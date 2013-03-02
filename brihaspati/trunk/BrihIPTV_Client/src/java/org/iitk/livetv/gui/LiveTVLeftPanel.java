@@ -4,7 +4,7 @@ package org.iitk.livetv.gui;
  * LiveTVLeftPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG, IIT Kanpur
+ * Copyright (c) 2012-2013 ETRG, IIT Kanpur
  */
 
 import java.awt.BorderLayout;
@@ -23,12 +23,14 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;;
 import java.util.Collections;
 import java.util.Vector;
+import java.util.StringTokenizer;
 import org.iitk.livetv.util.ClientObject;
 
 
@@ -44,7 +46,7 @@ public class LiveTVLeftPanel extends JPanel implements ActionListener, MouseList
 	private JComboBox categoryBox=null;
 	private DefaultListModel model;
 	private JList list=null;
-	private JScrollPane pane=null;
+	private JScrollPane chListPane=null;
 	private ClientObject client_obj=ClientObject.getController();
 
 
@@ -73,8 +75,9 @@ public class LiveTVLeftPanel extends JPanel implements ActionListener, MouseList
                 northPanel.add(selectCategory,gbc);
 
 		
-		Vector channelCategory=ClientObject.getController().getCategory();
+		Vector channelCategory=client_obj.getCategory();
 		Collections.sort(channelCategory);
+		channelCategory.add(0,"All");
 		categoryBox=new JComboBox(channelCategory); 
 		categoryBox.addActionListener(this);
                 gbc.gridx = 0;
@@ -83,20 +86,36 @@ public class LiveTVLeftPanel extends JPanel implements ActionListener, MouseList
 		northPanel.add(categoryBox,gbc);
 	
 		mainPanel.add(northPanel,BorderLayout.NORTH);
-
 		
-		model = new DefaultListModel();
+/*		model = new DefaultListModel();
     		list = new JList(model);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    		pane = new JScrollPane(list);		
-                mainPanel.add(pane,BorderLayout.CENTER);
+		//ListCellRenderer renderer = new ChannelListCellRendered();
+                //list.setCellRenderer(renderer);
 
+		Vector ch_list=ClientObject.getController().getChannels("All");
+		for(int i=0;i<ch_list.size();i++){
+			String str=(ch_list.get(i)).toString();
+			StringTokenizer st=new StringTokenizer(str,"$");
+			model.addElement(st.nextToken());
+		}
+
+    		chListPane = new JScrollPane(list);		
+*/
+    		chListPane = new JScrollPane();		
+               // mainPanel.add(chListPane,BorderLayout.CENTER);
+                mainPanel.add(ChannelListPanel.getController().createGUI(),BorderLayout.CENTER);
 
 		return mainPanel;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		
+		if(e.getSource()==categoryBox){
+                        JComboBox combo = (JComboBox)e.getSource();
+                        String category_name=(String)combo.getSelectedItem();
+			client_obj.setChoosenCategoryName(category_name);	
+			
+		}
 	}
 
 	public void mouseClicked(MouseEvent ev) {}

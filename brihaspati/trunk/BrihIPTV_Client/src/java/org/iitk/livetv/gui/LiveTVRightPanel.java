@@ -4,7 +4,7 @@ package org.iitk.livetv.gui;
  * LiveTVRightPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG, IIT Kanpur
+ * Copyright (c) 2012-2013 ETRG, IIT Kanpur
  */
 
 import java.awt.BorderLayout;
@@ -87,25 +87,33 @@ public class LiveTVRightPanel extends JPanel implements ActionListener, MouseLis
 		northPanel=new JPanel();
 
 		canvas = new Canvas();
-    	canvas.setBackground(Color.black);
-    	factory = new MediaPlayerFactory("--no-video-title-show", "--no-plugins-cache", "--no-snapshot-preview");
-    	mediaPlayer = factory.newEmbeddedMediaPlayer();
+	    	canvas.setBackground(Color.black);
+    		factory = new MediaPlayerFactory("--no-video-title-show", "--no-plugins-cache", "--no-snapshot-preview");
+	    	mediaPlayer = factory.newEmbeddedMediaPlayer();
+	
+    		String[] standardMediaOptions ={"video-filter=logo", "logo-file=vlcj-logo.png", "logo-opacity=25"};
+	    	mediaPlayer.setStandardMediaOptions(standardMediaOptions);
 
-    	String[] standardMediaOptions ={"video-filter=logo", "logo-file=vlcj-logo.png", "logo-opacity=25"};
-    	mediaPlayer.setStandardMediaOptions(standardMediaOptions);
+    		videoSurface = factory.newVideoSurface(canvas);
 
-    	videoSurface = factory.newVideoSurface(canvas);
-
-    	mediaPlayer.setVideoSurface(videoSurface);
+	    	mediaPlayer.setVideoSurface(videoSurface);
 		mainPanel.add(canvas, BorderLayout.CENTER);
 		controlsPanel = new PlayerControlsPanel(mediaPlayer);
 		mainPanel.add(controlsPanel,BorderLayout.SOUTH);
-
 		return mainPanel;
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void playMedia(){
+		System.out.println("Starting play");
+		String[] mediaOptions = {":sout=#transcode{vcodec=theo,vb=800,fps=25,scale=1,acodec=vorb,ab=128,channels=2,samplerate=44100,desync(5)},dst=display} ",":ttl=1",":sout-keep"};
 
+                mediaPlayer.setPlaySubItems(true);
+		mediaPlayer.playMedia("dshow://", mediaOptions);
+		System.out.println("play media start");
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
 	}
 
 	public void mouseClicked(MouseEvent ev) {}
@@ -113,4 +121,8 @@ public class LiveTVRightPanel extends JPanel implements ActionListener, MouseLis
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e){}
+
+	public EmbeddedMediaPlayer getMediaPlayer(){
+		return mediaPlayer;
+	}
 }

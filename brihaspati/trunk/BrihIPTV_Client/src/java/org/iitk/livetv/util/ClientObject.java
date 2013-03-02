@@ -4,7 +4,7 @@ package org.iitk.livetv.util;
  * ClientObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012, ETRG, IIT Kanpur.
+ * Copyright (c) 2012-2013, ETRG, IIT Kanpur.
  */
 
 import java.util.Vector;
@@ -21,6 +21,8 @@ public class ClientObject {
 	private Vector indexServerList=null;
 	private String indexServerName="";
 	private Vector categoryList=null;	
+	private Vector channelList=null;
+	private String category_name="All";
 	private String localIP="";
 	private String usr_name="";
 	private String usr_id="";
@@ -73,6 +75,11 @@ public class ClientObject {
 			categoryList=commMgr.getCategoryList();
 		return categoryList;
 	}
+
+	public Vector getChannels(){
+		channelList=commMgr.getChannelList(category_name);
+		return channelList;
+	}
 	
 	/**
          * This method is used to send username and password to indexSerName which match these username
@@ -82,6 +89,11 @@ public class ClientObject {
 	public boolean getAuthentication(String indexSerName, String usr, String pass){
 		boolean value =commMgr.connectToIndexServer(indexSerName,usr,pass);
 		return value;
+	}
+
+	public boolean addChannel(String category, String ch_name, String ch_desc, String user_id, String ipaddr, String port){
+		boolean value=commMgr.putChannelDetails(category, ch_name, ch_desc, user_id, ipaddr, port);
+		return value;	
 	}
 
 	public void setIndexServerName(String value){
@@ -98,6 +110,13 @@ public class ClientObject {
 
 	public void setLocalIP(String str){
 		this.localIP=str;
+	}
+	public void setChoosenCategoryName(String name){
+		category_name=name;
+	}
+	
+	public String getChoosenCategoryName(){
+		return category_name;
 	}
 }
 

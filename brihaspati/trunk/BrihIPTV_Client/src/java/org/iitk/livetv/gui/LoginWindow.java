@@ -4,7 +4,7 @@ package org.iitk.livetv.gui;
  * LoginWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
  */
 
 import java.io.File;
@@ -44,6 +44,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 import com.sun.jna.Platform;
 import com.sun.jna.Native;
@@ -58,6 +59,7 @@ import org.iitk.livetv.util.ClientObject;
 import org.iitk.livetv.util.HttpsUtil;
 
 import java.util.Arrays;
+import java.util.Vector;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on 23Aug2012
@@ -150,7 +152,7 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 	private void createGUI(){
 
 		content = getContentPane();
-                setTitle("LiveTV");
+                setTitle("BrihIPTV");
 		setIconImage((new ImageIcon(clr.getResource("resources/images/title_icon.png"))).getImage());
 		setJMenuBar(createMenu());
 
@@ -171,8 +173,10 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 
 		content.add(mainPanel);
 		dim=Toolkit.getDefaultToolkit().getScreenSize();
-                setLocation((((int)dim.getWidth()/2)-200),(((int)dim.getHeight()/2)-350));
-                setSize(410,530);
+                //setLocation((((int)dim.getWidth()/2)-200),(((int)dim.getHeight()/2)-350));
+                pack();
+		setLocationRelativeTo(null);
+                setSize(400,530);
                 setVisible(true);
 		addWindowListener(new WindowAdapter() {
             		public void windowClosing(WindowEvent evt) {
@@ -223,8 +227,12 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 		optionPanel.setLayout(new GridBagLayout());
                	GridBagConstraints gbc = new GridBagConstraints();
 		Insets insets = new Insets(5,10,5,10);
-		gbc.fill=GridBagConstraints.HORIZONTAL;
+		gbc.fill = GridBagConstraints.BOTH;
+                gbc.anchor = GridBagConstraints.NORTH;
 		gbc.insets = insets;
+		gbc.weighty = 0.5;
+                gbc.weightx = 0.5;
+		//gbc.ipady = 5;
 
 		chooseLanguageLabel=new JLabel("Select language");
 		gbc.gridx = 0;
@@ -272,7 +280,7 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
                 gbc.insets = insets;
                 gbc.fill=GridBagConstraints.HORIZONTAL;
 
-                username =new JLabel("Enter your email-id");
+                username =new JLabel("Enter your email-id *");
                 username.setEnabled(false);
                 usernameText=new JTextField();
                 usernameText.setEnabled(false);
@@ -290,7 +298,7 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
                 gbc.gridy = 1;
                 loginPanel.add(usernameText,gbc);
 
-                password=new JLabel("Password");
+                password=new JLabel("Password *");
                 password.setEnabled(false);
                 passwordField=new JPasswordField();
                 passwordField.setEnabled(false);
@@ -396,7 +404,7 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 
     		}else if(e.getActionCommand().equals("signin_action")){
 			loginStatus.setText("");
-			if( (!(usernameText.getText()).equals(""))) {
+			if( (!(usernameText.getText()).equals(""))&&(!(passwordField.getText()).equals(""))) {
 	                        loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
 
 				if(loginValue==false){
@@ -404,7 +412,8 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 					passwordField.setText("");
 					usernameText.setCursor(defaultCursor);
 					loginStatus.setText("<html><blink><Font size=3 color=red><b>"+" Username and Password doesn't match!!"+"</b></font></blink></html>");
-					setSize(360,570);
+					setSize(400,550);
+
 				}else {
 					client_obj.setUserName(usernameText.getText());
 					client_obj.setIndexServerName(indexServerName);// set this indexServerName object to ClientObject for later use by this client.
@@ -415,10 +424,12 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 							content.add(LiveTVMainPanel.getController().createGUI());
 							setResizable(true);
 							setSize(((int)dim.getWidth()-800),((int)dim.getHeight()-500));
-							setLocation((((int)dim.getWidth()/3)-200),(((int)dim.getHeight()/3)-200));
+							//pack();
+							setLocationRelativeTo(null);
 							validate();
                       					repaint();
 							addchannelMenuItem.setEnabled(true);
+							LiveTVRightPanel.getController().playMedia();
 						}else
 							System.out.println("Error in checknativeLibrary");
 					}else
@@ -426,11 +437,12 @@ public class LoginWindow extends JFrame implements ActionListener, MouseListener
 
             	}
 			}else
-			System.out.println("Error in Sign in action");
+			JOptionPane.showMessageDialog(null, "Please fill all fields", "Login error", JOptionPane.INFORMATION_MESSAGE);
 
     		}else if(e.getActionCommand().equals("quit")){
 			System.exit(0);
 		}else if(e.getActionCommand().equals("addchannel")){
+			new AddChannel().createGUI();
 
     		}else if(e.getActionCommand().equals("connection")){
 			new PreferenceWindow();

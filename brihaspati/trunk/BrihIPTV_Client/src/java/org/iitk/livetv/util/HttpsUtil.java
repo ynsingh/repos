@@ -4,7 +4,7 @@ package org.iitk.livetv.util;
  * HttpsUtil.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG, IIT Kanpur.
+ * Copyright (c) 2012-2013 ETRG, IIT Kanpur.
  */
 
 import java.io.IOException;
@@ -203,7 +203,7 @@ public class HttpsUtil{
         	                String str="";
                 	        try{
                         	        if((str=in.readLine())!=null){
-                                	        if(str.equals("Successfull")){
+                                	        if(str.equals("Successful")){
                                         	        flag=true;
 	                                        }
                         	        }
@@ -295,7 +295,9 @@ public class HttpsUtil{
                                                      	while(st.hasMoreTokens()) {
                                                         	msgList.addElement(st.nextElement().toString());
                                                       	}
-                        	                }
+                        	                }else{
+							msgList.addElement(str);
+						}						
                                 	}
                                 }finally {
                                 	if(in != null) in.close();
@@ -304,7 +306,7 @@ public class HttpsUtil{
                 }catch(Exception e){
                         System.out.println("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
                         msgList.clear();
-                        return msgList;
+                        //return msgList;
                 }
                 return msgList;
         }

@@ -4,7 +4,7 @@ package org.iitk.livetv.util;
  * @(#)RuntimeObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG, IIT Kanpur.
+ * Copyright (c) 2012-2013 ETRG, IIT Kanpur.
  */
 
 import java.util.Properties;
@@ -82,4 +82,8 @@ public class RuntimeObject {
         protected String getcertIssuerName(){
 		return prop.getProperty("cert_Issuer_Name");
         }
+
+	public String getStreamingPort(){
+		return prop.getProperty("Streaming_Port");
+	}
 }	

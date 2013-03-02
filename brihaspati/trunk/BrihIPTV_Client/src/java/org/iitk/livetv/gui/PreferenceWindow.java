@@ -4,7 +4,7 @@ package org.iitk.livetv.gui;
  * PreferenceWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
  */
 
 import java.io.BufferedWriter;
@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -29,9 +33,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.BorderFactory;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
@@ -78,6 +86,8 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 	private Properties prop;
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	private ClassLoader clr= this.getClass().getClassLoader();
+
 
 	public static PreferenceWindow getController(){
 		if (preWin==null){
@@ -100,8 +110,9 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		tabPane.add("Connectin Settings",createTabPane());
 		window_mainPanel.add(tabPane,BorderLayout.CENTER);
 		con.add(window_mainPanel); 
-    		setSize(420, 300);
-    		setLocation(515,100);
+		pack();
+                setLocationRelativeTo(null);
+    		setSize(470,290 );
     		setVisible(true);
     		setResizable(true);
     	}
@@ -129,17 +140,25 @@ public class PreferenceWindow extends JFrame implements ActionListener{
         	centerPanel.setLayout(new BorderLayout());
 
 		proxyPanel1=new JPanel();
-	        proxyPanel1.setLayout(new FlowLayout());
+	        proxyPanel1.setLayout(new GridBagLayout());
+                Insets insets = new Insets(5,5,5,5);
+                GridBagConstraints proxyPanel1_gbc = new GridBagConstraints();
+                proxyPanel1_gbc.fill=GridBagConstraints.HORIZONTAL;
 
 		proxyPanel2=new JPanel();
-        	proxyPanel2.setLayout(new FlowLayout());
+        	proxyPanel2.setLayout(new GridBagLayout());
+                GridBagConstraints proxyPanel2_gbc = new GridBagConstraints();
+                proxyPanel2_gbc.fill=GridBagConstraints.HORIZONTAL;
 
   		
   		rbttnPanel=new JPanel();
   		rbttnPanel.setLayout(new GridLayout(3,1,1,1));
   		proxyhost= new JLabel("Http Proxy");
-		proxyhosttext=new JTextField(20);
-	        proxyport= new JLabel("Port");
+		proxyhosttext=new JTextField(20);	
+		proxyport= new JLabel("Port");
+		
+		//SpinnerModel model1 = new SpinnerNumberModel(8080,1025,10000,1);
+    		//JSpinner spinner = new JSpinner(model1);
 		proxyporttext=new JTextField(8);
 
 		proxyuser= new JLabel("User name");
@@ -149,13 +168,12 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 
   		bttngroup= new ButtonGroup();
 
- 		/****************************************MODIFIED********************************/
  		netType=Integer.parseInt(getProperties().getProperty("Type"));
   		
   		if(netType==1){
   			rb1= new JRadioButton("No Proxy", true);
 		//	rb1.addActionListener(this);
-        //  rb1.setActionCommand("rb1");
+        	//  	rb1.setActionCommand("rb1");
 
 			rb3= new JRadioButton("Use Proxy", false);
 			proxyhost.setEnabled(false);
@@ -172,14 +190,14 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 			rb1= new JRadioButton("No Proxy", false);
 			rb3= new JRadioButton("Use Proxy", true);
 		//	rb3.addActionListener(this);
-        	//  rb3.setActionCommand("rb3");
+        	//  	rb3.setActionCommand("rb3");
 
 			String host=getProperties().getProperty("ProxyHost");
 			String port=getProperties().getProperty("ProxyPort");
 			String user=getProperties().getProperty("ProxyUser");
 			String pass=getProperties().getProperty("ProxyPass");
 
-            proxyhost.setEnabled(true);
+            		proxyhost.setEnabled(true);
 			proxyhosttext.setEditable(true);
 			proxyhosttext.setText(host);
 
@@ -195,54 +213,72 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 			proxypasstext.setEditable(true);
 			proxypasstext.setText(pass);
 		}
-		/*************************************************************************/	
-			rb1.addActionListener(this);
-            		rb1.setActionCommand("rb1");
+		rb1.addActionListener(this);
+            	rb1.setActionCommand("rb1");
 	
-			rb3.addActionListener(this);
-            		rb3.setActionCommand("rb3");
-	
-			bttngroup.add(rb1);
-                	bttngroup.add(rb3);
-                	rbttnPanel.add(rb1);
-                	rbttnPanel.add(rb3);
-                
-			titledBorder = BorderFactory.createTitledBorder("Proxy Authentication");
-        		centerPanel.setBorder(titledBorder);
+		rb3.addActionListener(this);
+            	rb3.setActionCommand("rb3");
 
-			proxyPanel1.add(proxyhost);
-                	proxyPanel1.add(proxyhosttext);
-                	proxyPanel1.add(proxyport);
-                	proxyPanel1.add(proxyporttext);
+		bttngroup.add(rb1);
+               	bttngroup.add(rb3);
+               	rbttnPanel.add(rb1);
+               	rbttnPanel.add(rb3);
+               
+		titledBorder = BorderFactory.createTitledBorder("Proxy Authentication");
+       		centerPanel.setBorder(titledBorder);
 
-                	centerPanel.add(proxyPanel1,BorderLayout.NORTH);
+		proxyPanel1_gbc.gridx = 0;
+                proxyPanel1_gbc.gridy = 0;
+		proxyPanel1_gbc.insets = insets;
+		proxyPanel1.add(proxyhost,proxyPanel1_gbc);
+		proxyPanel1_gbc.gridx = 1;
+                proxyPanel1_gbc.gridy = 0;
+               	proxyPanel1.add(proxyhosttext,proxyPanel1_gbc);
+		proxyPanel1_gbc.gridx = 2;
+                proxyPanel1_gbc.gridy = 0;
+               	proxyPanel1.add(proxyport,proxyPanel1_gbc);
+		proxyPanel1_gbc.gridx = 3;
+                proxyPanel1_gbc.gridy = 0;
+               	proxyPanel1.add(proxyporttext,proxyPanel1_gbc);
 
-                	proxyPanel2.add(proxyuser);
-                	proxyPanel2.add(proxyusertext);
-                	proxyPanel2.add(proxypass);
-                	proxyPanel2.add(proxypasstext);
+               	centerPanel.add(proxyPanel1,BorderLayout.NORTH);
 
-                	centerPanel.add(proxyPanel2,BorderLayout.CENTER);
+		proxyPanel2_gbc.gridx = 0;
+                proxyPanel2_gbc.gridy = 1;
+		proxyPanel2_gbc.insets = insets;
+               	proxyPanel2.add(proxyuser,proxyPanel2_gbc);
+		proxyPanel2_gbc.gridx = 1;
+                proxyPanel2_gbc.gridy = 1;
+               	proxyPanel2.add(proxyusertext,proxyPanel2_gbc);
+		proxyPanel2_gbc.gridx = 0;
+                proxyPanel2_gbc.gridy = 2;
+               	proxyPanel2.add(proxypass,proxyPanel2_gbc);
+		proxyPanel2_gbc.gridx = 1;
+                proxyPanel2_gbc.gridy = 2;
+               	proxyPanel2.add(proxypasstext,proxyPanel2_gbc);
 
-                	bttnPanel=new JPanel();
-                	bttnPanel.setLayout(new FlowLayout());
-                	bttnPanel.setBorder(BorderFactory.createTitledBorder(""));
+               	centerPanel.add(proxyPanel2,BorderLayout.CENTER);
 
-                	appbttn=new JButton("Apply");
-                	appbttn.addActionListener(this);
-			appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+               	bttnPanel=new JPanel();
+               	bttnPanel.setLayout(new FlowLayout());
+               	bttnPanel.setBorder(BorderFactory.createTitledBorder(""));
 
-                	cancelbttn=new JButton("Cancel");
-                	cancelbttn.addActionListener(this);
-			cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+               	appbttn=new JButton("Apply",new ImageIcon(clr.getResource("resources/images/ok.png")));
 
-                	bttnPanel.add(appbttn);
-                	bttnPanel.add(cancelbttn);
+               	appbttn.addActionListener(this);
+		appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-			mainPanel.add(rbttnPanel,BorderLayout.NORTH);
-                	mainPanel.add(centerPanel,BorderLayout.CENTER);
-                	mainPanel.add(bttnPanel,BorderLayout.SOUTH);
-                	return mainPanel;
+               	cancelbttn=new JButton("Cancel",new ImageIcon(clr.getResource("resources/images/quit.png")));
+               	cancelbttn.addActionListener(this);
+		cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+               	bttnPanel.add(appbttn);
+               	bttnPanel.add(cancelbttn);
+
+		mainPanel.add(rbttnPanel,BorderLayout.NORTH);
+               	mainPanel.add(centerPanel,BorderLayout.CENTER);
+               	mainPanel.add(bttnPanel,BorderLayout.SOUTH);
+               	return mainPanel;
   		
 	}
 

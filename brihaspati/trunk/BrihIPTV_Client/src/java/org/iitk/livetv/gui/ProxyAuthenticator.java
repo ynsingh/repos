@@ -4,7 +4,7 @@ package org.iitk.livetv.gui;
  * ProxyAuthenticator.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG, IIT Kanpur.
+ * Copyright (c) 2012-2013 ETRG, IIT Kanpur.
  */
 
 import javax.swing.JFrame;
@@ -79,7 +79,7 @@ public class ProxyAuthenticator implements ActionListener {
                 main_panel.add(south_panel,BorderLayout.SOUTH);
 
                 frame.getContentPane().add(main_panel);
-                frame.setSize(500,150);
+                frame.setSize(500,170);
                 frame.setLocation(300,300);
                 frame.setVisible(true);
 
@@ -97,7 +97,7 @@ public class ProxyAuthenticator implements ActionListener {
                   	}
 		}else if(e.getActionCommand().equals("Cancel_Bttn")){
 			frame.dispose();
-			createGUI();
+		//	createGUI();
 		}
 	}
 
