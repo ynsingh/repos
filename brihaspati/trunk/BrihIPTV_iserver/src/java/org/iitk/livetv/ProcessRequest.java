@@ -3,7 +3,7 @@ package org.iitk.livetv;
 /*@(#)ProcessRequest.java
  *
  * See licence file for usage and redistribution terms
- * Copyright (c) 2012-2013.All Rights Reserved.
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
  */
 
 import javax.servlet.RequestDispatcher;
@@ -42,6 +42,8 @@ import org.iitk.livetv.om.UserPeer;
 import org.iitk.livetv.om.User;
 import org.iitk.livetv.om.CategoryPeer;
 import org.iitk.livetv.om.Category;
+import org.iitk.livetv.om.ChannelPeer;
+import org.iitk.livetv.om.Channel;
 import java.sql.Date;
  /**
   * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
@@ -169,9 +171,44 @@ public class ProcessRequest extends HttpServlet {
                                 out.flush();
                                 out.close();
 			}
-		}else if(reqType.equals("getChannel")){
+		}else if(reqType.equals("getChannelList")){
+			String category=request.getParameter("category");
+			Vector result=new Vector();
+			result=getChannelList(category);
+			int resultSize=result.size();
+                        String message="";
+                        if(resultSize!=0){
+                                for(int i=0;i<resultSize;i++){
+                                        if(i==0)
+                                                message=result.elementAt(i).toString();
+                                        else
+                                                message=message+","+result.elementAt(i).toString();
+                                }
+                                response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+                        }else{
+                                message="noChannel";
+                                response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+                        }
 
-		}else if(reqType.equals("createChannel")){
+		}else if(reqType.equals("addChannel")){
+			String category=request.getParameter("category");
+                        String name=request.getParameter("ch_name");
+                        String desc=request.getParameter("ch_desc");
+			String usrID=request.getParameter("usr_id");
+                        String ipAddr=request.getParameter("ip");
+                        String port=request.getParameter("port");
+                        String status=request.getParameter("status");
+			String message=addChannel(category,name,desc,usrID,ipAddr,port,status);
+                        response.setContentLength(message.length());
+                        out.println(message);
+                        out.flush();
+                        out.close();
 
 		}else if(reqType.equals("playChannel")){
 
@@ -180,9 +217,38 @@ public class ProcessRequest extends HttpServlet {
 		}else if(reqType.equals("removeChannel")){
 		
 		}
-
-
 	}//end of post method
+
+	public String addChannel(String category, String name, String desc, String usrID,String ipAddr, String port, String status){
+		String result="Unsuccessful";
+		List returnValue=null;
+		String category_ID="";
+		try{
+		 	Criteria crit = new Criteria();
+				try{
+					crit.add(CategoryPeer.CATEGORY_NAME,category);
+                	        	returnValue = CategoryPeer.doSelect(crit);
+				      	Category element=(Category)returnValue.get(0);
+                              		category_ID=Integer.toString(element.getCategoryId());
+					ServerLog.getController().Log("category id : "+category_ID);
+        	              	} catch(Exception ex) { ServerLog.getController().Log("Error in getCategory id : "+ex.getMessage());}
+			
+                 		crit.add(ChannelPeer.CHANNEL_OWNER_ID,usrID);
+	                 	crit.add(ChannelPeer.CHANNEL_NAME,name);
+        	        	crit.add(ChannelPeer.CHANNEL_DESC,desc);
+                	 	crit.add(ChannelPeer.CHANNEL_IP_ADDRESS,ipAddr);
+                 		crit.add(ChannelPeer.CHANNEL_PORT,port);
+	                 	crit.add(ChannelPeer.CHANNEL_CATEGORY_ID,category_ID);
+        	         	crit.add(ChannelPeer.CHANNEL_STATUS,status);
+                	 	crit.setDistinct();
+                 		UserPeer.doInsert(crit);
+	                 	result="Successful";
+				return result;
+			//}
+		}catch(Exception e){ServerLog.getController().Log("Error in add channel data "+e.getMessage());
+		}
+		return result;
+	}
 
 	private String userRegistration(String name, String email, String pass, String gender, Date dob, String phone, String addr, String city, String state, String country, String zip){
 
@@ -236,7 +302,7 @@ public class ProcessRequest extends HttpServlet {
 		String result=null;
 		List returnValue=null;
 		try{
-			 // use the server util for getting the password in string form from the MD5 
+			// use the server util for getting the password in string form from the MD5 
                         //String authPassword=EncryptionUtil.createDigest("MD5",password);
 
                         /** send the Login and Password to the Mysql Database for the authentication purpose */
@@ -282,6 +348,45 @@ public class ProcessRequest extends HttpServlet {
             	} catch(Exception e) { ServerLog.getController().Log("Error in get Category list"+e); }
                 return result;
 	}
+
+	public Vector getChannelList(String category){
+                Vector result=new Vector();
+                List catList=null;
+				ServerLog.getController().Log(category);
+                try{
+			Criteria crit = new Criteria();
+			if(!category.equals("All")){
+				crit = new Criteria();
+                        	crit.add(CategoryPeer.CATEGORY_NAME,category);
+                        	List tempcatList = CategoryPeer.doSelect(crit);
+			
+				if(tempcatList.size()!=0){
+					Category element=(Category)tempcatList.get(0);
+					int ChCatgoryId=element.getCategoryId();
+					//String chidd= ChCatgoryId.toString();
+					crit = new Criteria();
+					crit.add(ChannelPeer.CHANNEL_CATEGORY_ID,ChCatgoryId);
+        	                	catList=ChannelPeer.doSelect(crit);
+				}	
+			}
+			else{
+                        crit.addGroupByColumn(ChannelPeer.CHANNEL_ID);
+                        catList=ChannelPeer.doSelect(crit);
+			}
+			if(catList.size()!=0){
+				for(int i=0;i<=catList.size();i++){
+                                        Channel ch=(Channel)catList.get(i);
+                                        String chname=ch.getChannelName();
+                                        int chid=ch.getChannelId();
+                                        int chstatus=ch.getChannelStatus();
+                                        String chnmId=chname+"$"+chid+"$"+chstatus;
+                                        result.addElement(chnmId);
+                        	}
+			}
+                }catch(Exception e){System.out.println("Error in getChannelList() :"+e.getMessage());}
+                return result;
+        }
+
 	
 }//end of class
 

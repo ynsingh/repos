@@ -8,6 +8,7 @@
 <!-- ==================================================================== -->
 <!-- ==================================================================== -->
 
+<!--database name="livetv" defaultIdMethod="idbroker">-->
 <database name="livetv" defaultIdMethod="idbroker">
 
 	<table name="USER" idMethod="idbroker">
@@ -63,12 +64,22 @@
 
 	<table name="CHANNEL" idMethod="idbroker">
                 <column name="CHANNEL_ID" required="true" primaryKey="true" type="INTEGER"/>
+                <column name="CHANNEL_OWNER_ID" required="true" type="INTEGER"/>
                 <column name="CHANNEL_NAME" required="true" size="100" type="VARCHAR"/>
                 <column name="CHANNEL_DESC" size="255" type="VARCHAR"/>
                 <column name="CHANNEL_IP_ADDRESS" required="true" size="25" type="VARCHAR"/>
                 <column name="CHANNEL_PORT" required="true" size="10" type="INTEGER"/>
-                <column name="CHANNEL_ICON" size="255" type="VARCHAR"/>
-		
+                <column name="CHANNEL_STATUS" required="true" size="10" type="INTEGER"/>
+                <column name="CHANNEL_CATEGORY_ID" required="true" type="INTEGER"/>
+
+		<foreign-key foreignTable="USER">
+			 <reference local="CHANNEL_OWNER_ID" foreign="USER_ID"/>
+		</foreign-key>
+	
+		<foreign-key foreignTable="CATEGORY">
+                         <reference local="CHANNEL_CATEGORY_ID" foreign="CATEGORY_ID"/>
+                </foreign-key>
+
                 <unique>
                         <unique-column name="CHANNEL_NAME"/>
                 </unique>

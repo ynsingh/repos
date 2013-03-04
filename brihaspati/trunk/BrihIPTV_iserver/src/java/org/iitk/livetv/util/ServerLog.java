@@ -2,7 +2,7 @@ package org.iitk.livetv.util;
 
 /*@(#)ServerLog.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2012-2013. All Rights Reserved.
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur. 
  */
 
 import java.util.Date;
@@ -22,6 +22,7 @@ public class ServerLog {
 	private static File existingFile =null;
         private static DataOutputStream dos = null;
 	private ServletContext context=null;
+	FileOutputStream flog=null;
 	
 	/**
 	 * ServerLog controller 
@@ -37,6 +38,7 @@ public class ServerLog {
 		context=context1;
 		existingFile=new File(context.getRealPath("logs/ServerLog.txt"));
 		dos = new DataOutputStream(new FileOutputStream(existingFile,true));
+		flog=new FileOutputStream(existingFile,true);
 	}
 	
 	private void createFile(){
@@ -44,6 +46,7 @@ public class ServerLog {
                         dos = new DataOutputStream(new FileOutputStream(existingFile,true));
 		}catch(Exception e){ }	
 	}
+
 	
         /**
         * In this method, Dump error message in logfile
@@ -58,8 +61,9 @@ public class ServerLog {
 				createFile();
 			}
 			Date Errordate=new Date();
-	        	dos.writeBytes(Errordate+"---"+msg+"\n");
-			dos.flush();                        
+			flog=new FileOutputStream(existingFile,true);
+	        	flog.write((Errordate+"---"+msg+"\n").getBytes());
+			flog.close();                        
                 }catch(Exception e) { }
         }
 }
