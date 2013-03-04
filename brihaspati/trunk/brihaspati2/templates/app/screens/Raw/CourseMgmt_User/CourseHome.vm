@@ -9,6 +9,8 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author<a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author<a href="mailto:sunil0711@gmail.com">Sunil Yadav </a>
+ * @author<a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
+ * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012 
  * @author<a href="mailto:richa.tandon11@gmail.com">Richa Tandon </a>
  * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012, 07-Feb-2013(Richa)
  * Contributors: Members of ETRG, I.I.T. Kanpur
@@ -1028,11 +1030,35 @@ $!data.getMessage()
 				                </table>	
 			                </td></tr>
 		                </table>
+		  <div style="overflow:auto;  height:100px; background:$ui.tableColor">
+                              <table  bgcolor="$ui.tableColor" width="98%"  align="left">
+                                    <tr>
+                                           <td colspan="3" align="center" bgcolor="$ui.menuColor" style="font-family:arial;"><b>$sec_session</b></td>
+                                    </tr>
+                                    #if($lec_details.size()==0)
+                                        <tr><td>$session_info</td></tr>
+                                    #else
+                                    #foreach($st in $lec_details)
+                                    #if($velocityCount%2==0)
+                                    <tr bgcolor="$ui.menuColor">
+                                    #else
+                                    <tr bgcolor="$ui.tableColor">
+                                    #end
+                                    <td width="50%">$st.lecname</td>
+                                    <td><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$st.key" style="text-decoration:none;" target="_blank">$brih_join</a></td>
+                                    <td><a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lectureId",$st.lid).addPathInfo("mode","Clecture")","newWin"); style="text-decoration:none;">$brih_more</a></td>
+
+                                   </tr>
+                                    #end
+                                    #end
+
+                              </table>
+                   </div>
 		#if($guest_login == "false")
 			#if($user_role != "instructor")
 			 <div style="overflow:auto;  height:120px; background:$ui.tableColor">
 			#else
-			<div style="overflow:auto;  height:280px; background:$ui.tableColor">
+			<div style="overflow:auto;  height:215px; background:$ui.tableColor">
 			#end
                               <table  bgcolor="$ui.tableColor" width="98%"  align="left">
                            	    <tr>
@@ -1122,4 +1148,23 @@ $!data.getMessage()
         {
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
         }
+	function popup(url,popupName)
+        {
+                var w=650;
+                var h=200;
+                var left = (screen.width/2)-(w/2);
+                var top = (screen.height/2)-(h/2);
+                Win2 = window.open (url,popupName, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                //Win2=window.open(url,popupName,"resizable,height=200,width=650");
+        }
+	window.onload = setupRefresh;
+
+	function setupRefresh() {
+        setTimeout("refreshPage();", 60000); // milliseconds
+        }
+        function refreshPage() {
+        window.location = location.href;
+        }
+
+
 </SCRIPT>

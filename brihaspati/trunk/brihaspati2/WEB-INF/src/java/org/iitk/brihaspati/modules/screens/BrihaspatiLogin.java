@@ -68,8 +68,7 @@ import java .util.Calendar;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
-
-//import in.ac.dei.edrp.api.DEIRemoteAccessAPI;
+import org.iitk.brihaspati.modules.utils.BrihaspatiSyncRunningSession;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 /**
@@ -87,76 +86,6 @@ public class BrihaspatiLogin extends VelocityScreen
     {
 		boolean flag = false;
 		System.gc();
-		try{
-			 /**
-			  *This block of code compare current date ant time to Lecture Date and Time
-			  *if Lecture date and time is greater than current date and time then pics 
-		          *LECTURE ID of that Lecture and sends to VM for further use.
-			  */
-
-			 ArrayList list = new ArrayList();
-                         Map map = new HashMap();
-					
-			 int lectureId=0;			
-			
-			 // Get Current date month and year.
-
-			 Calendar cal = new GregorianCalendar();
-			 int day = cal.get(Calendar.DAY_OF_MONTH);
-			 int month=cal.get(Calendar.MONTH)+1;
-			 int year=cal.get(Calendar.YEAR);
-			 
-			 Date date2 = new Date();
-                         java.sql.Date currentDate = new java.sql.Date(date2.getTime());
-                         Criteria crte = new Criteria();
-                         crte.addGroupByColumn(LecturePeer.LECTUREID);
-                         List lec=LecturePeer.doSelect(crte);
-
-			 //Get Current time using SimpleDateFormat.
-
-                         SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
-                         String time = stf.format(new Date());
-                         Date currenttime=stf.parse(time);
-			 
-			 //Loop for getting data from Lecture table.
-                         for(int i=0;i<lec.size();i++){
-                                Lecture element=(Lecture)lec.get(i);
-                                String lectime=element.getSessiontime();
-                                String str1[]=lectime.split(":");
-                                int itime = Integer.parseInt(str1[0]);
-                                String duration=element.getDuration();
-                                String str[]=duration.split(":");
-                                int iduration=Integer.parseInt(str[0]);
-                                int finaltime=itime+iduration;
-                                String sf=new Integer(finaltime).toString();
-                                String ct=sf+":"+str1[1];
-                                Date sessiondate1=element.getSessiondate();
-				java.sql.Date sessiondate= new java.sql.Date(sessiondate1.getTime());
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                		String strDate = dateFormat.format(sessiondate);
-                                String strDate_split[]=strDate.split("-");
-				int sday=Integer.parseInt(strDate_split[2]);
-				int smonth=Integer.parseInt(strDate_split[1]);
-				int syear=Integer.parseInt(strDate_split[0]);
-                                SimpleDateFormat stf1 = new SimpleDateFormat("HH:mm");
-                                Date date=stf1.parse(ct);
-
-				//Condition to check if current date is before session date.And if current date is equal to session date then time will also 				     be cmpared.
- 
-				if((currentDate.compareTo(sessiondate)<0 )|| ((day==sday && month==smonth && year==syear) && currenttime.compareTo(date) < 0)){
-					map = new HashMap();
-					String lecname = element.getLecturename();
-					map.put("lecname",lecname);
-                                	lectureId=element.getLectureid();
-					map.put("lid",lectureId);
-					list.add(map);
-
-                                }
-
-                        }
-			context.put("lec_details",list);
-		}catch(Exception e){}
-		//
 /*
 		String message=DEIRemoteAccessAPI.getStudentInfo("nksinghiitk@gmail.com", "iitk_brihaspati");
                 ErrorDumpUtil.ErrorLog("Message comes from dei server  =="+message);
@@ -178,6 +107,7 @@ String hdir=System.getProperty("user.home");
                 try{
                         ParameterParser pp=data.getParameters();
                         String lang=pp.getString("lang","");
+			context.put("lec_details",BrihaspatiSyncRunningSession.getRunningSession("",""));
                         if(lang.equals(""))
 			{
 				flag = true;

@@ -73,6 +73,7 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
+import org.iitk.brihaspati.modules.utils.BrihaspatiSyncRunningSession;
 
 import org.iitk.brihaspati.om.ModulePermissionPeer;
 import org.iitk.brihaspati.om.ModulePermission;
@@ -130,6 +131,7 @@ public class CourseHome extends SecureScreen{
 			 */
 			String C_Name=CourseUtil.getCourseName(courseid);
  			String username=user.getName();
+			context.put("lec_details",BrihaspatiSyncRunningSession.getRunningSession(courseid,username));
 			int userid=UserUtil.getUID(username);
 			String User_Id=Integer.toString(userid);
 			/**

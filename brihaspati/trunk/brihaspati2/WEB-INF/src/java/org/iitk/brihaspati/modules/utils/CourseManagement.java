@@ -591,6 +591,31 @@ public class CourseManagement
 		}
 		return(message);
 	}
+
+	/**
+          * Check if the user obtained is a primary instructor of 
+          * this course
+          * @param groupName String
+          * @return instructor login id in string formate .
+          */
+		
+	public static String IsPrimaryInstructor(String groupName)
+        {
+                try
+                {
+                        String grpAlias=CourseUtil.getCourseAlias(groupName);
+                        String unmwIid=StringUtils.substringAfter(groupName,grpAlias);
+                        String ins_name[]=unmwIid.split("_");
+			return ins_name[0];
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in IsPrimaryInstructor() - CourseManagement Utils "+e);
+                }
+                return null;
+        }
+
+
 	/**
 	  * Check if the user obtained is a primary instructor of 
 	  * this course

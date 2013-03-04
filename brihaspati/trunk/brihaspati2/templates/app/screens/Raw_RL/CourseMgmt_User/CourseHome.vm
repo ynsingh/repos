@@ -173,6 +173,31 @@ $!data.getMessage()
 			                </td></tr>
 		                </table>
 			#############################
+			 <div style="overflow:auto;  height:100px; background:$ui.tableColor">
+                              <table  bgcolor="$ui.tableColor" width="98%"  align="left">
+                                    <tr>
+                                           <td colspan="3" align="center" bgcolor="$ui.menuColor" style="font-family:arial;"><b>$sec_session</b></td>
+                                    </tr>
+                                    #if($lec_details.size()==0)
+                                        <tr><td>$session_info</td></tr>
+                                    #else
+                                    #foreach($st in $lec_details)
+                                    #if($velocityCount%2==0)
+                                    <tr bgcolor="$ui.menuColor">
+                                    #else
+                                    <tr bgcolor="$ui.tableColor">
+                                    #end
+                                    <td width="50%">$st.lecname</td>
+                                    <td><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$st.skey" style="text-decoration:none;" target="_blank">$brih_join</a></td>
+                                    <td><a href=javascript:popup("$link.setPage("call,CourseMgmt_User,LecInfo.vm").addPathInfo("lectureId",$st.lid)","newWin"); style="text-decoration:none;">$brih_more</a></td>
+
+                                   </tr>
+                                    #end
+                                    #end
+
+                              </table>
+	                   </div>
+			##################################
 				#if($guest_login == "false")
                         #if($user_role != "instructor")
                          <div style="overflow:auto;  height:120px;">
@@ -684,5 +709,22 @@ $!data.getMessage()
         function popupWin(url,popupName)
         {
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+        }
+	function popup(url,popupName)
+        {
+                var w=650;
+                var h=200;
+                var left = (screen.width/2)-(w/2);
+                var top = (screen.height/2)-(h/2);
+                Win2 = window.open (url,popupName, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                //Win2=window.open(url,popupName,"resizable,height=200,width=650");
+        }
+        window.onload = setupRefresh;
+
+        function setupRefresh() {
+        setTimeout("refreshPage();", 60000); // milliseconds
+        }
+        function refreshPage() {
+        window.location = location.href;
         }
 </SCRIPT>
