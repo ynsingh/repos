@@ -1,7 +1,7 @@
 *************************************************************************************************************
-Copyright 2004-2007 ETRG, IIT Kanpur
+Copyright 2004-2007, 2013 ETRG, IIT Kanpur
 Contributions by:- Awadhesh Kumar Trivedi, Nagendra Kumar Singh
-Last modified on 27 January 2007
+Last modified on 05 March 2013. 
 *************************************************************************************************************
 
 This document describes procedure to install Brihaspati(New) on any Linux machine.
@@ -14,7 +14,7 @@ Download the following
 
 1. jdk-1_5_0_02-linux-i586-rpm.bin from http://java.sun.com
 2. apache-ant-1.6.1-bin.zip from http://ant.apache.org/
-3. tdk-2.3_01.tar.gz from http://home.iitk.ac.in/~ynsingh/tool/brihaspati.shtml
+3. apache-tomcat-7.0.34 from http://home.iitk.ac.in/~ynsingh/tool/brihaspati.shtml
 4. latest brihaspati2.tar.gz from http://sourceforge.net/projects/brihaspati
 and http://home.iitk.ac.in/~ynsingh/tool/brihaspati.shtml
 5. download mysql from http://dev.mysql.com/downloads/
@@ -65,8 +65,8 @@ Step 5: Logout and relgoin in linux machine as user 'brihaspati'
 
 Step 6: Install tdk
 
-	# gunzip tdk-2.3_01.tar.gz
-	# tar -xvf tdk-2.3_01.tar
+	# gunzip apache-tomcat-7.x.x.tar.gz
+	# tar -xvf apache-tomcat-7.x.x.tar
 
 Step 7: Install ant
 
@@ -82,16 +82,16 @@ replicated in rc file to avoid typing them again when loging in next time.
    # JAVA_HOME=/usr/java/j2sdk-1_5_0
    # ANT_HOME=/home/brihaspati/apache-ant-1.6.1
    # PATH=/usr/java/j2sdk-1_5_0/bin:/home/brihaspati/apache-ant-1.6.1/:$PATH
-   # CLASSPATH=/home/brihaspati/tdk-2.3_01/common/lib/servletjar:$CLASSPATH
+   # CLASSPATH=/home/brihaspati/apache-tomcat-7.x.x/common/lib/servletjar:$CLASSPATH
    # export JAVA_HOME ANT_HOME PATH CLASSPATH
 
 
 Step 9: Installing BRIHASPATI (after moving into home directory of brihaspati login)
 
-	# cd tdk-2.3_01/
-	Create directory in tdk-2.3_01
+	# cd apache-tomcat-7.x.x/
+	Create directory in apache-tomcat-7.x.x
 		$mkdir webapps
-	# cd tdk-2.3_01/webapps/ 
+	# cd apache-tomcat-7.x.x/webapps/ 
 	Copy brihaspati2-xxxxxxx.tar.gz	to this directory. 
 
 	# gunzip brihaspati2-xxxxxxxx.tar.gz
@@ -102,7 +102,7 @@ svn co http://202.141.40.215/repos/brihaspati/trunk/brihaspati2
 
 Step 10: Configuring brihaspati2.
 
-	# cd /home/brihaspati/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf
+	# cd /home/brihaspati/apache-tomcat-7.x.x/webapps/brihaspati2/WEB-INF/conf
 
 	Open TurbineResources.template file and find and set the following entries
 		
@@ -144,7 +144,7 @@ Step 10: Configuring brihaspati2.
 
 
 Step 11:
-	# cd /home/brihaspati/tdk-2.3_01/webapps/brihaspati2/WEB-INF/build
+	# cd /home/brihaspati/apache-tomcat-7.x.x/webapps/brihaspati2/WEB-INF/build
 
 	Open build.properties file using ant text editor (We use vi:-)) and find and set the following entries
 		------------------------------------------------------------
@@ -157,7 +157,7 @@ Step 11:
 		databasepassword=password
 		# no space after password (This is password for accessing mysql
 		# database
-	# Also cd /home/brihaspati/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf
+	# Also cd /home/brihaspati/apache-tomcat-7.x.x/webapps/brihaspati2/WEB-INF/conf
 
 	Open torque.properties file using ant text editor (We use vi:-)) and find and set the following entries
                 ------------------------------------------------------------
@@ -182,7 +182,7 @@ Step 11:
 
 		Give Password when asked.
 Step 12:
-	# cd /home/brihaspati/tdk-2.3_01/conf' and open 'server.xml'. Change the context
+	# cd /home/brihaspati/apache-tomcat-7.x.x/conf' and open 'server.xml'. Change the context
 	
 	path as given below
         <Context path="/brihaspati" docBase="brihaspati2" reloadable="true"/>
@@ -197,7 +197,7 @@ Step 13:
 		"/home/brihaspati"
 
 	Step 13.2:
-		Copy fonts from tdk-2.3_01/webapps/brihaspati2/Fonts/ dir to .fonts
+		Copy fonts from apache-tomcat-7.x.x/webapps/brihaspati2/Fonts/ dir to .fonts
 
 	Step 13.3:
 		Reboot the system or restart the font server from command as
@@ -211,13 +211,13 @@ Step 14:
 Step 15:
 	# For Scorm Packager
 	Go to BrihaspatiEditor dir
-	"tdk-2.3_01/webapss/brihaspati2/BrihaspatiEditor"
+	"apache-tomcat-7.x.x/webapss/brihaspati2/BrihaspatiEditor"
 	Open BrihaspatiEditor.jnlp, change codebase eg. 172.28.44.17(Server IP
 Address)
 
 Step 16:Installing BRIHASPATI Spring Module (Directory, Twitter etc)
 
-        # cd tdk-2.3_01/webapps
+        # cd apache-tomcat-7.x.x/webapps
 
 	get the latest source from  SVN repository at this location
 	svn co http://202.141.40.215/repos/brihaspati/trunk/brihaspatiSpring
@@ -229,7 +229,7 @@ Step 16:Installing BRIHASPATI Spring Module (Directory, Twitter etc)
 
 START BRIHASPATI
 ----------------
-   Go to  ~/tdk-2.3_01/webapps/brihaspati2/bin and open BrihStart.sh when using
+   Go to  ~/apache-tomcat-7.x.x/webapps/brihaspati2/bin and open BrihStart.sh when using
    system first time after installation. Set the variable appropriately and
    type
    
@@ -247,24 +247,23 @@ START BRIHASPATI
 
 STOPPING THE BRIHASPATI
 -----------------------
-   In ~/tdk-2.3_01/webapps/brihaspati2/bin directory run BrihStop.sh to stop the
+   In ~/apache-tomcat-7.x.x/webapps/brihaspati2/bin directory run BrihStop.sh to stop the
    server. To restart the server again, run BrihStart.sh
 
 Configuring the system for autostarting the Brihaspati on system boot
 ---------------------------------------------------------------------
 As root go to /etc and open rc.local and type the command
 
-/usr/bin/sudo -u brihaspati /home/brihaspati/tdk-2.3_01/webapps/brihaspati2/bin/BrihStartRoot.sh &
+/usr/bin/sudo -u brihaspati /home/brihaspati/apache-tomcat-7.x.x/webapps/brihaspati2/bin/BrihStartRoot.sh &
 BrihStartRoot with full path name before as last command. Also open
 BrihStartRoot and edit the variable appropritately.
-e.g "/home/brihaspati/tdk-2.3_01/webapps/brihaspati2/bin/BrihStartRoot.sh"
+e.g "/home/brihaspati/apache-tomcat-7.x.x/webapps/brihaspati2/bin/BrihStartRoot.sh"
 
 
 Site address for installation instruction
 -----------------------------------------
 http://home.iitk.ac.in/~ynsingh/tool/brihaspati.html
 
-See notes.txt if you are upgrading the build.
 -----------------------------------------------------------------------
-Last modified on 10 December 2012, 15:00 hrs IST
+Last modified on 05 March 2013, 15:00 hrs IST
 
