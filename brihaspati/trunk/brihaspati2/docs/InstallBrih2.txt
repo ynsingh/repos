@@ -182,14 +182,40 @@ Step 11:
 
 		Give Password when asked.
 Step 12:
-	# cd /home/brihaspati/apache-tomcat-7.x.x/conf' and open 'server.xml'. Change the context
-	
-	path as given below
+	# cd /home/brihaspati/apache-tomcat-7.x.x/conf' and open 'server.xml'. Add the Connectors as given below
+       replacing any already defined connectors. In the end add context just beneath the Valve defination as shown.
+--------------------------------------------------------
+	<Connector port="8080" protocol="HTTP/1.1"
+            acceptCount="20"
+            connectionTimeout="60000"
+            redirectPort="8443"
+            minSpareThreads="5" maxThreads="400"
+            enableLookups="true" />
+    <!-- Note : To disable connection timeouts, set connectionTimeout value 
+     to -1 -->
+
+    <!-- Define an SSL HTTP/1.1 Connector on port 8443 -->
+
+    <Connector port="8443" protocol="HTTP/1.1"
+               acceptCount="20" SSLEnabled="true"
+               maxThreads="150" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS"
+               minSpareThreads="5" 
+               enableLookups="true"
+               keystoreFile="/home/brihaspati/apache-tomcat.7.x.x/certs/service.jks" keystorePass="xxxxxx" />
+
+
+	<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log." suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
         <Context path="/brihaspati" docBase="brihaspati2" reloadable="true"/>
+        <Context path="/brihaspatisync_iserver" docBase="brihaspatisync_iserver" reloadable="true"/>
+        <Context path="/javadoc" docBase="javadoc" reloadable="true"/>
+        <Context path="/brihaspatiSpring" docBase="brihaspatiSpring" reloadable="true"/>
 
-        in place of
-        <Context path="/newapps" docBase="newapps" reloadable="true"/>
-
+      </Host>
+---------------------------------------------------------------------
 Step 13:
 	# Font installation for multilingual brihaspati
 	Step 13.1:
@@ -223,7 +249,6 @@ Step 16:Installing BRIHASPATI Spring Module (Directory, Twitter etc)
 	svn co http://202.141.40.215/repos/brihaspati/trunk/brihaspatiSpring
 
 	# cd brihaspatiSpring
-	# ant project-om
 	# ant compile
 
 
