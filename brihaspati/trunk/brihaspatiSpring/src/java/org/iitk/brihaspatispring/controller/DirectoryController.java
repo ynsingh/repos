@@ -59,7 +59,7 @@ import java.util.List;
 import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 import org.iitk.brihaspatispring.utils.Pagination;
-import org.iitk.brihaspati.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.torque.Torque; 
 import javax.servlet.ServletContext;
 import org.apache.torque.util.Criteria;

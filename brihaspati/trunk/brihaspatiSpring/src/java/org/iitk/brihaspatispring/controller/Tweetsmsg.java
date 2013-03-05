@@ -48,7 +48,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.util.HashMap;
 import org.apache.torque.util.Criteria;
-import org.iitk.brihaspati.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import java.util.List;
 import org.iitk.brihaspati.om.Tweets;
 import org.iitk.brihaspati.om.TweetsPeer;
