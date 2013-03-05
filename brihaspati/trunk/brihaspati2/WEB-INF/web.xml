@@ -23,10 +23,14 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
+    <servlet-mapping>
+        <servlet-name>brihaspati</servlet-name>
+        <url-pattern>/servlet/brihaspati/*</url-pattern>
+        </servlet-mapping>
+
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Brihaspati Internals</web-resource-name>
-      <url-pattern>/scrpts/*.*</url-pattern>
       <url-pattern>/resources/*</url-pattern>
       <url-pattern>/confsrc/*</url-pattern>
       <url-pattern>/bin/*</url-pattern>
