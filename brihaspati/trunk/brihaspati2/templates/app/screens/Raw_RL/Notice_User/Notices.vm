@@ -1,6 +1,6 @@
 #*
  * @(#) Notices.vm
- * Copyright (c) 2005,2006,2009,2010,2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2006,2009,2010,2011,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
@@ -8,9 +8,10 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 31-12-2009, 25-04-2010,07-09-2010 , 09-Aug-2011 (Sunil Kr).
- * @modified date: 24-08-2012 (Sunil Yadav)
+ * @modified date: 24-08-2012 (Sunil Yadav),4-03-2013
 *#
 <head>
 ##This Script use for Fck Editor in textarea.
@@ -193,8 +194,44 @@ $!data.getMessage()
 </tr>
 #end*#
 #if($nflag == "fh")
-	##<tr bgcolor="$ui.menuColor"><td>Flash Heading Configuration</td></tr>
-	<tr bgcolor="$ui.menuColor" align="right" ><td>$brih_flash $brih_heading $RemoteConfiguration</td></tr>
+
+    #if($data.getUser().getUserName() == "admin")
+        <tr align="right" bgcolor="$ui.menuColor">
+         <td> <select id="sel" name="htype" class="drop" onChange="go(frm)">
+	  #if($!hflag == "Flash Heading")
+          <option value="Flash Heading" >$brih_flash $brih_heading</option>
+	  #end
+	  #if($!hflag == "Shutdown Notices")
+          <option value="Shutdown Notices" >$brih_shutd $brih_Notices</option>
+          #end	
+          <option value="Flash Heading" >$brih_flash $brih_heading</option>
+          <option value="Shutdown Notices">$brih_shutd $brih_Notices</option>
+          </select>
+        </td>
+        <td width=35%>$brih_heading $brih_type</td>
+        </tr>
+
+	#if($hflag=="Shutdown Notices")
+	<tr align="right" bgcolor="$ui.tableColor">
+        <td > <select id="" name="shtime" class="drop">
+          <option value="15">15 $brih_minute</option>
+          <option value="30">30 $brih_minute</option>
+          <option value="45">45 $brih_minute</option>
+          <option value="60">1 $brih_hour</option>
+          <option value="120">2 $brih_hour</option>
+          <option value="180">3 $brih_hour</option>
+          <option value="240">4 $brih_hour</option>
+          <option value="300">5 $brih_hour</option>
+          <option value="360">6 $brih_hour</option>
+          </select>
+        </td>
+        <td>$brih_shutd $brih_time</td>
+	</tr>
+	#end
+#else
+        <tr bgcolor="$ui.menuColor"><td>$brih_flash $brih_heading $RemoteConfiguration</td></tr>
+#end
+##	<tr bgcolor="$ui.menuColor" align="right" ><td>$brih_flash $brih_heading $RemoteConfiguration</td></tr>
 	</table>
 	<table align=left bgcolor="$ui.tableColor" width="100%">
 #else
@@ -290,12 +327,12 @@ $!data.getMessage()
 #end ##end for Flash Heading
 
 #if($flag)
-	<tr bgcolor="$ui.tableColor" align="right">
-#else
 	<tr bgcolor="$ui.menuColor" align="right">
+#else
+	<tr bgcolor="$ui.tableColor" align="right">
 #end
 ##<tr bgcolor="$ui.tableColor">
-<td width="3"><textarea id="ta" name="message" rows=10 cols=80></textarea></td>
+<td width="3"><textarea id="ta" name="message" rows=10 cols=80>$!fNoti $!sNoti</textarea></td>
 <td>$brih_msg2 </td>
 </tr>
        #if($nflag == "fh")
@@ -336,6 +373,9 @@ $!data.getMessage()
 	        #if($nflag == "fh")
         	  <input type="button" class="button-ftextstyle" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
 		  <input type="hidden" name="nflag" value="$nflag" >
+		  <input type="hidden" name="shtime">
+		  <input type="hidden" name="htype" value="$!hflag">
+		  <input type="hidden" name="eventSubmit_doChange">
 	        #else
         	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
 	        #end
@@ -386,7 +426,9 @@ $!data.getMessage()
                 }
 		editor.setMode("wysiwyg");
         }
+	  function go(frm){
+                frm.actionName.value="eventSubmit_doChange";
+                frm.submit();
+        }
+
 </SCRIPT>
-
-
-###################################

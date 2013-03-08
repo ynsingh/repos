@@ -10,7 +10,8 @@
  * @author<a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author<a href="mailto:smita37uiet@gmail.com">smita Pal</a>
  * @author<a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @modified date:27-09-2010
+ * @author<a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date:27-09-2010,28-02-2013
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
@@ -49,6 +50,11 @@ $page.setBgColor("$ui.bgcolor")
 	<tr> ##1#t tr
 		<td colspan="2">$navigation.setTemplate("/DefaultTop.vm")</td>
 	</tr> ##1#t tr closed
+##Show ShutDown Notification
+<tr><td colspan=2>
+<iframe id="iframe0" src='$link.setPage("Shutdown.vm").addPathInfo("lang",$lang)' style="height:16px;width:100%; overflow:hidden;" frameborder="0"></iframe>
+</td></tr>
+##end
 	<tr> ##2#d tr
 		<td colspan=2>  ##1#t td of 2nd tr
          			<table style="width:1100px; margin:0px auto;"> ##2#d table
@@ -180,8 +186,25 @@ $page.setBgColor("$ui.bgcolor")
     		</td> ##32#h td closed
 	</tr> ##8#h tr closed
 </table>
+<input type="button" style="opacity:0;" id="autoclick" onclick="getIframeText();">
 </body>
 </div>
 #end
+<script type="text/javascript">
+    setInterval(function() {
+        $("#autoclick").click();
+    }, 1);
+        function getIframeText() {
+
+            var iframe0 = document.getElementById("iframe0");
+
+            var iframe0document=iframe0.contentDocument||iframe0.contentWindow.document;
+
+            var inputIframe = iframe0document.getElementById("frame_text");
+                if(inputIframe.value==""){
+                document.getElementById('iframe0').style.display = 'none';
+                }
+        }
+    </script>
 </html>
 

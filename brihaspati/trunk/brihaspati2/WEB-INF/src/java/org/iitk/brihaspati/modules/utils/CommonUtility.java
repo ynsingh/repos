@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)CommonUtility.java
- *  Copyright (c) 2005-2008,2010-2011,2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2008,2010-2011,2012,2013 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -53,7 +53,8 @@ import java.util.Iterator;
 
 import com.workingdogs.village.Record;
 
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 
 //turbine
 import org.apache.torque.util.Criteria;
@@ -163,7 +164,9 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.GraphUtil;
-
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -178,7 +181,7 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:piyushm45@gmail.com">PiyushMishra</a>	
  * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
- * @modified date:12-09-2012,10-10-2012,23-10-2012
+ * @modified date:12-09-2012,10-10-2012,23-10-2012,24-03-2013,
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -240,7 +243,7 @@ public class CommonUtility{
 	public static boolean CleanSystem(){
 	try {
 		String c_date=ExpiryUtil.getCurrentDate("-");
-                Date current_date=Date.valueOf(c_date);
+                java.sql.Date current_date=java.sql.Date.valueOf(c_date);
                 Criteria crit=new Criteria();
                 crit.add(SystemCleantimePeer.ID,1);
                 List z=SystemCleantimePeer.doSelect(crit);
@@ -1214,7 +1217,49 @@ public static void grpLeader()
                 }
                 return true;
         }
-
+	 /**
+         * This method remove shutdown.properties file after Expity Time
+         * This method also return shutdown message for showing in template.
+         * @return string
+         */
+	
+	public static String removeShutDownNotice(String ShutdNoticePath){
+		String Shutdownnotice="";
+		try{
+			//Get File path Shutdown.properties
+			File ExistShutdFile=new File(ShutdNoticePath);
+			//Check file exist.
+                        if(ExistShutdFile.exists()){
+                        /**
+			* Get Current time using SimpleDateFormat.
+			* Get Expity datetime from Properties file
+			* Get Current system datetime.
+			*/
+                        Date CurrentDateTime = new Date();
+                        String TempShutdownExpDate = AdminProperties.getValue(ShutdNoticePath,"brihaspati.admin.ShutdownExpDate.value");
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date ShutdownExpDateTime=dateFormat.parse(TempShutdownExpDate);
+			/**
+			 * Compare System DateTime from File Expiry DateTime
+			 * If System DateTime is equal to File Expiry DateTime then delete existing file.
+			 * else return Message of Shutdown notices.
+			 */
+                        if(CurrentDateTime.compareTo(ShutdownExpDateTime)>=0){
+                        	//Delete file
+                                ExistShutdFile.delete();
+                       		}
+                        else {
+				// Get Shutdown Message form Properties file.
+                        	Shutdownnotice = AdminProperties.getValue(ShutdNoticePath,"brihaspati.admin.ShutdownHeading.value");
+                        	}
+                  	}
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("error in removing Shutdown notice and return message : "+e);
+		}
+		// Return Message
+		return Shutdownnotice;
+	}
 //Add method
 }//end of class
 
