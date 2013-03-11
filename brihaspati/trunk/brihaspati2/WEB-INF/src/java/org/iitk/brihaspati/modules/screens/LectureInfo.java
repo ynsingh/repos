@@ -77,6 +77,8 @@ public class LectureInfo extends VelocityScreen
                	{	
 			org.apache.turbine.om.security.User user=data.getUser();
 			ParameterParser pp=data.getParameters();
+			String lang=pp.getString("lang","english");
+                        context.put("lang",lang);
 			pp.add("str","session");
                         String mode=pp.getString("mode","");
                         String LecId = pp.getString("lectureId","");

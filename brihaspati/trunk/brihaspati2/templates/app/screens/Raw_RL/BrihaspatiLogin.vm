@@ -241,14 +241,14 @@ $page.setBgColor($ui.bgcolor)
 	                </td></tr>
 		</tr>
 		</table>
-		<div style="width:258px; z-index:100; height:25px; border:1px solid #ccc; font-size:13px; background:$ui.menuColor; position:absolute;"><span style="margin:4px 18px; position:absolute; align:center"> $sec_session</span></div>
-	        <div id="scroll" style="width:257px; height:100px; border:1px solid #ccc; ">
+		<div style="width:343px; z-index:100; height:25px; border:1px solid #ccc; font-size:13px; background:$ui.menuColor; position:absolute;"><span style="margin:4px 18px; position:absolute; align:right;"> $sec_session</span></div>
+	        <div id="scroll" style="width:343px; height:100px; border:1px solid #ccc; ">
         	<br><br>
 	        #if($lec_details.size()==0)
         	        $session_info
 	        #else
         	#foreach($st in $lec_details)
-	        <span style="margin-left:10px;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lectureId",$st.lid)","newWin"); style="float:right; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">more</a><br>
+	        <span style="margin-left:10px;float:right;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lang",$lang).addPathInfo("lectureId",$st.lid).addPathInfo("mode","Alecture")","newWin"); style="float:left; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">$brih_more</a><br>
         	#end
 	        #end
         	</div>
@@ -263,6 +263,27 @@ $page.setBgColor($ui.bgcolor)
         {
                 Win1=window.open(url,popupName,"resizable,height=200,width=400");
         }
+
+	function popup(url,popupName)
+        {
+                var w=650;
+                var h=200;
+                var left = (screen.width/2)-(w/2);
+                var top = (screen.height/2)-(h/2);
+                Win2 = window.open (url,popupName, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                //Win2=window.open(url,popupName,"resizable,height=200,width=650");
+        }
+
+
+        window.onload = setupRefresh;
+
+        function setupRefresh() {
+        setTimeout("refreshPage();", 60000); // milliseconds
+        }
+        function refreshPage() {
+        window.location = location.href;
+        }	
+
 	function checkUNamePwd(frm,field)
 	{
 		if(frm.username.value!="")

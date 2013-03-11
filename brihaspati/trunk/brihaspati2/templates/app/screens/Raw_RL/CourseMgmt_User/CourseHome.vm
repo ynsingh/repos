@@ -173,7 +173,7 @@ $!data.getMessage()
 			                </td></tr>
 		                </table>
 			#############################
-			 <div style="overflow:auto;  height:100px; background:$ui.tableColor">
+			<div style="overflow:auto;  height:100px; background:$ui.tableColor">
                               <table  bgcolor="$ui.tableColor" width="98%"  align="left">
                                     <tr>
                                            <td colspan="3" align="center" bgcolor="$ui.menuColor" style="font-family:arial;"><b>$sec_session</b></td>
@@ -183,20 +183,22 @@ $!data.getMessage()
                                     #else
                                     #foreach($st in $lec_details)
                                     #if($velocityCount%2==0)
-                                    <tr bgcolor="$ui.menuColor">
+                                    <tr bgcolor="$ui.menuColor" align="right">
                                     #else
-                                    <tr bgcolor="$ui.tableColor">
+                                    <tr bgcolor="$ui.tableColor" align="right">
                                     #end
+                                    <td align=""><a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lectureId",$st.lid).addPathInfo("lang","urdu").addPathInfo("mode","Clecture")","newWin"); style="text-decoration:none;">$brih_more</a></td>
+                                    <td><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$st.key" style="text-decoration:none;" target="_blank">$brih_join</a></td>
                                     <td width="50%">$st.lecname</td>
-                                    <td><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$st.skey" style="text-decoration:none;" target="_blank">$brih_join</a></td>
-                                    <td><a href=javascript:popup("$link.setPage("call,CourseMgmt_User,LecInfo.vm").addPathInfo("lectureId",$st.lid)","newWin"); style="text-decoration:none;">$brih_more</a></td>
 
                                    </tr>
                                     #end
                                     #end
 
                               </table>
-	                   </div>
+                   </div>
+
+
 			##################################
 				#if($guest_login == "false")
                         #if($user_role != "instructor")

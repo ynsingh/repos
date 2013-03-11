@@ -78,7 +78,7 @@ $!msg
                 $session_info
         #else
         #foreach($st in $lec_details)
-        <span style="margin-left:10px;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lectureId",$st.lid)","newWin"); style="float:right; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">more</a><br>
+        <span style="margin-left:10px;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lang",$lang).addPathInfo("lectureId",$st.lid).addPathInfo("mode","Alecture")","newWin"); style="float:right; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">$brih_more</a><br>
         #end
         #end
         </div>
