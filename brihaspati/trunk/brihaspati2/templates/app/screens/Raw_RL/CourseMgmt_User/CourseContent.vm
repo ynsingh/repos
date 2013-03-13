@@ -14,28 +14,32 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Course Content")
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
+#set ($loginusr=$data.getUser().getName().toString())
+#set($flag1=false)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 $!data.getMessage()
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+ </script>
+
 <table bgcolor="$ui.menuColor" width=100%>
 <tr align ="right"><td>
 	#if($isAdmin=="true")
 		 $brih_course $brih_Of $brih_content | $course | <a href=$link.setPage("call,Admin.vm")>$brih_home</a>  
-##		<a href=$link.setPage("Index.vm") style=text-decoration:none> $brih_home </a> | $course | 
 	#elseif ($isInstructor=="true")
-<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | $brih_course $brih_Of $brih_content | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none >$course</a> | <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none >$brih_home</a>
+<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_course </a> | $brih_course $brih_Of $brih_content | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none >$course</a> | <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none >$brih_home</a>
 
-##		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home </a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
-##		 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
 	#else
-	$brih_course $brih_content | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>Home</a>
+	$brih_course $brih_content | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a>
 	#end
-	##	#if($lang=="english")
-	##		$brih_course $brih_content
-	##	#else
-	##		$brih_content
-	##	#end
 	</font>
 </td>
 </tr>
@@ -43,7 +47,10 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.tableColor">
 <tr><td align=left colspan=9>
 	#if ($isInstructor=="true")
-<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+		<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 #if($AccessMsg!="")
+                <font color="red" size="4">$AccessMsg
+	        #end
 	#end
 </td></tr>
 #if($user_role == "instructor")
@@ -65,13 +72,13 @@ $!data.getMessage()
         #elseif($tdcolor == "5")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> $brih_grade $RemoteConfiguration </a></td>
 	#if($tdcolor != "4")    
         <td>
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> $brih_course $brih_Of $brih_header $brih_upload </a></td>
 	#if($tdcolor != "3")    
         <td>
         #elseif($tdcolor == "3")
@@ -83,7 +90,7 @@ $!data.getMessage()
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> $brih_upload $brih_course $brih_content </a></td>
 	#if($tdcolor != "0")  
         <td>
         #elseif($tdcolor == "0")
@@ -95,180 +102,214 @@ $!data.getMessage()
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_content </a></td>
 #end
-#if($user_role == "student")
+#if($data.getUser().getTemp("modulename5") == "5")
+        #set($flag1=true)
+#end
+##if($user_role == "student")
+#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag1==false)))
+	#if($data.getUser().getUserName() != "guest")
+		#if($tdcolor != "2")    
+        		<td>
+	        #elseif($tdcolor == "2")
+        		<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> $brih_content $brih_upload </a></td>
+	#end
 	#if($tdcolor != "1")
          <td>
          #elseif($tdcolor == "1")
          <td bgcolor="#AFDCEC">
          #end
-	 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "english") $brih_course $brih_content #else $brih_course $brih_content #end </a></td>
+	 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_course $brih_content </a></td>
 	#if($data.getUser().getUserName() != "guest")
-	#if($tdcolor != "0")
-        <td>
-        #elseif($tdcolor == "0")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td>
-	#if($tdcolor != "2")    
-        <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+		#if($tdcolor != "0")
+        		<td>
+	        #elseif($tdcolor == "0")
+        		<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td>
 	#end
+#end
+#if(($user_role == "teacher_assistant")&&($flag1))
+
+        #if($tdcolor != "7")
+        	 <td>
+        #elseif($tdcolor == "7")
+	         <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
+        #if($tdcolor != "6")    
+        	<td>
+        #elseif($tdcolor == "6")
+	        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")> $brih_scorm $brih_packager </a></td>
+        #if($tdcolor != "4")    
+        	<td>
+        #elseif($tdcolor == "4")
+	        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> $brih_course $brih_Of $brih_header $brih_upload </a></td>
+        #if($tdcolor != "2")    
+        	<td>
+        #elseif($tdcolor == "2")
+	        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> $brih_content $brih_upload </a></td>
+         #if($tdcolor != "1")    
+        	<td>
+        #elseif($tdcolor == "1")
+	        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> $brih_course $brih_content </a></td>
+        </td>
 #end
 </tr>
 </table>
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setAction("EditContent_Action").setPage("call,CourseMgmt_User,CourseContent.vm")">
 
-<table  align="right" bgcolor="$ui.tableColor" cellpadding="5" width=100%>
-<tr>
-<td>
+<table  align="left" bgcolor="$ui.tableColor" cellpadding="5" width=100%> ###Main Table
+<tr> <td> ## Main <tr> <td>
 <table  align="left" bgcolor="$ui.tableColor" cellpadding="5" width=100%>
-
- #if($isInstructor=="true")
-        <td align="left">
-                #if($dirContent.size()>1)
-                <table align="left" bgcolor="$ui.menuColor" width=100%>
-                <tr><td align=left>
-			 #headerCell("")
-                        #headerCell("$brih_action")
-                        #headerCell("$brih_sequence")
-                </td></tr>
-                <tr>
-                        <td></td>
-			 <td>
-        <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
-                <input type="hidden" name="actionName" value="">
-                <input type="hidden" name="deleteFileNames" value="">
-                <input type="hidden" name="changeFileNameOrder" value="">
-                <input type="hidden" name="changeFileSeqnoOrder" value="">
-                <input type="hidden" name="count" value="$tdcolor">
-
-        </td>
-
-                        <td>
-                        ##if( $dirContent.size()>1)
-                        <select name="actionType" class="drop">
-                        <option selected value="-1"></option>
-                        <option value=1>$brih_move</option>
-                        <option value=2>$brih_exchange</option>
-                        </select>
-                        ##end
-                        </td>
-                        <td>
-                        ##if( $dirContent.size()>1)
-                        <select name="destinationSeqno" class="drop">
-                        <option selected value="-1"></option>
-                        #foreach($index in [1..$dirContent.size()])
-                        #set ( $seqno= $index - 1 )
-                        <option value=$seqno >$index</option>
-                        #end
-                        </select>
-                        ##end
+  #if ($errorTemplate)
+                <tr align="right">
+                        <td colspan="4" align="right">
+                                <table bgcolor="$ui.bgcolor">
+                  	             <tr align="right"><td><img src="$ui.image($ui.alertImage,$data)"></td>
+                        	       <td align="right">
+                                	parse ($errorTemplate) 
+	                               </td>
+        	                       </tr>
+                                </table>
                         </td>
                 </tr>
-                </table>
-                ##end
-        </td>
-       ## </tr> ##main tr
-        ##if( $dirContent.size()>1)
-       ## <tr bgcolor="$ui.menuColor">
-#*	<td>
-        <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="Change file Order" onClick="isOrderChanged(document.frm,this);">
-                <input type="hidden" name="actionName" value="">
-                <input type="hidden" name="deleteFileNames" value="">
-                <input type="hidden" name="changeFileNameOrder" value="">
-                <input type="hidden" name="changeFileSeqnoOrder" value="">
-                <input type="hidden" name="count" value="$tdcolor">
-
-        </td>*#
-        </tr>
         #end
-      ##</tr>
+##<tr>
+##<td>
+<tr> ##main tr for topic
+ #if($isInstructor=="true")
+        ##<td align="left">
+	<td valign="top">
+                #if($dirContent.size()>1)
+                	<table align="left" bgcolor="$ui.tableColor" width=100%>
+			<br>
+	                <tr align="right"> 
+				<td> </td>
+				<td align="right"> <font size=4> <b> $brih_action </b> </font>
+				<td align="right"> <font size=4><b> $brih_sequence </b></font>
+	                </tr>
+			#set($i=0)
+                	#set($flag=true)
+	                #foreach($file in $dirContent)
+		                <tr bgcolor="$ui.menuColor">
+				 #if($flag==true)
+					<td>
+       					 <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
+			                <input type="hidden" name="actionName" value="">
+        			        <input type="hidden" name="deleteFileNames" value="">
+                			<input type="hidden" name="changeFileNameOrder" value="">
+	                		<input type="hidden" name="changeFileSeqnoOrder" value="">
+	        	        	<input type="hidden" name="count" value="$tdcolor">
+	
+				        </td>
+	
+        	                	<td>
+        		                <select name="actionType" class="drop">
+                		        <option selected value="-1"></option>
+                        		<option value=1>$brih_move</option>
+		                        <option value=2>$brih_exchange</option>
+        		                </select>
+                	        	</td>
+	                	        <td>
+                	        	<select name="destinationSeqno" class="drop">
+	                        	<option selected value="-1"></option>
+		                        #foreach($index in [1..$dirContent.size()])
+        			                #set ( $seqno= $index - 1 )
+               			        	<option value=$seqno >$index</option>
+	                        	#end
+	                        	</select>
+        	                	</td>
+					#set($flag=false)
+                        	#end
+			#set($i=$i+1)
+                	</tr>
+	                #end
+	                </table>
+		       ##</td>
+        	##</tr>
+		#end
+	</td>
         #end
 
-</table>
-</td>
-
+##</table>
+##</td>
 
 <td>
-<table bgcolor="$ui.tableColor" cellpadding="5" width=100% align="right">
-	#if ($errorTemplate)
-		<tr align="right">
-			<td colspan="4" align="right">
-          			<table bgcolor="$ui.bgcolor">
-				<tr align="right"><td><img src="$ui.image($ui.alertImage,$data)"></td>
-              			<td align="right"> 
-				#parse ($errorTemplate) 
-				</td>
-            			</tr>
-          			</table>
-        		</td>
-      		</tr>
-	#end
+##<table bgcolor="$ui.tableColor" cellpadding="5" width=100% align="right">
 
-	<tr> ##main tr for topic
+	##<tr> ##main tr for topic
 	<td>
 		#set ( $count=1 )
 		#set ( $seqno=1 )
 		<table align="left" bgcolor="$ui.tableColor" width=100%>
-		<tr><td></td><td align="left" colspan=1>
-		<font size=4><b> $brih_topic #if($lang=="hindi") $brih_Of1 #end $brih_name  
-		</td>
-		<td align="center" colspan=4><font size=4><b> $brih_availableAction</td>
-		</tr>
+			<tr align="right">	
+				<td colspan= 6><font size=4><b> $brih_availableAction</td>
+				<td> <font size=4><b> $brih_topic $brih_Of1 $brih_name  </td>
+			</tr>
 
 	#if($isInstructor=="true")
 		#foreach($file in $dirContent)
-		#if($velocityCount%2==0)
-		<tr bgcolor="$ui.tableColor">
-		#else
-		<tr bgcolor="$ui.menuColor">
-		#end
-			##<td>$count.&nbsp;</td> <td><b>$file.getName()</b> </td>
-			#set($seqno= $count - 1 )
-                      <td>
-                        #if($dirContent.size()>1)
-                        <input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
-                        #end
-                        </td>
+			#if($velocityCount%2==0)
+				<tr bgcolor="$ui.tableColor" align="right">
+			#else
+				<tr bgcolor="$ui.menuColor" align="right">
+			#end
+			#foreach($flist in $fileList)
+				#if($flist.topic==$file.getName())
+					#set($seqno= $count - 1 )
+       					<td>
+                			#if($dirContent.size()>1)
+		                        	<input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
+	        		        #end
+		        	        </td>
+		
+					#if($AccessMsg=="")
+		                                #if($file.getGuestAccess()=="true")
+                		                        <td align="center" valign="top"><a href="$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("GuestAccess","false")"><font color="red"> $brih_guest $DisBoard_DBmsg7</a></td>
+		                                #else
+                		                         <td align="center" valign="top"><a href="$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("GuestAccess","true")"><font color="green"> $brih_guest $DisBoard_DBmsg8</a></td>
+		                                #end    
+                		        #else
+		                                <td align="center" valign="top"><font color="grey">$brih_guest $DisBoard_DBmsg7</td>
+                		        #end
 
-#if($AccessMsg=="")
-                                #if($file.getGuestAccess()=="true")
-                                        <td align="center"><a href="$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("GuestAccess","false")"><font color="red"> $brih_guest $DisBoard_DBmsg7</a></td>
-                                #else
-                                         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("GuestAccess","true")"><font color="green"> $brih_guest $DisBoard_DBmsg8</a></td>
-                                #end    
-                        #else
-                                <td align="center"><font color="grey">$brih_guest $DisBoard_DBmsg7</td>
-                        #end
+						 <td align="center" valign="top"><a href="$link.setAction("PublishAction").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("actionName","eventSubmit_doDeleteTopic")" onclick="javascript:return confirm('Do you want to delete this topic')"> $brih_delete</a></td>
+			
+						<td align="center" valign="top"><a href="$link.setPage("call,CourseMgmt_User,PublishModule.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation())">$brih_publish</a><br><font color="red">$flist.unpublst<font color="green"> $flist.publst</td>
 
- <td align="center"><a href="$link.setAction("PublishAction").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation()).addPathInfo("actionName","eventSubmit_doDeleteTopic")" onclick="javascript:return confirm('Do you want to delete this topic')"> $brih_delete</a></td>
-
-			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,PublishModule.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("stat",$file.getLocation())">$brih_publish</a></td>
+	
+						<td align="center" valign="top"><a href="$link.setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("status",$file.getLocation())">$brih_edit</a>&nbsp;&nbsp;</td> 
 
 
-			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("status",$file.getLocation())">$brih_edit</a>&nbsp;&nbsp;</td> 
-
-
-      			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("status",$file.getLocation())">$brih_view</a>&nbsp;&nbsp;</td> 
+			      			<td align="center" valign="top"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("uname",$file.getUserName()).addPathInfo("status",$file.getLocation())">$brih_view</a>&nbsp;&nbsp;</td> 
 
                     
-                    	<td><b>$file.getName()</b> </td> 
-			<td>$count.&nbsp;</td>
-
-		</tr>
-		#set ( $count= $count+1)
+			                    	<td><b>$file.getName()</b> </td> 
+						<td>$count.&nbsp;</td>
+	
+				</tr>
+				#set ( $count= $count+1)
+				#end
+			#end
 		#end
 		#foreach($r in $readR)
-                #if($velocityCount%2==0)
-                <tr bgcolor="$ui.tableColor" align="right">
-                #else
-                <tr bgcolor="$ui.menuColor" align="right">
-                #end
+                	#if($velocityCount%2==0)
+	               		<tr bgcolor="$ui.tableColor" align="right">
+	                #else
+        		        <tr bgcolor="$ui.menuColor" align="right">
+	                #end
                         <td align="right">$count&nbsp;</td><td><b>$r.Topic</b></td>
                         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("uname",$r.UserName).addPathInfo("status","Remote").addPathInfo("cName",$r.CourseName).addPathInfo("topic",$r.Topic).addPathInfo("count",$tdcolor)"> $brih_view</a>&nbsp;&nbsp;</td>
                         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("uname",$r.UserName).addPathInfo("status","Remote").addPathInfo("topic",$r.Topic).addPathInfo("cName",$r.CourseName).addPathInfo("count",$tdcolor)"> $brih_edit</a>&nbsp;&nbsp;</td>
@@ -283,21 +324,29 @@ $!data.getMessage()
 ##<br>
     	#foreach($file in $dirContent)
 		#if($velocityCount%2==0)
-		<tr bgcolor="$ui.tableColor" align="right">
+			<tr bgcolor="$ui.tableColor" align="right">
 		#else
-		<tr bgcolor="$ui.menuColor" align="right">
+			<tr bgcolor="$ui.menuColor" align="right">
 		#end
-			<td align="right">$count &nbsp;</td> <td><b>$file.getName()</b> </td>
-			<td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td> 
+		#if($loginusr=="guest")
+                	#if($file.getGuestAccess()=="false")
+                        	<td colspan=2><b>$file.getName()</b> </td>
+                                <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+			#end
+		#else
+                                <td>$count &nbsp;</td> <td><b>$file.getName()</b> </td>
+                                <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+                #end
 		</tr>
+		
 		#set ( $count= $count+1)
 		#end
 		#foreach($r in $readR)
-                #if($velocityCount%2==0)
-                <tr bgcolor="$ui.tableColor" align="right">
-                #else
-                <tr bgcolor="$ui.menuColor" align="right">
-                #end
+        	        #if($velocityCount%2==0)
+                		<tr bgcolor="$ui.tableColor" align="right">
+	                #else
+        		        <tr bgcolor="$ui.menuColor" align="right">
+	                #end
                         <td align="right">$count&nbsp;</td><td><b>$r.Topic</b></td>
                         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("uname",$r.UserName).addPathInfo("status","Remote").addPathInfo("cName",$r.CourseName).addPathInfo("topic",$r.Topic).addPathInfo("count",$tdcolor)"> $brih_view</a>&nbsp;&nbsp;</td>
                 </tr>
@@ -307,79 +356,9 @@ $!data.getMessage()
 	#end	
 		
 	</table>
-	</td>
-
-#*	#if($isInstructor=="true")
-        <td align="left">
-		#if($dirContent.size()>1)
-                <table bgcolor="$ui.menuColor" width=100% align="left"> 
-        	<tr><td align="left">
-                        #headerCell("$brih_action")
-                        #headerCell("$brih_sequence")
-        	</td></tr>
-               <table bgcolor="$ui.menuColor" width=100%>
-        	<tr>
-			<td align=left>
-                        	#headerCell("$brih_action")
-	                        #headerCell("$brih_sequence")
-        		</td>
-		</tr>
-		#set($i=0)
-                #set($flag=true)
-                #foreach($file in $dirContent)
-
-        	<tr>	
-			<td>
-			#if($dirContent.size()>1)
-	                        <input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
-	                #end
-			</td>
-			#if(($i%2!=0)&&($flag==true))
-				<td width="15%" align="center">
-        	                        <select name="actionType" class="drop">
-                		                <option selected value="-1"></option>
-			                        <option value=1>"$brih_move"</option>
-                        		        <option value=2>"$brih_exchange"</option>
-	                                </select>
-                                </td>
-        	                <td width="15%" align="center">
-					<select name="destinationSeqno" class="drop">
-			                        <option selected value="-1"></option>
-						#foreach($index in [1..$dirContent.size()])
-						#set ( $seqno= $index - 1 )
-							<option value=$seqno >$index</option>
-						#end
-					</select>
-				</td>
-	                        <td align="left">
-        		                <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
-	                        </td>
-				#set($flag=false)
-			#end
-			#set($i=$i+1)
-		#end
-		</tr>
-		</table>
-		##end
-        </td>
-	</tr> ##main tr
-        ##if( $dirContent.size()>1)
-                <input type="hidden" name="actionName" value="">
-                <input type="hidden" name="deleteFileNames" value="">
-                <input type="hidden" name="changeFileNameOrder" value="">
-                <input type="hidden" name="changeFileSeqnoOrder" value="">
-                <input type="hidden" name="count" value="$tdcolor">
-
-	</td>
-	</tr>
-	#end
-      ##</tr>
-	#end
-      *#
-    </table>
 </td>
-</tr>
 </table>
+</td> </tr> </table> ## End Main <tr><td> <table>
 </form>
 
 <SCRIPT language="JavaScript">

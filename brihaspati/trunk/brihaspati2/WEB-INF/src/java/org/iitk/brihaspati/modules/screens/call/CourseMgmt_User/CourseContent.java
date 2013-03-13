@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseContent.java	
  *
- *  Copyright (c) 2006-2008,2010,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2008,2010,2012,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,6 +38,9 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 
 import java.util.Vector;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.File;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -196,6 +199,63 @@ public class CourseContent extends VelocitySecureScreen{
 	                                topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
 	                                Vector reader=topicMetaData.getFileDetailsModify();
 					context.put("dirContent",reader);
+					/*
+					 * Below code for dislplay number of publish and unpublish file in template  //Richa
+					 * get the path where unpublish file saved and get number of unpublished file
+ 					* get the path where publish file saved and get number of published file.  
+ 					*/ 
+					try{
+					ArrayList PublishList = new ArrayList();
+					Map map = new HashMap();
+					ArrayList list = new ArrayList();
+					File f1 = new File(filePath);
+                                        String flist[] = f1.list();
+					String unpblist[] = new String[1000];
+					Vector filelst=new Vector();
+					for(int z=0;z<flist.length;z++)
+                                        {
+						if((new File(filePath+"/"+flist[z])).isDirectory())
+                                                {
+							PublishList = new ArrayList();
+							File ContentFile=new File(data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/"+flist[z]);
+							String contentlist[] = ContentFile.list();	
+							//ErrorDumpUtil.ErrorLog("file for reading flist[z]----"+flist[z]);
+							map = new HashMap();
+							for(int k=0;k<contentlist.length;k++)
+							{
+								//ErrorDumpUtil.ErrorLog("list of file in contentlist[k]--------"+contentlist[k]);
+								map.put("topic",flist[z]);		
+								unpblist=null;
+								filelst=null;
+								if(new File(data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/"+flist[z]+"/"+contentlist[k]).isDirectory())
+								{
+									File unpbfile=new File(data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/"+flist[z]+"/"+contentlist[k]);
+									unpblist = unpbfile.list();
+									if(unpblist!=null)
+										map.put("unpublst",unpblist.length);
+								}
+								else if(contentlist[k].endsWith("xml"))
+								{
+									//ErrorDumpUtil.ErrorLog("file name else part for adding--------"+contentlist[k]);
+									TopicMetaDataXmlReader tp=new TopicMetaDataXmlReader(data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/"+flist[z]+"/"+contentlist[k]);
+					                                filelst=tp.getFileDetails();
+									if(filelst!=null){
+										PublishList.add(filelst);							
+										 //ErrorDumpUtil.ErrorLog("value inside filelst-----"+PublishList);
+										map.put("publst",filelst.size());
+									}
+									if(filelst==null)
+										map.put("publst",0);
+								}
+								if(k==contentlist.length-1)
+								list.add(map);
+							}
+						}
+					}
+					context.put("fileList",list);
+					}
+					catch(Exception e)
+					{ErrorDumpUtil.ErrorLog("error inside reading files--------"+e);}	
 				}
 			}
                         /**
