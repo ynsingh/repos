@@ -324,7 +324,8 @@ public class CourseTimeUtil
 					totalLogin=log+totalLogin;
 					}
 				//}
-				TimeandLogin=totalTime+"@"+totalLogin;
+				String date1=date+" "+"00:00:00";
+				TimeandLogin=totalTime+"@"+totalLogin+"@"+date1;
 			
 		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in TotalCourseTime Method-----"+ex);}
 		 return TimeandLogin;
@@ -338,47 +339,65 @@ public class CourseTimeUtil
 			Criteria crit=new Criteria();
                         crit.add(CourseTimePeer.USER_ID,userid);
                         crit.add(CourseTimePeer.COURSE_ID,courseid);
-			List v=CourseTimePeer.doSelect(crit);
+			crit.add("COURSE_TIME","CLOGIN_DATE",(Object) (date+"%"),crit.LIKE);
+			CourseTimePeer.doDelete(crit);
+			/*List v=CourseTimePeer.doSelect(crit);
 			for(int p=0;p<v.size();p++){
                                         CourseTime element=(CourseTime)v.get(p);
 					Date clogindate=element.getCloginDate();	
 					String de =ModuleTimeUtil.getDateformate(clogindate);
 					if(de.equals(date))
 					CourseTimePeer.doDelete(crit);
-			}
+			}*/
 		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil Total deleteDayEntry Method-----"+ex);}
 	}
+	/*
+	*Select all the user with UserId,CourseId,LoginDate .
+	*Get Userid ,courseid,Date(String) in a String.
+	*take a vector if vector contain this string combination already.
+	*than no calulation and entry made for this combination.
+	*Otherwise data is caluated and entry made in Course_TIMEday table.
+	*/
 	 public static void CourseDay()
         {
                 try{
-                        Calendar calendar = Calendar.getInstance();
+                        /*Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.DATE, -1);
                         Date yesterday = calendar.getTime();
-                        String date=ModuleTimeUtil.getDateformate(yesterday);
-                        Vector vec=new Vector();
+                        String date=ModuleTimeUtil.getDateformate(yesterday);*/
+                        //Vector vec=new Vector();
                         Criteria crit=new Criteria();
-                        crit.setDistinct();
+                        /*crit.setDistinct();
                         crit.addGroupByColumn(CourseTimePeer.USER_ID);
                         crit.addGroupByColumn(CourseTimePeer.COURSE_ID);
-                        List v=CourseTimePeer.doSelect(crit);
+			crit.addGroupByColumn(CourseTimePeer.CLOGIN_DATE);*/
+			List v=CourseTimePeer.doSelect(crit);
+			Vector vec=new Vector();
+			if(v.size()!=0)
                         for(int p=0;p<v.size();p++){
                                 CourseTime element=(CourseTime)v.get(p);
                                 int userid=element.getUserId();
                                 String courseid=element.getCourseId();
-                                String TimeandLogin=totalCourseTime(userid,courseid,date);
+				Date date=element.getCloginDate();
+				String date1=ModuleTimeUtil.getDateformate(date);
+				String combo=userid+'='+courseid+'='+date1;
+				if(!vec.contains(combo)){
+				vec.add(combo);
+                                String TimeandLogin=totalCourseTime(userid,courseid,date1);
                                 String [] Stringsplit=TimeandLogin.split("@");
                                 int totalTime=Integer.parseInt(Stringsplit[0]);
                                 int totalLogins=Integer.parseInt(Stringsplit[1]);
-                                deleteDayEntry(userid,courseid,date);
-                                String date1=date+" "+"00:00:00";
+				String date2=(Stringsplit[2]);
+                                deleteDayEntry(userid,courseid,date1);
                                         Criteria cr=new Criteria();
                                         cr.add(CourseTimedayPeer.USER_ID,userid);
                                         cr.add(CourseTimedayPeer.COURSE_ID,courseid);
-                                        cr.add(CourseTimedayPeer.PRIVIOUS_DATE,date1);
+                                        cr.add(CourseTimedayPeer.PRIVIOUS_DATE,date2);
                                         cr.add(CourseTimedayPeer.COURSE_TIMEDAY,totalTime);
                                         cr.add(CourseTimedayPeer.COUNT_LOGINDAY,totalLogins);
                                         CourseTimedayPeer.doInsert(cr);
                                  }
+				}
 
                 }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil Method CourseDay-------------"+ex);}
         }

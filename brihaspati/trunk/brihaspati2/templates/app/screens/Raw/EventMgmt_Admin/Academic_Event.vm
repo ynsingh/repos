@@ -1,10 +1,11 @@
 #*
  * @(#) Academic_Event.vm
- * Copyright (c) 2007 ETRG,IIT Kanpur.
+ * Copyright (c) 2007,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 07-12-2010
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita</a>
+ * @modified date: 07-12-2010,12-03-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -12,16 +13,19 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="/brihaspati2/scrpts/Academic_Event.js">
+        </script>
+
 </head>
 <body>
 #set($lang = $data.getUser().getTemp("lang").toString())
 ## Representation of TOP BAR
-<table bgcolor="$ui.menuColor" width=100%>
-        <tr><td>
+<table width=100%>
+        <tr bgcolor="$ui.menuColor"><td colspan=10>
 			##if($data.getUser().getUserName() == "admin")
 			$page.setTitle("Admin Home ")
-			<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
-			#if($mode == "edit")
+			<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+		#*	#if($mode == "edit")
 			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi" || $lang == "gujarati") $brih_Ev #if($lang=="hindi") $brih_Of1 #end $brih_update #else  $brih_update $brih_Ev #end
 			#else
 			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | #if($lang=="hindi" || $lang =="gujarati") $brih_Ev $brih_add #else $brih_add $brih_Ev #end
@@ -54,72 +58,102 @@ $!data.getMessage()
 	#elseif($tdcolor=="4")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("count","4")>$brih_col1</a></td>
+	*#
+	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none>$brih_calendar</a> |
+        ##<a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm") style=text-decoration:none>$brih_col1</a></td>
+	$brih_col1
 </tr>
-
+##<tr><td><td></td><td></td><td></td><td></td><td></td></td></tr>
 ## Representation of HELP link
 
 ##<table width=100% align=left bgcolor="$ui.menuColor">
-        <tr bgcolor="$ui.menuColor">
-	<td colspan=3><i>$brih_nt</i></td>
+        <tr bgcolor="$ui.tableColor">
+	<td colspan=5><i>$brih_nt</i></td>
                 <td align=right>
 <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/acdcal.html","newWin");>$brih_help</a>
                 </td>
         </tr>
 ##</table>
-</body>
-#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
-<form name=frm method="post" action="$link.setAction("AcademicAction").setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("mode","edit")">
+##</body>
+##set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
+##<form name=frm method="post" action="$link.setAction("AcademicAction").setPage("call,EventMgmt_Admin,Academic_Event.vm")">
 
   ##<table align=left bgcolor="$ui.tableColor" width=100%>
-	<tr bgcolor="$ui.tableColor">
-		#if(($mode == "edit") && ($actionName!="eventSubmit_doInsert") && ($actionName!="eventSubmit_doUpdate"))		
-        	<td colspan=4><b><i> #if($lang =="hindi" || $lang == "gujarati") $brih_col1 $brih_update #else $brih_update $brih_col1 #end </i></b></td>
+	<tr bgcolor="$ui.menuColor">
+	#*	#if(($mode == "edit") && ($actionName!="eventSubmit_doInsert") && ($actionName!="eventSubmit_doUpdate"))		
+        	<td colspan=3><b><i> #if($lang =="hindi" || $lang == "gujarati") $brih_col1 $brih_update #else $brih_update $brih_col1 #end </i></b></td>
 		#else
-        	<td colspan=4><b><i> #if($lang == "hindi" || $lang == "gujarati") $brih_col1 $brih_add #else  $brih_add $brih_col1 #end </i></b></td>
+	
+        	<td colspan=3><b><i> #if($lang == "hindi" || $lang == "gujarati") $brih_col1 $brih_add #else  $brih_add $brih_col1 #end </i></b></td>
 		#end
+	*#
+	<td colspan=10><b><i> #if($lang == "hindi" || $lang == "gujarati") $brih_col1 $brih_add #else  $brih_add $brih_col1 #end </i></b></td>
 	</tr>
-	##</table>
-
-  ##<table align=left bgcolor="$ui.tableColor" width=100%>
-	#if(($mode==" ") || ($actionName=="eventSubmit_doInsert") ||($actionName=="eventSubmit_doUpdate"))
-        <tr bgcolor="$ui.menuColor">
-            	<td>$brih_Da</td>
+	</table>
+#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
+<form name=frm method="post" action="$link.setAction("AcademicAction").setPage("call,EventMgmt_Admin,Academic_Event.vm")">
+ <table align=left bgcolor="$ui.tableColor" width=100%>
+	##if(($mode==" ") || ($actionName=="eventSubmit_doInsert") ||($actionName=="eventSubmit_doUpdate"))
+        <tr bgcolor="$ui.tableColor">
+            	<td width="25%">$brih_Da</td>
              	<td colspan=3>
-			<select class="drop" name="Start_mon">
-            		<option value="$cmonth">$cmonth
-	    		#foreach($mon in $month)
-	    			#if($mon != $cmonth)
-            			<option value="$mon">$mon
-	    			#end
-			#end
-			</select>
-      			&nbsp<font size=+1>.</font>&nbsp
-			<select class="drop" name="Start_year">
-                	<option value="$cyear">$cyear
-			#foreach($year in $year_list)
-				#if($cyear != $year)
-				<option value="$year">$year
-		    		#end
-		 	#end
-                	</select>
+		<select class="drop" name="Start_mon" id="u1" size="1" onChange="checkoption(document.frm,this);"/>
+                        ##<select class="drop" name="vmonth" id="u1" size="1" onChange="checkoption(document.frm,this);"/>
+
+                        #if($vmonth!="")
+                        <option>$vmonth</option>
+                        #end
+                         #foreach($mon in $month)
+                                        #if($mon!=$vmonth)
+                                        <option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$mon)">$mon</option>
+                                        #end
+                                </option>
+
+                         #end
+                        </select>
+			&nbsp<font size=+1>.</font>&nbsp
+                        <select class="drop" name="Start_year" id="u2" onChange="checkoption(document.frm,this);">
+
+                        #if($vyear!="")
+                        <option>$vyear</option>
+                        #end
+                        #foreach($year in $year_list)
+                                #if($vyear!=$year)
+                                <option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$year)">$year
+
+                                #end
+                        #end
+                        </select>
+
                 </td>
 	</tr>		
-	<tr bgcolor="$ui.tableColor">
+	#set ($event1="$brih_acd")
+	#set($event2="$brih_col2")
+	<tr bgcolor="$ui.menuColor">
         	<td>$brih_Ev #if($lang =="hindi") $brih_Of2 #end $brih_type</td>
-		<td colspan=3><select name="etype" class="drop" onChange="checkoption(document.frm,this);">
-			<option value="Academic">$brih_acd
-			<option value="holidays">$brih_col2
-		</td>	
-	</tr>
-        <tr bgcolor="$ui.menuColor">
-		<td>$brih_Ev</font></td>
-                <td colspan=3><textarea name="event" wrap="physical" rows=4 cols=50></textarea>
-		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
+		<td colspan=3>
+		<select name="etype" class="drop" id="u" onChange="checkoption(document.frm,this);">
+			#if($etype=="Academic")
+				<option value="Academic">$brih_acd</option>
+			#else if($etype=="Holidays")
+				<option value="Holidays">$brih_col2</option>
+			#end
+				#if($etype!="Academic")
+                        ##<option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$vyear).addPathInfo("etype","Academic")">$event1
+			<option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$vyear).addPathInfo("etype","Academic")">$brih_acd
+                        </option>
+				#else 
+                               ##<option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$vyear).addPathInfo("etype","Holidays")">$event2
+				<option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$vyear).addPathInfo("etype","Holidays")">$brih_col2
+	                      </option>
+	
+		     #end
+                        </select>
+
 		</td>
 	</tr>
-	#end
-	#if(($mode =="edit") && ($actionName !="eventSubmit_doInsert") && ($actionName !="eventSubmit_doUpdate"))
+	##end
+#*	#if(($mode =="edit") && ($actionName !="eventSubmit_doInsert") && ($actionName !="eventSubmit_doUpdate"))
 		<tr bgcolor="$ui.menuColor">
                 <td>$brih_Da</td>
                 <td colsapn=3><input type="text" size=25 name="date" value="$!keydate" "readonly"></td>
@@ -134,8 +168,25 @@ $!data.getMessage()
 		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
 		</td>
                 </tr>
-	#end	
+	#end
+	*#	
 	<tr bgcolor="$ui.tableColor">
+                <td>$brih_Ev</font></td>
+                <td colspan=3><textarea name="detail" wrap="physical" rows=4 cols=50>$!detail</textarea>
+		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
+                </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td colspan=4>
+        #if($detail=="")
+         <input type=button class="button-ftextstyle" name="eventSubmit_doSave" value=$brih_save onClick="checkList(document.frm,this);"/>
+        #else
+                <input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_save onClick="checkList(document.frm,this);"/>
+        #end
+                </td>
+        </tr>
+
+#*	<tr bgcolor="$ui.tableColor">
         	<td colspan=4>
         	<font face="$ui.sanSerifFonts">
 		#if(($mode==" ") || ($actionName=="eventSubmit_doInsert")|| ($actionName=="eventSubmit_doUpdate"))
@@ -151,7 +202,14 @@ $!data.getMessage()
         	</font>
         	</td>
         </tr>
+*#
 </table>
+<input type="hidden" name="val">
+<input type="hidden" name="actionName">
+##<input type ="hidden" name="detail" value="$element">
+<input type ="hidden" name="date" value="$date">
+<input type="hidden" name="type" value="check">
+<input type="hidden" name="maxValue" value="$maxValue">
 </form>
 
 <SCRIPT LANGUAGE="javascript">
@@ -160,7 +218,7 @@ $!data.getMessage()
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
         }
 
-        function checkEvent(frm,field)
+       /* function checkEvent(frm,field)
         {
           	if((frm.event.value!="") && (frm.etype.value!=""))
           	{
@@ -196,6 +254,42 @@ $!data.getMessage()
 	function checkoption (frm,field)
 	{
         	frm.val.value=document.frm.etype.value;
-	}
+	}*/
+	function checkoption(frm,field)
+        {
+                if(document.getElementById=="u1"){
+                frm.val.value=document.frm.Start_mon.value;
+                //alert("1--------"+frm.val.value);
+                }
+                else if(document.getElementById=="u2")
+                {
+                        frm.val.value=document.frm.Start_year.value;
+                }
+                else
+                {
+                        frm.val.value=document.frm.etype.value;
+                }
+                window.location = field.value;
+                //alert("-------4-----------");
+        }
+	/*function checkList(frm,field)
+        {
+		if(frm.detail.value!="")
+                {
+
+                        frm.actionName.value=field.name;
+                        frm.submit();
+		}else
+		{
+                        alert("Please Write the events");
+                }
+
+        }
+	function checkList1(frm,field)
+        {
+		frm.actionName.value=field.name;
+                        frm.submit();
+	}*/
+	
 
 </SCRIPT>
