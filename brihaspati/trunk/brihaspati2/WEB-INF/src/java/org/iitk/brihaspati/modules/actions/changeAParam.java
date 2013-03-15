@@ -51,6 +51,8 @@ import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 import org.apache.torque.util.Criteria;
 import java.util.List;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.commons.lang.StringUtils;
+import org.iitk.brihaspati.modules.utils.MailNotification;
 /**
  * @author <a href="mailto:nksinghiitk@yahoo.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
@@ -61,6 +63,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  * @modified date: 30-1-2013
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
+ * @modified date: 12-03-2013, 16-03-2013
  */
 
 //public class changeAParam extends SecureAction_Admin{
@@ -93,6 +96,8 @@ public class changeAParam extends SecureAction_Admin{
 		 */
 
 
+		String path="";	
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		LangFile=(String)user.getTemp("LangFile");
 		ParameterParser pp=data.getParameters();
 		String AFName=pp.getString("AFName","");
@@ -104,8 +109,25 @@ public class changeAParam extends SecureAction_Admin{
 		String mailServPort = pp.getString("mailServPort","");	
 	 	String mailFrom = pp.getString("mailFrom","");	
 	 	String muName = pp.getString("muName","");	
-	 	String mPass = pp.getString("mPass","");	
+	 	String mPass = pp.getString("mPass","");
 	 	String eMail = pp.getString("eMail","");
+                if(StringUtils.isNotBlank(muName) && StringUtils.isNotBlank(mPass))
+                {
+                        String Mail_msg= (MailNotification.sendMail("Dummy mail to chek mail sending functionality", muName, "Dumy mail", "", LangFile, "")).trim();
+
+                        if(!Mail_msg.equals("Mail sent succesfully.")){
+                                String tempUname=StringUtils.substringBefore(muName,"@");
+                                if(!tempUname.equals(muName)) {
+					AdminProperties.setValue(path,tempUname,"brihaspati.mail.username");
+                                        Mail_msg= (MailNotification.sendMail("Dummy mail to chek mail sending functionality", tempUname, "Dumy mail", "", LangFile, "")).trim();
+                                        if(Mail_msg.equals("Mail sent succesfully."))
+                                                muName = tempUname;
+                                }
+                                else {
+					data.addMessage(MultilingualUtil.ConvertedString("adm_msg2",LangFile));
+				}
+                        }
+                }
 	 	String domainNM = pp.getString("mailDomain","");	
                 String iquota = pp.getString("iquota","");
 	 	String aquota = pp.getString("cquota","");
@@ -216,8 +238,6 @@ public class changeAParam extends SecureAction_Admin{
 		 * Update the first,last name configuration parameter values for Admin
 		 * @see AdminProperties in utils
 		 */
-		String path="";	
-		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		String mailSpoolResendTime = pp.getString("spoolMailResendTime","");
@@ -256,14 +276,15 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
 			AdminProperties.setValue(path,twtexp,"brihaspati.admin.twtexpiry.value");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
-			data.setMessage(prof_update);
+			//data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	
 			//data.addMessage("Disk space is update for user and Courses");
 			data.addMessage(m_u.ConvertedString("qmgmt_msg6",LangFile));
 			}
 		else
 			prof_update=m_u.ConvertedString("usr_prof1",LangFile);
-			data.setMessage(prof_update);
+			//data.setMessage(prof_update);
+			data.addMessage(prof_update);
 			 // Maintain Log
                                         java.util.Date date= new java.util.Date();
                                         String LogfilePath=TurbineServlet.getRealPath("/logs")+"/Operation.txt";

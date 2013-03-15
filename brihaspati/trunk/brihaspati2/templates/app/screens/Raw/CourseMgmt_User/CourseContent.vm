@@ -305,12 +305,6 @@ $!data.getMessage()
                 #set($flag=true)
                 #foreach($file in $dirContent)
         	<tr>	
-		##	<td>
-			##if($dirContent.size()>1)
-	                 ##       <input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);"> ##<div style="height:20px;"></div>
-	                ##end
-			##</td>
-			##if(($i%2!=0)&&($flag==true))
 			#if($flag==true)
 				<td width="15%" align="center">
         	                        <select name="actionType" class="drop">
