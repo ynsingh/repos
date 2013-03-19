@@ -60,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
 
 /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifieddate : 19-03-2013
  */
 
 public class Quota extends SecureScreen_Institute_Admin
@@ -111,7 +113,13 @@ public class Quota extends SecureScreen_Institute_Admin
 				}
 			}
 			long qtingb=QuotaUtil.getInstituteUsedQuota(instituteId);
-			long remquota =(instquota - qtingb);
+			//long remquota =(instquota - qtingb);
+			//context.put("rquota",remquota);
+			Criteria criteria = new Criteria();
+			criteria.add(InstituteQuotaPeer.INSTITUTE_ID,instituteId);
+			List qlist=InstituteQuotaPeer.doSelect(criteria);
+                	BigDecimal uquota= ((InstituteQuota)qlist.get(0)).getInstituteUquota();
+			long remquota = instquota - uquota.longValue();
 			context.put("rquota",remquota);
 			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");

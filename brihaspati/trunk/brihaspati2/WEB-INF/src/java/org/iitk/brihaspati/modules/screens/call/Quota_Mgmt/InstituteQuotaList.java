@@ -55,10 +55,15 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.apache.commons.io.FileSystemUtils;
+import org.iitk.brihaspati.modules.utils.QuotaUtil;
+import java.io.File;
 
 /**
  * This class shows the List of all Institute with alloted Quota(space)
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifieddate : 19-03-2013
  */
 
 public class InstituteQuotaList extends SecureScreen_Admin
@@ -90,6 +95,30 @@ public class InstituteQuotaList extends SecureScreen_Admin
                         int list_conf=Integer.parseInt(conf);
                         context.put("userConf",new Integer(list_conf));
                         context.put("userConf_string",conf);
+
+			//Calculating total and available size 
+			//of brihaspati2 folder
+			
+			//String dir_path = TurbineServlet.getRealPath("");
+			String dir_path = AdminProperties.getValue(path,"brihaspati.home.dir.value");
+	                if(dir_path.equals("")){
+        	               dir_path=System.getProperty("user.home");
+                	}
+			//ErrorDumpUtil.ErrorLog("DIRECTORY PATH= "+dir_path);
+			File pdir = new File(dir_path);
+			long total_size = pdir.getTotalSpace();
+			total_size = total_size/1024;
+			//ErrorDumpUtil.ErrorLog("TOTAL SIZE IN KB = "+total_size);	
+			total_size = (total_size/1024)/1024;
+			//ErrorDumpUtil.ErrorLog("TOTAL SIZE IN GB = "+total_size);
+			context.put("totalsize",total_size);
+			long avail_size = pdir.getFreeSpace();
+			avail_size=avail_size/1024;
+			//ErrorDumpUtil.ErrorLog("AVAILABLE SIZE IN KB = "+avail_size);
+                        avail_size=(avail_size/1024)/1024;
+			//ErrorDumpUtil.ErrorLog("AVAILABLE SIZE IN GB = "+avail_size);
+			context.put("availablesize",avail_size);
+			
 			if(mode.equals("instlistquota"))
 			{
 				if((status.equals("nosearch")))

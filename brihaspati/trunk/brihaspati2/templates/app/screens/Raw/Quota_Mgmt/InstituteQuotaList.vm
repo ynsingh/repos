@@ -4,7 +4,8 @@
  * All Rights Reserved.
  *
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
- *
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifieddate: 19-03-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -29,6 +30,7 @@ $!data.getMessage()
 		##end
 		</font>
 		</td>
+	
 	</tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
@@ -50,6 +52,14 @@ $!data.getMessage()
 	 <td width=15% bgcolor="#AFDCEC">
 	 #end
 	 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","ulistquota").addPathInfo("count","2").addPathInfo("status","nosearch") style=text-decoration:none>$brih_usr $brih_quota </a></td>
+	#if($mode =="instlistquota")
+	<td width=25%>
+                $brih_totalDiskSpace : $totalsize GB
+        </td>	
+	<td width=25%>
+                $brih_freeDiskSpace : $availablesize GB
+        </td>
+	#end
 </tr>
 <form name="frm" action="$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").setAction("InstituteQuotaAction")"> 
 #if($mode =="instlistquota")  

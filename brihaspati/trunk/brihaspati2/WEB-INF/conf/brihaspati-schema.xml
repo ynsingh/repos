@@ -476,6 +476,7 @@
 <table name="INSTITUTE_QUOTA">
 	<column name="INSTITUTE_ID" required="true" primaryKey="true" type="INTEGER"/>
 	<column name="INSTITUTE_AQUOTA" required="true" type="NUMERIC"/>
+	<column name="INSTITUTE_UQUOTA" required="true" type="NUMERIC"/>
 </table>
 
 <!-- ===============================INFRA MANAGEMENT SCHEMA==================================== -->

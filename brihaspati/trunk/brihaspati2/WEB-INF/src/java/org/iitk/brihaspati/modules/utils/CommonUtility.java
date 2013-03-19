@@ -55,7 +55,7 @@ import com.workingdogs.village.Record;
 
 //import java.sql.Date;
 import java.util.Date;
-
+import java.math.BigDecimal;
 //turbine
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
@@ -94,6 +94,7 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteQuotaPeer;
+import org.iitk.brihaspati.om.InstituteQuota;
 import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.LecturePeer;
 import org.iitk.brihaspati.om.LearnerScoPeer;
@@ -145,6 +146,7 @@ import org.iitk.brihaspati.om.VenuePeer;
 import org.iitk.brihaspati.om.ModulePermissionPeer;
 import org.iitk.brihaspati.om.CourseModulePeer;
 
+import org.apache.commons.io.FileSystemUtils;
 import org.iitk.brihaspati.modules.actions.UploadAction;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -181,7 +183,7 @@ import java.text.SimpleDateFormat;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:piyushm45@gmail.com">PiyushMishra</a>	
  * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
- * @modified date:12-09-2012,10-10-2012,23-10-2012,24-03-2013,
+ * @modified date:12-09-2012,10-10-2012,23-10-2012,24-03-2013,19-03-2013
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -290,6 +292,7 @@ public class CommonUtility{
 				grpLeader();
 				//Call method removeNonce();
 				boolean nonce = removeNonce();
+				boolean uquota = setQuota();
 				//Calling Emailspooling file to send Failure mail
 				 MailNotificationThread.getController().emailXMLRead();
 				
@@ -1259,6 +1262,130 @@ public static void grpLeader()
 		}
 		// Return Message
 		return Shutdownnotice;
+	}
+
+	/**
+ 	 * This method calculates the total space
+ 	 * used by all the courses of a particular 
+ 	 * institute and updates the same in
+ 	 * the database
+	 */
+	public static boolean setQuota()
+	{
+		boolean quota=false;
+		Criteria crit = new Criteria();
+		int inst_id;
+		long inst_quota;
+		int l, i, j, k, inst;
+		//String group_name[], courses[];
+		long size=0, avail_size=0;
+		File dir;
+
+		try{
+			String path = TurbineServlet.getRealPath("/Courses");
+//                        ErrorDumpUtil.ErrorLog("Path of courses folder "+path);
+			File file = new File(path);
+                        String[] contents = file.list();
+//			ErrorDumpUtil.ErrorLog("Size of contents in Courses folder "+contents.length);
+
+			//Getting list of all courses
+			crit.addGroupByColumn(TurbineGroupPeer.GROUP_NAME);
+			List l2 = TurbineGroupPeer.doSelect(crit);
+			l=l2.size();
+//			ErrorDumpUtil.ErrorLog("111111");
+			String group_name[] = new String[l];
+			
+			for(i=0;i<l;i++)
+			{
+				group_name[i] = ((TurbineGroup)l2.get(i)).getGroupName();
+//				ErrorDumpUtil.ErrorLog("RRRRR "+group_name[i]);
+			}
+			
+			//Getting id of all institutes
+			crit = new Criteria();
+			crit.addGroupByColumn(InstituteQuotaPeer.INSTITUTE_ID);
+                        List list = InstituteQuotaPeer.doSelect(crit);
+                        l=list.size();
+//			ErrorDumpUtil.ErrorLog("Value of l "+l);
+                        //int inst_id[] = new int[l];
+                        //Getting quota alloted to all institutes
+
+			/**
+ 			 * Computing the available space for 
+ 			 * each institute, on the basis of list
+ 			 * fetched from Institute_Quota table
+ 			 */
+                        for(i=0; i<l; i++)
+                        {
+                                inst_id = ((InstituteQuota)list.get(i)).getInstituteId();
+  //                              ErrorDumpUtil.ErrorLog("SSSSS "+inst_id);
+				crit = new Criteria();
+				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
+                        	List list1 = InstituteQuotaPeer.doSelect(crit);
+				BigDecimal uquota =((InstituteQuota)list1.get(0)).getInstituteAquota();
+				inst_quota = uquota.longValue();
+//				ErrorDumpUtil.ErrorLog("TTTTT "+inst_quota);
+
+				/**
+ 				 * Getting courses from the list
+ 				 * fetched from Turbine_Group table
+ 				 * that belongs to "this" institute.
+ 				 */
+				for(j=0; j<group_name.length; j++)
+				{
+					k= group_name[j].lastIndexOf("_");
+				//	ErrorDumpUtil.ErrorLog("Value of group_name[j] "+group_name[j]);
+					if(!group_name[j].substring(k+1).equals("admin"))
+					{
+						if(k>0)
+						{
+                                        		inst = Integer.parseInt(group_name[j].substring(k+1));
+							if(inst==inst_id)
+							{
+								/**
+ 								 * Getting the size of each course
+ 								 * of "this" particular Institute
+ 								 * In future, we'll compute user space
+ 								 * as well.
+ 								 */
+								for(k=0; k<contents.length; k++)
+								{
+									if(contents[k].contains(group_name[j]))
+									{
+										dir = new File(path+"/"+contents[k]);
+				//						ErrorDumpUtil.ErrorLog("Value of dir "+dir);
+                        							size = size+QuotaUtil.getDirSizeInMegabytes(dir);		
+				//						ErrorDumpUtil.ErrorLog("Size in mb "+size);
+									}  	
+								}//for3
+							}//if3	
+						}//if2
+					}//if1													
+				}//for2
+			
+				/**
+ 				 * Changing size from Mb to Gb
+				 */
+				size=size/1024;
+				//ErrorDumpUtil.ErrorLog("Total used space "+size);
+				/**
+ 				 * Updating Institute_Quota table
+ 				 * with the computed value of used space
+				 */
+				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
+                                crit.add(InstituteQuotaPeer.INSTITUTE_UQUOTA,size);
+                                InstituteQuotaPeer.doUpdate(crit);
+
+			}//for1
+
+						
+			quota=true;
+		}
+		catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("Error inside CommonUtility: setQuota "+e);
+                }       
+                return quota;
 	}
 //Add method
 }//end of class
