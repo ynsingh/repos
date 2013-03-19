@@ -243,9 +243,9 @@ $page.setTitle("Upload Marks")
                         var j;
                         var str = document.uploadform.marksDetail.value;
                         /**
-                        * @param temp, gives split string with '/' that represent change of line
+                        * @param temp, gives split string with '\n' that represent change of line
                         */
-                        temp = str.split("/");
+                        temp = str.split("\n");
                         //alert(temp.length);
                         mySpreadSheet = new Bs_SpreadSheet;
                         mySpreadSheet.objectName = 'mySpreadSheet';

@@ -185,9 +185,10 @@ public class UploadMarks extends SecureScreen_Instructor
 			while((line=br.readLine())!=null)
                   		{// 1 while
 					/**
-					 *add '/' after every line that tells change of line in spreadsheet 
+					 *add '\n' after every line that tells change of line in spreadsheet 
 					 */
-					str = str+line+"/";
+					str = str+line+"\n";
+					//ErrorDumpUtil.ErrorLog("str in screen file inside edit check---"+str);
 				}// end of 1 while
 			int strln = str.length();
 			String substr = str.substring(0,strln-1);
