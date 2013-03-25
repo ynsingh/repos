@@ -42,21 +42,21 @@ public class HTTPClient extends Thread {
 		while(ThreadController.getController().getThreadFlag()){
                      	try {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
-					String datastr="nodata";
+					String chat_wb_handraise_data="nodata";
 					if(utilObject.getSendQueueSize() != 0) {
-        	                		datastr=utilObject.getSendQueue();
-						datastr=java.net.URLEncoder.encode(datastr);
+        	                		chat_wb_handraise_data=utilObject.getSendQueue();
+						chat_wb_handraise_data=java.net.URLEncoder.encode(chat_wb_handraise_data);
 	                	      	}
 					
-					String reg="";
+					String parentip="";
 					if(clientObject.getParentReflectorIP()!= null ) {
-        		                	reg=clientObject.getParentReflectorIP();
+        		                	parentip=clientObject.getParentReflectorIP();
                 		                clientObject.setParentReflectorIP("null");
                        			}else {
-                                		reg="null";
+                                		parentip="null";
 	                                }
 					LinkedList send_queue=UtilObject.getController().getSendQueue("ch_wb_Data");
-					String message=clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg;
+					String message=chat_wb_handraise_data+"req"+parentip;
 					if(!(message.equals(message_diff)) || (send_queue.size()== 0)) {
 						message_diff=message;
 						send_queue.addLast((message_diff).getBytes());
