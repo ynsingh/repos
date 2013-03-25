@@ -1,9 +1,10 @@
 #*
  * @(#)InstituteQuotaList.vm
- * Copyright (c)2011 ETRG,IIT Kanpur.
+ * Copyright (c)2011,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com "> Shaista </a>
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -12,73 +13,70 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr>
+	<tr align="right">
 		<td>
 		<font face="$ui.sansSerifFonts"><b>
-		##if($data.getUser().getUserName()=="admin")
 		$page.setTitle("Institute Quota Management")
 		#if($mode=="instlistquota")
-         	<a href=$link.setPage("Index.vm").addPathInfo("count","1").addPathInfo("mode","instlistquota") style=text-decoration:none>$brih_ad $brih_home</a> | $RemoteInstitute $brih_quota $brih_list
+         		<a href=$link.setPage("Index.vm").addPathInfo("count","1").addPathInfo("mode","instlistquota") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | $RemoteInstitute $brih_Of2 $brih_quota $brih_Of $brih_list
 		#elseif($mode=="ulistquota")
-         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
-         	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("count","2").addPathInfo("mode","ulistquota").addPathInfo("status","nosearch") style=text-decoration:none>$brih_quota $brih_mgmt</a> | $brih_usr $brih_quota 
+	         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad  $brih_Of1 $brih_home</a> | 
+        	 	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("count","2").addPathInfo("mode","ulistquota").addPathInfo("status","nosearch") style=text-decoration:none> $brih_mgmt $brih_quota </a> | $brih_usr $brih_Of1 $brih_quota 
 		#else 
-         	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
-         	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("count","1").addPathInfo("status","nosearch") style=text-decoration:none>$brih_quota $brih_mgmt</a> | $brih_quota $brih_update
+         		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | 
+	         	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("count","1").addPathInfo("status","nosearch") style=text-decoration:none>$brih_mgmt $brih_quota </a> | $brih_quota $brih_update
 		#end
-		##end
 		</font>
 		</td>
 	</tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-#*        <tr bgcolor="$ui.tableColor">
-                <td align=right colspan="10">
-		<img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Quota.html","newWin");>$brih_help</a>
-                </td>
-        </tr>*#
-<tr>
-	#if($tdcolor != "1")
-	<td width=15%>
-	#elseif($tdcolor == "1")
-	<td width=15% bgcolor="#AFDCEC">
+<tr align="right">
+	#if($mode =="instlistquota")
+		<td align="left" colspan="2"> 	$brih_freeDiskSpace : $availablesize $brih_qsizegb </td>
+		<td align="left" colspan="2"> $brih_totalDiskSpace : $totalsize $brih_qsizegb </td>
+	#else
+		<td  colspan="4"> </td>
 	#end
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("count","1").addPathInfo("status","nosearch") style=text-decoration:none>$RemoteInstitute $brih_quota $brih_list</a></td>
 	 #if($tdcolor != "2")
-	 <td width=15%>
+	 <td align="right" colspan="2">
 	 #elseif($tdcolor == "2")
-	 <td width=15% bgcolor="#AFDCEC">
+	 <td bgcolor="#AFDCEC" align="right" colspan="2">
 	 #end
-	 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","ulistquota").addPathInfo("count","2").addPathInfo("status","nosearch") style=text-decoration:none>$brih_usr $brih_quota </a></td>
+	 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","ulistquota").addPathInfo("count","2").addPathInfo("status","nosearch") style=text-decoration:none>$brih_usr $brih_Of1 $brih_quota </a></td>
+	#if($tdcolor != "1")
+	<td align="right" colspan="3">
+	#elseif($tdcolor == "1")
+	<td bgcolor="#AFDCEC" align="right" colspan="3">
+	#end
+	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("count","1").addPathInfo("status","nosearch") style=text-decoration:none>$RemoteInstitute $brih_Of2 $brih_quota $brih_Of $brih_list</a></td>
+	
 </tr>
 <form name="frm" action="$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").setAction("InstituteQuotaAction")"> 
 #if($mode =="instlistquota")  
-<tr bgcolor="$ui.menuColor">
-	<td align=left colspan="10"><b><I>$brih_listOf $RemoteInstitute $brih_quota </I></td>
-</tr>
-<tr>
-                <td width=10%>$brih_searchBy </td>
-                <td width=10%>
-                        <select class="drop" name="queryList">
-                                <option value="Institute Name">$RemoteInstitute $brih_name</option>
-                        </select>
-                </td>
-                <td width=10%>$brih_match_str</td>
-                <td width=10%>
-                        <input align="center" type="text" name="valueString" value="">
-                </td>
-                <td>
-                        <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+	<tr bgcolor="$ui.menuColor" align="right">
+	<td colspan="9"><b><I> $RemoteInstitute $brih_Of2 $brih_quota $brih_Of $brih_list </I></td>
+	</tr>
+	<tr align="right">
+                <td colspan="2"> <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="status" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                         <input type="hidden" name="mode" value="$mode">
                 </td>
+                <td width=10% align="right" colspan="2"> <input align="center" type="text" name="valueString" value=""> </td>
+                <td width=10% align="right" colspan="2">$brih_match_str</td>
+                <td width=10% align="right" colspan="2">
+                        <select class="drop" name="queryList">
+                                <option value="Institute Name">$RemoteInstitute $brih_Of1 $brih_name</option>
+                        </select>
+                </td>
+                <td width=10% align="right">$brih_searchBy </td>
 </tr>
 ##<tr bgcolor="$ui.tableColor"> 
-<tr bgcolor="$ui.menuColor"> 
-	<td width="8%"><b><I>$RemoteInstitute $brih_name</b></I></td>
-	<td><b><I>$quota_avail $brih_qsizegb</b></I></td>
-	<td colspan=5><b><I>$brih_availableAction</I></b></td>
+<tr bgcolor="$ui.menuColor" align="right"> 
+	<td colspan="7"><b><I>$brih_availableAction</I></b></td>
+	<td><b><I>$quota_avail $brih_qsizegb $brih_in </b></I></td>
+	<td><b><I>$RemoteInstitute $brih_Of1 $brih_name</b></I></td>
 	##</font>
 </tr>
 ##end
@@ -88,15 +86,13 @@ $!data.getMessage()
 	#foreach($ent1 in $entry1)
 		#if($counter1==$counter2)
 			#if($velocityCount%2==0)	
-			<tr bgcolor="$ui.menuColor">
+				<tr bgcolor="$ui.menuColor" align="right">
 			#else
-			<tr bgcolor="$ui.tableColor"> 
+				<tr bgcolor="$ui.tableColor" align="right"> 
 			#end 
-               		<td><I>$ent1.getInstituteName()</I></td>
+			<td colspan=7> <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("instid",$lst.getInstituteId()).addPathInfo("iname",$ent1.getInstituteName()).addPathInfo("iquota",$lst.getInstituteAquota()).addPathInfo("count",$tdcolor).addPathInfo("mode","edit") style=text-decoration:none><I>$brih_edit</I></a></td>
                 	<td><I>$lst.getInstituteAquota()</I></td>
-			<td colspan=7>
-			<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("instid",$lst.getInstituteId()).addPathInfo("iname",$ent1.getInstituteName()).addPathInfo("iquota",$lst.getInstituteAquota()).addPathInfo("count",$tdcolor).addPathInfo("mode","edit") style=text-decoration:none><I>$brih_edit</I></a>
-			</td>
+               		<td><I>$ent1.getInstituteName()</I></td>
 			</tr>
 		#end 
 		#set($counter2=$counter2+1)
@@ -105,176 +101,175 @@ $!data.getMessage()
 		#end
 		#if($status=="Search")
 		#foreach($lst in $entry)
-		<td><I>$institutename</I></td>
-		<td><I>$lst.getInstituteAquota()</I></td>
 		<td><a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("instid",$lst.getInstituteId()).addPathInfo("iname",$institutename).addPathInfo("iquota",$lst.getInstituteAquota()).addPathInfo("count",$tdcolor).addPathInfo("mode","edit") style=text-decoration:none><I>$brih_edit</I></a></td>
+		<td><I>$lst.getInstituteAquota()</I></td>
+		<td><I>$institutename</I></td>
 		#end
 		#end
-<tr>
-<td colspan=10 align=left>
+<tr align="right">
+<td colspan="9" align="right">
 #if($status == "nosearch")	
         #if($total_size <= $userConf)
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
+        <img src="$content.getURI("images/Last_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+        <img src="$content.getURI("images/Previous_blank.png")">
+	<img src="$content.getURI("images/First_blank.png")">
 
         #elseif($startIndex == $userConf_string)
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>        
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <img src="$content.getURI("images/Previous_blank.png")">
+	<img src="$content.getURI("images/First_blank.png")">
         #elseif($endIndex == $total_size || $endIndex > $total_size)
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
 
+        <img src="$content.getURI("images/Last_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
         #else
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor).addPathInfo("mode",$mode).addPathInfo("status",$status) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor).addPathInfo("mode",$mode).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>       
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
         #end
 #else
 	#if($total_size<= $userConf)
-	<font color="white">$brih_first</font> &nbsp;
-	<font color="white">$brih_nxt</font> &nbsp;
-	<font color="white">$brih_pre</font> &nbsp;
-	<font color="white">$brih_last</font> &nbsp;
+        <img src="$content.getURI("images/Last_blank.png")">
+        <img src="$content.getURI("images/Previous_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+	<img src="$content.getURI("images/First_blank.png")">
 	#elseif($startIndex== $userConf_string)
-	<font color="white">$brih_first</font> &nbsp;
-	<font color="white">$brih_pre</font> &nbsp;
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-	<a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <img src="$content.getURI("images/Previous_blank.png")">
+	<img src="$content.getURI("images/First_blank.png")">
 	#elseif($endIndex == $total_size || $endIndex > $total_size)
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-	<font color="white">$brih_nxt</font> &nbsp;
-	<font color="white">$brih_last</font> &nbsp;
-        #else
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-	#end
-	
+        <img src="$content.getURI("images/Last_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+	 #else
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+	 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        #end
 #end
 
 </td>
 </tr>
 #end
 #if($mode=="edit")
-	<tr width=100% bgcolor="$ui.tableColor"> 
-	<td colspan="10"><b><I>$brih_update $RemoteInstitute $brih_quota </I></b></td>
+	<tr width=100% bgcolor="$ui.tableColor" align="right"> 
+	<td colspan="9"><b><I> $RemoteInstitute $brih_Of1 $brih_quota $brih_edit </I></b></td>
 	</tr>
-	<tr bgcolor="$ui.menuColor">
-		<td width=20%>$RemoteInstitute $brih_ID</td>
-                <td><input type="text" name="instid" value="$iid" "readonly"></td>
+	<tr bgcolor="$ui.menuColor" align="right">
+                <td colspan="8"><input type="text" name="instid" value="$iid" "readonly"></td>
+		<td width=20%>$RemoteInstitute $brih_Of1 $brih_ID</td>
 	</tr>	
-	<tr bgcolor="$ui.tableColor">
-		<td>$RemoteInstitute $brih_name</td>
-                <td><input type="text" name="iname" value="$name" "readonly"></td>
+	<tr bgcolor="$ui.tableColor" align="right">
+                <td colspan="8"><input type="text" name="iname" value="$name" "readonly"></td>
+		<td>$RemoteInstitute $brih_Of1 $brih_name</td>
 	</tr>	
-	<tr  bgcolor="$ui.menuColor">
-		<td>$RemoteInstitute $brih_quota $brih_qsizegb</td>
-                <td><input type="text" name="iquota" value="$quota"></td>
+	<tr  bgcolor="$ui.menuColor" align="right">
+                <td colspan="8"><input type="text" name="iquota" value="$quota"></td>
+		<td>$RemoteInstitute $brih_Of2 $brih_quota $brih_Of1 $brih_qsizegb</td>
 	</tr>
-	<tr bgcolor="$ui.tableColor"><td colspan=10>
+	<tr bgcolor="$ui.tableColor" align="right"><td colspan="9">
 	<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="checkfield(document.frm,this);"/>
                 <input type="hidden" name="count" value="$tdcolor">
                 <input type="hidden" name="mode" value="$mode">
 	</td></tr>
 #end
 #if($mode=="ulistquota")
-<tr bgcolor="$ui.menuColor">
-        <td align=left colspan="10"><b><I>$brih_listOf $brih_usr $brih_quota </I></td>
+<tr bgcolor="$ui.menuColor" align="right">
+        <td colspan="9"><b><I> $brih_usr $brih_Of2 $brih_quota $brih_Of $brih_list </I></td>
 </tr>
-<tr>
-                <td width=10%>$brih_searchBy </td>
-                <td width=10%>
-                        <select class="drop" name="queryList">
-                                <option value="User Name">$brih_usr $brih_name</option>
-                                <option value="First Name">$brih_first $brih_name</option>
-                                <option value="Last Name">$brih_last $brih_name</option>
-                                <option value="Email">$brih_email</option>
-                        </select>
-                </td>
-                <td width=10%>$brih_match_str</td>
-                <td width=10%>
-                        <input align="center" type="text" name="valueString" value="">
-                </td>
-                <td>
+<tr align="right">
+                <td colspan="5">
                         <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="status" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                         <input type="hidden" name="mode" value="$mode">
                 </td>
+                <td width=10%> <input align="center" type="text" name="valueString" value=""> </td>
+                <td width=10%>$brih_match_str</td>
+                <td width=10%>
+                        <select class="drop" name="queryList">
+                                <option value="User Name">$brih_usr $brih_Of1 $brih_name</option>
+                                <option value="First Name">$brih_first $brih_name</option>
+                                <option value="Last Name">$brih_last $brih_name</option>
+                                <option value="Email">$brih_email</option>
+                        </select>
+                </td>
+                <td width=10%>$brih_searchBy </td>
 </tr>
-<tr bgcolor="$ui.menuColor">
-        <td width="10%"><b><I>$brih_name</b></I></td>
+<tr bgcolor="$ui.menuColor" align="right">
+        <td colspan="7"><b><I>$brih_availableAction</I></b></td>
         <td><b><I>$quota_avail $quota_sze</b></I></td>
-        <td colspan=5><b><I>$brih_availableAction</I></b></td>
+        <td width="10%"><b><I>$brih_name</b></I></td>
 </tr>
 	#foreach($lst in $entry)
-	#if($velocityCount%2==0) 
-	<tr bgcolor="$ui.menuColor">
-	#else
-	<tr bgcolor="$ui.tableColor">
-        #end
-        <td><I>$lst.getLoginName()</I></td>
-                <td><I>$lst.getQuota()</I></td>
+		#if($velocityCount%2==0) 
+			<tr bgcolor="$ui.menuColor" align="right">
+		#else
+			<tr bgcolor="$ui.tableColor" align="right">
+	        #end
                 <td colspan=7>
-                ##<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("uid",$lst.getUserId()).addPathInfo("name",$lst.getLoginName()).addPathInfo("mode","uedit").addPathInfo("quota",$lst.getQuota()).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><I>$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("uid",$lst.getUserId()).addPathInfo("name",$lst.getLoginName()).addPathInfo("mode","uedit").addPathInfo("quota",$lst.getQuota()).addPathInfo("count",$tdcolor) style=text-decoration:none><I>$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
+                <td><I>$lst.getQuota()</I></td>
+	        <td><I>$lst.getLoginName()</I></td>
         </tr>
         #end 
-	<tr>
-	<td colspan=10 align=left>
+	<tr align="right">
+	<td colspan="9" >
 	#if($status == "nosearch")
-	#if($total_size <= $userConf)
-	<font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
+		#if($total_size <= $userConf)
+	        <img src="$content.getURI("images/Last_blank.png")">		
+        	<img src="$content.getURI("images/Next_blank.png")">
+	        <img src="$content.getURI("images/Previous_blank.png")">
+		<img src="$content.getURI("images/First_blank.png")">
 	#elseif($startIndex == $userConf_string)
-	<font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>	
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <img src="$content.getURI("images/Previous_blank.png")">
+	<img src="$content.getURI("images/First_blank.png")">
 	#elseif($endIndex == $total_size || $endIndex > $total_size)
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
+        <img src="$content.getURI("images/Last_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+	
 	#else
-	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>	
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
 	#end
 	#else
 	        #if($total_size<= $userConf)
-		<font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
-        #elseif($startIndex== $userConf_string)
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-        #elseif($endIndex == $total_size || $endIndex > $total_size)
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
-        #else
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+	        <img src="$content.getURI("images/Last_blank.png")">	        
+        	<img src="$content.getURI("images/Previous_blank.png")">
+	        <img src="$content.getURI("images/Next_blank.png")">
+		<img src="$content.getURI("images/First_blank.png")">
+	        #elseif($startIndex== $userConf_string)
+	        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+        	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+	        <img src="$content.getURI("images/Previous_blank.png")">
+		<img src="$content.getURI("images/First_blank.png")">
+	        
+		#elseif($endIndex == $total_size || $endIndex > $total_size)
+	        <img src="$content.getURI("images/Last_blank.png")">		
+        	<img src="$content.getURI("images/Next_blank.png")">
+	        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+		<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        	#else
+	        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_last).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+        	<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+	        <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+		 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("startIndex",$check_first).addPathInfo("status",$status).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        	
                 #end
 #end
 </td>
@@ -282,22 +277,22 @@ $!data.getMessage()
 
 #end
 #if($mode=="uedit")
-        <tr width=100% bgcolor="$ui.tableColor">
-        <td colspan="10"><b><I>$brih_update $brih_usr $brih_quota </I></b></td>
+        <tr width=100% bgcolor="$ui.tableColor" align="right">
+        <td colspan="9"><b><I> $brih_usr $brih_Of1 $brih_quota $brih_edit </I></b></td>
         </tr>
-        <tr bgcolor="$ui.menuColor">
-        <td width=20%>$brih_usr $brih_ID</td>
-        <td><input type="text" name="uid" value="$uid" "readonly"></td>
+        <tr bgcolor="$ui.menuColor" align="right">
+        	<td colspan="8"><input type="text" name="uid" value="$uid" "readonly"></td>
+	        <td width=20%>$brih_usr $brih_Of1 $brih_ID</td>
         </tr>
-        <tr bgcolor="$ui.tableColor">
-        <td>$brih_usrName</td>
-        <td><input type="text" name="name" value="$name" "readonly"></td>
+        <tr bgcolor="$ui.tableColor" align="right">
+        	<td colspan="8"><input type="text" name="name" value="$name" "readonly"></td>
+	        <td>$brih_usrName</td>
         </tr>
-        <tr  bgcolor="$ui.menuColor">
-        <td>$brih_usr $brih_quota $quota_sze</td>
-        <td><input type="text" name="quota" value="$quota"></td>
+        <tr  bgcolor="$ui.menuColor" align"right">
+        <td colspan="8"><input type="text" name="quota" value="$quota"></td>
+        <td>$brih_usr $brih_Of1 $brih_quota $quota_sze $brih_in </td>
         </tr>
-        <tr><td>
+        <tr align="right"><td colspan="9">
         ##<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="updatefield(document.frm,this);"/>
         <input type=button class="button-ftextstyle" name="eventSubmit_doUpdateUserQuota" value=$brih_update onClick="updatefield(document.frm,this);"/>
         <input type="hidden" name="count" value="$tdcolor">
