@@ -215,7 +215,8 @@ public class PublishAction extends SecureAction_Instructor
 		String username=pp.getString("uname","");
 		context.put("username",username);
 		String cName=data.getParameters().getString("cName","");
-		context.put("cName",cName);		
+		context.put("cName",cName);	
+		//ErrorDumpUtil.ErrorLog("\n\n\n status="+status+"\t username="+username+"\t cName="+cName, data.getServletContext().getRealPath("/msgDisp.txt"));
 		String visibleList=pp.getString("visibleList","");
 		String accessibleList=pp.getString("accessibleList","");
 ///////////////////////////// Start (Shaista) /////////////////
@@ -759,10 +760,16 @@ public class PublishAction extends SecureAction_Instructor
                                                         crit.add(TurbineUserPeer.USER_ID, usrId);
                                                         List usrList = TurbineUserPeer.doSelect(crit);
                                                         String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
-                                                        Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+grpName.trim()+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
+                                                        Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName.trim()+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
                                                 }
                                                 if(Mail_msg.equals("Success"))
                                                 {
+							crit = new Criteria();
+       							crit.add(TurbineUserPeer.USER_ID, uid);
+                	                                List usrList = TurbineUserPeer.doSelect(crit);
+                        	                        String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
+                                	                Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName.trim()+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
+
                                                         Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
                                                         data.addMessage(Mail_msg);
                                                 }

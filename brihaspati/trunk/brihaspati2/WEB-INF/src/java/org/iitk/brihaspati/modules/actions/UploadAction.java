@@ -404,18 +404,21 @@ public class UploadAction extends SecureAction
 			                List v1=TurbineUserGroupRolePeer.doSelect(crit);				
 					String Mail_msg = "";
 					if(v1.size() >0){
+						String courseName = CourseUtil.getCourseName(courseHome);	
 						for(int i=0; i < v1.size(); i ++) {
-							int usrId =( (TurbineUserGroupRole) v1.get(i)).getUserId();
+							int usrId =((TurbineUserGroupRole) v1.get(i)).getUserId();
 							crit = new Criteria();
 							crit.add(TurbineUserPeer.USER_ID, usrId);
 							List usrList = TurbineUserPeer.doSelect(crit);
 							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
-							String courseName = CourseUtil.getCourseName(courseHome);	
-							//Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile, "","");	
-							//Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
+							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
 						}
-						if(Mail_msg.equals("Success"))
-						{
+						if(Mail_msg.equals("Success")) {
+							crit = new Criteria();
+        	                                        crit.add(TurbineUserPeer.USER_ID, uid);
+                	                                List usrList = TurbineUserPeer.doSelect(crit);
+                        	                        String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
+							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
 							Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
 							data.addMessage(Mail_msg);
 						}
