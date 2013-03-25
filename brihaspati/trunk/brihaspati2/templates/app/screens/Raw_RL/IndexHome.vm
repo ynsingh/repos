@@ -1,12 +1,13 @@
 #*
  * @(#) IndexHome.vm
- * Copyright (c) 2006-2008,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2006-2008,2009,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 15-04-2010
- * @modified date 13-06-2012
+ * @modified date 13-06-2012,22-03-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -88,19 +89,6 @@ a.one:link,a.one:visited
 ############################
 <body>
 $!data.getMessage()
-#macro(UNAME)
-
-        #if($firstname!="")
-                #if($lastname!="")
-                <b> $firstname $lastname</b>
-                #else
-                <b> $firstname</b>
-                #end
-        #else
-        <b>$username</b>
-        #end
-#end
-
 #macro (BlinkingText $text)
   <font face="$ui.sansSerifFonts" color="$ui.fontColorRed">
       &nbsp;&nbsp;<blink><sup>$text</sup></blink>&nbsp;
@@ -111,7 +99,7 @@ $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100% CellPadding=0 align=center>
 <tr bgcolor="$ui.menuColor">
 	<td align=center>
-	        <font size=4 face="$ui.sansSerifFonts"> <font color="$ui.fontColorBlue" > <b> #UNAME() </font> $brih_welcome
+	        <font size=4 face="$ui.sansSerifFonts"> <font color="$ui.fontColorBlue" > <b> $username </font> $brih_welcome
 	       </b> </font>
 	</td>
 </tr>
@@ -121,59 +109,42 @@ $!data.getMessage()
 #end
 
 <table width=100% align=left> ##table 1 start
-	<tr bgclor="$ui.menuColor">
+	<tr bgcolor="$ui.menuColor">
 ## Start of today's events
 #if($guest_login=="false")
-        <td width=20% valign="top">
-        <table width=100% > 
-        <tr><td>
-	#if($information.size() > 0)
-        	<div style="width:300px; overflow: auto;">
-        #end
-                <table width=100% align=center valign="top">
-                <tr bgcolor="$ui.menuColor"> <td colspan=3 align="right" > 
-			<font face="$ui.sansSerifFonts"><b>$brih_today $brih_Of1 $brih_event</b></font> 
-		</td> </tr>
-                </table>
-                <table width=100% valign="top">
-                #set ( $count1 = 1 )
-                ##set ( $row_counter = 1 )
-                #foreach ($element in $information)
-                        #set ( $count2 = 1 )
-                        #foreach ($begt in $Stime)
-                                #set ( $count3 = 1 )
-                                #foreach ($stt in $Etime)
-                                        #if (($count1 == $count2) && ($count1 ==$count3))
-                                        ##<tr>
-					#if($velocityCount % 2 == 0)
-                                                <tr bgcolor="$ui.tableColor">
-                                                ##set($row_counter=$row_counter+1)
-                                        #else
-                                                ##set($row_counter=$row_counter+1)
-                                                <tr bgcolor="$ui.menuColor">
-                                        #end
-
-                                                #if ($INT.valueOf($begt) > $INT.valueOf($currenttime))
-                                                <td><font color="$ui.fontColorGreen">$element</font>
-                                                #elseif($INT.valueOf($currenttime) < $INT.valueOf($stt))
-                                                <td><blink><font color="$ui.fontColorRed">$element</font></blink>
+<td width=20% valign="top">
+                <table width=100%>
+                        <tr><td>
+                                <table width=100% align=center vlign="top">
+                                        <tr bgcolor="$ui.menuColor"><td colspan=3 align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_today $brih_Of1 $brih_event</b></font>
+                                        </td></tr>
+                                </table>
+                                        <div style="width:100%; overflow: auto;">
+                                        <table width="100%" valign="top">
+                                #if($info.size() > 0)
+                                        #foreach ($element in $info)
+                                                ##if($velocityCount % 2 == 0)
+                                                 ##       <tr bgcolor="$ui.menuColor">
+                                                ##else
+                                                        <tr bgcolor="$ui.tableColor">
+                                                ##end
+                                                #if ($INT.valueOf($element.btime) > $INT.valueOf($currenttime))
+                                                        <td><font color="green">$element.get("minfo")</font>
+                                                #elseif($INT.valueOf($currenttime) < $INT.valueOf($element.ltime))
+                                                        <td><blink><font color="red">$element.get("minfo")</font></blink>
                                                 #else
-                                                <td><font color="$ui.fontColorBlack">$element</font>
+                                                        <td><font color="black">$element.get("minfo")</font>
                                                 #end
-                                                </td>
-					</tr>
+                                                </td></tr>
                                         #end
-                                #set($count3 =$count3 + 1)
+				 #else
+                                <tr><td>
+                                <font color="red">$brih_noevent</font></td></tr>
                                 #end
-                        #set($count2=$count2+1)
-                        #end
-                #set ( $count1 = $count1 + 1 )
-                #end
-		 </table>
-		#if($information != "")
-                        </div>
-                #end
-        </table>
+                                        </table>
+                                        </div>
+                </table>
         </td>
 #end		
 ##end of today event

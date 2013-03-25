@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
 /*
  * @(#)ViewAss.java 
  *
- *  Copyright (c) 2007 ETRG,IIT Kanpur.
+ *  Copyright (c) 2007,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -74,6 +74,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 	 *   Compose a discussion and reply.
 	 *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
 	 *   @author  <a href="smita37uiet@gmail.com">smita Pal</a>
+	 *   @author  <a href="Tej Bahadur@gmail.com">Tej Bahadur</a>
 	*/
 
 
@@ -90,6 +91,7 @@ public class ViewAss extends  SecureScreen
                         context.put("coursename",(String)user.getTemp("course_name"));
                         String courseid=(String)user.getTemp("course_id");
                         String DB_subject1=pp.getString("topicList");
+			context.put("topicList",DB_subject1);
                         context.put("tdcolor",pp.getString("count",""));
         		                
 			String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment");

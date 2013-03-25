@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
 
 /*
  * @(#) PostAns.java 
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -62,6 +62,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 	* This class contains code of Post Answer to the Assignment
 	* @author<a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
 	* @author<a href="smita37uiet@gmail.com">Smita Pal</a>
+	* @author<a href="tejdgurung20@gmail.com">Tej Bahadur</a>
 	*/
  
 public class PostAns extends  SecureScreen
@@ -84,6 +85,7 @@ public class PostAns extends  SecureScreen
 			context.put("coursename",(String)user.getTemp("course_name"));
 			context.put("Ans","Ans");
 			context.put("tdcolor",data.getParameters().getString("count",""));
+			context.put("topicnm",data.getParameters().getString("topicname",""));
 			Date curDate=new Date();
                         long longCurDate= curDate.getTime();
 			/*
@@ -157,7 +159,7 @@ public class PostAns extends  SecureScreen
 						ErrorDumpUtil.ErrorLog("arvind no "+path);
 						context.put("answerfile1","no");			
 					}
-					} catch(Exception e){ ErrorDumpUtil.ErrorLog("ssssssss arvind  "+e);  }
+					} catch(Exception e){ ErrorDumpUtil.ErrorLog(" "+e);  }
 					
 				} else
 					context.put("answerfilecheck","checked");

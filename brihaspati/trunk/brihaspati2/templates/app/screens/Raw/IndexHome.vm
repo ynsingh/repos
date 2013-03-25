@@ -1,6 +1,6 @@
 #*
  * @(#) IndexHome.vm
- * Copyright (c) 2004-2005,2009, 2010, 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2004-2005,2009, 2010, 2011,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
@@ -15,7 +15,7 @@
  * @ modified date: 13-Oct-2010 (Shaista), 09-11-2010, 07-12-2010 (Problem resolved for view bookmarks)
  * @ modified date: 22-Feb-2011 (Tej), 19-08-2011 (Shaista)
  * @ modified date: 24-Oct-2011 (Sunil)(Institutewise Course List)
- * @ modified date: 11-june-2012 (Gaurav Verma) (Task Management)
+ * @ modified date: 11-june-2012 (Gaurav Verma) (Task Management), 18-03-2013(Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -343,9 +343,9 @@ $!data.getMessage()
 		                	<font face="$ui.sansSerifFonts"><b>$brih_today_ev</b></font>
                 			</td></tr>
 		                </table>
-				#if($info.size() > 0)
 					<div style="width:100%; overflow: auto;">
 					<table width="100%" valign="top">
+				#if($info.size() > 0)
 					#foreach ($element in $info)
 						#if($velocityCount % 2 == 0)
 							<tr bgcolor="$ui.menuColor">
@@ -353,17 +353,20 @@ $!data.getMessage()
 							<tr bgcolor="$ui.tableColor">
 						#end
 						#if ($INT.valueOf($element.btime) > $INT.valueOf($currenttime))
-							<td><font color="green">$element.DI</font>
+							<td><font color="green">$element.get("minfo")</font>
 						#elseif($INT.valueOf($currenttime) < $INT.valueOf($element.ltime))
-							<td><blink><font color="red">$element.DI</font></blink>
+							<td><blink><font color="red">$element.get("minfo")</font></blink>
 						#else
-							<td><font color="black">$element.DI</font>
+							<td><font color="black">$element.get("minfo")</font>
 						#end
 						</td></tr>
 					#end
+				#else
+                                <tr><td>
+                                <font color="red">$brih_noevent</font></td></tr>
+                                #end
 					</table>
 					</div>
-				#end
         	</table>
         </td>
 #end
