@@ -7,8 +7,8 @@ package org.bss.brihaspatisync.reflector;
  * Copyright (c) 2009 ETRG, IIT Kanpur.
  */
 
+import java.util.Timer;
 import java.util.Vector;
-import java.util.Properties;
 
 import java.io.InputStream;
 import java.io.BufferedReader;
@@ -16,25 +16,17 @@ import java.io.InputStreamReader;
 
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.InetAddress;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
-//import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
-
-import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
-
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
-//import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
-import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
-//import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
 import org.bss.brihaspatisync.reflector.network.nms.PostNmsServer;
+import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
+import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
+import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
 
-import java.util.Timer;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 

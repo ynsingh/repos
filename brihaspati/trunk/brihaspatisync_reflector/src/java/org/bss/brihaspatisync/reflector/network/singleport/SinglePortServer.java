@@ -20,6 +20,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
+import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -74,6 +75,8 @@ class MyHandler implements HttpHandler {
 				String lecture_id_username=responseHeader.get("session").toString();
                                 String lecture_id_usernamearray[]=lecture_id_username.split(",");
                                 String lecture_id=lecture_id_usernamearray[0];
+				lecture_id=lecture_id.replace("[","");
+				lecture_id=lecture_id.trim();
 				String username=lecture_id_usernamearray[1];
                                 String type=lecture_id_usernamearray[2];
 				type=type.replaceAll("]","");
@@ -90,7 +93,6 @@ class MyHandler implements HttpHandler {
 						BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
 						if( (bytes.length>0) && (bytes !=null)) {
 						        buffer_mgt.putByte(bytes,username,type+lecture_id);		
-							buffer_mgt.sendData(username,type+lecture_id);
 						}
 						
 						byte[] image_new=buffer_mgt.sendData(username,type+lecture_id);
@@ -113,10 +115,33 @@ class MyHandler implements HttpHandler {
                         	                        responseBody.write(sendbytes);
                                 	        }
 					}else if(type.equals("ch_wb_Data")) {
-						String returndata=HttpGetPost.getController().putValue_CH_WB(new String(bytes),lecture_id,username);
-						if(returndata != null) {
-							responseBody.write(returndata.getBytes());
-						}
+						try {
+ 							HttpGetPost.getController().putValue_CH_WB(bytes,lecture_id,username);
+                                	                MyHashTable temp_ht=runtimeObject.getMyHashTable();
+                                                	if(!temp_ht.getStatus(type+lecture_id)){
+                                        	                BufferMgt buffer_mgt= new BufferMgt();
+                                                        	temp_ht.setValues(type+lecture_id,buffer_mgt);
+	                                                }
+        	                                        BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
+                	                                if((bytes.length > 0) && (bytes !=null)) {
+                        	                                String req=new String(bytes);
+                                	                        String data_value[]=req.split("req");
+								if(!(data_value[0].startsWith("HandRaiseAction")))
+	                                        	                buffer_mgt.putByte(data_value[0].getBytes(),username,type+lecture_id);
+        	                                        }
+	
+        	                                        byte[] sendbytes=buffer_mgt.sendData(username,type+lecture_id);
+        	                                        String userlist_data=UserListUtil.getContriller().getDataForVector(lecture_id);
+                        	                        if(userlist_data.equals("")) userlist_data="nodata";
+                                	                String ch_wb="";
+                                        	        if(sendbytes == null) 
+								ch_wb="nodata";
+                                                	else { 
+								ch_wb=new String(sendbytes);
+							}
+		                                        String userlist_ch_wb_data=userlist_data+"  "+ch_wb;	
+                        	                        responseBody.write(userlist_ch_wb_data.getBytes());
+						}catch(Exception e){}
 					}else if(type.equals("ins_video")){
 						MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
                 	                        if(!temp_ht.getStatus(type+lecture_id)){
@@ -126,7 +151,6 @@ class MyHandler implements HttpHandler {
 	                                        BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
         	                                if((bytes.length>0) && (bytes !=null)) {
                 	                                buffer_mgt.putByte(bytes,username,type+lecture_id);
-                        	                        buffer_mgt.sendData(username,type+lecture_id);
                                 	        }
                                         	byte[] sendbytes=buffer_mgt.sendData(username,type+lecture_id);
 	                                        if((sendbytes.length>0) && (sendbytes !=null)){
@@ -141,7 +165,6 @@ class MyHandler implements HttpHandler {
                                 	        BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
                                         	if((bytes.length>0) && (bytes !=null)) {
                                                 	buffer_mgt.putByte(bytes,username,type+lecture_id);
-	                                                buffer_mgt.sendData(username,type+lecture_id);
         	                                }
                 	                        byte[] sendbytes = buffer_mgt.sendData(username,type+lecture_id);
                         	                if((sendbytes.length>0) && (sendbytes !=null)) {

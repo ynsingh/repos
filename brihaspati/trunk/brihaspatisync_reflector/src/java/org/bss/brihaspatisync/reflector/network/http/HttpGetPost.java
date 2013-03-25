@@ -32,61 +32,34 @@ public class HttpGetPost {
                 return httpserver;
         }
 	
-	public String putValue_CH_WB(String req,String lecture_id,String username) {
+	public void putValue_CH_WB(byte[] bytes,String lecture_id,String username) {
 		try {
 			/**
- 			 ** split() is used to get lecture_id and the data from this request , 
-			 ** where data_value[0] contains lecture_id and data_value[1] contains data.
+ 			 ** where data_value[0] contains contain data and data_value[1] contains parent ip .
                          */
-				
-                        String data_value[]=req.split("req");
-			if(data_value[1].startsWith("HandRaiseAction")){
-                        	data_value[1]=java.net.URLDecoder.decode(data_value[1]).replaceAll("HandRaiseAction","");
-                                handraiseAction.setValue(data_value[1]);
-                    	}else {
-                        	String s=data_value[0];
-                                String strarray[]=s.split(",");
-                                data_value[0]=strarray[1];
-                                RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
-                                if(strarray[0].equals("instructor")){
-                                	/** ip for master reflector */
-                                        runtimeObject.setMastrerReflecterCourseid(strarray[1]);
-                            	}
-                                MyHashTable temp_ht=runtimeObject.getMyHashTable();
-                                /** set All course id */
-                                runtimeObject.setCourseID(data_value[0]);
-                                if(runtimeObject.getStatusCourseidIP(data_value[0]+"#"+username)) {
-                                	/** set course id and ip */
-                                        runtimeObject.setCourseid_IP(data_value[0]+"#"+username);
-                             	}
 
-                                if(data_value[2].startsWith("parent")) {
-					data_value[2]=data_value[2].replace("parent","");
-                                        if(!data_value[2].equals("")) {
-                                        	//org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(data_value[0],data_value[2]);
-                                     	}
-                         	} 
-				if(!temp_ht.getStatus("ch_wb"+lecture_id)) {
-					BufferMgt buffer_mgt= new BufferMgt();
-					temp_ht.setValues("ch_wb"+lecture_id,buffer_mgt);
-					buffer_mgt.putByte(data_value[1].getBytes(),username,"ch_wb"+lecture_id);
-					return null;
-               	                } else if(temp_ht.getStatus("ch_wb"+lecture_id)) {
-                       	                BufferMgt buffer_mgt=temp_ht.getValues("ch_wb"+lecture_id);
-					if(!data_value[1].equals("nodata"))
-						buffer_mgt.putByte(data_value[1].getBytes(),username,"ch_wb"+lecture_id);
-					byte[] ch_wb_data=buffer_mgt.sendData(username,"ch_wb"+lecture_id);
-					String userlist_data=UserListUtil.getContriller().getDataForVector(data_value[0]);
-					if(userlist_data.equals("")) userlist_data="nodata";
-					String ch_wb="";
-					if(ch_wb_data == null) ch_wb="nodata";
-					else ch_wb=new String(ch_wb_data);
-					String userlist_ch_wb_data=userlist_data+"  "+ch_wb;
-					return userlist_ch_wb_data;
-                                }
-                     	}   
+			String req=new String(bytes);		
+                        String data_value[]=req.split("req");
+                        RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+                        runtimeObject.setMastrerReflecterCourseid(lecture_id);
+			if(data_value[0].startsWith("HandRaiseAction")){
+                               	data_value[0]=java.net.URLDecoder.decode(data_value[0]).replaceAll("HandRaiseAction","");
+	                        handraiseAction.setValue(data_value[0]);
+			}
+			
+			/** set All course id */
+                        runtimeObject.setCourseID(lecture_id);
+                        if(runtimeObject.getStatusCourseidIP(lecture_id+"#"+username)) {
+                               	/** set course id and ip */
+                                runtimeObject.setCourseid_IP(lecture_id+"#"+username);
+                        }
+                        if(data_value[1].startsWith("parent")) {
+				data_value[1]=data_value[1].replace("parent","");
+                                if(!data_value[1].equals("")) {
+                                       	org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(lecture_id,data_value[1]);
+                               	}
+                         } 
                 }catch(Exception ex){System.out.println("Error in in http post and get server "+ex.getMessage());}
-		return null;
         }
 }
 
