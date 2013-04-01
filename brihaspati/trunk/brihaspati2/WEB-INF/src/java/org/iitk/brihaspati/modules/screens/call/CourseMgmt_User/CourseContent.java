@@ -45,6 +45,7 @@ import java.io.File;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
+import org.apache.commons.lang.StringUtils;
 //import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.Turbine;
 //import org.apache.turbine.services.security.TurbineSecurity;
@@ -234,7 +235,7 @@ public class CourseContent extends VelocitySecureScreen{
 									if(unpblist!=null)
 										map.put("unpublst",unpblist.length);
 								}
-								else if(contentlist[k].endsWith("xml"))
+								else if(StringUtils.startsWith(contentlist[k],flist[z]))
 								{
 									//ErrorDumpUtil.ErrorLog("file name else part for adding--------"+contentlist[k]);
 									TopicMetaDataXmlReader tp=new TopicMetaDataXmlReader(data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/"+flist[z]+"/"+contentlist[k]);
