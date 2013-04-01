@@ -60,8 +60,8 @@ public class JoinSession {
 			if(!(usr_name.equals(""))){
 				if(usr_name.equals("guest")) {
 					usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
-					client_obj.setUserName(usr_name);
 					usr_name=java.net.URLEncoder.encode(usr_name);
+					client_obj.setUserName(usr_name);
 				}
 				username="user="+URLEncoder.encode(usr_name,"UTF-8");
 			} else

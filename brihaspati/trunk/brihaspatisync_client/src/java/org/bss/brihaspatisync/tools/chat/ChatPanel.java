@@ -153,21 +153,20 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
       		int   i, length;
       		JTextField tf;	
       		if (e.getKeyCode() == KeyEvent.VK_ENTER){
-         		tf = (JTextField)e.getSource();
-         		msg = ClientObject.getController().getUserName()+" : "+tf.getText();
-			if (tf.getText().length() == 0)  return;
-         		else {
-				showChatMSG(msg);
-				try{
-                        		StringBuffer sb=new StringBuffer(100);
-		                        sb=sb.append("ch");
-                		        sb=sb.append("$");
-		                        sb=sb.append(msg);
+			try {
+	         		tf = (JTextField)e.getSource();
+				msg = java.net.URLDecoder.decode(ClientObject.getController().getUserName(),"UTF-8")+" : "+tf.getText();
+				if (tf.getText().length() == 0)  return;
+         			else {
+					showChatMSG(msg);
+        	                	StringBuffer sb=new StringBuffer(100);
+			                sb=sb.append("ch");
+                			sb=sb.append("$");
+		                	sb=sb.append(msg);
                 		        send_msg=sb.toString();
-                		        utilObject.setSendQueue(send_msg);
-                        	}catch(Exception ex){}
-
-	               	}
+		              		utilObject.setSendQueue(send_msg);
+	               		}
+                        }catch(Exception ex){}
              		input_text.setText("");
 		}
       	}
