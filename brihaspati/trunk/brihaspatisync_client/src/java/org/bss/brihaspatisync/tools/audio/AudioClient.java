@@ -92,7 +92,7 @@ public class AudioClient implements Runnable {
                                 	if(audio_rechive_data.size()>0) {
                 				byte[] audioBytes=(byte[])audio_rechive_data.get(0);
 	                                        audio_rechive_data.remove(0);			
-        	        	              	if((audioBytes.length) > 3000) {
+        	        	              	if((audioBytes.length) > 10) {
                 	        	              	AudioPlayer.getController().putAudioStream(audioBytes);
 						}
 					}

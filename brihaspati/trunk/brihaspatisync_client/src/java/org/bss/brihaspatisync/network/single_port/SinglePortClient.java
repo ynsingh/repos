@@ -105,7 +105,7 @@ public class SinglePortClient implements Runnable {
 								byte[] send_data=(byte[])sendqueue.get(0);
 								sendqueue.remove(0);
 								byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
-								if(receive_data_fromserver.length>100) {	
+								if(receive_data_fromserver.length>10) {	
 	                               			                LinkedList audio_queue=UtilObject.getController().getQueue("Audio_Data");
         	                               			        audio_queue.addLast(receive_data_fromserver);		
 								}

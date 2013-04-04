@@ -4,9 +4,9 @@ package org.bss.brihaspatisync.tools.audio;
  * AudioCapture.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012, 2013 ETRG,IIT Kanpur.
  */
-
+import java.util.Arrays;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -17,9 +17,11 @@ import javax.sound.sampled.TargetDataLine;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 
+import org.xiph.speex.SpeexEncoder;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Modified on 04-04-2013. JSpeex codec integration to encode audio data.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified transmit thread.
  */
 
@@ -41,7 +43,6 @@ public class AudioCapture implements Runnable {
 		try {
 			if(targetDataLine ==null){
 				targetDataLine =ClientObject.getController().getTargetLine();
-				System.out.println("opening targetDataLine.");
 			} else System.out.println("targetDataLine could not initialized.");
 		} catch(Exception e){System.out.println("Error in open targetdataline "+e.getMessage());}
     	}
@@ -59,7 +60,7 @@ public class AudioCapture implements Runnable {
 		}
         }
 	
-	protected void start(){
+	protected void startCapture(){
 		if(runner ==null){
 	                bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
                 	getTargetLine();
@@ -74,11 +75,11 @@ public class AudioCapture implements Runnable {
 	protected void setflag(boolean flag){
 		if((ClientObject.getController().getUserRole()).equals("instructor")) {
 			if(flag)
-        	       		start();
+        	       		startCapture();
 	                
 		}else {
 			if(flag){
-				start();
+				startCapture();
 			}else { 
 				stopCapture();
 			}
@@ -90,10 +91,21 @@ public class AudioCapture implements Runnable {
  	 */  
 	public void run(){ 
                 try {
+			SpeexEncoder encoder = new SpeexEncoder();
+                        encoder.init(1, 10, (int)audioFormat.getSampleRate(), audioFormat.getChannels());
+                        final int raw_block_size = encoder.getFrameSize() * audioFormat.getChannels()  * (audioFormat.getSampleSizeInBits() / 8);
 			while(flag){	
-			        audio_data = new byte[bufferSize];
+			        audio_data = new byte[raw_block_size];
                                	int cnt = targetDataLine.read(audio_data,0,audio_data.length);
-				audioVector.addLast(audio_data);
+				if (!encoder.processData(audio_data, 0, raw_block_size)) {
+                                        System.err.println("Could not encode data!");
+                                        break;
+                                }
+                                int encoded = encoder.getProcessedData(audio_data, 0);
+                                 System.out.println(encoded+ " bytes resulted as a result of encoding " + cnt + " raw bytes.");
+                                byte[] encoded_data = new byte[encoded];
+                                System.arraycopy(audio_data , 0, encoded_data, 0, encoded);
+                                audioVector.addLast(encoded_data);
 			}
                 }catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
         }

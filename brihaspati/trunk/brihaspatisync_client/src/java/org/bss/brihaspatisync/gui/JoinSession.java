@@ -131,7 +131,7 @@ public class JoinSession {
                                         org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
                                 }
 			}
-		}catch(Exception ex){System.out.println("Error in start audio thread");}
+		}catch(Exception ex){System.out.println("Error in start audio thread"+ex.getMessage());}
 
 		//start video thread
 		try {

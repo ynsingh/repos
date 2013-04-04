@@ -15,6 +15,7 @@ import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.gui.LoginWindow;
 import org.bss.brihaspatisync.gui.MailLogin;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import java.io.File;
 
@@ -36,12 +37,19 @@ public class Client {
 	
 	private Client(){}
 
+
 	private void startClient(){
                 try{
-                	/* The look and feel is set */
 			Language.getController().SelectLanguage("English");
-                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                		if ("Nimbus".equals(info.getName())) {
+                    			UIManager.setLookAndFeel(info.getClassName());
+                    			break;
+                		}
+            		}
+
                	}catch(Exception e){System.out.println("Error on Loading Look&Feel");}
+		
 
                 if(((ClientObject.getController().getIndexServerList()).size()) > 1){
 			MainWindow.getController().createGUI();
@@ -54,7 +62,13 @@ public class Client {
 	private void startFromURL(String user_name,String lect_id,String course_id,String indexServerName,String ins_std){
 		try {
 			Language.getController().SelectLanguage("English");
-                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                		if ("Nimbus".equals(info.getName())) {
+                    			UIManager.setLookAndFeel(info.getClassName());
+                    			break;
+                		}
+            		}
+
 			MainWindow.getController().createGUI();
 			MailLogin.getController().joindirect(user_name,lect_id,course_id,indexServerName,ins_std);
 		}catch(Exception e){System.out.println("Error on Loading Look&Feel"+e.getMessage());}
