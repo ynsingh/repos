@@ -589,6 +589,7 @@
 <!--	<foreign-key foreignTable="TURBINE_USER">
 	      <reference local="USER_ID" foreign="USER_ID"/>
 	</foreign-key>-->
+	
 </table>
 
 <!-- ==========================scorm learner tracking======================================================== -->
@@ -621,7 +622,6 @@
                 <unique-column name="NONCE"/>
         </unique>
 </table>
-
 <!-- ========================================== TWEETS==================================================== -->
 <table name="TWEETS" idMethod="idbroker" description="User Tweets">
         <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
@@ -629,5 +629,21 @@
         <column name="TWEET" Type="VARCHAR" size="255"/>
         <column name="TWEET_DATE" Type="VARCHAR" size="255"/>
         <column name="EXPIRY_DATE" Type="VARCHAR" size="255" />
+</table>
+<!-- ==========================POLL======================================================== -->
+<table name="POLL" idMethod="idbroker">
+<column name="QUESTION_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+<column name="QUESTION_TYPE" required="true" type="INTEGER"/>
+<column name="QUESTION" required="true" size="255" type="VARCHAR"/>
+<column name="RESULT_YES"  type="INTEGER"/>
+<column name="RESULT_NO" type="INTEGER"/>
+<column name="RESULT_CAN" type="INTEGER"/>
+<column name="RESULT_PERCENTAGE_YES"  type="INTEGER"/>
+<column name="RESULT_PERCENTAGE_NO"  type="INTEGER"/>
+<column name="RESULT_PERCENTAGE_CAN"  type="INTEGER"/>
+<column name="USER_ID" required="true" size="255" type="VARCHAR"/>
+<column name="INSTITUTE_ID"  type="INTEGER"/>
+<column name="VALID_TILL"  type="DATE"/>
+<column name="INSERT_DATE"  type="DATE"/>
 </table>
 </database>

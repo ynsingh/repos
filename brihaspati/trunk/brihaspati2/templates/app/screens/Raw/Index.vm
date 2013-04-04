@@ -77,6 +77,12 @@ $!data.getMessage()
 <div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
 <a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
 </div>
+##iframe is use to show brihaspati poll
+#if($Uid.toString()!="1")
+<div style="position:auto; margin-top:-23px; height:230px; background:$ui.menuColor;" >
+<iframe src="$ipadd/brihaspatiSpring/pollmodule/pollAttemptIndex.vm?user_Id=$UserId&f=$firstname&usrNme=$usrNme&instNme=$instN" style="height:230px; width:310px; border-radius:-5px;" scrolling="no" frameborder="0"></iframe>
+</div><br>
+#end
 <td width="80%" valign="top">
 #if($Uid.toString()!="1")
 <div class="indexhomescroll">

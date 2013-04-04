@@ -303,6 +303,16 @@ public class Index extends SecureScreen{
 
                         } catch(Exception error){ ErrorDumpUtil.ErrorLog("The error is :- "+error); }
 
+			                        /*poll default institute name*/
+                        Iterator iter = cId.iterator();
+                        if (iter.hasNext()) {
+                                Object instFirst = iter.next();
+                                context.put("instN",instFirst);
+                                }
+                        context.put("usrNme", username);
+                        context.put("UserId",uid);
+
+
 		}
 		catch(Exception e){
 			data.setMessage("The error is :- "+e);

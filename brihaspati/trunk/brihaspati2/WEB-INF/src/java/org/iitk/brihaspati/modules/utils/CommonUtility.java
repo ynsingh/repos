@@ -169,6 +169,9 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import org.iitk.brihaspati.om.PollPeer;
+import org.iitk.brihaspati.om.Poll;
+
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -1373,7 +1376,7 @@ public static void grpLeader()
  				 * with the computed value of used space
 				 */
 				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
-                                crit.add(InstituteQuotaPeer.INSTITUTE_UQUOTA,size);
+                                crit.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,size);
                                 InstituteQuotaPeer.doUpdate(crit);
 
 			}//for1
@@ -1387,6 +1390,26 @@ public static void grpLeader()
                 }       
                 return quota;
 	}
+	 public static void updatePoll(){
+                try{
+                        /**
+                        *This method uses outdated polls
+                        *prints the txt  document to file
+
+                        */
+                        java.util.Date date_Now = new java.util.Date();
+                        Criteria crit_upDate=new Criteria();
+                        crit_upDate.add(PollPeer.VALID_TILL,(Object)date_Now,crit_upDate.LESS_EQUAL);
+                        PollPeer.doDelete(crit_upDate);
+                }
+                catch(Exception ez){
+                 ErrorDumpUtil.ErrorLog("error in update poll : "+ez);
+                }
+        }
+
+
+
+
 //Add method
 }//end of class
 

@@ -124,5 +124,12 @@
 
                </td>
        </tr>
+	 </tr>
+        <tr bgcolor="$ui.menuColor">
+            <td td class="dt">
+              <a href=$link.setPage("call,poll,poll.vm").addPathInfo("inst_Mode","psnl").addPathInfo("do","create")  style=text-decoration:none>$poll_brih</a>
+            </td>
+        </tr>
+
 </table>
 
