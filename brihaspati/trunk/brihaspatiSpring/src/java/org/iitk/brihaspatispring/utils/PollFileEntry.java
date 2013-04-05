@@ -1,4 +1,4 @@
-package org.iitk.brihaspatispring.modules.utils;
+package org.iitk.brihaspatispring.utils;
 /*
  * @(#)PollFileEntry.java
  *

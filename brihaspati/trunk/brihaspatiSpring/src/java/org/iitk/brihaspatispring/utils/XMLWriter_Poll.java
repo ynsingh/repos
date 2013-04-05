@@ -48,9 +48,8 @@ import org.apache.xml.serialize.XMLSerializer;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.iitk.brihaspatispring.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
-import org.iitk.brihaspati.modules.utils.PollFileEntry;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
-
+import org.iitk.brihaspatispring.utils.PollFileEntry;
 /**
  * @author <a href="piyushm45@gmail.com">Piyush Mishra</a>
  */
@@ -233,13 +232,13 @@ public class XMLWriter_Poll {
 						 *set the value in InstituteFileEntry object
 						 *@see PollFileEntry in utils
 						 */
-                                                PollFileEntry PollFileEntry=new PollFileEntry();
+                                                PollFileEntry pollFileEntry=new PollFileEntry();
                                                 String alias=getTagValue("Alias",eElement);
                                                 String filename=getTagValue("FileName",eElement);
-                                                PollFileEntry.setAlias(alias);
-                                                PollFileEntry.setFileName(filename);
+                                                pollFileEntry.setAlias(alias);
+                                                pollFileEntry.setFileName(filename);
 						/*store all values in the vector*/
-                                                v.add(PollFileEntry);
+                                                v.add(pollFileEntry);
                                         }
                                 }
                         }
