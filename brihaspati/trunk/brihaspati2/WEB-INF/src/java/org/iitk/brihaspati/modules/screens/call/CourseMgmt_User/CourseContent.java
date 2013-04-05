@@ -235,11 +235,12 @@ public class CourseContent extends VelocitySecureScreen{
 									if(unpblist!=null)
 										map.put("unpublst",unpblist.length);
 								}
-								else if(StringUtils.startsWith(contentlist[k],flist[z]))
+								else if(StringUtils.equals(contentlist[k], flist[z]+"__des.xml"))
 								{
 									//ErrorDumpUtil.ErrorLog("file name else part for adding--------"+contentlist[k]);
 									TopicMetaDataXmlReader tp=new TopicMetaDataXmlReader(data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/"+flist[z]+"/"+contentlist[k]);
 					                                filelst=tp.getFileDetails();
+									//ErrorDumpUtil.ErrorLog("file name else part for adding--------"+filelst);
 									if(filelst!=null){
 										PublishList.add(filelst);							
 										 //ErrorDumpUtil.ErrorLog("value inside filelst-----"+PublishList);

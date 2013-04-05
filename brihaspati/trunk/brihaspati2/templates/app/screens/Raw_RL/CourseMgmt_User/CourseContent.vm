@@ -186,6 +186,7 @@ $!data.getMessage()
                         </td>
                 </tr>
         #end
+        <tr align="right"><td colspan=6> <font color="green">$brih_published </font>/ <font color="red">$brih_unpublish</font> $brih_file $brih_Of2 $brih_number - <font color="green">(n)</font> / <font color="red">(n)</font></td></tr>
 ##<tr>
 ##<td>
 <tr> ##main tr for topic

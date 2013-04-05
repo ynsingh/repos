@@ -289,7 +289,7 @@ public class UploadAction extends SecureAction
 				if(fileItem!=null && fileItem.getSize() != 0)
 				{
 					String temp=fileItem.getName();
-					if(!temp.equals(contentTopic+".xml"))
+					if(!temp.equals(contentTopic+"__des.xml"))
 					{
 						int index=temp.lastIndexOf("\\");
 						++totalFilesEntries;
@@ -380,7 +380,7 @@ public class UploadAction extends SecureAction
 					else
 					{
 						upldmsg=temp+" "+MultilingualUtil.ConvertedString("topicUpload_msg",LangFile);
-						data.addMessage(upldmsg);
+						//data.addMessage(upldmsg);
 					}
 				}//fileTiem	
 			}//count
@@ -451,7 +451,7 @@ public class UploadAction extends SecureAction
 				}
 			}
 			else
-			{			
+			{	
 			// nothing was uploaded
 			context.put("uploadStatus","nothing");	
 			context.put("totalFilesEntries",(new TotalFileCount(totalFilesEntries) ) );
@@ -460,6 +460,10 @@ public class UploadAction extends SecureAction
 			}//ifflag1
 			else
 			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
+			if(StringUtils.isNotBlank(upldmsg)){
+				context.put("tmpupload","uploadXmlMsg");		
+				context.put("XmlMsg",upldmsg);
+			}
 			//Maintain Log
 			String loginName = user.getName();
                         String strInstId =  (String)user.getTemp("Institute_id","");

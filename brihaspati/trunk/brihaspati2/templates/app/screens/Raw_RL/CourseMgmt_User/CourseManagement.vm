@@ -41,6 +41,9 @@ $page.setTitle("Home | $course | Course management")
                 #else
                 $brih_uploadSucessfully
                 #end
+                #if($XmlMsg!="")
+ 	               $XmlMsg
+                #end
                 </td>
         #else
                 #if($uploadStatus=="partial")
@@ -50,6 +53,9 @@ $page.setTitle("Home | $course | Course management")
 
                        ## Following files already existed, so were not uploaded :
                         $brih_uploadFileExist $brih_commaexist<br>
+			#if($XmlMsg!="")
+ 	                       $XmlMsg
+	                #end
                 
 		#elseif($totalFilesEntries.Count>0)
                         <td>
@@ -57,10 +63,15 @@ $page.setTitle("Home | $course | Course management")
                         ##All of the following  Existed at Server :
 			$brih_uploadNonefile <br>
                         $brih_uploadFileOnServer $brih_commaexist<br>
+			#if($XmlMsg!="")
+	                        $XmlMsg
+	                #end
                 #elseif($uploadStatus!="")
                         <td>
                         ##There is nothing to Upload
                         $brih_uploadNothin <br>
+		#elseif($tmpupload=="uploadXmlMsg")
+	                $XmlMsg
                 #end
                  <br>
                 #set($count=1)
