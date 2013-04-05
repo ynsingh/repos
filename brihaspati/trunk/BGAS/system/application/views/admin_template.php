@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Webzash<?php if (isset($page_title)) echo ' | ' . $page_title; ?></title>
+<title>BGAS<?php if (isset($page_title)) echo ' | ' . $page_title; ?></title>
 
 <?php echo link_tag(asset_url() . 'images/favicon.ico', 'shortcut icon', 'image/ico'); ?>
 
@@ -128,7 +128,7 @@ $(document).ready(function(){
 </div>
 <div id="footer">
 	<?php if (isset($page_footer)) echo $page_footer ?>
-        Based on <a href="http://webzash.org" target="_blank"> Webzash<a/> 
+        Based on <a href="http://webzash.org" target="_blank"> Webzash<a/> and licensed is <a href="/BGAS/brihaspati-license.txt" target="_blank">BGAS License</a> 
 </div>
 </body>
 </html>

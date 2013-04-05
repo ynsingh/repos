@@ -12,7 +12,7 @@ class Welcome extends Controller {
 	{
 		$this->load->model('Ledger_model');
 		$this->load->library('accountlist');
-		$this->template->set('page_title', 'Welcome to Webzash');
+		$this->template->set('page_title', 'Welcome to BGAS');
 
 		/* Bank and Cash Ledger accounts */
 		$this->db->from('ledgers')->where('type', 1);
