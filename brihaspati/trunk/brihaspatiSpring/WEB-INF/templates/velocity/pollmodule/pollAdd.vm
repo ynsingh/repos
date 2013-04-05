@@ -1,0 +1,111 @@
+#*
+ * @(#)pollAdd.vm
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author<a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+<html>
+<head>
+<script type="text/javascript">
+_editor_url="#springUrl("")/js/Editor/";
+_editor_lang = "en";
+</script>
+<script type="text/javascript" src="#springUrl("")/js/Editor/Head.js" /></script>
+<script type="text/javascript" src="#springUrl("")/js/Editor/htmlarea.js" /></script>
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/htmlarea.css" />
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/profile_css.css" />
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/color.css" />
+</head>
+<body onload="initEditor()">
+#if($model.l=="check")
+##!! poll submitted !!## 
+<div  style="position:auto; margin-top:-2px; margin-left:-3px">
+<table align="center" border="0" width="100%">
+<tr>
+<td><font style="font-family:'Times New Roman',Georgia,Serif; color:#000; font-size:20px;" ><b>#springMessage("brih_poll") #springMessage("brih_sub")</b></font></td>
+</tr>
+</table>
+</div>
+#end   
+#if($model.vacheck=="vacheck")
+<font style="font-family:'Times New Roman',Georgia,Serif;font-size:20px;"  color="Red" ><b>#springMessage("brih_pollntsubmit") </b></font>
+#end 
+##!!fck editor to add poll question!!##
+<form name="insert" method="post"></br>
+<tr></tr>
+<div  style="position:auto; margin-top:-25px; margin-left:-3px">
+<table width="100%">
+<tr>
+<td class="tableBottomColor" style="font-family:'Times New Roman',Georgia,Serif;font-size:19px;"><font class="serif" color="#000"><b>#springMessage("brih_Adpoll") #springMessage("brih_poll")</b></font></td>                                          
+</tr>
+</table>
+<table align="Center" border="0" width="100%">
+<tr>
+<td class="formLabelColor" width="300px"><font style="font-family:'Times New Roman',Georgia,Serif;Serif;font-size:19px;" class="serif" color="#000">#springMessage("brih_entrpoll") #springMessage("brih_poll")</font></td>
+<td><textarea id="ta" name="question" rows="9" cols="102"></textarea></td>
+</tr>
+<tr>
+<td class="tableBottomColor"><font style="font-family:'Times New Roman',Georgia,Serif; Serif;font-size:19px;" class="serif" color="#000" >&nbsp;#springMessage("brih_expirypoll")</font></td>
+<td class="tableBottomColor">
+<select class="drop_Val" name="sel_Date" size="1"  onChange="ChangeGroup(document.frm,this);"/>
+<option value="30">One Month
+<option value="15">Two Weeks
+<option value="7">One Week
+<option value="2">One Day
+</option>
+</select>
+</td>
+</tr>
+</table>
+<table width="100%">
+<tr>
+<td class="formLabelColor">
+<font size="2"> <input type="submit" name="doInsert" value="Submit" class="button-ftextstyle" onClick="checkValue(document.insert,this); checkForm();">
+<input name="name" type="hidden" value="name"/>
+<input name="question" type="hidden" value="question"/>
+<input name="sel_Date" type="hidden" value="sel_Date"/>
+##&nbsp;&nbsp;<input type="Reset" name="reset" value="Reset" class="button-ftextstyle" onClick="clearData(document.uploadform,this)"; />
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+<script language="javascript">
+function checkValue(insert,field)
+{
+if(insert.question.value!="") 
+{
+insert.submit();
+ }
+else
+{
+alert("Please Fill All The mandatory (*) Fields");
+  }
+}
+function clearData(uploadform,field)
+{
+insert.question.value="";
+}	
+function checkValue(uploadform,field)
+{
+if((uploadform.question.value!="") )
+{
+uploadform.actionName.value=field.name;
+uploadform.submit();
+}
+else
+{
+alert("Please Fill All The mandatory (*) Fields");
+  }
+}
+
+function checkForm()    
+{
+var fck=document.getElementById("question").value;
+alert(fck);
+}
+</script>
+

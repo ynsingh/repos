@@ -1,0 +1,109 @@
+#*
+ * @(#)ResultSingle.vm
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author<a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+<html>
+<title>
+Poll
+</title>
+<head>
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/profile_css.css" />
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/color.css" />
+</head>
+<style>
+font:hover {
+   background: #AFDCEC;
+   }
+</style>
+<body>
+#if($model.modeSingle=="check")
+&nbsp;<a href="javascript: window.history.go(-1)" style=text-decoration:none><font  color="#0000FF" size="3" >BackToPollList</font></a><br>
+#end
+#foreach($ls1 in ${model.listvalue})
+#if($!ls1.getQuestionType()==1)
+<div  style="position:auto; margin-top:-5px; margin-left:-3px">
+<table width="100%">
+<tr>
+<td class="formLabelColor" width="50%" height="50px"><font size="3">&nbsp;$!ls1.getQuestion()</font></td>
+</tr>
+</table>
+</div>
+<div  style="position:auto; margin-top:-4px; margin-left:-3px">
+<table width="100%">
+<tr>			
+##!!poll graph !!##
+<td class="tableBottomColor" width="50%" height="50px">
+##!!poll graph for yes!!##
+#if($!ls1.getResultPercentageYes()>0)
+<table border="0" width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;" >
+<font size="3"><b> #springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+</td></tr>
+<tr><td border="0" height="10px" width="$!ls1.getResultPercentageYes()%" bgcolor="#339900"></td>
+<td></td></tr>
+</table>
+#else
+<table border="0" width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;" >
+<font size="3"><b> #springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+</td></tr>
+<tr><td border="0"></td>
+<td></td></tr>
+</table>
+#end
+##!!poll graph for No!!##
+#if($!ls1.getResultPercentageNo()>0)
+<table border="0" width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b> #springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font>
+</td></tr>
+<tr><td border="0" height="10px" width="$!ls1.getResultPercentageNo()%" bgcolor="#FF0000"></td>
+<td></td></tr>
+</table>
+#else
+<table border="0" width="100%" height="5%" >
+<tr>
+<td style="height: 20px; width: 72px;"> <font size="3"><b> #springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font></td>
+</tr>
+<tr><td border="0"></td>
+<td></td>
+</tr>
+</table>
+#end
+##!!poll graph for Can't!!##
+#if($!ls1.getResultPercentageCan()>0)
+<table border="0" width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b> #springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>
+</td></tr>
+<tr><td border="0" height="10px" width="$!ls1.getResultPercentageCan()%" bgcolor="#FF9900"></td>
+<td></td></tr>
+</table>
+#else
+<table border="0" width="100%" height="5%" >
+<td style="height: 20px; width: 72px;">
+<font size="3"><b> #springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>                                                                          </td>
+<td border="0"></td>
+<td></td>
+</table>
+#end
+</td>
+</td>
+#end
+</tr>
+</table>
+</div>
+#end
+<table width="100%"><td align="center"><font  onclick="closeWin()" style="font-size:16px; cursor:pointer;"><b>#springMessage("brih_CloseWindow")</b></font></td></table>
+</body>
+</html>
+<script type="text/javascript">
+function closeWin()
+{
+window.close();
+}
+</script>
+

@@ -1,0 +1,189 @@
+#*
+ * @(#)pollViewResult.vm
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author<a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+<html>
+<title>
+#springMessage("brih_poll")
+</title>
+<head>
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/profile_css.css" />
+<link rel="stylesheet" type="text/css" href="#springUrl("")/css/color.css" />
+</head>
+<style>
+font:hover {
+   background: #AFDCEC;
+   }
+</style>
+<body>
+</br>
+<table width="100%"><tr><td align="center"><font style="margin-left:5px; font-size:20px;"><b>#springMessage("brih_AllpollList")</b></font></td></tr></table>
+</br>
+#set( $count = 1 )
+#set( $countPoll = 0 )
+#foreach($ls1 in ${model.listvalue})
+#if($ls1.getInstituteId()==$model.instidv)
+#set( $countPoll = $countPoll + 1 )
+#if($count==1)
+#if($!ls1.getQuestionType()==1)
+<div style="position:auto; margin-top:-3px; margin-left:-3px;">
+<table style="width:100%;">
+<tr>
+<td width="50%" class="formLabelColor">
+<font size="3">&nbsp;$!ls1.getQuestion()</font><br><br>
+<font size="2">&nbsp;#springMessage("brih_datepoll") : $!ls1.getInsertDate()</font><br>
+</td>			
+<td  width="50%" class="formLabelColor">
+##!!poll yes graph result!!##
+#if($!ls1.getResultPercentageYes()>0)
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;" >
+<font size="3"><b>#springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+</td></tr>
+<tr><td height="10px" width="$!ls1.getResultPercentageYes()%" bgcolor="#339900"></td>
+<td></td></tr>
+</table>
+#else
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;" >
+<font size="3"><b>#springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+</td></tr>
+<tr><td ></td>
+<td></td></tr>
+</table>
+#end
+##!!poll No graph result!!##
+#if($!ls1.getResultPercentageNo()>0)
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b>#springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font>
+</td></tr>
+<tr><td height="10px" width="$!ls1.getResultPercentageNo()%" bgcolor="#FF0000"></td>
+<td></td></tr>
+</table>
+#else
+<table width="100%" height="5%" >
+<tr>
+<td style="height: 20px; width: 72px;"><font size="3"><b>#springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font></td>
+</tr>
+<tr><td ></td>
+<td></td></tr>
+</table>
+#end
+##!!poll Can't graph result!!##
+#if($!ls1.getResultPercentageCan()>0)
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b>#springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>
+</td></tr>
+<tr><td height="10px" width="$!ls1.getResultPercentageCan()%" bgcolor="#FF9900"></td>
+<td></td></tr>
+</table>
+#else
+<table width="100%" height="5%" >
+<td style="height: 20px; width: 72px;">
+<font size="3"><b>#springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>						
+</td>
+<td ></td>
+<td></td>
+</table>
+#end
+</td>
+</tr>
+</table>
+</div>
+#set( $count = 2 )
+#end
+#else
+#if($!ls1.getQuestionType()==1)
+<div style="position:auto; margin-top:-3px; margin-left:-3px;">
+<table style="width:100%;">
+<tr>
+<td width="50%" class="tableBottomColor">
+<font size="3">&nbsp;$!ls1.getQuestion()</font><br><br>
+<font size="2">&nbsp;#springMessage("brih_datepoll") : $!ls1.getInsertDate()</font><br>
+</td>
+<td  width="50%" class="tableBottomColor">
+#if($!ls1.getResultPercentageYes()>0)
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;" >
+<font size="3"><b>#springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+</td></tr>
+<tr><td height="10px" width="$!ls1.getResultPercentageYes()%" bgcolor="#339900"></td>
+<td></td></tr>
+</table>
+#else
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;" >
+<font size="3"><b>#springMessage("brih_Yespoll") [$!ls1.getResultPercentageYes()%]</b></font>
+</td></tr>
+<tr><td ></td>
+<td></td></tr>
+</table>
+#end
+#if($!ls1.getResultPercentageNo()>0)
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b>#springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font>
+</td></tr>
+<tr><td height="10px" width="$!ls1.getResultPercentageNo()%" bgcolor="#FF0000"></td>
+<td></td></tr>
+</table>
+#else
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;"><font size="3"><b>#springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font>                                  </td></tr>
+<tr><td ></td>
+<td></td></tr>
+</table>
+#end
+#if($!ls1.getResultPercentageCan()>0)
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b>#springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>
+</td></tr>
+<tr><td height="10px" width="$!ls1.getResultPercentageCan()%" bgcolor="#FF9900"></td>
+<td></td></tr>
+</table>
+#else
+<table width="100%" height="5%" >
+<tr><td style="height: 20px; width: 72px;">
+<font size="3"><b>#springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>            					</td></tr>
+<tr><td ></td>
+<td></td></tr>
+</table>
+#end
+</td>
+</tr>
+</table>
+</div>
+#set( $count = 1 )
+#end
+#end
+#end
+#end
+#if($countPoll == 0)
+<br><br>
+<table width="100%">
+<tr align="center">
+<td><font style="margin-left:5px; font-size:16px;">&nbsp;#springMessage("brih_pollmsg")</font>
+</tr>
+</table>
+#end
+<br><br>
+<table width="100%"><td align="center"><font  onclick="closeWin()" style="font-size:16px; cursor:pointer;"><b>#springMessage("brih_CloseWindow")</b></font></td></table>
+
+</body>
+</html>
+
+<script type="text/javascript">
+function closeWin()
+{
+window.close();
+}
+</script>
+
+

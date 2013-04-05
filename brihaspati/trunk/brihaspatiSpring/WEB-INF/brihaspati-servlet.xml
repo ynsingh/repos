@@ -2,20 +2,18 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-
 	<bean id="DirectoryController" class="org.iitk.brihaspatispring.controller.DirectoryController"> </bean>
-
 	<bean id="DefaultController" class="org.iitk.brihaspatispring.controller.DefaultController"> </bean>
-
 	<bean id="DefaultBottomController" class="org.iitk.brihaspatispring.controller.DefaultBottomController"></bean>
-
 	<bean id="DefaultTopController" class="org.iitk.brihaspatispring.controller.DefaultTopController"></bean>
-
 	<bean id="ViewerController" class="org.iitk.brihaspatispring.controller.ViewerController"></bean>
-
 	<bean id="Index" class="org.iitk.brihaspatispring.controller.Index"> </bean>
-
 	<bean id="Tweetsmsg" class="org.iitk.brihaspatispring.controller.Tweetsmsg"> </bean>
+	<bean id="pollAttemptIndex" class="org.iitk.brihaspatispring.controller.pollmodule.pollAttemptIndex"></bean>
+	<bean id="pollViewResult" class="org.iitk.brihaspatispring.controller.pollmodule.pollViewResult"></bean>
+	<bean id="pollUpdate" class="org.iitk.brihaspatispring.controller.pollmodule.pollUpdate"></bean>
+        <bean id="pollAdd" class="org.iitk.brihaspatispring.controller.pollmodule.pollAdd"></bean>
+        <bean id="pollResultSingle" class="org.iitk.brihaspatispring.controller.pollmodule.pollResultSingle"></bean>
 
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
                 <property name="defaultLocale" value="english" />
@@ -49,6 +47,12 @@
 		<prop key="/Viewer.vm">ViewerController</prop>
 		<prop key="/index.vm">Index</prop>
 		<prop key="/tweetsmsg.vm">Tweetsmsg</prop>
+		<prop key="/pollmodule/pollAttemptIndex.vm">pollAttemptIndex</prop>
+                <prop key="/pollmodule/pollViewResult.vm">pollViewResult</prop>
+                <prop key="/pollmodule/pollUpdate.vm">pollUpdate</prop>
+                <prop key="/pollmodule/pollAdd.vm">pollAdd</prop>
+                <prop key="/pollmodule/pollResultSingle.vm">pollResultSingle</prop>
+
 	    </props>
         </property>
 	</bean>
@@ -64,5 +68,4 @@
 		<property name="exposeSpringMacroHelpers"><value>true</value></property>
 		<property name="contentType"><value>text/html;charset=UTF-8</value></property>
 	</bean>
-
 </beans>        
