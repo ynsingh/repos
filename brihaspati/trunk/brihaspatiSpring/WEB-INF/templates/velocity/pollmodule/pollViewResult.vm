@@ -42,7 +42,7 @@ font:hover {
 #if($!ls1.getResultPercentageYes()>0)
 <table width="100%" height="5%" >
 <tr><td style="height: 20px; width: 72px;" >
-<font size="3"><b>#springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+<font size="3"><b>#springMessage("brih_Yespoll") ($!ls1.getResultYes()) - [$!ls1.getResultPercentageYes() %]  </b></font>
 </td></tr>
 <tr><td height="10px" width="$!ls1.getResultPercentageYes()%" bgcolor="#339900"></td>
 <td></td></tr>
@@ -60,7 +60,7 @@ font:hover {
 #if($!ls1.getResultPercentageNo()>0)
 <table width="100%" height="5%" >
 <tr><td style="height: 20px; width: 72px;">
-<font size="3"><b>#springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font>
+<font size="3"><b>#springMessage("brih_Nopoll") ($!ls1.getResultNo()) - [$!ls1.getResultPercentageNo() %] </b></font>
 </td></tr>
 <tr><td height="10px" width="$!ls1.getResultPercentageNo()%" bgcolor="#FF0000"></td>
 <td></td></tr>
@@ -78,7 +78,7 @@ font:hover {
 #if($!ls1.getResultPercentageCan()>0)
 <table width="100%" height="5%" >
 <tr><td style="height: 20px; width: 72px;">
-<font size="3"><b>#springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>
+<font size="3"><b>#springMessage("brih_Canpoll") ($!ls1.getResultCan()) - [$!ls1.getResultPercentageCan() %]  </b></font>
 </td></tr>
 <tr><td height="10px" width="$!ls1.getResultPercentageCan()%" bgcolor="#FF9900"></td>
 <td></td></tr>
@@ -111,7 +111,7 @@ font:hover {
 #if($!ls1.getResultPercentageYes()>0)
 <table width="100%" height="5%" >
 <tr><td style="height: 20px; width: 72px;" >
-<font size="3"><b>#springMessage("brih_Yespoll")[$!ls1.getResultPercentageYes()%]</b></font>
+<font size="2"><b>#springMessage("brih_Yespoll") ($!ls1.getResultYes()) - [$!ls1.getResultPercentageYes() %] </b></font>
 </td></tr>
 <tr><td height="10px" width="$!ls1.getResultPercentageYes()%" bgcolor="#339900"></td>
 <td></td></tr>
@@ -128,7 +128,7 @@ font:hover {
 #if($!ls1.getResultPercentageNo()>0)
 <table width="100%" height="5%" >
 <tr><td style="height: 20px; width: 72px;">
-<font size="3"><b>#springMessage("brih_Nopoll")[$!ls1.getResultPercentageNo()%]</b></font>
+<font size="3"><b>#springMessage("brih_Nopoll") ($!ls1.getResultNo()) - [$!ls1.getResultPercentageNo() %] </b></font>
 </td></tr>
 <tr><td height="10px" width="$!ls1.getResultPercentageNo()%" bgcolor="#FF0000"></td>
 <td></td></tr>
@@ -143,7 +143,7 @@ font:hover {
 #if($!ls1.getResultPercentageCan()>0)
 <table width="100%" height="5%" >
 <tr><td style="height: 20px; width: 72px;">
-<font size="3"><b>#springMessage("brih_Canpoll")[$!ls1.getResultPercentageCan()%]</b></font>
+<font size="3"><b>#springMessage("brih_Canpoll") ($!ls1.getResultCan()) - [$!ls1.getResultPercentageCan() %] </b></font>
 </td></tr>
 <tr><td height="10px" width="$!ls1.getResultPercentageCan()%" bgcolor="#FF9900"></td>
 <td></td></tr>

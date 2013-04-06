@@ -79,7 +79,7 @@ location=document.brihaspaticombo.brihInst.options[document.brihaspaticombo.brih
 	</tr>
 	#if($model.lsSize > 1)
 	<tr><td>
-	<font style="margin-left:5px; font-size:16px;">&nbsp;Institute Name : $model.inst</font>
+	<font style="margin-left:5px; font-size:16px;">&nbsp;$model.inst</font>
 	</tr></td>
 	#end
 	</table>
