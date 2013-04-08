@@ -52,7 +52,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
 * This class is used to create quiz one by one
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -145,7 +145,7 @@ public class OneByOne_Quiz extends SecureScreen{
                                 //CourseTimeUtil.getCalculation(userid);
                                 //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
         }

@@ -56,9 +56,7 @@ import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 public class Notice_Send extends SecureScreen{
 	/**
@@ -114,12 +112,10 @@ public class Notice_Send extends SecureScreen{
                          *method for how much time user spend in this page.
                          */
 			String Role = (String)user.getTemp("role");
-			if((Role.equals("student")) || (Role.equals("instructor")))
+			if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
-                                //CourseTimeUtil.getCalculation(user_id);
-                                //ModuleTimeUtil.getModuleCalculation(user_id);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(user_id,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(user_id,eid);
                         }
 
 		}

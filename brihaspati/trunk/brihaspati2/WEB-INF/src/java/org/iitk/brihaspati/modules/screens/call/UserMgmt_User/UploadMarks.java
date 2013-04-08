@@ -53,7 +53,7 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_Marks;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
  /** 
   * In this class, We upload marks in particuler course by instructor 
@@ -85,7 +85,7 @@ public class UploadMarks extends SecureScreen_Instructor
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			/**

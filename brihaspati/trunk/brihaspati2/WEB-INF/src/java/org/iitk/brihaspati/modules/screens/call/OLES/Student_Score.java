@@ -71,9 +71,7 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils. MailNotificationThread;
+import org.iitk.brihaspati.modules.utils. ModuleTimeThread;
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -259,13 +257,10 @@ public class Student_Score extends SecureScreen
                          *Time calculaion for how long user use this page.
                          */
                          int userid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
-                         }
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);                         }
   		
 		}catch(Exception e)
 		{

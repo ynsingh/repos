@@ -55,7 +55,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class is used to show score of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -237,7 +237,7 @@ public class Quiz_Score extends SecureScreen{
                                 //CourseTimeUtil.getCalculation(userid);
                                 //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 		}	

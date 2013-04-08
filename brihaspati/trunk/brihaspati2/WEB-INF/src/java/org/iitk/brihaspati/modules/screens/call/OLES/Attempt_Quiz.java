@@ -75,7 +75,7 @@ import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class contains code for attempt quiz part of student
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -247,7 +247,7 @@ public class Attempt_Quiz extends SecureScreen
                                 //CourseTimeUtil.getCalculation(userid);
                                 //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 		}

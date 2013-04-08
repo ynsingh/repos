@@ -53,7 +53,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -113,10 +113,10 @@ public class Launchcontentnew extends SecureScreen
 			context.put("dim",dim);
                         //frame.setSize(700, 320);
                         //frame.setLocation((((int)dim.getWidth()/2)-350),(((int)dim.getHeight()/2)-160));
- 			 if((role.equals("student")) || (role.equals("instructor")))
+ 			 if((role.equals("student")) || (role.equals("instructor")) || (role.equals("teacher_assistant")))
                         {
 				int eid=0;
-                                MailNotificationThread.getController().CourseTimeSystem(Integer.parseInt(userid),eid);
+                                ModuleTimeThread.getController().CourseTimeSystem(Integer.parseInt(userid),eid);
                          }
 
 

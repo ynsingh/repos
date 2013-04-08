@@ -47,7 +47,8 @@ import java.io.FileInputStream;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
@@ -71,6 +72,7 @@ public class Logwiki extends SecureScreen
 		context.put("course",(String)user.getTemp("course_name"));
     	    	String fName=data.getParameters().getString("filename","");
 		String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/"+ "/Wikilog/"+fName);
+		int uid=UserUtil.getUID(user.getName());
  		FileReader fr= new FileReader(filePath);
 		BufferedReader br=new BufferedReader(fr);
 		Vector v = new Vector();
@@ -96,6 +98,13 @@ public class Logwiki extends SecureScreen
 		* Getting file object from temporary variable and 
 		* Replacing the String from Propety file
 		*/
+		/* Code for time */
+		if((userrole.equals("student")) || (userrole.equals("instructor"))||(userrole.equals("teacher_assistant")))
+                         {
+                                int eid=0;
+                                ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+                         }
+
        	}catch(Exception e)
 	{
 		data.setMessage("Error in screen call,Wiki,Logwiki.java is ========>  "+ e);

@@ -51,7 +51,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen; 
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 public class Insert_Multiple extends SecureScreen
 {
@@ -146,12 +146,10 @@ public class Insert_Multiple extends SecureScreen
                          */
 			 String Role = (String)user.getTemp("role");
 			 int userid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("instructor")))
                          {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 		}//try

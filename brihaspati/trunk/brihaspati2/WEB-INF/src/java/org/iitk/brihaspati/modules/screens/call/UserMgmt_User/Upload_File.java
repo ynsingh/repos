@@ -51,6 +51,7 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *This class contain the code for
  *Getting all the Parameters
@@ -75,6 +76,7 @@ public class Upload_File extends SecureScreen
 			*put in the context for 
 			*use in templates
 			*/
+			String Role = (String)data.getUser().getTemp("role");
                 	String Username=data.getUser().getName();
                 	context.put("uname",Username);
 			/**
@@ -120,6 +122,15 @@ public class Upload_File extends SecureScreen
 			context.put("TUSize",totalsize);
                         long rSize=dspace-totalsize;
                         context.put("SpaceKb",rSize);
+			/**
+                         *Time calculaion for how long user use this page.
+                         */
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
+                         {
+                                int eid=0;
+                                ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+                         }
+
 
 		}
 		catch(Exception e)

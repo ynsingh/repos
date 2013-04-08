@@ -54,9 +54,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import com.workingdogs.village.Record;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.apache.turbine.om.security.User;
@@ -187,12 +185,10 @@ public class Chat extends SecureScreen
 				
 		if((!mode1.equals("general")) || (!mode2.equals("instituteWise"))){
 			String Role=(String)data.getUser().getTemp("role");
-			if((Role.equals("student")) || (Role.equals("instructor")))
+			if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")) )
 			{
-				//CourseTimeUtil.getCalculation(uid);
-				//ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
 			}
 			
 			///////////////////////////////////

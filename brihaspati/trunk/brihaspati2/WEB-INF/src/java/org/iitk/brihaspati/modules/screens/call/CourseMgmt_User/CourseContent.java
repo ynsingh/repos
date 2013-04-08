@@ -65,9 +65,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.xml.sax.helpers.AttributesImpl;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 
 
@@ -117,10 +115,8 @@ public class CourseContent extends VelocitySecureScreen{
                          int uid=UserUtil.getUID(user.getName());
                          if((role.equals("student")) || (role.equals("instructor")) || (role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			if( acl.hasRole("instructor",group))

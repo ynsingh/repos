@@ -65,10 +65,8 @@ import org.apache.velocity.context.Context;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 	/**
 	 *   This class contains code for all discussions in workgroup
 	 *   Compose a discussion and reply.
@@ -107,10 +105,8 @@ public class ViewAss extends  SecureScreen
                          int userid=UserUtil.getUID(UserName);
                          if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                               // CourseTimeUtil.getCalculation(userid);
-                               // ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 			Criteria crit=new Criteria();

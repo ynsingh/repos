@@ -58,7 +58,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.turbine.services.session.TurbineSession;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -285,7 +285,7 @@ public class Index extends SecureScreen{
                 	        int eid2=CourseTimeUtil.getentryid(uid);
 				if(eid1==eid2)
                        		 {
-					MailNotificationThread.getController().CourseTimeSystem(uid,eid2);			
+					ModuleTimeThread.getController().CourseTimeSystem(uid,eid2);			
                                	}
 		
 			} catch(Exception e){ ErrorDumpUtil.ErrorLog("The error is :- "+e); }

@@ -53,7 +53,7 @@ import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.XMLWriter_Marks;
 import org.iitk.brihaspati.modules.utils.MarksFileEntry;
 
@@ -84,10 +84,10 @@ public class ViewMarks extends SecureScreen_Student
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(checkUser);
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			/**

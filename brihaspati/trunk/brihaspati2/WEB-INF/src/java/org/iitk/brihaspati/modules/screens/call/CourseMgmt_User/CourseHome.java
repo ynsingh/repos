@@ -307,11 +307,11 @@ public class CourseHome extends SecureScreen{
 		         /*
                          *Time calculaion for how long user use this page.
                          */
-                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
+                        /*if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
-                         }
+                         }*/
 			Vector weektime=ModuleTimeUtil.LastweekModuleTime(courseid,userid);
                         context.put("weektime",weektime);
 			

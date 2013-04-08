@@ -55,9 +55,7 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
  * This class Upload file for course Content
@@ -82,12 +80,10 @@ public class CourseManagement extends SecureScreen
                  *Time calculaion for how long user use this page.
                  */
 		 String Role = (String)user.getTemp("role");
-                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                  {
-	                 //CourseTimeUtil.getCalculation(uid);
-        	         //ModuleTimeUtil.getModuleCalculation(uid);
 			int eid=0;
-			MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+			ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                  }
 
                 String dir=(String)user.getTemp("course_id");

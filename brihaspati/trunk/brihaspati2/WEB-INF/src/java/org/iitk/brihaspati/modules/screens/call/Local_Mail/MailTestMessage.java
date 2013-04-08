@@ -53,9 +53,7 @@ import org.apache.turbine.modules.screens.VelocitySecureScreen;
 import org.apache.turbine.util.security.AccessControlList;
 import org.iitk.brihaspati.om.MailSend;
 import org.iitk.brihaspati.om.MailSendPeer;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.apache.turbine.services.servlet.TurbineServlet;
 /**
@@ -98,10 +96,8 @@ public class MailTestMessage extends VelocitySecureScreen
 		  if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("teacher_assistant",g))
 		{
 			authorised=true;
-			//CourseTimeUtil.getCalculation(uid);
-                        //ModuleTimeUtil.getModuleCalculation(uid);
 			int eid=0;
-			MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+			ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
 		}
 		else
 		{

@@ -49,9 +49,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 public class News_Update extends SecureScreen
 {
@@ -126,12 +124,10 @@ public class News_Update extends SecureScreen
 			String Role = (String)user.getTemp("role");
 			String username=user.getName();
                         int uid=UserUtil.getUID(username);
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
 
                         }
 

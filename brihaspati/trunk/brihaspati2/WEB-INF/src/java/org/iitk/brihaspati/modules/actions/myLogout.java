@@ -56,7 +56,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils. MailNotificationThread;
+import org.iitk.brihaspati.modules.utils. ModuleTimeThread;
 
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
@@ -125,7 +125,7 @@ public class myLogout extends VelocityAction{
                                 	int eid2=CourseTimeUtil.getentryid(uid);
                                 	if(eid1==eid2)
                                 	{
-						MailNotificationThread.getController().CourseTimeSystem(uid,eid2);
+						ModuleTimeThread.getController().CourseTimeSystem(uid,eid2);
                         		}
 				/**
 				* Create log file for user
