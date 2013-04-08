@@ -138,7 +138,7 @@ public class RegisterToIndexServer {
 	/**
 	 * Instantiate connection with index server with "inactive" status.
 	 */
-	public void connectToIndexServer(){
+	public String connectToIndexServer(){
       		if(!ServerIP.equals("")){
                         try{
                                 String indexServer=ServerIP;
@@ -159,12 +159,15 @@ public class RegisterToIndexServer {
 						System.out.println("There is an error!! please try again");
                                         }
                                 }
+				return "Successfully";
                         }catch(Exception e){
-                                System.out.println("Error on registeration "+e.getMessage());
+				System.out.println("Error on registeration "+e.getMessage());
+				return "fail_registeration";
                         }
                 }else {
                         System.out.println("Reflector could not find iserver pls try again ");
                 }
+		return null;
 	}
 	
 	public void requestToChangeStatus(String str1){

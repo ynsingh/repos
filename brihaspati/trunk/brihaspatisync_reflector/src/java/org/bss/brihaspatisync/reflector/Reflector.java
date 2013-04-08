@@ -60,12 +60,27 @@ public class Reflector {
 		}else if(str.equals("start")){
 			// start reflector via command line.
 			if(!flag) {
-				if(startReflector()){
-					RegisterToIndexServer.getController().connectToIndexServer();
-                        		System.out.println("Reflector started successfully.");
-                               	}else { 
-                			System.out.println("There is problem in starting Reflector.");
-                             	}
+				Vector indexServerList=RegisterToIndexServer.getController().connectToMasterServer();
+				if(indexServerList.size() >0){
+					for(int i=0;i<indexServerList.size();i++) {
+						System.out.println(" "+i+"      "+indexServerList.get(i).toString());
+					}
+					System.out.print(" Enter option:");
+					java.util.Scanner in = new java.util.Scanner(System.in);
+					int inexno  = Integer.parseInt(in.nextLine());
+					System.out.println();
+					if((inexno>-1) && (indexServerList.size()>inexno)) {
+						String iserver_ip=indexServerList.get(inexno).toString();
+						RegisterToIndexServer.getController().setIServerIP(iserver_ip);
+						String start_or_stop=RegisterToIndexServer.getController().connectToIndexServer();
+						if(!(start_or_stop.equals("fail_registeration")))
+		                        		System.out.println("Reflector started successfuly.");
+						else
+               						System.out.println("Some problem in starting Reflector.");
+					} else
+						System.out.println("Give the IP for Indexing Server. ");
+				}else
+					System.out.println("Reflector could not connect master server. ");
                      	}else {
                         	System.out.println("Reflector is already running.");
 			}
@@ -144,7 +159,6 @@ public class Reflector {
                                 label1.setText("Reflector stoped successfully.");
                                 System.exit(0);
 			} 
-
                 }
 	};
 	
