@@ -156,11 +156,9 @@ public class CourseContent extends VelocitySecureScreen{
                                         context.put("dirContent",dc);
                                 }
 				/**
- 				 * Instructor have permission to give guest access inside course content.
- 				 * So below code is only executed when role is instructor.
- 				 * Before giving access to guest, first check guest have permission to access that course or not.
+ 				 * When user role is instructor then read Xml file for checking guest access for course content.
  				 */ 	
-				if(role.equals("instructor") || (user.getName().equals("guest")))
+				if(role.equals("instructor"))
 				{
 					topicMetaData=null;
 					String Xmlgstaccess=null;
@@ -168,14 +166,28 @@ public class CourseContent extends VelocitySecureScreen{
                 	                       	st=((FileEntry) dc.elementAt(i)).getName();
 						String Pdate=((FileEntry)dc.elementAt(i)).getPDate();
 						Xmlgstaccess=((FileEntry)dc.elementAt(i)).getGuestAccess();
+						/**
+                                                 * Below check is executed when instructor changes guest access for particular topic.
+                                                 * If content topic that is displayed on screen and topic name from xml file is same
+                                                 *      then it modifies the guest access for that topic in xml.
+                                                 */
+
 						if(st.equals(contentTopic))
 						{
 							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(filePath,"coursecontent",st,gstaccess);
 							xmlWriter.writeXmlFile();
 						}
 						else
+						/**
+                                                 * Else set flag value true.
+                                                 */
 							flag=true;				
 					}
+					/**
+                                         * When flag is true
+                                         *      Then check, if guest have permission to access content then it set in xml file i.e. false
+                                         *                       else set true for guest access in xml.
+                                         */
 					if(flag)
 					{
 						st="";

@@ -192,7 +192,9 @@ $!data.getMessage()
         		</td>
       		</tr>
 	#end
-	<tr><td colspan=6> <font color="green">(n)</font> / <font color="red">(n)</font> - $brih_number $brih_Of <font color="green">$brih_published </font>/ <font color="red">$brih_unpublish</font> $brih_file </td></tr>
+	#if($isInstructor=="true")
+		<tr><td colspan=6> <font color="green">(n)</font> / <font color="red">(n)</font> - $brih_number $brih_Of <font color="green">$brih_published </font>/ <font color="red">$brih_unpublish</font> $brih_file </td></tr>
+	#end
 	<tr> ##main tr for topic
 	<td valign="top">
 		#set ( $count=1 )
