@@ -68,6 +68,7 @@
 		<copy file="${lib.dir}/poi-scratchpad-3.6-20091214.jar" tofile="${jnlp.dir}/poi-scratchpad-3.6-20091214.jar"/>
                 <copy file="${lib.dir}/poi-3.6-20091214.jar" tofile="${jnlp.dir}/poi-3.6-20091214.jar"/>
                 <copy file="${lib.dir}/HttpClient.jar" tofile="${jnlp.dir}/HttpClient.jar"/>
+                <copy file="${lib.dir}/jspeex-0.9.7.jar" tofile="${jnlp.dir}/jspeex-0.9.7.jar"/>
 
 	    	<signjar keystore="${jnlp.dir}/brihaspatisync"
 			 alias="brihaspati_sync"	

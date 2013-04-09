@@ -118,7 +118,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	 * Constructor detail
 	 */
 	private LoginWindow(){
-		super(Language.getController().getLangValue("LoginWindow.Title"),true,false,true,true);
+		super(Language.getController().getLangValue("LoginWindow.Title"),true,false,false,true);
 		createGUI();
 		setFrameIcon(new ImageIcon(clr.getResource("resources/images/login.png")));
 	}
@@ -194,8 +194,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		add(panel,BorderLayout.CENTER);
 		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((((int)dim.getWidth()/2)-160),(((int)dim.getHeight()/2)-225));
-    		setSize(355,470); 
+    		setSize(355,520); 
     		setVisible(true);
+		setResizable(false);
   	}
 
 	public void setMessage(String str){
@@ -265,7 +266,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 buttonPanel.setLayout(new FlowLayout());
 		
 		ClassLoader clr= this.getClass().getClassLoader();
-                submitLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/submit.jpg")));
+        /*        submitLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/submit.jpg")));
                 submitLabel.setEnabled(false);
 	        submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 submitLabel.addMouseListener(this);
@@ -275,16 +276,28 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 cancelLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 cancelLabel.addMouseListener(this);
                 cancelLabel.setName("cancel.Action");
-
-                forgetpass=new JLabel(Language.getController().getLangValue("LoginWindow.forgetpass"));
+	*/
+		submitButton=new JButton("Submit",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
+                submitButton.setEnabled(false);
+                submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		submitButton.addMouseListener(this);
+                submitButton.setName("submit.Action");
+                cancelButton=new JButton("Cancel",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
+                cancelButton.setEnabled(false);
+                cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		cancelButton.addMouseListener(this);
+                cancelButton.setName("cancel.Action");
+	
+                forgetpass=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("LoginWindow.forgetpass")+"</u></font></html>");
+		forgetpass.setForeground(Color.BLUE);
                 forgetpass.addMouseListener(this);
                 forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 forgetpass.setName("forgetpass.Action");
 
                 buttonPanel.add(forgetpass);
-                buttonPanel.add(submitLabel);
+                buttonPanel.add(submitButton);
 
-                buttonPanel.add(cancelLabel);;
+                buttonPanel.add(cancelButton);;
                 CenterPanel.add(buttonPanel,BorderLayout.SOUTH);
 
                 mainLoginPanel.add(CenterPanel,BorderLayout.CENTER);
@@ -329,8 +342,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 usernameText.setEnabled(true);
                                 password.setEnabled(true);
                                 passwordField.setEnabled(true);
-                                submitLabel.setEnabled(true);
-                                cancelLabel.setEnabled(true);
+                                submitButton.setEnabled(true);
+                                cancelButton.setEnabled(true);
                                 username.setFocusable(true);
                         }
                         if(indexServerName.equals("Select")){
@@ -338,8 +351,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 usernameText.setEnabled(false);
                                 password.setEnabled(false);
                                 passwordField.setEnabled(false);
-                                submitLabel.setEnabled(false);
-                                cancelLabel.setEnabled(false);
+                                submitButton.setEnabled(false);
+                                cancelButton.setEnabled(false);
                         }
 	
 		}catch(Exception e){}
@@ -365,7 +378,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				}catch(Exception ex){}
 				return;
                         }
-    		}
+		}
 	}   
 		
 	public void mouseClicked(MouseEvent e) {
@@ -381,35 +394,37 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			ForgetPass.getController();
 		}
                  else if(e.getComponent().getName().equals("submit.Action")){
-			submitLabel.setCursor(busyCursor);
+			submitButton.setCursor(busyCursor);
 			if( (!(usernameText.getText()).equals(""))) {
 	                        loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
 				if(loginValue==false){
                 	        	passwordField.setText("");
 					LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                 	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-					submitLabel.setCursor(defaultCursor);
+					submitButton.setCursor(defaultCursor);
+					setSize(355,550);
 				}else {
 					client_obj.setUserName(usernameText.getText());
 					mainWindow.getMenuItem4().setEnabled(true);
                                 	mainWindow.getDesktop().add(CourseSessionWindow.getController());
                                 	setVisible(false);
 					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
-					submitLabel.setCursor(defaultCursor);
+					submitButton.setCursor(defaultCursor);
 				}
 			}else
 				LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
-			submitLabel.setCursor(defaultCursor);
+			submitButton.setCursor(defaultCursor);
 			
                  }
                  else if(e.getComponent().getName().equals("cancel.Action")){
-			cancelLabel.setCursor(busyCursor);
+			cancelButton.setCursor(busyCursor);
+			System.out.println("----------------------------------------");
 			try{
                                 Thread.sleep(500);
                         }catch(InterruptedException ie){
-                                cancelLabel.setCursor(defaultCursor);
+                                cancelButton.setCursor(defaultCursor);
                         }finally{
-                                cancelLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                                cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
                         }
 			Logout.getController().sendLogoutRequest();
 			
