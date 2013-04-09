@@ -6,4 +6,4 @@ for i in lib/*
   CLASSPATH=$CLASSPATH:$i
  done
 export CLASSPATH  
-java -Djavax.net.ssl.trustStore=jnlp/brihaspatisync org.bss.brihaspatisync.reflector.Reflector start &
+java -Djavax.net.ssl.trustStore=jnlp/brihaspatisync org.bss.brihaspatisync.reflector.Reflector start <option &
