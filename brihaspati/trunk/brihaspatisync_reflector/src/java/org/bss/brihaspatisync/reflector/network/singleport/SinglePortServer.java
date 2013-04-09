@@ -106,7 +106,7 @@ class MyHandler implements HttpHandler {
                 	                                temp_ht.setValues(type+lecture_id,buffer_mgt);
                         	                }
                                 	        BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
-                                        	if((bytes.length) > 3000 && (bytes !=null) ) {
+                                        	if((bytes.length) > 10 && (bytes !=null) ) {
                                                 	buffer_mgt.putByte(bytes,username,type+lecture_id);
 	                                        }
 	
