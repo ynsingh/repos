@@ -1376,7 +1376,7 @@ public static void grpLeader()
  				 * with the computed value of used space
 				 */
 				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
-                                crit.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,size);
+                                crit.add(InstituteQuotaPeer.INSTITUTE_UQUOTA,size);
                                 InstituteQuotaPeer.doUpdate(crit);
 
 			}//for1

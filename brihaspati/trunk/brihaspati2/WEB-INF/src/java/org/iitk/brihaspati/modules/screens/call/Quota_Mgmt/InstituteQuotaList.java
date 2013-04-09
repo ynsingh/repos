@@ -111,13 +111,16 @@ public class InstituteQuotaList extends SecureScreen_Admin
 			//ErrorDumpUtil.ErrorLog("TOTAL SIZE IN KB = "+total_size);	
 			total_size = (total_size/1024)/1024;
 			//ErrorDumpUtil.ErrorLog("TOTAL SIZE IN GB = "+total_size);
-			context.put("totalsize",total_size);
+			// convert long to int 
+			int tsze= (int)total_size; 
+			context.put("totalsize",tsze);
 			long avail_size = pdir.getFreeSpace();
 			avail_size=avail_size/1024;
 			//ErrorDumpUtil.ErrorLog("AVAILABLE SIZE IN KB = "+avail_size);
                         avail_size=(avail_size/1024)/1024;
 			//ErrorDumpUtil.ErrorLog("AVAILABLE SIZE IN GB = "+avail_size);
-			context.put("availablesize",avail_size);
+			int asze= (int)avail_size; 
+			context.put("availablesize",asze);
 			
 			if(mode.equals("instlistquota"))
 			{

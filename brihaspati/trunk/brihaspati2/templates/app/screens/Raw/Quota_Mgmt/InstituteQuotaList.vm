@@ -56,6 +56,10 @@ $!data.getMessage()
 	<td width=25%>
                 $brih_totalDiskSpace : $totalsize $brih_qsizegb
         </td>	
+	<td> 
+		#set( $usdsze = $totalsize - $availablesize )
+		$brih_usedspace : $usdsze  $brih_qsizegb
+	</td>
 	<td width=25%>
                 $brih_freeDiskSpace : $availablesize $brih_qsizegb
         </td>
@@ -87,7 +91,8 @@ $!data.getMessage()
 ##<tr bgcolor="$ui.tableColor"> 
 <tr bgcolor="$ui.menuColor"> 
 	<td width="8%"><b><I>$RemoteInstitute $brih_name</b></I></td>
-	<td><b><I>$quota_avail $brih_qsizegb</b></I></td>
+	<td><b><I>$brih_quota $brih_qsizegb</b></I></td>
+	<td><b><I>$brih_usedspace $brih_qsizegb</b></I></td>
 	<td colspan=5><b><I>$brih_availableAction</I></b></td>
 	##</font>
 </tr>
@@ -104,6 +109,8 @@ $!data.getMessage()
 			#end 
                		<td><I>$ent1.getInstituteName()</I></td>
                 	<td><I>$lst.getInstituteAquota()</I></td>
+                	<td><I>$lst.getInstituteUquota()</I></td>
+			
 			<td colspan=7>
 			<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("instid",$lst.getInstituteId()).addPathInfo("iname",$ent1.getInstituteName()).addPathInfo("iquota",$lst.getInstituteAquota()).addPathInfo("count",$tdcolor).addPathInfo("mode","edit") style=text-decoration:none><I>$brih_edit</I></a>
 			</td>
