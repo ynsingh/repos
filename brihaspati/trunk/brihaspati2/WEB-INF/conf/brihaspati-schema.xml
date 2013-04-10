@@ -493,14 +493,17 @@
 	<column name="FLOOR" type="INTEGER"/>
 </table>
 
-<table name="DEPARTMENT" idMethod="idbroker" description="Institute Room Information">
+<table name="DEPARTMENT" idMethod="idbroker" description="Department Information">
   	<column name="DEPARTMENT_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
   	<column name="NAME" required="true" size="100" type="VARCHAR"/>
-  	<column name="DEPARTMENT_CODE" required="true" size="10" type="VARCHAR"/>
-	<column name="FLOORS_COUNT" required="true" size="10" type="INTEGER"/>
-	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
+  	<column name="DEPARTMENT_CODE" required="true" size="100" type="VARCHAR"/>
+  	<column name="NICK_NAME" size="255" type="VARCHAR"/>
+	<column name="FLOORS_COUNT" required="true" size="11" type="INTEGER"/>
+<unique>
+        <unique-column name="NAME"/>
+        <unique-column name="DEPARTMENT_CODE"/>
+</unique>
 </table>
-
 <!-- ===============================TIMETABLE MANAGEMENT SCHEMA==================================== -->
 
 <table name ="TIMETABLE_COURSE_INFO" idMethod="idbroker" description="Course Scheduling Information">
@@ -645,5 +648,29 @@
 <column name="INSTITUTE_ID"  type="INTEGER"/>
 <column name="VALID_TILL"  type="DATE"/>
 <column name="INSERT_DATE"  type="DATE"/>
+</table>
+<!-- ==========================SCHOOL======================================================== -->
+<table name="SCHOOL" idMethod="idbroker" description="School Information">
+        <column name="SCHOOL_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="NAME" required="true" size="255" type="VARCHAR"/>
+        <column name="SCHOOL_CODE" required="true" size="255" type="VARCHAR"/>
+        <column name="NICK_NAME" size="255" type="VARCHAR"/>
+        <column name="DESCRIPTION" size="255" type="VARCHAR"/>
+<unique>
+        <unique-column name="NAME"/>
+        <unique-column name="SCHOOL_CODE"/>
+ </unique>
+</table>
+<!-- ==========================DEPARTMENT-SCHOOl-UNIVERSITY-MAP================================ -->
+<table name="DEPT_SCHOOL_UNIV" idMethod="idbroker" description="Department_School_University Information">
+        <column name="ID" required="true" primaryKey="true" size="11" type="INTEGER"/>
+        <column name="DEPT_ID" size="255" type="VARCHAR"/>
+        <column name="SCHOOL_ID" size="255" type="VARCHAR"/>
+        <column name="UNIVERSITY_ID" type="VARCHAR" size="255"/>
+ <unique>
+        <unique-column name="DEPT_ID"/>
+        <unique-column name="SCHOOL_ID"/>
+        <unique-column name="UNIVERSITY_ID"/>
+ </unique>
 </table>
 </database>

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)ListManagement.java	
  *
- *  Copyright (c) 2004-2008,2010,2011,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2010,2011,2012,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -65,7 +65,9 @@ import java.io.FileOutputStream;
 import java.io.File;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
-
+import org.iitk.brihaspati.om.DepartmentPeer;
+import org.iitk.brihaspati.om.DeptSchoolUnivPeer;
+import org.iitk.brihaspati.om.SchoolPeer;
 /**
  * This class contains methods for listing
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
@@ -74,7 +76,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>  
- * @modified date:02-07-2011
+ * @modified date:02-07-2011, 12-02-2013
  */
 
 public class ListManagement
@@ -812,6 +814,65 @@ public class ListManagement
 			 return userList;
 			
 		}
-	//}
+		
+		/**
+                 * Getting Department List
+                 */
+
+		public static List getDepartmentList(String departmentId){
+		List deptlist = new ArrayList(); 
+		try{
+			Criteria crit=new Criteria();
+			if(departmentId.equals("")){
+			crit.addGroupByColumn(DepartmentPeer.DEPARTMENT_ID);
+                	deptlist=DepartmentPeer.doSelect(crit);
+			}
+			else{
+			int deptid=Integer.parseInt(departmentId);
+                	crit.add(DepartmentPeer.DEPARTMENT_ID,deptid);
+                	deptlist=DepartmentPeer.doSelect(crit);
+			}
+		}
+		catch(Exception e){ErrorDumpUtil.ErrorLog("The error in getting department list -- "+e); }
+		return deptlist;
+		}
+	
+		 /**
+                 * Getting School List
+                 */
+	
+		public static List getSchoolList(String SchoolId){
+		List schoollist = new ArrayList(); 
+                try{
+			Criteria crit=new Criteria();
+			if(SchoolId.equals("")){
+                        crit.addGroupByColumn(SchoolPeer.SCHOOL_ID);
+			}
+			else{
+                	int schid=Integer.parseInt(SchoolId);
+                	crit.add(SchoolPeer.SCHOOL_ID,schid);
+			}
+                        schoollist = SchoolPeer.doSelect(crit);
+                }
+                catch(Exception e){ErrorDumpUtil.ErrorLog("The error in getting School list -- "+e); }
+                return schoollist;
+                }
+
+		 /**
+                 * Getting Department School University  List
+                 */
+
+		public static List getDeptScoolUnivList(String InstituteId){
+		List dsulist=new ArrayList();
+		String univid=InstituteId;
+                try{
+                	Criteria crit=new Criteria();
+                	crit.addGroupByColumn(DeptSchoolUnivPeer.ID);
+                	crit.add(DeptSchoolUnivPeer.UNIVERSITY_ID,univid);
+                	dsulist=DeptSchoolUnivPeer.doSelect(crit);
+		}
+		catch(Exception e){ErrorDumpUtil.ErrorLog("The error in getting department school university map list -- "+e); }
+                	return dsulist;
+		}
 }
 

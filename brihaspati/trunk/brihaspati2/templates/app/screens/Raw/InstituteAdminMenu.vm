@@ -130,6 +130,11 @@
               <a href=$link.setPage("call,poll,poll.vm").addPathInfo("inst_Mode","psnl").addPathInfo("do","create")  style=text-decoration:none>$poll_brih</a>
             </td>
         </tr>
+	<tr>
+		<td class="dt" bgcolor="$ui.tableColor">
+		<a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("mode","deptmap").addPathInfo("count","1").addPathInfo("instituteId",$instId) style=text-decoration:none>$brih_dept/$brih_sch</a>
+		</td>
+	</tr>
 
 </table>
 

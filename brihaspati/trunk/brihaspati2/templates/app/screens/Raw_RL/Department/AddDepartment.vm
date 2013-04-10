@@ -1,0 +1,705 @@
+#*
+ * @(#) AddDepartment.vm
+ * Copyright (c) 2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setTitle("Admin Home | Add Department")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+</head>
+
+#set($lang = $data.getUser().getTemp("lang" ).toString()) 
+#set($InstituteId = $data.getUser().getTemp("Institute_id" ))
+
+	<table bgcolor="$ui.menuColor" width=100%>
+	<tr align="right">
+         <td colspan="10" align="left"> <a href=javascript:popupWin("/brihaspati2/docs/Department.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> 
+	<td>
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home </a> |
+        #if($mode=="dept")
+        	<a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1").addPathInfo("mode","dept") style=text-decoration:none> $brih_dept $brih_Of3 $brih_add </a>
+        #elseif ($mode=="school")
+	        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","school") style=text-decoration:none> $brih_schce $brih_Of3 $brih_add</a>
+ #elseif ($mode=="lstdept")
+        	<a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3").addPathInfo("mode","lstdept") style=text-decoration:none>$brih_dept $brih_Of $brih_list</a>
+ #elseif ($mode=="lstschool")
+	        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","4").addPathInfo("mode","lstschool") style=text-decoration:none>$brih_schce $brih_Of $brih_list</a>
+ #elseif ($mode=="deptmap")
+        	<a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","5").addPathInfo("mode","deptmap") style=text-decoration:none>$brih_dept $brih_Of3 $brih_map</a>
+ #elseif ($mode=="schoolmap")
+	        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","6").addPathInfo("mode","schoolmap") style=text-decoration:none> $brih_schce $brih_Of3 $brih_map </a>
+        #end
+        </td>
+        </td>
+	</tr>
+	</table>
+
+	<table width=100% align=left bgcolor="$ui.tableColor">
+	<tr align="right">
+#if($data.getUser().getTemp("role") != "institute_admin")
+        #if($tdcolor != "2")
+        	<td width="16%" align="left">
+        #elseif($tdcolor == "2")
+	        <td width="16%" bgcolor="#AFDCEC" align="left">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","lstschool") style=text-decoration:none> $brih_schce $brih_Of $brih_list </a>
+        </td>
+        #if($tdcolor != "1")
+        	<td width="15%" align="left">
+        #elseif($tdcolor == "1")
+	        <td width="15%" bgcolor="#AFDCEC" align="left">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1").addPathInfo("mode","lstdept") style=text-decoration:none> $brih_dept $brih_Of $brih_list</a>
+        </td>
+
+#else
+
+	#if($tdcolor != "6")
+        <td width="18%" align="center">
+        #elseif($tdcolor == "6")
+        <td width="18%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","6").addPathInfo("mode","school") style=text-decoration:none> $brih_schce $brih_add</a> </td>
+	#if($tdcolor != "5")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "5")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","5").addPathInfo("mode","lstschool") style=text-decoration:none> $brih_schce $brih_Of $brih_list </a>
+	</td>
+	#if($tdcolor != "4")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "4")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","4").addPathInfo("mode","schoolmap") style=text-decoration:none> $brih_schce $brih_Of3 $brih_map</a>
+	</td>
+	#if($tdcolor != "3")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "3")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+	<a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3").addPathInfo("mode","dept") style=text-decoration:none>$brih_dept $brih_add</a>
+	</td>
+	#if($tdcolor != "2")
+        <td width="15%" align="center">
+        #elseif($tdcolor == "2")
+        <td width="15%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","lstdept") style=text-decoration:none>$brih_dept $brih_Of $brih_list</a>
+	</td>
+        #if($tdcolor != "1")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "1")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("mode","deptmap").addPathInfo("count","1") style=text-decoration:none> $brih_dept $brih_Of3 $brih_map</a>
+	</td>
+#end
+##	</td>
+	</tr>
+	</table>
+	<table bgcolor="$ui.tableColor" align=left width=100%>
+
+########################################## Add and Edit Department ####################################
+
+	#if($mode=="dept")
+        <tr align="right"><td>
+	<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+    	<table align="left" width=100%>
+	<tr bgcolor="$ui.menuColor" align="right">
+        <td> <input type="text" name="dcode" value="$!dptcode"> </td>
+        <td> <span style="color:red;">*</span> $brih_dept $brih_Of1 $brih_code</td>
+        </tr>
+      	<tr align="right">
+        <td> <input type="text" name="deptname" value="$!dptname"> </td>
+        <td> <span style="color:red;">*</span> $brih_dept $brih_Of $brih_name </td>
+	</tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td>  <input type="text" name="dnick" value="$!dptnckame"> </td>
+        <td> <span style="color:red;">*</span> $brih_dept $brih_Of1 $brih_nick $brih_name</td>
+        </tr>
+        <tr align="right">
+        <td>  <input type="text" name="fcount" value="$!fcount" onkeyup="isInteger(this.value)" id="checkint"> </td>
+        <td><span style="color:red;">*</span> $brih_floor</td>
+        </tr>
+
+        <tr bgcolor="$ui.tableColor" align="right">
+        <td colspan=2 bgcolor="$ui.menuColor">
+    	<input type="hidden" name="mode" value="$mode" >
+	<input type="hidden" name="count" value="$tdcolor" >
+        <input type="hidden" name="instituteId" value="$instituteId" >
+        <input type="hidden" name="actionName"/>
+	#if($mode=="dept")
+        <input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="checkdept(document.frm,this);"/>
+	#else
+        <input type="hidden" name="deptid" value="$dptid" >
+        <input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="update" onClick="checkdept(document.frm,this);"/>
+ 	#end
+	</table>
+	</form>
+	</td></tr>
+	#end
+
+#################################### Add school ##################################
+
+	#if($mode=="school") 
+        <tr align="right"><td>
+	<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+        <table align="left" width=100%>
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td> <input type="text" name="schcode" value="$!schoolcode"> </td>
+        <td> <span style="color:red;">*</span> $brih_schce $brih_Of1 $brih_code</td>
+        </tr>
+        <tr align="right">
+        <td>  <input type="text" name="schname" value="$!schoolname"> </td>
+        <td> <span style="color:red;">*</span> $brih_schce $brih_Of1 $brih_name </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td>  <input type="text" name="schnick" value="$!schoolnickname"> </td>
+        <td> <span style="color:red;">*</span>  $brih_schce $brih_Of1 $brih_nick $brih_name </td>
+        </tr>
+        <tr align="right">
+        <td>  <textarea name="schdesc">$!schooldesc</textarea></td>
+        <td> $brih_schce $brih_Of1 $brih_desc</td>
+        </tr>
+
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td align=left colspan=2>
+        <input type="hidden" name="mode" value="$mode" >
+        <input type="hidden" name="count" value="$tdcolor" >
+        <input type="hidden" name="instituteId" value="$instituteId" >
+        <input type="hidden" name="actionName"/>
+	#if($mode=="school")
+        <input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="submit" onClick="checkschool(document.frm,this);"/>
+	#else
+	<input type="hidden" name="schid" value="$schid" >
+        <input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="submit" onClick="checkschool(document.frm,this);"/>
+	#end
+	</table>
+	</form>
+	</td></tr>
+	#end
+
+###################################### List of Department ###############################
+	#if($mode == "lstdept")
+		#if($lstdept.size()==0)
+        		<tr align="right"><td><font color="red" size="3"><b><i>$brih_deptnoexist</i>*</b></font></td></tr>
+	        #else
+			#if($data.getUser().getTemp("role") != "institute_admin")
+				#set ( $headings = ["$brih_action", "$brih_floor", "$brih_nick $brih_name", "$brih_dept $brih_Of1 $brih_name", "$brih_dept $brih_Of1 $brih_code"] ) 
+		        #else
+				#set ( $headings = ["$brih_floor", "$brih_nick $brih_name", "$brih_dept $brih_Of1 $brih_name", "$brih_dept $brih_Of1 $brih_code"] ) 
+			#end
+			<tr align="right"><td>
+			<table width="100%">
+				tr bgcolor="$ui.menuColor" align="right">
+		       		#foreach ($heading in $headings)
+	        		  #headerCell($heading)
+	        		#end
+			        </tr>
+				#foreach ($lsdept in $lstdept)
+        			#if($velocityCount%2==0)
+		        		<tr bgcolor="$ui.menuColor" align="right">
+			        	    #set($bg=$ui.menuColor)
+			        #else
+        				<tr bgcolor="$ui.tableColor" align="right">
+						#set($bg=$ui.tableColor)
+       				 #end
+				#if($data.getUser().getTemp("role") != "institute_admin")
+					<td> <a href="$link.setPage("call,Department,AddDepartment.vm").addPathInfo("deptid",$lsdept.getDepartmentId()).addPathInfo("mode","deptdel")" style="text-decoration:none;">$brih_delete</a></td>	
+				#end
+		        	<td>$!lsdept.getFloorsCount()</td>
+	        		<td>$!lsdept.getNickName()</td>
+		        	<td>$!lsdept.getName()</td>
+	        		<td>$!lsdept.getDepartmentCode()</td>
+				</tr>
+			</table>
+		#end
+	#end
+	</td>
+	</tr>
+	#end
+###################################### Deletion of Department by Super Admin ###############################
+        #if(($data.getUser().getTemp("role") != "institute_admin") && ($mode== "deptdel"))
+        #set ( $headings = ["$brih_dept $brih_name", "$RemoteInstitute $brih_name", "$brih_action"] )
+        #if($instname.size()!=0)
+        <tr><td>
+        <table width="100%">
+        <tr bgcolor="$ui.menuColor">
+        #foreach ($heading in $headings)
+          #headerCell($heading)
+        #end
+        </tr>
+          #if($velocityCount%2==0)
+        <tr bgcolor="$ui.menuColor">
+        #else
+        <tr bgcolor="$ui.tableColor">
+        #end
+        #if($instname.size()>0)
+        <td>$depname</td>
+        <td>$instname</td>
+        <td>
+        #else
+        <td>
+       		$brih_deptnoexist
+        </td>
+        #end
+        #if($instname.size()==1)
+        <a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("deptid",$depid).addPathInfo("mode","deptdel")" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to delete this department')">$brih_remove</a>
+        #else
+        <a id="deldept" style="text-decoration:none; cursor:pointer; color:blue">$brih_remove</a>
+        #end
+        </td>
+        </tr>
+        #end
+        </table>
+        </td>
+        </tr>
+        #end
+
+
+####### END ##################	
+
+############################### List of School ############################
+
+	#if ($mode == "lstschool") 
+		#if($lstschool.size()==0)
+	        	<tr align="right"><td><font color="red" size="3"><b> <i>$brih_schoolnoexist</i>*</b></font></td></tr>
+	        #else	
+			#if($data.getUser().getTemp("role") != "institute_admin")
+				#set ( $headings = ["$brih_action", "$brih_desc", "$brih_nick $brih_name", "$brih_schce $brih_Of1 $brih_code", "$brih_schce $brih_Of1 $brih_name"] )
+			#else
+				#set ( $headings = [ "$brih_desc", "$brih_nick $brih_name", "$brih_schce $brih_Of1 $brih_code", "$brih_schce $brih_Of1 $brih_name"] )
+			#end
+		<tr align="right"><td>
+		<table width="100%">
+		<tr bgcolor="$ui.menuColor" align="right">
+        	#foreach ($heading in $headings)
+                	#headerCell($heading)
+	         #end
+        	</tr>
+	        #foreach ($lsschool in $lstschool)
+        		#if($velocityCount%2==0)
+        			<tr bgcolor="$ui.menuColor" align="right">
+	                	#set($bg=$ui.menuColor)
+	        	#else
+			        <tr bgcolor="$ui.tableColor" align="right">
+                		#set($bg=$ui.tableColor)
+		        #end
+			#if($data.getUser().getTemp("role") != "institute_admin")
+		              <td> <a href="$link.setPage("call,Department,AddDepartment.vm").addPathInfo("schid",$lsschool.getSchoolId()).addPathInfo("mode","schdel")" style="text-decoration:none;">$brih_delete</a></td>
+	        	#end
+	              <td>$!lsschool.getDescription()</td>
+        	      <td>$!lsschool.getNickName()</td>
+	              <td>$!lsschool.getSchoolCode()</td>
+        	      <td>$!lsschool.getName()</td>
+
+		</tr>
+		#end
+	</table>
+	#end
+	</td>
+	</tr>
+	#end
+###################################### Deletion of School by Super Admin ###############################
+ #if($listsize.size()==0)
+        <tr align="right"><td><font color="red" size="3"><b>* <i>$brih_delschool</i></b></font></td></tr>
+        #else
+
+        #if(($data.getUser().getTemp("role") != "institute_admin") && ($mode== "schdel"))
+        #set ( $headings = ["$brih_schce $brih_Of1 $brih_name","$RemoteInstitute $brih_Of1 $brih_name","$brih_action"] )
+        #set ( $headings = ["$brih_action", "$RemoteInstitute $brih_Of1 $brih_name", "$brih_schce $brih_Of1 $brih_name"] )
+        #if($instname.size()!=0)
+        <tr><td>
+	        <table width="100%">
+        		<tr bgcolor="$ui.menuColor" align="right">
+		        #foreach ($heading in $headings)
+				#headerCell($heading)
+		        #end
+		        </tr>
+			#if($velocityCount%2==0)
+	        		<tr bgcolor="$ui.menuColor" align="right">
+		        #else
+        			<tr bgcolor="$ui.tableColor" align="right">
+		        #end
+       			<td>
+		        #if($instname.size()==1)
+			        	<a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("schid",$schid).addPathInfo("mode","schdel")" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to delete this school')">$brih_delete</a>
+		        #else
+				        <a id="delsch" style="text-decoration:none; cursor:pointer; color:blue">$brih_delete</a>
+		        #end
+        		</td>
+		        #if($instname.size()>0)
+			        <td>$instname</td>
+        			<td>$schname</td>
+		        #else
+	        		<td> $brih_schoolnoexist </td>
+		        #end
+        </tr>
+        #end
+        </table>
+        </td>
+        </tr>
+        #end
+        #end
+####### END ##################
+
+###################################### Map Department ##################################
+
+	#if ($mode == "deptmap") 
+		<tr><td>
+		<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+		#if($deptmap.size()==0)
+        		<tr align="right"><font color="red" size="3"><b><i> $brih_nodeptmap</i> * </b></font></tr>
+	        #else
+			<table bgcolor="$ui.menuColor" width=100%>
+        		<tr align="right" bgcolor="$ui.menuColor">
+		        	<td colspan=2> $brih_select </td>
+			        <td width=5%> <b> $brih_dept <b></td>
+		        </tr>
+			#set($flag=false)
+        		#set( $count = "" )
+		        ##Get Department list
+        		#foreach($department in $deptmap)
+                		#if($velocityCount%2==0)
+                        		<tr bgcolor="$ui.menuColor" align="right">
+		        	#else
+        		                <tr bgcolor="$ui.tableColor" align="right">
+	        		#end
+				#set($deptcodeid = "$department.getDepartmentId()" )
+				#foreach($mapdpt in $lsdsu)
+        	        		##check DepartmentId
+	        	        	##if match it shows, this Department already mapped
+	        		        ##then set flag true
+		        		#if(("$mapdpt.getDeptId()")==("$department.getDepartmentId()"))
+	
+		        		       #set($flag=true)
+					#end    
+			        #end
+        	        	##If flag true then disable that check box 
+	        		 #if($flag)
+			              <td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
+        			      <td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" DISABLED></td>
+                        
+					#set($flag=false)
+				#else
+			              <td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
+        			      <td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" ></td>
+				#end
+	
+			        #set($count = "$count$!deptcodeid^")
+		        #end
+	        	</tr>
+	        	<tr bgcolor="$ui.tableColor" align="right">
+        			 <td colspan=3>
+                	        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
+                        	<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
+	                        <INPUT TYPE="hidden" NAME="actionName" VALUE="eventSubmit_doMap">
+        	                <INPUT TYPE="hidden" NAME="mode" VALUE="deptmap">
+	        	        </td>
+	        	</tr>
+		        </table>
+		#end
+	</form>
+	</td>
+	</tr>
+	#end
+
+############################## Map School ###############################
+	#if ($mode == "schoolmap") 
+		<tr align="right"><td>
+		<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+		#if ($schoolmap.size() == 0)
+	 	       <tr align="right"><font color="red" size="3"><b>* <i> $brih_noschoolmap</i></b></font></tr>
+	        #else
+
+		<table bgcolor="$ui.menuColor" width=100%>
+	        <tr bgcolor="$ui.menuColor" align="right">
+	        <td colspan=2><b> $brih_schce<b></td>
+	        <td width=5%>$brih_select </td>
+        	</tr>
+	        #set($flag=false)
+        	##Get School list
+		#set($cnt = 0)
+        	#foreach($school in $schoolmap)
+			#set($cnt = $cnt+1)
+	                #if($velocityCount%2==0)
+        	                <tr bgcolor="$ui.menuColor" align="right">
+                	#else
+                        	<tr bgcolor="$ui.tableColor" align="right">
+	                #end
+                        #set($schcodeid = "$school.getSchoolId()" )
+	                        <td colspan=2>$school.getName()  ($school.getSchoolCode())</td>
+				#if($deptmap.size()==0)
+	               			<td><INPUT TYPE="CHECKBOX" NAME="$!schcodeid" onClick="javascript:showTable$cnt(); addSelectedList(this,document.frm);" value="$schcodeid" id="$cnt"></td>
+	        	                <INPUT TYPE="hidden" NAME="sdept" value="sdept">
+                	        #else
+        		                <td><INPUT TYPE="CHECKBOX" NAME="$!schcodeid" onClick="javascript:showTable$cnt();" value="$schcodeid" id="$cnt"></td>
+                        	#end
+
+########################## show Department for every School ###########################
+
+			#if($velocityCount%2==0)
+         		        <tr bgcolor="$ui.menuColor" align="right">
+	                #else
+        	                <tr bgcolor="$ui.tableColor" align="right">
+	                #end
+
+			<td></td>
+			<td  id='tabl$cnt' style="display:none;" bgcolor="$ui.tableColor">
+			<table bgcolor="" width="100%">
+			#if ($deptmap.size() == 0)
+        	        	<tr align="right"><font color="red" size="3"><b> <i> $brih_deptnoexist</i>*</b></font></tr>
+	                #else
+				<tr align="right">
+			        <td colspan=2 bgcolor="$ui.menuColor"><b> $brih_dept <b></td>
+				<td width=5% bgcolor="$ui.menuColor">$brih_choose </td>
+			        </tr>
+		              	<td colspan=2 align="right">$brih_No $brih_dept</td>
+				<td align="right"><INPUT TYPE="CHECKBOX" NAME="$schcodeid:000" value="000" onClick="addSelectedList(this,document.frm);"></td>
+			        #set( $count = "" )
+			        ##Get Department list
+			        #foreach($department in $deptmap)
+			                #if($velocityCount%2==0)
+                        			<tr bgcolor="$ui.menuColor" align="right">
+			                #else
+                        			<tr bgcolor="$ui.tableColor" align="right">
+			                #end
+                        		#set($deptcodeid = "$schcodeid:$department.getDepartmentId()" )
+			                #foreach($mapdpt in $lsdsu)
+                        			##check DepartmentId
+			                        ##if match it shows, this Department already mapped
+                        			##then set flag true
+			                        #if(("$mapdpt.getDeptId()")==("$department.getDepartmentId()") && ("$mapdpt.getSchoolId()")==("$school.getSchoolId()"))
+                        		        #set($flag=true)
+		                        #end    
+                		#end
+		                ##If flag true then disable that check box 
+                		#if($flag)
+                		        <td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
+		                        <td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" DISABLED></td>
+
+	                	        #set($flag=false)
+        		        #else
+                		        <td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
+		                        <td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" ></td>
+		                #end
+
+			        #set($count = "$count$!deptcodeid^")
+	        		</tr>
+			#end
+		#end
+        </table>
+	</td>
+        </tr>
+
+########################## end of show Department for every School ###############################
+
+########################## Script for displaying Department with in each School###################
+
+		<script type="text/javascript" language="javascript">
+		function showTable$cnt(){
+		var disp = document.getElementById('tabl$cnt');
+		if( disp.style.display == 'block' ) {
+		    disp.style.display = 'none';
+  		}
+		else {
+    		    disp.style.display = 'block';
+ 		 }
+		  return disp ;
+		}
+		</script>
+
+########################## end of Script for displaying Department with in each School############
+
+        #set($count = "$count$!schcodeid^")
+        #end
+        </tr>
+        <tr bgcolor="$ui.tableColor" align="right">
+                <td colspan=3>
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
+                        <INPUT TYPE="hidden" NAME="actionName" VALUE="eventSubmit_doMap">
+                        <INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
+                        <INPUT TYPE="hidden" NAME="mode" VALUE="schoolmap">
+                </td>
+        </tr>
+        </table>
+	</form>
+	#end
+######################### end of school map #######################
+	</td>
+	</tr>
+	#end
+	</table>
+
+<script type="text/javascript" language="javascript">
+
+function isInteger(s) {
+      var cle=document.getElementById('checkint');
+      var i;
+      s = s.toString();
+ for (i = 0; i < s.length; i++) {
+      var c = s.charAt(i);
+ if (isNaN(c)) {
+      cle.value="";
+      cle.focus;
+      alert("Please Enter number Only");
+      return false;
+        }
+      }
+      return true;
+    }
+
+function  checkdept(frm,fld) {
+var reason = "";
+    reason += validatedeptname(frm.deptname);
+    reason += validatedcode(frm.dcode);
+    reason += validatednick(frm.dnick);
+    reason += validatefcount(frm.fcount);
+if (reason != "") {
+        alert("Some fields need correction:\n\n"+reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+function validatedeptname(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered department name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function validatednick(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered nick name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function validatedcode(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered department code.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validatefcount(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered floors.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function  checkschool(frm,fld) {
+var reason = "";
+    reason += validateschname(frm.schname);
+    reason += validateschcode(frm.schcode);
+    reason += validateschnick(frm.schnick);
+if (reason != "") {
+        alert("Some fields need correction:\n\n"+reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+function validateschname(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered school name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validateschcode(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered school code.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validateschnick(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered nick name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function checkValue(frm,field)
+{
+        if(frm.selectFileNames.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+        {
+                alert("Please Select check box for School/Department Name !!");
+        }
+}
+
+
+function addSelectedList(field,frm)
+{
+if(field.checked)
+{
+ frm.selectFileNames.value=frm.selectFileNames.value+field.name+"^";
+}
+                else
+                {
+                        var slFile,index,actualString,preString,postString;
+                        actualString=frm.selectFileNames.value;
+                        index=actualString.indexOf(field.name+"^",0);
+                        preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+                        actualString=preString+postString;
+                        frm.selectFileNames.value=actualString;
+                }
+}
+
+$(document).ready(function(){
+$("#deldept").click(function() {
+alert("Unable to delete Department, used in many institutes");
+});
+$("#delsch").click(function() {
+alert("Unable to delete School, used in many institutes");
+});
+});
+</script>
