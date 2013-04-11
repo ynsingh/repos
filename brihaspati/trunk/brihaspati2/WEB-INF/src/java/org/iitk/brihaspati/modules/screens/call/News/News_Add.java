@@ -42,6 +42,7 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.apache.turbine.om.security.User;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 /**
  * This class contains code for all record of News
  * Grab all the records in a table using a Peer, and;
@@ -49,6 +50,7 @@ import org.apache.turbine.om.security.User;
  * where they can be displayed by a #foreach loop.
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">jaivir singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  */
 
 public class News_Add extends SecureScreen
@@ -122,6 +124,12 @@ public class News_Add extends SecureScreen
 				int eid=0;
 				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                         }
+			// Load saved msg
+                        try{
+                                String savemsg = AutoSave.doLoad((String)user.getTemp("course_id")+(user.getTemp("Institute_id")).toString()+Role+username+"gnews");
+                                context.put("msg",savemsg);
+                        }
+                        catch(Exception e){}
 
 
 		}

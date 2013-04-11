@@ -39,9 +39,9 @@ $!data.getMessage()
 	#if(($data.getUser().getUserName() == "admin") || $data.getUser().getTemp("role")=="institute_admin")
         	<a href=$link.setPage("Index.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_Notices
 	#else
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | 
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString()</a> |
 		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $brih_Notices
+		| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString()</a> |
+		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>  
 	#end
 	</font>
 </td></tr>
@@ -332,7 +332,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.tableColor" align="right">
 #end
 ##<tr bgcolor="$ui.tableColor">
-<td width="3"><textarea id="ta" name="message" rows=10 cols=80>$!fNoti $!sNoti</textarea></td>
+<td width="3"><textarea id="ta" name="message" rows=10 cols=80> #if($nflag=="fh") $!msg #else $!fNoti $!sNoti $!msg #end </textarea></td>
 <td>$brih_msg2 </td>
 </tr>
        #if($nflag == "fh")
@@ -370,15 +370,18 @@ $!data.getMessage()
 	        <input type="hidden" name="count" value="$tdcolor">
 	        <input type="hidden" name="countTemp" value="1">
 		<input type="hidden" name="actionName">
+                  <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.frm,this);"/>
 	        #if($nflag == "fh")
         	  <input type="button" class="button-ftextstyle" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
 		  <input type="hidden" name="nflag" value="$nflag" >
 		  <input type="hidden" name="shtime">
 		  <input type="hidden" name="htype" value="$!hflag">
 		  <input type="hidden" name="eventSubmit_doChange">
+		  <input type="hidden" name="page" value="flash">
 	        #else
         	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
-	        #end
+		  <input type="hidden" name="page" value="notices">
+                #end
 
         	</font>
 	        </td>
@@ -389,6 +392,16 @@ $!data.getMessage()
 </form>
 </body>
 <SCRIPT LANGUAGE="javascript">
+
+	function check(frm,field){
+       		editor.setMode("textmode");
+	        frm.actionName.value=field.name;
+        	frm.submit();
+	        editor.setMode("wysiwyg");
+        }
+        setInterval(function() {
+          $("#autoclick1").click();
+        }, 50000);
 
         function checkField1(frm,field)
         {

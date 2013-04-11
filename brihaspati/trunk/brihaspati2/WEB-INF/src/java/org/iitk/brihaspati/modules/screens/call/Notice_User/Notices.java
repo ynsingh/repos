@@ -43,6 +43,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @ modified date: 13-Oct-2010 (Shaista),01-feb-2012(Dewanshu Singh Sisaudiya)
  * @ modified date: 24-08-2012 (Sunil Yadav),08-03-2013
  */
@@ -71,6 +72,7 @@ import com.workingdogs.village.Record;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.Notification;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 public class Notices extends SecureScreen
@@ -139,6 +141,17 @@ public class Notices extends SecureScreen
 
 			String rolename=(user.getTemp("role")).toString();
 			String instituteId=(user.getTemp("Institute_id")).toString();
+			//for getting saved msg
+			try{
+				String page = "";
+				if(flag.equals("fh")){ 
+					page="flash";}
+				else{
+					page="notices";}
+		                String savemsg = AutoSave.doLoad(dir+instituteId+rolename+user_name+page);
+                		context.put("msg",savemsg);
+	                }
+                	catch(Exception e){}
 			List CList=null;
                         if(loginname.equals("admin"))	{
                         	CList=ListManagement.getCourseList();

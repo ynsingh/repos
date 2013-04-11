@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
 import org.iitk.brihaspati.om.News;
 import org.iitk.brihaspati.om.NewsPeer;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 
 /**
  *
@@ -61,6 +62,7 @@ import org.iitk.brihaspati.om.NewsPeer;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">jaivir singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
 */
 
 public class  NewsAction extends SecureAction
@@ -172,12 +174,13 @@ public class  NewsAction extends SecureAction
 				msg=MultilingualUtil.ConvertedString("news_msg2",LangFile);
                         	data.setMessage(msg);
                     	}
+		AutoSave.doDelete((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page","")); 
 		
 		}
 		catch(Exception e)
 		{
 			data.setMessage("The Error in Add News !!"+e);
-		}  
+		} 
 	}       
 	/**
 	 * In this method, Updation of News
@@ -377,6 +380,27 @@ public class  NewsAction extends SecureAction
 			data.setMessage("The error in the news deletion !!"+ex);
 		}
 	}
+
+	/**
+        * In this method, We save message/s or Local_mail for users(Local)
+        * @param data RunData
+        * @param context Context
+        * @exception Exception a generic exception
+        */
+        public void doSave(RunData data, Context context)
+        {
+                try{
+                        User user = data.getUser();
+                        ParameterParser pp=data.getParameters();
+                        String id = (String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page","");
+                        String message = pp.getString("news");
+                        AutoSave.doSave(id,message);
+                        data.setScreenTemplate("call,News,News_Add.vm");
+                }
+                catch(Exception e){
+                }
+        }
+
 	/**
           * This method is invoked when no button corresponding to
           * doInsert is found
@@ -394,6 +418,8 @@ public class  NewsAction extends SecureAction
                 	doUpdate(data,context);
                 else if(action.equals("eventSubmit_doDelete"))
                 	doDelete(data,context);
+		else if(action.equals("eventSubmit_doSave"))
+                        doSave(data,context);
                 else    
                 	data.setMessage("Cannot find the button");
        }

@@ -83,6 +83,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.iitk.brihaspati.modules.utils.AutoSave;
+
 import java.util.Calendar;
 //import java.util.Date;
 import java.text.DateFormat;
@@ -96,6 +98,7 @@ import java.text.SimpleDateFormat;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date: 28-01-2010
  * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011, 16-06-2011 (Shaista)
  * @modified date: 24-08-2012 (Sunil Yadav),23-02-2013
@@ -370,12 +373,34 @@ public class Notice_Send_Delete extends SecureAction
                                 data.setScreenTemplate("call,Notice_User,Notices.vm");
 
                         data.setMessage(msg1);
+			AutoSave.doDelete((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page",""));
 		}
 		catch(Exception ex)
 		{
 			data.setMessage("The Error in Send Notice .."+ex);
 		}
 	}
+
+	/**
+        * In this method, We save message/s or Local_mail for users(Local)
+        * @param data RunData
+        * @param context Context
+        * @exception Exception a generic exception
+        */
+        public void doSave(RunData data, Context context)
+        {
+                try{
+                        User user = data.getUser();
+                        ParameterParser pp=data.getParameters();
+                        String id = (String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page","");
+                        String message = pp.getString("message");//pp.getString("hexaStr").trim();
+                        AutoSave.doSave(id,message);
+                        data.setScreenTemplate("call,Notice_User,Notices.vm");
+                }
+                catch(Exception e){
+                }
+        }
+
 	/**
         * In this method,we insert notice to database
         * @param msg_id int
@@ -548,6 +573,7 @@ public class Notice_Send_Delete extends SecureAction
          		 **/
                         String LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
+			User user = data.getUser();
 			/**
          		  * @param htype: Getting heading Type as a String from Parameter Parser 
           		  * @param Fheading: Getting Message as a String from Parameter Parser 
@@ -597,6 +623,7 @@ public class Notice_Send_Delete extends SecureAction
                         }
 			String Fhupdate=MultilingualUtil.ConvertedString("cal_ins",LangFile);
                         data.setMessage(Fhupdate);
+			AutoSave.doDelete((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page",""));
 		}
 		catch(Exception ex){data.setMessage("The error in do Write method in Notice Send"+ex);}
 	}
@@ -615,6 +642,8 @@ public class Notice_Send_Delete extends SecureAction
 			doDelete(data,context);
 		else if(action.equals("eventSubmit_doWrite"))
                         doWrite(data,context);
+		else if(action.equals("eventSubmit_doSave"))
+                        doSave(data,context);
 		else if(action.equals("eventSubmit_doChange"))
 			data.setMessage("");
 		else

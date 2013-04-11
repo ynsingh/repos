@@ -8,6 +8,7 @@
  *@author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *@author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date: 31-12-2009, 20-08-2010
  * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
  *#
@@ -161,7 +162,7 @@ $!data.getMessage()
 			</tr>
 			<tr>
 				<td><b>$brih_msg2<font color=Red>*</font></b></td>
-				<td><textarea id="ta" name="message" rows=10 cols=80 wrap=physical></textarea></td>
+				<td><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!msg</textarea></td>
 				<td><input type="hidden" name="Repid" value=$Repid></td>
 			</tr>
 		#else
@@ -173,7 +174,7 @@ $!data.getMessage()
 				<b><font face="$ui.sansSerifFonts">$brih_msg2 </font> </b>
 				</td>
 				<td>
-				<font face="$ui.sansSerifFonts" size=4><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!rep_msg</textarea></font>
+				<font face="$ui.sansSerifFonts" size=4><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!rep_msg $!msg</textarea></font>
 				</td>
 			</tr>
                         <input type="hidden" name="Repid" value="$msg_id">				
@@ -202,8 +203,10 @@ $!data.getMessage()
 			<input type="hidden" name="stats" value="$stats">
 	 		<INPUT TYPE="hidden" NAME="count" value="$tdcolor">
 			<input type="hidden" NAME="mode2" value="$mode2">
+			<input type="hidden" NAME="page" value="disboard">
 			##<input type="button" name="eventSubmit_doSend" value="$DisBoard_DB_msg25" onClick="checkBlank(document.uploadform,this);"/>&nbsp;&nbsp	
 			<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.uploadform,this);"/>
 			</td>
 		</tr>
 		</table>
@@ -292,6 +295,16 @@ $!data.getMessage()
 	        	alert("Please fill all mandatory  fields.");
 		editor.setMode("wysiwyg")
 	}
+	function check(uploadform,field){
+	        editor.setMode("textmode");
+        	uploadform.actionName.value=field.name;
+	        uploadform.submit();
+        	editor.setMode("wysiwyg");
+        	}
+        setInterval(function() {
+          $("#autoclick1").click();
+        }, 50000);
+
 	function insertminus(uploadform)	
 	{
 		 if(uploadform.status[1].checked)

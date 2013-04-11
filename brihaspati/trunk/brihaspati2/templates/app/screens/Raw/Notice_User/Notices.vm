@@ -9,6 +9,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 31-12-2009, 25-04-2010,07-09-2010 , 09-Aug-2011 (Sunil Kr).
  * @modified date: 24-08-2012 (Sunil Yadav),23-02-2013
@@ -313,7 +314,7 @@ $!data.getMessage()
 #end
 ##<tr bgcolor="$ui.tableColor">
 <td>$brih_msg2 </td>
-<td width="3"><textarea id="ta" name="message" rows=10 cols=80>$!fNoti $!sNoti</textarea></td>
+<td width="3"><textarea id="ta" name="message" rows=10 cols=80> #if($nflag=="fh") $!msg #else $!fNoti $!sNoti $!msg #end </textarea></td>
 </tr>
        #if($nflag == "fh")
 		#set ($ext=10)
@@ -355,9 +356,12 @@ $!data.getMessage()
 		  <input type="hidden" name="shtime">
 		  <input type="hidden" name="htype" value="$!hflag">
                   <input type="hidden" name="eventSubmit_doChange">
+		  <input type="hidden" name="page" value="flash">
 	        #else
         	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
+		  <input type="hidden" name="page" value="notices">
 	        #end
+		  <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.frm,this);"/>
 
         	</font>
 	        </td>
@@ -384,6 +388,16 @@ $!data.getMessage()
                 }
 		editor.setMode("wysiwyg");
         }
+
+	function check(frm,field){
+        editor.setMode("textmode");
+        frm.actionName.value=field.name;
+        frm.submit();
+        editor.setMode("wysiwyg");
+        }
+        setInterval(function() {
+          $("#autoclick1").click();
+        }, 50000);
 
         function checkField(frm,field)
         {

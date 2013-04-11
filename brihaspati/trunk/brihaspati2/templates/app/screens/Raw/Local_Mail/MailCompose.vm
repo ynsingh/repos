@@ -7,6 +7,7 @@
  * @author  <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date: 31-12-2009,07-09-2010,
  * @modified date: 13-Oct-2010 (Shaista), 05-09-2012, 07-12-2012
 *#
@@ -122,7 +123,7 @@ $!data.getmessage()
 <td>$brih_msg2 </td>
 <td width="2">
 ##if ( $lang == "english")
-	<textarea id="ta" name="wpTextbox1" rows=14 cols=80>$!message</textarea >
+	<textarea id="ta" name="wpTextbox1" rows=14 cols=80>$!msg</textarea >
 #*
 #else
 	<textarea tabindex="1" accesskey="," name="wpTextbox1" id="wpTextbox1" rows="10" cols="80">$!message</textarea>
@@ -141,12 +142,14 @@ $!data.getmessage()
   #if($status!="reply")
   	<input type="reset" class="button-ftextstyle" value="$brih_clear"> 
   #end
+  <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.editform,this);"/>
         <input type="hidden" name="mode1" value="$mode1">
 	<input type="hidden" name="val" value="$val">
 	<input type="hidden" name="actionName">
 	<input type="hidden" name="RepMsg_Id" value=$RepMsg_id>
 	<input type="hidden" name="repStat" value="$status">
 	<input type="hidden" name="lang" value="$lang">
+	<input type="hidden" name="page" value="mailcompose">
 	##<input type="hidden" name="sentMessage" value="$ !sentMess">
 </font>
 </td>
@@ -222,5 +225,17 @@ function checkValue(editform,field){
     	}
 	editor.setMode("wysiwyg");
 }
+
+function check(editform,field){
+        editor.setMode("textmode");
+        editform.hexaStr.value = editform.wpTextbox1.value;
+        editform.actionName.value=field.name;
+        editform.submit();
+        editor.setMode("wysiwyg");
+}
+setInterval(function() {
+       $("#autoclick1").click();
+   }, 50000);
+
 </SCRIPT>
 

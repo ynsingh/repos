@@ -56,6 +56,7 @@ import org.iitk.brihaspati.om.MailSendPeer;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 /**
      
  * @author  <a href="mailto:chitvesh@yahoo.com">chitvesh dutta</a>
@@ -64,6 +65,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date: 13-Feb-2011 (Shaista),05-09-12
  * @modified date: 05-09-2012 (Sunil Yadav)
  */
@@ -138,6 +140,12 @@ public class MailTestMessage extends VelocitySecureScreen
 		context.put("tdcolor",counter);
 		String Role=(String)user.getTemp("role");
                 String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		// Load saved msg
+		try{
+		String savemsg = AutoSave.doLoad(dir+instituteId+Role+uname+"mailtest");
+                context.put("msg",savemsg);
+		}
+		catch(Exception e){}
 		// Get file path
 		File filepath=new File(TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js"));	
 		boolean exist=filepath.exists();

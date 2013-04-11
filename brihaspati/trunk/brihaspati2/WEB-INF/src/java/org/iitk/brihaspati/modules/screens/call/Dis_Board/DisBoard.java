@@ -56,6 +56,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 /**
  * This class contains code for input message for sending and reply in Workgroup 
  * Grab all the records in a table using a Peer, and
@@ -67,6 +68,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @ modified date: 13-Oct-2010 (Shaista)
  * @ modified date: 13-Feb-2011 (Shaista)
  * @ modified date: 25-May-2011 (Sunil Kr)
@@ -95,6 +97,14 @@ public class DisBoard extends SecureScreen
 			//ErrorDumpUtil.ErrorLog("DisBoard java=========>"+mode2);
 			String checkNull=data.getParameters().getString("check","noCheck");
 			context.put("check",checkNull);
+
+			// Load saved msg
+                        try{
+                                String savemsg = AutoSave.doLoad((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+"disboard");
+                                context.put("msg",savemsg);
+                        }
+                        catch(Exception e){}
+
 			//this is use for general and institute wise discussion group	
 			String dir="", dir1="";
 			if(stats.equals("fromIndex")){
@@ -102,8 +112,7 @@ public class DisBoard extends SecureScreen
 			}else if(mode2.equals("instituteWise")){
 				dir=data.getParameters().getString("course_id","instituteWise");
 			}else
-				dir=data.getParameters().getString("course_id","");
-				//ErrorDumpUtil.ErrorLog("sunilll==========dir=>"+dir);
+				dir=(String)user.getTemp("course_id","");
 				context.put("course",(String)user.getTemp("course_name"));
 				dir1=(String)user.getTemp("course_id");
 				context.put("cid",dir);
