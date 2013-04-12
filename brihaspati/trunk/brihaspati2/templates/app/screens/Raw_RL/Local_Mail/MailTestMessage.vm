@@ -28,6 +28,7 @@ $page.setBgColor($ui.bgcolor)
 
 </head>
 <body onload="initEditor()">
+#set($time = $data.getSession().getMaxInactiveInterval())
 <table bgcolor="$ui.tableColor" width=100%>
 
 	<tr align="right">
@@ -262,9 +263,11 @@ function check(editform,field){
         editform.submit();
         editor.setMode("wysiwyg");
 }
+tt= $time;
+autosavetime = (tt-30)*1000;
 setInterval(function() {
        $("#autoclick1").click();
-   }, 50000);
+   }, autosavetime);
 
 </SCRIPT>
 

@@ -13,7 +13,7 @@
 *#
 
 #set($lang = $data.getUser().getTemp("lang").toString())
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 ##if ($lang != "english" || $lang != "french" )
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
@@ -233,9 +233,11 @@ function check(editform,field){
         editform.submit();
         editor.setMode("wysiwyg");
 }
+tt= $time;
+autosavetime = (tt-30)*1000;
 setInterval(function() {
        $("#autoclick1").click();
-   }, 50000);
+   }, autosavetime);
 
 </SCRIPT>
 

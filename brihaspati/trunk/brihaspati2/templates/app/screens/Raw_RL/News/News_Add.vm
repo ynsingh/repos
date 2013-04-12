@@ -26,7 +26,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 ## Representation of TOP BAR
 <table bgcolor="$ui.menuColor" width=100%>
         <tr align="right">
@@ -221,8 +221,10 @@ $!data.getMessage()
         	frm.submit();
         	editor.setMode("wysiwyg");
 	}
+	tt= $time;
+        autosavetime = (tt-30)*1000;
 	setInterval(function() {
        		$("#autoclick1").click();
-   	}, 50000);
+   	}, autosavetime);
 
 </SCRIPT>

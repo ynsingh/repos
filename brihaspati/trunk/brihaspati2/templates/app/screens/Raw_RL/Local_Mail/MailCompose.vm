@@ -32,7 +32,7 @@
 	        /*]]>*/</script>
 </head>
 <body onload="initEditor()">
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 $page.setTitle("Admin Home | Communication | Local Mail | Compose Message")
 $page.setBgColor($ui.bgcolor)
 $!data.getmessage()
@@ -198,9 +198,11 @@ function check(editform,field){
         editform.submit();
         editor.setMode("wysiwyg");
 }
+tt= $time;
+autosavetime = (tt-30)*1000;
 setInterval(function() {
        $("#autoclick1").click();
-   }, 50000);
+   }, autosavetime);
 
 </SCRIPT>
 

@@ -128,7 +128,7 @@ $!data.getMessage()
 </tr>
 </table>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 #set($Repid=0)
 <form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")>
 ##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
@@ -300,10 +300,12 @@ $!data.getMessage()
         	uploadform.actionName.value=field.name;
 	        uploadform.submit();
         	editor.setMode("wysiwyg");
-        	}
+        }
+	tt= $time;
+        autosavetime = (tt-30)*1000;
         setInterval(function() {
           $("#autoclick1").click();
-        }, 50000);
+        }, autosavetime);
 
 	function insertminus(uploadform)	
 	{

@@ -22,7 +22,7 @@
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 $page.setBgColor($ui.bgcolor)
 #if($mode=="compose")
 	$page.setTitle("Home | DiscussionBoard |$LocalMail_MailContent_msg1")
@@ -312,10 +312,12 @@ $!data.getMessage()
         	uploadform.actionName.value=field.name;
 	        uploadform.submit();
         	editor.setMode("wysiwyg");
-        	}
+        }
+	tt= $time;
+        autosavetime = (tt-30)*1000;
         setInterval(function() {
           $("#autoclick1").click();
-        }, 50000);
+        }, autosavetime);
 
 	function insertminus(uploadform)	
 	{

@@ -23,7 +23,7 @@
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
 </head>
 <body onload="initEditor()">
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 #if($data.getUser().getUserName() == "admin")
 	 $page.setTitle("AdminHome | Notices")
 #else
@@ -399,9 +399,11 @@ $!data.getMessage()
         	frm.submit();
 	        editor.setMode("wysiwyg");
         }
+	tt= $time;
+        autosavetime = (tt-30)*1000;
         setInterval(function() {
           $("#autoclick1").click();
-        }, 50000);
+        }, autosavetime);
 
         function checkField1(frm,field)
         {
