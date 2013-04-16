@@ -97,10 +97,17 @@ $(document).ready(function() {
 				echo " (";
 				echo anchor('user/account', 'change', array('title' => 'Change active account', 'class' => 'anchor-link-a'));
 				echo ")<br />";
+				echo "Acc. Name : ";
+				$current_active_account = $this->session->userdata('active_account');
+			        echo ($current_active_account) ? $current_active_account : "(None)";
+				echo "<br/>";
 				echo "FY : ";
 				echo date_mysql_to_php_display($this->config->item('account_fy_start'));
 				echo " - ";
 				echo date_mysql_to_php_display($this->config->item('account_fy_end'));
+				echo "<br/>";
+				echo "Date : ";
+				echo Date("l, d F Y");
 			?>
 		</div>
 	</div>
