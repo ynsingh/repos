@@ -691,8 +691,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         String strInstId =  (String)user.getTemp("Institute_id","");
                         String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
                         String loginName = user.getName();
-                        String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
-                        log.info("Student Expiry enable by -->"+loginName + " | Institute Name -->"+instName +"| Course -->"+cName+ " | email -->"+email+ " | IP Address --> "+data.getRemoteAddr());
+                        log.info("Student Expiry enable by -->"+loginName + " | Institute Name -->"+instName +"| Course -->"+cName+ " | IP Address --> "+data.getRemoteAddr());
                 }
                 catch(Exception ex)
                 {
@@ -728,12 +727,11 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         data.setMessage(userName+" expiry ");
                         data.addMessage(MultilingualUtil.ConvertedString("update_msg",LangFile));
 			//Maintain Log
-                        String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
                         User user=data.getUser();
                         String loginName = user.getName();
                         String strInstId =  (String)user.getTemp("Institute_id","");
                         String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
-                        log.info("Student Expiry disable by -->"+loginName+ " | Course -->"+cName+"Institute Name -->"+instName + " | email -->"+email + " | IP Address --> "+data.getRemoteAddr());
+                        log.info("Student Expiry disable by -->"+loginName+ " | Course -->"+cName+"Institute Name -->"+instName + " | IP Address --> "+data.getRemoteAddr());
                 }
                 catch(Exception ex)
                 {
