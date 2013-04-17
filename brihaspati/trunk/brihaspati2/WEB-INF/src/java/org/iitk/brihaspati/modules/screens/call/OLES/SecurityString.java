@@ -65,6 +65,8 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
  *   @author  <a href="dev.singha93@gmail.com">Devendra singhal</a> 
+ *   @author  <a href="jaivir@iitk.ac.in">Jaivir singh</a> 
+ *   @author  <a href="palseema30@gmail.com">Manorama Pal</a> 
  */
 
 public class SecurityString extends  SecureScreen{               
@@ -81,12 +83,12 @@ public class SecurityString extends  SecureScreen{
 			context.put("tdcolor",count);
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);
+			String quizlstid=pp.getString("quizlist","");
+			context.put("quizlist",quizlstid);
 			String studentLoginName=pp.getString("studentLoginName","");
 			context.put("studentLoginName",studentLoginName);
-			ErrorDumpUtil.ErrorLog("inide Security String quiz id is "+quizID+" : "+studentLoginName);
 			
 			String flag=pp.getString("flag","");
-			ErrorDumpUtil.ErrorLog("inide Security String flag is "+flag);
 			context.put("flag",flag);
 			String Role = (String)user.getTemp("role");
 			/**
@@ -101,44 +103,53 @@ public class SecurityString extends  SecureScreen{
 
 			int g_id=GroupUtil.getGID(courseid);
 			Vector userList2=UserGroupRoleUtil.getUDetail(g_id,3);
-				String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-				String quizPath="/Quiz.xml"; 
-				File file=new File(filePath+"/"+quizPath);
-				Vector quizList=new Vector();
-				Vector instructorQuizList=new Vector();
-				QuizMetaDataXmlReader quizmetadata=null;
-				if(!file.exists()){
+			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+			String quizPath="/Quiz.xml"; 
+			File file=new File(filePath+"/"+quizPath);
+			Vector quizList=new Vector();
+			Vector instructorQuizList=new Vector();
+			QuizMetaDataXmlReader quizmetadata=null;
+			if(!file.exists()){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToshowSecurity",LangFile));
+				return;
+			}
+			else{
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
+				quizList=quizmetadata.getQuesBanklist_Detail();
+				if(quizList!=null && quizList.size()!=0){
+					for(int i=0; i<quizList.size();i++){
+						String quizid = ((QuizFileEntry) quizList.elementAt(i)).getQuizID();
+						String userName = quizid.substring((quizid.lastIndexOf("_")+1),(quizid.length()));
+						if((userName.trim()).equalsIgnoreCase(uname.trim())){
+							instructorQuizList.add((QuizFileEntry)quizList.get(i));
+						}
+					}
+					context.put("quizList",instructorQuizList);
+				}
+				else{
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToshowSecurity",LangFile));
 					return;
 				}
-				else{
-						quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
-						quizList=quizmetadata.getQuesBanklist_Detail();
-						if(quizList!=null && quizList.size()!=0){
-							for(int i=0; i<quizList.size();i++){
-								String quizid = ((QuizFileEntry) quizList.elementAt(i)).getQuizID();
-								ErrorDumpUtil.ErrorLog("quiz id is: "+quizid);
-								String userName = quizid.substring((quizid.lastIndexOf("_")+1),(quizid.length()));
-								ErrorDumpUtil.ErrorLog("selected quiz id :"+quizid);
-								if((userName.trim()).equalsIgnoreCase(uname.trim())){
-									ErrorDumpUtil.ErrorLog("inside true username == uname "+userName);
-									instructorQuizList.add((QuizFileEntry)quizList.get(i));
-								}
-							}
-							context.put("quizList",instructorQuizList);
+				if(!quizlstid.equals("")){
+					String createquiz=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizlstid);
+					String securityFilePath=quizlstid+"_Security.xml";
+					quizmetadata=new QuizMetaDataXmlReader(createquiz+"/"+securityFilePath+"/");
+                               		Vector  collect=quizmetadata.getSecurityDetail();
+					context.put("securitydetail",collect);
+					//get QuizName------------------
+					String newquizname="";
+					if(quizList!=null && quizList.size()!=0){
+                                        	for(int i=0; i<quizList.size();i++){
+                                                	String quizid = ((QuizFileEntry) quizList.elementAt(i)).getQuizID();
+                                               	 	String quizname =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
+							if(quizid.equals(quizlstid))
+								newquizname=quizname;
 						}
-						else{
-							data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToshowSecurity",LangFile));
-							return;
-						}
-
-					String createquiz=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);	
-					context.put("userList2",userList2);									
+						context.put("quizname",newquizname);
+					}
+				}									
 			}
-				
-				
-			
-		}
+		}//try
 		catch(Exception e) {
 			ErrorDumpUtil.ErrorLog("The exception in SecurityString class ::"+e);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));

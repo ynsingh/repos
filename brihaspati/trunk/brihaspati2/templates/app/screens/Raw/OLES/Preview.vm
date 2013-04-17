@@ -3,7 +3,9 @@
  * Copyright (c) 2010 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
- * Contributors: Members of MHRD Project DEI Agra
+ * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:palseema@rediffmail.com ">Manorama Pal</a>
+ * Contributors: Members of MHRD Project DEI Agra, IITK.
 *#
 
 $page.setTitle("Quiz Preview")
@@ -16,7 +18,7 @@ $page.setBgColor("bgcolor")
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 
 #set($lang = $data.getUser().getTemp("lang").toString())
-## Creating the links for help regarding FAQ 
+## Creating the links for help regarding Quiz 
 <table width="100%">
 <tr>
 ##<td align=left> <font face="$ui.sansSerifFonts">$!data.getMessage()</font> </td>
@@ -108,16 +110,16 @@ $page.setBgColor("bgcolor")
 		        <font size=4> <b>  $brih_answer    </b></font>
 	        </td>
 	        <td>
-			<table align=center border=0 cellpadding="5" width=100% >	
-				#set($a="")
-				#set($b="")
-				#set($c="")
+			<table align=center border=0 cellpadding="5" width=100% >
+				#set($a="")			
+				#set($k="")			
+				#set($c="")			
 				#set($d="")			
 				#if($finalQ.getQuestionType() == "mcq")
 					#if($finalQ.getAnswer()=="$brih_a")
 						#set($a="checked")
 					#elseif($finalQ.getAnswer()=="$brih_b")
-						#set($b="checked")
+						#set($k="checked")
 					#elseif($finalQ.getAnswer()=="$brih_c")
 						#set($c="checked")
 					#else
@@ -129,7 +131,7 @@ $page.setBgColor("bgcolor")
 							$!finalQ.getOption1()	
 		       		        	</td>
 						<td align=left colspan=2 ><b> $brih_b </b>
-							<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $b disabled>
+							<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $k disabled>
 							$!finalQ.getOption2()
 						</td>
 					</tr>
@@ -147,9 +149,9 @@ $page.setBgColor("bgcolor")
 				#if($finalQ.getQuestionType() == "tft")
 					#if($finalQ.getAnswer()=="true")
 						#set($a="checked")
-						#set($b="")
+						#set($k="")
 					#elseif($finalQ.getAnswer()=="false")
-						#set($b="checked")
+						#set($k="checked")
 						#set($a="")
 					#end
 					<tr>	
@@ -158,7 +160,7 @@ $page.setBgColor("bgcolor")
 							$brih_true	
 						</td>
 						<td align=left colspan=2 >
-							<input type="RADIO" name="$velocityCount" value="B"  $!b disabled>									
+							<input type="RADIO" name="$velocityCount" value="B"  $!k disabled>									
 							$brih_false
 						</td>	
 					</tr>

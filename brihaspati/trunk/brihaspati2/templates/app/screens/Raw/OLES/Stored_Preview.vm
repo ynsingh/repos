@@ -111,14 +111,14 @@ $page.setBgColor("bgcolor")
 	        <td>
 			<table align=center border=0 cellpadding="5" width=100% >	
 				#set($a="")
-				#set($b="")
+				#set($k="")
 				#set($c="")
 				#set($d="")			
 				#if($finalQ.getQuestionType() == "mcq")
 					#if($finalQ.getAnswer()=="$brih_a")
 						#set($a="checked")
 					#elseif($finalQ.getAnswer()=="$brih_b")
-						#set($b="checked")
+						#set($k="checked")
 					#elseif($finalQ.getAnswer()=="$brih_c")
 						#set($c="checked")
 					#else
@@ -130,7 +130,7 @@ $page.setBgColor("bgcolor")
 						$!finalQ.getOption1()	
         	      	        	</td>
 					<td align=left colspan=2 ><b> $brih_b </b>
-						<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $b disabled>
+						<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $k disabled>
 						$!finalQ.getOption2()
 					</td>
 				</tr>
@@ -148,9 +148,9 @@ $page.setBgColor("bgcolor")
 				#if($finalQ.getQuestionType() == "tft")
 					#if($finalQ.getAnswer()=="true")
 						#set($a="checked")
-						#set($b="")
+						#set($k="")
 					#elseif($finalQ.getAnswer()=="false")
-						#set($b="checked")
+						#set($k="checked")
 						#set($a="")
 					#end
 				<tr>	
@@ -159,7 +159,7 @@ $page.setBgColor("bgcolor")
 						$brih_true	
 					</td>
 					<td align=left colspan=2 >
-						<input type="RADIO" name="$velocityCount" value="B" $!b disabled>							
+						<input type="RADIO" name="$velocityCount" value="B" $!k disabled>							
 						$brih_false
 					</td>	
 				</tr>

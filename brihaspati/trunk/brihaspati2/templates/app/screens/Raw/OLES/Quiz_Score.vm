@@ -75,7 +75,7 @@ $page.setBgColor($ui.bgcolor)
 	</tr>		
 	<tr bgcolor="$ui.menuColor">
 		<td width=20% colspan=2><b> $brih_score </td>
-		<td>$!studentMarks </td>
+		<td><b>$!studentMarks</b> </td>
 	</tr>
 	<tr>
 		<td width=20% colspan=2><b>$brih_min Passing Marks</td>
@@ -83,7 +83,7 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 		<td width=20% colspan=2><b> $brih_percentage (%) </td>
-                <td>$!percentageScore %</td>
+                <td><b>$!percentageScore %</b></td>
 	</tr>
 	<tr>
 		<td width=20% colspan=2><B>$brih_result</td>

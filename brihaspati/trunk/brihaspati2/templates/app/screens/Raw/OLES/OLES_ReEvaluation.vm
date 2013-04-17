@@ -20,7 +20,7 @@ $page.setBgColor($ui.bgcolor)
 		<font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("Index.vm")>Home</a> |
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system< </a>| $brih_reevaluate    
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>$online_online $brih_examat $brih_system </a>| $brih_reevaluate    
         </b></td> </tr>    
 </table>
 
@@ -62,19 +62,19 @@ $page.setBgColor($ui.bgcolor)
 		#if($tdcolor != "5")
 			<td>
         #elseif($tdcolor == "5")
-            <td bgcolor="#AFDCEC"
+            <td bgcolor="#AFDCEC">
 		#end
 		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
 		#if($tdcolor != "6")
 			<td>
 		#elseif($tdcolor == "6")
-           	<td bgcolor="#AFDCEC>
+           	<td bgcolor="#AFDCEC">
         #end
       	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security</I></b></a></td>
       	#if($tdcolor != "7")
 			<td>
 		#elseif($tdcolor == "7")
-           	<td bgcolor="#AFDCEC>
+           	<td bgcolor="#AFDCEC">
         #end
        	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 	</tr>

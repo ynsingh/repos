@@ -3,7 +3,9 @@
  * Copyright (c) 2010 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
- * Contributors: Members of MHRD Project, DEI Agra
+ * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:palseema@rediffmail.com ">Manorama Pal</a>
+ * Contributors: Members of MHRD Project, DEI Agra, IITK
 *#
 $page.setTitle("Quiz Management")
 $page.setBgColor($ui.bgcolor)
@@ -200,7 +202,8 @@ $!data.getMessage()
 
 	function checkField(frm,field){
 		if(frm.deleteFileNames.value!=""){
-			if(confirm('Do you want to delete all the Quizzes')){
+			if(confirm('Do you want to delete the selected  Quiz')){
+			//if(confirm('Do you want to delete all the Quizzes')){
 	        		frm.actionName.value=field.name;
         			frm.submit();
         		}

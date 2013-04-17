@@ -62,35 +62,33 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 public class Random_Quiz extends SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
 		/**
-        *Retrieve the Parameters by using the Parameter Parser
-        *Get the UserName and put it in the context
-        *for template use
-        */
-        ParameterParser pp=data.getParameters();
-	String lang=data.getUser().getTemp("LangFile").toString();
-        try{
-        	User user=data.getUser();
+        	*Retrieve the Parameters by using the Parameter Parser
+        	*Get the UserName and put it in the context
+        	*for template use
+        	*/
+        	ParameterParser pp=data.getParameters();
+		String lang=data.getUser().getTemp("LangFile").toString();
+        	try{
+        		User user=data.getUser();
+        		String mode =pp.getString("mode"," ");
+        		String quizMode =pp.getString("quizMode"," ");        			
+        		String type = pp.getString("type","");
+        		String count = pp.getString("count","");
+        		String courseID=(String)user.getTemp("course_id");
+        		String quizDetail="";
         	
-        	String mode =pp.getString("mode"," ");
-        	String quizMode =pp.getString("quizMode"," ");        			
-        	String type = pp.getString("type","");
-        	String count = pp.getString("count","");
-        	String courseID=(String)user.getTemp("course_id");
-        	String quizDetail="";
-        	
-        	context.put("tdcolor",count);
-        	context.put("course",(String)user.getTemp("course_name"));
+        		context.put("tdcolor",count);
+        		context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
 			context.put("quizMode",quizMode);
 			context.put("type",type);
 			context.put("courseID",courseID);
-			
 			String username=user.getName();
-            String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseID+"/");
-            String quizPath="/QBtopiclist.xml";
+            		String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseID+"/");
+            		String quizPath="/QBtopiclist.xml";
             
-            File file=new File(filePath+"/"+quizPath);
-            Vector topicList=new Vector();
+            		File file=new File(filePath+"/"+quizPath);
+            		Vector topicList=new Vector();
 			QuizMetaDataXmlReader topipcmetadata=null;
 			
 			if(file.exists()){
@@ -100,7 +98,6 @@ public class Random_Quiz extends SecureScreen{
 						context.put("topicList",topicList);
 					}	            
 			}
-			ErrorDumpUtil.ErrorLog("The mode is::"+mode);
 			if(mode.equalsIgnoreCase("update")){
 				quizDetail = pp.getString("quizDetail","");
 				String quizName = pp.getString("quizName","");
@@ -145,12 +142,10 @@ public class Random_Quiz extends SecureScreen{
 				int eid=0;
 				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
-
-			
-        }
-        catch(Exception e) {
-        	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
-        	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));
-        }
-    }
+        	}
+        	catch(Exception e) {
+        		ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
+        		data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));
+        	}
+    	}
 }

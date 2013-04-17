@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)OLES_Quiz.java	
  *
- *  Copyright (c) 2010 DEI Agra. 
+ *  Copyright (c) 2010,2012,2013 DEI Agra, IITK. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -32,40 +32,48 @@ package org.iitk.brihaspati.modules.actions;
  */
 //JDK
 import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.util.*;
+//import java.io.FileReader;
+//import java.io.BufferedReader;
+import java.util.Vector;
+import java.util.HashMap;
 import java.util.Calendar;
+import java.util.Random;
+import java.util.StringTokenizer;
+import java.util.Properties;
 import java.text.SimpleDateFormat;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.velocity.context.Context;
-import org.apache.commons.fileupload.FileItem;
+//import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati
-import org.iitk.brihaspati.modules.utils.CourseUserDetail;
-import org.iitk.brihaspati.modules.utils.CourseUtil;
-import org.iitk.brihaspati.modules.utils.UserUtil;
+//import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+//import org.iitk.brihaspati.modules.utils.CourseUtil;
+//import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.apache.turbine.modules.screens.VelocityScreen;
+//import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.XmlData;
+//import org.iitk.brihaspati.modules.utils.MailNotification;
+//import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
-import java.util.Random;
+//import org.iitk.brihaspati.modules.utils.GroupUtil;
+//import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.OnlineExamSystemMail;
 
 /**
  * This Action class for Generate quiz  module of online examination system 
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a> 
- * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a> 
+ * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+ * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28jan2013 		 
  */
 public class OLES_Quiz extends SecureAction{
 
@@ -119,15 +127,14 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
 
-
 	/** This method is responsible for uploading quiz setting in a xml file
 	 * @param data RunData instance
 	 * @param context Context instance
 	 * @exception Exception, a generic exception
 	 */
 	public void doUploadQuiz(RunData data, Context context){
-		ErrorDumpUtil.ErrorLog("inside action");
-		try {	        	
+		try{
+			/**Get parameter from template through Parameter Parser*/	        	
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();			
@@ -140,29 +147,43 @@ public class OLES_Quiz extends SecureAction{
 			String maxTime=pp.getString("maxTime","")+":00";
 			String noQuestion=pp.getString("numberQuestion","");
 			String allow = pp.getString("allow","");
-
+			/**get path where the quiz stored */
 			String filepath=CoursePath+"/"+crsId+"/Exam/";
 			File ff=new File(filepath);
+			/**Check for the existence of directory*/
 			if(!ff.exists())
 				ff.mkdirs();
 			String filepath1=CoursePath+"/"+crsId+"/Exam/"+quizID;
 			File ff1=new File(filepath1);
+			/**Check for the existence of directory*/
 			if(!ff1.exists())
 				ff1.mkdirs();
+			/**get path where the quiz setting and quiz question file stored */
 			String quizQuestionPath="/"+quizID+"_Questions.xml";
 			String quizQuestionSettingPath="/"+quizID+"_QuestionSetting.xml";
 			File QuizQuestionxmls=new File(filepath1+"/"+quizQuestionPath);
 			String QuizQuestionxmlsPath =  QuizQuestionxmls.getAbsolutePath();
 			String QuizQuestionSettingxmlsPath =  filepath1+"/"+quizQuestionSettingPath;
-			String quizPath="/Quiz.xml";				
+			String quizPath="Quiz.xml";				
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
-			/*
-			 * At the time of quiz setup, status is saved to "INA"
+
+			/** At the time of quiz setup, status is saved to "INA"
 			 * when quiz is created (either randomly/one by one) status is changed to "ACT"
 			 */
+			
 			String status="INA";
 			xmlwriteQuizlist(filepath,quizID,quizName,maxMarks,maxTime,noQuestion,status,Cur_date,quizPath,data,context,QuizQuestionxmlsPath,QuizQuestionSettingxmlsPath);
-		}catch(Exception e){
+			/** This  part is responsible for sending mail to student to inform about the Practice Quiz
+			  *@see OnlineExamSystemMail (method:SendMail) in util
+			  */
+			if(allow.equals("yes")){
+				String str=OnlineExamSystemMail.SendMail(crsId,username,"practice","","","","",LangFile);
+				if(str.equals("Success"))
+				str=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                        	data.addMessage(str);
+			}
+		}//try
+		catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:doUploadQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
 		}
@@ -186,6 +207,7 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void xmlwriteQuizlist(String filepath,String quizID,String quizName,String maxMarks,String maxTime,String noQuestion,String status,String CreationDate,String quizPath,RunData data,Context context, String QuizQuestionxmlsPath, String QuizQuestionSettingxmlsPath){
 		try{
+			/** get LangFile for multingual changes*/
 			ParameterParser pp=data.getParameters();
 			LangFile=data.getUser().getTemp("LangFile").toString();
 			String allow = pp.getString("allow","");
@@ -194,7 +216,6 @@ public class OLES_Quiz extends SecureAction{
 			File Quizxmls=new File(filepath+"/"+quizPath);
 			File QuizQuestionxmls=new File(QuizQuestionxmlsPath);
 			String Filename = QuizQuestionxmls.getName();
-			ErrorDumpUtil.ErrorLog("\n file name! "+Filename);
 			File QuizQuestionSettingxmls=new File(QuizQuestionSettingxmlsPath);
 			QuizMetaDataXmlReader quizMetaData=null;
 			/**
@@ -203,6 +224,7 @@ public class OLES_Quiz extends SecureAction{
 			 */
 			if(!Quizxmls.exists()) {
 				QuizMetaDataXmlWriter.OLESRootOnly(Quizxmls.getAbsolutePath());
+				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
 			}
 			/**
 			 *Checking for  the existing quiz setting
@@ -221,10 +243,20 @@ public class OLES_Quiz extends SecureAction{
 					}
 				}
 			}
-			if(found==false){                     
+			if(found==false){                   
 				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
-				QuizMetaDataXmlWriter.appendQues_Banklist(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,allow);
+				/**This part read existing xml (Quiz.xml)file and write new xml file with old values
+				 *@see QuizMetaDataXmlWriter (method:QuizXml) in utils
+				 *modify by Jaivir and Seema
+        			 */
+				xmlWriter=QuizMetaDataXmlWriter.QuizXml(filepath,quizPath);
+				//-----------------------------------------------------------------
+				QuizMetaDataXmlWriter.appendQues_Banklist(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,CreationDate,"",allow);
 				xmlWriter.writeXmlFile();
+				/**
+                         	*Checking for  xml file presence and create blank xml for quiz setting and quiz questions xml
+                         	*@see QuizMetaDataXmlWriter in Util.
+                         	*/
 				if(!QuizQuestionxmls.exists()) {
 					QuizMetaDataXmlWriter.OLESRootOnly(QuizQuestionxmls.getAbsolutePath());
 				}
@@ -248,6 +280,9 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void doUpdateQuiz(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
@@ -266,7 +301,6 @@ public class OLES_Quiz extends SecureAction{
 			String noQuestion=pp.getString("numberQuestion","");
 			String mode=pp.getString("mode","");
 			String quizMode=pp.getString("quizMode","");
-			ErrorDumpUtil.ErrorLog("mode,quizMode is"+"::"+mode+"::"+quizMode);
 			String status = "ACT";
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
 			String modifiedDate = Cur_date;
@@ -278,6 +312,8 @@ public class OLES_Quiz extends SecureAction{
 			Vector str=new Vector();
 			HashMap insertedQuestionHashMap=new HashMap();
 			String deltype = pp.getString("delType","");
+
+			/**get path where the Exam directory,quiz setting and quiz question file stored */
 			String filepath=CoursePath+"/"+crsId+"/Exam/";
 			String filepath1=CoursePath+"/"+crsId+"/Exam/"+quizID+"/";
 			String quizPath="/Quiz.xml";
@@ -285,15 +321,17 @@ public class OLES_Quiz extends SecureAction{
 			String tempQuizQuestionPath="/"+quizID+"_Temp_Questions.xml";
 			String quizQuestionSettingPath="/"+quizID+"_QuestionSetting.xml";
 			String fileName = filepath+quizQuestionPath;
+			/** read the xml file and put the all values in vector (collect)
+			 * get total counting and marks counting of already inserted questions put in hashmap
+         		 * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
+			 */
 			QuizMetaDataXmlReader quizmetadata=null;
 			quizmetadata=new QuizMetaDataXmlReader(filepath+quizPath);
 			collect=quizmetadata.getQuesBanklist_Detail();
-
 			quizmetadata=new QuizMetaDataXmlReader(filepath1+quizQuestionSettingPath);
 			insertedQuestionHashMap=quizmetadata.getQuizQuestionNoMarks(quizmetadata,quizID);
 			int insertedMarksQuiz =((Integer)insertedQuestionHashMap.get("marks"));
 			int insertedQuestionQuiz = ((Integer)insertedQuestionHashMap.get("noQuestion"));
-
 			if(collect!=null){
 				for(int i=0;i<collect.size();i++){
 					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
@@ -302,7 +340,11 @@ public class OLES_Quiz extends SecureAction{
 						break;
 					}
 				}
-				if(deltype.equals("quizDel")){ 
+				/**gets all distinct quizID,userID and score from score.xml file
+				 *check for quiz submitted by any student or not
+				 *@see QuizMetaDataXmlReader (reader of score.xml) in Util
+				 */
+				if(deltype.equals("quizDel")){
 					String quizid;
 					File scoreFile = new File(filepath+"/score.xml");
 					Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
@@ -313,7 +355,6 @@ public class OLES_Quiz extends SecureAction{
 							for(QuizFileEntry a:scoreVector){
 								quizid = a.getQuizID();
 								if(quizid.equalsIgnoreCase(quizID)){
-									ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
 									data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
 									return;
 								}
@@ -321,35 +362,30 @@ public class OLES_Quiz extends SecureAction{
 						}
 					}
 					xmlWriter=new XmlWriter(filepath+"/"+quizPath);
+					/**This part read existing xml (Quiz.xml)file and write new xml file with old values
+                                         *@see QuizMetaDataXmlWriter (method:QuizXml) in utils
+					 *modified by Jaivir/Manorama
+					 */
+					xmlWriter=QuizMetaDataXmlWriter.QuizXml(filepath,quizPath);
+					//-----------------------------------------------------------
 					xmlWriter.removeElement("Quiz",seq); 
 					File file=new File(filepath1);
 					success = deleteDir(file);
-//					File file=new File(filepath1+"/"+quizQuestionPath);
-//					File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
-//					File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
-//					if(!file.exists()){
-//						return;
-//					}
-//					else if(!fileQuestionSetting.exists()){
-//						file.delete();
-//						return;
-//					} 
-//					else {
-//						file.delete();
-////						fileQuestionSetting.delete();						
-//					}
-//					if(fileTemp.exists()){
-//						fileTemp.delete();
-//					}
 					xmlWriter.writeXmlFile();
 					data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
 				}
 				else{
 					if(insertedQuestionQuiz<=Integer.parseInt(noQuestion)){
 						if(insertedMarksQuiz<=Integer.parseInt(maxMarks)){
-							xmlWriter=QuizMetaDataXmlWriter.Update_QuizList(filepath,quizPath,seq,quizID,maxMarks,maxTime,noQuestion,modifiedDate);
-							xmlWriter.writeXmlFile();
-								data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));
+							//xmlWriter=QuizMetaDataXmlWriter.Update_QuizList(filepath,quizPath,seq,quizID,maxMarks,maxTime,noQuestion,modifiedDate);
+							/**update file element in existing xml file with sequence number
+							 *read existing xml (Quiz.xml)file and write new xml file with old values also updated values
+                                         		 *@see QuizMetaDataXmlWriter (method:QuizXml) in utils
+                                         		 *modified by Jaivir/Manorama
+							 */
+							UpdateQuizSetup(filepath,quizID,maxMarks,maxTime,noQuestion,modifiedDate);
+							//xmlWriter.writeXmlFile();
+							data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));
 						}
 						else{
 							data.setMessage(MultilingualUtil.ConvertedString("brih_quizupdate",LangFile)+" "+insertedMarksQuiz+" "+MultilingualUtil.ConvertedString("brih_insertedmarksmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_maxmarks",LangFile));														
@@ -373,21 +409,18 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void generateQuiz(RunData data, Context context){
 		try{
+			/** get the quizname from the template
+			 *check the practice quiz status
+		 	 * set template according to the quiz status(allow value yes or no)
+			 */
 			String quizName=data.getParameters().getString("quizName","");
 			context.put("quizName",quizName);			
 			String[] temp = quizName.split(",");
 			String allowPractice=temp[3];
-			//			context.put("quizID",quizID);
-			//			String maxMarks=temp[1];		
-			ErrorDumpUtil.ErrorLog("quiz id from drop down "+allowPractice);
 			if(allowPractice.equalsIgnoreCase("yes")){
 				context.put("type","createQuiz");
-				ErrorDumpUtil.ErrorLog("inside data set screen template");
 				data.setScreenTemplate("call,OLES,Practice_Quiz.vm");				
 			}			
-//			context.put("type","createQuiz");		
-			ErrorDumpUtil.ErrorLog("quiz id from drop down "+quizName);
-				
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:generateQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -401,6 +434,10 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void randomQuiz(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
+			ParameterParser pp=data.getParameters();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseid=data.getParameters().getString("courseID","");
 			String username=data.getUser().getName();
@@ -410,20 +447,22 @@ public class OLES_Quiz extends SecureAction{
 			String mode=data.getParameters().getString("mode","");
 			String quizMode=data.getParameters().getString("quizMode","");
 			String topicName = data.getParameters().getString("topicName","");
-			ErrorDumpUtil.ErrorLog("\n topic name is:"+topicName);
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
-
+	
+			/**get the count parameter of tab colour
+			 *put in the context for use in template
+			 */
 			String count=data.getParameters().getString("count","");
-			ErrorDumpUtil.ErrorLog("cont in random Quiz inside OLES_Quiz.java:");
 			context.put("tdcolor",count);
 
 			String status = "ACT";
-			String quizStatus="ACT";
-			ErrorDumpUtil.ErrorLog("\n mode in oles quiz is:"+mode);
+			//String quizStatus="ACT";
+			/** get the parameter from the template
+			 *set the value of level of question(easy,medium and hard)
+			 */
 			
 			String page = data.getParameters().getString("page","");
-			ParameterParser pp=data.getParameters();
 			String numberQuestion="";
 			if(mode.equals("one")|quizMode.equals("one")){
 				numberQuestion = "1";
@@ -438,7 +477,7 @@ public class OLES_Quiz extends SecureAction{
 				numberQuestion = pp.getString("numberQuestion","");
 
 			String marksQuestion = pp.getString("marksQuestion","");
-
+			/**get path where the Exam directory,quiz setting and quiz question file stored */
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String questionSettingPath=quizID+"_QuestionSetting.xml";
 			String questionsPath=quizID+"_Questions.xml";
@@ -448,17 +487,22 @@ public class OLES_Quiz extends SecureAction{
 			if(!newFile.exists())
 				context.put("isFile","");
 			else {
+				/** read the xml file and put vector hashmap(hm)
+                         	 * get total counting and marks counting of already inserted questions
+                         	 * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
+                         	 * @return hashmap
+				 */	
 				context.put("isFile","exist");
 				QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 				HashMap hm = new HashMap();
 				hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID);
-				ErrorDumpUtil.ErrorLog("hash Map in Random Quiz inside OLESQuiz"+hm.size());
 				int mark =((Integer)hm.get("marks"));
 				int enteredQuestions = ((Integer)hm.get("noQuestion"));
 				if(enteredQuestions < Integer.parseInt(maxnoQuestions) | mark < Integer.parseInt(maxMarks)){
 					if(enteredQuestions==0){
 						if(Integer.parseInt(numberQuestion)<=Integer.parseInt(maxnoQuestions)){
 							if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks))
+								/*part responsible for inserting quiz_questions setting in a xml file*/
 								insertQuestionRandomly(xmlWriter,newFilePath,numberQuestion,topicName,typeName,levelName,marksQuestion,status,data,username,courseid,questionSettingPath,questionsPath);
 							else
 										data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
@@ -498,7 +542,10 @@ public class OLES_Quiz extends SecureAction{
 	public String[] insertQuestionRandomly(XmlWriter xmlWriter, String newFilePath, String numberQuestion,
 			String topicName, String typeName, String levelName, String marksQuestion, String status, RunData data, String username, String courseid, String questionSettingPath, String questionsPath){
 		String variable[]=new String[4];
-		try{ 
+		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String mode=data.getParameters().getString("mode","");
 			String quizMode=data.getParameters().getString("quizMode","");
@@ -517,6 +564,10 @@ public class OLES_Quiz extends SecureAction{
 			String option2="";
 			String option3="";
 			String option4="";
+
+			/**check for insert question one bye one mode
+			 * and get parameter according to the type of question(mcq, tft, sat,lat)
+			 */
 			if(mode.equals("one")|quizMode.equals("one")){
 				questionID=data.getParameters().getString("questionID","");
 				question=data.getParameters().getString("question","");
@@ -529,7 +580,7 @@ public class OLES_Quiz extends SecureAction{
 				}    			
 			}
 
-			
+				
 			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizXml="Quiz.xml";
 			String startDate=null;
@@ -541,34 +592,46 @@ public class OLES_Quiz extends SecureAction{
 			String currentDate=amt[0];
 			String currentTime=amt[1];
 			
-			ErrorDumpUtil.ErrorLog("inside insertQuestion Rendomly method CurrentDate and time are:"+currentDate+currentTime);
 			Vector dateCollect=new Vector();
 			File file1=new File(quizXmlPath+"/"+quizXml);
 			QuizMetaDataXmlReader topipcmetadata=null;
 			if(file1.exists()){
+				/** read the xml file and put the all values in vector (datecollect)
+				 *get quiz detail on the basis of the passed quizID
+				 *@see xmlReader QuizMetaDataXmlReader in Util
+                         	 */
 				topipcmetadata=new QuizMetaDataXmlReader(quizXmlPath+"/"+quizXml);
 				dateCollect=topipcmetadata.getQuiz_Detail(quizID);
 					if(dateCollect!=null && dateCollect.size()!=0){
 						for(int i=0;i<dateCollect.size();i++){
 							startDate=((QuizFileEntry) dateCollect.elementAt(i)).getExamDate();
 							startTime=((QuizFileEntry) dateCollect.elementAt(i)).getStartTime();
-							ErrorDumpUtil.ErrorLog("stattDate is "+ startDate);
-							ErrorDumpUtil.ErrorLog("Start Time is "+ startTime);
 						}
 					}
 			}
-
+			/**get question Bank file path where the questions stored*/
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
-			ErrorDumpUtil.ErrorLog("ff file path :"+ff.getPath());
 			if(!ff.exists())
 				variable[0] = "empty";
 			else{
+				/**read the xml file and put the all values in vector (questionVector)
+				 * gets all questions from question bank for random quiz on the basis of the passed QuestionType(mcq,tft,sat,lat)
+				 *@see xmlReader QuizMetaDataXmlReader in Util
+				 */
 				QuizMetaDataXmlReader questionBankXmlReader;         
 				questionBankXmlReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankQuestionsPath);              
-				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);             
+				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);
+				/**check for the availability of question in question bank*/             
 				if(questionVector!=null){
+					/**read the xml file and get id stored in QuizSettings.xml
+					 *@see xmlReader QuizMetaDataXmlReader in Util
+					 */
 					questionBankXmlReader=new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 					String id = questionBankXmlReader.getID_RandomQuiz();
+					/**read the xml file and gets all inserted questions for random quiz
+					 *@see xmlReader QuizMetaDataXmlReader in Util
+					 *@return String[]
+					 */
 					insertedQuestionVector = questionBankXmlReader.getQuizQuestions(questionBankQuestionsPath,numberQuestion,questionVector.size());                    
 					if(insertedQuestionVector[0].equalsIgnoreCase("a"))
 						variable[0]="empty";
@@ -585,15 +648,33 @@ public class OLES_Quiz extends SecureAction{
 							variable[2]="0";
 							variable[3] = ""+String.valueOf(questionVector.size());
 						}
+						/**append element in existing xml (quizid_questionSetting.xml) file
+						 *@see QuizMetaDataXmlWriter in Util
+						 *write xml in the given path 
+						 *@see XmlWriter (method: writeXmlFile()) in Util
+						 */	
 						xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
 						QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
 						xmlWriter.writeXmlFile();
+						/**check for insert question one bye one mode*/
 						if(mode.equals("one")|quizMode.equals("one")){
+
+							/**read existing xml file(quizID__Questions.xml) and write new xml file with old values
+							 *append element in existing xml (quizid_questions.xml) file
+                                                         *@see QuizMetaDataXmlWriter in Util
+                                                 	 *write xml in the given path 
+                                                 	 *@see XmlWriter (method: writeXmlFile()) in Util
+							 *modified by Jaivir/Manorama
+                                                 	 */
 							xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
+							xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(newFilePath,questionsPath,typeName);
 							QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
 							xmlWriter.writeXmlFile();
 							variable[0]="success";
 						}
+						/**This method is responsible for updating quiz setting after first time question setting insertion
+         					 * status is set to ACT and mode is random / one
+						 */
 						updateQuizRandomly(quizID, quizStatus, courseid,mode);
 					}
 					else{
@@ -601,11 +682,29 @@ public class OLES_Quiz extends SecureAction{
 						String questionNo = String.valueOf(questionVector.size()-Integer.parseInt(insertedQuestionVector[0]));
 						if(Integer.parseInt(numberQuestion)<=Integer.parseInt(questionNo)){
 							variable[0]="insert";
+							/**read existing xml file(quizID_QuestionSetting.xml) and write new xml file with old values
+							 *append element in existing xml (quizid_questionSetting.xml) file
+							 **@see QuizMetaDataXmlWriter in Util
+							 *write xml in the given path 
+                                                         *@see XmlWriter (method: writeXmlFile()) in Util
+                                                         *modified by Jaivir/Manorama
+                                                         */
 							xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+							xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(newFilePath,questionSettingPath);
 							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,numberQuestion,id);
-							xmlWriter.writeXmlFile(); 
+							xmlWriter.writeXmlFile();
+							/**check for insert question one bye one mode*/ 
 							if(mode.equals("one")|quizMode.equals("one")){
+
+								/**read existing xml file(quizID__Questions.xml) and write new xml file with old values
+                                                         	 *append element in existing xml (quizid_questions.xml) file
+                                                         	 *@see QuizMetaDataXmlWriter in Util
+                                                         	 *write xml in the given path 
+                                                         	 *@see XmlWriter (method: writeXmlFile()) in Util
+                                                         	 *modified by Jaivir/Manorama
+								 */
 								xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
+								xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(newFilePath,questionsPath,typeName);
 								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
 								xmlWriter.writeXmlFile();
 								variable[0]="success";
@@ -616,11 +715,28 @@ public class OLES_Quiz extends SecureAction{
 							variable[0]="dont insert";
 						else{
 							variable[0]="insert";
+							/**read existing xml file(quizID_QuestionSetting.xml) and write new xml file with old values
+                                                         *append element in existing xml (quizid_questionSetting.xml) file
+                                                         **@see QuizMetaDataXmlWriter in Util
+                                                         *write xml in the given path 
+                                                         *@see XmlWriter (method: writeXmlFile()) in Util
+                                                         *modified by Jaivir/Manorama
+							 */
 							xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+                                                        xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(newFilePath,questionSettingPath);
 							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
 							xmlWriter.writeXmlFile();
+							/**check for insert question one bye one mode*/
 							if(mode.equals("one")|quizMode.equals("one")){
+								/**read existing xml file(quizID__Questions.xml) and write new xml file with old values
+                                                                 *append element in existing xml (quizid_questions.xml) file
+                                                                 *@see QuizMetaDataXmlWriter in Util
+                                                                 *write xml in the given path 
+                                                                 *@see XmlWriter (method: writeXmlFile()) in Util
+                                                                 *modified by Jaivir/Manorama
+                                                                 */
 								xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
+								xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(newFilePath,questionsPath,typeName);
 								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
 								xmlWriter.writeXmlFile();
 								variable[0]="success";
@@ -633,7 +749,12 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else
 					variable[0]="empty";
-			}        
+			}
+			/**set message according to the diffrent cases(empty,success,firstInsert,insert)
+			 * and according to the mode random/one by one
+			 * and set the updates messages also
+			 *@see MultilingualUtil in Util
+			 */        
 			if(variable[0].equalsIgnoreCase("empty"))
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile));
 			else if(variable[0].equalsIgnoreCase("success")){
@@ -646,42 +767,30 @@ public class OLES_Quiz extends SecureAction{
 				if(mode.equals("random")|quizMode.equals("random")){
 					if(startDate!=null && startTime!=null){
 						if((currentDate.compareTo(startDate)==-1) && (currentTime.compareTo(startTime)==-1 ||  currentTime.compareTo(startTime)==0 || currentTime.compareTo(startTime)==1)){
-							data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-									" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-									" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile)+" "+MultilingualUtil.ConvertedString("brih_updateAnnouncequizSave",LangFile));
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile)+" "+MultilingualUtil.ConvertedString("brih_updateAnnouncequizSave",LangFile));
 						}
 						else if((currentDate.compareTo(startDate)==0) && (currentTime.compareTo(startTime)==-1 ||  currentTime.compareTo(startTime)==0)){
-								data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-										" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-										" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile)+" "+" "+MultilingualUtil.ConvertedString("brih_updateAnnouncequizSave",LangFile));
-							}
+						data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+	" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile)+" "+" "+MultilingualUtil.ConvertedString("brih_updateAnnouncequizSave",LangFile));
+						}
+						else{
+						data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+						}
+				 	}
 					else{
-						data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-								" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-								" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));	
 					}
-				 }
+				}
 				else{
-					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-							" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-							" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));	
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
 				}
 			}
-				else{
-					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-							" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-							" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
-				}
-		}
-			
 			else if(variable[0].equalsIgnoreCase("dont insert")){
-				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-						" "+MultilingualUtil.ConvertedString("brih_sono",LangFile));
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_sono",LangFile));
 			} 
 			if(variable[0].equalsIgnoreCase("empty")){
 			}
 			else{
+				/**set templates according to the mode random/one by one*/
 				if(page.equalsIgnoreCase("exit")){
 					if(mode.equals("one"))
 						data.setScreenTemplate("call,OLES,Oles_Gen.vm");
@@ -708,29 +817,48 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void updateQuizRandomly(String quizID, String quizStatus, String courseid, String quizMode){
 		try{
-			
 			XmlWriter xmlWriter = null;
 			String newFilePath1=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/");
 			String quizPath="/Quiz.xml";
 			int seq=-1;
-			ErrorDumpUtil.ErrorLog("quiz mode in update quiz randomly is :"+quizMode);
+			/** check the quizmode in xml and set quiz mode random*/
 			if(quizMode.trim().isEmpty()){
-				ErrorDumpUtil.ErrorLog("inside quiz mode empty");
 				quizMode="random";
 			}
 			Vector collect=new Vector();
+			/**read the xml file get all details of Quiz.xml 
+                         *@see xmlReader QuizMetaDataXmlReader in Util
+                         */
 			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(newFilePath1+quizPath);
 			collect=quizmetadata.getQuesBanklist_Detail();
 			if(collect!=null){
 				for(int i=0;i<collect.size();i++){
 					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
+					String quizName=((QuizFileEntry)collect.get(i)).getQuizName();
+                                	String maxMarks=((QuizFileEntry)collect.get(i)).getMaxMarks();
+                                	String maxTime=((QuizFileEntry)collect.get(i)).getMaxTime();
+                                	String noQuestion=((QuizFileEntry)collect.get(i)).getnoQuestion();
+                                	String status=((QuizFileEntry)collect.get(i)).getQuizStatus();
+                                	String Filename=((QuizFileEntry)collect.get(i)).getQuizFileName();
+                                	String CreationDate=((QuizFileEntry)collect.get(i)).getCreationDate();
+                                	String modifiedDate=((QuizFileEntry)collect.get(i)).getModifiedDate();
+                                	String Qmode=((QuizFileEntry)collect.get(i)).getQuizMode();
+                                	String allowPractice = ((QuizFileEntry)collect.get(i)).getAllowPractice();
 					if(quizid.equals(quizID)){
-						seq=i;
-						break;
+						/**read existing xml file(Quiz.xml) and write new xml file with old values
+						 *and also update the quiz status and quiz mode in existing xml file
+						 * and delete the onld entry from the xml(DeleteEntryinXml)
+                                                 *@see QuizMetaDataXmlWriter in Util
+                                                 *write xml in the given path 
+                                                 *@see XmlWriter (method: writeXmlFile()) in Util
+                                                 *modified by Jaivir/Manorama
+                                                 */
+						xmlWriter=QuizMetaDataXmlWriter.QuizXml(newFilePath1,quizPath);
+						QuizMetaDataXmlWriter.appendQues_Banklist(xmlWriter,quizid,quizName,maxMarks,maxTime,noQuestion,"ACT",Filename,CreationDate,modifiedDate,quizMode,allowPractice);
+						xmlWriter.writeXmlFile();
+						Vector str=DeleteEntryinXml(newFilePath1,quizPath,quizid);
 					}
 				}
-				xmlWriter=QuizMetaDataXmlWriter.UpdateRandomQuizList(newFilePath1,quizPath,seq,quizID,quizStatus,quizMode);
-				xmlWriter.writeXmlFile();
 			}                   
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:updateQuizRandomly !! "+e);    			
@@ -768,6 +896,9 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void doRemoveQuiz(RunData data, Context context, String quizID){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			boolean success;
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
@@ -781,6 +912,7 @@ public class OLES_Quiz extends SecureAction{
 			XmlWriter xmlWriter=null;
 			Vector collect=new Vector();
 			Vector str=new Vector();
+			/**get path where the Exam directory,quiz, quiz setting and quiz question file stored */
 			String filepath=CoursePath+"/"+crsId+"/Exam/";
 			String filepath1=CoursePath+"/"+crsId+"/Exam/"+quizID+"/";
 			String quizPath="/Quiz.xml";
@@ -788,10 +920,14 @@ public class OLES_Quiz extends SecureAction{
 			String tempQuizQuestionPath="/"+quizID+"_Temp_Questions.xml";
 			String quizQuestionSettingPath="/"+quizID+"_QuestionSetting.xml";
 			String fileName = filepath+quizQuestionPath;
+
+                        /**read the xml file get all details of Quiz.xml and put in vector (collect)
+			 *@see QuizMetaDataXmlReader in Util
+			 */
 			QuizMetaDataXmlReader quizmetadata=null;
 			quizmetadata=new QuizMetaDataXmlReader(filepath+quizPath);
 			collect=quizmetadata.getQuesBanklist_Detail();
-
+			/**by reading xml get the sequence of the entry*/
 			if(collect!=null){
 				for(int i=0;i<collect.size();i++){
 					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
@@ -799,9 +935,13 @@ public class OLES_Quiz extends SecureAction{
 						seq=i;            	   
 						break;
 					}
-				}  
+				}
+				/**read the xml file (score.xml) and put in vector(scoreVector)
+				 *@see QuizMetaDataXmlReader in Util
+				 *and by matching quizid check that quiz is attempted by any student or not
+				 *if any student attempt that quiz then we cannot delete that quiz
+				 */  
 				String quizid;
-				ErrorDumpUtil.ErrorLog("seq inside doRempveQuiz method "+seq);
 				File scoreFile = new File(filepath+"/score.xml");
 				Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
 				if(scoreFile.exists()){
@@ -811,44 +951,27 @@ public class OLES_Quiz extends SecureAction{
 					for(QuizFileEntry a:scoreVector){
 						quizid = a.getQuizID();
 						if(quizid.equalsIgnoreCase(quizID)){
-							ErrorDumpUtil.ErrorLog("quiz id entry in score.xml");
 							data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
 							return;
 						}
 					}
 					}
 				}
+				/**read existing xml file(Quiz.xml) and write new xml file with old values
+                                 *and delete the  entry from the xml on the basis of seq
+                                 *@see QuizMetaDataXmlWriter in Util
+                                 *write xml in the given path 
+                                 *@see XmlWriter (method: writeXmlFile()) in Util
+                                 *modified by Jaivir/Manorama
+				 */
 				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
-				xmlWriter.removeElement("Quiz",seq); 
-				//=====================
+                                xmlWriter=QuizMetaDataXmlWriter.QuizXml(filepath,quizPath);
+				xmlWriter.removeElement("Quiz",seq);
+				/**get the path of the quiz directory which we want to delete
+				 *delete the directory of deleted quiz
+				 */ 
 				File file=new File(filepath1);
 				success = deleteDir(file);
-//				File file=new File(filepath1+"/"+quizQuestionPath);
-//				File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
-//				File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
-//				if(!file.exists()){
-//					return;
-//				}
-//				else if(!fileQuestionSetting.exists()){
-//					file.delete();
-//					return;
-//				} 
-//				else {
-//					file.delete();
-////					fileQuestionSetting.delete();						
-//				}
-//				if(fileTemp.exists()){
-//					fileTemp.delete();
-//				}
-				//=========================
-//				File file=new File(filepath1+"/"+quizQuestionPath);
-//				File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
-//				File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
-//				file.delete(); 
-//				fileQuestionSetting.delete();
-//				if(fileTemp.exists()){
-//					fileTemp.delete();
-//				}
 				xmlWriter.writeXmlFile();
 				data.setMessage(MultilingualUtil.ConvertedString("brih_unattempt",LangFile)+" "+MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
 
@@ -866,6 +989,9 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void oneByOneQuiz(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseid=data.getParameters().getString("courseID","");
 			String username=data.getUser().getName();
@@ -878,10 +1004,10 @@ public class OLES_Quiz extends SecureAction{
 			String levelName = data.getParameters().getString("levelName","");
 
 			String quizMode=data.getParameters().getString("quizMode","");
-
+			/**get the path of question bank where the questions is stored */
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
-
+			/**get path where the Exam directory,quiz, quiz setting and quiz question file stored */
 			String quizFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String quizQuestionsPath=quizID+"_Questions.xml";
 			Vector quizQuestionsVector = new Vector();
@@ -901,6 +1027,10 @@ public class OLES_Quiz extends SecureAction{
 			if(!newFile.exists())
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion",LangFile));
 			else{
+				/**read the xml file (quizID__Questions.xml) and put in vector(quizQuestionsVector)(selectedQuestionID)
+				 *gets all question ids and filepaths (which are already inserted) from quizquestions file of a quiz
+                                 *@see QuizMetaDataXmlReader in Util
+				 */
 				QuizMetaDataXmlReader quizXmlReader=new QuizMetaDataXmlReader(quizFilePath+"/"+quizQuestionsPath);
 				if(mode.equals("update")){
 					quizQuestionsVector = quizXmlReader.getInsertedQuizQuestions(id);
@@ -908,7 +1038,10 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else
 					quizQuestionsVector = quizXmlReader.getInsertedQuizQuestions();
-
+				/**read the xml file (questionBank) and put in vector (questionBankVector)
+				 *gets all questions from question bank for random quiz
+				 *@see QuizMetaDataXmlReader in Util
+				 */
 				QuizMetaDataXmlReader questionBankXmlReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankQuestionsPath);
 				questionBankVector = questionBankXmlReader.getRandomQuizQuestions(typeName);
 				if(quizQuestionsVector!=null & questionBankVector!=null){
@@ -916,6 +1049,9 @@ public class OLES_Quiz extends SecureAction{
 						String marks = ((QuizFileEntry) quizQuestionsVector.elementAt(i)).getMarksPerQuestion();
 						marksQuestion = marksQuestion + Integer.parseInt(marks);		           		
 					}
+					/**check the inserted no of question is equals to the no of questions defined in the quiz setting xml
+					 *if not equals then add the more question otherwise not
+					 */
 					if(quizQuestionsVector.size()!=Integer.parseInt(maxnoQuestions)){
 						if(marksQuestion!=Integer.parseInt(maxMarks)){
 							if(quizQuestionsVector.size()==0){
@@ -954,6 +1090,9 @@ public class OLES_Quiz extends SecureAction{
 					else
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion",LangFile));
 				}
+				/**set messages according to the checks
+				 *@see MultilingualUtil in utils
+				 */
 				if(var.equalsIgnoreCase("complete"))
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion",LangFile));
 				else if(var.equalsIgnoreCase("maxQuestion"))
@@ -961,6 +1100,9 @@ public class OLES_Quiz extends SecureAction{
 				else if(var.equalsIgnoreCase("maxMarks"))
 					data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks+". "+MultilingualUtil.ConvertedString("brih_excessmsg",LangFile));
 				else{
+					/**put parameters in the context for use in template
+					 *set template according to the mode
+					 */
 					String quizDetail=data.getParameters().getString("quizDetail","");
 					context.put("quizDetail",quizDetail);
 					context.put("topicName",topicName);
@@ -988,6 +1130,9 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void addQuestion(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+			 *put in the context for use in template
+                         */
 			String quizName=data.getParameters().getString("quizName","");
 			String topicName = data.getParameters().getString("topicName","");
 			String typeName = data.getParameters().getString("typeName","");
@@ -1024,6 +1169,9 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void updateQuizQuestionSetting(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseid=data.getParameters().getString("courseID","");
 			String username=data.getUser().getName();
@@ -1034,19 +1182,27 @@ public class OLES_Quiz extends SecureAction{
 			String topicID = pp.getString("topicID","");
 			String numberQuestion = pp.getString("numberQuestion","");
 			String marksQuestion = pp.getString("marksQuestion","");
+			/**get path where the Exam directory,quiz, quiz setting file stored */
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String questionSettingPath=quizID+"_QuestionSetting.xml";
 
+			/** read the xml file and put in the hashmap
+                         * get total counting and marks counting of already inserted questions
+                         * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
+                         * @return hashmap
+                         */
 			QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 			HashMap hm = new HashMap();
 			hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID,topicID);
 			int mark =((Integer)hm.get("marks"));
 			int enteredQuestions = ((Integer)hm.get("noQuestion"));
+			/**check the entered question according to the total counting and marks counting of already inserted questions
+			*/
 			if(enteredQuestions < Integer.parseInt(maxnoQuestions) | mark < Integer.parseInt(maxMarks)){
 				if(enteredQuestions==0){
 					if(Integer.parseInt(numberQuestion)<=Integer.parseInt(maxnoQuestions)){
-						if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks))									
-							updateQuizQuestionRandomly(newFilePath,data,questionSettingPath);
+						if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks))										/**updating quiz_questions setting (randomly) in a xml file*/			
+							 updateQuizQuestionRandomly(newFilePath,data,questionSettingPath);
 						else
 							data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
 					}
@@ -1055,7 +1211,8 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else{
 					if(Integer.parseInt(numberQuestion)<=Integer.parseInt(maxnoQuestions)-enteredQuestions){                           
-						if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks)-mark)							        
+						if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks)-mark)	
+							/**updating quiz_questions setting (randomly) in a xml file*/   
 							updateQuizQuestionRandomly(newFilePath,data,questionSettingPath);
 						else
 							data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
@@ -1080,7 +1237,10 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public String[] updateQuizQuestionRandomly(String newFilePath,RunData data,String questionSettingPath){
 		String variable[]=new String[4];
-		try{ 
+		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */ 
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseid=data.getParameters().getString("courseID","");
 			String username=data.getUser().getName();
@@ -1098,16 +1258,20 @@ public class OLES_Quiz extends SecureAction{
 			String topicID = pp.getString("topicID","");
 			String numberQuestion = pp.getString("numberQuestion","");
 			String marksQuestion = pp.getString("marksQuestion","");
-
+			/**get the path of question bank where the questions is stored */
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
 			Vector questionVector = new Vector();
 			String[] insertedQuestionVector = new String[2];
 			int seq=-1;
+			/** read the xml file and put in the vector(collect)
+			 *get quiz_questions detail from the quizID_QuestionSetting.xml
+                         * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
+                         */
 			Vector collect=new Vector();
 			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 			collect=quizmetadata.getQuizQuestionDetail();
-			
+			/**get path where the Exam directory,quiz, quiz setting and quiz question file stored */	
 			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizXml="Quiz.xml";
 			String startDate=null;
@@ -1121,6 +1285,11 @@ public class OLES_Quiz extends SecureAction{
 			Vector dateCollect=new Vector();
 			File file1=new File(quizXmlPath+"/"+quizXml);
 			QuizMetaDataXmlReader topipcmetadata=null;
+			/**check for the presence of xml file
+			 *read the xml file and put in the vector(dateCollect)
+			 *get quiz detail on the basis of the passed quizID
+			 *@see xmlReader QuizMetaDataXmlReader in Util
+			 */
 			if(file1.exists()){
 				topipcmetadata=new QuizMetaDataXmlReader(quizXmlPath+"/"+quizXml);
 				dateCollect=topipcmetadata.getQuiz_Detail(quizID);
@@ -1128,12 +1297,12 @@ public class OLES_Quiz extends SecureAction{
 						for(int i=0;i<dateCollect.size();i++){
 							startDate=((QuizFileEntry) dateCollect.elementAt(i)).getExamDate();
 							startTime=((QuizFileEntry) dateCollect.elementAt(i)).getStartTime();
-							ErrorDumpUtil.ErrorLog("stattDate is "+ startDate);
-							ErrorDumpUtil.ErrorLog("Start Time is "+ startTime);
 						}
 					}
 			}
-			
+			/**if the entry exists in the xml file
+			 *get sequence through topicid
+			 */
 			if(collect!=null){
 				for(int i=0;i<collect.size();i++){
 					String topicid =((QuizFileEntry) collect.elementAt(i)).getID();
@@ -1144,16 +1313,29 @@ public class OLES_Quiz extends SecureAction{
 				}
 			}
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
-			if(!ff.exists())
+			if(!ff.exists()){
 				variable[0] = "empty";
+			}
 			else{
+				/**read the xml file and put the all values in vector (questionVector)
+                                 *gets all questions from question bank for random quiz on the basis of the passed QuestionType(mcq,tft,sat,lat)
+                                 *@see xmlReader QuizMetaDataXmlReader in Util
+                                 */
 				QuizMetaDataXmlReader questionBankXmlReader;         
 				questionBankXmlReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankQuestionsPath);
 				XmlWriter xmlWriter = new XmlWriter(newFilePath+"/"+questionSettingPath);
-				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);             
+				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);
+				/**check for the availability of question in question bank*/             
 				if(questionVector!=null){
+					/**read the xml file and get id stored in QuizSettings.xml
+                                         *@see xmlReader QuizMetaDataXmlReader in Util
+                                         */
 					questionBankXmlReader=new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 					String id = questionBankXmlReader.getID_RandomQuiz();
+					/**read the xml file and gets all inserted questions for random quiz
+                                         *@see xmlReader QuizMetaDataXmlReader in Util
+                                         *@return String[]
+                                         */
 					insertedQuestionVector = questionBankXmlReader.getQuizQuestions(questionBankQuestionsPath,topicID);                    
 					if(insertedQuestionVector[0].equalsIgnoreCase("a"))
 						variable[0]="empty";
@@ -1170,6 +1352,12 @@ public class OLES_Quiz extends SecureAction{
 							variable[2]="0";
 							variable[3] = ""+String.valueOf(questionVector.size());
 						}
+						/**update file element in existing quizid_questionSetting.xml file with sequence number
+        					 *and all updated variables values
+                                                 *@see QuizMetaDataXmlWriter in Util
+                                                 *write xml in the given path 
+                                                 *@see XmlWriter (method: writeXmlFile()) in Util
+                                                 */
 						xmlWriter=QuizMetaDataXmlWriter.Update_QuizQuestionSetting(newFilePath,questionSettingPath,seq,topicName,typeName,levelName,marksQuestion,questionNo,topicID);
 						xmlWriter.writeXmlFile(); 
 					}
@@ -1177,14 +1365,25 @@ public class OLES_Quiz extends SecureAction{
 						String questionNo = String.valueOf(questionVector.size()-Integer.parseInt(insertedQuestionVector[0]));
 						if(Integer.parseInt(numberQuestion)<=Integer.parseInt(questionNo)){
 							variable[0]="update";
-							xmlWriter=QuizMetaDataXmlWriter.Update_QuizQuestionSetting(newFilePath,questionSettingPath,seq,topicName,typeName,levelName,marksQuestion,numberQuestion,topicID);
-							xmlWriter.writeXmlFile(); 
+							/**update file element in existing quizid_questionSetting.xml file with sequence number
+                                                 	 *and all updated variables values
+							 *modified by Jaivir/Manorama
+                                                 	 */
+							UpdateQuesSettingXml(newFilePath,questionSettingPath,topicID,topicName,typeName,levelName,marksQuestion,numberQuestion);
+							//xmlWriter=QuizMetaDataXmlWriter.Update_QuizQuestionSetting(newFilePath,questionSettingPath,seq,topicName,typeName,levelName,marksQuestion,numberQuestion,topicID);
+							//xmlWriter.writeXmlFile(); 
 							variable[3] = ""+numberQuestion;
 						}
 						else if(questionNo.equalsIgnoreCase("0"))
 							variable[0]="dont update";
 						else{
 							variable[0]="update";
+							/**update file element in existing quizid_questionSetting.xml file with sequence number
+                                                         *and all updated variables values
+                                                         *@see QuizMetaDataXmlWriter in Util
+                                                         *write xml in the given path 
+                                                         *@see XmlWriter (method: writeXmlFile()) in Util
+                                                         */
 							xmlWriter=QuizMetaDataXmlWriter.Update_QuizQuestionSetting(newFilePath,questionSettingPath,seq,topicName,typeName,levelName,marksQuestion,questionNo,topicID);
 							xmlWriter.writeXmlFile();  
 							variable[3] = ""+questionNo;
@@ -1195,7 +1394,10 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else            	
 					variable[0]="empty";
-			}        
+			}
+			/**set the messages acording to the cases
+			 *that questions available or not in the question bank
+			 */        
 			if(variable[0].equalsIgnoreCase("empty"))
 				
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile)); 
@@ -1220,7 +1422,10 @@ public class OLES_Quiz extends SecureAction{
 				else
 					data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile));
 			}
-
+			/**set the messages when update the xml file(quiz.xml and quizquestionsetting.xml)
+			 *set the message according to the mode and conditions
+			 *@see MultilingualUtil in Util
+			 */
 			else if(variable[0].equalsIgnoreCase("update")){
 				if(mode.equals("update") && quizMode.equals("random")){
 					if(startDate!=null && startTime!=null){
@@ -1267,6 +1472,7 @@ public class OLES_Quiz extends SecureAction{
 			if(variable[0].equalsIgnoreCase("empty")){
 			}
 			else{
+				/**set the template according to the mode*/
 				if(page.equalsIgnoreCase("exit")){
 					if(quizMode.equalsIgnoreCase("random"))
 						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
@@ -1286,21 +1492,35 @@ public class OLES_Quiz extends SecureAction{
 	 * @exception Exception, a generic exception
 	 */
 	public void acceptQuizPreview(RunData data, Context context){
-		try {	        	
+		try {	     
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */   	
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
+			/**get the count parameter of tab colour
+                         *put in the context for use in template
+                         */
 			String count = data.getParameters().getString("count","");
 			context.put("tdcolor",count);
 			String username=data.getUser().getName();
 			crsId=(String)data.getUser().getTemp("course_id");
 			String course = (String)user.getTemp("course_name");
 			String quizID = pp.getString("quizID","");
-
+			/**get path where the Exam directory,quiztempquestions  and quiz question file stored
+			 *check the presence of directory if not exists then make directory
+			 */
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/"+quizID+"/");
 			File ff=new File(filePath);
 			if(!ff.exists())
 				ff.mkdirs();
+			/**get the path where the quiztempquestions xml stored
+			 *ans also get the path of quizquestions xml
+			 *if file exists then delete the file if user accept the preview
+			 * and rename the quizID_Temp_Questions.xml into quizID_Questions.xml
+			 *and questions saved in xml file
+			 */
 			String tempQuizQuestionPath="/"+quizID+"_Temp_Questions.xml";
 			File tempquizQuestionxmls=new File(filePath+"/"+tempQuizQuestionPath);
 			String quizQuestionPath="/"+quizID+"_Questions.xml";
@@ -1322,7 +1542,11 @@ public class OLES_Quiz extends SecureAction{
 	 * @exception Exception, a generic exception
 	 */
 	public void showPreview(RunData data, Context context){
-		try {	        	
+		try {
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+			 * and parameters put in the context for use in template
+                         */	    
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
@@ -1337,21 +1561,30 @@ public class OLES_Quiz extends SecureAction{
 			context.put("quizID",quizID);
 			context.put("quizDetail",quizDetail);
 			context.put("quizName",quizName);
-
+			/**get path where the Exam directory,quiz question file stored*/
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/"+quizID+"/");
 			File ff=new File(filePath);
 			String quizQuestionPath="/"+quizID+"_Questions.xml";
+			/**
+			*/
 			Vector question = new Vector();
 			QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(filePath+"/"+quizQuestionPath);
+			/**check quizID director exists or not*/
 			if(!ff.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_nopreview",LangFile));
 				return;
 			}
+			/**check quizID_Questions.xml file exists or not*/
 			File QuizQuestionxmls=new File(filePath+"/"+quizQuestionPath);
 			if(!QuizQuestionxmls.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_nopreview",LangFile));
 				return;
 			}
+			/**read xml file file
+			 *get all question ids and filepaths (which are already inserted) from quizquestions file of a quiz
+			 *put in the context for use in template
+			 *and set the template screen for show preview
+			 */
 			question = questionReader.getInsertedQuizQuestions();
 			if(question==null){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_nopreview",LangFile));
@@ -1372,12 +1605,18 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void rejectQuizPreview(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         * and parameters put in the context for use in template
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String count = data.getParameters().getString("count","");
 			context.put("tdcolor",count);
 			String quizID = data.getParameters().getString("quizID","");
 			crsId=(String)data.getUser().getTemp("course_id");
-
+			/**get path where the Exam directory,quiztempquestions  and quiz question file stored
+			 *check the existence of tempquizQuestionxmls and delete it
+			 */
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/"+quizID+"/");
 			String tempQuizQuestionPath="/"+quizID+"_Temp_Questions.xml";
 			File tempquizQuestionxmls=new File(filePath+"/"+tempQuizQuestionPath);
@@ -1398,12 +1637,16 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void updateOneByOneQuiz(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                        * get LangFile for multingual changes
+                        */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp = data.getParameters();
 			String quizDetail = pp.getString("quizDetail","");
 			String quizSetting = pp.getString("quizSetting","");
 			String[] temp = quizSetting.split(",");
 			String id = temp[5];
+			/**get parameters according to the question level and question type*/
 			String option1,option2,option3,option4,levelName;
 			String topicName = pp.getString("topicName","");
 			String typeName = pp.getString("typeName","");
@@ -1434,21 +1677,33 @@ public class OLES_Quiz extends SecureAction{
 			String questionNo = "1";
 			String courseID = pp.getString("courseID","");
 			String quizID = pp.getString("quizID","");
+			/**get path where the Exam directory,quiztempquestions  and quiz question file stored*/
 			String quizFilePath=TurbineServlet.getRealPath("/Courses/"+courseID+"/Exam/"+quizID);
 			String quizQuestionSettingPath=quizID+"_QuestionSetting.xml";
 			String quizQuestionsPath=quizID+"_Questions.xml";
 			String maxMarks = pp.getString("maxMarks","");
+
+			/** read the xml file
+                         * get total counting and marks counting of already inserted questions put in hashmap
+                         * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
+                         */
 			QuizMetaDataXmlReader quizXmlReader=new QuizMetaDataXmlReader(quizFilePath+"/"+quizQuestionSettingPath);
 			HashMap insertedMarksHashMap = new HashMap();
 			insertedMarksHashMap = quizXmlReader.getQuizQuestionNoMarks(quizXmlReader,quizID);
 			int insertedMarksQuiz =((Integer)insertedMarksHashMap.get("marks"));
-			
+			/**check the marks of inserted question and max marks of the question from the setting xml
+			 * according to that condition update file element in existing quizid_questionSetting.xml file with sequence number
+        		 * and all updated variables values 
+			 */
 			if(Integer.parseInt(marksQuestion)<Integer.parseInt(maxMarks)){
 				if(Integer.parseInt(marksQuestion)+insertedMarksQuiz<Integer.parseInt(maxMarks)){
 					XmlWriter xmlWriter=null;
 					xmlWriter=new XmlWriter(quizFilePath+"/"+quizQuestionSettingPath);
 					xmlWriter = QuizMetaDataXmlWriter.Update_QuizQuestionSetting(quizFilePath,quizQuestionSettingPath,(Integer.parseInt(id))-1,topicName,typeName,levelName,marksQuestion,questionNo,id);
-					xmlWriter.writeXmlFile();			
+					xmlWriter.writeXmlFile();
+					/**update file element in existing quizid_question.xml file with sequence number
+         				 * and all updated variables values
+					 */			
 					XmlWriter xmlWriter1=null;
 					xmlWriter1=new XmlWriter(quizFilePath+"/"+quizQuestionsPath);
 					xmlWriter1 = QuizMetaDataXmlWriter.UpdateQuizQuestion(quizFilePath,quizQuestionsPath,Integer.parseInt(id),questionID,question,option1,option2,option3,option4,answer,marksQuestion,fileName);
@@ -1475,30 +1730,33 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void announceExam(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String quizID=data.getParameters().getString("quizID","");
 			String courseid=(String)user.getTemp("course_id");  
-
+			/**get path of the Exam directory*/
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizPath="/Quiz.xml";
 			QuizMetaDataXmlReader quizmetadata=null;
 			
 			//==========functionality - if quiz is attempted then can not be reannounced===============
+			/**reading the score xml get the information quiz is attempted by ant one or not
+			 *if quiz is attempted then can not be reannounced
+			 */
 			String quizid;
 			File scoreFile = new File(filePath+"/score.xml");
 			Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
 			
 			if(scoreFile.exists()){
-				
-					ErrorDumpUtil.ErrorLog("\n inside score vector  is "+scoreVector);
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/score.xml");
 					scoreVector = quizmetadata.getDistinctIDFromFinalScore();
 					if(scoreVector!=null){
 					for(QuizFileEntry a:scoreVector){
 						quizid = a.getQuizID();
 						if(quizid.equalsIgnoreCase(quizID)){
-							ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
 							data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotreannounce",LangFile));
 							data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
 							return;
@@ -1506,16 +1764,18 @@ public class OLES_Quiz extends SecureAction{
 					}
 				}
 			}
-			
-			
-			//============================================
 			//functionality code-if preview is not saved then quiz can't announced
+			/**get path where the Exam directory,quiztempquestions  and quiz question file stored*/
 			String previewFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
 			String previewPath=quizID+"_Questions.xml";
 			Vector previewDetail=new Vector();
+			/**check the quiztempquestions xml exists or not
+			 *if exists then by reading the xml file (if return null)
+			 *check that preview is saved or not if preview is not saved
+			 *then quiz can't announced
+			 */
 			File previewFile=new File(previewFilePath+"/"+previewPath);
 			if(previewFile.exists()){
-				ErrorDumpUtil.ErrorLog("inside preview file exist");
 				quizmetadata=new QuizMetaDataXmlReader(previewFilePath+"/"+previewPath);				
 				previewDetail=quizmetadata.getInsertedQuizQuestions();
 				if(previewDetail==null || previewDetail.size()==0){
@@ -1533,7 +1793,10 @@ public class OLES_Quiz extends SecureAction{
 
 			File file=new File(filePath+"/"+quizPath);
 			Vector quizDetail=new Vector();
-
+			/**check the Quiz xml file exists or not
+			 *get quiz detail on the basis of the passed quizID
+			 * and put in the context for use in template
+			 */
 			if(file.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 				quizDetail=quizmetadata.getQuiz_Detail(quizID);
@@ -1552,12 +1815,10 @@ public class OLES_Quiz extends SecureAction{
 							endTime = ((QuizFileEntry) quizDetail.elementAt(i)).getEndTime();
 							allowPractice = ((QuizFileEntry) quizDetail.elementAt(i)).getAllowPractice();
 							resDate = ((QuizFileEntry) quizDetail.elementAt(i)).getResDate();
-							ErrorDumpUtil.ErrorLog("start date and end date "+startDate+endDate);
 						}							              
 					}
 				}
 			}
-
 			String m = "";
 			if(startDate==null & startTime==null & endDate==null & endTime==null & resDate==null){
 				m="new";
@@ -1565,7 +1826,6 @@ public class OLES_Quiz extends SecureAction{
 			else{
 				m="update";				
 			}
-			ErrorDumpUtil.ErrorLog("value of m "+m);
 			context.put("mode",m);
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:announceExam !! "+e);
@@ -1580,6 +1840,9 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void newAnnouncement(RunData data, Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp = data.getParameters();
 			String quizID=pp.getString("quizID","");
@@ -1587,14 +1850,11 @@ public class OLES_Quiz extends SecureAction{
 			int maxTime;
 			String mode=pp.getString("mode","");
 			String maxtime = pp.getString("maxTime","");
-			ErrorDumpUtil.ErrorLog("\n string maxtime is :"+maxtime);
 			if(maxtime.indexOf(":")==-1){
-				ErrorDumpUtil.ErrorLog("\n inside -1");
 				maxTime=Integer.parseInt(pp.getString("maxTime",""));
 			}
 			else{
 				String maxtimeArray[] = maxtime.split(":");
-				ErrorDumpUtil.ErrorLog("\n inside -1 else after split");
 				maxTime=Integer.parseInt(maxtimeArray[0]);
 			}
 
@@ -1624,7 +1884,6 @@ public class OLES_Quiz extends SecureAction{
 			String endDate = endYear+"-"+endMonth+"-"+endDay;
 			String endTime = endHour+":"+endMinute;
 			String resDate = resYear+"-"+resMonth+"-"+resDay;
-			ErrorDumpUtil.ErrorLog("in oles_quiz"+resDate);
 			
 			Calendar current = Calendar.getInstance();
 			Calendar examDate = Calendar.getInstance();
@@ -1678,7 +1937,11 @@ public class OLES_Quiz extends SecureAction{
 				data.setMessage(MultilingualUtil.ConvertedString("brih_resdatlessEnd",LangFile));
 				return;
 			}
-
+			/**In this part after get the start time/date end time/date and result data
+			 *by reading xml  get all details of Quiz.xml 
+			 *according to the detail get the sequence of that quiz
+			 *and update the start time/date end time/date and result data in the xml
+			 */
 			if(flag==true){
 				int seq = -1;
 				XmlWriter xmlWriter=null;
@@ -1692,20 +1955,27 @@ public class OLES_Quiz extends SecureAction{
 					for(int i=0;i<collect.size();i++){
 						String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
 						if(quizid.equals(quizID)){
-							seq=i;  
+							seq=i;
 							break;
 						}
 					}
 					xmlWriter=QuizMetaDataXmlWriter.announceQuiz(filePath,quizPath,seq,quizID,startDate,startTime,endDate,endTime,resDate);
-					xmlWriter.writeXmlFile();
 				}
 				if(mode.equals("update"))
 					data.setMessage(MultilingualUtil.ConvertedString("c_msg5",LangFile));
-				else
+				else{
 					data.setMessage(MultilingualUtil.ConvertedString("brih_announced",LangFile));
-					data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
-			}	
-			
+				}
+				/** This  method is responsible for sending mail to student to inform about the  quiz announcement
+                          	*@see OnlineExamSystemMail (method:SendMail) in util
+                          	*/
+				String str=OnlineExamSystemMail.SendMail(courseID,data.getUser().getName(),"announce",startDate,startTime,"","",LangFile);
+				if(str.equals("Success"))
+				str=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                        	data.addMessage(str);
+				data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+				
+			}
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:newAnnouncement !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -1718,8 +1988,11 @@ public class OLES_Quiz extends SecureAction{
 	 * @exception Exception, a generic exception
 	 */
 	public void practiceQuiz(RunData data, Context context){
-		ParameterParser pp=data.getParameters();
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
+			ParameterParser pp=data.getParameters();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String courseid=(String)data.getUser().getTemp("course_id");			
 			String quizID=pp.getString("quizID","");
@@ -1727,11 +2000,16 @@ public class OLES_Quiz extends SecureAction{
 			String maxnoQuestions=pp.getString("noQuestions","");
 			String numberQuestion=pp.getString("numberQuestion","");			
 			String marksQuestion = pp.getString("marksQuestion","");
+			/**get path where the Exam directory,quizquestionsSetting.xml  and quiz question file stored*/
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String questionSettingPath=quizID+"_QuestionSetting.xml";			
 			File newFile=new File(newFilePath+"/"+questionSettingPath);			
 			XmlWriter xmlWriter=null;
-
+			/** read the xml file
+                         * get total counting and marks counting of already inserted questions put in hashmap
+                         * @see xmlReader QuizMetaDataXmlReader (reader of quizId_questionSetting.xml) in Util
+			 * inserting quiz_questions setting in a xml file( method:insertPreviewQuestionSetting)
+                         */
 			if(!newFile.exists())
 				QuizMetaDataXmlWriter.OLESRootOnly(newFile.getAbsolutePath());
 			QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
@@ -1739,7 +2017,6 @@ public class OLES_Quiz extends SecureAction{
 			hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID);
 			int mark =((Integer)hm.get("marks"));
 			int enteredQuestions = ((Integer)hm.get("noQuestion"));
-			ErrorDumpUtil.ErrorLog("marks and entered questions "+mark +" : "+enteredQuestions);
 			if(enteredQuestions < Integer.parseInt(maxnoQuestions) | mark < Integer.parseInt(maxMarks)){
 				if(enteredQuestions==0){
 					if(Integer.parseInt(numberQuestion)<=Integer.parseInt(maxnoQuestions)){
@@ -1780,9 +2057,12 @@ public class OLES_Quiz extends SecureAction{
 	 * @exception Exception, a generic exception
 	 */
 	public String[] insertPreviewQuestionSetting(RunData data,Context context){
-		ParameterParser pp=data.getParameters();
-		String variable[]=new String[4];
-		try{ 
+			ParameterParser pp=data.getParameters();
+			String variable[]=new String[4];
+		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */ 
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String username=data.getUser().getName();
 			String courseid=(String)data.getUser().getTemp("course_id");
@@ -1797,8 +2077,9 @@ public class OLES_Quiz extends SecureAction{
 			String mode=data.getParameters().getString("mode","");
 			String quizMode=data.getParameters().getString("quizMode","");
 			String page = data.getParameters().getString("page","");
-			//			String quizID=data.getParameters().getString("quizID","");
+			//String quizID=data.getParameters().getString("quizID","");
 			String quizStatus="ACT";
+			/**get path where the Exam directory,quizquestionsSetting.xml  and quiz question file stored*/
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
@@ -1817,16 +2098,27 @@ public class OLES_Quiz extends SecureAction{
 			XmlWriter xmlWriter = null;
 
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
-			ErrorDumpUtil.ErrorLog("\n question bank file path :"+ff.getPath());
 			if(!ff.exists())
 				variable[0] = "empty";
 			else{
+				/**read the xml file and put the all values in vector (questionVector)
+                                 * gets all questions from question bank for random quiz on the basis of the passed QuestionType(mcq,tft,sat,lat)
+                                 *@see xmlReader QuizMetaDataXmlReader in Util
+                                 */
 				QuizMetaDataXmlReader questionBankXmlReader;         
 				questionBankXmlReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankQuestionsPath);              
-				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);             
+				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);
+				/**check for the availability of question in question bank*/             
 				if(questionVector!=null){
+					/**read the xml file and get id stored in QuizSettings.xml
+                                         *@see xmlReader QuizMetaDataXmlReader in Util
+                                         */
 					questionBankXmlReader=new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 					String id = questionBankXmlReader.getID_RandomQuiz();
+					/**read the xml file and gets all inserted questions for random quiz
+                                         *@see xmlReader QuizMetaDataXmlReader in Util
+                                         *@return String[]
+                                         */
 					insertedQuestionVector = questionBankXmlReader.getQuizQuestions(questionBankQuestionsPath,numberQuestion,questionVector.size());                    
 					if(insertedQuestionVector[0].equalsIgnoreCase("a"))
 						variable[0]="empty";
@@ -1843,18 +2135,32 @@ public class OLES_Quiz extends SecureAction{
 							variable[2]="0";
 							variable[3] = ""+String.valueOf(questionVector.size());
 						}
+						/**append element in existing xml (quizid_questionSetting.xml) file
+                                                 *@see QuizMetaDataXmlWriter in Util
+                                                 *write xml in the given path 
+                                                 *@see XmlWriter (method: writeXmlFile()) in Util
+                                                 */
 						xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
 						QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
 						xmlWriter.writeXmlFile();
-
+						/**This method is responsible for updating quiz setting after first time question setting insertion
+                                                 * status is set to ACT and mode is random / one
+                                                 */
 						updateQuizRandomly(quizID, quizStatus, courseid, mode);
+						
 					}
 					else{
 
 						String questionNo = String.valueOf(questionVector.size()-Integer.parseInt(insertedQuestionVector[0]));
 						if(Integer.parseInt(numberQuestion)<=Integer.parseInt(questionNo)){
 							variable[0]="insert";
+							/**append element in existing xml (quizid_questionSetting.xml) file
+                                                 	 *@see QuizMetaDataXmlWriter in Util
+                                                 	 *write xml in the given path 
+                                                 	 *@see XmlWriter (method: writeXmlFile()) in Util
+                                                 	 */
 							xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+							xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(newFilePath,questionSettingPath);
 							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,numberQuestion,id);
 							xmlWriter.writeXmlFile(); 							
 							variable[3] = ""+numberQuestion;
@@ -1863,7 +2169,13 @@ public class OLES_Quiz extends SecureAction{
 							variable[0]="dont insert";
 						else{
 							variable[0]="insert";
+							/**append element in existing xml (quizid_questionSetting.xml) file
+                                                         *@see QuizMetaDataXmlWriter in Util
+                                                         *write xml in the given path 
+                                                         *@see XmlWriter (method: writeXmlFile()) in Util
+                                                         */
 							xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+							xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(newFilePath,questionSettingPath);
 							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
 							xmlWriter.writeXmlFile();
 
@@ -1875,7 +2187,12 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else
 					variable[0]="empty";
-			}        
+			}
+			/**set message according to the diffrent cases(empty,success,firstInsert,insert)
+                         * and according to the mode random/one by one
+                         * and set the updates messages also
+                         *@see MultilingualUtil in Util
+                         */        
 			if(variable[0].equalsIgnoreCase("empty"))
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile));
 			else if(variable[0].equalsIgnoreCase("success"))
@@ -1895,6 +2212,7 @@ public class OLES_Quiz extends SecureAction{
 			if(variable[0].equalsIgnoreCase("empty")){
 			}
 			else{
+				/**set templates according to the mode random/one by one*/
 				if(page.equalsIgnoreCase("exit")){
 					if(mode.equals("one"))
 						data.setScreenTemplate("call,OLES,Oles_Gen.vm");
@@ -1934,9 +2252,11 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void deleteQuestions(RunData data,Context context){
 		try{
+			/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
-			ErrorDumpUtil.ErrorLog("Inside deleteQuestion Method !! ");
 			crsId=(String)data.getUser().getTemp("course_id");
 			String quizID=pp.getString("quizID","");
 			String topicName=pp.getString("topicName","");
@@ -1949,7 +2269,6 @@ public class OLES_Quiz extends SecureAction{
 			String deltype = pp.getString("delType","");
 			String mode=pp.getString("Mode","");
 			String quizMode=pp.getString("quizMode","");
-			ErrorDumpUtil.ErrorLog("quizID,topicName,questionNumber,ID,questionType,deltype"+" : "+quizID+" : "+topicName+" : "+questionNumber+ID+" : "+deltype+" : "+mode+" : "+quizMode+" : "+questionLevel+" : "+questionMarks);
 			boolean success;
 			boolean flag=false;
 			boolean flag1=false;
@@ -1959,6 +2278,7 @@ public class OLES_Quiz extends SecureAction{
 			XmlWriter xmlWriter1=null;
 			Vector collect=new Vector();
 			Vector questionCollect=new Vector();
+			/**get path where the Exam directory,quizquestionsSetting.xml  and quiz question file stored*/
 			String filePath=TurbineServlet.getRealPath("/Courses/"+crsId+"/Exam/"+quizID);
 			String quizQuestionPath="/"+quizID+"_Questions.xml";
 			String quizQuestionSettingPath="/"+quizID+"_QuestionSetting.xml";
@@ -1980,24 +2300,26 @@ public class OLES_Quiz extends SecureAction{
 			String currentTime=amt[1];
 			Vector dateCollect=new Vector();
 			File file1=new File(quizXmlPath+"/"+quizXml);
-			//QuizMetaDataXmlReader topipcmetadata=null;
-			ErrorDumpUtil.ErrorLog("quizXmlPath and quizXml is"+quizXmlPath+"/"+quizXml);
 			if(file1.exists()){
+				/**read the xml file and get quiz detail on the basis of the passed quizID
+				 *@see QuizMetaDataXmlReader in Util
+				 */
 				quizmetadata=new QuizMetaDataXmlReader(quizXmlPath+"/"+quizXml);
 				dateCollect=quizmetadata.getQuiz_Detail(quizID);
-				ErrorDumpUtil.ErrorLog("inside file 1 dateCollect is "+ dateCollect);
 					if(dateCollect!=null && dateCollect.size()!=0){
 						for(int i=0;i<dateCollect.size();i++){
 							startDate=((QuizFileEntry) dateCollect.elementAt(i)).getExamDate();
 							startTime=((QuizFileEntry) dateCollect.elementAt(i)).getStartTime();
 							endDate=((QuizFileEntry) dateCollect.elementAt(i)).getExpiryDate();
 							endTime=((QuizFileEntry) dateCollect.elementAt(i)).getEndTime();
-							ErrorDumpUtil.ErrorLog("stattDate is "+ startDate);
-							ErrorDumpUtil.ErrorLog("Start Time is "+ startTime);
 						}
 					}
 			}
-			
+			/**read the xml file and 
+			 *get quiz_questions detail from the quizID_Questions.xml except the specified topicid
+			 *get sequence from the detail 
+                         *@see QuizMetaDataXmlReader in Util
+			 */
 			if(questionSettingFile.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+quizQuestionSettingPath);
 				collect=quizmetadata.getQuizQuestionDetail(quizID);
@@ -2013,22 +2335,22 @@ public class OLES_Quiz extends SecureAction{
 					}
 				}
 			}
+			/**read the xml file and 
+			 *gets all question ids and filepaths (which are already inserted) from quizquestions file of a quiz
+			 *get sequence from the detail 
+                         *@see QuizMetaDataXmlReader in Util
+			 */
 			if(mode.equals("update") && quizMode.equals("one")){
-				ErrorDumpUtil.ErrorLog("inside update one");
 				if(questionFile.exists()){
 					String file_Name=topicName+"_"+questionLevel+"_"+questionType+".xml";
-					ErrorDumpUtil.ErrorLog("file_Name is "+file_Name+":::"+ questionMarks);
 					quizmetadata=new QuizMetaDataXmlReader(filePath+quizQuestionPath);
 					questionCollect=quizmetadata.getInsertedQuizQuestions();
 					if(questionCollect!=null && questionCollect.size()!=0){
-						ErrorDumpUtil.ErrorLog("inside colloec");
 						for(int j=0;j<questionCollect.size();j++){
 							String questionID=((QuizFileEntry) questionCollect.elementAt(j)).getQuestionID();
 							String questionMarks1=((QuizFileEntry) questionCollect.elementAt(j)).getMarksPerQuestion();
 							String fileName=((QuizFileEntry) questionCollect.elementAt(j)).getFileName();
-							ErrorDumpUtil.ErrorLog("file Name is "+fileName+"::"+questionMarks1);
 							if(fileName.equals(file_Name) && questionMarks1.equals(questionMarks)){
-								ErrorDumpUtil.ErrorLog("file name is "+fileName+":::"+ questionMarks1);
 								seq1=j;
 								break;
 							}
@@ -2036,13 +2358,17 @@ public class OLES_Quiz extends SecureAction{
 					}
 				}
 			}
-			ErrorDumpUtil.ErrorLog("seq is "+seq);
-			ErrorDumpUtil.ErrorLog("seq1 is "+seq1);
+			/** according to the above code information
+			 * according to the seq number delete the entry from the xml
+			 * and also related files and directories 
+			 */
 			if(deltype.equals("quizDel")){
 					if(mode.equals("update") && quizMode.equals("random")){
 						if(seq >= 0){
 						xmlWriter=new XmlWriter(filePath+quizQuestionSettingPath);
-						ErrorDumpUtil.ErrorLog("Before Remove Question Setting");
+						//=====modified by seema=================================//
+						xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(filePath,quizQuestionSettingPath);
+						//=====modified by seema=================================//
 						xmlWriter.removeElement("QuizQuestions",seq);
 						xmlWriter.writeXmlFile();
 						if(questionFile.exists()){
@@ -2068,20 +2394,22 @@ public class OLES_Quiz extends SecureAction{
 						return;
 					}
 				}
+				/** according to the above code information
+                         	* according to the seq number delete the entry from the xml
+                         	* and also related files and directories
+				* @see XmlWriter in Utils
+                         	*/
 				else if(mode.equals("update") && quizMode.equals("one")){
 					if(seq1 >= 0){
-					xmlWriter1=new XmlWriter(filePath+quizQuestionSettingPath);
-					ErrorDumpUtil.ErrorLog("Before Remove Question Setting");
-					xmlWriter1.removeElement("QuizQuestions",seq);
-					xmlWriter1.writeXmlFile();
-					ErrorDumpUtil.ErrorLog("After Remove Question Setting");
+						xmlWriter1=new XmlWriter(filePath+quizQuestionSettingPath);
+						xmlWriter1=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(filePath,quizQuestionSettingPath);
+						xmlWriter1.removeElement("QuizQuestions",seq);
+						xmlWriter1.writeXmlFile();
 					
-					
-						ErrorDumpUtil.ErrorLog("Before Remove Question");
 						xmlWriter=new XmlWriter(filePath+quizQuestionPath);
+						xmlWriter=QuizMetaDataXmlWriter.RandomQuizWriteTempxml(filePath,quizQuestionPath,"typename");
 						xmlWriter.removeElement("QuizQuestions",seq1);
 						xmlWriter.writeXmlFile();
-						ErrorDumpUtil.ErrorLog("After Remove Question");
 						data.setMessage(MultilingualUtil.ConvertedString("brih_questiondelete",LangFile));
 					}
 					else{
@@ -2104,6 +2432,157 @@ public class OLES_Quiz extends SecureAction{
 		data.setMessage("See ExceptionLog !!");
 	 }
    }
+	/** This method is responsible for Delete quiz from xml files.
+         * @param String filePath 
+         * @param String xmlfile 
+         * @param String quizID
+	 * return Vector 
+         * @author Manorama Pal /Jaivir
+         */
+	public Vector DeleteEntryinXml(String filePath,String xmlfile,String quizID){
+		Vector collect=null;
+		try{
+			/**reading the xml file and get detail
+                         *and  select the seqence for deletion
+			 *and delete the entry from xml according to the sequence number
+                         *@see  TopicMetaDataXmlReader and XmlWriter in Utils
+                         */
+			XmlWriter xmlWriter = null;
+			int seq=-1;
+			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+xmlfile);
+			collect=quizmetadata.getQuesBanklist_Detail();
+			if(collect!=null){
+				for(int i=0;i<collect.size();i++){
+					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
+					if(quizid.equals(quizID)){
+						seq=i;
+						break;
+					}
+				}
+			}
+			xmlWriter=QuizMetaDataXmlWriter.QuizXml(filePath,xmlfile);
+			xmlWriter.removeElement("Quiz",seq);
+			xmlWriter.writeXmlFile();
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method: DeleteEntryinXml !! "+e);    			
+		}
+		return collect;
+	}
+	/**This method used to update the status of quiz if it is once created(Quiz.xml) 
+	 * and all updated variables values
+         * @param String FilePath 
+         * @param String quizID
+         * @param String maxMarks
+         * @param String maxTime 
+         * @param String noQuestion 
+         * @param String modifiedDate 
+         * @author Manorama Pal /Jaivir
+	 */
+	public void UpdateQuizSetup(String FilePath,String quizID, String maxMarks,String maxTime,String noQuestion,String modifiedDate){
+		try{
+			/**read the xml file and get all detail 
+			 *@see QuizMetaDataXmlReader in utils
+			 * according to detail get the sequence number
+			 * and update the status of that sequence
+			 * and delete the old once (method:DeleteEntryinXml )
+			 */
+			XmlWriter xmlWriter = null;
+			String quizPath="/Quiz.xml";
+			int seq=-1;
+			Vector collect=new Vector();
+			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(FilePath+quizPath);
+			collect=quizmetadata.getQuesBanklist_Detail();
+			if(collect!=null){
+				for(int i=0;i<collect.size();i++){
+					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
+					String quizName=((QuizFileEntry)collect.get(i)).getQuizName();
+                                	String status=((QuizFileEntry)collect.get(i)).getQuizStatus();
+                                	String Filename=((QuizFileEntry)collect.get(i)).getQuizFileName();
+                                	String CreationDate=((QuizFileEntry)collect.get(i)).getCreationDate();
+                                	String Qmode=((QuizFileEntry)collect.get(i)).getQuizMode();
+                                	String allowPractice = ((QuizFileEntry)collect.get(i)).getAllowPractice();
+					if(quizid.equals(quizID)){
+						xmlWriter=QuizMetaDataXmlWriter.QuizXml(FilePath,quizPath);
+						QuizMetaDataXmlWriter.appendQues_Banklist(xmlWriter,quizid,quizName,maxMarks,maxTime,noQuestion,"ACT",Filename,CreationDate,modifiedDate,Qmode,allowPractice);
+						xmlWriter.writeXmlFile();
+						Vector str=DeleteEntryinXml(FilePath,quizPath,quizid);
+					}
+				}
+			}                   
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:UpdateQuizSetup !! "+e);    			
+		}
+	}
+	/** This method update file element in existing quizid_questionSetting.xml file with sequence number
+         * and all updated variables values 
+         * @param String FilePath 
+         * @param String quesSettingPath
+         * @param String topicID
+         * @param String topicname 
+         * @param String questype 
+         * @param String queslevel 
+         * @param String quesMarks 
+         * @param String noofQues 
+         * @author Manorama Pal /Jaivir
+	 */
+	public void UpdateQuesSettingXml(String FilePath,String quesSettingPath,String topicID,String topicname,String questype,String queslevel,String quesMarks,String noofQues){
+		try{
+			XmlWriter xmlWriter = null;
+			int seq=-1;
+			Vector collect=new Vector();
+			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(FilePath+"/"+quesSettingPath);
+			collect=quizmetadata.getQuizQuestionDetail();
+			if(collect!=null){
+				for(int i=0;i<collect.size();i++){
+					String ID =((QuizFileEntry) collect.elementAt(i)).getID();
+					if(ID.equals(topicID)){
+						xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(FilePath,quesSettingPath);
+						QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicname,questype,queslevel,quesMarks,noofQues,topicID);;
+						xmlWriter.writeXmlFile();
+						Vector str=DeleteEntryinQuesSettingXml(FilePath,quesSettingPath,topicID);
+					}
+				}
+			}                   
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:UpdateQuesSettingXml !! "+e);    			
+		}
+	}
+	/** This method delete entry from quizid_questionSetting.xml file with sequence number
+         * @param String filePath 
+         * @param String xmlfile
+         * @param String topicID
+         * @author Manorama Pal /Jaivir
+         */
+	 public Vector DeleteEntryinQuesSettingXml(String filePath,String xmlfile,String topicID){
+                Vector collect=null;
+                try{
+			/**read the xml file and get all detail 
+                         *@see QuizMetaDataXmlReader in utils
+                         * according to detail get the sequence number
+                         * and delete the entry (xmlWriter method:removeElement)
+                         */
+                        XmlWriter xmlWriter = null;
+                        int seq=-1;
+                        QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+xmlfile);
+                        collect=quizmetadata.getQuizQuestionDetail();
+                        if(collect!=null){
+                                for(int i=0;i<collect.size();i++){
+                                        String ID =((QuizFileEntry) collect.elementAt(i)).getID();
+                                        if(ID.equals(topicID)){
+                                                seq=i;
+                                                break;
+                                        }
+                                }
+                        }
+                        xmlWriter=QuizMetaDataXmlWriter.RandomWriteinQues_settingxml(filePath,xmlfile);
+                        xmlWriter.removeElement("QuizQuestions",seq);
+                        xmlWriter.writeXmlFile();
+                }catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method: DeleteEntryinXml !! "+e);
+                }
+                return collect;
+        }
+
 }
 
 

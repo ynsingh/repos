@@ -1,9 +1,10 @@
 #*
- * @#Random_Quiz.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * @(#) SecurityString.vm
+ * Copyright (c) 2010,2013 MHRD, DEI Agra, IITK.
  * All Rights Reserved.
  * @author <a href="mailto:dev.singha93@gmail.com">Devendra singhal</a>
- * Contributors: Members of MHRD, DEI Agra.
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+ * Contributors: Members of MHRD, DEI Agra, IITK.
 *#
 $page.setTitle("Show Security String")
 $page.setBgColor($ui.bgcolor)
@@ -45,7 +46,11 @@ $page.setBgColor($ui.bgcolor)
 </table>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#if($flag=="show")
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("flag",$flag)>
+#else
 <form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,SecurityString.vm").setAction("OLES_AttemptQuiz")>
+#end
 #if($flag == "security")
 <table width="100%" bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.tableColor">
@@ -70,50 +75,45 @@ $page.setBgColor($ui.bgcolor)
 </table>
 #elseif($flag == "show")
 	<table bgcolor="$ui.tableColor" width="100%">
-		<tr bgcolor="$ui.menuColor">
-			<td>
-	        	<b>$brih_usr $brih_name </b>
-      	  </td>
-			<td>
-    			<SELECT name=userList class="drop">	
-    			<option value="1" > #if($lang =="hindi" || $lang=="gujarati") $brih_student $brih_select #else $brih_select $brih_student #end </option>
-				#foreach($topic in $userList2)
-					#if($!topic.getLoginName()==$!studentLoginName)
-						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
-					#else
-						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
-					#end              			
-				#end			
-	       	 </SELECT>
-			</td>
-		</tr>
-		<tr bgcolor="$ui.menuColor">
-			<td>
+		<tr bgcolor="$ui.menuColor"  width="100%">
+			<td width="50%">
 				<b> $brih_quiz $brih_name  </b>
     		</td>
-			<td>
-        		<SELECT name=quizlist class="drop">       		
-				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>			
+			<td width="50%">
+			<SELECT name=quizlist class="drop" onChange="checkField(document.frm);">
+                                #if($quizlist=="")
+				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>
+				 #else                   
+                                <option value="$!quizname">$!quizname</option>  #end
 					#foreach($topic in $quizList)
-						#if($!topic.getQuizID()==$!quizID)
 							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
-						#else
-							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
-						#end               		 		
 					#end			
     			</SELECT>
 			</td>
 		</tr>
-	
-		<tr bgcolor="$ui.menuColor">
-			<td colspan="2">
-				<input type="button" class="button-ftextstyle" name="eventSubmit_Security" value="$brith_showSecurity" onClick="checkField(document.frm,this);"/>		
-			</td>
-		</tr>    
-		<input type="hidden" name="actionName">
-		<input type="hidden" name="quizID">
-		<input type="hidden" name="quizName">
-		<input type="hidden" name="studentLoginName">
+		#if($quizname!="")
+                <table width="100%" bgcolor="$ui.tableColor">
+                        <tr bgcolor="$ui.tableColor">
+                                <td width="50%"><b>$brih_student $brih_name</b></td>
+                                <td width="50%"><b>$brih_secritystrs</b></td></tr>
+                        #foreach($secstrs in $securitydetail)
+                        #if($velocityCount%2==0)
+                                <tr bgcolor="$ui.tableColor">
+                                #else
+                                <tr bgcolor="$ui.menuColor">
+                                #end
+
+                        <td>$secstrs.StudentID</td>
+                        <td>$secstrs.SecurityID</td>
+                        #end
+                        </tr>
+                <tr bgcolor="$ui.menuColor">
+                        <td colspan="2">
+                        <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/>
+                        </td>
+                </tr>
+                </table>
+                #end
 	</table>
 	
 #elseif($flag == "generate")
@@ -160,27 +160,7 @@ $page.setBgColor($ui.bgcolor)
         }
         
 	function checkField(frm,field){
-		quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-		userid = frm.userList.options[frm.userList.selectedIndex].value;	
-			if(userid==1){
-				alert("kindly select the Student Name")		
-				frm.userList.focus();
-				return false;
-			}
-			else{
-				if(quizid ==1){
-					alert("kindly select the quiz")
-					frm.quizlist.focus();
-					return false;
-				}
-				else{
-					frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-					frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;
-					frm.studentLoginName.value = frm.userList.options[frm.userList.selectedIndex].value;	
-					frm.actionName.value=field.name;
-	       			frm.submit();
-			}
-		}
+	 	frm.submit();
 	}	
 	function checkField1(frm,field){
 		quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;			

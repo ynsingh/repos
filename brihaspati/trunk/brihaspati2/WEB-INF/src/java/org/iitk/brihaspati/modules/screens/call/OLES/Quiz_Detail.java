@@ -36,7 +36,8 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  * 
  */
 //Jdk
-import java.util.*;
+import java.util.Vector;
+import java.util.HashMap;
 import java.io.File;
 //Turbine
 import org.apache.turbine.util.RunData;
@@ -68,90 +69,84 @@ public class Quiz_Detail extends SecureScreen{
 	        ParameterParser pp=data.getParameters();
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try {			
-            User user=data.getUser();
-            String uname=user.getName();
-            int userid=UserUtil.getUID(uname);
-            String uid=Integer.toString(userid);
-            String courseid=(String)user.getTemp("course_id");
-            String mode =pp.getString("mode","");
-            String quizMode=pp.getString("quizMode","");
-            String checkstatus=pp.getString("checkstatus","");
+            		User user=data.getUser();
+            		String uname=user.getName();
+            		int userid=UserUtil.getUID(uname);
+            		String uid=Integer.toString(userid);
+            		String courseid=(String)user.getTemp("course_id");
+            		String mode =pp.getString("mode","");
+            		String quizMode=pp.getString("quizMode","");
+            		String checkstatus=pp.getString("checkstatus","");
             
-            context.put("tdcolor",pp.getString("count",""));
+            		context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
 			context.put("quizMode",quizMode);
-			ErrorDumpUtil.ErrorLog("count in java "+pp.getString("count",""));
 			
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			QuizMetaDataXmlReader quizmetadata=null;
-            Vector allQuiz=new Vector();
-            HashMap visibilityFlag = new HashMap(); 
-            String quizPath="Quiz.xml";
+            		Vector allQuiz=new Vector();
+            		HashMap visibilityFlag = new HashMap(); 
+            		String quizPath="Quiz.xml";
 			File f=new File(filePath+"/"+quizPath);
 			
 			if(f.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
 				allQuiz=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
-//				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");			
+//				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");
 			}
 			if(allQuiz==null)
-                return;
-            if(allQuiz.size()!=0){
-            	checkstatus="NoBlank";
-                context.put("allQuiz",allQuiz);
-                for(int i=0;i<allQuiz.size();i++){
-                	String quizid =((QuizFileEntry) allQuiz.elementAt(i)).getQuizID();
-                	String maxmarks =((QuizFileEntry) allQuiz.elementAt(i)).getMaxMarks();
-                	String maxquestions =((QuizFileEntry) allQuiz.elementAt(i)).getnoQuestion();
-                	String allowPractice = ((QuizFileEntry) allQuiz.elementAt(i)).getAllowPractice();
-                	String newFilePath=filePath+"/"+quizid+"/";
-                	String questionsPath=quizid+"_QuestionSetting.xml";        	                    	       
+                		return;
+            		if(allQuiz.size()!=0){
+            			checkstatus="NoBlank";
+                		context.put("allQuiz",allQuiz);
+                		for(int i=0;i<allQuiz.size();i++){
+                			String quizid =((QuizFileEntry) allQuiz.elementAt(i)).getQuizID();
+                			String maxmarks =((QuizFileEntry) allQuiz.elementAt(i)).getMaxMarks();
+                			String maxquestions =((QuizFileEntry) allQuiz.elementAt(i)).getnoQuestion();
+                			String allowPractice = ((QuizFileEntry) allQuiz.elementAt(i)).getAllowPractice();
+                			String newFilePath=filePath+"/"+quizid+"/";
+                			String questionsPath=quizid+"_QuestionSetting.xml";        	                    	       
                 	
-                	File newFile=new File(newFilePath+questionsPath);
-                	if(!newFile.exists()){
-                		data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_setting",LangFile));
-                	}
-                	else{
-                		ErrorDumpUtil.ErrorLog("inside else !!");
-                		QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionsPath);
-                		HashMap hm = new HashMap();
-                		hm = questionReader.getQuizQuestionNoMarks(questionReader,quizid);
-                		int mark =((Integer)hm.get("marks"));
-                		int enteredQuestions = ((Integer)hm.get("noQuestion")); 
-                		if(mark==(Integer.parseInt(maxmarks))||enteredQuestions==(Integer.parseInt(maxquestions))){
-                			ErrorDumpUtil.ErrorLog("inside if !!");
-                			visibilityFlag.put(quizid, "true");			        				       
-			        	}
-                		else{
-                			ErrorDumpUtil.ErrorLog("inside false ");
-                			visibilityFlag.put(quizid, "false");
-			        	}		   		
+                			File newFile=new File(newFilePath+questionsPath);
+                			if(!newFile.exists()){
+                				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_setting",LangFile));
+                			}
+                			else{
+                				QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionsPath);
+                				HashMap hm = new HashMap();
+                				hm = questionReader.getQuizQuestionNoMarks(questionReader,quizid);
+                				int mark =((Integer)hm.get("marks"));
+                				int enteredQuestions = ((Integer)hm.get("noQuestion")); 
+                				if(mark==(Integer.parseInt(maxmarks))||enteredQuestions==(Integer.parseInt(maxquestions))){
+                					visibilityFlag.put(quizid, "true");			        				       
+			        		}
+                				else{
+                					visibilityFlag.put(quizid, "false");
+			        		}		   		
 					}    
 				}
 				context.put("visibilityFlag",visibilityFlag);
-            }
+            		}
 			else{
 				checkstatus="blank";
-            }
+            		}
 			context.put("checkstatus",checkstatus);
 			/**
               		  *Time calculaion for how long user use this page.
                           */
 			  String Role = (String)user.getTemp("role");
-			  //int userid=UserUtil.getUID(user.getName());
                           if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                           {
 				int eid=0;
                                 ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
 
                            }
-
  
 		}		        
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in detail quiz file!!"+ex);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,LangFile));
-        }
+        	}
 	}
 }

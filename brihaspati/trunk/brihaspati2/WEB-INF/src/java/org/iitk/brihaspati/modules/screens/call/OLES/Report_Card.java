@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Report_Card.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra.
+ *  Copyright (c) 2010,2013 MHRD, DEI Agra, IITK .
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -61,37 +61,53 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class is used to show report card of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
+ *   @author  <a href="jaivirpal@gmail.com">Jaivir Singh</a>
+ *   @author  <a href="palseema30@gmail.com">Manorama Pal</a>
  */
 
 public class Report_Card extends SecureScreen{
-	//	MultilingualUtil mu=new MultilingualUtil();
-
 	public void doBuildTemplate( RunData data,Context context ){
 		ParameterParser pp=data.getParameters();
 		String file=data.getUser().getTemp("LangFile").toString();
-		try{			
+		try{
+			/**Get user name and put in context for use in template*/			
 			User user=data.getUser();
 			String uname=user.getName();
 			context.put("userName",uname);
+
+			/**Get CourseId from temp*/
 			String courseid=(String)user.getTemp("course_id");
+
+			/**Get userid according to User name
+                         *@see UserUtil in utils
+                         */
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			ErrorDumpUtil.ErrorLog("user id is :"+uid);
 			int index = courseid.lastIndexOf("_");
 			int instID = Integer.valueOf(courseid.substring(index+1, courseid.length()));
 			ErrorDumpUtil.ErrorLog("institute id is :"+instID);
 			String rollNo="";
+
+			/*Select Roll Number from 'StudentRollno' table */
 			Criteria crit=new Criteria();
 			crit.add(StudentRollnoPeer.EMAIL_ID,uname);
 			crit.add(StudentRollnoPeer.INSTITUTE_ID,instID);
 			ErrorDumpUtil.ErrorLog("criteriaIS :"+crit);
 			List v=StudentRollnoPeer.doSelect(crit);
-			StudentRollno element=(StudentRollno)v.get(0);
-			rollNo=element.getRollNo().toString();
-			ErrorDumpUtil.ErrorLog("roll no is :"+rollNo);
+
+			/*Check Rollno. exist or not */
+
+			if(v.size()!=0){
+				StudentRollno element=(StudentRollno)v.get(0);
+				rollNo=element.getRollNo().toString();
+			}
 			String fullName = UserUtil.getFullName(Integer.valueOf(uid));
 			context.put("fullName",fullName);
-			ErrorDumpUtil.ErrorLog("full name is :"+fullName);
 			context.put("rollNo",rollNo);
+
+			/**Get Quiz details by the ParameterParser and
+                         *put in context to use in templates
+                         */
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");
@@ -101,13 +117,6 @@ public class Report_Card extends SecureScreen{
 			String maxMarks=pp.getString("maxMarks","");				
 			String maxQuestion=pp.getString("maxQuestion","");
 			String marksQuestions = pp.getString("maxMarksQuestion","");
-			ErrorDumpUtil.ErrorLog("all variables :"+quizName +" :"+quizID+" :"+maxTime+" :"+maxMarks+" :"+maxQuestion+" :"+marksQuestions);
-			//			String temp[] = marksQuestions.split(",");
-			//			if(maxMarks.isEmpty()){
-			//				maxMarks = temp[1];
-			//				maxQuestion = temp[2];
-			//			}
-			//==========================================================
 			context.put("maxMarks",maxMarks);
 			context.put("maxQuestion",maxQuestion);
 			String answerSheetFlag = pp.getString("answerSheetFlag","no");
@@ -123,6 +132,8 @@ public class Report_Card extends SecureScreen{
 			context.put("passingMarks",Math.round(passingMarks));
 			Vector answerDetail=new Vector();
 			int studentMarks=0;
+
+			/**Find the Path where the 'quiz answer file' and 'score.xml'  exists */
 			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
 			String quizAnswerFile = uid+".xml";	
 			String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
@@ -130,11 +141,15 @@ public class Report_Card extends SecureScreen{
 			String usedTime="00:00";
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
 			File quizFile= new File(quizPath+"/"+quizXmlFile);
+
+			/**Check the "score.xml" file exists or not */
 			if(!quizFile.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 				return;
 			}
 			else{
+
+				/**Get details from "score.xml" file and store in a vector. */
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizXmlFile);
 				Vector quizDetail = quizmetadata.getFinalScore(uid);
 				if(quizDetail==null || quizDetail.size()==0){
@@ -154,18 +169,26 @@ public class Report_Card extends SecureScreen{
 					context.put("usedTime",usedTime);
 				}
 			}
+
+			/**Check the student "uid.xml" exists or not */
 			if(!answerFile.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 				return;
 			}
 			else{
+
+				/**Get the Details from student uid.xml store in a vector*/
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
 				answerDetail = quizmetadata.getFinalAnswer();
+				/**If file is empty, set message else put in context for use in template*/
 				if(answerDetail==null || answerDetail.size()==0){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 					return;
 				}
 				else{
+					/**Get the AwardedMarks and MarksPerQuestion
+                                          *calculate the number of correct answer and percentage
+                                          */
 					context.put("answerDetail",answerDetail);
 					for(int i=0;i<answerDetail.size();i++){
 						int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());
@@ -175,9 +198,8 @@ public class Report_Card extends SecureScreen{
 						}
 						studentMarks +=studentMark;
 					}
-					ErrorDumpUtil.ErrorLog("total no of correct answer of student"+noCorrectAns);
+					/**put in context for use in template*/
 					context.put("noCorrectAns",noCorrectAns);
-					ErrorDumpUtil.ErrorLog("total marks of student"+studentMarks);
 					context.put("studentMarks",studentMarks);
 					String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
 					context.put("percentageScore",percentageScore);

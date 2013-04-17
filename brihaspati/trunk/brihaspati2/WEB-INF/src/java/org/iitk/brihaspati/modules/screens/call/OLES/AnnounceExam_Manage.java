@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)AnnounceExam_Manage.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra. 
+ *  Copyright (c) 2010,2013 MHRD, DEI Agra,IITK. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -71,9 +71,6 @@ public class AnnounceExam_Manage extends SecureScreen{
         try{
         	User user=data.getUser();
         	String uname=user.getName();
-//        	String count = pp.getString("count","3");
-//        	ErrorDumpUtil.ErrorLog("The count value :"+count);
-//        	context.put("tdcolor",pp.getString("count","3"));
         	context.put("tdcolor","3");
         	context.put("course",(String)user.getTemp("course_name"));
         	String courseid=(String)user.getTemp("course_id");        	
@@ -83,45 +80,42 @@ public class AnnounceExam_Manage extends SecureScreen{
             	/**
                  *Time calculaion for how long user use this page.
                  */
-                 int uid=UserUtil.getUID(user.getName());
-                 if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
-                 {
-			 int eid=0;
-			 ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
-                  }
+                int uid=UserUtil.getUID(user.getName());
+                if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
+                {
+			int eid=0;
+			ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+                }
 
-            File file=new File(filePath+"/"+quizPath);
-			Vector quizList=new Vector();
-			Vector finalQuizList=new Vector();
-			QuizMetaDataXmlReader quizmetadata=null;
-			if(file.exists()){
-				context.put("isFile","exist");
-				ErrorDumpUtil.ErrorLog("inside file exist:");
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
-				ErrorDumpUtil.ErrorLog("after active n currently not running quizzes:"+quizList);
-				if(quizList!=null && quizList.size()!=0){
-					for(int i=0;i<quizList.size();i++){
-						String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
-						String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
-						String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();
-						//=============modification on 31 march-reason--> mode was not passing
-						String startDate = ((QuizFileEntry) quizList.elementAt(i)).getExamDate();
-						ErrorDumpUtil.ErrorLog("The start date :"+startDate);
-						//=================================
-//						if(quizMode.equalsIgnoreCase("random")){
-							if(allowPractice.equalsIgnoreCase("no")){
-								finalQuizList.add(quizList.get(i));				
-							}
+            	File file=new File(filePath+"/"+quizPath);
+		Vector quizList=new Vector();
+		Vector finalQuizList=new Vector();
+		QuizMetaDataXmlReader quizmetadata=null;
+		if(file.exists()){
+			context.put("isFile","exist");
+			quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+			quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
+			if(quizList!=null && quizList.size()!=0){
+				for(int i=0;i<quizList.size();i++){
+					String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
+					String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
+					String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();
+					//=============modification on 31 march-reason--> mode was not passing
+					String startDate = ((QuizFileEntry) quizList.elementAt(i)).getExamDate();
+					//=================================
+//					if(quizMode.equalsIgnoreCase("random")){
+						if(allowPractice.equalsIgnoreCase("no")){
+							finalQuizList.add(quizList.get(i));				
+						}
 //						}						
-					}	
-//					if(quizList.size()!=0){
-						context.put("quizList",finalQuizList);	              
-//					}
-				}
+				}	
+//				if(quizList.size()!=0){
+					context.put("quizList",finalQuizList);	              
+//				}
 			}
-			else
-				context.put("isFile","");
+		}
+		else
+		context.put("isFile","");
         }catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in AnnounceExam_Manage screen::"+e);
         	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));	

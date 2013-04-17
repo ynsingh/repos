@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)AnnounceExam_Manage.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra. 
+ *  Copyright (c) 2010, 2013 MHRD, DEI Agra, IITK. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,7 +38,8 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 
 //Jdk
 import java.io.File;
-import java.util.*;
+import java.util.Vector;
+import java.util.Calendar;
 //Turbine
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
@@ -57,8 +58,6 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
@@ -79,7 +78,6 @@ public class Announce_Exam extends SecureScreen{
         	User user=data.getUser();
         	String courseid=(String)user.getTemp("course_id");   
         	String username=user.getName();
-        	//context.put("tdcolor",pp.getString("count",""));
         	String mode = pp.getString("mode","");
         	String quizID = pp.getString("quizID","");
         	context.put("quizID",quizID);
@@ -89,7 +87,6 @@ public class Announce_Exam extends SecureScreen{
         	String noQuestions = pp.getString("noQuestions","");
         	String creationDate = pp.getString("creationDate","");
         	String type="";
-        	ErrorDumpUtil.ErrorLog("mode is :"+mode);
            	String check = "y";
            	String filePath1=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID);
           	String quizSettingPath=quizID+"_QuestionSetting.xml";
@@ -103,7 +100,6 @@ public class Announce_Exam extends SecureScreen{
 			if(collect!=null && collect.size()!=0){
 				for(int i=0;i<collect.size();i++){
 					type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
-					ErrorDumpUtil.ErrorLog("question type "+type);
 						if((type.equals("sat")) ||(type.equals("lat"))){
 					 	   check = "n";
 					 	   flag=true;
@@ -111,12 +107,10 @@ public class Announce_Exam extends SecureScreen{
 						}
 				}
 				if(check.equals("y")){
-					ErrorDumpUtil.ErrorLog("set for mcq tft"+type+check);
 					context.put("setVisible","hidden");
 					context.put("flag",flag);
 				}
 				else{
-					ErrorDumpUtil.ErrorLog("set for else"+type+check);
 					context.put("setVisible","visible");
 				}		
 
@@ -165,35 +159,34 @@ public class Announce_Exam extends SecureScreen{
 							else{
 								resDate = null;
 							}
-								ErrorDumpUtil.ErrorLog("resdate in aanounce.java "+resDate);
     						}    						         
     					}
     				}
     			}
     			String[] temp = startDate.split("-");
-				context.put("Start_year",temp[0]);
-				context.put("Start_month",temp[1]);
-				context.put("Start_day",temp[2]);
+			context.put("Start_year",temp[0]);
+			context.put("Start_month",temp[1]);
+			context.put("Start_day",temp[2]);
 				
-				String[] temp1 = startTime.split(":");
-				context.put("Start_hr",temp1[0]);
-				context.put("Start_min",temp1[1]);
+			String[] temp1 = startTime.split(":");
+			context.put("Start_hr",temp1[0]);
+			context.put("Start_min",temp1[1]);
+			
+			String[] temp2 = endDate.split("-");
+			context.put("End_year",temp2[0]);
+			context.put("End_month",temp2[1]);
+			context.put("End_day",temp2[2]);
 				
-				String[] temp2 = endDate.split("-");
-				context.put("End_year",temp2[0]);
-				context.put("End_month",temp2[1]);
-				context.put("End_day",temp2[2]);
-				
-				String[] temp3 = endTime.split(":");
-				context.put("End_hr",temp3[0]);
-				context.put("End_min",temp3[1]);
-				context.put("allowPractice",allowPractice);  
-				if(check.equals("n")){	
-					String[] temp4 = resDate.split("-");
-					context.put("Res_year",temp4[0]);
-					context.put("Res_month",temp4[1]);
-					context.put("Res_day",temp4[2]);
-				}
+			String[] temp3 = endTime.split(":");
+			context.put("End_hr",temp3[0]);
+			context.put("End_min",temp3[1]);
+			context.put("allowPractice",allowPractice);  
+			if(check.equals("n")){	
+				String[] temp4 = resDate.split("-");
+				context.put("Res_year",temp4[0]);
+				context.put("Res_month",temp4[1]);
+				context.put("Res_day",temp4[2]);
+			}
         	}
         
         	context.put("course",(String)user.getTemp("course_name"));
@@ -202,24 +195,18 @@ public class Announce_Exam extends SecureScreen{
         	String month = temp4[1];
         	context.put("cmonth",month);
         	String date = temp4[2];
-        	ErrorDumpUtil.ErrorLog("currentday "+date);
         	context.put("cday",date);
         	String strdatetype=currentdate.replaceAll("-","");
-            int currentdate1=Integer.parseInt(strdatetype);
-            ErrorDumpUtil.ErrorLog("currentdate "+currentdate1);
-            int cyear1=currentdate1/10000;
-            String cyear=Integer.toString(cyear1);
-            ErrorDumpUtil.ErrorLog("cyear "+cyear);
-            context.put("year",cyear);
-            Vector year=YearListUtil.getYearList();
-            ErrorDumpUtil.ErrorLog("year "+year);
-            context.put("year_list",year);
-            Calendar cld = Calendar.getInstance();
-        	ErrorDumpUtil.ErrorLog("\n current date "+cld.getTime());
+            	int currentdate1=Integer.parseInt(strdatetype);
+            	int cyear1=currentdate1/10000;
+            	String cyear=Integer.toString(cyear1);
+            	context.put("year",cyear);
+            	Vector year=YearListUtil.getYearList();
+            	context.put("year_list",year);
+            	Calendar cld = Calendar.getInstance();
         	//cld.clear();
         	cld.add(Calendar.DAY_OF_MONTH, 30);
         	cld.add(Calendar.MINUTE, 5);
-        	ErrorDumpUtil.ErrorLog("\n date after 30 days "+cld.getTime());
         	String eYear = Integer.toString(cld.get(cld.YEAR));
         	int eMon = (cld.get(cld.MONTH))+1;
         	String eMonth = Integer.toString(eMon);
@@ -237,7 +224,6 @@ public class Announce_Exam extends SecureScreen{
 				eHour="0"+eHour;
 			if(eMin<10)
 				eMinute="0"+eMinute;
-        	ErrorDumpUtil.ErrorLog("\n all date values "+eYear+" "+eMonth+" "+eDate+" "+eHour+" "+eMinute);
         	context.put("eYear",eYear);
         	context.put("eMonth",eMonth);
         	context.put("eDate",eDate);

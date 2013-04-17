@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)QuizFileEntry.java
  *
- *  Copyright (c) 2010-2011 DEI, Agra.
+ *  Copyright (c) 2010-2011,2012,2013 DEI, Agra, IITK .
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -31,13 +31,15 @@ package org.iitk.brihaspati.modules.utils;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
- *  Contributors: Members of MHRD, DEI, Agra
+ *  Contributors: Members of MHRD, DEI, Agra, IITK
  *
  */
 /**
  * This class set some value and get in templates from XML file 
  * @author: <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
  * @author: Aayushi
+ * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author: <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>03jan2013
  */
 public class QuizFileEntry implements Comparable<QuizFileEntry> {
 			
@@ -61,32 +63,34 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	private String marksPerQuestion;
 	private String status;
 	private String questionID;
-    private String question;
-    private String answer;
-    private String option1;
-    private String option2;
-    private String option3;
-    private String option4;
-    private String questionNumber;
-    private String fileName;
-    private String id;
-    private String examDate;
-    private String expiryDate;
-    private String startTime;
-    private String endTime;
-    private String allowPractice;
-    private String awardedMarks;
-    private String userID;
-    private String score;
-    private String studentAnswer;
-    private String instructorAnswer;
-    private String usedTime;
-    private String resDate;
-    private String evaluate;
-    private String studentLoginName;
-    private String securityID;
-    private String studentID;
-    private String IPAddress;
+
+    	private String question;
+    	private String answer;
+    	private String option1;
+    	private String option2;
+    	private String option3;
+    	private String option4;
+    	private String questionNumber;
+    	private String fileName;
+    	private String id;
+    	private String examDate;
+    	private String expiryDate;
+    	private String startTime;
+    	private String endTime;
+    	private String allowPractice;
+    	private String awardedMarks;
+    	private String userID;
+    	private String score;
+    	private String studentAnswer;
+    	private String instructorAnswer;
+    	private String usedTime;
+    	private String resDate;
+    	private String evaluate;
+    	private String studentLoginName;
+    	private String securityID;
+    	private String studentID;
+    	private String IPAddress;
+    	private String Attributeno;
 
 //-----------------------------OLES
 	
@@ -108,51 +112,51 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 //		return temp;
 //	}	
 //---------------------------------Quiz(DEI Agra)-------------------------------
-     /*
-      * compareTo method is overrided to make quizFileEntry objects comparable
-      */
-    public int compareTo(QuizFileEntry o1){
-    	ErrorDumpUtil.ErrorLog("\n questionbank's question"+o1.getQuestion());
-    	ErrorDumpUtil.ErrorLog("\n tree set question"+this.getQuestion());
-    if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?    	
-    	ErrorDumpUtil.ErrorLog("inside exactly same");
-    	return 0;
-    }
-	if (o1 == null){ // Is the object being compared null?
-		ErrorDumpUtil.ErrorLog("inside null situation");
-		return 1;
-	}
+	/*
+      	* compareTo method is overrided to make quizFileEntry objects comparable
+      	*/
+    	public int compareTo(QuizFileEntry o1){
+    		//ErrorDumpUtil.ErrorLog("\n questionbank's question"+o1.getQuestion());
+    		//ErrorDumpUtil.ErrorLog("\n tree set question"+this.getQuestion());
+    		if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?    	
+    			//ErrorDumpUtil.ErrorLog("inside exactly same");
+    			return 0;
+    		}
+		if (o1 == null){ // Is the object being compared null?
+			//ErrorDumpUtil.ErrorLog("inside null situation");
+			return 1;
+		}
 
-	if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a QuizFileEntry object?
-		ErrorDumpUtil.ErrorLog("inside wrong object type");
-		return 1;
-	}
-	ErrorDumpUtil.ErrorLog("after every condition check");
-    return 1;
-    }
+		if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a QuizFileEntry object?
+			//ErrorDumpUtil.ErrorLog("inside wrong object type");
+			return 1;
+		}
+		//ErrorDumpUtil.ErrorLog("after every condition check");
+    		return 1;
+    	}
     
     
-    public boolean equals(QuizFileEntry o1)
-    {
-    	ErrorDumpUtil.ErrorLog("o1 's question"+o1.getQuestion());
-    	ErrorDumpUtil.ErrorLog("this 's question"+this.getQuestion());
-    if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?
+	public boolean equals(QuizFileEntry o1)
+    	{
+    		//ErrorDumpUtil.ErrorLog("o1 's question"+o1.getQuestion());
+    		//ErrorDumpUtil.ErrorLog("this 's question"+this.getQuestion());
+    		if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?
     	 
-    	ErrorDumpUtil.ErrorLog("inside exactly same");
-    	return true;
-    }
-	if (o1 == null){ // Is the object being compared null?
-		ErrorDumpUtil.ErrorLog("inside null situation");
-		return false;
-	}
+    			//ErrorDumpUtil.ErrorLog("inside exactly same");
+    			return true;
+    		}
+		if (o1 == null){ // Is the object being compared null?
+			//ErrorDumpUtil.ErrorLog("inside null situation");
+			return false;
+		}
 
-	if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a Person?
-		ErrorDumpUtil.ErrorLog("inside wrong object type");
-		return false;
-	}
-	ErrorDumpUtil.ErrorLog("after every condition check");
-    return false;
-    }
+		if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a Person?
+			//ErrorDumpUtil.ErrorLog("inside wrong object type");
+			return false;
+		}
+		//ErrorDumpUtil.ErrorLog("after every condition check");
+    		return false;
+    	}
     
 	public void setQuizID(String quizID){
 		this.quizID = quizID;
@@ -440,5 +444,11 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	}
 	public String getIP(){
 		return IPAddress;
+	}
+	public void setnoofAttribute(String ats){
+		this.Attributeno=ats;
+	}
+	public String getnoofAttribute(){
+		return Attributeno;
 	}
 }

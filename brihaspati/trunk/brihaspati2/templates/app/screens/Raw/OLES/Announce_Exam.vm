@@ -1,9 +1,11 @@
 #*
  * @(#)Announce_Exam.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010 DEI Agra,.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com ">Aayushi</a>
- * Contributors: Members of MHRD Project DEI Agra
+ * @author <a href="mailto:palseema30@gmail.com ">Manorama Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
+ * Contributors: Members of MHRD Project DEI Agra, IITK
 *#
 $page.setTitle("Announce Exam")
 $page.setBgColor("bgcolor")
@@ -107,7 +109,8 @@ $!data.getMessage()
 		<td><input type="text" name="noQuestions" value="$noQuestions" readonly></td>
 	</tr>
 	<tr>
-		<td><b>$brih_cre_dat</b></td>
+		##<td><b>$brih_cre_dat</b></td>
+		<td><b>$brih_creation $brih_Da</b></td>
 		<td><input type="text" name="creationDate" value="$creationDate" readonly></td>
 	</tr>
 	<tr>

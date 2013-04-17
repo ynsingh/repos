@@ -62,9 +62,8 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 public class OLES_ReEvaluation extends SecureScreen{
 	public void doBuildTemplate( RunData data,Context context ){
-		ErrorDumpUtil.ErrorLog("inside OLES_ReEvaluation.java file!!"); 
-			ParameterParser pp=data.getParameters();
-			String langfile=data.getUser().getTemp("LangFile").toString();
+		ParameterParser pp=data.getParameters();
+		String langfile=data.getUser().getTemp("LangFile").toString();
 		try {			
 			User user=data.getUser();
 			String uname=user.getName();
@@ -83,7 +82,6 @@ public class OLES_ReEvaluation extends SecureScreen{
 			String fullName = UserUtil.getFullName(Integer.valueOf(studentID));
 			context.put("fullName",fullName);
 			context.put("studentID",studentID);
-			ErrorDumpUtil.ErrorLog("courseID, quizID, quizName, count, studentLoginName, studentID,coursename "+courseid+" : "+quizID+" : "+quizName+" : "+count+" : "+studentLoginName+" : "+studentID+" : "+courseName);	
 			Vector collectScore=new Vector();
 			List collectStudentLoginName=new ArrayList();
 			String quizScorePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
@@ -103,7 +101,6 @@ public class OLES_ReEvaluation extends SecureScreen{
 				}
 				else{
 					context.put("collectScore",collectScore);
-					ErrorDumpUtil.ErrorLog("inside OLES_ReEvaluation.java file in else part !!"+collectScore.size());
 					for(int i=0;i<collectScore.size();i++){
 						String evaluate=((QuizFileEntry)collectScore.elementAt(i)).getEvaluate();
 						if(evaluate==null || evaluate.equals("complete") || evaluate.equals("partial")){

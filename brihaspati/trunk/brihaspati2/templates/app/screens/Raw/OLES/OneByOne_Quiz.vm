@@ -3,7 +3,9 @@
  * Copyright (c) 2010 MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
- * Contributors: Members of MHRD, DEI Agra.
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Pal</a>
+ * Contributors: Members of MHRD, DEI Agra, IITK.
 *#
 $page.setTitle("Quiz Creation")
 $page.setBgColor("bgcolor")
@@ -118,7 +120,7 @@ $!data.getMessage()
 		#if($typeName=="mcq" || $typeName=="tft")
 			<td><input type="text" name="answer" value="$answer" readonly></td>        
 		#else
-			<td><textarea rows="2" cols="23 name="answer" readonly>$answer</textarea></td>        
+			<td><textarea rows="2" cols=23 name="answer" readonly>$answer</textarea></td>        
 		#end
         </tr>   
 	<tr>

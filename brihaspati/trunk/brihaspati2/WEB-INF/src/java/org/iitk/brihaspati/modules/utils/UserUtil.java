@@ -189,6 +189,26 @@ public class UserUtil
         return v;
 
         }
+
+	/**
+         * Get Email on the basis of uid        
+         * @param uid Integer
+         * @return String
+         * @Author Jaivir Singh/Manorama Pal
+         */
+        public static String getEmail(int uid){
+                String email=null;
+                try{
+
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserPeer.USER_ID,uid);
+                        List v=TurbineUserPeer.doSelect(crit);
+                        TurbineUser element=(TurbineUser)v.get(0);
+                        email=element.getEmail().toString();
+                }
+                catch(Exception e){ErrorDumpUtil.ErrorLog("Exception inside getEmail() UserUtil.java!!"+e);}
+                return email;
+      }
 	
 
 }

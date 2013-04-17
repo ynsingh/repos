@@ -120,7 +120,6 @@ public class Attempt_Quiz extends SecureScreen
 			quesID=fileName=quesType=markPerQues="";
 			quesType = pp.getString("quesType","");
 			String quesDetail = pp.getString("quesDetail","");
-			ErrorDumpUtil.ErrorLog("getting parameter of quesDetail"+quesDetail);
 			
 			if(quesDetail.isEmpty()){ 
 				markPerQues = pp.getString("markPerQues","");            
@@ -151,10 +150,7 @@ public class Attempt_Quiz extends SecureScreen
 			String finalAnswer = pp.getString("finalAnswer","");
 			context.put("finalAnswer",finalAnswer);
 
-			ErrorDumpUtil.ErrorLog("\n final answer is "+finalAnswer);
-//			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
 			String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID+"/");
-//			String quizPath="/Quiz.xml"; 
 			String answerPath=uid+".xml";
 			String questionPath=quizID+"_Questions.xml";
 			File file=new File(answerFilePath+"/"+questionPath);
@@ -171,7 +167,6 @@ public class Attempt_Quiz extends SecureScreen
 					for(int i=0;i<quizList.size();i++){														
 						totalMarks = totalMarks + Integer.parseInt(((QuizFileEntry)quizList.elementAt(i)).getMarksPerQuestion());											
 					}
-					ErrorDumpUtil.ErrorLog("\n total marks and count "+quizList.size()+":"+totalMarks);
 					context.put("maxQuestion",quizList.size());	
 					context.put("maxMarks",totalMarks);
 				}
@@ -183,33 +178,29 @@ public class Attempt_Quiz extends SecureScreen
 			 */
 			int maxtime; 							
 			if(maxTime.indexOf(":")==-1){
-				ErrorDumpUtil.ErrorLog("\n inside -1");
 				 maxtime=Integer.parseInt(maxTime);
 			}
 			else{
 				String maxtimeArray[] = maxTime.split(":");
-				ErrorDumpUtil.ErrorLog("\n inside -1 else after split");
 				maxtime=Integer.parseInt(maxtimeArray[0]);
 			}
 			Timer timer = new Timer();
-		    timer.schedule(new TimerTask(){
+		    	timer.schedule(new TimerTask(){
 		    	public void run(){
 		    		Attempt_Quiz.msg = 1;
-		    		ErrorDumpUtil.ErrorLog("msg value inside run:"+Attempt_Quiz.msg);
 		    	}
-		    }, (maxtime*60) * 1000);
+		    	}, (maxtime*60) * 1000);
 		    
-		    if(msg==1){		    	
-		    	data.setMessage(MultilingualUtil.ConvertedString("brih_overQuizTime",LangFile));
-		    	data.setScreenTemplate("call,OLES,Student_Quiz.vm");
-		    }	
+		    	if(msg==1){		    	
+		    		data.setMessage(MultilingualUtil.ConvertedString("brih_overQuizTime",LangFile));
+		    		data.setScreenTemplate("call,OLES,Student_Quiz.vm");
+		    	}	
 			/*
 			 * this block is used to set timer value in session so that if student refresh the
 			 * page timer is not restarted from the starting point
 			 */
 			String timerValue = pp.getString("timerValue","");
 			String timerValueSession = (String)user.getTemp("timerValue"); 
-			ErrorDumpUtil.ErrorLog("\n timer value and timersession"+timerValue+":"+timerValueSession);
 			if(timerValue==null || timerValue.equalsIgnoreCase("")){
 				if(timerValueSession==null || timerValueSession.equalsIgnoreCase("")){
 					context.put("timerValue",maxTime);						

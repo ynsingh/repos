@@ -519,5 +519,15 @@ public class MailNotification{
                		f1.delete();
                 }
 	}
+
+	public static String getQuizMessage(String info, String course_id, String quiz_date,String quiz_time,String quizname,String securitystr,String uName,Properties pr) throws Exception{
+                message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
+                replaceString("course_id",course_id);
+                replaceString("quiz_date",quiz_date);
+                replaceString("quiz_time",quiz_time);
+                replaceString("quiz_name",quizname);
+                replaceString("security_string",securitystr);
+                return replaceString("user_name",uName);
+        }
 }
 

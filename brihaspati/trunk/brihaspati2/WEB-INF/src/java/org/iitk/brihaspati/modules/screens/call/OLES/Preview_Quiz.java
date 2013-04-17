@@ -63,30 +63,30 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 public class Preview_Quiz extends SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
-	/**
-        *Retrieve the Parameters by using the Parameter Parser
-        *Get the UserName and put it in the context
-        *for template use
-        */
-        ParameterParser pp=data.getParameters();
-	String LangFile=data.getUser().getTemp("LangFile").toString();
-        try
-        {
-        	User user=data.getUser();
-        	String userName=user.getName();
-        	String mode =pp.getString("mode"," ");
-        	String type = pp.getString("type","");
-        	String courseid=(String)user.getTemp("course_id");
+		/**
+        	*Retrieve the Parameters by using the Parameter Parser
+        	*Get the UserName and put it in the context
+        	*for template use
+        	*/
+       		ParameterParser pp=data.getParameters();
+		String LangFile=data.getUser().getTemp("LangFile").toString();
+        	try
+        	{
+        		User user=data.getUser();
+        		String userName=user.getName();
+        		String mode =pp.getString("mode"," ");
+        		String type = pp.getString("type","");
+        		String courseid=(String)user.getTemp("course_id");
         	
-        	context.put("tdcolor",pp.getString("count",""));
-        	context.put("course",(String)user.getTemp("course_name"));
+        		context.put("tdcolor",pp.getString("count",""));
+        		context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
 			context.put("type",type);
 			
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-            String quizPath="Quiz.xml";
+            		String quizPath="Quiz.xml";
             
-            File file=new File(filePath+"/"+quizPath);
+           	 	File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
 			Vector finalQuizList=new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
@@ -95,42 +95,32 @@ public class Preview_Quiz extends SecureScreen{
 				data.setMessage(MultilingualUtil.ConvertedString("brih_nopreview",LangFile));
 				return;
 			}
-//				context.put("isFile","exist");
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);	
-				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,userName); 
-				//this code is to list all random and nonpractice quizzes
-				if(quizList==null && quizList.size()==0){
+			quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);	
+			quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,userName); 
+			//this code is to list all random and nonpractice quizzes
+			if(quizList==null && quizList.size()==0){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noQuizpreview",LangFile));
+				return;
+			}
+			else{					
+				for(int i=0;i<quizList.size();i++){
+					String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
+					String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
+					String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();						
+					if(quizMode.equalsIgnoreCase("random")){
+						if(allowPractice.equalsIgnoreCase("no")){
+							finalQuizList.add(quizList.get(i));				
+						}
+					}						
+				}					
+				if(finalQuizList.size()==0){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noQuizpreview",LangFile));
 					return;
 				}
-				else{					
-					for(int i=0;i<quizList.size();i++){
-						String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
-						String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
-						String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();						
-						if(quizMode.equalsIgnoreCase("random")){
-							if(allowPractice.equalsIgnoreCase("no")){
-								finalQuizList.add(quizList.get(i));				
-							}
-						}						
-					}					
-					if(finalQuizList.size()==0){
-						data.setMessage(MultilingualUtil.ConvertedString("brih_noQuizpreview",LangFile));
-						return;
-					}
-					else{
-						context.put("quizList",finalQuizList);
-					}
+				else{
+					context.put("quizList",finalQuizList);
 				}
-//				quizList=quizmetadata.getQuizDetailForPreview("random");
-//				if(quizList!=null){
-//					if(quizList.size()!=0){
-//						context.put("quizList",quizList);
-//					}
-//				}
-//			}
-//			else
-//				context.put("isFile","");
+			}
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -144,10 +134,10 @@ public class Preview_Quiz extends SecureScreen{
 				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
-	    }
-        catch(Exception e) {
-        	ErrorDumpUtil.ErrorLog("The exception in Preview_Quiz screen::"+e);
-        	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
-        }
-    }
+	    	}
+        	catch(Exception e) {
+        		ErrorDumpUtil.ErrorLog("The exception in Preview_Quiz screen::"+e);
+        		data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
+        	}
+    	}
 }

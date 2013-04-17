@@ -57,13 +57,14 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 //import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 //import org.apache.commons.lang.StringUtils;
 
 /**
  * This Action class for Online Examination system 
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a> 
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a> 
- * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012 
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012, 05march2013 
  */
 public class OnlineExaminationSystem extends SecureAction
 {
@@ -79,13 +80,23 @@ public class OnlineExaminationSystem extends SecureAction
 	public void doUploadQues_Bank(RunData data, Context context){
 		try
 		{//try
-			//CourseUserDetail MsgDetails=new CourseUserDetail();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			crsId=(String)data.getUser().getTemp("course_id");
 		 	ParameterParser pp=data.getParameters();
 			User user=data.getUser();
                         String username=data.getUser().getName();
 			String topic=pp.getString("Topicname","");
+			/**Check for Illegal character in topic name
+			 *@see StringUtil in Utils
+			 */
+			int checktopic=StringUtil.checkString(topic);
+			if(checktopic!=-1)
+                	{
+                        	String Mu_msg1=MultilingualUtil.ConvertedString("brih_illegalchar",LangFile);
+                        	data.setMessage(Mu_msg1);
+                        	return;
+                	}
+
 			String Questype=pp.getString("valQuestype","");
 			String difflevel=pp.getString("valdifflevel","");
 			String typeques=pp.getString("typeques","");
@@ -398,7 +409,6 @@ public class OnlineExaminationSystem extends SecureAction
 			String questiontype=pp.getString("qtype","");
 			String oldquesimage=pp.getString("quesimage","");
 			String quesimg=new String();
-			ErrorDumpUtil.ErrorLog("in update method typeques===="+typeques);
 			String fulltopic=topic+"_"+difflevel+"_"+questiontype;
 			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                         if(typeques.equals("imgtypeques")){
@@ -640,7 +650,6 @@ public class OnlineExaminationSystem extends SecureAction
                         if(found==false)
                         {
 				if(!Quesid.equals("")){
-				ErrorDumpUtil.ErrorLog("Quesid in ques write method=========="+Quesid);
                         	if(Questiontype.equals("mcq"))
 				{
                         		xmlWriter=new XmlWriter(filepath+"/"+QBtopicpath);
@@ -747,7 +756,6 @@ public class OnlineExaminationSystem extends SecureAction
                         	Read=tr.getQuesBank_Detail();
                         else
                                 Read=tr.getQuesBank_Detail1();
-				//ErrorDumpUtil.ErrorLog("read in else getMaxQuesid action==="+Read);	
                         if(Read != null)
                         {
                                 for(int n=0;n<Read.size();n++)

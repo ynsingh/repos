@@ -62,7 +62,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 public class Create_Quiz extends SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
-		/**
+	/**
         *Retrieve the Parameters by using the Parameter Parser
         *Get the UserName and put it in the context
         *for template use
@@ -73,44 +73,43 @@ public class Create_Quiz extends SecureScreen{
         	User user=data.getUser();
         	String uname=user.getName();
 		String Role = (String)user.getTemp("role");
-		 /**
-                  *Time calculaion for how long user use this page.
-                  */
-                  int uid=UserUtil.getUID(uname);
-                  if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
-                  {
-			  int eid=0;
-                          ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+		/**
+                 *Time calculaion for how long user use this page.
+                 */
+                int uid=UserUtil.getUID(uname);
+                if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
+                {
+			int eid=0;
+                        ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
 			  
-                  }
-
+                }
         	String mode =pp.getString("mode"," ");
         	String type = pp.getString("type","");
         	String courseid=(String)user.getTemp("course_id");
           	context.put("tdcolor",pp.getString("count",""));
         	context.put("course",(String)user.getTemp("course_name"));
-			context.put("mode",mode);
-			context.put("type",type);
+		context.put("mode",mode);
+		context.put("type",type);
 			
-			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-            String quizPath="/Quiz.xml";
+		String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+            	String quizPath="/Quiz.xml";
             
-            File file=new File(filePath+"/"+quizPath);
-			Vector quizList=new Vector();
-			QuizMetaDataXmlReader quizmetadata=null;
+            	File file=new File(filePath+"/"+quizPath);
+		Vector quizList=new Vector();
+		QuizMetaDataXmlReader quizmetadata=null;
 			
-			if(file.exists()){
-				context.put("isFile","exist");
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.getStatusQuiz_Detail("INA",uname);
-				if(quizList!=null){
-					if(quizList.size()!=0){
-						context.put("quizList",quizList);	              
-					}
+		if(file.exists()){
+			context.put("isFile","exist");
+			quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+			quizList=quizmetadata.getStatusQuiz_Detail("INA",uname);
+			if(quizList!=null){
+				if(quizList.size()!=0){
+					context.put("quizList",quizList);	              
 				}
 			}
-			else
-				context.put("isFile","");
+		}
+		else
+		context.put("isFile","");
         }
         catch(Exception e){
         	ErrorDumpUtil.ErrorLog("The exception in Create_Quiz screen::"+e);

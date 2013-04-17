@@ -53,8 +53,6 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class is used to show score of student after attempting the quiz
@@ -62,14 +60,11 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
  */
 
 public class Quiz_Score extends SecureScreen{
-//	MultilingualUtil mu=new MultilingualUtil();
 
 	public void doBuildTemplate( RunData data, Context context ){
 		ParameterParser pp=data.getParameters();
 		String file=data.getUser().getTemp("LangFile").toString();
 		try{
-			//			String stat = pp.getString("status");			
-			//			context.put("status",stat);
 			User user=data.getUser();
 			String uname=user.getName();
 			String courseid=(String)user.getTemp("course_id");
@@ -78,12 +73,10 @@ public class Quiz_Score extends SecureScreen{
 			context.put("role",role);
 			String type1=pp.getString("type","");
 			context.put("type",type1);
-			ErrorDumpUtil.ErrorLog("\n role is :"+role+" and type is :"+type1);
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);
-			ErrorDumpUtil.ErrorLog("\n quiz name & quiz id is :"+quizName +" : "+quizID);
 			String maxTime="";
 			String maxMarks="";
 			String maxQuestion="";
@@ -104,7 +97,6 @@ public class Quiz_Score extends SecureScreen{
 					HashMap<String,Integer> maxMarksQuestion = quesmetadata.getQuizQuestionNoMarks(quesmetadata,quizID);
 					maxMarks =(String.valueOf(maxMarksQuestion.get("marks")));
 					maxQuestion = (String.valueOf(maxMarksQuestion.get("noQuestion")));
-					ErrorDumpUtil.ErrorLog("max marks and max questions"+maxMarks+" ; "+maxQuestion);
 					QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizXmlPath);
 					quizDetail = quizmetadata.getQuiz_Detail(quizID);
 					if(quizDetail==null || quizDetail.size()==0){
@@ -113,9 +105,6 @@ public class Quiz_Score extends SecureScreen{
 					else{
 						for(QuizFileEntry a:quizDetail){
 							 maxTime = a.getMaxTime();
-//							 maxMarks = a.getMaxMarks();
-//							 maxQuestion = a.getnoQuestion();
-							 ErrorDumpUtil.ErrorLog("\n max time & max marks,max question is :"+maxTime);
 						}
 					}
 				}				
@@ -146,7 +135,6 @@ public class Quiz_Score extends SecureScreen{
 						if(collect!=null && collect.size()!=0){
 								for(int i=0;i<collect.size();i++){
 										type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
-										ErrorDumpUtil.ErrorLog("question type "+type);
 										if((type.equals("sat")) ||(type.equals("lat"))){
 												check = "n";
 										}
@@ -165,30 +153,19 @@ public class Quiz_Score extends SecureScreen{
 			context.put("maxQuestion",maxQuestion);
 			String answerSheetFlag = pp.getString("answerSheetFlag","no");
 			context.put("answerSheetFlag",answerSheetFlag);
-			ErrorDumpUtil.ErrorLog("answer sheet flag"+answerSheetFlag);
 			Double passingMarks=0.0;			
 			Double passingPercentage = 33.0;
 			String finalResult="";
-			ErrorDumpUtil.ErrorLog("max marks "+maxMarks);
 			passingMarks = (Double.parseDouble(maxMarks)/100)*passingPercentage;
-			ErrorDumpUtil.ErrorLog("passing marks of student"+passingMarks);
 			
 			context.put("passingMarks",Math.round(passingMarks));
 			Vector answerDetail=new Vector();
 			int studentMarks=0;
-			//									
-			//			if(QuizID.equals("")) {
-			//				context.put("checkedQuiz","Uncheked");
-			//				return;
-			//			}
-			//			context.put("checkedQuiz","cheked");
-
 			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
 			if(role.equalsIgnoreCase("instructor")){
 				String studentLoginName=pp.getString("studentLoginName","");
 				context.put("studentLoginName",studentLoginName);
 				uid=Integer.toString(UserUtil.getUID(studentLoginName));
-				ErrorDumpUtil.ErrorLog("student login name :"+uid);
 			}
 			else if(role.equalsIgnoreCase("student")){
 				context.put("studentLoginName",uname);
@@ -197,7 +174,6 @@ public class Quiz_Score extends SecureScreen{
 			}
 			String quizAnswerFile = uid+".xml";						
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
-			ErrorDumpUtil.ErrorLog("answer file path :"+answerFile.getPath());
 			if(!answerFile.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 				return;
@@ -205,7 +181,6 @@ public class Quiz_Score extends SecureScreen{
 			else{
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
 				answerDetail = quizmetadata.getFinalAnswer();
-				ErrorDumpUtil.ErrorLog("after answer detail fetching :"+answerDetail);
 				if(answerDetail==null || answerDetail.size()==0){
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 					return;
@@ -216,7 +191,6 @@ public class Quiz_Score extends SecureScreen{
 						int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());					
 						studentMarks +=studentMark;
 					}
-					ErrorDumpUtil.ErrorLog("total marks of student"+studentMarks);
 					context.put("studentMarks",studentMarks);
 					String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
 					context.put("percentageScore",percentageScore);
@@ -234,8 +208,6 @@ public class Quiz_Score extends SecureScreen{
 			 int userid=UserUtil.getUID(user.getName());
                          if((role.equals("student")) || (role.equals("instructor")))
                          {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
 				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
