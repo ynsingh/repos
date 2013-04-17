@@ -84,7 +84,7 @@ $!data.getMessage()
 					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","map").addPathInfo("count","4").addPathInfo("rlid","$data2.getRoleId()").addPathInfo("rlnme","$data2.getRoleName()") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_role $brih_Of $Repo_Perm $brih_update #else $brih_update $brih_role $Repo_Perm #end </a>
 				</td>
 			        <td>
-					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("rlid","$data2.getRoleId()") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_role $brih_delet #else $brih_delete $brih_role #end </a>
+					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("rlid","$data2.getRoleId()") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_role $brih_delete #else $brih_delete $brih_role #end </a>
 				</td>
 				#else
 				<td> #if($lang == "hindi" || $lang =="gujarati") $brih_role $brih_Of $Repo_Perm $brih_update #else $brih_update $brih_role $Repo_Perm #end </td><td> #if($lang == "hindi" || $lang =="gujarati") $brih_role $brih_delete #else $brih_delete $brih_role #end </td>
