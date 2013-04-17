@@ -39,7 +39,7 @@
    </tr>
    <tr>
       <td class="dt">
-         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a>
+         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_usr $brih_mgmt</a>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor">
