@@ -116,7 +116,9 @@ $page.setBgColor($ui.bgcolor)
 
 				<tr align="right" bgcolor="$ui.menuColor">
 				#if($UDetail.size()==0)
-                                       <td colspan=6><select name="prg1" id="pg1" class="drop" size=1 onChange="showList(document.frm,this);">
+					<td colspan=5 id="rl1">
+                                        </td>
+					<td><select name="prg1" id="pg1" class="drop" size=1 onChange="showList(document.frm,this);">
 	                                       <option value="Select Program">$brih_program $brih_select </option>
 						#foreach($instplist in $rlprglist)
 							<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>

@@ -60,6 +60,7 @@ public class DbDetail
 	private String PrgCode;
 	private String Permission;
 	private String GrpmgmtType;
+	private int Reply_id;
 
 	public void setSender(String Sender)
 	{
@@ -142,6 +143,14 @@ public class DbDetail
         public String getGrpmgmtType()
         {
                 return GrpmgmtType;
+        }
+	public void setReplyId(int replyid)
+        {
+                this.Reply_id=replyid;
+        }
+        public int getReplyId()
+        {
+                return Reply_id;
         }
 
 }

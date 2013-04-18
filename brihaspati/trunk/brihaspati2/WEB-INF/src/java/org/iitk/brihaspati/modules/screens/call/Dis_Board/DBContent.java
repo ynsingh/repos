@@ -223,6 +223,7 @@ public class DBContent extends SecureScreen
 					{
 						exDate = ExpiryUtil.getExpired(posttime, ExDay);				     
 					}
+					int reply_id = (element1.getReplyId());
 					DbDetail dbDetail= new DbDetail();
                         		dbDetail.setSender(sender_name);
 		                	dbDetail.setPDate(posttime);
@@ -233,6 +234,7 @@ public class DBContent extends SecureScreen
 		               		dbDetail.setExpiryDate(exDate);
 					dbDetail.setGrpmgmtType(dbType);
 					dbDetail.setPrgCode(stat);
+					dbDetail.setReplyId(reply_id);
 					entry.addElement(dbDetail);
 				}//for2	
 			}//for1

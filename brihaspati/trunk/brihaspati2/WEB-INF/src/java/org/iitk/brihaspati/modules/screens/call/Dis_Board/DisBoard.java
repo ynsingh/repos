@@ -128,6 +128,9 @@ public class DisBoard extends SecureScreen
 			else if(mode2.equals("instituteWise"))
 				dir="instituteWise";
 			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
+			if(!(new File(filePath).exists())){
+                                        new File(filePath).mkdirs();
+                                }
 			//ErrorDumpUtil.ErrorLog("instituteWise/general/courese=======filePath===>"+filePath);
 			
 			File dirHandle=new File(filePath);

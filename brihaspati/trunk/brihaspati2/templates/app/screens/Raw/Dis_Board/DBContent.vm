@@ -223,7 +223,7 @@ $!data.getMessage()
 			#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
 			<td> $e.getSender() </td>
 			#else
-			<td> #if($e.getPrgCode()=="1") <blink><font color="Green" size="3"><b>*</b></font></blink> #else &nbsp; #end  $e.getSender()</td>
+			<td> #if($e.getPrgCode()=="1") <blink><font color="Green" size="3"><b>*</b></font></blink> #else &nbsp; #end  #if($user_role != "student") $e.getSender() #elseif (($e.getSender()== $UserName) || ($e.getReplyId()!=0)) $e.getSender() #end</td>
 			#end
 			<td>$e.getPDate()</td>
 			<td>$e.getMSubject()</td>
