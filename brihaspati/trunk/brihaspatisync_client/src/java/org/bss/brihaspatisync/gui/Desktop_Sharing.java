@@ -123,7 +123,7 @@ public class Desktop_Sharing implements MouseListener {
 			imageDisplay.setHorizontalAlignment(JLabel.CENTER);
 			centerPanel.setLocation(targetWidth-40,4);
 	                centerPanel.setSize(40,40);
-			//centerPanel.updateUI();
+			centerPanel.updateUI();
 			scaledImage.flush(); 
 		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
 	}

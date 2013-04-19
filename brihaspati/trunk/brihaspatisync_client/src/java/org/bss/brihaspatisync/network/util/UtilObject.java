@@ -108,10 +108,8 @@ public class UtilObject {
                 try {
                         LinkedList sendqueue=UtilObject.getController().getSendQueue(type);
                         if(sendqueue.size()>10) {
-                                for(int i=0;i<5;i++) {
-                                        sendqueue.remove(0);
-                                }
+                        	sendqueue.clear();
                         }
-                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
+                }catch(Exception epe){System.out.println("Exception in UtilObject class from networkHandler method "+type ); }
         }  
 }

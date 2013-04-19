@@ -98,7 +98,8 @@ public class AudioPlayer implements Runnable {
                                                         System.out.println(decoded+ " bytes resulted as a result of decoding " + audio_data.length + " encoded bytes.");
                                                         sourceDataLine.write(decoded_data,0,decoded);
 							audioVector.remove(0);
-						}	
+						}else
+                                                        sourceDataLine=org.bss.brihaspatisync.util.ClientObject.getController().getSourceLine();	
 					}
 				} 
 				runner.yield();	

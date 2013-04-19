@@ -86,7 +86,7 @@ public class AudioClient implements Runnable {
 					}else {
 						LinkedList send_queue=UtilObject.getController().getSendQueue("Audio_Data");
                                         	send_queue.addLast(null);	
-						runner.sleep(20);
+						runner.sleep(30);
 					}
                         	        LinkedList audio_rechive_data=UtilObject.getController().getQueue("Audio_Data");
                                 	if(audio_rechive_data.size()>0) {
@@ -101,7 +101,7 @@ public class AudioClient implements Runnable {
 				}else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
-			}catch(Exception epe){StatusPanel.getController().setaudioClient("no"); }
+			}catch(Exception epe){StatusPanel.getController().setaudioClient("no"); System.out.println("Exception in AudioClient class  "); }
         	}
 	}
 }

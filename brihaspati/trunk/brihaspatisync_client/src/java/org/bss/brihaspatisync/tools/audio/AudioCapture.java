@@ -96,18 +96,20 @@ public class AudioCapture implements Runnable {
                         final int raw_block_size = encoder.getFrameSize() * audioFormat.getChannels()  * (audioFormat.getSampleSizeInBits() / 8);
 			while(flag){	
 			        audio_data = new byte[raw_block_size];
-                               	int cnt = targetDataLine.read(audio_data,0,audio_data.length);
-				if (!encoder.processData(audio_data, 0, raw_block_size)) {
-                                        System.err.println("Could not encode data!");
-                                        break;
-                                }
-                                int encoded = encoder.getProcessedData(audio_data, 0);
-                                 System.out.println(encoded+ " bytes resulted as a result of encoding " + cnt + " raw bytes.");
-                                byte[] encoded_data = new byte[encoded];
-                                System.arraycopy(audio_data , 0, encoded_data, 0, encoded);
-                                audioVector.addLast(encoded_data);
+				if(targetDataLine !=null){
+                               		int cnt = targetDataLine.read(audio_data,0,audio_data.length);
+					if (!encoder.processData(audio_data, 0, raw_block_size)) {
+        	                                System.err.println("Could not encode data!");
+                	                }
+                        	        int encoded = encoder.getProcessedData(audio_data, 0);
+                                	byte[] encoded_data = new byte[encoded];
+	                                System.arraycopy(audio_data , 0, encoded_data, 0, encoded);
+        	                        audioVector.addLast(encoded_data);
+				}else 
+                         	       targetDataLine =ClientObject.getController().getTargetLine();
+                        	
 			}
-                }catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
+                }catch(Exception e){System.out.println("Eception in capture Audio class "+e.getCause());}
         }
 		
 	protected byte [] getAudioData(){
