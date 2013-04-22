@@ -713,7 +713,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                 data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
                                return;
                         }
-			if(StringUtils.isNotBlank(uname) && StringUtils.isNotBlank(rollno) && StringUtils.isNotBlank(prgcode) && StringUtils.isNotBlank(InstId))
+			if(StringUtils.isNotBlank(uname) && StringUtils.isNotBlank(rollno) && StringUtils.isNotBlank(InstId) && !prgcode.equals("Select Program"))
 			{
 				msg=CourseProgramUtil.InsertRollno(uname, prgcode, rollno, InstId, LangFile);
 			}
