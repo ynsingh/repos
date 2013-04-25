@@ -1,6 +1,6 @@
 #*
  * @(#)DisBoard.vm
- * Copyright (c) 2005-2006,2009, 2010, 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2006,2009, 2010, 2011, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *@author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
@@ -135,9 +135,9 @@ $!data.getMessage()
 <table align="left" bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
 #if ($stats == "fromIndex")
-        <td colspan=2><b>WorkGroup:&nbsp<font color="Green"> $brih_general $DiscussionBoard </font></b>
+        <td colspan=2><b> $DisBoard_WorkGroup:&nbsp<font color="Green"> $brih_general $DiscussionBoard </font></b>
 #elseif ($mode2 == "instituteWise")
-        <td colspan=2><b>WorkGroup:&nbsp<font color="Green">$RemoteInstitute $brih_wise $DiscussionBoard </font></b>
+        <td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green">$RemoteInstitute $brih_wise $DiscussionBoard </font></b>
 #else
 	<td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green"> $cid </font></b>
 #end

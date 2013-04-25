@@ -5,7 +5,7 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *@author <a href="mailto:smita37uiet@gmail.com">Smita</a>
- * @modified date: 07-12-2010
+ * @modified date: 07-12-2010, 24-04-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -62,6 +62,8 @@ $!data.getMessage()
 
         ##<a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("count","4")>$brih_col1</a></td>
 	$brih_col1
+*#
+	 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none>$brih_calendar</a> | $brih_col1
 </tr>
 
 ## Representation of HELP link
@@ -75,8 +77,6 @@ $!data.getMessage()
         </tr>
 #*</table>
 ##</body>
-#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
-<form name=frm method="post" action="$link.setAction("AcademicAction").setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("mode","edit")">
 *#
 
 	<tr align="right" bgcolor="$ui.menuColor">
@@ -100,8 +100,21 @@ $!data.getMessage()
             			<option value="$mon">$mon
 	    			#end
 			#end
+*#
+			#if($vmonth!="")
+                        <option>$vmonth</option>
+                        #end
+                         #foreach($mon in $month)
+                                        #if($mon!=$vmonth)
+                                        <option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$mon)">$mon</option>
+                                        #end
+                                </option>
+
+                         #end
+
 			</select>
       			&nbsp<b><font size=+1>.</font></b>&nbsp
+#*
 			<select name="Start_year" class="drop">
                 	<option value="$cyear">$cyear
 			#foreach($year in $year_list)
@@ -109,10 +122,45 @@ $!data.getMessage()
 				<option value="$year">$year
 		    		#end
 		 	#end
+*#
+			<select class="drop" name="Start_year" id="u2" onChange="checkoption(document.frm,this);">
+
+                        #if($vyear!="")
+                        <option>$vyear</option>
+                        #end
+                        #foreach($year in $year_list)
+                                #if($vyear!=$year)
+                                <option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$year)">$year
+
+                                #end
+                        #end
                 	</select>
                 </td>
-	</tr>		
-*#
+		<td width="25%">$brih_Da</td>
+	</tr>
+	#set ($event1="$brih_acd")
+        #set($event2="$brih_col2")
+        <tr bgcolor="$ui.menuColor">
+                <td colspan=3>
+                <select name="etype" class="drop" id="u" onChange="checkoption(document.frm,this);">
+                        #if($etype=="Academic")
+                                <option>$event1</option>
+                        #else if($etype=="Holidays")
+                                <option>$event2</option>
+                        #end
+                                #if($etype!="Academic")
+                        <option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$vyear).addPathInfo("etype","Academic")">$event1
+                        </option>
+                                #else 
+                               <option value="$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("vmonth",$vmonth).addPathInfo("vyear",$vyear).addPathInfo("etype","Holidays")">$event2
+                              </option>
+
+                     #end
+                        </select>
+
+                </td>
+                <td>$brih_Ev #if($lang =="hindi") $brih_Of2 #end $brih_type</td>
+        </tr>	
 	#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
 <form name=frm method="post" action="$link.setAction("AcademicAction").setPage("call,EventMgmt_Admin,Academic_Event.vm")">
  <table align=left bgcolor="$ui.tableColor" width=100%>

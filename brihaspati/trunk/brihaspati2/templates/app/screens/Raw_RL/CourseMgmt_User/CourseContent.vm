@@ -1,6 +1,6 @@
 #*
  * @(#) CourseContent.vm
- * Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009,2010,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -8,7 +8,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
- * @modified date: 30-03-2010
+ * @modified date: 30-03-2010, 22-04-2013
 *#
 
 $page.setBgColor($ui.bgcolor)
@@ -45,15 +45,22 @@ $!data.getMessage()
 </tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-<tr><td align=left colspan=9>
+<tr align="right">
+##<td align=left colspan=9>
 	#if ($isInstructor=="true")
-		<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		 #if($AccessMsg!="")
-                <font color="red" size="4">$AccessMsg
+		#if($AccessMsg!="")
+			<td align="left" colspan="3">
+				<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+			<td align="right" colspan="6"> <font color="red" size="4">$AccessMsg  </td>
+		#else
+			<td align="left" colspan="9"> <a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin")>$brih_help</a> | <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> $brih_VideoHelp</font></a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+
+			
 	        #end
 	#end
-</td></tr>
+</tr>
 #if($user_role == "instructor")
+<tr bgcolor="$ui.menuColor">
 	#if($tdcolor != "7")
          <td>
          #elseif($tdcolor == "7")
@@ -72,7 +79,7 @@ $!data.getMessage()
         #elseif($tdcolor == "5")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> $brih_grade $RemoteConfiguration </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none>  $RemoteConfiguration $brih_grade </a></td>
 	#if($tdcolor != "4")    
         <td>
         #elseif($tdcolor == "4")
@@ -84,13 +91,13 @@ $!data.getMessage()
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none>  $RemoteConfiguration $brih_course </a></td>
 	#if($tdcolor != "2")    
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> $brih_upload $brih_course $brih_content </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> $brih_course $brih_content $brih_upload </a></td>
 	#if($tdcolor != "0")  
         <td>
         #elseif($tdcolor == "0")
@@ -102,8 +109,10 @@ $!data.getMessage()
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_content </a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_course $brih_content </a></td>
+</tr>
 #end
+
 #if($data.getUser().getTemp("modulename5") == "5")
         #set($flag1=true)
 #end
@@ -333,12 +342,13 @@ $!data.getMessage()
 		#end
 		#if($loginusr=="guest")
                 	#if($file.getGuestAccess()=="false")
-                        	<td colspan=2><b>$file.getName()</b> </td>
-                                <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+                                <td align="center" colspan=2><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+                        	<td><b>$file.getName()</b> </td>
 			#end
 		#else
-                                <td>$count &nbsp;</td> <td><b>$file.getName()</b> </td>
                                 <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$file.getName()).addPathInfo("count",$tdcolor).addPathInfo("status",$file.getLocation())"> $brih_view</a>&nbsp;&nbsp;</td>
+				<td><b>$file.getName()</b> </td>
+                                <td>$count &nbsp;</td> 
                 #end
 		</tr>
 		
@@ -350,8 +360,9 @@ $!data.getMessage()
 	                #else
         		        <tr bgcolor="$ui.menuColor" align="right">
 	                #end
-                        <td align="right">$count&nbsp;</td><td><b>$r.Topic</b></td>
                         <td align="center"><a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("uname",$r.UserName).addPathInfo("status","Remote").addPathInfo("cName",$r.CourseName).addPathInfo("topic",$r.Topic).addPathInfo("count",$tdcolor)"> $brih_view</a>&nbsp;&nbsp;</td>
+			<td><b>$r.Topic</b></td>
+                        <td align="right">$count&nbsp;</td>
                 </tr>
                 #set ( $count= $count+1)
                 #end

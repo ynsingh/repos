@@ -19,7 +19,7 @@
  * @author <a href="sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 23-08-2012 
  * @author <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
- * @modified date: 21-11-2012, 15-03-2013
+ * @modified date: 21-11-2012, 15-03-2013, 22-04-2013
 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -195,6 +195,11 @@ $!data.getMessage()
         <div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
                 <a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
         </div>
+	#if($Uid.toString()!="1")
+		<div style="position:auto; margin-top:-23px; height:230px; background:$ui.menuColor;" >
+		<iframe src="$ipadd/brihaspatiSpring/pollmodule/pollAttemptIndex.vm?user_Id=$UserId&f=$firstname&usrNme=$usrNme&instNme=$instN" style="height:230px; width:310px; border-radius:-5px;" scrolling="no" frameborder="0"></iframe>
+		</div><br>
+	#end
 </td>
 </table>
 </body>

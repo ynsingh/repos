@@ -71,7 +71,7 @@ $!data.getMessage()
                 </table>
 
 </td>
-<td align="center" Valign="top">
+<td align="center" valign="top">
 ## width added by Shaista
 <table align="center" border=1 cellspacing=1 width="100%">
 <tr>
@@ -256,7 +256,7 @@ $!data.getMessage()
 		</tr>
        </table>
 </td>
-<td align="center">
+<td align="center" valign="top">
 ## width added by Shaista
 		<table align="center" bgcolor="$ui.tableColor" border=1 width="100%">
                 <tr><td align=center><font color="magenta">$brih_col1</font></td></tr>

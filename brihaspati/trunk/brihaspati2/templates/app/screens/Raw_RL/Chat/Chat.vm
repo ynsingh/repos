@@ -15,10 +15,18 @@ $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 #set($lang=$data.getUser().getTemp("lang").toString())
+#set($flag=false)
+
 #if ($lang == "urdu")
         #set($lang="urd")
+#elseif($lang == "arabic")
+        #set($lang="ar")
+#elseif($lang == "persian")
+        #set($lang="pr")
 #end
-
+#if($data.getUser().getTemp("modulename3") == "3")
+        #set($flag=true)
+#end
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr align="right">
 		<td>
@@ -26,7 +34,7 @@ $!data.getMessage()
 		#if($mode == "general")
                         <a href=$link.setPage("Index.vm")>$brih_home</a> | $brih_chat
                 #else
-			<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_chat
+			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |$brih_chat
 			| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
 		#end
@@ -45,6 +53,27 @@ $!data.getMessage()
         	        <td bgcolor="#AFDCEC">
 	        #end
                 <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+	#elseif($mode == "instituteWise")
+                #if($tdcolor!="4")
+                        <td width="50%">
+                #elseif($tdcolor == "4")
+                        <td width="50%" bgcolor="#AFDCEC">
+                #end
+                        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","4").addPathInfo("grpName",$grpName) style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
+                #if($tdcolor!="2")
+                        <td width="50%">
+                #elseif($tdcolor == "2")
+                        <td width="50%" bgcolor="#AFDCEC">
+                #end
+                        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName) style=text-decoration:none>$brih_chat</a></td>
+#elseif($mode == "general")
+                #if($tdcolor!="2")
+                        <td width="50%">
+                #elseif($tdcolor == "2")
+                        <td width="50%" bgcolor="#AFDCEC">
+                #end
+                        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode) style=text-decoration:none>$brih_chat</a></td>
+
 
         #elseif($mode == "general")
                 #if($tdcolor!="2")
@@ -72,8 +101,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "3")
                         <td bgcolor="#AFDCEC">
                 #end
-               	##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
-		#if( $data.getUser().getTemp("role") == "student")
+		#if(( $data.getUser().getTemp("role") == "student")||(($data.getUser().getTemp("role") == "teacher_assistant")&&($flag==false)))
                         <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
 			#foreach($msg in $unreadMsg)
 	                        #if($msg!="0")
@@ -150,5 +178,10 @@ $!data.getMessage()
 	<param name="autoconnect" value="yes">
 	<param name="locksettings" value="yes">
 	<param name="embed" value="no">
+        ##<param name="expiryTime" value=$TaskConf>
+        <param name="babylonPath" value=$babylonPath>
+        <param name="fullfile" value="$fullfile">
+        <param name="role" value=$role>
+        <param name="mode" value=$mode>
 </applet>
 #end

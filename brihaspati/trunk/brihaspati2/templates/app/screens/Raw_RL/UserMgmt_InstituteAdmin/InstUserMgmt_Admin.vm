@@ -54,9 +54,9 @@ $!data.getMessage()
 		##$brih_student $brih_course $brih_list 
 	 #elseif(($mode=="sclist") || ($mode == "instlist"))
                 #if($mode=="sclist")
-                      $brih_student $brih_Of $brih_course $brih_list
+                      $brih_student $brih_Of2 $brih_course $brih_Of $brih_list
                 #else
-                        $brih_Instructor $brih_Of $brih_course $brih_list
+                        $brih_Instructor $brih_Of2 $brih_course $brih_Of $brih_list
                 #end
 	#elseif($mode=="AddMUser")
 	##	$brih_add $brih_multiple1 $brih_usr
@@ -110,14 +110,14 @@ $!data.getMessage()
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_Of $brih_course $brih_list </a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_Of2 $brih_course $brih_Of $brih_list </a></td>
 
 	#if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_Of $brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_Of2 $brih_course $brih_Of $brih_list</a></td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
@@ -204,13 +204,13 @@ $!data.getMessage()
         </tr>
 	#if($st.Rolename=="")   
                 <tr id="table1" style="display:none;" align="right">
-                <td colspan=3 align="right">
+                <td colspan="4" align="right">
                 #if($st.Pgname!="")
                         <select name="prg" id="prg_id" size=1 onChange="DeleteField(document.frm,this);" class="drop"/>
                                 <option value="$!st.Pgcode">$!st.Pgname</option>
                 #else
                         <select name="prg" id="prg_id" size=1 onChange="DeleteField(document.frm,this);" class="drop"/>
-                                <option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
+                                <option value="Select Program"> $brih_program $brih_select </option>
                 #end
                 #foreach($progname in $PrgDetail)
                         #if($progname.getPrgName()!=$st.Pgname)
@@ -222,13 +222,13 @@ $!data.getMessage()
                 <td>($brih_program($brih_student $brih_if </td>
         #elseif($st.Rolename=="student")
                 <tr id="table1" align="right">
-                <td colspan=3>
+                <td colspan="4">
                 #if($st.Pgname!="")
                         <select name="prg" id="prg_id" size=1 onChange="DeleteField(document.frm,this);" class="drop"/>
                                 <option value="$!st.Pgcode">$!st.Pgname</option>
                 #else
                         <select name="prg" id="prg_id" size=1 onChange="DeleteField(document.frm,this);" class="drop"/>
-                                <option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
+                                <option value="Select Program"> $brih_program $brih_select </option>
                 #end
                 #foreach($progname in $PrgDetail)
                         #if($progname.getPrgName()!=$st.Pgname)
@@ -237,7 +237,7 @@ $!data.getMessage()
                 #end
                         </select>
                 </td>
-                <td>$brih_program($brih_if $brih_student) </td>
+                <td>($brih_program($brih_student $brih_if </td>
         </tr>
         #end
         #if($st.Rolename=="")
@@ -248,26 +248,26 @@ $!data.getMessage()
                         #end
                 #else
                         #if($st.usrname=="")
-                                <td><input type="text" name="rollno" id="rollno_id" value=""/></td>
+                                <td colspan="4"><input type="text" name="rollno" id="rollno_id" value=""/></td>
                         #else
-                                <td><input type="text" name="rollno" id="rollno_id" value="" /></td>
+                                <td colspan="4"><input type="text" name="rollno" id="rollno_id" value="" /></td>
                         #end
                 #end
-                <td>$brih_rollno($brih_if $brih_student)</td>
+                <td>($brih_rollno( $brih_student $brih_if </td>
         #elseif($st.Rolename=="student")
                 <tr id="table2" bgcolor="$ui.menuColor" align="right">
                 #if($rollno.size()>0)
                         #foreach($rlno in $rollno)
-                                <td><input type="text" name="rollno" value="$rlno.getRollNo()" /></td>
+                                <td colspan="4"><input type="text" name="rollno" value="$rlno.getRollNo()" /></td>
                         #end
                 #else
                         #if($st.usrname=="")
-                                <td><input type="text" name="rollno" id="rollno_id" value=""/></td>
+                                <td colspan="4"><input type="text" name="rollno" id="rollno_id" value=""/></td>
                         #else
-                                <td><input type="text" name="rollno" id="rollno_id" value="" /></td>
+                                <td colspan="4"><input type="text" name="rollno" id="rollno_id" value="" /></td>
                         #end
                 #end
-                <td>$brih_rollno($brih_if $brih_student)</td>
+                <td>($brih_rollno($brih_student $brih_if</td>
         </tr>
         #end
 #end ## end of Foreach loop
@@ -284,7 +284,6 @@ $!data.getMessage()
 </table>
 </form>
 #end
-##if($mode == "sclist")
 #if(($mode == "sclist")||($mode == "instlist"))
  <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("status","ForallStudent")">
 <table width=100% cellpadding=1 align="right" bgcolor="$ui.tableColor">
@@ -317,7 +316,7 @@ $!data.getMessage()
 	#if($mode == "sclist")
 		#set ( $headings = ["", "", "", "", "", "", "", "$brih_rollno", "$brih_email", "$brih_student $brih_Of1 $brih_name", "$brih_login $brih_name"])
 	#elseif($mode == "instlist")
-		#set ( $headings = ["", "", "", "", "", "", "", "","$brih_login $brih_name","$brih_Instructor $brih_Of1 $brih_name","$brih_email"] )
+		#set ( $headings = ["", "", "", "", "", "", "", "","$brih_email","$brih_Instructor $brih_Of1 $brih_name","$brih_login $brih_name"] )
 	#end
  
         #foreach ($heading in $headings)
@@ -332,11 +331,12 @@ $!data.getMessage()
 	        	<tr bgcolor="$ui.menuColor" align="right">
 			#set($bg=$ui.tableColor)
         	#end
+			<td colsapn="7"></td>
 		#if($mode == "sclist")
-                        <td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_list</a></td>
-                        <td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_rollno $brih_mgmt </a> </td>
+                        <td colspan="3"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_list</a></td>
+                        <td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor) style=text-decoration:none> $brih_mgmt $brih_rollno </a> </td>
                 #elseif($mode == "instlist")
-                        <td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","0").addPathInfo("mode","instlist") style=text-decoration:none>$brih_course $brih_list</a></td>
+                        <td colspan="6"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","0").addPathInfo("mode","instlist") style=text-decoration:none>$brih_course $brih_Of $brih_list</a></td>
                 #end
 		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp; </td>
                 ##<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a></td>
@@ -367,31 +367,31 @@ $!data.getMessage()
         <td bgcolor="$ui.menuColor" colspan="11" align="right">
         #if($total_size<= $AdminConf)
 
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
+	<img src="$content.getURI("images/Last_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+        <img src="$content.getURI("images/Previous_blank.png")">
+        <img src="$content.getURI("images/First_blank.png")">
 
         #elseif($startIndex== $AdminConf_str)
 
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$startIndex).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+        	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/Last.png")"></a> &nbsp;
+	        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$startIndex).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/Next.png")"></a> &nbsp;
+        	<img src="$content.getURI("images/Previous_blank.png")">
+	        <img src="$content.getURI("images/First_blank.png")">
 
         #elseif($endIndex == $total_size || $endIndex > $total_size)
 
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <font color="white">$brih_nxt</font>&nbsp;
-        <font color="white">$brih_last</font>&nbsp;
+		<img src="$content.getURI("images/Last_blank.png")">
+	        <img src="$content.getURI("images/Next_blank.png")">
+        	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/Previous.png")"> </a> &nbsp;
+	        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/First.png")"> </a> &nbsp;
 
         #else
 
-	       	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-		<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-		<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-		<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+        	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/Last.png")"></a> &nbsp;
+        	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$startIndex).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/Next.png")"></a> &nbsp;
+        	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/Previous.png")"> </a> &nbsp;
+        	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentList.vm").addPathInfo("queryList",$query).addPathInfo("value",$value).addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor) style=text-decoration:none> <img src="$content.getURI("images/First.png")"> </a> &nbsp;
         #end
 #end
   </td>
@@ -410,7 +410,7 @@ $!data.getMessage()
                         #if( $count == $count2 )
                         <tr bgcolor="$ui.menuColor">
                         <td align=center>
-                                <font face="$ui.sansSerifFonts">$brih_usr $brih_name <font color="brown">"$entry"</font></font>
+                                <font face="$ui.sansSerifFonts">$brih_usr $brih_Of1 $brih_name <font color="brown">"$entry"</font></font>
                         </td>
                         <td align=center>
                                 <font
@@ -799,24 +799,24 @@ face="$ui.sansSerifFonts">$type</font>
 #if($mode=="rollnomgmt")
 <form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin").addPathInfo("username",$username).addPathInfo("mode",$mode)">
         <table align="left" width="100%" bgcolor="$ui.menuColor" >
-                <tr><td>$brih_rollno $brih_Manage $brih_for $username</td></tr>
+                <tr align="right"><td>$brih_for $brih_rollno $brih_Manage $username</td></tr>
         </table>
                 <table align="left" width="100%" bgcolor="$ui.tableColor" >
 
         #* If Rollno conflict with other user then it comes inside if check otherwise in else check*#
                 #if($Rollnolist.size()>0)
-                        <tr>
+                        <tr align="right">
                                 <td><b>$brih_email</b></td>
                                 <td><b>$brih_program</b></td>
                                 <td><b>$brih_rollno</b></td>
                         </tr>
                          #foreach($st in $Rollnolist)
-                        <tr bgcolor="$ui.menuColor">
+                        <tr bgcolor="$ui.menuColor" align="right">
                                 <td>$st.confuname</td>
                                 <td>$st.confProgram</td>
                                 <td><input type="text" name="rollno1" value=$st.confRollno></td>
                         </tr>
-                        <tr>
+                        <tr align="right">
                                 <td>$st.uname</td>
                                 <td>$st.Program</td>
                                 <td><input type="text" name="rollno2" value=$st.Rollno></td>
@@ -825,29 +825,29 @@ face="$ui.sansSerifFonts">$type</font>
                                 <input type="hidden" name="rlnocount" value="2">
                         #end
                         </tr>
-                        <tr bgcolor="$ui.menuColor">
-                                <td colspan=3><input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateConflictRollno" VALUE="$brih_update" onClick="UpdateConflictrollno(document.frm,this);"></td>
+                        <tr bgcolor="$ui.menuColor" align="right">
+                                <td colspan=3 align="right"><input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateConflictRollno" VALUE="$brih_update" onClick="UpdateConflictrollno(document.frm,this);"></td>
                         </tr>
                 #else
-                        <tr>
-                        #set ( $headings = ["","$brih_program","$brih_rollno","","","",""] )
+                        <tr align="right">
+                        ###set ( $headings = ["","$brih_program","$brih_rollno","","","",""] )
+                        #set ( $headings = ["","","","","","","$brih_program","$brih_rollno",""] )
                                 #foreach ($heading in $headings)
                                         <td><font size=3><b>$heading</b></font></td>
                                 #end
     	                    </tr>
                 #* when status is new rollno then it comes inside if check, otherwise in else check to show rollno and program of the student for deleteion or updation.*#
                          #if($status=="newrollno"||$rlnolist.size()==0)
-                                <tr bgcolor="$ui.menuColor">
-                                        <td></td>
-                                        <td><select class="drop" name="prg" size=1 id="pg$num" onChange="showList(document.frm,this,$num);">
-                                                <option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end </option>
+                                <tr bgcolor="$ui.menuColor" align="right">
+                                        <td colspan="7"><select class="drop" name="prg" size=1 id="pg$num" onChange="showList(document.frm,this,$num);">
+                                                <option value="Select Program"> $brih_program $brih_select </option>
                                                         #foreach($instplist in $NewPrgDetail)
                                                                 <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
                                                         #end
                                         </td>
-                                        <td colspan=5><input type="text" name="rlno" id="rl$num" value=""></td>
+                                        <td><input type="text" name="rlno" id="rl$num" value=""></td>
                                 </tr>
-                                        <tr><td></td><td colspan=6><input type="button" class="button-ftextstyle" name="eventSubmit_doAddRollno" value="$brih_add" onClick="DeleteField(document.frm,this);"></td>
+                                        <tr align="right"> <td colspan="8"><input type="button" class="button-ftextstyle" name="eventSubmit_doAddRollno" value="$brih_add" onClick="DeleteField(document.frm,this);"></td>
                                 </tr>
 
                         #else
@@ -855,25 +855,23 @@ face="$ui.sansSerifFonts">$type</font>
                                 #foreach ($urecord1 in $rlnolist)
                                         #set($num=$num+1)
                                         #if($velocityCount%2==0)
-                                                <tr bgcolor="$ui.tableColor">
+                                                <tr bgcolor="$ui.tableColor" align="right">
                                         #else
-                                                <tr bgcolor="$ui.menuColor">
+                                                <tr bgcolor="$ui.menuColor" align="right">
                                         #end
-                                                <td width="5%">
-                                                        <INPUT TYPE="CHECKBOX" NAME="PrgAndRollno" onClick="addUpdateList(this,document.frm,$num);">
-                                                </td>
+                                                        <td colspan="6"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$username).setAction("UserAction_InstituteAdmin").addPathInfo("actionName","eventSubmit_doDeleteRollno").addPathInfo("prgval",$urecord1.getPrgName()).addPathInfo("rollnoval",$urecord1.getRollNo()).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor) onclick="javascript:return confirm('Do you want to delete this Program')" style=text-decoration:none>$brih_delete</a>&nbsp; &nbsp; <input type="text" name="rlno$num" id="rl$num" value=$urecord1.getRollNo()> </td>
                                                         <td id="pg$num">$urecord1.getPrgName()</td>
-                                                        <td colspan=5><input type="text" name="rlno$num" id="rl$num" value=$urecord1.getRollNo()>&nbsp; &nbsp;
-                                                        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$username).setAction("UserAction_InstituteAdmin").addPathInfo("actionName","eventSubmit_doDeleteRollno").addPathInfo("prgval",$urecord1.getPrgName()).addPathInfo("rollnoval",$urecord1.getRollNo()).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor) onclick="javascript:return confirm('Do you want to delete this Program')" style=text-decoration:none>$brih_delete</a></td>
+							<td width="5%"> <INPUT TYPE="CHECKBOX" NAME="PrgAndRollno" onClick="addUpdateList(this,document.frm,$num);"> </td>
                                                 </tr>
                                 #end
                                 #if($rlnolist.size()%2==0)
-                                        <tr bgcolor="$ui.menuColor">
+                                        <tr bgcolor="$ui.menuColor" align="right">
                                 #else
-                                        <tr>
+                                        <tr align="right">
                                 #end
-                                        <td width="10%"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$username).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor).addPathInfo("status","newrollno") class="button-ftextstyle">$brih_add $brih_new</td>
-                                        <td colspan=7><input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateRollno" value="$brih_update" onClick="DeleteField(document.frm,this);"></td>
+                                        <td colspan=7><input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateRollno" value="$brih_update" onClick="DeleteField(document.frm,this);" style="height:30px; min-width:110px;"></td>
+                                        <td width="10%">
+					<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$username).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor).addPathInfo("status","newrollno") class="button-ftextstyle"  style="min-width:110px; height:20px;"> $brih_new $brih_add </td>
                         </tr>
                         #end
                 #end
