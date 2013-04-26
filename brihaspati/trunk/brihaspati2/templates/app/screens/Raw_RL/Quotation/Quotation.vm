@@ -29,7 +29,7 @@ $!data.getMessage()
         <td>
         <font face="$ui.sansSerifFonts">
         <b>
-        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | $brih_mgmt $brih_quotation         </td>
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_mgmt $brih_quotation</a> | #if($mode=="edit") $brih_edit $brih_quotation #else $brih_quotation $brih_add  #end </td>
 </tr>
 </table>
 

@@ -35,6 +35,7 @@ package org.iitk.brihaspati.modules.utils;
 import java.util.Vector;
 import java.util.Hashtable;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This class sets the quotation 
@@ -66,6 +67,10 @@ public class QuotationController
         {
 		String str = null;
 		str = (String)ht.get("tmp_quot");
+		if(StringUtils.isBlank(str)){
+			QuotationThread.getController().Quotation();
+			str = (String)ht.get("tmp_quot");
+		}
 		return str;
         }
 

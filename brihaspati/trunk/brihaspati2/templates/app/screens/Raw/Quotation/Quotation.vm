@@ -29,15 +29,14 @@ $!data.getMessage()
         <td>
         <font face="$ui.sansSerifFonts">
         <b>
-        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_quotation $brih_mgmt
-        </td>
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a> | #if($mode=="edit") $brih_edit $brih_quotation #else $brih_add $brih_quotation #end </td>
 </tr>
 </table>
 
 <form name=frm method="post" action="$link.setAction("AddQuotation").setPage("call,Quotation,Quotation.vm").addPathInfo("mode","quote")">
 	<table width="100%" bgcolor="$ui.tableColor">
         	<tr>
-                	<td bgcolor="#AFDCEC"><a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a></td>
+                	<td bgcolor="#AFDCEC"><a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_add $brih_quotation $brih_mgmt</a></td>
 		</tr>
 	</table>
 
