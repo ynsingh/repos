@@ -41,7 +41,8 @@ package org.iitk.brihaspati.modules.utils;
  * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 09-11-2012
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 09-11-2012, 23-04-2013
  */
 public class InstituteFileEntry
 {
@@ -71,6 +72,8 @@ public class InstituteFileEntry
 	private String attempt;
 	private String langFile;
 	private String attachFile;
+	private String quotationId;
+	private String quotationValue;
 
 	public void setSubject(String subject)
         {
@@ -286,5 +289,21 @@ public class InstituteFileEntry
         public int getInstituteAdminStatus()
         {
                 return status;
+        }
+	public void setQuotationId(String quot_id)
+        {
+                this.quotationId=quot_id;
+        }
+        public String getQuotationId()
+        {
+                return quotationId;
+        }
+	public void setQuotationValue(String quot_val)
+        {
+                this.quotationValue=quot_val;
+        }
+        public String getQuotationValue()
+        {
+                return quotationValue;
         }
 }

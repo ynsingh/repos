@@ -4,6 +4,7 @@
  * All Rights Reserved.
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 08-04-2013 (Priyanka Rawat)
  *#
 
 $page.setTitle("$brih_home | $brih_course $brih_mgmt")
@@ -36,7 +37,7 @@ $!data.getMessage()
 		#end
 		#foreach($cnamelist in $courseList)
 			#if($cname!=$cnamelist.getGroupName())
-				<option value="$link.setPage("call,TA_Management,InstAdminTA_Management.vm").addPathInfo("cname",$cnamelist.getGroupName())" style="width:275px;" title="$cnamelist.getCourseName()">$cnamelist.getCourseName()</option>
+				<option value="$link.setPage("call,TA_Management,InstAdminTA_Management.vm").addPathInfo("cname",$cnamelist.getGroupName())" style="width:275px;" title="$cnamelist.getCAlias(): $cnamelist.getCourseName()-$cnamelist.getUserName()">$cnamelist.getCAlias(): $cnamelist.getCourseName()-$cnamelist.getUserName()</option>
 			#end
 		#end
 		</td>

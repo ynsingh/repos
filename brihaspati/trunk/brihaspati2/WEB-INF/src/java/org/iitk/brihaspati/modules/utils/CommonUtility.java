@@ -154,7 +154,7 @@ import org.iitk.brihaspati.modules.actions.Groupmanagement;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
-//Lucene
+//Lucenei
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
@@ -167,6 +167,7 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.GraphUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.iitk.brihaspati.om.PollPeer;
@@ -187,6 +188,7 @@ import org.iitk.brihaspati.om.Poll;
  * @author <a href="mailto:piyushm45@gmail.com">PiyushMishra</a>	
  * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
  * @modified date:12-09-2012,10-10-2012,23-10-2012,24-03-2013,19-03-2013
+ * @modified date:23-04-2013(Priyanka Rawat)
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -296,6 +298,8 @@ public class CommonUtility{
 				//Call method removeNonce();
 				boolean nonce = removeNonce();
 				boolean uquota = setQuota();
+				//Calling Quotation Thread to select quotation
+				QuotationThread.getController().Quotation();
 				//Calling Emailspooling file to send Failure mail
 				 MailNotificationThread.getController().emailXMLRead();
 				
@@ -1122,28 +1126,22 @@ public static void grpLeader()
 
          	int cnt=0;
         	try{
-                	//ErrorDumpUtil.ErrorLog("inside removeNonce");
                 	long boundary = System.currentTimeMillis() - ONE_HOUR;
                 	crit = new Criteria();
                 	List list = OpenidPeer.doSelect(crit);
                 	for (Iterator i = list.iterator();i.hasNext() ;)
                 	{
-                	//	ErrorDumpUtil.ErrorLog("removeNonce");
                         	Openid openid = (Openid) i.next();
                         	long date = openid.getToDate();
-			//	ErrorDumpUtil.ErrorLog("date is "+date);
                         	if(date<boundary)
                         	{
                                 	String exp_nonce = openid.getNonce();
-                          //      	ErrorDumpUtil.ErrorLog("Nonce from db is "+exp_nonce);
                                 	String exp_provider = openid.getProvider();
-                            //    	ErrorDumpUtil.ErrorLog("Provider from db is "+exp_provider);
                                         criteria = new Criteria();
                                         criteria.add(OpenidPeer.NONCE,exp_nonce);
                                         criteria.add(OpenidPeer.PROVIDER,exp_provider);
                                         OpenidPeer.doDelete(criteria);
                                         cnt++;
-                              //  	ErrorDumpUtil.ErrorLog("count is "+cnt);
                                 }//if
 			}//for
 		}//try
@@ -1286,22 +1284,18 @@ public static void grpLeader()
 
 		try{
 			String path = TurbineServlet.getRealPath("/Courses");
-//                        ErrorDumpUtil.ErrorLog("Path of courses folder "+path);
 			File file = new File(path);
                         String[] contents = file.list();
-//			ErrorDumpUtil.ErrorLog("Size of contents in Courses folder "+contents.length);
 
 			//Getting list of all courses
 			crit.addGroupByColumn(TurbineGroupPeer.GROUP_NAME);
 			List l2 = TurbineGroupPeer.doSelect(crit);
 			l=l2.size();
-//			ErrorDumpUtil.ErrorLog("111111");
 			String group_name[] = new String[l];
 			
 			for(i=0;i<l;i++)
 			{
 				group_name[i] = ((TurbineGroup)l2.get(i)).getGroupName();
-//				ErrorDumpUtil.ErrorLog("RRRRR "+group_name[i]);
 			}
 			
 			//Getting id of all institutes
@@ -1309,7 +1303,6 @@ public static void grpLeader()
 			crit.addGroupByColumn(InstituteQuotaPeer.INSTITUTE_ID);
                         List list = InstituteQuotaPeer.doSelect(crit);
                         l=list.size();
-//			ErrorDumpUtil.ErrorLog("Value of l "+l);
                         //int inst_id[] = new int[l];
                         //Getting quota alloted to all institutes
 
@@ -1321,13 +1314,11 @@ public static void grpLeader()
                         for(i=0; i<l; i++)
                         {
                                 inst_id = ((InstituteQuota)list.get(i)).getInstituteId();
-  //                              ErrorDumpUtil.ErrorLog("SSSSS "+inst_id);
 				crit = new Criteria();
 				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
                         	List list1 = InstituteQuotaPeer.doSelect(crit);
 				BigDecimal uquota =((InstituteQuota)list1.get(0)).getInstituteAquota();
 				inst_quota = uquota.longValue();
-//				ErrorDumpUtil.ErrorLog("TTTTT "+inst_quota);
 
 				/**
  				 * Getting courses from the list
@@ -1337,7 +1328,6 @@ public static void grpLeader()
 				for(j=0; j<group_name.length; j++)
 				{
 					k= group_name[j].lastIndexOf("_");
-				//	ErrorDumpUtil.ErrorLog("Value of group_name[j] "+group_name[j]);
 					if(!group_name[j].substring(k+1).equals("admin"))
 					{
 						if(k>0)
@@ -1356,9 +1346,7 @@ public static void grpLeader()
 									if(contents[k].contains(group_name[j]))
 									{
 										dir = new File(path+"/"+contents[k]);
-				//						ErrorDumpUtil.ErrorLog("Value of dir "+dir);
                         							size = size+QuotaUtil.getDirSizeInMegabytes(dir);		
-				//						ErrorDumpUtil.ErrorLog("Size in mb "+size);
 									}  	
 								}//for3
 							}//if3	
@@ -1370,7 +1358,6 @@ public static void grpLeader()
  				 * Changing size from Mb to Gb
 				 */
 				size=size/1024;
-				//ErrorDumpUtil.ErrorLog("Total used space "+size);
 				/**
  				 * Updating Institute_Quota table
  				 * with the computed value of used space

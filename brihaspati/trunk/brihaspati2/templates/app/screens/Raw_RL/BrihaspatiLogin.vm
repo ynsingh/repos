@@ -37,12 +37,16 @@ $page.setBgColor($ui.bgcolor)
 </table>
 *#
 <table align=left class="main" bgcolor="$ui.tableColor"> ## Ta1
-<tr><td>
-##<marquee direction="left">
+<tr><td colspan="3">
+<marquee direction="right">
 <font size=4>$!fNoti</font>
-##</morque>
+</marquee>
 </td></tr>
-
+<tr><td colspan="3">
+<marquee direction="right"> <font size=4>$!quotation</font></marquee>
+</td></tr>
+##</table>
+##<table width="100%">
 <tr> ## tr1
 	<td valign="top" bgcolor="$ui.tableColor" width="65%"> ## TD1 
 		<table align="left" width="100%" class="login">

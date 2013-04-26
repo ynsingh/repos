@@ -8,10 +8,10 @@
  * @modified date: 29-08-2010, 24-09-2010 (Shaista)
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
- *@author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- *@author modified date 31-10-2012<a href="mailto:shikhashuklaa@ymail.com">Shikha Shukla</a>
+ * @author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author modified date 31-10-2012<a href="mailto:shikhashuklaa@ymail.com">Shikha Shukla</a>
  * @modified date: 07-12-2010
- * @modified date: 15-02-2011
+ * @modified date: 15-02-2011,23-04-2013(Priyanka Rawat)
 *#
 
 $page.setTitle("Login in Brihaspati")
@@ -26,6 +26,9 @@ $page.setBgColor($ui.bgcolor)
 <table>
 <tr><td>
 <marquee> <font size=4>$!fNoti</font></marquee>
+</td></tr>
+<tr><td>
+<marquee> <font size=4>$!quotation</font></marquee>
 </td></tr>
 </table>
 $!data.getMessage() 

@@ -1,0 +1,104 @@
+#*
+ * @(#)Quotation.vm
+ * Copyright (c) 2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com ">Priyanka Rawat</a>
+ * @date 23-04-2013
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+<head>
+<script type="text/javascript">
+        _editor_url = "$content.getURI("/scrpts/")";
+        _editor_lang = "en";
+</script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> 
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<body onload="initEditor()">
+
+$page.setTitle("Admin Home | Quotation Management")
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+        <td>
+        <font face="$ui.sansSerifFonts">
+        <b>
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_quotation $brih_mgmt
+        </td>
+</tr>
+</table>
+
+<form name=frm method="post" action="$link.setAction("AddQuotation").setPage("call,Quotation,Quotation.vm").addPathInfo("mode","quote")">
+	<table width="100%" bgcolor="$ui.tableColor">
+        	<tr>
+                	<td bgcolor="#AFDCEC"><a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a></td>
+		</tr>
+	</table>
+
+	<table align=left width="100%" bgcolor="$ui.tableColor">
+		<tr>
+			 #if($mode=="edit")
+				<td>$brih_edit $brih_quotation</td>
+			#else
+				<td>$brih_add $brih_quotation</td>
+			#end
+			<td>
+				<textarea id="ta" name="message" rows=10 cols=80>$!editQuot_Value</textarea>
+				<input type="hidden" name="editQuotId" value=$!editQuot_Id>
+			</td>
+		</tr>
+		<tr>	
+			<td colspan=2 bgcolor="$ui.menuColor">
+				#if($mode=="edit")
+					<input type="submit"  class="button-ftextstyle"  name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>	
+				#else	
+					<input type="submit"  class="button-ftextstyle"  name="eventSubmit_doSubmit" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+				#end
+			</td>
+		</tr>
+	</table>
+	#set($headings = ["$brih_quotation","$brih_availableAction"] )
+
+	<table bgcolor="$ui.tableColor" align="center" width="100%" >
+	<tr>
+	#foreach ($heading in $headings)
+	        <td><font size=3><b>$heading</b></font></td>
+	#end
+	</tr>
+	#foreach($entry in $qdetail)
+       		#if($velocityCount%2==0)
+      			<tr bgcolor="$ui.tableColor">
+       		#else
+       			<tr bgcolor="$ui.menuColor">
+       		#end	
+			<td>	
+				$entry.getQuotationValue()
+			</td>
+		<td>
+			<font face="$ui.sansSerifFonts">
+        		<a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("mode","edit").addPathInfo("quotid",$entry.getQuotationId()) style="text-decoration:none">$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp
+               		</font>
+			<font face="$ui.sansSerifFonts">
+			<a href=$link.setPage("call,Quotation,Quotation.vm").setAction("AddQuotation").addPathInfo("mode","quote").addPathInfo("quotid",$entry.getQuotationId()).addPathInfo("actionName","eventSubmit_doDelete") style="text-decoration:none" onclick="javascript:return confirm('Do you want to delete this quotation')">$brih_delete</a>
+
+                        </font>
+		</td>
+		</tr>
+	#end		
+	</table>
+		<input type=hidden name="actionName" >
+</form>
+</body>
+<SCRIPT LANGUAGE="javascript">
+function checkField(frm,field)
+{
+        frm.actionName.value=field.name;
+        frm.submit();
+}
+</SCRIPT>

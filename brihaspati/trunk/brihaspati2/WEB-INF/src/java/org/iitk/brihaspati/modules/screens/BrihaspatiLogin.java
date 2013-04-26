@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.QuotationController;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import java.util.List;
 import java.util.Date;
@@ -75,6 +76,8 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sweetshaista00@yahoo.com">Shaista Bano</a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifieddate 23-04-2013
  */
 public class BrihaspatiLogin extends VelocityScreen
 {
@@ -147,13 +150,14 @@ String hdir=System.getProperty("user.home");
 			{
                         	XmlRpc.setKeepAlive(true);
 			}//if
-
 			// for notofication
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
 			String fhead = AdminProperties.getValue(path,"brihaspati.admin.flashHeading.value");
 	                context.put("fNoti",fhead);
 	                context.put("msg",pp.getString("msg",""));
-
+			//Display Quotation
+			String quotation = (QuotationController.getController()).getQuotation();
+			context.put("quotation",quotation);
 
 		}
                 catch(Exception e)
