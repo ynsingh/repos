@@ -43,10 +43,10 @@ import org.bss.brihaspatisync.gui.HandRaiseAction;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class ShareScreenAndPPT implements MouseListener{
+public class Allow_Deny_Permission implements MouseListener{
 
         private JPanel mainPanel;
-        private static ShareScreenAndPPT wbPanel=null;
+        private static Allow_Deny_Permission allow_deny_permission=null;
 	
 	private JLabel desk_share=null;
 	private String selectedUsername="";
@@ -54,11 +54,11 @@ public class ShareScreenAndPPT implements MouseListener{
 	private JLabel denie_permission=null;
 	private ClientObject client_obj=ClientObject.getController();
 	private boolean flag=false;
-        protected static ShareScreenAndPPT getController(){
-                if (wbPanel==null){
-                        wbPanel=new ShareScreenAndPPT();
+        protected static Allow_Deny_Permission getController(){
+                if (allow_deny_permission==null){
+                        allow_deny_permission=new Allow_Deny_Permission();
                 }
-                return wbPanel;
+                return allow_deny_permission;
         }
 
 	
@@ -66,15 +66,14 @@ public class ShareScreenAndPPT implements MouseListener{
        	protected JPanel createGUI(){
                 
                 mainPanel=new JPanel();
-                mainPanel.setLayout(new java.awt.FlowLayout());
-		desk_share=new JLabel("<html><blink><Font size=3 color=white><b> Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+		desk_share=new JLabel("<html><blink><Font size=2 color=white><b> Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
 		desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
                 desk_share.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		desk_share.setName("Permission");
 		desk_share.setEnabled(false);
 		desk_share.addMouseListener(this);		
 
-		denie_permission=new JLabel("<html><blink><Font size=3 color=white><b> Deny Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+		denie_permission=new JLabel("<html><blink><Font size=2 color=white><b> Deny Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                 denie_permission.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
                 denie_permission.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 denie_permission.setName("Denie-Permission");
@@ -93,11 +92,11 @@ public class ShareScreenAndPPT implements MouseListener{
 	protected void setEnable_Decable(){
 		try{
 		if((client_obj.getUserRole()).equals("instructor")){
-                        desk_share.setText("<html><blink><Font size=3 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+                        desk_share.setText("<html><blink><Font size=2 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                         desk_share.setName("Allow-Permission");
 			desk_share.setEnabled(true);
                 }else {
-                        desk_share.setText("<html><blink><Font size=3 color=blue><b> Get-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+                        desk_share.setText("<html><blink><Font size=2 color=blue><b> Get-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                         desk_share.setName("Get-Permission");
 			desk_share.setEnabled(true);
 		}
@@ -119,8 +118,8 @@ public class ShareScreenAndPPT implements MouseListener{
 						flag=true;
 	                        		HandRaiseAction.getController().actionONRequest("Share-Screen",selectedUsername);
 						denieselectedUsername=selectedUsername;
-						desk_share.setText("<html><blink><Font size=3 color=white><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
-						denie_permission.setText("<html><blink><Font size=3 color=red><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+						desk_share.setText("<html><blink><Font size=2 color=white><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+						denie_permission.setText("<html><blink><Font size=2 color=red><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
 						desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
 						desk_share.setEnabled(false);
 						denie_permission.setEnabled(true);
@@ -133,8 +132,8 @@ public class ShareScreenAndPPT implements MouseListener{
 				}catch(Exception ex){System.out.println("Error in Allow-Permission in line no 124 ");}
 				if(cmd.equals("Denie-Permission")) {
                         		HandRaiseAction.getController().actionONRequest("available",denieselectedUsername);
-                        		denie_permission.setText("<html><blink><Font size=3 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
-					desk_share.setText("<html><blink><Font size=3 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+                        		denie_permission.setText("<html><blink><Font size=2 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
+					desk_share.setText("<html><blink><Font size=2 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                         		denie_permission.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
 					denie_permission.setEnabled(false);
                                         desk_share.setEnabled(true);
@@ -153,8 +152,8 @@ public class ShareScreenAndPPT implements MouseListener{
 					flag =true;
 					HandRaiseAction.getController().actionONRequest("Allow-Permission",selectedUsername);
 					denieselectedUsername=selectedUsername;
-                                	desk_share.setText("<html><blink><Font size=3 color=white><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
-                        		denie_permission.setText("<html><blink><Font size=3 color=red><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
+                                	desk_share.setText("<html><blink><Font size=2 color=white><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+                        		denie_permission.setText("<html><blink><Font size=2 color=red><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
                                 	desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
                                 	denie_permission.setEnabled(true);
                                 	desk_share.setEnabled(false);
@@ -168,8 +167,8 @@ public class ShareScreenAndPPT implements MouseListener{
                 	        if(cmd.equals("Denie-Permission")) {
 					flag =false;
                         		HandRaiseAction.getController().actionONRequest("available",denieselectedUsername);
-	                                denie_permission.setText("<html><blink><Font size=3 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
-        	                        desk_share.setText("<html><blink><Font size=3 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+	                                denie_permission.setText("<html><blink><Font size=2 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
+        	                        desk_share.setText("<html><blink><Font size=2 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                 	                denie_permission.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
                         	        denie_permission.setEnabled(false);
                                 	desk_share.setEnabled(true);
@@ -184,8 +183,8 @@ public class ShareScreenAndPPT implements MouseListener{
                            	selectedUsername=client_obj.getUserName();
                                 HandRaiseAction.getController().actionONRequest("Get-Permission",selectedUsername);
                                 denieselectedUsername=selectedUsername;
-                                desk_share.setText("<html><blink><Font size=3 color=white><b> Get-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
-                                denie_permission.setText("<html><blink><Font size=3 color=blue><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
+                                desk_share.setText("<html><blink><Font size=2 color=white><b> Get-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+                                denie_permission.setText("<html><blink><Font size=2 color=blue><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
                                 desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
                                 denie_permission.setEnabled(true);
                                 desk_share.setEnabled(false);
@@ -194,8 +193,8 @@ public class ShareScreenAndPPT implements MouseListener{
                    	}
                        	if(cmd.equals("Denie-Permission")) {
                         	HandRaiseAction.getController().actionONRequest("available",denieselectedUsername);
-                                denie_permission.setText("<html><blink><Font size=3 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
-                                desk_share.setText("<html><blink><Font size=3 color=blue><b> Get-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+                                denie_permission.setText("<html><blink><Font size=2 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>") ;
+                                desk_share.setText("<html><blink><Font size=2 color=blue><b> Get-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                                 denie_permission.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
                                 denie_permission.setEnabled(false);
                                 desk_share.setEnabled(true);

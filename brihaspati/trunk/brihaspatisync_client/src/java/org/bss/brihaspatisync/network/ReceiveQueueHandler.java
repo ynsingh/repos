@@ -26,14 +26,10 @@ import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
 
 public class ReceiveQueueHandler implements Runnable{
 
-	private int tempInt=0;
-	
-        private int tempInt1=0;	
-
         private Thread runner = null;
 
 	private boolean rec_Flag = false;
-
+	
         private static ReceiveQueueHandler rqh=null;
 	
 	private UtilObject utilobject = UtilObject.getController();
@@ -101,6 +97,21 @@ public class ReceiveQueueHandler implements Runnable{
 							}
 						}
 					}
+
+					/**
+					 * This method is used to netwrok very slow . 
+					 * then remove data from sending queue 
+					 */ 	
+					try {
+						java.util.Hashtable hashtable=utilobject.get_send_queue_hashTable();
+						java.util.Enumeration en=hashtable.keys();
+						while (en.hasMoreElements()) {
+							java.util.LinkedList sendqueue=utilobject.getSendQueue((String)en.nextElement());
+				                        if(sendqueue.size()>10) {
+                        				        sendqueue.clear();
+	                        			}
+						}
+					}catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to remove queue for network slow .");}
 				}
 				runner.yield();
 				runner.sleep(10);

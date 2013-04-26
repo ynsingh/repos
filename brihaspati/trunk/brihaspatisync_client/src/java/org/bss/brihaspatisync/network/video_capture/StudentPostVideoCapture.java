@@ -118,7 +118,6 @@ public class StudentPostVideoCapture implements Runnable {
 						}
                               		}
 				}
-				UtilObject.getController().networkHandler("stud_video");
                        		runner.sleep(10000);runner.yield();
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
 		}

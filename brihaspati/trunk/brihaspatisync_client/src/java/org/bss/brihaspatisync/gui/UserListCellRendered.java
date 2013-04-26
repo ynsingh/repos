@@ -49,7 +49,7 @@ class UserListCellRendered implements ListCellRenderer {
                 }
                 if (isSelected) {
                         renderer.setForeground(theForeground);
-			ShareScreenAndPPT.getController().setSelectedUsername(userid);				
+			Allow_Deny_Permission.getController().setSelectedUsername(userid);				
                 }
                 if (theIcon != null) {
                         renderer.setIcon(theIcon);

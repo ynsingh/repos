@@ -115,7 +115,6 @@ public class PostVideoCapture implements Runnable {
                         	                       		org.bss.brihaspatisync.gui.VideoPanel.getController().runInstructorVidio(image);
 						}
                               		}
-					UtilObject.getController().networkHandler("ins_video");
 				}
 	                       	runner.sleep(3000); runner.yield();
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}

@@ -84,7 +84,6 @@ public class HTTPClient extends Thread {
 								utilObject.setRecQueue(str2);	
 						}
 					}
-					UtilObject.getController().networkHandler("ch_wb_Data");
 				}
 				this.sleep(2000);this.yield();
 			}catch(Exception ex) {	System.out.println("Error in HTTP Client "+ex.getMessage());   }

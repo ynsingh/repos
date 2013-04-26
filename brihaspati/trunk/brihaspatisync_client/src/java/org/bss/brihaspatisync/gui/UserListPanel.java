@@ -83,8 +83,8 @@ public class UserListPanel extends Thread {
                 jlist.setCellRenderer(renderer);
                 scrollPane = new JScrollPane(jlist);
 	
-              	mainPanel.add(ShareScreenAndPPT.getController().createGUI(),BorderLayout.NORTH);
-		ShareScreenAndPPT.getController().setEnable_Decable();
+              	mainPanel.add(Allow_Deny_Permission.getController().createGUI(),BorderLayout.NORTH);
+		Allow_Deny_Permission.getController().setEnable_Decable();
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
 		this.start();
 		return mainPanel;

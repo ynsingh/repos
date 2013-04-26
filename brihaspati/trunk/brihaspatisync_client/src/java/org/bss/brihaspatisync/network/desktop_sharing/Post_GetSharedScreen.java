@@ -154,7 +154,6 @@ public class Post_GetSharedScreen implements Runnable {
 							}
 						}
 					}
-					UtilObject.getController().networkHandler("Desktop_Data");
 					StatusPanel.getController().setdestopClient("yes");
 				}else 
 					StatusPanel.getController().setdestopClient("no");

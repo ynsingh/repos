@@ -97,7 +97,6 @@ public class AudioClient implements Runnable {
 						}
 					}
 					StatusPanel.getController().setaudioClient("yes");
-					UtilObject.getController().networkHandler("Audio_Data");
 				}else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
