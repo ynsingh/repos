@@ -62,8 +62,10 @@ $!data.getMessage()
 			</td>
 		</tr>
 	</table>
-	#set($headings = ["$brih_quotation","$brih_availableAction"] )
 
+	#if($qdetail.size()>0)
+		#set($headings = ["$brih_quotation","$brih_availableAction"] )
+	#end
 	<table bgcolor="$ui.tableColor" align="center" width="100%" >
 	<tr>
 	#foreach ($heading in $headings)
