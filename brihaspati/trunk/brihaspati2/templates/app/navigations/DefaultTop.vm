@@ -29,4 +29,4 @@ $page.setBgColor("#ffffff")
 #end
 
 </div>
-<hr style="width:1090px; margin:5px auto;">
+<hr style="width:1090px; margin:0px auto;">

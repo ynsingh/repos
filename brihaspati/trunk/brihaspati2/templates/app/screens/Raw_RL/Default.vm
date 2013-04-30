@@ -53,7 +53,7 @@ $page.setBgColor("$ui.bgcolor")
 	</tr> ##1#t tr closed
 ##Show ShutDown Notification
 <tr><td colspan=2>
-<iframe id="iframe0" src='$link.setPage("Shutdown.vm").addPathInfo("lang",$lang)' style="height:16px;width:100%; overflow:hidden;" frameborder="0"></iframe>
+<iframe id="iframe0" src='$link.setPage("Shutdown.vm").addPathInfo("lang",$lang)' style="height:15px;width:100%; overflow:hidden;" frameborder="0"></iframe>
 </td></tr>
 ##end
 
@@ -193,21 +193,14 @@ $page.setBgColor("$ui.bgcolor")
 </div>
 #end
 <script type="text/javascript">
-    setInterval(function() {
-        $("#autoclick").click();
-    }, 1);
-        function getIframeText() {
-
-            var iframe0 = document.getElementById("iframe0");
-
-            var iframe0document=iframe0.contentDocument||iframe0.contentWindow.document;
-
-            var inputIframe = iframe0document.getElementById("frame_text");
-                if(inputIframe.value==""){
+function getIframeText() {
+	var iframe0 = document.getElementById("iframe0");
+        var iframe0document=iframe0.contentDocument||iframe0.contentWindow.document;
+        var inputIframe = iframe0document.getElementById("frame_text");
+        if(inputIframe.value==""){
                 document.getElementById('iframe0').style.display = 'none';
-                }
         }
-    </script>
-
+}
+</script>
 </html>
 

@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)RegisterCourseInstructor.java	
  *
- *  Copyright (c) 2004-2006,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2009,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -30,6 +30,8 @@ package org.iitk.brihaspati.modules.actions;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import java.util.List;
+import org.iitk.brihaspati.modules.utils.ListManagement;;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -54,6 +56,8 @@ import org.apache.commons.logging.LogFactory;
  * @modified date: 04-08-2011 (Shaista)
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modify date: 09-08-2012 (Priyanka)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 22-04-2013
  */
 public class RegisterCourseInstructor extends SecureAction_Admin
 {
@@ -81,7 +85,7 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 				ParameterParser pp=data.getParameters();
 		 		/**
 		  		* Gather details from the page where user has entered them
-				*  Added By shaista
+				* Added By shaista
 				* @param instName: Getting instName as a String from Parameter Parser 
 				* @param instId: Getting instId as an int 
 				* @see InstituteIdUtil
@@ -132,6 +136,29 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 		}
 		
 	}
+	
+	/**
+	* This method is used to getting all mapped department list according to Instiute
+        * in the system
+        * @param data RunData instance
+        * @param context Context instance
+        * @exception Exception, a generic exception
+        */
+	public void doSearch(RunData data, Context context) throws Exception
+        {
+                /**
+                * Get only those department which is mapped with specific institute
+	        * Gather details from the page where user has entered them
+                * @param instName: Getting instName as a String from Parameter Parser 
+                * @param instId: Getting instId as an String 
+                * @see ListManagement util in utils
+                */
+                ParameterParser pp=data.getParameters();
+                String instName=pp.getString("instName");
+		String instituteId = Integer.toString(InstituteIdUtil.getIst_Id(instName));
+                List DeptList=ListManagement.getMapDeptList(instituteId);
+                context.put("deptlist",DeptList);
+        }
 
 	/**
  	  * This method is invoked when no button corresponding to 
@@ -144,16 +171,17 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 		String action=data.getParameters().getString("actionName","");
 		if(action.equals("eventSubmit_doRegister"))
 			doRegister(data,context);
+		else if(action.equals("eventSubmit_doSearch"))
+		{
+			doSearch(data,context);
+		}
 		else{
-			
-		
-		/**
-                 * getting property file According to selection of Language in temporary variable
-                 * getting the values of first,last names and
-                 * configuration parameter.
-                 */
- 
-                LangFile=(String)data.getUser().getTemp("LangFile"); 
+			/**
+                 	* getting property file According to selection of Language in temporary variable
+                 	* getting the values of first,last names and
+                 	* configuration parameter.
+                 	*/
+                	LangFile=(String)data.getUser().getTemp("LangFile"); 
 			String str=MultilingualUtil.ConvertedString("c_msg",LangFile);
                         data.setMessage(str);
 		}

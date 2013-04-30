@@ -1,10 +1,12 @@
 #*
  * @(#) EditCourse.vm
- * Copyright (c) 2004-2005 ETRG,IIT Kanpur.
+ * Copyright (c) 2004-2005,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a>
  * @author  <a href="sweetshaista00@yahoo.com">Shaista Shekh</a>  
+ * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>  
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 22-04-2013
 *#
 
 $page.setTitle("Admin Home | List Management | View All Courses | Edit Course")
@@ -41,9 +43,15 @@ $page.setTitle("Admin Home | List Management | View All Courses | Edit Course")
 
       	</tr>
       	<tr align="right">
-        	###formCell ("$brih_dept" "Department" "$cd.getDept()")
-		<td> <input type="text" name="Department" size="35%" value="$cd.getDept()"></td>
-		<td ><b> $brih_dept </b> </td>
+        <td>
+                <select class="drop" name="Department" size=1 style="width:300px;" />
+                <option value="$brih_select $brih_dept" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
+                #foreach($name in $deptlist)
+                <option value="$name.getName()" title="$name.getName()" style="width:275px;">$name.getName()</option>
+                #end
+                </select>
+        </td
+	<td> $brih_dept</font></td>
       	</tr>
       	<tr align="right">
 	<td>

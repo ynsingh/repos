@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)ListManagement.java	
  *
- *  Copyright (c) 2004-2008,2010,2011,2012,2013 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2010-11,2012-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -67,7 +67,9 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.iitk.brihaspati.om.DepartmentPeer;
 import org.iitk.brihaspati.om.DeptSchoolUnivPeer;
+import org.iitk.brihaspati.om.DeptSchoolUniv;
 import org.iitk.brihaspati.om.SchoolPeer;
+import java.util.LinkedHashSet;
 /**
  * This class contains methods for listing
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
@@ -76,7 +78,8 @@ import org.iitk.brihaspati.om.SchoolPeer;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>  
- * @modified date:02-07-2011, 12-02-2013
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>  
+ * @modified date:02-07-2011, 12-02-2013, 22-04-2013
  */
 
 public class ListManagement
@@ -789,90 +792,152 @@ public class ListManagement
                         catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e);}
 			return UsDetail;
 		}
-		/**
-		 *List of users in a course
-		 */
-		 public static Vector getCourseUser(int userid,int gid)
+	/**
+	 *List of users in a course
+	 */
+	public static Vector getCourseUser(int userid,int gid)
+	{
+		Vector userList=new Vector();
+		try
 		{
-		 Vector userList=new Vector();
-			try{
-			        Criteria crit =new Criteria();
-                                crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-                                crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-                                crit.and(TurbineUserGroupRolePeer.GROUP_ID,gid);
-                                crit.setDistinct();
-                                List v=TurbineUserPeer.doSelect(crit);
-                                for(int i=0;i<v.size();i++)
-                                {
-                                        TurbineUser element=(TurbineUser)v.get(i);
-                                        String studentname=element.getUserName();
-					if(!studentname.equals("guest"))
+		        Criteria crit =new Criteria();
+                        crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+                        crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+                        crit.and(TurbineUserGroupRolePeer.GROUP_ID,gid);
+                        crit.setDistinct();
+                        List v=TurbineUserPeer.doSelect(crit);
+                        for(int i=0;i<v.size();i++)
+                        {
+                        	TurbineUser element=(TurbineUser)v.get(i);
+                                String studentname=element.getUserName();
+				if(!studentname.equals("guest"))
                                         userList.addElement(studentname);
-                                }
+                        }
 
-			}catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e); }
-			 return userList;
-			
 		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e); 
+		}
+		 return userList;
+	}
 		
-		/**
-                 * Getting Department List
-                 */
-
-		public static List getDepartmentList(String departmentId){
-		List deptlist = new ArrayList(); 
-		try{
-			Criteria crit=new Criteria();
-			if(departmentId.equals("")){
+	/**
+         * This Method is used for getting Department List
+	 * @parameter:String departmentId 
+	 * @return: List (Department)
+         */
+	public static List getDepartmentList(String departmentId)
+	{
+	List deptlist = new ArrayList(); 
+	try{
+		Criteria crit=new Criteria();
+		if(departmentId.equals(""))
+		{
 			crit.addGroupByColumn(DepartmentPeer.DEPARTMENT_ID);
-                	deptlist=DepartmentPeer.doSelect(crit);
-			}
-			else{
+               		deptlist=DepartmentPeer.doSelect(crit);
+		}
+		else
+		{
 			int deptid=Integer.parseInt(departmentId);
-                	crit.add(DepartmentPeer.DEPARTMENT_ID,deptid);
-                	deptlist=DepartmentPeer.doSelect(crit);
-			}
+               		crit.add(DepartmentPeer.DEPARTMENT_ID,deptid);
+               		deptlist=DepartmentPeer.doSelect(crit);
 		}
-		catch(Exception e){ErrorDumpUtil.ErrorLog("The error in getting department list -- "+e); }
-		return deptlist;
-		}
-	
-		 /**
-                 * Getting School List
-                 */
-	
-		public static List getSchoolList(String SchoolId){
+	}
+	catch(Exception e)
+	{
+		ErrorDumpUtil.ErrorLog("The error in getting department list -- "+e); 
+	}
+	return deptlist;
+	}
+
+	/**
+         * This Method is used for getting School List
+         * @parameter:String SchoolId
+         * @return: List (School)
+         */
+
+	public static List getSchoolList(String SchoolId)
+	{
 		List schoollist = new ArrayList(); 
-                try{
+        	try
+		{
 			Criteria crit=new Criteria();
-			if(SchoolId.equals("")){
-                        crit.addGroupByColumn(SchoolPeer.SCHOOL_ID);
+			if(SchoolId.equals(""))
+			{
+                       		crit.addGroupByColumn(SchoolPeer.SCHOOL_ID);
 			}
-			else{
-                	int schid=Integer.parseInt(SchoolId);
-                	crit.add(SchoolPeer.SCHOOL_ID,schid);
+			else
+			{
+               			int schid=Integer.parseInt(SchoolId);
+                		crit.add(SchoolPeer.SCHOOL_ID,schid);
 			}
-                        schoollist = SchoolPeer.doSelect(crit);
-                }
-                catch(Exception e){ErrorDumpUtil.ErrorLog("The error in getting School list -- "+e); }
+                        	schoollist = SchoolPeer.doSelect(crit);
+		}
+        	catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("The error in getting School list -- "+e); 
+		}
                 return schoollist;
-                }
+        }
 
-		 /**
-                 * Getting Department School University  List
-                 */
+	/**
+         * This Method is used for getting Mapped Department List
+         * @parameter:String InstituteId
+         * @return: List (All Mapped Department/School/University List)
+         */
 
-		public static List getDeptScoolUnivList(String InstituteId){
+	public static List getDeptScoolUnivList(String InstituteId)
+	{
 		List dsulist=new ArrayList();
 		String univid=InstituteId;
-                try{
+                try
+		{
                 	Criteria crit=new Criteria();
                 	crit.addGroupByColumn(DeptSchoolUnivPeer.ID);
                 	crit.add(DeptSchoolUnivPeer.UNIVERSITY_ID,univid);
                 	dsulist=DeptSchoolUnivPeer.doSelect(crit);
 		}
-		catch(Exception e){ErrorDumpUtil.ErrorLog("The error in getting department school university map list -- "+e); }
-                	return dsulist;
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("The error in getting department school university map list -- "+e); 
 		}
+                return dsulist;
+	}
+
+	/**
+         * This Method is used for getting Mapped Department List
+         * @parameter:String InstituteId
+         * @return: List (All unique/soretd Mapped DepartmentList)
+         */
+	public static List getMapDeptList(String InstituteId) 
+	{
+               	ArrayList mapdeptlist = new ArrayList();
+               	try
+		{
+			List lsdsu=getDeptScoolUnivList(InstituteId);
+			//Initialize Arraylist for getting sort department list
+                       	for(int i=0;i<=lsdsu.size();i++)
+                       	{
+                             	DeptSchoolUniv element=(DeptSchoolUniv)lsdsu.get(i);
+                               	String deptid=element.getDeptId();
+                               	String mapschid=element.getSchoolId();
+                               	//Check map school id
+                               	if(mapschid == null)
+                               	{
+                                     	List mapdept=ListManagement.getDepartmentList(deptid);
+                                       	//Add department list in Arraylist
+                                       	mapdeptlist.addAll(mapdept);
+                               	}
+                        }
+                        	//Sort unique department list from Vector list
+                        	mapdeptlist = new ArrayList(new LinkedHashSet(mapdeptlist));
+                }
+                catch(Exception e)
+                {
+                       	ErrorDumpUtil.ErrorLog("Exception in getting mapped deaprtment list"+e);
+                }	
+                return mapdeptlist;
+	}
 }
 

@@ -1,7 +1,6 @@
-<html>
 #*
  * @(#) Editgroup.vm
- *  Copyright (c) 2006,2007,2010,2011,2013 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006-07,2010-11,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
@@ -11,7 +10,7 @@
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 31-12-2009, 07-09-2010, 11-08-2011
  *  @modified date:jan 17- 2011
- *  @modified date:Feb 15- 2011, Feb 07-2013
+ *  @modified date:Feb 15- 2011, Feb 07-2013, April 22-2013
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 <head>
@@ -92,7 +91,7 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5") style="text-decoration:none">$brih_grp #if($lang == "hindi") $brih_Of #end $brih_activity</a></td>
-        <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin");style="text-decoration:none">$brih_help</a></td>
+        <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin") style="text-decoration:none">$brih_help</a></td>
 </tr>
 </table > ##table 2 end
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Editgroup.vm").setAction("Groupmanagement")>
