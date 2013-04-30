@@ -401,15 +401,14 @@ $!msg
                 //Win2=window.open(url,popupName,"resizable,height=200,width=650");
         }
 
+##	window.onload = setupRefresh;
 
-	window.onload = setupRefresh;
-
-        function setupRefresh() {
-        setTimeout("refreshPage();", 60000); // milliseconds
-        }
-    	function refreshPage() {
-       	window.location = location.href;
-    	}
+##       function setupRefresh() {
+##        setTimeout("refreshPage();", 60000); // milliseconds
+##        }
+##    	function refreshPage() {
+##       	window.location = location.href;
+##    	}
 
 	function checkUNamePwd(frm,field)
 	{
