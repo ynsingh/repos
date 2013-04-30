@@ -176,7 +176,9 @@ public class UserManagement
 			}
 			catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
 		}
-
+		
+		UName = UName.replaceAll("\\s", "");
+		Email = Email.replaceAll("\\s", "");
 		int userid=UserUtil.getUID(UName);
 		/**
 		 * Checks if there are any illegal characters in the values
@@ -1110,6 +1112,7 @@ public class UserManagement
 		{
 			String rollmsg = "";
 			int stdntid=0;
+			eMail = eMail.replaceAll("\\s", "");	
                 	User user = TurbineSecurity.getUser(userName);
                 	user.setFirstName(fName);
                 	user.setLastName(lName);

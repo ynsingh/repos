@@ -61,6 +61,8 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 
 /** 
@@ -250,7 +252,7 @@ public class DBContent extends SecureScreen
 			if(entry.size()!=0)
 			{
 				context.put("status","Noblank");
-				context.put("entry",entry);
+				//context.put("entry",entry);
 			}
 			else
 			{
@@ -279,6 +281,47 @@ public class DBContent extends SecureScreen
 					int eid=0;
 					ModuleTimeThread.getController().CourseTimeSystem(user_id,eid);
                       		}
+			}
+			String institute_id=data.getUser().getTemp("Institute_id").toString();
+			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+institute_id+"Admin.properties";
+                        int confParam = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
+			context.put("userConf",confParam);
+			context.put("userConf_str",Integer.toString(confParam));
+			int startIndex=pp.getInt("startIndex",0);
+                        String status=new String();
+                        int t_size=entry.size();
+
+			if(entry.size()!=0){
+
+                                status="notempty";
+                                int value[]=new int[7];
+                                value=ListManagement.linkVisibility(startIndex,t_size,confParam);
+				
+				int k=value[6];
+                                context.put("k",String.valueOf(k));
+
+                                Integer total_size=new Integer(t_size);
+                                context.put("total_size",total_size);
+
+                                int eI=value[1];
+                                Integer endIndex=new Integer(eI);
+                                context.put("endIndex",endIndex);
+				
+				int check_first=value[2];
+                                context.put("check_first",String.valueOf(check_first));
+
+				int check_pre=value[3];
+                                context.put("check_pre",String.valueOf(check_pre));
+				
+				int check_last1=value[4];
+                                context.put("check_last1",String.valueOf(check_last1));
+
+				int check_last=value[5];
+                                context.put("check_last",String.valueOf(check_last));
+				
+				context.put("startIndex",String.valueOf(eI));
+                                Vector splitlist=ListManagement.listDivide(entry,startIndex,confParam);
+                                context.put("entry",splitlist);
 			}
 			
 		}//try

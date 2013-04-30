@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#)ViewMarks.java	
  *
- *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -47,7 +47,7 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.om.security.User;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Student;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor_Student;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
@@ -66,7 +66,7 @@ import org.iitk.brihaspati.modules.utils.MarksFileEntry;
   * @modified date: 20-10-2010,01-02-2012
   */
  
-public class ViewMarks extends SecureScreen_Student 
+public class ViewMarks extends SecureScreen_Instructor_Student
 {
 	private String rollno1=null,rollno2=null;
 	private List v=null;
@@ -76,8 +76,17 @@ public class ViewMarks extends SecureScreen_Student
 		try
 		{	
 			User user=data.getUser();
-			String checkUser=user.getName();
 			String Role = (String)user.getTemp("role");
+                        String checkUser="";
+                        if(Role.equals("instructor"))
+                        {
+                                checkUser = data.getParameters().getString("username");
+                                context.put("UsrName",checkUser);
+                        }
+                        else
+                        {
+                                checkUser=user.getName();
+                        }
 			String dir=(String)user.getTemp("course_id");
                         context.put("course",(String)user.getTemp("course_name"));
 			/**
@@ -185,7 +194,7 @@ public class ViewMarks extends SecureScreen_Student
 							}
 						}
 						catch(Exception e){
-							ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
+							//ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
 						}
 					}
 				}
@@ -195,11 +204,14 @@ public class ViewMarks extends SecureScreen_Student
 				context.put("markDetail",markDetail);
 				context.put("marksDSize",Integer.toString(markDetail.size()));
 				context.put("status","NoBlank");
+			}// end of if
+			rollno1="";
+			rollno2="";
 				if(markDetail.size()==0){
 					context.put("marksDSize","0");
                                         context.put("status","Blank");
 				}
-			}// end of if
+			//}// end of if
 		}
 		catch(IOException e)
 		{

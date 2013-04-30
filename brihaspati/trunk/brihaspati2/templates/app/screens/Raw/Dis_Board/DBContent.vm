@@ -301,6 +301,31 @@ $!data.getMessage()
 		</tr>
 			
       		#end ## foreach ends
+      		<tr>
+                        <td colspan=8 >
+			#if($total_size<= $userConf)
+				<img src="$content.getURI("images/First_blank.png")">
+        	                <img src="$content.getURI("images/Next_blank.png")">
+                	        <img src="$content.getURI("images/Previous_blank.png")">
+                        	<img src="$content.getURI("images/Last_blank.png")">
+			#elseif($startIndex== $userConf_str)
+				<img src="$content.getURI("images/First_blank.png")">
+	                        <img src="$content.getURI("images/Previous_blank.png")">
+        	                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+			#elseif($endIndex == $total_size || $endIndex > $total_size)
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+	                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+        	                <img src="$content.getURI("images/Next_blank.png")">
+                	        <img src="$content.getURI("images/Last_blank.png")">
+			 #else
+			 	<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+                         	<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+	                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+	                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+                     #end
+                     	</td>
+		</tr>
        		<tr bgcolor="$ui.menuColor">
      	         <td colspan=8>
 		#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
