@@ -62,11 +62,15 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.ActiveUserListThread;
+import org.iitk.brihaspati.modules.utils.ActiveUserListController;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailo:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
@@ -77,13 +81,14 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 
 public class Index extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
-		try{	
+		try{
+			ParameterParser pp=data.getParameters();
 			String ip=data.getServerName();
-			String port=Integer.toString(data.getServerPort());
-			String sch=data.getServerScheme(); 
-			String ipadd=sch+"://"+ip+":"+port;
-			context.put("ipadd",ipadd);
-
+                        String port=Integer.toString(data.getServerPort());
+                        String sch=data.getServerScheme(); 
+                        String ipadd=sch+"://"+ip+":"+port;
+                        context.put("ipadd",ipadd);
+			String viewAll=pp.getString("viewAll","");
                         /*
                          * getting the current user 
 			 * & check current user is superAdmin,InsAdmin,Instructor,student or guest
@@ -94,12 +99,23 @@ public class Index extends SecureScreen{
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
-
+			ActiveUserListThread.getController().activeUser(uid);		
 			Vector cId=new Vector();
 			if(uid==1){
-                                cId.add("mainA");
+                                cId.add("admin");
+				if(viewAll.equals("ViewAll")) {
+	                        	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,1));
+				}
+				else 
+				{
+					context.put("uList",ActiveUserListController.getController().getUserListVector(cId,0));
+				}
 			}else if(uid==0){
                                 cId.add("guest");
+				if(viewAll.equals("ViewAll"))
+                                	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,1));
+                               else
+				      	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,0));
                         }
 			else{
 				/**
@@ -115,76 +131,16 @@ public class Index extends SecureScreen{
 					}
 				}
 				context.put("instNameList",instNameList);
+				if(viewAll.equals("ViewAll")){
+					context.put("uList",ActiveUserListController.getController().getUserListVector((InstituteIdUtil.getAllInstId(uid)),1));
+				}else{
+					context.put("uList",ActiveUserListController.getController().getUserListVector(InstituteIdUtil.getAllInstId(uid),0));
+				}
 			}
-			/**
-			 * code for Active User list
-                         */
-			List < String >  actlst = new ArrayList < String >  (  ) ;
-                        Collection au=TurbineSession.getActiveUsers();
-                        actlst.addAll(au);
-			Iterator it=au.iterator();
-                        Vector ve=new Vector();
-                        	while(it.hasNext()){
-                        		String ss=it.next().toString();
-                                	ve.add(ss.substring(0,(ss.length()-3)));
-                        }
+			/*
+			 *Code for ActiveUserList.
+			 */
 
-                        //send list to vm
-                        /*context.put("activelist", actlst);
-			String role=data.getParameters().getString("role");
-			context.put("role",role);*/
-			 /**
-                         * code for Active User list With Time
-                         */
-			Vector ve1=new Vector();
-			Vector ve2=new Vector();
-
-                        Collection aul=TurbineSession.getActiveSessions();
-                         for(Iterator i=aul.iterator();i.hasNext();)
-                         {
-				HttpSession session=(HttpSession) i.next();
-                                User un =TurbineSession.getUserFromSession(session);
-                                String u=un.getName();
-                                //check for current session is not null
-                                if(ve.contains(u)){
-                                	int userid=UserUtil.getUID(u);
-				        Vector lId=new Vector();
-					if((userid!=1) && (userid!=0)){
-						  lId=InstituteIdUtil.getAllInstId(userid);
-						}
-                                //time calculation for given userid
-					String time=InstituteIdUtil.getTimeCalculation(userid);
-					for (int x = 0; x < cId.size(); x++)
-				 	{
-						Object e=cId.get(x);
-						if(e.equals("mainA")){
-							  String h=u+" "+"("+time+")";
-                                        		ve2.add(h);
-						}else if(e.equals("guest")){
-							if(u.equals(e)){
-								String h=u+" "+"("+time+")";
-                                                 		ve2.add(h);
-                                       			}
-						}else if(lId.contains(e)){
-							String h=u+" "+"("+time+")";
-							Vector ve3=new Vector();
-                                                	ve3.add(h);
-							for(int m=0;m<ve3.size();m++){
-								String instid=(String)ve3.get(m);
-								if(!ve2.contains(instid)){
-                        			                         ve2.add(instid);
-                                        			}
-                                			}
-						}
-					}//end of for loop for cId value
-                                               
-			 	}//end of first if loop
-			}//end of first for loop
-                                                context.put("uList",ve2);
-						
-			/*User user=data.getUser();
-			String username=user.getName();
-			int uid=UserUtil.getUID(username);*/
 			context.put("Uid",uid);
 			/** 
 			 *	code for Photo display 

@@ -30,7 +30,6 @@ $!data.getMessage()
 <head>
 <link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
-</script>
 </head>
 
 <body onload="doLoad();">
@@ -52,11 +51,13 @@ $!data.getMessage()
 #if($Uid.toString()=="1")
 <div class="scroll">
 #end
+<form name="frm" method="post"  enctype="multipart/form-data"  action="$link.setPage("Index.vm")">
 
 <table>
 <td valign="top">
 <div style="overflow:auto; height:auto; ">
         <table  bgcolor="$ui.tableColor" style="width:310px;">
+		#if($uList.size()!=0)
                 <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr>
 
                         #foreach($element in $uList)
@@ -69,6 +70,14 @@ $!data.getMessage()
                                 <td> $element </td>
                                   </tr>
                         #end
+			#if($uList.size()>5)
+                        <tr bgcolor="$ui.menuColor"><td align="right"><input type="submit" value="$brih_more" onclick="checkBlankTest()"></td><tr>
+                        #end
+
+		#else
+			<tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>Active User #if($lang== "hindi") of #end List &nbsp;&nbsp;(0)</b></td></tr>
+                #end
+
         </table>
 </div>
 ##iframe is use to show brihaspati Twitter
@@ -177,6 +186,8 @@ $!data.getMessage()
 	<input type="hidden" name="chatRoomName" value="">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="mode2" value="">
+	<input type="hidden" name="viewAll" value="">
+</from>
 </td>
 </tr>
 </table>
@@ -190,10 +201,22 @@ function checkOption(field)
 {
 	  window.location = field.value;
 }
+
+function refresh()
+{
+window.location = '$link.setPage("Index.vm")';
+refresh='true';
+}
 function doLoad()
 {
 setTimeout( "refresh()", 5*60*1000 );
 }
+function checkBlankTest()
+{
+        document.frm.viewAll.value="ViewAll";
+        frm.submit();
+}
+
 function popup(url,popupName)
         {
                 var w=650;
