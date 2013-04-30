@@ -30,7 +30,7 @@
 	echo "</p>";
 
 	echo "<p>";
-	echo form_label('Select accounts', 'accounts[]');
+	echo form_label('Select accounts - You can select Multiple account by pressing CTRL', 'accounts[]');
 	echo "<br />";
 	echo form_multiselect('accounts[]', $accounts, $accounts_active);
 	echo "</p>";

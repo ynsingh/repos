@@ -5,7 +5,7 @@ echo $this->session->userdata('user_name');
 echo "</p>";
 
 echo "<table border=0 cellpadding=5 class=\"simple-table manage-account-table\">";
-echo "<thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead>";
+echo "<thead><tr><th>Username</th><th>Email</th><th>Account Name</th><th>Role</th><th>Status</th><th></th></tr></thead>";
 echo "<tbody>";
 $odd_even = "odd";
 foreach ($users as $row)
@@ -21,6 +21,7 @@ foreach ($users as $row)
 		{
 			$username = isset($active_users['username']) ? $active_users['username'] : "-";
 			$email = isset($active_users['email']) ? $active_users['email'] : "-";
+			$accountname = isset($active_users['accounts']) ? $active_users['accounts'] : "-";
 			$role = isset($active_users['role']) ? $active_users['role'] : "-";
 			$status = isset($active_users['status']) ? $active_users['status'] : "-";
 		}
@@ -32,6 +33,7 @@ foreach ($users as $row)
 	echo "\">";
 	echo "<td>" . $username . "</td>";
 	echo "<td>" . $email . "</td>";
+	echo "<td>" . $accountname . "</td>";
 
 	echo "<td>";
 	switch ($role)
