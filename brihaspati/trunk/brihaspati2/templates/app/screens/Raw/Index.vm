@@ -89,7 +89,7 @@ $!data.getMessage()
 ##</div>
 ##iframe is use to show brihaspati poll
 #if($Uid.toString()!="1")
-<div style="position:auto; margin-top:-23px; height:230px; background:$ui.menuColor;" >
+<div style="position:auto; margin-top:3px; height:230px; background:$ui.menuColor;" >
 <iframe src="$ipadd/brihaspatiSpring/pollmodule/pollAttemptIndex.vm?user_Id=$UserId&f=$firstname&usrNme=$usrNme&instNme=$instN" style="height:230px; width:310px; border-radius:-5px;" scrolling="yes" frameborder="0"></iframe>
 </div><br>
 #end
