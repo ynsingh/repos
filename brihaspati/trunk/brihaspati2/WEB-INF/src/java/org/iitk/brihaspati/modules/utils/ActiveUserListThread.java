@@ -39,6 +39,7 @@ public class ActiveUserListThread implements Runnable {
         private boolean flag=false;
         private static Thread runner=null;
 	private Vector user_id=new Vector();
+	private java.util.Collection au=null;
 	private java.util.Hashtable ht1 = new java.util.Hashtable();	
         private static ActiveUserListThread activeuserlistThread=null;
 	
@@ -70,7 +71,16 @@ public class ActiveUserListThread implements Runnable {
 		}catch(Exception e){}
         }
 	
-
+	public int ActUsersize() throws Exception {
+                try {
+                        if(au != null)
+                                return au.size();
+                        else
+                                return 0;
+                } catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in get size of all userList !"+e.getMessage()); }
+                return 0;
+        }
+		
         /**
         * Start ActiveUserListThread Thread.
         */
@@ -111,7 +121,7 @@ public class ActiveUserListThread implements Runnable {
                                                 if(ht.containsKey(e.toString()))
                                                 	ht.remove(e.toString());
                                         }
-					java.util.Collection au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
+					au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
 					java.util.Iterator it=au.iterator();
         	               		while(it.hasNext()){
                 	               		String ss=it.next().toString();

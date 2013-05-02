@@ -89,6 +89,7 @@ public class Index extends SecureScreen{
                         String ipadd=sch+"://"+ip+":"+port;
                         context.put("ipadd",ipadd);
 			String viewAll=pp.getString("viewAll","");
+			context.put("viewAll",viewAll);
                         /*
                          * getting the current user 
 			 * & check current user is superAdmin,InsAdmin,Instructor,student or guest
@@ -99,6 +100,7 @@ public class Index extends SecureScreen{
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
+			context.put("au",ActiveUserListThread.getController().ActUsersize());
 			ActiveUserListThread.getController().activeUser(uid);		
 			Vector cId=new Vector();
 			if(uid==1){
