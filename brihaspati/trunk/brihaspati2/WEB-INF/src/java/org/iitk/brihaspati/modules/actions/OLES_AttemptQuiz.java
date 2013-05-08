@@ -912,7 +912,6 @@ public class OLES_AttemptQuiz extends SecureAction{
 			/**Get parameters from template through Parameter Parser
                          * get LangFile for multingual changes
 			 */
-			ErrorDumpUtil.ErrorLog("in evaluate method==");
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String cid=(String)data.getUser().getTemp("course_id");
 			String quizID=pp.getString("quizID","");
@@ -928,7 +927,6 @@ public class OLES_AttemptQuiz extends SecureAction{
 			boolean flag=true;
 			/**check for the quiz score.xml file exists or not*/
 			if(!scoreFile.exists()){
-					ErrorDumpUtil.ErrorLog("in evaluate method under condition scoreFile Exists ==");
 				data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
 				return;
 			}
@@ -961,12 +959,9 @@ public class OLES_AttemptQuiz extends SecureAction{
 					 */
 					QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
 					seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
-					ErrorDumpUtil.ErrorLog("in evaluate method seq=="+seq);
 					if(seq==-1){
-					ErrorDumpUtil.ErrorLog("under seq if");
 					data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));}
 					else{
-					ErrorDumpUtil.ErrorLog("under seq else");
 					data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");}
 				}
 				else{
@@ -990,7 +985,6 @@ public class OLES_AttemptQuiz extends SecureAction{
 			/**Get parameters from template through Parameter Parser
                          * get LangFile for multingual changes
                          */
-			ErrorDumpUtil.ErrorLog("testing evaluateQuestion method");
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String cid=(String)data.getUser().getTemp("course_id");
 			String quizID=pp.getString("quizID","");
@@ -1341,7 +1335,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 					/** This  part is responsible for sending mail to student to inform about the securitystring for Quiz
                           	 	*@see MailNotificationThread in util
                           	 	*/
-					/*String subject="", msgDear="",msgRegard="",message="";
+					String subject="", msgDear="",msgRegard="",message="";
                         		String srvrPort=TurbineServlet.getServerPort();
 					String email=UserUtil.getEmail(uids);
 					String Crsname=CourseUtil.getCourseName(courseID);
@@ -1365,7 +1359,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 					if(Mail_msg.equals("Success")){
                                        		Mail_msg=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
                                        		data.addMessage(Mail_msg);
-					}*/
+					}
 				}
 			}
 			else{
