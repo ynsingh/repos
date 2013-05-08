@@ -1,8 +1,9 @@
 #*
  * @(#) Evaluate.vm
-  * Copyright (c) 2010 DEI Agra.
+  * Copyright (c) 2010 DEI Agra, 2013 IITK.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
  * Contributors: Members of MHRD Project DEI Agra
 *#
 
@@ -95,7 +96,7 @@ $page.setBgColor("bgcolor")
 </table>	
 <table width="100%" >
 	##<tr><td>&nbsp;</td></tr>
-	<tr bgcolor="$ui.menuColor" >
+	#*<tr bgcolor="$ui.menuColor" >
 		<td >
 	        <b>$brih_usr $brih_name </b>
         </td>
@@ -111,11 +112,9 @@ $page.setBgColor("bgcolor")
 			#end			
 	        </SELECT>
 		</td>
-	</tr>
+	</tr>*#
 	<tr bgcolor="$ui.menuColor" >
-		<td>
-			<b> $brih_quiz $brih_name  </b>
-    	</td>
+		<td><b> $brih_quiz $brih_name  </b></td>
 		<td>
         	<SELECT name=quizlist>       		
 			<option value="1">Select Quiz</option>			
@@ -127,10 +126,19 @@ $page.setBgColor("bgcolor")
 					#end               		 		
 				#end			
     		</SELECT>
-		</td>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_GetStudent" value="$brih_get" onClick="checkfield(document.frm,this);"/></td>
 	</tr>
-	
-	<tr bgcolor="$ui.menuColor" >
+		#foreach($det in $details)
+		<tr>
+			<td>$det.studentLoginName</td>
+			#if($type=="result")
+			<td><a href=$link.setPage("call,OLES,Evaluate.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizID",$det.quizId).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("actionName","eventSubmit_Result") style=text-decoration:none>$brih_result</a></td>
+			#else
+			<td><a href=$link.setPage("call,OLES,Evaluate.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizId",$det.quizId).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("actionName","eventSubmit_Evaluate") style=text-decoration:none>$brih_evaluate</a></td>
+			#end
+		</tr>
+		#end	
+	#*<tr bgcolor="$ui.menuColor" >
 		<td colspan="2">
 		#if($type=="result")
 		<input type="button" class="button-ftextstyle" name="eventSubmit_Result" value="Result" onClick="checkField(document.frm,this);"/>
@@ -138,7 +146,7 @@ $page.setBgColor("bgcolor")
 		<input type="button" class="button-ftextstyle" name="eventSubmit_Evaluate" value="Evaluate" onClick="checkField(document.frm,this);"/>
 		#end 			
 		</td>
-	</tr>    		
+	</tr>*#    		
 	
 	
 	#if($longtype == false)
@@ -155,11 +163,13 @@ $page.setBgColor("bgcolor")
 	</tr>
 	#end
 	<input type="hidden" name="actionName">
-	<input type="hidden" name="quizID">
+	<input type="hidden" name="type" value="$!type">
+	<input type="hidden" name="count" value="$!tdcolor">
+	#*<input type="hidden" name="quizID">
 	<input type="hidden" name="studentLoginName">
 	<input type="hidden" name="quizName">
 	<input type="hidden" name="type" value="$!type">
-	<input type="hidden" name="count" value="$!tdcolor">
+	<input type="hidden" name="count" value="$!tdcolor">*#
 	</table>
   </div>
 </form>
@@ -232,4 +242,8 @@ $page.setBgColor("bgcolor")
 		}
 	}
 }
+ 	function checkfield(frm,field){
+	      	frm.actionName.value=field.name;
+               	frm.submit();
+	}
 </SCRIPT>

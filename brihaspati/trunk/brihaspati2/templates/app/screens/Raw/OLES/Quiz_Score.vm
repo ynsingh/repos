@@ -69,6 +69,7 @@ $page.setBgColor($ui.bgcolor)
 		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> <u>$brih_score $brih_card $brih_for $!quizName</i></b></font>
 		</td>
 	</tr>
+	#if($hbtn != "true")	
 	<tr bgcolor="$ui.menuColor">
 		<td width=20% colspan=2><b> Total Marks </td>
 		<td>$!maxMarks</td>
@@ -95,6 +96,7 @@ $page.setBgColor($ui.bgcolor)
         	<input type="button" class="button-ftextstyle" style="visibility:$setVisible" value="$brih_apply $brih_for $brih_reevaluation" name="eventSubmit_revaluate" onClick="setValue(document.frm,this);"/>
 	        </td>
 	</tr>
+	#end	
 </table>
 #else
 

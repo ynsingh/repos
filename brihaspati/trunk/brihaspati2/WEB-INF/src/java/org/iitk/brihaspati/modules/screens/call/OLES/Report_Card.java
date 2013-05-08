@@ -74,6 +74,7 @@ public class Report_Card extends SecureScreen{
 			User user=data.getUser();
 			String uname=user.getName();
 			context.put("userName",uname);
+			ErrorDumpUtil.ErrorLog("report card screen");
 
 			/**Get CourseId from temp*/
 			String courseid=(String)user.getTemp("course_id");
@@ -169,47 +170,74 @@ public class Report_Card extends SecureScreen{
 					context.put("usedTime",usedTime);
 				}
 			}
-
-			/**Check the student "uid.xml" exists or not */
-			if(!answerFile.exists()){
-				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
-				return;
-			}
-			else{
-
-				/**Get the Details from student uid.xml store in a vector*/
-				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
-				answerDetail = quizmetadata.getFinalAnswer();
-				/**If file is empty, set message else put in context for use in template*/
-				if(answerDetail==null || answerDetail.size()==0){
-					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
-					return;
-				}
-				else{
-					/**Get the AwardedMarks and MarksPerQuestion
-                                          *calculate the number of correct answer and percentage
-                                          */
-					context.put("answerDetail",answerDetail);
-					for(int i=0;i<answerDetail.size();i++){
-						int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());
-						int marksPerQues = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getMarksPerQuestion());
-						if(studentMark==marksPerQues){
-							noCorrectAns = noCorrectAns + 1;
-						}
-						studentMarks +=studentMark;
+			String hbtn="";
+                        String cid=(String)user.getTemp("course_id");
+                        String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+                        String scoreXml="score.xml";
+                        File scorefile=new File(examPath+"/"+scoreXml);
+                        QuizMetaDataXmlReader qdata=null;
+                        Vector scoreCollect=new Vector();
+                        String evaluate="";
+                        String qid="";
+                        if(scorefile.exists()){
+                                qdata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+                                scoreCollect=qdata.getFinalScore(uid);
+                                if(scoreCollect!=null && scoreCollect.size()!=0){
+                                        for(int i=0;i<scoreCollect.size();i++){
+                                                qid=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
+                                                if(quizID.equals(qid)){
+                                                evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
+                                                }
+                                        }
+                                }
+                        }
+                        if(evaluate!=null){
+                                if(evaluate.equals("complete")){
+					if(!answerFile.exists()){
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
+						return;
 					}
-					/**put in context for use in template*/
-					context.put("noCorrectAns",noCorrectAns);
-					context.put("studentMarks",studentMarks);
-					String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
-					context.put("percentageScore",percentageScore);
-					if(Integer.parseInt(percentageScore)>=passingPercentage)
-						finalResult="Pass";
-					else
-						finalResult="Fail";
-					context.put("finalResult",finalResult);
-				}				
-			}				
+					else{
+						/**Get the Details from student uid.xml store in a vector*/
+						QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
+						answerDetail = quizmetadata.getFinalAnswer();
+						/**If file is empty, set message else put in context for use in template*/
+						if(answerDetail==null || answerDetail.size()==0){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
+							return;
+						}
+						else{
+							/**Get the AwardedMarks and MarksPerQuestion
+                                          		*calculate the number of correct answer and percentage
+                                          		*/
+							context.put("answerDetail",answerDetail);
+							for(int i=0;i<answerDetail.size();i++){
+								int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());
+								int marksPerQues = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getMarksPerQuestion());
+								if(studentMark==marksPerQues){
+									noCorrectAns = noCorrectAns + 1;
+								}
+								studentMarks +=studentMark;
+							}
+							/**put in context for use in template*/
+							context.put("noCorrectAns",noCorrectAns);
+							context.put("studentMarks",studentMarks);
+							String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
+							context.put("percentageScore",percentageScore);
+							if(Integer.parseInt(percentageScore)>=passingPercentage)
+								finalResult="Pass";
+							else
+								finalResult="Fail";
+							context.put("finalResult",finalResult);
+						}				
+					}
+				}//if evaluate complete                                                                                 
+                        }//if evaluate null
+                        else{
+                                hbtn="true";
+                                data.setMessage(MultilingualUtil.ConvertedString("quiz_reportcard",file));
+                        }
+                                context.put("hbtn",hbtn);				
 			/**
                          *Time calculaion for how long user use this page.
                          */

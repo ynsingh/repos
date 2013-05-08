@@ -68,12 +68,13 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *@author  <a href="noopur.here@gmail.com">Nupur Dixit</a> 
+ *@author  <a href="jaivirpal@gmail.com">Jaivir Singh</a>02May2013 
  */
 
 public class Evaluate extends  SecureScreen{               
 	public void doBuildTemplate(RunData data,Context context){
 		ParameterParser pp=data.getParameters();
-		String LangFile=(String)data.getUser().getTemp("LangFile");	
+		String LangFile=(String)data.getUser().getTemp("LangFile");
 		try{		
 			User user=data.getUser();
 			String uname=user.getName();
@@ -150,12 +151,11 @@ public class Evaluate extends  SecureScreen{
 			// rohit end------------------------------------------
 
 
-			String createquiz=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);	
-			
-			int g_id=GroupUtil.getGID(courseid);
+			//String createquiz=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);	commented by Jaivir 
+			/*int g_id=GroupUtil.getGID(courseid);
 			Vector userList2=UserGroupRoleUtil.getUDetail(g_id,3);
-			context.put("userList2",userList2);
-			context.put("studentLoginName",studentLoginName);
+			context.put("userList2",userList2);*/
+			//context.put("studentLoginName",studentLoginName);
 		}
 		catch(Exception e) {
 			ErrorDumpUtil.ErrorLog("The exception in gradequiz class ::"+e);

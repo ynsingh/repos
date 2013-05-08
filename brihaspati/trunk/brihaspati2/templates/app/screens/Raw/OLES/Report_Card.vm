@@ -51,6 +51,7 @@ $page.setBgColor($ui.bgcolor)
 		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> <u>Report $brih_card $brih_for $!quizName</i></b></font>
 		</td>
 	</tr>
+	#if($hbtn != "true")
 	<tr bgcolor="$ui.menuColor">
 		<td width=20% colspan=2><b> Name : </td>
 		<td>$!fullName ($!userName)</td>
@@ -94,6 +95,7 @@ $page.setBgColor($ui.bgcolor)
         	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")> Go Back </a>
 	        </td>
 	</tr>
+	#end
 </table>
 
 <input type="hidden" name="actionName">

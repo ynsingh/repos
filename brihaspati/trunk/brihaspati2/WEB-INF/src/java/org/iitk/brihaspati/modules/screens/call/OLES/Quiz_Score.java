@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Quiz_Score.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra.
+ *  Copyright (c) 2010 MHRD, DEI Agra, 2013 IITK.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -57,6 +57,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class is used to show score of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
+ *   @author  <a href="jaivirpal@gmail.com">Jaivir Singh</a>26Apr2013
  */
 
 public class Quiz_Score extends SecureScreen{
@@ -88,7 +89,6 @@ public class Quiz_Score extends SecureScreen{
 				Vector<QuizFileEntry> quizDetail =new Vector<QuizFileEntry>();
 				
 				if(!quizFile.exists()){
-					
 				}
 				else{
 					String questionSettingPath=quizID+"_QuestionSetting.xml";
@@ -172,6 +172,31 @@ public class Quiz_Score extends SecureScreen{
 				//uid=Integer.toString(UserUtil.getUID(studentLoginName));	
 				uid=Integer.toString(UserUtil.getUID(uname));			
 			}
+			/////////////////////////////////////////////////////////////////////
+			String hbtn="";
+			String cid=(String)user.getTemp("course_id");
+			String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+                        String scoreXml="score.xml";
+			File scorefile=new File(examPath+"/"+scoreXml);
+			QuizMetaDataXmlReader qdata=null;
+			Vector scoreCollect=new Vector();
+			String evaluate="";
+			String qid="";
+			if(scorefile.exists()){
+                                qdata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+                                scoreCollect=qdata.getFinalScore(uid);
+                                if(scoreCollect!=null && scoreCollect.size()!=0){
+                                        for(int i=0;i<scoreCollect.size();i++){
+                                                qid=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
+						if(quizID.equals(qid)){
+                                                evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
+						}
+					}
+				}
+			}
+			if(evaluate!=null){
+				if(evaluate.equals("complete")){
+			/////////////////////////////////////////////
 			String quizAnswerFile = uid+".xml";						
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
 			if(!answerFile.exists()){
@@ -200,8 +225,15 @@ public class Quiz_Score extends SecureScreen{
 						finalResult="Fail";
 					context.put("finalResult",finalResult);
 				}			
-
+			}
+			}//if evaluate complete											
+			}//if evaluate null
+			else{
+				hbtn="true";
+				//data.setMessage("Quiz is not verified");
+				data.setMessage(MultilingualUtil.ConvertedString("quiznverified",file));
 			}											
+				context.put("hbtn",hbtn);
 			/**
                          *Time calculaion for how long user use this page.
                          */
