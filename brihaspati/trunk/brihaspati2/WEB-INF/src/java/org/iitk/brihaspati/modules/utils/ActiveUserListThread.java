@@ -30,9 +30,12 @@ package org.iitk.brihaspati.modules.utils;
  *  
  *  
  */
-import java.util.Vector;
-import org.iitk.brihaspati.modules.utils.ActiveUserListController;
 
+import java.util.Vector;
+
+/**
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ */
 
 public class ActiveUserListThread implements Runnable {
 
@@ -40,13 +43,14 @@ public class ActiveUserListThread implements Runnable {
         private static Thread runner=null;
 	private Vector user_id=new Vector();
 	private java.util.Collection au=null;
-	private java.util.Hashtable ht1 = new java.util.Hashtable();	
         private static ActiveUserListThread activeuserlistThread=null;
-	
+	private java.util.Hashtable userid_instid = new java.util.Hashtable();	
+	private ActiveUserListController controller=null;
+
         /**
          * Controller for this class to use as a singleton.
          */
-        public static ActiveUserListThread getController(){
+        public static ActiveUserListThread getController() {
                 if(activeuserlistThread==null) {
                         activeuserlistThread=new ActiveUserListThread();
 			activeuserlistThread.start();	
@@ -54,30 +58,37 @@ public class ActiveUserListThread implements Runnable {
                 return activeuserlistThread;
         }
 	
-        public void activeUser(int userid) throws Exception {
+	/**
+	 * This method is used to set curently login id in vector 
+	 * and put in a hash table with coresponding inst id .
+	 */	
+	
+        public void setActiveUserId(int userid) throws Exception {
 		try {
 			user_id.add(userid);
-                        if(ht1.containsKey(userid))
-                                ht1.remove(userid);
-                        Vector cId=new Vector();
-                        if(userid==1){
-                                cId.add("admin");
-                        } else if(userid==0){
-                                cId.add("guest");
-                        }else if((userid!=1) && (userid!=0)){
-				 cId=InstituteIdUtil.getAllInstId(userid);
+                        Vector cid=new Vector();
+                        if(userid==1) {
+                                cid.add("admin");
+                        } else if(userid==0) {
+                                cid.add("guest");
+                        }else if((userid !=1) && (userid !=0)) {
+				 cid=InstituteIdUtil.getAllInstId(userid);
 			}
-                        ht1.put(userid,cId);
-		}catch(Exception e){}
+                        userid_instid.put(userid,cid);
+		}catch(Exception e){ErrorDumpUtil.ErrorLog("Exception in setActiveUserId method in ActiveUserListThread class !"+e.getMessage());}
         }
 	
-	public int ActUsersize() throws Exception {
+	/**
+	 * This method is used to get size list of all login user
+	 */
+	
+	public int getActUsersListSize() throws Exception {
                 try {
                         if(au != null)
                                 return au.size();
                         else
                                 return 0;
-                } catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in get size of all userList !"+e.getMessage()); }
+                } catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in getActUsersListSize method in ActiveUserListThread class !"+e.getMessage()); }
                 return 0;
         }
 		
@@ -88,6 +99,7 @@ public class ActiveUserListThread implements Runnable {
 		if (runner == null) {
                         flag=true;
                         runner = new Thread(this);
+			controller=ActiveUserListController.getController();
                         runner.start();
                 }
         }
@@ -112,15 +124,26 @@ public class ActiveUserListThread implements Runnable {
 				runner.sleep(1000);
                                 runner.yield();
 				if(user_id.size()>0 ) {
-					Vector InsId=(Vector)ht1.remove((Integer)user_id.get(0));
+					/**
+					 * These lines of code are used to get all inst id according to user id 
+					 * and remove key and value from hashtable and vector .
+					 */
+					Vector InsId=(Vector)userid_instid.get((Integer)user_id.get(0));
                                         int userid=(Integer)(user_id.get(0));
                                         user_id.remove(0);
+					/**
+					 * These lines of code are used to remove temp vector according to inst id .
+					 */
+						
                                         for (int x = 0; x < InsId.size(); x++) {
-                                        	java.util.Hashtable ht=ActiveUserListController.getController().gettemp_Hashtable();
-                                                Object e=InsId.get(x);
-                                                if(ht.containsKey(e.toString()))
-                                                	ht.remove(e.toString());
+						Object e=InsId.get(x);
+                                                Vector tempvector=controller.getempVector(e.toString());
+                                                tempvector.clear();	
                                         }
+					/**
+					 * These lines of code get all ActiveUsers from the session in collection 
+					 * and get every user one by one and set them into a vector according to insituteid .
+					 */
 					au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
 					java.util.Iterator it=au.iterator();
         	               		while(it.hasNext()){
@@ -131,11 +154,11 @@ public class ActiveUserListThread implements Runnable {
 						if(userid ==1){
 							Object e=InsId.get(0);
                 	                        	String uIdTime=u+" "+"("+time+")";
-							Vector returnvector=ActiveUserListController.getController().getempVector(e.toString().trim());
+							Vector returnvector=controller.getempVector(e.toString().trim());
                                 	                returnvector.add(uIdTime);
                                         	}else if(userid ==0) {
 							Object e=InsId.get(0);
-							Vector returnvector=ActiveUserListController.getController().getempVector(e.toString().trim());
+							Vector returnvector=controller.getempVector(e.toString().trim());
 							if(u.equals("guest")){
 	        	                                        String uIdTime=u+" "+"("+time+")";
 								returnvector.add(uIdTime);
@@ -145,7 +168,7 @@ public class ActiveUserListThread implements Runnable {
 							Vector lId=InstituteIdUtil.getAllInstId(uid);
 							for (int x = 0; x < InsId.size(); x++) {
                 	               				Object e=InsId.get(x);
-								Vector returnvector=ActiveUserListController.getController().getempVector(e.toString().trim());
+								Vector returnvector=controller.getempVector(e.toString().trim());
 								if(lId.contains(e)) {
                                 		       			String uIdTime=u+" "+"("+time+")";
 									uIdTime=uIdTime.trim();
@@ -156,17 +179,21 @@ public class ActiveUserListThread implements Runnable {
 							}
 						}
 					}
-					
+					/**
+					 * These lines of code are used to set a single copy in final hash table .
+					 */
 					try {
 						for (int x = 0; x < InsId.size(); x++) {
 							Object e=InsId.get(x);
-							Vector returnvector=ActiveUserListController.getController().getempVector(e.toString().trim());
-							java.util.Hashtable ht=ActiveUserListController.getController().getHashtable();
-							ht.put(e.toString().trim(),returnvector);
+							Vector returnvector=controller.getempVector(e.toString().trim());
+							returnvector = new Vector<String>(new java.util.LinkedHashSet<String>(returnvector));
+							java.util.Hashtable final_userlist=controller.getHashtable();
+							final_userlist.put(e.toString().trim(),returnvector);
 						}
-					}catch(Exception e){ ErrorDumpUtil.ErrorLog("Exception in thread class 2"+e.getMessage()); }
-			}
-		}catch(Exception es){ ErrorDumpUtil.ErrorLog("Exception thread "+es.getMessage()); }
+					}catch(Exception e){ ErrorDumpUtil.ErrorLog("Exception in ActiveUserListThread class line no 168 "+e.getMessage()); }
+				}else
+					userid_instid.clear();
+			}catch(Exception es){ ErrorDumpUtil.ErrorLog("Exception in ActiveUserListThread class  "+es.getMessage()); }
          	}
         }
 }

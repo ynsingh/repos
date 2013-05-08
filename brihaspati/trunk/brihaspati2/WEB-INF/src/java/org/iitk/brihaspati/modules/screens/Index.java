@@ -95,13 +95,12 @@ public class Index extends SecureScreen{
 			 * & check current user is superAdmin,InsAdmin,Instructor,student or guest
                          */
 			//CourseTimeUtil.getCalculation();
-			Vector instNameList = new Vector();
 			String instName = "";
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
-			context.put("au",ActiveUserListThread.getController().ActUsersize());
-			ActiveUserListThread.getController().activeUser(uid);		
+			context.put("au",ActiveUserListThread.getController().getActUsersListSize());
+			ActiveUserListThread.getController().setActiveUserId(uid);		
 			Vector cId=new Vector();
 			if(uid==1){
                                 cId.add("admin");
@@ -125,6 +124,7 @@ public class Index extends SecureScreen{
 				 * Adding unique name of the institute according to institute id in a Vector.
 				 * Putting the vector of institute name in context.
 				**/
+				Vector instNameList = new Vector();
 				cId=(InstituteIdUtil.getAllInstId(uid));
 				for(int inst = 0; inst < cId.size(); inst ++){
 					instName = InstituteIdUtil.getIstName(Integer.parseInt(cId.get(inst).toString()));

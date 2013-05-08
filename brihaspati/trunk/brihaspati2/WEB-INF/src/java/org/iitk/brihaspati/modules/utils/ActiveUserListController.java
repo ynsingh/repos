@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  *  @(#) ActiveUserListController.java
- *  Copyright (c) 2010, 2012 ETRG,IIT Kanpur 
+ *  Copyright (c) 2013, ETRG,IIT Kanpur 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -31,68 +31,82 @@ package org.iitk.brihaspati.modules.utils;
   *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  
  */
+
 import java.util.Vector;
 import java.util.Hashtable;
 
+/**
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ */
+
 public class ActiveUserListController
 {
-	private Vector return_v=new Vector();
 	private static ActiveUserListController aulc=null;
 	private java.util.Hashtable ht = new java.util.Hashtable();
-	private java.util.Hashtable temp = new java.util.Hashtable();
-		
+	private java.util.Hashtable temphashtable = new java.util.Hashtable();
+
+	/**
+         * Controller for this class to use as a singleton.
+         */		
 	public static ActiveUserListController getController(){
                 if (aulc==null){
                         aulc=new ActiveUserListController();
                 }
                 return aulc;
         }
-	/**
-	 *
-	 */
-	protected synchronized java.util.Hashtable gettemp_Hashtable(){
-                return temp;
-        }	
 
-        public synchronized Vector getempVector(String insid)
+	/**
+	 * This method is used to assign blank vector according to inst id    
+	 * and clear vector after using to ActiveUserListThread class .
+	 */
+        protected synchronized Vector getempVector(String insid)
         {
-                if(!(temp.containsKey(insid))) {
-                        temp.put(insid,new Vector());
+                if(!(temphashtable.containsKey(insid.trim()))) {
+                        temphashtable.put(insid,new Vector());
                 }
-                return (Vector)temp.get(insid);
+                return (Vector)temphashtable.get(insid);
         }
 		
+	/**
+         * This method is used to assign blank vector according to inst id    
+	 * and return a vector(all final user list) 
+         */	
+	private synchronized Vector getOriginalVector(String insid)
+        {
+			
+                if(!(ht.containsKey(insid.trim()))) {
+                        ht.put(insid,new Vector());
+                }
+                return (Vector)ht.get(insid);
+        }
+	
+	/**
+	 * This method is used to return hash table .
+	 **/	
 	protected synchronized java.util.Hashtable getHashtable(){
                 return ht;
         }
-		
+	
+	/**
+	 * This method is used to get all user list according to inst id 
+	 */
 	public synchronized Vector getUserListVector(Vector insid,int mode)
         {
-		return_v.clear();
-		try {
+			
+		Vector return_v=new Vector();
+		try{
 			for(int i=0;i<insid.size();i++) {
 				Object e=insid.get(i);
-				if(ht.containsKey(e.toString().trim())){
-					Vector v=(Vector)ht.get(e.toString().trim());
-					for(int j=0;j<v.size();j++) {			
-						String u=v.get(j).toString().trim();
-						if(!return_v.contains(u)){
-							if((mode==0)){
-								return_v.add(u);
-								if(return_v.size()==5)
-									break;
-							}
-							else if(mode==1){
-								return_v.add(u);
-							}
-						}
-					} v.clear();
+				return_v.addAll(return_v.size(),getOriginalVector(e.toString().trim()));
+				if(mode==0) {
+					if(return_v.size()>5){
+						return_v.subList(5,return_v.size()).clear();
+						break;
+					}
 				}
-				if( (return_v.size()==5) && (mode==0))
-				break;
 			}
-		}catch(Exception e){ ErrorDumpUtil.ErrorLog(" Exception in ActiveUserListController class ");}
+			return_v = new Vector<String>(new java.util.LinkedHashSet<String>(return_v));
+		}catch(Exception e){ErrorDumpUtil.ErrorLog("Error in Controller----"+e);}
 		return return_v;
         }
-		
 }
