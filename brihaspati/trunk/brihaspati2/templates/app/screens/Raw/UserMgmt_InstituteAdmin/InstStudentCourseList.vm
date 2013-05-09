@@ -104,9 +104,8 @@ $page.setBgColor($ui.bgcolor)
 	#end
 		#foreach($i in $student)
 			<tr bgcolor="$ui.menuColor">
-				<td colspan=2><b>$brih_listCourse</b></td> #if($mode != "instlist")<td ><b>$brih_program</b></td>#else <td colspan=4> </td> #end
+				<td><b>$brih_listCourse</b></td> #if($mode != "instlist")<td colspan=2><b>$brih_program</b></td>#else <td colspan=4> </td> #end
 			</tr>
-					#set($count="")
 					#set($temp=0)
 					#set($counter=0)
                                         #set($num=0)
@@ -117,49 +116,43 @@ $page.setBgColor($ui.bgcolor)
 						#else
 						<tr bgcolor="$ui.tableColor">
 						#end
-							#if($mode != "instlist")
-							<td width="5%">
-								##set($userAndGroup = "$groupname:$!i.UserName" )
-								<INPUT TYPE="CHECKBOX" NAME="$userAndGroup" onClick="addUpdateList(this,document.frm,$num);">
-							</td>
-							#end
 							<td id="grp$num">$groupname</td>
 							#foreach($st in $UDetail)
         	                                                #if($groupname==$st.grpname)
-        	                                                	 <td><select name="prg$num" id="pg$num" class="drop" size=1>
+        	                                                	 <td colspan=2><select name="prg$num" id="pg$num" class="drop" size=1 style="width:130px"; onChange="changePrg(document.frm,this,$num);">
                                                                                 <option value="$st.pgcode">$st.pgname </option>
 										#foreach($instplist in $rlprglist)
 	                                                                                #if($st.pgname!=$instplist.getPrgName())
 		                                                                                <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 		                                                                        #end
 		                                                                #end
-		                                                        </select></td>
+		                                                        </select>&nbsp;&nbsp;
 									#set($temp=$temp+1)
 								#else
 	                                                                #set($counter=$counter+1)
                                         	                #end
                                         	                #if($counter==$UDetail.size()&&($mode != "instlist"))
-                                        	                	<td><select name="prg$num" id="pg$num" class="drop" size=1>
+                                        	                	<td colspan=2><select name="prg$num" id="pg$num" class="drop" size=1 style="width:130px"; onChange="changePrg(document.frm,this,$num);">
                                                                                 <option value="Select Program">$brih_select $brih_program</option>
 										#foreach($instplist in $rlprglist)
 											<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 										#end
-									</select></td>
+									</select>&nbsp;&nbsp;
 								#end
                                                         #end
                                                         #if(($temp==0)&&($UDetail.size()==0)&&($mode != "instlist"))
-                                                        	<td><select name="prg$num" id="pg$num" class="drop" size=1>
+                                                        	<td colspan=2><select name="prg$num" id="pg$num" class="drop" size=1 style="width:130px"; onChange="changePrg(document.frm,this,$num);">
 	                                                                <option value="Select Program">$brih_select $brih_program</option>
 									#foreach($instplist in $rlprglist)
 										<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 									#end
-								</select></td>
+								</select>&nbsp;&nbsp;
 							#end
-						</tr>
-						#set($count="$count$userAndGroup^")
+							<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").setAction("InstituteRemoveStudentCourse").addPathInfo("actionName","eventSubmit_doRemove").addPathInfo("courseid",$groupname).addPathInfo("username",$username).addPathInfo("mode",$mode).addPathInfo("count","2") style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this Course for student.')">$brih_remove</a>
+                                                </td>
+                                                </tr>
 						#set($temp=0)
 						#set($counter=0)
-					<INPUT TYPE="hidden" NAME="counter" VALUE="$num">
 					#end
 					##</table>
 				</td>
@@ -167,9 +160,7 @@ $page.setBgColor($ui.bgcolor)
 			#if($mode != "instlist")
 			<tr>
 				<td>
-					<INPUT TYPE="SUBMIT" class="button-ftextstyle" NAME=eventSubmit_doRemove VALUE="$brih_remove" onclick="javascript:return confirm('Do you want to delete this Course for student.')"></td>
-				<td>    <INPUT TYPE="submit" class="button-ftextstyle" NAME=eventSubmit_doUpdate VALUE="$brih_update"></td>
-					<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
+					<INPUT TYPE="submit" class="button-ftextstyle" NAME=eventSubmit_doUpdate VALUE="$brih_update"></td>
 			</tr>
 			#end
 		#end
@@ -215,57 +206,36 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 </table>
 
-<INPUT TYPE="hidden" NAME=deleteFileNames VALUE="">
+<INPUT TYPE="hidden" NAME=updateFileNames VALUE="">
 </FORM>
 
 <SCRIPT LANGUAGE="javascript">
-function addDeleteList(field,frm)
-{
-if(field.checked)
-	{
-	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
-	}
-else
-        {
-        var rmFile,index,actualString,preString,postString;
-        actualString=frm.deleteFileNames.value;
-        index=actualString.indexOf(field.name+"^",0);
-        preString=actualString.substring(0,index);
-        postString=actualString.substring(index+field.name.length+1);
-	actualString=preString+postString;
-	
-	frm.deleteFileNames.value=actualString;
-	}
-}
 function ChkField(frm,field)
 {
 	frm.actionName.value=field.name;
         frm.submit();
 }
-function addUpdateList(field,frm,count)
+function changePrg(frm,field,count)
 {
-        var grpid = document.getElementById("grp"+count).textContent;
-        //alert("inside script document.frm.prg1.value\n"+grpid);
+	var grpid = document.getElementById("grp"+count).textContent;
         var pgid = document.getElementById("pg"+count);
         var pgval = pgid.value;
-        //alert("inside script document.frm.rollno1.value\n"+pgval);
         var tmp=grpid+":"+pgval;
-
-        if(field.checked){
-               frm.deleteFileNames.value=frm.deleteFileNames.value+tmp+"^";
-               //alert("check field ---"+frm.deleteFileNames.value);
+        var index,actualString,preString,postString,newIndex;
+        actualString=frm.updateFileNames.value;
+        index=actualString.indexOf(grpid+":",0);
+        if(index!=-1)
+        {
+                newIndex=actualString.indexOf("^",index);
+                preString=actualString.substring(0,index);
+                postString=actualString.substring(newIndex+1);
+                actualString=preString+postString;
+                frm.updateFileNames.value=actualString+tmp+"^";
+        }
+        else
+        {
+                frm.updateFileNames.value=frm.updateFileNames.value+tmp+"^";
 
         }
-        else{
-                var rmFile,index,actualString,preString,postString;
-                actualString=frm.deleteFileNames.value;
-                //index=actualString.indexOf(field.name+"^",0);
-                index=actualString.indexOf(tmp+"^",0);
-                preString=actualString.substring(0,index);
-                //postString=actualString.substring(index+field.name.length+1);
-                postString=actualString.substring(index+tmp.length+1);
-                actualString=preString+postString;
-                frm.deleteFileNames.value=actualString;
-                }
 }
 </SCRIPT>																			

@@ -37,7 +37,8 @@ function trim(s){
 function validateEmail(fld) {
         var error="";
         var tfld = trim(fld.value);                        // value of field with whitespace trimmed off
-        var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+        //var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+        var emailFilter = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
         if (fld.value == "")
         {

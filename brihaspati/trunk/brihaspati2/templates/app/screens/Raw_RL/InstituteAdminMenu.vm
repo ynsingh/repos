@@ -34,8 +34,7 @@
    </tr>
    <tr align="right">
       <td align="right" class="dt">
-		 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_usr</a>
-    
+		<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_mgmt $brih_usr</a>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor" align="right">
