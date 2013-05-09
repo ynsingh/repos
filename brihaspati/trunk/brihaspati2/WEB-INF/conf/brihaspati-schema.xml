@@ -153,6 +153,7 @@
 <table name="SYSTEM_CLEANTIME" idMethod="idbroker">
 	<column name="ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
 	<column name="CLEAN_DATE" type="DATE"/>
+	<column name="LOAD_FLAG" required="true" type="INTEGER" default="0"/>
 </table>
 <table name="TASK" idMethod="idbroker">
 	<column name="TASK_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>

@@ -49,6 +49,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
+import org.iitk.brihaspati.om.SystemCleantimePeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -57,9 +58,9 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
 //import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.iitk.brihaspati.modules.utils.QuotationSort;
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -89,8 +90,13 @@ public class myLogin extends VelocityAction{
 	
 	public void doPerform( RunData data, Context context )
 	{
+		//Start time
+		long startTime = System.nanoTime();
+		int load_flag =0;
+
 		System.gc();
 		Criteria crit = null;
+		Criteria criteria =null;
 		String userLanguage = "";
 		String a_key = "";	
 		String str;	
@@ -235,5 +241,35 @@ public class myLogin extends VelocityAction{
                                 data.setScreenTemplate("BrihaspatiLogin.vm");
 			}
        		}//end else of password check
+		
+		//Calculating time taken to execute the above code
+		try
+		{
+			long estimatedTime = System.nanoTime() - startTime;
+			double elapsedTime = (double)estimatedTime / 60000000000.0;
+			if(elapsedTime < 1 || elapsedTime == 1)
+			{
+				load_flag=0;	
+			}
+
+			if(elapsedTime > 1 && elapsedTime < 2)
+			{
+				load_flag=1;
+			}
+	
+			if(elapsedTime > 2 || elapsedTime == 2)
+			{
+				load_flag=2;
+			}
+
+			criteria = new Criteria();
+                        criteria.add(SystemCleantimePeer.ID,"1");
+                        criteria.add(SystemCleantimePeer.LOAD_FLAG,load_flag);
+	                SystemCleantimePeer.doUpdate(criteria);
+		}
+		catch(Exception ex)
+		{
+			ErrorDumpUtil.ErrorLog("An exception occurred while calculating loadfactor: myLogin class "+ex);
+		}	
 	}
 }

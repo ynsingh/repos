@@ -50,6 +50,29 @@ $page.setBgColor($ui.bgcolor)
 <tr> ## tr1
 	<td valign="top" bgcolor="$ui.tableColor" width="65%"> ## TD1 
 		<table align="left" width="100%" class="login">
+		<tr align="right">
+			 #if($!load_flag == 0)
+			 	<td colspan=4>
+				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/green.gif")" border="0"><br>
+				$brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
+                                $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"></td>
+				
+                        #end
+                        #if($!load_flag == 1)
+                        	<td colspan=4>
+				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
+                                $brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/orange.jpg")" border="0"><br>
+                                $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"></td>
+				
+                        #end
+			#if($!load_flag == 2) 
+				<td colspan=4>
+				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
+                                $brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
+                                $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/red.gif")" border="0"></td>
+				
+                        #end
+		</tr>
 		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 		<tr align="right">
         	<td colspan="3">
@@ -125,10 +148,29 @@ $page.setBgColor($ui.bgcolor)
 		<input type=hidden name="flag" value="$flag">
 		<tr align="right"><td colspan=4 align="right">$brih_guestMsg2</td></tr>
 </form>
-<tr align="right"><td colspan=4 align="right"> 
-	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+<tr align="right"><td colspan=4 align="right">
+	#if($!load_flag == 0)
+		<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+&nbsp;&nbsp;
+	#end
+<br>	 
+	#*<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+	*#
+	#if($!load_flag == 1)
+		 <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")'} else {void('')};"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")'} else {void('')};"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+		<br>
+	#end
+	#if($!load_flag == 2)
+		 <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+		
+		<br>
+	#end
 	<font face="$ui.sansSerifFonts">
 		<br> $brih_signin -
 	</font>
@@ -294,7 +336,8 @@ $page.setBgColor($ui.bgcolor)
 		{
 			if(frm.password.value!="")
 			{
-				frm.submit();  
+				//frm.submit();  
+				 loadFlag(frm,field);
 			}
 	        	else
 	        	{
@@ -329,5 +372,43 @@ var x=document.getElementById("language");
 //x.options[x.selectedIndex].text=str;
 window.location=x.value;
 }
+
+$(function(){
+     $('#scroll').slimScroll({
+         height: '200px',
+         disableFadeOut: true
+          });
+      });
+
+function loadFlag(frm,field)
+{
+        var loadFlag = $!load_flag;
+
+	if(frm.username.value == "admin")
+        {
+                frm.submit();
+        }
+	else
+	{
+        	if(loadFlag == "0")
+        	{
+                	frm.submit();
+        	}
+
+        	if(loadFlag == "1")
+        	{
+                	var r=confirm("Traffic on site is high, it may take longer to login. If you still want to continue then click OK.");
+                	if (r)
+                	{
+                        	frm.submit();
+                	}
+        	}
+        	if(loadFlag == "2")
+        	{
+                	alert("High traffic on site. Please try again later or wait for the light on login page to be green.");
+        	}
+	}
+}
+
                          
 </SCRIPT>

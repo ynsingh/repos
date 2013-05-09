@@ -63,6 +63,8 @@ import java.text.SimpleDateFormat;
 import java.text.Format;
 import org.iitk.brihaspati.om.Lecture;
 import org.iitk.brihaspati.om.LecturePeer;
+import org.iitk.brihaspati.om.SystemCleantime;
+import org.iitk.brihaspati.om.SystemCleantimePeer;
 import java.text.DateFormat;
 import java .util.GregorianCalendar;
 import java .util.Calendar;
@@ -87,8 +89,11 @@ public class BrihaspatiLogin extends VelocityScreen
      */
     public void doBuildTemplate( RunData data, Context context )
     {
+		int load_flag =0;
 		boolean flag = false;
 		System.gc();
+		Criteria crit;
+		List list = null;
 /*
 		String message=DEIRemoteAccessAPI.getStudentInfo("nksinghiitk@gmail.com", "iitk_brihaspati");
                 ErrorDumpUtil.ErrorLog("Message comes from dei server  =="+message);
@@ -159,6 +164,15 @@ String hdir=System.getProperty("user.home");
 			String quotation = (QuotationController.getController()).getQuotation();
 			context.put("quotation",quotation);
 
+			/**
+ 			 * Get load_flag value from database
+ 			 * and context put the same on template.
+ 			 */
+			crit = new Criteria();
+			crit.add(SystemCleantimePeer.ID,"1");
+			list = SystemCleantimePeer.doSelect(crit);			
+			load_flag = ((SystemCleantime)list.get(0)).getLoadFlag();
+			context.put("load_flag", load_flag);
 		}
                 catch(Exception e)
 		{

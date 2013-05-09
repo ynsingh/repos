@@ -40,7 +40,8 @@ $!msg
                 <img src="$content.getURI("/images/newspaper.gif")"><u><b>$brih_newsHeadline</b></u>
         	</td></tr> ## 6, 5
         	<tr><td> ## 5, 6
-		<marquee scrollamount="1" direction="up" loop="2" behaviour="slide">
+		##<marquee scrollamount="1" direction="up" loop="2" behaviour="slide">
+		<marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide"
 		#if($status!="empty")
                 #set($count=1)
                 #foreach($news in $detail)
@@ -112,6 +113,26 @@ $!msg
 	</td> ## 3
 	<td valign="top" class="login"> ## 3
 	<table align="left"> ## 4
+	<tr>
+
+                        #if($!load_flag == 0)
+                                <td colspan=4><img src="$content.getURI("/images/green.gif")" border="0">&nbsp;$brih_trafficMessage1<br>
+                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage2<br>
+                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage3</td>
+                        #end
+                                        
+                        #if($!load_flag == 1)
+                                <td colspan=4><img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage1<br>
+                                <img src="$content.getURI("/images/orange.jpg")" border="0">&nbsp;$brih_trafficMessage2<br>
+                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage3</td>
+                        #end
+
+			#if($!load_flag == 2)
+				<td colspan=4><img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage1<br>
+                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage2<br>
+                                <img src="$content.getURI("/images/red.gif")" border="0">&nbsp;$brih_trafficMessage3</td>           
+                        #end
+	</tr>
         <tr><td colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 
 	<tr> ## 5
@@ -332,10 +353,26 @@ $!msg
 <br>$brih_signin:
 </font>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+#if($!load_flag == 0)
+	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
 &nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
 <br>
+#end
+
+#if($!load_flag == 1)
+	<a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")'} else {void('')};"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+&nbsp;&nbsp;
+        <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")'} else {void('')};"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+<br>
+#end
+
+#if($!load_flag == 2)
+	 <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+&nbsp;&nbsp;
+        <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+<br>
+#end
 </td></tr>
 
 <table>
@@ -416,7 +453,8 @@ $!msg
 		{
 			if(frm.password.value!="")
 			{
-				frm.submit();  
+				loadFlag(frm,field);
+				//frm.submit();  
 			}
 	        	else
 	        	{
@@ -458,5 +496,34 @@ $(function(){
           });
       });
 
-                         
+function loadFlag(frm,field)
+{
+        var loadFlag = $!load_flag;
+
+	if(frm.username.value == "admin")
+	{
+		frm.submit();
+	}
+	else
+	{
+        	if(loadFlag == "0")
+        	{
+                	frm.submit();
+        	}
+
+        	if(loadFlag == "1")
+        	{
+                	var r=confirm("Traffic on site is high, it may take longer to login. If you still want to continue then click OK.");
+                	if (r)
+                	{
+                        	frm.submit();
+                	}
+        	}
+        	if(loadFlag == "2")
+        	{
+                	alert("High traffic on site. Please try again later or wait for the light on login page to be green.");
+        	}
+	}
+}
+         
 </SCRIPT>

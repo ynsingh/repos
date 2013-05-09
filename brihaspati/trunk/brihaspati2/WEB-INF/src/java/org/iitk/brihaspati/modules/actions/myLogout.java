@@ -51,6 +51,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati class
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
+import org.iitk.brihaspati.om.SystemCleantimePeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
@@ -78,6 +79,8 @@ public class myLogout extends VelocityAction{
     	{
 		try
 		{
+			Criteria criteria;
+			int load_flag = 0;
 		/*
 		 * Check user exist in this session or not
                  */
@@ -146,6 +149,12 @@ public class myLogout extends VelocityAction{
 		        	        data.setScreenTemplate("Login.vm");
 		               		data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
                 	}
+
+			//Updating load factor in database
+			criteria = new Criteria();
+                        criteria.add(SystemCleantimePeer.ID,"1");
+                        criteria.add(SystemCleantimePeer.LOAD_FLAG,load_flag);
+                        SystemCleantimePeer.doUpdate(criteria);
 		}
 		catch ( Exception e ){
 			ErrorDumpUtil.ErrorLog("The Exception in logout action is "+e);

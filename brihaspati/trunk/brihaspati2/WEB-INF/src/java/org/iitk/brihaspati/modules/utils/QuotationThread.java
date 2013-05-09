@@ -32,6 +32,7 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 import java.util.Hashtable;
+import java.io.File;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
@@ -82,9 +83,15 @@ public class QuotationThread implements Runnable {
                         while(flag){
 				String filepath=TurbineServlet.getRealPath("/Quotation");
 				filepath=filepath+"/Quotation.xml";
-                        	quot = XMLWriter_Quotation.randomSelect(filepath);
 				Hashtable ht = QuotationController.getController().getHashtable();
-				ht.put("tmp_quot", quot);
+                        	if(new File(filepath).exists())
+				{
+					quot = XMLWriter_Quotation.randomSelect(filepath);
+					if(!quot.equals(null))
+					{
+						ht.put("tmp_quot", quot);
+					}
+				}
 	                        stop();
                         }
                 }
