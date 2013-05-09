@@ -47,7 +47,7 @@ $!data.getMessage()
 #if($mode == "QuizDetail")
 	<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")>
 #else	
-	<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Oles_Gen.vm").setAction("OLES_Quiz")>
+	<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Create_Quiz.vm").setAction("OLES_Quiz").addPathInfo("count","2").addPathInfo("type","selectQuiz")>
 #end
 	
 
@@ -178,12 +178,12 @@ $!data.getMessage()
 			if(btype){
 				if((frm.maxMarks.value>=10) && (frm.maxMarks.value<=100)){
 					if((frm.maxTime.value>=5) && (frm.maxTime.value<=120)){
-						if((frm.numberQuestion.value>=5) && (frm.numberQuestion.value<=20)){
+						if((frm.numberQuestion.value>=5) && (frm.numberQuestion.value<=50)){
 				                       	frm.actionName.value=field.name;
 			                        	frm.submit();
 				            	}
 				                else{
-					                alert("The number of questions in a quiz should be between 5 to 20");
+					                alert("The number of questions in a quiz should be between 5 to 50");
 				            	}
 			        	}
 					else{

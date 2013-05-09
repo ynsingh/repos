@@ -1594,4 +1594,34 @@ public class QuizMetaDataXmlReader{
 		}
 		return vt;
 	}
+	/**
+         * This method gets the practicequiz detail  
+         * @return vector
+         * @exception generic Exception
+         * @author Manorama Pal
+         */
+	public Vector getAttemptPracticeQuizDetail(){
+                Vector collect=new Vector();
+                try{
+                        XmlData files[]=xr.getElements("Quiz");
+                        if(files!=null){
+                                Attributes ats;
+                                String studentid,noofAttempt;
+                                for(int i=0;i<files.length;i++){
+                                        QuizFileEntry fileEntry=new QuizFileEntry();
+                                        ats=files[i].getAttributes();
+                                        studentid=ats.getValue("StudentID");
+                                        noofAttempt=ats.getValue("NoofAttempt");
+                                        fileEntry.setStudentID(studentid);
+                                        fileEntry.setNoofAttempt(noofAttempt);
+                                        collect.add(fileEntry);
+                                }
+
+                        }
+                }
+                catch(Exception ex){
+                        ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getAttemptPracticeQuizDetail !! "+ex);
+                }
+                return collect;
+	}	
 }

@@ -72,33 +72,39 @@ $!data.getMessage()
 			#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation &nbsp;&nbsp;</I></b></a></td>
 			#if($tdcolor != "5")
 			<td>
-            #elseif($tdcolor == "5")
-            	<td bgcolor="#AFDCEC">
-            #end
-			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+            		#elseif($tdcolor == "5")
+            		<td bgcolor="#AFDCEC">
+            		#end
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result &nbsp;&nbsp;</I></b></a></td>
 			#if($tdcolor != "6")
-				<td>
+			<td>
 			 #elseif($tdcolor == "6")
-            	<td bgcolor="#AFDCEC>
-            #end
-           	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security</I></b></a></td>
-           	#if($tdcolor != "7")
-				<td>
+            		<td bgcolor="#AFDCEC">
+            		#end
+           		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security").addPathInfo("counttemp","1") style=text-decoration:none>$brith_security &nbsp;&nbsp;</I></b></a></td>
+           		#if($tdcolor != "7")
+			<td>
 			 #elseif($tdcolor == "7")
-            	<td bgcolor="#AFDCEC>
-            #end
-           	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
+            		<td bgcolor="#AFDCEC">
+            		#end
+           		<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation &nbsp;&nbsp;</I></b></a></td>
+           		#if($tdcolor != "8")
+			<td>
+			 #elseif($tdcolor == "8")
+            		<td bgcolor="#AFDCEC">
+            		#end
+           		<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice$brih_quiz $brih_qinfo</I></b></a></td>
 		</tr>
-		<tr bgcolor="$ui.menuColor"><td colspan="7">
+		<tr bgcolor="$ui.menuColor"><td colspan="8">
 		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_new $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_queBank #end </a></b>
 		</td></tr>
 		#if( $total_size!=0 )
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="8"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
 		#else
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_in $brih_question $brih_arenotexists #else $brih_question $brih_arenotexists $brih_in $brih_queBank #end </td></tr>
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="8"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_in $brih_question $brih_arenotexists #else $brih_question $brih_arenotexists $brih_in $brih_queBank #end </td></tr>
 		#end
 </table>
 <table width="100%" bgcolor="$ui.tableColor">

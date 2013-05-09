@@ -522,7 +522,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			//=======freshQuiz session variable is set to yes so that when same is tried again its previous answers are cleared
 			//and new answers are saved
 			user.setTemp("freshQuiz","yes");
-			data.setScreenTemplate("call,OLES,Quiz_Score.vm");						
+			data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+			AttemptedpracticeQuizReport(data,context);						
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:savePracticeQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -1287,8 +1288,11 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ParameterParser pp=data.getParameters();
 			String quizID=pp.getString("quizID",""); 
 			String quizName=pp.getString("quizName","");
-			pp.setString("flag","generate");
-			
+			//pp.setString("flag","generate");
+			pp.setString("flag1","generate");
+                        pp.setString("flag","security");
+                        pp.setString("counttemp","1");
+			String sendMail = pp.getString("sendMail","");	
 			int g_id=GroupUtil.getGID(courseID);
 			Vector userList=new Vector();
 			Vector collectSecurity=new Vector();
@@ -1335,30 +1339,32 @@ public class OLES_AttemptQuiz extends SecureAction{
 					/** This  part is responsible for sending mail to student to inform about the securitystring for Quiz
                           	 	*@see MailNotificationThread in util
                           	 	*/
-					String subject="", msgDear="",msgRegard="",message="";
-                        		String srvrPort=TurbineServlet.getServerPort();
-					String email=UserUtil.getEmail(uids);
-					String Crsname=CourseUtil.getCourseName(courseID);
-					Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
-					if(srvrPort.equals("8080")){
-						subject = MailNotification.subjectFormate("studentsecuritystring",quizName, pr );
-						msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
-                        			msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
-						message = MailNotification.getQuizMessage("studentsecuritystring","","","",quizName,securityID,Crsname,pr);
-					}
-					else{
-						subject = MailNotification.subjectFormate("studentsecuritystringhttps",quizName, pr );
-						msgDear = pr.getProperty("brihaspati.Mailnotification.newUserhttps.msgDear");
-                        			msgRegard=pr.getProperty("brihaspati.Mailnotification.newUserhttps.msgRegard");
-						message = MailNotification.getQuizMessage("studentsecuritystringhttps","","","",quizName,securityID,Crsname,pr);
-					}
-                        		//String msgRegard=pr.getProperty("brihaspati.Mailnotification."+value+".msgRegard");
-					msgRegard = MailNotification.replaceServerPort(msgRegard);
-					msgDear = MailNotification.getMessage_new(msgDear, "","", "",student);
-					String Mail_msg =MailNotificationThread.getController().set_Message(message,msgDear,msgRegard,"",email,subject,"",LangFile);
-					if(Mail_msg.equals("Success")){
-                                       		Mail_msg=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
-                                       		data.addMessage(Mail_msg);
+					if((sendMail.equals("sendMail"))&&(!securityID.equals(""))){
+						String subject="", msgDear="",msgRegard="",message="";
+                        			String srvrPort=TurbineServlet.getServerPort();
+						String email=UserUtil.getEmail(uids);
+						String Crsname=CourseUtil.getCourseName(courseID);
+						Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
+						if(srvrPort.equals("8080")){
+							subject = MailNotification.subjectFormate("studentsecuritystring",quizName, pr );
+							msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+                        				msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+							message = MailNotification.getQuizMessage("studentsecuritystring","","","",quizName,securityID,Crsname,pr);
+						}
+						else{
+							subject = MailNotification.subjectFormate("studentsecuritystringhttps",quizName, pr );
+							msgDear = pr.getProperty("brihaspati.Mailnotification.newUserhttps.msgDear");
+                        				msgRegard=pr.getProperty("brihaspati.Mailnotification.newUserhttps.msgRegard");
+							message = MailNotification.getQuizMessage("studentsecuritystringhttps","","","",quizName,securityID,Crsname,pr);
+						}
+                        			//String msgRegard=pr.getProperty("brihaspati.Mailnotification."+value+".msgRegard");
+						msgRegard = MailNotification.replaceServerPort(msgRegard);
+						msgDear = MailNotification.getMessage_new(msgDear, "","", "",student);
+						String Mail_msg =MailNotificationThread.getController().set_Message(message,msgDear,msgRegard,"",email,subject,"",LangFile);
+						if(Mail_msg.equals("Success")){
+                                       			Mail_msg=" "+MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                                       			data.addMessage(Mail_msg);
+						}
 					}
 				}
 			}
@@ -1411,4 +1417,64 @@ public class OLES_AttemptQuiz extends SecureAction{
 			 data.setMessage("See ExceptionLog !!");
 		}
 	}
+
+	/** This method is responsible for to write the detail of parctice quiz in xml file
+         * @param data RunData instance
+         * @param context Context instance
+         * @exception Exception, a generic exception
+         */
+        public static void AttemptedpracticeQuizReport(RunData data, Context context){
+        	try{
+                	XmlWriter xmlWriter=null;
+                        /**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                         */
+                        String username=data.getUser().getName();
+                        String LangFile=(String)data.getUser().getTemp("LangFile");
+                        String courseID=(String)data.getUser().getTemp("course_id");
+                        ParameterParser pp=data.getParameters();
+                        String quizID=pp.getString("quizID","");
+                        String quizName=pp.getString("quizName","");
+
+                        /**get path where the Exam directory,quizID_Security.xml file stored */
+                        String PractinfoFile=quizID+"_PracticeQuizInfo.xml";
+                        String examFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseID+"/Exam/"+"/"+quizID);
+                        File PractinfoFile1=new File(examFilePath+"/"+PractinfoFile);
+                        /**create the balnk xm file*/
+                        if(!PractinfoFile1.exists()){
+                                QuizMetaDataXmlWriter.OLESRootOnly(examFilePath+"/"+PractinfoFile);
+                        }
+                        /**read the xml file and put the all values in vector (collectPractinfo)
+                         *gets the Detail of all parctice quiz
+			 *@see xmlReader QuizMetaDataXmlReader in Util
+                         *if exists in xml then  update  the information and  appened  also the  new entry
+                         */
+                        String attemptnos="",studentid="";
+                        int attemptednos=1;
+                        int seq=-1;
+                        QuizMetaDataXmlReader readPractinfoFile=new QuizMetaDataXmlReader(examFilePath+"/"+PractinfoFile+"/");
+                        Vector collectPractinfo=readPractinfoFile.getAttemptPracticeQuizDetail();
+                        if(collectPractinfo!=null){
+                                for(int i=0;i<collectPractinfo.size();i++){
+                                        studentid=((QuizFileEntry)collectPractinfo.get(i)).getStudentID();
+                                        attemptnos=((QuizFileEntry)collectPractinfo.get(i)).getNoofAttempt();
+                                        if(studentid.equals(username)){
+                                                attemptednos=Integer.parseInt(attemptnos)+1;
+                                                seq=i;
+                                                break;
+                                        }
+                                }
+
+                        }
+                        xmlWriter=new XmlWriter(examFilePath+"/"+PractinfoFile);
+                        xmlWriter=QuizMetaDataXmlWriter.Write_PracticeQuizInfoxml(examFilePath,PractinfoFile);
+                        QuizMetaDataXmlWriter.appendPracticeQuizInfo(xmlWriter,username,attemptednos,seq);
+                        xmlWriter.writeXmlFile();
+                }
+		catch(Exception ex){
+                         ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:AttemptedpracticeQuizReport !! "+ex);
+                                data.setMessage("See ExceptionLog !!");
+                 }
+        }
+
 }	                           

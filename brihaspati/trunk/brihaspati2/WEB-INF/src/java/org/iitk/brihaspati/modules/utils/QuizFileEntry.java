@@ -91,6 +91,7 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     	private String studentID;
     	private String IPAddress;
     	private String Attributeno;
+    	private String noofAttempt;
 
 //-----------------------------OLES
 	
@@ -450,5 +451,11 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	}
 	public String getnoofAttribute(){
 		return Attributeno;
+	}
+	public void setNoofAttempt(String noofAttempt){
+		this.noofAttempt=noofAttempt;
+	}
+	public String getNoofAttempt(){
+		return noofAttempt;
 	}
 }

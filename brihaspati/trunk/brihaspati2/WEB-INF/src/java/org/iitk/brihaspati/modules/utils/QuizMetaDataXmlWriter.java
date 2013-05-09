@@ -1409,6 +1409,68 @@ public class QuizMetaDataXmlWriter
                 }
         }
 
+	/**
+         * This method append element in existing xml (quizid_PracticeQuizInfo.xml) file
+         * @param xmlWriter XmlWriter
+         * @param topic name String
+         * @param type of question String
+         * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+        */
+        public static void appendPracticeQuizInfo(XmlWriter xmlWriter,String StudentID,int NoofAttempt,int seq)
+        {
+		try{
+        		AttributesImpl ats=new AttributesImpl();
+	    		String Attemptno = String.valueOf(NoofAttempt);
+            		ats.addAttribute("","StudentID","","",StringUtil.replaceXmlSpecialCharacters(StudentID));
+            		ats.addAttribute("","NoofAttempt","","",StringUtil.replaceXmlSpecialCharacters(Attemptno));
+	    		if(seq != -1){
+                		xmlWriter.changeAttributes("Quiz",ats,seq);
+			}
+			else{
+            			xmlWriter.appendElement("Quiz",null,ats);
+			}
+		}
+		catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("Error in QuizMetaDataXmlWriter method :appendPracticeQuizInfo !!"+e);
+                }
+
+        }
+
+	/**
+        *This method read existing xml file(quizID_PracticeQuizInfo.xml) and write new xml file with old values
+        * @param filePath String
+        * @param xmlFile String 
+        * @return xmlWriter XmlWriter
+        */
+        public static XmlWriter Write_PracticeQuizInfoxml(String filePath,String xmlfile)
+        {
+		int seq=-1; 
+                XmlWriter xmlWriter=null;
+                File descFile=new File(filePath+"/"+xmlfile);
+                try{
+                        /**Get the details from xml file and store in a vector
+                          *after storing in xml file delete the xml file and create the new xml file
+                          */
+                        QuizMetaDataXmlReader quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+xmlfile);
+                        Vector v=quizMetaData.getAttemptPracticeQuizDetail();
+                        descFile.delete();
+                        OLESRootOnly(descFile.getAbsolutePath());
+                        xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+                        if(v!=null){
+                                /**Get the value from vector for comparing in attributes and use in methods.*/
+                                for(int i=0;i<v.size();i++)
+                                {
+                                        String studentid = ((QuizFileEntry)v.get(i)).getStudentID();
+                                        String noofattempt =((QuizFileEntry)v.get(i)).getNoofAttempt();
+                                        appendPracticeQuizInfo(xmlWriter,studentid,Integer.parseInt(noofattempt),seq);
+                                }
+                        }
+		}
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The exception in QuizMetaDataXmlWriter [XmlWriter Write_PracticeQuizInfoxml]:"+e);
+                }
+                return xmlWriter;
+	}
 
 //-------------------------------------------------------IITKanpur---------------------------------	
 

@@ -147,6 +147,8 @@ public class OLES_Quiz extends SecureAction{
 			String maxTime=pp.getString("maxTime","")+":00";
 			String noQuestion=pp.getString("numberQuestion","");
 			String allow = pp.getString("allow","");
+			//String type = pp.getString("type","");
+			pp.setString("count","2");
 			/**get path where the quiz stored */
 			String filepath=CoursePath+"/"+crsId+"/Exam/";
 			File ff=new File(filepath);
@@ -475,7 +477,7 @@ public class OLES_Quiz extends SecureAction{
 			}
 			else
 				numberQuestion = pp.getString("numberQuestion","");
-
+			
 			String marksQuestion = pp.getString("marksQuestion","");
 			/**get path where the Exam directory,quiz setting and quiz question file stored */
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
@@ -523,7 +525,7 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else
 					data.setMessage(MultilingualUtil.ConvertedString("brih_excessmsg",LangFile));
-			}            
+			}
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:randomQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -564,7 +566,7 @@ public class OLES_Quiz extends SecureAction{
 			String option2="";
 			String option3="";
 			String option4="";
-
+			data.getParameters().setString("count","3");
 			/**check for insert question one bye one mode
 			 * and get parameter according to the type of question(mcq, tft, sat,lat)
 			 */
@@ -797,7 +799,8 @@ public class OLES_Quiz extends SecureAction{
 					if(quizMode.equalsIgnoreCase("random")|quizMode.equalsIgnoreCase("one"))
 						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
 					else 
-						data.setScreenTemplate("call,OLES,Create_Quiz.vm");
+						//data.setScreenTemplate("call,OLES,Create_Quiz.vm");{
+						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
 				}
 			}
 		}catch(Exception e){
@@ -2078,6 +2081,7 @@ public class OLES_Quiz extends SecureAction{
 			String quizMode=data.getParameters().getString("quizMode","");
 			String page = data.getParameters().getString("page","");
 			//String quizID=data.getParameters().getString("quizID","");
+			pp.setString("count","3");
 			String quizStatus="ACT";
 			/**get path where the Exam directory,quizquestionsSetting.xml  and quiz question file stored*/
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
@@ -2219,7 +2223,8 @@ public class OLES_Quiz extends SecureAction{
 					if(quizMode.equalsIgnoreCase("random")|quizMode.equalsIgnoreCase("one"))
 						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
 					else
-						data.setScreenTemplate("call,OLES,Create_Quiz.vm");
+						//data.setScreenTemplate("call,OLES,Create_Quiz.vm");
+						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
 				}
 			}
 		}catch(Exception e){
