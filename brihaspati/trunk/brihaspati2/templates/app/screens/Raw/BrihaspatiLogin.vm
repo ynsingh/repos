@@ -116,21 +116,15 @@ $!msg
 	<tr>
 
                         #if($!load_flag == 0)
-                                <td colspan=4><img src="$content.getURI("/images/green.gif")" border="0">&nbsp;$brih_trafficMessage1<br>
-                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage2<br>
-                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage3</td>
+                                <td colspan=4><img src="$content.getURI("/images/green.gif")" border="0">&nbsp;$brih_trafficMessage1</td>
                         #end
                                         
                         #if($!load_flag == 1)
-                                <td colspan=4><img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage1<br>
-                                <img src="$content.getURI("/images/orange.jpg")" border="0">&nbsp;$brih_trafficMessage2<br>
-                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage3</td>
+                                <td colspan=4><img src="$content.getURI("/images/orange.jpg")" border="0">&nbsp;$brih_trafficMessage2</td>
                         #end
 
 			#if($!load_flag == 2)
-				<td colspan=4><img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage1<br>
-                                <img src="$content.getURI("/images/grey.jpg")" border="0">&nbsp;$brih_trafficMessage2<br>
-                                <img src="$content.getURI("/images/red.gif")" border="0">&nbsp;$brih_trafficMessage3</td>           
+				<td colspan=4><img src="$content.getURI("/images/red.gif")" border="0">&nbsp;$brih_trafficMessage3</td>           
                         #end
 	</tr>
         <tr><td colspan=4><font color="red">$!data.getMessage() </font></td></tr>

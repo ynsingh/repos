@@ -58,9 +58,12 @@ import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils. ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
 
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifieddate 09-05-2013 (Priyanka Rawat)
  **/
 
 public class myLogout extends VelocityAction{
@@ -150,11 +153,12 @@ public class myLogout extends VelocityAction{
 		               		data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
                 	}
 
-			//Updating load factor in database
-			criteria = new Criteria();
+			/*criteria = new Criteria();
                         criteria.add(SystemCleantimePeer.ID,"1");
                         criteria.add(SystemCleantimePeer.LOAD_FLAG,load_flag);
-                        SystemCleantimePeer.doUpdate(criteria);
+                        SystemCleantimePeer.doUpdate(criteria);*/
+			//Updating load factor in QuotationThread
+			QuotationThread.getController().setLoadFlag(load_flag);
 		}
 		catch ( Exception e ){
 			ErrorDumpUtil.ErrorLog("The Exception in logout action is "+e);

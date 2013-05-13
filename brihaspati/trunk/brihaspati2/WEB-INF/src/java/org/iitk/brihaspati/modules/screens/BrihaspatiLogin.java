@@ -53,7 +53,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.QuotationController;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import java.util.Collection;
 import java.util.List;
 import java.util.Date;
 import java.util.Vector;
@@ -79,7 +81,7 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  * @author <a href="mailto:sweetshaista00@yahoo.com">Shaista Bano</a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modifieddate 23-04-2013
+ * @modifieddate 23-04-2013, 09-05-2013 (Priyanka Rawat)
  */
 public class BrihaspatiLogin extends VelocityScreen
 {
@@ -90,6 +92,7 @@ public class BrihaspatiLogin extends VelocityScreen
     public void doBuildTemplate( RunData data, Context context )
     {
 		int load_flag =0;
+		int active_user = 0;
 		boolean flag = false;
 		System.gc();
 		Criteria crit;
@@ -165,13 +168,26 @@ String hdir=System.getProperty("user.home");
 			context.put("quotation",quotation);
 
 			/**
- 			 * Get load_flag value from database
+ 			 * Get load_flag value from QuotationThread
  			 * and context put the same on template.
  			 */
-			crit = new Criteria();
+			
+			/*crit = new Criteria();
 			crit.add(SystemCleantimePeer.ID,"1");
 			list = SystemCleantimePeer.doSelect(crit);			
-			load_flag = ((SystemCleantime)list.get(0)).getLoadFlag();
+			load_flag = ((SystemCleantime)list.get(0)).getLoadFlag();*/
+			load_flag = QuotationThread.getController().getLoadFlag();
+			active_user = QuotationThread.getController().getActiveUser();
+			if(load_flag == 2)
+			{	
+				Collection au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
+				if(au.size() == 0 || au.size() < active_user)
+				{
+                                	QuotationThread.getController().setLoadFlag(0);
+					QuotationThread.getController().setActiveUser(au.size());
+				}
+				load_flag = 0;
+			}
 			context.put("load_flag", load_flag);
 		}
                 catch(Exception e)

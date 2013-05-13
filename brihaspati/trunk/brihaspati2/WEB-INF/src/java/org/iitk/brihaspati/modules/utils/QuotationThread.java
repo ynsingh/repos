@@ -45,6 +45,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  */
 public class QuotationThread implements Runnable {
 
+	public static int load_flag = 0;
+	public int active_user = 0;
         private boolean flag=false;
         private static Thread runner=null;
         private static QuotationThread quotation_thread=null;
@@ -52,8 +54,11 @@ public class QuotationThread implements Runnable {
 
         public static QuotationThread getController(){
                 if(quotation_thread== null)
-                         quotation_thread =new QuotationThread();
-                return  quotation_thread;
+		{
+			quotation_thread =new QuotationThread();
+			load_flag = 0;
+                }
+		return  quotation_thread;
         }
 
         private void start(){
@@ -64,7 +69,7 @@ public class QuotationThread implements Runnable {
                 }
         }
 
-            private void stop() {
+        private void stop() {
                 if (runner != null) {
                         flag=false;
                         runner.interrupt();
@@ -97,5 +102,26 @@ public class QuotationThread implements Runnable {
                 }
                 catch(Exception e){ErrorDumpUtil.ErrorLog("Error in QuotationThread class==="+e);}
         }
+
+	public void setLoadFlag(int load_flag)
+	{
+		this.load_flag = load_flag;
+	}
+
+	public int getLoadFlag()
+	{
+		return load_flag;
+	}
+
+	public void setActiveUser(int active_user)
+        {
+                this.active_user = active_user;
+        }
+
+        public int getActiveUser()
+        {
+                return active_user;
+        }
+
 }//end of class
  

@@ -53,22 +53,16 @@ $page.setBgColor($ui.bgcolor)
 		<tr align="right">
 			 #if($!load_flag == 0)
 			 	<td colspan=4>
-				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/green.gif")" border="0"><br>
-				$brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
-                                $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"></td>
+				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/green.gif")" border="0"></td>
 				
                         #end
                         #if($!load_flag == 1)
                         	<td colspan=4>
-				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
-                                $brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/orange.jpg")" border="0"><br>
-                                $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"></td>
+                                $brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/orange.jpg")" border="0"></td>
 				
                         #end
 			#if($!load_flag == 2) 
 				<td colspan=4>
-				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
-                                $brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/grey.jpg")" border="0"><br>
                                 $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/red.gif")" border="0"></td>
 				
                         #end

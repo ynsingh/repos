@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,11 +57,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
-//import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-//import org.iitk.brihaspati.modules.utils.QuotationSort;
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -76,7 +76,7 @@ import org.apache.turbine.TurbineConstants;
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @author <a href="mailto:palseema30@gmail.com">Manorama pal</a>
  *  @author modified date 04 Oct 2011<a href="mailto:kishore.shukla@gmail.com">kishore shukla</a>
- * @author modified date 09-08-2012, 01-10-2012 <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author modifieddate 09-08-2012, 01-10-2012, 09-05-2013 <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 
 public class myLogin extends VelocityAction{
@@ -132,19 +132,13 @@ public class myLogin extends VelocityAction{
 					crit = new Criteria();
 					crit.add(UserPrefPeer.USER_ID,uid);
 					list = UserPrefPeer.doSelect(crit);
-				//	list_size = list.size();
-			//		ErrorDumpUtil.ErrorLog("LIST IS	"+list);		
 					a_key = ((UserPref)list.get(0)).getActivation(); 
-					//len = str.indexOf("Activation");
-					 
-					//ErrorDumpUtil.ErrorLog("I M HERE......"+a_key+" ACTIVATE");
  
 					if (a_key == null || a_key.equalsIgnoreCase("NULL"))
 					{
 						 try{
                 	                              	str=MultilingualUtil.ConvertedString("act_prb",LangFile);
                                                         data.setMessage(str);
-							//data.setMessage("Your account has some problem, contact to administrator or re register.");
                         	                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                  	         }
 	                                         catch (Exception ex){
@@ -219,7 +213,6 @@ public class myLogin extends VelocityAction{
 						try{
 							str=MultilingualUtil.ConvertedString("reAct_mail",LangFile);
                                                         data.setMessage(str);
-                                                      //data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
                                                       data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                                  }
                                                  catch (Exception ex){
@@ -261,11 +254,25 @@ public class myLogin extends VelocityAction{
 			{
 				load_flag=2;
 			}
-
-			criteria = new Criteria();
+			/*criteria = new Criteria();
                         criteria.add(SystemCleantimePeer.ID,"1");
                         criteria.add(SystemCleantimePeer.LOAD_FLAG,load_flag);
-	                SystemCleantimePeer.doUpdate(criteria);
+	                SystemCleantimePeer.doUpdate(criteria);*/
+
+			/**
+ 			 * Number of active users is being calculated here.
+ 			 * When a user visits Brihaspati's login page
+ 			 * this number will then be compared with the
+ 			 * number of active users at that time. If number 
+ 			 * of active users would have been decreased then 
+ 			 * the value of load_flag will be set to "0".
+ 			 * Decreased number of active users signifies that
+ 			 * some of the users who have logged in are not active,
+ 			 * thus load on the system will be low.
+  			 */
+			Collection au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
+			QuotationThread.getController().setActiveUser(au.size());
+			QuotationThread.getController().setLoadFlag(load_flag);
 		}
 		catch(Exception ex)
 		{
