@@ -148,7 +148,7 @@ $(document).ready(function() {
 				<?php echo anchor('report', 'Reports', array('title' => 'Reports')); ?>
 				<ul>
 					<li><?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?></li>
-					<li><?php echo anchor('report/profitandloss', 'Profit & Loss', array('title' => 'Profit & Loss')); ?></li>
+					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?></li>
 					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
 					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>
 					<li><?php echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation')); ?></li>
