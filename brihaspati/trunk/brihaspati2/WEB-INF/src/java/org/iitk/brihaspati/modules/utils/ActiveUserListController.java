@@ -73,13 +73,19 @@ public class ActiveUserListController
          */	
 	private synchronized Vector getOriginalVector(String insid)
         {
-			
                 if(!(ht.containsKey(insid.trim()))) {
                         ht.put(insid,new Vector());
                 }
                 return (Vector)ht.get(insid);
         }
-	
+
+	/**
+         * This method is used to return hash table .
+         **/
+        protected synchronized java.util.Hashtable getTempHashtable(){
+                return temphashtable;
+        }
+
 	/**
 	 * This method is used to return hash table .
 	 **/	
@@ -92,21 +98,20 @@ public class ActiveUserListController
 	 */
 	public synchronized Vector getUserListVector(Vector insid,int mode)
         {
-			
 		Vector return_v=new Vector();
-		try{
+		try {
 			for(int i=0;i<insid.size();i++) {
 				Object e=insid.get(i);
 				return_v.addAll(return_v.size(),getOriginalVector(e.toString().trim()));
 				if(mode==0) {
-					if(return_v.size()>5){
+					if(return_v.size()>5) {
 						return_v.subList(5,return_v.size()).clear();
 						break;
 					}
 				}
 			}
 			return_v = new Vector<String>(new java.util.LinkedHashSet<String>(return_v));
-		}catch(Exception e){ErrorDumpUtil.ErrorLog("Error in Controller----"+e);}
+		} catch(Exception e){ ErrorDumpUtil.ErrorLog("Error in Controller----"+e); }
 		return return_v;
         }
 }

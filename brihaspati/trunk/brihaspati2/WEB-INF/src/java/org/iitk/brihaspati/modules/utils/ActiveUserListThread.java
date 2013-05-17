@@ -40,21 +40,21 @@ import java.util.Vector;
 public class ActiveUserListThread implements Runnable {
 
         private boolean flag=false;
-        private static Thread runner=null;
+        private Thread runner=null;
 	private Vector user_id=new Vector();
 	private java.util.Collection au=null;
         private static ActiveUserListThread activeuserlistThread=null;
 	private java.util.Hashtable userid_instid = new java.util.Hashtable();	
-	private ActiveUserListController controller=null;
+	private ActiveUserListController controller=ActiveUserListController.getController();
 
         /**
          * Controller for this class to use as a singleton.
          */
-        public static ActiveUserListThread getController() {
+        public static ActiveUserListThread getController() throws Exception {
                 if(activeuserlistThread==null) {
                         activeuserlistThread=new ActiveUserListThread();
-			activeuserlistThread.start();	
 		}
+		activeuserlistThread.start();	
                 return activeuserlistThread;
         }
 	
@@ -71,7 +71,7 @@ public class ActiveUserListThread implements Runnable {
                                 cid.add("admin");
                         } else if(userid==0) {
                                 cid.add("guest");
-                        }else if((userid !=1) && (userid !=0)) {
+                        } else if((userid !=1) && (userid !=0)) {
 				 cid=InstituteIdUtil.getAllInstId(userid);
 			}
                         userid_instid.put(userid,cid);
@@ -95,11 +95,10 @@ public class ActiveUserListThread implements Runnable {
         /**
         * Start ActiveUserListThread Thread.
         */
-        private void start(){
+        private void start() throws Exception {
 		if (runner == null) {
                         flag=true;
                         runner = new Thread(this);
-			controller=ActiveUserListController.getController();
                         runner.start();
                 }
         }
@@ -107,10 +106,11 @@ public class ActiveUserListThread implements Runnable {
         /**
          * Stop ActiveUserListThread Thread.
          */
-        private void stop() {
+        private void stop() throws Exception {
                 if (runner != null) {
                         flag=false;
                         runner.interrupt();
+			//runner.stop(); this is Deprecated api 
                         runner = null;
                 }
         }
@@ -118,18 +118,19 @@ public class ActiveUserListThread implements Runnable {
         /**
          * ActiveUserListThread for shows currently login user with time.
          */
-        public synchronized void run() {
+        public void run() {
                 while(flag) {
                        try {
 				runner.sleep(1000);
                                 runner.yield();
+				au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
 				if(user_id.size()>0 ) {
 					/**
 					 * These lines of code are used to get all inst id according to user id 
 					 * and remove key and value from hashtable and vector .
 					 */
-					Vector InsId=(Vector)userid_instid.get((Integer)user_id.get(0));
-                                        int userid=(Integer)(user_id.get(0));
+					int userid=(Integer)(user_id.get(0));
+					Vector InsId=(Vector)userid_instid.get(userid);
                                         user_id.remove(0);
 					/**
 					 * These lines of code are used to remove temp vector according to inst id .
@@ -144,7 +145,6 @@ public class ActiveUserListThread implements Runnable {
 					 * These lines of code get all ActiveUsers from the session in collection 
 					 * and get every user one by one and set them into a vector according to insituteid .
 					 */
-					au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
 					java.util.Iterator it=au.iterator();
         	               		while(it.hasNext()){
                 	               		String ss=it.next().toString();
@@ -155,13 +155,13 @@ public class ActiveUserListThread implements Runnable {
 							Object e=InsId.get(0);
                 	                        	String uIdTime=u+" "+"("+time+")";
 							Vector returnvector=controller.getempVector(e.toString().trim());
-                                	                returnvector.add(uIdTime);
+                                	                returnvector.add(0,uIdTime);
                                         	}else if(userid ==0) {
 							Object e=InsId.get(0);
 							Vector returnvector=controller.getempVector(e.toString().trim());
 							if(u.equals("guest")){
 	        	                                        String uIdTime=u+" "+"("+time+")";
-								returnvector.add(uIdTime);
+								returnvector.add(0,uIdTime);
 
 							}
 						}else {
@@ -173,7 +173,7 @@ public class ActiveUserListThread implements Runnable {
                                 		       			String uIdTime=u+" "+"("+time+")";
 									uIdTime=uIdTime.trim();
 									if(!(returnvector.contains(uIdTime))) {
-                                                		                returnvector.add(uIdTime);
+                                                		                returnvector.add(0,uIdTime);
                                                         		}
 								}
 							}
@@ -186,13 +186,20 @@ public class ActiveUserListThread implements Runnable {
 						for (int x = 0; x < InsId.size(); x++) {
 							Object e=InsId.get(x);
 							Vector returnvector=controller.getempVector(e.toString().trim());
-							returnvector = new Vector<String>(new java.util.LinkedHashSet<String>(returnvector));
 							java.util.Hashtable final_userlist=controller.getHashtable();
 							final_userlist.put(e.toString().trim(),returnvector);
 						}
 					}catch(Exception e){ ErrorDumpUtil.ErrorLog("Exception in ActiveUserListThread class line no 168 "+e.getMessage()); }
-				}else
+				}else{
 					userid_instid.clear();
+					if(au.size()==0) {
+						java.util.Hashtable final_userlist=controller.getHashtable();
+						java.util.Hashtable temp_userlist=controller.getTempHashtable();
+						temp_userlist.clear();
+						final_userlist.clear();	
+						stop();
+					}
+				}
 			}catch(Exception es){ ErrorDumpUtil.ErrorLog("Exception in ActiveUserListThread class  "+es.getMessage()); }
          	}
         }
