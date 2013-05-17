@@ -307,7 +307,7 @@ public class ClientObject {
  	 * Getting a available mixer in local system which support selected audio format.
  	 **/
 
-        private void getMixer(){
+        private void getMixer() {
                 if(currentMixer==null) {
                         try {
                                 DataLine.Info targetdataLineInfo = new DataLine.Info(TargetDataLine.class, getAudioFormat());
@@ -336,9 +336,10 @@ public class ClientObject {
 							targetDataLine.open(getAudioFormat());
 		                	                targetDataLine.start();
                 		        	        System.out.println("opening targetDataLine.");
-						} catch(Exception ex){System.out.println("Error in get Miser and start targetDataLine "+ex.getMessage());}	
-						break;
+						} catch(Exception ex){System.out.println("Error in get Miser and start targetDataLine "+ex.getMessage());}
                                         }
+					if((sourceDataLine.isOpen()) && (targetDataLine.isOpen()))
+						break;
                                 }
                         }catch(Exception e){System.out.println("Error in get Miser and start sourceDataLine and targetDataLine "+e.getMessage());}
                 }
@@ -350,11 +351,10 @@ public class ClientObject {
 		return 	targetDataLine;
 	}
 	
-	public SourceDataLine getSourceLine(){
+	public SourceDataLine getSourceLine() {
 		if(currentMixer == null)
                         getMixer();
 		return sourceDataLine;
 	}	
-		
 }
 

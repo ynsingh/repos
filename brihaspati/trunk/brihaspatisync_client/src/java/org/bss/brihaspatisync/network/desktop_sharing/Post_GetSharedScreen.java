@@ -7,7 +7,6 @@ package org.bss.brihaspatisync.network.desktop_sharing;
  * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
-import java.io.File;
 import  java.util.LinkedList;
 import java.io.ByteArrayOutputStream;
 
@@ -25,11 +24,11 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
-import org.bss.brihaspatisync.gui.Desktop_Sharing;
 import org.bss.brihaspatisync.gui.StatusPanel;
+import org.bss.brihaspatisync.gui.Desktop_Sharing;
 
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.network.util.UtilObject;
@@ -46,8 +45,8 @@ public class Post_GetSharedScreen implements Runnable {
 	private boolean flag=false;
 	private boolean getflag=false;
 	private boolean screen_mode=false;		
-		
 	private static Post_GetSharedScreen post_screen=null;
+	private UtilObject clientobject=UtilObject.getController();		
 	private ByteArrayOutputStream os = new ByteArrayOutputStream();
 	
 	/**
@@ -127,7 +126,7 @@ public class Post_GetSharedScreen implements Runnable {
 					if(!getflag) {
 						BufferedImage image=captureScreen();
 						ImageIO.write(image, "jpeg", os);
-						LinkedList send_queue=UtilObject.getController().getSendQueue("Desktop_Data");
+						LinkedList send_queue=clientobject.getSendQueue("Desktop_Data");
 						if(send_queue.size()==0 ){
 							send_queue.addLast(os.toByteArray());
 						}else {
@@ -138,10 +137,10 @@ public class Post_GetSharedScreen implements Runnable {
 						os.flush();
 						os.reset();	
 					}else {
-						LinkedList send_queue=UtilObject.getController().getSendQueue("Desktop_Data");
+						LinkedList send_queue=clientobject.getSendQueue("Desktop_Data");
                                                 send_queue.addLast(null);
 						/****   receive the image from reflector **********/
-						LinkedList desktop_queue=UtilObject.getController().getQueue("Desktop_Data");
+						LinkedList desktop_queue=clientobject.getQueue("Desktop_Data");
                                                 if(desktop_queue.size()>0) {
 							byte[] bytes1=(byte[])desktop_queue.get(0);
 							desktop_queue.remove(0);
@@ -178,7 +177,7 @@ public class Post_GetSharedScreen implements Runnable {
         	return left.length - right.length;
     	}
 	
-	public void setFlag(boolean f){
+	public void setFlag(boolean f) {
 		screen_mode=f;
 	}
 }

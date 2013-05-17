@@ -7,42 +7,37 @@ package org.bss.brihaspatisync.gui;
  * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.Container;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.Dimension;
-import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.ActionListener;
+import java.awt.KeyboardFocusManager;
+
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.ImageIcon;
-import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 import javax.swing.BorderFactory;
-import java.util.Arrays;
-import org.bss.brihaspatisync.util.ClientObject;
+import javax.swing.JInternalFrame;
+import javax.swing.JPasswordField;
+import javax.swing.border.TitledBorder;
+
 import org.bss.brihaspatisync.util.Language;
-import org.bss.brihaspatisync.network.Log;
-import javax.swing.JOptionPane;
+import org.bss.brihaspatisync.util.ClientObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
@@ -220,8 +215,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 
                 username.setEnabled(false);
-                usernameText=new JTextField();
+                usernameText=new JTextField("guest");
                 usernameText.setEnabled(false);
+		usernameText.addMouseListener(this);
 
                 usernameText.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
@@ -230,8 +226,10 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 });
                 password=new JLabel(Language.getController().getLangValue("LoginWindow.password"));
                 password.setEnabled(false);
-                passwordField=new JPasswordField();
+                passwordField=new JPasswordField("guest");
                 passwordField.setEnabled(false);
+		passwordField.addMouseListener(this);
+
                 passwordField.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
 				usernameText.setCursor(busyCursor);
@@ -266,17 +264,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 buttonPanel.setLayout(new FlowLayout());
 		
 		ClassLoader clr= this.getClass().getClassLoader();
-        /*        submitLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/submit.jpg")));
-                submitLabel.setEnabled(false);
-	        submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                submitLabel.addMouseListener(this);
-                submitLabel.setName("submit.Action");
-                cancelLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/cancel.jpg")));
-                cancelLabel.setEnabled(false);
-                cancelLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                cancelLabel.addMouseListener(this);
-                cancelLabel.setName("cancel.Action");
-	*/
 		submitButton=new JButton("Submit",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
                 submitButton.setEnabled(false);
                 submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -318,8 +305,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		username.setText(Language.getController().getLangValue("LoginWindow.username"));
 		password.setText(Language.getController().getLangValue("LoginWindow.password"));				
 		
-                //mainPanel.remove(1);
-                //mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
                 mainPanel.revalidate();
                 mainPanel.validate();
                 panel.repaint();
@@ -382,7 +367,19 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	}   
 		
 	public void mouseClicked(MouseEvent e) {
-                 if(e.getComponent().getName().equals("forgetpass.Action")){
+		if(e.getComponent()== usernameText) {
+			if(passwordField.getText().equals(""))		
+				passwordField.setText("guest");
+			usernameText.setText("");
+		} 
+		
+		if(e.getComponent()== passwordField) {
+			if(usernameText.getText().equals(""))            
+                                usernameText.setText("guest");
+                        passwordField.setText("");
+                } 
+	
+                if(e.getComponent().getName().equals("forgetpass.Action")){
 			forgetpass.setCursor(busyCursor);
 			try{
 				Thread.sleep(500);
@@ -393,7 +390,11 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			}
 			ForgetPass.getController();
 		}
-                 else if(e.getComponent().getName().equals("submit.Action")){
+                else if(e.getComponent().getName().equals("submit.Action")){
+			if(passwordField.getText().equals(""))
+                                passwordField.setText("guest");
+			if(usernameText.getText().equals(""))
+                                usernameText.setText("guest");
 			submitButton.setCursor(busyCursor);
 			if( (!(usernameText.getText()).equals(""))) {
 	                        loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
@@ -418,7 +419,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                  }
                  else if(e.getComponent().getName().equals("cancel.Action")){
 			cancelButton.setCursor(busyCursor);
-			System.out.println("----------------------------------------");
 			try{
                                 Thread.sleep(500);
                         }catch(InterruptedException ie){

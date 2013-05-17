@@ -9,13 +9,8 @@ package org.bss.brihaspatisync.tools.audio;
 
 import java.util.LinkedList;
 
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.AudioInputStream;
-import org.bss.brihaspatisync.util.ThreadController;
 
 import org.xiph.speex.SpeexDecoder;
 
@@ -76,36 +71,34 @@ public class AudioPlayer implements Runnable {
 			if(sourceDataLine == null) {
 				sourceDataLine=org.bss.brihaspatisync.util.ClientObject.getController().getSourceLine();
 			}
-                }catch(Exception e){System.out.println("Error in open sourceDataLine : "+e.getMessage());}
+                }catch(Exception e){System.out.println("Exception in open sourceDataLine : "+e.getMessage());}
 
         }
 
 	/**
  	 * Play audio thread which get audio stream from audioVector(local buffer for audio stream).
  	 */ 		 
+
 	public void run() {
 		SpeexDecoder decoder = new SpeexDecoder();
-                decoder.init(1, (int) audioFormat.getSampleRate(), audioFormat.getChannels(), true);
-		while(flag && ThreadController.getController().getThreadFlag()){
+                decoder.init(1, (int) audioFormat.getSampleRate(), audioFormat.getChannels(), true);	
+		while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()){
 			try {
 				if(audioVector.size() > 4){
 					for (int i=0;i<4;i++) {
 						if(sourceDataLine != null ) {
 							byte[] audio_data=audioVector.get(0);
-                                                        decoder.processData(audio_data, 0, audio_data.length);
-                                                        byte[] decoded_data = new byte[decoder.getProcessedDataByteSize()];
-                                                        int decoded = decoder.getProcessedData(decoded_data, 0);
-                                                        System.out.println(decoded+ " bytes resulted as a result of decoding " + audio_data.length + " encoded bytes.");
-                                                        sourceDataLine.write(decoded_data,0,decoded);
 							audioVector.remove(0);
+                                                        decoder.processData(audio_data, 0, audio_data.length);
+							byte[] decoded_data= new byte[decoder.getProcessedDataByteSize()];
+                					decoder.getProcessedData(decoded_data, 0);
+                                                        sourceDataLine.write(decoded_data,0,decoded_data.length);
 						}else
                                                         sourceDataLine=org.bss.brihaspatisync.util.ClientObject.getController().getSourceLine();	
 					}
 				} 
 				runner.yield();	
-			}catch(Exception ex){System.out.println("Error in AudioPlayer run() "+ex.getMessage());}
+			}catch(Exception ex){System.out.println("Exception in AudioPlayer run() "+ex.getMessage());}
 		}//end of while
 	}
 }
-
-

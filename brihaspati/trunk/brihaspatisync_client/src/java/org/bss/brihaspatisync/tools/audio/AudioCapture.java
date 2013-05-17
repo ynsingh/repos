@@ -6,16 +6,10 @@ package org.bss.brihaspatisync.tools.audio;
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2012, 2013 ETRG,IIT Kanpur.
  */
-import java.util.Arrays;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.TargetDataLine;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.TargetDataLine;
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.ThreadController;
 
 import org.xiph.speex.SpeexEncoder;
 
@@ -28,10 +22,7 @@ import org.xiph.speex.SpeexEncoder;
 public class AudioCapture implements Runnable {
 
 	private boolean flag=false;
-        private int bufferSize=0;	
 	private Thread runner=null;	
-	private byte audio_data[]=null;
-   	private Mixer currentMixer=null;
 	private TargetDataLine targetDataLine=null;
 	private AudioFormat audioFormat=ClientObject.getController().getAudioFormat();
 	private java.util.LinkedList<byte[]> audioVector=new java.util.LinkedList<byte[]>();
@@ -50,7 +41,7 @@ public class AudioCapture implements Runnable {
 	/**
  	 * Stop TargetDataLine
  	 */  
-	public void stopCapture(){
+	public void stopCapture() {
 		if(runner !=null){
 			runner.stop();
 			runner=null;
@@ -61,8 +52,8 @@ public class AudioCapture implements Runnable {
         }
 	
 	protected void startCapture(){
-		if(runner ==null){
-	                bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
+		if(runner ==null) {
+	                //bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
                 	getTargetLine();
 			runner=new Thread(this);
 			flag=true;
@@ -76,11 +67,10 @@ public class AudioCapture implements Runnable {
 		if((ClientObject.getController().getUserRole()).equals("instructor")) {
 			if(flag)
         	       		startCapture();
-	                
-		}else {
-			if(flag){
+		} else {
+			if(flag) {
 				startCapture();
-			}else { 
+			} else { 
 				stopCapture();
 			}
 		}
@@ -89,34 +79,31 @@ public class AudioCapture implements Runnable {
 	/**
  	 * Local thread for record audio from microphone and save in file named as filename variable.
  	 */  
-	public void run(){ 
+	public void run() { 
                 try {
 			SpeexEncoder encoder = new SpeexEncoder();
                         encoder.init(1, 10, (int)audioFormat.getSampleRate(), audioFormat.getChannels());
                         final int raw_block_size = encoder.getFrameSize() * audioFormat.getChannels()  * (audioFormat.getSampleSizeInBits() / 8);
-			while(flag){	
-			        audio_data = new byte[raw_block_size];
-				if(targetDataLine !=null){
+			byte audio_data[] = new byte[raw_block_size];
+			while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {	
+				if(targetDataLine !=null) {
                                		int cnt = targetDataLine.read(audio_data,0,audio_data.length);
-					if (!encoder.processData(audio_data, 0, raw_block_size)) {
-        	                                System.err.println("Could not encode data!");
-                	                }
-                        	        int encoded = encoder.getProcessedData(audio_data, 0);
-                                	byte[] encoded_data = new byte[encoded];
-	                                System.arraycopy(audio_data , 0, encoded_data, 0, encoded);
-        	                        audioVector.addLast(encoded_data);
-				}else 
-                         	       targetDataLine =ClientObject.getController().getTargetLine();
-                        	
+					if( encoder.processData(audio_data, 0, audio_data.length) ) {
+						byte[] encoded_data= new byte[encoder.getProcessedDataByteSize()];
+                        	        	encoder.getProcessedData(encoded_data, 0);
+        	                        	audioVector.addLast(encoded_data);
+					} else 
+        	                                System.out.println("Could not encode data!");
+				} else 
+                         	       targetDataLine = ClientObject.getController().getTargetLine();
 			}
-                }catch(Exception e){System.out.println("Eception in capture Audio class "+e.getCause());}
+                } catch(Exception e){System.out.println("Eception in capture Audio class "+e.getCause());}
         }
 		
-	protected byte [] getAudioData(){
-		if(audioVector.size()>0){
-			if(audioVector.size()>10){
-                                for(int removepacket=0;removepacket<5;removepacket++)
-                                        audioVector.remove(0);
+	protected byte [] getAudioData() {
+		if(audioVector.size()>0) {
+			if(audioVector.size()>10) {
+				audioVector.subList(2,7).clear();	
                         }
 			byte[] data=audioVector.get(0);
 			audioVector.remove(0);

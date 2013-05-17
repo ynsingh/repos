@@ -111,7 +111,7 @@ public class ReceiveQueueHandler implements Runnable{
                         				        sendqueue.clear();
 	                        			}
 						}
-					}catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to remove queue for network slow .");}
+					} catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to remove queue for network slow"+ex.getMessage());}
 				}
 				runner.yield();
 				runner.sleep(10);
