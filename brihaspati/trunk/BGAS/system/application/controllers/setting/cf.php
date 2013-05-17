@@ -300,7 +300,7 @@ class Cf extends Controller {
 				$group_q = $this->db->get();
 				foreach ($group_q->result() as $row)
 				{
-					if ( ! $newacc->query("INSERT INTO groups (id, parent_id, name, affects_gross) VALUES (?, ?, ?, ?)", array($row->id, $row->parent_id, $row->name, $row->affects_gross)))
+					if ( ! $newacc->query("INSERT INTO groups (id, code, parent_id, name, affects_gross) VALUES (?, ?, ?, ?, ?)", array($row->id, $row->code, $row->parent_id, $row->name, $row->affects_gross)))
 					{
 						$this->messages->add('Failed to add Group account - ' . $row->name . '.', 'error');
 						$cf_status = FALSE;
@@ -332,13 +332,13 @@ class Cf extends Controller {
 							$op_balance = $cl_balance;
 							$op_balance_dc = "D";
 						}
-						if ( ! $newacc->query("INSERT INTO ledgers (id, group_id, name, op_balance, op_balance_dc, type, reconciliation) VALUES (?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->group_id, $row->name, $op_balance, $op_balance_dc, $row->type, $row->reconciliation)))
+						if ( ! $newacc->query("INSERT INTO ledgers (id, code, group_id, name, op_balance, op_balance_dc, type, reconciliation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->code, $row->group_id, $row->name, $op_balance, $op_balance_dc, $row->type, $row->reconciliation)))
 						{
 							$this->messages->add('Failed to add Ledger account - ' . $row->name . '.', 'error');
 							$cf_status = FALSE;
 						}
 					} else {
-						if ( ! $newacc->query("INSERT INTO ledgers (id, group_id, name, op_balance, op_balance_dc, type, reconciliation) VALUES (?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->group_id, $row->name, 0, "D", $row->type, $row->reconciliation)))
+						if ( ! $newacc->query("INSERT INTO ledgers (id, code, group_id, name, op_balance, op_balance_dc, type, reconciliation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->code, $row->group_id, $row->name, 0, "D", $row->type, $row->reconciliation)))
 						{
 							$this->messages->add('Failed to add Ledger account - ' . $row->name . '.', 'error');
 							$cf_status = FALSE;
