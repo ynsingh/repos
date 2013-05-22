@@ -185,8 +185,9 @@ String hdir=System.getProperty("user.home");
 				{
                                 	QuotationThread.getController().setLoadFlag(0);
 					QuotationThread.getController().setActiveUser(au.size());
+					load_flag = 0;
 				}
-				load_flag = 0;
+				//load_flag = 0;
 			}
 			context.put("load_flag", load_flag);
 		}
