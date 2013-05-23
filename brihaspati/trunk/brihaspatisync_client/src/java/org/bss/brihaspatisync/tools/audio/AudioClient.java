@@ -10,11 +10,9 @@ package org.bss.brihaspatisync.tools.audio;
 import java.util.LinkedList;
 
 import org.bss.brihaspatisync.gui.StatusPanel;
-import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
-
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
@@ -27,9 +25,9 @@ public class AudioClient implements Runnable {
 	private boolean flag=false;
 	private static AudioClient audio=null;
 	private AudioCapture au_cap=new AudioCapture();	
-	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-
+	//private org.xiph.speex.SpeexEncoder encoder=org.bss.brihaspatisync.util.AudioUtilObject.getSpeexEncoder();
+	
 	/**
  	 * Controller for the class.
  	 */
@@ -81,12 +79,12 @@ public class AudioClient implements Runnable {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					byte [] audiodata=au_cap.getAudioData();
 					if(audiodata != null) {
-						LinkedList send_queue=UtilObject.getController().getSendQueue("Audio_Data");
-                	                        send_queue.addLast(audiodata);
+						//byte[] encoded_data=getEncoder(audiodata);
+                                        	LinkedList send_queue=UtilObject.getController().getSendQueue("Audio_Data");
+	                	                send_queue.addLast(audiodata);
 					} else {
 						LinkedList send_queue=UtilObject.getController().getSendQueue("Audio_Data");
                                         	send_queue.addLast(null);	
-						runner.sleep(30);
 					}
                         	        LinkedList audio_rechive_data=UtilObject.getController().getQueue("Audio_Data");
                                 	if(audio_rechive_data.size()>0) {
@@ -99,8 +97,24 @@ public class AudioClient implements Runnable {
 					StatusPanel.getController().setaudioClient("yes");
 				} else
 					StatusPanel.getController().setaudioClient("no");
+				runner.sleep(100);
 				runner.yield();
-			} catch(Exception epe) { StatusPanel.getController().setaudioClient("no"); System.out.println("Exception in AudioClient class  "+epe.getMessage()); }
+			} catch(Exception epe) { 
+				StatusPanel.getController().setaudioClient("no"); 	
+				System.out.println("Exception in AudioClient class  "+epe.getMessage()); 
+			}
         	}
 	}
+	
+	/*** audio encoder 
+	private byte [] getEncoder(byte [] audiodata) {
+		byte[] encoded_data= null;
+		try {
+			if(encoder.processData(audiodata, 0, audiodata.length)) {
+				encoded_data= new byte[encoder.getProcessedDataByteSize()];
+				encoder.getProcessedData(encoded_data, 0);
+			}
+		} catch(Exception e) { System.out.println("Exception  "+e.getMessage());}
+		return encoded_data;
+	} **/
 }

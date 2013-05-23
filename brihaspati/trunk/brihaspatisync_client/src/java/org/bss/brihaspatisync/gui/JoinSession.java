@@ -124,7 +124,7 @@ public class JoinSession {
 
 		//start audio thread
 		try{
-			String a_status=client_obj.getAudioStatus();
+			String a_status=org.bss.brihaspatisync.util.AudioUtilObject.getAudioStatus();
                         if(a_status.equals("1")){
 				org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
                                 if((client_obj.getUserRole()).equals("instructor")){
@@ -135,7 +135,7 @@ public class JoinSession {
 
 		//start video thread
 		try {
-			String v_status=client_obj.getVideoStatus();
+			String v_status=org.bss.brihaspatisync.util.AudioUtilObject.getVideoStatus();
 			if((client_obj.getUserRole()).equals("instructor")) {
 				if(v_status.equals("1")){	
                         		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();

@@ -102,9 +102,11 @@ public class SinglePortClient implements Runnable {
 							while(sendqueue.size() !=0 ) {
 								byte[] send_data=(byte[])sendqueue.remove();
 								byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
-								if((receive_data_fromserver.length>0) && (receive_data_fromserver !=null) ) {	
-	                               			                LinkedList audio_queue=UtilObject.getController().getQueue("Audio_Data");
-        	                               			        audio_queue.addLast(receive_data_fromserver);		
+								if(receive_data_fromserver !=null) {
+									if(receive_data_fromserver.length>0) {	
+	                               			                	LinkedList audio_queue=UtilObject.getController().getQueue("Audio_Data");
+        	                               			        	audio_queue.addLast(receive_data_fromserver);		
+									}
 								}
 							}
 						}catch(Exception e) { System.out.println("Exception in SinglePortClient in Audio_Data "+e.getMessage());}

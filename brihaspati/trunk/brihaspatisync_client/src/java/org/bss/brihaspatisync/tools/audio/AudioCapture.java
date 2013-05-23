@@ -9,9 +9,8 @@ package org.bss.brihaspatisync.tools.audio;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
-import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.AudioUtilObject;
 
-import org.xiph.speex.SpeexEncoder;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
@@ -20,11 +19,12 @@ import org.xiph.speex.SpeexEncoder;
  */
 
 public class AudioCapture implements Runnable {
-
+	
+	private int bufferSize=0;
 	private boolean flag=false;
 	private Thread runner=null;	
 	private TargetDataLine targetDataLine=null;
-	private AudioFormat audioFormat=ClientObject.getController().getAudioFormat();
+	private AudioFormat audioFormat=AudioUtilObject.getAudioFormat();
 	private java.util.LinkedList<byte[]> audioVector=new java.util.LinkedList<byte[]>();
 
 	/**
@@ -33,7 +33,7 @@ public class AudioCapture implements Runnable {
     	public void getTargetLine() {
 		try {
 			if(targetDataLine ==null){
-				targetDataLine =ClientObject.getController().getTargetLine();
+				targetDataLine =AudioUtilObject.getTargetLine();
 			} else System.out.println("targetDataLine could not initialized.");
 		} catch(Exception e){System.out.println("Error in open targetdataline "+e.getMessage());}
     	}
@@ -53,7 +53,7 @@ public class AudioCapture implements Runnable {
 	
 	protected void startCapture(){
 		if(runner ==null) {
-	                //bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
+	                bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
                 	getTargetLine();
 			runner=new Thread(this);
 			flag=true;
@@ -64,7 +64,7 @@ public class AudioCapture implements Runnable {
         }
 	
 	protected void setflag(boolean flag){
-		if((ClientObject.getController().getUserRole()).equals("instructor")) {
+		if((org.bss.brihaspatisync.util.ClientObject.getController().getUserRole()).equals("instructor")) {
 			if(flag)
         	       		startCapture();
 		} else {
@@ -81,29 +81,23 @@ public class AudioCapture implements Runnable {
  	 */  
 	public void run() { 
                 try {
-			SpeexEncoder encoder = new SpeexEncoder();
-                        encoder.init(1, 10, (int)audioFormat.getSampleRate(), audioFormat.getChannels());
-                        final int raw_block_size = encoder.getFrameSize() * audioFormat.getChannels()  * (audioFormat.getSampleSizeInBits() / 8);
-			byte audio_data[] = new byte[raw_block_size];
 			while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {	
-				if(targetDataLine !=null) {
+				if(targetDataLine != null) {
+					byte audio_data[] = new byte[bufferSize];
                                		int cnt = targetDataLine.read(audio_data,0,audio_data.length);
-					if( encoder.processData(audio_data, 0, audio_data.length) ) {
-						byte[] encoded_data= new byte[encoder.getProcessedDataByteSize()];
-                        	        	encoder.getProcessedData(encoded_data, 0);
-        	                        	audioVector.addLast(encoded_data);
-					} else 
-        	                                System.out.println("Could not encode data!");
+					audioVector.addLast(audio_data);
 				} else 
-                         	       targetDataLine = ClientObject.getController().getTargetLine();
+                         	       targetDataLine = AudioUtilObject.getTargetLine();
 			}
-                } catch(Exception e){System.out.println("Eception in capture Audio class "+e.getCause());}
+                } catch(Exception e){ System.out.println("Eception in capture Audio class "+e.getCause()); }
         }
 		
-	protected byte [] getAudioData() {
-		if(audioVector.size()>0) {
+	protected synchronized byte [] getAudioData() {
+		if(audioVector.size()>1) {
 			if(audioVector.size()>10) {
-				audioVector.subList(2,7).clear();	
+				for (int i=1; i< 7; i++) {
+					audioVector.remove(1);	
+				}
                         }
 			byte[] data=audioVector.get(0);
 			audioVector.remove(0);

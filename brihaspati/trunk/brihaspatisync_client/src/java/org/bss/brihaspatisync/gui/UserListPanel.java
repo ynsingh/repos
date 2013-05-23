@@ -23,6 +23,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.DefaultListCellRenderer;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.AudioUtilObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 
@@ -48,8 +49,8 @@ public class UserListPanel extends Thread {
 	private ClientObject client_obj=ClientObject.getController();
 	private String username=client_obj.getUserName();;	
 	private String role=client_obj.getUserRole();	
-	private String a_status=client_obj.getAudioStatus();
-        private String v_status=client_obj.getVideoStatus();
+	private String a_status=AudioUtilObject.getAudioStatus();
+        private String v_status=AudioUtilObject.getVideoStatus();
 	
 	/**
 	 * Controller for class.

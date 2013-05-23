@@ -33,7 +33,7 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.Properties;
 import java.util.Iterator;
-import org.bss.brihaspatisync.util.Language;
+//import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.ProxyAuthenticator;
@@ -226,9 +226,9 @@ public class HttpsUtil{
 								// for use in runtime
 								ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
 								String a_status=str1[3].replaceAll("A=","");
-								ClientObject.getController().setAudioStatus(a_status);
+								AudioUtilObject.setAudioStatus(a_status);
 								String v_status=str1[4].replaceAll("V=","");
-								ClientObject.getController().setVideoStatus(v_status);
+								AudioUtilObject.setVideoStatus(v_status);
 							}catch(Exception e){ System.out.println("Error in HttpsUtil.java "+e.getMessage());}
 						}else if(str.startsWith("date")) {					
 							str=str.replaceAll("date","");

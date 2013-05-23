@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
 
-import org.xiph.speex.SpeexDecoder;
-
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Jan2012.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified run() Method.
@@ -27,9 +25,9 @@ public class AudioPlayer implements Runnable {
         private boolean flag=false;
 	private SourceDataLine sourceDataLine=null;
 	private LinkedList<byte[]> audioVector=new LinkedList<byte[]>();
-        private AudioFormat audioFormat=org.bss.brihaspatisync.util.ClientObject.getController().getAudioFormat();;
+        private AudioFormat audioFormat=org.bss.brihaspatisync.util.AudioUtilObject.getAudioFormat();;
+	//private org.xiph.speex.SpeexDecoder decoder = org.bss.brihaspatisync.util.AudioUtilObject.getSpeexDecoder();
 
-	
 	protected static AudioPlayer getController(){
 		if(ap==null)
 			ap=new AudioPlayer();
@@ -69,7 +67,7 @@ public class AudioPlayer implements Runnable {
 	private void startSourceLine(){
                 try{
 			if(sourceDataLine == null) {
-				sourceDataLine=org.bss.brihaspatisync.util.ClientObject.getController().getSourceLine();
+				sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();
 			}
                 }catch(Exception e){System.out.println("Exception in open sourceDataLine : "+e.getMessage());}
 
@@ -80,25 +78,31 @@ public class AudioPlayer implements Runnable {
  	 */ 		 
 
 	public void run() {
-		SpeexDecoder decoder = new SpeexDecoder();
-                decoder.init(1, (int) audioFormat.getSampleRate(), audioFormat.getChannels(), true);	
 		while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()){
 			try {
-				if(audioVector.size() > 4){
-					for (int i=0;i<4;i++) {
-						if(sourceDataLine != null ) {
-							byte[] audio_data=audioVector.get(0);
-							audioVector.remove(0);
-                                                        decoder.processData(audio_data, 0, audio_data.length);
-							byte[] decoded_data= new byte[decoder.getProcessedDataByteSize()];
-                					decoder.getProcessedData(decoded_data, 0);
-                                                        sourceDataLine.write(decoded_data,0,decoded_data.length);
-						}else
-                                                        sourceDataLine=org.bss.brihaspatisync.util.ClientObject.getController().getSourceLine();	
-					}
+				if(audioVector.size() > 5) {
+					if(sourceDataLine != null ) {
+						//byte[] decoded_data=getDecoder(audioVector.get(0));
+						byte[] audiostream=audioVector.get(0);
+						audioVector.remove(0);
+                                                sourceDataLine.write(audiostream,0,audiostream.length);
+						System.gc();
+					} else
+                                        	sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();	
 				} 
 				runner.yield();	
-			}catch(Exception ex){System.out.println("Exception in AudioPlayer run() "+ex.getMessage());}
-		}//end of while
+			} catch(Exception ex){System.out.println("Exception in AudioPlayer run() "+ex.getMessage());}
+		} //end of while
 	}
+	/**
+	public byte[] getDecoder(byte[] audio_data) {
+		byte[] decoded_data=null;
+		try {
+			decoder.processData(audio_data, 0, audio_data.length);
+        	        decoded_data= new byte[decoder.getProcessedDataByteSize()];
+       	                decoder.getProcessedData(decoded_data, 0);
+		}catch(Exception e){System.out.println("Exception in AudioPlayer class in getDecoder method  "+e.getMessage());}
+		return decoded_data;
+	}**/
+
 }

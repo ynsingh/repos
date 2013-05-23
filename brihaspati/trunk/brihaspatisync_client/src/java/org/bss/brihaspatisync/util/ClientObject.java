@@ -4,16 +4,10 @@ package org.bss.brihaspatisync.util;
  * ClientObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010-2011-2012, ETRG, IIT Kanpur.
+ * Copyright (c) 2010-2011-2012,2013 ETRG, IIT Kanpur.
  */
 
 import java.util.Vector;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.TargetDataLine;
-import javax.sound.sampled.SourceDataLine;
 import org.bss.brihaspatisync.http.HttpCommManager;
 
 /**
@@ -24,20 +18,11 @@ import org.bss.brihaspatisync.http.HttpCommManager;
 
 public class ClientObject {
 
-	private Mixer currentMixer=null;
-	private SourceDataLine sourceDataLine=null;
-	private TargetDataLine targetDataLine=null;
-	
 	private static ClientObject cb=null;
 	private Vector indexServerList=null;
 	private String indexServerName="";
 	
 	private String localIP="";
-	private String a_status="";
-	private String v_status="";
-
-	//mention what is stored in a_status and v_status --YNS
-
 	private String usr_name="";
 	private String usr_role="";
 	private String lect_id="";
@@ -46,9 +31,8 @@ public class ClientObject {
 	private String courseForAnnounce="";
 	private Vector usrStatusVector=null;
 	private Vector usrNameVector=null;
-	private int av_port=2000;
 	private HttpCommManager commMgr = HttpCommManager.getController();
-
+	
 	public static ClientObject getController(){
 		if(cb==null)
 			cb=new ClientObject();
@@ -67,19 +51,15 @@ public class ClientObject {
         }
 
 	protected void setReflectorIP(String value){
-                this.reflector_ip=value;
+                reflector_ip=value;
         }
 
         public String getReflectorIP(){
                 if( reflector_ip!=null ){
-                        return this.reflector_ip;
+                        return reflector_ip;
                 }
                 return reflector_ip;
         }
-
-	public int getAVPort(){
-		return av_port;
-	}
 
 	/**
 	 * This method is used to retrive the list of index server by calling connectToMasterServer() 
@@ -193,12 +173,6 @@ public class ClientObject {
 		return courseForAnnounce;
 	}
 	
-	/*
-	public String getServerDate(){
-		return commMgr.getServerDate();
-	}
-	*/
-	
 	/**
          * This method is used store all user status to change icons in userlist.
          */
@@ -255,22 +229,6 @@ public class ClientObject {
                 return this.localIP;
         }
 
-	public void setVideoStatus(String str){
-                this.v_status=str;
-        }
-
-        public void setAudioStatus(String str){
-                this.a_status=str;
-        }
-
-	public String getVideoStatus(){
-                return v_status;
-        }
-
-        public String getAudioStatus(){
-                return a_status;
-        } 
-	
 	private Vector LectureInfo=null;
 	private int LectureInfoindex=-1;
 	
@@ -289,72 +247,5 @@ public class ClientObject {
         public int getLectureInfoIndex(){
                 return LectureInfoindex;
         }
-
-	/**
-	 * Define audio format
- 	 */
-	
-        public javax.sound.sampled.AudioFormat getAudioFormat(){
-		float sampleRate = 8000;    //8000,11025,16000,22050,44100
-		int sampleSizeInBits = 16;  //8,16
-                int channels = 2;           //1,2
-		boolean signed = true;      //true,false
-		boolean bigEndian =false;    //true,false
-		return new javax.sound.sampled.AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
-    	}
-
-	/**
- 	 * Getting a available mixer in local system which support selected audio format.
- 	 **/
-
-        private void getMixer() {
-                if(currentMixer==null) {
-                        try {
-                                DataLine.Info targetdataLineInfo = new DataLine.Info(TargetDataLine.class, getAudioFormat());
-                                DataLine.Info soursedataLineInfo = new DataLine.Info(SourceDataLine.class, getAudioFormat());
-                                Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-                                System.out.println("Available mixers:");
-                                for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
-                                        System.out.println(mixerInfo[cnt].getName());
-                                        Mixer currentMixer_local = AudioSystem.getMixer(mixerInfo[cnt]);
-					if( currentMixer_local.isLineSupported(soursedataLineInfo) ) {
-                                                System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
-						currentMixer=currentMixer_local;
-                                                try {
-                                                        sourceDataLine =(SourceDataLine)currentMixer.getLine(soursedataLineInfo);
-                                                        sourceDataLine.open(getAudioFormat());
-                                                        sourceDataLine.start();
-                                                        System.out.println("opening sourceDataLine.");
-                                                } catch(Exception ex){System.out.println("Error in get Miser and start sourceDataLine "+ex.getMessage());}
-					}
-
-                                        if( currentMixer_local.isLineSupported(targetdataLineInfo) ) {
-                                                System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
-                                                currentMixer=currentMixer_local;
-						try {
-							targetDataLine =(TargetDataLine)currentMixer.getLine(targetdataLineInfo);
-							targetDataLine.open(getAudioFormat());
-		                	                targetDataLine.start();
-                		        	        System.out.println("opening targetDataLine.");
-						} catch(Exception ex){System.out.println("Error in get Miser and start targetDataLine "+ex.getMessage());}
-                                        }
-					if((sourceDataLine.isOpen()) && (targetDataLine.isOpen()))
-						break;
-                                }
-                        }catch(Exception e){System.out.println("Error in get Miser and start sourceDataLine and targetDataLine "+e.getMessage());}
-                }
-        }
-	
-	public TargetDataLine getTargetLine() {
-		if(currentMixer == null)
-			getMixer();
-		return 	targetDataLine;
-	}
-	
-	public SourceDataLine getSourceLine() {
-		if(currentMixer == null)
-                        getMixer();
-		return sourceDataLine;
-	}	
 }
 
