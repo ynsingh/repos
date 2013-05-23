@@ -5,6 +5,7 @@ class Accountlist
 	var $id = 0;
 	var $name = "";
 	var $code = "";
+	var $status = "";
 	var $total = 0;
 	var $optype = "";
 	var $opbalance = 0;
@@ -37,10 +38,14 @@ class Accountlist
 			$this->id = $group->id;
 			$this->name = $group->name;
 			$this->code = $group->code;
+			$this->status = $group->status ;
 			$this->total = 0;
 		}
-		$this->add_sub_ledgers();
-		$this->add_sub_groups();
+		if($this->status==0)
+		{
+			$this->add_sub_groups();
+			$this->add_sub_ledgers();
+		}
 	}
 
 	function add_sub_groups()
@@ -121,10 +126,17 @@ class Accountlist
 		{
 			echo "<tr class=\"tr-group\">";
 			echo "<td class=\"td-group\">";
+			//$this->messages->add('Value of status field==>');
+			//echo $this->status;
+			//echo "Test";	
 			if ($this->id <= 4)
-				echo "&nbsp;<strong>" .  $this->code. "</strong>";
+				{echo "&nbsp;<strong>" .  $this->code . "</strong>";
+				//echo "&nbsp;<strong>" .  $this->status . "</strong>";
+				}
 			else
-				echo "&nbsp;" .  $this->code;
+				{echo "&nbsp;" .  $this->code;
+				//echo "&nbsp;<strong>" .  $this->status . "</strong>";
+				}
 			echo "</td>";
 			echo "<td class=\"td-group\">";
 			echo $this->print_space($this->counter);
@@ -136,22 +148,31 @@ class Accountlist
 			echo "<td>Group Account</td>";
 			echo "<td>-</td>";
 			echo "<td>-</td>";
-
 			if ($this->id <= 4)
 			{
 				echo "<td class=\"td-actions\"></tr>";
 			} else {
 				echo "<td class=\"td-actions\">" . anchor('group/edit/' . $this->id , "Edit", array('title' => 'Edit Group', 'class' => 'red-link'));
+				$id1=$this->id;
+				$status1=$this->status;
+				if (  check_access('administer'))
+				{
+				if($this->status == 0)				
+					echo " &nbsp;" . anchor('group/enabledisable/' . $id1 . "/" .  $status1, 'Hide',  array('title' => 'Edit Group', 'class' => 'red-link')) ;
+				else
+					echo " &nbsp;" . anchor('group/enabledisable/' . $id1 . "/" .  $status1, 'Unhide', array('title' => 'Edit Group', 'class' => 'red-link')) ;
+				}
 				echo " &nbsp;" . anchor('group/delete/' . $this->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete group')), array('class' => "confirmClick", 'title' => "Delete Group")) . "</td>";
 			}
 			echo "</tr>";
 		}
 		foreach ($this->children_groups as $id => $data)
 		{
-			$this->counter++;
+			"$this->counter++ ";
 			$data->account_st_main($this->counter);
 			$this->counter--;
 		}
+		//} 
 		if (count($this->children_ledgers) > 0)
 		{
 			$this->counter++;

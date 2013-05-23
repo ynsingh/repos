@@ -353,6 +353,46 @@ class Group extends Controller {
 		}
 		return;
 	}
+
+			/** function for hide and unhide a group in chart of accounts **/
+			/** created by sharad <sharad23nov@yahoo.com> date 20-05-2013 **/
+
+	function enabledisable($id,$status)
+	{
+	/*	$id = $this->input->xss_clean($id);
+                $id = (int)$id;
+		$status = $this->input->xss_clean($status);
+		$status = (int)$status;*/
+		if ( ! check_access('administer'))
+                {
+                        $this->messages->add('You have no permission to hide and unhide a group.', 'error');
+                        redirect('account');
+                        return;
+                }
+
+
+		if($status == 0)
+			$status = 1;
+		else
+			$status = 0;
+		$this->db->trans_begin();
+                $update_data = array('status' => $status);
+		if ( ! $this->db->where('id', $id)->update('groups', $update_data))
+                {
+                	$this->db->trans_rollback();
+                        $this->messages->add('Error in hiding/unhiding Group account - ' . $id . '.', 'error');
+                        $this->template->load('template', 'account');
+                        return;
+                } else {
+                        $this->db->trans_complete();
+                        $this->messages->add('Operation successfull for Group Account - ' . $id . '.', 'success');
+                        redirect('account');
+                        return;
+               	}
+                
+
+
+	}
 }
 
 /* End of file group.php */
