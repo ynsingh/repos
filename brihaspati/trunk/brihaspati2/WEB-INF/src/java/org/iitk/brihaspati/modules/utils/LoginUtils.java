@@ -104,6 +104,7 @@ public class LoginUtils{
                 	                        {
                         	                       HttpSession session=(HttpSession) i.next();
                                 	                session.invalidate();
+							break;
 	                                        }
 	                                }
 				}// try for single session
@@ -218,7 +219,8 @@ public class LoginUtils{
 					}
 	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
 				}
-
+				//Get the session if exist then remove and create new session
+				CheckSession(username);
 				// Store the user object.
 				data.setUser(user);
 				// Mark the user as being logged in.
