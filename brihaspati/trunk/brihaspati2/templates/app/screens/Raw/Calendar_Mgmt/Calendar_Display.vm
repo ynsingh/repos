@@ -16,6 +16,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 ##<table bgcolor="$ui.tableColor" width=100%>
 
@@ -42,6 +43,9 @@ $!data.getMessage()
 	#end
 	</font>
 	</td>
+	<td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/CourseCalendar.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        </td>
 </tr>
 </table>
 

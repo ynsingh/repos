@@ -4,6 +4,7 @@
  * All Rights Reserved.
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modify date: 10-12-2011, 07-02-2012
 *#
@@ -16,25 +17,19 @@ $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-#if($institudeName != "ListAll")
 <table bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor"><td colspan=7>
-<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
+#if($institudeName != "ListAll")
+<tr align="right" bgcolor="$ui.menuColor"><td colspan=7>
+   <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a> |
 #if($mode == "instructordelete")
-         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("count","1") style=text-decoration:none>$course1</a> |  <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_ins $brih_mgmt</a> | $brih_listOfInstructor 
+ $brih_listOfInstructor
 #else
-         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("count","1") style=text-decoration:none>$course1</a> | <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_ins $brih_mgmt</a> | $brih_addSecInstructor 
+$brih_listOfInstructor
 #end
+ | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("count","1") style=text-decoration:none>$course1</a> | <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a>
 </td></tr>
 <tr>
 #if(($permission != "0")&&($institudeName != "ListAll"))
-	#if($tdcolor != "2")
-        <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else $brih_listOfInstructor #end </a>
-	</td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
@@ -50,55 +45,70 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else $brih_listOfInstructor #end </a>
-	</td
+	</td>
 	#end
+ #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else $brih_listOfInstructor #end </a>
+        </td>
+
 </tr>
-</table>
 #else
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor"><td colspan=7>
+ <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_regMgmt</a> $irih_listOfInstructor|
 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
-<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_regMgmt</a> | $brih_listOfInstructor	
+</tr>
 </table>
 #end
 #if(($mode == "instructordelete")||($institudeName == "ListAll"))
 <table width=100%>
-        <tr bgcolor="$ui.tableColor">
+<align="right" bgcolor="$ui.tableColor">
+       <td>
+        <a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Instructor.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+        </td>
+
         <td>
-        <b>*<font color="LightGreen">$brih_lightgreencolor </font></b> ->>> $brih_mainInstructor &nbsp;&nbsp;&nbsp;
-        <b>*<font color="Pink">$brih_lightpinkcolor</font></b> ->>> $brih_assignedrole <br>
+        <b>*<font color="LightGreen">$brih_lightpinkcolor</font></b> ->>> $brih_assignedrole &nbsp;&nbsp;&nbsp;
+        <b>*<font color="Pink"> $brih_lightgreencolor</font></b> ->>> $brih_mainInstructor <br>
         </td>
-## Representation of HELP link
-	<td align=right>
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Instructor.html","newWin");>$brih_help</a>
-        </td>
-        </tr>
 </table>
 #end
 <table bgcolor="$ui.tableColor" width=100%>
 #if(($permission=="1") && ($mode == ""))
 <form name=frm method="post" action="$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").setAction("InstructorRegisteration").addPathInfo("cName",$cName)">
 <tr bgcolor="$ui.menuColor">
-	<td><b>$brih_course $brih_ID</b></td>
-	<td><b>$cName</b></td>
+   <td align="right" colspan="3"><b>$cName</b></td>
+        <td align="right" colspan="3"><b>$brih_course $brih_ID</b></td>
+     </tr>
+
+                ## #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "$!st.usrname")
+                <td align="right" colspan="3"> <input type="text" name="EMAIL" value="$!st.usrname"> </td>
+                <td align="right"> <font color=red>*</font> $brih_email $brih_ID </td>
+                </tr>
+                <tr bgcolor="$ui.menuColor" align="right">
+                        ##formPasswordCell ("$brih_pwd" "PASSWD" "$!st.Pswd")
+                        <td align="right" colspan="3"> <input type="password" name="PASSWD" value="$!st.Pswd"> </td>
+                        <td> $brih_pwd </td>
+                </tr>
+                <tr align="right">
+                        ##formCell ("$brih_first $brih_name" "FNAME" "$!st.Fstname")
+                        <td align="right" colspan="3"> <input type="text" name="FNAME" value="$!st.Fstname"> </td>
+                        <td> $brih_first $brih_name </td>
+                </tr>
+                <tr bgcolor="$ui.menuColor" align="right">
+                        ###formCell("$brih_last $brih_name" "LNAME" "$!st.Lstname")
+                        <td align="right" colspan="3"> <input type="text" name="LNAME" value="$!st.Lstname"> </td>
+                        <td> $brih_last $brih_name </td>
 </tr>
-<tr>
-	#formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-</tr>
-<tr bgcolor="$ui.menuColor">
-	#formPasswordCell ("$brih_pwd" "PASSWD" "")
-</tr>
-<tr>
-        #formCell ("$brih_first $brih_name" "FNAME" "")
-</tr>
-<tr bgcolor="$ui.menuColor">
-        #formCell("$brih_last $brih_name" "LNAME" "")
-</tr>
-<tr>
-	<td colspan=5 align="left">
-	<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
-        <input type="hidden" name="actionName">
+<tr align="right">
+	<td colspan=5 align="right">
         <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
+        <input type="hidden" name="actionName">
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
         <input type="hidden" name="count" Value="$tdcolor"/>
 	<input type="hidden" name="cName" value="$cName">
 	</td>
@@ -109,29 +119,33 @@ $!data.getMessage()
 #if($mode == "instructordelete")
 <table width="100%">
 	#if($permission != "0")	
-	    #set($headings = ["$brih_usrName","$brih_first $brih_name","$brih_last $brih_name","$Repo_Perm"] )
+     #set($headings = ["$Repo_Perm","$brih_last $brih_name","$brih_first $brih_name","$brih_usrName"])
+           
  	#else
-	    #set($headings = ["$brih_usrName","$brih_first $brih_name","$brih_last $brih_name"] )
+          #set($headings = ["$brih_last $brih_name","$brih_first $brih_name","$brih_usrName"] )
+                 
  	#end
 <FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").setAction("InstructorList_Action").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("mode","instructordelete")">
 #if($status=="notempty")
+
 <tr bgcolor="$ui.menuColor">
-#if($permission != "0")
-<td align="left">
-	<input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
-        <font face="$ui.sansSerifFonts"><b>
-        #if($lang == "hindi")
-        $brih_all $brih_select</b
-        #else
-        $brih_selAll</b>
-        #end
-        </td>
-#end
-	#foreach ($heading in $headings)
+        #foreach ($heading in $headings)
         #headerCell ($heading)
         #end
+        <td>
+         <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
+        <font face="$ui.sansSerifFonts"><b>
+        #if($lang == "hindi")
+        All Select</b>
+        #else
+        Select All </b>
+        #end
+
+        </td>
+
         </tr>
-           #set($count="")      
+ 
+          #set($count="")      
              #set($count1= 0)      
                #foreach($users in $userdetail)
 		 #set($temp1= 0)
@@ -154,19 +168,7 @@ $!data.getMessage()
 			#set($temp1 = $temp1 + 1)
 		      #end	
 			#foreach($user in $users)
-			 #if($permission != "0")        		
                             <td>
-			    #if($count1 != $as)
-				#if($user.UserName != $flag )
-	                    		<INPUT TYPE="CHECKBOX" NAME="$!user.UserName" onClick="addDeleteList(this,document.frm);">
-				#end
-			    #end
-                            </td>
-			  #end
-			    <td>$!user.UserName</td>
-                            <td>$!user.getFirstName()</td>
-                            <td>$!user.getLastName()</td>
-			    <td>
 			    #if($permission=="1")
 	               	    #set($temp= 0)      
 			    #foreach($us in $usrprms)
@@ -185,14 +187,31 @@ $!data.getMessage()
                                 	#end	
 					#set($temp = $temp + 1)
 				#end	
-				##set($count1 = $count1 + 1)
 				#end
-                	#end
-				#set($count1 = $count1 + 1)
-         	#end
+
+</td>
+
+                               <td>$!user.getLastName()</td>
+                               <td>$!user.getFirstName()</td>
+                                <td>$!user.UserName</td>
+                            <td>
+                                #if($permission != "0")                        
+                            #if($count1 != $as)
+                                #if($user.UserName != $flag )
+                                        <INPUT TYPE="CHECKBOX" NAME="$!user.UserName" onClick="addDeleteList(this,document.frm);">
+                                #end
+                            #end
+                            </td>
+                          #end
+                        #end
+                                #set($count1 = $count1 + 1)
+                #end
+        </tr>
+
+
         </tr>
 	#if($permission=="1")
-        <tr bgcolor="$ui.menuColor"><td colspan=5 >
+        <tr align="right" bgcolor="$ui.menuColor"><td colspan=5 >
 	  <input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
           <input type="hidden" name="deleteFileNames" value="">
  	  <input type="hidden" name="count" value="$tdcolor">
@@ -202,7 +221,7 @@ $!data.getMessage()
 	#end
 
 	#if($mode == "instructordelete")
-	<tr><td align=left bgcolor="$ui.tableColor" colspan=6>
+	<tr><td align="right" bgcolor="$ui.tableColor" colspan=6>
         #if($total_size <= $AdminConf)
         <img src="$content.getURI("images/First_blank.png")">
         <img src="$content.getURI("images/Previous_blank.png")">
