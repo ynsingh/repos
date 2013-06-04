@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS entries (
   dr_total decimal(15,2) NOT NULL DEFAULT '0.00',
   cr_total decimal(15,2) NOT NULL DEFAULT '0.00',
   narration text NOT NULL,
+  update_date datetime NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
@@ -67,6 +68,7 @@ CREATE TABLE IF NOT EXISTS entry_items (
   amount decimal(15,2) NOT NULL DEFAULT '0.00',
   dc char(1) NOT NULL,
   reconciliation_date datetime NULL,
+  update_date datetime NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

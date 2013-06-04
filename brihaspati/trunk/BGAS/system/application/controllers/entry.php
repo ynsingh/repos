@@ -308,7 +308,8 @@ class Entry extends Controller {
 			$data['ledger_id'] = $this->input->post('ledger_id', TRUE);
 			$data['dr_amount'] = $this->input->post('dr_amount', TRUE);
 			$data['cr_amount'] = $this->input->post('cr_amount', TRUE);
-		} else {
+		} 
+		else {
 			for ($count = 0; $count <= 3; $count++)
 			{
 				if ($count == 0 && $entry_type == "payment")
@@ -470,6 +471,7 @@ class Entry extends Controller {
 				'narration' => $data_narration,
 				'entry_type' => $data_type,
 				'tag_id' => $data_tag,
+				'update_date' => $data_date,
 			);
 			if ( ! $this->db->insert('entries', $insert_data))
 			{
@@ -510,6 +512,7 @@ class Entry extends Controller {
 					'ledger_id' => $data_ledger_id,
 					'amount' => $data_amount,
 					'dc' => $data_ledger_dc,
+					'update_date' => $data_date,
 				);
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
@@ -824,6 +827,9 @@ class Entry extends Controller {
 			$data_type = $entry_type_id;
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$data_has_reconciliation = $this->input->post('has_reconciliation', TRUE);
+			
+			$dateTime = new DateTime();
+        		$updatedate = $dateTime->format("Y-m-d 00:00:00");
 
 			$this->db->trans_start();
 			$update_data = array(
@@ -831,6 +837,7 @@ class Entry extends Controller {
 				'date' => $data_date,
 				'narration' => $data_narration,
 				'tag_id' => $data_tag,
+				'update_date' => $updatedate,
 			);
 			if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
 			{
@@ -880,6 +887,7 @@ class Entry extends Controller {
 					'ledger_id' => $data_ledger_id,
 					'amount' => $data_amount,
 					'dc' => $data_ledger_dc,
+					'update_date' => $updatedate,
 				);
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
