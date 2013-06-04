@@ -3,9 +3,9 @@
  * Copyright (c) 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-<html>
 $page.setTitle("Admin Home | Add Department")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
@@ -129,7 +129,7 @@ $!data.getMessage()
         	<td>  <input type="text" name="dnick" value="$!dptnckame"> </td>
         </tr>
         <tr>
-        	<td> $brih_floor <span style="color:red;">*</span></td>
+        	<td> $brih_floor</td>
         	<td> <input type="text" name="fcount" value="$!fcount" onkeyup="isInteger(this.value)" id="checkint"> </td>
         </tr>
         <tr bgcolor="$ui.tableColor">
@@ -214,8 +214,9 @@ $!data.getMessage()
 		#end
 	<tr>
 		<td>
+		<div style="width:900px;overflow-x:auto;">
 		<table width="100%">
-		<tr bgcolor="$ui.menuColor">
+		<tr bgcolor="$ui.menuColor" align="center">
         	#foreach ($heading in $headings)
           		#headerCell($heading)
         	#end
@@ -241,6 +242,7 @@ $!data.getMessage()
 			</tr>
 		#end
 		</table>
+		</div>
 		</td>
 	</tr>
 	#end
@@ -257,8 +259,9 @@ $!data.getMessage()
 	#if($!depname != "")
       	<tr>
 		<td>
+		<div style="width:900px;overflow-x:auto;">
         	<table width="100%">
-        	<tr bgcolor="$ui.menuColor">
+        	<tr bgcolor="$ui.menuColor" align="center">
         	#foreach ($heading in $headings)
           		#headerCell($heading)
         	#end
@@ -285,6 +288,7 @@ $!data.getMessage()
 	 		</td>
         	</tr>
         	</table>
+		</div>
 		</td>
         </tr>
 	#end
@@ -298,38 +302,77 @@ $!data.getMessage()
 		<td><font color="red" size="3"><b>* <i>$brih_schoolnoexist</i></b></font></td>
 	</tr>
        	#else
-		#if($lang == "hindi" || $lang =="gujarati") 
-			#set ( $headings = ["$brih_schce $brih_name","$brih_schce $brih_code", "$brih_nick $brih_name", "$brih_desc" , "$brih_action"] )
+		#if($data.getUser().getTemp("role") == "institute_admin")
+			#set ( $headings = ["$brih_select","$brih_schce $brih_name","$brih_schce $brih_code", "$brih_nick $brih_name", "$brih_desc" , "$brih_availableAction"] )
 		#else
-			#set ( $headings = ["$brih_schce $brih_name","$brih_schce $brih_code", "$brih_nick $brih_name", "$brih_desc" , "$brih_action"] )
+			#set ( $headings = ["$brih_schce $brih_name","$brih_schce $brih_code", "$brih_nick $brih_name", "$brih_desc" , "$brih_availableAction"] )
 		#end
 		<tr>
 			<td>
 			<table width="100%">
-			<tr bgcolor="$ui.menuColor">
+			<tr bgcolor="$ui.menuColor" align="center">
         		#foreach ($heading in $headings)
                 		#headerCell($heading)
          		#end
         		</tr>
+			#set($cnt=0)
         		#foreach ($lsschool in $lstschool)
-        			#if($velocityCount%2==0)
-        			<tr bgcolor="$ui.menuColor">
-                			#set($bg=$ui.menuColor)
-       				#else
-        			<tr bgcolor="$ui.tableColor">
-                			#set($bg=$ui.tableColor)
-        			#end
-              				<td>$!lsschool.getName()</td>
+			 	#set($cnt = $cnt+1)
+				#if($data.getUser().getTemp("role") != "institute_admin")
+                                        #if($velocityCount%2==0)
+                                        <tr bgcolor="$ui.menuColor">
+                                        #else
+                                        <tr bgcolor="$ui.tableColor">
+                                        #end
+                                #else
+                                        <tr bgcolor="$ui.tableColor">
+                                #end
+					#if($data.getUser().getTemp("role") == "institute_admin")
+					<td><INPUT TYPE="CHECKBOX" onClick="javascript:showTable$cnt();" id="$cnt" title="click for see mapped department associated with school"></td>
+					#end
+              				<td width="30%">$!lsschool.getName()</td>
               				<td>$!lsschool.getSchoolCode()</td>
               				<td>$!lsschool.getNickName()</td>
               				<td>$!lsschool.getDescription()</td>
-				#if($data.getUser().getTemp("role") != "institute_admin")
+					#if($data.getUser().getTemp("role") != "institute_admin")
 	      				<td><a href="$link.setPage("call,Department,AddDepartment.vm").addPathInfo("schid",$lsschool.getSchoolId()).addPathInfo("mode","schdel")" style="text-decoration:none;">$brih_delete</a></td>
-				#else
-					<td> <a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("schid",$lsschool.getSchoolId()).addPathInfo("mode","schunmap").addPathInfo("instituteId",$instituteId)" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to unmap this School!! It will unmap all mapped Department with school !!')">$brih_deptunmap</a>
+					#else
+					<td width="25%"> <a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("schid",$lsschool.getSchoolId()).addPathInfo("mode","schunmap").addPathInfo("instituteId",$instituteId)" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to unmap this School!! It will unmap all mapped Department with school !!')">$brih_deptunmap</a> |
+					 <a id="$cnt" onClick="javascript:showTable$cnt();" style="text-decoration:none; cursor:pointer; color:blue" title="View Mapped Department">$brih_dept $brih_list</a>
 					</td>
-        			#end
+        				#end
 				</tr>
+				 #if($data.getUser().getTemp("role") == "institute_admin")
+                		<tr bgcolor="$ui.menuColor">
+                        		<td></td>
+                        		<td id='tabl$cnt' style="display:none;width:350px;overflow-x:auto;" >
+                                        	##Get Mapped Department list associated with School/Centre
+                                        	#foreach($deptlist in $lstdeptschool)
+                                        	#set($id= "$lsschool.getSchoolId()")
+                                                	#if($id==$deptlist.get("schid"))
+								<ul type="square">
+                                                                        <li><font style="text-decoration:none; cursor:pointer;color:blue;" title="$deptlist.get("deptname")">$deptlist.get("deptname")</font></li>
+                                                                </ul>
+                                                	#end
+                                		#end
+                        		</td>
+                        		<td  colspan='5'></td>
+                		</tr>
+				#end
+##### Script for displaying Mapped Department with in each School#######
+<script type="text/javascript" language="javascript">
+function showTable$cnt(){
+	var disp = document.getElementById('tabl$cnt');
+        if( disp.style.display == 'block' ){
+        	disp.style.display = 'none';
+        }
+        else {
+        	disp.style.display = 'block';
+        }
+        return disp ;
+}
+</script>
+########### END OF SCHOOL ####################         
 			#end
 			</table>
 			</td>
@@ -348,6 +391,7 @@ $!data.getMessage()
        	#if($!schname != "")
        	<tr>
 		<td>
+		<div style="width:900px;overflow-x:auto;">
         	<table width="100%">
         	<tr bgcolor="$ui.menuColor">
         	#foreach ($heading in $headings)
@@ -376,6 +420,7 @@ $!data.getMessage()
         		</td>
         	</tr>
         	</table>
+		</div>
         	</td>
 	</tr>
         #end
@@ -390,6 +435,7 @@ $!data.getMessage()
 	#if($deptmap.size()==0)
         <tr><font color="red" size="3"><b>* <i> $brih_nodeptmap</i></b></font></tr>
         #else
+	<div style="width:930px;overflow-x:auto;">
 	<table bgcolor="$ui.menuColor" width=100%>
         <tr bgcolor="$ui.menuColor">
         	<td width=5%>$brih_select</td>
@@ -416,16 +462,15 @@ $!data.getMessage()
                 ##If flag true then disable that check box ###
          	#if($flag)
               		<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" DISABLED></td>
-              		<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
 	 		#set($flag=false)
          	#else
               		<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" ></td>
-              		<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
          	#end
+              		<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
         	#set($count = "$count$!deptcodeid^")
         	</tr>
         #end
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.tableColor">
         	<td colspan=3>
                 <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="$brih_map $brih_dept" onClick="checkValue(document.frm,this);">
                 <INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
@@ -434,6 +479,7 @@ $!data.getMessage()
               	</td>
         </tr>
         </table>
+	</div>
 	#end
 	</form>
 	</td>
@@ -480,8 +526,8 @@ $!data.getMessage()
                 #else
                 <tr bgcolor="$ui.tableColor">
                 #end
-			<td></td>
-			<td id='tabl$cnt' style="display:none;" bgcolor="$ui.tableColor">
+			<td bgcolor="$ui.menuColor"></td>
+			<td id='tabl$cnt' style="display:none;width:850px;overflow-x:auto;" bgcolor="$ui.tableColor">
 			<table bgcolor="" width="100%">
 			#if ($deptmap.size() == 0)
                 	<tr><font color="red" size="3"><b>* <i> $brih_deptnoexist</i></b></font></tr>
@@ -513,12 +559,11 @@ $!data.getMessage()
                 			##If flag true then disable that check box 
                 			#if($flag)
                         			<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" DISABLED></td>
-                        			<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
                         			#set($flag=false)
                 			#else
                         			<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" ></td>
-                        			<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
                 			#end
+                        			<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
        					 	#set($count = "$count$!deptcodeid^")
         				</tr>
        				#end
@@ -549,7 +594,7 @@ $!data.getMessage()
         #set($count = "$count$!schcodeid^")
         #end
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.tableColor">
                 <td colspan=3>
                         <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="Submit" onClick="checkValue(document.frm,this);">
                         <INPUT TYPE="hidden" NAME="actionName" VALUE="eventSubmit_doMap">
@@ -565,4 +610,3 @@ $!data.getMessage()
 </tr>
 #end
 </table>
-</html>

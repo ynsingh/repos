@@ -41,7 +41,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh 20100810</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh - 20100810</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date: 22-11-2010,22-04-2013
+ * @modified date: 22-11-2010,22-04-2013,31-05-2013
  */
 
 
@@ -112,11 +112,12 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
 			user.setTemp("mInststat",minststat);
                         String instituteId=data.getParameters().getString("instituteid","");
                         context.put("instituteId",instituteId);
-			/**
-			* Get mapped Department List from table for showing in template
-			*/
+			// Get mapped Department List according the institute for showing in template
 			List DeptList=ListManagement.getMapDeptList(instituteId);
                         context.put("deptlist",DeptList);
+			// Get mapped School List according the institute for showing in template
+			List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                        context.put("schlist",mapschlist);
 			/**
  			*Check Institute Profile exist or not
  			*/ 

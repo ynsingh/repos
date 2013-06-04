@@ -57,7 +57,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modify date: 09-08-2012 (Priyanka)
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modify date: 22-04-2013
+ * @modify date: 22-04-2013,31-05-2013
  */
 public class RegisterCourseInstructor extends SecureAction_Admin
 {
@@ -96,6 +96,8 @@ public class RegisterCourseInstructor extends SecureAction_Admin
                                 path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"instName"+"Admin.properties";
 		 		String gname=pp.getString("COURSEID").toUpperCase();
 		 		String cname=pp.getString("CNAME");
+				//Get school/center name for Course Registeration
+				String schname=pp.getString("SCHNAME");
 		 		String dept=pp.getString("DEPARTMENT","");
 		 		String description=pp.getString("DESCRIPTION","");
 		 		//String uname=pp.getString("UNAME");
@@ -122,7 +124,8 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 		  		*/
 		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
 		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,""); //modified by Shaista passing institute id and institute name. Last parameter added by Priyanka
-		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,LangFile,instId,instName,"");
+				//Add last parameter 'schname' for course registration with school/center.
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,LangFile,instId,instName,"",schname);
 				data.setMessage(msg);
 				// Maintain Log
                                 java.util.Date date= new java.util.Date();
@@ -138,26 +141,37 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 	}
 	
 	/**
-	* This method is used to getting all mapped department list according to Instiute
-        * in the system
-        * @param data RunData instance
-        * @param context Context instance
-        * @exception Exception, a generic exception
+	* This method is used to getting all mapped department and school/center list 
+	* according to instiute in the system.
+        * @param data RunData instance.
+        * @param context Context instance.
+        * @exception Exception, a generic exception.
         */
 	public void doSearch(RunData data, Context context) throws Exception
         {
+		try
+		{
                 /**
-                * Get only those department which is mapped with specific institute
-	        * Gather details from the page where user has entered them
-                * @param instName: Getting instName as a String from Parameter Parser 
-                * @param instId: Getting instId as an String 
-                * @see ListManagement util in utils
+                * Get only those department which is mapped with specific institute.
+	        * Gather details from the page where user has entered them.
+                * @param instName: Getting instName as a String from Parameter Parser .
+                * @param instId: Getting instId as an String .
+                * @see ListManagement util in utils.
                 */
                 ParameterParser pp=data.getParameters();
                 String instName=pp.getString("instName");
 		String instituteId = Integer.toString(InstituteIdUtil.getIst_Id(instName));
+		//Get mapped department list
                 List DeptList=ListManagement.getMapDeptList(instituteId);
                 context.put("deptlist",DeptList);
+		//Get mapped school/center list
+		List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                context.put("schlist",mapschlist);
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Exception in getting mapped department or school/center list ---"+e.getMessage());
+		}
         }
 
 	/**

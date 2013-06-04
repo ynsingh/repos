@@ -348,7 +348,6 @@ var reason = "";
     reason += validatedeptname(frm.deptname);
     reason += validatedcode(frm.dcode);
     reason += validatednick(frm.dnick);
-    reason += validatefcount(frm.fcount);
 if (reason != "") {
         alert("Some fields need correction:\n\n"+reason);
         return false;
@@ -383,16 +382,6 @@ var error = "";
         if (fld.value == "") {
                 fld.style.background = 'Yellow';
                 error = "* you haven't entered department code.\n";
-        } else {
-                fld.style.background = 'White';
-        }
-        return error;
-}
-function validatefcount(fld){
-var error = "";
-        if (fld.value == "") {
-                fld.style.background = 'Yellow';
-                error = "* you haven't entered floors.\n";
         } else {
                 fld.style.background = 'White';
         }

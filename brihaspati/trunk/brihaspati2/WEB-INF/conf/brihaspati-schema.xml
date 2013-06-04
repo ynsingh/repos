@@ -38,6 +38,7 @@
 	<column name="GROUP_NAME" required="true" primaryKey="true" type="VARCHAR" size="99"/>
 	<column name="CNAME" size="255" type="VARCHAR"/>
 	<column name="GROUP_ALIAS" required="true" type="VARCHAR" size="99"/>
+	<column name="SCHOOL_CENTER" type="VARCHAR" size="255"/>
 	<column name="DEPT" size="255" type="VARCHAR"/>
 	<column name="DESCRIPTION"  size="255" type="VARCHAR"/>
 	<column name="ACTIVE" required="true" type="TINYINT" default="0"/>
@@ -498,7 +499,7 @@
   	<column name="NAME" required="true" size="100" type="VARCHAR"/>
   	<column name="DEPARTMENT_CODE" required="true" size="100" type="VARCHAR"/>
   	<column name="NICK_NAME" size="255" type="VARCHAR"/>
-	<column name="FLOORS_COUNT" required="true" size="11" type="INTEGER"/>
+	<column name="FLOORS_COUNT" size="11" type="INTEGER"/>
 	<column name="INSTITUTE_ID" type="INTEGER"/>
 <unique>
         <unique-column name="NAME"/>

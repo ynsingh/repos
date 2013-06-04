@@ -65,11 +65,15 @@ import java.io.FileOutputStream;
 import java.io.File;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.iitk.brihaspati.om.Department;
 import org.iitk.brihaspati.om.DepartmentPeer;
 import org.iitk.brihaspati.om.DeptSchoolUnivPeer;
 import org.iitk.brihaspati.om.DeptSchoolUniv;
 import org.iitk.brihaspati.om.SchoolPeer;
 import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * This class contains methods for listing
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
@@ -79,7 +83,7 @@ import java.util.LinkedHashSet;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>  
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>  
- * @modified date:02-07-2011, 12-02-2013, 22-04-2013
+ * @modified date:02-07-2011, 12-02-2013, 22-04-2013,31-05-2013
  */
 
 public class ListManagement
@@ -838,7 +842,7 @@ public class ListManagement
                		deptlist=DepartmentPeer.doSelect(crit);
 		}
 		else
-		{
+		{	
 			int deptid=Integer.parseInt(departmentId);
                		crit.add(DepartmentPeer.DEPARTMENT_ID,deptid);
                		deptlist=DepartmentPeer.doSelect(crit);
@@ -912,32 +916,93 @@ public class ListManagement
          */
 	public static List getMapDeptList(String InstituteId) 
 	{
-               	ArrayList mapdeptlist = new ArrayList();
+		ArrayList mapdeptlist = new ArrayList();
                	try
 		{
 			List lsdsu=getDeptScoolUnivList(InstituteId);
 			//Initialize Arraylist for getting sort department list
-                       	for(int i=0;i<=lsdsu.size();i++)
+                       	for(int i=0;i<lsdsu.size();i++)
                        	{
                              	DeptSchoolUniv element=(DeptSchoolUniv)lsdsu.get(i);
-                               	String deptid=element.getDeptId();
-                               	String mapschid=element.getSchoolId();
-                               	//Check map school id
-                               	if(mapschid == null)
-                               	{
-                                     	List mapdept=ListManagement.getDepartmentList(deptid);
-                                       	//Add department list in Arraylist
-                                       	mapdeptlist.addAll(mapdept);
-                               	}
-                        }
-                        	//Sort unique department list from Vector list
-                        	mapdeptlist = new ArrayList(new LinkedHashSet(mapdeptlist));
+                               	String deptid=element.getDeptId().toString();
+				List deptlist=getDepartmentList(deptid);
+                                //Add department list in Arraylist
+                                mapdeptlist.addAll(deptlist);
+			}
+			// Get unique list and removing duplicate entry from list.
+			mapdeptlist = new ArrayList(new LinkedHashSet(mapdeptlist));
+			// Get sorted list using Collection method.
+			Collections.sort(mapdeptlist);
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
-                       	ErrorDumpUtil.ErrorLog("Exception in getting mapped deaprtment list"+e);
+                       	ErrorDumpUtil.ErrorLog("Exception in getting mapped deaprtment list"+ex.getMessage());
                 }	
                 return mapdeptlist;
+	}
+	/**
+        * This Method is used for getting Mapped department and school/center list along with institute
+	* and mapped department list along wioth school/center.
+        * @parameter:String InstituteId.
+        * @parameter:String mode (mode is used for getting mapped school list using "school" parameter and mapped department list associated with school using "schooldept" parameter).
+        * @return: List (All unique/soretd Mapped Department and school/center).
+        */
+	public static List getMapSchoolDeptList(String InstituteId,String mode)
+        {
+                ArrayList mapschlist = new ArrayList();
+		Map map = new HashMap();
+                try
+                {
+                	List lsdsu=getDeptScoolUnivList(InstituteId);
+                        for(int i=0;i<=lsdsu.size();i++)
+                        {
+                        	DeptSchoolUniv element=(DeptSchoolUniv)lsdsu.get(i);
+                                String schoolid=element.getSchoolId();
+                                if(schoolid != null)
+                                {	
+					//if mode equals to "school" then getting map school list according to schoolid associated with institute.
+					if(mode.equals("school"))
+					{
+                                        	List mapschool=getSchoolList(schoolid);
+                                        	mapschlist.addAll(mapschool);
+					}
+					//if mode equals to "schooldept" then getting mapped department list associated with school/center.
+					if(mode.equals("schooldept"))
+					{
+						String deptid=null;
+						deptid=element.getDeptId().toString();
+						if(deptid!=null)
+						{
+							try
+							{
+								//Get Department list using department id
+                                				List deptlist=getDepartmentList(deptid);
+								Department newelement=(Department)deptlist.get(0);
+			                        		String Deptname=newelement.getName().toString();
+								//set school id and department name in hash table alongwith keys for display in template
+								map = new HashMap();
+                                                		map.put("schid",schoolid );
+                                                		map.put("deptname",Deptname);
+								mapschlist.add(map);
+							}
+							catch(Exception ex) 
+							{	
+								ErrorDumpUtil.ErrorLog("Error in getting department list alongwith school/center--"+ex.getMessage());
+							}
+						}
+					}
+                                }
+				// Get unique list and removing duplicate entry from list.
+				mapschlist = new ArrayList(new LinkedHashSet(mapschlist));
+			}
+			// Get sorted list using Collection method.
+			Collections.sort(mapschlist);
+		}
+                catch(Exception e)
+                {
+                	ErrorDumpUtil.ErrorLog("Exception in getting mapped school list"+e);
+                }
+		return mapschlist;
 	}
 }
 

@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)CourseUserDetail.java
  *
- *  Copyright (c) 2006-2008.2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2008,2010,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -43,8 +43,9 @@ package org.iitk.brihaspati.modules.utils;
  *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @modified date: 20-10-2010,3-11-2010, 23-12-2010, 13-07-2011
- *  @modified date: 09-08-2012 (Priyanka)
+ *  @modified date: 09-08-2012 (Priyanka),31-05-2013
  */
 
 import java.util.Date;
@@ -87,6 +88,7 @@ public class CourseUserDetail
 	private int countLogins;
 	private String activate;
 	private String flag;
+	private String schcenter;
 	/**
 	 * Course details
 	 */ 
@@ -386,6 +388,15 @@ public class CourseUserDetail
         public int getCountLogins()
         {
                 return countLogins;
+        }
+	// Add school/center name in Course Registration
+	public void setSchoolCenter(String schcenter)
+        {
+                this.schcenter=schcenter;
+        }
+        public String getSchoolCenter()
+        {
+                return schcenter;
         }
 
 

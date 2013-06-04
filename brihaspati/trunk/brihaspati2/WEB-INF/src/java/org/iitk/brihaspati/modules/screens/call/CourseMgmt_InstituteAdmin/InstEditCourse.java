@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_InstituteAdmin;
 /**
  *  @author: <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a> 
  *  @author: <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
- *  @modify date: 22-04-2013
+ *  @modify date: 22-04-2013,31-05-2013
  */
 import java.util.List;
 import java.util.Vector;
@@ -72,11 +72,12 @@ public class InstEditCourse extends SecureScreen_Institute_Admin{
 			context.put("Courseid",GName);
 			String counter = data.getParameters().getString("count","");
 			context.put("tdcolor",counter);
-			/**
-                        * Get Department List from table for showing in template
-                        */
+                        // Get mapped Department List from table for showing in template
 			List DeptList=ListManagement.getMapDeptList(instituteId);
                         context.put("deptlist",DeptList);
+                        // Get mapped School List from table for showing in template
+			List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                        context.put("schlist",mapschlist);
 		}
 		catch(Exception e)
 		{

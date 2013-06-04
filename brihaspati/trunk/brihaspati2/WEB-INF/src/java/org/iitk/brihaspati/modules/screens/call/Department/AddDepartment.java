@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
 /**
  * @author <a href="santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+ * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 31-05-2013
  */
 
 /* This screen class is called when User's selects a Department/School
@@ -95,29 +97,25 @@ public class AddDepartment extends SecureScreen
 	 		*/		
 			if (mode.equals("lstdept")||mode.equals("deptmap") || (mode.equals("deptunmap"))) 
 			{
-				dptid="";
-				Vector unid=new Vector();
-				// getting mapped department list
-				List mapdeptlist = ListManagement.getMapDeptList(instituteId);
 				/**
 				* If role is Insttitute Admin then send department listto the template 
 				* to showing mapped department list in template 
 				*/
 				if(userrole.equals("institute_admin") && ((mode.equals("lstdept"))||(mode.equals("deptunmap"))))
 				{
+					// getting mapped department list
+					List mapdeptlist = ListManagement.getMapDeptList(instituteId);
 					context.put("mapdeptlist",mapdeptlist);
 				}
 				if(userrole.equals("institute_admin") && (mode.equals("deptmap")))
-				{
+				{	
+					//set department id is null for getting all department list from table
+					dptid="";
 					// get all Departments List	
                 			List lstdept=ListManagement.getDepartmentList(dptid);
-					// get map Departments List	
-					crit=new Criteria();
-                			crit.add(DeptSchoolUnivPeer.SCHOOL_ID,null);
-                			crit.add(DeptSchoolUnivPeer.UNIVERSITY_ID,instituteId);
-                			List dsuulist=DeptSchoolUnivPeer.doSelect(crit);
-					// set variable for displaying mapped Department List in Template
 					context.put("deptmap",lstdept);
+					// get map Departments List	
+                			List dsuulist=ListManagement.getDeptScoolUnivList(instituteId);
 					context.put("lsdsu",dsuulist);
 				}
 			}
@@ -132,8 +130,7 @@ public class AddDepartment extends SecureScreen
 				if(mode.equals("deptdel"))
 				{
         				Vector unid=new Vector();
-					//Get Department Name
-					//Get Institute name correspondance Department  
+					//Get Institute name according to the Department and put in context to show in template.
 					List lstdept=ListManagement.getDepartmentList(dptid);
 					String deptname= ((Department)lstdept.get(0)).getName();
 					crit=new Criteria();
@@ -145,8 +142,10 @@ public class AddDepartment extends SecureScreen
                 				String univid=newelement.getUniversityId();
 						int instid = Integer.parseInt(univid);
 						String InstName=InstituteIdUtil.getIstName(instid);
+						//Add all institute name in vector
                 				unid.add(InstName);
                				}
+					//Remove duplicate entry from vector.
                 			unid = new Vector(new LinkedHashSet(unid));
 					context.put("depid",dptid);
 					context.put("depname",deptname);
@@ -158,7 +157,7 @@ public class AddDepartment extends SecureScreen
 			{
         			Vector unid=new Vector();
         			List lstschool = ListManagement.getSchoolList(schid);
-				//Get School Name
+				//Get Institute name according to the school/center and put in context to show in template.
         			String schname= ((School)lstschool.get(0)).getName();
         			crit=new Criteria();
         			crit.add(DeptSchoolUnivPeer.SCHOOL_ID,schid);
@@ -182,42 +181,26 @@ public class AddDepartment extends SecureScreen
                 		context.put("listsize",dsuulist);
         		}
 		
-                	// This code getting all school list and mapped school list to show in template 
+                	// This code getting all school list and mapped school list to show in template.
 			else if((mode.equals("lstschool")) || (mode.equals("schoolmap")) || (mode.equals("schunmap")))
 			{
-				schid="";
-				// get all School list 
-				List lstschool=ListManagement.getSchoolList(schid);
-				//if(mode.equals("lstschool")){	
-				Vector mapschlist = new Vector();
-				// set variable for displaying School info in Template
-				List lsdsu=ListManagement.getDeptScoolUnivList(instituteId);
-        			ArrayList mapdeptlist = new ArrayList();
-        			try 
-				{
-        				for(int i=0;i<=lsdsu.size();i++)
-					{
-        					DeptSchoolUniv element=(DeptSchoolUniv)lsdsu.get(i);
-        					String schoolid=element.getSchoolId();
-						if(schoolid != null)
-						{
-                					crit=new Criteria();
-                        				List mapschool=ListManagement.getSchoolList(schoolid);
-                        				mapschlist.addAll(mapschool);
-						}
-                			}
-                		}	
-                		catch(Exception e) 
-				{
-					ErrorDumpUtil.ErrorLog("Exception in getting mapped school list"+e);
-				}
 				if(((mode.equals("lstschool"))|| (mode.equals("schunmap"))) && (userrole.equals("institute_admin")))
 				{	
-					mapschlist = new Vector(new LinkedHashSet(mapschlist));
+					//Getting mapped school list according the institute.
+					List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
 					context.put("lstschool",mapschlist);
+					//Getting mapped department list according the school and their institute.
+					List mapschdeptlist = ListManagement.getMapSchoolDeptList(instituteId,"schooldept");
+					context.put("lstdeptschool",mapschdeptlist);
                 		}
                 		else 
 				{
+					//set school id is null for getting all department list from table
+					schid="";
+					// get all School list for showing in tempaltes.
+					List lstschool=ListManagement.getSchoolList(schid);
+					// Get mapped department school list 
+					List lsdsu=ListManagement.getDeptScoolUnivList(instituteId);
 					// get all department List to disable mapped department
                 			List lstdept=ListManagement.getDepartmentList(dptid);
 					// set variable for displaying mapped department with school in Template

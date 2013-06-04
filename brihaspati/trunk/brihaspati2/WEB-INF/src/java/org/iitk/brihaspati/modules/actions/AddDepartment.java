@@ -36,6 +36,8 @@ package org.iitk.brihaspati.modules.actions;
 
 /**
  * @author <a href="santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+ * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 31-05-2013
  */
 import java.util.List;
 import java.util.Vector;
@@ -104,7 +106,14 @@ public class AddDepartment extends SecureAction
         		String deptname=pp.getString("deptname","");
 		        String deptcode=pp.getString("dcode","");
         		String deptnick=pp.getString("dnick","");
-		        int deptfloor=Integer.parseInt(pp.getString("fcount",""));
+			String fcount=pp.getString("fcount","");
+			int deptfloor;
+			if(fcount.equals("")){
+			deptfloor=0;
+			}
+			else{
+		        deptfloor=Integer.parseInt(fcount);
+			}
 			try 
 			{
 				/**

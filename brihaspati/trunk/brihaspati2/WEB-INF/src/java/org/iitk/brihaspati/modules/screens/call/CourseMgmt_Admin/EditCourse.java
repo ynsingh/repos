@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_Admin;
 /**
  *  @author: <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a> 
  *  @author: <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
- *  @modify date: 22-04-2013 
+ *  @modify date: 22-04-2013,31-05-2013 
  */
 import java.util.List;
 import java.util.Vector;
@@ -48,6 +48,8 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 public class EditCourse extends SecureScreen_Admin{
 	/**
@@ -66,18 +68,20 @@ public class EditCourse extends SecureScreen_Admin{
 			String LangFile=null;
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String GName = data.getParameters().getString("gName");
-			Vector CDetail=CourseManagement.getCourseNUserDetails(GName);
-			context.put("CourseDetail",CDetail);
+			//Vector CDetail=CourseManagement.getCourseNUserDetails(GName);
 			context.put("Courseid",GName);
 			String counter = data.getParameters().getString("count","");
 			context.put("tdcolor",counter);
-			/**
-                        * Get mapped Department List from table for showing in template
-                        */
-			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+			String instituteId=InstituteDetailsManagement.getInsId(GName);
+			// Get Institute Course User Details using CourseManagent Util.
+			Vector CDetail=CourseManagement.getInstituteCourseNUserDetails(GName,instituteId);
+			context.put("CourseDetail",CDetail);
+                        // Get mapped Department List according the institute for showing in template
 			List DeptList=ListManagement.getMapDeptList(instituteId);
                         context.put("deptlist",DeptList);
-
+                        // Get mapped School/Center List according the institute for showing in template
+			List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                        context.put("schlist",mapschlist);
 		}
 		catch(Exception e)
 		{

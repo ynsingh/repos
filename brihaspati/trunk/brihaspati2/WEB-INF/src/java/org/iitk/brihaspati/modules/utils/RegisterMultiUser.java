@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*@(#)RegisterMultiUser.java
- *  Copyright (c) 2005-2006,2010,2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2006,2010,2012-13 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -62,7 +62,7 @@ import org.iitk.brihaspati.modules.utils.CourseUtil;
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur Gurung</a> 
  *  @modified date: 20-10-2010, 23-12-2010, 26-07-2011,17-05-2012
  *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- *  @modify date: 09-08-2012 (Priyanka)
+ *  @modify date: 09-08-2012 (Priyanka),31-05-2013
  */
 
 public class RegisterMultiUser
@@ -404,7 +404,8 @@ public class RegisterMultiUser
                                         							*/
 												if(InstituteId==0){
 													//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,"","");//last parameter added by Priyanka
-     													String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,LangFile,0,"","");
+													//Add last parameter as blank for school/center for course registration usinf file.
+     													String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,LangFile,0,"","","");
 													error=3;
                                         								errMsg=msg;
 												}
@@ -421,7 +422,8 @@ public class RegisterMultiUser
                                          									**/
 
                                         									//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName,"");//last parameter added by Priyanka
-                                        									String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,LangFile,InstituteId,instName,"");
+														//Add last parameter as blank for school/center for course registration usinf file.
+                                        									String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,LangFile,InstituteId,instName,"","");
 														error=3;
                                         									errMsg=MultilingualUtil.ConvertedString("instructor",LangFile)+" - "+msg;
                                         								}

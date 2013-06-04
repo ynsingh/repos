@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) OnlineRegistration_Admin.java	
  *
- *  Copyright (c) 2008, 2009, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008-09,2010-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -73,7 +73,8 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
  * @modify 20-03-09, 08-07-2010, 20-10-2010, 23-12-2010, 05-08-2011, 16-08-2011
  * @modify 20-04-12
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 09-08-2012 (Priyanka)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 09-08-2012 (Priyanka),31-05-2013
  */
 
 /**
@@ -475,7 +476,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                                                        {
                                                                 try{
                                                                         //String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");//last parameter added by Priyanka
-									String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c");
+									//Add last parameter as blank for school/center for online course(instructor) registration.
+									String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c","");
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

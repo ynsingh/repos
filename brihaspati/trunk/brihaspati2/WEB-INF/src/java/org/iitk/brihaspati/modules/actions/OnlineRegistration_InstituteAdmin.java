@@ -225,7 +225,8 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
 								//call for utils to perform registration successfull in the courses.
                                                                 try{
                                                                         //String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c");
+									//Add last parameter as blank for 'school/center' name for online course(Instructor) registration.
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c","");
 									data.setMessage(msg);
                                                                 }
                                                                 catch(Exception e){data.setMessage("Error in new Course Registration "+e);}
