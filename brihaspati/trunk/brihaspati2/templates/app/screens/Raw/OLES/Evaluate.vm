@@ -4,7 +4,8 @@
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
- * Contributors: Members of MHRD Project DEI Agra
+ * Contributors: Members of MHRD Project DEI Agra, IITK
+ * @modified date: 22may2013(Manorama Pal)
 *#
 
 $page.setTitle("quiz Evaluation")
@@ -29,13 +30,32 @@ $page.setBgColor("bgcolor")
                 #if($!type == "result")
                 	$brih_result
                 #else
-					$brih_evaluate
-				#end
-        </b>
+			$brih_evaluate
+		#end
+	</b></td>
+##index of paginations
+	<td align=right>
+        	#if( $total_size!=0 )
+                	#if( $endIndex < $total_size )
+                        	#if( $endIndex < $userConf )
+                                       #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                                #elseif($k == $j)
+                                        ##[$k - $total_size] of $total_size
+                                       #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                                #else
+                                        ##[$k - $endIndex] of $total_size
+                                       #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
+                                #end
+                        #else
+                                ##[$k - $total_size] of $total_size
+                               #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+                        #end
+                #end
+
         </td>
-        </tr>
+</tr>
 </table>
-## Creating the links for help 
+## Creating the link for help 
 <table width="100%">
 	<tr>
 		<td align=right>
@@ -96,65 +116,121 @@ $page.setBgColor("bgcolor")
                 <td>
                 #elseif($tdcolor == "8")
                 <td bgcolor="#AFDCEC">
-                #end
-                <b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice $brih_quiz $brih_qinfo</I></b></a></td>
+        #end
+        <b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice $brih_quiz $brih_qinfo</I></b></a></td>
 	</tr>
 </table>	
 <table width="100%" >
-	##<tr><td>&nbsp;</td></tr>
-	#*<tr bgcolor="$ui.menuColor" >
-		<td >
-	        <b>$brih_usr $brih_name </b>
-        </td>
-		<td>
-    		<SELECT name=userList>	
-    		<option value="1" >Select Student</option>
-			#foreach($topic in $userList2)
-				#if($!topic.getLoginName()==$!studentLoginName)
-					<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
-				#else
-					<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
-				#end              			
-			#end			
-	        </SELECT>
-		</td>
-	</tr>*#
 	<tr bgcolor="$ui.menuColor" >
-		<td><b> $brih_quiz $brih_name  </b></td>
-		<td>
-        	<SELECT name=quizlist>       		
-			<option value="1">Select Quiz</option>			
+		<td colspan="6"><b> $brih_quiz $brih_name  </b></td>
+		<td width="80%">
+        	<SELECT name=quizlist class="drop" onChange="checkField(document.frm,this);" >
+			#if($!quizID=="")       		
+			<option>Select Quiz</option>
+			#else
+                                <option value="$!quizName">$!quizName</option>  #end			
 				#foreach($topic in $quizList)
 					#if($!topic.getQuizID()==$!quizID)
-						<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+					 <option value="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("quizID",$!topic.getQuizID()).addPathInfo("quizName",$!topic.getQuizName()).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"style="width:175px;">$!topic.getQuizName()</option>
 					#else
-						<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+					 <option value="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("quizID",$!topic.getQuizID()).addPathInfo("quizName",$!topic.getQuizName()).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"style="width:175px;">$!topic.getQuizName()</option>
 					#end               		 		
 				#end			
     		</SELECT>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_GetStudent" value="$brih_get" onClick="checkfield(document.frm,this);"/></td>
 	</tr>
+</table>
+<table width="100%" >
+		#if($type=="result" && $quizID!="")
+		#if($flag==false)
+                #set($headings=["","$brih_student $brih_name","$brih_score/$brih_total $brih_marks","$brih_percentage","$brih_min $brih_passing $brih_marks","$brih_result","$brih_answer $brih_sheet"])
+		#else
+                #set($headings=["$brih_student $brih_name","$brih_score/$brih_total $brih_marks","$brih_percentage","$brih_min $brih_passing $brih_marks","$brih_result","$brih_answer $brih_sheet"])
+		#end
+                <tr bgcolor="$ui.tableColor">
+                        #foreach($heading in $headings)
+                        <td align="left">
+                                <b>$heading</b>
+                        </td>
+                        #end
+                </tr>
+                #end
+                #set($coun="")
 		#foreach($det in $details)
-		<tr>
+			#if($velocityCount%2==0)
+                                <tr bgcolor="$ui.menuColor">
+                        #else
+                                <tr bgcolor="$ui.tableColor">
+                        #end
+			#if($type=="result" && $flag==false)
+                        <td>
+				#if($!det.evaluate=="complete")
+                                <INPUT TYPE="CHECKBOX" NAME="$det.studentLoginName" VALUE="$det.studentLoginName" onClick="addDeleteList(this,document.frm);" DISABLED>
+				#else
+                                <INPUT TYPE="CHECKBOX" NAME="$det.studentLoginName" VALUE="$det.studentLoginName" onClick="addDeleteList(this,document.frm);">
+				#end
+                        </td>
+                        #end
 			<td>$det.studentLoginName</td>
 			#if($type=="result")
-			<td><a href=$link.setPage("call,OLES,Evaluate.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizID",$det.quizId).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("actionName","eventSubmit_Result") style=text-decoration:none>$brih_result</a></td>
+			#if($!det.evaluate!="complete" && $flag==true)
+			<td><font color="red">$brih_noevaluateQuiz</font></td>
+			<td><b></b></td>
 			#else
-			<td><a href=$link.setPage("call,OLES,Evaluate.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizId",$det.quizId).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("actionName","eventSubmit_Evaluate") style=text-decoration:none>$brih_evaluate</a></td>
+                        <td><b>$!det.studentMarks/$!maxMarks</b></td>
+                        <td><b>$!det.percentageScore %</b></td>
+			#end
+                        <td>$!passingMarks</td>
+			#if($!det.evaluate!="complete" && $flag==true)
+                        <td><b><i></i></b></td>
+			#else
+                        <td><b><i> $!det.finalResult </i></b></td>
+			#end
+                        <td><a href=$link.setPage("call,OLES,Quiz_Score.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizID",$det.quizId).addPathInfo("quizName",$quizName).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("answerSheetFlag","yes").addPathInfo("actionName","eventSubmit_ViewAnswerSheet") onclick="showAnswerSheet(document.frm,this);" style=text-decoration:none>AnswerSheet</a></td>
+                #set($coun="$coun$det.studentLoginName^") 
+			#else
+			#if($!det.evaluate=="complete")
+			<td width="50%"><a href=$link.setPage("call,OLES,Evaluate.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizId",$det.quizId).addPathInfo("quizName",$quizName).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("actionName","eventSubmit_Evaluate") onclick="this.removeAttribute('href');this.className='disabled'" style=text-decoration:none>$brih_evaluate</a></td>
+			#else
+			<td width="50%"><a href=$link.setPage("call,OLES,Evaluate.vm").setAction("OLES_AttemptQuiz").addPathInfo("quizId",$det.quizId).addPathInfo("quizName",$quizName).addPathInfo("studentLoginName",$det.studentLoginName).addPathInfo("count",$tdcolor).addPathInfo("actionName","eventSubmit_Evaluate") style=text-decoration:none>$brih_evaluate</a></td>
+			#end
 			#end
 		</tr>
-		#end	
-	#*<tr bgcolor="$ui.menuColor" >
-		<td colspan="2">
-		#if($type=="result")
-		<input type="button" class="button-ftextstyle" name="eventSubmit_Result" value="Result" onClick="checkField(document.frm,this);"/>
-		#else
-		<input type="button" class="button-ftextstyle" name="eventSubmit_Evaluate" value="Evaluate" onClick="checkField(document.frm,this);"/>
-		#end 			
-		</td>
-	</tr>*#    		
-	
-	
+		#end
+		#if($type=="result" && $quizID!="" && $flag==false)
+                <tr bgcolor="$ui.menuColor" >
+                <td colspan="7">
+                <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
+                <font face="$ui.sansSerifFonts"><b>$brih_selAll</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" class="button-ftextstyle" name="eventSubmit_Result_Vecrification" value="$brih_verify" onClick="resultverify(document.frm,this);"/>
+                <input type="reset" value="$brih_reset" class="button-ftextstyle">
+                </td>
+        	</tr>
+        	#end  
+		#if( $total_size!=0 )
+                        <table bgcolor="#e5e5e5" width="100%"><tr bgcolor="$ui.menuColor"><td align="left">
+                         #if($total_size <= $userConf)
+                        <img src="$content.getURI("images/First_blank.png")">
+                        <img src="$content.getURI("images/Previous_blank.png")">
+                        <img src="$content.getURI("images/Next_blank.png")">
+                        <img src="$content.getURI("images/Last_blank.png")">
+                        #elseif($startIndex == $userConf_string)
+                        <img src="$content.getURI("images/First_blank.png")">
+                        <img src="$content.getURI("images/Previous_blank.png")">
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$startIndex).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Next.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_last).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type) "><img src="$content.getURI("images/Last.png")"></a>
+                        #elseif($endIndex == $total_size || $endIndex > $total_size)
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_first).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/First.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_pre).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Previous.png")"></a>
+                        <img src="$content.getURI("images/Next_blank.png")">
+                        <img src="$content.getURI("images/Last_blank.png")">
+                        #else
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_first).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/First.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_pre).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Previous.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Next.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_last).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Last.png")"></a>
+                        #end
+                        </td></tr></table>
+                #end                  
 	#if($longtype == false)
 	<tr bgcolor="$ui.tableColor" >
 		<td align=center colspan=3 >
@@ -171,11 +247,11 @@ $page.setBgColor("bgcolor")
 	<input type="hidden" name="actionName">
 	<input type="hidden" name="type" value="$!type">
 	<input type="hidden" name="count" value="$!tdcolor">
-	#*<input type="hidden" name="quizID">
-	<input type="hidden" name="studentLoginName">
-	<input type="hidden" name="quizName">
-	<input type="hidden" name="type" value="$!type">
-	<input type="hidden" name="count" value="$!tdcolor">*#
+	<input type="hidden" name="quizID" value="$!quizID">
+	<input type="hidden" name="studentLoginName" studentLoginName>
+	<input type="hidden" name="quizName" value="$!quizName">
+        <INPUT TYPE="hidden" NAME="deleteFileNames">
+	<input type="hidden" name="answerSheetFlag" value="$!answerSheetFlag">
 	</table>
   </div>
 </form>
@@ -224,32 +300,64 @@ $page.setBgColor("bgcolor")
                 return false;
         }
 	
+function resultverify(frm,field){
+       	if(frm.deleteFileNames.value!=""){
+               	if(confirm('Do you want to verify the selected  student result')){
+                       	frm.actionName.value=field.name;
+                       	frm.submit();
+               	}
+               	else{
+                       	return false;
+               	}
+       	}
+       	else{
+               	alert("Please select checkbox to verify the result !!");
+       	}
 
- function checkField(frm,field){
-	quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-	userid = frm.userList.options[frm.userList.selectedIndex].value;	
-	if(userid==1){
-		alert("kindly select the Student Name")		
-		frm.userList.focus();
-		return false;
-	}
-	else{
-		if(quizid ==1){
-			alert("kindly select the quiz to Evaluate")
-			frm.quizlist.focus();
-			return false;
-		}
-		else{
-			frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-			frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;
-			frm.studentLoginName.value = frm.userList.options[frm.userList.selectedIndex].value;				
-			frm.actionName.value=field.name;
-	       	frm.submit();
-		}
-	}
 }
- 	function checkfield(frm,field){
-	      	frm.actionName.value=field.name;
-               	frm.submit();
-	}
+function addDeleteList(field,frm){
+        if(field.checked){
+                frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+        }
+        else{
+                var rmFile,index,actualString,preString,postString;
+                actualString=frm.deleteFileNames.value;
+                index=actualString.indexOf(field.name+"^",0);
+                preString=actualString.substring(0,index);
+                postString=actualString.substring(index+field.name.length+1);
+                actualString=preString+postString;
+                frm.deleteFileNames.value=actualString;
+        }
+}
+function selectAll(field){
+                if(field.checked){
+                        var rmFile,index,actualString,pre=0,next=0;
+                        actualString=document.frm.deleteFileNames.value="$coun";
+                        while( ( pre=actualString.indexOf("^",next) ) >=0 ){
+                                var temp=actualString.substring(next,pre);
+                                next=pre+1;
+                                rmFile=document.frm.elements[temp].checked=true;
+                        }
+                }
+                else{
+                        var rmFile,index,actualString,pre=0,next=0;
+                        actualString=document.frm.deleteFileNames.value="$coun";
+                        while( ( pre=actualString.indexOf("^",next) ) >=0 ){
+                                var temp=actualString.substring(next,pre);
+                                next=pre+1;
+                                rmFile=document.frm.elements[temp].checked=false;
+                        }
+                        document.frm.deleteFileNames.value="";
+                }
+        }
+
+
+        function checkField(frm,field){
+		window.location = field.value;
+        }
+        function showAnswerSheet(frm,field){
+                frm.actionName.value=field.name;
+                frm.answerSheetFlag.value="yes";
+                frm.submit();
+        }
 </SCRIPT>

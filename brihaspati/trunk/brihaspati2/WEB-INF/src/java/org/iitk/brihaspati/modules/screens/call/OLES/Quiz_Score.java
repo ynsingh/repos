@@ -58,6 +58,7 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
  *   This class is used to show score of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
  *   @author  <a href="jaivirpal@gmail.com">Jaivir Singh</a>26Apr2013
+ *   @modified date: 14may2013(Manorama Pal)  
  */
 
 public class Quiz_Score extends SecureScreen{
@@ -81,9 +82,11 @@ public class Quiz_Score extends SecureScreen{
 			String maxTime="";
 			String maxMarks="";
 			String maxQuestion="";
+			String AllowPractice="";
+			String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
 			if(role.equalsIgnoreCase("instructor")){
 				context.put("setVisible","hidden");
-				String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
+				//String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
 				String quizXmlPath = "Quiz.xml";	
 				File quizFile= new File(quizPath+"/"+quizXmlPath);
 				Vector<QuizFileEntry> quizDetail =new Vector<QuizFileEntry>();
@@ -122,7 +125,8 @@ public class Quiz_Score extends SecureScreen{
 					maxQuestion = temp[2];
 				}
 				//==========================================================
-					String filePath1=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID);
+					//String filePath1=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID);
+					String filePath1=quizPath+"/"+quizID;
 					String type = "";
 					String check = "y";
             				String quizSettingPath=quizID+"_QuestionSetting.xml";
@@ -161,7 +165,8 @@ public class Quiz_Score extends SecureScreen{
 			context.put("passingMarks",Math.round(passingMarks));
 			Vector answerDetail=new Vector();
 			int studentMarks=0;
-			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
+			//String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
+			String quizAnswerPath=quizPath+"/"+quizID;
 			if(role.equalsIgnoreCase("instructor")){
 				String studentLoginName=pp.getString("studentLoginName","");
 				context.put("studentLoginName",studentLoginName);
@@ -172,68 +177,68 @@ public class Quiz_Score extends SecureScreen{
 				//uid=Integer.toString(UserUtil.getUID(studentLoginName));	
 				uid=Integer.toString(UserUtil.getUID(uname));			
 			}
-			/////////////////////////////////////////////////////////////////////
+			//------------------------------------------jaivir singh--------------------//
 			String hbtn="";
-			String cid=(String)user.getTemp("course_id");
-			String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
-                        String scoreXml="score.xml";
-			File scorefile=new File(examPath+"/"+scoreXml);
+			//String cid=(String)user.getTemp("course_id");
+			//String examPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+                       	String scoreXml="score.xml";
+			File scorefile=new File(quizPath+"/"+scoreXml);
 			QuizMetaDataXmlReader qdata=null;
 			Vector scoreCollect=new Vector();
 			String evaluate="";
 			String qid="";
 			if(scorefile.exists()){
-                                qdata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
-                                scoreCollect=qdata.getFinalScore(uid);
-                                if(scoreCollect!=null && scoreCollect.size()!=0){
-                                        for(int i=0;i<scoreCollect.size();i++){
-                                                qid=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
+                               	qdata=new QuizMetaDataXmlReader(quizPath+"/"+scoreXml);
+                               	scoreCollect=qdata.getFinalScore(uid);
+                               	if(scoreCollect!=null && scoreCollect.size()!=0){
+                                       	for(int i=0;i<scoreCollect.size();i++){
+                                               	qid=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
 						if(quizID.equals(qid)){
-                                                evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
+                                               		evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
 						}
 					}
 				}
 			}
-			if(evaluate!=null){
-				if(evaluate.equals("complete")){
-			/////////////////////////////////////////////
-			String quizAnswerFile = uid+".xml";						
-			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
-			if(!answerFile.exists()){
-				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
-				return;
-			}
-			else{
-				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
-				answerDetail = quizmetadata.getFinalAnswer();
-				if(answerDetail==null || answerDetail.size()==0){
-					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
-					return;
-				}
-				else{
-					context.put("answerDetail",answerDetail);
-					for(int i=0;i<answerDetail.size();i++){
-						int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());					
-						studentMarks +=studentMark;
+			if(((evaluate!=null)&&(evaluate.equals("complete")))||(type1.equals("practice"))){
+				//if(evaluate.equals("complete"){
+			//------------------------------------------jaivir singh--------------------//
+				String quizAnswerFile = uid+".xml";						
+				File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
+					if(!answerFile.exists()){
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
+						return;
 					}
-					context.put("studentMarks",studentMarks);
-					String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
-					context.put("percentageScore",percentageScore);
-					if(Integer.parseInt(percentageScore)>=passingPercentage)
-						finalResult="Pass";
-					else
-						finalResult="Fail";
-					context.put("finalResult",finalResult);
-				}			
-			}
-			}//if evaluate complete											
+					else{
+						QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
+						answerDetail = quizmetadata.getFinalAnswer();
+						if(answerDetail==null || answerDetail.size()==0){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
+							return;
+						}
+						else{
+							context.put("answerDetail",answerDetail);
+							for(int i=0;i<answerDetail.size();i++){
+								int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());					
+								studentMarks +=studentMark;
+							}
+							context.put("studentMarks",studentMarks);
+							String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
+							context.put("percentageScore",percentageScore);
+							if(Integer.parseInt(percentageScore)>=passingPercentage)
+								finalResult="Pass";
+							else
+								finalResult="Fail";
+								context.put("finalResult",finalResult);
+						}			
+					}
+				//}//if evaluate complete											
 			}//if evaluate null
 			else{
 				hbtn="true";
 				//data.setMessage("Quiz is not verified");
 				data.setMessage(MultilingualUtil.ConvertedString("quiznverified",file));
 			}											
-				context.put("hbtn",hbtn);
+			context.put("hbtn",hbtn);
 			/**
                          *Time calculaion for how long user use this page.
                          */

@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
+import java.util.StringTokenizer;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -107,6 +108,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 * @exception Exception, a generic exception
 	 */
 	public void doPerform(RunData data,Context context) throws Exception{
+		LangFile=(String)data.getUser().getTemp("LangFile");
 		String action=data.getParameters().getString("actionName","");
 		context.put("actionName",action);		
 		if(action.equals("eventSubmit_attemptQuiz"))
@@ -141,10 +143,13 @@ public class OLES_AttemptQuiz extends SecureAction{
 			securityString(data,context);
 		else if(action.equals("eventSubmit_generateSecurity"))
 			generateSecurity(data,context);
-		else if(action.equals("eventSubmit_GetStudent"))
-			GetCrsStudent(data,context);	
-		else
-			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
+		else if(action.equals("eventSubmit_Result_Vecrification"))
+			Result_Vecrification(data,context);	
+		else if(action.equals("eventSubmit_ViewAnswerSheet"))
+			ViewAnswerSheet(data,context);	
+		else{
+			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));	
+			}
 	}
 	
 	/** This method get list of final questions in a shuffled mode to be attempted by student
@@ -1378,46 +1383,6 @@ public class OLES_AttemptQuiz extends SecureAction{
 		 }
 		
 	}
-	
-	public void GetCrsStudent(RunData data, Context context){
-		try{
-			ParameterParser pp=data.getParameters();
-			String qid=pp.getString("quizlist","");
-			User user=data.getUser();	
-			String cid=(String)user.getTemp("course_id");
-			String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
-                        String scoreXml="score.xml";
-                        File file=new File(examPath+"/"+scoreXml);
-                        QuizMetaDataXmlReader quizmetadata=null;
-                        Vector scoreCollect=new Vector();
-                        Vector quizDetail=new Vector();
-                        Vector collect=new Vector();
-			Map map=new HashMap();
-                        if(file.exists()){
-				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
-				scoreCollect=quizmetadata.attemptedQuiz();
-                                if(scoreCollect!=null && scoreCollect.size()!=0){
-                                	for(int i=0;i<scoreCollect.size();i++){
-                                		String quizId=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
-						if(quizId.equals(qid)){
-                                			String uid=((QuizFileEntry) scoreCollect.elementAt(i)).getUserID();
-							String sname=UserUtil.getFullName(Integer.parseInt(uid));
-							map = new HashMap();
-							map.put("quizId",quizId);
-							map.put("studentLoginName",sname);
-							collect.add(map);
-						}
-					}
-				}
-			}
-			context.put("details",collect);
-		}
-		catch(Exception ex){
-			 ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:GetCrsStudent !! "+ex);
-			 data.setMessage("See ExceptionLog !!");
-		}
-	}
-
 	/** This method is responsible for to write the detail of parctice quiz in xml file
          * @param data RunData instance
          * @param context Context instance
@@ -1476,5 +1441,111 @@ public class OLES_AttemptQuiz extends SecureAction{
                                 data.setMessage("See ExceptionLog !!");
                  }
         }
+	/** This method is responsible for to write the result verification detail in xml file
+         * @param data RunData instance
+         * @param context Context instance
+         * @exception Exception, a generic exception
+         */
+	public void Result_Vecrification(RunData data,Context context){
+        	ParameterParser pp = data.getParameters();
+                try{
+                	/**Get parameters from template through Parameter Parser
+                         * get LangFile for multingual changes
+                        */
+                        String LangFile=(String)data.getUser().getTemp("LangFile");
+                        String cid=(String)data.getUser().getTemp("course_id");
+                        String quizID=pp.getString("quizID","");
+			context.put("quizID",quizID);
+                        String quizName=pp.getString("quizName","");
+			context.put("quizName",quizName);
+                        String type=pp.getString("type","");
+                        String uid="";
+                        int seq=-1;
+			/**get path where the Exam directory,score.xml file stored */
+                        String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+                        String scorePath="score.xml";
+                        String usedTime="";
+                        String quizid="";
+                        String userID="";
+                        int totalScore=0;
+                        String evaluate=null;
+                        String studtlist=data.getParameters().getString("deleteFileNames");
+                        if(!studtlist.equals("")){
+                                StringTokenizer st=new StringTokenizer(studtlist,"^");
+                                for(int j=0;st.hasMoreTokens();j++){
+                                        String stu_name=st.nextToken();
+                                        uid=Integer.toString(UserUtil.getUID(stu_name));
+                        		/**read the xml file and put in vector(scoreDetail)
+                        		*get detail from score.xml file for the given quizid and userid
+                        		*@see QuizMetaDataXmlReader () in Util
+                        		*/
+                        		QuizMetaDataXmlReader quizmMtaData=new QuizMetaDataXmlReader(scoreFilePath+"/"+scorePath);
+                        		Vector scoreDetail = quizmMtaData.getDetailOfAlreadyInsertedScore(scoreFilePath,scorePath,quizID,uid);
+                        		XmlWriter xmlScoreWriter = null;
+					if(scoreDetail!=null && scoreDetail.size()!=0){
+                                		for(int i=0;i<scoreDetail.size();i++) {
+                                        	usedTime = (((QuizFileEntry) scoreDetail.elementAt(i)).getUsedTime());
+                                        	totalScore=Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getScore()));
+                                        	userID=(((QuizFileEntry) scoreDetail.elementAt(i)).getUserID());
+                                        	quizid=(((QuizFileEntry) scoreDetail.elementAt(i)).getQuizID());
+                                        	seq = Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getID()));
+                                        	evaluate=(((QuizFileEntry) scoreDetail.elementAt(i)).getEvaluate());
+                                		}
+                        		}	
+                        		xmlScoreWriter = new XmlWriter(scoreFilePath+"/"+scorePath);
+                        		if(uid.equalsIgnoreCase(userID) && quizID.equalsIgnoreCase(quizid)){
+                                		evaluate="complete";
+                                		/**This part read existing xml (score.xml)file and write new xml file with old values
+                                		*@see QuizMetaDataXmlWriter (method:QuizXml) in utils
+                                		*/
+                                		xmlScoreWriter=QuizMetaDataXmlWriter.WriteinScorexml(scoreFilePath,scorePath);
+                                		/**write(append/overwrite) final scores in existing xml (score.xml) file*/
+                                		QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq,evaluate);
+                        		}//if
+                        		xmlScoreWriter.writeXmlFile();
+				}//for
+			}//if
+                        data.setMessage(MultilingualUtil.ConvertedString("brih_finalScoreSaved",LangFile));
+                }catch(Exception e){
+                       ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:Result_Vecrification !! "+e);
+        	}
+        }//method
 
-}	                           
+	/** This method is responsible for the View AnswerSheet 
+         * @param data RunData instance
+         * @param context Context instance
+         * @exception Exception, a generic exception
+         */
+	public void ViewAnswerSheet(RunData data, Context context){
+        	try{
+			String Langfile=data.getUser().getTemp("LangFile").toString();
+			User user=data.getUser();
+			ParameterParser pp = data.getParameters();
+			String quizID=pp.getString("quizID","");
+                        context.put("quizID",quizID);
+			String courseid=(String)user.getTemp("course_id");
+			String studentLoginName=pp.getString("studentLoginName","");
+                        String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
+			String quizAnswerFile = uid+".xml";
+                        File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
+                        if(!answerFile.exists()){
+                        	data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",Langfile));
+                                return;
+                        }
+			else{
+                       		QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
+                        	Vector answerDetail = quizmetadata.getFinalAnswer();
+                      		if(answerDetail==null || answerDetail.size()==0){
+                        		data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",Langfile));
+                                	return;
+                         	}
+				else
+                         	context.put("answerDetail",answerDetail);
+			}
+		}
+		catch(Exception e){
+                       ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:ViewAnswerSheet !! "+e);
+                }
+        }//method
+}//class	                           
