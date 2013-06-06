@@ -14,80 +14,92 @@ $page.setTitle("Enter the Question")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
-<tr>
-        <td><b>
-        <b>
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
-	#if($acttype=="viewques" || $acttype=="editques")
-	<a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)>$brih_view $brih_queBank</a> |
-	#end
-	#if($acttype=="viewques")
-        $brih_view $brih_qus
-	#elseif($acttype=="editques")
+
+
+<tr align="right">
+        <td  align="right"><b>
+#if($acttype=="viewques" || $acttype=="editques")
+        <a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)>$brih_view  $brih_queBank</a>|
+        #end
+        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a>|
+        #if($acttype=="viewques")
+         $brih_view $brih_qus
+        #elseif($acttype=="editques")
         $brih_edit $brih_qus
-	#else	
-	$brih_add $brih_qus
-	#end
+        #else
+        $brih_add $brih_qus
+        #end
+
+        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a>
+        |<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+
         </b></td>
 </tr>
 </table>
 <br>
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Short.vm").setAction("OnlineExaminationSystem")>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
-<tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $Topicname</b></td></tr>
+<tr align="right" bgcolor="$ui.menuColor"><td><b>$Topicname :$brih_queBank $brih_topic</b></td></tr>
 </table>
 <table width="100%" bgcolor="$ui.menuColor" cellpadding="2"> 
 #if($acttype!="editques")  
 <tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$topic/$quesimage")" width="80" height="100"></td></tr>
 #end
-  <tr>
-   <td align="centre" width="30%">
-     <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
-   </td>
-   <td width=70% align="left" >
-     <font face="$ui.sansSerifFonts">
+<tr align="right">
+   <td width="30%">
       <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end>$!Ques</textarea >
-	</td>
+   </td>
+    <td width="70%" align="right">
+      <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
+
+ </td>
+ </tr>
+
+
  </tr>
  #if($typeques=="imgtypeques")
- <tr>
-        ##fileUpload ("<b>Attach File </b><font color=Red>*</font>" "file")
-	#fileUpload ("<b>Upload Image </b><font color=Red>*</font>" "quesimg")
+ <tr align="right">
+##        ##fileUpload ("<b>Attach File </b><font color=Red>*</font>" "file")
+##	#fileUpload ("<b>Upload Image </b><font color=Red>*</font>" "quesimg")
+
+                <td align="right"><input type="file" size="20%" name="file" value=""> </td>
+                <td> <b> <font color="RED">*</font> $brih_upload $brih_image </b> </td>
  </tr>
  #end
-  <tr bgcolor="$ui.tableColor"> 
-  	<td width=30% align="centre" >
-    	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") Reply #else Answer #end </font></b>
-   	</td>
-   	<td width=70% align="left" >
-    	<font face="$ui.sansSerifFonts">
-      <textarea name="Answer" rows=3 cols=50 #if($mode=="View") readonly #end>$!Ans </textarea >
-   	</td>
- </tr>
-  <tr> 
-	<td width=30% align="centre" >
-        <b><font face="$ui.sansSerifFonts">$brih_desc</font></b>
+
+<tr align="right" >
+        <td align="right" width=30%>
+      <textarea name="$brih_answer " rows=3 cols=50 #if($mode=="View") readonly #end>$!Ans </textarea >
         </td>
-        <td  width=70% align="left" >
+        <td width=70% align="right" >
         <font face="$ui.sansSerifFonts">
+        <b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") Reply #else $brih_answer  #end </font></b>
+        </td>
+ </tr>
+  <tr align="right">
+        <td width="30%" >
         <textarea name="hint" rows=3 cols=50 #if($mode=="View") readonly #end >$!Desc</textarea >
         </td>
-	##formCell("Hint" "hint" "$!hint")
-
+        <td  width=70% align="right" >
+        <font face="$ui.sansSerifFonts">
+        <b><font face="$ui.sansSerifFonts">$brih_desc</font></b>
+        </td>
+        ##formCell("Hint" "hint" "$!hint")
  </tr> 
+
+
 <tr bgcolor="$ui.tableColor">
-<td align=center colspan=2 >  
+<td align="right" colspan=2 >  
 <font face ="$ui.sansserifFonts">
 		#if($acttype!="viewques")
 		#if($acttype=="editques")
                 <input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
                 <input type="reset" class="button-ftextstyle" value="$brih_reset">
                 #else
-	  	<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
-  		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
-		<input type="reset" class="button-ftextstyle" value="$brih_reset"> 
+
+ <input type="button" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" class="button-ftextstyle" onClick="checkValue(document.frm,this);">
+                <input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);">
+                <input type="reset" class="button-ftextstyle" value="$brih_reset">
 		#end
 		#end
   <input type="hidden" name="actionName" value="">

@@ -96,9 +96,9 @@ $page.setBgColor($ui.bgcolor)
 	#if($collectScore.size()!=0)
 	#if($flag)
 		<tr bgcolor="$ui.tableColor" width="100%" collspan="6">
-			<th>QuizID</th>
-			<th>StudentID(Student Name)</th>
-			<th>Total Score</th>
+			<th>$brih_quiz $brih_ID</th>
+			<th> $brih_student $brih_ID($brih_student $brih_name)</th>
+			<th>$brih_total $brih_score</th>
 		</tr>
 	#else
 		<tr bgcolor="$ui.tableColor" width="100%">

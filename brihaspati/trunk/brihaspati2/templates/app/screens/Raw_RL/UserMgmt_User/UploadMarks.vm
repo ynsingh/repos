@@ -11,6 +11,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Upload Marks")
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
 
@@ -28,6 +31,46 @@ $!data.getMessage()
         <script type="text/javascript" src="/brihaspati2/scrpts/Bs_SpreadSheet.inc.js"></script>
         <script type="text/javascript" src="/brihaspati2/scrpts/Bs_ButtonBar.class.js"></script>
         <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Button.class.js"></script>
+	<script type="text/javascript">
+                $(document).ready(function(){
+                        var counter = 2;
+                        $("#addFile").click(function () {
+                                if(counter>10){
+                                        alert("Only 10 file options allow");
+                                        return false;
+                                }
+                                var newTextBoxDiv = $(document.createElement('div'))
+                                .attr("id", 'FileBoxDiv' + counter);
+                                newTextBoxDiv.html('<input class="browse" type="file" name="file' + counter + '" id="file' + counter + '" value="" > <label style="margin-left:60px;"><b>$brih_file<font color="red">*</font></b></label> <label style="float:right; margin-left:20px;"><b>$brih_alias<font color="red">*</font></b></label> <input type="text" name="text' + counter + '" id="text' + counter + '" value="" style="float:right;" >');
+                                newTextBoxDiv.appendTo("#FileBoxesGroup");
+                                counter++;
+                        });
+
+                        $("#removeFile").click(function () {
+                                if(counter==2){
+                                alert("No more file options to remove");
+                                return false;
+                        }
+                        counter--;
+                        $("#FileBoxDiv" + counter).remove();
+                        });
+
+                        $("#upload").click(function () {
+                                for(var i=1;i<counter;i++){
+                                        if((document.getElementById('text'+i).value=="") || (document.getElementById('file'+i).value=="")){
+                                                alert("All fields are mandatory!!");
+                                                return false;
+                                        }
+                                }
+                                $("#load").submit();
+                        });
+
+                        document.getElementById('myvalue').value = counter;
+
+                });
+
+        </script>
+
         </head>
 
 ##This check for displaying spreadsheet
@@ -60,143 +103,91 @@ $page.setTitle("Upload Marks")
 </td>
         </td></tr>
 #end
-
+</table>
 ## Form is created
 <form name="uploadform" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,UploadMarks.vm").setAction("UploadMarksAction")">
 
+#if($show.size()!=0)
+<div style="width:925px; max-height:150px; overflow:auto;">
+<table style="border:1px solid #ccc;" align="right"  width="100%">
+<tr style="font-weight:bold; background:$ui.menuColor;" align="right"><td style="border:1px solid #ccc">$brih_action</td><td style="border:1px solid #ccc">$brih_file $brih_name</td><td style="border:1px solid #ccc">$brih_alias</td><td style="border:1px solid #ccc"> $brih_serialNo</td>
+</tr>
 
-## if marks file exist than show link of View marks & Download Marks
-        <tr  align="right">
-         #if($fileExists=="true")
-          <td align="right"><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("dl",1).addPathInfo("filename",$fileName)"> #if($lang=="hindi") Marks List  Download #else $brih_download $brih_marks #end </a></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+#set($count = 0)
+#foreach($sh in $show)
+<tr style="background:$ui.tableColor;" align="right">
+<td style="border:1px solid #ccc">
+#set($ts="-")
+#set($name=$sh.getAlias().concat($ts.concat($sh.getFileName())))
+<a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("filename",$name).addPathInfo("status","edit").addPathInfo("type","edit")" style="text-decoration:none">$brih_edit</a>
+|
+<a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("dl",1).addPathInfo("filename",$name)" style="text-decoration:none">$brih_download</a>
+|
+<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$name)","newWin"); style="text-decoration:none">$brih_view $brih_marks</a>
+|
+<a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("alias",$sh.getAlias()).addPathInfo("FileName",$sh.getFileName()).addPathInfo("actionName","eventSubmit_doDelete").setAction("UploadMarksAction")" style="text-decoration:none" onclick="javascript:return confirm('Do you want to delete this file')">$brih_delete</a>
 </td>
-                <td align="right"><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$fileName)","newWin");> #if($lang=="hindi") Marks List  View #else $brih_view $brih_marks #end </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-                 #end
-##if type is spreadsheet then show help link for inserting marks in spreadsheet
-#if($type == "spreadsheet")
-    <td align="right">
-    <a href=javascript:popupWin("/brihaspati2/docs/SpreadsheetInst.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
-    
-#end   
-
-               </td>
-        </tr>
-
-     	#if ($errorTemplate)
-      	<tr>
-        <td colspan="4">
-          <table bgcolor="$ui.bgcolor">
-            <tr>
-              <td>
-                <img src="$ui.image($ui.alertImage,$data)">
-              </td>
-              <td>
-                #parse ($errorTemplate)
-              </td>
-            </tr>
-          </table>
-        </td>
-      	</tr>
-      	#end
-	#*<tr>
-	<td>
-		<font color="brown"><b>$!data.getMessage()</b></font>
-	</td>
-	</tr>*#
-	<input type="hidden" name="actionName">
-## if type is not spreadsheet then show marks upload text box
-#if($type !="spreadsheet")
-	<tr align="right" bgcolor="$ui.menuColor">
-		<td colspan=3><b>
-		#if(($data.getUser().getTemp("lang" ).toString())=="hindi")
-		$brih_marks $brih_upload
-		#else
-		$brih_upload $brih_marks
-		#end
-		</b>
-		</td>
-	</tr>
-      	<tr align="right">
- ## Create Sheet link for spreadsheet
-                <td align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$WikiCreate  $brih_sheet</a>
-                </td>
- <td><input type="file" size="40%" name="file" value=""> </td>
-                <td> <b> <font color="RED">*</font> $brih_at_file </b> </td>
-
-
-        	##fileUpload ("$brih_at_file <font color=Red>*</font>" "file")
-
-        </tr>
-
-      	</tr>
-      	<tr align="right" bgcolor="$ui.menuColor">
-        	<td colspan=3>
-          	#*
-	            Check for a mode, the update and delete buttons
-	            shouldn't appear when inserting a new user.
-	          *#
-	
-        	  <font face="$ui.sansSerifFonts">
-        	  <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
-		  ##<input type="hidden" name="count" value="$tdcolor">
-	          </font>
-	        </td>
-      </tr>
+#set($count=$count+1)
+<td style="border:1px solid #ccc">$sh.getFileName()</td>
+<td style="border:1px solid #ccc">$sh.getAlias()</td>
+<td style="border:1px solid #ccc">$count</td>
+</tr>
 #end
-    </table> ## table 1 end
-
-#if(($type !="spreadsheet")&&($FileExist == "true"))
-        ## table 2 created
-        
-<table align="right" bgcolor="$ui.tableColor" width=100%>
-                <tr align="right">
-                  <td  align="right" colspan=1>
-                        <font size=4><b>$brih_availableAction
-                        </td>
-                        <td align="right"colspan=3 bgcolor="$ui.tableColor">
-                        <font size=4><b>$brih_topics #if($lang=="hindi") of #end $brih_name
-                        </td>
-                </tr>
-                #if($velocityCount%2==0)
-                <tr align="right" bgcolor="$ui.tableColor">
-                #else
-                <tr align="right" bgcolor="$ui.menuColor">
-            ##   #end
-
-                        <td align="center"><a href="$link.setAction("UploadMarksAction").addPathInfo("actionName","eventSubmit_doDelete")" onclick="javascript:return confirm('Do you want to delete this file')">$brih_delete</a></td>
-                     <td align="center"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("status","edit")" >$brih_edit</a>&nbsp;&nbsp;</td>
-                        <td align="center"><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$fileName)","newWin");>  #if($lang=="hindi") $brih_marks $brih_list $brih_Of1 $brih_view #else $brih_view $brih_marks  #end </a>
-              #end      
-                         #if($FileExist=="true")
-                        <td align="right">$fileName</td>
+</table>
+</div>
 #end
-                </tr>
-        </table> ## table 2 end
+<br>
 
-#end
-
-
-#if(($type=="spreadsheet")||($status=="edit"))
+#if(($type=="spreadsheet")|| ($status=="edit"))
 <div id="dataTableDiv" style="width:600; height:300; border:1px solid black;"></div>
-## table 3 created for viewing spreadsheet
-        <table>
+### table 3 created for viewing spreadsheet
+	<table>
 #if($type=="spreadsheet")
-        <input type="button" name="eventSubmit_doSave" value="Save" onClick="exportDataToTextarea(document.uploadform,this)";>
+	<tr align="right"><td> <input type="text" name="alias" value=""></td><td><label><b>$brih_alias<font color="red">*</font></b></label></td>
+        <td>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="exportDataToTextarea(document.show,this)";>
+</td></tr>
 #else
-        <input type="button" name="eventSubmit_doSave" value="Update" onClick="exportDataToTextarea(document.uploadform,this)";>
+<tr align="right"><td>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_update" onClick="exportDataToTextarea(document.show,this);">
+</td><tr>
 #end
-        <input type="hidden" name="fieldValue" value="">
-        <input type="hidden" name="type" value="$type">
+<input type="hidden" name="fieldValue" value="">
+        <input type="hidden" name="fileName" value="$fileName">
+        <input type="hidden" name="myvalue" id="myvalue"  value="">
         <input type="hidden" name="marksDetail" value="$marksDetail">
         <input type="hidden" name="formulaDetail" value="$formulaDetail">
         <input type="hidden" name="status" value="$status">
+        <input type="hidden" name="actionName" value="">
+        <input type="hidden" name="type" value="$type">
         </table> ## table 3 end
-#end
 
-</form> ## form end
-        </body> ## body end
+<hr>
+#end
+</form>
+</br>
+<form id="load" name="upload" method="POST" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,UploadMarks.vm").setAction("UploadMarksAction")">
+<div style="width:600; height:300; border:1px;">
+<div id='FileBoxesGroup'>
+        <div id="FileBoxDiv1">
+        <input class="browse" type="file" name="file1" id="file1">
+        <label style="margin-left:60px;"><b>$brih_file<font color="red">*</font></b></label>
+        <label  style="float:right; margin-left:20px;"><b>$brih_alias<font color="red">*</font></b></label>
+        <input type='text' id='text1' name="text1"  style="float:right;">
+        </div>
+<div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_sheet $brih_create </a></div>
+</div>
+
+<input class="button-ftextstyle" type='button' value='$brih_remove $brih_file' id='removeFile'>
+<input class="button-ftextstyle" type='button' value='$brih_add $brih_marks $brih_file' id='addFile'>
+<input class="button-ftextstyle" type="button" name="eventSubmit_doUpload" value="$brih_upload" id="upload"/>
+<input type="hidden" name="actionName" value="eventSubmit_doUpload">
+<input type="hidden" name="type" value="$type">
+</div>
+</form>
+</body> ## body end
 </html> ## html end
+
 
 <SCRIPT language="JavaScript">
         function popupWin(urlName,popupName)
@@ -291,21 +282,35 @@ $page.setTitle("Upload Marks")
                 }// end of 1 else
                 mySpreadSheet.init(data,'dataTableDiv');
         }// end of init function
-        function exportDataToTextarea(uploadform,field) 
+
+        function exportDataToTextarea(show,field) 
 	{
-		/**
-		 * @param elm,getting id where spreadsheet have to be opened
-		 */
-        	var elm = document.getElementById('cvsTextarea');
-		/**
-		 * Getting values of spreadsheet
-		 */
-        	elm.value = mySpreadSheet.exportDataToCsv(); //note that formatting information (bold etc) is not exported.
-        	//alert("Getting spreadsheet value--------->"+document.uploadform.fieldValue.value);
-                        document.uploadform.status.value = "";
-                        document.uploadform.type.value = "";
-                        uploadform.actionName.value=field.name;
-                        uploadform.submit();
+		if(show.type.value=="edit"){
+			/**
+			 * @param elm,getting id where spreadsheet have to be opened
+			 */
+        		var elm = document.getElementById('cvsTextarea');
+			/**
+			 * Getting values of spreadsheet	
+			 */
+			elm.value = mySpreadSheet.exportDataToCsv(); //note that formatting information (bold etc) is not exported.
+                        show.status.value = "";
+                        show.type.value = "";
+                        show.actionName.value=field.name;
+                        show.submit();
+                }else{
+			if(show.alias.value!=""){
+				var elm = document.getElementById('cvsTextarea');
+                                elm.value = mySpreadSheet.exportDataToCsv(); //note that formatting information (bold etc) is not exported.
+                                show.status.value = "";
+                                show.type.value = "SpreadSheet";
+                                show.actionName.value=field.name;
+                                show.submit();
+        		}
+			else{
+                                alert("You were not inserted alias name!");
+                        }
+		}
         }
 
 </SCRIPT>

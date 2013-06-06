@@ -36,10 +36,10 @@ $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
 		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>Home</a> |
+                <a href=$link.setPage("Index.vm")>$brih_home</a> |
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>OnLine Examination System</a>|
-				<a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4")>Evaluation </a>|
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $brih_onlineExamSystem</a>|
+				<a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4")>$brih_evaluation </a>|
 				$!quizName             
     	</td>
 	</tr>
@@ -50,13 +50,13 @@ $page.setBgColor($ui.bgcolor)
 <table width=100% bgcolor="$ui.tableColor">
 	<tr>
 		<td width="15%">
-			<font color="$ui.fontColorBlue" size="4">Quiz Name:</font>
+			<font color="$ui.fontColorBlue" size="4">$brih_quiz $brih_name:</font>
 		</td>
 		<td width="35%">
 			$!quizName
 		</td>
 		<td width="15%">
-			<font color="$ui.fontColorBlue" size="4">Student Name:</font>
+			<font color="$ui.fontColorBlue" size="4">$brih_student $brih_name:</font>
 		</td>
 		<td width="35%">
 			$!fullName ($!studentLoginName)
@@ -86,7 +86,7 @@ $page.setBgColor($ui.bgcolor)
 				<tr>
 					
 						#if($!answer.getQuestionType()=="mcq")
-						<td width="30%"><b>Options</td>		
+						<td width="30%"><b>$brih_options</td>		
 					<td colspan=4>
 						<table width=100% >
 						#set($A="")
@@ -103,24 +103,24 @@ $page.setBgColor($ui.bgcolor)
 							#set($D = "checked")
 						#end
 							<tr>
-								<td align=left> <b> A </b>
+								<td align=left> <b> $brih_a </b>
 						 			<input type="RADIO" name="answer$velocityCount" value="A" $!A disabled>$!answer.getOption1()						
        		        			</td>
-								<td align=left ><b> B </b>
+								<td align=left ><b> $brih_b </b>
 									<input type="RADIO" name="answer$velocityCount" value="B" $!B disabled>$!answer.getOption2()						
 								</td>
 							</tr>
 							<tr>					
-								<td align=left> <b> C </b>
+								<td align=left> <b> $brih_c </b>
 									<input type="RADIO" name="answer$velocityCount" value="C" $!C disabled>$!answer.getOption3()	
             					</td>
-        						<td align=left> <b> D </b>
+        						<td align=left> <b> $brih_d </b>
            							<input type="RADIO" name="answer$velocityCount" value="D" $!D disabled>$!answer.getOption4()	
             					</td>
 							</tr>
 					</table></td></tr>
 						#elseif($!answer.getQuestionType()=="tft")
-						<td width="30%"><b>Options</td>		
+						<td width="30%"><b>$brih_options</td>		
 					<td colspan=4>
 						<table width=100% >
 							#if($!answer.getStudentAnswer()=="true")
@@ -147,11 +147,11 @@ $page.setBgColor($ui.bgcolor)
 						#end
 						
 				<tr>
-					<td> <b> Student  $brih_answer</td>
+					<td> <b> $brih_student  $brih_answer</td>
 					#if($!answer.getStudentAnswer()!="")
 					<td colspan=4>$!answer.getStudentAnswer()</td>
 					#else
-					<td colspan=4>Not Attempted</td>
+					<td colspan=4>$brih_notAttempted</td>
 					#end
 					<td align="right">
 					#if($!answer.getQuestionType()=="mcq" || $!answer.getQuestionType()=="tft")
@@ -173,7 +173,7 @@ $page.setBgColor($ui.bgcolor)
 					<td colspan=4>$!answer.getInstructorAnswer()</td>
 				</tr>
 				<tr>
-					<td> <b> Marks Obtained</td>
+					<td> <b> $brih_marks $brih_obtained</td>
 					#if($!answer.getQuestionType()=="mcq" || $!answer.getQuestionType()=="tft")
 						<td colspan=4><input type="text" ID="marks$velocityCount" name="marks$velocityCount" value="$!answer.getAwardedMarks()" readOnly size="2%"></td>
 					#else
@@ -188,7 +188,7 @@ $page.setBgColor($ui.bgcolor)
 	<tr>
 		<td>
 			#if($flag)
-			<input type="button" class="button-ftextstyle" name="eventSubmit_EvaluateQuestionDone" value="Evaluation Done" onClick="saveEvaluation1(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_EvaluateQuestionDone" value="$brih_evaluationDone" onClick="saveEvaluation1(document.frm,this);"/>
 			#end
 		</td>
 	</tr>

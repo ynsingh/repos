@@ -103,6 +103,7 @@ $page.setBgColor($ui.bgcolor)
                                 #if ($lang != "persian")
 	        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")">($brih_persian( $brih_persian1 
 				#end
+        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","portuguese")"> ($brih_portugue($brih_portuguese1 
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> ($brih_russian1) $brih_russian
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (EspaýOB) $brih_spanish
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil

@@ -14,74 +14,71 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 	<table bgcolor="$ui.tableColor" width=100%>
-	<tr bgcolor="$ui.menuColor"><td colspan=7>
-	$brih_listOf $bri_ta |
+	<tr bgcolor="$ui.menuColor" align=="right"><td colspan=7>
+	 $bri_ta $brih_listOf |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a>|
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> </td>
 	</tr>
 	</table>
 	<table bgcolor="$ui.tableColor" width=100%>
-	<tr>
-	#if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> $bri_ta $brih_Of $brih_list </a>
-        </td>
-        #if($tdcolor != "2")
-        <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $bri_ta $brih_reg </a></td>
+	<tr align="right">
+#*
 	 #if($tdcolor != "3")
         <td>
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>
-
+*#
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $bri_ta $brih_reg </a></td>
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> $bri_ta $brih_Of $brih_list </a> </td>
 	</tr>
 	</table>
 	
 	
-	#set($headings = ["$brih_first $brih_name","$brih_last $brih_name","$brih_email","$bri_auth"] )
+	###set($headings = ["$brih_first $brih_name","$brih_last $brih_name","$brih_email","$bri_auth"] )
+	#set($headings = ["$bri_auth","$brih_email","$brih_last $brih_name","$brih_first $brih_name"] )
 
 	<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,TA_Management,TA_Management.vm").setAction("TA_Registeration")">
 	<table width="100%">
    		#if($status=="notempty")
-	        <tr bgcolor="$ui.menuColor">
-		        <td align="left">
-		        <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
-		        <font face="$ui.sansSerifFonts"><b>
-		        #if($lang == "hindi") $brih_all $brih_select</b #else $brih_selAll </b> #end
-        		</td>
+	        <tr bgcolor="$ui.menuColor" align="right">
 	
         		#foreach ($heading in $headings)
 		        #headerCell ($heading)
 		        #end
+		        <td> <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);> <font face="$ui.sansSerifFonts"><b> $brih_all $brih_select</b> </td>
         	</tr>
 		#set( $count = "" )
 		#foreach($users in $userdetail)
 			#if($velocityCount%2==0)
-			        <tr bgcolor="$ui.menuColor">
+			        <tr bgcolor="$ui.menuColor" align="right">
 		        #else
-			        <tr bgcolor="$ui.tableColor">
+			        <tr bgcolor="$ui.tableColor" align="right">
 		        #end
 			
 			#foreach($user in $users)
-				<td><INPUT TYPE="CHECKBOX" NAME="$!user.UserName" onClick="addDeleteList(this,document.frm);"></td>
-			        <td>$!user.getFirstName()</td>	
-				<td>$!user.getLastName()</td>
-				<td>$!user.UserName</td>
 				<td><a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("username",$user.UserName).addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod </a> &nbsp;</td>
+				<td>$!user.UserName</td>
+				<td>$!user.getLastName()</td>
+			        <td>$!user.getFirstName()</td>	
+				<td><INPUT TYPE="CHECKBOX" NAME="$!user.UserName" onClick="addDeleteList(this,document.frm);"></td>
 				</tr>
         			#set ( $count = "$count$!user.UserName^"  )
          		#end
 		#end
 
-	 <tr bgcolor="$ui.menuColor">
+	 <tr bgcolor="$ui.menuColor" align="right">
                 <td colspan=6>
                         <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doRemoveUser" VALUE="$brih_delete" onClick="DeleteField(document.frm,this);">
                         <INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
@@ -90,31 +87,32 @@ $!data.getMessage()
                 </td>
          </tr>
 
-	<tr>
-		<td align=left bgcolor="$ui.tableColor" colspan=6>
-        	#if($total_size <= $AdminConf)
-	        <font color="white">$brih_first</font> &nbsp;
-	        <font color="white">(<<=)$brih_pre</font> &nbsp;
-	        <font color="white">$brih_nxt (=>>)</font>&nbsp;
-	        <font color="white">$brih_last</font> &nbsp;
-        	#elseif($startIndex == $AdminConf_str)
-	        <font color="white">$brih_first</font> &nbsp;
-	        <font color="white">(<<=) $brih_pre</font> &nbsp;
-        	<a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$startIndex) style=text-decoration:none>$brih_nxt (=>>)</a> &nbsp;
-	        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+	<tr align="right">
+		<td bgcolor="$ui.tableColor" colspan=6>
+		#if($total_size <= $AdminConf)
+                <img src="$content.getURI("images/Last_blank.png")">
+                <img src="$content.getURI("images/Next_blank.png")">
+                <img src="$content.getURI("images/Previous_blank.png")">
+                <img src="$content.getURI("images/First_blank.png")">
+                #elseif($startIndex == $AdminConf_str)
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_last) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$startIndex) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+                <img src="$content.getURI("images/Previous_blank.png")">
+                <img src="$content.getURI("images/First_blank.png")">
 
-        	#elseif($endIndex == $total_size || $endIndex > $total_size)
-	        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
-        	<a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_pre) style=text-decoration:none>(<<=) $brih_pre</a> &nbsp;
-	        <font color="white">$brih_nxt (=>>)</font> &nbsp;
-        	<font color="white">$brih_last</font> &nbsp;
-	
-	        #else
-        	<a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
-	        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_pre) style=text-decoration:none>(<<=) $brih_pre</a> &nbsp;
-        	<a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex) style=text-decoration:none>$brih_nxt (=>>)</a> &nbsp;
-	        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
-	        #end
+                #elseif($endIndex == $total_size || $endIndex > $total_size)
+                <img src="$content.getURI("images/Last_blank.png")">
+                <img src="$content.getURI("images/Next_blank.png")">
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_pre) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_first) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+
+                #else
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_last) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_pre) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+                <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count",$tdcolor).addPathInfo("startIndex",$check_first) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+                #end
+
 	        </td>
         </tr>
 #end

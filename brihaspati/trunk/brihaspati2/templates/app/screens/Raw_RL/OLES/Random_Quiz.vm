@@ -3,6 +3,7 @@
  * Copyright (c) 2010 MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of MHRD, DEI Agra.
 *#
 <head>
@@ -19,33 +20,36 @@ $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
-		#if($quizMode == "random")
-			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")> 
-			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_detail </a>|
-			$quizMode
-			#if($mode == "update")				
-				$mode	
-			#end
-		#else	
-			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a> |
-			#if($tdcolor=="1")
-				$brih_onebyone
-			#else
-				$brih_randomly
-			#end
-		#end	
-	</b></td></tr>
-</table>
+<tr align="right"><td align="right"><b>
+                <font face="$ui.sansSerifFonts">
+                <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a>|
+                <a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a>|
+
+
+ #if($quizMode == "random")
+                        <a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")>
+                        $brih_quiz #if($lang =="hindi")  #end $brih_detail </a>|
+                        $quizMode
+                        #if($mode == "update")                          
+                                $mode
+                        #end
+                #else   
+                        #if($tdcolor=="1")
+                                $brih_onebyone
+                        #else
+                                $brih_randomly
+                        #end
+                #end    
+
+                |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a>
+                |<a href=$link.setPage("Index.vm")>$brih_home</a>
+        </b></td></tr>
+
 
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+		<td><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 	</tr>
 </table>
 
@@ -83,21 +87,21 @@ $!data.getMessage()
 	#else
 		#if($mode == "update")
 			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_qus $brih_updation $brih_in $brih_random $brih_mode </font><b></i></td>
+				<td align="right" width="100%" colspan="5"><b><i><font size="3">$brih_qus $brih_updation $brih_in $brih_random $brih_mode </font><b></i></td>
 			</tr>
 		#elseif($mode == "random")
 			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
+				<td align="right" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
 			</tr>
 		#else
 			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_qus $brih_addition </font><b></i></td>
+				<td align="right" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_qus $brih_addition </font><b></i></td>
 			</tr>
 		#end
 	#end
 	<tr>
-		<td><b>$brih_topic $brih_name</b><font color=Red>*</font></td>        		              
-        	<td><select name=topicList class="drop">		
+		     		              
+        	<td align="right"><select name=topicList class="drop">		
 			#if($mode == "update")
 				#foreach($topicname in $topicList)				
 					#if($topicname.getTopic().toString()==$topic.toString())						
@@ -110,12 +114,12 @@ $!data.getMessage()
 				#foreach($topicname in $topicList)
 					<option value="$topicname.getTopic()">$topicname.getTopic()</option>
 				#end
-			#end	
-		</select></td>
+              	#end	
+           <td align="right"><font color=Red>*</font><b>$brih_topic $brih_name</b></td>		
+</select></td>
 	</tr>
         <tr>
-        	<td><b>$brih_type</b><font color=Red>*</font></td>
-        	<td><select name=typeList class="drop">            	
+        	      	<td align="right"><select name=typeList class="drop">            	
 		    	#if($mode == "update")
 		    		#if($questionType=='mcq')	
 		    			#set($mcq='selected')                		
@@ -132,11 +136,12 @@ $!data.getMessage()
 			<option value="sat" $sat>$brih_shortType $brih_answer
 			<option value="lat" $lat>$brih_long $brih_answer
 			</option>
+                   <td align="right"><font color=Red>*</font><b>$brih_type</b></td>
             	</select></td>     	
         </tr>
         <tr>
-        	<td><b>$brih_difflevel</b><font color=Red>*</font></td>        	
-        	<td><select name="levelList" class="drop">
+        	    	
+        	<td align="right"><select name="levelList" class="drop">
     			#if($mode == "update")
     				#if($questionLevel=='0-3')	
     					#set($easy='selected')										
@@ -150,37 +155,39 @@ $!data.getMessage()
 			<option value="4-6" $medium>$brih_medium
 			<option value="7-9" $hard>$brih_hard
 			</option>
+                     <td align="right"><font color=Red>*</font><b>$brih_difflevel</b></td>
             	</select></td> 
         </tr>
 	<tr>
-        	<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
-		<td>
+        	<td align="right">
 		  	#if($mode == "update")
 		  		<input type="text" name="numberQuestion" value="$questionNumber">
 	  		#else
 	  			<input type="text" name="numberQuestion" value="">	
   			#end	  	
-  		</td>
+                 <td align="right"><font color=Red>*</font><b>$brih_num $brih_qus2</b></td>  		
+</td>
         </tr>                
 	<tr>
-        	<td><b>$brih_marks $brih_per $brih_qus</b><font color=Red>*</font></td>
-		<td>
+       		<td align="right">
 			#if($mode == "update")
 		  		<input type="text" name="marksQuestion" value="$markPerQuestion">
 	  		#else
 	  			<input type="text" name="marksQuestion" value="">		
 			#end	
+                  <td align="right"><font color=Red>*</font><b>$brih_marks $brih_per $brih_qus</b></td>
+
 		</td>
         </tr>
 	<tr bgcolor="$ui.menuColor" width="100%">
-		<td align="left" width="100%" colspan="5">
+		<td align="right" width="100%" colspan="5">
 			#if($mode == "update")
 				<input type="button" class="button-ftextstyle" name="eventSubmit_updateQuizQuestionSetting" value="$brih_update" onClick="checkValue(document.frm,this);"/>
 		  		<input type="reset" name="$brih_reset" class="button-ftextstyle" value="$brih_restore $brih_original"/>
 			#else
-				<input type="button" name="eventSubmit_randomQuiz" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
-				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" class="button-ftextstyle" onClick="checkValue(document.frm,this);">			
 				<input type="reset" name="reset" value="$brih_reset" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
+				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" class="button-ftextstyle" onClick="checkValue(document.frm,this);">			
+				<input type="button" name="eventSubmit_randomQuiz" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
 			#end
 		</td>
 	</tr>

@@ -52,7 +52,7 @@ $!data.getMessage()
 #if($futureQuizList.size()!=0)
 	#foreach($futureqid in $futureQuizList)
 		<tr>	
-			<td>$velocityCount .<td colspan="5">Quiz "$futureqid.getQuizName()" is scheduled but it will start at $futureqid.getExamDate() at $futureqid.getStartTime()</td>
+			<td>$velocityCount .<td colspan="5">$brih_quiz "$futureqid.getQuizName()" $brih_quizSchedule $futureqid.getExamDate() $brih_at $futureqid.getStartTime()</td>
 		</tr>
 	#end	        						
 #end	
@@ -122,7 +122,7 @@ $!data.getMessage()
 		#if($isFile!="")
 			#if($quizList.size()!=0)
 				<tr bgcolor="$ui.menuColor" colspan="4">
-					<td align="left"><b><font face="$ui.sansSerifFonts">Enter Security String</font></b></td>
+					<td align="left"><b><font face="$ui.sansSerifFonts"> $brih_enterSecurityStr</font></b></td>
 					<td align="left">
 						<input type="text" name="textBox" value=""  MaxLength="5" size="10">	
 					</td>

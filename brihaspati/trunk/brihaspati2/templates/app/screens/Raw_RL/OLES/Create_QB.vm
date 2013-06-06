@@ -4,6 +4,7 @@
  * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 <head>
@@ -13,115 +14,126 @@ $page.setTitle("QuestionBank")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
-$!Msg
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
-<tr><td><b>
-	<font face="$ui.sansSerifFonts">
-	<a href=$link.setPage("Index.vm")>$brih_home</a>|
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
-	#if($addques=="addques")
-		$brih_add $brih_question
-	#else
-		$WikiCreate $brih_new $brih_queBank
-	#end
+
+<tr align="right"><td><b> 
+        <font face="$ui.sansSerifFonts">
+	 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_qus $brih_bank</a>|
+
+        #if($addques=="addques")
+                $brih_add $brih_question
+        #else
+                $WikiCreate $brih_new $brih_queBank
+        #end
+
+        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> 
+        |<a href=$link.setPage("Index.vm")>$brih_home</a>
 </b></td>
 </tr>
+
+
 </table>
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 <tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+<td>
+<a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 </tr>
 </table>
 ##creating form for FAQ
-##if($questype=="obo_ques")
-##<form name="frm" method="post" action=$link.setPage("call,OLES,Create_QB.vm")>
-##else
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Create_QB.vm").setAction("OnlineExaminationSystem")>
-##end
 ## Adding links for  add category,showing list of Faq category and delte category
 <table width="100%" bgcolor="$ui.tableColor">
-		#if($mode=="cnqb")
-		<tr bgcolor="$ui.tableColor">
-			#if($tdcolor != "1")
-                        <td>
-                        #elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","upload_multiple").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_multiple1 $brih_qus $brih_add #else $brih_add $brih_multiple1 $brih_qus #end </I></b></a></td>
-			#if($tdcolor != "2")
-                        <td>
-                        #elseif($tdcolor == "2")
-			<td bgcolor="#AFDCEC">
-			#end
-		<b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","imgtypeques").addPathInfo("addques",$addques).addPathInfo("Topicname",$Topicname).addPathInfo("count","2") style=text-decoration:none>  #if($lang =="hindi" || $lang == "gujarati")  $brih_image $brih_qus  $brih_upload #else $brih_upload $brih_image $brih_qus #end </I></b></a></td>
-			#if($tdcolor != "3")
-                        <td>
+ #if($mode=="cnqb")
+                <tr bgcolor="$ui.tableColor">
+
+       			#if($tdcolor != "3")
+	                        <td>
                         #elseif($tdcolor == "3")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","obo_ques").addPathInfo("addques",$addques).addPathInfo("Topicname",$Topicname).addPathInfo("count","3") style=text-decoration:none>$brih_onebyoneQues</I></b></a></td>
-		</tr>
-		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i><font size="3"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $WikiCreate #else $WikiCreate $brih_queBank #end</font><b></i></td></tr>
-		<tr>
-                	<td><b>$brih_topic #if($lang =="hindi")  $brih_Of1 #end   $brih_name</b><font color=Red>*</font></td>
-                	<td>
-			#if($addques=="addques")
-			<input type="text" name="Topicname" value="$Topicname" readonly></td>
-			#else
-			<input type="text" name="Topicname" value=""></td>
-			#end
-        	</tr>
-		<tr>
-                	<td><b>$brih_qus #if($lang =="hindi" || $lang == "gujarati")  $brih_Of2 #end $brih_type</b><font color=Red>*</font>
-			</td>
-                	<td>
-			<select name="Questype" class="drop" onChange="ChangeQuestype(document.frm);"/>
-                	<option>
-			<option value="mcq">$brih_multiplechoice $brih_qus $brih_type
-			<option value="tft">$brih_true/$brih_false $brih_type
-			<option value="maq" disabled="true">$brih_match $brih_type
-			<option value="sat">$brih_shortType $brih_answer $brih_type
-			<option value="lat">$brih_long $brih_answer $brih_type
-			</option>
-                	</select>
-                	</td>
+                        	<td bgcolor="#AFDCEC">
+                        #end
+                        <b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","obo_ques").addPathInfo("addques",$addques).addPathInfo("Topicname",$Topicname).addPathInfo("count","3") style=text-decoration:none>$brih_onebyoneQues</I></b></a></td>
+
+			#if($tdcolor != "2")
+                	        <td>
+                        #elseif($tdcolor == "2")
+        	                <td bgcolor="#AFDCEC">
+                        #end
+	                <b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","imgtypeques").addPathInfo("addques",$addques).addPathInfo("Topicname",$Topicname).addPathInfo("count","2") style=text-decoration:none> $brih_image $brih_Of2 $brih_qus  $brih_upload </I></b></a></td>
+
+                        #if($tdcolor != "1")
+				<td>
+                        #elseif($tdcolor == "1")
+	                        <td bgcolor="#AFDCEC">
+                        #end
+                        <b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","upload_multiple").addPathInfo("count","1") style=text-decoration:none> $brih_multiple1 $brih_qus $brih_add </I></b></a></td>
+                        </tr>
+			<tr align="right">
+				<td> </td>
+	                        <td align="right">
+	                        #if($addques=="addques")
+        		                <input type="text" name="Topicname" value="$Topicname" readonly></td>
+                        	#else
+		                        <input type="text" name="Topicname" value=""></td>
+                	  	#end
+                		<td align="right"><font color=Red>*</font><b>$brih_topic $brih_Of1 $brih_name</b></td> 
+			</tr>
+	                <tr align="right">
+				<td> </td>
+	                        <td align="right">
+        	                <select name="Questype" class="drop" onChange="ChangeQuestype(document.frm);"/>
+                	        	<option>
+	                        	<option value="mcq">$brih_multiplechoice $brih_qus $brih_insert
+		                        <option value="tft">$brih_true/$brih_false $brih_type $brih_Of2 $brih_qus $brih_insert
+        		                <option value="maq" disabled="true">$brih_match $brih_type $brih_Of2 $brih_qus $brih_insert
+                		        <option value="sat">$brih_short $brih_answer $brih_Of2 $brih_qus $brih_insert
+                        		<option value="lat">$brih_long $brih_answer $brih_Of2 $brih_qus $brih_insert
+		                        </option>
+        	                </select>
+				</td>
+                       		<td align="right"><font color=Red>*</font><b>$brih_qus $brih_Of $brih_type</b> </td>
+
+                        ##</td>
+			</tr>
+	                <tr>
+				<td> </td>
+	                        <td align="right">
+        	                <select name="difflevel" class="drop" onChange="Changedifflevel(document.frm);"/>
+                		        <option>
+		                        <option value="0-3">$brih_easy
+                		        <option value="4-6">$brih_medium
+		                        <option value="7-9">$brih_hard
+                		        </option>
+	                        </select>
+				</td>
+				<td align="right"><font color=Red>*</font><b>$brih_qus $brih_Of2 $brih_difflevel </b> </td>
+
+                        ##</td>
+	               </tr>
+         	       <tr align="right">
+		 <td> </td>
+                #if($typeques!="imgtypeques")
+                        #if($typeques!="obo_ques")
+               			<td><input type="file" size="20%" name="file" value=""> </td>
+				<td><b> <font color="RED">*</font>$brih_at_file</b> </td>
+	                      ##fileUpload ("<b>$brih_at_file </b><font color=Red>*</font>" "file")
+                        #end
+                #end
+
                 </tr>
-		<tr> 
-                	<td><b>$brih_qus #if($lang =="hindi")  $brih_Of2 #end $brih_difflevel </b><font color=Red>*</font>
-			</td>
-                	<td>
-			<select name="difflevel" class"drop" onChange="Changedifflevel(document.frm);"/>
-                	<option>
-			<option value="0-3">$brih_easy
-			<option value="4-6">$brih_medium
-			<option value="7-9">$brih_hard
-			</option>
-                	</select>
-                	</td>
-                </tr>
-		<tr>
-		#if($typeques!="imgtypeques")
-			#if($typeques!="obo_ques")
-		##if($typeques=="upload_multiple")
-        		        #fileUpload ("<b>$brih_at_file </b><font color=Red>*</font>" "file")
-			#end
-		#end
-		</tr>
-		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">
-		#if($typeques=="obo_ques"||$typeques=="imgtypeques")
-                <input type="button" class="button-ftextstyle" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
-		#else
-                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadQues_Bank" value="$brih_submit" onClick="checkField(document.frm,this);"/>
-		#end
-		<input type="reset" class="button-ftextstyle" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
-		</td></tr>
+                <tr bgcolor="$ui.menuColor" width="100%">
+			<td align="right" width="100%" colspan="4">
+        	        #if($typeques=="obo_ques"||$typeques=="imgtypeques")
+	                #else
+	                #end
+        	        <input type="reset" name="reset" class="button-ftextstyle" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+                		<input type="button" class="button-ftextstyle" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+             </td></tr>
 	#end
 		##foreach( $e in $Msg )
 		 ##       <tr bgcolor="$ui.tableColor">

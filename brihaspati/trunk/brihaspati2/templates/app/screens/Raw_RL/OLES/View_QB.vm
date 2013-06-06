@@ -1,9 +1,12 @@
 #*
+
  * @(#)View_QB.vm
  * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+
 *#
 $page.setTitle("QuestionBank")
 $page.setBgColor("bgcolor")
@@ -12,24 +15,22 @@ $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-## Retreiving the $lang (representing the choosen language for display, which
-## was set in corresponding the screen class.
-#set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
-<tr><td><b>
+<tr align="right"><td align="right"><b>
 	<font face="$ui.sansSerifFonts">
-	<a href=$link.setPage("Index.vm")>$brih_home</a>|
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
-	$brih_view $brih_qus$brih_bank
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_qus $brih_bank</a>
+	|$brih_view $brih_qus$brih_bank
+	|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> 
+	|<a href=$link.setPage("Index.vm")>$brih_home</a>
 </b></td>
 </tr>
 </table>
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 <tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+<td>
+<a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
 </tr>
 </table>
 ##creating form for FAQ
@@ -38,85 +39,99 @@ $!data.getMessage()
 ## Adding links for  add category,showing list of Faq category and delte category
 <table width="100%" bgcolor="$ui.tableColor">
 		<tr bgcolor="$ui.tableColor">
-			#if($tdcolor != "1")
-                        <td>
-                        #elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</I></b></a></td>
-			#if($tdcolor != "2")
-                        <td>
-                        #elseif($tdcolor == "2")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2") style=text-decoration:none>$brih_generate $brih_exam</a></td>
-			#if($tdcolor != "3")
-                        <td>
-                        #elseif($tdcolor == "3")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
-			#if($tdcolor != "4")
+	#if($tdcolor != "5")
+        	<td>
+	#elseif($tdcolor == "5")
+        	<td bgcolor="#AFDCEC">
+	#end
+                        <b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+
+#if($tdcolor != "4")
                         <td>
                         #elseif($tdcolor == "4")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
-			#if($tdcolor != "5")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+
+ #if($tdcolor != "3")
                         <td>
-                        #elseif($tdcolor == "5")
-			<td bgcolor="#AFDCEC">
-			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
-		</tr>
+                        #elseif($tdcolor == "3")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none> $brih_QDannounce $brih_exam </I></b></a></td>
+
+#if($tdcolor != "2")
+                        <td>
+                        #elseif($tdcolor == "2")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none> $brih_exam $brih_generate </I></b></a></td>
+
+#if($tdcolor != "1")
+                        <td>
+                        #elseif($tdcolor == "1")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <b><I><a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_qus $brih_bank</I></b></a></td>
+		
+</tr>
 		</table>
 <table width="100%" bgcolor="$ui.tableColor">
-		<tr bgcolor="$ui.menuColor"><td align="left"><b><i>$brih_qus2 of $topic<b></i></td>
-			<td><b>$brih_qus $brih_type</b><font color=Red>*</font>
-                        </td>
-                        <td>
-                        ##<select name="Questype" onChange="ChangeQuestype(document.frm);"/>
-                        <select name="Questype" class="drop"onChange="ShowQues(document.frm);"/>
-                        ##<option>$questype</option>$questype
-                        <option></option>
-                        <option value="mcq">$brih_multiplechoice $brih_qus $brih_type
-                        <option value="tft">$brih_true/$brih_false $brih_type 
-                        <option value="maq">$brih_match $brih_type
-                        <option value="sat">$brih_shortType $brih_answer $brih_type
-                        <option value="lat">$brih_long $brih_answer $brih_type
-                        </option>
-                        </select>
-                        </td>
-			<td><b>$brih_qus $brih_difflevel</b><font color=Red>*</font>
-                        </td>
-                        <td>
-                        ##<select name="difflevel" onChange="Changedifflevel(document.frm);"/>
-                        <select name="difflevel" class="drop" onChange="ShowQues(document.frm);"/>
-                        ##<option>$dlevel</option>$dlevel
-                        <option></option>
-                        <option value="0-3">$brih_easy
-                        <option value="4-6">$brih_medium
-                        <option value="7-9">$brih_hard
-                        </option>
-                        </select>
-                        </td>
-</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td bgcolor="$ui.menuColor">  
+			#if($questype!="")
+				<td>
+				 <select name="difflevel" class="drop" onChange="ShowQues(document.frm);"/>
+                	        #if($difflevel="")
+                        		<option></option>
+	                        #end
+        	                 #if($difflevel!="All")
+                	 	       <option value="$!difflevel">
+                        		#if($difflevel=="0-3") Easy #end
+	                        	#if($difflevel=="4-6") Medium #end
+	        	                #if($difflevel=="7-9") Hard #end
+        	        	        </option>$!difflevel
+                	        #end
+                        	<option value="All">$brih_all
+	                        <option value="0-3">$brih_easy
+        	                <option value="4-6">$brih_medium
+                	        <option value="7-9">$brih_hard
+                        	</option>
+	                        </select>
+				</td> 
+	
+			<td><font color=Red>*</font><b>$brih_qus $brih_difflevel</b> </td>
+			#end
+			<td>
+				<select name="questype" class="drop" onChange="ShowQues(document.frm);"/>
+                	        #if($questype="")
+                   		     <option></option>
+	                        #else
+                	        	<option value="$!questype">
+	                	        #if($questype=="All") All #end
+        	                	#if($questype=="mcq") Multiple Choice Question Type #end
+	                		#if($questype=="tft") True/False Type #end
+		                        #if($questype=="maq") Matching Type #end
+        		                #if($questype=="sat") Short Answer Type #end
+                		        #if($questype=="lat") Long Answer Type #end
+                        		</option>$!questype
+        	                #end
+                	        <option value="All">$brih_all
+                        	<option value="mcq">$brih_multiplechoice $brih_qus $brih_insert
+	                        <option value="tft"> $brih_true/$brih_false $brih_type $brih_Of2 $brih_qus $brih_insert
+        	                <option value="maq"> $brih_match $brih_type $brih_Of2 $brih_qus $brih_insert
+                	        <option value="sat">$brih_shortType $brih_answer $brih_type
+                        	<option value="lat">$brih_long $brih_answer $brih_Of2 $brih_qus $brih_insert
+	                        </option>
+        	                </select>
+			</td>
+			<td><font color=Red>*</font><b>$brih_qus $brih_type</b> </td>
+			<td bgcolor="$ui.menuColor"><td align="right"><b><i>$brih_qus2 $brih_Of2 $topic<b></i></td>
+
+	</tr>
 </table>
 ##$questype
 <table width="100%" bgcolor="$ui.tableColor">
-					#if($checkstatus!="blank")
-					<tr bgcolor="$ui.menuColor"><td colspan="2"><b>$brih_qus $brih_type :</b>
-					#if($questype=="mcq") $brih_multiplechoice $brih_qus $brih_type #end
-					#if($questype=="tft") $brih_true/$brih_false $brih_type #end
-					#if($questype=="maq") $brih_match $brih_type #end
-					#if($questype=="sat") $brih_shortType $brih_answer $brih_type #end
-					#if($questype=="lat") $brih_long $brih_answer $brih_type #end </td>
-					<td colspan="2"><b>$brih_difflevel :</b>
-					#if($difflevel=="0-3") $brih_easy #end
-					#if($difflevel=="4-6") $brih_medium #end
-					#if($difflevel=="7-9") $brih_hard #end
-					 </td></tr>
-					#end
 		##if($checkstatus=="NoBlank")
 		#foreach ($Ques in $allQues)
 				#if($velocityCount%2==0)

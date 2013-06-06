@@ -32,7 +32,7 @@ $page.setBgColor($ui.bgcolor)
 
 <table width="100%">
 	<tr align="right">
-		<td align="left"> <a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/hand.gif")"> </td>
+		<td align="right"> <a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 	</tr>
 </table>
 ##==================
@@ -133,10 +133,12 @@ $page.setBgColor($ui.bgcolor)
 				</td>
                         	<td>$PracticeQuizInfo.studentid</td>
 			#end
+
+
                         </tr>
                </table>
 		#end
-	</table>
+
 	</table>
 </form>
 </body>
