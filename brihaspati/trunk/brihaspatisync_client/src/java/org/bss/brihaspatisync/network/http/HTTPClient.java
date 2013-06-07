@@ -55,13 +55,16 @@ public class HTTPClient extends Thread {
                        			}else {
                                 		parentip="null";
 	                                }
+					/****   send the chat and whiteboard data to reflector ****/
 					LinkedList send_queue=utilObject.getSendQueue("ch_wb_Data");
 					String message=chat_wb_handraise_data+"req"+parentip;
+					
 					if(!(message.equals(message_diff)) || (send_queue.size()== 0)) {
 						message_diff=message;
 						send_queue.addLast((message_diff).getBytes());
 					}
-				
+					
+					
 					LinkedList cha_wb_queue=utilObject.getQueue("ch_wb_Data");
 					if(cha_wb_queue.size()>0) {
 						String str=new String((byte[])cha_wb_queue.get(0));

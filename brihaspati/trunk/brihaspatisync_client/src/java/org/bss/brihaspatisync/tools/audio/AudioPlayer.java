@@ -26,7 +26,7 @@ public class AudioPlayer implements Runnable {
 	private SourceDataLine sourceDataLine=null;
 	private LinkedList<byte[]> audioVector=new LinkedList<byte[]>();
         private AudioFormat audioFormat=org.bss.brihaspatisync.util.AudioUtilObject.getAudioFormat();;
-	//private org.xiph.speex.SpeexDecoder decoder = org.bss.brihaspatisync.util.AudioUtilObject.getSpeexDecoder();
+	private org.xiph.speex.SpeexDecoder decoder = org.bss.brihaspatisync.util.AudioUtilObject.getSpeexDecoder();
 
 	protected static AudioPlayer getController(){
 		if(ap==null)
@@ -78,31 +78,37 @@ public class AudioPlayer implements Runnable {
  	 */ 		 
 
 	public void run() {
+		
 		while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()){
 			try {
 				if(audioVector.size() > 5) {
+					byte[] bigArray=new byte[((getDecoder(audioVector.get(0)).length)*5)];
+					System.out.println(bigArray.length);	
+					int currentOffset = 0;
+					for (int i=0;i<5;i++) {
+						byte[] currentArray=getDecoder(audioVector.get(0)); audioVector.remove(0);
+						System.arraycopy(currentArray, 0,bigArray, currentOffset,currentArray.length);
+						currentOffset += currentArray.length;
+					}
 					if(sourceDataLine != null ) {
-						//byte[] decoded_data=getDecoder(audioVector.get(0));
-						byte[] audiostream=audioVector.get(0);
-						audioVector.remove(0);
-                                                sourceDataLine.write(audiostream,0,audiostream.length);
+                                                sourceDataLine.write(bigArray,0,bigArray.length);
 						System.gc();
 					} else
                                         	sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();	
 				} 
 				runner.yield();	
-			} catch(Exception ex){System.out.println("Exception in AudioPlayer run() "+ex.getMessage());}
+			} catch(Exception ex) { System.out.println("Exception in AudioPlayer in run() method "+ex.getMessage());}
 		} //end of while
 	}
-	/**
+	
 	public byte[] getDecoder(byte[] audio_data) {
 		byte[] decoded_data=null;
 		try {
 			decoder.processData(audio_data, 0, audio_data.length);
         	        decoded_data= new byte[decoder.getProcessedDataByteSize()];
        	                decoder.getProcessedData(decoded_data, 0);
-		}catch(Exception e){System.out.println("Exception in AudioPlayer class in getDecoder method  "+e.getMessage());}
+		}catch(Exception e){  System.out.println("Exception in AudioPlayer class in getDecoder method  "+e.getMessage());}
 		return decoded_data;
-	}**/
+	}
 
 }

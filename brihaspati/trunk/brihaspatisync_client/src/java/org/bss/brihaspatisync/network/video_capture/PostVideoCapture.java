@@ -82,7 +82,7 @@ public class PostVideoCapture implements Runnable {
 			try {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					if(!getflag) {	
-						/***  send data to reflector ********/
+						/****  send video image to reflector ****/
 						if(BufferImage.getController().bufferSize()>0) {
 							BufferedImage bimg=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
@@ -104,8 +104,7 @@ public class PostVideoCapture implements Runnable {
 							os.reset();
 						}
 					}else {
-						LinkedList send_queue=UtilObject.getController().getSendQueue("ins_video");
-                                                send_queue.addLast(null);
+						/****   receive the video image from reflector **********/
 						LinkedList desktop_queue=UtilObject.getController().getQueue("ins_video");
                                        		if(desktop_queue.size()>0) {
                                         		byte[] bytes1=(byte[])desktop_queue.get(0);
@@ -116,7 +115,7 @@ public class PostVideoCapture implements Runnable {
 						}
                               		}
 				}
-	                       	runner.sleep(3000); runner.yield();
+	                       	runner.sleep(30000); runner.yield();
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
 		}
 	}

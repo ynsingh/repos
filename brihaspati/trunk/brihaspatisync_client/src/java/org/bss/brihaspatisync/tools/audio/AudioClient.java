@@ -23,10 +23,12 @@ public class AudioClient implements Runnable {
 
 	private Thread runner=null;
 	private boolean flag=false;
+	private boolean audiostartstopFlag=false;
 	private static AudioClient audio=null;
 	private AudioCapture au_cap=new AudioCapture();	
+	private UtilObject utilobject=UtilObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	//private org.xiph.speex.SpeexEncoder encoder=org.bss.brihaspatisync.util.AudioUtilObject.getSpeexEncoder();
+	private org.xiph.speex.SpeexEncoder encoder=org.bss.brihaspatisync.util.AudioUtilObject.getSpeexEncoder();
 	
 	/**
  	 * Controller for the class.
@@ -65,28 +67,33 @@ public class AudioClient implements Runnable {
       		}
    	}
 
+	/**
+	 * This flag is used to AudioCapture start/stop thread .
+	 */   
 	public void postAudio(boolean startstopflag) {
+		audiostartstopFlag=startstopflag;
 		au_cap.setflag(startstopflag);	
 	}
 
 	/**
- 	 *Transmit audioInputStream to reflector by using HTTP post method.
+ 	 * Transmit audioInputStream to reflector by using HTTP post method.
  	 */
 		
   	public void run() {
 		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
-					byte [] audiodata=au_cap.getAudioData();
-					if(audiodata != null) {
-						//byte[] encoded_data=getEncoder(audiodata);
-                                        	LinkedList send_queue=UtilObject.getController().getSendQueue("Audio_Data");
-	                	                send_queue.addLast(audiodata);
-					} else {
-						LinkedList send_queue=UtilObject.getController().getSendQueue("Audio_Data");
-                                        	send_queue.addLast(null);	
+					/****   send audio data to reflector ****/
+					if(audiostartstopFlag) {
+						byte [] audiodata=au_cap.getAudioData();
+						if(audiodata != null) {
+							byte[] encoded_data=getEncoder(audiodata);
+                        	                	LinkedList send_queue=utilobject.getSendQueue("Audio_Data");
+	                		                send_queue.addLast(encoded_data);
+						} 
 					}
-                        	        LinkedList audio_rechive_data=UtilObject.getController().getQueue("Audio_Data");
+					/****   receive the audio data from reflector **********/
+                        	        LinkedList audio_rechive_data=utilobject.getQueue("Audio_Data");
                                 	if(audio_rechive_data.size()>0) {
                 				byte[] audioBytes=(byte[])audio_rechive_data.get(0);
 	                                        audio_rechive_data.remove(0);			
@@ -97,7 +104,7 @@ public class AudioClient implements Runnable {
 					StatusPanel.getController().setaudioClient("yes");
 				} else
 					StatusPanel.getController().setaudioClient("no");
-				runner.sleep(100);
+				runner.sleep(10);
 				runner.yield();
 			} catch(Exception epe) { 
 				StatusPanel.getController().setaudioClient("no"); 	
@@ -106,7 +113,9 @@ public class AudioClient implements Runnable {
         	}
 	}
 	
-	/*** audio encoder 
+	/**
+	 * This method is used to encode raw audio data.  
+	 */ 
 	private byte [] getEncoder(byte [] audiodata) {
 		byte[] encoded_data= null;
 		try {
@@ -114,7 +123,7 @@ public class AudioClient implements Runnable {
 				encoded_data= new byte[encoder.getProcessedDataByteSize()];
 				encoder.getProcessedData(encoded_data, 0);
 			}
-		} catch(Exception e) { System.out.println("Exception  "+e.getMessage());}
+		} catch(Exception e) { System.out.println("Exception in AudioClient class in getEncoder method ! "+e.getMessage());}
 		return encoded_data;
-	} **/
+	} 
 }

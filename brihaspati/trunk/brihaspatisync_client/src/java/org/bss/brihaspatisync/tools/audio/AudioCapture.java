@@ -26,7 +26,9 @@ public class AudioCapture implements Runnable {
 	private TargetDataLine targetDataLine=null;
 	private AudioFormat audioFormat=AudioUtilObject.getAudioFormat();
 	private java.util.LinkedList<byte[]> audioVector=new java.util.LinkedList<byte[]>();
+	private org.xiph.speex.SpeexEncoder encoder=org.bss.brihaspatisync.util.AudioUtilObject.getSpeexEncoder();
 
+	
 	/**
  	 * Open and start input Line (TargetDataLine) from selected Mixer.
  	 */  
@@ -53,7 +55,7 @@ public class AudioCapture implements Runnable {
 	
 	protected void startCapture(){
 		if(runner ==null) {
-	                bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
+			bufferSize=2 *  encoder.getChannels() * encoder.getFrameSize();
                 	getTargetLine();
 			runner=new Thread(this);
 			flag=true;
@@ -82,12 +84,14 @@ public class AudioCapture implements Runnable {
 	public void run() { 
                 try {
 			while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {	
-				if(targetDataLine != null) {
-					byte audio_data[] = new byte[bufferSize];
-                               		int cnt = targetDataLine.read(audio_data,0,audio_data.length);
-					audioVector.addLast(audio_data);
-				} else 
-                         	       targetDataLine = AudioUtilObject.getTargetLine();
+				try {
+					if(targetDataLine != null) {
+						byte audio_data[] = new byte[bufferSize];
+                	               		int cnt = targetDataLine.read(audio_data,0,audio_data.length);
+						audioVector.addLast(audio_data);
+					} else 
+                         	       		targetDataLine = AudioUtilObject.getTargetLine();
+				} catch(Exception ex){ System.out.println("Eception in capture Audio class "+ex.getCause()); }
 			}
                 } catch(Exception e){ System.out.println("Eception in capture Audio class "+e.getCause()); }
         }

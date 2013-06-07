@@ -127,7 +127,7 @@ public class Post_GetSharedScreen implements Runnable {
 						BufferedImage image=captureScreen();
 						ImageIO.write(image, "jpeg", os);
 						LinkedList send_queue=clientobject.getSendQueue("Desktop_Data");
-						if(send_queue.size()==0 ){
+						if(send_queue.size() ==0 ) {
 							send_queue.addLast(os.toByteArray());
 						}else {
 							int k=compare(os.toByteArray(),(byte[])send_queue.get((send_queue.size())-1));
@@ -137,8 +137,6 @@ public class Post_GetSharedScreen implements Runnable {
 						os.flush();
 						os.reset();	
 					}else {
-						LinkedList send_queue=clientobject.getSendQueue("Desktop_Data");
-                                                send_queue.addLast(null);
 						/****   receive the image from reflector **********/
 						LinkedList desktop_queue=clientobject.getQueue("Desktop_Data");
                                                 if(desktop_queue.size()>0) {

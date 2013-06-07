@@ -14,8 +14,9 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.SourceDataLine;
 import org.bss.brihaspatisync.http.HttpCommManager;
-//import org.xiph.speex.SpeexEncoder;
-//import org.xiph.speex.SpeexDecoder;
+import org.xiph.speex.SpeexEncoder;
+import org.xiph.speex.SpeexDecoder;
+
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  * This class is used to store objects which are needed in runtime by this client.
@@ -25,8 +26,8 @@ public class AudioUtilObject {
 
 	private static String a_status="";
 	private static String v_status="";
-	//private static SpeexEncoder encoder=null;
-	//private static SpeexDecoder decoder=null;
+	private static SpeexEncoder encoder=null;
+	private static SpeexDecoder decoder=null;
 	private static SourceDataLine sourceDataLine=null;
 	private static TargetDataLine targetDataLine=null;
 	
@@ -117,26 +118,24 @@ public class AudioUtilObject {
 		return sourceDataLine;
 	}
 
-	/**	
+		
 	public static SpeexEncoder getSpeexEncoder() {
 		try {
 			if(encoder == null) {
-				encoder = new SpeexEncoder();
-	                        encoder.init(1, 10, (int)getAudioFormat().getSampleRate(), getAudioFormat().getChannels());
-				
+				encoder = new SpeexEncoder();	
+	                        encoder.init(2, 8, (int)getAudioFormat().getSampleRate(), getAudioFormat().getChannels());
 			}
-		} catch(Exception e){System.out.println("Exception in ClientObject class in getSpeexEncoder method  "+e.getMessage());}	
-		return encoder;
+		} catch(Exception e){System.out.println("Exception in ClientObject class in getSpeexEncoder method  "+e.getMessage());}			return encoder;
 	}
 		
 	public static SpeexDecoder getSpeexDecoder() {
 		try {
 			if(decoder == null) {
                         	decoder = new SpeexDecoder();
-		                decoder.init(1, (int) getAudioFormat().getSampleRate(), getAudioFormat().getChannels(), false);
+		                decoder.init(2, (int) getAudioFormat().getSampleRate(), getAudioFormat().getChannels(), false);
                         }	
-		}catch(Exception e){ System.out.println("Exception in ClientObject class in getSpeexDecoder method  "+e.getMessage()); }
+		} catch(Exception e){ System.out.println("Exception in ClientObject class in getSpeexDecoder method  "+e.getMessage()); }
 		return decoder;
-	}**/
+	}
 }
 
