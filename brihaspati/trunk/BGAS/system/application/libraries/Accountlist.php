@@ -5,7 +5,7 @@ class Accountlist
 	var $id = 0;
 	var $name = "";
 	var $code = "";
-	var $status = "";
+	var $status = 0;
 	var $total = 0;
 	var $optype = "";
 	var $opbalance = 0;
@@ -38,7 +38,7 @@ class Accountlist
 			$this->id = $group->id;
 			$this->name = $group->name;
 			$this->code = $group->code;
-			$this->status = $group->status ;
+			$this->status = $group->status;
 			$this->total = 0;
 		}
 		if($this->status==0)

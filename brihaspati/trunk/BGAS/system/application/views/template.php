@@ -117,6 +117,9 @@ $(document).ready(function() {
 				<a href="<?php print base_url(); ?>" title="Dashboard">Dashboard</a>
 			</li>
 			<li>
+				<?php echo anchor('budgetl', 'Budgets', array('title' => 'Budget accounts')); ?>
+			</li>
+			<li>
 				<?php echo anchor('account', 'Accounts', array('title' => 'Chart of accounts')); ?>
 			</li>
 			<li>

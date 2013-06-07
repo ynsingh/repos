@@ -82,7 +82,7 @@ class General {
 					}
 					$this->check_database_version();
 
-					$table_names = array('groups', 'ledgers', 'entry_types', 'entries', 'entry_items', 'tags', 'logs', 'settings');
+					$table_names = array('groups', 'ledgers', 'budgets', 'entry_types', 'entries', 'entry_items', 'tags', 'logs', 'settings');
 					foreach ($table_names as $id => $tbname)
 					{
 						$valid_db_q = mysql_query('DESC ' . $tbname);
