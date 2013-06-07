@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS ledgers (
   op_balance_dc char(1) NOT NULL,
   type INT(2) NOT NULL DEFAULT 0,
   reconciliation int(1) NOT NULL,
-  status int(1) NOT NULL DEFAULT 0,
+  lstatus int(1) NOT NULL DEFAULT 0,
   UNIQUE(code,name),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
