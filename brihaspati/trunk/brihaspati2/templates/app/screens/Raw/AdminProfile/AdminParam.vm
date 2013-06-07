@@ -120,7 +120,7 @@ $!data.getMessage()
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
    </tr>
    <tr bgcolor="$ui.tableColor">
-	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size </td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" value="$!upldsze"></font></td>
    </tr>
 ##--------------------------------------Tweet expiry---------------------

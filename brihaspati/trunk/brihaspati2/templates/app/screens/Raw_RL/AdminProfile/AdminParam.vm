@@ -120,7 +120,7 @@ $!data.getMessage()
    </tr>
    <tr bgcolor="$ui.tableColor" align="right">
 	<td><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" size="30" value="$!upldsze"></font></td>
-	<td><font face="$ui.sansSerifFonts">$brih_file $brih_insert1 $brih_Of1 $brih_size </td>	
+	<td><font face="$ui.sansSerifFonts">$brih_file $brih_insert1 $brih_Of1 $brih_size $quota_sze $brih_in</td>	
    </tr>
 ##--------------------------------------Tweet expiry---------------------
 	<tr bgcolor="$ui.menuColor" align="right">

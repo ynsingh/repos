@@ -201,7 +201,11 @@ public class AdminParam extends SecureScreen{
                  context.put("FaqExp",new Integer(FaqExp));
 		//----------------------------------FAQ---------------------------
                  String fupldsze = AdminProperties.getValue(path,"services.UploadService.size.max");
-                 context.put("upldsze",fupldsze);
+		 long newSize = Long.parseLong(fupldsze);
+		 long fupldszemb = newSize/1024/1024;
+		 String upldsize = Long.toString(fupldszemb);
+		
+                 context.put("upldsze",upldsize);
 
 		}
 		catch(Exception e) {	

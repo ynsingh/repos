@@ -249,6 +249,8 @@ public class changeAParam extends SecureAction_Admin{
 			TurbineSecurity.saveUser(user);
 			// for delete the file  and set the value for admin configuration
 		 	(new File(path)).delete();
+			long bytUplodsze = Long.parseLong(fileupldsze)*1024*1024;
+			String TRpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"TurbineResources.properties";
 			AdminProperties.setValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
 			AdminProperties.setValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
 			AdminProperties.setValue(path,AdminPassExp,"brihaspati.admin.passwordExpiry");
@@ -264,7 +266,9 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
-			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
+			//AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
+			AdminProperties.setValue(path,Long.toString(bytUplodsze),"services.UploadService.size.max");
+			AdminProperties.setTRValue(TRpath,Long.toString(bytUplodsze),"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
 			AdminProperties.setValue(path,dstoreurl,"brihaspati.admin.hdfsurl.value");
