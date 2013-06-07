@@ -1,4 +1,4 @@
-alter table ledgers add status int(1) NOT NULL DEFAULT 0 after affects_gross;
+alter table ledgers add status int(1) NOT NULL DEFAULT 0 after reconciliation;
 
 CREATE TABLE IF NOT EXISTS budgets (
   id int(11) NOT NULL AUTO_INCREMENT,
