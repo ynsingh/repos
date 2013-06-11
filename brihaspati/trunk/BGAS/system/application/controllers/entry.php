@@ -828,10 +828,11 @@ class Entry extends Controller {
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$data_has_reconciliation = $this->input->post('has_reconciliation', TRUE);
 			
-			$dateTime = new DateTime();
-        		$updatedate = $dateTime->format("Y-m-d 00:00:00");
-
-			$this->db->trans_start();
+//			$dateTime = new DateTime();
+//        		$updatedate = $dateTime->format("Y-m-d 00:00:00");
+			
+			$updatedate = date_php_to_mysql(date_today_php());
+                        $this->db->trans_start();
 			$update_data = array(
 				'number' => $data_number,
 				'date' => $data_date,
