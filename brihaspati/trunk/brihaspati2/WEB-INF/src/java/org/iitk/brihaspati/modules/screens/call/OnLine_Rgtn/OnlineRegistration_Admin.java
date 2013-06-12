@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OnLine_Rgtn;
 /*
  * @(#) OnlineRegistration_Admin.java
  *
- *  Copyright (c) 2008, 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2008,2010,2013 ETRG,IIT Kanpur.
  *  
  *  All Rights Reserved.
  *  Redistributions of source code must retain the above copyright
@@ -28,8 +28,6 @@ package org.iitk.brihaspati.modules.screens.call.OnLine_Rgtn;
  *
  */
 
-
-
 import java.io.File;
 import java.util.List;
 import java.util.Vector;
@@ -48,8 +46,6 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
-
-
 /**
  *This class contain the list of request of user registration and list of course registration.
  * institute admin accept or reject the request.
@@ -58,8 +54,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 20-10-2010,23-12-2010
- * @modified date: 09-08-2012 (Priyanka)
+ * @modified date: 09-08-2012 (Priyanka),10-06-2013
  */
 
 public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
@@ -108,7 +105,6 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                        	        String email=((CourseUserDetail) list.elementAt(i)).getEmail();
 						String fname=((CourseUserDetail) list.elementAt(i)).getInstructorName();
 						String lname=((CourseUserDetail) list.elementAt(i)).getUserName();
-						String orgtn=((CourseUserDetail) list.elementAt(i)).getDept();
                                        	        String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
                                        	        String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
                                        	        String rollno=((CourseUserDetail) list.elementAt(i)).getRollNo();
@@ -124,7 +120,6 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                        	        dbDetail.setMSubject(email);
 						dbDetail.setExpiryDate(fname);
 						dbDetail.setPermission(lname);
-						dbDetail.setGrpmgmtType(orgtn);
                                        	        dbDetail.setStatus(gname);
                                        	        dbDetail.setMsgID(roleName);
                                        	        dbDetail.setRollno(rollno);
@@ -184,6 +179,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                 	               		String email=((CourseUserDetail) list.elementAt(i)).getEmail();
                         	       		String fname=((CourseUserDetail) list.elementAt(i)).getInstructorName();
                                			String lname=((CourseUserDetail) list.elementAt(i)).getUserName();
+						String scname=((CourseUserDetail) list.elementAt(i)).getSchoolCenter();
 						DbDetail dbDetail= new DbDetail();
         	                                dbDetail.setSender(gname);
                 	                        dbDetail.setPDate(cname);
@@ -192,6 +188,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                 	        dbDetail.setStatus(email);
                                                 dbDetail.setMsgID(fname);
                                        	        dbDetail.setPermission(lname);
+						dbDetail.setSchoolCenter(scname);
                                         	entry.addElement(dbDetail);
 						}
 					   }

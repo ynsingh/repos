@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OnLine_Rgtn;
 /*
  * @(#) OnlineCourseApproval.java
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2013 ETRG,IIT Kanpur.
  *  
  *  All Rights Reserved.
  *  Redistributions of source code must retain the above copyright
@@ -50,6 +50,8 @@ import org.apache.turbine.modules.screens.VelocityScreen;
  * admin accept or reject the request.
  
  * @author  <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author  <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:10-06-2013
  */
 
 //class for viewing to approve/reject online course request by institute admin
@@ -100,6 +102,8 @@ public class OnlineCourseApproval extends SecureScreen_Institute_Admin
                                                 		String email=((CourseUserDetail) list.elementAt(i)).getEmail();
                                                 		String fname=((CourseUserDetail) list.elementAt(i)).getInstructorName();
                                                 		String lname=((CourseUserDetail) list.elementAt(i)).getUserName();
+								//Get school/Center name
+                                                		String scname=((CourseUserDetail) list.elementAt(i)).getSchoolCenter();
                                                 		DbDetail dbDetail= new DbDetail();
                                                 		dbDetail.setSender(gname);
                                                 		dbDetail.setPDate(cname);
@@ -108,6 +112,7 @@ public class OnlineCourseApproval extends SecureScreen_Institute_Admin
                                                 		dbDetail.setStatus(email);
                                                 		dbDetail.setMsgID(fname);
                                                 		dbDetail.setPermission(lname);
+                                                		dbDetail.setSchoolCenter(scname);
                                                 		entry.addElement(dbDetail);
                                                 	}
 						}

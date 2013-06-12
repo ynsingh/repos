@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) OnlineRegistration_InstituteAdmin.java	
  *
- *  Copyright (c) 2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2012,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -67,6 +67,8 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 06-06-2013
  */
 //class for accepting and rejecting for the online course request by institute admin
 public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_Admin{
@@ -173,7 +175,7 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
                 try{
 
 			ParameterParser pp=data.getParameters();
-			String gidUname="", passwd="", cname="", instName="";
+			String gidUname="", passwd="", cname="", instName="",dept="",scname="";
 			String instituteId=pp.getString("instituteid");
 			int instId=Integer.parseInt(instituteId);
 			instName= InstituteIdUtil.getIstName(instId);
@@ -211,6 +213,8 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
                                                         gname=((CourseUserDetail) courselist.elementAt(i)).getGroupName().replace("&colon",":");
                                                         cname=((CourseUserDetail) courselist.elementAt(i)).getCourseName();
                                                         uname=((CourseUserDetail) courselist.elementAt(i)).getLoginName();
+                                                        dept=((CourseUserDetail) courselist.elementAt(i)).getDept();
+                                                        scname=((CourseUserDetail) courselist.elementAt(i)).getSchoolCenter();
 							/**
 							*Set the Password if empty.
 							*password is the value of 0th position of mailid
@@ -225,8 +229,8 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
 								//call for utils to perform registration successfull in the courses.
                                                                 try{
                                                                         //String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");
-									//Add last parameter as blank for 'school/center' name for online course(Instructor) registration.
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c","");
+									//Add parameter "dept" and "scname" for accept online course(Instructor) registration.
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,dept,"",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c",scname);
 									data.setMessage(msg);
                                                                 }
                                                                 catch(Exception e){data.setMessage("Error in new Course Registration "+e);}

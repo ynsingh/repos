@@ -6,7 +6,7 @@
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>  
  * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>  
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 22-04-2013,31-05-2013
+ * @modified date: 22-04-2013,31-05-2013,06-06-2013
 *#
 
 $page.setTitle("Admin Home | List Management | View All Courses | Edit Course")
@@ -46,21 +46,21 @@ $!data.getMessage()
 		$brih_view_all $brih_usr
 	#end
 	</a></td>
-        </td width=50%>
 	#if($tdcolor != "2")	
 	<td>
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all $brih_course</a>
+	</td>
 </tr>
 </table>
 
 <form name=frm method="post" action="$link.setPage("call,CourseMgmt_InstituteAdmin,InstEditCourse.vm").setAction("EditInstituteCourse")">
-  <div align="left">
-    ##<table align=left cellspacing=1 bgcolor="$ui.tableColor" cellpadding="5">
-    <table align=left width=100% bgcolor="$ui.tableColor">
-     #foreach($cd in $CourseDetail)
+	<div align="left">
+    	##<table align=left cellspacing=1 bgcolor="$ui.tableColor" cellpadding="5">
+    	<table align=left width=100% bgcolor="$ui.tableColor">
+    	#foreach($cd in $CourseDetail)
      	<tr bgcolor="$ui.menuColor">
 		#entry1Cell("$brih_course $brih_ID" "$cd.getGroupName()")
      	</tr>
@@ -72,7 +72,7 @@ $!data.getMessage()
         	<td>
         	<select class="drop" name="SCHNAME" size=1 style="width:300px;" />
 		#if("$!cd.getSchoolCenter()"=="")
-        	<option value="$brih_select $brih_sch" title="$brih_select $brih_sch">$brih_select $brih_sch </option>
+        	<option value="" title="$brih_select $brih_sch">$brih_select $brih_sch </option>
 		#else
         	<option value="$!cd.getSchoolCenter()" title="$!cd.getSchoolCenter()">$!cd.getSchoolCenter()</option>
 		#end
@@ -80,14 +80,14 @@ $!data.getMessage()
         	<option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
         	#end
         	</select>
-        	</td
+        	</td>
         </tr>
       	<tr>
 		<td> $brih_dept</td>
         	<td>
         	<select class="drop" name="Department" size=1 style="width:300px;" />
 		#if("$!cd.getDept()"=="")
-        	<option value="$brih_select $brih_dept" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
+        	<option value="" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
 		#else
 		<option value="$!cd.getDept()" title="$!cd.getDept()" style="width:275px;">$!cd.getDept()</option>
 		#end
@@ -95,7 +95,7 @@ $!data.getMessage()
         	<option value="$!name.getName()" title="$!name.getName()" style="width:275px;">$!name.getName()</option>
         	#end
         	</select>
-        	</td
+        	</td>
       	</tr>
       	<tr bgcolor="$ui.menuColor">
   		<td>
@@ -140,8 +140,8 @@ $!data.getMessage()
 	<input type="hidden" name="count" value="$tdcolor">
 	<input type="hidden" name="listcourse" value="listcourse">
 	#end
-    </table>
-  </div>
+    	</table>
+  	</div>
 </form>
 <script LANGUAGE="javascript">
   function confirmForUD(frm,val){

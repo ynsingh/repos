@@ -1,99 +1,59 @@
 #*
  * @(#) OnlineCourseApproval.vm
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Sharad Singh</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
-
-
+ * @modify date: 10-06-2013
 *#
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <body>
 <form name="frm" method="post" action="$link.setPage("call,OnLine_Rgtn,OnlineCourseApproval.vm").setAction("OnlineRegistration_InstituteAdmin")">				  
 #if($entry.size() !=0)
+#set ( $headings = ["$brih_schce","$brih_dept","$brih_last $brih_name","$brih_first $brih_name","$brih_email","$brih_course $brih_Of1 $brih_name","$brih_usr $brih_Of1 $brih_name","$brih_course $brih_Of1 $brih_ID","$brih_select"] )
 <table bgcolor="$ui.tableColor" cellpadding="5" align=left width=100%>
-        <tr bgcolor="$ui.menuColor">
-                <td>
-                        <b> $brih_select </b>
-                </td>
-                <td align="center">
-			<b> $brih_course #if($lang =="hindi") $brih_Of1 #end $brih_ID</font></b> 
-                </td>
-                <td align="center">
-			<b> $brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_name </b>
-                </td>
-                <td align="center">
-			<b> $brih_course #if($lang =="hindi") $brih_Of1 #end $brih_name</b>
-                </td>
-                <td align="center">
-                        <b> $brih_email  </b>
-                </td>
-                <td align="center">
-                        <b>$brih_first $brih_name  </b>
-                </td>
-                <td align="center">
-                        <b>$brih_last $brih_name </b>
-                </td>
-                <td>
-                        <b> $online_organisation </b>
-                </td>
-
+	 <tr align="center" bgcolor="$ui.menuColor">
+                  #foreach ($heading in $headings)
+                        #headerCell($heading)
+                  #end
         </tr>
-
+	</tr>
         #foreach($e in $entry)
         #if($velocityCount%2==0)
-        <tr bgcolor="$ui.menuColor">
+        <tr align="right" bgcolor="$ui.menuColor">
         #else
-        <tr bgcolor="$ui.tableColor">
+        <tr align="right" bgcolor="$ui.tableColor">
         #end
-          <td align="center">
-                #set($mailCname="${e.getStatus()}:${e.getSender()}${e.getMSubject()}")
-                <INPUT TYPE="CHECKBOX" NAME="$mailCname" VALUE="" onClick="addDeleteList(this,document.frm);">
-          </td>
-          <td>
-                $e.getSender() ## CourseId
-          </td>
-
-          <td >
-                $e.getMSubject() ## User Name
-          </td>
-
-          <td>
-                $e.getPDate()
-          </td>
-
-          <td >
-                $e.getStatus() ## getting Email ID
-          </td>
-          <td >
-                $e.getMsgID()
-          </td>
-          <td >
-                $e.getPermission()
-          </td>
-          <td>
-                $e.getGrpmgmtType()
-          </td>
+		<td>$e.getSchoolCenter()</td>
+		<td>$e.getGrpmgmtType()</td>
+		<td>$e.getPermission()</td>
+		<td>$e.getMsgID()</td>
+		<td>$e.getStatus()</td> ## getting Email ID
+ 		<td>$e.getPDate()</td>
+ 		<td>$e.getMSubject()</td> ## User Name
+ 		<td>$e.getSender()</td> ## CourseId
+		<td align="center">
+                	#set($mailCname="${e.getStatus()}:${e.getSender()}${e.getMSubject()}")
+                	<INPUT TYPE="CHECKBOX" NAME="$mailCname" VALUE="" onClick="addDeleteList(this,document.frm);">
+        	</td>
         </tr>
         #end
-        <tr bgcolor="$ui.menuColor">
-        <td align="left" colspan=8>
-        <input type="button" name="eventSubmit_doAcceptCourses" value="$online_accept" onClick="AcceptField(document.frm,this);">
-        <input type="button" name="eventSubmit_doDeleteCourse" value="$online_reject" onClick="AcceptField(document.frm,this);">
-        <INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
-        <input type="hidden" name="count" value="$tdcolor">
-        <input type="hidden" name="instituteid" value="$instituteid">
-        <input type="hidden" name="actionName">
-        </td>
+        <tr align="right" bgcolor="$ui.menuColor">
+        	<td colspan=9>
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doAcceptCourses" value="$online_accept" onClick="AcceptField(document.frm,this);">
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteCourse" value="$online_reject" onClick="AcceptField(document.frm,this);">
+        		<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
+        		<input type="hidden" name="count" value="$tdcolor">
+        		<input type="hidden" name="instituteid" value="$instituteid">
+        		<input type="hidden" name="actionName">
+        	</td>
         </tr>
-        
-        <br>
-
-</td>
-</tr>
 </table>
 #end
-
 </form>
 </body>
 <SCRIPT LANGUAGE="javascript">

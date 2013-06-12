@@ -5,6 +5,7 @@
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modify date: 06-06-2013
 *#
 $page.setTitle("Admin Home | Add Department")
 $page.setBgColor("bgcolor")
@@ -138,14 +139,8 @@ $!data.getMessage()
 		<input type="hidden" name="count" value="$tdcolor" >
         	<input type="hidden" name="instituteId" value="$instituteId" >
         	<input type="hidden" name="actionName"/>
-		#if($mode=="dept")
-        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="submit" onClick="checkdept(document.frm,this);"/>
-        	<input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
-		#else
-        	<input type="hidden" name="deptid" value="$dptid" >
-        	<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="update" onClick="checkdept(document.frm,this);"/>
-        	<input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
- 		#end
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="checkdept(document.frm,this);"/>
+        	<input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>
 	</table>
@@ -183,14 +178,8 @@ $!data.getMessage()
         	<input type="hidden" name="count" value="$tdcolor" >
         	<input type="hidden" name="instituteId" value="$instituteId" >
         	<input type="hidden" name="actionName"/>
-		#if($mode=="school")
-        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="submit" onClick="checkschool(document.frm,this);"/>
-        	<input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
-		#else
-		<input type="hidden" name="schid" value="$schid" >
-        	<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="submit" onClick="checkschool(document.frm,this);"/>
-        	<input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
-		#end
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="checkschool(document.frm,this);"/>
+        	<input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>
 	</table>
@@ -216,7 +205,7 @@ $!data.getMessage()
 		<td>
 		<div style="width:900px;overflow-x:auto;">
 		<table width="100%">
-		<tr bgcolor="$ui.menuColor" align="center">
+		<tr bgcolor="$ui.menuColor">
         	#foreach ($heading in $headings)
           		#headerCell($heading)
         	#end
@@ -261,7 +250,7 @@ $!data.getMessage()
 		<td>
 		<div style="width:900px;overflow-x:auto;">
         	<table width="100%">
-        	<tr bgcolor="$ui.menuColor" align="center">
+        	<tr bgcolor="$ui.menuColor">
         	#foreach ($heading in $headings)
           		#headerCell($heading)
         	#end
@@ -310,7 +299,7 @@ $!data.getMessage()
 		<tr>
 			<td>
 			<table width="100%">
-			<tr bgcolor="$ui.menuColor" align="center">
+			<tr bgcolor="$ui.menuColor">
         		#foreach ($heading in $headings)
                 		#headerCell($heading)
          		#end
@@ -596,7 +585,7 @@ function showTable$cnt(){
         </tr>
         <tr bgcolor="$ui.tableColor">
                 <td colspan=3>
-                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="Submit" onClick="checkValue(document.frm,this);">
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
                         <INPUT TYPE="hidden" NAME="actionName" VALUE="eventSubmit_doMap">
                         <INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
                         <INPUT TYPE="hidden" NAME="mode" VALUE="schoolmap">

@@ -7,7 +7,7 @@
  * @author  <a href="nksinghiitk@gmail.com">Nagendra Kumar Singh</a>  
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date: 22-11-2010,22-04-2013,31-05-2013 
+ * @modified date: 22-11-2010,22-04-2013,31-05-2013,06-06-2013 
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -77,7 +77,7 @@ $!data.getMessage()
         	<td>
         	<select class="drop" name="SCHNAME" size=1 style="width:300px;" />
 		 #if("$!cd.getSchoolCenter()"=="")
-                <option value="$brih_select $brih_sch" title="$brih_select $brih_sch">$brih_select $brih_sch </option>
+                <option value="" title="$brih_select $brih_sch">$brih_select $brih_sch </option>
                 #else
                 <option value="$!cd.getSchoolCenter()" title="$!cd.getSchoolCenter()">$!cd.getSchoolCenter()</option>
                 #end
@@ -92,7 +92,7 @@ $!data.getMessage()
         	<td>
                 <select class="drop" name="Department" size=1 style="width:300px;" />
 		#if("$!cd.getDept()"=="")
-                <option value="$brih_select $brih_dept" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
+                <option value="" title="$brih_select $brih_dept">$brih_select $brih_dept </option>
                 #else
                 <option value="$!cd.getDept()" title="$!cd.getDept()" style="width:275px;">$!cd.getDept()</option>
                 #end
