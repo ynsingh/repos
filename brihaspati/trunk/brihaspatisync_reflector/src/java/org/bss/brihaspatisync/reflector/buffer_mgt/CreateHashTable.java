@@ -29,8 +29,8 @@ public class  CreateHashTable {
          
 	public CreateHashTable() { }	
                           
-         /**
-         * Create set_getBuffer method to check incoming packet type
+        /**
+	 * Create set_getBuffer method to check incoming packet type
          *queue is available or not if not then create queue of that type.
          *         
          */          
@@ -71,26 +71,25 @@ public class  CreateHashTable {
                                 if((value-decreasepointer) >0 ) {
                                         value=value-decreasepointer;
                                         ht.put(key,value);
-                                     
                                 }
 				else {
                                         ht.put(key,decreasepointer);
                                 }
                         }
-                }catch(Exception e){ System.out.println("Error in resetPointer Method in CreateHashTable class ");}
+                }catch(Exception e){ System.out.println("Exception in resetPointer Method in CreateHashTable class ");}
         } 
   
         /**
-         * setPointer method is used to set the ip of incomming packet as key  and how
-         * many times packets from this ip is come is stored as value in hashtable,after
+         * setPointer method is used to set the login_name of incomming packet as key  and how
+         * many times packets from this login_name is come is stored as value in hashtable,after
          * this, store the value of hashtable in a vector. 
          *
          */ 
 	     	
-        public void setPointer(String ip,int pointer ,String type){
+        public void setPointer(String login_name,int pointer ,String type){
 		Hashtable ht=setPointertoHashtable(type);
                 try {
-                        ht.put(ip,pointer);
+                        ht.put(login_name,pointer);
                         if(vector==null )
                                vector=new Vector();
                         vector.clear();
@@ -104,7 +103,7 @@ public class  CreateHashTable {
                                 int value = ((Integer)e.getValue()).intValue();        
                                 vector.add(value);
                      	}
-		}catch(Exception e){System.out.println("Error in setPointer Method in CreateHashTable class ");}
+		}catch(Exception e){System.out.println("Exception in setPointer Method in CreateHashTable class ");}
         }
     
 	public Vector getPointer() throws Exception {
@@ -112,18 +111,18 @@ public class  CreateHashTable {
         }
 
         /**
-         * To get the pointer value of given ip.
+         * To get the pointer value of given login name.
          */
 	
-	public int getValue(String ip,String type) {
+	public int getValue(String login_name,String type) {
 		Hashtable ht=setPointertoHashtable(type);
                 try {
-			if(ht.containsKey(ip)){
-                        	int ik=((Integer)(ht.get(ip))).intValue();
+			if(ht.containsKey(login_name)){
+                        	int ik=((Integer)(ht.get(login_name))).intValue();
              			return ik;
 			}
 			return 0;
-               	} catch(Exception e){System.out.println("Error in getValue Method in CreateHashTable class "+e.getMessage()); return 0;}
+               	} catch(Exception e){System.out.println("Exception in getValue Method in CreateHashTable class "+e.getMessage()); return 0;}
 		
         } 
 }

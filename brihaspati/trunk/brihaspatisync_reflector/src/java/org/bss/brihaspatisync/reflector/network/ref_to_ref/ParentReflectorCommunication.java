@@ -75,17 +75,17 @@ public class ParentReflectorCommunication implements Runnable {
                                         if(type.equals("Audio_Data")) {
                                                 try {	
 							MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-	                                                if(!temp_ht.getStatus(type+lecture_id)){
+	                                                if(!temp_ht.getStatus(type+lecture_id)) {
         	                                                BufferMgt buffer_mgt= new BufferMgt();
                 	                                        temp_ht.setValues(type+lecture_id,buffer_mgt);
                         	                        }
-                                	                BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
+	                               	                BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
         	                                        byte[] sendbytes=buffer_mgt.sendData(username,type+lecture_id);
 							byte[] rechive_bytes=sendDataToReflector(sendbytes,type);
-							if((rechive_bytes.length>0) && (rechive_bytes !=null) ){
+							if((rechive_bytes.length>0) && (rechive_bytes !=null) ) {
                                                                 buffer_mgt.putByte(rechive_bytes,username,type+lecture_id);
                                                         }
-                                                }catch(Exception e){ System.out.println("Error in Audio_Data in reflector to reflector "+e.getMessage());}
+                                                } catch(Exception e){ System.out.println("Error in Audio_Data in reflector to reflector "+e.getMessage());}
                                         }else if(type.equals("Desktop_Data")) {
 						try {
                                                 	MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
@@ -170,6 +170,7 @@ public class ParentReflectorCommunication implements Runnable {
 	private byte[] sendDataToReflector(byte[] send_data,String type){
                 try {
                         HttpClient client = new HttpClient();
+			System.out.println("http://"+parentreflector_ip+":"+server_port);
                         PostMethod postMethod = new PostMethod("http://"+parentreflector_ip+":"+server_port);
                         client.setConnectionTimeout(8000);
                         if(send_data != null)
@@ -179,6 +180,7 @@ public class ParentReflectorCommunication implements Runnable {
                         int statusCode = client.executeMethod(postMethod);
                         byte[] receive_data_fromserver=postMethod.getResponseBody();
                         postMethod.releaseConnection();
+			System.out.println("   receive_data_fromserver       "+receive_data_fromserver.length);
                         return receive_data_fromserver;
 		}catch(Exception e) { }
                 return null;

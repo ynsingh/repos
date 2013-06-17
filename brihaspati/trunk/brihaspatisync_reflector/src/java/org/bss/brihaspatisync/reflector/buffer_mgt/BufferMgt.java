@@ -24,10 +24,10 @@ public class  BufferMgt {
 	private CreateHashTable createhashtable=new CreateHashTable();
 
 	public BufferMgt() {}
-        static int counter=0;	
+
         /**          
-        *create removeBufferAndSetPointer method to remove the packets from a specific queue.
-        */                   
+ 	 * create removeBufferAndSetPointer method to remove the packets from a specific queue.
+         */                   
 
         private void removeBufferAndSetPointer(String type){
 		try {
@@ -49,65 +49,58 @@ public class  BufferMgt {
                      	}
             	}catch(Exception e){}
     	}
-
 	
-	private byte[] sendData_IncreasePointer(String ip,String type) throws Exception {
+	/**
+	 * This method is used to get data from buffer 
+	 * and encrease pointer from ponter buffer .
+	 */  
+	
+	private byte[] sendData_IncreasePointer(String user_id,String type) throws Exception {
 		try {	
-             		int curpointer = createhashtable.getValue(ip,type);
+             		int curpointer = createhashtable.getValue(user_id,type);
 			Buffer buffer=createhashtable.set_getBuffer(type);
 			int size=buffer.size();
-			if(curpointer<size){
+			if(curpointer < size){
 				byte[] str=null;	
-				while( curpointer != size) {
+				while( curpointer < size) {
 					String str1=(buffer.get(curpointer)).toString();
                                         str1=str1.trim();
-                                        ip=ip.trim();
-                                        if(!(str1.startsWith(ip))){
+                                        user_id=user_id.trim();
+                                        if(!(str1.startsWith(user_id))){
 						str=buffer.getObject(curpointer);
                                                 curpointer++;
-                                                setPointer(ip,curpointer,type);
+                                                setPointer(user_id,curpointer,type);
                                                 break;
                                         }
                                         curpointer++;
-                                        setPointer(ip,curpointer,type);
+                                        setPointer(user_id,curpointer,type);
 				}
 				removeBufferAndSetPointer(type);
 				return str;
 			}  
-		} catch(Exception e){System.out.println("Error in sendData_IncreasePointer method "+e.getMessage());}	
-		return null;
+		} catch(Exception e){System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage());}	  	       return null;
 	 }
 
 
          /**
-         * Create putByte method to insert the packets in appropriate queue after matching 
-         * packet type and queue type.                
-         */                  
+          * Create putByte method to insert the packets in appropriate queue after matching 
+          * packet type and queue type.                
+          */                  
 
-	 public  synchronized void putByte(byte[] data,String current_ip,String type){
+	 public  synchronized void putByte(byte[] data,String user_id,String type){
 		try {
-			counter++;
-			if(counter==65535){
-				counter=0;
-			}
 			Buffer buffer=createhashtable.set_getBuffer(type);
-                        buffer.put(current_ip);
+                        buffer.put(user_id);
                         buffer.putObject(data);
-		}catch(Exception e){ System.out.println("Error in putByte method in BufferMgt class ----->"+e.getMessage()); }
+		}catch(Exception e){ System.out.println("Exception in putByte method in BufferMgt class "+e.getMessage()); }
 	}
-	
-	 public int getBufferSize(){
-                int cont=counter;
-                return cont;
-        }
 
-
- 	public byte[] sendData(String newip,String type) {
+ 	public byte[] sendData(String user_id,String type) {
                 try {
-			if(!newip.equals("")) {
-				return sendData_IncreasePointer(newip,type);
+			if(!user_id.equals("")) {
+				return sendData_IncreasePointer(user_id,type);
 			}
-               	}catch(Exception s){ System.out.println("Error in sendData method ----->"+s.getMessage());}
+               	}catch(Exception s){ System.out.println("Exception in sendData method in BufferMgt class "+s.getMessage());}
 		return null;
 	}
 	

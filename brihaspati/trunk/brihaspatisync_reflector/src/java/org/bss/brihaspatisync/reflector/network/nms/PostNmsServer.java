@@ -32,7 +32,7 @@ public class PostNmsServer {
     	private HttpServer server =null;
 	private int server_port=2773;
 
-
+	/*
 	public static PostNmsServer getController() throws Exception {
     		if(postserver==null)
         		postserver=new PostNmsServer();
@@ -58,9 +58,9 @@ public class PostNmsServer {
           		server.stop(0);
         		System.out.println(" PostNmsServer stop successfully !! ");
     		}
-  	}
+  	}**/
 }
-
+/**
 class MyNmsPostHandler implements HttpHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
@@ -83,7 +83,7 @@ class MyNmsPostHandler implements HttpHandler {
 	}
 
 }
-
+**/
 
 
 
