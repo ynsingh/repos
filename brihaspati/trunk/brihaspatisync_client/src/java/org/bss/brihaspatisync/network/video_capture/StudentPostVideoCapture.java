@@ -70,9 +70,8 @@ public class StudentPostVideoCapture implements Runnable {
         
 	public void stop() {
                 if (runner != null) {
-			flag=false;
+			flag=false;	
 			getflag=false;
-                        runner.stop();
                         runner = null;
 			VideoPanel.getController().removeStudentPanel();
 			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("stud_video");
@@ -81,7 +80,7 @@ public class StudentPostVideoCapture implements Runnable {
         }
 
 	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag()) {
+		while( flag && ThreadController.getController().getThreadFlag()) {
 			try {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					/****   send student video image to reflector ****/

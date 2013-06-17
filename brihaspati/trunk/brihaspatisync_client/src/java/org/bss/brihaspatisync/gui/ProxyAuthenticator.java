@@ -81,8 +81,9 @@ public class ProxyAuthenticator implements ActionListener {
                 main_panel.add(south_panel,BorderLayout.SOUTH);
 
                 frame.getContentPane().add(main_panel);
-                frame.setSize(500,150);
-                frame.setLocation(300,300);
+                frame.setSize(500,270);
+		java.awt.Dimension dim=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+                frame.setLocation((((int)dim.getWidth()/2)-250),(((int)dim.getHeight()/2)-76));
                 frame.setVisible(true);
 
 	}

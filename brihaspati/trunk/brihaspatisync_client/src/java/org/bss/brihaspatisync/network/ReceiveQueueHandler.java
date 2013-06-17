@@ -27,9 +27,7 @@ import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
 public class ReceiveQueueHandler implements Runnable{
 
         private Thread runner = null;
-
-	private boolean rec_Flag = false;
-	
+	private boolean flag = false;	
         private static ReceiveQueueHandler rqh=null;
 	
 	private UtilObject utilobject = UtilObject.getController();
@@ -51,10 +49,8 @@ public class ReceiveQueueHandler implements Runnable{
          */
 	
         public synchronized void start() throws IOException {
-		if(rec_Flag!=true){
-			rec_Flag=true;
-		}
 		if (runner == null) {
+			flag=true;
                         runner = new Thread(this);
 			runner.start();
 			System.out.println("ReceiveQueueHandler has started.");
@@ -65,11 +61,8 @@ public class ReceiveQueueHandler implements Runnable{
          * Stop receiveQueueHandler Thread.
          */
         public synchronized void stop() {
-		if(rec_Flag!=false){
-			rec_Flag=false;
-		}
                 if (runner != null) {
-                        runner.stop();
+			flag=false;
 			runner = null;
 			System.out.println("ReceiveQueueHandler has stopped.");
              	}
@@ -79,7 +72,7 @@ public class ReceiveQueueHandler implements Runnable{
          * Get Entry from Receive Queue and send it to appropriate tool for performing Action on GUI. 
          */
 	public void run(){
-		while(rec_Flag && ThreadController.getController().getThreadFlag()){
+		while(flag && ThreadController.getController().getThreadFlag()){
 			try{
 				synchronized(utilobject){
 					while(utilobject.getRecQueueSize() != 0){

@@ -107,8 +107,9 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		tabPane.add(Language.getController().getLangValue("PreferenceWindow.TabPane"),createTabPane());
 		window_mainPanel.add(tabPane,BorderLayout.CENTER);
 		con.add(window_mainPanel); 
-    		setSize(430, 300);
-    		setLocation(515,100);
+    		setSize(430, 400);
+		java.awt.Dimension dim=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+                setLocation((((int)dim.getWidth()/2)-210),(((int)dim.getHeight()/2)-200));
     		setVisible(true);
     		setResizable(false);
     	}
@@ -125,21 +126,6 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		return prop;
 	}
 
-/*	public int getNetType(){
-	}
-
-	public String getProxyHost(){
-	}
-
-	public int getProxyPort(){
-	}
-
-	public String getProxyUser(){
-	}
-
-	public String getProxyPass(){
-	}
-*/
 	/**
 	 * Creating Tabbed Pane For Connection Setting Window.
 	 */
@@ -161,7 +147,8 @@ public class PreferenceWindow extends JFrame implements ActionListener{
                 gbc.fill = GridBagConstraints.HORIZONTAL;
   		
   		rbttnPanel=new JPanel();
-  		rbttnPanel.setLayout(new GridLayout(3,1,1,1));
+  		rbttnPanel.setLayout(new GridBagLayout());//new GridLayout(3,1,1,1));
+		
   		proxyhost= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxyhost"));
 		proxyhosttext=new JTextField(20);
 	        proxyport= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxyport"));
@@ -179,8 +166,6 @@ public class PreferenceWindow extends JFrame implements ActionListener{
   		
   		if(netType==1){
   			rb1= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton1"), true);
-		//	rb1.addActionListener(this);
-        //  rb1.setActionCommand("rb1");
 
 			rb3= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton2"), false);
 			proxyhost.setEnabled(false);
@@ -196,15 +181,13 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 
 			rb1= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton1"), false);
 			rb3= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton2"), true);
-		//	rb3.addActionListener(this);
-        	//  rb3.setActionCommand("rb3");
 
 			String host=getProperties().getProperty("ProxyHost");
 			String port=getProperties().getProperty("ProxyPort");
 			String user=getProperties().getProperty("ProxyUser");
 			String pass=getProperties().getProperty("ProxyPass");
 
-            proxyhost.setEnabled(true);
+			proxyhost.setEnabled(true);
 			proxyhosttext.setEditable(true);
 			proxyhosttext.setText(host);
 
@@ -407,26 +390,8 @@ public class PreferenceWindow extends JFrame implements ActionListener{
   	
   				
   		}
-		/*      if(e.getActionCommand() == "rb2"){
-
-                        proxyhost.setEnabled(false);
-                        proxyhosttext.setEnabled(false);
-                        proxyport.setEnabled(false);
-                        proxyporttext.setEnabled(false);
-                        proxyuser.setEnabled(false);
-                        proxyusertext.setEnabled(false);
-                        proxypass.setEnabled(false);
-                        proxypasstext.setEnabled(false);
-
-                        if(netType!=2){
-                                netType=2;
-                        }
-
-                }
-         */
- 
   		
-  if(e.getSource()==appbttn){
+		if(e.getSource()==appbttn){
 		
 		appbttn.setCursor(busyCursor);
 		

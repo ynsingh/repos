@@ -82,7 +82,6 @@ public class Post_GetSharedScreen implements Runnable {
                 if (runner != null) {
 			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("Desktop_Data");	
 			flag=false;
-                        runner.stop();
 			getflag=false;
                         runner = null;		
 			robot  = null;

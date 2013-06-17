@@ -63,8 +63,8 @@ public class SinglePortClient implements Runnable {
  	 */  
 	public void start(){
                 if (runner == null) {
-			h.setName("session");
 			flag=true;
+			h.setName("session");
                         runner = new Thread(this);
                         runner.start();
 			ThreadController.getController().setReflectorStatusThreadFlag(true);
@@ -79,7 +79,6 @@ public class SinglePortClient implements Runnable {
 	public void stop() {
                 if (runner != null) {
 			flag=false;
-                        runner.stop();
                         runner = null;
 			System.out.println("Single Port Client stop successfully !!");
                 }
@@ -172,10 +171,10 @@ public class SinglePortClient implements Runnable {
 							}
 						} catch(Exception e){ System.out.println("Exception in SinglePortClient in Student video "+e.getMessage());}
 					}
-					runner.sleep(10);
+					runner.sleep(5);
 					runner.yield();
 				}
-			}catch(Exception ep){ System.out.println("Exception in SinglePortClient class  "+ep.getMessage());}
+			}catch(Exception ep){ System.out.println(this.getClass()+" Exception  "+ep.getMessage());}
 			System.gc();
 		}
 	}
@@ -202,13 +201,15 @@ public class SinglePortClient implements Runnable {
                     	}
 			int statusCode = client.executeMethod(postMethod);
 			byte[] receive_data_fromserver=postMethod.getResponseBody();
-                        postMethod.releaseConnection();	
+                        postMethod.releaseConnection();
+			
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");	
 			ThreadController.getController().setReflectorStatusThreadFlag(true);
 			return receive_data_fromserver;
 		}catch(Exception e) { 
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
-			System.out.println("Error in Send data from client to reflector "+e.getMessage());
+			ThreadController.getController().setReflectorStatusThreadFlag(false);
+			System.out.println(this.getClass()+" in Send data from client to reflector "+e.getMessage());
 		} 
 		return null;
 	}

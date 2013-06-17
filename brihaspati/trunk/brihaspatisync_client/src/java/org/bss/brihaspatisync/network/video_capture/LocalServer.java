@@ -38,9 +38,7 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 public class LocalServer implements Runnable {
 	
 	private Thread runner=null;
-	
 	private boolean flag=false;
-
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static LocalServer get_capture=null;
@@ -57,7 +55,7 @@ public class LocalServer implements Runnable {
          * Start TCPSender Thread.
          */
         public void start(){
-                if (runner == null) {
+                if (runner == null) {	
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
@@ -72,7 +70,6 @@ public class LocalServer implements Runnable {
         public void stop() {
                 if (runner != null) {
 			flag=false;
-                        runner.stop();
                         runner = null;
 			System.out.println("Video Captureing  stop Successfully !!");
                 }

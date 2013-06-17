@@ -218,7 +218,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 usernameText=new JTextField("guest");
                 usernameText.setEnabled(false);
 		usernameText.addMouseListener(this);
-
+		
                 usernameText.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
                                 KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
@@ -235,7 +235,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				usernameText.setCursor(busyCursor);
 				if( (!(usernameText.getText()).equals(""))) {	
 					loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
-					if(loginValue==false){
+					if(loginValue==false) {
 						passwordField.setText("");
 						LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
 		                                StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
@@ -311,8 +311,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
                 mainWindow.setMenuText();
                 mainWindow.setMenuItemText();
-		StatusPanel.getController().getStatusLabel().setText("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
-		StatusPanel.getController().getAppLabel().setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
+		StatusPanel.getController().setStatus("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
+		StatusPanel.getController().setStatus("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
 		StatusPanel.getController().revalidate();
 		StatusPanel.getController().validate();
 		StatusPanel.getController().repaint();
@@ -367,18 +367,23 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	}   
 		
 	public void mouseClicked(MouseEvent e) {
+		
 		if(e.getComponent()== usernameText) {
-			if(passwordField.getText().equals(""))		
-				passwordField.setText("guest");
-			usernameText.setText("");
+			try {
+				if(passwordField.getText().equals(""))		
+					passwordField.setText("guest");
+				usernameText.setText("");
+			} catch (Exception ex) { }
 		} 
 		
 		if(e.getComponent()== passwordField) {
-			if(usernameText.getText().equals(""))            
-                                usernameText.setText("guest");
-                        passwordField.setText("");
+			try {
+				if(usernameText.getText().equals(""))            
+        	                        usernameText.setText("guest");
+                	        passwordField.setText("");
+			} catch (Exception ex) { }
                 } 
-	
+		/*	
                 if(e.getComponent().getName().equals("forgetpass.Action")){
 			forgetpass.setCursor(busyCursor);
 			try{
@@ -389,47 +394,48 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 			ForgetPass.getController();
-		}
-                else if(e.getComponent().getName().equals("submit.Action")){
-			if(passwordField.getText().equals(""))
-                                passwordField.setText("guest");
-			if(usernameText.getText().equals(""))
-                                usernameText.setText("guest");
-			submitButton.setCursor(busyCursor);
-			if( (!(usernameText.getText()).equals(""))) {
-	                        loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
-				if(loginValue==false){
-                	        	passwordField.setText("");
-					LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-                                	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-					submitButton.setCursor(defaultCursor);
-					setSize(355,550);
-				}else {
-					client_obj.setUserName(usernameText.getText());
-					mainWindow.getMenuItem4().setEnabled(true);
-                                	mainWindow.getDesktop().add(CourseSessionWindow.getController());
-                                	setVisible(false);
-					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
-					submitButton.setCursor(defaultCursor);
-				}
-			}else
-				LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
-			submitButton.setCursor(defaultCursor);
-			
+		}*/
+                else if(e.getComponent().getName().equals("submit.Action")) {
+			try {
+				if(passwordField.getText().equals(""))
+                                	passwordField.setText("guest");
+				if(usernameText.getText().equals(""))
+        	                        usernameText.setText("guest");
+				submitButton.setCursor(busyCursor);
+				if( (!(usernameText.getText()).equals(""))) {
+	                        	loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+					if(loginValue==false){
+        	        	        	passwordField.setText("");
+						LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                        	        	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+						submitButton.setCursor(defaultCursor);
+						setSize(355,550);
+					}else {
+						client_obj.setUserName(usernameText.getText());
+						mainWindow.getMenuItem4().setEnabled(true);
+                        	        	mainWindow.getDesktop().add(CourseSessionWindow.getController());
+                                		setVisible(false);
+						StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
+						submitButton.setCursor(defaultCursor);
+					}
+				}else
+					LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
+				submitButton.setCursor(defaultCursor);
+			} catch(Exception ex) {   }
                  }
                  else if(e.getComponent().getName().equals("cancel.Action")){
-			cancelButton.setCursor(busyCursor);
-			try{
-                                Thread.sleep(500);
-                        }catch(InterruptedException ie){
-                                cancelButton.setCursor(defaultCursor);
-                        }finally{
+			//cancelButton.setCursor(busyCursor);
+			//try{
+                        //        Thread.sleep(500);
+                        //}catch(InterruptedException ie){
+                        //        cancelButton.setCursor(defaultCursor);
+                        //}finally{
                                 cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                        }
+                        //}
 			Logout.getController().sendLogoutRequest();
-			
                  }else 
 			System.out.println("oop!! Incorrect Action in LoginWindow");
+		
         }
 
         public void mousePressed(MouseEvent e) {}

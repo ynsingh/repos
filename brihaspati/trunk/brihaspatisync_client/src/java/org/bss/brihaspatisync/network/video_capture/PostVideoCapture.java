@@ -29,8 +29,8 @@ import com.sun.image.codec.jpeg.JPEGEncodeParam;
  */
 
 public class PostVideoCapture implements Runnable {
-	private Thread runner=null;
 	private boolean flag=false;
+	private Thread runner=null;
 	private boolean getflag=false;
 	private static PostVideoCapture post_capture=null;
 	private java.io.ByteArrayOutputStream os=new java.io.ByteArrayOutputStream();
@@ -70,7 +70,6 @@ public class PostVideoCapture implements Runnable {
                 if (runner != null) {
 			flag=false;
 			getflag=false;
-                        runner.stop();
                         runner = null;
 			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("ins_video");
 			System.out.println("Post Video Capture  stop successfully !!");

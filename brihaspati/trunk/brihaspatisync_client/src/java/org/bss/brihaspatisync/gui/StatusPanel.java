@@ -5,14 +5,18 @@ package org.bss.brihaspatisync.gui;
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
-import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.BorderLayout;
+
+import java.util.Vector;	
 import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.util.ThreadController;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a>
@@ -20,8 +24,10 @@ import org.bss.brihaspatisync.util.Language;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a> Modified on 10 Dec 2012, Add two method getStatusLabel(), and getAppLabel().
  *
  */
-public class StatusPanel extends JPanel {
+public class StatusPanel extends JPanel implements Runnable {
 	
+	private Thread runner=null;
+
 	private JPanel east_panel=new JPanel();
 	private JPanel west_panel=null;
 	
@@ -34,22 +40,29 @@ public class StatusPanel extends JPanel {
 	private JLabel httpclient=new JLabel();
 	private JLabel audioclient=new JLabel();
 	
-	private String pptmess="";
-	private String destopmess="";
-	private String httpclientmess="";
-	private String audioclientmess="";
+	private Vector mess=new Vector();
+	private Vector pptmess=new Vector();
+	private Vector destopmess=new Vector();
+	private Vector httpclientmess=new Vector();
+	private Vector audioclientmess=new Vector();
+
 	private static StatusPanel labe =null;
 	private ClassLoader clr= this.getClass().getClassLoader();
 	private FlowLayout flowLayout = new FlowLayout();
+
+	private String httpmessage="";
+	private String pptmessage="";
+	private String destmessage="";
+	private String audiomessage="";
 	
 	private JPanel desktop_panel=null;
 	private JPanel ppt_panel=null;
-	private JPanel reflector_panel=null;
+	private JPanel chatwb_panel=null;
 	private JPanel audio_panel=null;
-	
+
 	public StatusPanel() {
-		setLayout(new BorderLayout());
 		try {
+			setLayout(new BorderLayout());
 			west_panel=new JPanel();
 			east_panel=new JPanel();
 			west_panel.setBackground(new Color(24,116,205));
@@ -66,16 +79,30 @@ public class StatusPanel extends JPanel {
 			
 			desktop_panel=new JPanel();
 			desktop_panel.setBackground(new Color(24,116,205));
-			
+			destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
+			desktop_panel.add(destop,flowLayout);
+
 			ppt_panel=new JPanel();
 			ppt_panel.setBackground(new Color(24,116,205));
-			
-			reflector_panel=new JPanel();
-			reflector_panel.setBackground(new Color(24,116,205));
+			ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
+			ppt_panel.add(ppt,flowLayout);
 
-			east_panel.add(desktop_panel,flowLayout);
+			
+			chatwb_panel=new JPanel();
+                        chatwb_panel.setBackground(new Color(24,116,205));		
+			httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
+                        chatwb_panel.add(httpclient,flowLayout);
+			
+	
+			audio_panel=new JPanel();
+			audio_panel.setBackground(new Color(24,116,205));
+			audioclient.setText("<html><Font size=3 color=white><b> Audio </b></font></html>");
+                        audio_panel.add(audioclient,flowLayout);
+
 			east_panel.add(ppt_panel,flowLayout);
-			east_panel.add(reflector_panel,flowLayout);
+			east_panel.add(desktop_panel,flowLayout);
+			east_panel.add(audio_panel,flowLayout);
+			east_panel.add(chatwb_panel,flowLayout);
 			add(east_panel,BorderLayout.EAST);
 		}catch(Exception e){}
 	}
@@ -86,87 +113,104 @@ public class StatusPanel extends JPanel {
 		return labe;
 	}
 
-	public JLabel getStatusLabel(){
-		return statusLabel;
-	}
-
-	public JLabel getAppLabel(){
-		return appLabel;
-	}
-
-
-	public void setStatus(String message){
-		label1.setText("<html><blink><Font size=3 color=white><b>"+message+"</b></font></blink></html>");
-		statusLabel.updateUI();
-	}
+	public void startStatusPanel(){
+                if (runner == null) {
+                        runner = new Thread(this);
+                        runner.start();
+                }
+        }
 	
-	public void setaudioClient(String message){
-		message=message.trim();
-                if(!(audioclientmess.equals(message))){
-                        audioclientmess=message;
-                        if(audioclient != null)
-                                reflector_panel.remove(audioclient);
-                        if(message.equals("yes"))
-                                audioclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
-                        else
-                                audioclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-                        audioclient.setText("<html><Font size=3 color=white><b> Audio </b></font></html>");
-                        reflector_panel.add(audioclient,flowLayout);
-                        audioclient.updateUI();
+	public void stopStatusPanel() {
+                if (runner != null) {
+                        runner.interrupt();
+                        runner = null;
                 }
         }
 
+	public void run() {
+                while(!runner.isInterrupted()) {
+                        try {
+				if(audioclientmess.size()>0) {
+					try {
+						String message=audioclientmess.get(0).toString();
+						audioclientmess.remove(0);
+                			        if(message.equals("yes"))
+                                			audioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+		                        	else
+                		                	audioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+					} catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
+				}
+				if(destopmess.size()>0 ) {
+					String message=destopmess.get(0).toString();
+                                        destopmess.remove(0);
+	                       		try {
+        	                       		if(message.equals("yes"))
+                	                       		destop.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+                        	       		else
+                                	       		destop.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+					} catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
+				} if(httpclientmess.size()>0) {
+					String message=httpclientmess.get(0).toString();
+                                        httpclientmess.remove(0);
+		                        if(message.equals("yes"))
+                				httpclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+		                        else
+                		                httpclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+				} if(pptmess.size()>0) {
+					String message=pptmess.get(0).toString();
+                                        pptmess.remove(0);
+		                        if(message.equals("yes"))
+                		                ppt.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+		                        else
+                		                ppt.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+				}
+				if(mess.size()>0) {
+					String message=mess.get(0).toString();
+                                        mess.remove(0);
+					label1.setText("<html><blink><Font size=3 color=white><b>"+message+"</b></font></blink></html>");
+				}		
+				runner.sleep(500);
+                		runner.yield();
+                        } catch(Exception ep) {  
+				try {  
+					runner.sleep(1000); runner.yield(); 
+					System.out.println("Exception in StatusPanel class  "+ep.getMessage());
+				}catch(Exception e) { }
+			}
+		}
+	}	
+	
+	public void setStatus(String message) {
+		mess.add(message);
+		startStatusPanel();
+	}
+	
+	public void setaudioClient(String message) {
+		if(!audiomessage.equals(message)) {
+                        audiomessage=message;
+			audioclientmess.add(message);
+		}
+        }
 
 	public void sethttpClient(String message){
-		message=message.trim();
-		if(!(httpclientmess.equals(message))) {
-			httpclientmess=message;	
-			if(httpclient != null)
-				reflector_panel.remove(httpclient);
-			if(message.equals("yes"))
-				httpclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
-			else 
-				httpclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-			httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
-			reflector_panel.add(httpclient,flowLayout);	
-			httpclient.updateUI();
+		if(!httpmessage.equals(message)) {
+			httpmessage=message;
+			httpclientmess.add(message.trim());
 		}
 	}
 	
 	public void setdestopClient(String message){
-		message=message.trim();
-        	if(!(destopmess.equals(message))) {
-                        destopmess=message;
-                        if(destop != null)
-                                desktop_panel.remove(destop);
-                       try {
-                               if(message.equals("yes"))
-                                       destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
-                               else
-                                       destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-                       }catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
-                        destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
-                        desktop_panel.add(destop,flowLayout);
-                        destop.updateUI();
-                }
+		if(!destmessage.equals(message)) {
+                        destmessage=message;
+			destopmess.add(message);
+		}
         }
 	
 	public void setpptClient(String message){
-		message=message.trim();
-		if(!pptmess.equals(message)){
-                        pptmess=message;
-                        if(ppt != null)
-                                ppt_panel.remove(ppt);
-                        if(message.equals("yes"))
-                                ppt=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
-                        else
-                                ppt=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-
-                        ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
-                        ppt_panel.add(ppt,flowLayout);
-                        ppt.updateUI();
-			//ppt_panel.revalidate();
-                }
+		if(!pptmessage.equals(message)) {
+                        httpmessage=message;
+			pptmess.add(message);
+		}
         }
 }
 
