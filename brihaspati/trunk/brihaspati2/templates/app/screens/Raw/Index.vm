@@ -58,6 +58,9 @@ $!data.getMessage()
 <div style="overflow:auto; height:auto; ">
         <table  bgcolor="$ui.tableColor" style="width:310px;">
 		#if($uList.size()!=0)
+		#if($au==0)
+			#set($au=1)
+		#end
                 <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($au)</b></td></tr>
 
                         #foreach($element in $uList)

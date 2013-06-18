@@ -96,7 +96,7 @@ public class ActiveUserListController
 	/**
 	 * This method is used to get all user list according to inst id 
 	 */
-	public synchronized Vector getUserListVector(Vector insid,int mode)
+	public synchronized Vector getUserListVector(Vector insid,int mode,String username)
         {
 		Vector return_v=new Vector();
 		try {
@@ -111,7 +111,18 @@ public class ActiveUserListController
 				}
 			}
 			return_v = new Vector<String>(new java.util.LinkedHashSet<String>(return_v));
-		} catch(Exception e){ ErrorDumpUtil.ErrorLog("Error in Controller----"+e); }
+			try {
+				if(mode==0) {
+					boolean flag=false;
+					for(int i=0;i<return_v.size();i++) {
+						if((return_v.get(i).toString()).startsWith(username)) { 							flag=true;			
+						}			
+					}
+					if(!flag) 
+						return_v.add(0,username+" "+"("+"0"+"Hrs"+" "+"0"+"Min)");
+				}
+			} catch(Exception e) {  }
+		} catch(Exception e){ ErrorDumpUtil.ErrorLog("Exception in Controller----"+e); }
 		return return_v;
         }
 }

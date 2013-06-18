@@ -109,7 +109,7 @@ public class ActiveUserListThread implements Runnable {
         private void stop() throws Exception {
                 if (runner != null) {
                         flag=false;
-                        runner.interrupt();
+                        //runner.interrupt();
 			//runner.stop(); this is Deprecated api 
                         runner = null;
                 }
@@ -186,6 +186,7 @@ public class ActiveUserListThread implements Runnable {
 						for (int x = 0; x < InsId.size(); x++) {
 							Object e=InsId.get(x);
 							Vector returnvector=controller.getempVector(e.toString().trim());
+							returnvector=new Vector<String>(new java.util.LinkedHashSet<String>(returnvector));
 							java.util.Hashtable final_userlist=controller.getHashtable();
 							final_userlist.put(e.toString().trim(),returnvector);
 						}

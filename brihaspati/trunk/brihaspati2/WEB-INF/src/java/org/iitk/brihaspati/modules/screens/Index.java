@@ -105,18 +105,18 @@ public class Index extends SecureScreen{
 			if(uid==1){
                                 cId.add("admin");
 				if(viewAll.equals("ViewAll")) {
-	                        	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,1));
+	                        	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,1,username));
 				}
 				else 
 				{
-					context.put("uList",ActiveUserListController.getController().getUserListVector(cId,0));
+					context.put("uList",ActiveUserListController.getController().getUserListVector(cId,0,username));
 				}
 			}else if(uid==0){
                                 cId.add("guest");
 				if(viewAll.equals("ViewAll"))
-                                	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,1));
+                                	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,1,username));
                                else
-				      	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,0));
+				      	context.put("uList",ActiveUserListController.getController().getUserListVector(cId,0,username));
                         }
 			else{
 				/**
@@ -134,9 +134,9 @@ public class Index extends SecureScreen{
 				}
 				context.put("instNameList",instNameList);
 				if(viewAll.equals("ViewAll")){
-					context.put("uList",ActiveUserListController.getController().getUserListVector((InstituteIdUtil.getAllInstId(uid)),1));
+					context.put("uList",ActiveUserListController.getController().getUserListVector((InstituteIdUtil.getAllInstId(uid)),1,username));
 				}else{
-					context.put("uList",ActiveUserListController.getController().getUserListVector(InstituteIdUtil.getAllInstId(uid),0));
+					context.put("uList",ActiveUserListController.getController().getUserListVector(InstituteIdUtil.getAllInstId(uid),0,username));
 				}
 			}
 			/*
