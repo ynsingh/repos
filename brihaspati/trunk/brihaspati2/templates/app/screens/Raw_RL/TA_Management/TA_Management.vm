@@ -3,6 +3,7 @@
  * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -14,10 +15,10 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 	<table bgcolor="$ui.tableColor" width=100%>
-	<tr bgcolor="$ui.menuColor" align=="right"><td colspan=7>
-	 $bri_ta $brih_listOf |
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a>|
-	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> </td>
+	<tr bgcolor="$ui.menuColor" align="right"><td colspan=7>
+	 $bri_ta $brih_listOf 
+	|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a>
+	|<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> </td>
 	</tr>
 	</table>
 	<table bgcolor="$ui.tableColor" width=100%>
@@ -57,8 +58,8 @@ $!data.getMessage()
         		#foreach ($heading in $headings)
 		        #headerCell ($heading)
 		        #end
-		        <td> <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);> <font face="$ui.sansSerifFonts"><b> $brih_all $brih_select</b> </td>
-        	</tr>
+                       <td><b> $brih_all $brih_select</b><input type="CHECKBOX" name="checkAll" onClick=selectAll(this);><font face="$ui.sansSerifFonts"></td> 
+                               	</tr>
 		#set( $count = "" )
 		#foreach($users in $userdetail)
 			#if($velocityCount%2==0)
