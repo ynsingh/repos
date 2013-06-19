@@ -257,4 +257,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 }
-
+.test
+{
+width:11em; 
+word-wrap:break-word;
+}

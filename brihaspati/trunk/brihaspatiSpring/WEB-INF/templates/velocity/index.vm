@@ -5,87 +5,111 @@
  *
  * @author<a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
  * @modified date: 11-06-2012 (vipul kumar pal)
+ * @modified date: 13-06-2013 (Dewanshu Singh Sisaudiya)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 
 *#
 
-<link href="css/profile_css.css" rel="stylesheet" type="text/css" />
-<link href="css/color.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" language="javascript">
-$(document).ready(function(){
- $("#button").hide();
-  $("#tweets").click(function(){
-    $('#tweets').animate({ height: "45px" }, 500);
-        var qrcontainer = $(this).next("#button");
-        qrcontainer.show();
-   });
-$("#tweetnow").click(function() {
-	$("#comptweet").toggle("slow");
-	});
-});
-
-function limitText(limitField, limitCount, limitNum) {
-       
-	   if (limitField.value.length > limitNum) {
+	<link href="css/profile_css.css" rel="stylesheet" type="text/css" />
+	<link href="css/color.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+	$("#button").hide();
+	$("#tweets").click(function(){
+	$('#tweets').animate({ height: "45px" }, 500);
+        	var qrcontainer = $(this).next("#button");
+        	qrcontainer.show();
+  		});
+		$("#tweetnow").click(function() {
+		$("#comptweet").toggle("slow");
+			});
+		});
+	function limitText(limitField, limitCount, limitNum) {
+        if (limitField.value.length > limitNum) {
                 limitField.value = limitField.value.substring(0, limitNum);
-        } else {
-                limitCount.value = limitNum - limitField.value.length;
-        }
-}
+       		 } else {
+                	limitCount.value = limitNum - limitField.value.length;
+        	}
+	}	
 
-</script>
-<body class="bg menuColor">
-<div>
-<div style="width:220px; margin:0px auto;">
-<form name="registerfile" method="POST" >
-<div style="width:290px; max-height:210px auto; margin-top:5px; margin-left:-15px;" class="bgd">
-<span style=" margin:0px 15px auto;" class="span_text">#springMessage("brih_tweets")<br><center>$!model.tweets.size()</center></span>
-<hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:0px 75px auto;">
+		</script>
+	<body onload="doLoad();"class="bg menuColor">
+		#if(${model.mode}=="all")
+	<div class="gd" style="width:400px;margin-left:1px;">
+	<form name="registerfile" method="POST" >
+	<center><span style="font: 14px Helvetica, Arial, sans-serif"><b><h3>#springMessage("brih_tweets")</h3></b><span></center>
+        <hr style="opacity:0.4;" class="hr_tweet">
+			#foreach ($tweet in ${model.tweets})
+			<b><span style="float:left;color:#333;margin-left:5px; font: 14px Helvetica, Arial, sans-serif;">$!tweet.getUserName()</span><span style="float:right;color:#333;font: 14px Helvetica, Arial, sans-serif;">$!tweet.getTweetDate()</span><br></b>
+        		<span style="margin-left:5px;font: 14px Helvetica, Arial, sans-serif;color:blue;"class="test">$!tweet.getTweet()   $!tweet.getID()</span><br>
+        			#if(($!tweet.getUserName()==${model.username})||(${model.Uid}=="1"))
+        		<a href="#springUrl("/index.vm")?Id=$!tweet.getId()&username=${model.username}&Uid=${model.Uid}&mode=${model.mode}"><img src="images/delete.png" style="float:right; margin-top:-16px;"onclick="javascript:return confirm('Do you want to delete this Tweet')" ></a>
+        			#end
+        			<hr style="opacity:0.4;" class="hr_tweet">
+        			#end
+
+				</div>
+		#else
+			<div style="width:220px; margin:0px auto;">
+			<form name="submittweet" method="POST" >
+			<div style="width:290px; max-height:210px auto; margin-top:5px; margin-left:-15px;" class="bgd">
+			<span style=" margin:0px 15px auto;" class="span_text">#springMessage("brih_tweets")<br><center>$!model.tsize</center></span>
+			<hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:0px 75px auto;">
 <span style="margin:-40px 105px auto;" class="span_text">#springMessage("brih_following")<br><center>$!model.fing.size()</center></span>
-<hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:-40px 200px auto;">
-<span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$!model.fls.size()</center></span>
-<hr style="width:290px; height:1px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin-top:0px;">
+			<hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:-40px 200px auto;">
+			<span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$!model.fls.size()</center></span>
+			<hr style="width:290px; height:1px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin-top:0px;">
 #if(${model.Uid}!="0")
-<a href="javascript:void(0);" style="color:#333; font-size:14px; text-decoration:none; margin-left:10px;" id="tweetnow">Compose Tweet </a>
-<div style="display:none;" id="comptweet">
-<textarea  name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
-onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder="Compose..."style="width:220px"></textarea>
-<input type="button" id="button" class="button-ftextstyle" value="Tweet" style="margin-top:-55px; margin-left:230px;width:55px;height:40px; position:absolute;z-index:100;" onclick="check(document.registerfile,this);"/>
-#end
-</div>
-</div>
+			<a href="javascript:void(0);" style="color:#333; font-size:14px; text-decoration:none; margin-left:10px;" id="tweetnow">Compose Tweet </a>
+			<div style="display:none;" id="comptweet">
+			<textarea  name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
+			onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder="Compose..."style="width:220px"></textarea>
+			<input type="button" id="button" class="button-ftextstyle" value="Tweet" style="margin-top:-55px; margin-left:230px;width:55px;height:40px; position:absolute;z-index:100;" onclick="check(document.submittweet,this);"/>
+			<input type="hidden" name="flg" value="compose">
+			#end
+			</div>
+			</div>
+			</div>
+			</form>
+			<br>
+			<br>
+			<div class="bgd" style="margin-left:11px;">
+			<form name="registerfile" method="POST" >
+			<center><span style="font: 14px Helvetica, Arial, sans-serif"><b><h3>#springMessage("brih_tweets")</h3></b><span></center>
+			<hr class="hr_tweet">
+		#foreach ($tweet in ${model.tweets})
+			<b><span style="float:left;color:#333;margin-left:5px; font: 14px Helvetica, Arial, sans-serif;">$!tweet.getUserName()</span><span style="float:right;color:#333;font: 14px Helvetica, Arial, sans-serif;">$!tweet.getTweetDate()</span><br></b>
+        		<span style="margin-left:5px;font: 14px Helvetica, Arial, sans-serif;color:blue" class="test">$!tweet.getTweet()   $!tweet.getID()</span><br>
+		#if(($!tweet.getUserName()==${model.username})||(${model.Uid}=="1"))
+		#if(${model.mode}=="all")
+			<a href="#springUrl("/index.vm")?Id=$!tweet.getId()&username=${model.username}&Uid=${model.Uid}&mode=${model.mode}"><img src="images/delete.png" style="float:right; margin-top:-16px;"onclick="javascript:return confirm('Do you want to delete this Tweet')" ></a>
+		#else
+			<a href="#springUrl("/index.vm")?Id=$!tweet.getId()&username=${model.username}&Uid=${model.Uid}"><img src="images/delete.png" style="float:right; margin-top:-16px;"onclick="javascript:return confirm('Do you want to delete this Tweet')" ></a>
+			#end
+			#end
+			<hr style="opacity:0.4;" class="hr_tweet">
+			#end
+			</form>
+			</div>
+	        	#end
+			</div>
 
-
-
-
-</div>
-</form>
-<br>
-<br>
-<div class="gadget" style="margin-left:26px;">
-
-<iframe src="#springUrl("/tweetsmsg.vm?username=${model.username}&Uid=${model.Uid}")" frameborder="0" height="330px" class="bgd"></iframe>
-
-</div>
-</div>
-
-<script>
-        function check(registerfile,field)
-        {
-                if(!registerfile.tweets.value=="")
+		<script>
+       			 function check(submittweet,field)
+        	{
+               	 	if(!submittweet.tweets.value=="")
                 {
-                registerfile.submit();
+                	submittweet.submit();
+			 doLoad();
+			 doLoad();
                 }
                 else{
                          alert("Write something to TWEET :) !!!");
                 }
         }
-</script>
-<script>
-function reloadPage()
-  {
-  location.reload()
-  }
-</script>
-
+		function doLoad()
+		{
+		setTimeout( "refresh()", 1000 );
+		}
+		</script>

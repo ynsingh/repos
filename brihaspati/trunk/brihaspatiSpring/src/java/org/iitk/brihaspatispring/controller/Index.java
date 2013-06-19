@@ -1,4 +1,5 @@
 package org.iitk.brihaspatispring.controller;
+
 /*
  * @(#)Index.java
  *
@@ -29,102 +30,98 @@ package org.iitk.brihaspatispring.controller;
  *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *
+ *                      
+ *                      
  *  Contributors: Members of ETRG, I.I.T. Kanpur
- *
- */
-
-/**
- *  @author: <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
- */
-
-
+ *                      
+ */                     
+                        
 
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.torque.Torque;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 import javax.servlet.ServletContext;
+
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+
 import org.iitk.brihaspati.om.Tweets;
 import org.iitk.brihaspati.om.TweetsPeer;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Date;
-import java.util.HashMap;
-import org.apache.torque.util.Criteria;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import java.util.List;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.apache.turbine.services.servlet.TurbineServlet;
+
+import org.iitk.brihaspatispring.utils.TweetThread;
+import org.iitk.brihaspatispring.utils.ErrorDumpUtil;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.torque.Torque;
+
+/**                     
+ *  @author: <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ *  modified@date 13-06-2013
+ */  
 
 /**
-*class for handling tweet insertion 
-*set expirey for tweets according to the superadmin
+*class for handling all functions for  tweet deletion and selection for show tweets
+*class file use parameters to show and delete tweets
 */
 public class Index extends SimpleFormController {
-        private Torque set=null;
-        private ServletContext context=null;
-/**
-         *this mathod is used for initilize torque to access database  
-         *and process response according to http request
-         */
-
-        public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
-                Map myModel = new HashMap();
-                try{	
-                        String tweetmsg=request.getParameter("tweets");
-                        String Uid=request.getParameter("Uid");
-                        String username=request.getParameter("username");
-			String uname=request.getParameter("uname");
-                        String expdate=request.getParameter("expdate");
-			ErrorDumpUtil.ErrorLog("expiry date"+expdate);
-                        String name=request.getParameter("name");
-                        myModel.put("username",username);
-                        myModel.put("name",name);
-                        myModel.put("expdate",expdate);
-                        myModel.put("Uid",Uid);
-                        Date date = new Date();
-                        java.sql.Date Cdate = new java.sql.Date(date.getTime());
-                        set=new Torque();
-                        String tempFileName = getServletContext().getRealPath("Torque.properties");
-                        set.init(tempFileName);
-			//inserting tweets into database
-			try{
-				Criteria crit = new Criteria();
-        	                crit.add(TweetsPeer.USER_NAME,username);
-                	        crit.add(TweetsPeer.TWEET,tweetmsg);
-                        	crit.add(TweetsPeer.TWEET_DATE,Cdate);
-                        	crit.add(TweetsPeer.EXPIRY_DATE,expdate);
-	                        crit.setDistinct();
-        	                TweetsPeer.doInsert(crit);
-			}catch(Exception exp){}
-			// getting tweets info and Tweets from database
-                        Criteria criteria = new Criteria();
-                        criteria.addGroupByColumn(TweetsPeer.ID);
-                        criteria.add(TweetsPeer.USER_NAME,username);
-                        List tweets = TweetsPeer.doSelect(criteria);
-                        myModel.put("tweets",tweets);
-			/*
-                        Criteria flrs = new Criteria();
-                        flrs.addGroupByColumn(TweetFollowersPeer.ID);
-                        flrs.add(TweetFollowersPeer.FOLLOWING_ID,uname);
-                        List fls = TweetFollowersPeer.doSelect(flrs);
-                        myModel.put("fls",fls);
-
-                        Criteria fling = new Criteria();
-                        fling.addGroupByColumn(TweetFollowersPeer.ID);
-                        fling.add(TweetFollowersPeer.FOLLOWERS_ID,uname);
-                        List fing = TweetFollowersPeer.doSelect(fling);
-                        myModel.put("fing",fing);
-                       */
-			 }
+	private Torque set=null;
+	
+	/**
+	 *this mathod is used for initilize torque to access database  
+	 *and process response according to http request
+	 */
+        public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+		Map myModel = new HashMap();
+		try{
+			try {
+				set=new Torque();
+                        	String tempFileName = getServletContext().getRealPath("Torque.properties");
+   				set.init(tempFileName);
+			} catch(Exception e) { }
+			String mode = request.getParameter("mode");
+			String username=request.getParameter("username");
+			try {
+				String uid=request.getParameter("Uid");
+				String id = request.getParameter("Id");
+			       	String tweetmsg=request.getParameter("tweets");
+        	                String expdate=request.getParameter("expdate");
+                	        String name=request.getParameter("name");
+	                	myModel.put("username",username);
+				myModel.put("Uid",uid);
+				myModel.put("mode",mode);
+                	        myModel.put("name",name);
+	                	myModel.put("expdate",expdate);
+					
+                        	if(StringUtils.isNotEmpty(tweetmsg))
+                                	TweetThread.getController().addComposTweetMsg(username,tweetmsg ,expdate);
+				if(StringUtils.isNotEmpty(id)) 
+					TweetThread.getController().deleteTweetMsg(id,username);
+	                } catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in insertion of tweets"+e); }
 			
-                        catch(Exception e){
-                                ErrorDumpUtil.ErrorLog("Exception in Index.java"+e);
-                        }
-                        return new ModelAndView("index", "model", myModel);
-    }
+			try {
+				if (mode == null) {
+	                		TweetThread.getController().setLoginId(username);
+        	        		List tweets =TweetThread.getController().getSelectTweet();
+			                myModel.put("tweets",tweets);
+				}
+			} catch(Exception exp) { ErrorDumpUtil.ErrorLog("Exception in Index.java  "+exp); }
+			try {
+				if (mode != null) {
+					if (mode.equals("all")) {
+			                	List tweets =TweetThread.getController().getAllTweet();
+			        	        myModel.put("tweets",tweets);
+					}
+				}
+			} catch(Exception exp) { ErrorDumpUtil.ErrorLog("Exception in showing list "+exp); }
+			try {
+                                int tsize=TweetThread.getController().getSize(username);
+                                myModel.put("tsize",tsize);
+                        } catch(Exception exc) { ErrorDumpUtil.ErrorLog("Exception in getting number of message"+exc); }
+		} catch(Exception ex){ 	ErrorDumpUtil.ErrorLog("Exception in Index.java"+ex); }
+	        return new ModelAndView("index", "model", myModel);
+    	}
 }
-
-
