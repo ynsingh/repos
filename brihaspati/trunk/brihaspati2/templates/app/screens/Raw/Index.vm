@@ -88,11 +88,11 @@ $!data.getMessage()
 </div>
 
 ##iframe is use to show brihaspati Twitter
-##<div style="background:$ui.menuColor;" class="tweet_header">$brih_twitter</div>
-##<iframe height="410" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang" frameborder="0"></iframe>
-##<div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
-##<a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
-##</div>
+<div style="background:$ui.menuColor;" class="tweet_header">$brih_twitter</div>
+<iframe height="410" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang" frameborder="0"></iframe>
+<div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
+<a href=javascript:popup("$link.setPage("call,Twtwin.vm").addPathInfo("mode","all")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
+</div>
 ##iframe is use to show brihaspati poll
 #if($Uid.toString()!="1")
 <div style="position:auto; margin-top:3px; height:230px; background:$ui.menuColor;" >
@@ -228,7 +228,7 @@ function checkBlankTest()
 
 function popup(url,popupName)
         {
-                var w=650;
+                var w=450;
                 var h=450;
                 var left = (screen.width/2)-(w/2);
                 var top = (screen.height/2)-(h/2);
