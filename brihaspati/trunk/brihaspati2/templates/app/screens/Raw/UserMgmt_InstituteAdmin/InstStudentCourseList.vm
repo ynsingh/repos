@@ -148,6 +148,8 @@ $page.setBgColor($ui.bgcolor)
 									#end
 								</select>&nbsp;&nbsp;
 							#end
+								</td>
+							<td>
 							<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").setAction("InstituteRemoveStudentCourse").addPathInfo("actionName","eventSubmit_doRemove").addPathInfo("courseid",$groupname).addPathInfo("username",$username).addPathInfo("mode",$mode).addPathInfo("count","2") style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this Course for student.')">$brih_remove</a>
                                                 </td>
                                                 </tr>
@@ -155,8 +157,7 @@ $page.setBgColor($ui.bgcolor)
 						#set($counter=0)
 					#end
 					##</table>
-				</td>
-			</tr>
+			##</tr>
 			#if($mode != "instlist")
 			<tr>
 				<td>
@@ -183,7 +184,7 @@ $page.setBgColor($ui.bgcolor)
 		</td>
 		#if($mode != "instlist")
 		<td> <select name="prg" class="drop" size=1 >
-                        <option value="Select Program">$brih_select $brih_program</iption>
+                        <option value="Select Program">$brih_select $brih_program</option>
 			#foreach($instplist in $rlprglist)
 				        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 			#end
