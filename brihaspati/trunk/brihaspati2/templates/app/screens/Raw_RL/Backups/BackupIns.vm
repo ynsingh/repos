@@ -10,18 +10,13 @@
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Instructor Backup")
-#set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
-<head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-</head>
-<font face="$ui.sansSerifFonts">
-<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<table bgcolor="$ui.menuColor" width=100%>
 <tr align="right">
-        <td>
-        <font face="$ui.sansSerifFonts" size=3>
-        <b>
-        $brih_backup |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString() </a> |  <a href=$link.setPage("call,IndexHome.vm")>$brih_home </a>
+        <td><b>
+		$brih_backup | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString() </a> |  <a href=$link.setPage("call,IndexHome.vm")>$brih_home </a> 
         </td>
 </tr>
 </table>
@@ -41,22 +36,20 @@ $!data.getMessage()
         </td>
 </tr>
 #end
-<tr><td colspan="3">
-#if ($lang == "english") 
-	<b>$brih_course Wise $brih_backup 
-	#else 
-	$brih_course $brih_Of1 $brih_backup</b> 
-	#end 
+<tr align="right"><td colspan="3"> $brih_course $brih_Of1 $brih_backup</b> </td> </tr>
+<tr><td> <a href=javascript:popupWin("/brihaspati2/docs/Backup.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/Lefthand.gif")">
 </td></tr>
-<tr bgcolor="$ui.menuColor" >
-<td align="left">
-<input type="button" name="eventSubmit_doStudent_db_backup" class="button-ftextstyle" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+
+<tr bgcolor="$ui.menuColor"  align="right">
+<td>
+<input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
 <input type="hidden" name="actionName">
-<input type="button" name="eventSubmit_doCourseBackup" class="button-ftextstyle" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
-<td align="right"><input type="text" name="courses" value="$data.getUser().getTemp("course_id" ).toString()" readonly />
 </td>
+<td><input type="text" name="courses" value="$data.getUser().getTemp("course_id" ).toString()" readonly /></td>
 </tr>
-<tr><td align="left" colspan="2"><a href=$link.setPage("call,Backups,BackupList.vm").addPathInfo("st","ins")><b>$brih_backup $brih_list</b></a></td></tr>
+<tr align="right"><td colspan="2"><a href=$link.setPage("call,Backups,BackupList.vm").addPathInfo("st","ins")><b>$brih_backup $brih_Of $brih_list</b></a></td></tr>
 	     
 </table>
 </form>

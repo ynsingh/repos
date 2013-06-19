@@ -1,10 +1,11 @@
 #*
 
  * @#Create_QB.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 <head>
@@ -128,11 +129,12 @@ $!data.getMessage()
                 </tr>
                 <tr bgcolor="$ui.menuColor" width="100%">
 			<td align="right" width="100%" colspan="4">
-        	        #if($typeques=="obo_ques"||$typeques=="imgtypeques")
-	                #else
-	                #end
-        	        <input type="reset" name="reset" class="button-ftextstyle" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
-                		<input type="button" class="button-ftextstyle" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+        	        	<input type="reset" name="reset" class="button-ftextstyle" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+			#if($typeques=="obo_ques"||$typeques=="imgtypeques")
+		                <input type="button" class="button-ftextstyle" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+                	#else
+		                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadQues_Bank" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+                	#end
              </td></tr>
 	#end
 		##foreach( $e in $Msg )

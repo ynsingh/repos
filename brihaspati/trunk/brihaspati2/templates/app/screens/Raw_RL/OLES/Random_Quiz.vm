@@ -1,9 +1,10 @@
 #*
  * @#Random_Quiz.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * Copyright (c) 2010, 2013 MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * Contributors: Members of MHRD, DEI Agra.
 *#
 <head>
@@ -26,9 +27,9 @@ $!data.getMessage()
                 <a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a>|
 
 
- #if($quizMode == "random")
+		 #if($quizMode == "random")
                         <a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")>
-                        $brih_quiz #if($lang =="hindi")  #end $brih_detail </a>|
+                        $brih_quiz $brih_Of $brih_detail </a>|
                         $quizMode
                         #if($mode == "update")                          
                                 $mode
@@ -67,22 +68,22 @@ $!data.getMessage()
 	
 <table width="100%" bgcolor="$ui.tableColor">
 	#if($quizMode != "random")
-		<tr bgcolor="$ui.tableColor">
-		#if($tdcolor != "1")
-        		<td>
-        	#elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC">
-		#end
-			<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none >$brih_onebyone</I></b></a></td>
+		<tr bgcolor="$ui.tableColor" align="right">
 		#if($tdcolor != "2")
              		<td>
         	#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
 		<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) id="random" style=text-decoration:none>$brih_randomly</I></b></a></td>		
+		#if($tdcolor != "1")
+        		<td>
+        	#elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC">
+		#end
+			<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none >$brih_onebyone</I></b></a></td>
 		</tr>	
-		<tr bgcolor="$ui.menuColor" width="100%">
-			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
+		<tr bgcolor="$ui.menuColor" width="100%" align="right">
+			<td width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
 		</tr>
 	#else
 		#if($mode == "update")

@@ -1,9 +1,10 @@
 #*
  * @#Preview_Quiz.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * Copyright (c) 2010,2013 MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * Contributors: Members of MHRD, DEI Agra.
 *#
 $page.setTitle("Quiz Preview")
@@ -30,7 +31,7 @@ $!data.getMessage()
 
 
                        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style="text-decoration:none;">$online_online $brih_examat $brih_system</a>|
-                        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style="text-decoration:none;">$brih_generate $brih_exam</a>|
+                        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style="text-decoration:none;">$brih_exam $brih_generate </a>|
                         $brih_quiz $brih_detail
                         |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none;">$course</a>
                         |<a href=$link.setPage("Index.vm") style="text-decoration:none;">$brih_home</a>
@@ -67,20 +68,20 @@ $!data.getMessage()
                 #elseif($tdcolor == "3")
                         <td bgcolor="#AFDCEC">
                 #end
-                        <b><I><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>$brih_quiz $brih_detail</I></b></a></td>
+                        <b><I><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>$brih_quiz $brih_Of $brih_detail</I></b></a></td>
 
 #if($tdcolor != "2")
                         <td>
                 #elseif($tdcolor == "2")
                         <td bgcolor="#AFDCEC">
                 #end
-                        <b><I><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>$brih_quiz $brih_creation</I></b></a></td>
+                        <b><I><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>$brih_quiz $brih_Of $brih_creation</I></b></a></td>
 #if($tdcolor != "1")
                         <td>
                 #elseif($tdcolor == "1")
                         <td bgcolor="#AFDCEC">
                 #end
-                        <b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_quiz $brih_setup</I></b></a></td>
+                        <b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_quiz $brih_Of1 $brih_setup</I></b></a></td>
 
 	</tr>
 		
@@ -88,21 +89,17 @@ $!data.getMessage()
 
 ##Drop down list to select a quiz
 <table border=1 align="center" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
-	<tr bgcolor="$ui.menuColor" >
-		<td width=30% align="centre">
-	      		<b><font face="$ui.sansSerifFonts"> #if($lang =="hindi" || $lang =="gujarati") $brih_quiz $brih_select #else $brih_select  $brih_quiz#end </font></b>
-	   	</td>
-	   	<td  width=70% align="left"  >
+	<tr bgcolor="$ui.menuColor" align="right">
+	   	<td  width=70% >
 	        	<font face="$ui.sansSerifFonts">
-	        	##if($isFile!="")
 	        		#if($quizList.size()!=0)
+	        			<input type="button" class="button-ftextstyle" name="" value="$brih_submit" onClick="checkValue(document.frm,this);">
+					&nbsp;&nbsp;&nbsp;
 	        			<select name=quizList class="drop">
 	        				#foreach($qid in $quizList)
 	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getMaxTime()">$qid.getQuizName()</option>
 	        				#end
-	        			</select> &nbsp;
-	        			<input type="button" class="button-ftextstyle" name="" value="$brih_submit" onClick="checkValue(document.frm,this);">
-					&nbsp;&nbsp;&nbsp;
+	        			</select> 
 				#else
 					$brih_norandomquizmsg
 				#end	
@@ -110,6 +107,7 @@ $!data.getMessage()
 	        		##$brih_norandomquizmsg
 	        	##end
 		</td>
+		<td width=30% align="centre"><b><font face="$ui.sansSerifFonts"> $brih_quiz $brih_select </font></b></td>
 	</tr>
 </table>
 	

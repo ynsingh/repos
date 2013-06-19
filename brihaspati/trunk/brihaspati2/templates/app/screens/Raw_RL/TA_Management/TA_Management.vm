@@ -1,8 +1,9 @@
 #*
  * @(#) TA_Management.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
@@ -13,7 +14,6 @@
 $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
-#set($lang = $data.getUser().getTemp("lang" ).toString())
 	<table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor" align="right"><td colspan=7>
 	 $bri_ta $brih_listOf 
@@ -36,7 +36,7 @@ $!data.getMessage()
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $bri_ta $brih_reg </a></td>
+        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $bri_ta $brih_Of1 $brih_reg </a></td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
@@ -58,8 +58,8 @@ $!data.getMessage()
         		#foreach ($heading in $headings)
 		        #headerCell ($heading)
 		        #end
-                       <td><b> $brih_all $brih_select</b><input type="CHECKBOX" name="checkAll" onClick=selectAll(this);><font face="$ui.sansSerifFonts"></td> 
-                               	</tr>
+		        <td>  <font face="$ui.sansSerifFonts"><b> $brih_all $brih_select</b> </font> <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);> </td>
+        	</tr>
 		#set( $count = "" )
 		#foreach($users in $userdetail)
 			#if($velocityCount%2==0)
@@ -69,7 +69,7 @@ $!data.getMessage()
 		        #end
 			
 			#foreach($user in $users)
-				<td><a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("username",$user.UserName).addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod </a> &nbsp;</td>
+				<td><a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("username",$user.UserName).addPathInfo("count","3") style=text-decoration:none> $brih_course $brih_Of $bri_mod </a> &nbsp;</td>
 				<td>$!user.UserName</td>
 				<td>$!user.getLastName()</td>
 			        <td>$!user.getFirstName()</td>	

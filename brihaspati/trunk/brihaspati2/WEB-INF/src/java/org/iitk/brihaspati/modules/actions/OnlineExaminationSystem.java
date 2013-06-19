@@ -619,6 +619,7 @@ public class OnlineExaminationSystem extends SecureAction
                         *@see TopicMetaDataXmlWriter in Util.
                         */
 			boolean found=false;
+			MultilingualUtil mU= new MultilingualUtil();
                         TopicMetaDataXmlReader topicmetadata=null;
                         File QBpathxml=new File(filepath+"/"+QBtopicpath);
                         if(!QBpathxml.exists())
@@ -642,7 +643,8 @@ public class OnlineExaminationSystem extends SecureAction
                                                 if(Question.equals(Ques))
                                                 {
                                                         found=true;
-                                                data.setMessage("Questions are already exists");
+                                                //data.setMessage("Questions are already exists");
+                                                data.setMessage(mU.ConvertedString("oles_qusAlreadyExist", LangFile));
                                                 }
                                           }//for
                                 }//if
@@ -663,12 +665,17 @@ public class OnlineExaminationSystem extends SecureAction
                        	        	TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,Quesid,Question,Answer,Description,ImgUrl);
                          	}
                 		xmlWriter.writeXmlFile();
-				if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques")))
-				data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
-				else
-				{
-				data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
-				data.setScreenTemplate("call,OLES,Oles_QB.vm");
+				if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques"))){
+					if(LangFile.endsWith("_urd.properties"))
+						data.setMessage(mU.ConvertedString("oles_msg2",LangFile)+" "+mU.ConvertedString("brih_Added",LangFile));
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
+				}else {
+					if(LangFile.endsWith("_urd.properties"))
+						data.setMessage(mU.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile));
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
+					data.setScreenTemplate("call,OLES,Oles_QB.vm");
 				}
 			}
 			}

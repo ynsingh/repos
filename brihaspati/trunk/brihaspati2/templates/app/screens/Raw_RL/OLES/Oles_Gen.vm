@@ -1,6 +1,6 @@
 #*
  * @#Oles_Gen.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010,2013 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
@@ -24,8 +24,8 @@ $!data.getMessage()
                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style="text-decoration:none;">$online_online $brih_examat $brih_system</a>|
                 <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style="text-decoration:none;"> $brih_exam $brih_generate </a>|
 #if($mode == "QuizDetail")              
-               <a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3") style="text-decoration:none;">$brih_quiz $brih_detail </a>|
-                                $brih_quiz $brih_Of3 $brih_update
+               <a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3") style="text-decoration:none;">$brih_quiz $brih_Of $brih_detail </a>|
+                                $brih_quiz $brih_Of $brih_update
                 #else
                                 $brih_quiz $brih_Of1 $brih_setup
                 #end
@@ -38,23 +38,21 @@ $!data.getMessage()
 
 ## Creating the links for help regarding FAQ 
 <table width="100%">
-	<tr>
-		<td>
-<a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
-	</tr>
+	<tr><td><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td></tr>
 </table>
 
 #if($mode == "QuizDetail")
 	<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")>
 #else	
-	<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Oles_Gen.vm").setAction("OLES_Quiz")>
+	<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Create_Quiz.vm").setAction("OLES_Quiz").addPathInfo("count","2").addPathInfo("type","selectQuiz")>
+
 #end
 	
 
 <table width="100%" bgcolor="$ui.tableColor">
 #if($mode == "QuizDetail")
 	<tr bgcolor="$ui.menuColor" width="100%" align="right">
-		<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_update $brih_quiz</font><b></i></td>
+		<td width="100%" colspan="5"><b><i><font size="3"> $brih_quiz $brih_Of $brih_update</font><b></i></td>
 	</tr>
 #else
 	<tr width="100%" align="right">
@@ -94,28 +92,28 @@ $!data.getMessage()
 	#foreach ($Quiz in $allQuiz)
 		##<tr bgcolor="$ui.menuColor">
 		<tr align="right" colspan="7">	
-			<td align="right"><b> $brih_quiz $brih_Of1 $brih_ID</b></td>
 			<td align="right"><input type="text" name="quizID" value="$!qid" readonly></td>
+			<td align="right"><b> $brih_quiz $brih_Of1 $brih_ID</b></td>
 		</tr>	
 		<tr align="right"  bgcolor="$ui.menuColor">
-	       		<td align="right"><font color=Red>*</font><b>$brih_quiz $brih_Of $brih_title</b></td>  
 	       		<td align="right"><textarea rows="2" cols="23" name="quizName" readonly>$Quiz.getQuizName()</textarea></td>              
+	       		<td align="right"><font color=Red>*</font><b>$brih_quiz $brih_Of $brih_title</b></td>  
 			##<td><input type="text" name="quizName" value="$Quiz.getQuizName()" readonly></td>
 		</tr>
 		<tr align="right">
-			<td align="right"><font color=Red>*</font><b>$brih_marks $brih_Of $brih_maximum </b></td>			
 			<td align="right"><input type="text" name="maxMarks" value="$Quiz.getMaxMarks()"></td>
+			<td align="right"><font color=Red>*</font><b>$brih_marks $brih_Of $brih_maximum </b></td>			
 		</tr>
 		<tr align="right"  bgcolor="$ui.menuColor">
-			<td align="right"><font color=Red>*</font><b>$brih_time $brih_Of $brih_maximum </b></td> 
 			#set($len = $Quiz.getMaxTime().indexOf(":")) 
   			#set($mtime=$Quiz.getMaxTime().substring(0,$len))			
 			<td align="right"><input type="text" name="maxTime" value="$mtime"></td>       	
 			##<td><input type="text" name="maxTime" value="$Quiz.getMaxTime()"></td>
+			<td align="right"><font color=Red>*</font><b>$brih_time $brih_Of $brih_maximum </b></td> 
 		</tr>
 		<tr align="right"  bgcolor="$ui.menuColor">
-           		<td align="right"><font color=Red>*</font><b>$brih_qus2 $brih_Of $brih_num</b></td>
 			<td align="right"><input type="text" name="numberQuestion" value="$Quiz.getnoQuestion()"></td>
+           		<td align="right"><font color=Red>*</font><b>$brih_qus2 $brih_Of $brih_num</b></td>
 	        </tr>   
 	#end
 #else
@@ -139,13 +137,13 @@ $!data.getMessage()
                 <td align="right" colspan="4"><font color=Red>*</font><b>$brih_time $brih_Of  $brih_maximum </b></td>
         </tr>
         <tr>
-                <td align="right" colspan="5"><input type="text" name="numberQuestion" value=""></td>
-        <td align="right" colspan="5"><font color=Red>*</font><b>$brih_qus2 $brih_Of $brih_num</b></td>
+                <td align="right" colspan="6"><input type="text" name="numberQuestion" value=""></td>
+	        <td align="right" colspan="4"><font color=Red>*</font><b>$brih_qus2 $brih_Of $brih_num</b></td>
         </tr>
         <tr align="right" colspan="5">
                 <td align="right" colspan="5">
-                <input type="radio" name="allow" value="no" checked>$brih_no <br>
-                <td align="right"><input type="radio" name="allow" value="yes">$brih_yes</td>
+                $brih_no <input type="radio" name="allow" value="no" checked> <br>
+                <td align="right">$brih_yes<input type="radio" name="allow" value="yes"></td>
                <td align="right"><font color=Red>*</font><b>$brih_allowpractice</b></td>
                 </tr>
               
@@ -183,12 +181,12 @@ $!data.getMessage()
 			if(btype){
 				if((frm.maxMarks.value>=10) && (frm.maxMarks.value<=100)){
 					if((frm.maxTime.value>=5) && (frm.maxTime.value<=120)){
-						if((frm.numberQuestion.value>=5) && (frm.numberQuestion.value<=20)){
+						if((frm.numberQuestion.value>=5) && (frm.numberQuestion.value<=50)){
 				                       	frm.actionName.value=field.name;
 			                        	frm.submit();
 				            	}
 				                else{
-					                alert("The number of questions in a quiz should be between 5 to 20");
+					                alert("The number of questions in a quiz should be between 5 to 50");
 				            	}
 			        	}
 					else{

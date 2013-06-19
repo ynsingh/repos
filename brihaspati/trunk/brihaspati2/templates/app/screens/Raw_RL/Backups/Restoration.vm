@@ -1,8 +1,9 @@
  #*
  * @(#) Restoration.vm
- * Copyright(c)2004 ETRG,IIT Kanpur.
+ * Copyright(c)2004,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaista.shekh@yahoo.com">Shaista</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -15,10 +16,10 @@ $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <table bgcolor="$ui.menuColor" width=100%>
-<tr>
+<tr align="right">
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
-     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
+     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | 
 	#if($st=="")
 	$brih_restore
 	#elseif($st=="db")
@@ -30,26 +31,27 @@ $!data.getMessage()
 </tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-<tr>
-		#if($tdcolor!="1")
-		<td>
-		#elseif($tdcolor=="1")
-		<td bgcolor="#AFDCEC">
-		#end
-		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restore</a></td>
-		#if($tdcolor!="2")
-		<td>
-		#elseif($tdcolor=="2")
-		<td bgcolor="#AFDCEC">
-		#end
-		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","db").addPathInfo("count","2") style=text-decoration:none>$brih_system $brih_restore</a></td>
+<tr align="right">
 		#if($tdcolor!="3")
 		<td>
 		#elseif($tdcolor=="3")
 		<td bgcolor="#AFDCEC">
 		#end
     		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","glsry").addPathInfo("count","3") style=text-decoration:none>$Glossary $brih_restore</a></td>
+		#if($tdcolor!="2")
+		<td>
+		#elseif($tdcolor=="2")
+		<td bgcolor="#AFDCEC">
+		#end
+		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","db").addPathInfo("count","2") style=text-decoration:none>$brih_system $brih_restore</a></td>
+		#if($tdcolor!="1")
+		<td>
+		#elseif($tdcolor=="1")
+		<td bgcolor="#AFDCEC">
+		#end
+		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restore</a></td>
 </tr>
+</table>
 #if($st == "glsry")
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Glossary,Glossary.vm").setAction("AdminRestoreAction")" >
 #else
@@ -61,10 +63,10 @@ $!data.getMessage()
 #end
         <table width="100%" align="left">
       #if ($errorTemplate)
-      <tr>
+      <tr aling="right">
         <td colspan="4">
-          <table align=left>
-            <tr bgcolor="$ui.menuColor" >
+          <table>
+            <tr bgcolor="$ui.menuColor" align="right">
               <td>
                 <img src="$ui.image($ui.alertImage,$data)">
               </td>
@@ -77,11 +79,14 @@ $!data.getMessage()
       </tr>
       #end
 
-      <tr bgcolor="$ui.menuColor">
-        #fileUpload ("$brih_file" "file")
+      <tr bgcolor="$ui.menuColor" align="right">
+        ###fileUpload ("$brih_file" "file")
+	<td> <input type="file" class="button-ftextstyle" name="file" value=""> </td>
+	<td> $brih_file </td>
+
       </tr>
-	<tr bgcolor="$ui.tableColor">
-        <td align="left" colspan="2">
+	<tr bgcolor="$ui.tableColor" align="right">
+        <td colspan="2">
 
           <font face="$ui.sansSerifFonts">
         #if($st == "db")
@@ -97,7 +102,7 @@ $!data.getMessage()
       </tr>
     </table>
 </form>
-</table>
+##</table>
 <SCRIPT LANGUAGE="javascript">
         function checkValues(uploadform,field)
         {

@@ -5,6 +5,7 @@
  * @author <a href="mailto:dev.singha93@gmail.com">Devendra singhal</a>
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of MHRD, DEI Agra, IITK.
 *#
 $page.setTitle("Show Security String")
@@ -19,7 +20,10 @@ $page.setBgColor($ui.bgcolor)
 </font>
 
 <table bgcolor="$ui.menuColor" width=100%>
-        <tr align="right"><td><b>
+
+        <tr align="right"><td align="right"><b>
+
+
 		<font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>$online_online $brih_examat $brih_system</a>|
               	#if($flag1 == "show") 
@@ -34,6 +38,7 @@ $page.setBgColor($ui.bgcolor)
 ## Creating the links for help regarding QUIZ 
 
 <table width="100%">
+	<tr>
 	<tr align="right">
 		<td align="left"> <a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
 	</tr>
@@ -102,7 +107,9 @@ $page.setBgColor($ui.bgcolor)
 #end
 #if($flag == "security")
 <table width="100%" bgcolor="$ui.tableColor">
-	<tr bgcolor="$ui.tableColor" align="right">
+
+	<tr bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.tableColor" align="right">
 		#if($tdcolor1 != "2")
 			<td>
 		 #elseif($tdcolor1 == "2")
@@ -118,56 +125,60 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 </table>
 <table bgcolor="$ui.tableColor" width="100%">
-	<tr bgcolor="$ui.menuColor" width="100%" align="right">
-		<td align="left" width="100%" colspan="6"><b><i><font size="3"> $brith_security $brih_Of $brih_string </font><b></i></td>
+
+	<tr bgcolor="$ui.menuColor" width="100%">
+		<td align="right" width="100%" colspan="6"><b><i><font size="3"> $brith_security $brih_string </font><b></i></td>
 	</tr>
 </table>
 #if($flag1 == "show")
-	<table bgcolor="$ui.tableColor" width="100%">
-		<tr bgcolor="$ui.menuColor" align="right">
-			<td  width="50%">
-        		<SELECT name=quizlist class="drop" onChange="checkField(document.frm);"> 
-				#if($quizlist=="")      		
-					<option value="1"> $brih_quiz $brih_select </option>
-				#else                   
-                                	<option value="$!quizname">$!quizname</option>  #end
-					#foreach($topic in $quizList)
-						<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
-					#end			
-    			</SELECT>
-			</td>
-			<td width="50%"> <b> $brih_quiz $brih_Of1 $brih_name  </b> </td>
-		</tr>
-	</table>
-		#if($quizname!="")
-                <table width="100%" bgcolor="$ui.tableColor">
+
+<table bgcolor="$ui.tableColor" width="100%">
+              <tr bgcolor="$ui.menuColor"  width="100%" align="right">
+                        <td width="50%">
+                                <SELECT name=quizlist class="drop" onChange="checkField(document.frm);">
+                                #if($quizlist=="")
+                                        <option value="1"> $brih_quiz $brih_select </option>
+                                 #else                   
+                                        <option value="$!quizname">$!quizname</option>  #end
+                                        #foreach($topic in $quizList)
+                                                <option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
+                                        #end                    
+                                </SELECT>
+                        </td>
+                        <td width="50%">
+                                <b>$brih_quiz $brih_Of1 $brih_name </b>
+                        </td>
+                </tr>
+                #if($quizname!="")
                         <tr bgcolor="$ui.tableColor" align="right">
                                 <td width="50%"><b>$brih_secritystrs</b></td>
                                 <td width="50%"><b>$brih_student $brih_Of1 $brih_name</b></td>
-			</tr>
+                        </tr>
                         #foreach($secstrs in $securitydetail)
-                        	#if($velocityCount%2==0)
-                                	<tr bgcolor="$ui.tableColor" align="right">
+                                #if($velocityCount%2==0)
+                                <tr bgcolor="$ui.tableColor" align="right">
                                 #else
-	                                <tr bgcolor="$ui.menuColor" align="right">
+                                <tr bgcolor="$ui.menuColor" align="right">
                                 #end
-	
-        	                <td>$secstrs.SecurityID</td>
-                	        <td>$secstrs.StudentID</td>
+                                        <td>$secstrs.StudentID</td>
+                                        <td>$secstrs.SecurityID</td>
                         #end
                         </tr>
-                <tr bgcolor="$ui.menuColor" align="right">
-                        <td colspan="2"> <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/> </td>
-                </tr>
-                </table>
+                        <tr bgcolor="$ui.menuColor">
+                        <td colspan="2" align="right">
+                        <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/>
+                        </td>
+                        </tr>
                 #end
-	
+        </table>
+
 #else
 
 	<table bgcolor="$ui.tableColor" width="100%">
-		<tr align="right"><td><b>$Notice_Send $brih_mail</b><INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"></td><tr>
+		<tr align="right"><td colspan="2"><b>$Notice_Send $brih_mail</b><INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"></td><tr>
 		<tr bgcolor="$ui.menuColor" align="right">
-			<td>
+			<td align="right">
+
         		<SELECT name=quizlist class="drop">       		
 				<option value="1"> $brih_quiz $brih_select </option>			
 					#foreach($topic in $quizList)
@@ -179,12 +190,17 @@ $page.setBgColor($ui.bgcolor)
 					#end			
     			</SELECT>
 			</td>
-			<td> <b> $brih_quiz $brih_Of1 $brih_name </b> </td>
+
+                         <td align="right"><b> $brih_quiz $brih_Of1 $brih_name  </b></td>
 		</tr>
 	
 	
-		<tr bgcolor="$ui.menuColor" align="right">
-			<td colspan="2"> <input type="button" class="button-ftextstyle" name="eventSubmit_generateSecurity" value="$brith_generateSecurity" onClick="checkField1(document.frm,this);"/>	</td>
+
+	<tr bgcolor="$ui.menuColor">
+			<td align="right" colspan="2">
+				<input type="button" class="button-ftextstyle" name="eventSubmit_generateSecurity" value="$brith_generateSecurity" onClick="checkField1(document.frm,this);"/>		
+			</td>
+
 		</tr>    
 		<input type="hidden" name="actionName">
 		<input type="hidden" name="quizID">

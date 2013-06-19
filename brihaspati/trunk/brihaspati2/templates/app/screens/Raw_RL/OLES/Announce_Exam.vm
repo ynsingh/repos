@@ -1,11 +1,12 @@
 #*
  * @(#)Announce_Exam.vm
- * Copyright (c) 2010 DEI Agra,.
+ * Copyright (c) 2010,2013 DEI Agra,.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com ">Aayushi</a>
  * @author <a href="mailto:palseema30@gmail.com ">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * Contributors: Members of MHRD Project DEI Agra, IITK
 *#
 $page.setTitle("Announce Exam")
@@ -386,12 +387,12 @@ $!data.getMessage()
 	
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="right" width="100%" colspan="5">
+			<input type="reset" name="reset" class="drop" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 			#if($mode == "update")
 				<input type=button class="drop" name="eventSubmit_newAnnouncement" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			#else
 				<input type="button" class="drop" name="eventSubmit_newAnnouncement" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 			#end		
-			<input type="reset" name="reset" class="drop" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>
 #end
