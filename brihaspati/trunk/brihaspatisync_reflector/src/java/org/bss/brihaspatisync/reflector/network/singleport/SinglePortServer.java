@@ -56,7 +56,7 @@ public class SinglePortServer {
         public void stop() throws Exception {
                 if (server != null) {
                         server.stop(0);
-                        System.out.println(" Single Port Server stop successfully !! ");
+                        System.out.println(" Single Port Server stoped successfully !! ");
                 }
         }
 	
@@ -170,7 +170,11 @@ class MyHandler implements HttpHandler {
                         	                if((sendbytes.length>0) && (sendbytes !=null)) {
                                 	                responseBody.write(sendbytes);
                                         	}
+					} else if(type.equals("stop")) {
+						org.bss.brihaspatisync.reflector.LogoutReflector.getController().stopReflector();
+                		                System.exit(0);	
 					}
+					
                 	     	} catch(Exception e){} 
 				responseBody.flush();
 		        	responseBody.close();
