@@ -172,6 +172,9 @@ class MyHandler implements HttpHandler {
                                         	}
 					} else if(type.equals("stop")) {
 						org.bss.brihaspatisync.reflector.LogoutReflector.getController().stopReflector();
+						byte[] sendbytes="Reflector is Successfully Loggedout ".getBytes("UTF-8");
+						responseBody.write(sendbytes);
+						org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().stop();
                 		                System.exit(0);	
 					}
 					

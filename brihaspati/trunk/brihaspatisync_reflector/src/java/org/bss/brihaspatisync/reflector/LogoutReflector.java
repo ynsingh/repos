@@ -41,25 +41,19 @@ public class LogoutReflector {
 	}
 
 	public void stopReflector(){
-
 		try {	
 			System.out.println("stop ref 1");	
 			String indexServer=riserver.getIServerIP();
 			System.out.println("indexServer "+indexServer);	
 			if(!indexServer.equals("")) {	
 				String req_url=indexServer+"/ProcessRequest?req=reflector_logout";
-				System.out.println("req_url "+req_url);
 				URL indexurl = new URL(req_url);
                                	HttpsURLConnection connection=HttpsUtil.getController().createHTTPConnection(indexurl);
-				System.out.println("connection "+connection);
-                               	if(connection==null){
-                                       	JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
-                       		}else{
+                               	if(connection != null){
 					BufferedReader in=null;
                                		try{
 		                		in= new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 				String str=in.readLine();
-						System.out.println("str "+str);
 						if(str.equals("successfull")){
 						  	System.out.println("xml delete !Logout Reflector Successfully !! ");	
 						}
@@ -69,42 +63,18 @@ public class LogoutReflector {
                                			}
 					}
                        		}
-				org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().stop();
 				Timer UL_Timer =riserver.getTimer();
 				if(UL_Timer != null) {
 					UL_Timer.cancel();
 					System.out.println("Logout Reflector Successfully !! ");			
-				}else {	
-					System.out.println("Reflector is not start");
-				}
-			}else {
-				System.out.println("Reflector is not start");
+				}	
+				org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().stop();
 			}
-		}catch(Exception e){
+		}catch(Exception e){ 	
+			try {
+				org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().stop();
+			}catch(Exception ex){}
 			System.out.println("Error on Logout Reflector ");
 		}
 	}
-	
-/*	protected void restartReflector(){
-		try {
-			HttpGetPost.getController().stop();     
-                      	TCPServer.getController().stop();      
-                        PPTGetAndPostServer.getController().stopThread();
-                        //log.stop();
-                        TransmitHandlerThread.getControllerofHandler().stop();
-                        Timer UL_Timer =riserver.getTimer();
-                        if(UL_Timer != null) {
-                        	UL_Timer.cancel();
-                             	log.setString("Logout Reflector Successfully !! ");
-                      	}else {
-                        	System.out.println("Reflector is not start");
-                      	}
-					
-		}catch(Exception e){
-                        log.setString("Error on Logout Reflector ");
-                }
-	}
-	*/
-	      	
-	 
 }
