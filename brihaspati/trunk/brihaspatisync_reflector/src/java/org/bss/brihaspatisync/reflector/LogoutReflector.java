@@ -40,7 +40,8 @@ public class LogoutReflector {
 		return logoutref;
 	}
 
-	protected void stopReflector(){
+	public void stopReflector(){
+
 		try {	
 			System.out.println("stop ref 1");	
 			String indexServer=riserver.getIServerIP();
