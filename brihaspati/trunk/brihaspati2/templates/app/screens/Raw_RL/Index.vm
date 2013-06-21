@@ -147,6 +147,8 @@ $!data.getMessage()
 						<input type="hidden" name="chatRoomName" value="">
 						<input type="hidden" name="mode" value="">
 						<input type="hidden" name="mode2" value="">
+						<input type="hidden" name="viewAll" value="">
+
 					</td>	
 				</tr>
 		</table>
@@ -175,18 +177,30 @@ $!data.getMessage()
 <td valign="top">
  <div style="overflow:auto; height:auto; ">
                 <table  bgcolor="$ui.tableColor" style="width:310px;">
-                        <tr><td align="center" bgcolor="$ui.menuColor"><b>($brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;($uList.size()</b></td></tr>
+			#if($uList.size()!=0)
+		                #if($au==0)
+                	        #set($au=1)
+		                #end
 
-                        #foreach($element in $uList)
-                                #if($velocityCount%2==0)
-                                        <tr bgcolor="$ui.menuColor" align="right">
-                                #else
-                                        <tr bgcolor="$ui.tableColor" align="right">
-                                #end
-
+	                        <tr><td align="center" bgcolor="$ui.menuColor"><b>($brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;($au</b></td></tr>
+				#foreach($element in $uList)
+                                	#if($velocityCount%2==0)
+                                        	<tr bgcolor="$ui.menuColor" align="right">
+	                                #else
+        	                                <tr bgcolor="$ui.tableColor" align="right">
+                	                #end
                                         <td> $element </td>
-                                          </tr>
-                        #end
+                                        </tr>
+	                        #end
+				#if(($uList.size()) > 4)
+                	                #if($viewAll!="ViewAll")
+                        	        <tr bgcolor="$ui.tableColor" align="right"><td>...</td></tr>
+                                	#end
+		                        <tr bgcolor="$ui.menuColor"><td align="right"><input type="submit" value="$brih_more" onclick="checkBlankTest()"></td></tr>
+                	        #end
+			#else
+        	                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>(0 $brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;( </b></td></tr>
+                	#end
                 </table>
         </div>
 ##iframe is use to show brihaspati Twitter
@@ -205,15 +219,29 @@ $!data.getMessage()
 </body>
 <SCRIPT Language="javascript">
 
-function checkOption(field)
-{
-	  window.location = field.value;
-}
-function doLoad()
-{
-setTimeout( "refresh()", 5*60*1000 );
-}
-function popup(url,popupName)
+	function checkOption(field)
+	{
+		  window.location = field.value;
+	}
+
+	function refresh()
+	{
+		window.location = '$link.setPage("Index.vm")';
+		refresh='true';
+	}
+
+	function doLoad()
+	{
+		setTimeout( "refresh()", 5*60*1000 );
+	}
+
+	function checkBlankTest()
+	{
+        	document.frm.viewAll.value="ViewAll";
+	        frm.submit();
+	}
+
+	function popup(url,popupName)
         {
                 var w=650;
                 var h=450;
@@ -222,5 +250,6 @@ function popup(url,popupName)
                 Win2 = window.open (url,popupName, 'scrollbars=yes, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
                 //Win2=window.open(url,popupName,"resizable,height=200,width=650");
         }
+
 
 </SCRIPT >
