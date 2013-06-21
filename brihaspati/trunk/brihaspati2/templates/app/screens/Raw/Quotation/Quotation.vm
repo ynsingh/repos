@@ -4,7 +4,8 @@
  * All Rights Reserved.
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:rpriyanka12@ymail.com ">Priyanka Rawat</a>
- * @date 23-04-2013
+ * @author <a href="mailto:chaudharydeepika88@gmail.com ">Deepika Chaudhary</a>
+ * @date 23-04-2013,21-06-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -15,6 +16,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> 
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
@@ -30,9 +32,11 @@ $!data.getMessage()
         <font face="$ui.sansSerifFonts">
         <b>
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("count","1").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a> | #if($mode=="edit") $brih_edit $brih_quotation #else $brih_add $brih_quotation #end </td>
+        <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/QuotationManagement.html","newWin"); style='text-decoration:none'><font size=4>$brih_help</font></a>
+        </td>
 </tr>
 </table>
-
 <form name=frm method="post" action="$link.setAction("AddQuotation").setPage("call,Quotation,Quotation.vm").addPathInfo("mode","quote")">
 	<table width="100%" bgcolor="$ui.tableColor">
         	<tr>

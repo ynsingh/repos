@@ -1,6 +1,6 @@
 #*
  * @(#) InstituteList.vm 
- * Copyright (c) 2010,2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2012,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
@@ -12,8 +12,8 @@
  * @modified date: 10-08-2010 (Shaista)
  * @modified date: 10-10-2010, 22-11-2010 (Shaista)
  * @modified date: 12 April 2012,20-05-2012
+ * @modified date: 21 June 2013,21-06-2013 (Deepika Chaudhary)
 *#
-
 
 $page.setTitle("Admin Home | View Institute List")
 $page.setBgColor($ui.bgcolor)
@@ -21,6 +21,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table  bgcolor="$ui.tableColor" width=100%>
@@ -51,6 +52,9 @@ $!data.getMessage()
 			#end
 		#end
 		</td>
+                <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/InstituteManagement.html","newWin"); style='text-decoration:none'><font size=4>$brih_help</font></a>
+	        </td>
 	</tr>
 </table>
 <table  bgcolor="$ui.tableColor" width=100%>

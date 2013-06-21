@@ -6,6 +6,7 @@
  * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 22-11-2010 
+ * @modified date: 21-06-2013 (Deepika Chaudhary)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -15,6 +16,7 @@ $page.setTitle("Admin Home | View Role Permission List")
 $page.setBgColor($ui.bgcolor)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 <body>
 
@@ -27,6 +29,9 @@ $!data.getMessage()
 		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
 		$brih_role #if($lang == "hindi") $brih_Of #end $Repo_Perm $brih_list	
 		</td>
+                <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RolePermissionManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        	</td>
 	</tr>
 </table>
 <form name="frm" method="Post" action="$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap")">
