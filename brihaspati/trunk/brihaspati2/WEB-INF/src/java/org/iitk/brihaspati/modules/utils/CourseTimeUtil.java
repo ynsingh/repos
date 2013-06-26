@@ -152,7 +152,7 @@ public class CourseTimeUtil
 		 */
                 public static String getCloginTime(int userid)
                 {
-                String ctime=null;
+                String cname=null;
                 try{
 			Date date=new Date();
 			int eid=getentryid(userid);
@@ -171,12 +171,15 @@ public class CourseTimeUtil
 						long diffHours = time1/(60*60*1000);
 						long diffHour = coursetime%(60*60*1000);
 						long diffMin=diffHour/(60*1000);
-						ctime=diffHours+" hours"+" "+diffMin+" min";
+						String ctime=diffHours+" hours"+" "+diffMin+" min";
+						String LoginName=UserUtil.getLoginName(userid);
+						 cname=LoginName+" ("+ctime+" )";
 					}
+
 				}
 			}
                 }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getCloginTime Method------"+ex);}
-                 return ctime;
+                 return cname;
         }
 	/*
 	 *method For time calculating for a User's current Login at every page on Course area.
@@ -237,14 +240,11 @@ public class CourseTimeUtil
 	 *use this CourseArea. 
          *This method use in GUI in CourseHome.
 	 */
-	public static Vector getCourseActiveList(int gid,String groupName)
+	/*public static Vector getCourseActiveList(int gid,String groupName)
 	{
 		 Vector userList=new Vector();
 		try{
-			/*getting gruop name of current gid */
-			//String groupname=getGroupName(gid);
                         Vector Activelist=new Vector();
-			/*get All Active User in a Vector*/
                         Collection au=TurbineSession.getActiveUsers();
 			Iterator it=au.iterator();
                         while(it.hasNext()){
@@ -253,40 +253,25 @@ public class CourseTimeUtil
                                 int uid=UserUtil.getUID(ss1);
                                 Activelist.add(uid);
                         }
-			/*get List of All user in A Group bY gid*/
 			Criteria crit=new Criteria();
 			crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
-			//crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
-			/*getList of All Users*/
                         List v=TurbineUserGroupRolePeer.doSelect(crit);
-			/*take value from List one by one*/
 			if(v.size()!=0){
 				for(int p=0;p<v.size();p++){
                                 	TurbineUserGroupRole el=(TurbineUserGroupRole)v.get(p);
-					/*take User_Id*/
                                 	int uid=el.getUserId();
-					/*if(this user belongs this group or not){yes*/
 					if(Activelist.contains(uid)){
-					/*getEntry_ID of this User From COURSE_TIME table*/
 					int eid=getentryid(uid);
 					crit=new Criteria();
-					/*take status of user on the behalf of ENTRY_ID and
-				  		GROUP_NAME*/
 					crit.add(CourseTimePeer.ENTRY_ID,eid);
 					crit.add(CourseTimePeer.COURSE_ID,groupName);
 					List v1=CourseTimePeer.doSelect(crit);
 					if(v1.size()!=0){
 						CourseTime element=(CourseTime)v1.get(0);
 						int status=element.getStatus();
-						/*if(status==1){true*/
 					  	if(status==1){
-							/*user currently in this GROUP*/
-							/*time in this CourseArea*/
 							 String ct=CourseTimeUtil.getCloginTime(uid);
-							/*take LoginName of User*/
 							String LoginName=UserUtil.getLoginName(uid);
-							/*take Login Name and Time in a String for showing 
-					          	on browser*/
 						 	String cname=LoginName+" ("+ct+" )";
 							userList.add(cname);
 						}
@@ -298,7 +283,7 @@ public class CourseTimeUtil
 		} 
 	}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseActiveList------"+ex); }
                  return userList;
-}
+}*/
 	/*
 	 *Method for Calculating time User Spend in a Course in a day.
 	 */
