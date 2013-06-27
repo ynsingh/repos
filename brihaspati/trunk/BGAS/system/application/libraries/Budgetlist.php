@@ -206,7 +206,7 @@ class Budgetlist
 			{
 				echo "<td class=\"td-actions\"></tr>";
 			} else {
-				echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $this->id , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
+				//echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $this->id , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
 				$id1=$this->id;
 	//			$status1=$this->status;
 	//			if (  check_access('administer'))
@@ -286,12 +286,12 @@ class Budgetlist
                                 echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $data['over'];
                         	echo " </td>";
-                     //   	if ($data['id'] <= 4)
-                       // 	{
-                         //       	echo "<td class=\"td-actions\"></tr>";
+                        //	if ($data['id'] <= 4)
+                        //	{
+                          //     	echo "<td class=\"td-actions\"></tr>";
                         //	} else {
-                                echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
-				echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
+                                //echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
+				//echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
                         //	}
                         echo "</tr>";
 

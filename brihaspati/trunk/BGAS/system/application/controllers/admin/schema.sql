@@ -36,6 +36,15 @@ CREATE TABLE IF NOT EXISTS budgets (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
+CREATE TABLE budget_allocate(
+  id INTEGER (11)  NOT NULL AUTO_INCREMENT,
+  code VARCHAR (25) NOT NULL,
+  allocation_amount DECIMAL (15, 2) DEFAULT 0.00,
+  creation_date DATETIME NOT NULL,
+  UNIQUE (code, allocation_amount),
+  PRIMARY KEY(id)
+)ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS entry_types (
   id int(5) NOT NULL,
   label varchar(15) NOT NULL,

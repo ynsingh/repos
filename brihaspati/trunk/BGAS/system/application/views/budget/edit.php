@@ -14,24 +14,26 @@ $(document).ready(function() {
 <?php
 	echo form_open('budget/edit/' . $budget_id);
 
-	echo "<p>";
+/*	echo "<p>";
 	echo form_label('Budget Code', 'budget_code');
 	echo "<br />";
 	echo form_input($budget_code);
 	echo "</p>";
-
+*/
+	echo form_hidden('budget_code', $budget_code);
+	
 	echo "<p>";
 	echo form_label('Budget Name', 'budget_name');
 	echo "<br />";
 	echo form_input($budget_name);
 	echo "</p>";
 
-	echo "<p>";
+/*	echo "<p>";
         echo form_label('Budget Type', 'budget_type');
         echo "<br />";
         echo form_input($budget_type);
         echo "</p>";
-
+*/
 	/*echo "<p>";
 	echo form_label('Budget Parent', 'group_parent');
 	echo "<br />";
@@ -46,7 +48,7 @@ $(document).ready(function() {
 	echo "</p>";
 	*/
 	
-	echo "<p>";
+/*	echo "<p>";
         echo form_label('B/D Balance', 'budget_bd');
         echo "<br />";
         echo form_input($budget_bd);
@@ -57,7 +59,7 @@ $(document).ready(function() {
         echo "<br />";
         echo form_input($budget_op);
         echo "</p>";
-
+*/
 	echo "<p>";
         echo form_label('Over Expense Allowed', 'budget_over');
         echo "<br />";
@@ -72,4 +74,4 @@ $(document).ready(function() {
 	echo "</p>";
 
 	echo form_close();
-
+?>
