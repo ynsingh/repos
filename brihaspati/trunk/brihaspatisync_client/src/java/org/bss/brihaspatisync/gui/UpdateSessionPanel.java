@@ -17,10 +17,8 @@ import java.awt.event.MouseListener;
 import javax.swing.border.TitledBorder;
 import java.util.StringTokenizer;
 import java.net.URLEncoder;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.DateUtil;
 
 import java.net.URLEncoder;
@@ -95,25 +93,12 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	private String lectValue;
 	private Log log=Log.getController();	
 	private ClientObject client_obj=ClientObject.getController();
-	private InstructorCSPanel insCSPanel=InstructorCSPanel.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	private InstructorCSPanel insCSPanel=null;	
 
-
-	private static UpdateSessionPanel annPanel=null; 
-
-	/**
-         *The Controller for UpdateSessionPanel Class.
-         */
-
-	protected static UpdateSessionPanel getController(){
-                if (annPanel==null){
-                        annPanel=new UpdateSessionPanel();
-                }
-                return annPanel;
-        }
-	
-	protected JPanel createGUI(int indexnumber,Vector updatevector){
+	protected UpdateSessionPanel(int indexnumber,Vector updatevector,InstructorCSPanel insCSPanel) {
+		this.insCSPanel=insCSPanel;
         	mainPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(createNorthPanel(),BorderLayout.NORTH);
@@ -127,49 +112,47 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 frame.setVisible(true);                                          /**Showing the frame*/
                 Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
                 frame.setLocation((((int)dim.getWidth()/2)-425),(((int)dim.getHeight()/2)-125));
-		return mainPanel;
 	}
 
 	private void setLectureValues(int indexnumber,Vector updatevector){
 		try {
-		java.util.StringTokenizer str1 = new java.util.StringTokenizer(updatevector.get(indexnumber).toString(),",");
-                lecture_id=decrypt(str1.nextElement().toString());
-                courseId=decrypt(str1.nextElement().toString());
-                lectName_Text.setText(decrypt(str1.nextElement().toString()));
-                lecInfoArea.setText(decrypt(str1.nextElement().toString()));
-                String updatemailid=decrypt(str1.nextElement().toString());
-                phone_Text.setText(decrypt(str1.nextElement().toString()));
-                String updatemailidarry[]=updatemailid.split("@");
-                urlText.setText(updatemailidarry[0]);
-                atRate.setText("@");
-                endText.setText(updatemailidarry[1]);
-                if((decrypt(str1.nextElement().toString())).equals("1"))
-                        video.setSelected(true);
-                else
-                        video.setSelected(false);
-                if((decrypt(str1.nextElement().toString())).equals("1"))
-                        audio.setSelected(true);
-                else
-                        audio.setSelected(false);
-                String sr=decrypt(str1.nextElement().toString());
-
-                updatemailid=decrypt(str1.nextElement().toString());
-                updatemailidarry=updatemailid.split("-");
-
-                updatemailid=decrypt(str1.nextElement().toString());//Session Time
-                updatemailidarry=updatemailid.split(":");
-		String durationtime=decrypt(str1.nextElement().toString());
-		durationtime=durationtime.substring(0,durationtime.indexOf(":"));
-		String mail=decrypt(str1.nextElement().toString());
-		mail=decrypt(str1.nextElement().toString());
-		mail=decrypt(str1.nextElement().toString());
-		if(mail.equals("1"))
-			mail_send.setSelected(true);		
-		else
-			mail_send.setSelected(false);
-                durationBox.setSelectedItem(durationtime+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));	
-		}catch(Exception e){System.out.println("Error in Update session in UpdateSessionPanel class ");}	
-		
+			java.util.StringTokenizer str1 = new java.util.StringTokenizer(updatevector.get(indexnumber).toString(),",");
+	                lecture_id=decrypt(str1.nextElement().toString());
+        	        courseId=decrypt(str1.nextElement().toString());
+                	lectName_Text.setText(decrypt(str1.nextElement().toString()));
+	                lecInfoArea.setText(decrypt(str1.nextElement().toString()));
+        	        String updatemailid=decrypt(str1.nextElement().toString());
+                	phone_Text.setText(decrypt(str1.nextElement().toString()));
+	                String updatemailidarry[]=updatemailid.split("@");
+        	        urlText.setText(updatemailidarry[0]);
+	                atRate.setText("@");
+        	        endText.setText(updatemailidarry[1]);
+                	if((decrypt(str1.nextElement().toString())).equals("1"))
+	                        video.setSelected(true);
+        	        else
+                	        video.setSelected(false);
+	                if((decrypt(str1.nextElement().toString())).equals("1"))
+        	                audio.setSelected(true);
+                	else
+	                        audio.setSelected(false);
+        	        String sr=decrypt(str1.nextElement().toString());
+	
+        	        updatemailid=decrypt(str1.nextElement().toString());
+                	updatemailidarry=updatemailid.split("-");
+	
+        	        updatemailid=decrypt(str1.nextElement().toString());//Session Time
+                	updatemailidarry=updatemailid.split(":");
+			String durationtime=decrypt(str1.nextElement().toString());
+			durationtime=durationtime.substring(0,durationtime.indexOf(":"));
+			String mail=decrypt(str1.nextElement().toString());
+			mail=decrypt(str1.nextElement().toString());
+			mail=decrypt(str1.nextElement().toString());
+			if(mail.equals("1"))
+				mail_send.setSelected(true);		
+			else
+				mail_send.setSelected(false);
+	                durationBox.setSelectedItem(durationtime+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));	
+		} catch(Exception e){System.out.println("Error in Update session in UpdateSessionPanel class ");}	
 	}	
 
 	/**
@@ -188,7 +171,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 audio.setBackground(Color.LIGHT_GRAY);
                 whiteboard=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.WBCheck")+"</font></html>");
                 whiteboard.setBackground(Color.LIGHT_GRAY);
-		mail_send=new JCheckBox("<html><font color=green>Mail send");
+		mail_send=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("mail_send")+"</font></html>");
+
                 mail_send.setBackground(Color.LIGHT_GRAY);	
                 north_Panel.add(new JLabel("                           "));
                 north_Panel.add(audio);
@@ -350,8 +334,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 closeLabel.addMouseListener(this);
                 closeLabel.setName("closeLabel.Action");
                 closeLabel.addMouseListener(this);
-
-
                 annBttn=new JButton("<html><u><b><center><font color=blue>"+Language.getController().getLangValue("UpdateSessionPanel.UpdateBttn")+"</font></center></b></u>");
 		annBttn.addActionListener(this);
                 south_Panel.add(duration);
@@ -387,12 +369,11 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 
                                 lectValue=null;
                                 return lectValue.toString();
-                        }
-                        else if((intforduedate >= curdate)&& check){
+                        } else if((intforduedate >= curdate)&& check) {
                                 String st_hour=(String)hourBox.getSelectedItem();
                                 String st_minutes=(String)minBox.getSelectedItem();
 				String st_hour_st_minutes=st_hour+":"+st_minutes;
-                                if(intforduedate == curdate){
+                                if(intforduedate == curdate) {
                                         int totaltime=Integer.parseInt(st_hour)*60;
                                         totaltime=totaltime+Integer.parseInt(st_minutes);
 					int cue_finaltime =(h*60)+m;	
@@ -474,38 +455,25 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
       	 */
 	public void actionPerformed(ActionEvent e){
         	if(e.getSource()==annBttn){
-			annBttn.setCursor(busyCursor);
-			try{
-				Thread.sleep(500);
-			}catch(InterruptedException ie){
-				annBttn.setCursor(defaultCursor);
-			}finally{
-				annBttn.setCursor(defaultCursor);
-			}
-			try{
+			try {
+				annBttn.setCursor(busyCursor);
 				String lectValue = getLectureValues();
                                 String indexServerName=client_obj.getIndexServerName();
-
-                                if(!(indexServerName.equals(""))){
+                                if(!(indexServerName.equals(""))) {
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
-                                        if(HttpsUtil.getController().getIndexingMessage(indexServer)){
+                                        if(HttpsUtil.getController().getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
-                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));
-
-						frame.dispose();
-						insCSPanel.getmainPanel().remove(1);
-                                                        Vector course_Name=client_obj.getInstCourseList();
-                                                        insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(course_Name,client_obj.getIndexServerName())),BorderLayout.CENTER);
-                                                        insCSPanel.getmainPanel().revalidate();
-                                                        insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
-						/*************************************************************/
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      frame.dispose();
+						insCSPanel.getmainPanel().remove(1);	
+						insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(client_obj.getInstCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+                                                insCSPanel.getmainPanel().revalidate();
+                                                insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
                                         }else
-                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
-
-                                }else{
-                                        log.setLog("insufficient indexServer name in UpdateSession :" + indexServerName);
-                                }
-			}catch(Exception ex){log.setLog("Error at actionPerformed()in UpdateSessionPanel"+ex.getMessage());}
+                                               JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
+                                } else
+					System.out.println("insufficient indexServer name in UpdateSession :" + indexServerName);
+                                annBttn.setCursor(defaultCursor);
+			} catch(Exception ex){log.setLog("Error at actionPerformed()in UpdateSessionPanel"+ex.getMessage());}
 		}//if
      	}
 

@@ -4,95 +4,62 @@ package org.bss.brihaspatisync.gui;
  * AnnounceSessionAction.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur.
+ * Copyright (c) 2011 , 2013 ETRG, IIT Kanpur.
  */
 
-import java.awt.Cursor;
 import javax.swing.JPanel;
-import javax.swing.JButton;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.DateUtil;
 import java.net.URLEncoder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.BorderLayout;
 import java.util.Vector;
-import org.bss.brihaspatisync.network.Log;
 
 
 /**
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha Yadav </a>Created on 20Dec2008
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modify for GUI. 
  */
 
-public class AnnounceSessionAction extends JPanel implements ActionListener{
+public class AnnounceSessionAction implements ActionListener{
 
-	private Vector course_Name=null;
-	private JPanel Ins_mainPanel;
-	private JButton annBttn;	
-	private static AnnounceSessionAction ann_action=null;
 	private ClientObject client_obj=ClientObject.getController();
-	private InstructorCSPanel insCSPanel=InstructorCSPanel.getController();
-	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-        private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-
-	private AnnounceSessionPanel ann_sessionPanel=AnnounceSessionPanel.getController();
-	private Log log=Log.getController();
-	
-	/**
- 	 * This is a controller for this class.
- 	 */
-	public static AnnounceSessionAction getController(){
-		if(ann_action==null){
-			ann_action=new AnnounceSessionAction();
-		}
-			return ann_action;
-		
-	}
-	
+	private InstructorCSPanel insCSPanel=null;
+	private AnnounceSessionPanel ann_sess_panel=null;	
+	protected AnnounceSessionAction(InstructorCSPanel insCSPanel,AnnounceSessionPanel ann_sess_panel) {
+		this.insCSPanel=insCSPanel;
+		this.ann_sess_panel=ann_sess_panel;
+	}	
 	/**
 	 * If user press the Announce button then this method will announce a new Session.
      	 */
     	public void actionPerformed(ActionEvent e){
-    		if(e.getSource()==(AnnounceSessionPanel.getController().getannBttn())){
+    		if(e.getSource()==(ann_sess_panel.getannBttn())){
 			try{ 
-				AnnounceSessionPanel.getController().getannBttn().setCursor(busyCursor);
-				try{
-					Thread.sleep(1000);
-				}catch(InterruptedException ie){
-					AnnounceSessionPanel.getController().getannBttn().setCursor(defaultCursor);
-				}finally{
-					AnnounceSessionPanel.getController().getannBttn().setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-				if(!(AnnounceSessionPanel.getController().getLectureValues().equals(""))){
-					//String lectValue = "lectValue="+URLEncoder.encode(AnnounceSessionPanel.getController().getLectureValues(),"UTF-8");
-					String lectValue = AnnounceSessionPanel.getController().getLectureValues();
+				if(!(ann_sess_panel.getLectureValues().equals(""))){
+					String lectValue = ann_sess_panel.getLectureValues();
 					String indexServerName=client_obj.getIndexServerName();
                                         String value;
 					if(!(indexServerName.equals(""))){
 						String 	indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
 						if(HttpsUtil.getController().getIndexingMessage(indexServer)){
-					
+							
 							insCSPanel.getmainPanel().remove(1);
-					 		course_Name=client_obj.getInstCourseList();
+					 		Vector course_Name=client_obj.getInstCourseList();
 					 		insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(course_Name,client_obj.getIndexServerName())),BorderLayout.CENTER);
 							insCSPanel.getmainPanel().revalidate();
 							value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog1");
                               				System.out.println(value);
 							insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
-						}else
+							
+						} else
 						        value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog2");
-                                                        System.out.println(value);
-					}else{
+					} else
 						value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog3");
-						System.out.println(value);
-					}//else
 				}//if
-        		}catch(Exception ex){
+        		}catch(Exception ex) {
         			System.out.println("Error at actionPerformed()in AnnounceSessionPanel"+ex.getMessage());
         		}
 		}

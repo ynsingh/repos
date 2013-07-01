@@ -34,7 +34,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.gui.HandRaiseAction;
 
 /**

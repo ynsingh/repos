@@ -29,7 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.gui.Language;
 
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.network.ppt_sharing.PostPPTScreen;

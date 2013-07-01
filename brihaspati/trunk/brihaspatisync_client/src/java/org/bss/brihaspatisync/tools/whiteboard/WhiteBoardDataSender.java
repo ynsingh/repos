@@ -21,20 +21,10 @@ import org.bss.brihaspatisync.network.Log;
 public class WhiteBoardDataSender {
 
     	private String message="";
-//	private Log log=Log.getController();
-	private static WhiteBoardDataSender wb_draw=null;
 	private UtilObject utilObject=UtilObject.getController();
 
-
-        public static WhiteBoardDataSender getController(){
-                if(wb_draw==null){
-                        wb_draw=new WhiteBoardDataSender();
-                }
-                return wb_draw;
-        }
-
 	/*Constructor to initialise the value */
-	private WhiteBoardDataSender(){}
+	protected WhiteBoardDataSender(){}
 
 
 	/**
@@ -64,6 +54,7 @@ public class WhiteBoardDataSender {
                     	msg=msg.append("$");
                     	msg=msg.append(msgdata1);
                   	message=msg.toString();
+			System.out.println("message "+message);	
 			utilObject.setSendQueue(message);
               	} catch(Exception e) { System.out.println("Error On WhiteBoardDataSender"+e.getMessage()); }
      	}

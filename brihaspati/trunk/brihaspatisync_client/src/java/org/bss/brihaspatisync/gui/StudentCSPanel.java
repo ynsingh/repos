@@ -30,7 +30,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.util.Vector;
 import java.util.Date;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 
@@ -82,16 +81,6 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 
 	private static StudentCSPanel studcspanel=null;
 
-	/**
-	 * Controller for class.
-	 */
-	protected static StudentCSPanel getController(){
-		if (studcspanel==null){
-			studcspanel=new StudentCSPanel();
-		}
-		return studcspanel;
-	}
-	
 	/**
 	 * Creating GUI for StudentCSPanle
 	 */
@@ -288,7 +277,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 					// store role in client objects for later use by this client.
 					if(!(client_obj.getUserRole()).equals("student"))
                                                 client_obj.setUserRole("student");
-                                       	JoinSession.getController().goToLecture(lect_id);
+                                       	new JoinSession(lect_id);
                                	}
                        	}
                 }catch(Exception exc){log.setLog("Can't open GUI");}

@@ -23,7 +23,7 @@ public class ThreadController {
 		return tc;
 	}
 
-	public void setThreadFlag(boolean value){
+	public void setThreadFlag(boolean value) {
 		this.threadFlag=value;
 	}
 	
@@ -31,7 +31,6 @@ public class ThreadController {
 		return this.threadFlag;
 	}
 
-	
 	public void setReflectorStatusThreadFlag(boolean value){
                 this.reflector_status=value;
         }

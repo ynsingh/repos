@@ -11,7 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.JOptionPane;
 
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.gui.Language;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.gui.LoginWindow;
 import org.bss.brihaspatisync.gui.MailLogin;
@@ -26,19 +26,10 @@ import java.io.File;
  */
 
 public class Client {
-	
-	private static Client client=null;
-	
-	public static Client getController(){
-		if(client==null)
-			client=new Client();
-		return client;
-	}
-	
+	  
 	private Client(){}
 
-
-	private void startClient(){
+	private void startClient() {
                 try{
 			Language.getController().SelectLanguage("English");
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -47,16 +38,11 @@ public class Client {
                     			break;
                 		}
             		}
-
-               	}catch(Exception e){System.out.println("Error on Loading Look&Feel");}
-		
-
-                if(((ClientObject.getController().getIndexServerList()).size()) > 1){
+               	}catch(Exception e) { System.out.println("Error on Loading Look&Feel"); }
+                if(((ClientObject.getController().getIndexServerList()).size()) > 1)
 			MainWindow.getController().createGUI();
-                	MainWindow.getController().getDesktop().add(LoginWindow.getController());
-		}else{
+		else
                 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("Client.MessageDialog"));
-              	}
 	}
 
 	private void startFromURL(String user_name,String lect_id,String course_id,String indexServerName,String ins_std){
@@ -74,22 +60,22 @@ public class Client {
 		}catch(Exception e){System.out.println("Error on Loading Look&Feel"+e.getMessage());}
 	}
 
-
-
-	
 	/**
          * Main Method for client
          */
 	
 	public static void main(String args[]) {
-		String user_name=args[0].trim();
-		String lect_id=args[1].trim();
-		String course_id=args[2].trim();
-		String indexServerName=args[3].trim();
-		String ins_std=args[4].trim();
-		if(user_name.equals("no"))
-			Client.getController().startClient();
-		else 
-			Client.getController().startFromURL(user_name,lect_id,course_id,indexServerName,ins_std);
+		try {
+			String user_name=args[0].trim();
+			if(user_name.equals("no"))
+				new Client().startClient();
+			else { 
+				String lect_id=args[1].trim();
+				String course_id=args[2].trim();
+				String indexServerName=args[3].trim();
+				String ins_std=args[4].trim();
+				new Client().startFromURL(user_name,lect_id,course_id,indexServerName,ins_std);
+			}
+		}catch(Exception e){System.out.println("Exception in Client class on Loading Look&Feel"+e.getMessage());}
 	}
 }

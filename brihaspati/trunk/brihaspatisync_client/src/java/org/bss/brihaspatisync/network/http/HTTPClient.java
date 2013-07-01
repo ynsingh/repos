@@ -38,7 +38,6 @@ public class HTTPClient extends Thread {
         }
 
 	public void run() {
-		
 		while(ThreadController.getController().getThreadFlag()){
                      	try {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
@@ -77,7 +76,7 @@ public class HTTPClient extends Thread {
 							str2=java.net.URLDecoder.decode(str2);
 							if(!str1.equals("nodata")) {
 								if(str1.equals("sessionlist_timeout") && (value_count>5)){
-									org.bss.brihaspatisync.gui.Logout.getController().sessionOutMessage();
+									new org.bss.brihaspatisync.gui.Logout().sessionOutMessage();
 								}else
 									org.bss.brihaspatisync.util.RuntimeDataObject.getController().setUserList(str1);
 								if(value_count<7)
@@ -89,7 +88,8 @@ public class HTTPClient extends Thread {
 					}
 				}
 				this.sleep(2000);this.yield();
-			}catch(Exception ex) {	System.out.println("Error in HTTP Client "+ex.getMessage());   }
+			} catch(Exception ex) {	System.out.println("Error in HTTP Client "+ex.getMessage());   }
 		}
+		org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
   	}
 }

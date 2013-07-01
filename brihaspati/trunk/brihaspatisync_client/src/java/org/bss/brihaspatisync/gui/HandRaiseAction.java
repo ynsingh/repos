@@ -9,7 +9,6 @@ package org.bss.brihaspatisync.gui;
 
 import java.net.URLEncoder;
 
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;

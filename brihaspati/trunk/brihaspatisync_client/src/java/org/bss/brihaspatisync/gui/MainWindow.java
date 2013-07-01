@@ -4,117 +4,113 @@ package org.bss.brihaspatisync.gui;
  * MainWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012, ETRG, IIT Kanpur.
+ * Copyright (c) 2012,2013 ETRG, IIT Kanpur.
  */
 
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.Dimension;
 import java.awt.Container;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.ActionListener;
-import org.bss.brihaspatisync.util.Language;
-import javax.swing.JMenu;
+
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
+
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JDesktopPane;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class MainWindow  extends JFrame implements ActionListener{
+public class MainWindow  extends JFrame implements ActionListener {
 
-	private static JDesktopPane desktop=null;
 	private JMenu menu1;
+	private JMenu menu2;
+	private JMenu menu3;
+
 	private JMenuItem menuItem1;
 	private JMenuItem menuItem2;
 	private JMenuItem menuItem3;
-	private JMenu menu2;
 	private JMenuItem menuItem4;
-	private JMenu menu3;
 	private JMenuItem menuItem5;
 	private JMenuItem menuItem6;
 	private JMenuItem menuItem7;
-	private JPanel north_Panel =null;
-	private JPanel south_Panel =null;
-	private JPanel east_Panel =null;
-	private JPanel west_Panel =null;
-	private Container content=null;
-	private JMenuBar menuBar;	
-	private JLabel label=null;
 	
+	private JLabel label=null;
+	private static Container content=null;
 	private static MainWindow fw=null;
+	private static JDesktopPane desktop=null;
 	private ClassLoader clr= this.getClass().getClassLoader();
-
 
 	/**
 	 * Controller for class.
 	 */
+	
         public static MainWindow  getController(){
                 if (fw==null){
                         fw=new MainWindow();
                 }
                 return fw;
         }
-
+	
 	//Create MainWindow frame GUI.
-	public void createGUI(){
-                
+	public void createGUI() {
+	
 		content = getContentPane();
                 content.setBackground(new Color(24,116,205));
                 setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 		setIconImage(new ImageIcon(clr.getResource("resources/images/mainwindow.gif")).getImage());
                 setJMenuBar(createJMenuBar());
-
+		
 		desktop = new JDesktopPane();
-                desktop.setBackground(new Color(220,220,220));
+		desktop.setBackground(new Color(220,220,220));
+		desktop.add(new LoginWindow());
+	
 		JPanel northPanel=new JPanel();
                 northPanel.setBackground(new Color(24,116,205));
-                content.add(northPanel,BorderLayout.NORTH);
 
-                south_Panel=StatusPanel.getController();
+                JPanel south_Panel=StatusPanel.getController();
                 south_Panel.setBackground(new Color(24,116,205));
-                content.add(south_Panel,BorderLayout.SOUTH);
 
-                east_Panel=new JPanel();
+                JPanel east_Panel=new JPanel();
                 east_Panel.setBackground(new Color(24,116,205));
-                content.add(east_Panel,BorderLayout.EAST);
 
-                west_Panel=new JPanel();
+                JPanel west_Panel=new JPanel();
                 west_Panel.setBackground(new Color(24,116,205));
-                content.add(west_Panel,BorderLayout.WEST);
 
-                content.add(desktop,BorderLayout.CENTER);
+		content.add(northPanel,BorderLayout.NORTH);
+		content.add(south_Panel,BorderLayout.SOUTH);
+		content.add(east_Panel,BorderLayout.EAST);
+		content.add(west_Panel,BorderLayout.WEST);
+		content.add(desktop,BorderLayout.CENTER);
 
                 Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
                 setSize((int)dim.getWidth(),(int)dim.getHeight());
                 setVisible(true);
                 addWindowListener( new WindowAdapter (){
-                        public void windowClosing (WindowEvent ev ){
-                                Logout.getController().sendLogoutRequest();
-                                System.exit(0);
+                        public void windowClosing (WindowEvent ev ) {
+				new Logout().sendLogoutRequest();
+	                        System.exit(0);
                         }
                 });
-
-	
 	}
 
 	//Create JmenuBar for Mainwindow frame.
 	private JMenuBar createJMenuBar(){
-	        menuBar = new JMenuBar();
-
+	        JMenuBar menuBar = new JMenuBar();
                 menu1 = new JMenu(Language.getController().getLangValue("MainWindow.menu1"));
-
                 menuItem1=new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem1"));
                 menuItem1.setActionCommand("Logout");
                 menuItem1.setEnabled(false);
@@ -151,13 +147,13 @@ public class MainWindow  extends JFrame implements ActionListener{
 
                 menuItem5 = new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem5"));
                 menuItem5.setActionCommand("Connection");
-		//menuItem5.setEnabled(false);
+		menuItem5.setEnabled(false);
                 menuItem5.addActionListener(this);
                 menu3.add(menuItem5);
 		
 		menuItem6 = new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem6"));
                 menuItem6.setActionCommand("VideoServer");
-		//menuItem6.setEnabled(false);
+		menuItem6.setEnabled(false);
                 menuItem6.addActionListener(this);
                 menu3.add(menuItem6);
 
@@ -165,120 +161,81 @@ public class MainWindow  extends JFrame implements ActionListener{
                 menuBar.add(menu2);
                 menuBar.add(menu3);
 		
-		return menuBar;//main_EastPanel;	
+		return menuBar;	
 	}
   
 
 	public void actionPerformed(ActionEvent e) {
-                if(e.getActionCommand().equals("Connection")){
+                if(e.getActionCommand().equals("Connection")) {
 			new PreferenceWindow();
-                }else if(e.getActionCommand().equals("VideoServer")){
+                } else if(e.getActionCommand().equals("VideoServer")) {
                         new VideoServerConfigure();
-                }else if(e.getActionCommand().equals("Logout")){
-
+                } else if(e.getActionCommand().equals("Logout")) {
                         desktop.removeAll();
-                        desktop.add(LoginWindow.getController());
-                	desktop.revalidate();
-                	desktop.validate();
-                	desktop.repaint();
-                	//menuItem4.setEnabled(false);
+			desktop.setBackground(new Color(220,220,220));
+			menuItem1.setEnabled(false);
+	                menuItem2.setEnabled(false);	
+			desktop.add(new LoginWindow());
+			content.add(desktop,BorderLayout.CENTER);
 
-            	}else if(e.getActionCommand().equals("Sessionout")){
-			content.removeAll();//(1);
-			JPanel p1=new JPanel();
-			p1.setLayout(new BorderLayout());
-			
-			JPanel north_Panel1=new JPanel();
-	                north_Panel1.setBackground(new Color(24,116,205));
-        	       	p1.add(north_Panel1,BorderLayout.NORTH);
+			org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
+                        org.bss.brihaspatisync.util.ThreadController.getController().setThreadFlag(false);
+                        org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
 
-                	JPanel south_Panel1=new JPanel();
-                	south_Panel1.setBackground(new Color(0,0,0));
-                	//south_Panel1.setBackground(new Color(24,116,205));
-                	p1.add(south_Panel1,BorderLayout.SOUTH);
-
-                	JPanel east_Panel1=new JPanel();
-                	east_Panel1.setBackground(new Color(24,116,205));
-                	p1.add(east_Panel1,BorderLayout.EAST);
-
-                	JPanel west_Panel1=new JPanel();
-                	west_Panel1.setBackground(new Color(24,116,205));
-                	p1.add(west_Panel1,BorderLayout.WEST);
-
-			JDesktopPane desktop1 = new JDesktopPane();
-	                desktop1.setBackground(new Color(220,220,220));
-			desktop1.add(new CourseSessionWindow());//.getController());
-		
-			p1.add(desktop1, BorderLayout.CENTER);
-               	 	content.add(p1);
                 	content.validate();
-			content.repaint();
-         	}else if(e.getActionCommand().equals("Exit")){
-			Logout.getController().sendLogoutRequest();
+                	content.repaint();
+            	} else if(e.getActionCommand().equals("Sessionout")) {
+			desktop.removeAll();
+                        desktop.setBackground(new Color(220,220,220));
+                        desktop.add(new CourseSessionWindow());
+                        content.add(desktop,BorderLayout.CENTER);
+
+			org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
+			org.bss.brihaspatisync.util.ThreadController.getController().setThreadFlag(false);
+			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
+
+                        content.validate();
+                        content.repaint();
+			
+         	}else if(e.getActionCommand().equals("Exit")) {
+			new Logout().sendLogoutRequest();
                         System.exit(0);
-		}else if(e.getActionCommand().equals("Start-Recorder")){
+		}else if(e.getActionCommand().equals("Start-Recorder")) {
 			 // Action code for start recorder.
-                } else if(e.getActionCommand().equals("LectureInfo")){
+                } else if(e.getActionCommand().equals("LectureInfo")) {
 		  	LectureInfo info=new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfo());                      
                 }
-		else{
+		else {
 			StatusPanel.getController().setStatus(Language.getController().getLangValue("MainWindow.MessageDialog1"));
 		}
         }
 
-	//set text for menu according to language choosen.
-	public void setMenuText(){
+	//set text for menuItem according to language choosen.
+	public void setMenuItemText() {
 		menu1.setText(Language.getController().getLangValue("MainWindow.menu1"));
 		menu2.setText(Language.getController().getLangValue("MainWindow.menu2"));
-		menu3.setText(Language.getController().getLangValue("MainWindow.menu3"));
-	}
-	
-	//set text for menuItem according to language choosen.
-	public void setMenuItemText(){
+		menu3.setText(Language.getController().getLangValue("MainWindow.menu3"));	
+
  		menuItem1.setText(Language.getController().getLangValue("MainWindow.menuItem1"));
         	menuItem2.setText(Language.getController().getLangValue("MainWindow.menuItem2"));
         	menuItem3.setText(Language.getController().getLangValue("MainWindow.menuItem3"));
         	menuItem4.setText(Language.getController().getLangValue("MainWindow.menuItem4"));
         	menuItem5.setText(Language.getController().getLangValue("MainWindow.menuItem5"));
         	menuItem6.setText(Language.getController().getLangValue("MainWindow.menuItem6"));
+        	menuItem7.setText(Language.getController().getLangValue("InstructorCSPanel.LectureInfo"));
+		menuItem1.setEnabled(true);
+		menuItem2.setEnabled(true);
 	}
 
         public JDesktopPane getDesktop(){
                 return desktop;
         }
-	
-        protected JMenuItem getMenuItem1(){
-                return menuItem1;
-        }
-
-        protected JMenuItem getMenuItem2(){
-                return menuItem2;
-        }
-
-        protected JMenuItem getMenuItem3(){
-                return menuItem3;
-        }
-        protected JMenuItem getMenuItem4(){
-                return menuItem4;
-        }
-        protected JMenuItem getMenuItem5(){
-                return menuItem5;
-        }
-	protected JMenuItem getMenuItem6(){
-                return menuItem6;
-        }
-	
-	protected JMenuItem getMenuItem7(){
-                return menuItem7;
-        }
-
         public  Container getContainer(){
                 return content;
         }
-
+	
 	public  void setCouseid(String courseid){
                setTitle(courseid);
-
         }
 }
 

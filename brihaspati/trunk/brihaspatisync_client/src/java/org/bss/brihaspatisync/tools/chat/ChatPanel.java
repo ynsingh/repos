@@ -34,7 +34,7 @@ import javax.swing.JColorChooser;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
-import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.gui.Language;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;

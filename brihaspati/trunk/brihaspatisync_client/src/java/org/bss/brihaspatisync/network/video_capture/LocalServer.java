@@ -59,7 +59,7 @@ public class LocalServer implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			JoinSessionPanel.getController().getAV_Panel().add(VideoPanel.getController().createGUI());
+			//JoinSessionPanel.getController().getAV_Panel().add(VideoPanel.getController().createGUI());
 			System.out.println("Video Captureing start sucessfully !!");
 		}
         }

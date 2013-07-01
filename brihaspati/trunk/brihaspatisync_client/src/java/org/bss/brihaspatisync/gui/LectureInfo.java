@@ -24,7 +24,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.border.BevelBorder;
 import java.util.Vector;
-import org.bss.brihaspatisync.util.Language;
 
 
 /**

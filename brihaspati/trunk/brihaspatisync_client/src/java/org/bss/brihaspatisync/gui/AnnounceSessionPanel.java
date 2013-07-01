@@ -31,7 +31,6 @@ import javax.swing.border.TitledBorder;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.net.URLEncoder;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
@@ -46,7 +45,7 @@ import java.net.URLEncoder;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class AnnounceSessionPanel extends JPanel implements MouseListener{
+public class AnnounceSessionPanel extends JPanel implements MouseListener {
 
 	private JPanel mainPanel;
 	private JPanel north_Panel;
@@ -86,31 +85,21 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	private Vector returnVector=null;
 	private String lectValue;
 	private ClientObject client_obj=ClientObject.getController();
-	private static AnnounceSessionPanel annPanel=null; 
 	private Log log=Log.getController();
 	private int h=0;
 	private int m=0;
 	private int year=2011;
 	private int month=1;
         private int day=1;
-
-
-	/**
-         *The Controller for AnnounceSessionPanel Class.
-         */
-
-	protected static AnnounceSessionPanel getController(){
-                if (annPanel==null){
-                        annPanel=new AnnounceSessionPanel();
-                }
-                return annPanel;
-        }
+	
+	private InstructorCSPanel insCSPanel=null;
 
 	/**
 	 * Create announce session GUI.
 	 */
 	
-	protected JPanel createGUI(){
+	protected JPanel createGUI(InstructorCSPanel insCSPanel) {
+		this.insCSPanel=insCSPanel;
                 mainPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(createNorthPanel(),BorderLayout.NORTH);
@@ -292,7 +281,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 
 		//Modified by pratibha
 		annBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-               	annBttn.addActionListener(AnnounceSessionAction.getController());
+               	annBttn.addActionListener(new AnnounceSessionAction(insCSPanel,this));
               	//End of modification
 		//annBttn.addActionListener(this);
                 south_Panel.add(duration);
@@ -413,15 +402,9 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	 * If user press the Announce button then announce a new Session,
 	 * this method is moved to AnnounceSessionAction.java
       	 */
-/*	public void actionPerformed(ActionEvent e){
+	public void actionPerformed(ActionEvent e){
 	}
-*/	
-	private void announceNewSession(){
-		mainPanel.remove(1);
-               	mainPanel.add(createGUI(),BorderLayout.CENTER);
-              	mainPanel.revalidate();
-        }
-
+	
 	protected JButton getannBttn(){
                 return annBttn;
         }

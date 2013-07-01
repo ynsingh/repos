@@ -36,7 +36,6 @@ public class SinglePortClient implements Runnable {
 	private int port=RuntimeDataObject.getController().client_single_port();
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
 	
 	/**
  	 * Controller for the class.
@@ -64,7 +63,6 @@ public class SinglePortClient implements Runnable {
 	public void start(){
                 if (runner == null) {
 			flag=true;
-			h.setName("session");
                         runner = new Thread(this);
                         runner.start();
 			ThreadController.getController().setReflectorStatusThreadFlag(true);
@@ -189,8 +187,7 @@ public class SinglePortClient implements Runnable {
                         client.setConnectionTimeout(8000);
 			if(send_data != null)	
 				postMethod.setRequestBody(new java.io.ByteArrayInputStream(send_data));
-			h.setValue(clientObject.getLectureID()+","+clientObject.getUserName()+","+type);
-                        postMethod.setRequestHeader(h);
+                        postMethod.setRequestHeader("session",clientObject.getLectureID()+","+clientObject.getUserName()+","+type);
 			// Http Proxy Handler
 			if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
                         	HostConfiguration config = client.getHostConfiguration();

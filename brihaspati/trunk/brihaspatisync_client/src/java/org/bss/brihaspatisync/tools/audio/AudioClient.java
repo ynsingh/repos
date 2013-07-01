@@ -61,6 +61,7 @@ public class AudioClient implements Runnable {
 			flag=false;
             		runner = null;	
 			StatusPanel.getController().setaudioClient("no");
+			postAudio(false);	
 			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("Audio_Data");	
 			System.out.println("AudioClient stop successfully !!");
       		}
@@ -79,7 +80,7 @@ public class AudioClient implements Runnable {
  	 */
 		
   	public void run() {
-		while((!runner.isInterrupted()) && ThreadController.getController().getThreadFlag()) {
+		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					/****   send audio data to reflector ****/

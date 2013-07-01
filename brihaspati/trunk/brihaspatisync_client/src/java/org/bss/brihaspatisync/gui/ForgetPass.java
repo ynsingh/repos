@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import org.bss.brihaspatisync.util.Language;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>

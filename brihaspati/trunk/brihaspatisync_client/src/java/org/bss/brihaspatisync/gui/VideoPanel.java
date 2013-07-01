@@ -27,6 +27,7 @@ import javax.swing.JLayeredPane;
 import java.awt.image.BufferedImage;
 
 
+import java.awt.Font;
 import java.awt.Color;
 
 public class VideoPanel {
@@ -59,18 +60,37 @@ public class VideoPanel {
                 }
                 return videoPanel;
         }
-
+	
+	public void resetController() {
+		videoPanel=null;
+	}
+	
 	/**
  	 * Create JscrollPane in which images display label is added to show capture images.
  	 */ 
-	public JLayeredPane createGUI() {  
-	
-		mainPanel=new JLayeredPane();
-		mainPanel.setBackground(Color.YELLOW);
+	public JPanel createGUI() {  
+		JPanel av_Pane=new JPanel();
+                av_Pane.setLayout(new BorderLayout());
+                av_Pane.setBackground(Color.BLACK);
+                
+                JPanel labelPane=new JPanel();
+                JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
+                welcome.setFont(new Font("Arial", Font.PLAIN, 12));
+
+                JLabel userLogin=new JLabel(org.bss.brihaspatisync.util.ClientObject.getController().getwelcomeUserName());
+                userLogin.setForeground(new Color(24,116,205));
+                userLogin.setFont(new Font("Arial", Font.BOLD, 12));
+                labelPane.add(welcome);
+                labelPane.add(userLogin);
+                        
+                av_Pane.add(labelPane,BorderLayout.NORTH);
 		
+		mainPanel=new JLayeredPane();
+		mainPanel.setBackground(new Color(1, 0, 0, 0.5f));
+	
 		leftPanel=new JPanel();
 		leftPanel.setLayout(new BorderLayout());
-	        leftPanel.setBackground(Color.BLUE);
+	        leftPanel.setBackground(new Color(1, 0, 0, 0.5f));
 		
 		selfimageDisplay = new JLabel();	
 		js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -79,7 +99,7 @@ public class VideoPanel {
 		
 		centerPanel=new JPanel();
 		centerPanel.setLayout(new BorderLayout());
-        	centerPanel.setBackground(Color.GREEN);
+		centerPanel.setBackground(new Color(1, 0, 0, 0.5f));
 		centerPanel.setLocation(0,0);
 		centerPanel.setSize(0,0);
 		
@@ -87,9 +107,11 @@ public class VideoPanel {
                 js1=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 js1.getViewport().add(otherimageDisplay);
                 centerPanel.add(js1,BorderLayout.CENTER);
+        	
         	mainPanel.add(leftPanel, new Integer(0), 0);
 	        mainPanel.add(centerPanel, new Integer(1), 0);
-		return mainPanel; 	
+                av_Pane.add(mainPanel,BorderLayout.CENTER);
+		return av_Pane; 	
 	}
 	
 	

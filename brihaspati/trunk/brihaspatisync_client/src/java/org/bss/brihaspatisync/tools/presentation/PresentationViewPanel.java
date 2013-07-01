@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.gui.Language;
 import org.bss.brihaspatisync.network.ppt_sharing.PostPPTScreen;
 
 /**

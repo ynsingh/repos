@@ -120,7 +120,9 @@ public class Post_GetSharedScreen implements Runnable {
 	public void run() {
 		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
+				
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+					System.out.println("asdasdsadad da d\n\n asdasdsada das da========================\n---------------------------");
 					/****   send the image to reflector **********/
 					if(!getflag) {
 						BufferedImage image=captureScreen();

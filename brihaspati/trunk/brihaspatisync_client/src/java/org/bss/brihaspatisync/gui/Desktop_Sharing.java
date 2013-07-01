@@ -15,7 +15,6 @@ package org.bss.brihaspatisync.gui;
  */
 
 import javax.swing.JLabel;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
@@ -25,6 +24,7 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -33,17 +33,11 @@ import org.bss.brihaspatisync.util.ImageScaler;
 
 public class Desktop_Sharing implements MouseListener {
 
-	private JScrollPane js=null;
-        private JLayeredPane mainPanel=null;
+        private JLayeredPane videoPanel=null;
 	private JPanel centerPanel=null;
 	private JPanel leftPanel=null;	
 	private JLabel imageDisplay = null;
-	
-	private JScrollPane js1=null;
-        private JLabel otherimageDisplay = null;
-	private BufferedImage origanalimage=null;	
         private static Desktop_Sharing desktopSharing=null;
-
 	
 	public static Desktop_Sharing getController(){
                 if (desktopSharing==null){
@@ -55,33 +49,34 @@ public class Desktop_Sharing implements MouseListener {
 	/**
  	 * Create JscrollPane in which images dislpay label is added to show screen share images.
  	 */ 
-	public JLayeredPane createGUI(){  
-		mainPanel=new JLayeredPane();
+	public JLayeredPane createGUI() { 
+		 
+		videoPanel=new JLayeredPane();
 
                 leftPanel=new JPanel();
-                leftPanel.setLayout(new BorderLayout());
-
+		leftPanel.setLayout(new BorderLayout());
+		
                 imageDisplay = new JLabel();
-                js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                JScrollPane js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 js.getViewport().add(imageDisplay);
                 leftPanel.add(js,BorderLayout.CENTER);
-
+		
                 centerPanel=new JPanel();
                 centerPanel.setLayout(new BorderLayout());
 		centerPanel.setLocation(0,0);
 		centerPanel.setSize(0,0);
 
-                otherimageDisplay= new JLabel(new ImageIcon(this.getClass().getClassLoader().getResource("resources/images/icon_fullscreen_off.jpg")));
-		otherimageDisplay.setBackground(new Color(24,116,205));
+                JLabel otherimageDisplay= new JLabel(new ImageIcon(this.getClass().getClassLoader().getResource("resources/images/icon_fullscreen_off.jpg")));
                 otherimageDisplay.setName("click");
                 otherimageDisplay.setEnabled(true);
                 otherimageDisplay.addMouseListener(this);
-                js1=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+                JScrollPane js1=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 js1.getViewport().add(otherimageDisplay);
                 centerPanel.add(js1,BorderLayout.CENTER);
-                mainPanel.add(leftPanel, new Integer(0), 0);
-                mainPanel.add(centerPanel, new Integer(1), 0);
-		return mainPanel; 	
+                videoPanel.add(leftPanel, new Integer(0), 0);
+                videoPanel.add(centerPanel, new Integer(1), 0);
+		return videoPanel; 	
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -106,7 +101,7 @@ public class Desktop_Sharing implements MouseListener {
 	public void showImage(BufferedImage originalImage){
 		try{
 
-			Dimension mainPanel_dim=mainPanel.getSize();
+			Dimension mainPanel_dim=videoPanel.getSize();
 			int mainPanelWidth = (int)mainPanel_dim.getWidth();
         		int mainPanelHeight = (int)mainPanel_dim.getHeight();
 			leftPanel.setSize(mainPanelWidth,mainPanelHeight);

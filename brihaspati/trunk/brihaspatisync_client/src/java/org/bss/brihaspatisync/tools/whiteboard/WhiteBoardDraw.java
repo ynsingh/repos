@@ -83,7 +83,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 	private  Vector draw_vector=new Vector();
 	private static WhiteBoardDraw wb_draw=null;
 	private boolean checkFlag=false;
-//	private Log log=Log.getController();
+	private WhiteBoardDataSender wb_sender=new WhiteBoardDataSender();
 
 
 	public static WhiteBoardDraw getController(){
@@ -324,7 +324,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                         setFont(myfont);
                         System.out.println("String of msg==>"+msgdata);
                         g.drawString(msgdata,x1,y1);
-                       	WhiteBoardDataSender.getController().sendUnicastPacket(col,figure,x1,y1,0,0,textname,sizedata,msgdata);
+                       	wb_sender.sendUnicastPacket(col,figure,x1,y1,0,0,textname,sizedata,msgdata);
                         
                 }
                 if (kind == LINE)   g.drawLine(x1, y1, x2, y2);
@@ -396,7 +396,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                                 graphicsForDrawing.setPaintMode();
                                 putFigure(graphicsForDrawing, figure, startX, startY,prevX,prevY,false);
                                 putFigure(offscreenGraphics, figure, startX, startY,prevX, prevY,false);
-                                WhiteBoardDataSender.getController().sendUnicastPacket(col,figure,startX,startY,prevX,prevY,"blank",0,"blank");
+                                wb_sender.sendUnicastPacket(col,figure,startX,startY,prevX,prevY,"blank",0,"blank");
                               	
                         }
                 }
@@ -415,7 +415,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 
                 if (figure == CURVE && figure!=8) {
                         putFigure(graphicsForDrawing, LINE, prevX, prevY, x, y, false);
-                        WhiteBoardDataSender.getController().sendUnicastPacket(col,0,prevX,prevY,x,y,"blank",0,"blank");
+                        wb_sender.sendUnicastPacket(col,0,prevX,prevY,x,y,"blank",0,"blank");
 	                putFigure(offscreenGraphics, LINE, prevX, prevY, x, y, false);
                 }
                 else {
@@ -433,7 +433,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                 OSG.setColor(Color.white);
                 OSG.fillOval(pt.x, pt.y,40,40);
                 repaint();
-              	WhiteBoardDataSender.getController().sendUnicastPacket(10,9,pt.x,pt.y,0,0,"blank",0,"blank");
+              	wb_sender.sendUnicastPacket(10,9,pt.x,pt.y,0,0,"blank",0,"blank");
         }
 
         public void mouseEntered(MouseEvent evt) { }

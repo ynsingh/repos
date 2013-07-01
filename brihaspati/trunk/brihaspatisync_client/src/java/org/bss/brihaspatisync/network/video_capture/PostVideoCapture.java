@@ -53,8 +53,8 @@ public class PostVideoCapture implements Runnable {
                 if (runner == null) {
 			flag=true;
 			getflag=getscreen;
-			if(getflag)
-				org.bss.brihaspatisync.gui.JoinSessionPanel.getController().getAV_Panel().add(org.bss.brihaspatisync.gui.VideoPanel.getController().createGUI());
+			//if(getflag)
+			//	org.bss.brihaspatisync.gui.JoinSessionPanel.getController().getAV_Panel().add(org.bss.brihaspatisync.gui.VideoPanel.getController().createGUI());
                         runner = new Thread(this);
                         runner.start();
 			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("ins_video");
@@ -85,12 +85,13 @@ public class PostVideoCapture implements Runnable {
 						if(BufferImage.getController().bufferSize()>0) {
 							BufferedImage bimg=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
-							
+								
 	                                	        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
         	                               		JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
 	        	                               	enParam.setQuality(0.25F, true);
 	        		                        jencoder.setJPEGEncodeParam(enParam);
         	        		                jencoder.encode(bimg);
+							
 							LinkedList send_queue=UtilObject.getController().getSendQueue("ins_video");
 							if(send_queue.size()==0 ){
                                                         	send_queue.addLast(os.toByteArray());

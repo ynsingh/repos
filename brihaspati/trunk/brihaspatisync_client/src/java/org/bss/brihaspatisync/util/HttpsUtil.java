@@ -33,7 +33,8 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.Properties;
 import java.util.Iterator;
-//import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.gui.Language;
+
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.ProxyAuthenticator;
@@ -234,7 +235,7 @@ public class HttpsUtil{
 							str=str.replaceAll("date","");
 							return str;
 						}else {
-							org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(org.bss.brihaspatisync.util.Language.getController().getLangValue("JoinSession.MessageDialog1"));	
+							org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 							return null;
 						}
 					}
@@ -279,9 +280,7 @@ public class HttpsUtil{
 		try {
                 	URL url = new URL(sendurl);
                         connection=createHTTPConnection(url);
-                        if(connection==null){
-                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
-                        }else{
+                        if(connection!=null){
                         	BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
                                 try{
@@ -296,7 +295,8 @@ public class HttpsUtil{
                                 }finally {
                                 	if(in != null) in.close();
                                 }
-                        }
+                        }else 
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
                 }catch(Exception e){
                         System.out.println("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
                         msgList.clear();

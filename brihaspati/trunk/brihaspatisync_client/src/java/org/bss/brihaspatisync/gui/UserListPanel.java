@@ -21,7 +21,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.DefaultListCellRenderer;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.AudioUtilObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -42,13 +41,14 @@ public class UserListPanel extends Thread {
 	private Vector user_list=new Vector();
 	private boolean flag=false;
 	private boolean sharescreenFlag=false;		
-	private String turnof_onFlag="";		
+	private String turnof_onFlag="";
+
 	private Vector userlist=new Vector();
 	
 	private static UserListPanel ul_panel=null;
 	private ClientObject client_obj=ClientObject.getController();
-	private String username=client_obj.getUserName();;	
 	private String role=client_obj.getUserRole();	
+	private String username=client_obj.getUserName();;	
 	private String a_status=AudioUtilObject.getAudioStatus();
         private String v_status=AudioUtilObject.getVideoStatus();
 	
@@ -61,7 +61,12 @@ public class UserListPanel extends Thread {
 		}
 		return ul_panel;
 	}
-	
+
+	public void resetController() {
+		this.stop();
+                ul_panel=null;
+        }	
+
 	/**
 	* Creating GUI for UserListPanel.
 	*/
@@ -95,7 +100,7 @@ public class UserListPanel extends Thread {
 	/**
  	 * This method is used to get all userlist from reflector. 
  	 */
-	public  void run(){
+	public  void run() {
 		while(org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {
 			userlist.clear(); 
 			try {

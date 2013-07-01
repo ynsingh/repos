@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**

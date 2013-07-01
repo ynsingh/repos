@@ -11,7 +11,6 @@ import java.io.File;
 import java.awt.BorderLayout;
 import java.net.URLEncoder;
 import java.util.Vector;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
@@ -30,32 +29,18 @@ import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
 
 public class JoinSession {
 
-	private String status="available";
-	private static JoinSession js=null;
-	private ClientObject client_obj=ClientObject.getController();
-	private Log log=Log.getController();
 	
-	/**
-	* Controller for class.
-	*/
-	
-	protected static JoinSession getController(){
-		if(js==null){
-			js=new JoinSession();
-		}
-		return js;
-	}
+	protected JoinSession(){}
 
 	/**
 	 * goToLecture(Lecture_ID) takes Lecture ID, connects to indexing server and get the appropriate peer client and connects this
  	 * client system to it, to received the lecture transmission.The method does not return anything.
  	 */
-	protected void goToLecture(String Lecture_ID){
-		String lectid="";
-		String role="";
-		String username="";
+
+	private ClientObject client_obj=ClientObject.getController();
+	protected JoinSession(String Lecture_ID){
                 try{
-			lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
+			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
 			String usr_name=client_obj.getUserName();
 			if(!(usr_name.equals(""))){
 				if(usr_name.equals("guest")) {
@@ -63,67 +48,62 @@ public class JoinSession {
 					usr_name=java.net.URLEncoder.encode(usr_name);
 					client_obj.setUserName(usr_name);
 				}
-				username="user="+URLEncoder.encode(usr_name,"UTF-8");
-			} else
-				log.setLog("Insufficient username in goTOLecture() in joinSession Class :"+usr_name);
-
-			if(!(client_obj.getUserRole().equals("")))
-        	        	role="role="+URLEncoder.encode(client_obj.getUserRole(),"UTF-8");
-			else
-				log.setLog("Insufficient role :"+client_obj.getUserRole());
-
-                	String st="status="+URLEncoder.encode(status,"UTF-8");
-
-			String indexName=client_obj.getIndexServerName();
-			if(!(indexName.equals(""))){
-                		String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
-				//get reflector ip from indexing server.
-				String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
-				if(!(ref_ip.equals(""))){
-					System.out.println(ref_ip);
-					if(!(ThreadController.getController().getThreadFlag()))
-			                        ThreadController.getController().setThreadFlag(true);	
-					//start GUI for this lecture id 
-					startGUIThread();
-					StatusPanel.getController().sethttpClient("no");
-					StatusPanel.getController().setdestopClient("no");
-					StatusPanel.getController().setpptClient("no");
-					// Thread for get userlist and other media data from reflector.
-                			new HTTPClient(Lecture_ID).start();
-					org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
-				}else{
-					StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
+				String username="user="+URLEncoder.encode(usr_name,"UTF-8");
+				//start GUI for this lecture id 
+				if(!(client_obj.getUserRole().equals(""))) {
+        	        	   String role="role="+URLEncoder.encode(client_obj.getUserRole(),"UTF-8");
+                		   String st="status="+URLEncoder.encode("available","UTF-8");
+				   String indexName=client_obj.getIndexServerName();
+				   if(!(indexName.equals(""))) {
+	                		String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
+					//get reflector ip from indexing server.
+					String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
+					if(!(ref_ip.equals(""))) {
+						System.out.println(ref_ip);
+						if(!(ThreadController.getController().getThreadFlag()))
+			                		ThreadController.getController().setThreadFlag(true);	
+						StatusPanel.getController().sethttpClient("no");
+						StatusPanel.getController().setdestopClient("no");
+						StatusPanel.getController().setpptClient("no");
+						// Thread for get userlist and other media data from reflector.
+	                			new HTTPClient(Lecture_ID).start();
+						org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
+						startGUIThread();
+						
+					}else {
+						StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
+					}
+				   } else
+                                	System.out.println("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
 				}
-			}else
-                                System.out.println("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
-
-          	}catch(Exception ex){log.setLog("Error on Join Session==> "+ex.getMessage());}
+			}
+			
+          	}catch(Exception ex) {  System.out.println("Error on Join Session==> "+ex.getMessage());}
 	}
 
 	/**
 	 * This method is responsible for load all media tool for goToLecture(Lecture_ID) 
 	 * which start all transmit and receive (local client's Network_Controller).
 	 */
-	protected void startGUIThread(){
+	private void startGUIThread() {
 		// set flag for controle all threads of application.
 		try {
 			//remove CourseSessionWindow and add gui for view all tools activities.
-	                MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
-        	        MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
-			MainWindow.getController().getMenuItem7().setEnabled(true);
-			MainWindow.getController().getContainer().validate();
-			MainWindow.getController().getContainer().repaint();
-		}catch(Exception e){System.out.println("Error to open panel in JoinSession "+e.getMessage());}
-		// Timer to print user list in gui.
-                try{
+			MainWindow mainWindow=MainWindow.getController();
+			mainWindow.setMenuItemText();
+			mainWindow.getDesktop().removeAll();
+                        mainWindow.getDesktop().setBackground(new java.awt.Color(220,220,220));
+                        mainWindow.getDesktop().add(new JoinSessionPanel(),BorderLayout.CENTER);
+                        mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
+                        mainWindow.getContainer().validate();
+                        mainWindow.getContainer().repaint();
+	
+			// Timer to print user list in gui.
 			// start thread controller which can handle send and receive thread of network.
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
 			HandRaiseThreadController.getController().start();
-		}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
-
-		//start audio thread
-		try{
+			//start audio thread
 			String a_status=org.bss.brihaspatisync.util.AudioUtilObject.getAudioStatus();
                         if(a_status.equals("1")){
 				org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
@@ -131,10 +111,8 @@ public class JoinSession {
                                         org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
                                 }
 			}
-		}catch(Exception ex){System.out.println("Error in start audio thread"+ex.getMessage());}
 
-		//start video thread
-		try {
+			//start video thread
 			String v_status=org.bss.brihaspatisync.util.AudioUtilObject.getVideoStatus();
 			if((client_obj.getUserRole()).equals("instructor")) {
 				if(v_status.equals("1")){	
@@ -144,7 +122,5 @@ public class JoinSession {
 			} else 
 				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(true);
                 }catch(Exception e){}
-		
 	}
-
 }

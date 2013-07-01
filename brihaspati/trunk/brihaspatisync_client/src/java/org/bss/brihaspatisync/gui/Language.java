@@ -1,4 +1,4 @@
-package org.bss.brihaspatisync.util;
+package org.bss.brihaspatisync.gui;
 
 /*
  * @(#)Language.java
@@ -139,8 +139,6 @@ public class Language {
                                 prop.load(new InputStreamReader(inputStream,"UTF8"));
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
                 }
-
-
 	}
         
                             

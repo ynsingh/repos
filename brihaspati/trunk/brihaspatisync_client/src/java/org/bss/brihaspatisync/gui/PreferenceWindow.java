@@ -40,7 +40,6 @@ import java.util.Properties;
 import java.io.InputStream;
 import java.io.File;
 import javax.swing.JOptionPane;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.network.Log;
 

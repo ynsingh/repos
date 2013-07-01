@@ -15,7 +15,6 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 
 import java.util.Vector;	
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ThreadController;
 
 /**
@@ -27,6 +26,7 @@ import org.bss.brihaspatisync.util.ThreadController;
 public class StatusPanel extends JPanel implements Runnable {
 	
 	private Thread runner=null;
+	private boolean flag=false;
 
 	private JPanel east_panel=new JPanel();
 	private JPanel west_panel=null;
@@ -67,13 +67,15 @@ public class StatusPanel extends JPanel implements Runnable {
 			east_panel=new JPanel();
 			west_panel.setBackground(new Color(24,116,205));
 			east_panel.setBackground(new Color(24,116,205));	
-			statusLabel = new JLabel("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
+			statusLabel = new JLabel();
+			statusLabel.setText("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
 			label1 = new JLabel();	
 			west_panel.add(statusLabel,flowLayout);
 			west_panel.add(label1,flowLayout);
 			add(west_panel,BorderLayout.WEST);
 			
-			appLabel=new JLabel("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
+			appLabel=new JLabel();
+			appLabel.setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
 			east_panel.add(appLabel);
 			setBackground(new Color(24,116,205));
 			
@@ -96,7 +98,7 @@ public class StatusPanel extends JPanel implements Runnable {
 	
 			audio_panel=new JPanel();
 			audio_panel.setBackground(new Color(24,116,205));
-			audioclient.setText("<html><Font size=3 color=white><b> Audio </b></font></html>");
+			audioclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+" </b></font></html>");
                         audio_panel.add(audioclient,flowLayout);
 
 			east_panel.add(ppt_panel,flowLayout);
@@ -105,6 +107,17 @@ public class StatusPanel extends JPanel implements Runnable {
 			east_panel.add(chatwb_panel,flowLayout);
 			add(east_panel,BorderLayout.EAST);
 		}catch(Exception e){}
+	}
+	
+	protected void updateGUI() {	
+		statusLabel.setText("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
+		appLabel.setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
+		destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
+		ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
+		httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
+		audioclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+" </b></font></html>");
+		validate();
+                repaint();
 	}
 
 	public static StatusPanel  getController(){
@@ -115,6 +128,7 @@ public class StatusPanel extends JPanel implements Runnable {
 
 	public void startStatusPanel(){
                 if (runner == null) {
+			flag=true;
                         runner = new Thread(this);
                         runner.start();
                 }
@@ -122,13 +136,13 @@ public class StatusPanel extends JPanel implements Runnable {
 	
 	public void stopStatusPanel() {
                 if (runner != null) {
-                        runner.interrupt();
+			flag=true;
                         runner = null;
                 }
         }
 
 	public void run() {
-                while(!runner.isInterrupted()) {
+                while(flag) {
                         try {
 				if(audioclientmess.size()>0) {
 					try {
@@ -199,14 +213,14 @@ public class StatusPanel extends JPanel implements Runnable {
 		}
 	}
 	
-	public void setdestopClient(String message){
+	public void setdestopClient(String message) {
 		if(!destmessage.equals(message)) {
                         destmessage=message;
 			destopmess.add(message);
 		}
         }
 	
-	public void setpptClient(String message){
+	public void setpptClient(String message) {
 		if(!pptmessage.equals(message)) {
                         httpmessage=message;
 			pptmess.add(message);

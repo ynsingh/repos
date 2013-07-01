@@ -53,7 +53,7 @@ public class AudioCapture implements Runnable {
 		}
         }
 	
-	protected void startCapture(){
+	private void startCapture(){
 		if(runner ==null) {
 			bufferSize=2 *  encoder.getChannels() * encoder.getFrameSize();
                 	getTargetLine();
@@ -69,12 +69,13 @@ public class AudioCapture implements Runnable {
 		if((org.bss.brihaspatisync.util.ClientObject.getController().getUserRole()).equals("instructor")) {
 			if(flag)
         	       		startCapture();
+			else 
+                                stopCapture();
 		} else {
-			if(flag) {
+			if(flag) 
 				startCapture();
-			} else { 
+			else  
 				stopCapture();
-			}
 		}
 	}
 

@@ -19,26 +19,14 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
 
-public class Logout{
+public class Logout {
 
-	private static Logout logout=null;
 	private ClientObject client_obj=ClientObject.getController();
 	
 	/**
-	 * Controller for Class
-	 */
-	public static Logout getController(){
-		if(logout==null){
-			logout=new Logout();
-		}
-		return logout;
-	}
-
-	/**
 	 * Constructor for class
 	 */
-	private Logout(){
-	}
+	//private Logout(){ }
 
 	/**
 	 * close all local network thread and media threads 
