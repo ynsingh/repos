@@ -156,6 +156,7 @@ $!msg
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> $brih_italian
 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","japanese")"> $brih_japanese  
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> $brih_korean 
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","kannada")"> $brih_kannada
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> $brih_marathi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> $brih_malayalam 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> $brih_nepali 
@@ -204,6 +205,9 @@ $!msg
         #elseif($lang == "korean")
                 ##<option>$brih_korean ($brih_korean)</option>
                 <option>$brih_korean </option>
+        #elseif($lang == "kannada")
+                ##<option>$brih_kannada ($brih_kannada)</option>
+                <option>$brih_kannada </option>
 	#elseif ($lang == "malayalam")
                 ##<option> $brih_malayalam ($brih_malayalam)</option>
                 <option> $brih_malayalam </option>
@@ -287,6 +291,10 @@ $!msg
         #if ($lang != "korean")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")">$brih_korean ($brih_korean1)  </option>
         #end
+       #if ($lang != "kannada")
+                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","kannada")">$brih_kannada ($brih_kannada1)  </option>
+        #end
+
 	#if ($lang != "malayalam")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")">$brih_malayalam ($brih_malayalam1) </option>
         #end
