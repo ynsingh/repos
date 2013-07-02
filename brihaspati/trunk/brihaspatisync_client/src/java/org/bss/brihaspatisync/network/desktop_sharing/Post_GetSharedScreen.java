@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
@@ -122,7 +121,6 @@ public class Post_GetSharedScreen implements Runnable {
 			try {
 				
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
-					System.out.println("asdasdsadad da d\n\n asdasdsada das da========================\n---------------------------");
 					/****   send the image to reflector **********/
 					if(!getflag) {
 						BufferedImage image=captureScreen();

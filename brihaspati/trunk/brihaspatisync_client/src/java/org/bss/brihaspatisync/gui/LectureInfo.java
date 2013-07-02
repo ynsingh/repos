@@ -70,8 +70,24 @@ public class LectureInfo extends JFrame implements MouseListener
 
 	private JPanel descPanel=null;
        
-	private String[] sessionInfo={"Lecture Id","Course Name","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times"," Mail Notification" };
-	
+	//private String[] sessionInfo={"Lecture Id","Course Name","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times"," Mail Notification" };
+	private String[] sessionInfo={
+		Language.getController().getLangValue("LectureInfo.LectureIdLabel"),
+		Language.getController().getLangValue("LectureInfo.CourseNameLabel"),
+		Language.getController().getLangValue("AnnounceSessionPanel.LectureName"),
+		Language.getController().getLangValue("AnnounceSessionPanel.LectureInfo"),
+		Language.getController().getLangValue("LectureInfo.AuthorUrlLabel"),
+		Language.getController().getLangValue("AnnounceSessionPanel.Phone"),
+		Language.getController().getLangValue("AnnounceSessionPanel.Video"),
+		Language.getController().getLangValue("AnnounceSessionPanel.Audio"),
+		Language.getController().getLangValue("AnnounceSessionPanel.WhiteBoard"),
+		Language.getController().getLangValue("AnnounceSessionPanel.LectureDate"),
+		Language.getController().getLangValue("AnnounceSessionPanel.LectureTime"),
+		Language.getController().getLangValue("AnnounceSessionPanel.LectureDuration"),
+		Language.getController().getLangValue("AnnounceSessionPanel.LectureRepeat"),
+		Language.getController().getLangValue("AnnounceSessionPanel.lectureRepeatForTime"),
+		Language.getController().getLangValue("LectureInfo.mailNotification")
+		};		
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);	
 	
@@ -95,7 +111,7 @@ public class LectureInfo extends JFrame implements MouseListener
 		for(int i=0;i<15;i++)
 			descPanel.add(descLabel[i]);			
 		infoLabel=new JLabel("<html><u><Font Color=Black>"+Language.getController().getLangValue("LectureInfo.InformationOfLecture")+"</Font Color=Black></u></html>");
-		closeLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/close.jpg")));
+		closeLabel=new JLabel("<html><u><Font Color=Blue>"+Language.getController().getLangValue("LectureInfo.CloseBttn")+"</Font Color=Black></u></html>");//,new ImageIcon(clr.getResource("resources/images/close.jpg")));
        		closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     		closeLabel.addMouseListener(this);
     		closeLabel.setName("closeLabel.Action");

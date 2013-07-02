@@ -123,13 +123,13 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
                 north_Panel.setLayout(new FlowLayout(FlowLayout.CENTER));
                 north_Panel.setBackground(Color.LIGHT_GRAY);
                 north_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
-                video=new JCheckBox("<html><font color=green>Video");
+		video=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.VideoCheck")+"</font></html>");
                 video.setBackground(Color.LIGHT_GRAY);
-                audio=new JCheckBox("<html><font color=green>Audio");
+                audio=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+"</font></html>");
                 audio.setBackground(Color.LIGHT_GRAY);
-                whiteboard=new JCheckBox("<html><font color=green>WhiteBoard");
-                whiteboard.setBackground(Color.LIGHT_GRAY); 
-		mail_send=new JCheckBox("<html><font color=green>Mail send");
+                whiteboard=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.WBCheck")+"</font></html>");
+                whiteboard.setBackground(Color.LIGHT_GRAY);
+                mail_send=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("mail_send")+"</font></html>");
                 mail_send.setBackground(Color.LIGHT_GRAY); 
                 north_Panel.add(new JLabel("                           "));
                 north_Panel.add(audio);
@@ -154,7 +154,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
                 phone=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.Phone")+"</font><font color=red>*</font>");
                 date=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureDate")+"</font><font color=red>*</font>");
                 time=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureTime")+"</font><font color=red>*</font>");
-                //email=new JLabel("<html>&nbsp<font color=black>Email</font><font color=blue>*</font>");
                 lectName_Text=new JTextField();
                 phone_Text=new JTextField();
                 lecInfoArea=new JTextArea();
