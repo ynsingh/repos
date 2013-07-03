@@ -622,7 +622,7 @@ class Report extends Controller {
 				if (float_ops($pandl, 0, '>'))
 				{
 					$total = float_ops($total, $pandl, '+');
-					Accountlist::add_row_csv(array("Profit & Loss Account (Net Profit)", convert_cur($pandl)));
+					Accountlist::add_row_csv(array("Income & Expenses Account (Net Income)", convert_cur($pandl)));
 				}
 			}
 
@@ -648,7 +648,7 @@ class Report extends Controller {
 				if (float_ops($pandl, 0, '<'))
 				{
 					$total = float_ops($total, -$pandl, '+');
-					Accountlist::add_row_csv(array("Profit & Loss Account (Net Loss)", convert_cur(-$pandl)));
+					Accountlist::add_row_csv(array("Income And Expenses Account (Net Expenses)", convert_cur(-$pandl)));
 				}
 			}
 		
@@ -720,7 +720,7 @@ class Report extends Controller {
 			if (float_ops($grosspl, 0, '>'))
 			{
 				$grosstotal = float_ops($grosstotal, $grosspl, '+');
-				Accountlist::add_row_csv(array("Gross Profit C/O", convert_cur($grosspl)));
+				Accountlist::add_row_csv(array("Gross Income C/O", convert_cur($grosspl)));
 			}
 			Accountlist::add_row_csv(array("Total Expenses - Gross", convert_cur($grosstotal)));
 
@@ -791,7 +791,7 @@ class Report extends Controller {
 			if (float_ops($netpl, 0, '>'))
 			{
 				$nettotal = float_ops($nettotal, $netpl, '+');
-				Accountlist::add_row_csv(array("Net Profit", convert_cur($netpl)));
+				Accountlist::add_row_csv(array("Net Income ", convert_cur($netpl)));
 			}
 			Accountlist::add_row_csv(array("Total - Net Expenses", convert_cur($nettotal)));
 
@@ -802,7 +802,7 @@ class Report extends Controller {
 			if ($grosspl > 0)
 			{
 				$nettotal = float_ops($nettotal, $grosspl, '+');
-				Accountlist::add_row_csv(array("Gross Profit B/F", convert_cur($grosspl)));
+				Accountlist::add_row_csv(array("Gross Income B/F", convert_cur($grosspl)));
 			}
 
 			if ($netpl > 0)
@@ -810,7 +810,7 @@ class Report extends Controller {
 
 			} else if ($netpl < 0) {
 				$nettotal = float_ops($nettotal, -$netpl, '+');
-				Accountlist::add_row_csv(array("Net Loss", convert_cur(-$netpl)));
+				Accountlist::add_row_csv(array("Net Expenses", convert_cur(-$netpl)));
 			}
 			Accountlist::add_row_csv(array("Total - Net Incomes", convert_cur($nettotal)));
 
@@ -847,7 +847,7 @@ class Report extends Controller {
 		if ($statement == "profitandloss")
 		{
 			$data['report'] = "report/profitandloss";
-			$data['title'] = "Profit and Loss Statement";
+			$data['title'] = "Income And Expenses Statement";
 			$data['left_width'] = "";
 			$data['right_width'] = "";
 			$this->load->view('report/report_template', $data);
