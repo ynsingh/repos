@@ -106,11 +106,11 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		tabPane.add(Language.getController().getLangValue("PreferenceWindow.TabPane"),createTabPane());
 		window_mainPanel.add(tabPane,BorderLayout.CENTER);
 		con.add(window_mainPanel); 
-    		setSize(430, 400);
+    		setSize(500, 400);
 		java.awt.Dimension dim=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
                 setLocation((((int)dim.getWidth()/2)-210),(((int)dim.getHeight()/2)-200));
     		setVisible(true);
-    		setResizable(false);
+    		//setResizable(false);
     	}
 
 	public Properties getProperties(){
@@ -146,7 +146,7 @@ public class PreferenceWindow extends JFrame implements ActionListener{
                 gbc.fill = GridBagConstraints.HORIZONTAL;
   		
   		rbttnPanel=new JPanel();
-  		rbttnPanel.setLayout(new GridBagLayout());//new GridLayout(3,1,1,1));
+  		rbttnPanel.setLayout(new GridLayout(3,1,1,1));
 		
   		proxyhost= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxyhost"));
 		proxyhosttext=new JTextField(20);

@@ -147,7 +147,7 @@ public class MainWindow  extends JFrame implements ActionListener {
 
                 menuItem5 = new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem5"));
                 menuItem5.setActionCommand("Connection");
-		menuItem5.setEnabled(false);
+		menuItem5.setEnabled(true);
                 menuItem5.addActionListener(this);
                 menu3.add(menuItem5);
 		
@@ -226,6 +226,9 @@ public class MainWindow  extends JFrame implements ActionListener {
         	menuItem7.setText(Language.getController().getLangValue("InstructorCSPanel.LectureInfo"));
 		menuItem1.setEnabled(true);
 		menuItem2.setEnabled(true);
+		menuItem5.setEnabled(true);
+		menuItem6.setEnabled(true);
+		//setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 	}
 
         public JDesktopPane getDesktop(){
