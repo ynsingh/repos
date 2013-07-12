@@ -3,7 +3,7 @@ package org.bss.brihaspatisync.network.video_capture;
  * LocalServer.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2011,2013, ETRG, IIT Kanpur.
  */
 
 import javax.imageio.ImageIO;
@@ -37,11 +37,13 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
 public class LocalServer implements Runnable {
 	
+	private static LocalServer get_capture=null;
+	
 	private Thread runner=null;
 	private boolean flag=false;
+	private VLCCapture grabber=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private static LocalServer get_capture=null;
 
 	public static LocalServer getController(){
                 if(get_capture==null)
@@ -59,7 +61,6 @@ public class LocalServer implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			//JoinSessionPanel.getController().getAV_Panel().add(VideoPanel.getController().createGUI());
 			System.out.println("Video Captureing start sucessfully !!");
 		}
         }
@@ -80,33 +81,49 @@ public class LocalServer implements Runnable {
  	 * and put the image in buffer .
  	 */
 	public void run() {
+		
 		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
+				
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
-					
-					HttpClient client = new HttpClient();
-					HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
-			                client.setConnectionTimeout(80000);
-                        	        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-                                	int statusCode1 = client.executeMethod(method);
-	                                byte[] bytes1=method.getResponseBody();
-        	                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes1));
-                	               	method.releaseConnection();
-					if(image!=null) {
-						BufferImage.getController().handleBuffer();
-						BufferImage.getController().put(image);
-						if((clientObject.getUserRole()).equals("instructor")){
-							VideoPanel.getController().runInstructorVidio(image);
-						}else {
-                        	        		VideoPanel.getController().runStudentVidio(image);
+					String ip=runtime_object.getVideoServer();
+					BufferedImage image=null;
+					String os=System.getProperty("os.name");
+				        if((os.startsWith("Windows")) || (!(ip.equals("127.0.0.1")))) {
+						HttpClient client = new HttpClient();
+						HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+					        //client.setConnectionTimeout(80000);
+                        		        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+		                               	int statusCode1 = client.executeMethod(method);
+	        		                byte[] bytes1=method.getResponseBody();
+        	                	        image = ImageIO.read(new ByteArrayInputStream(bytes1));
+		                	       	method.releaseConnection();
+					} else if((os.startsWith("Linux")) || (os.startsWith("MAC"))) {
+						if(grabber == null) {
+							//String cap_device=null;
+					                //if(os.startsWith("Windows"))
+					                //        cap_device="dshow://";
+					                //if(os.startsWith("Linux"))
+					                //        cap_device="v4l2:///dev/video0";
+					                //if(os.startsWith("MAC"));
+					                //        cap_device="qtcapture://";
+					                grabber=new VLCCapture(600,400);			
 						}
-					}else {
-						runner.sleep(4000);runner.yield();
+						image=grabber.grab();
 					}
-					
-				}	
-				runner.sleep(5000);runner.yield();
-			} catch(Exception e){ }
+						
+					if(image != null) {
+                                        	BufferImage.getController().handleBuffer();
+                                                BufferImage.getController().put(image);
+                                                if((clientObject.getUserRole()).equals("instructor")) 
+                                                	VideoPanel.getController().runInstructorVidio(image);
+                                              	else  
+                                               		VideoPanel.getController().runStudentVidio(image);
+                                    	}   
+                                        runner.sleep(3000);runner.yield();
+				} else
+					runner.sleep(3000);runner.yield();
+			} catch(Exception e) { }
 		}
 	}
 }
