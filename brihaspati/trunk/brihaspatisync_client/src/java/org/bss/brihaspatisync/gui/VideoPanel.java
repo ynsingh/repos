@@ -42,9 +42,9 @@ public class VideoPanel {
 	private int kk1=0;
 	private int half=0;
 		
+	private JPanel av_Pane=null;
 	private JScrollPane js=null;
 	private JScrollPane js1=null;
-	
         private JLayeredPane mainPanel=null;
         private JPanel leftPanel=null;
         private JPanel centerPanel=null;
@@ -69,7 +69,7 @@ public class VideoPanel {
  	 * Create JscrollPane in which images display label is added to show capture images.
  	 */ 
 	public JPanel createGUI() {  
-		JPanel av_Pane=new JPanel();
+		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
                 av_Pane.setBackground(Color.BLACK);
                 
@@ -149,6 +149,8 @@ public class VideoPanel {
         }
 
 	private BufferedImage resizeImageforstudent(BufferedImage originalImage, int type) {
+		W=av_Pane.getSize().width;
+                H=av_Pane.getSize().height;
                 BufferedImage resizedImage = new BufferedImage(((W*40)/100),((H*40)/100), type);
                 Graphics2D g = resizedImage.createGraphics();
                 g.drawImage(originalImage, 0, 0,((W*40)/100),((H*40)/100), null);
@@ -160,6 +162,8 @@ public class VideoPanel {
         }
 	
         private BufferedImage resizeImage(BufferedImage originalImage, int type) {
+		W=av_Pane.getSize().width;
+                H=av_Pane.getSize().height;
                 BufferedImage resizedImage = new BufferedImage(W,H, type);
                 Graphics2D g = resizedImage.createGraphics();
                 g.drawImage(originalImage, 0, 0,W,H, null);
@@ -174,7 +178,8 @@ public class VideoPanel {
 		
                 return resizedImage;
         }
-	
+
+	/*	
 	public void setIMG_HIEGHT(int value) {
 		if(H1<value) {
 	                H1=value;
@@ -214,6 +219,6 @@ public class VideoPanel {
 			W=W1;
 			kk1++;
                 }
-        }	
+        }*/	
 }
 
