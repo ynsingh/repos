@@ -334,7 +334,7 @@ $!data.getMessage()
 		#else
 			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
 			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMove" VALUE="Move" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMove" VALUE="$brih_move" onClick="checkValue(document.frm,this);">
                 #end	
 			<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 	     		<INPUT TYPE="hidden" NAME="actionName">

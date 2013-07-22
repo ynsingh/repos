@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * Copyright (c) 2005-2007, 2010, 2011, 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2007, 2010, 2011, 2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -627,7 +627,8 @@ public class SendDB extends SecureAction
 			        	                //ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
                         				SystemIndependentUtil.deleteFile(AssDir);
 			                        	//AssDir.delete();
-				                        data.setMessage("DiscussionBoard deleted successfully !!");
+							String delmsg=MultilingualUtil.ConvertedString("db_delmsg",LangFile);
+                                                        data.setMessage(delmsg);
 						
 							if(stats.equals("fromIndex"))
                 	        			{

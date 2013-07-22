@@ -112,11 +112,11 @@ $!data.getMessage()
 
 	<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
 #if($stats == "fromIndex")
-        <tr bgcolor="$ui.menuColor"><td colspan=5><b>WorkGroup:&nbsp&nbsp<font color=green> $brih_general $DiscussionBoard</font></b>
+        <tr bgcolor="$ui.menuColor"><td colspan=5><b>$DisBoard_WorkGroup: <font color=green> $brih_general $DiscussionBoard</font></b>
 #elseif ($mode2 == "instituteWise")
-        <tr bgcolor="$ui.menuColor"><td colspan=5><b>WorkGroup:&nbsp&nbsp<font color=green> #if($lang == "hindi" || $lang == "gujarati") $brih_institute $brih_Of2 $brih_wise $DiscussionBoard #else $RemoteInstitute $brih_wise $DiscussionBoard #end </font></b>
+        <tr bgcolor="$ui.menuColor"><td colspan=5><b>$DisBoard_WorkGroup:<font color=green> #if($lang == "hindi" || $lang == "gujarati") $brih_institute $brih_Of2 $brih_wise $DiscussionBoard #else $RemoteInstitute $brih_wise $DiscussionBoard #end </font></b>
 #else
-        <tr bgcolor="$ui.menuColor"><td colspan=5><b>WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
+        <tr bgcolor="$ui.menuColor"><td colspan=5><b>$DisBoard_WorkGroup:<font color=green>$courseid</font></b>
 #end
  	</td></tr>
 	<tr><td colspan=5>

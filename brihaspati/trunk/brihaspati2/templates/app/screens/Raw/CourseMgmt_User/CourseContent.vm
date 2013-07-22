@@ -37,7 +37,7 @@ $!data.getMessage()
 		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home </a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 		 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
 	#else
-		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>Home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 	#end
 		#if($lang=="english")
 			$brih_course $brih_content

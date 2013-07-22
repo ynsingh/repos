@@ -313,7 +313,7 @@ $!data.getMessage()
         ##<tr bgcolor="$ui.menuColor" >
         <tr>
 
-                #fileUpload ("Attach File <font color=RED>*</font>" "file")
+                #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
 
         </tr>
         <tr bgcolor="$ui.menuColor">

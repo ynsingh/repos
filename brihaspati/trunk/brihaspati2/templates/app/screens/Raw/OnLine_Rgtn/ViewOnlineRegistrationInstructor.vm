@@ -14,6 +14,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 <table  bgcolor="$ui.menuColor" width=100%>
 <tr>
 	 <td>
@@ -21,9 +22,11 @@ $!data.getMessage()
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
 	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1")>$brih_student $brih_mgmt</a> |$brih_view $online_online $brih_reg
 	</td>
+                <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ViewOnlineResgistration.html","newWin") style=text-decoration:none><font size=4>$brih_help</font></a>
+                </td>
 </tr>
 </table>
-
 <body>
 <div class="scroll">
 <form name="frm" method="post" action="$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").setAction("OnlineRegistration_Instructor")">

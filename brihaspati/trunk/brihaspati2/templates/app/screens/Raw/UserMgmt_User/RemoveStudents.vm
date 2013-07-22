@@ -17,6 +17,7 @@ $!data.getMessage()
 </head>
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 </head>
 
 #set($lang=$data.getUser().getTemp("lang").toString()) 
@@ -47,6 +48,9 @@ $!data.getMessage()
 		#end
 	#end
 	</td>
+        <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoveStudent.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+                </td>
 </tr>
 </table>
 ##if($user_role == "instructor")
@@ -234,7 +238,7 @@ frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
 #foreach( $e in $error_user )
         <tr bgcolor="$ui.tableColor">
         <td align=center>
-        <font face="$ui.sansSerifFonts">User Name <font color="brown">"$e.getErr_User()"</font>
+        <font face="$ui.sansSerifFonts">$brih_usrName<font color="brown">"$e.getErr_User()"</font>
         </font>
         </td>
         <td align=center>

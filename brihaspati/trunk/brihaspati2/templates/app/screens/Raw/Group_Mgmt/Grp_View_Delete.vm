@@ -190,9 +190,9 @@ $!data.getMessage()
         <tr>
         <td>
          #if($lang=="english")
-        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="Delete Group" onClick="deleteConfirm(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
         #else
-        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="Group Delete" onClick="deleteConfirm(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
         #end
         </td>
 </tr>
