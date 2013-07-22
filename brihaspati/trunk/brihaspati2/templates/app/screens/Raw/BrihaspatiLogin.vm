@@ -10,8 +10,9 @@
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
  * @author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author modified date 31-10-2012<a href="mailto:shikhashuklaa@ymail.com">Shikha Shukla</a>
+ * @author modified date 22-07-2013<a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 07-12-2010
- * @modified date: 15-02-2011,23-04-2013(Priyanka Rawat)
+ * @modified date: 15-02-2011,23-04-2013(Priyanka Rawat),22-07-2013(Tej)
 *#
 
 $page.setTitle("Login in Brihaspati")
@@ -136,7 +137,7 @@ $!msg
                 <td> $brih_language</td>
         #end
         <td> ## 6
-	<select id="language" onChange ="javascript:OnChange();" class="drop">
+	<select id="language" onChange ="javascript:OnChange();" class="drop" style="width:230px">
 	#if($flag)
 		<option> $brih_select $brih_language </option>
 	#end
@@ -332,7 +333,7 @@ $!msg
         </select>
         </td> </tr> ## 6, 5
 <form name="frm" method="post" action="$link.setAction("myLogin")">
-<tr> #formCell("$brih_email ($brih_usr)" "username" "") <td>(Ex. brihspti@iitk.ac.in)</td></tr> 
+<tr> #formCell("$brih_email ($brih_usr)" "username" "") <td title="brihspti@iitk.ac.in"><span style= "font-size:10px;font-family:Arial;font-weight:bold;color:#000;white-space:nowrap;display:block;">(Ex. brihspti@iitk.ac.in)</span></td></tr> 
 <tr> #formPasswordCell("$brih_pwd" "password" "") </tr> 
 #if(($ldapcat == "null")||($ldapcat ==""))
 &nbsp;
@@ -356,7 +357,7 @@ $!msg
 <input type=hidden name="flag" value="$flag">
 </font>
 </td> </tr> ## 6, 5
-<tr><td colspan=4>$brih_guestMsg2</td></tr>
+<tr><td colspan=4><span style= "font-size:14px;font-family:Arial;font-weight:bold;color:#000;white-space:nowrap;display:block;">$brih_guestMsg2</span></td></tr>
 </form>
 
 <tr><td colspan="4"><b>

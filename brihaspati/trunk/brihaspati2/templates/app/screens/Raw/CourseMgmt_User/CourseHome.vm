@@ -12,7 +12,7 @@
  * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012 
  * @author<a href="mailto:richa.tandon11@gmail.com">Richa Tandon </a>
  * @author<a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012, 07-Feb-2013(Richa),18-03-2013
+ * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012, 07-Feb-2013(Richa),18-03-2013,22-07-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -274,8 +274,15 @@ $!data.getMessage()
 					</table>
 				</td>
 				## inner column 2 (5) close
-	
 				## inner column 3 (5) open
+                                <td align=center>
+                                        <table>
+                                            <tr><td align=center><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
+
+                                            <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td></tr>
+                                        </table>
+                                </td>
+                                ## inner column 3 (5) close
 			#*
 				<td align=center>
 					<table>
@@ -433,7 +440,17 @@ $!data.getMessage()
 					</td>
 					## inner column 3 (1)close
 				</tr>
-		##inner row 3 close 
+		##inner row 4 open 
+				<tr>
+                                  <td align=center>
+                                        <table>
+                                            <tr><td align=center><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
+
+                                            <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none>$brih_attend $brih_mgmt </a><br></td></tr>
+                                        </table>
+                                </td>
+                                </tr>
+		##inner row 4 close 
 
 ## Condition for Teacher Assistant
 	

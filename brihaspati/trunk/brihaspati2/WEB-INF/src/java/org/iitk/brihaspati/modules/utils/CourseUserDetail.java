@@ -45,7 +45,7 @@ package org.iitk.brihaspati.modules.utils;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @modified date: 20-10-2010,3-11-2010, 23-12-2010, 13-07-2011
- *  @modified date: 09-08-2012 (Priyanka),31-05-2013
+ *  @modified date: 09-08-2012 (Priyanka),31-05-2013,22-07-2013
  */
 
 import java.util.Date;
@@ -89,6 +89,13 @@ public class CourseUserDetail
 	private String activate;
 	private String flag;
 	private String schcenter;
+	private String status;
+        private String remarks;
+        private String userid;
+        private int present;
+        private int absent;
+        private int leave;
+
 	/**
 	 * Course details
 	 */ 
@@ -398,7 +405,58 @@ public class CourseUserDetail
         {
                 return schcenter;
         }
-
-
-
+	// set/get "status" for Attendance Management
+	public void setStatus(String status)
+        {
+                this.status=status;
+        }
+        public String getStatus()
+        {
+                return status;
+        }
+	// set/get "remarks" for Attendance Management
+        public void setRemarks(String remarks)
+        {
+                this.remarks=remarks;
+        }
+        public String getRemarks()
+        {
+                return remarks;
+        }
+	// set/get "userId" for Attendance Management
+        public void setUserId(String userid)
+        {
+                this.userid=userid;
+        }
+        public String getUserId()
+        {
+                return userid;
+        }
+	// set/get status "Present" for Attendance Management
+         public void setPresent(int present)
+        {
+                this.present=present;
+        }
+        public int getPresent()
+        {
+                return present;
+        }
+	// set/get status "Absent" for Attendance Management
+        public void setAbsent(int absent)
+        {
+                this.absent=absent;
+        }
+        public int getAbsent()
+        {
+                return absent;
+        }
+	// set/get status "Leave" for Attendance Management
+        public void setLeave(int leave)
+        {
+                this.leave=leave;
+        }
+        public int getLeave()
+        {
+                return leave;
+        }
 }

@@ -12,7 +12,7 @@
  * @author<a href="mailto:richa.tandon1@gmail.com">Richa Tandon </a>
  * @author<a href="mailto:tejdgurung20@gmail.com">tej Bahadur </a>
  * @modified:Date 29-10-2009, 07-04-2010, 25-04-2012(sunil kumar)
- * @modified:Date 23-08-2012(Sunil Yadav),07-Feb-2013(Richa),18-03-2013(Tej)
+ * @modified:Date 23-08-2012(Sunil Yadav),07-Feb-2013(Richa),18-03-2013,22-07-2013(Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -133,7 +133,15 @@
 			</td>
 		 </tr>
 		 #end
-
+		 #if($data.getUser().getTemp("role") == "instructor")
+                 <tr bgcolor="$ui.menuColor">
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
+                </tr>
+		#else
+                 <tr>
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
+                </tr>
+                #end
 	#end
 
 #######################TA Management##############

@@ -101,7 +101,7 @@ $!data.getMessage()
   </font>
 #end
 
-<table bgcolor="$ui.tableColor" width=100% CellPadding=0 align=center>
+<table style="width:1108px; bgcolor="$ui.tableColor" width=100% CellPadding=0 align=center>
 <tr bgcolor="$ui.menuColor">
 	<td align="center">
 			#if($lang == "hindi" || $lang == "gujarati")
