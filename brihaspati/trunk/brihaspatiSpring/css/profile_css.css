@@ -196,55 +196,10 @@ a.rm, a.com {
         width:623px;
 }
 
-.button-ftextstyle {
-        -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-        -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-        box-shadow:inset 0px 1px 0px 0px #dcecfb;
-        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea) );
-        background:-moz-linear-gradient( center top, #bddbfa 5%, #80b5ea 100% );
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bddbfa', endColorstr='#80b5ea');
-        background-color:#bddbfa;
-        -moz-border-radius:6px;
-        -webkit-border-radius:6px;
-        border-radius:6px;
-        border:1px solid #84bbf3;
-        display:inline-block;
-        color:#0000FF;
-        font-family:arial;
-        font-size:15px;
-        font-weight:bold;
-        padding:5px 10px;
-        text-decoration:none;
+.button-ftextstyle {width:105px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
+
+.drop_Val {width:100px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
 }
-
-.drop_Val {
-          -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-        -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-        box-shadow:inset 0px 1px 0px 0px #dcecfb;
-        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea) );
-        background:-moz-linear-gradient( center top, #bddbfa 5%, #80b5ea 100% );
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bddbfa', endColorstr='#80b5ea');
-        background-color:#bddbfa;
-        -moz-border-radius:6px;
-        -webkit-border-radius:6px;
-        border-radius:6px;
-        border:1px solid #84bbf3;
-        display:inline-block;
-        color:#0000FF;
-        font-family:arial;
-        font-size:15px;
-        font-weight:bold;
-        padding:4px 0px;
-        text-decoration:none;
-}.drop_Val:hover {
-                 background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #80b5ea), color-stop(1, #bddbfa) );
-        background:-moz-linear-gradient( center top, #80b5ea 5%, #bddbfa 100% );
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#80b5ea', endColorstr='#bddbfa');
-        background-color:#80b5ea;
-}
-
-
-
 
 .poll {
 background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
