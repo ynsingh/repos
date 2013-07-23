@@ -27,14 +27,14 @@ $!data.getMessage()
 <td align="left"> <font color="red"><b> <blink>
 Go For Live Lecture
 </blink> </b></font>
-<a href="https://202.141.40.216:8443/brihaspatisync_client/jnlp/brihaspatisync.jnlp">
+<a href="https://202.141.40.216:8443/brihaspatisync_client/jnlp/brihaspatisync.jnlp" style=text-decoration:none>
 Click here  </a>
 </td>
 </tr>
 </table>
 <br>
 <div style="width:340px; float:right; background:#f3f3f3; border-radius:10px;">
-<table align="right" >
+<table align="right" style=" float:left;font-size:17px;font-family:Times New Roman;">
 <tr>
 <td>
 <font color="purple">Click here to enter in <b>Brihaspati</b></font><br>  
@@ -95,18 +95,18 @@ Click here  </a>
 <br>
 </div>
 
-<div style="width:500px; height:auto; float:left;font-size:17px;font-family:Times New Roman;">
+<div style="width:500px; height:auto; float:left;font-size:16px;font-family:Times New Roman;">
 <table>
 <tr>
 <td align="Left">
-<b><u>What is BRIHASPATI? </u></b><br>
+<b> <span style="font-size:19px;color:#216094;">Brihaspati</span> </b><br><br>
 A platform independent, highly scalable content-delivery tool for web based e-learning system !!<br><br>
-<b><u>Entities !!</u></b><br>
+<b>Entities</b><br><br>
 ENJOY the features of Administrator, Instructor (Primary/Secondary) or Student !! <br><br>
-<b><u>Interactive communication tools !!</u></b>
+<b>Interactive communication tools</b>
 <ul><li> CHAT :- Users can communicate online...</ul>
 <ul><li> WHITE BOARD :- Instructor can make drawings,freehand or pre-defined components while chatting...</ul>
-<b><u>Features under development !!</u></b>
+<b>Features under development </b>
 <ul><li> SCORM player in brihaspati</ul>
 <ul><li> Content authoring and course instruction functionality decoupled</ul>
 <ul><li> Multiserver architecture</ul>
