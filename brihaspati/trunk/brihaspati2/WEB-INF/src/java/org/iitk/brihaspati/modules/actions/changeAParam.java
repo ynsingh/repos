@@ -242,6 +242,8 @@ public class changeAParam extends SecureAction_Admin{
 		String prof_update=null;
 		String mailSpoolResendTime = pp.getString("spoolMailResendTime","");
 		String mailSpoolExpiryDay = pp.getString("mailSpoolingExpiry","");
+		String normalTrafficTime = pp.getString("normalTraffic");
+		String highTrafficTime = pp.getString("highTraffic");
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
@@ -279,6 +281,8 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path, mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
 			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
 			AdminProperties.setValue(path,twtexp,"brihaspati.admin.twtexpiry.value");
+			AdminProperties.setValue(path,normalTrafficTime,"brihaspati.admin.normalTraffic.value");
+			AdminProperties.setValue(path,highTrafficTime,"brihaspati.admin.highTraffic.value");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			//data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	

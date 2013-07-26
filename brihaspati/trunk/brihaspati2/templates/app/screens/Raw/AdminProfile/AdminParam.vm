@@ -325,6 +325,15 @@ $!data.getMessage()
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="mailSpoolingExpiry" value="$!mailSpoolingExpiry"></font></td>
    </tr>
    <tr bgcolor="$ui.menuColor">
+        <td width=30><font face="$ui.sansSerifFonts">$brih_normalSystemLoad</font></td>
+        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="normalTraffic" value="$!normalTraffic"></font></td>
+   </tr>
+   <tr>
+        <td width=30><font face="$ui.sansSerifFonts">$brih_highSystemLoad</font></td>
+        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="highTraffic" value="$!highTraffic"></font></td>
+   </tr>
+
+   <tr bgcolor="$ui.menuColor">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName"/>
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>

@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
 import org.iitk.brihaspati.modules.utils.QuotationThread;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -183,13 +185,18 @@ public class myLogin extends VelocityAction{
 						//Calculating time taken to execute the above code
 						try
 						{
+							String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                					String normalTrafficTime = AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
+							double normal_trafficTime = Double.parseDouble(normalTrafficTime);
+							String highTrafficTime = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
+							double high_trafficTime = Double.parseDouble(highTrafficTime);
 							long estimatedTime = System.nanoTime() - startTime;
 							double elapsedTime = (double)estimatedTime / 60000000000.0;
-							if(elapsedTime < 1)
+							if(elapsedTime < normal_trafficTime)
 							{
 								load_flag=0;	
 							}
-							else if(elapsedTime < 2)
+							else if(elapsedTime < high_trafficTime)
 							{
 								load_flag=1;
 							}
