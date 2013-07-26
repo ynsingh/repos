@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /*
  * @(#)NoticeContent.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2010, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,7 +38,8 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /**
  *  @author: <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 13-Oct-2010 (Shaista)
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @ modified date: 13-Oct-2010 (Shaista), 26-july-2013(Richa)
  */
 
 import org.iitk.brihaspati.modules.utils.GroupUtil;
@@ -91,6 +92,8 @@ public class NoticeContent extends SecureScreen{
 			 */		
 			String courseName ="",userInCourse="";
 			String flag=pp.getString("flag","");
+			String mode=pp.getString("mode","");
+			context.put("mode",mode);
 			String user_role=(String)user.getTemp("role");
 			String courseId="";
 			courseId=pp.getString("courseId","");
@@ -251,7 +254,7 @@ public class NoticeContent extends SecureScreen{
 
 			for(count1=0;count1<rec_no;count1++){
 				NoticeSend element=(NoticeSend)(w.get(count1));
-				if(element.getRoleId()==role_id || element.getRoleId()==7)
+				if(element.getRoleId()==role_id || element.getRoleId()==7 || element.getRoleId()==9)
 					a.add(w.get(count1));
 			}
 			/**
@@ -288,6 +291,7 @@ public class NoticeContent extends SecureScreen{
 					int uid=element1.getUserId();
 					String loginName=UserUtil.getLoginName(uid);
 					noticeSRDetails.setUserName(loginName);
+					noticeSRDetails.setRoleId(Integer.toString(element1.getRoleId()));
 					noticeSentRec.add(noticeSRDetails);
 				}
 			}
@@ -322,6 +326,13 @@ public class NoticeContent extends SecureScreen{
                                 data.setMessage(msg);
 			}
 			context.put("Rec_size",Integer.toString(noticeSentRec.size()));
+			if(mode.equals("reply"))
+			{
+				String subject =pp.getString("subject","");
+				context.put("subject",subject);
+        	                String seMail = pp.getString("uname","");
+				context.put("senderMail",seMail);
+			}
 			 /*
                           *Method for how much time user spend in this page.
                           */

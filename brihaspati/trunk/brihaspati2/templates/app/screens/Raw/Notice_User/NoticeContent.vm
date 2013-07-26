@@ -1,6 +1,6 @@
 #*
  * @(#)NoticeContent.vm
- *  Copyright (c) 2005, 2009, 2010, 2011, 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005, 2009, 2010, 2011, 2012, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
@@ -9,8 +9,9 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com"> Richa Tandon</a>
  * @modified date: 25-01-2010, 27-04-2010, 26-07-2010, 07-09-2010, 09-Aug-2011 (Sunil Kr)
- * @modified date: 15-05-2012 (Shaista)
+ * @modified date: 15-05-2012 (Shaista), 26-july-2013(Richa)
  *#
 <head>
 ## This Script use for Fck Editor in textarea.
@@ -154,7 +155,7 @@ $!data.getMessage()
 <td>
 	<table width=100% bgcolor="$ui.tableColor">
  	<tr bgcolor="$ui.menuColor">
-  	<td colspan=5>
+  	<td colspan=6>
   	<I><b>
 		#if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
 			<font color=blue>#UNAME()</font> $Notice_NoticeContent_msg3 
@@ -164,7 +165,7 @@ $!data.getMessage()
 		</b></I>
   	</td>
  	</tr>
-	#set($headings=["$Notice_Sender","$Notice_Subject","$brih_Da","$brih_status"])
+	#set($headings=["$Notice_Sender","$Notice_Subject","$brih_task","$brih_Da","$brih_status"])
 	<tr>
 		<td>
 		</td>
@@ -201,10 +202,19 @@ $!data.getMessage()
 			<td align="Center">
         			<INPUT TYPE="CHECKBOX" NAME="$SeRe.getMsgId()" onClick="addDeleteList(this,document.frm);">
 			</td>
-			<td align="Center">$SeRe.getUserName()</td>
+			<td align="Center">$SeRe.getUserName()
+			#if($SeRe.getRoleId()== "9")
+	                        #BlinkingText("Parent msg")
+	                #end
+	                </td>
 			<td align="Center">
 				##<a href="$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("flag",$flag).addPathInfo("desc","Notice_Des").addPathInfo("count",$tdcolor)">$SeRe.getMsgSubject()</a>
 				<a href="$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("flag",$flag).addPathInfo("desc","Notice_Des").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2")">$SeRe.getMsgSubject()</a>
+			</td>
+			<td>
+                        #if($SeRe.getRoleId()== "9")
+                        	<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("uname",$SeRe.getUserName()).addPathInfo("subject",$SeRe.getMsgSubject()).addPathInfo("flag",$flag).addPathInfo("mode","reply").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2")> $LocalMail_Reply
+			#end
 			</td>
 			<td align="Center">$SeRe.getPostTime()</td>
 				<td align=center>
@@ -223,11 +233,20 @@ $!data.getMessage()
 			<td align="Center">
         			<INPUT TYPE="CHECKBOX" NAME="$SeRe.getMsgId()" onClick="addDeleteList(this,document.frm);">
 			</td>
-			<td align="Center">$SeRe.getUserName()</td>
+			<td align="Center">$SeRe.getUserName()
+			#if($SeRe.getRoleId()== "9")
+	                        #BlinkingText("Parent msg")
+	                #end
+	                </td>
 			<td align="Center">
 				##<a href="$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("flag",$flag).addPathInfo("desc","Notice_Des").addPathInfo("courseId",$courseId).addPathInfo("count",$tdcolor)">$SeRe.getMsgSubject()</a>
 				<a href="$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("flag",$flag).addPathInfo("desc","Notice_Des").addPathInfo("courseId",$courseId).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2")">$SeRe.getMsgSubject()</a>
 			</td>
+			<td>
+                        #if($SeRe.getRoleId()== "9")
+                        	<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("uname",$SeRe.getUserName()).addPathInfo("subject",$SeRe.getMsgSubject()).addPathInfo("flag",$flag).addPathInfo("mode","reply").addPathInfo("courseId",$courseId).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2")> $LocalMail_Reply
+                        #end
+                        </td>
 			<td align="Center">$SeRe.getPostTime()</td>
                         <td align=center>
 			#if($SeRe.getReadFlag() == "0")
@@ -257,7 +276,7 @@ $!data.getMessage()
         	<INPUT TYPE="hidden" NAME="countTemp" VALUE="$tdcolor1">
         	<INPUT TYPE="hidden" NAME="courseId" VALUE="$courseId">
 	</td>
-	<td colspan=4>
+	<td colspan=5>
 	</td>
 	</tr>
 	</table>
@@ -277,6 +296,33 @@ $!data.getMessage()
 	</tr>
 	</table>
 </td>
+#end
+#if($mode=="reply")
+	<table>
+        <tr>
+        <td>To</td>
+                <td><input type="text" name="msg" value="$!senderMail" readonly></td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td>Subject</td>
+                <td><input type="text" name="subject" value="$!subject"></td>
+        </tr>
+        <tr>
+                <td>$brih_msg2 </td>
+                <td>
+        <textarea id="ta" name="msg_val" rows=14 cols=120 wrap=physical> </textarea>
+                </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=2>
+                <font face="$ui.sansserifFonts">
+                  <input type="button" class="button-ftextstyle" name="eventSubmit_doSendMsg" value="$Notice_Send"  onClick="checkEditorValue(document.frm,this);"/>
+                  <input type="hidden" name="actionValue" value="">
+                  <input type="hidden" name="courseId" value="$course">
+                  <input type="hidden" name="senderMail" value="$senderMail">
+                </td>
+        </tr>
+        </table>
 #end
 </tr>
 </table>
@@ -310,6 +356,13 @@ function addDeleteList(field,frm)
                        actualString=preString+postString;
                        frm.deleteFileNames.value=actualString;
        	}
+}
+function checkEditorValue(frm,field)
+{
+        editor.setMode("textmode");
+        frm.actionValue.value=field.name;
+        frm.submit();
+        editor.setMode("wysiwyg");
 }
 
 </SCRIPT>

@@ -69,6 +69,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
@@ -628,6 +629,30 @@ public class Notice_Send_Delete extends SecureAction
 		catch(Exception ex){data.setMessage("The error in do Write method in Notice Send"+ex);}
 	}
 
+	public void doSendMsg(RunData data, Context context)
+        {
+		try
+                {
+                        String mailMsg = "";
+                        User user = data.getUser();
+                        String username=user.getName();
+                        ParameterParser pp=data.getParameters();
+                        String LangFile=user.getTemp("LangFile").toString();
+                        String subject =pp.getString("subject","");
+                        String semail = pp.getString("senderMail","");
+                        String message = pp.getString("msg_val","");
+                        if( semail != null && semail != "")
+                                mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", semail, subject, "", LangFile);
+			String msg1=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                        data.setMessage(msg1);
+                        //ErrorDumpUtil.ErrorLog("mailMsg reply---------"+mailMsg);
+                }
+                catch(Exception ex)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in doSend method!! "+ex);
+                }
+	}
+
     /**
      * Default action to perform if the specified action cannot be executed.
      * @param data RunData
@@ -636,6 +661,8 @@ public class Notice_Send_Delete extends SecureAction
 	public void doPerform( RunData data,Context context )throws Exception
 	{
 		String action=data.getParameters().getString("actionName","");
+		if(StringUtils.isBlank(action))
+			action=data.getParameters().getString("actionValue","");
 		if(action.equals("eventSubmit_doSend"))
 			doSend(data,context);
 		else if(action.equals("eventSubmit_doDelete"))
@@ -646,6 +673,8 @@ public class Notice_Send_Delete extends SecureAction
                         doSave(data,context);
 		else if(action.equals("eventSubmit_doChange"))
 			data.setMessage("");
+		else if(action.equals("eventSubmit_doSendMsg"))
+			doSendMsg(data,context);
 		else
 			data.setMessage("Cannot find the button");
 	}

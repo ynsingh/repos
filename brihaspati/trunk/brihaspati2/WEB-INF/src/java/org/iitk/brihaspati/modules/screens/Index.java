@@ -51,6 +51,8 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.UserConfiguration;
+import org.iitk.brihaspati.om.ParentInfo;
+import org.iitk.brihaspati.om.ParentInfoPeer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -126,11 +128,13 @@ public class Index extends SecureScreen{
 				**/
 				Vector instNameList = new Vector();
 				cId=(InstituteIdUtil.getAllInstId(uid));
+				if(cId.size()>0){
 				for(int inst = 0; inst < cId.size(); inst ++){
 					instName = InstituteIdUtil.getIstName(Integer.parseInt(cId.get(inst).toString()));
 					if(!instNameList.contains(instName)){
 						instNameList.add(instName);
 					}
+				}
 				}
 				context.put("instNameList",instNameList);
 				if(viewAll.equals("ViewAll")){
@@ -187,6 +191,8 @@ public class Index extends SecureScreen{
 			Vector InstituteAdmin_Role=UserGroupRoleUtil.getGID(uid,7);
 		// check for ta Role
 			Vector TeacherAssistant_Role=UserGroupRoleUtil.getGID(uid,8);
+		// check for Parent
+                        Vector Parent_Role=UserGroupRoleUtil.getGID(uid,9);
 
 			if(Admin_Role.size()!=0)
 			{
@@ -221,6 +227,10 @@ public class Index extends SecureScreen{
                         {
                                 context.put("Role8","TeacherAssistantRole");
                         }
+			if(Parent_Role.size()!=0)
+                        {
+                                context.put("Role9","ParentRole");
+                	}
 	
 			if(user.getName().equals("guest")){
 				context.put("guest_login","true");
@@ -262,18 +272,21 @@ public class Index extends SecureScreen{
                         } catch(Exception error){ ErrorDumpUtil.ErrorLog("The error is :- "+error); }
 
 			                        /*poll default institute name*/
+			if(cId.size()>0){
                         Iterator iter = cId.iterator();
                         if (iter.hasNext()) {
                                 Object instFirst = iter.next();
                                 context.put("instN",instFirst);
-                                }
+                               }
+			}
                         context.put("usrNme", username);
                         context.put("UserId",uid);
+			
 
 
 		}
 		catch(Exception e){
-			data.setMessage("The error is :- "+e);
+			data.setMessage("The error is:- "+e);
 			}
 	}
 }

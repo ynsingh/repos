@@ -52,8 +52,10 @@ public class AssignmentDetail
         private String feedback;
 	private String Duedate;
 	private String AssignmentDuedate;
+	private String Topicname;
         private String Assignmentdate;
         private String Studentname;
+        private String AssignmentId;
 	public void setStudentname(String Studentname)
         {
                 this.Studentname=Studentname;
@@ -162,6 +164,22 @@ public class AssignmentDetail
         public String getAssignmentDuedate()
         {
                 return AssignmentDuedate;
+        }
+	public void setTopic(String Topicname)
+        {
+                this.Topicname=Topicname;
+        }
+        public String getTopic()
+        {
+                return Topicname;
+        }
+	public void setAssignmentId(String AssId)
+        {
+                this.AssignmentId=AssId;
+        }
+        public String getAssignmentId()
+        {
+                return AssignmentId;
         }
 	
 }

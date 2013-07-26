@@ -418,6 +418,11 @@ $!msg
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general") style="text-decoration:none">$brih_FAQ #if($lang == "hindi")  $brih_Of #end $brih_list </a>
 </td></tr>
+##Add Parent Registration link in login page
+<tr><td colspan=4><b>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english") style="text-decoration:none">$brih_parent $brih_reg </a>
+</b></td></tr>
 ##Add ResendActivation link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;

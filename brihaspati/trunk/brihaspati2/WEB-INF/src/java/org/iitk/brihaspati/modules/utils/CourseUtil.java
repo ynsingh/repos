@@ -38,12 +38,14 @@ import java.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 //Turbine classes
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.AccessControlList;
 //Brihaspati classes4
+import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
@@ -269,4 +271,27 @@ public class CourseUtil{
 		}
 		return list;
 	}
+	public static String getCourseInstrEmail(String Course_id)
+        {
+		String userEmail="";
+                try
+                {
+                        Criteria crit=new Criteria();
+                        crit.add(CoursesPeer.GROUP_NAME,Course_id);
+                        List v=CoursesPeer.doSelect(crit);
+                        String GName=((Courses)v.get(0)).getGroupName();
+                        String gAlias=((Courses)v.get(0)).getGroupAlias();
+                        CourseUserDetail cuDetail=new CourseUserDetail();
+                        int index=gAlias.length();
+                        String loginName=GName.substring(index);
+                        String oldloginName=StringUtils.substringBeforeLast(loginName,"_");
+                        int UId=UserUtil.getUID(oldloginName);
+                        String uID=Integer.toString(UId);
+			List userDetails=UserManagement.getUserDetail(uID);
+                        TurbineUser element=(TurbineUser)userDetails.get(0);
+			userEmail=element.getEmail().toString();
+		}
+		catch (Exception ex){ErrorDumpUtil.ErrorLog("The error in getCourseInstrEmail in Course Util "+ex );}
+		return userEmail;
+	}	
 }

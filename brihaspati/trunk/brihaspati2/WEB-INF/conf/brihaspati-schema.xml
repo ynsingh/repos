@@ -675,4 +675,9 @@
         <unique-column name="UNIVERSITY_ID"/>
  </unique>
 </table>
+<table name="PARENT_INFO" idMethod="idbroker" description="Parent Intimation">
+        <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="STUDENT_ID" size="255" type="VARCHAR"/>
+        <column name="PARENT_ID" size="255" type="VARCHAR"/>
+</table>
 </database>

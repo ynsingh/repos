@@ -1,0 +1,179 @@
+#*
+ * @(#)ParentRegistration.vm 
+ * Copyright (c)2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ *#
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/jquery.timepicker.css")" media="screen"/>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/base.css")" media="screen"/>
+
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.timepicker.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/base.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/datepair.js")"></script>
+</head>
+
+$!data.getMessage()
+$page.setTitle("$brih_login $WikiPage | $brih_parent $brih_reg ")
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<body>
+	<table bgcolor="$ui.menuColor" width=100%>
+                <tr><td>
+                        <a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none> $brih_login $WikiPage </a>| $brih_parent $brih_reg   
+                </td></tr>
+        </table>
+
+
+##<form name="frm" method="post" action="$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang).setAction("ParentRegistration")">
+<form name="frm" method="post" action="$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang).setAction("ParentRegistration")">
+    <table align="left" width=100%>
+      <tr bgcolor="$ui.menuColor">
+        <td> $brih_first $brih_name <span style="color:red;">*</span></td>
+        <td> <input type="text" name="fname" value=""> </td
+      </tr>
+      <tr>
+        <td> $brih_last $brih_name <span style="color:red;">*</span></td>
+        <td>  <input type="text" name="lname" value=""> </td>
+      </tr>
+      <tr bgcolor="$ui.menuColor">
+        <td> $brih_email $brih_Id<span style="color:red;">*</span></td>
+        <td>  <input type="email" name="email" value=""> </td>
+      </tr>
+      <tr>
+        <td> $brih_pwd <span style="color:red;">*</span></td>
+        <td>  <input type="password" name="password" value=""> </td>
+      </tr>
+
+      <tr bgcolor="$ui.menuColor">
+        <td> $RemoteAddress <span style="color:red;">*</span></td>
+        <td>  <textarea name="address"></textarea></td>
+      </tr>
+      <tr>
+        <td> $brih_mobileno <span style="color:red;">*</span></td>
+        <td>  <input type="text" name="mobileno" value=""> </td>
+      </tr>
+      <tr><br>
+	<table id='FileBoxesGroup' width="100%">
+        	<tr id="FileBoxDiv1" bgcolor="$ui.menuColor" class="datepair">
+		        <td width="320px">$brih_student $brih_mail $brih_Id<font color="red">*</font></td>
+		        <td colspan=2 ><input type='email' id='text1' name="text1">
+			<input class="button-ftextstyle" type='button' value='Add text box' id='addFile'>
+			<input class="button-ftextstyle" type='button' value='Remove Box' id='removeFile'></td>
+	        </tr>
+	</table>
+      </tr>
+
+          <tr bgcolor="$ui.menuColor">
+          <td align=left colspan=2>
+    <input type="hidden" name="myvalue" id="myvalue"  value="1">
+    <input type="hidden" name="actionName" value=""/>
+    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="submit" onClick="check(document.frm,this);" id="upload"/>
+    <input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
+</table>
+</form>
+</body>
+</html>
+<script language="JavaScript">
+function  check(frm,fld) {
+var reason = "";
+    reason += validatefname(frm.fname);
+    reason += validatelname(frm.lname);
+    reason += validateemail(frm.email);
+    reason += validateaddress(frm.address);
+    reason += validatemobileno(frm.mobileno);
+    //reason += msg;
+if (reason != "") {
+        alert("Some fields need correction:\n\n"+reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+function validatefname(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered first name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validatelname(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered last name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validateemail(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered email.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validateaddress(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered address.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validatemobileno(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered mobile no.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+$(document).ready(function(){
+                        var counter = 2;
+                        $("#addFile").click(function () {
+			document.getElementById('myvalue').value = counter;
+                                if(counter>5){
+                                        alert("Only 5 email allowed !!");
+                                        return false;
+                                }
+                                var newTextBoxDiv = $(document.createElement('tr'))
+                                newTextBoxDiv.attr("id", 'FileBoxDiv' + counter);
+                                newTextBoxDiv.attr("class", 'datepair');
+				if((counter%2!=0)||(counter%2>0)||(counter%2<0)) newTextBoxDiv.attr("bgcolor", "$ui.menuColor");
+                                newTextBoxDiv.html('<td>Student Mail ID <font color="red">*</font></td> <td><input type="email" name="text' + counter + '" id="text' + counter + '" value="" ></td>');
+                                newTextBoxDiv.appendTo("#FileBoxesGroup");
+                                counter++;
+                        });
+
+                        $("#removeFile").click(function () {
+                                if(counter==2){
+                                	alert("No more options to remove");
+                                	return false;
+                        	}
+                        counter--;
+                        	$("#FileBoxDiv" + counter).remove();
+                        });
+
+                });
+
+
+</script>
+

@@ -13,6 +13,7 @@ insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (5,'author');
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (6,'user');
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (7,'institute_admin');
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (8,'teacher_assistant');
+insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (9,'parent');
 
 insert into TURBINE_PERMISSION (PERMISSION_ID,PERMISSION_NAME) values (2,'read');
 insert into TURBINE_PERMISSION (PERMISSION_ID,PERMISSION_NAME) values (3,'write');
