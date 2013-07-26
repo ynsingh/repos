@@ -9,10 +9,11 @@ import com.opensymphony.xwork2.ModelDriven;
 import java.io.File;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.TestimonialDao;
 import org.IGNOU.ePortfolio.Model.Testimonials;
 import org.IGNOU.ePortfolio.Model.UserList;
-import org.IGNOU.ePortfolio.DAO.TestimonialDao;
 
 /**
  *
@@ -25,7 +26,7 @@ public class TestimonialReqAction extends ActionSupport implements ModelDriven<O
     private Testimonials testiModel = new Testimonials();
     private String msg, sentmsg = getText("msg.Request"), draftmsg = getText("msg.draft");
     private String buttonName, testiReqTo;
-    private String FilePath = getText("Filepath");
+    private String FilePath = ReadPropertyFile("Filepath");
     private File sDoc;
     private String sDocFileName, sDocPath;
     private FileUploadCommon fupload = new FileUploadCommon();
@@ -51,7 +52,7 @@ public class TestimonialReqAction extends ActionSupport implements ModelDriven<O
 
             }
             testiModel.setDraft(Boolean.FALSE);
-            dao.RequestTestimonial(testiModel, testiReqTo);
+            dao.TestimonialSave(testiModel, testiReqTo);
             msg = sentmsg;
         }
         if ("Draft".equals(getButtonName())) {
@@ -70,7 +71,7 @@ public class TestimonialReqAction extends ActionSupport implements ModelDriven<O
 
             }
             testiModel.setDraft(Boolean.TRUE);
-            dao.RequestTestimonial(testiModel, testiReqTo);
+            dao.TestimonialSave(testiModel, testiReqTo);
             msg = draftmsg;
         }
         return SUCCESS;

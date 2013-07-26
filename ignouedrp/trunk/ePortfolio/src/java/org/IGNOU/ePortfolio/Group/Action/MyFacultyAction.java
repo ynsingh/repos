@@ -28,7 +28,7 @@ public class MyFacultyAction extends ActionSupport {
     }
 
     public String MyFacultyList() throws Exception {
-        MyFacultyList = dao.MyFacultyList(user_id);
+        MyFacultyList = dao.FacultyListByEmailId(user_id);
         listSize = MyFacultyList.size();
         return SUCCESS;
     }
@@ -62,14 +62,14 @@ public class MyFacultyAction extends ActionSupport {
     }
 
     /**
-     * @return the MyFacultyList
+     * @return the FacultyListByEmailId
      */
     public List<UserList> getMyFacultyList() {
         return MyFacultyList;
     }
 
     /**
-     * @param MyFacultyList the MyFacultyList to set
+     * @param FacultyListByEmailId the FacultyListByEmailId to set
      */
     public void setMyFacultyList(List<UserList> MyFacultyList) {
         this.MyFacultyList = MyFacultyList;

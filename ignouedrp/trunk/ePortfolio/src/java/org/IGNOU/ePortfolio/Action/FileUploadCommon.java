@@ -12,13 +12,14 @@ import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
  * @author Amit
  */
 public class FileUploadCommon extends ActionSupport{
-    private String Filepath=getText("Filepath");
+    private String Filepath=ReadPropertyFile("Filepath");
     private InputStream fis;
     private String requestorId,recordProof;
     final Logger logger = Logger.getLogger(this.getClass());

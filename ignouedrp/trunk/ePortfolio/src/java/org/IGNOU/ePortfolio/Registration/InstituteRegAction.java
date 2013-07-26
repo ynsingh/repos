@@ -6,8 +6,8 @@ package org.IGNOU.ePortfolio.Registration;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import org.IGNOU.ePortfolio.DAO.InstituteDao;
 import org.IGNOU.ePortfolio.Model.Institute;
-import org.IGNOU.ePortfolio.DAO.InstituteRegDao;
 
 /**
  *
@@ -18,7 +18,7 @@ import org.IGNOU.ePortfolio.DAO.InstituteRegDao;
 public class InstituteRegAction extends ActionSupport implements ModelDriven<Object> {
 
     Institute ins = new Institute();
-    InstituteRegDao dao = new InstituteRegDao();
+    InstituteDao dao = new InstituteDao();
     private String msg, RegSuccess = getText("msg.infoSaved");
     private String CountryCode, city;
 
@@ -29,7 +29,7 @@ public class InstituteRegAction extends ActionSupport implements ModelDriven<Obj
     public String execute() throws Exception {
         ins.setCountry(CountryCode);
         ins.setCityPlace(city);
-        dao.AddInfo(ins);
+        dao.InstituteSave(ins);
         msg = RegSuccess;
         return SUCCESS;
     }

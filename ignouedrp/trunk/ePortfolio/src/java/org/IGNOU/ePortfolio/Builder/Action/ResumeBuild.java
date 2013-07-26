@@ -22,12 +22,12 @@ public class ResumeBuild extends ActionSupport {
     private String user_id=new UserSession().getUserInSession();
  
     public String MakeResume(){
-        userDetaillist=bdao.ProfileDetailsDao(user_id);
+        userDetaillist=bdao.UserListDetailByUserId(user_id);
     
     return SUCCESS;
     }
      public List<UserList> MakeResumes(){
-        userDetaillist=bdao.ProfileDetailsDao(user_id);
+        userDetaillist=bdao.UserListDetailByUserId(user_id);
     
     return userDetaillist;
     }

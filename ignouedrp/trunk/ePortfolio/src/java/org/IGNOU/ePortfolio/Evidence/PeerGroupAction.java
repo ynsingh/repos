@@ -38,7 +38,7 @@ public class PeerGroupAction extends ActionSupport {
     }
 
     public String PeerGroupEviList() throws Exception {
-        PeerEviList = dao.PeerEviList(instituteId, programmeId);
+        PeerEviList = dao.EvidenceListByInstituteIdProgrammeId(instituteId, programmeId);
         return SUCCESS;
     }
 
@@ -169,14 +169,14 @@ public class PeerGroupAction extends ActionSupport {
     }
 
     /**
-     * @return the PeerEviList
+     * @return the EvidenceListByInstituteIdProgrammeId
      */
     public List<Evidence> getPeerEviList() {
         return PeerEviList;
     }
 
     /**
-     * @param PeerEviList the PeerEviList to set
+     * @param EvidenceListByInstituteIdProgrammeId the EvidenceListByInstituteIdProgrammeId to set
      */
     public void setPeerEviList(List<Evidence> PeerEviList) {
         this.PeerEviList = PeerEviList;

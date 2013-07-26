@@ -28,8 +28,8 @@ public class TestimonialRequest extends ActionSupport {
     private List<User> IPList, TUList;
 
     public String getFaculty() {
-        IPList = updao.UserPrograme(user_id); //getting the institute and programm Id
-        TUList = dao.ShowTestiUsrList(IPList.iterator().next().getInstituteId(), IPList.iterator().next().getProgrammeId(), IPList.iterator().next().getRole());
+        IPList = updao.UserListByUserId(user_id); //getting the institute and programm Id
+        TUList = dao.UserListByInstituteIdProgrammeIdRole(IPList.iterator().next().getInstituteId(), IPList.iterator().next().getProgrammeId(), IPList.iterator().next().getRole());
         facultyList = new HashMap<String, String>();
         for (int i = 0; i < TUList.size(); i++) {
             facultyList.put(TUList.get(i).getEmailId(), TUList.get(i).getFname() + " " + TUList.get(i).getLname());

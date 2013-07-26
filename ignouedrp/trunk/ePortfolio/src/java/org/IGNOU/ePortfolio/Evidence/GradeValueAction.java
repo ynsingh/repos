@@ -56,13 +56,13 @@ public class GradeValueAction extends ActionSupport {
                 setStr(getStr() + (getSplitDetails2()[i] + getGradeValue()[i]) + "-" + getGradeValue1()[i] + " ");
             }
         }
-        getDao().saveVal(user_id, gtdId, str, getCourseId());
+        getDao().GradeValueSave(user_id, gtdId, str, getCourseId());
         msg = infoSaved;
         return SUCCESS;
     }
 
     public String UpdateGradeSetupValue() throws Exception {
-        setCourseProInsList(pDao.CorProInsList(courseId));
+        setCourseProInsList(pDao.CourseDetailByCourseId(courseId));
         setSplitDetails(getDetails().split(","));
         for (int i = 0; i < getSplitDetails().length; i++) {
             setStr1(getStr1() + getSplitDetails()[i]);
@@ -75,12 +75,12 @@ public class GradeValueAction extends ActionSupport {
                 setStr(getStr() + (getSplitDetails2()[i] + getGradeValue()[i]) + "-" + getGradeValue1()[i] + " ");
             }
         }
-        dao.UpdateGradeSetupValue(gradeValId, courseId, user_id, gtdId, str, new Date());
+        dao.GradeValueUpdate(gradeValId, courseId, user_id, gtdId, str, new Date());
         return SUCCESS;
     }
 
     public String GetGradeSetupInfo() throws Exception {
-        GradeSetupList = dao.PopulateGradeSetuplist(user_id);
+        GradeSetupList = dao.GradeValueListByUserId(user_id);
         if (GradeSetupList.isEmpty()) {
             msg = recordNotFound;
         } 

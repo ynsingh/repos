@@ -98,7 +98,7 @@ public class MyProfileAction extends ActionSupport {
      * Show and Update Methods begin....
      */
     public String ShowAcademicInfo() {
-        setAcademicListList(getDao().AcademicList(getUser_id()));
+        setAcademicListList(getDao().ProfileAcademicListByUserId(getUser_id()));
         if (getAcademicListList().isEmpty()) {
             // return SUCCESS;
             return INPUT;
@@ -109,18 +109,18 @@ public class MyProfileAction extends ActionSupport {
     }
 
     public String EditAcademicInfo() {
-        setEditAcademicList(getDao().EditAcademic(getUser_id()));
+        setEditAcademicList(getDao().ProfileAcademicEdit(getUser_id()));
         return SUCCESS;
     }
 
     public String UpdateAcademicInfo() {
-        //dao.UpdateAcademic(getAcademicInfoId(), getUserId(), getUniversity(), getDegree(), getFstudy(), getAdate(), getCdate(), getActivities(), getAdditionalNote());
+        //dao.ProfileAcademicUpdate(getAcademicInfoId(), getUserId(), getUniversity(), getDegree(), getFstudy(), getAdate(), getCdate(), getActivities(), getAdditionalNote());
         /**
          * Added on 04-04-2012 by IGNOU Team
          *
          * @Version 2
          */
-        getDao().UpdateAcademic(getAcademicInfoId(), getDegree(), getDegree(), getUniversity(), getLocation(), getFstudy(), getPyear(), getPercent(), getDivision());
+        getDao().ProfileAcademicUpdate(getAcademicInfoId(), getDegree(), getDegree(), getUniversity(), getLocation(), getFstudy(), getPyear(), getPercent(), getDivision());
         msg = updateInfo;
         return SUCCESS;
     }
@@ -132,7 +132,7 @@ public class MyProfileAction extends ActionSupport {
      * @return SUCCESS
      */
     public String ShowEmploymentInfo() {
-        setEmploymentListList(getDao().EmploymentList(getUser_id()));
+        setEmploymentListList(getDao().ProfileEmployementListByUserId(getUser_id()));
         if (getEmploymentListList().isEmpty()) {
             // return SUCCESS;
             return INPUT;
@@ -150,7 +150,7 @@ public class MyProfileAction extends ActionSupport {
      * @throws Exception
      */
     public String EditEmploymentInfo() throws Exception {
-        setEmpListList(getDao().empList(getEmploymentInfoId()));
+        setEmpListList(getDao().ProfileEmploymentlListByEmplymentId(getEmploymentInfoId()));
         return SUCCESS;
     }
 
@@ -162,7 +162,7 @@ public class MyProfileAction extends ActionSupport {
      * @throws Exception
      */
     public String UpdateEmploymentInfo() throws Exception {
-        getDao().UpdateEmp(getEmploymentInfoId(), getUserId(), getJtitle(), getOrgName(), getOaddress(), getOcity(), getOstate(), getOcountry(), getJdate(), getLdate(), getDescription());
+        getDao().ProfileEmploymentUpdate(getEmploymentInfoId(), getUserId(), getJtitle(), getOrgName(), getOaddress(), getOcity(), getOstate(), getOcountry(), getJdate(), getLdate(), getDescription());
         msg = updateInfo;
         return SUCCESS;
     }
@@ -175,7 +175,7 @@ public class MyProfileAction extends ActionSupport {
      * @throws Exception
      */
     public String DeleteEmploymentInfo() throws Exception {
-        getDao().DeleteEmpInfo(getEmploymentInfoId());
+        getDao().ProfileEmploymentDelete(getEmploymentInfoId());
         msg = deleteInfo;
         return SUCCESS;
     }

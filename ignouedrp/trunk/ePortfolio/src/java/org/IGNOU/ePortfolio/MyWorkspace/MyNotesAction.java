@@ -63,7 +63,7 @@ public class MyNotesAction extends ActionSupport implements ModelDriven<Object> 
 
     @Override
     public String execute() throws Exception {
-        dao.saveNotesInfo(nots);
+        dao.MyNotesSave(nots);
         msg = infoSaved;
         return SUCCESS;
     }

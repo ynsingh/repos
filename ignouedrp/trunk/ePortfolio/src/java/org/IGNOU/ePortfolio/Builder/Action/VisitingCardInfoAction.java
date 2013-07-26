@@ -31,7 +31,7 @@ public class VisitingCardInfoAction extends ActionSupport{
     
     
      public String VisitingcardDetail() {
-        vcList = vcDao.VisitingCardData(user_id);
+        vcList = vcDao.VisitingCardDetailByUserId(user_id);
         if (vcList.isEmpty()) {
             return INPUT;
         }
@@ -40,12 +40,12 @@ public class VisitingCardInfoAction extends ActionSupport{
     }
 
     public String VisitingCardEdit() {
-        vcList = vcDao.EditVcardData(visitcardId);
+        vcList = vcDao.VisitingCardEdit(visitcardId);
         return SUCCESS;
     }
 
     public String VisitingCardUpdate() {
-        vcDao.UpdateVcardDetail(visitcardId,user_id, displayName, designation, company, mobile, officePh, fax, email, websiteOff, websitePer);
+        vcDao.VisitingCardUpdate(visitcardId,user_id, displayName, designation, company, mobile, officePh, fax, email, websiteOff, websitePer);
         return SUCCESS;
     }
 

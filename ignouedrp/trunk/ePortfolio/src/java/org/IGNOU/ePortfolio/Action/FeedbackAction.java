@@ -64,7 +64,7 @@ public class FeedbackAction extends ActionSupport implements ModelDriven<Object>
 
     @Override
     public String execute() throws Exception {
-        dao.addInfo(getF());
+        dao.FeedbackSave(getF());
         feedbackmsg = "Feedback Submitted Successfully";
         return SUCCESS;
     }

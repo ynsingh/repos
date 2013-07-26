@@ -38,7 +38,7 @@ public class ExtraActivitiesInfoAction extends ActionSupport {
     }
 
     public String ShowExtInfo() throws Exception {
-        setEXTList(getDao().ShowInfo(getUser_id()));
+        setEXTList(getDao().ExtraActivitiesListByUserId(getUser_id()));
         if (getEXTList().isEmpty()) {
             return INPUT;
         } else {
@@ -47,18 +47,18 @@ public class ExtraActivitiesInfoAction extends ActionSupport {
     }
 
     public String EditExtInfo() throws Exception {
-        setEXTList(getDao().EditInfo(getActivitiesId()));
+        setEXTList(getDao().ExtraActivitiesListByActivityId(getActivitiesId()));
         return SUCCESS;
     }
 
     public String UpdateExtInfo() throws Exception {
-        getDao().UpdateInfo(getActivitiesId(), getUserId(), getOrganizationName(), getCause(), getRole(), getTfrom(), getTto(), getDescription());
+        getDao().ExtraActivitiesUpdate(getActivitiesId(), getUserId(), getOrganizationName(), getCause(), getRole(), getTfrom(), getTto(), getDescription());
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteExtInfo() throws Exception {
-        getDao().DeleteInfo(getActivitiesId());
+        getDao().ExtraActivitiesDelete(getActivitiesId());
         msg = infoDeleted;
         return SUCCESS;
     }

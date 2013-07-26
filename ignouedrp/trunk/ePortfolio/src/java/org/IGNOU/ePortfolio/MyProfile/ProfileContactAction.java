@@ -37,7 +37,7 @@ public class ProfileContactAction extends ActionSupport implements ModelDriven<O
 
     @Override
     public String execute() throws Exception {
-        dao.saveContactInfo(PCMOdel);
+        dao.ContactInfoSave(PCMOdel);
         msg = infoSaved;
         return SUCCESS;
     }

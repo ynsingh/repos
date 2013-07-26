@@ -38,7 +38,6 @@
         <action name="getMailTo" class="org.IGNOU.ePortfolio.Dropdown.TestimonialRequest">
             <result name="success" type="json"/>
         </action>
-        
         <action name="UniversityAct" class="org.IGNOU.ePortfolio.Dropdown.UnivProgAction">
             <result name="success" type="json"/>
         </action> 
@@ -87,6 +86,7 @@
     </package>
     
     <package name="org.IGNOU.ePortfolio.Action" namespace="/" extends="struts-default"> 
+        
         <action name="Login" class="org.IGNOU.ePortfolio.Action.LoginAction" method="LoginCheck">
             <interceptor-ref name="token" />
             <interceptor-ref name="basicStack" />

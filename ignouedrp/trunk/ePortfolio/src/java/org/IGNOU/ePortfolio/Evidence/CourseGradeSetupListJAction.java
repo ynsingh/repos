@@ -27,7 +27,7 @@ public class CourseGradeSetupListJAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        courceList = eviDao.GradeSetUpCourceList(user_id);
+        courceList = eviDao.CourseListGradeSetupByUserId(user_id);
         courseL = new HashMap<String, String>();
         if (courceList.isEmpty()) {
             courseL.put(null, getCourseNotFound());

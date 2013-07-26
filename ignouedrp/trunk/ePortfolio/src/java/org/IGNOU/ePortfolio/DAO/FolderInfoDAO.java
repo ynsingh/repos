@@ -1,9 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
+
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -44,20 +42,24 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
-     * saveInfo This is the function to Save information of Folder.
-      * @author IGNOU Team
-     */
+ * saveInfo This is the function to Save information of Folder.
+ *
+ * @author IGNOU Team
+ */
 public class FolderInfoDAO {
 
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+
     public UserdocsFolder saveInfo(UserdocsFolder obFolderModel) {
-        SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(obFolderModel);
-        session.getTransaction().commit();
-        session.close();
+        s = sessionFactory.openSession();
+        s.beginTransaction();
+        s.save(obFolderModel);
+        s.getTransaction().commit();
+        s.close();
         sessionFactory.close();
         return obFolderModel;
 
     }
+
 }

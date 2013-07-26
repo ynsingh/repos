@@ -30,7 +30,7 @@ public class SeminarsWorkshopsAction extends ActionSupport implements ModelDrive
 
     @Override
     public String execute() throws Exception {
-        dao.saveSW(getSw());
+        dao.SeminarsWorkshopsSave(getSw());
         msg = infoSaved;
         return SUCCESS;
     }

@@ -25,11 +25,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ConferenceDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public Conference saveConf(Conference CModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Conference ConferenceSave(Conference CModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -57,9 +57,8 @@ public class ConferenceDao {
         }
     }
 
-    public List<Conference> ShowConf(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Conference> ConferenceListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -82,35 +81,9 @@ public class ConferenceDao {
             sessionFactory.close();
         }
     }
-    /*
-    public List<ConferenceAuthors> ShowConfAuthor(ArrayList<Long> conferenceAuthorsId) {
-    sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-    Session s = sessionFactory.openSession();
-    Transaction t = null;
-    try {
-    t = s.beginTransaction();
-    List<ConferenceAuthors> ConfAuthoList = null;
-    try {
-    ConfAuthoList = s.createQuery("from ConferenceAuthors where conferenceAuthorsId in(" + conferenceAuthorsId + ")").list();
-    } catch (HibernateException HE) {
-    System.out.println(HE);
-    }
-    t.commit();
-    return ConfAuthoList;
-    } catch (Throwable ex) {
-    //Log the Exception
-    t.rollback();
-    System.err.println("Initial SessionFactory creation failed." + ex);
-    throw new ExceptionInInitializerError(ex);
-    } finally {
-    s.close();
-    sessionFactory.close();
-    }
-    }*/
 
-    public List<Conference> EditConf(long conferenceId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Conference> ConferenceListByConferenceId(long conferenceId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -133,9 +106,8 @@ public class ConferenceDao {
         }
     }
 
-    public Conference DeleteConf(long conferenceId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public Conference ConferenceDelete(long conferenceId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -152,13 +124,12 @@ public class ConferenceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public Conference UpdateConf(long conferenceId, String userId, String confType, String researchArea, String assoProject, String projectName, String role, String presentationType, String paperTitle, Integer noCoauthor, Integer pfrom, Integer pto, String conferenceName, String dfrom, String dto, String orgName, String venue, String state, String country, String language, String url, String affiliation, String abstract_, String key1, String key2, String key3, String key4, String key5, String key6, Set<ConferenceAuthors> conferenceAuthorses, ArrayList<String> fname, ArrayList<String> lname) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public Conference ConferenceUpdate(long conferenceId, String userId, String confType, String researchArea, String assoProject, String projectName, String role, String presentationType, String paperTitle, Integer noCoauthor, Integer pfrom, Integer pto, String conferenceName, String dfrom, String dto, String orgName, String venue, String state, String country, String language, String url, String affiliation, String abstract_, String key1, String key2, String key3, String key4, String key5, String key6, Set<ConferenceAuthors> conferenceAuthorses, ArrayList<String> fname, ArrayList<String> lname) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -203,15 +174,8 @@ public class ConferenceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

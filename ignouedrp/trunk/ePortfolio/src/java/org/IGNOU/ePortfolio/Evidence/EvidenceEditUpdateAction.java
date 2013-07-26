@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import org.IGNOU.ePortfolio.Model.Evidence;
@@ -34,7 +35,7 @@ public class EvidenceEditUpdateAction extends ActionSupport {
     private String assAttach;
     private String facDataFileName;
     private File facData;
-    private String evFilePath = getText("evidenceFilePath");
+    private String evFilePath = ReadPropertyFile("Filepath");
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
     private String infoUpdated = getText("msg.infoUpdated");
@@ -43,7 +44,7 @@ public class EvidenceEditUpdateAction extends ActionSupport {
     }
 
     public String EditEvidenceInfo() throws Exception {
-        EvidenceList = dao.EvidenceReviewInfo(evidenceId);
+        EvidenceList = dao.EvidenceListByEvidenceId(evidenceId);
         return SUCCESS;
     }
 
@@ -59,12 +60,12 @@ public class EvidenceEditUpdateAction extends ActionSupport {
             FileUtils.copyFile(facData, fileToCreate);
 
             assAttach = getFacDataFileName();
-            dao.UpdateEvi(evidenceId, evTitle, openDate, closeDate, lastAcceptDate, instruction, addDateSchedule, addAnnoOdate, addtoGradebook, assAttach, saveEvid, cancel, cancelReason);
+            dao.EvidenceUpdate(evidenceId, evTitle, openDate, closeDate, lastAcceptDate, instruction, addDateSchedule, addAnnoOdate, addtoGradebook, assAttach, saveEvid, cancel, cancelReason);
             msg = infoUpdated;
             return SUCCESS;
         } else {
             assAttach = "null";
-            dao.UpdateEvi(evidenceId, evTitle, openDate, closeDate, lastAcceptDate, instruction, addDateSchedule, addAnnoOdate, addtoGradebook, assAttach, saveEvid, cancel, cancelReason);
+            dao.EvidenceUpdate(evidenceId, evTitle, openDate, closeDate, lastAcceptDate, instruction, addDateSchedule, addAnnoOdate, addtoGradebook, assAttach, saveEvid, cancel, cancelReason);
             msg = infoUpdated;
             return SUCCESS;
         }
@@ -113,14 +114,14 @@ public class EvidenceEditUpdateAction extends ActionSupport {
     }
 
     /**
-     * @return the EvidenceList
+     * @return the EvidenceListByEvidenceId
      */
     public List<Evidence> getEvidenceList() {
         return EvidenceList;
     }
 
     /**
-     * @param EvidenceList the EvidenceList to set
+     * @param EvidenceListByEvidenceId the EvidenceListByEvidenceId to set
      */
     public void setEvidenceList(List<Evidence> EvidenceList) {
         this.EvidenceList = EvidenceList;

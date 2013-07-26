@@ -81,7 +81,7 @@ public class ReferenceAction extends ActionSupport {
     }
 
     public String ShowInfo() throws Exception {
-        RefList = dao.ShowReferenceInfo(getUser_id());
+        RefList = dao.ProfileReferencesListByUserId(getUser_id());
         if (RefList.isEmpty()) {
             // return SUCCESS;
             return INPUT;
@@ -92,18 +92,18 @@ public class ReferenceAction extends ActionSupport {
     }
 
     public String EditInfo() throws Exception {
-        RefList = dao.EditReferenceInfo(referencesId);
+        RefList = dao.ProfileReferencesEdit(referencesId);
         return SUCCESS;
     }
 
     public String UpdateRefInfo() throws Exception {
-        dao.UpdateReferenceInfo(referencesId, user_id, name, designation, orgUniv, place, city, state, country, phoneno, mobileno, emailId, website);
+        dao.ProfileReferencesUpdate(referencesId, user_id, name, designation, orgUniv, place, city, state, country, phoneno, mobileno, emailId, website);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteRefInfo() throws Exception {
-        dao.DeleteReference(referencesId);
+        dao.ProfileReferencesDelete(referencesId);
         msg = infoDeleted;
         return SUCCESS;
     }

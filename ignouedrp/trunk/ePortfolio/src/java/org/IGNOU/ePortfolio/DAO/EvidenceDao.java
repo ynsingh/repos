@@ -24,11 +24,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class EvidenceDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public Evidence saveEvidence(String evTitle, String instruction, String myAttachFileName, String user_id, Date openDate, Date closeDate, Date lastAcceptDate, Boolean addDateSchedule, Boolean addAnnoOdate, Boolean addtoGradebook, Boolean saveEvid, int coursesId, int gradeId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Evidence EvidenceSave(String evTitle, String instruction, String myAttachFileName, String user_id, Date openDate, Date closeDate, Date lastAcceptDate, Boolean addDateSchedule, Boolean addAnnoOdate, Boolean addtoGradebook, Boolean saveEvid, int coursesId, int gradeId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         Evidence e = new Evidence();
         try {
@@ -67,9 +67,8 @@ public class EvidenceDao {
         }
     }
 
-    public EvidenceSubmission saveEvidenceSubmission(int evidenceId, String user_id, String instructions, String attachment, Date subDate, Boolean submitted, Boolean post, Boolean saveDraft) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public EvidenceSubmission EvidenceSubmissionSave(int evidenceId, String user_id, String instructions, String attachment, Date subDate, Boolean submitted, Boolean post, Boolean saveDraft) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         EvidenceSubmission ev = new EvidenceSubmission();
         try {
@@ -102,9 +101,8 @@ public class EvidenceDao {
     /*IGNOU Team*/
 
     @SuppressWarnings("unchecked")
-    public List<Evidence> EvidenceDraftList(String facultyId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Evidence> EvidenceDraftListbyFacultyId(String facultyId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Evidence> GradeTypelist = null;
         try {
@@ -119,30 +117,12 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Evidence> EvidenceReviewInfo(int evidenceId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        List<Evidence> EvidenceInfo = null;
-        try {
-            EvidenceInfo = s.createQuery("from Evidence where evidenceId='" + evidenceId + "' ").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sessionFactory.close();
-        return EvidenceInfo;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Evidence> EvidenceList(String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Evidence> EvidenceNotSubmitedListByUserId(String userId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Evidence> StudentEvilist = null;
         try {
-            StudentEvilist = s.createQuery("from Evidence as e where e.saveEvid!='1' and e.evidenceId not in (select es.evidence.evidenceId from EvidenceSubmission as es where es.user='" + userId + "') and e.course in (select courseId from Course  where programme_id in (select programme.programmeId from UserList where email_id='" + userId + "'))").list();
+            StudentEvilist = s.createQuery("from Evidence as e where e.saveEvid!='1' and e.evidenceId not in (select es.evidence.evidenceId from EvidenceSubmission as es where es.user='" + userId + "')").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
@@ -153,25 +133,8 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Evidence> EvidenceSubmitedList(String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        List<Evidence> GradeTypelist = null;
-        try {
-            GradeTypelist = s.createQuery("from Evidence as e  where e.evidenceId in (select es.evidence.evidenceId from EvidenceSubmission as es where es.user='" + userId + "')").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sessionFactory.close();
-        return GradeTypelist;
-    }
-     @SuppressWarnings("unchecked")
-    public List<EvidenceSubmission> SubmitedEvidenceList(String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<EvidenceSubmission> EvidenceSubmissionByUserId(String userId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<EvidenceSubmission> evidencesubmittedlist = null;
         try {
@@ -186,9 +149,8 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Evidence> FacultyEvidenceList(String facultyId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Evidence> EvidenceListByFacultyId(String facultyId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Evidence> GradeTypelist = null;
         try {
@@ -203,9 +165,8 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Evidence> EvidenceInfoList(int evidenceId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Evidence> EvidenceListByEvidenceId(int evidenceId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Evidence> EvidInfo = null;
         try {
@@ -220,9 +181,8 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<EvidenceSubmission> EviStdSubList(int evidenceId, String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<EvidenceSubmission> EvidenceSubmissionPeerListByEvidenceIdUserId(int evidenceId, String userId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<EvidenceSubmission> EvidStdList = null;
         try {
@@ -237,9 +197,8 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Evidence> PeerEviList(int instituteId, int programmeId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Evidence> EvidenceListByInstituteIdProgrammeId(int instituteId, int programmeId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Evidence> EvidStdList = null;
         try {
@@ -254,13 +213,12 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<EvidenceSubmission> MySubInfo(int evidenceId, String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<EvidenceSubmission> EvidenceSubmissionListByEvidenceIdUserId(int evidenceId, String userId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<EvidenceSubmission> MyEvidSubList = null;
         try {
-            MyEvidSubList = s.createQuery("from EvidenceSubmission where user='" + userId + "' and evidence='" + evidenceId + "'").list();
+            MyEvidSubList = s.createQuery("from EvidenceSubmission where evidence='" + evidenceId + "' and user='" + userId + "'").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
@@ -271,43 +229,8 @@ public class EvidenceDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<EvidenceSubmission> getEviSubmitedGrade(String userId, String evidenceIdList) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        List<EvidenceSubmission> MyEvidSubList = null;
-        try {
-            MyEvidSubList = s.createQuery("from EvidenceSubmission where user='" + userId + "' and evidence in (" + evidenceIdList + ")").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sessionFactory.close();
-        return MyEvidSubList;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<ActivitiesComments> PeerCommentInfo(String submitorId, int activityId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        List<ActivitiesComments> CommentList = null;
-        try {
-            CommentList = s.createQuery("from ActivitiesComments where userBySubmitorId='" + submitorId + "' and evidence='" + activityId + "'").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sessionFactory.close();
-        return CommentList;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public List<ActivitiesComments> CommentList(String submitorId, int activityId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<ActivitiesComments> CommentPeerListBySubmitorIdEvidenceId(String submitorId, int activityId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<ActivitiesComments> CommentList = null;
         try {
@@ -321,9 +244,8 @@ public class EvidenceDao {
         return CommentList;
     }
 
-    public Evidence UpdateEvi(int evidenceId, String evTitle, Date openDate, Date closeDate, Date lastAcceptDate, String instruction, Boolean addDateSchedule, Boolean addAnnoOdate, Boolean addtoGradebook, String assAttach, Boolean saveEvid, Boolean cancel, String cancelReason) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Evidence EvidenceUpdate(int evidenceId, String evTitle, Date openDate, Date closeDate, Date lastAcceptDate, String instruction, Boolean addDateSchedule, Boolean addAnnoOdate, Boolean addtoGradebook, String assAttach, Boolean saveEvid, Boolean cancel, String cancelReason) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -356,11 +278,9 @@ public class EvidenceDao {
         }
     }
 
-
     @SuppressWarnings("unchecked")
-    public List<Course> GradeSetUpCourceList(String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Course> CourseListGradeSetupByUserId(String userId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Course> GradeTypelist = null;
         try {
@@ -374,7 +294,36 @@ public class EvidenceDao {
         return GradeTypelist;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    @SuppressWarnings("unchecked")
+    public List<EvidenceSubmission> EvidenceSubmissionListByEvidenceId(int evidenceId) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        List<EvidenceSubmission> userlist = null;
+        try {
+            userlist = s.createQuery("from EvidenceSubmission where evidence='" + evidenceId + "'").list();
+        } catch (HibernateException HE) {
+            System.out.println(HE);
+        }
+        t.commit();
+        s.close();
+        sessionFactory.close();
+        return userlist;
     }
+
+    @SuppressWarnings("unchecked")
+    public List<EvidenceSubmission> EvidenceSubmissionListBySubmissionId(int submissionId) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        List<EvidenceSubmission> userlist = null;
+        try {
+            userlist = s.createQuery("from EvidenceSubmission where submissionId='" + submissionId + "'").list();
+        } catch (HibernateException HE) {
+            System.out.println(HE);
+        }
+        t.commit();
+        s.close();
+        sessionFactory.close();
+        return userlist;
+    }
+
 }

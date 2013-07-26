@@ -6,8 +6,9 @@ package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import javax.servlet.http.HttpServletResponse;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.struts2.ServletActionContext;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
 
@@ -17,9 +18,9 @@ import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
  */
 public class RemoteLoginAction extends ActionSupport {
 
-    private String returnurl = getText("returnURL");
+    private String returnurl = ReadPropertyFile("returnURL");
     private String email, resp;
-    private String sourceid = getText("iitkScourceId");
+    private String sourceid = ReadPropertyFile("iitkScourceId");
     private HttpServletResponse res = ServletActionContext.getResponse();
     final Logger logger = Logger.getLogger(this.getClass());
     private String encd, rand, hash;
@@ -30,7 +31,7 @@ public class RemoteLoginAction extends ActionSupport {
     public String RemoteLoginIDCheck() throws Exception {
         resp = RemoteAuth.AuthR(email, returnurl, sourceid);
         res.sendRedirect(resp);
-        DOMConfigurator.configure("log4j.xml");
+        PropertyConfigurator.configure("log4j.properties");
         logger.warn("Values are " + email + " " + returnurl + "  " + sourceid);
         return SUCCESS;
     }

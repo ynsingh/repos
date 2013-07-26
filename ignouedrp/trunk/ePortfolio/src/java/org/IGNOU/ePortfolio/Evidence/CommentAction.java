@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.IOException;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.CommentDao;
 import org.IGNOU.ePortfolio.Model.ActivitiesComments;
@@ -20,7 +21,7 @@ import org.IGNOU.ePortfolio.Model.UserList;
 public class CommentAction extends ActionSupport {
 
     private String user_id = new UserSession().getUserInSession();
-    private String evFilePath = getText("evidenceFilePath");
+    private String evFilePath = ReadPropertyFile("Filepath");
     private ActivitiesComments actCom = new ActivitiesComments();
     private CommentDao cDao = new CommentDao();
     private File commentData;
@@ -37,14 +38,14 @@ public class CommentAction extends ActionSupport {
             UserList ul = new UserList();
             ul.setEmailId(user_id);
             setCommentorFilePath(commentDataFileName);
-            cDao.saveComment(evidenceId, userId, ul, submissionId, getComment(), commentorFilePath, rating);
+            cDao.CommantSave(evidenceId, userId, ul, submissionId, getComment(), commentorFilePath, rating);
             msg = mesComment;
             return SUCCESS;
         } else {
             setCommentorFilePath("null");
             UserList ul = new UserList();
             ul.setEmailId(user_id);
-            cDao.saveComment(evidenceId, userId, ul, submissionId, getComment(), getCommentorFilePath(), rating);
+            cDao.CommantSave(evidenceId, userId, ul, submissionId, getComment(), getCommentorFilePath(), rating);
             msg = mesComment;
             return SUCCESS;
         }

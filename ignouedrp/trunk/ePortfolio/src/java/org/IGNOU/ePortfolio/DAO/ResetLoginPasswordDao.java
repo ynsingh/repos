@@ -6,9 +6,9 @@ package org.IGNOU.ePortfolio.DAO;
 
 import org.IGNOU.ePortfolio.Model.User;
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory object.
@@ -17,11 +17,12 @@ import org.hibernate.Transaction;
  */
 public class ResetLoginPasswordDao {
 
-    private SessionFactory sessionFactory;
-
-    public User ReSetPassword(long registrationId, String passwordField) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();;
+    private Session s;
+    
+    public User UserUpdateByRegistrationIdPassword(long registrationId, String passwordField) {
+      
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -43,7 +44,4 @@ public class ResetLoginPasswordDao {
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

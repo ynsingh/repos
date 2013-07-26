@@ -55,7 +55,7 @@ public class ProfileInterestAction extends ActionSupport implements ModelDriven<
 
     @Override
     public String execute() throws Exception {
-        dao.saveInterestInfo(getProInt());
+        dao.ProfileInterestSave(getProInt());
         msg = infoSaved;
         return SUCCESS;
     }

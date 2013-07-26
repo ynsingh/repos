@@ -23,7 +23,7 @@ public class CourseRegistrationAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        dao.RegProCourse(programmeId, courseCode, courseName);
+        dao.CourseSave(programmeId, courseCode, courseName);
         msg = Saved;
         return SUCCESS;
     }

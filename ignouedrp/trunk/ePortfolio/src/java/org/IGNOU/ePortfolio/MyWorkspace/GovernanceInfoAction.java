@@ -33,7 +33,7 @@ public class GovernanceInfoAction extends ActionSupport {
     }
 
     public String ShowGovernanceInfo() throws Exception {
-        setGovernanceListList(getDao().ShowGovernanceInfo(user_id));
+        setGovernanceListList(getDao().GovernanceListByUserId(user_id));
         if (GovernanceListList == null || getGovernanceListList().isEmpty()) {
             return INPUT;
         } else {
@@ -42,18 +42,18 @@ public class GovernanceInfoAction extends ActionSupport {
     }
 
     public String DeleteGovernanceInfo() throws Exception {
-        dao.DeleteGovernance(governanceId);
+        dao.GovernanceDelete(governanceId);
         msg = infoDeleted;
         return SUCCESS;
     }
 
     public String EditGovernanceInfo() throws Exception {
-        setGovernanceListList(getDao().EditGovernanceInfo(governanceId));
+        setGovernanceListList(getDao().GovernanceListByGovernanceId(governanceId));
         return SUCCESS;
     }
 
     public String UpdateGovernanceInfo() throws Exception {
-        getDao().UpdateGovernance(governanceId, userId, nameCommittee, nameUniversity, durationFrom, durationTo, responsibility, url, summary, address);
+        getDao().GovernanceUpdate(governanceId, userId, nameCommittee, nameUniversity, durationFrom, durationTo, responsibility, url, summary, address);
         msg = infoUpdated;
         return SUCCESS;
     }

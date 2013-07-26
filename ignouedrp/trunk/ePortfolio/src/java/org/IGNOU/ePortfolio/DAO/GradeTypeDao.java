@@ -28,12 +28,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class GradeTypeDao {
 
-    private SessionFactory sf;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
     @SuppressWarnings("unchecked")
-    public List<GradeTypeMaster> GradeTypeList() {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeTypeMaster> GradeTypeMasterList() {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeTypeMaster> GradeTypelist = null;
         try {
@@ -43,14 +43,13 @@ public class GradeTypeDao {
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return GradeTypelist;
     }
 
     @SuppressWarnings("unchecked")
-    public List<GradeTypeDetailsMaster> GradeTypeDetailsList(int gtId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeTypeDetailsMaster> GradeTypeDetailsMasterByGradeTypeId(int gtId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeTypeDetailsMaster> GTDetailslist = null;
         try {
@@ -60,14 +59,13 @@ public class GradeTypeDao {
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return GTDetailslist;
     }
 
     @SuppressWarnings("unchecked")
-    public List<GradeValue> GradeTypeJList(int courseId, String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeValue> GradeValueJsonListByCourseIdUserId(int courseId, String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeValue> GTDetailslist = null;
         try {
@@ -77,13 +75,12 @@ public class GradeTypeDao {
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return GTDetailslist;
     }
 
-    public GradeValue saveVal(String user_id, Integer gtdId, String str,  Integer courseId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSf().openSession();
+    public GradeValue GradeValueSave(String user_id, Integer gtdId, String str, Integer courseId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         GradeValue gv = new GradeValue();
         try {
@@ -109,31 +106,13 @@ public class GradeTypeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sessionFactory.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<GradeValue> CheckGradeVal(String facultyId, Integer gtdId, Integer instituteId, Integer programmeId, Integer courseId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
-        List<GradeValue> GradeValuelist = null;
-        try {
-            GradeValuelist = s.createQuery("from GradeValue where facultyId='" + facultyId + "'and gtdId='" + gtdId + "' and instituteId='" + instituteId + "' and programmeId='" + programmeId + "' and courseId='" + courseId + "'").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sf.close();
-        return GradeValuelist;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<GradeTypeMaster> GTList(int gtId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeTypeMaster> GradeTypeMasterListByGradeTypeId(int gtId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeTypeMaster> GradeTypelist = null;
         try {
@@ -143,31 +122,13 @@ public class GradeTypeDao {
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return GradeTypelist;
     }
 
     @SuppressWarnings("unchecked")
-    public List<GradeTypeMaster> GTVal(int gtId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
-        List<GradeTypeMaster> GradeTypelist = null;
-        try {
-            GradeTypelist = s.createQuery("from GradeTypeMaster where gtId='" + gtId + "'").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sf.close();
-        return GradeTypelist;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<GradeValue> PopulateGradeVal(String facultyId, int gtdId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeValue> GradeValueListByGradeTypeIdUserId(String facultyId, int gtdId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeValue> GradeTypelist = null;
         try {
@@ -177,31 +138,29 @@ public class GradeTypeDao {
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return GradeTypelist;
     }
 
     @SuppressWarnings("unchecked")
-    public List<GradeTypeDetailsMaster> GTDMInfo(int gradeTypeMaster) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeTypeDetailsMaster> GradeTypeDetailsMasterListByGradeTypeMasterId(int gradeTypeMasterId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeTypeDetailsMaster> gtdList = null;
         try {
-            gtdList = s.createQuery("from GradeTypeDetailsMaster where gradeTypeMaster='" + gradeTypeMaster + "'").list();
+            gtdList = s.createQuery("from GradeTypeDetailsMaster where gradeTypeMaster='" + gradeTypeMasterId + "'").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return gtdList;
     }
 
     @SuppressWarnings("unchecked")
-    public EvidenceSubmission UpdateActivitiesMarks(int submissionId, String gradesObtained, String facultyComment, String facultyAttachment) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public EvidenceSubmission EvidenceSubmissionMarksUpdate(int submissionId, String gradesObtained, String facultyComment, String facultyAttachment) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -221,66 +180,29 @@ public class GradeTypeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<GradeValue> GVInfo(String facultyId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
-        List<GradeValue> gvList = null;
-        try {
-            gvList = s.createQuery("from GradeValue where facultyId='" + facultyId + "'").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sf.close();
-        return gvList;
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public List<GradeTypeMaster> getActivityGradeSetup(int courseId, String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
-        List<GradeTypeMaster> gvList = null;
-        try {
-            gvList = s.createQuery("from GradeTypeMaster as gtm  where gtm.gtId=(select gtdm.gradeTypeMaster.gtId from GradeTypeDetailsMaster as gtdm where gtdm.gtdId=(select gv.gtdId from GradeValue as gv where gv.facultyId='" + user_id + "' and gv.courseId='" + courseId + "'))").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sf.close();
-        return gvList;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<GradeValue> PopulateGradeSetuplist(String facultyId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<GradeValue> GradeValueListByUserId(String UserId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<GradeValue> GradeTypelist = null;
         try {
-            GradeTypelist = s.createQuery("from GradeValue where user='" + facultyId + "'").list();
+            GradeTypelist = s.createQuery("from GradeValue where user='" + UserId + "'").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return GradeTypelist;
     }
 
     @SuppressWarnings("unchecked")
-    public GradeValue UpdateGradeSetupValue(int gradeValId, Integer courseId, String facultyId, Integer gtdId, String gradeValue, Date gradeDate) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public GradeValue GradeValueUpdate(int gradeValId, Integer courseId, String facultyId, Integer gtdId, String gradeValue, Date gradeDate) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -302,14 +224,8 @@ public class GradeTypeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    /**
-     * @return the sf
-     */
-    public SessionFactory getSf() {
-        return sf;
-    }
 }

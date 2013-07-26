@@ -67,7 +67,7 @@ public class ProfAffiliationAction extends ActionSupport implements ModelDriven<
     @Override
     public String execute() throws Exception {
         try {
-            dao.AddAffiliationInfo(ProfAffili);
+            dao.ProfileProAffiliationSave(ProfAffili);
         } catch (HibernateException HE) {
             return HE.toString();
         }

@@ -29,7 +29,7 @@ public class ExtraActivitiesAction extends ActionSupport implements ModelDriven<
 
     @Override
     public String execute() throws Exception {
-        dao.saveInfo(ext);
+        dao.ExtraActivitiesSave(ext);
         msg = infoSaved;
         return SUCCESS;
     }

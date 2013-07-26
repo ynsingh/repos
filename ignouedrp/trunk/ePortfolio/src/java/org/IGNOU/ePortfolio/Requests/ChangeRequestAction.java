@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.RequestDao;
 
@@ -20,7 +21,7 @@ public class ChangeRequestAction extends ActionSupport  {
     private String user_id = new UserSession().getUserInSession();
     private RequestDao dao = new RequestDao();
     private String msg, reqMsg = getText("msg.Request");
-    private String FilePath = getText("Filepath");
+    private String FilePath = ReadPropertyFile("Filepath");
     private File uploadProof;
     private String FileUpPath,uploadProofFileName;
     private FileUploadCommon fupload=new FileUploadCommon();
@@ -41,14 +42,14 @@ public class ChangeRequestAction extends ActionSupport  {
            {
            FileUpPath=FilePath+"/"+user_id+"/";
            fupload.UploadFile(uploadProof, uploadProofFileName, FileUpPath);
-           dao.saveUserRequest(user_id,requestType,reason,newRecord,new Date(),uploadProofFileName, Boolean.FALSE);
+           dao.UserPersonalRequestSave(user_id,requestType,reason,newRecord,new Date(),uploadProofFileName, Boolean.FALSE);
            msg = reqMsg;
         return SUCCESS;
         }
         else
            {
               setUploadProofFileName("null");
-               dao.saveUserRequest(user_id,requestType,reason,newRecord,new Date(),uploadProofFileName, Boolean.FALSE);
+               dao.UserPersonalRequestSave(user_id,requestType,reason,newRecord,new Date(),uploadProofFileName, Boolean.FALSE);
           return SUCCESS;
         }
     }

@@ -19,12 +19,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class TaskActivityDAO {
 
-    private SessionFactory sessionFactory;
-
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
     @SuppressWarnings("unchecked")
-    public List<EvidenceSubmission> StdEviSubmitedScoreList(String userId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<EvidenceSubmission> EvidenceSubmissionListGradeNotNullByUserId(String userId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<EvidenceSubmission> EvidStdList = null;
         try {
@@ -38,7 +38,4 @@ public class TaskActivityDAO {
         return EvidStdList;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

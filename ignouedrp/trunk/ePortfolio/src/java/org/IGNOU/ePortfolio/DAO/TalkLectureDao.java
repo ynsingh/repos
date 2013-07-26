@@ -20,11 +20,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class TalkLectureDao {
 
-    private SessionFactory sessionFactory;
-
-    public TalkLecture saveTLInfo(TalkLecture TLModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
+    public TalkLecture TalkLectureSave(TalkLecture TLModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -38,13 +38,12 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<TalkLecture> ShowTL(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public List<TalkLecture> TalkLectureListByUserId(String user_id) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -62,13 +61,12 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+           sessionFactory.close();
         }
     }
 
-    public List<TalkLecture> EditTL(long talkLectureId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public List<TalkLecture> TalkLectureEdit(long talkLectureId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -86,13 +84,12 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public TalkLecture UpdateTL(long talkLectureId, String userId, String eventType, String nameUniversity, String address, String nameEvent, String lectureTopic, String deleveredOn, String timeFrom, String timeTo, String level, String url, String description) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public TalkLecture TalkLectureUpdate(long talkLectureId, String userId, String eventType, String nameUniversity, String address, String nameEvent, String lectureTopic, String deleveredOn, String timeFrom, String timeTo, String level, String url, String description) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -118,13 +115,12 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+           sessionFactory.close();
         }
     }
 
-    public TalkLecture DeleteTL(long talkLectureId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public TalkLecture TalkLectureDelete(long talkLectureId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -140,11 +136,8 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

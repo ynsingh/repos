@@ -11,6 +11,7 @@ import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
@@ -22,7 +23,7 @@ public class EvidenceSubmissionAction extends ActionSupport {
     private EvidenceDao evdao = new EvidenceDao();
     private File stuData;
     private String stuDataFileName;
-    private String evFilePath = getText("evidenceFilePath");
+    private String evFilePath = ReadPropertyFile("Filepath");
     private String attachment;
     private String msg;
     private String infoSaved = getText("msg.infoSaved");
@@ -42,13 +43,13 @@ public class EvidenceSubmissionAction extends ActionSupport {
             attachment = evFilePath + "/" + user_id + "/";
             new FileUploadCommon().UploadFile(stuData, stuDataFileName, attachment);
             setAttachment(getStuDataFileName());
-            evdao.saveEvidenceSubmission(evidenceId, user_id, getInstructions(), attachment, getSubDate(), getSubmitted(), getPost(), getSaveDraft());
+            evdao.EvidenceSubmissionSave(evidenceId, user_id, getInstructions(), attachment, getSubDate(), getSubmitted(), getPost(), getSaveDraft());
             msg = infoSaved;
             return SUCCESS;
         } else {
             setAttachment("null");
 
-            evdao.saveEvidenceSubmission(evidenceId, user_id, getInstructions(), attachment, getSubDate(), getSubmitted(), getPost(), getSaveDraft());
+            evdao.EvidenceSubmissionSave(evidenceId, user_id, getInstructions(), attachment, getSubDate(), getSubmitted(), getPost(), getSaveDraft());
             msg = infoSaved;
             return SUCCESS;
         }

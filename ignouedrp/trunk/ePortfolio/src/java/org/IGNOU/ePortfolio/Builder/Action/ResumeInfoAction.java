@@ -32,21 +32,21 @@ public class ResumeInfoAction extends ActionSupport{
     
     public String ListResume() 
     {
-        setResumelist(getRsdao().Resumelist(getUser_id()));
+        setResumelist(getRsdao().ResumeListByUserId(getUser_id()));
         return "success";
 
     }
      
     public String ResumeDelete()
     {
-    rsdao.deleteResume(getIdResume());
+    rsdao.ResumeDelete(getIdResume());
     return SUCCESS;
     }
     
     
     public String DownloadResume() throws FileNotFoundException, IOException
     {
-     resumelist = rsdao.DetailResume(idResume);
+     resumelist = rsdao.ResumeDetailByIdResume(idResume);
      resumeName=resumelist.iterator().next().getResumeName();
      resumeType=resumelist.iterator().next().getResumeType();
      resume= resumelist.iterator().next().getResume();

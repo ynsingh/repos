@@ -19,12 +19,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class UserProgrammeDao {
 
-    private SessionFactory sessionFactory;
-
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
     @SuppressWarnings("unchecked")
-    public List<User> UserPrograme(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<User> UserListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<User> UserProlist = null;
         try {
@@ -37,8 +37,5 @@ public class UserProgrammeDao {
         sessionFactory.close();
         return UserProlist;
     }
-    
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
+   
 }

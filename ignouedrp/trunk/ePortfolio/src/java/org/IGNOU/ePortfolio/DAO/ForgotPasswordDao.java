@@ -36,7 +36,6 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
-
 import java.util.Iterator;
 import org.IGNOU.ePortfolio.Model.User;
 import org.hibernate.Query;
@@ -50,25 +49,26 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author IGNOU Team
  */
 public class ForgotPasswordDao {
-    
-    public boolean FindRegisteredUser(String email_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sf.openSession();
-        Transaction t = session.beginTransaction();
 
-        Query qr = session.createQuery("from User  where email_id='" + email_id + "'");
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+
+    public boolean FindRegisteredUserByEmailId(String email_id) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        Query qr = s.createQuery("from User  where email_id='" + email_id + "'");
         @SuppressWarnings("unchecked")
         Iterator<User> it = qr.iterate();
-        while (it.hasNext()) {        
-            sf.close();
+        while (it.hasNext()) {
+            sessionFactory.close();
             t.commit();
-            session.close();
-            return true;        
-        }  
-        sf.close();
+            s.close();
+            return true;
+        }
         t.commit();
-         session.close();
+        s.close();
+        sessionFactory.close();
         return false;
     }
-   
+
 }

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import org.IGNOU.ePortfolio.Model.Evidence;
@@ -28,17 +29,17 @@ public class EvidenceAction extends ActionSupport {
     private String assAttach, cancelReason, myAttachFileName;
     private File myAttach;
     private int gradeScale, coursesId, gradeId;
-    private String evFilePath = getText("evidenceFilePath");
+    private String evFilePath = ReadPropertyFile("Filepath");
 
     public String EvidenceSave() throws IOException {
            if (myAttach != null) {
             assAttach = evFilePath + "/" + user_id + "/";
             new FileUploadCommon().UploadFile(myAttach, myAttachFileName, assAttach);
-            evdao.saveEvidence(evTitle, instruction, myAttachFileName, user_id, openDate, closeDate, lastAcceptDate, addDateSchedule, addAnnoOdate, addtoGradebook, saveEvid, coursesId, gradeId);
+            evdao.EvidenceSave(evTitle, instruction, myAttachFileName, user_id, openDate, closeDate, lastAcceptDate, addDateSchedule, addAnnoOdate, addtoGradebook, saveEvid, coursesId, gradeId);
             return SUCCESS;
         } else {
            setAssAttach("null");
-            evdao.saveEvidence(evTitle, instruction, assAttach, user_id, openDate, closeDate, lastAcceptDate, addDateSchedule, addAnnoOdate, addtoGradebook, saveEvid, coursesId, gradeId);
+            evdao.EvidenceSave(evTitle, instruction, assAttach, user_id, openDate, closeDate, lastAcceptDate, addDateSchedule, addAnnoOdate, addtoGradebook, saveEvid, coursesId, gradeId);
             return SUCCESS;
         }
     }

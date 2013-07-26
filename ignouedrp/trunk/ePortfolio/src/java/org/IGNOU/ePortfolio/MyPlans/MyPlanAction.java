@@ -62,7 +62,7 @@ public class MyPlanAction extends ActionSupport {
 
     @Override
     public String execute() {
-        planlist = dao.Planlist(getUser_id());
+        planlist = dao.UserPlanListByUserId(getUser_id());
         return SUCCESS;
     }
 
@@ -73,18 +73,18 @@ public class MyPlanAction extends ActionSupport {
      * @author IGNOU Team
      */
     public String editPlan() {
-        setEditPlanList(getDao().EditPlanlist(planId));
+        setEditPlanList(getDao().UserPlanlistByPlanId(planId));
         return SUCCESS;
     }
 
     public String UpdatePlan() throws Exception {
-        getDao().UpdatePlanInfo(planId, user_id, PTitle, PDescription);
+        getDao().UserPlanUpdate(planId, user_id, PTitle, PDescription);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeletePlan() throws Exception {
-        getDao().DeletePlan(planId);
+        getDao().UserPlanDelete(planId);
         msg = infoDeleted;
         return SUCCESS;
     }

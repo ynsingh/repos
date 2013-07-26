@@ -29,7 +29,7 @@ public class StudentExchangeAction extends ActionSupport implements ModelDriven<
 
     @Override
     public String execute() throws Exception {
-        getDao().saveExchangeInfo(StdExchange);
+        getDao().StudentExchangeSave(StdExchange);
         msg = infoSaved;
         return SUCCESS;
     }

@@ -1,9 +1,6 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -38,14 +35,15 @@
  */
 package org.IGNOU.ePortfolio.MyResources;
 
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.FolderInfoDAO;
 import org.IGNOU.ePortfolio.Model.UserdocsFolder;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  *
@@ -58,7 +56,7 @@ public class FolderInsert extends ActionSupport implements ModelDriven<UserdocsF
     private String user_id = new UserSession().getUserInSession();
     private FolderInfoDAO finfodao = new FolderInfoDAO();
     private UserdocsFolder fModel = new UserdocsFolder();
-    private String filepath = getText("evidenceFilePath") + "/" + user_id + "/";
+    private String filepath = ReadPropertyFile("Filepath") + "/" + user_id + "/";
     private String filetype;
     private String name;
     Calendar c_Date = Calendar.getInstance();

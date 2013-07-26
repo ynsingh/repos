@@ -20,12 +20,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class FacultyGroupDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
     @SuppressWarnings("unchecked")
-    public List<UserList> MyFacultyList(String emailId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<UserList> FacultyListByEmailId(String emailId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<UserList> MyFacultyListList = null;
         try {
@@ -39,7 +39,4 @@ public class FacultyGroupDao {
         return MyFacultyListList;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

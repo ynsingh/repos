@@ -1,6 +1,4 @@
-
-
-
+package org.IGNOU.ePortfolio.DAO;
 /*
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
@@ -35,7 +33,6 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.DAO;
 
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.ProfileHonorAward;
@@ -46,18 +43,20 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
+ *
  * @version 1
  * @author IGNOU Team
  * @since 13-Oct-2011
  */
 public class HonorAwardDao {
 
-    private SessionFactory sf;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public ProfileHonorAward AddHonorInfo(ProfileHonorAward HonorModel) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSf().openSession();
+    public ProfileHonorAward ProfileHonorAwardSave(ProfileHonorAward HonorModel) throws Exception {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -74,14 +73,13 @@ public class HonorAwardDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sessionFactory.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileHonorAward> ShowInfo(String userId) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileHonorAward> ProfileHonorAwardListByUserId(String userId) throws Exception {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -105,14 +103,13 @@ public class HonorAwardDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sessionFactory.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileHonorAward> ShowInfo(long honorAwardId) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileHonorAward> ProfileHonorAwardByHonorAwardId(long honorAwardId) throws Exception {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -136,13 +133,12 @@ public class HonorAwardDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sessionFactory.close();
         }
     }
 
-    public ProfileHonorAward UpdateInfo(long honorAwardId, String userId, String haTitle, String issuer, String haDate, String haDescription) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileHonorAward ProfileHonorAwardUpdate(long honorAwardId, String userId, String haTitle, String issuer, String haDate, String haDescription) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -163,13 +159,12 @@ public class HonorAwardDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sessionFactory.close();
         }
     }
 
-    public ProfileHonorAward DeleteInfo(long honorAwardId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileHonorAward ProfileHonorAwardDelete(long honorAwardId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -189,14 +184,8 @@ public class HonorAwardDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    /**
-     * @return the sf
-     */
-    public SessionFactory getSf() {
-        return sf;
-    }
 }

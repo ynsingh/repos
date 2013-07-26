@@ -29,7 +29,7 @@ public class ThesisDissertationAction extends ActionSupport implements ModelDriv
 
     @Override
     public String execute() throws Exception {
-        dao.saveTDInfo(getTD());
+        dao.ThesisDissertationSave(getTD());
         msg = infoSaved;
         return SUCCESS;
     }

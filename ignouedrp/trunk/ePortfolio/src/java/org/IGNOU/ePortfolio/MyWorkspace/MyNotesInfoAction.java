@@ -65,7 +65,7 @@ public class MyNotesInfoAction extends ActionSupport {
     private String infoUpdated = getText("msg.infoUpdated");
 
     public String ShowNotesInfo() throws Exception {
-        noteslistlist = notesDao.MyNotesList(user_id);
+        noteslistlist = notesDao.MyNotesListByUserId(user_id);
         if (noteslistlist.isEmpty()) {
             return INPUT;
         } else {
@@ -74,18 +74,18 @@ public class MyNotesInfoAction extends ActionSupport {
     }
 
     public String EditNoteInfo() {
-        editNoteList = notesDao.EditNote(notesId);
+        editNoteList = notesDao.MyNotesListByNotesId(notesId);
         return SUCCESS;
     }
 
     public String DeleteNotesInfo() throws Exception {
-        notesDao.DeleteNotesInfo(notesId);
+        notesDao.MyNotesDelete(notesId);
         msg = infoDeleted;
         return SUCCESS;
     }
 
     public String UpdateNotesInfo() throws Exception {
-        notesDao.UpdateNote(getNotesId(), getUserId(), getNote(), getDate(), getTopic());
+        notesDao.MyNotesUpdate(getNotesId(), getUserId(), getNote(), getDate(), getTopic());
         msg = infoUpdated;
         return SUCCESS;
     }

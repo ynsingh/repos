@@ -65,7 +65,7 @@ public class CertificationAddAction extends ActionSupport implements ModelDriven
 
     @Override
     public String execute() throws Exception {
-        dao.saveCertificationInfo(pc);
+        dao.ProfileCertificationSave(pc);
         msg = infoSaved;
         return SUCCESS;
     }

@@ -29,7 +29,7 @@ public class BookChapterAction extends ActionSupport implements ModelDriven<Obje
 
     @Override
     public String execute() throws Exception {
-        dao.saveBC(getBc());
+        dao.BookChapterSave(getBc());
         msg = infoSaved;
         return SUCCESS;
     }

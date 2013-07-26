@@ -29,7 +29,7 @@ public class GovernanceAction extends ActionSupport implements ModelDriven<Objec
 
     @Override
     public String execute() throws Exception {
-        dao.saveGovernanceInfo(getGovernanceInfo());
+        dao.GovernanceSave(getGovernanceInfo());
         msg = infoSaved;
         return SUCCESS;
     }

@@ -20,11 +20,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ThesisDissertationDao {
 
-    private SessionFactory sessionFactory;
-
-    public ThesisDissertation saveTDInfo(ThesisDissertation TDModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
+    public ThesisDissertation ThesisDissertationSave(ThesisDissertation TDModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -38,13 +38,12 @@ public class ThesisDissertationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<ThesisDissertation> ShowTD(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public List<ThesisDissertation> ThesisDissertationListByUserId(String user_id) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -62,13 +61,12 @@ public class ThesisDissertationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<ThesisDissertation> EditTD(long thesisDissertationId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public List<ThesisDissertation> ThesisDissertationEdit(long thesisDissertationId) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -86,13 +84,12 @@ public class ThesisDissertationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public ThesisDissertation UpdateTD(long thesisDissertationId, String userId, String reportType, String programme, String other, String department, String nameUniversity, String cityState, String country, String thesisType, String thesisTitle, String startDate, String endDate, String outcome, String url, String abstract_) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public ThesisDissertation ThesisDissertationUpdate(long thesisDissertationId, String userId, String reportType, String programme, String other, String department, String nameUniversity, String cityState, String country, String thesisType, String thesisTitle, String startDate, String endDate, String outcome, String url, String abstract_) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -121,13 +118,12 @@ public class ThesisDissertationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public ThesisDissertation DeleteTD(long thesisDissertationId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public ThesisDissertation ThesisDissertationDelete(long thesisDissertationId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -143,11 +139,8 @@ public class ThesisDissertationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

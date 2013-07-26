@@ -30,7 +30,7 @@ public class AllowCommentAction extends ActionSupport
    
 
     public String AddStudentListToEvSub() {
-        cDao.UpdateAllowedStudent(submissionId, canComment, listStudent);
+        cDao.EvidenceSubmissionUpdateWithAllowedStudent(submissionId, canComment, listStudent);
         msg = infoSaved;
         return SUCCESS;
     }

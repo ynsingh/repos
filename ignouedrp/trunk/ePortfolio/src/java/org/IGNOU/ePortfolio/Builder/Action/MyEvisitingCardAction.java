@@ -39,7 +39,7 @@ public class MyEvisitingCardAction extends ActionSupport {
     private Map session = ActionContext.getContext().getSession();
     public String ShowEcard() throws IOException
     {
-        vcList = vcDao.VisitingCardData(user_id);
+        vcList = vcDao.VisitingCardDetailByUserId(user_id);
         
         
          {

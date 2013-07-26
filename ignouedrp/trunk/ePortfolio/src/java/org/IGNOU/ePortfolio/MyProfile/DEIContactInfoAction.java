@@ -10,6 +10,7 @@ import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
 import org.jdom2.Document;
@@ -26,9 +27,9 @@ import org.jdom2.input.SAXBuilder;
 public class DEIContactInfoAction extends ActionSupport {
 
     private String user_id = new UserSession().getUserInSession();
-    private String skey = getText("deiKey");
-    private String src_id = getText("deiScourceId");
-    private String xfPath = getText("xmlContactPath");
+    private String skey = ReadPropertyFile("deiKey");
+    private String src_id = ReadPropertyFile("deiScourceId");
+    private String xfPath = ReadPropertyFile("xmlContactPath");
     private String universityCode = "0001";
     private String msg, xmlFile, randomNumber, hashCode;
     private String RemoteContactInfo;

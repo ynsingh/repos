@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -31,7 +32,7 @@ public class NavigationLinkAction extends ActionSupport {
     private ArrayList<String> CaptionList = new ArrayList();
     private ArrayList<String> UrlList = new ArrayList();
     private String msg, fileNotFound = getText("fileNotFound");
-    private String filePath = getText("filePath.NavigationLinks");
+    private String filePath = ReadPropertyFile("Filepath");
 
     public NavigationLinkAction() {
     }
@@ -213,5 +214,4 @@ public class NavigationLinkAction extends ActionSupport {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-
 }

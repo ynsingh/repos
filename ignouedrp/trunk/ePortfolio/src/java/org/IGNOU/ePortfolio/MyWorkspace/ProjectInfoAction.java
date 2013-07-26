@@ -82,7 +82,7 @@ public class ProjectInfoAction extends ActionSupport {
     }
 
     public String ShowProjectInfo() throws Exception {
-        ProList = getDao().ShowProjectInfo(user_id);
+        ProList = getDao().ProjectsListByUserId(user_id);
         if (ProList.isEmpty()) {
             return INPUT;
         } else {
@@ -91,18 +91,18 @@ public class ProjectInfoAction extends ActionSupport {
     }
 
     public String EditProjectInfo() throws Exception {
-        ProList = dao.EditProjectInfo(projectId);
+        ProList = dao.ProjectsEdit(projectId);
         return SUCCESS;
     }
 
     public String UpdateProjectInfo() throws Exception {
-        dao.UpdateProjectInfo(projectId, userId, proName, teamSize, role, proUrl, startDate, endDate, description, agency, budget);
+        dao.ProjectsUpdate(projectId, userId, proName, teamSize, role, proUrl, startDate, endDate, description, agency, budget);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteProjectInfo() throws Exception {
-        dao.DeleteProjectInfo(projectId);
+        dao.ProjectsDelete(projectId);
         msg = infoDeleted;
         return SUCCESS;
     }

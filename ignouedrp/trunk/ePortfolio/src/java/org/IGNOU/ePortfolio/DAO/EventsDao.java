@@ -15,17 +15,18 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
  *
  * @author Amit
  */
 public class EventsDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public Events saveEvent(Events EModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Events EventsSave(Events EModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -45,8 +46,7 @@ public class EventsDao {
 
     @SuppressWarnings("unchecked")
     public List<Events> EventsList() {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String Today = sdf.format(new Date());
@@ -64,8 +64,7 @@ public class EventsDao {
 
     @SuppressWarnings("unchecked")
     public List<Events> EventsAnnounceList() {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String Today = sdf.format(new Date());
@@ -83,9 +82,8 @@ public class EventsDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Events> PostponedEventsList() {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Events> EventsPostponedList() {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Events> EventInfolist = null;
         try {
@@ -100,9 +98,8 @@ public class EventsDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Events> ArchivedEventsList() {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Events> EventsArchivedList() {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String Today = sdf.format(new Date());
@@ -119,9 +116,8 @@ public class EventsDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Events> EditEvent(long eventsId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Events> EventEditByEventId(long eventsId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Events> EventInfolist = null;
         try {
@@ -135,9 +131,8 @@ public class EventsDao {
         return EventInfolist;
     }
 
-    public Events UpdateEvents(long eventsId, String eventTitle, Date eventDateFrom, Date eventDateTo, Date createDate, Date eventDisplayDate, String venue, String address, String city, String state, String country, Integer pincode, Long phone, String emailId, String website, String description, Boolean postponed, String postponedReason) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Events EventsUpdate(long eventsId, String eventTitle, Date eventDateFrom, Date eventDateTo, Date createDate, Date eventDisplayDate, String venue, String address, String city, String state, String country, Integer pincode, Long phone, String emailId, String website, String description, Boolean postponed, String postponedReason) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -175,9 +170,8 @@ public class EventsDao {
         }
     }
 
-    public Events DeleteEvents(long eventsId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Events EventsDelete(long eventsId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -201,24 +195,4 @@ public class EventsDao {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Events> AllEventsList() {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        List<Events> EventInfolist = null;
-        try {
-            EventInfolist = s.createQuery("from Events where postponed='0' order by eventDateFrom desc").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sessionFactory.close();
-        return EventInfolist;
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

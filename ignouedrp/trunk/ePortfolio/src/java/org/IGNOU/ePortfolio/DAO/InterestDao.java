@@ -29,44 +29,46 @@ package org.IGNOU.ePortfolio.DAO;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
- *
  */
+
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.ProfileInterest;
 import org.IGNOU.ePortfolio.Model.ProfileInterestList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 
- /**
-     * Added on 1-Dec-2011
-     * @param ProfileInterestModel 
-     * @return Profile Interest Model
-     * @author IGNOU Team
-     * This is the function to Insert Profile Interest Information into database.
-     **/
+/**
+ * Added on 1-Dec-2011
+ *
+ * @param ProfileInterestModel
+ * @return Profile Interest Model
+ * @author IGNOU Team This is the function to Insert Profile Interest
+ * Information into database.
+ *
+ */
 public class InterestDao {
 
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+
     @SuppressWarnings("unchecked")
-    public ProfileInterest saveInterestInfo(ProfileInterest profileInterest) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileInterest ProfileInterestSave(ProfileInterest profileInterest) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         s.save(profileInterest);
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return profileInterest;
     }
-    
+
     @SuppressWarnings({"unchecked"})
-    public List<ProfileInterestList> InterestList(String user_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileInterestList> ProfileInterestByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -86,14 +88,13 @@ public class InterestDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
-    public List<ProfileInterestList> EditInterest(long interestId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileInterestList> ProfileInterestByIntrestId(long interestId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -113,15 +114,13 @@ public class InterestDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
-    
-    
+
     @SuppressWarnings("unchecked")
-    public ProfileInterestList DeleteInterestInfo(long interestId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileInterestList ProfileInterestDelete(long interestId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -138,14 +137,13 @@ public class InterestDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
-    public ProfileInterestList UpdateInterest(long interestId, String userId, String acadInterest, String persInterest, String techInterest, String reserInterst, String myHobbies) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileInterestList ProfileInterestUpdate(long interestId, String userId, String acadInterest, String persInterest, String techInterest, String reserInterst, String myHobbies) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -168,7 +166,9 @@ public class InterestDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
+
+    
 }

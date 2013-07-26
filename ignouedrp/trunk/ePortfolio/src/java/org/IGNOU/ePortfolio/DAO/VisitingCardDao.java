@@ -16,18 +16,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author Amit
  */
 public class VisitingCardDao {
-    private SessionFactory sessionFactory;
-
-    /**
-     * @return the sessionFactory
-     */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-    
-    public Vistingcard AddVisitingCardDetail(Vistingcard vcModel){
-    sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
-    Session s=sessionFactory.openSession();
+     private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
+    public Vistingcard VisitingCardSave(Vistingcard vcModel){
+    s=sessionFactory.openSession();
      Transaction t = null;
     t=s.beginTransaction();
     s.save(vcModel);
@@ -35,9 +28,8 @@ public class VisitingCardDao {
     return vcModel;
     }
     
-    public List<Vistingcard> VisitingCardData(String user_id){
-        sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s=sessionFactory.openSession();
+    public List<Vistingcard> VisitingCardDetailByUserId(String user_id){
+        s=sessionFactory.openSession();
         Transaction t=null;
         t=s.beginTransaction();
         List<Vistingcard> vCardList=null;
@@ -46,9 +38,8 @@ public class VisitingCardDao {
         return vCardList;
     }
     
-    public List<Vistingcard> EditVcardData(Integer visitcardId){
-    sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
-    Session s=sessionFactory.openSession();
+    public List<Vistingcard> VisitingCardEdit(Integer visitcardId){
+     s=sessionFactory.openSession();
     Transaction t=null;
     t=s.beginTransaction();
     List<Vistingcard> vacrdlist=null;
@@ -60,9 +51,8 @@ public class VisitingCardDao {
     }
     
     
-    public Vistingcard UpdateVcardDetail(Integer visitcardId,String UserId, String displayName, String designation, String company, Long mobile, Long officePh, Integer fax, String email, String websiteOff, String websitePer){
-    sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
-    Session s=sessionFactory.openSession();
+    public Vistingcard VisitingCardUpdate(Integer visitcardId,String UserId, String displayName, String designation, String company, Long mobile, Long officePh, Integer fax, String email, String websiteOff, String websitePer){
+     s=sessionFactory.openSession();
     Transaction t=null;
     t=s.beginTransaction();
     

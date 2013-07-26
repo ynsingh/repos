@@ -15,7 +15,10 @@ Version      : 1
 <%
     String role = session.getAttribute("role").toString();
 %>
-
+<s:url id="LinksID" action="ShowNavLinks" namespace="/Administrator"/>
+<s:url id="RegInsiID" action="ShowRegisteredInstitute" namespace="/Administrator"/>
+<s:url id="AllInsiID" value="/Administrator/Programmes.jsp"/>
+<s:url id="DepID" value="/Administrator/Departments.jsp"/>
 <div class="left_box">
     <% if (role.contains("admin")) {%>     
     <div class="w100 fl-l">
@@ -24,15 +27,12 @@ Version      : 1
                 <h3><a href="#">Admin Responsibilities</a></h3>
                 <div class="accordion_txt">
                     <ul>
-                        <s:url id="LinksID" action="ShowNavLinks" namespace="/Administrator"/>
-                        <s:url id="RegInsiID" action="ShowRegisteredInstitute" namespace="/Administrator"/>
-                        <s:url id="AllInsiID" value="/Administrator/Programmes.jsp"/>
-                        <s:url id="DepID" value="/Administrator/Departments.jsp"/>
+
                         <li><s:a href="%{RegInsiID}">Institutes</s:a></li>
                         <li><s:a href="%{DepID}">Department/School</s:a></li>
                         <li><s:a href="%{AllInsiID}">Programmes</s:a></li>
                         <li><s:a href="%{LinksID}">Add Other Links</s:a></li>
-                        <li><a href="<s:url value="/Administrator/UniversityLogo.jsp"/>">Change University Logo</a></li>
+                        <li><a href="<s:url value="/Administrator/HeaderChange.jsp"/>">Change Header</a></li>
                         <li><s:a action="UserReqList" namespace="/Requests">Student Requests</s:a></li>
                         </ul>
                     </div>
@@ -58,6 +58,9 @@ Version      : 1
                 <h3><a href="#">My Account</a></h3>
                 <div class="accordion_txt">
                     <ul>
+                        <li><s:a href="%{RegInsiID}">Institutes</s:a></li>
+                        <li><s:a href="%{DepID}">Department/School</s:a></li>
+                        <li><s:a href="%{AllInsiID}">Programmes</s:a></li>
                         <li>My Course</li>
                         <li>My Team</li>
                         <li>My On-going Work</li>

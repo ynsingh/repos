@@ -67,7 +67,7 @@ public class JournalInfoAction extends ActionSupport {
     }
 
     public String ShowJournalInfo() throws Exception {
-        setJListList(getDao().ShowInfo(getUser_id()));
+        setJListList(getDao().JournalListByUserId(getUser_id()));
         if (getJListList().isEmpty()) {
             return INPUT;
         } else {
@@ -76,18 +76,18 @@ public class JournalInfoAction extends ActionSupport {
     }
 
     public String EditJournalInfo() throws Exception {
-        setJListList(getDao().EditInfo(getJournalId()));
+        setJListList(getDao().JournalListByJournalId(getJournalId()));
         return SUCCESS;
     }
 
     public String UpdateJournalInfo() throws Exception {
-        getDao().UpdateInfo(getJournalId(), getUserId(), getConfType(), getResearchArea(), getAsssProject(), getProjectName(), getPaperTitle(), getNoCoauthor(), getJournalName(), getVolumeNo(), getSerialNo(), getIssnNo(), getPfrom(), getPto(), getDate(), getImpactFactor(), getAvgCitagtionIndex(), getScopus(), getLanguage(), getAffiliation(), getUrl(), getSummary(), getKey1(), getKey2(), getKey3(), getKey4(), getKey5(), getKey6(), getJournalAuthors(), getFname(), getLname());
+        getDao().JournalUpdate(getJournalId(), getUserId(), getConfType(), getResearchArea(), getAsssProject(), getProjectName(), getPaperTitle(), getNoCoauthor(), getJournalName(), getVolumeNo(), getSerialNo(), getIssnNo(), getPfrom(), getPto(), getDate(), getImpactFactor(), getAvgCitagtionIndex(), getScopus(), getLanguage(), getAffiliation(), getUrl(), getSummary(), getKey1(), getKey2(), getKey3(), getKey4(), getKey5(), getKey6(), getJournalAuthors(), getFname(), getLname());
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteJournalInfo() throws Exception {
-        getDao().DeleteInfo(getJournalId());
+        getDao().JournalDeleteByJournalId(getJournalId());
         msg = infoDeleted;
         return SUCCESS;
     }

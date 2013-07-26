@@ -54,11 +54,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ProfAffiliationDao {
 
-    private SessionFactory sf;
+    private SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;   
 
-    public ProfileProAffiliation AddAffiliationInfo(ProfileProAffiliation AffiliationModel) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileProAffiliation ProfileProAffiliationSave(ProfileProAffiliation AffiliationModel) throws Exception {
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -75,14 +75,13 @@ public class ProfAffiliationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileProAffiliation> ShowAffiliationInfo(String UserId) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileProAffiliation> ProfileProAffiliationList(String UserId) throws Exception {
+      s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -106,14 +105,13 @@ public class ProfAffiliationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileProAffiliation> EditAffiliationInfo(long proAffiliationId) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileProAffiliation> ProfileProAffiliationEdit(long proAffiliationId) throws Exception {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -137,13 +135,12 @@ public class ProfAffiliationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
-    public ProfileProAffiliation UpdateInfo(long proAffiliationId, String userId, String role, String orgBody, String vfrom, String vupto, String place, String country, String summary) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileProAffiliation ProfileProAffiliationUpdate(long proAffiliationId, String userId, String role, String orgBody, String vfrom, String vupto, String place, String country, String summary) {
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -167,13 +164,12 @@ public class ProfAffiliationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
-    public ProfileProAffiliation DeleteAffiliation(long proAffiliationId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileProAffiliation ProfileProAffiliationDelete(long proAffiliationId) {
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -197,10 +193,4 @@ public class ProfAffiliationDao {
         }
     }
 
-    /**
-     * @return the sf
-     */
-    public SessionFactory getSf() {
-        return sf;
-    }
 }

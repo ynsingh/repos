@@ -21,7 +21,7 @@ public class UserListDao {
         return sessionFactory;
     }
     
-    public List<User> StudentListAllowed(int programmeId,String emailId) {
+    public List<User> UserListByProgrammeIdUserId(int programmeId,String emailId) {
         sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         Session s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
@@ -38,8 +38,4 @@ public class UserListDao {
         return TestiUlist;
     }
 
-
-    
-    
-    
 }

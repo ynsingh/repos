@@ -6,15 +6,14 @@ package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.DAO.LoginDao;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.User;
 import org.apache.commons.lang.StringUtils;
-import org.iitk.brihaspati.modules.utils.content.RemoteAccessApi;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
 import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
 
@@ -27,12 +26,12 @@ import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
 public class RemotePassAuth extends ActionSupport {
 
     private Map session = ActionContext.getContext().getSession();
-    private String sourceid = getText("iitkScourceId");
-    private String skey = getText("iitkKey");
-    private String serverURL = getText("serverURL");
-    private String reqURL = getText("reqURL");
+    private String sourceid = ReadPropertyFile("iitkScourceId");
+    private String skey = ReadPropertyFile("iitkKey");
+    private String serverURL = ReadPropertyFile("serverURL");
+    private String reqURL = ReadPropertyFile("reqURL");
     private String encd, rand, hash;
-    private String hDir, pPath, fPath = getText("remoteUserPath"), line, enURL, hashcode, keyedHash;
+    private String hDir, pPath, fPath = ReadPropertyFile("remoteUserPath"), line, enURL, hashcode, keyedHash;
     private String email;
     private String sess;
     private List<User> userList;

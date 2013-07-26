@@ -29,7 +29,7 @@ public class MediaAddAction extends ActionSupport implements ModelDriven<Object>
 
     @Override
     public String execute() throws Exception {
-        dao.saveMedia(getMp());
+        dao.MediaPublicationSave(getMp());
         msg = infoSaved;
         return SUCCESS;
     }

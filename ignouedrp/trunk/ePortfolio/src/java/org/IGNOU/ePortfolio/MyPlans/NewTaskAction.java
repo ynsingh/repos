@@ -61,7 +61,7 @@ public class NewTaskAction extends ActionSupport implements ModelDriven<Object> 
     public String execute() {
         up.setPlanId(planId);
         nt.setUserPlan(up);
-        dao.saveTaskInfo(nt);
+        dao.UserPlanTaskSave(nt);
         msg = infoSaved;
         return SUCCESS;
     }

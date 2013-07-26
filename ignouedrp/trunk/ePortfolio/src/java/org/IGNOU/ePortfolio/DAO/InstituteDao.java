@@ -22,15 +22,15 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class InstituteDao {
 
-    private SessionFactory sf;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    @SuppressWarnings("unchecked")
+     @SuppressWarnings("unchecked")
     public List<Institute> InstituteList() {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
-        List<Institute> Institutelist = null;
+        List<Institute> Institutelist;
         try {
             Institutelist = s.createQuery("from Institute").list();
             t.commit();
@@ -42,14 +42,36 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
+        }
+    }
+    public Institute InstituteSave(Institute InstModel) throws Exception {
+        s = sessionFactory.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+            s.save(InstModel);
+            t.commit();
+            return InstModel;
+        } catch (Exception e) {
+            System.err.println("Exception Occure" + e);
+            throw new Exception(e.toString());
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sessionFactory.close();
         }
     }
 
+   
+
     @SuppressWarnings("unchecked")
-    public List<Institute> UserInstitute(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Institute> InstituteListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Institute> Institutelist = null;
@@ -64,13 +86,12 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Department> DepartmentList(Integer instituteId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Department> DepartmentListByInstituteId(Integer instituteId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Department> Deptlist = null;
@@ -85,13 +106,12 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Programme> DeptProgrammeList(Integer departmentId, String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Programme> ProgrammeListByDepartmentIdUserId(Integer departmentId, String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Programme> Programmelist = null;
         try {
@@ -105,13 +125,12 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Programme> RegUserDeptProgrammeList(Integer departmentId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Programme> ProgrammeListByDepartmentId(Integer departmentId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Programme> Programmelist = null;
         try {
@@ -125,13 +144,12 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Programme> ProgrammeList(Integer instituteId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Programme> ProgrammeListByInstituteId(Integer instituteId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Programme> Programmelist = null;
@@ -146,13 +164,12 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Programme> ProgrammeDetailsList(Integer programmeId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Programme> ProgrammeListByProgrammeId(Integer programmeId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Programme> Programmelist = null;
         try {
@@ -167,13 +184,12 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Course> CourseList(Integer programmeId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Course> CourseListByProgrammeId(Integer programmeId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Course> Courselist = null;
@@ -188,7 +204,9 @@ public class InstituteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
+
+    
 }

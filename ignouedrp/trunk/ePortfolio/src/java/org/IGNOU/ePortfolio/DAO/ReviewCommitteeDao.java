@@ -20,11 +20,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ReviewCommitteeDao {
 
-    private SessionFactory sessionFactory;
-
+    private SessionFactory sessionFactory  = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
     public ReviewCommittee saveRCInfo(ReviewCommittee RCModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -38,13 +37,12 @@ public class ReviewCommitteeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
     public List<ReviewCommittee> ShowRC(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -62,13 +60,12 @@ public class ReviewCommitteeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
     public List<ReviewCommittee> EditRC(long reviewCommitteeId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -86,13 +83,12 @@ public class ReviewCommitteeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
     public ReviewCommittee UpdateRC(long reviewCommitteeId, String userId, String committeeType, String role, String committeeName, String date, String frequency, String url, String review, byte[] minutesFile) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -117,13 +113,12 @@ public class ReviewCommitteeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
     public ReviewCommittee DeleteRC(long reviewCommitteeId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -139,11 +134,8 @@ public class ReviewCommitteeDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

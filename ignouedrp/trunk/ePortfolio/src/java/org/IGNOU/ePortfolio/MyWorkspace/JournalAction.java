@@ -29,7 +29,7 @@ public class JournalAction extends ActionSupport implements ModelDriven<Object> 
 
     @Override
     public String execute() throws Exception {
-        dao.saveInfo(getJ());
+        dao.JournalSave(getJ());
         msg = infoSaved;
         return SUCCESS;
     }

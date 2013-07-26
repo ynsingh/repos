@@ -72,7 +72,7 @@ public class TestScoreInfoAction extends ActionSupport {
     }
 
     public String ShowInfo() throws Exception {
-        ScoreList = dao.ShowTestInfo(getUser_id());
+        ScoreList = dao.ProfileTestListByUserId(getUser_id());
         if (ScoreList.isEmpty()) {
             // return SUCCESS;
             return INPUT;
@@ -83,18 +83,18 @@ public class TestScoreInfoAction extends ActionSupport {
     }
 
     public String EditInfo() throws Exception {
-        ScoreList = dao.EditTestInfo(testId);
+        ScoreList = dao.ProfileTestEdit(testId);
         return SUCCESS;
     }
 
     public String UpdateInfo() throws Exception {
-        dao.UpdateTestInfo(testId, userId, tname, score, tdate, tdescription);
+        dao.ProfileTestUpdate(testId, userId, tname, score, tdate, tdescription);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteInfo() throws Exception {
-        dao.DeleteTestInfo(getTestId());
+        dao.ProfileTestDelete(getTestId());
         msg = infoDeleted;
         return SUCCESS;
     }

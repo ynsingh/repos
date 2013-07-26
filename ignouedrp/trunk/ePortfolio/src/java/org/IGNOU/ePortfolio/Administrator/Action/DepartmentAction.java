@@ -37,7 +37,7 @@ public class DepartmentAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        dao.RegDept(Integer.valueOf(instituteId), departmentName, departmentCode, introduction, postalAddress, phoneCode, phoneNo, mobileNo, fax, deptEmailId);
+        dao.DepartmentSave(Integer.valueOf(instituteId), departmentName, departmentCode, introduction, postalAddress, phoneCode, phoneNo, mobileNo, fax, deptEmailId);
         return SUCCESS;
     }
 

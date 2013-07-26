@@ -21,7 +21,7 @@ public class EventAction extends ActionSupport implements ModelDriven<Object> {
 
     @Override
     public String execute() throws Exception {
-        evntDao.saveEvent(evnt);
+        evntDao.EventsSave(evnt);
         msg = infoSaved;
         return SUCCESS;
     }

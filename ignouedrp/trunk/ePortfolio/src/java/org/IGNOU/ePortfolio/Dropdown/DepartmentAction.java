@@ -29,7 +29,7 @@ public class DepartmentAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        DeptList = instDao.DepartmentList(Integer.valueOf(instituteId));
+        DeptList = instDao.DepartmentListByInstituteId(Integer.valueOf(instituteId));
         departmentL = new HashMap<String, String>();
         if (DeptList.isEmpty()) {
             departmentL.put("NULL", DeptNotFound);

@@ -75,7 +75,7 @@ public class AcademicInfoAction extends ActionSupport {
 
     @Override
     public String execute() {
-        dao.saveInfo(user_id, degree, university, location, fstudy, pyear, percent, division);
+        dao.ProfileAcademicSave(user_id, degree, university, location, fstudy, pyear, percent, division);
         msg = infoSaved;
         return SUCCESS;
     }

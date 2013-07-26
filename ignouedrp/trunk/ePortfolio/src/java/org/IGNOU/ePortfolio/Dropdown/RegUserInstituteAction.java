@@ -16,9 +16,9 @@ import org.IGNOU.ePortfolio.Model.Institute;
  *
  * @author vinay
  */
-public class RegUserInstituteAction extends ActionSupport{
-    
- private static final long serialVersionUID = -2223948287805083119L;
+public class RegUserInstituteAction extends ActionSupport {
+
+    private static final long serialVersionUID = -2223948287805083119L;
     private String user_id = new UserSession().getUserInSession();
     private Map<String, String> univList = null;
     private InstituteDao instDao = new InstituteDao();
@@ -26,7 +26,7 @@ public class RegUserInstituteAction extends ActionSupport{
 
     @Override
     public String execute() {
-        InstList = instDao.UserInstitute(user_id);
+        InstList = instDao.InstituteListByUserId(user_id);
         univList = new HashMap<String, String>();
         for (int i = 0; i < getInstList().size(); i++) {
             univList.put("" + InstList.get(i).getInstituteId(), InstList.get(i).getInstituteName());

@@ -8,66 +8,63 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
  * @author IGNOU Team
  */
-public class DownloadAction extends ActionSupport{
-    
-    private String evFilePath = getText("evidenceFilePath");
+public class DownloadAction extends ActionSupport {
+
+    private String evFilePath = ReadPropertyFile("Filepath");
     private int evidenceId;
     private String facultyId;
     private String assAttach;
     private InputStream fis;
     private String userId;
-     private String attachment;
+    private String attachment;
     private String commentorId;
     private String commentorFilePath;
     private String filetype;
     private String outputdownload;
-    
-    public String downloadAssignment(){
-      try{
-         
-          outputdownload=evFilePath+"/"+facultyId+"/"+assAttach;
-          filetype=assAttach.substring(assAttach.lastIndexOf("."), assAttach.length());
-          fis = new FileInputStream(new File(outputdownload));
-        }
-        catch(Exception e){
-            System.out.println("Exp"+e);
-         }
-        return SUCCESS;
-    }
-   
-    
-    public String downloadStuAtt(){
-      try{
-     
-          outputdownload=evFilePath+"/"+userId+"/"+attachment;
-           filetype=attachment.substring(attachment.lastIndexOf("."), attachment.length());
-          fis = new FileInputStream(new File(outputdownload));
-        }
-        catch(Exception e){
-            System.out.println("Exp"+e);
-                    
+
+    public String downloadAssignment() {
+        try {
+
+            outputdownload = evFilePath + "/" + facultyId + "/" + assAttach;
+            filetype = assAttach.substring(assAttach.lastIndexOf("."), assAttach.length());
+            fis = new FileInputStream(new File(outputdownload));
+        } catch (Exception e) {
+            System.out.println("Exp" + e);
         }
         return SUCCESS;
     }
-     public String downloadCmtAttachment(){
-      try{
-     
-          outputdownload=evFilePath+"/"+commentorId+"/"+commentorFilePath;
-          filetype=commentorFilePath.substring(commentorFilePath.lastIndexOf("."), commentorFilePath.length());
-          fis = new FileInputStream(new File(outputdownload));
-        }
-        catch(Exception e){
-            System.out.println("Exp"+e);
-                    
+
+    public String downloadStuAtt() {
+        try {
+
+            outputdownload = evFilePath + "/" + userId + "/" + attachment;
+            filetype = attachment.substring(attachment.lastIndexOf("."), attachment.length());
+            fis = new FileInputStream(new File(outputdownload));
+        } catch (Exception e) {
+            System.out.println("Exp" + e);
+
         }
         return SUCCESS;
     }
-   
+
+    public String downloadCmtAttachment() {
+        try {
+
+            outputdownload = evFilePath + "/" + commentorId + "/" + commentorFilePath;
+            filetype = commentorFilePath.substring(commentorFilePath.lastIndexOf("."), commentorFilePath.length());
+            fis = new FileInputStream(new File(outputdownload));
+        } catch (Exception e) {
+            System.out.println("Exp" + e);
+
+        }
+        return SUCCESS;
+    }
 
     /**
      * @return the evidenceId
@@ -222,5 +219,4 @@ public class DownloadAction extends ActionSupport{
     public void setOutputdownload(String outputdownload) {
         this.outputdownload = outputdownload;
     }
-
 }

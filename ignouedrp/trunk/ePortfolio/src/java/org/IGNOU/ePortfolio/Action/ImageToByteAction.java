@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ImageToByteAction extends ActionSupport implements ServletRequestAw
 
         byte[] imageInByte = null;
 	String userId;
-        private String Filepath=getText("Filepath");
+        private String Filepath=ReadPropertyFile("Filepath");
  
 	private HttpServletRequest servletRequest;
  

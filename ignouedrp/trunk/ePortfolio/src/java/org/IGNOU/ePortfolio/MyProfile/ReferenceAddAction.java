@@ -70,7 +70,7 @@ public class ReferenceAddAction extends ActionSupport implements ModelDriven<Obj
 
     @Override
     public String execute() throws Exception {
-        dao.SaveReferenceInfo(Ref);
+        dao.ProfileReferenceSave(Ref);
         msg = infoSaved;
         return SUCCESS;
     }

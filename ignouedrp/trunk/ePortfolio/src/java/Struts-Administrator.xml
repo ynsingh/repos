@@ -90,7 +90,7 @@
         </action>
         -->
         <action name="AddDepartment" class="org.IGNOU.ePortfolio.Administrator.Action.DepartmentAction">
-            <result name="success">Departments.jsp</result>
+            <result name="success" type="redirect">Departments.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
             <result name="input">DepartmentAdd.jsp</result>
         </action>    
@@ -114,9 +114,9 @@
                 </param>
             </interceptor-ref>
             <interceptor-ref name="defaultStack"></interceptor-ref> 
-            <result name="success">UniversityLogo.jsp</result>
+            <result name="success">HeaderChange.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
-            <result name="input">./UniversityLogo.jsp</result>
+            <result name="input">./HeaderChange.jsp</result>
         </action>    
         <action name="AddNavigationLink" class="org.IGNOU.ePortfolio.Administrator.Action.NavigationLinkAction" method="AddOthersLink">
             <result name="success" type="redirectAction">ShowNavLinks</result>

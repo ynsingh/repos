@@ -11,10 +11,10 @@
  *  conditions are met:
  *
  *  Redistributions of source code must retain the above copyright
- *  notice, this  list of conditions and the following disclaimer.
+ *  notice, this  UserDocsListByUserId of conditions and the following disclaimer.
  *
  *  Redistribution in binary form must reproducuce the above copyright
- *  notice, this list of conditions and the following disclaimer in
+ *  notice, this UserDocsListByUserId of conditions and the following disclaimer in
  *  the documentation and/or other materials provided with the
  *  distribution.
  *
@@ -46,8 +46,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.Model.UserDocsList;
 import org.IGNOU.ePortfolio.DAO.FileDAO;
+import org.IGNOU.ePortfolio.Model.UserDocsList;
 import org.apache.log4j.Logger;
 
 /**
@@ -75,25 +75,25 @@ public class FileListAction extends ActionSupport {
     private String infoUpdated = getText("msg.infoUpdated");
 
     public String fetch() {
-        imagelistlist = dao.list(user_id);
+        imagelistlist = dao.UserDocsListByUserId(user_id);
         return "success";
 
     }
 
     public String delete() {
         DeleteFile();
-        dao.delete(getFileid());
+        dao.UserDocsDeleteByFileId(getFileid());
         msg = infoDeleted;
         return SUCCESS;
     }
 
     public String edit() {
-        imagelistlist = dao.DetailFetch(getFileid());
+        imagelistlist = dao.UserDocsListByFileId(getFileid());
         return SUCCESS;
     }
 
     public String update() {
-        imagelistlist = dao.DetailFetch(getFileid());
+        imagelistlist = dao.UserDocsListByFileId(getFileid());
         filename1 = (imagelistlist.iterator().next().getFilename());
         filepath1 = (imagelistlist.iterator().next().getFilepath());
         filetype = imagelistlist.iterator().next().getFiletype();
@@ -104,9 +104,9 @@ public class FileListAction extends ActionSupport {
         }
         File oldfile = new File(filepathN);
 
-        dao.Update(getFileid(), getFilename(), getDescription(), getFiledate());
+        dao.UserDocsUpdate(getFileid(), getFilename(), getDescription(), getFiledate());
 
-        imagelistlist = dao.DetailFetch(getFileid());
+        imagelistlist = dao.UserDocsListByFileId(getFileid());
         filename = imagelistlist.iterator().next().getFilename();
         filepath = imagelistlist.iterator().next().getFilepath();
         filetype = imagelistlist.iterator().next().getFiletype();
@@ -121,7 +121,7 @@ public class FileListAction extends ActionSupport {
     }
 
     public boolean DeleteFile() {
-        imagelistlist = dao.DetailFetch(getFileid());
+        imagelistlist = dao.UserDocsListByFileId(getFileid());
         filename = imagelistlist.iterator().next().getFilename();
         filepath = imagelistlist.iterator().next().getFilepath();
         filetype = imagelistlist.iterator().next().getFiletype();
@@ -141,7 +141,7 @@ public class FileListAction extends ActionSupport {
 
     public String download() throws IOException {
         try {
-            imagelistlist = dao.DetailFetch(getFileid());
+            imagelistlist = dao.UserDocsListByFileId(getFileid());
             filename = imagelistlist.iterator().next().getFilename();
             filepath = imagelistlist.iterator().next().getFilepath();
             filetype = imagelistlist.iterator().next().getFiletype();

@@ -34,11 +34,11 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
-import org.IGNOU.ePortfolio.Model.User;
 import org.IGNOU.ePortfolio.Model.PersonalInfo;
+import org.IGNOU.ePortfolio.Model.User;
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory object.
@@ -49,39 +49,13 @@ import org.hibernate.SessionFactory;
  */
 public class RegistrationDao {
 
-//    @SuppressWarnings("unchecked")
-//    public StudentRegistration saveInfo(StudentRegistration stRegModel) {
-//        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-//        Session session = sf.openSession();
-//        session.beginTransaction();
-//        
-//        User user = new User();
-//        user.setEmailId(stRegModel.getEmailId());
-//        user.setPassword(stRegModel.getPassword());
-//        user.setRole(stRegModel.getRole());
-//        user.setFname(stRegModel.getFname());
-//        user.setLname(stRegModel.getLname());
-//        user.setProgrammeId(Integer.parseInt(stRegModel.getPrograme()));
-//        user.setInstituteId(Integer.parseInt(stRegModel.getUnivName()));
-//        user.setUnivRegNo(stRegModel.getUnivRegNo());
-//        session.save(user);
-//        
-//        PersonalInfo pi = new PersonalInfo();
-//        pi.setEmailId(stRegModel.getEmailId());
-//        pi.setFirstName(stRegModel.getFname()+" "+stRegModel.getMname());
-//        pi.setLastName(stRegModel.getLname());
-//        session.save(pi);
-//        
-//        session.save(stRegModel);
-//        session.getTransaction().commit();
-//        session.close();
-//        sf.close();
-//        return stRegModel;
-//    }
+        private  SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+       private  Session session;
+       
+
      @SuppressWarnings("unchecked")
-    public User saveRegistration(User stRegModel) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sf.openSession();
+    public User UserSaveByRegModel(User stRegModel) {
+        session = sf.openSession();
         session.beginTransaction();
         
         PersonalInfo pi = new PersonalInfo();

@@ -13,9 +13,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.Model.PersonalInfo;
 import org.IGNOU.ePortfolio.DAO.PersonalInfoDao;
+import org.IGNOU.ePortfolio.Model.PersonalInfo;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
 import org.jdom2.Document;
@@ -43,9 +44,9 @@ public class PersonalInfoAction extends ActionSupport {
     private String msg;
     private String infoUpdated = getText("msg.infoUpdated");
     /*Extra Variables used in Remote Access */
-    private String skey = getText("deiKey");
-    private String src_id = getText("deiScourceId");
-    private String xfPath = getText("xmlStudentPath");
+    private String skey = ReadPropertyFile("deiKey");
+    private String src_id = ReadPropertyFile("deiScourceId");
+    private String xfPath = ReadPropertyFile("xmlStudentPath");
     private String universityCode = "0001";
     private String xmlFile, RemotePersonalInfo, studentName, dob, UID, enrollmentNo, hindiName, hindiFatherName, hindiMotherName;
     private String randomNumber, hashCode;
@@ -55,7 +56,7 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     public String ShowPersonalInfo() {
-        setPersonalListList(getDao().PersonalList(getUser_id()));
+        setPersonalListList(getDao().PersonalInfoList(getUser_id()));
         if (getPersonalListList().isEmpty()) {
             try {
                 getDEIPersonalInfo();
@@ -68,12 +69,12 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     public String EditPersonal() {
-        setPersonalListList(getDao().EditList(getPersonalInfoId()));
+        setPersonalListList(getDao().PersonalInfoEdit(getPersonalInfoId()));
         return SUCCESS;
     }
 
     public String UpdatePersonalInformation() {
-        dao.UpdatePersonal(personalInfoId, emailId, firstName, lastName, fatherName, motherName, otherGuardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
+        dao.PersonalInfoUpdate(personalInfoId, emailId, firstName, lastName, fatherName, motherName, otherGuardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
         msg = infoUpdated;
         return SUCCESS;
     }

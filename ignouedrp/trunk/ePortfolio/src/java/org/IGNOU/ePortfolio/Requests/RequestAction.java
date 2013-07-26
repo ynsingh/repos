@@ -42,21 +42,21 @@ public class RequestAction extends ActionSupport {
 
     /*List of all user's Request*/
     public String UserRequestList() throws Exception {
-        UsrReqList = dao.userRequestList();
+        UsrReqList = dao.UserPersonalRequestList();
         Headtitle = "New Requests";
         return SUCCESS;
     }
 
     /*Edit User Personal Information Individually by Admin*/
     public String EditUserDetails() throws Exception {
-        personalInfoList = dao.EditPersonalInfo(requestorId);
-        UsrReqList = dao.RequestInfoList(requestId);
+        personalInfoList = dao.PersonalInfoEdit(requestorId);
+        UsrReqList = dao.UserPersonalRequestListByRequestId(requestId);
         return SUCCESS;
     }
 
     /*Update User Personal Information Individually by Admin.*/
     public String UpdateUserDetials() throws Exception {
-        personalInfoList = dao.EditPersonalInfo(requestorId);
+        personalInfoList = dao.PersonalInfoEdit(requestorId);
         JSONObject JsonObject = new JSONObject();
         JsonObject.put("firstName", personalInfoList.iterator().next().getFirstName());
         JsonObject.put("lastName", personalInfoList.iterator().next().getLastName());
@@ -76,12 +76,12 @@ public class RequestAction extends ActionSupport {
         JsonObject.put("nationality", personalInfoList.iterator().next().getNationality());
         recordArchive = JsonObject.toString();
         // recordArchive = "Temp Value";
-        dao.UpdatePersonalInfo(requestId, recordArchive, personalInfoList.iterator().next().getPersonalInfoId(), requestorId, firstName, lastName, fatherName, motherName, otherGuardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
+        dao.PersonalInfoUpdate(requestId, recordArchive, personalInfoList.iterator().next().getPersonalInfoId(), requestorId, firstName, lastName, fatherName, motherName, otherGuardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
         return SUCCESS;
     }
 
     public String UserRequestUpdatedList() throws Exception {
-        UsrReqList = dao.userRequestUpdatedList();
+        UsrReqList = dao.UserPersonalRequestListProcessed();
         if (UsrReqList.isEmpty()) {
             msg = noRequestFound;
         }

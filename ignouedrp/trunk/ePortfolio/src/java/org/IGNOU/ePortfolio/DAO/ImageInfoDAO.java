@@ -1,9 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
+
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -44,21 +42,24 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
-     * saveInfo This is the function to Save information of Files.
-    
-     * @author IGNOU Team
-     */
+ * saveInfo This is the function to Save information of Files.
+ *
+ * @author IGNOU Team
+ */
 public class ImageInfoDAO {
 
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+
     public Userdocs saveInfo(Userdocs obImageModel) {
-        SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(obImageModel);
-        session.getTransaction().commit();
-        session.close();
+        s = sessionFactory.openSession();
+        s.beginTransaction();
+        s.save(obImageModel);
+        s.getTransaction().commit();
+        s.close();
         sessionFactory.close();
         return obImageModel;
 
     }
+
 }

@@ -34,7 +34,7 @@ public class DeleteAction extends ActionSupport {
     }
 
     public String DeleteAcademicInfo() {
-        getDao().DeleteAcademicInformation(getAcademicInfoId());
+        getDao().ProfileAcademicDelete(getAcademicInfoId());
         msg = infoDeleted;
         return SUCCESS;
     }

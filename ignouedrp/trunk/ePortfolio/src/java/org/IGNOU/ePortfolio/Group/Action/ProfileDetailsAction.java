@@ -31,7 +31,7 @@ public class ProfileDetailsAction extends ActionSupport {
     }
     
     public String PeerGroupProfileDetails() throws Exception {
-        ProfileDetailsList = dao.ProfileDetailsDao(emailId);
+        ProfileDetailsList = dao.UserListDetailByUserId(emailId);
         if (ProfileDetailsList.iterator().next().getProfileAcademics().isEmpty()) {
             AcademicList = "NULL";
         }

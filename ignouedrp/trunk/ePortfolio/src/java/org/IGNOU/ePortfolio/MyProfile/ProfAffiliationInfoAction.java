@@ -69,7 +69,7 @@ public class ProfAffiliationInfoAction extends ActionSupport {
     }
 
     public String ShowAffiliationInfo() throws Exception {
-        AffiliationList = dao.ShowAffiliationInfo(user_id);
+        AffiliationList = dao.ProfileProAffiliationList(user_id);
         if (AffiliationList.isEmpty()) {
             return INPUT;
         } else {
@@ -78,18 +78,18 @@ public class ProfAffiliationInfoAction extends ActionSupport {
     }
 
     public String EditAffiliationInfo() throws Exception {
-        AffiliationList = dao.EditAffiliationInfo(proAffiliationId);
+        AffiliationList = dao.ProfileProAffiliationEdit(proAffiliationId);
         return SUCCESS;
     }
 
     public String UpdateAffiliationInfo() throws Exception {
-        getDao().UpdateInfo(proAffiliationId, userId, role, orgBody, vfrom, vupto, place, country, summary);
+        getDao().ProfileProAffiliationUpdate(proAffiliationId, userId, role, orgBody, vfrom, vupto, place, country, summary);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteAffiliationInfo() throws Exception {
-        dao.DeleteAffiliation(proAffiliationId);
+        dao.ProfileProAffiliationDelete(proAffiliationId);
         msg = infoDeleted;
         return SUCCESS;
     }

@@ -71,7 +71,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
     @SuppressWarnings("unchecked")
     public String LoginCheck() throws IOException {
 
-        userList = updao.UserPrograme(email_id);
+        userList = updao.UserListByUserId(email_id);
         if (userList.isEmpty()) {
             PropertyConfigurator.configure("log4j.properties");
             //DOMConfigurator.configure("log4j.xml");

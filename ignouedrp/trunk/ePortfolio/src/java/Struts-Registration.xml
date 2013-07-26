@@ -37,7 +37,7 @@ Version :   1
             </result>
         </action>         
         <action name="AddInst" class="org.IGNOU.ePortfolio.Registration.InstituteRegAction">
-            <result name="success">../Welcome-Index.jsp</result>
+            <result name="success" type="redirectAction">ShowRegisteredInstitute</result>
             <result name="error">./error.jsp</result>
             <result name="input">./InstituteRegistration.jsp</result>
         </action>

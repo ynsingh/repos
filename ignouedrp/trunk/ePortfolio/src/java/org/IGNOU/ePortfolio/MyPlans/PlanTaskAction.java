@@ -68,7 +68,7 @@ public class PlanTaskAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        setTasklist(getDao().TaskList(planId));
+        setTasklist(getDao().UserPlanTaskListByPlanId(planId));
         return SUCCESS;
     }
 
@@ -76,7 +76,7 @@ public class PlanTaskAction extends ActionSupport {
      * Added on 24 Aug, 2011
      */
     public String EditTask() {
-        setEditTask(getDao().EditTaskList(taskId));
+        setEditTask(getDao().UserPlanTaskEdit(taskId));
         return SUCCESS;
     }
 
@@ -84,13 +84,13 @@ public class PlanTaskAction extends ActionSupport {
      * Calculating System Current Date End
      */
     public String UpdateTask() {
-        getDao().UpdateTask(taskId, TTitle, TDescription, new Date().toString(), status);
+        getDao().UserPlanTaskUpdate(taskId, TTitle, TDescription, new Date().toString(), status);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteTask() {
-        getDao().DeletePlanTask(taskId);
+        getDao().UserPlanTaskDelete(taskId);
         msg = infoDeleted;
         return SUCCESS;
     }

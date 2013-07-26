@@ -25,11 +25,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class BookChapterDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public BookChapter saveBC(BookChapter BCModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public BookChapter BookChapterSave(BookChapter BCModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -57,9 +57,8 @@ public class BookChapterDao {
         }
     }
 
-    public List<BookChapter> ShowBC(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<BookChapter> BookChapterListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -83,9 +82,8 @@ public class BookChapterDao {
         }
     }
 
-    public List<BookChapter> EditBC(long bookChapterId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<BookChapter> BookChapterListByBookChapterId(long bookChapterId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -108,9 +106,8 @@ public class BookChapterDao {
         }
     }
 
-    public BookChapter DeleteBC(long bookChapterId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public BookChapter BookChapterDeleteByBookChapterId(long bookChapterId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -127,13 +124,12 @@ public class BookChapterDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public BookChapter UpdateBC(Long bookChapterId, String userId, String bcType, String role, String title, Integer noCoauthor, String publisher, String isbn, String publishedOn, Integer PFrom, Integer PTo, String language, String affiliation, String url, String summary, Set<BookChapterAuthor> bookChapterAuthors, ArrayList<String> fname, ArrayList<String> lname) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public BookChapter BookChapterUpdate(Long bookChapterId, String userId, String bcType, String role, String title, Integer noCoauthor, String publisher, String isbn, String publishedOn, Integer PFrom, Integer PTo, String language, String affiliation, String url, String summary, Set<BookChapterAuthor> bookChapterAuthors, ArrayList<String> fname, ArrayList<String> lname) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -154,15 +150,6 @@ public class BookChapterDao {
             if (null != UpdateInfo) {
                 s.update(UpdateInfo);
             }
-//            BookChapterAuthor BCA = new BookChapterAuthor();
-//            for (int i = 0; i < BCModel.getFname().size(); i++) {
-//                BCA.setBookChapter(BCModel);
-//                BCA.setFname(BCModel.getFname().get(i));
-//                BCA.setLname(BCModel.getLname().get(i));
-//                s.save(BCA);
-//                s.flush();
-//                s.clear();
-//            }
             t.commit();
             return UpdateInfo;
         } catch (Throwable ex) {
@@ -172,15 +159,8 @@ public class BookChapterDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

@@ -24,12 +24,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ProgrammeCourseDao {
 
-    private SessionFactory sessionFactory;
-
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+    
     @SuppressWarnings("unchecked")
-    public List<Institute> univList(int instituteId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Institute> InstituteListByInstituteId(int instituteId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Institute> institutelist = null;
         try {
@@ -49,9 +49,8 @@ public class ProgrammeCourseDao {
 
 
     @SuppressWarnings("unchecked")
-    public List<Programme> CourseProList(int programmeId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Programme> ProgrammeDetailByProgrammeId(int programmeId) {
+       s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Programme> Programmelist = null;
         try {
@@ -71,9 +70,8 @@ public class ProgrammeCourseDao {
 
 
     @SuppressWarnings("unchecked")
-    public List<Course> CorProInsList(int courseId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Course> CourseDetailByCourseId(int courseId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Course> Courcelist = null;
         try {
@@ -92,9 +90,8 @@ public class ProgrammeCourseDao {
     }
 
 
-    public Programme RegDeptProgramme(int departmentId, int instituteId, String programmeName, String programmeCode, Integer duration, String overview) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Programme ProgrammeSave(int departmentId, int instituteId, String programmeName, String programmeCode, Integer duration, String overview) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         Institute inst = new Institute();
         Department dept = new Department();
@@ -126,9 +123,8 @@ public class ProgrammeCourseDao {
      * Course Dao
      */
 
-    public Course RegProCourse(Integer programmeId, String courseCode, String courseName) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Course CourseSave(Integer programmeId, String courseCode, String courseName) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         Programme pro = new Programme();
         try {
@@ -152,7 +148,4 @@ public class ProgrammeCourseDao {
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

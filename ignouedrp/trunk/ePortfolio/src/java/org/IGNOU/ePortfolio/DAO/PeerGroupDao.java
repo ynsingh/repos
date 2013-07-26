@@ -20,12 +20,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class PeerGroupDao {
 
-    private SessionFactory sessionFactory;
-
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();;
+    private Session s ;
     @SuppressWarnings("unchecked")
-    public List<UserList> PeerGroupList(String emailId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<UserList> UserListPeerByuserId(String emailId) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<UserList> PeerGroupList = null;
         try {
@@ -40,9 +39,8 @@ public class PeerGroupDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<UserList> ProfileDetailsDao(String emailId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<UserList> UserListDetailByUserId(String emailId) {
+         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<UserList> PeerGroupList = null;
         try {
@@ -54,9 +52,5 @@ public class PeerGroupDao {
         s.close();
         sessionFactory.close();
         return PeerGroupList;
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 }

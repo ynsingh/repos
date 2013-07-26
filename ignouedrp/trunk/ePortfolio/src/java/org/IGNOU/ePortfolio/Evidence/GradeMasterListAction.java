@@ -25,7 +25,7 @@ public class GradeMasterListAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        gradeMasterList = gradeDao.GradeTypeList();
+        gradeMasterList = gradeDao.GradeTypeMasterList();
         gradeL = new HashMap<String, String>();
         if (gradeMasterList.isEmpty()) {
             gradeL.put("NULL", getGradeNotFound());

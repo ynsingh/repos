@@ -22,7 +22,7 @@ public class UploadResumeAction extends ActionSupport implements ModelDriven<Res
        
     public String UploadResume() throws Exception {
          
-         rsdao.saveResume(res);
+         rsdao.ResumeSave(res);
          return SUCCESS;
      }    
     

@@ -29,7 +29,7 @@ public class TalkLectureAddAction extends ActionSupport implements ModelDriven<O
 
     @Override
     public String execute() throws Exception {
-        dao.saveTLInfo(getTlModel());
+        dao.TalkLectureSave(getTlModel());
         msg = infoSaved;
         return SUCCESS;
     }

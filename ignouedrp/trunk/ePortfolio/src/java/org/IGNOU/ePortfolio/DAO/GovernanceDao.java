@@ -13,7 +13,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
  *
  * @author IGNOU Team
  * @version 1
@@ -21,11 +22,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class GovernanceDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public Governance saveGovernanceInfo(Governance GovernanceModel) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public Governance GovernanceSave(Governance GovernanceModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -39,13 +40,12 @@ public class GovernanceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<Governance> ShowGovernanceInfo(String user_id) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public List<Governance> GovernanceListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -64,13 +64,12 @@ public class GovernanceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public Governance DeleteGovernance(long governanceId) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public Governance GovernanceDelete(long governanceId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -87,13 +86,12 @@ public class GovernanceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<Governance> EditGovernanceInfo(long governanceId) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public List<Governance> GovernanceListByGovernanceId(long governanceId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -112,13 +110,12 @@ public class GovernanceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public Governance UpdateGovernance(long governanceId, String userId, String nameCommittee, String nameUniversity, String durationFrom, String durationTo, String responsibility, String url, String summary, String address) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public Governance GovernanceUpdate(long governanceId, String userId, String nameCommittee, String nameUniversity, String durationFrom, String durationTo, String responsibility, String url, String summary, String address) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -145,18 +142,8 @@ public class GovernanceDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    /**
-     * @param sessionFactory the sessionFactory to set
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

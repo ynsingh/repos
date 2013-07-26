@@ -36,7 +36,7 @@ public class UnlikeUndoAction extends ActionSupport{
      private String userId;
      
      public String Unlike() throws ParseException{
-          likedislikelist=ldDao.LikeDislikeCheck(evidenceSubId, commentId);
+          likedislikelist=ldDao.LikeDislikeListByEvidenceIdCommentId(evidenceSubId, commentId);
           likeCount1=likedislikelist.iterator().next().getLikeCount();
           dislikeCount1=likedislikelist.iterator().next().getDislikeCount();
           userDetail1=likedislikelist.iterator().next().getUserDetail();
@@ -46,12 +46,12 @@ public class UnlikeUndoAction extends ActionSupport{
           userDetail=jsonlike.toString();
           likeCount=likeCount1-1;
           dislikeCount=dislikeCount1;
-          ldDao.UpdateLikeDislike(likeDislikeId, evidenceSubId, commentId, likeCount, dislikeCount, userDetail);
+          ldDao.LikeDislikeUpdate(likeDislikeId, evidenceSubId, commentId, likeCount, dislikeCount, userDetail);
        return SUCCESS;
      }    
       
      public String UndoDislike() throws ParseException{
-          likedislikelist=ldDao.LikeDislikeCheck(evidenceSubId, commentId);
+          likedislikelist=ldDao.LikeDislikeListByEvidenceIdCommentId(evidenceSubId, commentId);
           likeCount1=likedislikelist.iterator().next().getLikeCount();
           dislikeCount1=likedislikelist.iterator().next().getDislikeCount();
           userDetail1=likedislikelist.iterator().next().getUserDetail();
@@ -61,7 +61,7 @@ public class UnlikeUndoAction extends ActionSupport{
           userDetail=jsonlike.toString();
           dislikeCount=dislikeCount1-1;
          likeCount=likeCount1;
-          ldDao.UpdateLikeDislike(likeDislikeId, evidenceSubId, commentId, likeCount, dislikeCount, userDetail);
+          ldDao.LikeDislikeUpdate(likeDislikeId, evidenceSubId, commentId, likeCount, dislikeCount, userDetail);
     
      
      return SUCCESS;

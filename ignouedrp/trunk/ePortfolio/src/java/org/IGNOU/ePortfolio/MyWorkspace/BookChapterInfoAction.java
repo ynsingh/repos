@@ -54,7 +54,7 @@ public class BookChapterInfoAction extends ActionSupport {
     }
 
     public String ShowBCInfo() throws Exception {
-        BCListList = dao.ShowBC(user_id);
+        BCListList = dao.BookChapterListByUserId(user_id);
         if (BCListList.isEmpty()) {
             return INPUT;
         } else {
@@ -63,18 +63,18 @@ public class BookChapterInfoAction extends ActionSupport {
     }
 
     public String EditBCInfo() throws Exception {
-        setBCListList(getDao().EditBC(getBookChapterId()));
+        setBCListList(getDao().BookChapterListByBookChapterId(getBookChapterId()));
         return SUCCESS;
     }
 
     public String UpdateBCInfo() throws Exception {
-        getDao().UpdateBC(getBookChapterId(), getUserId(), getBcType(), getRole(), getTitle(), getNoCoauthor(), getPublisher(), getIsbn(), getPublishedOn(), getPFrom(), getPTo(), getLanguage(), getAffiliation(), getUrl(), getSummary(), getBookChapterAuthors(), getFname(), getLname());
+        getDao().BookChapterUpdate(getBookChapterId(), getUserId(), getBcType(), getRole(), getTitle(), getNoCoauthor(), getPublisher(), getIsbn(), getPublishedOn(), getPFrom(), getPTo(), getLanguage(), getAffiliation(), getUrl(), getSummary(), getBookChapterAuthors(), getFname(), getLname());
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteBCInfo() throws Exception {
-        getDao().DeleteBC(getBookChapterId());
+        getDao().BookChapterDeleteByBookChapterId(getBookChapterId());
         msg = infoDeleted;
         return SUCCESS;
     }

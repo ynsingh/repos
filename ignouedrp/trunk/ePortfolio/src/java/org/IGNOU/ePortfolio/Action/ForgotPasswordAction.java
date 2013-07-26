@@ -37,6 +37,7 @@ package org.IGNOU.ePortfolio.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import java.util.Random;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.DAO.ForgotPasswordDao;
 import org.IGNOU.ePortfolio.DAO.ResetLoginPasswordDao;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
@@ -64,18 +65,18 @@ public class ForgotPasswordAction extends ActionSupport {
     
     
     public String CheckRegisteredUser() throws Exception {
-        From=getText("mailFrom");
-        Password=getText("mailPassword");
+        From=ReadPropertyFile("mailFrom");
+        Password=ReadPropertyFile("mailPassword");
         
-        if (fpDao.FindRegisteredUser(email_id)) {
+        if (fpDao.FindRegisteredUserByEmailId(email_id)) {
             to=getEmail_id();
-            userList=updao.UserPrograme(email_id);
+            userList=updao.UserListByUserId(email_id);
             registrationId=userList.iterator().next().getRegistrationId();
             Random rand = new Random();
             int num = rand.nextInt(10000);
             recoverpassword="eport"+num;
             pwdHash=DigestUtils.md5Hex(recoverpassword);
-            dao.ReSetPassword(registrationId, pwdHash);
+            dao.UserUpdateByRegistrationIdPassword(registrationId, pwdHash);
             subject="Recovered Password";
              msg="Your Login Details for ePortfolio with New Password"
                      +"\n UserName: "+getEmail_id()+

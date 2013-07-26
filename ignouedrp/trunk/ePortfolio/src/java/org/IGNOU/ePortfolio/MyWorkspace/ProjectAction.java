@@ -67,7 +67,7 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Object> 
 
     @Override
     public String execute() throws Exception {
-        dao.AddProjectInfo(p);
+        dao.ProjectsSave(p);
         msg = infoSaved;
         return SUCCESS;
     }

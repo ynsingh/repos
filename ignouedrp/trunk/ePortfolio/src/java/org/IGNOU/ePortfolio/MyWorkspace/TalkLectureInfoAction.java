@@ -42,7 +42,7 @@ public class TalkLectureInfoAction extends ActionSupport {
     }
 
     public String ShowTLInfo() throws Exception {
-        setTLList(getDao().ShowTL(getUser_id()));
+        setTLList(getDao().TalkLectureListByUserId(getUser_id()));
         if (getTLList().isEmpty()) {
             return INPUT;
         } else {
@@ -51,18 +51,18 @@ public class TalkLectureInfoAction extends ActionSupport {
     }
 
     public String EditTLInfo() throws Exception {
-        setTLList(getDao().EditTL(getTalkLectureId()));
+        setTLList(getDao().TalkLectureEdit(getTalkLectureId()));
         return SUCCESS;
     }
 
     public String UpdateTLInfo() throws Exception {
-        getDao().UpdateTL(getTalkLectureId(), getUserId(), getEventType(), getNameUniversity(), getAddress(), getNameEvent(), getLectureTopic(), getDeleveredOn(), getTimeFrom(), getTimeTo(), getLevel(), getUrl(), getDescription());
+        getDao().TalkLectureUpdate(getTalkLectureId(), getUserId(), getEventType(), getNameUniversity(), getAddress(), getNameEvent(), getLectureTopic(), getDeleveredOn(), getTimeFrom(), getTimeTo(), getLevel(), getUrl(), getDescription());
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteTLInfo() throws Exception {
-        getDao().DeleteTL(getTalkLectureId());
+        getDao().TalkLectureDelete(getTalkLectureId());
         msg = infoDeleted;
         return SUCCESS;
     }

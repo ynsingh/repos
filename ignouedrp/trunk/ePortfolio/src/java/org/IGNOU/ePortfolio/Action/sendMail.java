@@ -44,15 +44,16 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class sendMail extends ActionSupport{
 
-    private String SMTP_HOST_NAME = getText("smtpHost");
-    private String SMTP_PORT = getText("smtpPort");
-    private String SMTP_AUTH_USER = getText("mailUser");
-    private String SMTP_AUTH_PWD = getText("mailPassword");
+    private String SMTP_HOST_NAME = ReadPropertyFile("smtpHost");
+    private String SMTP_PORT = ReadPropertyFile("smtpPort");
+    private String SMTP_AUTH_USER = ReadPropertyFile("mailUser");
+    private String SMTP_AUTH_PWD = ReadPropertyFile("mailPassword");
     private String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     final Logger logger = Logger.getLogger(this.getClass());
 

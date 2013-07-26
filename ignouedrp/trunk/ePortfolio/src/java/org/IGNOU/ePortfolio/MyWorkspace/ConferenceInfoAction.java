@@ -69,7 +69,7 @@ public class ConferenceInfoAction extends ActionSupport {
     }
 
     public String ShowConfInfo() throws Exception {
-        ConfListList = dao.ShowConf(user_id);
+        ConfListList = dao.ConferenceListByUserId(user_id);
         if (ConfListList.isEmpty()) {
             return INPUT;
         } else {
@@ -78,18 +78,18 @@ public class ConferenceInfoAction extends ActionSupport {
     }
 
     public String EditConfInfo() throws Exception {
-        setConfListList(getDao().EditConf(getConferenceId()));
+        setConfListList(getDao().ConferenceListByConferenceId(getConferenceId()));
         return SUCCESS;
     }
 
     public String UpdateConfInfo() throws Exception {
-        getDao().UpdateConf(getConferenceId(), getUserId(), getConfType(), getResearchArea(), getAssoProject(), getProjectName(), getRole(), getPresentationType(), getPaperTitle(), getNoCoauthor(), getPfrom(), getPto(), getConferenceName(), getDfrom(), getDto(), getOrgName(), getVenue(), getState(), getCountry(), getLanguage(), getUrl(), getAffiliation(), getAbstract_(), getKey1(), getKey2(), getKey3(), getKey4(), getKey5(), getKey6(), getConferenceAuthorses(), getFname(), getLname());
+        getDao().ConferenceUpdate(getConferenceId(), getUserId(), getConfType(), getResearchArea(), getAssoProject(), getProjectName(), getRole(), getPresentationType(), getPaperTitle(), getNoCoauthor(), getPfrom(), getPto(), getConferenceName(), getDfrom(), getDto(), getOrgName(), getVenue(), getState(), getCountry(), getLanguage(), getUrl(), getAffiliation(), getAbstract_(), getKey1(), getKey2(), getKey3(), getKey4(), getKey5(), getKey6(), getConferenceAuthorses(), getFname(), getLname());
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteConfInfo() throws Exception {
-        getDao().DeleteConf(getConferenceId());
+        getDao().ConferenceDelete(getConferenceId());
         msg = infoDeleted;
         return SUCCESS;
     }

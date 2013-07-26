@@ -29,7 +29,7 @@ public class ShowProfilePicture implements SessionAware {
     private Map session = ActionContext.getContext().getSession();
 
     public String ProPict() throws IOException {
-        spp = ppDao.Userimage(user_id);
+        spp = ppDao.ProfilePictureListByUserId(user_id);
         if (spp.isEmpty()) {
                String reqUri = session.get("requri").toString();
                  String filepath = "images/user.png";

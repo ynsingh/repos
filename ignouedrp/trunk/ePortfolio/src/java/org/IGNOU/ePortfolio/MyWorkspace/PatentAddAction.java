@@ -27,7 +27,7 @@ public class PatentAddAction extends ActionSupport implements ModelDriven<Object
 
     @Override
     public String execute() throws Exception {
-        dao.savePatentInfo(Pat);
+        dao.PatentSave(Pat);
         msg = infoSaved;
         return SUCCESS;
     }

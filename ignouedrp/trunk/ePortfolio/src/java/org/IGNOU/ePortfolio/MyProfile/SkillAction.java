@@ -68,19 +68,19 @@ public class SkillAction extends ActionSupport {
     }
 
     public String ShowSkillInfo() throws Exception {
-        PersonalList = dao.ShowSkill(user_id, ptype);
+        PersonalList = dao.ProfileSkillListByUserIdType(user_id, ptype);
         if (PersonalList.isEmpty()) {
             permsg = recordNotFound;
         }
-        AcademicList = dao.ShowSkill(user_id, atype);
+        AcademicList = dao.ProfileSkillListByUserIdType(user_id, atype);
         if (AcademicList.isEmpty()) {
             acdmsg = recordNotFound;
         }
-        TechnicalList = dao.ShowSkill(user_id, ttype);
+        TechnicalList = dao.ProfileSkillListByUserIdType(user_id, ttype);
         if (TechnicalList.isEmpty()) {
             techmsg = recordNotFound;
         }
-        OtherList = dao.ShowSkill(user_id, otype);
+        OtherList = dao.ProfileSkillListByUserIdType(user_id, otype);
         if (OtherList.isEmpty()) {
             othmsg = recordNotFound;
         }
@@ -96,7 +96,7 @@ public class SkillAction extends ActionSupport {
      *
      */
     public String DeleteSkillInfo() throws Exception {
-        dao.DeleteSkilInfo(getSkillId());
+        dao.ProfileSkillDelete(getSkillId());
         msg = infoDeleted;
         return SUCCESS;
     }
@@ -174,14 +174,14 @@ public class SkillAction extends ActionSupport {
     }
 
     /**
-     * @return the AcademicList
+     * @return the ProfileAcademicListByUserId
      */
     public List<ProfileSkill> getAcademicList() {
         return AcademicList;
     }
 
     /**
-     * @param AcademicList the AcademicList to set
+     * @param ProfileAcademicListByUserId the ProfileAcademicListByUserId to set
      */
     public void setAcademicList(List<ProfileSkill> AcademicList) {
         this.AcademicList = AcademicList;

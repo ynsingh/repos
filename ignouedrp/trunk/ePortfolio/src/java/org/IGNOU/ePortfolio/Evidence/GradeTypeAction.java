@@ -53,17 +53,17 @@ public class GradeTypeAction extends ActionSupport {
     }
 
     public String GradeType() throws Exception {
-        setGTList(getDao().GradeTypeList());
+        setGTList(getDao().GradeTypeMasterList());
         return SUCCESS;
     }
 
     public String GradeTypeDetails() throws Exception {
-        CourseListList = pDao.CorProInsList(courseId);
+        CourseListList = pDao.CourseDetailByCourseId(courseId);
         if (CourseListList.isEmpty()) {
             msg = formNotfilled;
             return INPUT;
         } else {
-            setGTDList(getDao().GradeTypeDetailsList(getGtId()));
+            setGTDList(getDao().GradeTypeDetailsMasterByGradeTypeId(getGtId()));
             setDetails(getGTDList().iterator().next().getDetails());
             setSplitDetails(getDetails().split(","));
             for (int i = 0; i < getSplitDetails().length; i++) {
@@ -75,7 +75,7 @@ public class GradeTypeAction extends ActionSupport {
     }
 
     public String GradeTypeEditDetails() throws Exception {
-        GTDList=getDao().GradeTypeDetailsList(getGtId());
+        GTDList=getDao().GradeTypeDetailsMasterByGradeTypeId(getGtId());
         details=getGTDList().iterator().next().getDetails();
         splitDetails=getDetails().split(",");
         for (int i = 0; i < getSplitDetails().length; i++) {
@@ -156,14 +156,14 @@ public class GradeTypeAction extends ActionSupport {
     }
 
     /**
-     * @return the GTList
+     * @return the GradeTypeMasterListByGradeTypeId
      */
     public List<GradeTypeMaster> getGTList() {
         return GTList;
     }
 
     /**
-     * @param GTList the GTList to set
+     * @param GradeTypeMasterListByGradeTypeId the GradeTypeMasterListByGradeTypeId to set
      */
     public void setGTList(List<GradeTypeMaster> GTList) {
         this.GTList = GTList;

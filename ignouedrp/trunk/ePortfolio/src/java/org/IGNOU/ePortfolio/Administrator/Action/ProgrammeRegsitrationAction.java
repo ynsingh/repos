@@ -27,7 +27,7 @@ public class ProgrammeRegsitrationAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        dao.RegDeptProgramme(Integer.valueOf(departmentId), Integer.valueOf(instituteId), programmeName, programmeCode, duration, overview);
+        dao.ProgrammeSave(Integer.valueOf(departmentId), Integer.valueOf(instituteId), programmeName, programmeCode, duration, overview);
         return SUCCESS;
     }
 

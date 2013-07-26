@@ -30,7 +30,7 @@ public class ProgrammeInfoAction extends ActionSupport {
      */
     @Override
     public String execute() throws Exception {
-        PrograList = instDao.ProgrammeDetailsList(getProgrammeId());
+        PrograList = instDao.ProgrammeListByProgrammeId(getProgrammeId());
         return SUCCESS;
     }
 

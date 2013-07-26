@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.IGNOU.ePortfolio.Action.PrintHtmlPdf;
 import org.IGNOU.ePortfolio.Action.UserSession;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
@@ -20,7 +21,7 @@ public class ExportAction extends ActionSupport {
 
     private String user_id = new UserSession().getUserInSession();
     private String report;
-    private String CFile = getText("Filepath");
+    private String CFile = ReadPropertyFile("Filepath");
     private InputStream fps;
     private String FileToCreate;
     private PrintHtmlPdf phpdf = new PrintHtmlPdf();

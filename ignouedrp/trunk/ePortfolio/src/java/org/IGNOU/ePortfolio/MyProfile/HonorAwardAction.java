@@ -66,7 +66,7 @@ public class HonorAwardAction extends ActionSupport implements ModelDriven<Objec
     @Override
     public String execute() throws Exception {
         try {
-            dao.AddHonorInfo(ProHonor);
+            dao.ProfileHonorAwardSave(ProHonor);
             msg = infoSaved;
         } catch (HibernateException HE) {
             msg = "Data has not been Saved Successfully. The Error is : " + HE.toString();

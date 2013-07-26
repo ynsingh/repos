@@ -67,7 +67,7 @@ public class CertificationAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        CertificateList = dao.ShowCertificateInfo(user_id);
+        CertificateList = dao.ProfileCertificationListByUserId(user_id);
         if (CertificateList.isEmpty()) {
             return INPUT;
         } else {
@@ -76,18 +76,18 @@ public class CertificationAction extends ActionSupport {
     }
 
     public String editCertificateInfo() throws Exception {
-        CertificateList = dao.ShowCertificateEditInfo(certificationId);
+        CertificateList = dao.ProfileCertificationByCertificationId(certificationId);
         return SUCCESS;
     }
 
     public String UpdateCertificateInfo() throws Exception {
-        dao.UpdateCertificate(certificationId, user_id, certificationName, certificationAuthority, license, certificationDate, validDate);
+        dao.ProfileCertificationUpdate(certificationId, user_id, certificationName, certificationAuthority, license, certificationDate, validDate);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String deleteCertificateInfo() throws Exception {
-        dao.DeleteCertificate(certificationId);
+        dao.ProfileCertificationDelete(certificationId);
         msg = infoDeleted;
         return SUCCESS;
     }

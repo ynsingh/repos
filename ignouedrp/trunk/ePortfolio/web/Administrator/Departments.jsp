@@ -26,6 +26,7 @@
     </head>
     <body>
         <%
+ String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
             }
@@ -50,9 +51,11 @@
                                     <div class="bradcum"> 
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<s:a action="ShowRegisteredInstitute">Registered Institutes</s:a>&nbsp;>&nbsp; Departments/School
                                         </div>
+ <% if (role.contains("admin")) {%>
                                         <div class="w98 maroa tr">
                                             <a href="DepartmentAdd.jsp">Add Department/School</a>
                                         </div>
+ <% } %>
                                         <div class="w100 fl-l tc fbld fcred">
                                         <s:property value="msg"/>
                                     </div>

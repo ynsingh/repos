@@ -41,6 +41,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ImageInfoDAO;
 import org.IGNOU.ePortfolio.Model.Userdocs;
@@ -55,7 +56,7 @@ public class ImageInsert extends ActionSupport implements ModelDriven<Userdocs> 
     private String user_id = new UserSession().getUserInSession();
     private ImageInfoDAO obInfoDAO = new ImageInfoDAO();
     private Userdocs obModel = new Userdocs();
-    private String filepath = getText("evidenceFilePath") + "/" + user_id + "/";
+    private String filepath = ReadPropertyFile("Filepath") + "/" + user_id + "/";
     private Calendar c_Date = Calendar.getInstance();
     private SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
     private String filedate = f.format(c_Date.getTime());

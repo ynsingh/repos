@@ -55,16 +55,17 @@ import org.hibernate.cfg.AnnotationConfiguration;
 public class PlanTaskDAO {
 
     /**
-     * saveTaskInfo This is the function to save Plan information into DB.
+     * UserPlanTaskSave This is the function to save Plan information into DB.
      * @author IGNOU Team
      * This function is used to insert Plan information in to Database
      * 
      */
+    private   SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session session;
+    
     @SuppressWarnings("unchecked")
-    public UserPlan saveInfo(UserPlan upModel) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-
-        Session session = sf.openSession();
+    public UserPlan UserPlanSave(UserPlan upModel) {
+        session = sf.openSession();
         session.beginTransaction();
         session.save(upModel);
         session.getTransaction().commit();
@@ -81,9 +82,8 @@ public class PlanTaskDAO {
      * This function is used to Fetch Plan List 
      */
     @SuppressWarnings("unchecked")
-    public List<UserPlan> Planlist(String user_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sf.openSession();
+    public List<UserPlan> UserPlanListByUserId(String user_id) {
+         session = sf.openSession();
         Transaction t = session.beginTransaction();
         List<UserPlan> planlistlist = null;
         try {
@@ -98,7 +98,7 @@ public class PlanTaskDAO {
     }
 
     /**
-     * EditPlanlist This is the function to show Plan details in Editor formate.
+     * UserPlanlistByPlanId This is the function to show Plan details in Editor formate.
      * Added on 23/08/2011
      * @param plan_id 
      * @return editplanlist
@@ -106,9 +106,8 @@ public class PlanTaskDAO {
      * This function is used to Edit Plan information in to Database 
      */
     @SuppressWarnings("unchecked")
-    public List<UserPlan> EditPlanlist(long plan_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sf.openSession();
+    public List<UserPlan> UserPlanlistByPlanId(long plan_id) {
+        session = sf.openSession();
         Transaction t = session.beginTransaction();
 
         List<UserPlan> editplanlist = null;
@@ -127,17 +126,16 @@ public class PlanTaskDAO {
      */
 
     @SuppressWarnings("unchecked")
-    public UserPlan UpdatePlanInfo(long planId, String userId, String PTitle, String PDescription) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public UserPlan UserPlanUpdate(long planId, String userId, String PTitle, String PDescription) {
+         session =sf.openSession();
         Transaction t = null;
         try {
-            t = s.beginTransaction();
-            UserPlan UpdateInfo = (UserPlan) s.load(UserPlan.class, planId);
+            t = session.beginTransaction();
+            UserPlan UpdateInfo = (UserPlan) session.load(UserPlan.class, planId);
             UpdateInfo.setPTitle(PTitle);
             UpdateInfo.setPDescription(PDescription);
             if (null != UpdateInfo) {
-                s.update(UpdateInfo);
+                session.update(UpdateInfo);
             }
             t.commit();
             return UpdateInfo;
@@ -147,7 +145,7 @@ public class PlanTaskDAO {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+            session.close();
             sf.close();
         }
     }
@@ -156,34 +154,32 @@ public class PlanTaskDAO {
      */
 
     @SuppressWarnings("unchecked")
-    public UserPlan DeletePlan(long planId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
-        UserPlan deletelist = (UserPlan) s.load(UserPlan.class, planId);
+    public UserPlan UserPlanDelete(long planId) {
+        session = sf.openSession();
+        Transaction t = session.beginTransaction();
+        UserPlan deletelist = (UserPlan) session.load(UserPlan.class, planId);
         if (null != deletelist) {
-            s.delete(deletelist);
+            session.delete(deletelist);
         }
         t.commit();
-        s.close();
+        session.close();
         sf.close();
         return deletelist;
     }
 
     /**
-     * saveTaskInfo This is the function to save Task information into DB.
+     * UserPlanTaskSave This is the function to save Task information into DB.
      * @param nt 
      * @return SUCCESS
      * @author IGNOU Team
      * This function is used to Save  Plan Task  information in to Database
      */
-    public UserPlanTask saveTaskInfo(UserPlanTask nt) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public UserPlanTask UserPlanTaskSave(UserPlanTask nt) {
+         session = sf.openSession();
         Transaction t = null;
         try {
-            t = s.beginTransaction();
-            s.save(nt);
+            t = session.beginTransaction();
+            session.save(nt);
             t.commit();
             return nt;
         } catch (Throwable ex) {
@@ -192,22 +188,21 @@ public class PlanTaskDAO {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+            session.close();
             sf.close();
         }
     }
 
     /**
-     * TaskList This is the function to show list of Task as per Plan_id.
+     * UserPlanTaskListByPlanId This is the function to show list of Task as per Plan_id.
      * @param plan_id 
      * @return TaskListList
      * @author IGNOU Team
      * This function is used to Fetch  Plan's Task  List information 
      */
     @SuppressWarnings("unchecked")
-    public List<UserPlanTask> TaskList(long planId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sf.openSession();
+    public List<UserPlanTask> UserPlanTaskListByPlanId(long planId) {
+        session = sf.openSession();
         Transaction t = session.beginTransaction();
         List<UserPlanTask> TaskListList = null;
         try {
@@ -220,25 +215,7 @@ public class PlanTaskDAO {
         sf.close();
         return TaskListList;
     }
-
-    @SuppressWarnings("unchecked")
-    public List<UserPlanTask> PlanTasklist(long plan_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sf.openSession();
-        Transaction t = session.beginTransaction();
-
-        List<UserPlanTask> planlist = null;
-        try {
-            planlist = session.createQuery("from UserPlanTask where planId='" + plan_id + "'").list();
-        } catch (HibernateException e) {
-            System.out.println(e);
-        }
-        t.commit();
-        session.close();
-        sf.close();
-        return planlist;
-    }
-
+   
     /**
      * EditTask This is the function to Fetch Task details in editable formate.
      * author IGNOU Team
@@ -247,58 +224,55 @@ public class PlanTaskDAO {
      * Added on 24th Aug 2011
      */
     @SuppressWarnings("unchecked")
-    public List<UserPlanTask> EditTaskList(long task_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
+    public List<UserPlanTask> UserPlanTaskEdit(long task_id) {
+         session = sf.openSession();
+        Transaction t = session.beginTransaction();
 
         List<UserPlanTask> EditTask = null;
         try {
-            EditTask = s.createQuery("from UserPlanTask where taskId='" + task_id + "'").list();
-            //       EditTask = session.createQuery("from PlanTaskList where task_id='"+task_id+"'").list();
-        } catch (HibernateException HE) {
+            EditTask = session.createQuery("from UserPlanTask where taskId='" + task_id + "'").list();
+           } catch (HibernateException HE) {
             System.out.println(HE);
         }
         t.commit();
-        s.close();
-        sf.close();
+        session.close();
+       sf.close();
         return EditTask;
     }
     /*This is the function to Update Task details */
 
     @SuppressWarnings("unchecked")
-    public UserPlanTask UpdateTask(long taskId, String TTitle, String TDescription, String TDate, Integer status) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
-        UserPlanTask UpdateTaskList = (UserPlanTask) s.load(UserPlanTask.class, taskId);
+    public UserPlanTask UserPlanTaskUpdate(long taskId, String TTitle, String TDescription, String TDate, Integer status) {
+        session = sf.openSession();
+        Transaction t = session.beginTransaction();
+        UserPlanTask UpdateTaskList = (UserPlanTask) session.load(UserPlanTask.class, taskId);
         UpdateTaskList.setTTitle(TTitle);
         UpdateTaskList.setTDescription(TDescription);
         UpdateTaskList.setTDate(TDate);
         UpdateTaskList.setStatus(status);
         if (null != UpdateTaskList) {
-            s.update(UpdateTaskList);
+            session.update(UpdateTaskList);
         }
         t.commit();
-        s.close();
+        session.close();
         sf.close();
         return UpdateTaskList;
     }
     /*This is the function to Delete Plan's Task details */
 
     @SuppressWarnings("unchecked")
-    public UserPlanTask DeletePlanTask(Long taskId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-        Transaction t = s.beginTransaction();
+    public UserPlanTask UserPlanTaskDelete(Long taskId) {
+        session = sf.openSession();
+        Transaction t = session.beginTransaction();
 
-        UserPlanTask deleteList = (UserPlanTask) s.load(UserPlanTask.class, taskId);
+        UserPlanTask deleteList = (UserPlanTask) session.load(UserPlanTask.class, taskId);
         if (null != deleteList) {
-            s.delete(deleteList);
+            session.delete(deleteList);
         }
         t.commit();
-        s.close();
+        session.close();
         sf.close();
         return deleteList;
     }
+
 }

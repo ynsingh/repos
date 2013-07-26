@@ -34,12 +34,12 @@ package org.IGNOU.ePortfolio.DAO;
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-import org.IGNOU.ePortfolio.Model.ProfileAcademic;
-import org.IGNOU.ePortfolio.Model.ProfileEmployment;
-import org.IGNOU.ePortfolio.Model.ProfileSkill;
-import org.IGNOU.ePortfolio.Model.ProfileCertification;
-import org.IGNOU.ePortfolio.Model.ProfileReferences;
 import java.util.List;
+import org.IGNOU.ePortfolio.Model.ProfileAcademic;
+import org.IGNOU.ePortfolio.Model.ProfileCertification;
+import org.IGNOU.ePortfolio.Model.ProfileEmployment;
+import org.IGNOU.ePortfolio.Model.ProfileReferences;
+import org.IGNOU.ePortfolio.Model.ProfileSkill;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,14 +53,13 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class MyProfileDAO {
 
-    private SessionFactory sf;
+    private SessionFactory  sf = new AnnotationConfiguration().configure().buildSessionFactory();
+    private  Session s;
 
-    // Create the SessionFactory from standard (hibernate.cfg.xml) 
-    // config file.
+    
     @SuppressWarnings("unchecked")
-    public List<ProfileAcademic> AcademicList(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileAcademic> ProfileAcademicListByUserId(String user_id) {
+        s = sf.openSession();
         Transaction t = s.beginTransaction();
 
         List<ProfileAcademic> academiclist = null;
@@ -76,9 +75,8 @@ public class MyProfileDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileEmployment> EmploymentList(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileEmployment> ProfileEmployementListByUserId(String user_id) {
+        s = sf.openSession();
         Transaction t = s.beginTransaction();
 
         List<ProfileEmployment> employmentlist = null;
@@ -95,9 +93,8 @@ public class MyProfileDAO {
     /*04-04-2012 by IGNOU Team resolved on 05-04-2011*/
 
     @SuppressWarnings("unchecked")
-    public ProfileAcademic UpdateAcademic(List<Long> academicInfoId, List<String> user_id, List<String> degree, List<String> university, List<String> location, List<String> fstudy, List<String> pyear, List<Integer> percent, List<String> division) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileAcademic ProfileAcademicUpdate(List<Long> academicInfoId, List<String> user_id, List<String> degree, List<String> university, List<String> location, List<String> fstudy, List<String> pyear, List<Integer> percent, List<String> division) {
+         s = sf.openSession();
         Transaction t = s.beginTransaction();
         ProfileAcademic pa = new ProfileAcademic();
         try {
@@ -131,9 +128,8 @@ public class MyProfileDAO {
 
     /*Writen by IGNOU Team on 04-Sep-2011*/
     @SuppressWarnings("unchecked")
-    public List<ProfileAcademic> EditAcademic(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileAcademic> ProfileAcademicEdit(String user_id) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -159,9 +155,8 @@ public class MyProfileDAO {
 
     /*Writen by IGNOU Team on 12-Sep-2011*/
     @SuppressWarnings("unchecked")
-    public ProfileAcademic DeleteAcademicInformation(long academicInfoId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileAcademic ProfileAcademicDelete(long academicInfoId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -185,9 +180,8 @@ public class MyProfileDAO {
     /*Writen by IGNOU Team on 13-Sep-2011*/
 
     @SuppressWarnings({"unchecked", "unchecked", "unchecked"})
-    public List<ProfileEmployment> empList(long employmentInfoId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileEmployment> ProfileEmploymentlListByEmplymentId(long employmentInfoId) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -212,9 +206,8 @@ public class MyProfileDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileEmployment UpdateEmp(long employmentInfo_id, String user_id, String jTitle, String orgName, String oAddress, String oCity, String oState, String oCountry, String jDate, String lDate, String description) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileEmployment ProfileEmploymentUpdate(long employmentInfo_id, String user_id, String jTitle, String orgName, String oAddress, String oCity, String oState, String oCountry, String jDate, String lDate, String description) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -245,9 +238,8 @@ public class MyProfileDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileEmployment DeleteEmpInfo(long employmentInfoId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileEmployment ProfileEmploymentDelete(long employmentInfoId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -269,9 +261,8 @@ public class MyProfileDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileSkill> ShowSkill(String user_id, String type) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileSkill> ProfileSkillListByUserIdType(String user_id, String type) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -295,9 +286,8 @@ public class MyProfileDAO {
         }
     }
      @SuppressWarnings("unchecked")
-    public List<ProfileSkill> ShowSkillList(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileSkill> ProfileSkillByUserId(String user_id) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -328,9 +318,8 @@ public class MyProfileDAO {
      * @author IGNOU Team
      **/
     @SuppressWarnings("unchecked")
-    public ProfileSkill DeleteSkilInfo(long skillId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileSkill ProfileSkillDelete(long skillId) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -358,9 +347,8 @@ public class MyProfileDAO {
      * @author IGNOU Team
      **/
     @SuppressWarnings({"unchecked", "unchecked"})
-    public List<ProfileCertification> ShowCertificateInfo(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileCertification> ProfileCertificationListByUserId(String user_id) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -391,9 +379,8 @@ public class MyProfileDAO {
      * @author IGNOU Team
      **/
     @SuppressWarnings("unchecked")
-    public List<ProfileCertification> ShowCertificateEditInfo(long certificationId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileCertification> ProfileCertificationByCertificationId(long certificationId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -418,9 +405,8 @@ public class MyProfileDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileCertification UpdateCertificate(long certification_id, String user_id, String certificationName, String certificationAuthority, String license, String certificationDate, String validDate) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileCertification ProfileCertificationUpdate(long certification_id, String user_id, String certificationName, String certificationAuthority, String license, String certificationDate, String validDate) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -449,9 +435,8 @@ public class MyProfileDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileCertification DeleteCertificate(long certificationId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileCertification ProfileCertificationDelete(long certificationId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -479,9 +464,8 @@ public class MyProfileDAO {
      * @author IGNOU Team
      **/
     @SuppressWarnings("unchecked")
-    public List<ProfileReferences> ShowReferenceInfo(String userId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileReferences> ProfileReferencesListByUserId(String userId) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -511,9 +495,8 @@ public class MyProfileDAO {
      * @author IGNOU Team
      **/
     @SuppressWarnings("unchecked")
-    public List<ProfileReferences> EditReferenceInfo(long referencesId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileReferences> ProfileReferencesEdit(long referencesId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -536,9 +519,8 @@ public class MyProfileDAO {
         }
     }
 
-    public ProfileReferences UpdateReferenceInfo(long references_id, String user_id, String name, String designation, String org_univ, String place, String city, String state, String country, Long phoneno, Long mobileno, String email_id, String website) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileReferences ProfileReferencesUpdate(long references_id, String user_id, String name, String designation, String org_univ, String place, String city, String state, String country, Long phoneno, Long mobileno, String email_id, String website) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -570,9 +552,8 @@ public class MyProfileDAO {
         }
     }
 
-    public ProfileReferences DeleteReference(long referencesId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileReferences ProfileReferencesDelete(long referencesId) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -593,10 +574,4 @@ public class MyProfileDAO {
         }
     }
 
-    /**
-     * @return the sf
-     */
-    public SessionFactory getSf() {
-        return sf;
-    }
 }

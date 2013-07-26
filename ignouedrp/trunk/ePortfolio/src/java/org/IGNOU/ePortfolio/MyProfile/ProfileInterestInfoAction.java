@@ -63,7 +63,7 @@ public class ProfileInterestInfoAction extends ActionSupport {
     private String infoUpdated = getText("msg.infoUpdated");
 
     public String ShowInterestInfo() throws Exception {
-        IntListList = getIntdao().InterestList(user_id);
+        IntListList = getIntdao().ProfileInterestByUserId(user_id);
         if (IntListList.isEmpty()) {
             return INPUT;
         } else {
@@ -72,18 +72,18 @@ public class ProfileInterestInfoAction extends ActionSupport {
     }
 
     public String EditInterestInfo() {
-        editIntList = Intdao.EditInterest(getInterestId());
+        editIntList = Intdao.ProfileInterestByIntrestId(getInterestId());
         return SUCCESS;
     }
 
     public String DeleteInterestInfo() throws Exception {
-        Intdao.DeleteInterestInfo(interestId);
+        Intdao.ProfileInterestDelete(interestId);
         msg = infoDeleted;
         return SUCCESS;
     }
 
     public String UpdateInterestInfo() throws Exception {
-        Intdao.UpdateInterest(getInterestId(), getUserId(), acadInterest, persInterest, techInterest, reserInterst, myHobbies);
+        Intdao.ProfileInterestUpdate(getInterestId(), getUserId(), acadInterest, persInterest, techInterest, reserInterst, myHobbies);
         msg = infoUpdated;
         return SUCCESS;
     }

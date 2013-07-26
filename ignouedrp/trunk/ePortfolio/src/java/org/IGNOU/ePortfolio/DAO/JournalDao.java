@@ -25,11 +25,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class JournalDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public Journal saveInfo(Journal JModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Journal JournalSave(Journal JModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -57,9 +57,8 @@ public class JournalDao {
         }
     }
 
-    public List<Journal> ShowInfo(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Journal> JournalListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -83,9 +82,8 @@ public class JournalDao {
         }
     }
 
-    public List<Journal> EditInfo(long journalId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<Journal> JournalListByJournalId(long journalId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -108,9 +106,8 @@ public class JournalDao {
         }
     }
 
-    public Journal DeleteInfo(long journalId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public Journal JournalDeleteByJournalId(long journalId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -127,13 +124,12 @@ public class JournalDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public Journal UpdateInfo(long journalId, String userId, String confType, String researchArea, String asssProject, String projectName, String paperTitle, Integer noCoauthor, String journalName, Integer volumeNo, Integer serialNo, String issnNo, Integer pfrom, Integer pto, String date, String impactFactor, String avgCitagtionIndex, String scopus, String language, String affiliation, String url, String summary, String key1, String key2, String key3, String key4, String key5, String key6, Set<JournalAuthor> journalAuthors, ArrayList<String> fname, ArrayList<String> lname) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public Journal JournalUpdate(long journalId, String userId, String confType, String researchArea, String asssProject, String projectName, String paperTitle, Integer noCoauthor, String journalName, Integer volumeNo, Integer serialNo, String issnNo, Integer pfrom, Integer pto, String date, String impactFactor, String avgCitagtionIndex, String scopus, String language, String affiliation, String url, String summary, String key1, String key2, String key3, String key4, String key5, String key6, Set<JournalAuthor> journalAuthors, ArrayList<String> fname, ArrayList<String> lname) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -143,11 +139,8 @@ public class JournalDao {
             UpdateInfo.setAvgCitagtionIndex(avgCitagtionIndex);
             UpdateInfo.setConfType(confType);
             UpdateInfo.setDate(date);
-            //   UpdateInfo.setFname(fname);
             UpdateInfo.setImpactFactor(impactFactor);
             UpdateInfo.setIssnNo(issnNo);
-            //   UpdateInfo.setJournalAuthors(journalAuthors);
-            //   UpdateInfo.setJournalId(journalId);
             UpdateInfo.setJournalName(journalName);
             UpdateInfo.setKey1(key1);
             UpdateInfo.setKey2(key2);
@@ -156,7 +149,6 @@ public class JournalDao {
             UpdateInfo.setKey5(key5);
             UpdateInfo.setKey6(key6);
             UpdateInfo.setLanguage(language);
-            // UpdateInfo.setLname(lname);
             UpdateInfo.setNoCoauthor(noCoauthor);
             UpdateInfo.setPaperTitle(paperTitle);
             UpdateInfo.setPfrom(pfrom);
@@ -180,15 +172,8 @@ public class JournalDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

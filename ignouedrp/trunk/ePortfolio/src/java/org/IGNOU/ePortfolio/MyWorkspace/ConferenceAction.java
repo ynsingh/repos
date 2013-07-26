@@ -29,7 +29,7 @@ public class ConferenceAction extends ActionSupport implements ModelDriven<Objec
 
     @Override
     public String execute() throws Exception {
-        dao.saveConf(getConf());
+        dao.ConferenceSave(getConf());
         msg = infoSaved;
         return SUCCESS;
     }

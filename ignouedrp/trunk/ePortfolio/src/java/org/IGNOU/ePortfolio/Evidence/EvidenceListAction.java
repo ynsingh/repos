@@ -39,7 +39,7 @@ public class EvidenceListAction extends ActionSupport {
     }
 
     public String FacultyEvidenceList() throws Exception {
-        StdevList = getDao().FacultyEvidenceList(user_id);
+        StdevList = getDao().EvidenceListByFacultyId(user_id);
         if (StdevList.isEmpty()) {
             msg = recordNotFound;
             return SUCCESS;
@@ -63,7 +63,7 @@ public class EvidenceListAction extends ActionSupport {
     }
 
     public String EvidenceReview() throws Exception {
-        EvidenceReviewList = dao.EvidenceInfoList(evidenceId);
+        EvidenceReviewList = dao.EvidenceListByEvidenceId(evidenceId);
         if (sDate.compareTo(EvidenceReviewList.iterator().next().getOpenDate()) <= 0) {
             poststatus = "false";
         } else {
@@ -73,7 +73,7 @@ public class EvidenceListAction extends ActionSupport {
     }
 
     public String StudentEvidenceList() throws Exception {
-        StdevList = getDao().EvidenceList(user_id);
+        StdevList = getDao().EvidenceNotSubmitedListByUserId(user_id);
         if (StdevList.isEmpty()) {
              msg = recordNotFound;
         } else {
@@ -95,7 +95,7 @@ public class EvidenceListAction extends ActionSupport {
     }
 
     public String EvidenceSubmittedList() throws Exception {
-       EviSubList=dao.SubmitedEvidenceList(user_id);
+       EviSubList=dao.EvidenceSubmissionByUserId(user_id);
        if(EviSubList.isEmpty()){
            msg = recordNotFound;
        }
@@ -103,7 +103,7 @@ public class EvidenceListAction extends ActionSupport {
     }
 
     public String StudentEvidenceDraftList() throws Exception {
-        StdevList = getDao().EvidenceDraftList(user_id);
+        StdevList = getDao().EvidenceDraftListbyFacultyId(user_id);
         return SUCCESS;
     }
 

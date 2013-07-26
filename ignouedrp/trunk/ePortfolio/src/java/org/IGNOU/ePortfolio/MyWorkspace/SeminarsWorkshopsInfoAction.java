@@ -58,7 +58,7 @@ public class SeminarsWorkshopsInfoAction extends ActionSupport {
     }
 
     public String ShowSWInfo() throws Exception {
-        setSWListList(getDao().ShowSW(getUser_id()));
+        setSWListList(getDao().SeminarsWorkshopsListByUserId(getUser_id()));
         if (getSWListList().isEmpty()) {
             return INPUT;
         } else {
@@ -67,18 +67,18 @@ public class SeminarsWorkshopsInfoAction extends ActionSupport {
     }
 
     public String EditSWInfo() throws Exception {
-        setSWListList(getDao().EditSW(getSeminarsWorkshopsId()));
+        setSWListList(getDao().SeminarsWorkshopsEdit(getSeminarsWorkshopsId()));
         return SUCCESS;
     }
 
     public String UpdateSWInfo() throws Exception {
-        getDao().UpdateSW(getSeminarsWorkshopsId(), getUserId(), getSwType(), getSwName(), getDFrom(), getDTo(), getVenue(), getState(), getCountry(), getSwRole(), getPerType(), getPaperTitle(), getNoCoauthors(), getAreaThemeTopic(), getSourceFunding(), getAmountFunded(), getLanguage(), getUrl(), getAbstract_(), getSeminarsWorkshopsAuthors(), getFname(), getLname());
+        getDao().SeminarsWorkshopsUpdate(getSeminarsWorkshopsId(), getUserId(), getSwType(), getSwName(), getDFrom(), getDTo(), getVenue(), getState(), getCountry(), getSwRole(), getPerType(), getPaperTitle(), getNoCoauthors(), getAreaThemeTopic(), getSourceFunding(), getAmountFunded(), getLanguage(), getUrl(), getAbstract_(), getSeminarsWorkshopsAuthors(), getFname(), getLname());
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteSWInfo() throws Exception {
-        getDao().DeleteSW(getSeminarsWorkshopsId());
+        getDao().SeminarsWorkshopsDelete(getSeminarsWorkshopsId());
         msg = infoDeleted;
         return SUCCESS;
     }

@@ -41,7 +41,7 @@ public class MediaInfoAction extends ActionSupport {
 
     public String ShowMedia() throws Exception {
 
-        MPubList = getDao().ShowMedia(getUser_id());
+        MPubList = getDao().MediaPublicationListByUserId(getUser_id());
         if (MPubList.isEmpty() /*&& basicListList.isEmpty()*/) {
             return INPUT;
         } else {
@@ -50,18 +50,18 @@ public class MediaInfoAction extends ActionSupport {
     }
 
     public String EditMedia() throws Exception {
-        MPubList = dao.EditMedia(mpId);
+        MPubList = dao.MediaPublicationListByMPId(mpId);
         return SUCCESS;
     }
 
     public String UpdateMedia() throws Exception {
-        dao.UpdateMedia(mpId, userId, typeOfMedia, titleOfMedia, titleOfArticle, pubDate, url, summary, api);
+        dao.MediaPublicationUpdate(mpId, userId, typeOfMedia, titleOfMedia, titleOfArticle, pubDate, url, summary, api);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteMedia() throws Exception {
-        dao.DeleteMedia(mpId);
+        dao.MediaPublicationDelete(mpId);
         msg = infoDeleted;
         return SUCCESS;
     }

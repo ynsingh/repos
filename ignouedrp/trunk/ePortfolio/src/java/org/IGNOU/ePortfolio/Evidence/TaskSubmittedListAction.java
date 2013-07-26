@@ -28,8 +28,8 @@ public class TaskSubmittedListAction extends ActionSupport {
     }
 
     public String TaskSubStudentList() throws Exception {
-        eviList = getEviDao().EvidenceInfoList(getEvidenceId());
-        EviStdList = getEviDao().EviStdSubList(getEvidenceId(), getUser_id());
+        eviList = getEviDao().EvidenceListByEvidenceId(getEvidenceId());
+        EviStdList = getEviDao().EvidenceSubmissionPeerListByEvidenceIdUserId(getEvidenceId(), getUser_id());
         return SUCCESS;
     }
 

@@ -55,7 +55,7 @@ public class PatentAction extends ActionSupport {
     }
 
     public String ShowPatentInfo() throws Exception {
-        setPatentListList(getDao().ShowPatentInfomration(getUser_id()));
+        setPatentListList(getDao().PatentListByUserId(getUser_id()));
         if (getPatentListList().isEmpty()) {
             return INPUT;
         } else {
@@ -64,18 +64,18 @@ public class PatentAction extends ActionSupport {
     }
 
     public String EditPatentInfo() throws Exception {
-        setPatentListList(getDao().EditInfo(getPatentId()));
+        setPatentListList(getDao().PatentEdit(getPatentId()));
         return SUCCESS;
     }
 
     public String UpdaPatentInfo() throws Exception {
-        dao.UpdatePatent(patentId, userId, patentType, country, patentTitle, assignee, applNo, field, patentDate, patentNo, affiliation, language, url, abstract_, api, fname, lname, address, inventors);
+        dao.PatentUpdate(patentId, userId, patentType, country, patentTitle, assignee, applNo, field, patentDate, patentNo, affiliation, language, url, abstract_, api, fname, lname, address, inventors);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeletePatentInfo() throws Exception {
-        getDao().DeletePatent(getPatentId());
+        getDao().PatentDelete(getPatentId());
         msg = infoDeleted;
         return SUCCESS;
     }

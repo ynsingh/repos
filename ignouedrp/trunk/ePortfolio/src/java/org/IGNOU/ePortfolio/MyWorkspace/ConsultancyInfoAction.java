@@ -47,7 +47,7 @@ public class ConsultancyInfoAction extends ActionSupport {
     }
 
     public String ShowConsultInfo() throws Exception {
-        setConsultList(getDao().ShowConsultancyInfo(getUser_id()));
+        setConsultList(getDao().ConsultancyListByUserId(getUser_id()));
         if (getConsultList().isEmpty()) {
             return INPUT;
         } else {
@@ -56,19 +56,19 @@ public class ConsultancyInfoAction extends ActionSupport {
     }
 
     public String DeleteConsultInfo() throws Exception {
-        getDao().DeleteConsultancyInfo(getConsultancyId());
+        getDao().ConsultancyDeleteByConsultancyId(getConsultancyId());
         msg = infoDeleted;
         return SUCCESS;
     }
 
     public String EditConsult() throws Exception {
-        setConsultList(getDao().EditConsultancyInfo(getConsultancyId()));
+        setConsultList(getDao().ConsultancyEdit(getConsultancyId()));
         return SUCCESS;
     }
 
     public String UpdateConsult() throws Exception {
-        // getDao().UpdateConsultancyInfo(getConsultancyId(), nameClient, durationFrom, durationTo, facultyInvolved, getRevenue(), fasilitiesUsed, getUrl(), getSummary(), getUserId());
-        getDao().UpdateConsultancyInfo(getCNatureId(), consultancyId, userId, clientName, DFrom, DTo, noOfConsultancy, revenue, service, url, summary, nameConsultancy, natureWork, consultancyNatures);
+        // getDao().ConsultancyUpdate(getConsultancyId(), nameClient, durationFrom, durationTo, facultyInvolved, getRevenue(), fasilitiesUsed, getUrl(), getSummary(), getUserId());
+        getDao().ConsultancyUpdate(getCNatureId(), consultancyId, userId, clientName, DFrom, DTo, noOfConsultancy, revenue, service, url, summary, nameConsultancy, natureWork, consultancyNatures);
 
         msg = infoUpdated;
         return SUCCESS;

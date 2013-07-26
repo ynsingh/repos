@@ -34,7 +34,7 @@ public class EventListAction extends ActionSupport {
     private String infoUpdated = getText("msg.infoUpdated");
 
     public String AllEventsList() {
-        eventList = evDao.AllEventsList();
+        eventList = evDao.EventsList();
         return SUCCESS;
     }
 
@@ -53,7 +53,7 @@ public class EventListAction extends ActionSupport {
     }
 
     public String ShowPostponedEventLists() {
-        eventList = evDao.PostponedEventsList();
+        eventList = evDao.EventsPostponedList();
         EventType = "Postponed Events";
         if (eventList.isEmpty()) {
             msg = recordNotFound;
@@ -62,7 +62,7 @@ public class EventListAction extends ActionSupport {
     }
 
     public String ShowArchivedEventLists() {
-        eventList = evDao.ArchivedEventsList();
+        eventList = evDao.EventsArchivedList();
         if (eventList.isEmpty()) {
             msg = recordNotFound;
         }
@@ -71,18 +71,18 @@ public class EventListAction extends ActionSupport {
     }
 
     public String EditEventsInfo() {
-        eventList = evDao.EditEvent(eventsId);
+        eventList = evDao.EventEditByEventId(eventsId);
         return SUCCESS;
     }
 
     public String UpdateEventInfo() throws Exception {
-        evDao.UpdateEvents(eventsId, eventTitle, eventDateFrom, eventDateTo, createDate, eventDisplayDate, venue, address, city, state, country, pincode, phone, emailId, website, description, postponed, postponedReason);
+        evDao.EventsUpdate(eventsId, eventTitle, eventDateFrom, eventDateTo, createDate, eventDisplayDate, venue, address, city, state, country, pincode, phone, emailId, website, description, postponed, postponedReason);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteEventInfo() throws Exception {
-        evDao.DeleteEvents(eventsId);
+        evDao.EventsDelete(eventsId);
         msg = infoDeleted;
         return SUCCESS;
     }

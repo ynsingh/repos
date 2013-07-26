@@ -20,11 +20,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class DepartmentDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public Department RegDept(Integer instituteId, String departmentName, String departmentCode, String introduction, String postalAddress, Integer phoneCode, Integer phoneNo, long mobileNo, Integer fax, String deptEmailId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Department DepartmentSave(Integer instituteId, String departmentName, String departmentCode, String introduction, String postalAddress, Integer phoneCode, Integer phoneNo, long mobileNo, Integer fax, String deptEmailId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         Institute inst = new Institute();
         try {
@@ -56,7 +56,4 @@ public class DepartmentDao {
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

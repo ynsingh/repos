@@ -65,7 +65,7 @@ public class EmploymentInfoAction extends ActionSupport implements ModelDriven<O
     
     @Override
     public String execute() throws Exception {
-        dao.saveEmpInfo(getPE());
+        dao.ProfileEmploymentSave(getPE());
         msg = infoSaved;
         return SUCCESS;
     }

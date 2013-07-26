@@ -67,7 +67,7 @@ public class SocialAddAction extends ActionSupport implements ModelDriven<Object
 
     @Override
     public String execute() throws Exception {
-        dao.saveSocialInfo(getPS());
+        dao.ProfileSocialSave(getPS());
         return SUCCESS;
     }
 

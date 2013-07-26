@@ -58,7 +58,7 @@ public class Check extends ActionSupport {
     
     public String Avail() {
         
-        stRegList=updao.UserPrograme(emailId);
+        stRegList=updao.UserListByUserId(emailId);
         if(stRegList.isEmpty())
         {
              inputStream = new StringBufferInputStream("User-Id is Available");

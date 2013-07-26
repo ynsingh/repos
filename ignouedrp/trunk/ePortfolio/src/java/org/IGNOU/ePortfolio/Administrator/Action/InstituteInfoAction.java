@@ -8,11 +8,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.ArrayList;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import org.IGNOU.ePortfolio.DAO.InstituteDao;
 import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
-import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
-import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import org.IGNOU.ePortfolio.DAO.UserListDao;
+import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Evidence;
 import org.IGNOU.ePortfolio.Model.Institute;
 import org.IGNOU.ePortfolio.Model.User;
@@ -54,13 +54,13 @@ public class InstituteInfoAction extends ActionSupport {
     }
 
     public String InstituteInfo() throws Exception {
-        UListInfo = uiDao.UserPrograme(user_id);
-        InsList = dao.univList(UListInfo.iterator().next().getInstituteId());
+        UListInfo = uiDao.UserListByUserId(user_id);
+        InsList = dao.InstituteListByInstituteId(UListInfo.iterator().next().getInstituteId());
         return SUCCESS;
     }
 
     public String StudentList() {
-        usrList = ulDao.StudentListAllowed(programmeId, userId);
+        usrList = ulDao.UserListByProgrammeIdUserId(programmeId, userId);
         for (int i = 0; i < usrList.size(); i++) {
             getStList().add(usrList.get(i).getFname() + "(" + usrList.get(i).getEmailId() + ")");
         }

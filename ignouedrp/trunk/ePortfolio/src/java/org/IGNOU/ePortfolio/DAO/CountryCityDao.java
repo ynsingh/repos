@@ -17,12 +17,13 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author Amit
  */
 public class CountryCityDao {
-    private SessionFactory sf;
-             
-       @SuppressWarnings("unchecked")
-         public List<Country> CountryList() {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+
+    @SuppressWarnings("unchecked")
+    public List<Country> CountryList() {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Country> countrylist = null;
@@ -37,20 +38,19 @@ public class CountryCityDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
 
     }
-    
-        @SuppressWarnings("unchecked")
-         public List<City> CityList(String countryCode) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+
+    @SuppressWarnings("unchecked")
+    public List<City> CityList(String countryCode) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<City> citylist = null;
         try {
-            citylist = s.createQuery("from City where countryCode='"+countryCode+"'").list();
+            citylist = s.createQuery("from City where countryCode='" + countryCode + "'").list();
             t.commit();
             return citylist;
         } catch (Throwable ex) {
@@ -60,8 +60,7 @@ public class CountryCityDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
-
     }
 }

@@ -27,7 +27,7 @@ public class TaskActivityScoreAction extends ActionSupport {
     }
 
     public String GetScore() throws Exception {
-        StdScrList = dao.StdEviSubmitedScoreList(user_id);
+        StdScrList = dao.EvidenceSubmissionListGradeNotNullByUserId(user_id);
      if (StdScrList.isEmpty()) {
             msg = notfound;
         }

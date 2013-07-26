@@ -21,12 +21,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class PersonalInfoDao {
 
-    private SessionFactory sf;
-
+    private SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
     @SuppressWarnings("unchecked")
-    public List<PersonalInfo> PersonalList(String user_id) {
-        setSf(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSf().openSession();
+    public List<PersonalInfo> PersonalInfoList(String user_id) {
+        s = getSf().openSession();
         Transaction t = s.beginTransaction();
         List<PersonalInfo> personallist = null;
         try {
@@ -41,9 +40,8 @@ public class PersonalInfoDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<PersonalInfo> EditList(Long personalInfoId) {
-        setSf(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSf().openSession();
+    public List<PersonalInfo> PersonalInfoEdit(Long personalInfoId) {
+         s = getSf().openSession();
         Transaction t = s.beginTransaction();
         List<PersonalInfo> personallist = null;
         try {
@@ -58,9 +56,8 @@ public class PersonalInfoDao {
     }
 
     @SuppressWarnings("unchecked")
-    public PersonalInfo UpdatePersonal(long personalInfoId, String emailId, String firstName, String lastName, String fatherName, String motherName, String otherGuardian, String gender, Date dateOfBirth, String pbirth, String mstatus, Long aadhaarNo, String passportNo, String panNo, Integer activeStatus, String castCategory, String religion, String nationality, String languageKnown) {
-        setSf(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSf().openSession();
+    public PersonalInfo PersonalInfoUpdate(long personalInfoId, String emailId, String firstName, String lastName, String fatherName, String motherName, String otherGuardian, String gender, Date dateOfBirth, String pbirth, String mstatus, Long aadhaarNo, String passportNo, String panNo, Integer activeStatus, String castCategory, String religion, String nationality, String languageKnown) {
+         s = getSf().openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -104,10 +101,4 @@ public class PersonalInfoDao {
         return sf;
     }
 
-    /**
-     * @param sf the sf to set
-     */
-    public void setSf(SessionFactory sf) {
-        this.sf = sf;
-    }
 }

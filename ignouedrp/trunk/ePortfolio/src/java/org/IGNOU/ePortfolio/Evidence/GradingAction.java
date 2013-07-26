@@ -14,13 +14,13 @@ import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import org.IGNOU.ePortfolio.DAO.GradeTypeDao;
-import org.IGNOU.ePortfolio.DAO.GradingDao;
 import org.IGNOU.ePortfolio.Model.Evidence;
 import org.IGNOU.ePortfolio.Model.EvidenceSubmission;
 import org.IGNOU.ePortfolio.Model.GradeTypeDetailsMaster;
 import org.IGNOU.ePortfolio.Model.GradeTypeMaster;
 import org.IGNOU.ePortfolio.Model.GradeValue;
 import org.apache.commons.lang.StringUtils;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
@@ -29,7 +29,7 @@ import org.apache.commons.lang.StringUtils;
 public class GradingAction extends ActionSupport {
 
     private String user_id = new UserSession().getUserInSession();
-    private GradingDao dao = new GradingDao();
+    private EvidenceDao dao = new EvidenceDao();
     private Integer evidenceId;
     private int submissionId;
     private String instructions;
@@ -41,26 +41,26 @@ public class GradingAction extends ActionSupport {
     private Integer instituteId;
     private Boolean submitted;
     private Boolean post;
-    private Boolean saveDraft; 
+    private Boolean saveDraft;
     private String gradesObtained;
     private String facultyComment;
     private String facultyAttachment;
     private File stuData, facData;
     private String stuDataFileName, facDataFileName;
     private GradeTypeMaster gtm = new GradeTypeMaster();
-    private GradeTypeDao gtdDao = new GradeTypeDao(); 
+    private GradeTypeDao gtdDao = new GradeTypeDao();
     private EvidenceDao EviDao = new EvidenceDao();
-     private List<Evidence> EviList; 
+    private List<Evidence> EviList;
     private List<EvidenceSubmission> ActivitiesSubmitedList;
     private List<Evidence> evList;
     private List<GradeTypeMaster> gtValList;
     private List<GradeValue> GVList;
-    private List<GradeTypeDetailsMaster> gtdmList;  
+    private List<GradeTypeDetailsMaster> gtdmList;
     private ArrayList<String> GObtained = new ArrayList<String>();
     private ArrayList<String> GradeLable = new ArrayList<String>();
     private ArrayList<String> GradeValueRange = new ArrayList<String>();
     private String[] splitValue1;
-    private String evFilePath = getText("evidenceFilePath");
+    private String evFilePath = ReadPropertyFile("Filepath");
     private String msg;
     private String recordNotFound = getText("recordNotFound");
     private String infoSaved = getText("msg.infoSaved");
@@ -72,7 +72,7 @@ public class GradingAction extends ActionSupport {
     /*Activity Details for Submit Student Activity's Form*/
 
     public String ActivitiesSubmitedList() throws Exception {
-        EviList = EviDao.EvidenceInfoList(evidenceId);
+        EviList = EviDao.EvidenceListByEvidenceId(evidenceId);
         if (EviList.isEmpty()) {
             msg = recordNotFound;
             return SUCCESS;
@@ -83,7 +83,7 @@ public class GradingAction extends ActionSupport {
     /*End*/
 
     public String UserActivitySubmitedList() throws Exception {
-        ActivitiesSubmitedList = dao.TaskSubmitedList(getEvidenceId());
+        ActivitiesSubmitedList = dao.EvidenceSubmissionListByEvidenceId(getEvidenceId());
         if (ActivitiesSubmitedList.isEmpty()) {
             msg = recordNotFound;
         } else {
@@ -108,19 +108,19 @@ public class GradingAction extends ActionSupport {
     }
 
     public String ActivitiesEvaluateList() throws Exception {
-      ActivitiesSubmitedList = dao.getUserList(getSubmissionId());
-      GVList = gtdDao.PopulateGradeVal(user_id, ActivitiesSubmitedList.iterator().next().getEvidence().getGradeValue().getGradeTypeDetailsMaster().getGtdId() /*getGtdmList().iterator().next().getGtdId()*/);
+        ActivitiesSubmitedList = dao.EvidenceSubmissionListBySubmissionId(getSubmissionId());
+        GVList = gtdDao.GradeValueListByGradeTypeIdUserId(user_id, ActivitiesSubmitedList.iterator().next().getEvidence().getGradeValue().getGradeTypeDetailsMaster().getGtdId() /*getGtdmList().iterator().next().getGtdId()*/);
         splitValue1 = GVList.iterator().next().getGradeValue().split(" ");
         for (int i = 0; i < splitValue1.length; i++) {
             GradeLable.add(StringUtils.substringBefore(splitValue1[i], ":"));
             GradeValueRange.add(StringUtils.substringAfter(splitValue1[i], ":"));
         }
-        
+
         return SUCCESS;
     }
 
     public String UpdateMarks() throws Exception {
-        gtdDao.UpdateActivitiesMarks(submissionId, gradesObtained, facultyComment, FacultyFile());
+        gtdDao.EvidenceSubmissionMarksUpdate(submissionId, gradesObtained, facultyComment, FacultyFile());
         msg = infoSaved;
         return SUCCESS;
     }
@@ -150,19 +150,6 @@ public class GradingAction extends ActionSupport {
      */
     public void setUser_id(String user_id) {
         this.user_id = user_id;
-    }
-    /**
-     * @return the dao
-     */
-    public GradingDao getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(GradingDao dao) {
-        this.dao = dao;
     }
 
     /**
@@ -417,7 +404,6 @@ public class GradingAction extends ActionSupport {
         this.stuDataFileName = stuDataFileName;
     }
 
-    
     /**
      * @return the EviList
      */

@@ -26,7 +26,7 @@ public class MyPeerGroupAction extends ActionSupport /*implements SessionAware*/
     }
 
     public String PeerGroupList() throws Exception {
-        PeerGroupListList = dao.PeerGroupList(user_id);
+        PeerGroupListList = dao.UserListPeerByuserId(user_id);
         return SUCCESS;
     }
 

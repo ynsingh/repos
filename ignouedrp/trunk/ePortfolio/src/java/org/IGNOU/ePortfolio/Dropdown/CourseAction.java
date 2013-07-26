@@ -26,7 +26,7 @@ public class CourseAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        CourseList = instDao.CourseList(Integer.valueOf(programmeId));
+        CourseList = instDao.CourseListByProgrammeId(Integer.valueOf(programmeId));
         courseL = new HashMap<String, String>();
         if (CourseList.isEmpty()) {
             courseL.put("NULL", getCourseNotFound());
@@ -50,7 +50,7 @@ public class CourseAction extends ActionSupport {
     }
 
     /**
-     * @return the CourseList
+     * @return the CourseListByProgrammeId
      */
     public List<Course> getCourseList() {
         return CourseList;

@@ -26,7 +26,7 @@ public class ProgrammAction extends ActionSupport {
 
     @Override
     public String execute() {
-        PrograList = instDao.ProgrammeList(Integer.valueOf(instituteId));
+        PrograList = instDao.ProgrammeListByInstituteId(Integer.valueOf(instituteId));
         programmeL = new HashMap<String, String>();
         if (PrograList.isEmpty()) {
             programmeL.put("NULL", getProgrammeNotFound());

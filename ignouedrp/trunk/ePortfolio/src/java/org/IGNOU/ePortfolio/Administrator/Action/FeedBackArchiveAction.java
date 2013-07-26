@@ -23,7 +23,7 @@ public class FeedBackArchiveAction extends ActionSupport {
    
     
      public String MoveFbsToArchive() throws Exception {
-        Feedback ArchiveFeedback = getFbDao().ArchiveFeedback(getFeedbackId());
+        Feedback ArchiveFeedback = getFbDao().FeedbackArchiveByFeedbackId(getFeedbackId());
         return SUCCESS;
     }
 

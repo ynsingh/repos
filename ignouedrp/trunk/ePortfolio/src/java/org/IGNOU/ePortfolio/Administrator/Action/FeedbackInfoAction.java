@@ -9,6 +9,7 @@ import java.util.List;
 import org.IGNOU.ePortfolio.Action.sendMail;
 import org.IGNOU.ePortfolio.DAO.FeedbackDao;
 import org.IGNOU.ePortfolio.Model.Feedback;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
@@ -38,32 +39,32 @@ public class FeedbackInfoAction extends ActionSupport {
     }
 
     public String DeleteFeedBack() {
-        fbDao.DeleteFeedback(feedbackId);
+        fbDao.FeedbackDeleteByFeedbackId(feedbackId);
 
         return SUCCESS;
     }
 
     public String ReplyFeedBack() {
-        fbList = fbDao.ReplyFeedback(feedbackId);
+        fbList = fbDao.FeedbackReplyListByFeedbackId(feedbackId);
         return SUCCESS;
     }
 
     public String DetailFeedback() {
-        fbList = fbDao.ReplyFeedback(feedbackId);
+        fbList = fbDao.FeedbackReplyListByFeedbackId(feedbackId);
         return SUCCESS;
     }
              
 
     public String  ForwardFeedback() {
-        fbList = fbDao.ReplyFeedback(feedbackId);
+        fbList = fbDao.FeedbackReplyListByFeedbackId(feedbackId);
         return SUCCESS;
     }
 
     public String SendFeedbackReply() throws Exception {
 
         to = getEmailId();
-        From = getText("mailFrom");
-        Password = getText("mailPassword");
+        From = ReadPropertyFile("mailFrom");
+        Password = ReadPropertyFile("mailPassword");
         subject =  getFSubject();
         msg = "Dear &nbsp;" + getName() + "<br><br><br>" + getComment();
 

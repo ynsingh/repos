@@ -64,7 +64,7 @@ public class SkillAddAction extends ActionSupport implements ModelDriven<Object>
 
     @Override
     public String execute() throws Exception {
-        dao.saveSkillInfo(getPS());
+        dao.ProfileSkillsSave(getPS());
         msg = infoSaved;
         return SUCCESS;
     }

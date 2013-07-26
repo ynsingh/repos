@@ -50,7 +50,7 @@ public class ThesisDissertationInfoAction extends ActionSupport {
 
     public String ShowInfo() throws Exception {
 
-        TDListList = dao.ShowTD(user_id);
+        TDListList = dao.ThesisDissertationListByUserId(user_id);
         if (TDListList.isEmpty()) {
             return INPUT;
         } else {
@@ -59,18 +59,18 @@ public class ThesisDissertationInfoAction extends ActionSupport {
     }
 
     public String EditInfo() throws Exception {
-        TDListList = dao.EditTD(thesisDissertationId);
+        TDListList = dao.ThesisDissertationEdit(thesisDissertationId);
         return SUCCESS;
     }
 
     public String UpdateInfo() throws Exception {
-        getDao().UpdateTD(thesisDissertationId, userId, reportType, programme, other, department, nameUniversity, cityState, country, thesisType, thesisTitle, startDate, endDate, outcome, url, abstract_);
+        getDao().ThesisDissertationUpdate(thesisDissertationId, userId, reportType, programme, other, department, nameUniversity, cityState, country, thesisType, thesisTitle, startDate, endDate, outcome, url, abstract_);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteInfo() throws Exception {
-        getDao().DeleteTD(getThesisDissertationId());
+        getDao().ThesisDissertationDelete(getThesisDissertationId());
         msg = infoDeleted;
         return SUCCESS;
 

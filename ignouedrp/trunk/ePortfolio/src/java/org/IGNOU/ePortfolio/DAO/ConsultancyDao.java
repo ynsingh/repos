@@ -7,7 +7,6 @@ package org.IGNOU.ePortfolio.DAO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.IGNOU.ePortfolio.MyWorkspace.ConsultancyInfoAction;
 import org.IGNOU.ePortfolio.Model.Consultancy;
 import org.IGNOU.ePortfolio.Model.ConsultancyNature;
 import org.hibernate.HibernateException;
@@ -26,14 +25,14 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ConsultancyDao {
 
-    private SessionFactory sf;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
     /*
-     * The method "saveConsultancyInfo" is used to insert Value into Database.
+     * The method "ConsultancySave" is used to insert Value into Database.
      */
 
-    public Consultancy saveConsultancyInfo(Consultancy ConsultancyModel) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public Consultancy ConsultancySave(Consultancy ConsultancyModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -56,13 +55,12 @@ public class ConsultancyDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Consultancy> ShowConsultancyInfo(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Consultancy> ConsultancyListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -81,13 +79,12 @@ public class ConsultancyDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public Consultancy DeleteConsultancyInfo(long consultancyId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public Consultancy ConsultancyDeleteByConsultancyId(long consultancyId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -104,13 +101,12 @@ public class ConsultancyDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public List<Consultancy> EditConsultancyInfo(long consultancyId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<Consultancy> ConsultancyEdit(long consultancyId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -129,20 +125,17 @@ public class ConsultancyDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public Consultancy UpdateConsultancyInfo(ArrayList<Long> CNatureId, Long consultancyId, String userId, String clientName, String DFrom, String DTo, Integer noOfConsultancy, String revenue, String service, String url, String summary, ArrayList<String> nameConsultancy, ArrayList<String> natureWork, Set<ConsultancyNature> consultancyNatures) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        //  ConsultancyInfoAction c = new ConsultancyInfoAction();
-        Session s = sf.openSession();
+    public Consultancy ConsultancyUpdate(ArrayList<Long> CNatureId, Long consultancyId, String userId, String clientName, String DFrom, String DTo, Integer noOfConsultancy, String revenue, String service, String url, String summary, ArrayList<String> nameConsultancy, ArrayList<String> natureWork, Set<ConsultancyNature> consultancyNatures) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
             Consultancy UpdateInfo = (Consultancy) s.load(Consultancy.class, consultancyId);
             UpdateInfo.setClientName(clientName);
-            //  UpdateInfo.setConsultancyId(consultancyId);
             UpdateInfo.setDFrom(DFrom);
             UpdateInfo.setDTo(DTo);
             UpdateInfo.setNoOfConsultancy(noOfConsultancy);
@@ -150,23 +143,6 @@ public class ConsultancyDao {
             UpdateInfo.setService(service);
             UpdateInfo.setSummary(summary);
             UpdateInfo.setUrl(url);
-            /*
-            int size = UpdateInfo.getNameConsultancy().size();
-            UpdateInfo.setUserId(userId);            
-            UpdateInfo.setConsultancyNatures(null);
-            UpdateInfo.setConsultancyNatures(consultancyNatures);
-            if (null != UpdateInfo) {
-            s.update(UpdateInfo);
-            for (int i = 0; i < UpdateInfo.getNoOfConsultancy(); i++) {
-            ConsultancyNature UpdateCN = (ConsultancyNature) s.load(ConsultancyNature.class, CNatureId.get(i));
-            UpdateCN.setNameConsultancy(UpdateInfo.getNameConsultancy().get(i));
-            UpdateCN.setNatureWork(UpdateInfo.getNatureWork().get(i));
-            s.update(UpdateCN);
-            s.flush();
-            s.clear();
-            }
-            }
-             */
             t.commit();
             return UpdateInfo;
         } catch (Throwable ex) {
@@ -176,11 +152,8 @@ public class ConsultancyDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sf;
-    }
 }

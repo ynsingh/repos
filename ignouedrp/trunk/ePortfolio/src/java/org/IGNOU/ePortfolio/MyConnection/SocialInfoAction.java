@@ -71,7 +71,7 @@ public class SocialInfoAction extends ActionSupport {
     }
 
     public String ShowSocialInfo() {
-        setSocialListList(getDao().SocialList(getUser_id()));
+        setSocialListList(getDao().ProfileSocialListByUserId(getUser_id()));
         if (getSocialListList().isEmpty()) {
             // return SUCCESS;
             return INPUT;
@@ -82,7 +82,7 @@ public class SocialInfoAction extends ActionSupport {
     }
 
     public String UpdateSocialInfo() {
-        getDao().UpdateSocial(getSocialInfoId(), getUserId(), getGtalk(), getSkype(), getMsn(), getAim(), getYahoo(), getFacebook(), getOrkut(), getTwitter(), getBlog());
+        getDao().ProfileSocialUpdate(getSocialInfoId(), getUserId(), getGtalk(), getSkype(), getMsn(), getAim(), getYahoo(), getFacebook(), getOrkut(), getTwitter(), getBlog());
         return SUCCESS;
     }
 

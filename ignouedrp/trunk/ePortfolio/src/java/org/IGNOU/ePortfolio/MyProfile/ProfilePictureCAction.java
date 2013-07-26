@@ -6,8 +6,6 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +20,7 @@ import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.ProfilePicture;
 import org.IGNOU.ePortfolio.Model.User;
 import org.IGNOU.ePortfolio.DAO.ProfilePictureDAO;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *
@@ -44,42 +43,28 @@ public class ProfilePictureCAction extends ActionSupport implements ModelDriven<
     private FileUploadCommon fup=new FileUploadCommon();
     private UserProgrammeDao userdao=new UserProgrammeDao();
     private List<User> userlist;
-    private String FilePath = getText("Filepath");
+    private String FilePath = ReadPropertyFile("Filepath");
     private String picUploadpath;
     private long registrationId;
    
     
     
     public String UpdateProfilePicture() throws Exception {
-           ppll=ppDao.Userimage(user_id);
-           userlist=userdao.UserPrograme(user_id);
+           ppll=ppDao.ProfilePictureListByUserId(user_id);
+           userlist=userdao.UserListByUserId(user_id);
            registrationId=userlist.iterator().next().getRegistrationId();
            if (ppll.isEmpty()) {
             pplst.setPicture(getPicture());
-            ppDao.saveProfilePicture(pplst);
+            ppDao.ProfilePictureSave(pplst);
             picUploadpath = FilePath+ "/" + user_id + "/";
-            boolean check=fup.UploadFile(upUserImage,(user_id.substring(0, 4))+".png", picUploadpath);
-            if(check=true){
-               ppDao.UserPicture(registrationId,(user_id.substring(0, 4))+".png"); 
-            }
-            else{
-            
-            ppDao.UserPicture(registrationId,null); 
-            }
+           fup.UploadFile(upUserImage,(user_id.substring(0, 4))+".png", picUploadpath);          
            return SUCCESS;
           } else {
            picId=ppll.iterator().next().getPicId();
-           ppDao.UpdateProPicture(picId, getPicture(), getUser_id(), getFiletype());
+           ppDao.ProfilePictureUpdate(picId, getPicture(), getUser_id(), getFiletype());
            picUploadpath = FilePath+ "/" + user_id + "/";
-            boolean check=fup.UploadFile(upUserImage,(user_id.substring(0, 4))+".png", picUploadpath);
-            if(check=true){
-               ppDao.UserPicture(registrationId,(user_id.substring(0, 4))+".png"); 
-            }
-            else{
-            
-            ppDao.UserPicture(registrationId,null); 
-            }
-               return SUCCESS;
+            fup.UploadFile(upUserImage,(user_id.substring(0, 4))+".png", picUploadpath);       
+            return SUCCESS;
         }
    }
         

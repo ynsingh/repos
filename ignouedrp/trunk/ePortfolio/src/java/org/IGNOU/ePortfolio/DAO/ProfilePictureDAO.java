@@ -16,12 +16,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ProfilePictureDAO {
     
-     
+    private  SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;    
    
-      @SuppressWarnings("unchecked")
-    public ProfilePicture saveProfilePicture(ProfilePicture ppll) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    @SuppressWarnings("unchecked")
+    public ProfilePicture ProfilePictureSave(ProfilePicture ppll) {
+        s = sf.openSession();
         Transaction t = s.beginTransaction();
         s.save(ppll);               
         t.commit();
@@ -31,9 +31,8 @@ public class ProfilePictureDAO {
     }
      
     @SuppressWarnings({"unchecked"})
-    public List<ProfilePicture> Userimage(String user_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfilePicture> ProfilePictureListByUserId(String user_id) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -66,36 +65,17 @@ public class ProfilePictureDAO {
         }
     }
     
-    public ProfilePicture UpdateProPicture(Long picId, byte[] picture, String userId, String filetype) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-       
+    public ProfilePicture ProfilePictureUpdate(Long picId, byte[] picture, String userId, String filetype) {
+        s = sf.openSession();
         Transaction t = s.beginTransaction();
         ProfilePicture Ppl = (ProfilePicture) s.load(ProfilePicture.class, picId);
         Ppl.setPicId(picId);
         Ppl.setPicture(picture);
         Ppl.setFiletype(filetype);
         Ppl.setUserId(userId);
-        
-        s.update(Ppl);
-       
-        t.commit();
-        s.close();
-        
-        return Ppl;
-    }
-    
-     public User UserPicture(long registrationId,String picture) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
-       
-        Transaction t = s.beginTransaction();
-        User Ppl = (User) s.load(User.class, registrationId);
-        Ppl.setPicture(picture);   
         s.update(Ppl);
         t.commit();
         s.close();
-        
         return Ppl;
     }
 }

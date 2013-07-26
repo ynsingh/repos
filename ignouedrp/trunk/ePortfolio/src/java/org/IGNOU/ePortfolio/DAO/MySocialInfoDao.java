@@ -42,9 +42,9 @@ import java.util.List;
 import org.IGNOU.ePortfolio.Model.ProfileSocial;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory object.
@@ -53,12 +53,12 @@ import org.hibernate.Transaction;
  */
 public class MySocialInfoDao {
 
-    private SessionFactory sf;
+    private SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
     /*This function is used to insert social information in to Data base*/
     @SuppressWarnings("unchecked")
-    public ProfileSocial saveSocialInfo(ProfileSocial SocialModel) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileSocial ProfileSocialSave(ProfileSocial SocialModel) {
+        s = sf.openSession();
         Transaction t = s.beginTransaction();
         s.save(SocialModel);
         t.commit();
@@ -68,9 +68,8 @@ public class MySocialInfoDao {
     }
     /*This function is used to Fetch social information */
     @SuppressWarnings("unchecked")
-    public List<ProfileSocial> SocialList(String user_id) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<ProfileSocial> ProfileSocialListByUserId(String user_id) {
+         s = sf.openSession();
         Transaction t = s.beginTransaction();
 
         List<ProfileSocial> sociallist = null;
@@ -86,9 +85,8 @@ public class MySocialInfoDao {
     }
     /*This function is used to Update social information in to Database*/
     @SuppressWarnings("unchecked")
-    public ProfileSocial UpdateSocial(long socialInfo_id, String user_id, String gtalk, String skype, String msn, String aim, String yahoo, String facebook, String orkut, String twitter, String blog) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileSocial ProfileSocialUpdate(long socialInfo_id, String user_id, String gtalk, String skype, String msn, String aim, String yahoo, String facebook, String orkut, String twitter, String blog) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();

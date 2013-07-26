@@ -25,11 +25,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class SeminarsWorkshopsDao {
 
-    private SessionFactory sessionFactory;
-
-    public SeminarsWorkshops saveSW(SeminarsWorkshops SWModel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();;
+    private Session s;
+    public SeminarsWorkshops SeminarsWorkshopsSave(SeminarsWorkshops SWModel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -56,9 +55,8 @@ public class SeminarsWorkshopsDao {
         }
     }
 
-    public List<SeminarsWorkshops> ShowSW(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<SeminarsWorkshops> SeminarsWorkshopsListByUserId(String user_id) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -82,9 +80,8 @@ public class SeminarsWorkshopsDao {
         }
     }
 
-    public List<SeminarsWorkshops> EditSW(long seminarsWorkshopsId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public List<SeminarsWorkshops> SeminarsWorkshopsEdit(long seminarsWorkshopsId) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -107,9 +104,8 @@ public class SeminarsWorkshopsDao {
         }
     }
 
-    public SeminarsWorkshops DeleteSW(long seminarsWorkshopsId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public SeminarsWorkshops SeminarsWorkshopsDelete(long seminarsWorkshopsId) {
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -126,13 +122,12 @@ public class SeminarsWorkshopsDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SeminarsWorkshops UpdateSW(Long seminarsWorkshopsId, String userId, String swType, String swName, String DFrom, String DTo, String venue, String state, String country, String swRole, String perType, String paperTitle, Integer noCoauthors, String areaThemeTopic, String sourceFunding, Long amountFunded, String language, String url, String abstract_, Set<SeminarsWorkshopsAuthor> seminarsWorkshopsAuthors, ArrayList<String> fname, ArrayList<String> lname) {
-        setSessionFactory(new AnnotationConfiguration().configure().buildSessionFactory());
-        Session s = getSessionFactory().openSession();
+    public SeminarsWorkshops SeminarsWorkshopsUpdate(Long seminarsWorkshopsId, String userId, String swType, String swName, String DFrom, String DTo, String venue, String state, String country, String swRole, String perType, String paperTitle, Integer noCoauthors, String areaThemeTopic, String sourceFunding, Long amountFunded, String language, String url, String abstract_, Set<SeminarsWorkshopsAuthor> seminarsWorkshopsAuthors, ArrayList<String> fname, ArrayList<String> lname) {
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -166,15 +161,8 @@ public class SeminarsWorkshopsDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+           sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

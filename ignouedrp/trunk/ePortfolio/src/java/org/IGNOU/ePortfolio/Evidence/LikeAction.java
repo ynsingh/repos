@@ -38,7 +38,7 @@ public class LikeAction extends ActionSupport implements ModelDriven<Object>{
    
    
     public String SaveLike() throws ParseException{
-             likedislikelist=ldDao.LikeDislikeCheck(evidenceSubId, commentId);
+             likedislikelist=ldDao.LikeDislikeListByEvidenceIdCommentId(evidenceSubId, commentId);
              if(likedislikelist.isEmpty())
              {
                   ldmodel.setEvidenceSubId(evidenceSubId);
@@ -49,7 +49,7 @@ public class LikeAction extends ActionSupport implements ModelDriven<Object>{
                    }else{
                    ldmodel.setCommentId(0);
                   }
-                  ldDao.saveLikeUnlike(ldmodel);
+                  ldDao.LikeDislikeSave(ldmodel);
                   return SUCCESS;
              }
              else
@@ -82,7 +82,7 @@ public class LikeAction extends ActionSupport implements ModelDriven<Object>{
              likeCount=likeCount1+L;
              dislikeCount=dislikeCount1;
              }
-             ldDao.UpdateLikeDislike(likeDislikeId, evidenceSubId, commentId, likeCount, dislikeCount, userDetail);
+             ldDao.LikeDislikeUpdate(likeDislikeId, evidenceSubId, commentId, likeCount, dislikeCount, userDetail);
              return SUCCESS;
              }
      }

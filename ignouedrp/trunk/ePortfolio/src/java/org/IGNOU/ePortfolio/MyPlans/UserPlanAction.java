@@ -57,7 +57,7 @@ public class UserPlanAction extends ActionSupport implements ModelDriven<UserPla
     private String infoSaved = getText("msg.infoSaved");
 
     public String DataInsert() {
-        hu.saveInfo(upModel);
+        hu.UserPlanSave(upModel);
         msg = infoSaved;
         return SUCCESS;
     }

@@ -10,6 +10,7 @@ import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
@@ -31,8 +32,8 @@ public class DEIPersonalInfoAction extends ActionSupport {
     private String hDir = System.getProperty("user.home");
     private String pPath = hDir + "/Remote_auth/dei-remote-access.properties";
     private String line, skey, xmlFile;
-    private String src_id = getText("deiScourceId");
-    private String xfPath = getText("xmlStudentPath");
+    private String src_id = ReadPropertyFile("deiScourceId");
+    private String xfPath = ReadPropertyFile("xmlStudentPath");
     private String universityCode = "0001";
     private String RemotePersonalInfo, msg;
     private String studentName, fatherName, motherName, dob, enrollmentNo, gender, category, nationality;

@@ -55,7 +55,7 @@ public class StudRegistrationAction extends ActionSupport implements ModelDriven
         password=userModel.getPassword();
         pwd=DigestUtils.md5Hex(password);
         userModel.setPassword(pwd);
-        rgDao.saveRegistration(userModel);
+        rgDao.UserSaveByRegModel(userModel);
         msg = RegSuccess;
         return SUCCESS;
     }

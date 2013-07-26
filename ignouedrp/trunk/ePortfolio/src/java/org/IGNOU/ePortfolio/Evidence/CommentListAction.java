@@ -32,7 +32,7 @@ public class CommentListAction extends ActionSupport {
     private String msg;
 
     public String EvidenceCommentList() {
-        evcommlist = getEviDao().MySubInfo(evidenceId, userId);
+        evcommlist = getEviDao().EvidenceSubmissionListByEvidenceIdUserId(evidenceId, userId);
         String allow = evcommlist.iterator().next().getListStudent();
         Boolean per = evcommlist.iterator().next().getCanComment();
         if (allow.contains(user_id) && per == true) {
@@ -40,7 +40,7 @@ public class CommentListAction extends ActionSupport {
         } else {
             allper = "null";
         }
-        ComList = eviDao.PeerCommentInfo(userId, evidenceId);
+        ComList = eviDao.CommentPeerListBySubmitorIdEvidenceId(userId, evidenceId);
         /*Calculate Avg.*/
         for (int i = 0; i < ComList.size(); i++) {
             temval = temval + ComList.get(i).getRating();
@@ -50,8 +50,8 @@ public class CommentListAction extends ActionSupport {
     }
 
     public String ReplyCommentList() {
-        evcommlist = getEviDao().MySubInfo(evidenceId, user_id);
-        ComList = eviDao.PeerCommentInfo(user_id, evidenceId);
+        evcommlist = getEviDao().EvidenceSubmissionListByEvidenceIdUserId(evidenceId, user_id);
+        ComList = eviDao.CommentPeerListBySubmitorIdEvidenceId(user_id, evidenceId);
         /*Calculate Avg.*/
         for (int i = 0; i < ComList.size(); i++) {
             temval = temval + ComList.get(i).getRating();

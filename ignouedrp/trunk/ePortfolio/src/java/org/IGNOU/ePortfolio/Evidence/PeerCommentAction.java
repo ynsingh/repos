@@ -34,8 +34,8 @@ public class PeerCommentAction extends ActionSupport {
     }
 
     public String ShowComments() throws Exception {
-        CommentList = eviDao.CommentList(user_id, evidenceId);
-        EvidenceInfo = eviDao.MySubInfo(evidenceId, user_id);
+        CommentList = eviDao.CommentPeerListBySubmitorIdEvidenceId(user_id, evidenceId);
+        EvidenceInfo = eviDao.EvidenceSubmissionListByEvidenceIdUserId(evidenceId, user_id);
         if (CommentList.isEmpty()) {
             msg = recordNotFound;
         } else {
@@ -48,8 +48,8 @@ public class PeerCommentAction extends ActionSupport {
         return SUCCESS;
     }
     public String ShowViewComments() throws Exception {
-        CommentList = eviDao.CommentList(userId, evidenceId);
-        EvidenceInfo = eviDao.MySubInfo(evidenceId, userId);
+        CommentList = eviDao.CommentPeerListBySubmitorIdEvidenceId(userId, evidenceId);
+        EvidenceInfo = eviDao.EvidenceSubmissionListByEvidenceIdUserId(evidenceId, userId);
         if (CommentList.isEmpty()) {
             msg = recordNotFound;
         } else {

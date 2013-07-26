@@ -19,64 +19,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ContactDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-//    public ContactInfo saveContInfo(ContactInfo cModel) {
-//        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-//        Session s = sf.openSession();
-//        Transaction t = null;
-//        try {
-//            t = s.beginTransaction();
-//            s.save(cModel);
-//            t.commit();
-//            return cModel;
-//        } catch (Throwable ex) {
-//            //Log the Exception
-//            t.rollback();
-//            System.err.println("Initial SessionFactory creation failed." + ex);
-//            throw new ExceptionInInitializerError(ex);
-//        } finally {
-//            s.close();
-//            sf.close();
-//        }
-//    }
-//
-//    public ContactInfo saveInfo(String user_id, String ccountry, String cstate, String ccity, String caddress1, String caddress2, Integer cpinZip, Integer cphoneNo, Integer cmobileNo, Integer cfaxNo, String cemailId, String cwebsite) {
-//        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-//        Session s = sf.openSession();
-//        Transaction t = null;
-//        try {
-//            t = s.beginTransaction();
-//            ContactInfo ci = new ContactInfo();
-//            ci.setCaddress1(caddress1);
-//            ci.setCaddress2(caddress2);
-//            ci.setCcity(ccity);
-//            ci.setCcountry(ccountry);
-//            ci.setCemailId(cemailId);
-//            ci.setCfaxNo(cfaxNo);
-//            ci.setUserId(user_id);
-//            ci.setCmobileNo(cmobileNo);
-//            ci.setCphoneNo(cphoneNo);
-//            ci.setCpinZip(cpinZip);
-//            ci.setCstate(cstate);
-//            ci.setCwebsite(cwebsite);
-//            s.save(ci);
-//            t.commit();
-//            return ci;
-//        } catch (Throwable ex) {
-//            //Log the Exception
-//            t.rollback();
-//            System.err.println("Initial SessionFactory creation failed." + ex);
-//            throw new ExceptionInInitializerError(ex);
-//        } finally {
-//            s.close();
-//            sf.close();
-//        }
-//    }
     @SuppressWarnings("unchecked")
     public List<ProfileContact> ContactList(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<ProfileContact> contactlist = null;
@@ -97,9 +45,8 @@ public class ContactDao {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileContact UpdateContact(long contactInfo_id, String user_id, String address1, String address2, String city, String state, String country, Integer pin, Long hTelephone, Long oTelephone, Long mobile, Long fax, String email1, String email2, String email3, String oWebsite, String pWebsite) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public ProfileContact ContactUpdate(long contactInfo_id, String user_id, String address1, String address2, String city, String state, String country, Integer pin, Long hTelephone, Long oTelephone, Long mobile, Long fax, String email1, String email2, String email3, String oWebsite, String pWebsite) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -133,10 +80,6 @@ public class ContactDao {
             s.close();
             sessionFactory.close();
         }
-
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

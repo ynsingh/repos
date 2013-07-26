@@ -22,12 +22,12 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author IGNOU Team
  */
 public class TestimonialDao {
-
-    private SessionFactory sessionFactory;
-
-    public List<User> ShowTestiUsrList(int instituteId, int programmeId, String role) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
+    public List<User> UserListByInstituteIdProgrammeIdRole(int instituteId, int programmeId, String role) {
+         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<User> TestiUlist = null;
@@ -43,9 +43,8 @@ public class TestimonialDao {
     }
   
 
-    public Testimonials RequestTestimonial(Testimonials TestiModel, String userByTestiReqTo) throws Exception {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+    public Testimonials TestimonialSave(Testimonials TestiModel, String userByTestiReqTo) throws Exception {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -70,8 +69,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> SentTestimonialRequest(String userByTestiRequestor) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Testimonials> ReqList = null;
@@ -87,8 +85,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> DraftTestimonialRequest(String userByTestiRequestor) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+       s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Testimonials> ReqList = null;
@@ -104,8 +101,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> TestimonialRequestToFaculty(String userByTestiReqTo) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Testimonials> ReqList = null;
@@ -121,8 +117,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> UpdateReadStatus(Integer testiReqId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = null;
         List<Testimonials> ReqList = null;
         try {
@@ -143,8 +138,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> CreateTestimonialfor(Integer testiReqId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Testimonials> ReqList = null;
         try {
@@ -159,8 +153,7 @@ public class TestimonialDao {
     }
 
     public Testimonials SaveTestimonialReport(Integer testiReqId, Date createDate, Date sentDate, Boolean sent, String report) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -186,8 +179,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> STestimonialSentToConcerned(String userByTestiRequestor) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Testimonials> ReqList = null;
         try {
@@ -202,8 +194,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> FTestimonialSentToConcerned(String userByTestiReqTo) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Testimonials> ReqList = null;
         try {
@@ -218,8 +209,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> FTestimonialSaved(String userByTestiReqTo) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+       s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Testimonials> ReqList = null;
         try {
@@ -234,8 +224,7 @@ public class TestimonialDao {
     }
 
     public List<Testimonials> FTestimonialEdit(Integer testiReqId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
 
         List<Testimonials> ReqList = null;
@@ -251,8 +240,7 @@ public class TestimonialDao {
     }
 
     public Testimonials UpdateTestimonialbyFaculty(Integer testiReqId, Boolean sent, String testiForEmail, String testiReqCc, String testiReqBcc, String report) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -278,7 +266,4 @@ public class TestimonialDao {
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

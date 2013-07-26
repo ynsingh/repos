@@ -12,9 +12,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.Model.ProfileContact;
 import org.IGNOU.ePortfolio.DAO.ContactDao;
+import org.IGNOU.ePortfolio.Model.ProfileContact;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -32,10 +33,7 @@ public class ContactInfoAction extends ActionSupport {
     private ProfileContact ProfileContact;
     private List<ProfileContact> contactListList;
     private long contactInfoId;
-    private Long HTelephone;
-    private Long OTelephone;
-    private Long mobileNo;
-    private Long faxNo;
+    private Long HTelephone, OTelephone, mobileNo,faxNo;
     private Integer pin;
     private String address1, address2, city, state, country, email1, email2, email3, owebsite, pwebsite;
     private String msg;
@@ -44,9 +42,9 @@ public class ContactInfoAction extends ActionSupport {
     /*
      * Remote Access
      */
-    private String skey = getText("deiKey");
-    private String src_id = getText("deiScourceId");
-    private String xfPath = getText("xmlContactPath");
+    private String skey = ReadPropertyFile("deiKey");
+    private String src_id = ReadPropertyFile("deiScourceId");
+    private String xfPath = ReadPropertyFile("xmlContactPath");
     private String universityCode = "0001";
     private String xmlFile, randomNumber, hashCode;
     private String RemoteContactInfo;
@@ -74,7 +72,7 @@ public class ContactInfoAction extends ActionSupport {
     }
 
     public String UpdateContactInfo() {
-        dao.UpdateContact(getContactInfoId(), getUser_id(), getAddress1(), getAddress2(), getCity(), getState(), getCountry(), getPin(), getHTelephone(), getHTelephone(), getMobileNo(), getFaxNo(), getEmail1(), getEmail2(), getEmail3(), getOwebsite(), getPwebsite());
+        dao.ContactUpdate(getContactInfoId(), getUser_id(), getAddress1(), getAddress2(), getCity(), getState(), getCountry(), getPin(), getHTelephone(), getHTelephone(), getMobileNo(), getFaxNo(), getEmail1(), getEmail2(), getEmail3(), getOwebsite(), getPwebsite());
         msg = getUpdateInfo();
         return SUCCESS;
     }

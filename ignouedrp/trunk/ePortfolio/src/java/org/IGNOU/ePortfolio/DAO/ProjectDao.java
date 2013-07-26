@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 /*
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
@@ -54,11 +51,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ProjectDao {
 
-    private SessionFactory sf = null;
-
-    public Projects AddProjectInfo(Projects ProjectModel) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    private SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
+    public Projects ProjectsSave(Projects ProjectModel) throws Exception {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -75,14 +72,13 @@ public class ProjectDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<Projects> ShowProjectInfo(String UserId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSf().openSession();
+    public List<Projects> ProjectsListByUserId(String UserId) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -101,14 +97,13 @@ public class ProjectDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<Projects> EditProjectInfo(long projectId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSf().openSession();
+    public List<Projects> ProjectsEdit(long projectId) {
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -127,13 +122,12 @@ public class ProjectDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
-    public Projects UpdateProjectInfo(long projectId, String userId, String proName, Integer teamSize, String role, String proUrl, String startDate, String endDate, String description, String agency, Long budget) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public Projects ProjectsUpdate(long projectId, String userId, String proName, Integer teamSize, String role, String proUrl, String startDate, String endDate, String description, String agency, Long budget) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -159,13 +153,12 @@ public class ProjectDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
-    public Projects DeleteProjectInfo(long testId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public Projects ProjectsDelete(long testId) {
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -186,13 +179,5 @@ public class ProjectDao {
         }
     }
 
-    /*    
-    
-     */
-    /**
-     * @return the sf
-     */
-    public SessionFactory getSf() {
-        return sf;
-    }
+   
 }

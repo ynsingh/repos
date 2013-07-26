@@ -22,7 +22,7 @@ public class ProfileContactDao {
 
     private SessionFactory sf;
 
-    public ProfileContact saveContactInfo(ProfileContact ContactModel) {
+    public ProfileContact ContactInfoSave(ProfileContact ContactModel) {
         sf = new AnnotationConfiguration().configure().buildSessionFactory();
         Session s = sf.openSession();
         Transaction t = s.beginTransaction();
@@ -31,7 +31,4 @@ public class ProfileContactDao {
         return ContactModel;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sf;
-    }
 }

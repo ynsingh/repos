@@ -58,8 +58,8 @@ public class GradeSetupAction extends ActionSupport {
         return SUCCESS;
     }
 
-//    public String UpdateGradeSetupValue() throws Exception {
-//        //     CourseProInsList = pDao.CorProInsList(courseId);
+//    public String GradeValueUpdate() throws Exception {
+//        //     CourseProInsList = pDao.CourseDetailByCourseId(courseId);
 //        setSplitDetails(getDetails().split(","));
 //        for (int i = 0; i < getSplitDetails().length; i++) {
 //            setStr1(getStr1() + getSplitDetails()[i]);
@@ -72,7 +72,7 @@ public class GradeSetupAction extends ActionSupport {
 //                setStr(getStr() + (getSplitDetails2()[i] + getGradeValue()[i]) + "-" + getGradeValue1()[i] + " ");
 //            }
 //        }
-//        dao.UpdateGradeSetupValue(gradeValId, instituteId, programmeId, courseId, user_id, gtdId, str, new Date());
+//        dao.GradeValueUpdate(gradeValId, instituteId, programmeId, courseId, user_id, gtdId, str, new Date());
 //        return SUCCESS;
 //    }
     /**
@@ -230,14 +230,14 @@ public class GradeSetupAction extends ActionSupport {
     }
 
     /**
-     * @return the GTList
+     * @return the GradeTypeMasterListByGradeTypeId
      */
     public List<GradeTypeMaster> getGTList() {
         return GTList;
     }
 
     /**
-     * @param GTList the GTList to set
+     * @param GradeTypeMasterListByGradeTypeId the GradeTypeMasterListByGradeTypeId to set
      */
     public void setGTList(List<GradeTypeMaster> GTList) {
         this.GTList = GTList;

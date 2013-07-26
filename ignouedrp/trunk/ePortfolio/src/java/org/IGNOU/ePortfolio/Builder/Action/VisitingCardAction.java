@@ -22,7 +22,7 @@ public class VisitingCardAction extends ActionSupport implements ModelDriven<Vis
     
 
     public String VisitingCardAdd() {
-        vcDao.AddVisitingCardDetail(vcMod);
+        vcDao.VisitingCardSave(vcMod);
         return SUCCESS;
     }
 

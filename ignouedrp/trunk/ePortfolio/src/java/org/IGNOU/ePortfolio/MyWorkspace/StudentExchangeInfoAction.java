@@ -29,7 +29,7 @@ public class StudentExchangeInfoAction extends ActionSupport {
     private String infoUpdated = getText("msg.infoUpdated");
 
     public String ShowInfo() throws Exception {
-        ExchangeProgrammeList = dao.ShowExchangeInfo(user_id);
+        ExchangeProgrammeList = dao.StudentExchangeListByUserId(user_id);
         if (ExchangeProgrammeList.isEmpty()) {
             return INPUT;
         } else {
@@ -38,18 +38,18 @@ public class StudentExchangeInfoAction extends ActionSupport {
     }
 
     public String DeleteInfo() throws Exception {
-        dao.DeleteExchangeInfo(studentExchangeId);
+        dao.StudentExchangeDelete(studentExchangeId);
         msg = infoDeleted;
         return SUCCESS;
     }
 
     public String EditInfo() throws Exception {
-        ExchangeProgrammeList = dao.EditExchangeInfo(studentExchangeId);
+        ExchangeProgrammeList = dao.StudentExchangeEdit(studentExchangeId);
         return SUCCESS;
     }
 
     public String UpdateInfo() throws Exception {
-        getDao().UpdateExchangeInfo(studentExchangeId, programmeType, nameUniversity, role, programmeTheme, venue, state, country, durationFrom, durationTo, degreeLevel, degraeeName, researchColl, url, description, userId, ifOther);
+        getDao().StudentExchangeUpdate(studentExchangeId, programmeType, nameUniversity, role, programmeTheme, venue, state, country, durationFrom, durationTo, degreeLevel, degraeeName, researchColl, url, description, userId, ifOther);
         msg = infoUpdated;
         return SUCCESS;
     }

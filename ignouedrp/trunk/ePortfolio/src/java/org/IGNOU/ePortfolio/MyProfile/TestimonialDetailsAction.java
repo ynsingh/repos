@@ -10,10 +10,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.PrintHtmlPdf;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.Action.sendMail;
-import org.IGNOU.ePortfolio.Model.Testimonials;
 import org.IGNOU.ePortfolio.DAO.TestimonialDao;
+import org.IGNOU.ePortfolio.Model.Testimonials;
 
 /**
  *
@@ -33,7 +34,7 @@ public class TestimonialDetailsAction extends ActionSupport {
     private String drafttitle = getText("title.testimonial.draft.faculty");
     private String DraftEdit = getText("title.testimonial.draft.edit.faculty");
     private String mailSubject = getText("mail.Subject.Testimonial");
-    private String CFile = getText("Filepath");
+    private String CFile = ReadPropertyFile("Filepath");
     private InputStream fps;
     private String FileToCreate;
     private PrintHtmlPdf phpdf = new PrintHtmlPdf();

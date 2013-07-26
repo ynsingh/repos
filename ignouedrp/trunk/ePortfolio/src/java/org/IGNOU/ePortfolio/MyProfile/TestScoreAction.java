@@ -65,7 +65,7 @@ public class TestScoreAction extends ActionSupport implements ModelDriven<Object
     @Override
     public String execute() throws Exception {
         try {
-            dao.AddTestInfo(test);
+            dao.ProfileTestSave(test);
             msg = infoSaved;
         } catch (Exception e) {
             msg = "Data has not been Saved Successfully, Error: " + e.toString();

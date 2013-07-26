@@ -66,7 +66,7 @@ public class HonorAwardInfoAction extends ActionSupport {
     }
 
     public String ShowHonorInfo() throws Exception {
-        HonorAwardList = dao.ShowInfo(user_id);
+        HonorAwardList = dao.ProfileHonorAwardListByUserId(user_id);
         if (HonorAwardList.isEmpty()) {
             return INPUT;
         } else {
@@ -75,18 +75,18 @@ public class HonorAwardInfoAction extends ActionSupport {
     }
 
     public String EditHonoprInfo() throws Exception {
-        HonorAwardList = dao.ShowInfo(getHonorAwardId());
+        HonorAwardList = dao.ProfileHonorAwardByHonorAwardId(getHonorAwardId());
         return SUCCESS;
     }
 
     public String UpdateHonorInfo() throws Exception {
-        getDao().UpdateInfo(honorAwardId, userId, haTitle, issuer, haDate, haDescription);
+        getDao().ProfileHonorAwardUpdate(honorAwardId, userId, haTitle, issuer, haDate, haDescription);
         msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteHonorInfo() throws Exception {
-        getDao().DeleteInfo(honorAwardId);
+        getDao().ProfileHonorAwardDelete(honorAwardId);
         msg = infoDeleted;
         return SUCCESS;
     }

@@ -30,7 +30,7 @@ public class CountLikeDislikeAction extends ActionSupport {
      
      
      public String CountLikeDislike() throws ParseException{
-       likedislist=ldDao.LikeDislikeCheck(evidenceSubId,commentId);
+       likedislist=ldDao.LikeDislikeListByEvidenceIdCommentId(evidenceSubId,commentId);
        if(likedislist.isEmpty()){
             likelist="null";
             return  SUCCESS; 

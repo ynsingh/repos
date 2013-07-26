@@ -28,7 +28,7 @@ public class GradeTypeListJAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        gradeMasterList = gradeDao.GradeTypeJList(Integer.valueOf(coursesId), user_id);
+        gradeMasterList = gradeDao.GradeValueJsonListByCourseIdUserId(Integer.valueOf(coursesId), user_id);
         gradeMasterL = new HashMap<Integer, String>();
         if (gradeMasterList.isEmpty()) {
             gradeMasterL.put(null, getGradeNotFound());

@@ -22,11 +22,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class MediaPublicationDao {
 
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    public MediaPublication saveMedia(MediaPublication MPMOdel) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public MediaPublication MediaPublicationSave(MediaPublication MPMOdel) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -40,13 +40,12 @@ public class MediaPublicationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<MediaPublication> ShowMedia(String user_id) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public List<MediaPublication> MediaPublicationListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -64,13 +63,12 @@ public class MediaPublicationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public List<MediaPublication> EditMedia(long mpId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public List<MediaPublication> MediaPublicationListByMPId(long mpId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -88,13 +86,12 @@ public class MediaPublicationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public MediaPublication UpdateMedia(long mpId, String userId, String typeOfMedia, String titleOfMedia, String titleOfArticle, String pubDate, String url, String summary, Integer api) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public MediaPublication MediaPublicationUpdate(long mpId, String userId, String typeOfMedia, String titleOfMedia, String titleOfArticle, String pubDate, String url, String summary, Integer api) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -116,13 +113,12 @@ public class MediaPublicationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public MediaPublication DeleteMedia(long mpId) {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSessionFactory().openSession();
+    public MediaPublication MediaPublicationDelete(long mpId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -138,11 +134,8 @@ public class MediaPublicationDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSessionFactory().close();
+            sessionFactory.close();
         }
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 }

@@ -52,11 +52,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class TestScoreDao {
 
-    private SessionFactory sf;
-
-    public ProfileTest AddTestInfo(ProfileTest TestModel) throws Exception {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    private SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+   
+    public ProfileTest ProfileTestSave(ProfileTest TestModel) throws Exception {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -73,14 +73,13 @@ public class TestScoreDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileTest> ShowTestInfo(String userId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSf().openSession();
+    public List<ProfileTest> ProfileTestListByUserId(String userId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -99,14 +98,13 @@ public class TestScoreDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileTest> EditTestInfo(long testId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = getSf().openSession();
+    public List<ProfileTest> ProfileTestEdit(long testId) {
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -125,13 +123,12 @@ public class TestScoreDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
-    public ProfileTest UpdateTestInfo(long testId, String userId, String tname, Integer score, String tdate, String tdescription) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileTest ProfileTestUpdate(long testId, String userId, String tname, Integer score, String tdate, String tdescription) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -152,13 +149,12 @@ public class TestScoreDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            getSf().close();
+            sf.close();
         }
     }
 
-    public ProfileTest DeleteTestInfo(long testId) {
-        sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public ProfileTest ProfileTestDelete(long testId) {
+         s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -179,10 +175,4 @@ public class TestScoreDao {
         }
     }
 
-    /**
-     * @return the sf
-     */
-    public SessionFactory getSf() {
-        return sf;
-    }
 }

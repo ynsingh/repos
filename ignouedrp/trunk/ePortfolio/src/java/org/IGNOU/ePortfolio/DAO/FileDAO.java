@@ -1,9 +1,6 @@
  /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -12,10 +9,10 @@
  *  conditions are met:
  *
  *  Redistributions of source code must retain the above copyright
- *  notice, this  list of conditions and the following disclaimer.
+ *  notice, this  UserDocsListByUserId of conditions and the following disclaimer.
  *
  *  Redistribution in binary form must reproducuce the above copyright
- *  notice, this list of conditions and the following disclaimer in
+ *  notice, this UserDocsListByUserId of conditions and the following disclaimer in
  *  the documentation and/or other materials provided with the
  *  distribution.
  *
@@ -45,97 +42,101 @@ package org.IGNOU.ePortfolio.DAO;
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.UserDocsList;
 import org.hibernate.*;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
+
 /**
-     * FileDAO This is the function to List information of files.
-     * @author IGNOU Team
-     */
+ * FileDAO This is the function to List information of files.
+ *
+ * @author IGNOU Team
+ */
 public class FileDAO {
 
-    @SuppressWarnings("unchecked")
-    public List<UserDocsList> list(String user_id) {
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-        Configuration cfg = new Configuration().configure();
-        SessionFactory f = cfg.buildSessionFactory();
-        Session session = f.openSession();
-        Transaction t = session.beginTransaction();
+    @SuppressWarnings("unchecked")
+    public List<UserDocsList> UserDocsListByUserId(String user_id) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
         List<UserDocsList> filelist = null;
         try {
-            Query q = session.createQuery("from UserDocsList imagelist where imagelist.user_id='" + user_id + "'");
+            Query q = s.createQuery("from UserDocsList imagelist where imagelist.user_id='" + user_id + "'");
             filelist = q.list();
-
         } catch (HibernateException he) {
             System.out.println(he);
         }
         t.commit();
-        session.close();
-        f.close();
+        s.close();
+        sessionFactory.close();
         return filelist;
     }
-/**
-     * delete This is the function to delete information of files.
+
+    /**
+     * UserDocsDeleteByFileId This is the function to UserDocsDeleteByFileId
+     * information of files.
+     *
      * @return imagelist
      * @author IGNOU Team
      */
-    public UserDocsList delete(int fileid) {
-        Configuration cfg = new Configuration().configure();
-        SessionFactory f = cfg.buildSessionFactory();
-        Session session = f.openSession();
-        Transaction t = session.beginTransaction();
-        UserDocsList imagelist = (UserDocsList) session.load(UserDocsList.class, fileid);
+    public UserDocsList UserDocsDeleteByFileId(int fileid) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        UserDocsList imagelist = (UserDocsList) s.load(UserDocsList.class, fileid);
         if (null != imagelist) {
-            session.delete(imagelist);
+            s.delete(imagelist);
         }
         t.commit();
-        session.close();
-        f.close();
+        s.close();
+        sessionFactory.close();
         return imagelist;
     }
-/**
-     * DetailFetch This is the function to fetch information of files.
+
+    /**
+     * UserDocsListByFileId This is the function to fetch information of files.
+     *
      * @return imagelist
      * @author IGNOU Team
      */
     @SuppressWarnings("unchecked")
-    public List<UserDocsList> DetailFetch(int fileid) {
-        Configuration cfg = new Configuration().configure();
-        SessionFactory f = cfg.buildSessionFactory();
-        Session session = f.openSession();
-        Transaction t = session.beginTransaction();
+    public List<UserDocsList> UserDocsListByFileId(int fileid) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
         List<UserDocsList> imagelist = null;
         try {
-            Query q = session.createQuery("from UserDocsList imagelist where imagelist.fileid='" + fileid + "'");
+            Query q = s.createQuery("from UserDocsList imagelist where imagelist.fileid='" + fileid + "'");
             imagelist = q.list();
 
         } catch (HibernateException he) {
             System.out.println(he);
         }
         t.commit();
-        session.close();
-        f.close();
+        s.close();
+        sessionFactory.close();
         return imagelist;
     }
-/**
-     * Update This is the function to Update information of files.
+
+    /**
+     * UserDocsUpdate This is the function to UserDocsUpdate information of
+     * files.
+     *
      * @return imagelist
      * @author IGNOU Team
      */
-    public UserDocsList Update(int fileid, String filename, String description, String filedate) {
-        Configuration cfg = new Configuration().configure();
-        SessionFactory f = cfg.buildSessionFactory();
-        Session session = f.openSession();
-        Transaction t = session.beginTransaction();
-        UserDocsList imagelist = (UserDocsList) session.load(UserDocsList.class, fileid);
+    public UserDocsList UserDocsUpdate(int fileid, String filename, String description, String filedate) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        UserDocsList imagelist = (UserDocsList) s.load(UserDocsList.class, fileid);
         imagelist.setFileid(fileid);
         imagelist.setFilename(filename);
         imagelist.setDescription(description);
         imagelist.setFiledate(filedate);
         if (null != imagelist) {
-            session.update(imagelist);
+            s.update(imagelist);
         }
         t.commit();
-        session.close();
-        f.close();
+        s.close();
+        sessionFactory.close();
         return imagelist;
     }
+
 }

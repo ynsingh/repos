@@ -34,7 +34,7 @@ public class ConsultancyAction extends ActionSupport implements ModelDriven<Obje
 
     @Override
     public String execute() throws Exception {
-        dao.saveConsultancyInfo(getConsultInfo());
+        dao.ConsultancySave(getConsultInfo());
         msg = infoSaved;
         return SUCCESS;
     }

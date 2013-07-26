@@ -1,39 +1,36 @@
-
 package org.IGNOU.ePortfolio.DAO;
+
 /**
- * 
- *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
- *  All Rights Reserved.
  *
- *  Redistribution and use in source and binary forms, with or
- *  without modification, are permitted provided that the following
- *  conditions are met:
+ * Copyright (c) 2011 eGyankosh, IGNOU, New Delhi. All Rights Reserved.
  *
- *  Redistributions of source code must retain the above copyright
- *  notice, this  list of conditions and the following disclaimer.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *  Redistribution in binary form must reproducuce the above copyright
- *  notice, this list of conditions and the following disclaimer in
- *  the documentation and/or other materials provided with the
- *  distribution.
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  *
  *
- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED.  IN NO EVENT SHALL eGyankosh, IGNOU OR ITS CONTRIBUTORS BE LIABLE
- *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
- *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
- *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL eGyankosh,
+ * IGNOU OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL,SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
- *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
+ * Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
- **/
+ *
+ */
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.MyNotes;
 import org.IGNOU.ePortfolio.Model.MyNotesList;
@@ -44,32 +41,37 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
  *
  * @author IGNOU Team
  */
 public class MyNoteDao {
 
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
+
     /**
      * Added on 1-Dec-2011
-     * @author IGNOU Team
-     * This is the function to Insert Notes Information into database.
-     **/
+     *
+     * @author IGNOU Team This is the function to Insert Notes Information into
+     * database.
+     *
+     */
     @SuppressWarnings("unchecked")
-    public MyNotes saveNotesInfo(MyNotes myNote) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public MyNotes MyNotesSave(MyNotes myNote) {
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         s.save(myNote);
         t.commit();
         s.close();
-        sf.close();
+        sessionFactory.close();
         return myNote;
     }
+
     @SuppressWarnings({"unchecked"})
-    public List<MyNotesList> MyNotesList(String user_id) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<MyNotesList> MyNotesListByUserId(String user_id) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -89,15 +91,13 @@ public class MyNoteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
-    
-    
+
     @SuppressWarnings("unchecked")
-    public List<MyNotesList> EditNote(long notesId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public List<MyNotesList> MyNotesListByNotesId(long notesId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -117,15 +117,13 @@ public class MyNoteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
-    
-    
+
     @SuppressWarnings("unchecked")
-    public MyNotesList DeleteNotesInfo(long notesId) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+    public MyNotesList MyNotesDelete(long notesId) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -142,15 +140,13 @@ public class MyNoteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
-    
-    
-     @SuppressWarnings("unchecked")
-    public MyNotesList UpdateNote(long notesId, String userId, String note, String date, String topic ) {
-        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session s = sf.openSession();
+
+    @SuppressWarnings("unchecked")
+    public MyNotesList MyNotesUpdate(long notesId, String userId, String note, String date, String topic) {
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -171,7 +167,8 @@ public class MyNoteDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sf.close();
+            sessionFactory.close();
         }
     }
+
 }

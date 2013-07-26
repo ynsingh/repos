@@ -33,12 +33,12 @@ public class ResetLoginPasswordAction extends ActionSupport {
     }
 
     public String ResetOldPassword() {
-        userList = upDao.UserPrograme(user_id);
+        userList = upDao.UserListByUserId(user_id);
         oldPwdHash=DigestUtils.md5Hex(oldPassword);
         if (oldPwdHash.equals(userList.iterator().next().getPassword())) {
             registrationId = userList.iterator().next().getRegistrationId();
             pwdFieldHash=DigestUtils.md5Hex(passwordField);
-            dao.ReSetPassword(registrationId, pwdFieldHash);
+            dao.UserUpdateByRegistrationIdPassword(registrationId, pwdFieldHash);
             PropertyConfigurator.configure("log4j.properties");
             logger.warn("User change his password"+user_id+"registration Id"+registrationId);
             return SUCCESS;

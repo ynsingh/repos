@@ -76,7 +76,7 @@ public class LogoutAction extends ActionSupport {
         }
 
         if (picname.equals("images/user.png")) {
-            System.out.println("Nothing to delete");
+            logger.warn("Nothing to delete");
         } else {
             new File(picpath + picname).delete();
             session.remove("appPath");
