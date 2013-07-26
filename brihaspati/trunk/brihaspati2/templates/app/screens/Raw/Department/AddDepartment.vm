@@ -5,7 +5,7 @@
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modify date: 06-06-2013
+ * @modify date: 06-06-2013,27-07-2013
 *#
 $page.setTitle("Admin Home | Add Department")
 $page.setBgColor("bgcolor")
@@ -13,8 +13,19 @@ $!data.getMessage()
 
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
+        <script type="text/javascript">
+                $(function(){
+                        $("#scroll").slimScroll({
+                                height: '560px',
+                                disableFadeOut: true
+                        });
+                });
+        </script>
+
 </head>
 
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
@@ -203,7 +214,7 @@ $!data.getMessage()
 		#end
 	<tr>
 		<td>
-		<div style="width:900px;overflow-x:auto;">
+		<div id="scroll" style="width:900px;overflow-x:auto;">
 		<table width="100%">
 		<tr bgcolor="$ui.menuColor">
         	#foreach ($heading in $headings)
@@ -248,7 +259,7 @@ $!data.getMessage()
 	#if($!depname != "")
       	<tr>
 		<td>
-		<div style="width:900px;overflow-x:auto;">
+		<div id="scroll" style="width:900px;overflow-x:auto;">
         	<table width="100%">
         	<tr bgcolor="$ui.menuColor">
         	#foreach ($heading in $headings)
@@ -298,6 +309,7 @@ $!data.getMessage()
 		#end
 		<tr>
 			<td>
+			<div id="scroll">
 			<table width="100%">
 			<tr bgcolor="$ui.menuColor">
         		#foreach ($heading in $headings)
@@ -364,6 +376,7 @@ function showTable$cnt(){
 ########### END OF SCHOOL ####################         
 			#end
 			</table>
+			</div>
 			</td>
 		</tr>
 	#end
@@ -380,7 +393,7 @@ function showTable$cnt(){
        	#if($!schname != "")
        	<tr>
 		<td>
-		<div style="width:900px;overflow-x:auto;">
+		<div id="scroll" style="width:900px;overflow-x:auto;">
         	<table width="100%">
         	<tr bgcolor="$ui.menuColor">
         	#foreach ($heading in $headings)
@@ -424,7 +437,7 @@ function showTable$cnt(){
 	#if($deptmap.size()==0)
         <tr><font color="red" size="3"><b>* <i> $brih_nodeptmap</i></b></font></tr>
         #else
-	<div style="width:930px;overflow-x:auto;">
+	<div id="scroll" style="width:930px;overflow-x:auto;">
 	<table bgcolor="$ui.menuColor" width=100%>
         <tr bgcolor="$ui.menuColor">
         	<td width=5%>$brih_select</td>
@@ -484,6 +497,7 @@ function showTable$cnt(){
 	#if ($schoolmap.size() == 0)
         	<tr><font color="red" size="3"><b>* <i> $brih_noschoolmap</i></b></font></tr>
         #else
+	<div id="scroll">
 	<table bgcolor="$ui.menuColor" width=100%>
         <tr bgcolor="$ui.menuColor">
         	<td width=5%>$brih_select</td>
@@ -592,6 +606,7 @@ function showTable$cnt(){
                 </td>
         </tr>
         </table>
+	</div>
 	</form>
 	#end
 ######################### end of school map #######################

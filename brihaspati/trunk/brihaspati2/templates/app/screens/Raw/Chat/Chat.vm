@@ -7,8 +7,9 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 10-aug-2010 (Shaista), 06-oct-2010, 07-dec-2010, 
- * @modified date: 15-Feb-2011, 04-April-2011 (Shaista), 26-Aug-2011, 19-10-2011 (Sunil Kr)
+ * @modified date: 15-Feb-2011, 04-April-2011 (Shaista), 26-Aug-2011, 19-10-2011 (Sunil Kr),27-07-2013
 *#
 
 $page.setTitle("Chat")
@@ -73,19 +74,17 @@ $!data.getMessage()
 #end
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr>
-		<td>
-		<font face="$ui.sansSerifFonts"><b>
+		<td><b>
 		#if(( $mode == "general") || ($mode == "instituteWise"))
-			<a href="$link.setPage("Index.vm")">$brih_home</a> |
+			<a href="$link.setPage("Index.vm")" style='text-decoration:none'>$brih_home</a> |
 		#else
-			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
+			<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
+			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> | 
 		
 			##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_chat
-			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
+			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> |
 		#end  
 		  $brih_chat
-		</font>
 		</td>
 	</tr>
 <td>
@@ -99,20 +98,20 @@ $!data.getMessage()
 	#elseif($tdcolor == "4")
         	<td bgcolor="#AFDCEC">
 	#end
-                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</td>
 #elseif($mode == "instituteWise")
 		#if($tdcolor!="4")
                         <td width="50%">
                 #elseif($tdcolor == "4")
                         <td width="50%" bgcolor="#AFDCEC">
                 #end
-			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","4").addPathInfo("grpName",$grpName) style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
+			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","4").addPathInfo("grpName",$grpName) style='text-decoration:none'>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
 		#if($tdcolor!="2")
                         <td width="50%">
                 #elseif($tdcolor == "2")
                         <td width="50%" bgcolor="#AFDCEC">
                 #end
-			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName) style=text-decoration:none>$brih_chat</a></td>
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName) style='text-decoration:none'>$brih_chat</a></td>
 #elseif($mode == "general")
 		#if($tdcolor!="2")
         	        <td width="50%">
@@ -175,7 +174,7 @@ $!data.getMessage()
 	        	#elseif($tdcolor == "5")
 			        <td bgcolor="#AFDCEC">
         		#end
-			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style='text-decoration:none'>$brih_news</td>
         	#end
 #end
 </tr>
@@ -189,27 +188,27 @@ $!data.getMessage()
 <table align="left" width=100% bgcolor="$ui.menuColor">
 <tr><td>
         <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
-                $brih_chatMsg2  <a href="/brihaspati/docs/saveChat.html">$brih_here</a><br>
+                $brih_chatMsg2  <a href="/brihaspati/docs/saveChat.html" style='text-decoration:none'>$brih_here</a><br>
 </td></tr>
 <tr bgcolor="tableColor"><td>
 	<blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
-		<a href="http://java.com/en/download/manual.jsp" target="_blank">$brih_djre</a>
+		<a href="http://java.com/en/download/manual.jsp" target="_blank" style='text-decoration:none'>$brih_djre</a>
 </td></tr>
 
 <tr><td>
 	<blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
 	$brih_chatMsg1
 	#if($mode=="general")
-		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode","general")>$brih_changePassword</a>
+		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode","general") style='text-decoration:none'>$brih_changePassword</a>
         #elseif($mode=="instituteWise")
-        	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName)>$brih_changePassword</a>
+        	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName) style='text-decoration:none'>$brih_changePassword</a>
         #else
-		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm")>$brih_changePassword</a>
+		<a href=$link.setPage("call,UserMgmt_User,changePassword.vm") style='text-decoration:none'>$brih_changePassword</a>
 	#end
 </td></tr>
 <tr><td>
         <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
-                $brih_chatMsg2  <a href="/brihaspati/docs/ChatDocToSavePlay.html">$brih_here</a><br>
+                $brih_chatMsg2  <a href="/brihaspati/docs/ChatDocToSavePlay.html" style='text-decoration:none'>$brih_here</a><br>
 </td></tr>
 </table>
 <applet archive="babylon.jar" code="babylon.babylonApplet.class" codebase=$codeBase width="0" height="0">

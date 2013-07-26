@@ -55,7 +55,8 @@ import org.iitk.brihaspati.om.ParentInfoPeer;
   * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
   * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
   * @author <a href="mailto:sharad23nov@yahoo.com">sharad singh</a>
-  
+  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+  * @modify date: 27-07-2013
   */
  
 public class UserGroupRoleUtil{
@@ -185,11 +186,12 @@ public class UserGroupRoleUtil{
 				{
                                 TurbineUser element1=(TurbineUser)st.get(j);
                                 String uName=element1.getUserName();
-                                String fName=element1.getFirstName();
-                                String lName=element1.getLastName();
+                                //String fName=element1.getFirstName();
+                                //String lName=element1.getLastName();
                                 String eMail=element1.getEmail();
 				CourseUserDetail cDetails=new CourseUserDetail();
-				String userName=fName+" "+lName;
+				String userName=UserUtil.getFullName(Integer.parseInt(s)); // Get User Full Name
+				//String userName=fName+" "+lName;
 				cDetails.setLoginName(uName);
 				cDetails.setUserName(userName);
 				cDetails.setEmail(eMail);

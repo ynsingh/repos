@@ -1,6 +1,6 @@
 #*
  * @(#)DBContent.vm
- * Copyright (c)2005-2006,2009, 2010, 2011 ETRG,IIT Kanpur.
+ * Copyright (c)2005-2006,2009, 2010, 2011-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
@@ -10,7 +10,8 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
- * @ modified date: 13-Oct-2010 (Shaista), 08-Aug-2011 (Sunil Kr)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @ modified date: 13-Oct-2010 (Shaista), 08-Aug-2011 (Sunil Kr),27-07-2013
  *#
 
 <head>
@@ -26,13 +27,13 @@ $!data.getMessage()
 ##($stats == "fromIndex") Use for general discussion group ## sk
 ##($mode2 == "instituteWise") Use for insititue wise discussion group ## sk
 		#if ($stats == "fromIndex")
-     			<a href=$link.setPage("Index.vm")>$brih_home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>|
+     			<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex") style='text-decoration:none'>$brih_general $DiscussionBoard</a>|
 		#elseif ($mode2 == "instituteWise")
-		        <a href=$link.setPage("Index.vm")>$brih_home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>|
+		        <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise") style='text-decoration:none'>$RemoteInstitute $brih_wise $DiscussionBoard</a>|
 		#else
-			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>|
-			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
-			<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> | 
+			<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cname</a>|
+			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> | 
+			<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</a> | 
 		#end
 		#if($mode=="All")
 			$LocalMail_MailContent_msg3 
@@ -47,37 +48,37 @@ $!data.getMessage()
    		#elseif($tdcolor=="4")
       			<td bgcolor="#AFDCEC">
    		#end
-      			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</td>
+      			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex") style='text-decoration:none'> $brih_general $DiscussionBoard</td>
 	#elseif ($mode2 == "instituteWise")
         	#if($tdcolor != "8")
            		<td>
         	#elseif($tdcolor=="8")
            		<td bgcolor="#AFDCEC">
         	#end
-           	<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
+           	<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise") style='text-decoration:none'>$RemoteInstitute $brih_wise $DiscussionBoard</td>
 	#else
 	        #if($tdcolor != "1")
         	<td>
 	        #elseif($tdcolor=="1")
         	<td bgcolor="#AFDCEC">
 	        #end
-        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_localmail</a></td>
 	        #if($tdcolor != "2")
         	<td>
 	        #elseif($tdcolor=="2")
         	<td bgcolor="#AFDCEC">
 	        #end
-        	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+        	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_chat</a></td>
 	        #if($tdcolor != "3")
         	<td>
 	        #elseif($tdcolor=="3")
         	<td bgcolor="#AFDCEC">
 	        #end
 		#if($user_role == "student")
-       		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+       		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style='text-decoration:none'> $Notice_NoticeContent_msg1</a></td>
 		#else
         	##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>Notices</td>
-        	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+        	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style='text-decoration:none'>$brih_Notices</td>
 	#end
 
         #if($tdcolor != "4")
@@ -85,14 +86,14 @@ $!data.getMessage()
         #elseif($tdcolor=="4")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'> $DiscussionBoard</td>
 	#if($user_role != "student")
 	        #if($tdcolor != "5")
         	<td>
 	        #elseif($tdcolor=="5")
         	<td bgcolor="#AFDCEC">
 	        #end
-	      <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+	      <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style='text-decoration:none'>$brih_news</td>
         #end
 	#end
 </tr>
@@ -111,11 +112,11 @@ $!data.getMessage()
 			#end
 		#end
 		#if($stats == "fromIndex")
-                	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("stats","fromIndex")>$LocalMail_MailContent_msg1</a>
+                	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("stats","fromIndex") style='text-decoration:none'>$LocalMail_MailContent_msg1</a>
                 #elseif ($mode2 == "instituteWise")
-                	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("mode2","instituteWise")>$LocalMail_MailContent_msg1</a>
+                	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("mode2","instituteWise") style='text-decoration:none'>$LocalMail_MailContent_msg1</a>
                 #else
-		       <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$workgroup).addPathInfo("check","more").addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg1</a>
+		       <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$workgroup).addPathInfo("check","more").addPathInfo("count",$tdcolor) style='text-decoration:none'>$LocalMail_MailContent_msg1</a>
 		#end
 			</td>
 		#end
@@ -131,16 +132,16 @@ $!data.getMessage()
                    	#else
                                 <td>
                    	#end
-                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("stats","fromIndex")>$LocalMail_MailContent_msg2</a>
+                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("stats","fromIndex") style='text-decoration:none'>$LocalMail_MailContent_msg2</a>
                 #elseif ($mode2 == "instituteWise")
                 	#if($tdcolor1 == "8")
                         	<td bgcolor="#AFDCEC">
                    	#else
                         	<td>
                    	#end
-                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$LocalMail_MailContent_msg2</a>
+                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("mode2","instituteWise").addPathInfo("count","8") style='text-decoration:none'>$LocalMail_MailContent_msg2</a>
                 #else
-			<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("course_id",$workgroup).addPathInfo("countTemp","2").addPathInfo("count","4")>$LocalMail_MailContent_msg2</a>
+			<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("course_id",$workgroup).addPathInfo("countTemp","2").addPathInfo("count","4") style='text-decoration:none'>$LocalMail_MailContent_msg2</a>
 		#end
 			</td>
                 	#if($tdcolor1 != "4")
@@ -149,11 +150,11 @@ $!data.getMessage()
                         	<td bgcolor="#AFDCEC">
                 	#end
 		#if($stats == "fromIndex")
-                        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("stats","fromIndex").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","4")>$brih_thread</a>
+                        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("stats","fromIndex").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","4") style='text-decoration:none'>$brih_thread</a>
                 #elseif ($mode2 == "instituteWise")
-                        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("mode2","instituteWise").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","8")>$brih_thread</a>
+                        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("mode2","instituteWise").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","8") style='text-decoration:none'>$brih_thread</a>
                 #else
-        	        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp","4")>$brih_thread</a>
+        	        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp","4") style='text-decoration:none'>$brih_thread</a>
 		#end
                 	</td>
 		#else
@@ -163,11 +164,11 @@ $!data.getMessage()
                         	<td bgcolor="#AFDCEC">
                 	#end
 		#if($stats=="fromIndex")
-                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg3</a>
+                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor) style='text-decoration:none'>$LocalMail_MailContent_msg3</a>
                 #elseif ($mode2 == "instituteWise")
-                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$LocalMail_MailContent_msg3</a>
+                        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("mode2","instituteWise").addPathInfo("count","8") style='text-decoration:none'>$LocalMail_MailContent_msg3</a>
                 #else
-			<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup).addPathInfo("countTemp","2").addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg3</a>
+			<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup).addPathInfo("countTemp","2").addPathInfo("count",$tdcolor) style='text-decoration:none'>$LocalMail_MailContent_msg3</a>
 		#end
 			</td>
 	        #end	
@@ -229,18 +230,18 @@ $!data.getMessage()
 			<td>$e.getMSubject()</td>
 			<td> 
 					#if($stats=="fromIndex") 
-                                                <a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor).addPathInfo("stats","fromIndex")>
+                                                <a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor).addPathInfo("stats","fromIndex") style='text-decoration:none'>
                                         #elseif ($mode2 == "instituteWise")
-                                                <a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor).addPathInfo("mode2","instituteWise")>
+                                                <a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor).addPathInfo("mode2","instituteWise") style='text-decoration:none'>
                                         #else
-						<a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor)>
+						<a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor) style='text-decoration:none'>
 					#end
 							<font face="$ui.sansSerifFonts">
 	       							$brih_view
 							</font>
 						</a>&nbsp
 						#if($user_role=="instructor")
-    		 					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1)>
+    		 					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1) style='text-decoration:none'>
 								<font face="$ui.sansSerifFonts">
 									$brih_edit
 		     						</font>
@@ -249,7 +250,7 @@ $!data.getMessage()
 	        
 						#if($user_role == "student")
 							#if($e.getSender()== $UserName)
-     								<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1)>
+     								<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1) style='text-decoration:none'>
 									<font face="$ui.sansSerifFonts">
 										$brih_edit
 		     							</font>
@@ -261,13 +262,13 @@ $!data.getMessage()
    
   						#if($data.getUser().getUserName()!="guest")
 							#if($from == "Grpmgmt")
-                                                        <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("from","Grpmgmt").addPathInfo("count",$tdcolor)>
+                                                        <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("from","Grpmgmt").addPathInfo("count",$tdcolor) style='text-decoration:none'>
 						#elseif($stats=="fromIndex")
-                                                           <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("stats","fromIndex")>
+                                                           <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("stats","fromIndex") style='text-decoration:none'>
                                                 #elseif ($mode2 == "instituteWise")
-                                                           <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("mode2","instituteWise")>
+                                                           <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("mode2","instituteWise") style='text-decoration:none'>
 						#else
-       				 			<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>
+       				 			<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor) style='text-decoration:none'>
                                                 #end
 
 	 							<font face="$ui.sansSerifFonts">
@@ -277,7 +278,7 @@ $!data.getMessage()
 	 					#end
 	 			 		</td>
 					
-					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1) >
+					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1) style='text-decoration:none'>
      			
 						#if($e.getStatus() == "0")
 			<td>

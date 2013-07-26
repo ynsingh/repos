@@ -98,7 +98,7 @@ $!data.getMessage()
 				<input type="submit" name="eventSubmit_doSearch" value="Search" id="btnSearch" style="visibility: hidden"/>
                		</td>   
                		 #else
-			<td width="50%"><b>$brih_course: </b><input type="text" value="$!course_id" size="35" title="$!course" readonly/></td>
+			<td width="50%"><b>$brih_course: </b><input type="text" value="$!course_id" size="35" font-color=red title="$!course" readonly/></td>
                 	#end
         	</tr>
         	</table>
@@ -121,17 +121,17 @@ $!data.getMessage()
                         	#else
                                 <tr bgcolor="$ui.tableColor">
                        		#end        
-                			<td align="center">$sno</td>
-                			<td>$!urecord.getLoginName()</td>
-                			<td>$!urecord.getEmail()</td>
+                			<td width="5%"align="center">$sno</td>
+                			<td width="25%">$!urecord.getUserName()</td>
+                			<td width="25%">$!urecord.getEmail()</td>
                 			#set($radioname="attendance$sno")
                 			#set($remark="remark$sno")
-               				<td align="center">
+               				<td  width="25%"align="center">
                         			<input type="radio" name="$radioname" value="p" checked="checked">$brih_present
                         			<input type="radio" name="$radioname" value="a">$brih_absent
                   			      	<input type="radio" name="$radioname" value="l">$brih_leave
                				</td>
-                			<td align="center"><input name="$remark" type="text" value="" maxlength="500" size="10"/></td>
+                			<td  width="15%"align="center"><input name="$remark" type="text" value="" maxlength="500" size="10"/></td>
                 			#set($studattendlist="$studattendlist:$!urecord.getLoginName():$!urecord.getEmail():$!radioname:$!remark^")
                 			#set($sno=$sno+1)
                 	#end
@@ -183,7 +183,7 @@ $!data.getMessage()
         	<form name=frm method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table width="100%" align="center" bgcolor="$ui.menuColor"  border="1" style="border-collapse:collapse; border:1px solid black;">
         	<tr>
-                	<td width="10%"><b>$brih_select $brih_Da : </b></td><td width="21%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="Calrange" /></div></td>
+                	<td width="12%"><b>$brih_select $brih_Da : </b></td><td width="21%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="Calrange" /></div></td>
 			#if($data.getUser().getTemp("role") == "institute_admin")
                 	<td align="center" width="44%"><b>$brih_course: </b>
                         <select id="group_id" class="drop" name="group" size=1 style="width:300px;"/>
@@ -197,7 +197,7 @@ $!data.getMessage()
                 	</select>
                 	</td>
                 	#else
-			<td align="center" width="44%"><b>$brih_course: </b><input type="text" name="group" value="$!course_id" size="35" title="$!course" readonly/></td>
+			<td align="center" width="44%"><b>$brih_course: </b><input type="text" name="group" value="$!course_id" size="30" title="$!course" readonly/></td>
                 	#end
                 	<td width="4%">
 				<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doSearch" VALUE="$brih_get $brih_attend" onClick="checkCourse(document.frm,this);">
@@ -217,7 +217,7 @@ $!data.getMessage()
                 	<th rowspan="2"><font size=3>$brih_student $brih_name</font></th>
                 	<th rowspan="2"><font size=3>$brih_email</font></th>
                 	<th colspan="3"><font size=3>$brih_attend $brih_status [<font color="blue"> $searchdate</font>]</th>
-                	<th rowspan="2"><font size=3><b>$brih_action</b></font></th>
+                	<th width="20%" rowspan="2"><font size=3><b>$brih_action</b></font></th>
                 	#else
                 	<th colspan="3"><font size=3>$brih_attend $brih_status (<font color="blue"> $brih_total $brih_attend = $attendreport.size() $brih_day</font>)</th>
 			<th rowspan="2"><font size=3>$brih_attend $brih_Da</font></th>
@@ -316,7 +316,7 @@ $!data.getMessage()
         	<form name="frm" method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table width="100%" align="center" bgcolor="$ui.menuColor"  border="1" style="border-collapse:collapse; border:1px solid black;">
         	<tr>
-                	<td width="9%"><b>$brih_select $brih_Da : </b></td>
+                	<td width="12%"><b>$brih_select $brih_Da : </b></td>
 			<td width="20%">
 			<div style="width: 10px; font-size: 80%;">
 			#if($mode=="All")
@@ -326,7 +326,7 @@ $!data.getMessage()
                         #end
                         </div>
                         </td>
-			<td width="40%"><b>$brih_course: </b><input type="text" value="$!course_id" size="35" title="$!course" readonly/></td>
+			<td width="40%"><b>$brih_course: </b><input type="text" value="$!course_id" size="30" title="$!course" readonly/></td>
                 	<td width="10%">
                 		<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doSearch" VALUE="$brih_attend">
 				<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doSearch">

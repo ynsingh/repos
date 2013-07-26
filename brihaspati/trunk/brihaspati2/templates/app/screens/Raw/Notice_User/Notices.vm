@@ -12,7 +12,7 @@
  * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 31-12-2009, 25-04-2010,07-09-2010 , 09-Aug-2011 (Sunil Kr).
- * @modified date: 24-08-2012 (Sunil Yadav),23-02-2013
+ * @modified date: 24-08-2012 (Sunil Yadav),23-02-2013,27-07-2013
 *#
 <head>
 ##This Script use for Fck Editor in textarea.
@@ -36,14 +36,13 @@
 
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td>
-	<font face="$ui.sansSerifFonts"><b>
+<tr><td><b>
 	#if(($data.getUser().getUserName() == "admin") || $data.getUser().getTemp("role")=="institute_admin")
-        	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | $brih_Notices
+        	<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_ad $brih_home</a> | $brih_Notices
 	#else
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | 
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString()</a> |
-		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $brih_Notices
+		<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$data.getUser().getTemp("course_name" ).toString()</a> |
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> | $brih_Notices
 	#end
 	</font>
 </td></tr>
