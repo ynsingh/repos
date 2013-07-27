@@ -16,6 +16,7 @@
 $page.DefaultDoctype
 
 <html>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 $page.setBgColor("$ui.bgcolor")
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 ##$page.addStyleSheet($content.getURI("resources/css/brihaspati.css"))
