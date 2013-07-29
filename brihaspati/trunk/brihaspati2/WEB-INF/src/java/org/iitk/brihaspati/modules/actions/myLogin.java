@@ -191,7 +191,9 @@ public class myLogin extends VelocityAction{
 							String highTrafficTime = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
 							double high_trafficTime = Double.parseDouble(highTrafficTime);
 							long estimatedTime = System.nanoTime() - startTime;
-							double elapsedTime = (double)estimatedTime / 60000000000.0;
+							//double elapsedTime = (double)estimatedTime / 60000000000.0;
+							//in seconds
+							double elapsedTime = (double)estimatedTime / 1000000000.0;
 							if(elapsedTime < normal_trafficTime)
 							{
 								load_flag=0;	

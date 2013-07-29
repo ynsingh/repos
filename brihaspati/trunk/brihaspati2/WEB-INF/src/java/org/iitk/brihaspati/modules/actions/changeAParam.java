@@ -243,7 +243,17 @@ public class changeAParam extends SecureAction_Admin{
 		String mailSpoolResendTime = pp.getString("spoolMailResendTime","");
 		String mailSpoolExpiryDay = pp.getString("mailSpoolingExpiry","");
 		String normalTrafficTime = pp.getString("normalTraffic");
+		if(normalTrafficTime.equals(""))
+		{
+			//in seconds
+			normalTrafficTime = "15";
+		}			
 		String highTrafficTime = pp.getString("highTraffic");
+		if(highTrafficTime.equals(""))
+                {
+			//in seconds
+                        highTrafficTime = "30";
+                }
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
