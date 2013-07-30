@@ -43,6 +43,7 @@ import java.sql.Date;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.util.parser.ParameterParser;
 
 import org.apache.torque.util.Criteria;
@@ -231,9 +232,10 @@ public class Assignments extends SecureAction
                                 FileItem fileItem;
                                 fileItem = pp.getFileItem("file");
                                 String fileName1=fileItem.getName();
-				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
-                                {//if1
-					
+				//ErrorDumpUtil.ErrorLog("fileName1 in assignment-------------"+StringUtils.isNotBlank(fileName1));
+				if(StringUtils.isNotBlank(fileName1)){
+					if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
+                                	{//if1
                                         /**
                                         * Select the Topic Name According to Course Id
                                         * from the Assignment table
@@ -347,6 +349,101 @@ public class Assignments extends SecureAction
 					msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);               
 					data.setMessage(msg);
 				}
+			}//end of blank file if
+			else
+			{
+                                        /**
+                                        * Select the Topic Name According to Course Id
+                                        * from the Assignment table
+                                        */
+				
+                                        crit=new Criteria();
+					crit.add(AssignmentPeer.GROUP_NAME,courseid);
+                                        crit.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
+                                        List u5=AssignmentPeer.doSelect(crit);
+
+                                        if( (u5.size()==0) || (mode.equals("Update")) )
+                                        {//if2
+                                                /**
+                                                * Insert the News Info
+                                                * from the Assignment table
+                                                */
+
+						crit=new Criteria();
+                                	        crit.add(NewsPeer.GROUP_ID,GID);
+                        	                crit.add(NewsPeer.USER_ID,uid);
+                	                        crit.add(NewsPeer.NEWS_TITLE,News);
+		                                crit.add(NewsPeer.NEWS_DESCRIPTION,MessageBox);
+                                                crit.add(NewsPeer.PUBLISH_DATE,Cur_date);
+                                                crit.add(NewsPeer.EXPIRY,Edate);
+                                                crit.add(NewsPeer.EXPIRY_DATE,Post_date);
+						NewsPeer.doInsert(crit);
+						//ErrorDumpUtil.ErrorLog("In news Insert1====>"+MessageBox);
+                                                /**
+						* Insert the Aissignment Info
+                		                * from the Assignment table
+                                	        */
+
+					//	ErrorDumpUtil.ErrorLog("I am here 279 ====>"+MessageBox);
+						Criteria crit1=new Criteria();
+                                                crit1.add(AssignmentPeer.ASSIGN_ID,agroup_name);
+                                                crit1.add(AssignmentPeer.GROUP_NAME,courseid);
+                                                crit1.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
+                                                crit1.add(AssignmentPeer.CUR_DATE,Cur_date);
+                                                crit1.add(AssignmentPeer.DUE_DATE,Post_date);
+                                                crit1.add(AssignmentPeer.PER_DATE,Post_date);
+                                                crit1.add(AssignmentPeer.GRADE,Grade);
+//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+agroup_name);
+//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+mode + agroup_name + courseid + DB_subject1 + Cur_date + Post_date + Post_date + Grade);
+//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+crit1);
+						if (mode.equals("Update")) {
+//							ErrorDumpUtil.ErrorLog("In Assignment Update====>");
+							AssignmentPeer.doUpdate(crit1);
+						} else {
+//							ErrorDumpUtil.ErrorLog("In Assignment Insert1====>"+crit1);
+                                                	AssignmentPeer.doInsert(crit1);
+						}
+	//					ErrorDumpUtil.ErrorLog("I am here 296 ====>");
+						File file=new File(Assign+"/__file.xml");
+                                                XmlWriter xmlwriter=null;
+						int kk = -1;
+                                                if(!file.exists())
+                                                {
+                                                       	TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
+                                                       	xmlwriter=new XmlWriter(Assign+"/__file.xml");
+						}else{
+                                                	if(mode.equals("Update")){
+                                                        	kk=0;
+                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
+                                                	}else {
+                                                       		//xmlwriter=new XmlWriter(Assign+"/__file.xml",kk);
+								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
+							}
+						}
+							TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,"",username,Grade,Duedate);
+						xmlwriter.writeXmlFile();
+
+//						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
+						/**
+                                                * Disply Message when assignment uploaded successfully
+                                                * and Assignment update successfully
+                                                */
+
+						if(mode.equals("Update")){
+							msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
+							data.setMessage(msg);
+						}else{
+							msg= MultilingualUtil.ConvertedString("assignment_msg5",LangFile);
+							data.setMessage(msg);
+						}
+						flag=true;
+						
+                                        }//if2
+                                        else {  
+						msg= MultilingualUtil.ConvertedString("assignment_msg15",LangFile);             
+						data.setMessage(msg);
+					}
+			}
 			}//else if
                         else {
 

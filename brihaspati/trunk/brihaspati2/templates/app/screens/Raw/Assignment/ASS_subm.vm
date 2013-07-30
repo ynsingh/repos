@@ -154,7 +154,7 @@ $!data.getMessage()
                 </td>
 	</tr>
         <tr bgcolor="$ui.menuColor">
-		<td><b> $brih_instruction  <font color=RED> * </font></b></td>
+		<td><b> $brih_instruction  </b></td>
 		#if($mode == "")
             	<td align="left" width="3"><textarea id="ta" name="message" wrap="physical" rows=9 cols=80 > $!DB_message </textarea></td>
 		#else
@@ -171,9 +171,9 @@ $!data.getMessage()
 	</tr>
         <tr bgcolor="$ui.menuColor">
 			#if($mode!="Update")
-        	                #fileUpload ("<b> $brih_at_file <font color=RED> * </font></b> " "file")
+        	                #fileUpload ("<b> $brih_at_file </b> " "file")
 			#else
-                        	#fileUpload ("<b> $brih_at_file <font color=RED> * </font></b> " "file")
+                        	#fileUpload ("<b> $brih_at_file </b> " "file")
 			#end
 	</tr>
 	<tr>
@@ -208,25 +208,33 @@ $!data.getMessage()
         function checkBlank(uploadform,field)
         {
 		editor.setMode("textmode")
-                if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
+                //if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
+		if((uploadform.contentTopic.value!="") && (uploadform.grade.value!=""))
                 {
-                        if(isNumberString(uploadform.grade.value))
+			if(uploadform.message.value!="" || uploadform.file.value!="")
                         {
-                                alert("Max Grade should be an positive value");
-                                frm.grade.focus();
-                                return false;
-                        }
+	                        if(isNumberString(uploadform.grade.value))
+        	                {
+                	                alert("Max Grade should be an positive value");
+                        	        frm.grade.focus();
+                                	return false;
+	                        }
+	
+        	                var temp=uploadform.message.value+uploadform.contentTopic.value;
+	                        if(isString(temp))
+        	                {
+	
+        	                        alert("Please check the special character !!");
+                	                return false;
+	                        }
 
-                        var temp=uploadform.message.value+uploadform.contentTopic.value;
-                        if(isString(temp))
+                        	uploadform.actionName.value=field.name;
+	                        uploadform.submit();
+			}
+                        else
                         {
-
-                                alert("Please check the special character !!");
-                                return false;
-                        }
-
-                        uploadform.actionName.value=field.name;
-                        uploadform.submit();
+                                alert("Please fill Instruction field or attach any file !!");
+                        }		
                 }else{
                         alert("Please fill all mandatory  fields. !!");
 		}
