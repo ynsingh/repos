@@ -6,9 +6,10 @@
  * @author <a href="mailto:awadhesh_trivedi.yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com ">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 07-09-2010,
- * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
+ * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr), 31-July-2013 (Rekha),
 *#
 <head>
 ##This Script use for Fck Editor in Textarea.
@@ -31,72 +32,80 @@ $!data.getMessage()
 	<td><b>
 	#if($data.getUser().getUserName() == "admin")
         $page.setTitle("Admin Home ")
-	<a href=$link.setPage("Index.vm")>$brih_ad $brih_Of1 $brih_home</a> |
+	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
         #elseif($data.getUser().getTemp("role") != "")
 	$page.setTitle("Home ")
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 	#else
 	$page.setTitle("Home ")
         <a href=$link.setPage("Index.vm")>$brih_home</a> |
         #end
         #if($status=="fromIndex")
-		$page.setTitle("| General News")
-		$brih_genNews
+	$page.setTitle("| General News")
+	$brih_genNews
 	#else
-		$page.setTitle("| $course | Communication | News")
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $course</a> |
-		##<a href =$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_course 
-		<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $brih_course 
-		$brih_Of2 $brih_news
+	##<a href =$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_course 
         #end
+	<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a>|
+	$page.setTitle("| $course | Communication | News")
+        $brih_course 
+	#if($lang=="hindi") $brih_Of2 #end $brih_news
+	|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $course</a> 
+        |<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
         </td>
 </tr>
 </table>
-#if($status=="fromCourse")
+ #if($status=="fromCourse")
 <table bgcolor="$ui.tableColor" width=100%>
+
 <tr align="right">
-	#if($tdcolor != "1")
-	<td>
-	#elseif($tdcolor=="1")
-	<td bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_local $brih_mail</a></td>
-	#if($tdcolor != "2")
-	<td>
-	#elseif($tdcolor=="2")
-	<td bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
-	#if($tdcolor != "3")
-	<td>
-	#elseif($tdcolor=="3")
-	<td bgcolor="#AFDCEC">
-	#end
-		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
-		#foreach($msg in $unreadMsg)
+
+                        #if($unreadm!="0")
+                        #BlinkingText("New")
+                        #end
+        </td>
+        #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+         #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard
+         #if($unreadm!="0")
+                        #BlinkingText("New")
+                        #end
+        </td>
+         #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
+                #foreach($msg in $unreadMsg)
                         #if($msg!="0")
                         #BlinkingText("New")
                         #end
                         #end
-		</td>		
-	#if($tdcolor != "4")
-	<td>
-	#elseif($tdcolor=="4")
-	<td bgcolor="#AFDCEC">
-	#end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard
-	 #if($unreadm!="0")
-                        #BlinkingText("New")
-                        #end
-	</td>
-	#if($tdcolor != "5")
-	<td>
-	#elseif($tdcolor=="5")
-	<td bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+                </td>
+ #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+ #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
 </tr>
 </table>
+
 #end
 #set($boolian="")
 <form name="frm" action="$link.setPage("call,News,News_Edit.vm").setAction("NewsAction")">
@@ -158,7 +167,7 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 		#end
 		</tr>
 #else
-<tr bgcolor="$ui.menuColor"><td colspan=3>$brih_newsNo</td></tr>
+<tr align="right" bgcolor="$ui.menuColor"><td colspan=3>$brih_newsNo</td></tr>
 #end
 ##<tr bgcolor="$ui.menuColor">
 ##<td>
@@ -176,7 +185,7 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 	<input type="hidden" name="count" value="$tdcolor" >
 	</td>
 #else
-	<tr>
+	<tr align="right">
 
 #end
 	#set($lang = $data.getUser().getTemp( "lang" ).toString())

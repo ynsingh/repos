@@ -24,10 +24,12 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" align="right"><td colspan=5>
 		<b>
 		#if ($stats == "fromIndex") ## Use for general discussion group #sk
-     			<a href=$link.setPage("Index.vm")>$brih_home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>| #if($mode=="All") $LocalMail_MailContent_msg3 #else$brih_unreadMsg #end
+     			<a href=$link.setPage("Index.vm")>$brih_home</a> 
+                       |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>| #if($mode=="All") $LocalMail_MailContent_msg3 #else$brih_unreadMsg #end
 
 		#elseif ($mode2 == "instituteWise")  ##Use for insititue wise discussion group ## sk
-		        <a href=$link.setPage("Index.vm")>$brih_home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>| #if($mode=="All") $LocalMail_MailContent_msg3 #else $brih_unreadMsg #end
+		        <a href=$link.setPage("Index.vm")>$brih_home</a> 
+                       |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>| #if($mode=="All") $LocalMail_MailContent_msg3 #else $brih_unreadMsg #end
 
 		#else
 			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 

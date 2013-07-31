@@ -9,7 +9,7 @@
  * @author <a href="sneha.srivastava24@gmail.com">Sneha Srivastava</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
+ * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr), 31-July-2013 (Rekha),
  *#
 
 <head>
@@ -18,7 +18,7 @@
 
 $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100%>
-	<tr bgcolor="$ui.menuColor">
+	<tr align="right" bgcolor="$ui.menuColor">
 		<td colspan=5>
 		<b>
 
@@ -32,68 +32,87 @@ $!data.getMessage()
                         <b><a href=$link.setPage("Index.vm")>$brih_home</a> |
                         <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")> $RemoteInstitute $brih_wise $DiscussionBoard</a>
                 #else
-			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>|
-			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
-			<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> 
 		#end
-			| $brih_arch
+		        <a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a>|
+			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a>|
+		        $brih_arch
+                        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>
+			|<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
 		</td>
 	</tr>
 <tr>
-#if($stats == "fromIndex")
-        #if($tdcolor!="4")
-        <td>
-        #elseif($tdcolor == "4")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4")>$brih_general $DiscussionBoard</td>
-#elseif($mode2 == "instituteWise")
-        #if($tdcolor!="8")
-        <td>
-        #elseif($tdcolor == "8")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
-#else
-        #if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor=="1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
-        #if($tdcolor != "2")
-        <td>
-        #elseif($tdcolor=="2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
-        #if($tdcolor != "3")
-        <td>
-        #elseif($tdcolor=="3")
-        <td bgcolor="#AFDCEC">
-        #end
-	#if($data.getUser().getTemp("role") == "student")
-                 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
-        #else
-	        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
-	#end
-        #if($tdcolor != "4")
-        <td>
-        #elseif($tdcolor=="4")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-	#if($data.getUser().getTemp("role") != "student")
-	        #if($tdcolor != "5")
-        	<td>
-	        #elseif($tdcolor=="5")
-        	<td bgcolor="#AFDCEC">
-	        #end
-        	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
-	#end
-#end
-</tr>
 
+<table bgcolor="$ui.tableColor" width=100%>
+<tr align="right">
+        #if($data.getUser().getUserName() != "guest")
+                #if(($stats != "fromIndex") && ($mode2 != "instituteWise"))
+                        #if($data.getUser().getTemp("role") == "instructor")
+                                #if($tdcolor != "5")
+                                        <td>
+                                #elseif($tdcolor=="5")
+                                        <td bgcolor="#AFDCEC">
+                                #end
+                                <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+                        #end
+                        #if($tdcolor!="4")
+                                <td>
+                        #elseif($tdcolor == "4")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+                        #if(($data.getUser().getTemp("role") == "student")||(($data.getUser().getTemp("role") == "teacher_assistant")&&($flag==false)))
+                                #if($tdcolor != "3")
+                                        <td>
+                                #elseif($tdcolor=="3")
+                                        <td bgcolor="#AFDCEC">
+                                #end
+                                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")> $Notice_NoticeContent_msg1</td>
+                        #end
+                        #if(($data.getUser().getTemp("role") == "instructor")||(($data.getUser().getTemp("role") == "teacher_assistant")&& $flag))
+                                #if($tdcolor != "3")
+                                        <td>
+                                #elseif($tdcolor=="3")
+                                        <td bgcolor="#AFDCEC">
+                                #end
+                                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
+                                #foreach($msg in $unreadMsg)
+                                        #if($msg!="0")
+                                                #BlinkingText("New")
+                                        #end
+                                #end
+
+                                </td>
+                        #end
+                        #if($data.getUser().getTemp("role") != "guest")
+                                #if($tdcolor != "2")
+                                        <td>
+                                #elseif($tdcolor=="2")
+                                        <td bgcolor="#AFDCEC">
+                                #end
+                                <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+                                #if($tdcolor != "1")
+                                        <td>
+                                #elseif($tdcolor=="1")
+                                        <td bgcolor="#AFDCEC">
+                                #end
+                                        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_local $brih_mail</a></td>
+                        #end
+                #elseif ($mode2 == "instituteWise")
+                        #if($tdcolor!="8")
+                                <td>
+                        #elseif($tdcolor == "8")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8").addPathInfo("grpName",$grpName) > $brih_institute $brih_Of2 $brih_wise $DiscussionBoard </td>
+                        #if($tdcolor!="2")
+                                <td>
+                        #elseif($tdcolor == "2")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","2").addPathInfo("grpName",$grpName)> $brih_institute $brih_Of2 $brih_wise $brih_chat </a></td>
+        </tr>
+                #end
+        #end
 </table>
 	
 	#if($t_size != 0)

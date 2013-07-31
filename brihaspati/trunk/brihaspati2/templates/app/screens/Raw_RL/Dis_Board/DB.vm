@@ -10,7 +10,7 @@
  *@author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  *@modified date: 20-08-2010 (Sunil Kumar) 11-Aug-2011,
  * @ modified date: 13-Oct-2010 (Shaista)
- * @ modified date: 15-May-2012, 22-April-2013 (Shaista)
+ * @ modified date: 15-May-2012, 22-April-2013 (Shaista), 31-July-2013 (Rekha),
  *#
 
 #set($flag=false)
@@ -29,9 +29,10 @@ $!data.getMessage()
 	#elseif($mode2 == "instituteWise")
 	        <b><a href=$link.setPage("Index.vm")>$brih_home</a> | $brih_Institute $brih_Of2 $brih_wise $DiscussionBoard
 	#else
-		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $DiscussionBoard
-		|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> |
-        	<b><a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> 
+                | $DiscussionBoard
+		|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> 
+        	|<b><a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
 	#end
        </td></tr>
 </table>
@@ -106,6 +107,7 @@ $!data.getMessage()
 	</tr>
 		#end
 	#end
+
 ###if($data.getUser().getTemp("role") =="student" && $data.getUser().getUserName() == "guest")
 #if(($data.getUser().getTemp("role") =="student" && $data.getUser().getUserName() == "guest") ||($data.getUser().getTemp("role") == "teacher_assistant" && $flag==false))
 

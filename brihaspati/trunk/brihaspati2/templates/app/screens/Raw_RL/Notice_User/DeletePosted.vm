@@ -7,8 +7,9 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
- * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 31-12-2009, 27-04-2010,07-09-2010, 11-08-2011 (Sunil Kumar)
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a> 
+* Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 31-12-2009, 27-04-2010,07-09-2010, 11-08-2011 (Sunil Kumar), 31-July-2013 (Rekha)
 *#
 
 <head>
@@ -27,94 +28,151 @@
 $page.setTitle("Home | $Course | Communication | Notices | Delete Posted Notice")
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr>
+	<tr align="right">
 		<td>
 		<font face="$ui.sansSerifFonts">
 		<b>
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | 
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$Course</a> | 
-		##<a href =$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | 
-		<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
-		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_Notices</a> | $Notice_DeletePosted_msg1
-		</font>
+		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_Notices</a>|
+		<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a>
+                 |$Notice_DeletePosted_msg1
+		##<a href =$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> |
+		|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$Course</a> 
+		|<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+
+
+	</font>
 		</td>
 	</tr>
 </table>
-<table width=100% bgcolor="$ui.tableColor">
-<tr>
-	#if($tdcolor != "1")
+<table align=left bgcolor="$ui.tableColor" width="100%">
+<tr align="right">
+        #if(($data.getUser().getUserName() == "admin") || $data.getUser().getTemp("role")=="institute_admin")
+                ##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh")>$brih_flash $brih_heading</a></td>
+                #if($tdcolor != "4")
                 <td>
-        #elseif($tdcolor=="1")
+                #elseif($tdcolor == "4")
                 <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a> </td>
-        #if($tdcolor != "2")
+                #end
+                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4") style=text-decoration:none >$brih_local $brih_mail</a></td>
+                #if($tdcolor != "3")
                 <td>
-        #elseif($tdcolor=="2")
+                #elseif($tdcolor == "3")
                 <td bgcolor="#AFDCEC">
-        #end
-                <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a> </td>
-        #if($tdcolor != "3")
+                #end
+                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh").addPathInfo("count","3") style=text-decoration:none >$brih_flash $brih_heading</a></td>
+                #if($tdcolor != "2")
                 <td>
-        #elseif($tdcolor=="3")
+                #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
-        #end
-        #if($data.getUser().getTemp("role") == "student")
-                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3") style=text-decoration:
-none> $Notice_NoticeContent_msg1</a></td>
-        #else
-                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices
-        #end
-        </td>
-        #if($tdcolor != "4")
-                <td>
-        #elseif($tdcolor=="4")
-                <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-        #if(($data.getUser().getTemp("role")!= "student") || ($data.getUser().getTemp("role")!= "guest"))
-                #if($tdcolor != "5")
+                #end
+                #if($data.getUser().getTemp("role")=="institute_admin")
+                <a href=$link.setPage("call,Notice_User,InstDeletePostedAdmin.vm").addPathInfo("count","2") style=text-decoration:none>$Notice_DeletePosted_msg1</a></td>
+                #else
+                <a href=$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("count","2") style=text-decoration:none>$Notice_DeletePosted_msg1</a></td>
+                #end
+                #if($tdcolor != "1")
                         <td>
-                #elseif($tdcolor=="5")
+                #elseif($tdcolor == "1")
                         <td bgcolor="#AFDCEC">
                 #end
-        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none> $brih_notice $Notice_Send </a></td>
+##$Notice_NoticeSend_msg1
+        <tr>
+                #set($flag = true)
+        #else
+                #if($data.getUser().getTemp("role") == "student")
+                        #if($tdcolor != "3")
+                                <td>
+                        #elseif($tdcolor=="3")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none > $Notice_NoticeContent_msg1
+##$Notice_NoticeContent_msg1
+</a></td>
+                        #if($tdcolor != "4")
+                                <td>
+                        #elseif($tdcolor=="4")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none >$DiscussionBoard</td>
+                        #if($tdcolor != "2")
+                                <td>
+                        #elseif($tdcolor=="2")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style=text-decoration:none >$brih_chat</a> </td>
+                        #if($tdcolor != "1")
+                                <td>
+                        #elseif($tdcolor == "1")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none >$brih_local $brih_mail</a> </td>
+                        </tr>
+                        <tr bgcolor="$ui.menuColor" align="right">
+                        #set($flag = false)
+                        #if($tdcolor1 != "2")
+                                <td>
+                        #elseif($tdcolor1 == "2")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+                 #else
+                        #if($tdcolor != "5")
+                                <td>
+                        #elseif($tdcolor=="5")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style=text-decoration:none >$brih_news</td>
+                        #if($tdcolor != "4")
+                                <td>
+                        #elseif($tdcolor=="4")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none >$DiscussionBoard</td>
+                        #if($tdcolor != "3")
+                                <td>
+                        #elseif($tdcolor=="3")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none >$brih_Notices </td>
+                        #if($tdcolor != "2")
+                                <td>
+                        #elseif($tdcolor=="2")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style=text-decoration:none >$brih_chat</a> </td>
+                        #if($tdcolor != "1")
+                                <td>
+                        #elseif($tdcolor == "1")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none >$brih_local $brih_mail</a> </td>
+                </tr>
+                <tr bgcolor="$ui.menuColor" align="right">
+                        #set($flag = false)
+                        #if($tdcolor1 != "3")
+                                <td colspan="3">
+                        #elseif($tdcolor1 == "3")
+                                <td bgcolor="#AFDCEC" colspan="3">
+                        #end
+                        <a href=$link.setPage("call,Notice_User,DeletePosted.vm").addPathInfo("count","3").addPathInfo("countTemp","3") style=text-decoration:none >$Notice_DeletePosted_msg1</a></td>
+                        #if($tdcolor1 != "2")
+                                <td>
+                        #elseif($tdcolor1 == "2")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+                        #if($tdcolor1 != "1")
+                                <td>
+                        #elseif($tdcolor1 == "1")
+                                <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none > $brih_notice $Notice_Send </a></td>
+##Notice_NoticeSend_msg1
+                #end
         #end
 
-</tr>
-<tr bgcolor="$ui.menuColor">
-	#if( $data.getUser().getTemp("role") == "instructor")
-		###if($tdcolor != "1")
-		#if($tdcolor1 != "1")
-		        <td>
-	        ###elseif($tdcolor == "1")
-        	#elseif($tdcolor1 == "1")
-		        <td bgcolor="#AFDCEC">
-	        #end
-        	##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
-	        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$Notice_NoticeSend_msg1</a></td>
-	#end
-        ###if($tdcolor != "2")
-        #if($tdcolor1 != "2")
-	        <td>
-        ###elseif($tdcolor == "2")
-       	#elseif($tdcolor1 == "2")
-	        <td bgcolor="#AFDCEC">
-        #end
-        ##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","2")>$Notice_NoticeContent_msg1</a></td>
-        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")>$Notice_NoticeContent_msg1</a></td>
-	#if( $data.getUser().getTemp("role") == "instructor")
-        	###if($tdcolor != "3")
-	        #if($tdcolor1 != "3")
-        		<td>
-	        ###elseif($tdcolor == "3")
-        	#elseif($tdcolor1 == "3")
-		        <td bgcolor="#AFDCEC">
-	        #end
-        	##<a href=$link.setPage("call,Notice_User,DeletePosted.vm").addPathInfo("count","3")>$Notice_DeletePosted_msg1</a></td>
-	        <a href=$link.setPage("call,Notice_User,DeletePosted.vm").addPathInfo("count","3").addPathInfo("countTemp","3")>$Notice_DeletePosted_msg1</a></td>
-	#end
-</tr>
+</td></tr>
 </table>
 
 <form name="frm" method="Post" action="$link.setPage("call,Notice_User,DeletePosted.vm").setAction("Notice_Send_Delete")">
