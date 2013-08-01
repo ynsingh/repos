@@ -51,11 +51,14 @@ import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.TurbineUserPeer;   
 import org.iitk.brihaspati.om.TurbineUserGroupRole;   
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;   
+import org.iitk.brihaspati.om.NewsPeer;
+import org.iitk.brihaspati.om.News;
 
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil; 
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
@@ -65,8 +68,11 @@ import org.apache.velocity.context.Context;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.NewsHeadlinesUtil;
+import org.iitk.brihaspati.modules.utils.NewsDetail;
 	/**
 	 *   This class contains code for all discussions in workgroup
 	 *   Compose a discussion and reply.
@@ -88,7 +94,7 @@ public class ViewAss extends  SecureScreen
                         ParameterParser pp=data.getParameters();
                         context.put("coursename",(String)user.getTemp("course_name"));
                         String courseid=(String)user.getTemp("course_id");
-                        String DB_subject1=pp.getString("topicList");
+                        String DB_subject1=pp.getString("topicList","");
 			context.put("topicList",DB_subject1);
                         context.put("tdcolor",pp.getString("count",""));
         		                
@@ -159,8 +165,41 @@ public class ViewAss extends  SecureScreen
                                 	}
                         	}
 			} //if
-			if(Role.equals("student"))
+			if(Role.equals("student")){
 				stname.add(UserName);
+				int gid=GroupUtil.getGID(courseid);
+	                        String g_Id=Integer.toString(gid);
+				crit=new Criteria();
+                                crit.add(NewsPeer.GROUP_ID,gid);
+                                List news=NewsPeer.doSelect(crit);
+				Vector entry=new Vector();
+                                for(int i=0;i<news.size();i++)
+                                {
+                                        String news_title=new String(((News)news.get(i)).getNewsTitle());
+                                        String news_desc=new String(((News)news.get(i)).getNewsDescription());
+
+                                        boolean flag=StringUtils.contains(news_desc, DB_subject1);
+                                        //ErrorDumpUtil.ErrorLog("bool return from screen file----"+flag);
+                                        if(flag)
+                                        {
+						News element=(News)(news.get(i));
+	                                        String news_subject=(element.getNewsTitle());
+        	                                String news_id=Integer.toString(element.getNewsId());
+                	                        int userId=(element.getUserId());
+                        	                String senderName=UserUtil.getLoginName(userId);
+	
+        	                                Date pd=element.getPublishDate();
+                	                        String pdate=pd.toString();
+	                                        NewsDetail newsD=new NewsDetail();
+        	                                newsD.setNews_Subject(news_subject);
+                	                        newsD.setNews_ID(news_id);
+                        	                newsD.setSender(senderName);
+                                	        newsD.setPDate(pdate);
+                                        	entry.add(newsD);
+                                        }
+                                }
+				context.put("detail",entry);
+			}
 			context.put("allTopics",w);
                         //read the xml file
                         TopicMetaDataXmlReader topicmetadata=null;
@@ -203,7 +242,7 @@ public class ViewAss extends  SecureScreen
 					
 					String filereader =((FileEntry) Assignmentlist.elementAt(c)).getfileName();
                                 	String username=((FileEntry) Assignmentlist.elementAt(c)).getUserName();
-	                                if(filereader.startsWith("AssignmentFile") && c<1 )
+	                                if((filereader.startsWith("AssignmentFile")||StringUtils.isBlank(filereader)) && c<1 )
         	                        {       
 						fileAssignment=filereader;
                 	                        filegrade =((FileEntry) Assignmentlist.elementAt(c)).getGrade();

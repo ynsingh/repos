@@ -79,13 +79,18 @@ $!data.getMessage()
 	<input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
         #end
         <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-	<SELECT name=topicList class="drop">
-        <option value="" ></option>
+	<SELECT name=topicList class="drop" onChange="checkBlank(document.uploadform);">
+	#if($topicList!="")
+	        <option value="$topicList" >$topicList</option>
+	#else
+	        <option value="" >$brih_select $brih_topic</option>
+	#end
         #foreach($topic in $allTopics)
-        <option value="$topic" > $topic </option>
+        	#if($topic!=$topicList)
+		        <option value="$topic" > $topic </option>
+		#end
         #end
         </SELECT> &nbsp;
-        <input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
         <input type="hidden" name="actionName">
         </td>
 	<td>
@@ -118,7 +123,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 		##<td align="center"> <b> $brih_usr  #if($lang == "hindi") $brih_Of1 #end $brih_name</b> </td>
 		<td align="center"> <b> $brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b> </td>
-        	<td align="center">  <b> $brih_assignment  #if($lang == "hindi") $brih_Of1 #end $brih_file  </b> </td>
+        	<td align="center">  <b> $brih_instruction / $brih_assignment  #if($lang == "hindi") $brih_Of1 #end $brih_file  </b> </td>
         	#if($anscheck == "ok")
         	<td align="center">  <b> $brih_answer  #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
         	#end
@@ -232,7 +237,15 @@ $!data.getMessage()
                 ##<td width="10%" align="Center"> $!e.getStudentname()  </td>  ##student name
                 <td width="10%" align="Center">$topicList</td>  ##Topic name
                 <td width="10%" align="center">   ##  Assignment file
+		#foreach($news in $detail)
+			<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none">$brih_instruction</a>
+		#end
+		#if(($detail.size()>0)&&($e.getAssignmentfile()!=""))
+	                /
+	        #end
+        	#if($e.getAssignmentfile()!="")
 			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a>
+		#end
                 </td>
                 #if($anscheck == "ok")
                 <td width="10%" align="center"> ## Answer file
@@ -284,16 +297,10 @@ $!data.getMessage()
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
         }
 
-        function checkBlank(uploadform,field)
+        function checkBlank(uploadform)
         {
-               	if(uploadform.topicList.value!="" )
-               	{
-			uploadform.actionName.value=field.name;
-			uploadform.submit();
-                }
-                else{
-			alert("Topic Name Can not Empty !! "+uploadform.topicList.value);
-		}
+		uploadform.actionName.value="dosubmitView";
+		uploadform.submit();
 
         }
 	

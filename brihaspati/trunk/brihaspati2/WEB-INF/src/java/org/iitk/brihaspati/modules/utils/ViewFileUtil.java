@@ -130,7 +130,8 @@ public class ViewFileUtil
 		int readCount;
 		data.getResponse().setHeader("Content-Type","text/html");
 		ServletOutputStream out=data.getResponse().getOutputStream();
-                out.write(str.getBytes());
+		String fixedStr = str.replaceAll("<br />", "\n");
+                out.write(fixedStr.getBytes());
 		}
 		catch (Exception ex)
 		{

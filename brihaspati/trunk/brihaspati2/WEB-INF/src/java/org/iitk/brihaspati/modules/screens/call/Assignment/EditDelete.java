@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
 /*
  * @(#)EditDelete.java 
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -64,6 +64,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.torque.util.Criteria;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
@@ -158,7 +159,7 @@ public class EditDelete extends  SecureScreen
 					for(Object val : Assignmentlist) {
 	                                	String filereader =((FileEntry)val).getfileName();
                                         	String username=((FileEntry)val).getUserName();
-					       	if(filereader.startsWith("AssignmentFile"))
+					       	if(filereader.startsWith("AssignmentFile")||StringUtils.isBlank(filereader))
                                         	{
                                                 	fileAssignment=filereader;
                                                 	filegrade =((FileEntry)val).getGrade();
