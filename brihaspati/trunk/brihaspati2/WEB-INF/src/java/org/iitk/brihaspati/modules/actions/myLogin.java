@@ -222,6 +222,7 @@ public class myLogin extends VelocityAction{
 							Collection au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
 							QuotationThread.getController().setActiveUser(au.size());
 							QuotationThread.getController().setLoadFlag(load_flag);
+							QuotationThread.getController().setLoginTime(elapsedTime);
 						}
 						catch(Exception ex)
 						{

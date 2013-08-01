@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseMgmt.java   
  *
- *  Copyright (c) 2011,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2011,2012, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -60,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka rawat</a> 
+ * @modified date : 01-08-2013
  */
 
 public class CourseMgmt extends SecureScreen {
@@ -127,25 +129,27 @@ public class CourseMgmt extends SecureScreen {
 				context.put("sch4",v.get(0));
 				context.put("sch5",v.get(1));
                 		context.put("midsem",v.get(2));
-	                	context.put("quiz",v.get(3));
-	        	        context.put("labwork",v.get(4));
-        	        	context.put("endsem",v.get(5));
-                		context.put("message",v.get(6));
-                		context.put("fileName",v.get(7));
-				context.put("labinst",v.get(8));
-				context.put("labinst1",v.get(9));
-				context.put("tute",v.get(10));
-				context.put("tute1",v.get(11));
-				context.put("t",v.get(12));
-				context.put("t1",v.get(13));
-				context.put("t2",v.get(14));	
-				context.put("t3",v.get(15));
-				context.put("t4",v.get(16));
-				context.put("t5",v.get(17));	
-				context.put("sch",v.get(18));
-				context.put("sch1",v.get(19));
-				context.put("sch2",v.get(20));
-				context.put("sch3",v.get(21));
+				context.put("assignment", v.get(3));
+				context.put("classnote", v.get(4));
+	                	context.put("quiz",v.get(5));
+	        	        context.put("labwork",v.get(6));
+        	        	context.put("endsem",v.get(7));
+                		context.put("message",v.get(8));
+                		context.put("fileName",v.get(9));
+				context.put("labinst",v.get(10));
+				context.put("labinst1",v.get(11));
+				context.put("tute",v.get(12));
+				context.put("tute1",v.get(13));
+				context.put("t",v.get(14));
+				context.put("t1",v.get(15));
+				context.put("t2",v.get(16));	
+				context.put("t3",v.get(17));
+				context.put("t4",v.get(18));
+				context.put("t5",v.get(19));	
+				context.put("sch",v.get(20));
+				context.put("sch1",v.get(21));
+				context.put("sch2",v.get(22));
+				context.put("sch3",v.get(23));
 			}
 			
 		}

@@ -130,6 +130,16 @@ $!msg
 				<td colspan=4><img src="$content.getURI("/images/red.gif")" border="0">&nbsp;$brih_trafficMessage3</td>           
                         #end
 	</tr>
+	<tr>
+		<td colspan=4>
+			$brih_noOfUsersLoggedIn - $!active_user
+		</td>
+	</tr>
+	<tr>
+		<td colspan=4>
+			$brih_timeTakenAtLastLogin - $!login_time
+		</td>
+	</tr>
         <tr><td colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 
 	<tr> ## 5

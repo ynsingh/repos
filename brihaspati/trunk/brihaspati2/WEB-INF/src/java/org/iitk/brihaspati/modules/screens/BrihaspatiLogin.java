@@ -93,6 +93,7 @@ public class BrihaspatiLogin extends VelocityScreen
     {
 		int load_flag =0;
 		int active_user = 0;
+		double login_time = 0.0d;
 		boolean flag = false;
 		System.gc();
 		Criteria crit;
@@ -178,6 +179,7 @@ String hdir=System.getProperty("user.home");
 			load_flag = ((SystemCleantime)list.get(0)).getLoadFlag();*/
 			load_flag = QuotationThread.getController().getLoadFlag();
 			active_user = QuotationThread.getController().getActiveUser();
+			login_time = QuotationThread.getController().getLoginTime();
 			if(load_flag == 2)
 			{	
 				Collection au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
@@ -190,6 +192,8 @@ String hdir=System.getProperty("user.home");
 				//load_flag = 0;
 			}
 			context.put("load_flag", load_flag);
+			context.put("active_user", active_user);
+			context.put("login_time", login_time);
 		}
                 catch(Exception e)
 		{

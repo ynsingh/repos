@@ -45,8 +45,12 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  */
 public class QuotationThread implements Runnable {
 
+	/* load_flag indicates load on the system*/
 	public static int load_flag = 0;
+	/* active_user specifies no. of users active on the system*/
 	public int active_user = 0;
+	/* login_time specifies time taken at last login*/
+	public double login_time = 0.0d;
         private boolean flag=false;
         private static Thread runner=null;
         private static QuotationThread quotation_thread=null;
@@ -121,6 +125,16 @@ public class QuotationThread implements Runnable {
         public int getActiveUser()
         {
                 return active_user;
+        }
+
+	public void setLoginTime(double login_time)
+        {
+                this.login_time = login_time;
+        }
+
+        public double getLoginTime()
+        {
+                return login_time;
         }
 
 }//end of class
