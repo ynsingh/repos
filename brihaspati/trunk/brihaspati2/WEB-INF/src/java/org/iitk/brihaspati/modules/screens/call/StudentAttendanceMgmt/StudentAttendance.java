@@ -55,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.modules.utils.XMLWriter_StudentAttendance;
 /**
  * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modifydate: 02-08-2013(Tej)
  */
 
 /* This screen class is called when User's selects a module Student Attendance Management.
@@ -90,8 +91,9 @@ public class StudentAttendance extends SecureScreen
 			// Get current date using Calendar api
                         Calendar currentDate = Calendar.getInstance();
                         SimpleDateFormat formatter= new SimpleDateFormat("dd/MM/yyyy");
-			if(date.equals("")){
-                        date = formatter.format(currentDate.getTime());
+			if(date.equals(""))
+			{
+                        	date = formatter.format(currentDate.getTime());
 			}
                         context.put("currentdate",date);
 			
@@ -142,15 +144,6 @@ public class StudentAttendance extends SecureScreen
 					}
 				}
 			}
-			
-			// Get current date for getting current day's name
-			Date now = new Date();
-                        /**
-			 * The day of the week spelled out completely.
-			 * Here "EEEE" is the symbol which means 'day in week' has Type "Text". 
-			 * @Example: "EEE" == "Tue" or "EEEE" == "Tuesday"
-			 **/
-                        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE");
 
 			// Get Course List if role is Instititute Admin
 			if(data.getUser().getTemp("role").equals("institute_admin"))
@@ -170,7 +163,6 @@ public class StudentAttendance extends SecureScreen
                                         	context.put("status","true");
                                 	}
                                         context.put("studentlist",userList);
-                                        context.put("dayName",simpleDateformat.format(now));
 				}
 					
 			}
@@ -181,31 +173,23 @@ public class StudentAttendance extends SecureScreen
 				//set status for showing student list to the instructors according their courses
                                 if(mode.equals("") ||mode.equals("attend"))
 				{
-				        if(simpleDateformat.format(now).equals("Sunday"))
+                                	Vector userList=new Vector();
+                                	int g_id=GroupUtil.getGID(courseid);
+                                	//Get student list
+                                	userList=UserGroupRoleUtil.getUDetail(g_id,3);
+					if(userList.size()!=0)
 					{
-                                        	context.put("status","false");
-                                        	context.put("dayName",simpleDateformat.format(now));
+                                        	context.put("status","true");
 					}
 					else
 					{
-                                		Vector userList=new Vector();
-                                		int g_id=GroupUtil.getGID(courseid);
-                                		//Get student list
-                                		userList=UserGroupRoleUtil.getUDetail(g_id,3);
-						if(userList.size()!=0)
-						{
-                                        		context.put("status","true");
-						}
-						else
-						{
-							context.put("status","false");
-						}
-                                		context.put("studentlist",userList);
-                                        	context.put("dayName",simpleDateformat.format(now));
-                                	}	
+						context.put("status","false");
+					}
+                                	context.put("studentlist",userList);
 				}
 			}
-			// Send course_id and course name to the template
+			// Send course_id, course name and Course Alias to the template
+			context.put("courseAlias",CourseUtil.getCourseAlias(courseid));
 			context.put("course_id",courseid);
                         context.put("course",course_name);
 

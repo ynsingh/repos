@@ -261,4 +261,5 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 .drop {width:100px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
 }
+.input_button {width:300px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
 

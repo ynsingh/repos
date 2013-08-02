@@ -4,6 +4,7 @@
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @ModifyDate: 02-08-2013(Tej)
 *#
 
 $page.setBgColor($ui.bgcolor)
@@ -13,11 +14,13 @@ $!data.getMessage()
 <head>
 	#### CSS ###	
 	<link rel="stylesheet" href="$content.getURI("scrpts/css/ui.daterangepicker.css")" type="text/css" />
+	<link rel="stylesheet" href="$content.getURI("scrpts/css/datepickr.css")" type="text/css" />
         <link rel="stylesheet" href="$content.getURI("scrpts/css/redmond/jquery-ui-1.7.1.custom.css")" type="text/css" title="ui-theme" />
 	
 	#### Java Script #####	
 	<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
         <script type="text/javascript" src="$content.getURI("scrpts/jquery/js/daterangepicker.jQuery.js")"></script>
+	<script type="text/javascript" src="$content.getURI("/scrpts/jquery/js/datepickr.js")"></script>
         <script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
 
 	<script type="text/javascript">
@@ -37,9 +40,9 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 	<td colspan=2>
 	#if($data.getUser().getTemp("role") == "institute_admin")
-		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home | </a>
+		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_ad $brih_home | </a>
 	#else
-		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+		<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 	#end
 	 <a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style="text-decoration:none">$brih_attend $brih_mgmt </a> 
 	#if($mode=="attend") | $brih_student $brih_attend #end
@@ -76,35 +79,39 @@ $!data.getMessage()
 #if(($mode =="attend") || ($mode ==""))
 <tr valign="top">
 	<td><p><b>$brih_attend $brih_sheet : $!course</b></p>
-        	<form name="frm" method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
+                <form name="frm" method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table width="80%" align="center" border="1"bgcolor="$ui.menuColor" style="border-collapse:collapse; border:1px solid black;">
         	<tr align="center">
-                	<td width="30%"><b>$brih_today : </b><input type="text" value="$currentdate" readonly name="searchdate" size="6"/></td>
+                	<td width="30%"><b>$brih_select $brih_Da : </b><input type="text" value="$currentdate" id="datepick" name="searchdate" class="button-ftextstyle" /></td>
 			#if($data.getUser().getTemp("role") == "institute_admin")
-                	<td width="50%"><b>$brih_course: </b> 
-                		<select id="group_id" class="drop" name="group" size=1 onChange="checkOption(document.frm,this);" style="width:300px;"/>
-				#if($!course_id != "")
-                        		<option value="$course_id" style="width:275px;" title="$!course">$!course_id</option>
-                        	#end
-                        		<option value="" style="width:275px;" title="select a course">$brih_sel_course</option>
-                        	#foreach($name in $courseList)
+                	<td width="55%"><b>$brih_course : </b> 
+				#if($mode =="attend")
+                			<select id="group_id" class="drop" name="group" size=1 onChange="checkOption(document.frm,this);" style="width:300px;"/>
+					#if($!course_id != "")
+                        		<option value="$course_id" style="width:275px;" title="$!course_id">$!course_id</option>
+                        		#end
+                        		<option value="" style="width:275px;" title="$brih_sel_course">$brih_sel_course</option>
+                        		#foreach($name in $courseList)
                         		<option value="$name.getGroupName()" style="width:275px;" title="$name.getCAlias(): $name.getCourseName()-$name.getUserName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
-                        	#end    
-                        	</select>
-                        	<input type="hidden" name="val"/>
-				<input type="hidden" name="mode" value="attend"/>
-				<input type="hidden" name="count" value="$tdcolor"/>
-				<input type="hidden" name="actionName" value="eventSubmit_doSearch">
-				<input type="submit" name="eventSubmit_doSearch" value="Search" id="btnSearch" style="visibility: hidden"/>
+                        		#end    
+                        		</select>
+                        		<input type="hidden" name="val"/>
+					<input type="hidden" name="mode" value=""/>
+					<input type="hidden" name="count" value="$tdcolor"/>
+					<input type="hidden" name="actionName" value="eventSubmit_doSearch">
+					<input type="submit" name="eventSubmit_doSearch" value="Search" id="btnSearch" style="visibility: hidden"/>
+				#else
+                                        <input type="text" value="$!courseAlias - $!course" title="$!courseAlias - $!course" class="input_button" readonly/>
+                                #end
                		</td>   
                		 #else
-			<td width="50%"><b>$brih_course: </b><input type="text" value="$!course_id" size="35" font-color=red title="$!course" readonly/></td>
+			<td width="50%"><b>$brih_course : </b><input type="text" value="$!courseAlias - $!course" title="$!courseAlias - $!course" class="input_button" readonly/></td>
                 	#end
         	</tr>
         	</table>
         	<br>
 		
-	        #if(($status=="true") && ($studentlist.size()!=0) && ($dayName!="Sunday"))
+	        #if(($status=="true") && ($studentlist.size()!=0))
 		<div id="scroll" style="font-size: 85%;">
         	<table width="100%" align="center"  border="1" style="border-collapse:collapse; border:1px solid black;">
         	#set ( $headings = ["$brih_serialNo","$brih_student $brih_name","$brih_email ","$brih_attend","$brih_remark"] )
@@ -137,23 +144,20 @@ $!data.getMessage()
                 	#end
          			<tr bgcolor="$ui.menuColor">
                 			<td colspan=5>
-                			<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doAttendance" VALUE="$brih_submit" onClick="selectAll(document.frm,this);">
+                			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doAttendance" VALUE="$brih_submit" onClick="CheckExpire(document.frm,this);">
                 			<INPUT TYPE="reset" class="button-ftextstyle" NAME="$brih_reset" >
                 			<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doAttendance">
-                			<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
+                			<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="$studattendlist">
 					<input type="hidden" name="count" value="$tdcolor"/>
+					<input type="hidden" name="group" value="$course_id"/>
                 			</td>
         			</tr>
         	</table>
 		</div>
 		#end
 
-		############ Set message if day's name is "sunday" and status is false or student list is zero. ##############
-		#if($dayName=="Sunday")
-                <tr align="center" bgcolor="$ui.menuColor">
-                        <td><font color="red">$brih_sunday</font></td>
-                </tr>
-                #elseif(($status=="false") && ($!course !="") && ($studentlist.size()==0))
+		############ Set message status is false or student list is zero. ##############
+                #if(($status=="false") && ($!course !="") && ($studentlist.size()==0))
                 <tr align="center" bgcolor="$ui.menuColor">
                         <td><font color="red">$brih_noStudent</font></td>
                 </tr>
@@ -183,21 +187,21 @@ $!data.getMessage()
         	<form name=frm method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table width="100%" align="center" bgcolor="$ui.menuColor"  border="1" style="border-collapse:collapse; border:1px solid black;">
         	<tr>
-                	<td width="12%"><b>$brih_select $brih_Da : </b></td><td width="21%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="Calrange" /></div></td>
+                	<td width="12%"><b>$brih_select $brih_Da : </b></td><td width="24%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="Calrange" class="button-ftextstyle" /></div></td>
 			#if($data.getUser().getTemp("role") == "institute_admin")
-                	<td align="center" width="44%"><b>$brih_course: </b>
+                	<td align="center" width="44%"><b>$brih_course : </b>
                         <select id="group_id" class="drop" name="group" size=1 style="width:300px;"/>
 				#if($!course_id != "")
-                        		<option value="$course_id" style="width:275px;" title="$!course">$!course_id</option>
+                        		<option value="$course_id" style="width:275px;" title="$!courseAlias - $!course">$!courseAlias - $!course</option>
                         	#end
-                        		<option value="" style="width:275px;" title="select a course">$brih_sel_course</option>
+                        		<option value="" style="width:275px;" title="$brih_sel_course">$brih_sel_course</option>
                         	#foreach($name in $courseList)
                         		<option value="$name.getGroupName()" style="width:275px;" title="$name.getCAlias(): $name.getCourseName()-$name.getUserName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
                         	#end    
                 	</select>
                 	</td>
                 	#else
-			<td align="center" width="44%"><b>$brih_course: </b><input type="text" name="group" value="$!course_id" size="30" title="$!course" readonly/></td>
+			<td align="center" width="44%"><b>$brih_course : </b><input type="text" name="group" value="$!courseAlias - $!course" title="$!courseAlias - $!course" class="input_button" readonly/></td>
                 	#end
                 	<td width="4%">
 				<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doSearch" VALUE="$brih_get $brih_attend" onClick="checkCourse(document.frm,this);">
@@ -229,20 +233,10 @@ $!data.getMessage()
                 	<td><font color="dark orange">$brih_leave ($brih_inday)</font></td>
 		</tr>
 		#set($sno=1)
-                #set($flag="false")
 		#set($present=0)
                 #set($absent=0)
                 #set($leave=0)
 	
-		## set flag true if all attendace is zero.		
-                	
-		#foreach ($urecord in $attendreport)
-                        #if($!urecord.getPresent()==0 && $!urecord.getAbsent()==0 &&  $!urecord.getLeave()==0)
-                                #set($flag="true")
-                        #end
-                #end
-                
-		#if($flag=="false") 
                 	#foreach ($urecord in $attendreport)
                        		#if($velocityCount%2==0)
                                 <tr align="center" bgcolor="$ui.menuColor">
@@ -280,19 +274,14 @@ $!data.getMessage()
 			
 				#if(($data.getUser().getTemp("role") == "student") && ($attendreport.size()>1))
                                 <tr align="center">
-                                <td><b>Grand Total</td>
-                                <td><font color="green"><b>Present ($present)</font></td>
-                                <td><font color="dark red"><b>Absent ($absent)</font></td>
-                                <td><font color="dark orange"><b>Leave ($leave)</font></td>
+                                <td><b>$brih_grand</td>
+                                <td><font color="green"><b>$brih_present ( $present )</font></td>
+                                <td><font color="dark red"><b>$brih_absent ( $absent )</font></td>
+                                <td><font color="dark orange"><b>$brih_leave ( $leave )</font></td>
 				#set( $presentStatus = $present * 100 /$attendreport.size())
-                                <td><font color="blue"> <b>Present ( $presentStatus % )</font></td>
+                                <td><font color="blue"> <b>$brih_present ( $presentStatus % )</font></td>
                                 </tr>
                                 #end
-		#else
-                		<tr align="center">
-                			<td colspan="7" ><font color="red" size=3>$brih_norecord</font></td>
-                		</tr>
-                #end
         	</table>
 		</div>
 		#end
@@ -320,13 +309,13 @@ $!data.getMessage()
 			<td width="20%">
 			<div style="width: 10px; font-size: 80%;">
 			#if($mode=="All")
-                        	<input type="text" value="$currentdate" name="searchdate" id="Calrange" />
+                        	<input type="text" value="$currentdate" name="searchdate" id="Calrange" class="button-ftextstyle" />
                         #else
-                        	<input type="text" value="$searchdate" name="searchdate" id="Calrange" />
+                        	<input type="text" value="$searchdate" name="searchdate" id="Calrange" class="button-ftextstyle" />
                         #end
                         </div>
                         </td>
-			<td width="40%"><b>$brih_course: </b><input type="text" value="$!course_id" size="30" title="$!course" readonly/></td>
+			<td width="40%"><b>$brih_course : </b><input type="text" value="$!courseAlias - $!course" title="$!courseAlias - $!course" class="input_button" readonly/></td>
                 	<td width="10%">
                 		<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doSearch" VALUE="$brih_attend">
 				<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doSearch">
@@ -348,10 +337,16 @@ $!data.getMessage()
         	<form name=frm method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table  width="100%" align="center"  border="1" style="border-collapse:collapse; border:1px solid black;">
         	<tr bgcolor="$ui.menuColor" align="center">
-                	<th width="10%"><font size=3>$brih_serialNo</font></th>
+                	<th rowspan="2" width="10%"><font size=3>$brih_serialNo</font></th>
                 	<th colspan="3"><font size=3>$brih_attend $brih_status (<font color="blue"> $brih_total $brih_attend = $attendreport.size() $brih_day</font>)</th>
-                	<th width="20%"><font size=3><b>$brih_attend $brih_Da</b></font></th>
+                	<th rowspan="2" width="20%"><font size=3><b>$brih_attend $brih_Da</b></font></th>
         	</tr>
+		<tr align="center" bgcolor="$ui.menuColor">
+                        <td><font color="green">$brih_present ($brih_inday)</font></td>
+                        <td><font color="dark red">$brih_absent ($brih_inday)</font></td>
+                        <td><font color="dark orange">$brih_leave ($brih_inday)</font></td>
+                </tr>
+
                 #set($sno=1)
 		#set($present=0)
                 #set($absent=0)
@@ -400,20 +395,19 @@ $!data.getMessage()
                 #end
 			######### Show total attendance ############
 			#if($attendreport.size()>1)
-			 <tr bgcolor="$ui.tableColor" align="center">
-                                <td><b>Grand Total</td>
-                                <td><font color="green"><b>Present ($present)</font></td>
-                                <td><font color="dark red"><b>Absent ($absent)</font></td>
-                                <td><font color="dark orange"><b>Leave ($leave)</font></td>
-				 #set( $presentStatus = $present * 100 /$attendreport.size())
-                                <td><font color="blue"> <b>Present ( $presentStatus % )</font></td>
-
+			<tr bgcolor="$ui.tableColor" align="center">
+				<td><b>$brih_grand</td>
+                                <td><font color="green"><b>$brih_present ( $present )</font></td>
+                                <td><font color="dark red"><b>$brih_absent ( $absent )</font></td>
+                                <td><font color="dark orange"><b>$brih_leave ( $leave )</font></td>
+                                #set( $presentStatus = $present * 100 /$attendreport.size())
+                                <td><font color="blue"> <b>$brih_present ( $presentStatus % )</font></td>
                 	</tr>
 			#end
 		#if($mode!="All")
 		<tr bgcolor="$ui.menuColor">
                 	<td colspan=5>
-                		<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doUpdate" VALUE="$brih_update" onClick="selectAll(document.frm,this);">
+                		<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doUpdate" VALUE="$brih_update">
                 		<INPUT TYPE="reset" class="button-ftextstyle" NAME="$brih_reset" >
                 		<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doUpdate">
                 		<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="$studattendlist">
@@ -442,23 +436,47 @@ $!data.getMessage()
 </body>
 ###################### SCRIPT #######################
 <SCRIPT LANGUAGE="javascript">
-function selectAll(field)
+
+new datepickr("datepick", {
+        "dateFormat": "d/m/y"
+});
+
+function CheckExpire(frm,field)
 {
-	var rmFile,index,actualString,pre=0,next=0;
-        actualString=document.frm.selectFileNames.value="$studattendlist";
-        while( ( pre=actualString.indexOf("^",next) ) >=0 )
-        {
-        	var temp=actualString.substring(next,pre);
-                next=pre+1;
-                rmFile=document.frm.elements[temp].checked=false;
-        }
-        document.frm.selectFileNames.value="";
+	var currdate = new Date()
+	var day = currdate.getDate()
+	var month = currdate.getMonth() + 1
+	var year = currdate.getFullYear()
+	var currentdate=(month + "/" + day + "/" + year)
+
+	var userdate1 = document.frm.searchdate.value;
+	var arr = userdate1.split("/");
+	var day1= arr[0]
+	var month1= arr[1]
+	var year1= arr[2]
+
+	var userdate =(month1 + "/" + day1 + "/" + year1)
+
+	var date1=currentdate.replace(/-/g,"/"); 	// this line is for if date format is in hyphen like  2013-12-12 00:00:00
+	var date2=userdate.replace(/-/g,"/"); 		// this line is for if date format is in hyphen like  2013-12-12 00:00:00
+	
+	var date_ini = new Date(date1).getTime();
+	var date_end = new Date(date2).getTime();
+
+	if(date_end > date_ini) {
+    		alert("Forward date attendance not allowed !!");
+		return false;
+	}
+	else {
+		document.frm.submit();
+	}
 }
+
 function checkOption (frm,field)
-        {
-                frm.val.value=document.frm.group.value;
-                document.getElementById("btnSearch").click();
-        }
+{
+  	frm.val.value=document.frm.group.value;
+        document.getElementById("btnSearch").click();
+}
 function checkCourse (frm,field)
 {
 	var course = document.frm.group.value;

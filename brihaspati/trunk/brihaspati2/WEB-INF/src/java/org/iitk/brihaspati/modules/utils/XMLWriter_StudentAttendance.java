@@ -58,6 +58,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modifydate: 02-08-2013(Tej)
  */
 
 /**
@@ -557,18 +558,15 @@ public class XMLWriter_StudentAttendance {
 						CourseUserDetail cud1=(CourseUserDetail)studattendlist1.get(j);
                                         	String userid2=cud1.getUserId().toString();
 						
-						// Compare userID
-						if(userid1.equals(userid2))
-						{
-							// Calculate total attendance of student.
-							present=present + cud1.getPresent(); 	// Total present
-							absent=absent+cud1.getAbsent();		// Total absent
-							leave=leave+cud1.getLeave();		// Total leave
-                                        		email=cud1.getEmail().toString();	// Email	
-                                        		fullname=cud1.getLoginName().toString();// Full Name
-						}
+						// Calculate total attendance of student.
+						present=present + cud1.getPresent(); 	// Total present
+						absent=absent+cud1.getAbsent();		// Total absent
+						leave=leave+cud1.getLeave();		// Total leave
 					}
 					
+					// Get email and fullName.	
+					email=UserUtil.getEmail(Integer.parseInt(userid1));		// Email     
+					fullname=UserUtil.getFullName(Integer.parseInt(userid1));   	// FullName
 					// Set student attendance detail.
 					CourseUserDetail cud=new CourseUserDetail();
                                 	cud.setEmail(email);		// set Email
@@ -694,7 +692,7 @@ public class XMLWriter_StudentAttendance {
 	try{	
 		Criteria crit=new Criteria();
 		crit.add(ParentInfoPeer.STUDENT_ID,studentId);
-                List v=TurbineUserPeer.doSelect(crit);
+                List v=ParentInfoPeer.doSelect(crit);
 		ParentInfo element=(ParentInfo)v.get(0);
                 String parentId=element.getParentId();
 		email=UserUtil.getEmail(Integer.parseInt(parentId));

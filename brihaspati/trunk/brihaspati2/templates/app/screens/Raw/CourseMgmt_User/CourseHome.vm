@@ -1197,7 +1197,7 @@ $!data.getMessage()
         }
 $(function(){
      $('#scroll').slimScroll({ 
-         height: '130px',
+         height: '220px'
          disableFadeOut: true
           });
       });
