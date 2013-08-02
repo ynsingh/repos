@@ -132,12 +132,12 @@ $!msg
 	</tr>
 	<tr>
 		<td colspan=4>
-			$brih_noOfUsersLoggedIn - $!active_user
+			$brih_noOfUsersLoggedIn $!active_user
 		</td>
 	</tr>
 	<tr>
 		<td colspan=4>
-			$brih_timeTakenAtLastLogin - $!login_time
+			$brih_timeTakenAtLastLogin $!login_time
 		</td>
 	</tr>
         <tr><td colspan=4><font color="red">$!data.getMessage() </font></td></tr>
