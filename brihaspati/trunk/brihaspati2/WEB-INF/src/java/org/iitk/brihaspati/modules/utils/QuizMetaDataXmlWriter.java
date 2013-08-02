@@ -52,7 +52,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 /**
  * This class generate Xml file with attributes and values
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
- * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>01Aug2013
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>03jan2013	
  */
 
@@ -481,14 +481,22 @@ public class QuizMetaDataXmlWriter
 							option2=((QuizFileEntry) questionVector.elementAt(i)).getOption2();
 							option3=((QuizFileEntry) questionVector.elementAt(i)).getOption3();
 							option4=((QuizFileEntry) questionVector.elementAt(i)).getOption4();
-							if(studentAnswer.equals("A"))
+							/*if(studentAnswer.equals("A"))
                                                                 studentAnswer=option1;
                                                         if(studentAnswer.equals("B"))
                                                                 studentAnswer=option2;
                                                         if(studentAnswer.equals("C"))
                                                                 studentAnswer=option3;
                                                         if(studentAnswer.equals("D"))
-                                                                studentAnswer=option4;
+                                                                studentAnswer=option4;*/
+							if(studentAnswer.equals(option1))
+                                                                studentAnswer="A";
+                                                        if(studentAnswer.equals(option2))
+                                                                studentAnswer="B";
+                                                        if(studentAnswer.equals(option3))
+                                                                studentAnswer="C";
+                                                        if(studentAnswer.equals(option4))
+                                                                studentAnswer="D";
 						}
 						if(studentAnswer.equalsIgnoreCase(realAnswer)){
 							awardedMarks = markPerQues;
@@ -776,14 +784,22 @@ public class QuizMetaDataXmlWriter
 							option2=((QuizFileEntry) questionVector.elementAt(i)).getOption2();
 							option3=((QuizFileEntry) questionVector.elementAt(i)).getOption3();
 							option4=((QuizFileEntry) questionVector.elementAt(i)).getOption4();
-							if(studentAnswer.equals("A"))
+							/*if(studentAnswer.equals("A"))
                                 				studentAnswer=option1;
                         				if(studentAnswer.equals("B"))
                                 				studentAnswer=option2;
                         				if(studentAnswer.equals("C"))
                                	 				studentAnswer=option3;
                         				if(studentAnswer.equals("D"))
-                                				studentAnswer=option4;
+                                				studentAnswer=option4;*/
+							if(studentAnswer.equals(option1))
+                                				studentAnswer="A";
+                        				if(studentAnswer.equals(option2))
+                                				studentAnswer="B";
+                        				if(studentAnswer.equals(option3))
+                               	 				studentAnswer="C";
+                        				if(studentAnswer.equals(option4))
+                                				studentAnswer="D";
 						}
 						if(studentAnswer.equalsIgnoreCase(realAnswer)){
 							awardedMarks = markPerQues;
