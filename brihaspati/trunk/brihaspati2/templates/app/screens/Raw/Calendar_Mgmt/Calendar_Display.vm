@@ -146,7 +146,7 @@ $!data.getMessage()
        			</option>
 			</select>
 		</font>
-		<input type ="submit" class="button-ftextstyle" value="Go" class="button-ftextstyle">
+		<input type ="submit" class="button-ftextstyle" value="$brih_Go" class="button-ftextstyle">
 		<input type="hidden" name="status" value="current">
 		<input type="hidden" name="path" value="$path">
 	       </td>

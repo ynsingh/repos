@@ -125,7 +125,7 @@ $!data.getMessage()
    </tr>
 ##--------------------------------------Tweet expiry---------------------
 	<tr bgcolor="$ui.menuColor">
-        <td width=30><font face="$ui.sansSerifFonts">Tweets Expiry(in days)</td>
+        <td width=30><font face="$ui.sansSerifFonts">$brih_tweets $brih_expiry</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="TweetExp" value="$!twtexp"></font></td>
     </tr>
 ##---------------------------------------------------------------------------  

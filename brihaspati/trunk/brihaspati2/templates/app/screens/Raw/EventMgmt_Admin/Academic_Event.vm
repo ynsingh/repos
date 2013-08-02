@@ -179,9 +179,9 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
                 <td colspan=4>
         #if($detail=="")
-         <input type=button class="button-ftextstyle" name="eventSubmit_doSave" value=$brih_save onClick="checkList(document.frm,this);"/>
+         <input type=button class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" onClick="checkList(document.frm,this);"/>
         #else
-                <input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_save onClick="checkList(document.frm,this);"/>
+                <input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_save" onClick="checkList(document.frm,this);"/>
         #end
                 </td>
         </tr>
