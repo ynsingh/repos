@@ -29,9 +29,8 @@ CREATE TABLE IF NOT EXISTS budgets (
   group_id int(11) NOT NULL,
   budgetname varchar(100) NOT NULL,
   bd_balance decimal(15,2) DEFAULT '0.00',
-  op_balance_dc char(1) DEFAULT NULL,
   type varchar(50) NOT NULL,
-  allowedover int(1) NOT NULL DEFAULT 0,
+  allowedover varchar(10) NOT NULL DEFAULT 0,
   UNIQUE(code,budgetname),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
@@ -129,5 +128,6 @@ CREATE TABLE IF NOT EXISTS settings (
   print_margin_right float NOT NULL,
   print_orientation varchar(1) NOT NULL,
   print_page_format varchar(1) NOT NULL,
-  database_version int(10) NOT NULL
+  database_version int(10) NOT NULL,
+  ins_name varchar(255) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

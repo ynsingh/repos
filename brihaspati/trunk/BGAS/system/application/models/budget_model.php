@@ -37,44 +37,23 @@ class Budget_model extends Model {
 	{
 		$var = '';
 		$parent_id = '';
-		$this->db->from('groups');
-		$this->db->select('parent_id')->where('name =', $chld_budget);
+		$this->db->from('ledgers');
+		$this->db->select('group_id')->where('name =', $chld_budget);
 		$parentId = $this->db->get();
 		foreach($parentId->result() as $row)
 		{
 		//	$this->logger->write_message("error", "Error Priyanka1 " . $row->parent_id);
-			$parent_id = $row->parent_id;
+			$parent_id = $row->group_id;
 		}
 		if($parent_id != '')
 		{
 			$this->db->from('groups');
-                	$this->db->select('name')->where('id =', $parent_id);
+                	$this->db->select('code')->where('id =', $parent_id);
                 	$parentId = $this->db->get();
                 	foreach($parentId->result() as $row)
                 	{
-                        	$var = $row->name;
+                        	$var = $row->code;
                 	}
-		}
-		if($var == '')
-		{
-			$this->db->from('ledgers');
-			$this->db->select('group_id')->where('name =', $chld_budget);
-			$parentId = $this->db->get();
-			foreach($parentId->result() as $row)
-			{
-			//	$this->logger->write_message("error", "Error Priyanka2 " . $row->group_id);
-				$parent_id = $row->group_id;
-			}
-			if ($parent_id != '')
-			{
-				$this->db->from('ledgers');
-				$this->db->select('name')->where('id =', $parent_id);
-				$parentId = $this->db->get();
-				foreach($parentId->result() as $row)
-				{
-					$var = $row->name;
-				}
-			}
 		}
 		return $var;
 	}
@@ -85,7 +64,7 @@ class Budget_model extends Model {
                 //$this->db->from('budgets')->order_by('budgetname', 'asc');
 		$this->db->from('budgets');
 		//$this->db->select('id, budgetname');
-		$this->db->select('id, budgetname, code')->where('code LIKE', '____')->order_by('budgetname', 'asc');
+		$this->db->select('id, budgetname, code, bd_balance')->where('code LIKE', '____')->order_by('code', 'asc');
                 $budget_parent_q = $this->db->get();
 		$counter = 0;
                 foreach ($budget_parent_q->result() as $row)
@@ -94,6 +73,7 @@ class Budget_model extends Model {
 			$options[$counter]['id'] = $row->id;
                         $options[$counter]['name'] = $row->budgetname;
 			$options[$counter]['code'] = $row->code;
+			$options[$counter]['bd_balance'] = $row->bd_balance;
 			$counter++;
                 }
                 return $options;
@@ -104,7 +84,7 @@ class Budget_model extends Model {
 		$options = array();
                 $this->db->from('budgets');
                 //$this->db->select('id, group_id, budgetname')->where('code LIKE', '_____%')->order_by('budgetname', 'asc');
-		$this->db->select('id, group_id, budgetname')->where('code LIKE', '_____%')->order_by('id', 'asc');
+		$this->db->select('id, code, group_id, budgetname')->where('code LIKE', '_____%')->order_by('id', 'asc');
                 $budget_parent_q = $this->db->get();
                 $counter = 0;
                 foreach ($budget_parent_q->result() as $row)
@@ -112,6 +92,7 @@ class Budget_model extends Model {
 			//$options[$counter]['group_id'] = $row->group_id;
                         $options[$counter]['name'] = $row->budgetname;
 			$options[$counter]['id'] = $row->id;
+			$options[$counter]['code'] = $row->code;
 			$this->db->from('budgets');
 			$this->db->select('budgetname')->where('id =', $row->group_id);
 			$budget_parent = $this->db->get();
@@ -129,38 +110,42 @@ class Budget_model extends Model {
 	function get_parent_budget($id)
 	{
 		$options = array();
-                $this->db->from('budgets');
-		$this->db->select('code')->where('id =', $id);
-		$parent_budget = $this->db->get();
 		$counter = 0;
-		foreach ($parent_budget->result() as $row)
-                {	
-			$code = $row->code;
 			$this->db->from('budgets');
-                        //$this->db->select('id, budgetname')->where('code LIKE', $code . '%');
-			$this->db->select('id, budgetname, code')->where('code LIKE', $code . '_' . '%')->order_by('id', 'asc');
+                $this->db->select('id, budgetname, code, bd_balance')->where('group_id = ', $id)->order_by('id', 'asc');
 			$child_budget = $this->db->get();
 			foreach($child_budget->result() as $chld_budget)
                         {
 				$options[$counter]['id'] = $chld_budget->id;
                                 $options[$counter]['child_budget'] = $chld_budget->budgetname;
 				$options[$counter]['code'] = $chld_budget->code;
+				$options[$counter]['bd_balance'] = $chld_budget->bd_balance;
 				$counter++;
                         }
-			//$counter++;
-		}
 		return $options;
 	}
 
 	function get_allocation_amount($data_parent_id)
 	{
 		$parent_amount = '';
+		$parent_date = '';
 		$this->db->from('budget_allocate');
-		$this->db->select('allocation_amount')->where('code =', $data_parent_id);
-		$parent_result = $this->db->get();
-		foreach($parent_result->result() as $parent)
+		$this->db->select_max('creation_date')->where('code =', $data_parent_id);
+		$date_result = $this->db->get();
+		foreach($date_result->result() as $date)
+                {
+                        $parent_date = $date->creation_date;
+                }
+		if($parent_date != NULL)
 		{
-			$parent_amount = $parent->allocation_amount;
+			$this->db->from('budget_allocate');
+			$this->db->select('allocation_amount')->where('code =', $data_parent_id);
+			$this->db->where('creation_date =', $parent_date);
+			$parent_result = $this->db->get();
+			foreach($parent_result->result() as $parent)
+			{
+				$parent_amount = $parent->allocation_amount;
+			}
 		}
 		return $parent_amount;
 	}
@@ -168,9 +153,10 @@ class Budget_model extends Model {
 	function get_child_budgets($parentId)
 	{
 		$child = array();
+		$budget_id = 0;
 		$counter = 0;
-		$this->db->from('budgets')->where('group_id =', $parentId);
-		//$this->db->select('code')->where('group_id =', $parentId);
+		$this->db->from('budgets');
+		$this->db->select('code')->where('group_id =', $parentId);
 		$child_budget = $this->db->get();
 		foreach($child_budget->result() as $row)
 		{
@@ -179,26 +165,17 @@ class Budget_model extends Model {
 		}
 		return $child;
 	}
-	/*function get_max_value($code)
-	{
-		$this->db->select('allocation_amount, reappropriation_amount')$this->db->from('budget_allocate')->where('code = ',$code);
-		//$this->db->from('budget_allocate')->where('id = ',$id);
-		//$this->db->select('allocation_amount, reappropriation_amount');
-		$budget_allocate_q = $this->db->get();
-		if ($budget_allocate_q->num_rows() > 0)
-		{
-			$row = $budget_allocate_q->result();
-			if ($row->allocation_amount > $row->reappropriation_amount)
-				$option = $row->allocation_amount;
-			else
-				$option = $row->reappropriation_amount;
-		}
-		return $option;
-	}*/
+
 
 	function get_selected_groups()
         {
                 $options = array();
+
+		//Added 'Main Budget' as first value
+		//to be displayed in the list
+		$new_id = "50"."#"."Main Budget";
+                $options[$new_id] = 'Main Budget';
+
                 $this->db->from('groups');
 		$this->db->where('code LIKE', '40%');
 		$this->db->where('status', '0')->order_by('name', 'asc');
@@ -238,13 +215,46 @@ class Budget_model extends Model {
 		return $options;
 	}
 
+	function get_budgets()
+	{
+		$budgets = array();
+		$counter = 0;
+		$this->db->from('budgets');
+                $this->db->select('id, code, budgetname, bd_balance, group_id')->where('code =', '50');
+		$budget_q = $this->db->get();
+                foreach($budget_q->result() as $row)
+                {
+                        $budget[$counter]['id'] = $row->id;
+                        $budget[$counter]['code'] = $row->code;
+                        $budget[$counter]['budgetname'] = $row->budgetname;
+                        $budget[$counter]['bd_balance'] = $row->bd_balance;
+                        $budget[$counter]['group_id'] = $row->group_id;
+                        $counter++;
+                }
+
+		$this->db->from('budgets');
+		$this->db->select('id, code, budgetname, bd_balance, group_id')->where('code <>', '40');
+		$this->db->where('code <>', '50')->order_by('code', 'asc');
+		$budget_q1 = $this->db->get();
+		foreach($budget_q1->result() as $row)
+		{
+			$budget[$counter]['id'] = $row->id;
+			$budget[$counter]['code'] = $row->code;
+			$budget[$counter]['budgetname'] = $row->budgetname;
+			$budget[$counter]['bd_balance'] = $row->bd_balance;
+			$budget[$counter]['group_id'] = $row->group_id;
+			$counter++;
+		}
+		return $budget;
+	}
+
 	function get_groupid_budgetname($parent_name)
 	{
 		$parent_id = '';
 		//$options[0] = "(Please Select)";
                 //$this->db->from('budgets')->order_by('budgetname', 'asc');
                 $this->db->from('budgets');
-		$this->db->select('id')->where('budgetname =', $parent_name);
+		$this->db->select('id')->where('code =', $parent_name);
                 $group_budget = $this->db->get();
                 foreach ($group_budget->result() as $row)
                 {

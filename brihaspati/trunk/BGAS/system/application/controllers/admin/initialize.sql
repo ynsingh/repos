@@ -989,3 +989,4 @@ INSERT INTO entry_types (id, label, name, description, base_type, numbering, pre
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (4, 'journal', 'Journal', 'Transfer between Non Bank account and Cash account', 1, 1, '', '', 0, 5);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (5, 'dpayment', 'Deferred Payment', 'For immediate booking of payment in foreign currency against letter of credot in INR as per applicable exchange rate', 1, 1, '', '', 0, 6);
 
+INSERT INTO budgets VALUES (1, '50', 0, 'Main Budget', 0.00, NULL, 'Yearly', 0);
