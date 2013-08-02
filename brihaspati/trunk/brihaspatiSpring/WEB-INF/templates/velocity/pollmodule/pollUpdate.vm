@@ -65,7 +65,7 @@ _editor_lang = "en";
 <table width="100%">
 <tr>
 <td class="formLabelColor">
-<input class="button-ftextstyle" type="submit" name="doInsert" value="UpDate" onClick="checkValue(document.insert,this);" style="width:100px">
+<input class="button-ftextstyle" type="submit" name="doInsert" value=#springMessage("brih_updt") onClick="checkValue(document.insert,this);" style="width:100px">
 <input name="question" type="hidden" value="question"/>
 <input name="up_Date" type="hidden" value="$!ls.getQuestionId()"/>
 <input name="UpDate" type="hidden" value="UpDate"/>

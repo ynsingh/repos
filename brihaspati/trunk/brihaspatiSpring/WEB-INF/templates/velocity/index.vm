@@ -61,11 +61,11 @@
 			<span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$!model.fls.size()</center></span>
 			<hr style="width:290px; height:1px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin-top:0px;">
 #if(${model.Uid}!="0")
-			<a href="javascript:void(0);" style="color:#333; font-size:14px; text-decoration:none; margin-left:10px;" id="tweetnow">Compose Tweet </a>
+			<a href="javascript:void(0);" style="color:#333; font-size:14px; text-decoration:none; margin-left:10px;" id="tweetnow">#springMessage("brih_compose")</a>
 			<div style="display:none;" id="comptweet">
 			<textarea  name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
-			onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder="Compose..."style="width:220px"></textarea>
-			<input type="button" id="button" class="button-ftextstyle" value="Tweet" style="margin-top:-55px; margin-left:230px;width:55px;height:40px; position:absolute;z-index:100;" onclick="check(document.submittweet,this);"/>
+			onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder=#springMessage("brih_compos") Style="width:220px"></textarea>
+			<input type="button" id="button" class="button-ftextstyle" value=#springMessage("brih_tweet") Style="margin-top:-55px; margin-left:230px;width:55px;height:40px; position:absolute;z-index:100;" onclick="check(document.submittweet,this);"/>
 			<input type="hidden" name="flg" value="compose">
 			#end
 			</div>

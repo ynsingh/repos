@@ -62,7 +62,7 @@ _editor_lang = "en";
 <table width="100%">
 <tr>
 <td class="formLabelColor">
-<font size="2"> <input type="submit" name="doInsert" value="Submit" class="button-ftextstyle" onClick="checkValue(document.insert,this); checkForm();">
+<font size="2"> <input type="submit" name="doInsert" value=#springMessage("brih_submit") class="button-ftextstyle" onClick="checkValue(document.insert,this); checkForm();">
 <input name="name" type="hidden" value="name"/>
 <input name="question" type="hidden" value="question"/>
 <input name="sel_Date" type="hidden" value="sel_Date"/>
