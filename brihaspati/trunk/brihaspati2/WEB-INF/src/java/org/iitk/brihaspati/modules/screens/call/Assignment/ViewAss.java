@@ -167,6 +167,7 @@ public class ViewAss extends  SecureScreen
 			} //if
 			if(Role.equals("student")){
 				stname.add(UserName);
+			}
 				int gid=GroupUtil.getGID(courseid);
 	                        String g_Id=Integer.toString(gid);
 				crit=new Criteria();
@@ -199,7 +200,7 @@ public class ViewAss extends  SecureScreen
                                         }
                                 }
 				context.put("detail",entry);
-			}
+		//	}
 			context.put("allTopics",w);
                         //read the xml file
                         TopicMetaDataXmlReader topicmetadata=null;
@@ -344,6 +345,6 @@ public class ViewAss extends  SecureScreen
 			}	
 
 		} //try
-                catch(Exception e){ }
+                catch(Exception e){ ErrorDumpUtil.ErrorLog("The Error in View asignment screen for student and instructor "+e); }
         }
 }

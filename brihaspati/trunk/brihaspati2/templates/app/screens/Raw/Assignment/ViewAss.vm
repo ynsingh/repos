@@ -143,9 +143,27 @@ $!data.getMessage()
 	#end	
 	## #if($user_role ==  "instructor")
 	#if(($user_role ==  "instructor")||($user_role ==  "teacher_assistant"))
+	<tr><td colspan=6>The $brih_instruction / $brih_assignment is 
+		#set ($stlp = 0)
+                #foreach($e in $Assignmentlist )
+
+                        #if(($e.getAssignmentfile()!= "") && ($stlp == 0))
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a> /
+ 			#set ($stlp = $stlp + 1)
+                        #end
+
+                #end
+		 #set ($stlp = 0)
+		 #foreach($news in $detail)
+			#if($stlp == 0)
+                        <a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none">$brih_instruction</a>
+			#set ($stlp = $stlp + 1)
+			#end
+		 #end
+	</td></tr>
 	<tr bgcolor="$ui.menuColor">
 		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b> </td>
-		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
+##		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
 		#if($anscheck == "ok")
 		<td align="center">  <b> $brih_answer #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
 		#end
@@ -176,9 +194,9 @@ $!data.getMessage()
 	<tr bgcolor="$ui.tableColor">
 	#end
 		<td width="10%"> $!e.getStudentname()  </td>  ##student name
-		<td width="10%">   ##  Assignment file
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a>
-		</td>
+##		<td width="10%">   ##  Assignment file
+##			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a>
+##		</td>
 		#if($anscheck == "ok")
 		<td width="10%" align="center"> ## Answer file  
 			#if($!e.getanswerfile() != "")
@@ -237,8 +255,12 @@ $!data.getMessage()
                 ##<td width="10%" align="Center"> $!e.getStudentname()  </td>  ##student name
                 <td width="10%" align="Center">$topicList</td>  ##Topic name
                 <td width="10%" align="center">   ##  Assignment file
+		#set ($stlp = 0)
 		#foreach($news in $detail)
+			#if($stlp == 0)
 			<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none">$brih_instruction</a>
+			#set ($stlp = $stlp + 1)
+                        #end
 		#end
 		#if(($detail.size()>0)&&($e.getAssignmentfile()!=""))
 	                /
