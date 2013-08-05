@@ -258,15 +258,12 @@ $!data.getMessage()
 		#set ($stlp = 0)
 		#foreach($news in $detail)
 			#if($stlp == 0)
-			<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none">$brih_instruction</a>
+			<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()).addPathInfo("TopicName",$topicList)","newWin"); style="text-decoration:none">$brih_instruction</a> 
 			#set ($stlp = $stlp + 1)
                         #end
 		#end
-		#if(($detail.size()>0)&&($e.getAssignmentfile()!=""))
-	                /
-	        #end
         	#if($e.getAssignmentfile()!="")
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a>
+			/<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a>
 		#end
                 </td>
                 #if($anscheck == "ok")
