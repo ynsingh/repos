@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*@(#)MailNotification.java
- *  Copyright (c) 2005-2006,2009,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009,2010, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -528,6 +528,16 @@ public class MailNotification{
                 replaceString("quiz_name",quizname);
                 replaceString("security_string",securitystr);
                 return replaceString("user_name",uName);
+        }
+	
+	public static String getAssignmentMessage(String info, String course_name, String topic_name) throws Exception{
+                if(StringUtils.isNotBlank(info)){
+                        if(StringUtils.isNotBlank(topic_name))
+                                info = info.replaceAll("topic_name",'"'+topic_name+'"');
+                        if(StringUtils.isNotBlank(course_name))
+                                info = info.replaceAll("course_name", '"'+course_name+'"');
+                }
+                return info;
         }
 }
 
