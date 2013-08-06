@@ -10,7 +10,7 @@ class Budgetlist
 	var $status = "";
 	var $total = 0;
 	var $bd_balance = 0.00;
-	var $op_balance = "";
+//	var $op_balance = "";
 	var $optype = "";
 	var $opbalance = 0;
 	var $children_groups = array();
@@ -132,10 +132,10 @@ class Budgetlist
 				echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $this->bd_balance;
 			echo "</td>";
-			echo "<td>";
+/*			echo "<td>";
 				echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $this->op_balance;
-			echo "</td>";
+			echo "</td>";*/
 			echo "<td>";
 				echo $this->print_space($this->counter);
 				echo "&nbsp;" .  $this->over;
@@ -179,10 +179,10 @@ class Budgetlist
                                 echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $data['bd_balance'];
                         	echo "</td>";
-                        	echo "<td>";
+/*                        	echo "<td>";
                                 echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $data['op_balance'];
-                        	echo "</td>";
+                        	echo "</td>";*/
                         	echo "<td>";
                                 echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $data['over'];
