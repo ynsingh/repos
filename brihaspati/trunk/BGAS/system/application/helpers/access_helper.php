@@ -60,6 +60,10 @@ if ( ! function_exists('check_access'))
 			'change account settings',
 			'cf account',
 			'backup account',
+			'create budget',
+			'edit budget',
+			'delete budget',
+			'reappropriate budget',
 		);
 		$permissions['accountant'] = array(
 			'view entry',

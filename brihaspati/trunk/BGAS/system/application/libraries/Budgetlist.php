@@ -43,7 +43,7 @@ class Budgetlist
 				$this->budget[$counter]['code'] = $row->code;
                         	$this->budget[$counter]['name'] = $row->budgetname;
                         	$this->budget[$counter]['bd_balance'] = $row->bd_balance;
-                        	$this->budget[$counter]['op_balance'] = $row->op_balance_dc;
+//                        	$this->budget[$counter]['op_balance'] = $row->op_balance_dc;
 				$this->budget[$counter]['type'] = $row->type;
 	                        $this->budget[$counter]['over'] = $row->allowedover;
                         	$counter++;
@@ -57,7 +57,7 @@ class Budgetlist
 			$this->code = $budget_n->code;
 			$this->name = $budget_n->budgetname;
 			$this->bd_balance = $budget_n->bd_balance;
-			$this->op_balance = $budget_n->op_balance_dc;
+//			$this->op_balance = $budget_n->op_balance_dc;
 			$this->type = $budget_n->type;
 			$this->over = $budget_n->allowedover;
 		}//else

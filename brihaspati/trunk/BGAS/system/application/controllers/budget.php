@@ -140,14 +140,10 @@ class Budget extends Controller {
 			}
 				$data_amount = $this->input->post('budget_amount', TRUE);
 				$sum = $data_amount;
-				$this->messages->add('sum = ' . $sum, 'error');
 				$data_parent_code = $this->Budget_model->get_parent($my_values[1]);
-                                $this->messages->add('data_parent_code = ' . $data_parent_code, 'error');
                                 $data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
-                                $this->messages->add('data_parent_id = ' . $data_parent_id, 'error');
                                 //Get amount allocated to parent budget
                                 $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
-                                $this->messages->add('parent amount = ' . $parent_amount, 'error');
 			//	$sum = $data_amount;
 //			if($my_values[1] != 'Expenses')
 			if($my_values[1] != 'Expenses' && $my_values[1] != 'Main Budget')
@@ -165,24 +161,16 @@ class Budget extends Controller {
 				$count = 0;
 				foreach ($child_budget as $code => $chld)
 		                {
-					$this->messages->add('child = ' . $chld['code'], 'error');
 					if($chld['code'] != $my_values[0]){
 						$allocation_amount = $this->Budget_model->get_allocation_amount($chld['code']);
 						$sum = $sum + $allocation_amount;
-						$this->messages->add('sum = ' . $sum, 'error');
 					}
 					$count++;
                 		}
-				$this->messages->add('data_amount = ' . $data_amount, 'error');
-				$this->messages->add('sum = ' . $sum, 'error');
-                                $this->messages->add('parent amount = ' . $parent_amount, 'error');				
 				if($sum > $parent_amount)
 				{
 					//Error message
 					$this->messages->add('Budget amount cannot exceed from parent budget. So, please check parent budget amount.', 'error');
-				//	$this->messages->add($data_amount, 'error');
-					$this->messages->add($sum, 'error');
-					$this->messages->add($parent_amount, 'error');
 				//	$this->template->load('template', 'budget/add', $data);
 					redirect('budget/add');
 					return;
@@ -203,7 +191,6 @@ class Budget extends Controller {
 							$this->db->select('id')->from('ledgers')->where('code', $my_values[0]);
 							if ($this->db->get()->num_rows() < 1)
 							{
-								$this->messages->add($my_values[0], 'error');
                                 				$this->messages->add('Invalid budget code.', 'error');
 								$this->template->load('template', 'budget/add', $data);
                                 				return;
@@ -233,7 +220,7 @@ class Budget extends Controller {
 							'group_id' => $data_parent_id,
 							'budgetname' => $my_values[1],
                                 			'bd_balance' => $data_amount,
-                                			'op_balance_dc' => NULL,
+                                		//	'op_balance_dc' => NULL,
                                 			'type' => $data_type,
                                 			'allowedover' => $data_budget_over,
                        	 			);
@@ -566,6 +553,15 @@ class Budget extends Controller {
 
 	function reappro(){
                 $username = $this->config->item('account_name');
+
+		/* Check access */
+                if ( ! check_access('reappropriate budget'))
+                {
+                        $this->messages->add('Permission denied.', 'error');
+                        redirect('budgetl');
+                        return;
+                }
+
                 $this->load->model('Budget_model');
 		$this->load->helper('array');
                 $this->template->set('page_title', 'Budget Reappropriation');

@@ -9,14 +9,14 @@ class Budgetl extends Controller {
 		//$this->template->set('nav_links', array('budget/add' => 'Add Budget'));
 
 		/* Calculating difference in Opening Balance */
-		$total_op = $this->Budget_model->get_diff_op_balance();
+/*		$total_op = $this->Budget_model->get_diff_op_balance();
 		if ($total_op > 0)
 		{
 			$this->messages->add('Difference in Opening Balance is Dr ' . convert_cur($total_op) . '.', 'error');
 		} else if ($total_op < 0) {
 			$this->messages->add('Difference in Opening Balance is Cr ' . convert_cur(-$total_op) . '.', 'error');
 		}
-
+*/
 		$this->template->load('template', 'budget/index');
 		return;
 	}
