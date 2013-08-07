@@ -19,7 +19,7 @@ import org.iitk.brihaspatisync.om.LecturePeer;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
- * @author <a href="mailto:ashish.knp@gmail.com"> Arvind Pal </a> // modifyed 2012 
+ * @author <a href="mailto:arvinjss17@gmail.com"> Arvind Pal </a> // modifyed 2012 
  */
 
 
@@ -36,7 +36,7 @@ public class ServerUtil {
         	return key;
     	}
 
-	/****************  get Corent Date **************/
+	/****************  get Current Date **************/
 	public static String getCurrentDate(String delimiter)
         {
                 String cdate="";
@@ -57,7 +57,7 @@ public class ServerUtil {
                         else
                                 cdate=current_year+current_month+current_day;
 			
-                } catch(Exception ex) { ServerLog.log("Error getCurrentDate in ServerUtil class "+e.getMessage()); }
+                } catch(Exception e) { ServerLog.log("Error getCurrentDate in ServerUtil class "+e.getMessage()); }
                 return(cdate.trim());
         }
 	/****************  get Corent Date **************/	
