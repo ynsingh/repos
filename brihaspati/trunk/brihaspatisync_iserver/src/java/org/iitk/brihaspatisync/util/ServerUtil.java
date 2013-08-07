@@ -2,28 +2,20 @@ package org.iitk.brihaspatisync.util;
 
 /*@(#)ServerUtil.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008.All Rights Reserved.
+ * Copyright (c) 2007-2008, 2013 All Rights Reserved.
  */
 
 
+import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
-import java.util.Date;
-import java.util.StringTokenizer;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import java.util.List;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspatisync.om.Lecture;
 import org.iitk.brihaspatisync.om.LecturePeer;
-
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import javax.crypto.spec.SecretKeySpec;
-import javax.crypto.*;
-import sun.misc.*;
-
-
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
@@ -31,29 +23,21 @@ import sun.misc.*;
  */
 
 
-public class ServerUtil{
+public class ServerUtil {
 	
-	private static ServerUtil obj=null;
-
-   	public static ServerUtil getController() {
-        	if(obj==null) 
-           		obj=new ServerUtil();
-		return obj;
-   	}
-
 	/** Generate a session Key */
-
-    	public int generateSessionKey() {
+    	public static int generateSessionKey() {
        		int key=new Random().nextInt();
-         		if(key<=0) {
-                     		do{
-                       			key=new Random().nextInt();
-                       		} while(key<=0);
-                    	}
+         	if(key<=0) {
+                	do{
+                       		key=new Random().nextInt();
+                       	} while(key<=0);
+             	}
         	return key;
     	}
+
 	/****************  get Corent Date **************/
-	public String getCurrentDate(String delimiter)
+	public static String getCurrentDate(String delimiter)
         {
                 String cdate="";
                 try{
@@ -73,17 +57,13 @@ public class ServerUtil{
                         else
                                 cdate=current_year+current_month+current_day;
 			
-                }
-                catch(Exception ex)
-                {
-                        System.out.println("Error in Expiry Util");
-                }
+                } catch(Exception ex) { ServerLog.log("Error getCurrentDate in ServerUtil class "+e.getMessage()); }
                 return(cdate.trim());
         }
 	/****************  get Corent Date **************/	
 	/** getting the  day or time difference between the sessionDate and SystemDate. */
 
-	public int getDifferenceOfDay(Date sessionDate,String sessionTime) {
+	public static int getDifferenceOfDay(Date sessionDate,String sessionTime) {
 
         	StringTokenizer str=new StringTokenizer(sessionTime,":");
               	int hours=0,minutes=0;
@@ -108,7 +88,7 @@ public class ServerUtil{
                 	return 0;
   	}
 	
-	public String getSystemDateTime() {
+	public static String getSystemDateTime() {
 		try {
 			java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
         	        java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
@@ -118,7 +98,7 @@ public class ServerUtil{
 		}catch(Exception e){return "UnSuccessfull"; }
 	}
 	
-	public String  getAVStatus(String lect_id) {
+	public static String getAVStatus(String lect_id) {
                 String str="";
                 try{
                         Criteria forav = new Criteria();
@@ -131,11 +111,11 @@ public class ServerUtil{
                                 String str2=(element.getForaudio());
                                 str =",A="+str2+",V="+str1;
                         }
-                } catch(Exception e) { ServerLog.getController().Log("Error in selection of course"+e); }
+                } catch(Exception e) { ServerLog.log("Error in selection of course"+e); }
                 return str;
         }
 		
-	public String getSessionList(String courseName){
+	public static String getSessionList(String courseName){
                	String message="";
                 try {
                         Criteria crit=new Criteria();
@@ -161,12 +141,12 @@ public class ServerUtil{
 				String mail=encrypt(element.getMailNotification());
                                 message=message+"$$"+lectid+","+lectCouseName+","+lectName+","+lectInfo+","+lectUserName+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime+","+mail;
 			}
-			ServerLog.getController().Log("getSessionList in ServerUtil class  "+message);
-                }catch(Exception e){ServerLog.getController().Log("Error getSessionList in ServerUtil class "+e.getMessage());}
+			ServerLog.log("getSessionList in ServerUtil class  "+message);
+                }catch(Exception e){ ServerLog.log("Error getSessionList in ServerUtil class "+e.getMessage());}
              	return message;
         }
 
-	public String getLectureInfo(String lecture_id){
+	public static String getLectureInfo(String lecture_id){
                 String message="";
                 try {
                         Criteria crit=new Criteria();
@@ -190,13 +170,13 @@ public class ServerUtil{
                                 String fortime=encrypt(element.getFortime());
                                 String mail=encrypt(element.getMailNotification());
                                 message=lectid+","+lectCouseName+","+lectName+","+lectInfo+","+lectUserName+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime+","+mail;
-				ServerLog.getController().Log("getLectureInfo in ServerUtil class  "+message);
+				ServerLog.log("getLectureInfo in ServerUtil class  "+message);
                         }
-                }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
+                }catch(Exception e) { ServerLog.log("Error Log in Lecture select "+e.getMessage());}
                 return message;
         }	
 	
-	private String encrypt(String Data) throws Exception {
+	private static String encrypt(String Data) throws Exception {
                 byte[] encVal = Data.getBytes();
                 String encryptedValue = new sun.misc.BASE64Encoder().encode(encVal);
                 return encryptedValue;

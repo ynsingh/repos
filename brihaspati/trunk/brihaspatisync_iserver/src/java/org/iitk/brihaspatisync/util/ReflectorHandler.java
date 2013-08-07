@@ -2,16 +2,17 @@ package org.iitk.brihaspatisync.util;
 
 /*@(#)ServerUtil.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008.All Rights Reserved.
+ * Copyright (c) 2007-2008, 2013 All Rights Reserved.
  */
 
-import java.util.Vector;
 import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.Vector;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import java.util.List;
 import org.apache.torque.util.Criteria;
+
 import org.iitk.brihaspatisync.om.Lecture;
 import org.iitk.brihaspatisync.om.LecturePeer;
 import org.iitk.brihaspatisync.om.UrlConection;
@@ -88,15 +89,15 @@ public class ReflectorHandler {
  	 **/  	
 	private void removeExpiryEntry(String lectid,javax.servlet.ServletContext context ){
                 try {
-                        ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
+                        ReflectorStatusManager.removeLoad_and_Sessionid_Peer(lectid);
                         Criteria crit=new Criteria();
                         crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
                         UrlConectionPeer.doDelete(crit);
-                        ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
+                        ReflectorStatusManager.removeLoad_and_Sessionid_Peer(lectid);
 			java.io.File filepath=new java.io.File(context.getRealPath(lectid+".xml"));
                         if(filepath.exists())
                         	filepath.delete();
-           	} catch(Exception e){ ServerLog.getController().Log(" Error in ReflectorHandler.java "+e.getMessage()); }
+           	} catch(Exception e){ ServerLog.log(" Error in ReflectorHandler.java "+e.getMessage()); }
 	}
 
 	/** 
@@ -148,7 +149,7 @@ public class ReflectorHandler {
                 try {
                         Criteria crit=new Criteria();
                         l=LecturePeer.doSelect(crit);
-                }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
+                }catch(Exception e) { ServerLog.log("Error Log in Lecture select "+e.getMessage());}
              	return l;
         }	
 		

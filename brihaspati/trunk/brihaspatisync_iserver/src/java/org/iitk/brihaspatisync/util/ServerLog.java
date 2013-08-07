@@ -2,7 +2,7 @@ package org.iitk.brihaspatisync.util;
 
 /*@(#)ServerLog.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008.All Rights Reserved.
+ * Copyright (c) 2007-2008, 2013 All Rights Reserved.
  */
 
 import java.util.Date;
@@ -14,33 +14,22 @@ import javax.servlet.ServletContext;
 
 /**
  * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
- * @author <a href="mailto:"> Arvind Pal </a>
+ * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  */
 
 public class ServerLog {
 
-	private static ServerLog log=null;
 	private static File existingFile =null;
         private static DataOutputStream dos = null;
-	private ServletContext context=null;
+	private static ServletContext context=null;
 	
-	/**
-	 * ServerLog controller 
-	 */
-	public static ServerLog getController(){
-                if (log==null){
-                        log=new ServerLog();
-                }
-                return log;
-        }
-	
-	public void setContext(ServletContext context1) throws Exception {
+	public static void setContext(ServletContext context1) throws Exception {
 		context=context1;
 		existingFile=new File(context.getRealPath("logs/ServerLog.txt"));
 		dos = new DataOutputStream(new FileOutputStream(existingFile,true));
 	}
 	
-	private void createFile(){
+	private static void createFile(){
 		try {
                         dos = new DataOutputStream(new FileOutputStream(existingFile,true));
 		}catch(Exception e){ }	
@@ -51,7 +40,7 @@ public class ServerLog {
         * @param msg String
         * @return
         */
-        public void Log(String msg)
+        public static void log(String msg)
         {
                 try
                 {

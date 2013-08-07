@@ -44,14 +44,10 @@ public class TimerOfDatabase extends TimerTask {
                      	while(itr.hasNext()) {
                         	Lecture resultofLecture=(Lecture)itr.next();
                            	Date sessiondate=resultofLecture.getSessiondate();
-                		//ServerLog.getController().Log("schedular is running under thread"+sessiondate);
-				int returnvalue=ServerUtil.getController().getDifferenceOfDay(sessiondate,resultofLecture.getSessiontime());
-				if(returnvalue==1) {
-					//deleteRow(resultofLecture.getLectureid());
-                            	}
+				int returnvalue=ServerUtil.getDifferenceOfDay(sessiondate,resultofLecture.getSessiontime());
                      	}	 
 			
-                } catch(Exception ex) {ServerLog.getController().Log("Error in try catch run() in Timer of Database class"+ex.getMessage());
+                } catch(Exception ex) { ServerLog.log("Error in try catch run() in Timer of Database class"+ex.getMessage());
  } 
        	}
 
@@ -59,11 +55,10 @@ public class TimerOfDatabase extends TimerTask {
 
      	private void deleteRow(NumberKey value) {
         	try {
-                	//ServerLog.getController().Log("schedular is running and deleting of row");
                   	Criteria del=new Criteria();
                   	del.add(LecturePeer.LECTUREID,value.toString());                              
                   	LecturePeer.doDelete(del);
-                } catch(Exception er) {ServerLog.getController().Log("Error in first try catch deleteRow() in Timer of Database "+er.getMessage());
+                } catch(Exception er) { ServerLog.log("Error in first try catch deleteRow() in Timer of Database "+er.getMessage());
 		}
 
                 try {
@@ -78,11 +73,10 @@ public class TimerOfDatabase extends TimerTask {
                                 if(flag==(Integer.parseInt(value.toString()))) {
                                 	add.setFlag(0);          
                                    	add.save(); 
-                          //         	ServerLog.getController().Log("Free the Session Address=>"+value.toString());
                                         break;
                              	}
 	           	}
-        	} catch(Exception er) {  ServerLog.getController().Log("Error in second try catch deleteRow() in Timer of Database "+er.getMessage());
+        	} catch(Exception er) {  ServerLog.log("Error in second try catch deleteRow() in Timer of Database "+er.getMessage());
 		}
            	Toolkit.getDefaultToolkit().beep();
      	} 

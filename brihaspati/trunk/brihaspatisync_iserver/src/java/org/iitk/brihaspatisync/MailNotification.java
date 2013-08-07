@@ -134,8 +134,8 @@ public class MailNotification {
                               				} else{ msg="Mail can't send since your mail id is null!!"; }
 				          	} else{ msg=msg;}
 						
-					} catch(Exception ex) { 	ServerLog.getController().Log("The error in mail send !!!"+ex); 	}
-					ServerLog.getController().Log("mail notofication "+msg);
+					} catch(Exception ex) { 	ServerLog.log("The error in mail send !!!"+ex); 	}
+					ServerLog.log("mail notofication "+msg);
 				}
 			
 		}).start();

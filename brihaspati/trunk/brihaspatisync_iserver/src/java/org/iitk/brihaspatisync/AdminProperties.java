@@ -1,23 +1,32 @@
 package org.iitk.brihaspatisync;
 
-import java.util.Properties;
+/*@ AdminProperties.java
+ * See licence file for usage and redistribution terms
+ * Copyright (c) 2007-2008, 2013.
+ * All Rights Reserved.
+ **/
+
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
+
+import java.util.List;
+import java.util.Vector;
+import java.util.Properties;
+
 import org.apache.torque.util.Criteria;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-
-
-import java.util.Vector;
-import java.util.List;
-
 import org.iitk.brihaspatisync.util.ServerLog;
+
+/**
+ *@author <a href="mailto:@arvindjss17@gmail.com"> Arvind Pal </a>
+ **/
 
 public class AdminProperties {
 	
@@ -66,7 +75,7 @@ public class AdminProperties {
                                 }
 				
                         }
-                } catch(Exception e){ org.iitk.brihaspatisync.util.ServerLog.getController().Log("This is the exception in get user UDetail method in AdminProperties class ---> "+e);	}
+                } catch(Exception e){ org.iitk.brihaspatisync.util.ServerLog.log("This is the exception in get user UDetail method in AdminProperties class "+e);	}
                 return uid;
   	}
 
@@ -83,7 +92,7 @@ public class AdminProperties {
                                 v=TurbineUserPeer.doSelect(crit);
                         }
                 }
-                catch(Exception e) { org.iitk.brihaspatisync.util.ServerLog.getController().Log(" This is the exception in get user UDetail method in AdminProperties class ---> "+e); }
+                catch(Exception e) { org.iitk.brihaspatisync.util.ServerLog.log(" This is the exception in get user UDetail method in AdminProperties class "+e); }
                 return v;
         }
                 
