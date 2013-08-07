@@ -73,7 +73,7 @@ $(document).ready(function() {
 <div id="container">
 	<div id="header">
 		<div id="logo">
-			<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); ?>
+			<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); $iname = $this->config->item('account_ins_name'); echo $iname;?>
 		</div>
 		<?php
 			if ($this->session->userdata('user_name')) {
@@ -234,7 +234,7 @@ $(document).ready(function() {
 </div>
 <div id="footer">
 	<?php if (isset($page_footer)) echo $page_footer ?>
-Based on <a href="http://webzash.org" target="_blank"> Webzash<a/> and licensed is <a href="/BGAS/brihaspati-license.txt" target="_blank">BGAS License</a>
+<a href="/~brihaspati/BGAS/ListOfDocument.html" target="_blank">Importants Links</a> Based on <a href="http://webzash.org" target="_blank"> Webzash<a/> and licensed is <a href="/~brihaspati/BGAS/brihaspati-license.txt" target="_blank">BGAS License</a> and <a href="/~brihaspati/BGAS/acknowledgement.txt" target="_blank">BGAS Acknowledgement</a>
 </div>
 </body>
 </html>
