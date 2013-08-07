@@ -34,7 +34,6 @@ package org.IGNOU.ePortfolio.DAO;
 
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.ProfileInterest;
-import org.IGNOU.ePortfolio.Model.ProfileInterestList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -67,15 +66,15 @@ public class InterestDao {
     }
 
     @SuppressWarnings({"unchecked"})
-    public List<ProfileInterestList> ProfileInterestByUserId(String user_id) {
+    public List<ProfileInterest> ProfileInterestByUserId(String user_id) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
 
-            List<ProfileInterestList> InterestListList = null;
+            List<ProfileInterest> InterestListList = null;
             try {
-                InterestListList = s.createQuery("from ProfileInterestList where user_id='" + user_id + "'").list();
+                InterestListList = s.createQuery("from ProfileInterest where user_id='" + user_id + "'").list();
             } catch (HibernateException HE) {
                 System.out.println(HE);
             }
@@ -93,15 +92,15 @@ public class InterestDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProfileInterestList> ProfileInterestByIntrestId(long interestId) {
+    public List<ProfileInterest> ProfileInterestByIntrestId(long interestId) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
 
-            List<ProfileInterestList> editInterestList = null;
+            List<ProfileInterest> editInterestList = null;
             try {
-                editInterestList = s.createQuery("from ProfileInterestList where interestId='" + interestId + "'").list();
+                editInterestList = s.createQuery("from ProfileInterest where interestId='" + interestId + "'").list();
             } catch (HibernateException HE) {
                 System.out.println(HE);
             }
@@ -119,12 +118,12 @@ public class InterestDao {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileInterestList ProfileInterestDelete(long interestId) {
+    public ProfileInterest ProfileInterestDelete(long interestId) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
-            ProfileInterestList DeleteInterest = (ProfileInterestList) s.load(ProfileInterestList.class, interestId);
+            ProfileInterest DeleteInterest = (ProfileInterest) s.load(ProfileInterest.class, interestId);
             if (DeleteInterest != null) {
                 s.delete(DeleteInterest);
             }
@@ -142,13 +141,13 @@ public class InterestDao {
     }
 
     @SuppressWarnings("unchecked")
-    public ProfileInterestList ProfileInterestUpdate(long interestId, String userId, String acadInterest, String persInterest, String techInterest, String reserInterst, String myHobbies) {
+    public ProfileInterest ProfileInterestUpdate(long interestId, String userId, String acadInterest, String persInterest, String techInterest, String reserInterst, String myHobbies) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
 
-            ProfileInterestList UpdateIntInfo = (ProfileInterestList) s.load(ProfileInterestList.class, interestId);
+            ProfileInterest UpdateIntInfo = (ProfileInterest) s.load(ProfileInterest.class, interestId);
             UpdateIntInfo.setAcadInterest(acadInterest);
             UpdateIntInfo.setPersInterest(persInterest);
             UpdateIntInfo.setTechInterest(techInterest);

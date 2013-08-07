@@ -19,7 +19,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * Hibernate Utility class with a convenient method to get Session Factory
  * object.
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class RequestDao {
 

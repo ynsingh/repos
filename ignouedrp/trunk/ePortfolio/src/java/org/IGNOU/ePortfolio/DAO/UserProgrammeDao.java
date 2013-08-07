@@ -13,17 +13,33 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
  *
  * @author IGNOU Team
  */
 public class UserProgrammeDao {
 
-    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
-   
+
     @SuppressWarnings("unchecked")
     public List<User> UserListByUserId(String user_id) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        List<User> UserProlist = null;
+        try {
+            UserProlist = s.createQuery("from User where emailId='" + user_id + "' and emailVerify=1").list();
+        } catch (HibernateException HE) {
+            System.out.println(HE);
+        }
+        t.commit();
+        s.close();
+        sessionFactory.close();
+        return UserProlist;
+    }
+
+    public List<User> CheckUserExistByUserId(String user_id) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<User> UserProlist = null;
@@ -37,5 +53,4 @@ public class UserProgrammeDao {
         sessionFactory.close();
         return UserProlist;
     }
-   
 }

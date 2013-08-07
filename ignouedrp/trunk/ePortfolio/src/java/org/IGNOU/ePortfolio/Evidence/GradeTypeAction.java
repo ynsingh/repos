@@ -8,7 +8,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
+import org.IGNOU.ePortfolio.DAO.CourseDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.DAO.GradeTypeDao;
 import org.IGNOU.ePortfolio.Model.Course;
 import org.IGNOU.ePortfolio.Model.GradeTypeDetailsMaster;
@@ -44,7 +45,7 @@ public class GradeTypeAction extends ActionSupport {
     private int programmeId;
     private int courseId;
     private List<Course> CourseListList;
-    private ProgrammeCourseDao pDao = new ProgrammeCourseDao();
+    private CourseDao cDao = new CourseDao();
     private int gradeValId;
     private String msg, formNotfilled = getText("msg.formNotFilled");
     private String Course;
@@ -58,7 +59,7 @@ public class GradeTypeAction extends ActionSupport {
     }
 
     public String GradeTypeDetails() throws Exception {
-        CourseListList = pDao.CourseDetailByCourseId(courseId);
+        CourseListList = cDao.CourseListByCourseId(courseId);
         if (CourseListList.isEmpty()) {
             msg = formNotfilled;
             return INPUT;
@@ -75,11 +76,11 @@ public class GradeTypeAction extends ActionSupport {
     }
 
     public String GradeTypeEditDetails() throws Exception {
-        GTDList=getDao().GradeTypeDetailsMasterByGradeTypeId(getGtId());
-        details=getGTDList().iterator().next().getDetails();
-        splitDetails=getDetails().split(",");
+        GTDList = getDao().GradeTypeDetailsMasterByGradeTypeId(getGtId());
+        details = getGTDList().iterator().next().getDetails();
+        splitDetails = getDetails().split(",");
         for (int i = 0; i < getSplitDetails().length; i++) {
-            str=getStr() + getSplitDetails()[i];
+            str = getStr() + getSplitDetails()[i];
         }
         setSplitDetails2(getStr().split(": "));
         return SUCCESS;
@@ -99,7 +100,7 @@ public class GradeTypeAction extends ActionSupport {
         this.dao = dao;
     }
 
-   /**
+    /**
      * @return the gtId
      */
     public int getGtId() {
@@ -163,13 +164,13 @@ public class GradeTypeAction extends ActionSupport {
     }
 
     /**
-     * @param GradeTypeMasterListByGradeTypeId the GradeTypeMasterListByGradeTypeId to set
+     * @param GradeTypeMasterListByGradeTypeId the
+     * GradeTypeMasterListByGradeTypeId to set
      */
     public void setGTList(List<GradeTypeMaster> GTList) {
         this.GTList = GTList;
     }
 
-    
     /**
      * @return the gtdId
      */
@@ -324,7 +325,6 @@ public class GradeTypeAction extends ActionSupport {
         this.programmeId = programmeId;
     }
 
-   
     /**
      * @return the courseId
      */
@@ -339,7 +339,7 @@ public class GradeTypeAction extends ActionSupport {
         this.courseId = courseId;
     }
 
-     /**
+    /**
      * @return the CourseListList
      */
     public List<Course> getCourseListList() {
@@ -351,20 +351,6 @@ public class GradeTypeAction extends ActionSupport {
      */
     public void setCourseListList(List<Course> CourseListList) {
         this.CourseListList = CourseListList;
-    }
-
-      /**
-     * @return the pDao
-     */
-    public ProgrammeCourseDao getpDao() {
-        return pDao;
-    }
-
-    /**
-     * @param pDao the pDao to set
-     */
-    public void setpDao(ProgrammeCourseDao pDao) {
-        this.pDao = pDao;
     }
 
     /**

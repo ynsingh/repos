@@ -63,9 +63,9 @@
                                         <s:iterator value="StdevList" status="stat">
                                             <tr>
                                                 <td align="center"><s:property value="#stat.count" /></td>
-                                                <td><s:property value="CourseList[#stat.index]"/></td>
+                                                <td><s:property value="course.courseCode"/></td>
                                                 <td><s:property value="evTitle"/><br/>
-                                                    <a href="EditEvidence?evidenceId=<s:property value="evidenceId"/>&amp;instituteId=<s:property value="instituteId"/>&amp;programmeId=<s:property value="programmeId"/>&amp;courseId=<s:property value="courseId"/>">Edit</a>
+                                                    <a href="EditEvidence?evidenceId=<s:property value="evidenceId"/>">Edit</a>
                                                 </td>
                                                 <td><s:property value="openDate"/></td>
                                                 <td><s:property value="closeDate"/></td>

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.PersonalInfo;
 import org.IGNOU.ePortfolio.Model.UserPersonalRequest;
 import org.IGNOU.ePortfolio.DAO.RequestDao;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class RequestAction extends ActionSupport {
 

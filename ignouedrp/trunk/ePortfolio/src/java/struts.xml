@@ -18,7 +18,7 @@
     <constant name="struts.configuration.xml.reload" value="true" />
     <constant name="struts.i18n.reload" value="true" /> 	
     <constant name="struts.ui.theme" value="xhtml" />	
-    <constant name="struts.custom.i18n.resources" value="RemoteAccess" />
+    <constant name="struts.custom.i18n.resources" value="CommonMeaasge" />
     <!--Include XML files-->
     <include file="Struts-MyPlan.xml"/>
     <include file="Struts-MyProfile.xml"/>
@@ -34,7 +34,11 @@
     <include file="Struts-Requests.xml"/>
     <include file="Struts-MyGroups.xml"/>
     <!-- Configuration for the default package. -->
+       
     <package name="Dropdown" extends="struts-default,json-default" namespace="/Dropdown">
+        <action name="CourseList" class="org.IGNOU.ePortfolio.Dropdown.CourseListDropDownAction">
+            <result name="success" type="json"/>
+        </action>
         <action name="getMailTo" class="org.IGNOU.ePortfolio.Dropdown.TestimonialRequest">
             <result name="success" type="json"/>
         </action>
@@ -86,12 +90,36 @@
     </package>
     
     <package name="org.IGNOU.ePortfolio.Action" namespace="/" extends="struts-default"> 
-        
+        <action name="NewRegistration" class="org.IGNOU.ePortfolio.Registration.RegistrationAction">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">Processing.jsp</result>            
+            <result name="success">Login.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
+            <result name="input">RegistrationForm.jsp</result>
+        </action>  
+        <action name="CheckAvail"  class="org.IGNOU.ePortfolio.Registration.Check" method="Avail">
+            <result type="stream">
+                <param name="contentType">text/html</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>    
+        <action name="EmailVarification" class="org.IGNOU.ePortfolio.Registration.RegistrationTokenValidation">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">Processing.jsp</result>
+            <result name="success">Login.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
+        </action>
         <action name="Login" class="org.IGNOU.ePortfolio.Action.LoginAction" method="LoginCheck">
             <interceptor-ref name="token" />
             <interceptor-ref name="basicStack" />
             <result name="success">./Welcome-Index.jsp</result>
-            <result name="error">./Login.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
             <result name="none">./Login.jsp</result>
             <result name="input">./Login.jsp</result>
             <result name="invalid.token">/ErrorPage/error.jsp</result>
@@ -100,18 +128,18 @@
         <action name="logout" class="org.IGNOU.ePortfolio.Action.LogoutAction">
             <result name="success">Login.jsp</result>
             <result name="input">Login.jsp</result>
-            <result name="error">error.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
         </action>
        
         <action name="feedback" class="org.IGNOU.ePortfolio.Action.FeedbackAction">
             <result name="success" >Login.jsp</result>
-            <result name="error">error.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
             <result name="input">Feedback.jsp</result>
         </action>
         <!-- Done on 27 Dec 2011(Mail functionality  working-->
         <action name="passwordRecovery" class="org.IGNOU.ePortfolio.Action.ForgotPasswordAction" method="CheckRegisteredUser">
             <result name="success">PasswordConfirmation.jsp</result>    
-            <result name="error">ForgotPassword.jsp</result>  
+            <result name="error">/ErrorPage/error.jsp</result>  
             <result name="none">ForgotPassword.jsp</result> 
         </action>
         
@@ -128,11 +156,9 @@
         <!-- Reset Login Password Start-->
         <action name="getMyPassword" class="org.IGNOU.ePortfolio.Action.ResetLoginPasswordAction" method="ResetOldPassword">
             <result name="success" type="redirectAction">logout</result>
-            <result name="error">./error.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
             <result name="input">./ChangeLoginPassword.jsp</result>
-        </action>
-        
-        <!-- Reset Login Password End-->
-               
+        </action>        
+        <!-- Reset Login Password End-->               
     </package> 
 </struts>

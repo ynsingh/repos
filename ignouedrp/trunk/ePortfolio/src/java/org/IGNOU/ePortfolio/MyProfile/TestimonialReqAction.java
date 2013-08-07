@@ -17,7 +17,7 @@ import org.IGNOU.ePortfolio.Model.UserList;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class TestimonialReqAction extends ActionSupport implements ModelDriven<Object> {
 

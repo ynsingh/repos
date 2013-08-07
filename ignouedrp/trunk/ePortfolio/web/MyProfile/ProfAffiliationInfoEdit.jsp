@@ -21,11 +21,11 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -50,14 +50,13 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Edit Professional Affiliation</div>
                             <div class="v_gallery">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowAffiliation">Professional Affiliation</s:a>&nbsp;>&nbsp;Edit Professional Affiliation </div>
-                                    </div>
-                                    <div class="w100 fl-l mart10">
-                                        <div class="w100 fl-l tc fbld fcgreen">
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowAffiliation">Professional Affiliation</s:a>&nbsp;>&nbsp;Edit Professional Affiliation </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
                                         <s:property value="msg"/>
                                     </div>
-                                    <div class="w100 fl-l mart5">
+                                    <div class="w100 fl-l">
                                         <s:form action="UpdateAffiliation" method="post" namespace="/MyProfile" name="myform" theme="simple">
                                             <fieldset class="w425p mar0a">
                                                 <legend class="fbld">Edit Professional Affiliation</legend>
@@ -352,28 +351,28 @@ Version      : 1
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("role","req","Please enter your Role");
-            frmvalidator.addValidation("role","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("role","alpha_s","Alphabetic chars only");
-    
-            frmvalidator.addValidation("orgBody","req","Please enter Organization/Body");
-            frmvalidator.addValidation("orgBody","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("orgBody","alpha_s","Alphabetic chars only");
-  
-            frmvalidator.addValidation("vfrom","req","Please enter Working From");
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("role", "req", "Please enter your Role");
+            frmvalidator.addValidation("role", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("role", "alpha_s", "Alphabetic chars only");
 
-            frmvalidator.addValidation("vupto","Please enter Work Upto");
-  
-            frmvalidator.addValidation("place","req","Please enter Place");
-            frmvalidator.addValidation("place","maxlen=20");
-            frmvalidator.addValidation("place","alpha_s","Alphabetic chars only");
-  
-            frmvalidator.addValidation("country","req","Please enter Country");
-            
-            frmvalidator.addValidation("summary","req","Please enter Summary");
-            frmvalidator.addValidation("role","maxlen=200","Max length for Summary is 200");
-  
+            frmvalidator.addValidation("orgBody", "req", "Please enter Organization/Body");
+            frmvalidator.addValidation("orgBody", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("orgBody", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("vfrom", "req", "Please enter Working From");
+
+            frmvalidator.addValidation("vupto", "Please enter Work Upto");
+
+            frmvalidator.addValidation("place", "req", "Please enter Place");
+            frmvalidator.addValidation("place", "maxlen=20");
+            frmvalidator.addValidation("place", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("country", "req", "Please enter Country");
+
+            frmvalidator.addValidation("summary", "req", "Please enter Summary");
+            frmvalidator.addValidation("role", "maxlen=200", "Max length for Summary is 200");
+
         </script>
     </body>
 </html>

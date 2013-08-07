@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Programme;
 
 /**
@@ -22,7 +22,7 @@ public class InstituteDeptProgrammeAction extends ActionSupport {
     private String user_id = new UserSession().getUserInSession();
     private Map<String, String> programmeL;
     private String instituteId, departmentId;
-    private InstituteDao instDao = new InstituteDao();
+    private ProgrammeDao dao = new ProgrammeDao();
     private List<Programme> PrograList;
     private String ProgrammeNotFound = getText("msg.programmeNotFound");
 
@@ -31,7 +31,7 @@ public class InstituteDeptProgrammeAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        PrograList = instDao.ProgrammeListByDepartmentIdUserId(Integer.valueOf(departmentId), user_id);
+        PrograList = dao.ProgrammeListByDepartmentIdUserId(Integer.valueOf(departmentId), user_id);
         programmeL = new HashMap<String, String>();
         if (PrograList.isEmpty()) {
             programmeL.put("NULL", getProgrammeNotFound());
@@ -40,7 +40,7 @@ public class InstituteDeptProgrammeAction extends ActionSupport {
                 programmeL.put(PrograList.get(j).getProgrammeId() + "", PrograList.get(j).getProgrammeName());
             }
         }
-        
+
         return SUCCESS;
     }
 
@@ -50,20 +50,6 @@ public class InstituteDeptProgrammeAction extends ActionSupport {
 
     public void setInstituteId(String instituteId) {
         this.instituteId = instituteId;
-    }
-
-    /**
-     * @return the instDao
-     */
-    public InstituteDao getInstDao() {
-        return instDao;
-    }
-
-    /**
-     * @param instDao the instDao to set
-     */
-    public void setInstDao(InstituteDao instDao) {
-        this.instDao = instDao;
     }
 
     /**

@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.DepartmentDao;
 import org.IGNOU.ePortfolio.Model.Department;
 
 /**
@@ -20,7 +20,7 @@ public class DepartmentAction extends ActionSupport {
     private static final long serialVersionUID = -2223948287805083119L;
     private Map<String, String> departmentL;
     private String instituteId;
-    private InstituteDao instDao = new InstituteDao();
+    private DepartmentDao instDao = new DepartmentDao();
     private List<Department> DeptList;
     private String DeptNotFound = getText("msg.departmentNotFound");
 
@@ -78,19 +78,5 @@ public class DepartmentAction extends ActionSupport {
      */
     public void setInstituteId(String instituteId) {
         this.instituteId = instituteId;
-    }
-
-    /**
-     * @return the instDao
-     */
-    public InstituteDao getInstDao() {
-        return instDao;
-    }
-
-    /**
-     * @param instDao the instDao to set
-     */
-    public void setInstDao(InstituteDao instDao) {
-        this.instDao = instDao;
     }
 }

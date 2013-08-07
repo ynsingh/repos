@@ -16,9 +16,9 @@ Version      : 1
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -43,51 +43,53 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Certification</div>
                             <div class="v_gallery">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Certifications </div>
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Certifications </div>
+                                <div class="w100 fl-l">
+                                    <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                                    <div class="wau fl-r mart10"> <a href="CertificationInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif"/>" title="Add Certification"/> </a> </div>
+                                </div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
+                                        <s:property value="msg"/>
+                                    </div>
                                     <div class="w100 fl-l mart10">
-                                        <div class="w98 mar0a tr"> <a href="CertificationInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif"/>" title="Add Certification"/> </a> </div>
-                                        <div class="w100 fl-l tc fbld fcgreen">
-                                            <s:property value="msg"/>
-                                        </div>
-                                        <div class="w100 fl-l mart5">
-                                            <table width="98%" class="mar0a" cellpadding="4" border="1" cellspacing="0">
-                                                <tr>
-                                                    <th>S. No</th>
-                                                    <th>Certification Name</th>
-                                                    <th>Certification Authority</th>
-                                                    <th>License No.</th>
-                                                    <th>Validity<br/>
-                                                        (From-To)</th>
-                                                    <th>Edit</th>
-                                                    <th>Delete</th>
+                                        <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0">
+                                            <tr>
+                                                <th>S. No</th>
+                                                <th>Certification Name</th>
+                                                <th>Certification Authority</th>
+                                                <th>License No.</th>
+                                                <th>Validity<br/>
+                                                    (From-To)</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            <s:iterator value="CertificateList" var="Certificate" status="stat">
+                                                <tr valign="middle">
+                                                    <td align="center"><s:property value="%{#stat.count}"/></td>
+                                                    <td><s:property value="certificationName"/>
+                                                    </td>
+                                                    <td><s:property value="certificationAuthority"/></td>
+                                                    <td><s:property value="license"/></td>
+                                                    <td width="85"><s:property value="certificationDate"/>
+                                                        &nbsp;to&nbsp;
+                                                        <s:property value="validDate"/>
+                                                    </td>
+                                                    <td align="center"><a href="editCertificate?certificationId=<s:property value="certificationId"/>"> <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/> </a></td>
+                                                    <td align="center"><a href="deleteCertificate?certificationId=<s:property value="certificationId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a> </td>
                                                 </tr>
-                                                <s:iterator value="CertificateList" var="Certificate" status="stat">
-                                                    <tr valign="middle">
-                                                          <td align="center"><s:property value="%{#stat.count}"/></td>
-                                                         <td><s:property value="certificationName"/>
-                                                        </td>
-                                                        <td><s:property value="certificationAuthority"/></td>
-                                                        <td><s:property value="license"/></td>
-                                                        <td width="85"><s:property value="certificationDate"/>
-                                                            &nbsp;to&nbsp;
-                                                            <s:property value="validDate"/>
-                                                        </td>
-                                                        <td align="center"><a href="editCertificate?certificationId=<s:property value="certificationId"/>"> <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/> </a></td>
-                                                        <td align="center"><a href="deleteCertificate?certificationId=<s:property value="certificationId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a> </td>
-                                                    </tr>
-                                                </s:iterator>
-                                            </table>
-                                        </div>
+                                            </s:iterator>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <!--Right box End Here-->
                         </div>
+                        <!--Right box End Here-->
                     </div>
-                    <!--Middle Section Ends Here-->
                 </div>
+                <!--Middle Section Ends Here-->
             </div>
+        </div>
         </div>
         <s:include value="/Footer.jsp"/>
     </body>

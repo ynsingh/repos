@@ -64,7 +64,7 @@ public class RemotePassAuth extends ActionSupport {
 //            pPath = hDir + "/remote_auth/brihaspati3-remote-access.properties";
 //        }
         //pPath = hDir + "/Remote_auth/brihaspati3-remote-access.properties";
-        // fPath = "C:/Users/Vinay Kr. Sharma/Remote_auth/remote-user.txt";
+        // fPath = "C:/Users/Vinay/Remote_auth/remote-user.txt";
 //        line = ReadNWriteInTxt.readLin(pPath, sourceid);
 //        skey = org.apache.commons.lang.StringUtils.substringBetween(line, ";", ";");
 //        serverURL = org.apache.commons.lang.StringUtils.substringAfterLast(line, ";");

@@ -20,13 +20,13 @@ Version      : 1
         <link href="<s:url value="/css/MonthYearPicker.css"/>" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -51,17 +51,15 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Edit Certification</div>
                             <div class="v_gallery">
-                                <div class="w98 mar0a">
-                                    <div class="w100 fl-l mart10">
-                                        <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowCertificateInfo">Certifications</s:a>&nbsp;>&nbsp;Edit Certification </div>
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowCertificateInfo">Certifications</s:a>&nbsp;>&nbsp;Edit Certification </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
+                                        <s:property value="msg"/>
                                     </div>
-                                    <div class="w100 fl-l mart10">
-                                        <div class="w100 fl-l tc fbld fcgreen">
-                                            <s:property value="msg"/>
-                                        </div>
-                                        <div class="w100 fl-l mart5">
-                                            <fieldset class="w450p mar0a">
-                                                <legend class="fbld">Edit Certification</legend>
+                                    <div class="w100 fl-l">
+                                        <fieldset class="w450p mar0a">
+                                            <legend class="fbld">Edit Certification</legend>
                                             <s:form action="UpdateCertificateInfo" method="post" namespace="/MyProfile" name="myform">
                                                 <s:hidden name="certificationId"/>
                                                 <s:hidden name="userId"/>
@@ -89,8 +87,7 @@ Version      : 1
                                                     </table>
                                                 </s:iterator>
                                             </s:form>
-                                            </fieldset>
-                                        </div>
+                                        </fieldset>
                                     </div>
                                 </div>
                             </div>
@@ -103,18 +100,18 @@ Version      : 1
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("certificationName","req","Please enter Certification Name");
-            frmvalidator.addValidation("certificationName","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("certificationName","alpha_s","Alphabetic chars only");
-            frmvalidator.addValidation("certificationAuthority","req","Please enter Certification Authority");
-            frmvalidator.addValidation("certificationAuthority","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("certificationAuthority","alpha_s","Alphabetic only");
-            frmvalidator.addValidation("license","req","Please enter License Number");
-            frmvalidator.addValidation("license","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("license","alphanumeric_space","Alphanumeric only");
-            frmvalidator.addValidation("certificationDate","req","Please enter Valid From");
-            frmvalidator.addValidation("validDate","req","Please enter Valid From");
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("certificationName", "req", "Please enter Certification Name");
+            frmvalidator.addValidation("certificationName", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("certificationName", "alpha_s", "Alphabetic chars only");
+            frmvalidator.addValidation("certificationAuthority", "req", "Please enter Certification Authority");
+            frmvalidator.addValidation("certificationAuthority", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("certificationAuthority", "alpha_s", "Alphabetic only");
+            frmvalidator.addValidation("license", "req", "Please enter License Number");
+            frmvalidator.addValidation("license", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("license", "alphanumeric_space", "Alphanumeric only");
+            frmvalidator.addValidation("certificationDate", "req", "Please enter Valid From");
+            frmvalidator.addValidation("validDate", "req", "Please enter Valid From");
         </script>
     </body>
 </html>

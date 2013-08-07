@@ -17,16 +17,16 @@
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
-        <script type="text/javascript">  
+        <script type="text/javascript">
             window.onload = setallonload;
         </script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -62,19 +62,16 @@
                                                 <fieldset class="w400p mar0a">
                                                     <legend class="fbld">Add Visiting Card Detail</legend>
                                                     <s:form action="vcardAction"  method="post" namespace="/Builder">
-                                                        <table width="70%" class="mar0a" cellpadding="1" cellspacing="4">
-
-                                                            <s:textfield name="displayName" label="Display Name"/>
-                                                            <s:textfield name="designation" label="Designation"/>
-                                                            <s:textfield name="company" label="Company Name"/>
-                                                            <s:textfield name="email" label="Email-Id"/>
-
-                                                            <s:textfield name="mobile" label="Mobile No"/>
-                                                            <s:textfield name="officePh" label="Office No"/>
-                                                            <s:textfield name="fax" label="Fax No"/>
-                                                            <s:textfield name="websiteOff" label="Website(off)"/>
-                                                            <s:textfield name="websitePer" label="Website(Per)"/>
-                                                            <td align="center" colspan="4"><s:submit value="Save" theme="simple" />
+                                                        <table width="80%" class="mar0a" cellpadding="1" cellspacing="4">
+                                                            <s:textfield name="displayName" label="Display Name" required="true"/>
+                                                            <s:textfield name="designation" label="Designation" required="true"/>
+                                                            <s:textfield name="company" label="Company Name" required="true"/>
+                                                            <s:textfield name="email" label="Email-Id" required="true"/>
+                                                            <s:textfield name="mobile" label="Mobile No" required="true"/>
+                                                            <s:textfield name="officePh" label="Office No" required="true"/>
+                                                            <s:textfield name="fax" label="Fax No" required="true"/>
+                                                            <s:textfield name="websiteOff" label="Website(off)" required="true"/>
+                                                            <s:textfield name="websitePer" label="Website(Per)" required="true"/>
                                                                 <s:reset value="Reset" theme="simple"/>
                                                             </td>
                                                             </tr>

@@ -9,7 +9,7 @@
     "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
 <validators>
       
-      <field name="displayName">
+    <field name="displayName">
         <field-validator type="requiredstring" >
             <message key="Please Enter Name To Display on Card" />
         </field-validator>
@@ -34,7 +34,7 @@
             <message key="Please Enter Number" />
         </field-validator>
     </field>
-    <field name="officePh">
+    <!--    <field name="officePh">
          <field-validator type="required">
             <message>You must enter a value Telephone</message>
         </field-validator>
@@ -44,11 +44,11 @@
             <message key="Please Enter Number" />
         </field-validator>
     </field>
-    <field name="fax">
+  <field name="fax">
         <field-validator type="required">
             <message key="Please Enter Fax Number" />
         </field-validator>
-    </field>
+    </field> -->
     <field name="email">
         <field-validator type="required" short-circuit="true">
             <message>You must enter a Email.</message>
@@ -57,8 +57,9 @@
             <message key="Please Enter Email" />
         </field-validator>
     </field>
-     <field name="websiteOff">
-       <field-validator type="required">
+    <!--
+    <field name="websiteOff">
+        <field-validator type="required">
             <message>You must enter a URL</message>
         </field-validator>
         <field-validator type="url">
@@ -67,11 +68,12 @@
     </field>
     
     <field name="websitePer">
-       <field-validator type="required">
+        <field-validator type="required">
             <message>You must enter a URL</message>
         </field-validator>
         <field-validator type="url">
             <message key="Please Enter Office Website" />
         </field-validator>
     </field>
-  </validators>
+    -->
+</validators>

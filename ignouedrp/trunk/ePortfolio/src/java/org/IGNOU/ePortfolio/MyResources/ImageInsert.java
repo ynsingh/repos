@@ -37,13 +37,13 @@
 package org.IGNOU.ePortfolio.MyResources;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
+import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
+import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ImageInfoDAO;
+import org.IGNOU.ePortfolio.DAO.ResourceDao;
 import org.IGNOU.ePortfolio.Model.Userdocs;
 
 /**
@@ -51,60 +51,26 @@ import org.IGNOU.ePortfolio.Model.Userdocs;
  * @author IGNOU Team
  * * @version 1.0 on 19 aug 2011
  */
-public class ImageInsert extends ActionSupport implements ModelDriven<Userdocs> {
-
+public class ImageInsert extends ActionSupport 
+    {
     private String user_id = new UserSession().getUserInSession();
-    private ImageInfoDAO obInfoDAO = new ImageInfoDAO();
-    private Userdocs obModel = new Userdocs();
+    private ResourceDao rdao = new ResourceDao();
+    private Userdocs ud = new Userdocs();
     private String filepath = ReadPropertyFile("Filepath") + "/" + user_id + "/";
-    private Calendar c_Date = Calendar.getInstance();
-    private SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-    private String filedate = f.format(c_Date.getTime());
+    private String filedate,filetype, filename, description ;
+     private long fileid;
+    private Long size;
+     private File userImage;
+    private String userImageFileName ;
     private String msg;
     private String infoSaved = getText("msg.infoSaved");
-
+      
     public String dataInsert() throws IOException {
-        obInfoDAO.saveInfo(obModel);
-        System.out.println("inserted");
-        msg = infoSaved;
+      
+        new FileUploadCommon().UploadFile(userImage, getFilename()+getFiletype(), getFilepath());
+        rdao.saveUserDocs(user_id, getSize(), getFiletype(), getFilename(), getFilepath(), getDescription(), new Date().toString());
+         msg = infoSaved;
         return SUCCESS;
-    }
-
-    @Override
-    public Userdocs getModel() {
-
-        obModel.setUser_id(user_id);
-        obModel.setFilepath(filepath);
-        obModel.setFiledate(filedate);
-        return obModel;
-    }
-
-    /**
-     * @return the filepath
-     */
-    public String getFilepath() {
-        return filepath;
-    }
-
-    /**
-     * @param filepath the filepath to set
-     */
-    public void setFilepath(String filepath) {
-        this.filepath = filepath;
-    }
-
-    /**
-     * @return the filedate
-     */
-    public String getFiledate() {
-        return filedate;
-    }
-
-    /**
-     * @param filedate the filedate to set
-     */
-    public void setFiledate(String filedate) {
-        this.filedate = filedate;
     }
 
     /**
@@ -133,5 +99,158 @@ public class ImageInsert extends ActionSupport implements ModelDriven<Userdocs> 
      */
     public void setInfoSaved(String infoSaved) {
         this.infoSaved = infoSaved;
+    }
+/**
+     * @return the fileid
+     */
+    public long getFileid() {
+        return fileid;
+    }
+
+    /**
+     * @param fileid the fileid to set
+     */
+    public void setFileid(long fileid) {
+        this.fileid = fileid;
+    }
+     /**
+     * @return the size
+     */
+    public Long getSize() {
+        size = (userImage.length()) / 1024;
+        return size;
+    }
+
+    /**
+     * @param size the size to set
+     */
+    public void setSize(Long size) {
+
+        this.size = size;
+    }
+    /**
+     * @return the filepath
+     */
+    public String getFilepath() {
+        return filepath;
+    }
+
+    /**
+     * @param filepath the filepath to set
+     */
+    public void setFilepath(String filepath) {
+
+
+        this.filepath = filepath;
+    }
+     /**
+     * @return the filetype
+     */
+    public String getFiletype() {
+        filetype = userImageFileName.substring(userImageFileName.indexOf(".", 4));
+        return filetype;
+    }
+
+    /**
+     * @param filetype the filetype to set
+     */
+    public void setFiletype(String filetype) {
+
+        this.filetype = filetype;
+    }
+
+    /**
+     * @return the filename
+     */
+    public String getFilename() {
+        if (filename.isEmpty()) {
+            filename = userImageFileName;
+            return filename;
+        } else {
+
+            return filename;
+        }
+
+    }
+
+    /**
+     * @param filename the filename to set
+     */
+    public void setFilename(String filename) {
+
+        this.filename = filename;
+
+    }
+
+    /**
+     * @return the userImage
+     */
+    public File getUserImage() {
+        return userImage;
+    }
+
+    /**
+     * @param userImage the userImage to set
+     */
+    public void setUserImage(File userImage) {
+        this.userImage = userImage;
+    }
+
+    /**
+     * @return the userImageFileName
+     */
+    public String getUserImageFileName() {
+        userImageFileName = userImage.getName();
+        return userImageFileName;
+
+    }
+
+    /**
+     * @param userImageFileName the userImageFileName to set
+     */
+    public void setUserImageFileName(String userImageFileName) {
+        this.userImageFileName = userImageFileName;
+    }
+
+    /**
+     * @return the filedate
+     */
+    public String getFiledate() {
+        return filedate;
+    }
+
+    /**
+     * @param filedate the filedate to set
+     */
+    public void setFiledate(String filedate) {
+        this.filedate = filedate;
+    }
+
+    /**
+     * @return the user_id
+     */
+    public String getUser_id() {
+        return user_id;
+    }
+
+    /**
+     * @param user_id the user_id to set
+     */
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

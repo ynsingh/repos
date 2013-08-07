@@ -59,8 +59,8 @@
                                         <table width="100%" class="fl-l mart10" cellpadding="4" border="1" cellspacing="0">   
                                             <tr>
                                                 <th align="center">S.No.</th>
-                                                <th align="center">Course ID</th>
-                                                <th align="center">Task/Activity ID</th>
+                                                <th align="center">Course</th>
+                                                <th align="center">Task/Activity</th>
                                                 <th align="center">Obtained Score</th>
                                                 <th align="center">Special Comments</th>
                                             </tr>
@@ -70,16 +70,22 @@
                                                         <s:property value="#stat.count" />
                                                     </td>
                                                     <td align="center">
-                                                        <s:property value="CourseCodeList[#stat.index]" />
+                                                        <s:property value="evidence.course.courseCode" />
                                                     </td>
                                                     <td align="left">
-                                                        <s:property value="EvidenceTitleList[#stat.index]" />
+                                                        <s:property value="evidence.evTitle" />
                                                     </td>
                                                     <td align="center">  
                                                         <s:property value="gradesObtained"/>
                                                     </td>
                                                     <td align="left"> <s:property value="facultyComment" escape="false"/><br/>
-                                                        <s:property value="facultyAttachment"/>
+                                                       <s:if test="facultyAttachment!='null'">
+                                                            <a href="../Evidence/downnloadAttach?facultyId=<s:property value="evidence.user.emailId"/>&amp;assAttach=<s:property value="facultyAttachment"/>" target="_blank">
+                                                               <s:property value="facultyAttachment"/>
+                                                            </a>
+                                                        </s:if>
+                                                        <s:elseif test="assAttach=='null'">
+                                                        </s:elseif> 
                                                     </td>
                                                 </tr>
                                             </s:iterator>

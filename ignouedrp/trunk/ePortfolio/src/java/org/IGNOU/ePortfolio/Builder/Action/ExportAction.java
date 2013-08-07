@@ -25,14 +25,36 @@ public class ExportAction extends ActionSupport {
     private InputStream fps;
     private String FileToCreate;
     private PrintHtmlPdf phpdf = new PrintHtmlPdf();
+    private String msg, fileNotFound = getText("fileNotFound"), failedtoCreate = getText("msg.failed");
 
     public String ResumeExport() throws FileNotFoundException {
-        CFile = CFile + "/" + user_id + "/" + "UserTesti.pdf";
-        report = report.replace("<br>", "<br/>");
-        report = report.replaceAll("\"", "\\\"");
-        FileToCreate = phpdf.HtmlToPdf(report, CFile);
-        fps = new FileInputStream(new File(FileToCreate));
-       return SUCCESS;
+        // File UserFolder = new File(CFile + "/" + user_id);
+        try {
+            File folder = new File(CFile + "/" + user_id);
+            if (!folder.exists()) {
+                if (folder.mkdir()) {
+                    System.out.println("Directory is created!");
+                    CFile = CFile + "/" + user_id + "/" + "Portfolio.pdf";
+                    report = report.replace("<br>", "<br/>");
+                    report = report.replaceAll("\"", "\\\"");
+                    FileToCreate = phpdf.HtmlToPdf(report, CFile);
+                    fps = new FileInputStream(new File(FileToCreate));
+                } else {
+                    msg = failedtoCreate;
+                }
+            } else {
+                CFile = CFile + "/" + user_id + "/" + "Portfolio.pdf";
+                report = report.replace("<br>", "<br/>");
+                report = report.replaceAll("\"", "\\\"");
+                FileToCreate = phpdf.HtmlToPdf(report, CFile);
+                fps = new FileInputStream(new File(FileToCreate));
+                // System.out.println("Failed to create directory!");
+            }
+        } catch (FileNotFoundException e) {
+            msg = fileNotFound + " " + e.toString();
+        }
+
+        return SUCCESS;
     }
 
     /**
@@ -96,5 +118,47 @@ public class ExportAction extends ActionSupport {
      */
     public void setReport(String report) {
         this.report = report;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the fileNotFound
+     */
+    public String getFileNotFound() {
+        return fileNotFound;
+    }
+
+    /**
+     * @param fileNotFound the fileNotFound to set
+     */
+    public void setFileNotFound(String fileNotFound) {
+        this.fileNotFound = fileNotFound;
+    }
+
+    /**
+     * @return the failedtoCreate
+     */
+    public String getFailedtoCreate() {
+        return failedtoCreate;
+    }
+
+    /**
+     * @param failedtoCreate the failedtoCreate to set
+     */
+    public void setFailedtoCreate(String failedtoCreate) {
+        this.failedtoCreate = failedtoCreate;
     }
 }

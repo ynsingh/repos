@@ -56,40 +56,38 @@ public class ForgotPasswordAction extends ActionSupport {
     final Logger logger = Logger.getLogger(this.getClass());
     private static final long serialVersionUID = 1L;
     private ForgotPasswordDao fpDao = new ForgotPasswordDao();
-    private UserProgrammeDao updao=new UserProgrammeDao();
+    private UserProgrammeDao updao = new UserProgrammeDao();
     private ResetLoginPasswordDao dao = new ResetLoginPasswordDao();
     private List<User> userList;
-    private String msg, recoverpassword, From, Password, to,subject;
+    private String msg, recoverpassword, From, Password, to, subject;
     private String pwdHash;
     private long registrationId;
-    
-    
+
     public String CheckRegisteredUser() throws Exception {
-        From=ReadPropertyFile("mailFrom");
-        Password=ReadPropertyFile("mailPassword");
-        
+        From = ReadPropertyFile("mailFrom");
+        Password = ReadPropertyFile("mailPassword");
         if (fpDao.FindRegisteredUserByEmailId(email_id)) {
-            to=getEmail_id();
-            userList=updao.UserListByUserId(email_id);
-            registrationId=userList.iterator().next().getRegistrationId();
+            to = getEmail_id();
+            userList = updao.UserListByUserId(email_id);
+            registrationId = userList.iterator().next().getRegistrationId();
             Random rand = new Random();
             int num = rand.nextInt(10000);
-            recoverpassword="eport"+num;
-            pwdHash=DigestUtils.md5Hex(recoverpassword);
+            recoverpassword = "eport" + num;
+            pwdHash = DigestUtils.md5Hex(recoverpassword);
             dao.UserUpdateByRegistrationIdPassword(registrationId, pwdHash);
-            subject="Recovered Password";
-             msg="Your Login Details for ePortfolio with New Password"
-                     +"\n UserName: "+getEmail_id()+
-                     "\n Password: "+recoverpassword+
-                     "\n Thanks for using ePortfolio";
-             new sendMail().SendMail(From,to,subject,msg);
-             PropertyConfigurator.configure("log4j.properties");
-             logger.warn("User ReSet His Password"+to+"New Password is"+recoverpassword);
-        return SUCCESS;
+            subject = "Recovered Password";
+            msg = "Your Login Details for ePortfolio with New Password"
+                    + "\n UserName: " + getEmail_id()
+                    + "\n Password: " + recoverpassword
+                    + "\n Thanks for using ePortfolio";
+            new sendMail().SendMail(From, to, subject, msg);
+            PropertyConfigurator.configure("log4j.properties");
+            logger.warn("User ReSet His Password" + to + "New Password is" + recoverpassword);
+            return SUCCESS;
         } else {
             msg = "Email Id is Not registered, Please Register to Login";
             PropertyConfigurator.configure("log4j.properties");
-             logger.warn("Non register Trying to recover password"+email_id);
+            logger.warn("Non register Trying to recover password" + email_id);
             return ERROR;
         }
     }
@@ -247,6 +245,4 @@ public class ForgotPasswordAction extends ActionSupport {
     public void setRegistrationId(long registrationId) {
         this.registrationId = registrationId;
     }
-
-    
 }

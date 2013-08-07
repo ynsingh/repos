@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 28, 2012 10:59:19 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ContactUs" table="contact_us">
+        <id name="contactId" type="int">
+            <column name="contact_id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="contactName" type="string">
+            <column length="50" name="contactName"/>
+        </property>
+        <property name="contactAddress" type="string">
+            <column length="100" name="contactAddress"/>
+        </property>
+        <property name="contactOff" type="java.lang.Long">
+            <column name="contactOff"/>
+        </property>
+        <property name="contactMob" type="java.lang.Long">
+            <column name="contactMob"/>
+        </property>
+        <property name="contactEmail" type="string">
+            <column length="100" name="contactEmail"/>
+        </property>
+        <property name="aboutUs" type="string">
+            <column length="65535" name="about_us"/>
+        </property>
+    </class>
+</hibernate-mapping>

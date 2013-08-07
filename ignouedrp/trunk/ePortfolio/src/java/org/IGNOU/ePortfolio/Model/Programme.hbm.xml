@@ -13,6 +13,9 @@
         <many-to-one name="institute" class="org.IGNOU.ePortfolio.Model.Institute" fetch="select" lazy="false" cascade="merge">
             <column name="institute_id" />
         </many-to-one>
+        <many-to-one name="programmeCreator" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
+            <column name="programme_creator" />
+        </many-to-one>
         <property name="programmeName" type="string">
             <column length="65535" name="programme_name"/>
         </property>
@@ -25,6 +28,8 @@
         <property name="overview" type="string">
             <column name="overview" length="65535" />
         </property> 
-       
+        <property name="programmeCreateDate" type="timestamp">
+            <column name="programme_create_date"/>
+        </property> 
     </class>
 </hibernate-mapping>

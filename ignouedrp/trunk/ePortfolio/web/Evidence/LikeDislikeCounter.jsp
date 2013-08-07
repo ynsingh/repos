@@ -1,7 +1,7 @@
 <%-- 
     Document   : LikeDislikeCounter
     Created on : Aug 8, 2012, 4:05:50 PM
-    Author     : Vinay Kr. Sharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

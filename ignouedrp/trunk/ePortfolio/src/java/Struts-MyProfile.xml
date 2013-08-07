@@ -31,7 +31,6 @@
             <result name="success">EmployeeInfo.jsp</result>
             <result name="input">./EmployeeInfoAdd.jsp</result>
         </action>
-        
         <action name="ShowPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInfoAction" method="ShowPersonalInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -42,6 +41,32 @@
             <result name="input">./PersonalInfoAdd.jsp</result>
             <result name="error">./error.jsp</result>
         </action>
+       <!--
+        <action name="ShowUserInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInformationAction">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">PersonalInformationEdit.jsp</result>
+            <result name="input">./PersonalInfoAdd.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+      
+        <action name="userUpdate" class="org.IGNOU.ePortfolio.MyProfile.PersonalInformationAction" method="UpdateUserInfo">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+             <result name="success" type="redirectAction">
+                 <param name="actionName">ShowUserInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./PersonalInformationEdit.jsp</result>
+        </action>
+        -->
         
         <action name="EditPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInfoAction" method="EditPersonal">
            
@@ -60,7 +85,6 @@
                 <param name="excludeMethods">input,back,cancel</param>
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
-            
             <result name="success" type="redirectAction">
                 <param name="actionName">ShowPersonalInfo</param>
                 <param name="msg">${msg}</param>

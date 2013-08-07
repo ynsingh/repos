@@ -4,5 +4,15 @@
     Author     : IGNOU Team
 --%>
 <%@taglib prefix="s" uri="/struts-tags" %>
-<meta http-equiv="refresh" content="1; url=<s:url includeParams="all" />"/>
-<div align="center"><b>Please wait while your request is being processed.........</b></div>
+<html>
+    <head><title>Processing......</title>
+        <meta http-equiv="refresh" content="1; url=<s:url includeParams="all" />"/>
+    </head>
+    <body>
+        <div align="center">
+            <b>
+                <img src="<s:url value="/images/wait.gif"/>" width="566" height="81"/>
+            </b>
+        </div>
+    </body>
+</html>

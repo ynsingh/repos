@@ -72,9 +72,4 @@
             <message>The Mobile number you entered is not valid.</message> 
         </field-validator> 
     </field> 
-    <field name="website">
-        <field-validator type="requiredstring">
-            <message key="Please Enter Website URL" />
-        </field-validator>
-    </field>
 </validators>

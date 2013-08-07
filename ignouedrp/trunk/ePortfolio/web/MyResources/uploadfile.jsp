@@ -54,7 +54,7 @@ Version    : 1
                                             <fieldset class="w500p mar0a mart10">
                                                 <legend><strong>Upload File</strong></legend>
                                                 <s:form action="addInfo" method="post" enctype="multipart/form-data" name="myform">
-                                                    <table width="50%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                    <table width="70%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                         <tr>
                                                             <td><s:textfield name="filename" label="File Name"/>
                                                             </td>

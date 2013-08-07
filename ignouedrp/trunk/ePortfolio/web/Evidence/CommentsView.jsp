@@ -73,13 +73,13 @@ Author : IGNOU Team
                                                     <td><s:property value="evidence.user.fname"/>&nbsp;<s:property value="evidence.user.lname"/></td>
 
                                                 </tr>
-                                                <tr>
+                                             <!--   <tr>
                                                     <td colspan="2">
                                                         <s:url id="likeId" value="countLike.action"><s:param name="evidenceSubId" value="submissionId"/><s:param name="commentId" value="commentId"/>
                                                         </s:url>
                                                         <sd:div href="%{#likeId}" updateFreq="1000">
                                                         </sd:div></td>
-                                                </tr>
+                                                </tr>-->
                                                 </s:iterator>
                                             </table>
                                         </fieldset>

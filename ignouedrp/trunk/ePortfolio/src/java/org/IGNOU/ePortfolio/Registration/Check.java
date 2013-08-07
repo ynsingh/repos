@@ -33,6 +33,7 @@
  *
  */
 package org.IGNOU.ePortfolio.Registration;
+
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
@@ -45,33 +46,30 @@ import org.IGNOU.ePortfolio.Model.User;
  * @author IGNOU Team
  */
 public class Check extends ActionSupport {
-    private UserProgrammeDao updao=new UserProgrammeDao();
+
+    private UserProgrammeDao updao = new UserProgrammeDao();
     private List<User> stRegList;
-    private  String emailId;
+    private String emailId;
     private InputStream inputStream;
     private Integer instituteId;
-     
+
     public InputStream getInputStream() {
         return inputStream;
     }
 
-    
     public String Avail() {
-        
-        stRegList=updao.UserListByUserId(emailId);
-        if(stRegList.isEmpty())
-        {
-             inputStream = new StringBufferInputStream("User-Id is Available");
 
-        return SUCCESS;
-        }
-        else{
+        stRegList = updao.CheckUserExistByUserId(emailId);
+        if (stRegList.isEmpty()) {
+            inputStream = new StringBufferInputStream("User-Id is Available");
+
+            return SUCCESS;
+        } else {
             inputStream = new StringBufferInputStream("This User-Id is Already Registered");
-            
-             return SUCCESS;
+
+            return SUCCESS;
         }
     }
-   
 
     /**
      * @return the stRegList
@@ -101,7 +99,6 @@ public class Check extends ActionSupport {
         this.emailId = emailId;
     }
 
-  
     /**
      * @return the instituteId
      */
@@ -115,6 +112,4 @@ public class Check extends ActionSupport {
     public void setInstituteId(Integer instituteId) {
         this.instituteId = instituteId;
     }
-
-  
 }

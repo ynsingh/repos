@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Builder.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PeerGroupDao;
@@ -15,22 +16,26 @@ import org.IGNOU.ePortfolio.Model.UserList;
  * @author IGNOU Team
  */
 public class ResumeBuild extends ActionSupport {
+
     private String resumeTitle;
     private String resumeObjective;
-    private PeerGroupDao bdao=new PeerGroupDao();
+    private PeerGroupDao bdao = new PeerGroupDao();
     private List<UserList> userDetaillist;
-    private String user_id=new UserSession().getUserInSession();
- 
-    public String MakeResume(){
-        userDetaillist=bdao.UserListDetailByUserId(user_id);
-    
-    return SUCCESS;
+    private String user_id = new UserSession().getUserInSession();
+    private Date currentDate = new Date();
+
+    public String MakeResume() {
+        userDetaillist = bdao.UserListDetailByUserId(user_id);
+
+        return SUCCESS;
     }
-     public List<UserList> MakeResumes(){
-        userDetaillist=bdao.UserListDetailByUserId(user_id);
-    
-    return userDetaillist;
+
+    public List<UserList> MakeResumes() {
+        userDetaillist = bdao.UserListDetailByUserId(user_id);
+
+        return userDetaillist;
     }
+
     /**
      * @return the resumeTitle
      */
@@ -100,5 +105,18 @@ public class ResumeBuild extends ActionSupport {
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
-    
+
+    /**
+     * @return the currentDate
+     */
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    /**
+     * @param currentDate the currentDate to set
+     */
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
 }

@@ -38,8 +38,7 @@ package org.IGNOU.ePortfolio.MyResources;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.FolderInfoDAO;
@@ -59,9 +58,7 @@ public class FolderInsert extends ActionSupport implements ModelDriven<UserdocsF
     private String filepath = ReadPropertyFile("Filepath") + "/" + user_id + "/";
     private String filetype;
     private String name;
-    Calendar c_Date = Calendar.getInstance();
-    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-    private String filedate = f.format(c_Date.getTime());
+   private String filedate;
     private String msg;
     private String infoSaved = getText("msg.infoSaved");
 
@@ -77,7 +74,7 @@ public class FolderInsert extends ActionSupport implements ModelDriven<UserdocsF
         fModel.setSize(0);
         fModel.setFilepath(getFilepath());
         fModel.setFiletype(getFiletype());
-        fModel.setFiledate(filedate);
+        fModel.setFiledate(new Date().toString());
         return fModel;
     }
 

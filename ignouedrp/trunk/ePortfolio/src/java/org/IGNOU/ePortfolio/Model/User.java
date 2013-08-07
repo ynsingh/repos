@@ -1,5 +1,5 @@
 package org.IGNOU.ePortfolio.Model;
-// Generated May 15, 2012 6:47:20 PM by Hibernate Tools 3.2.1.GA
+// Generated Jan 31, 2013 2:56:10 PM by Hibernate Tools 3.2.1.GA
 
 import java.util.Date;
 
@@ -13,54 +13,88 @@ public class User implements java.io.Serializable {
     private String password;
     private String role;
     private Date regTime;
+    private Boolean regApprove;
     private Date activTime;
+    private Boolean activStatus;
     private Date lastLogin;
     private Boolean deleted;
-    private Boolean activStatus;
-    private String fname;
-    private String lname;
     private String accessIp;
-    private String theme;
-    private String picture;
-    private String filetype;
-    private String univName;
-    private String univRegNo;
-    private String programe;
     private Integer instituteId;
+    private Integer departmentId;
     private Integer programmeId;
-     
-        
+    private String univRegNo;
+    private String fname;
+    private String mname;
+    private String lname;
+    private String fatherName;
+    private String motherName;
+    private String otherGardian;
+    private String gender;
+    private Date dateOfBirth;
+    private String pbirth;
+    private String mstatus;
+    private Long aadhaarNo;
+    private String passportNo;
+    private String panNo;
+    private String castCategory;
+    private Boolean physicalHandicapt;
+    private String physicalHandicaptSupportDoc;
+    private String religion;
+    private String nationality;
+    private String languageKnown;
+    private String theme;
+    private byte[] picture;
+    private String filetype;
+    private String uuid;
+    private Boolean emailVerify;
 
     public User() {
     }
 
-    public User(String emailId, long registrationId) {
-        this.emailId = emailId;
+    public User(long registrationId) {
         this.registrationId = registrationId;
     }
 
-    public User(String emailId, long registrationId, String password, String role, Date regTime, Date activTime, Date lastLogin, Boolean deleted, Boolean activStatus, String fname, String lname, String accessIp, String theme, String picture, String filetype, String univName, String univRegNo, String programe, Integer instituteId, Integer programmeId) {
-        this.emailId = emailId;
+    public User(long registrationId, String emailId, String password, String role, Date regTime, Boolean regApprove, Date activTime, Boolean activStatus, Date lastLogin, Boolean deleted, String accessIp, Integer instituteId, Integer departmentId, Integer programmeId, String univRegNo, String fname, String mname, String lname, String fatherName, String motherName, String otherGardian, String gender, Date dateOfBirth, String pbirth, String mstatus, Long aadhaarNo, String passportNo, String panNo, String castCategory, Boolean physicalHandicapt, String physicalHandicaptSupportDoc, String religion, String nationality, String languageKnown, String theme, byte[] picture, String filetype, String uuid, Boolean emailVerify) {
         this.registrationId = registrationId;
+        this.emailId = emailId;
         this.password = password;
         this.role = role;
         this.regTime = regTime;
+        this.regApprove = regApprove;
         this.activTime = activTime;
+        this.activStatus = activStatus;
         this.lastLogin = lastLogin;
         this.deleted = deleted;
-        this.activStatus = activStatus;
-        this.fname = fname;
-        this.lname = lname;
         this.accessIp = accessIp;
+        this.instituteId = instituteId;
+        this.departmentId = departmentId;
+        this.programmeId = programmeId;
+        this.univRegNo = univRegNo;
+        this.fname = fname;
+        this.mname = mname;
+        this.lname = lname;
+        this.fatherName = fatherName;
+        this.motherName = motherName;
+        this.otherGardian = otherGardian;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.pbirth = pbirth;
+        this.mstatus = mstatus;
+        this.aadhaarNo = aadhaarNo;
+        this.passportNo = passportNo;
+        this.panNo = panNo;
+        this.castCategory = castCategory;
+        this.physicalHandicapt = physicalHandicapt;
+        this.physicalHandicaptSupportDoc = physicalHandicaptSupportDoc;
+        this.religion = religion;
+        this.nationality = nationality;
+        this.languageKnown = languageKnown;
         this.theme = theme;
         this.picture = picture;
         this.filetype = filetype;
-        this.univName = univName;
-        this.univRegNo = univRegNo;
-        this.programe = programe;
-        this.instituteId = instituteId;
-        this.programmeId = programmeId;
-       
+        this.uuid = uuid;
+        this.emailVerify = emailVerify;
     }
 
     public String getEmailId() {
@@ -103,12 +137,28 @@ public class User implements java.io.Serializable {
         this.regTime = regTime;
     }
 
+    public Boolean getRegApprove() {
+        return this.regApprove;
+    }
+
+    public void setRegApprove(Boolean regApprove) {
+        this.regApprove = regApprove;
+    }
+
     public Date getActivTime() {
         return this.activTime;
     }
 
     public void setActivTime(Date activTime) {
         this.activTime = activTime;
+    }
+
+    public Boolean getActivStatus() {
+        return this.activStatus;
+    }
+
+    public void setActivStatus(Boolean activStatus) {
+        this.activStatus = activStatus;
     }
 
     public Date getLastLogin() {
@@ -127,12 +177,44 @@ public class User implements java.io.Serializable {
         this.deleted = deleted;
     }
 
-    public Boolean getActivStatus() {
-        return this.activStatus;
+    public String getAccessIp() {
+        return this.accessIp;
     }
 
-    public void setActivStatus(Boolean activStatus) {
-        this.activStatus = activStatus;
+    public void setAccessIp(String accessIp) {
+        this.accessIp = accessIp;
+    }
+
+    public Integer getInstituteId() {
+        return this.instituteId;
+    }
+
+    public void setInstituteId(Integer instituteId) {
+        this.instituteId = instituteId;
+    }
+
+    public Integer getDepartmentId() {
+        return this.departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Integer getProgrammeId() {
+        return this.programmeId;
+    }
+
+    public void setProgrammeId(Integer programmeId) {
+        this.programmeId = programmeId;
+    }
+
+    public String getUnivRegNo() {
+        return this.univRegNo;
+    }
+
+    public void setUnivRegNo(String univRegNo) {
+        this.univRegNo = univRegNo;
     }
 
     public String getFname() {
@@ -143,6 +225,14 @@ public class User implements java.io.Serializable {
         this.fname = fname;
     }
 
+    public String getMname() {
+        return this.mname;
+    }
+
+    public void setMname(String mname) {
+        this.mname = mname;
+    }
+
     public String getLname() {
         return this.lname;
     }
@@ -151,12 +241,132 @@ public class User implements java.io.Serializable {
         this.lname = lname;
     }
 
-    public String getAccessIp() {
-        return this.accessIp;
+    public String getFatherName() {
+        return this.fatherName;
     }
 
-    public void setAccessIp(String accessIp) {
-        this.accessIp = accessIp;
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
+
+    public String getMotherName() {
+        return this.motherName;
+    }
+
+    public void setMotherName(String motherName) {
+        this.motherName = motherName;
+    }
+
+    public String getOtherGardian() {
+        return this.otherGardian;
+    }
+
+    public void setOtherGardian(String otherGardian) {
+        this.otherGardian = otherGardian;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Date getDateOfBirth() {
+        return this.dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPbirth() {
+        return this.pbirth;
+    }
+
+    public void setPbirth(String pbirth) {
+        this.pbirth = pbirth;
+    }
+
+    public String getMstatus() {
+        return this.mstatus;
+    }
+
+    public void setMstatus(String mstatus) {
+        this.mstatus = mstatus;
+    }
+
+    public Long getAadhaarNo() {
+        return this.aadhaarNo;
+    }
+
+    public void setAadhaarNo(Long aadhaarNo) {
+        this.aadhaarNo = aadhaarNo;
+    }
+
+    public String getPassportNo() {
+        return this.passportNo;
+    }
+
+    public void setPassportNo(String passportNo) {
+        this.passportNo = passportNo;
+    }
+
+    public String getPanNo() {
+        return this.panNo;
+    }
+
+    public void setPanNo(String panNo) {
+        this.panNo = panNo;
+    }
+
+    public String getCastCategory() {
+        return this.castCategory;
+    }
+
+    public void setCastCategory(String castCategory) {
+        this.castCategory = castCategory;
+    }
+
+    public Boolean getPhysicalHandicapt() {
+        return this.physicalHandicapt;
+    }
+
+    public void setPhysicalHandicapt(Boolean physicalHandicapt) {
+        this.physicalHandicapt = physicalHandicapt;
+    }
+
+    public String getPhysicalHandicaptSupportDoc() {
+        return this.physicalHandicaptSupportDoc;
+    }
+
+    public void setPhysicalHandicaptSupportDoc(String physicalHandicaptSupportDoc) {
+        this.physicalHandicaptSupportDoc = physicalHandicaptSupportDoc;
+    }
+
+    public String getReligion() {
+        return this.religion;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
+
+    public String getNationality() {
+        return this.nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getLanguageKnown() {
+        return this.languageKnown;
+    }
+
+    public void setLanguageKnown(String languageKnown) {
+        this.languageKnown = languageKnown;
     }
 
     public String getTheme() {
@@ -167,11 +377,11 @@ public class User implements java.io.Serializable {
         this.theme = theme;
     }
 
-    public String getPicture() {
+    public byte[] getPicture() {
         return this.picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 
@@ -183,44 +393,31 @@ public class User implements java.io.Serializable {
         this.filetype = filetype;
     }
 
-    public String getUnivName() {
-        return this.univName;
+    /**
+     * @return the uuid
+     */
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUnivName(String univName) {
-        this.univName = univName;
+    /**
+     * @param uuid the uuid to set
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getUnivRegNo() {
-        return this.univRegNo;
+    /**
+     * @return the emailVerify
+     */
+    public Boolean getEmailVerify() {
+        return emailVerify;
     }
 
-    public void setUnivRegNo(String univRegNo) {
-        this.univRegNo = univRegNo;
+    /**
+     * @param emailVerify the emailVerify to set
+     */
+    public void setEmailVerify(Boolean emailVerify) {
+        this.emailVerify = emailVerify;
     }
-
-    public String getPrograme() {
-        return this.programe;
-    }
-
-    public void setPrograme(String programe) {
-        this.programe = programe;
-    }
-
-    public Integer getInstituteId() {
-        return this.instituteId;
-    }
-
-    public void setInstituteId(Integer instituteId) {
-        this.instituteId = instituteId;
-    }
-
-    public Integer getProgrammeId() {
-        return this.programmeId;
-    }
-
-    public void setProgrammeId(Integer programmeId) {
-        this.programmeId = programmeId;
-    }
-
 }

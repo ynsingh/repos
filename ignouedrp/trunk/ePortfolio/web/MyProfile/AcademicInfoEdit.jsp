@@ -19,13 +19,13 @@
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <sj:head />        
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -52,55 +52,48 @@
                         <div class="right_box">
                             <div class="my_account_bg">Edit Academic Information</div>
                             <div class="v_gallery">
-          <div class="w98 mar0a">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum">   
-                                        <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <a href="ShowAcademic_Info">Academic Information</a> > Edit Academic Information
-                                    </div> 
+                                <div class="bradcum"><a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <a href="ShowAcademic_Info">Academic Information</a> > Edit Academic Information</div> 
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
                                     <div class="w100 fl-l mart10">
-                                        <div class="fl-r">
-                                        </div>
-                                        <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
-                                        <div class="w100 fl-l mart5">
-                                            <table width="100%" class="mar0a" cellpadding="2" border="1" cellspacing="0">
+                                        <table width="100%" class="mar0a" cellpadding="2" border="1" cellspacing="0">
+                                            <tr>
+                                                <th>Degree/Programme</th>
+                                                <th>Specialization</th>
+                                                <th>Board/University/Institute</th>
+                                                <th>Passing Year</th>
+                                                <th>Percentage</th>
+                                                <th>Grade</th>
+                                                <th>Division</th>
+                                            </tr>
+                                            <s:form action="updateAcademicInformation" method="post"  theme="simple">
+                                                <s:iterator value="editAcademicList" var="ProfileAcademic">
+                                                    <s:hidden name="academicInfoId"/> <s:hidden name="userId"/>
+                                                    <tr>
+                                                        <td><s:textfield name="degree" style="width: 115px;"/></td>
+                                                        <td><s:textfield name="fstudy" style="width: 81px;"/></td>
+                                                        <td><s:textfield name="university" style="width: 163px;"/></td>   
+                                                        <td><s:textfield name="pyear" style="width: 66px;"/></td>
+                                                        <td><s:textfield name="percent" style="width: 68px;"/></td>
+                                                        <td><s:textfield name="location" style="width: 51px;"/></td>
+                                                        <td><s:textfield name="division" style="width: 46px;"/></td>
+                                                    </tr>
+                                                </s:iterator>
+                                            </table>
+                                            <table width="30%" class="mar0a mart10" cellpadding="0" border="0" cellspacing="0">
                                                 <tr>
-                                                    <th>Degree/Programme</th>
-                                                    <th>Specialization</th>
-                                                    <th>Board/University/Institute</th>
-                                                    <th>Passing Year</th>
-                                                    <th>Percentage</th>
-                                                    <th>Grade</th>
-                                                    <th>Division</th>
-                                                </tr>
-                                                <s:form action="updateAcademicInformation" method="post"  theme="simple">
-                                                    <s:iterator value="editAcademicList" var="ProfileAcademic">
-                                                        <s:hidden name="academicInfoId"/> <s:hidden name="userId"/>
-                                                        <tr>
-                                                            <td><s:textfield name="degree" style="width: 115px;"/></td>
-                                                            <td><s:textfield name="fstudy" style="width: 81px;"/></td>
-                                                            <td><s:textfield name="university" style="width: 163px;"/></td>   
-                                                            <td><s:textfield name="pyear" style="width: 66px;"/></td>
-                                                            <td><s:textfield name="percent" style="width: 68px;"/></td>
-                                                            <td><s:textfield name="location" style="width: 51px;"/></td>
-                                                            <td><s:textfield name="division" style="width: 46px;"/></td>
-                                                        </tr>
-                                                    </s:iterator>
-                                                </table>
-                                                  <table width="30%" class="mar0a mart10" cellpadding="0" border="0" cellspacing="0">
-                                                <tr>
-                                                <td>&nbsp;</td>
-                                                <td><s:submit value="Save Changes" />
-                                                <s:reset value="Cancel" onClick="history.go(-1);" /></td></tr>
-                                                </table>
-                                            </s:form>
-                                        </div>
-                                    </div>
+                                                    <td>&nbsp;</td>
+                                                    <td><s:submit value="Save Changes" />
+                                                        <s:reset value="Cancel" onClick="history.go(-1);" /></td></tr>
+                                            </table>
+                                        </s:form>
                                     </div>
                                 </div>
                             </div>
                             <!--Right box End Here-->
                         </div>
-                        
+
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>

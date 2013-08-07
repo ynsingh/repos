@@ -1,7 +1,7 @@
 <%-- 
     Document   : ChangeLoginPassword
     Created on : Aug 13, 2012, 04:23:01 PM
-    Author     : Vinay Kr. Sharma
+    Author     : Vinay
 --%>
 
 
@@ -33,7 +33,7 @@
         <div class="w100 fl-l">
             <div class="w990p mar0a">
                 <!--Header Starts Here-->
-                <s:include  value="./Header.jsp"/>
+                <s:include  value="/Header.jsp"/>
                 <!--Header Ends Here-->
 
                 <!--Middle Section Starts Here-->

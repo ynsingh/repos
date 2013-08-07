@@ -40,7 +40,7 @@ package org.IGNOU.ePortfolio.DAO;
  * @author IGNOU Team
  */
 import java.util.List;
-import org.IGNOU.ePortfolio.Model.UserDocsList;
+import org.IGNOU.ePortfolio.Model.Userdocs;
 import org.hibernate.*;
 import org.hibernate.cfg.AnnotationConfiguration;
 
@@ -55,12 +55,12 @@ public class FileDAO {
     private Session s;
 
     @SuppressWarnings("unchecked")
-    public List<UserDocsList> UserDocsListByUserId(String user_id) {
+    public List<Userdocs> UserDocsListByUserId(String user_id) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
-        List<UserDocsList> filelist = null;
+        List<Userdocs> filelist = null;
         try {
-            Query q = s.createQuery("from UserDocsList imagelist where imagelist.user_id='" + user_id + "'");
+            Query q = s.createQuery("from Userdocs imagelist where imagelist.user_id='" + user_id + "'");
             filelist = q.list();
         } catch (HibernateException he) {
             System.out.println(he);
@@ -78,10 +78,10 @@ public class FileDAO {
      * @return imagelist
      * @author IGNOU Team
      */
-    public UserDocsList UserDocsDeleteByFileId(int fileid) {
+    public Userdocs UserDocsDeleteByFileId(long fileid) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
-        UserDocsList imagelist = (UserDocsList) s.load(UserDocsList.class, fileid);
+        Userdocs imagelist = (Userdocs) s.load(Userdocs.class, fileid);
         if (null != imagelist) {
             s.delete(imagelist);
         }
@@ -98,12 +98,12 @@ public class FileDAO {
      * @author IGNOU Team
      */
     @SuppressWarnings("unchecked")
-    public List<UserDocsList> UserDocsListByFileId(int fileid) {
+    public List<Userdocs> UserDocsListByFileId(long fileid) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
-        List<UserDocsList> imagelist = null;
+        List<Userdocs> imagelist = null;
         try {
-            Query q = s.createQuery("from UserDocsList imagelist where imagelist.fileid='" + fileid + "'");
+            Query q = s.createQuery("from Userdocs imagelist where imagelist.fileid='" + fileid + "'");
             imagelist = q.list();
 
         } catch (HibernateException he) {
@@ -122,10 +122,10 @@ public class FileDAO {
      * @return imagelist
      * @author IGNOU Team
      */
-    public UserDocsList UserDocsUpdate(int fileid, String filename, String description, String filedate) {
+    public Userdocs UserDocsUpdate(long fileid, String filename, String description, String filedate) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
-        UserDocsList imagelist = (UserDocsList) s.load(UserDocsList.class, fileid);
+        Userdocs imagelist = (Userdocs) s.load(Userdocs.class, fileid);
         imagelist.setFileid(fileid);
         imagelist.setFilename(filename);
         imagelist.setDescription(description);

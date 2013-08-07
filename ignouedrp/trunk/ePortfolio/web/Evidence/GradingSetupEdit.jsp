@@ -84,7 +84,10 @@
                                                                 />
                                                         </td>
                                                     </tr>
-                                                    <tr><td colspan="3" align="center"><s:submit value="Edit"/></td></tr>
+                                                    <tr><td colspan="3" align="center">
+                                                            <s:submit value="Edit"/>&nbsp;
+                                                            <s:reset value="Back" onClick="history.go(-1);" />
+                                                        </td></tr>
                                                 </table>
                                             </s:form>
                                         </fieldset>

@@ -54,7 +54,7 @@
                                     <div align="right">
                                         <s:a href="AddEvidence.jsp">Create Activity</s:a>
                                         <s:a action="EviDraftList" cssClass="marl5">Draft</s:a>
-                                        <s:a href="GradeSetup.jsp" cssClass="marl5">Grade&nbsp;Setup</s:a>
+                                        <s:a href="GradeSetup.jsp" cssClass="marl5">Setup</s:a>
                                     </div>
                                     <div class="w100 fl-l tc fbld fcred mart10"><s:property value="msg"/></div>
                                     <table width="100%" class="mar0a mart5" cellpadding="4" border="1" cellspacing="0">
@@ -69,12 +69,12 @@
                                                 <td align="center"><s:property value="gradeValId"/></td>
 
                                                 <td>
-                                                    <s:property value="CourseList[#stat.index]"/>
+                                                    <s:property value="course.courseCode"/>
                                                     <br/>
-                                                    <a href="EditGradeSetup?gradeValId=<s:property value="gradeValId"/>&amp;Course=<s:property value="CourseList[#stat.index]"/>&amp;GradeType=<s:property value="GTMList[#stat.index]"/>">Edit</a>
+                                                    <a href="EditGradeSetup?gradeValId=<s:property value="gradeValId"/>&amp;Course=<s:property value="course.courseCode"/>&amp;GradeType=<s:property value="gradeTypeDetailsMaster.gradeTypeMaster.title"/>">Edit</a>
                                                 </td>
-                                                <td><s:property value="GTMList[#stat.index]"/></td>
-                                                <td><s:date name="gradeDate"/></td>
+                                                <td><s:property value="gradeTypeDetailsMaster.gradeTypeMaster.title"/></td>
+                                                <td><s:date name="gradeDate" format="MMM dd, yyyy"/></td>
                                             </tr>
                                         </s:iterator>
                                     </table> 

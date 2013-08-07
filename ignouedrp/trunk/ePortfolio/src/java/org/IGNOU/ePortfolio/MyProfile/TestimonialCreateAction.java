@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class TestimonialCreateAction extends ActionSupport {
 

@@ -13,7 +13,7 @@ import org.IGNOU.ePortfolio.DAO.TestimonialDao;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class TestimonialReqInfoAction extends ActionSupport {
 

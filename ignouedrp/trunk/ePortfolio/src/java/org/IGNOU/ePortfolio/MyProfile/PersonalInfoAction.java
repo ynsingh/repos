@@ -16,7 +16,9 @@ import java.util.logging.Logger;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PersonalInfoDao;
+import org.IGNOU.ePortfolio.DAO.UserListDao;
 import org.IGNOU.ePortfolio.Model.PersonalInfo;
+import org.IGNOU.ePortfolio.Model.User;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
 import org.jdom2.Document;
@@ -33,14 +35,15 @@ public class PersonalInfoAction extends ActionSupport {
     private String user_id = new UserSession().getUserInSession();
     private PersonalInfo pi = new PersonalInfo();
     private PersonalInfoDao dao = new PersonalInfoDao();
-    private long personalInfoId;
+    private UserListDao udao = new UserListDao();
+    private long registrationId;
     private String emailId;
-    private String firstName, lastName, fatherName, motherName, otherGuardian, gender, pbirth, mstatus, castCategory, religion, nationality, languageKnown;
+    private String fname, mname, lname, fatherName, motherName, otherGardian, gender, pbirth, mstatus, castCategory, religion, nationality, languageKnown;
     private Date dateOfBirth;
     private Long aadhaarNo;
     private String passportNo, panNo;
     private Integer activeStatus;
-    private List<PersonalInfo> PersonalListList;
+    private List<User> UserInfoList;
     private String msg;
     private String infoUpdated = getText("msg.infoUpdated");
     /*Extra Variables used in Remote Access */
@@ -56,10 +59,11 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     public String ShowPersonalInfo() {
-        setPersonalListList(getDao().PersonalInfoList(getUser_id()));
-        if (getPersonalListList().isEmpty()) {
+        setUserInfoList(udao.UserListByUserId(getUser_id()));
+        if (getUserInfoList().isEmpty()) {
             try {
                 getDEIPersonalInfo();
+                // msg="hello";
             } catch (Exception ex) {
                 Logger.getLogger(PersonalInfoAction.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -69,12 +73,15 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     public String EditPersonal() {
-        setPersonalListList(getDao().PersonalInfoEdit(getPersonalInfoId()));
+        setUserInfoList(udao.UserListByUserId(getUser_id()));
+        //setPersonalListList(getDao().PersonalInfoEdit(getPersonalInfoId()));
         return SUCCESS;
     }
 
     public String UpdatePersonalInformation() {
-        dao.PersonalInfoUpdate(personalInfoId, emailId, firstName, lastName, fatherName, motherName, otherGuardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
+        //dao.PersonalInfoUpdate(registrationId, emailId, fname, lname, fatherName, motherName, otherGardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
+        udao.UserUpdate(registrationId, fname, mname, lname, fatherName, motherName, otherGardian, gender, dateOfBirth, pbirth, mstatus, aadhaarNo, passportNo, panNo, activeStatus, castCategory, religion, nationality, languageKnown);
+
         msg = infoUpdated;
         return SUCCESS;
     }
@@ -151,7 +158,7 @@ public class PersonalInfoAction extends ActionSupport {
         smBean.setMaritalStatus(mstatus);
         smBean.setDateOfBirth(dob);
         smBean.setPlaceOfBirth(pbirth);
-        smBean.setGuardian(otherGuardian);
+        smBean.setGuardian(otherGardian);
         smBean.setUserId(src_id);
         smBean.setStatus("ACT");
         msg = DEIRemoteAccessAPI.updateStudentInfo(smBean, src_id, user_id, universityCode);
@@ -238,45 +245,45 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     /**
-     * @return the personalInfoId
+     * @return the registrationId
      */
-    public long getPersonalInfoId() {
-        return personalInfoId;
+    public long getRegistrationId() {
+        return registrationId;
     }
 
     /**
-     * @param personalInfoId the personalInfoId to set
+     * @param registrationId the registrationId to set
      */
-    public void setPersonalInfoId(long personalInfoId) {
-        this.personalInfoId = personalInfoId;
+    public void setRegistrationId(long registrationId) {
+        this.registrationId = registrationId;
     }
 
     /**
-     * @return the firstName
+     * @return the fname
      */
-    public String getFirstName() {
-        return firstName;
+    public String getFname() {
+        return fname;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param fname the fname to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 
     /**
-     * @return the lastName
+     * @return the lname
      */
-    public String getLastName() {
-        return lastName;
+    public String getLname() {
+        return lname;
     }
 
     /**
-     * @param lastName the lastName to set
+     * @param lname the lname to set
      */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 
     /**
@@ -406,17 +413,17 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     /**
-     * @return the PersonalListList
+     * @return the UserInfoList
      */
-    public List<PersonalInfo> getPersonalListList() {
-        return PersonalListList;
+    public List<User> getUserInfoList() {
+        return UserInfoList;
     }
 
     /**
-     * @param PersonalListList the PersonalListList to set
+     * @param UserInfoList the UserInfoList to set
      */
-    public void setPersonalListList(List<PersonalInfo> PersonalListList) {
-        this.PersonalListList = PersonalListList;
+    public void setUserInfoList(List<User> UserInfoList) {
+        this.UserInfoList = UserInfoList;
     }
 
     /**
@@ -462,17 +469,17 @@ public class PersonalInfoAction extends ActionSupport {
     }
 
     /**
-     * @return the otherGuardian
+     * @return the otherGardian
      */
-    public String getOtherGuardian() {
-        return otherGuardian;
+    public String getOtherGardian() {
+        return otherGardian;
     }
 
     /**
-     * @param otherGuardian the otherGuardian to set
+     * @param otherGardian the otherGardian to set
      */
-    public void setOtherGuardian(String otherGuardian) {
-        this.otherGuardian = otherGuardian;
+    public void setOtherGardian(String otherGardian) {
+        this.otherGardian = otherGardian;
     }
 
     /**
@@ -739,5 +746,33 @@ public class PersonalInfoAction extends ActionSupport {
      */
     public void setUID(String UID) {
         this.UID = UID;
+    }
+
+    /**
+     * @return the udao
+     */
+    public UserListDao getUdao() {
+        return udao;
+    }
+
+    /**
+     * @param udao the udao to set
+     */
+    public void setUdao(UserListDao udao) {
+        this.udao = udao;
+    }
+
+    /**
+     * @return the mname
+     */
+    public String getMname() {
+        return mname;
+    }
+
+    /**
+     * @param mname the mname to set
+     */
+    public void setMname(String mname) {
+        this.mname = mname;
     }
 }

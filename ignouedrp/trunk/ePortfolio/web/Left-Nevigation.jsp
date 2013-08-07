@@ -10,6 +10,7 @@ Version      : 1
 <%@taglib  prefix="sx"  uri="/struts-dojo-tags"%>
 <head>
     <sx:head/>
+
 </head>
 
 <%
@@ -27,13 +28,13 @@ Version      : 1
                 <h3><a href="#">Admin Responsibilities</a></h3>
                 <div class="accordion_txt">
                     <ul>
-
                         <li><s:a href="%{RegInsiID}">Institutes</s:a></li>
                         <li><s:a href="%{DepID}">Department/School</s:a></li>
                         <li><s:a href="%{AllInsiID}">Programmes</s:a></li>
                         <li><s:a href="%{LinksID}">Add Other Links</s:a></li>
                         <li><a href="<s:url value="/Administrator/HeaderChange.jsp"/>">Change Header</a></li>
                         <li><s:a action="UserReqList" namespace="/Requests">Student Requests</s:a></li>
+                        <li><s:a action="ShowContactUsAdmin" namespace="/Administrator">Contact Us</s:a></li>
                         </ul>
                     </div>
                 </div>
@@ -44,26 +45,31 @@ Version      : 1
         <div class="accordion">
             <div id="accordion">
                 <% if (role.contains("student")) {%>
-                <h3><a href="#">My Account</a></h3>
+                <h3><a href="#">My Affiliations</a></h3>
                 <div class="accordion_txt">
                     <ul>
-                        <li>My Courses</li>
-                        <li>My Progress</li>
-                        <li><s:a action="myPeerGroup" namespace="/MyGroups">My Peer Group</s:a></li>
-                        <li><s:a action="myFacultyGroup" namespace="/MyGroups">My Faculty</s:a></li>
+                        <li>Courses</li>
+                  <!--      <li><a href="<s:url value="/Activities/ActivityIndex.jsp"/>">My Activity</a></li> -->
+                        <li>Progress</li>
+                        <li><s:a action="myPeerGroup" namespace="/MyGroups">Peer Group</s:a></li>
+                        <li><s:a action="myFacultyGroup" namespace="/MyGroups">Faculty</s:a></li>
                         <li><a  href="<s:url value="/Requests/RequestIndex.jsp"/>">Requests</a></li>
+              <!--          <li><a href="<s:url value="/TalkTeacher.jsp"/>"   target="_blank">Talk To Teacher</a></li> -->
                     </ul>
                 </div>
                 <% } else {%>
-                <h3><a href="#">My Account</a></h3>
+                <s:url id="cId" action="myCourse" namespace="/Administrator"/>
+                <h3><a href="#">My Affiliations</a></h3>
                 <div class="accordion_txt">
                     <ul>
                         <li><s:a href="%{RegInsiID}">Institutes</s:a></li>
                         <li><s:a href="%{DepID}">Department/School</s:a></li>
                         <li><s:a href="%{AllInsiID}">Programmes</s:a></li>
-                        <li>My Course</li>
-                        <li>My Team</li>
-                        <li>My On-going Work</li>
+                        <li><s:a href="%{cId}">Course</s:a></li>
+                        <li>Team</li>
+                        <li>On-going Work</li>
+                    <!--          <li><a href="<s:url value="/TalkTeacher.jsp"/>"   target="_blank">Talk To Teacher</a></li>
+                <li><a href="<s:url value="/Activities/ActivityForm.jsp"/>">My Activity</a></li> -->
                         <li>Grade</li>
                     </ul>
                 </div>
@@ -81,5 +87,6 @@ Version      : 1
     <div class="u_events mart10">Upcoming Events</div>
     <s:url id="eventI" value="/Events/eShowEventInfo.action" />
     <!-- Calling Actions -->
-    <sx:div href="%{#eventI}"/>
+    <sx:div href="%{#eventI}" />
+   
 </div>

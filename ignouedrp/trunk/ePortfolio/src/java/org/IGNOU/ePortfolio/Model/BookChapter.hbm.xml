@@ -10,7 +10,7 @@ Last Modified on : 24-02-2012-->
     <class name="org.IGNOU.ePortfolio.Model.BookChapter" table="book_chapter" catalog="eportfolio">
         <id name="bookChapterId" type="java.lang.Long">
             <column name="book_chapter_id" />
-            <generator class="identity" />
+            <generator class="increment" />
         </id>
         <property name="userId" type="string">
             <column name="user_id" length="100" />

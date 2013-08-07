@@ -14,13 +14,13 @@
             <message key="Please Enter Address" />
         </field-validator>
     </field>
-   
+  <!-- 
     <field name="address2">
         <field-validator type="requiredstring">
             <message key="Please Enter Address" />
         </field-validator>
     </field>
-    
+    -->
     <field name="city">
         <field-validator type="requiredstring">
             <message key="Please Enter City" />
@@ -48,28 +48,17 @@
         </field-validator>
     </field> 
     
-    <field name="HTelephone">
-        <field-validator type="required">
-            <message>You must enter a value Telephone</message>
-        </field-validator>
-        <field-validator type="long">
-            <param name="min">1</param>
-            <param name="max">99999999</param>
-            <message key="Please Enter Number" />
-        </field-validator>
-    </field>
-    
-    <field name="OTelephone">
-        <field-validator type="required">
-            <message>You must enter a value Telephone</message>
-        </field-validator>
-        <field-validator type="long">
-            <param name="min">1</param>
-            <param name="max">99999999</param>
-            <message key="Please Enter Number" />
-        </field-validator>
-    </field>
-    
+    <!--   <field name="HTelephone">
+       <field-validator type="required">
+           <message>You must enter a value Telephone</message>
+       </field-validator>
+       <field-validator type="long">
+           <param name="min">1</param>
+           <param name="max">99999999</param>
+           <message key="Please Enter Number" />
+       </field-validator>
+   </field>
+    --> 
     
     <field name="mobileNo">
         <field-validator type="required" short-circuit="true">
@@ -91,12 +80,4 @@
         </field-validator>
     </field>
     
-    <field name="owebsite">
-        <field-validator type="required" short-circuit="true">
-            <message>You must enter a value.</message>
-        </field-validator>
-        <field-validator type="url">
-            <message key="Please Enter Office Website" />
-        </field-validator>
-    </field>
 </validators>

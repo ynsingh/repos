@@ -21,27 +21,27 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class PersonalInfoDao {
 
-    private SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+    private SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
-    @SuppressWarnings("unchecked")
-    public List<PersonalInfo> PersonalInfoList(String user_id) {
-        s = getSf().openSession();
-        Transaction t = s.beginTransaction();
-        List<PersonalInfo> personallist = null;
-        try {
-            personallist = s.createQuery("from PersonalInfo where emailId='" + user_id + "'").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        getSf().close();
-        return personallist;
-    }
 
+//    @SuppressWarnings("unchecked")
+//    public List<PersonalInfo> PersonalInfoList(String user_id) {
+//        s = getSf().openSession();
+//        Transaction t = s.beginTransaction();
+//        List<PersonalInfo> personallist = null;
+//        try {
+//            personallist = s.createQuery("from PersonalInfo where emailId='" + user_id + "'").list();
+//        } catch (HibernateException HE) {
+//            System.out.println(HE);
+//        }
+//        t.commit();
+//        s.close();
+//        getSf().close();
+//        return personallist;
+//    }
     @SuppressWarnings("unchecked")
     public List<PersonalInfo> PersonalInfoEdit(Long personalInfoId) {
-         s = getSf().openSession();
+        s = getSf().openSession();
         Transaction t = s.beginTransaction();
         List<PersonalInfo> personallist = null;
         try {
@@ -57,7 +57,7 @@ public class PersonalInfoDao {
 
     @SuppressWarnings("unchecked")
     public PersonalInfo PersonalInfoUpdate(long personalInfoId, String emailId, String firstName, String lastName, String fatherName, String motherName, String otherGuardian, String gender, Date dateOfBirth, String pbirth, String mstatus, Long aadhaarNo, String passportNo, String panNo, Integer activeStatus, String castCategory, String religion, String nationality, String languageKnown) {
-         s = getSf().openSession();
+        s = getSf().openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -100,5 +100,4 @@ public class PersonalInfoDao {
     public SessionFactory getSf() {
         return sf;
     }
-
 }

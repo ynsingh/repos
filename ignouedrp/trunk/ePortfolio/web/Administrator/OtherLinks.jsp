@@ -1,7 +1,7 @@
 <%-- 
     Document   : OtherLinks
     Created on : 20 Sep, 2012, 6:01:05 PM
-    Author     : VinayKrSharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

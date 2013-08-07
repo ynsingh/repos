@@ -70,7 +70,7 @@ Version      : 1
         <!--Footer Section Starts Here-->
         <div class="footer">
             <div class="f_menu"> 
-                <a href="<s:url value="/About.jsp"/>" target="_Blank">About</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a>
+                <s:a action="ShowAboutUs" namespace="/Administrator">About Us</s:a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a>
             </div>
         </div>
         <div class="footer_panel">

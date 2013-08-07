@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.CourseDao;
 import org.IGNOU.ePortfolio.Model.Course;
 
 /**
@@ -20,7 +20,7 @@ public class CourseAction extends ActionSupport {
     private static final long serialVersionUID = -2223948287805083119L;
     private Map<String, String> courseL;
     private String programmeId;
-    private InstituteDao instDao = new InstituteDao();
+    private CourseDao instDao = new CourseDao();
     private List<Course> CourseList;
     private String CourseNotFound = getText("msg.courseNotFound");
 

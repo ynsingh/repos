@@ -68,6 +68,7 @@
                                                                 headerValue="Please Select University/Institute"
                                                                 label="Select University/Institute"
                                                                 sortable="false"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -86,6 +87,7 @@
                                                                 headerValue="Please Select a Department/School/Collage"
                                                                 label="Department"
                                                                 onChangeTopics=""
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>

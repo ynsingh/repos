@@ -19,7 +19,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -46,6 +46,7 @@ Version      : 1
                             <div class="v_gallery">
                                 <div class="w100 fl-l mart10">
                                     <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Personal Information </div>
+                                    <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
                                     <div class="w100 fl-l mart10">
                                         <div class="w100 fl-l tc fbld fcgreen">
                                             <s:property value="msg"/>
@@ -151,12 +152,17 @@ Version      : 1
                                                     </tr>
                                                 </s:if>
                                                 <s:else>
-                                                    <s:iterator value="personalListList">
+                                                    <s:iterator value="UserInfoList">
                                                         <tr>
                                                             <th align="left">Name:</th>
-                                                            <td><s:property value="firstName"/>
+                                                            <td><s:property value="fname"/>
+                                                                <s:if test="mname!=null">
+                                                                    &nbsp;<s:property value="mname"/>
+                                                                </s:if>
+                                                                <s:else>
+                                                                </s:else>
                                                                 &nbsp;
-                                                                <s:property value="lastName"/>
+                                                                <s:property value="lname"/>
                                                             </td>
                                                             <td><a href="EditPersonalInfo?personalInfoId=<s:property value="personalInfoId"/>"><img src="<s:url value="/icons/edit.gif"/>" align="right" title="Edit Information"/></a></td>
                                                         </tr>
@@ -174,7 +180,7 @@ Version      : 1
                                                         </tr>
                                                         <tr>
                                                             <th align="left">Other Guardian's Name :</th>
-                                                            <td ><s:property value="otherGuardian"/>
+                                                            <td ><s:property value="otherGardian"/>
                                                             </td>
                                                             <td></td>
                                                         </tr>
@@ -186,7 +192,7 @@ Version      : 1
                                                         </tr>
                                                         <tr>
                                                             <th align="left">Date of Birth :</th>
-                                                            <td><s:date name="dateOfBirth" format="dd/MM/yyyy" />
+                                                            <td><s:date name="dateOfBirth" format="MMM dd, yyyy"/>
                                                             </td>
                                                             <td></td>
                                                         </tr>

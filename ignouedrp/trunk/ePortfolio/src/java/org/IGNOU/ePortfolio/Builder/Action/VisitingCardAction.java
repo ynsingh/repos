@@ -19,14 +19,11 @@ public class VisitingCardAction extends ActionSupport implements ModelDriven<Vis
     private String user_id = new UserSession().getUserInSession();
     private VisitingCardDao vcDao = new VisitingCardDao();
     private Vistingcard vcMod = new Vistingcard();
-    
 
     public String VisitingCardAdd() {
         vcDao.VisitingCardSave(vcMod);
         return SUCCESS;
     }
-
-   
 
     @Override
     public Vistingcard getModel() {
@@ -75,9 +72,7 @@ public class VisitingCardAction extends ActionSupport implements ModelDriven<Vis
     public void setVcMod(Vistingcard vcMod) {
         this.vcMod = vcMod;
     }
-
     /**
      * @return the vcList
      */
-   
 }

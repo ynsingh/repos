@@ -66,7 +66,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
     private UserProgrammeDao updao = new UserProgrammeDao();
     private String uName;
     private String recordNotFound = getText("msg.user.notFound");
-    private String pwd;
+    private String pwd, token;
 
     @SuppressWarnings("unchecked")
     public String LoginCheck() throws IOException {
@@ -74,22 +74,28 @@ public class LoginAction extends ActionSupport implements SessionAware {
         userList = updao.UserListByUserId(email_id);
         if (userList.isEmpty()) {
             PropertyConfigurator.configure("log4j.properties");
-            //DOMConfigurator.configure("log4j.xml");
-            logger.warn("User Name Not Found:- Entered Email Id is " + getEmail_id()  );
+            logger.warn("User Name Not Found:- Entered Email Id is " + getEmail_id());
             msg = recordNotFound;
             return ERROR;
         } else {
             role = userList.iterator().next().getRole();
-    }
-    uName = userList.iterator().next().getFname() + " " + userList.iterator().next().getLname();
-    try {
-            pwd=DigestUtils.md5Hex(password);
-            if (getLdao().FindUser(email_id,pwd, role)) {
+        }
+        uName = userList.iterator().next().getFname() + " " + userList.iterator().next().getLname();
+        try {
+            pwd = DigestUtils.md5Hex(password);
+            if (getLdao().FindUser(email_id, pwd, role)) {
                 session.put("user_id", getEmail_id());
                 session.put("role", getRole());
                 session.put("uName", uName);
-                 PropertyConfigurator.configure("log4j.properties");
-                 logger.warn("user logged in " + getEmail_id());
+                session.put("name", userList.iterator().next().getFname());
+                session.put("password", password);
+                // if (token.length() > 0 || token.endsWith(null)) {
+                session.put("token", "");
+                //} else {
+                // session.put(" token", token);
+                // }
+                PropertyConfigurator.configure("log4j.properties");
+                logger.warn("user logged in " + getEmail_id());
                 return SUCCESS;
             } else {
                 PropertyConfigurator.configure("log4j.properties");
@@ -122,7 +128,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
      * @return the password
      */
     public String getPassword() {
-         return password;
+        return password;
     }
 
     /**
@@ -271,5 +277,19 @@ public class LoginAction extends ActionSupport implements SessionAware {
      */
     public void setRecordNotFound(String recordNotFound) {
         this.recordNotFound = recordNotFound;
+    }
+
+    /**
+     * @return the token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * @param token the token to set
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -30,28 +30,21 @@ Version      : 1
             <div class="w990p mar0a">
                 <!--Header Starts Here-->
                 <div class="w100 fl-l">
-                    <div class="header">
-                        <div class="edrp_logo"><img src="images/edrp_logo.png" alt="" width="176" height="87" /></div>
-                        <div class="ignou_logo"><img src="images/ignou_logo.png" alt="" width="148" height="66" /></div>
+                      <div class="header">
+                        <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
                     </div>
                     <div class="menu_bg">
                         <div class="wau fl-l"><img src="images/blank.gif" alt="" width="20" height="10" /></div>
                         <div class="eportfolio_txt">ePORTFOLIO</div>
-                        <div class="menu"> &nbsp; </div>
+                       <div class="menu">
+                            <a href="<s:url value="/Login.jsp"/>">Home</a>
+                        </div>
                         <div class="menu_arrow_img">&nbsp;</div>
                         <div class="img_panel">
                             <div class="my_profile">
                                 <div id="menu">
-                                    <ul>
-                                        <li><a href="<s:url value="/Login.jsp"/>">Login</a></li>
-                                        <li><a href="#">New User</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="<s:url value="/Registration/StudentRegistration.jsp"/>">Student</a></li>
-                                                <li><a href="<s:url value="/Registration/FacultyRegistration.jsp"/>">Faculty</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
+                                     
+                                       </div>
                             </div>
                             <div class="profile_img">&nbsp;</div>
                         </div>
@@ -94,7 +87,7 @@ Version      : 1
         </div>
         <!--Footer Section Starts Here-->
         <div class="footer">
-            <div class="f_menu"> <a href="<s:url value="/About.jsp"/>" target="_Blank">About Us</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a> </div>
+            <div class="f_menu"> <a href="<s:url value="/About.jsp"/>" target="_Blank">About Us</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a> </div>
         </div>
         <div class="footer_panel">
             <div class="footer_txt">

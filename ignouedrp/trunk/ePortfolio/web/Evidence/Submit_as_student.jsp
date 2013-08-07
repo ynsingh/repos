@@ -136,7 +136,7 @@
                                                         <td colspan="2" align="center">
                                                             <s:submit value="Submit"/>&nbsp;
                                                             <s:reset value="Reset"/>&nbsp;
-                                                            <s:reset value="Cancel" onClick="history.go(-1);" />
+                                                            <s:reset value="Back" onClick="history.go(-1);" />
                                                         </td>
                                                     </tr>
                                                 </table>

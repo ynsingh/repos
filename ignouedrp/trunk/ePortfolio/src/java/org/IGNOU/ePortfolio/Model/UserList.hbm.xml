@@ -4,63 +4,121 @@
 <hibernate-mapping>
     <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.UserList" table="user">
         <id name="emailId" type="string">
-            <column length="100" name="email_id"/>
-            <generator class="assigned"/>
+            <column name="email_id" length="100" />
+            <generator class="identity" />
         </id>
         <property name="registrationId" type="long">
-            <column name="registration_id" not-null="true"/>
+            <column name="registration_id" not-null="true" />
         </property>
         <property name="password" type="string">
-            <column length="15" name="password"/>
+            <column name="password" length="50" />
         </property>
         <property name="role" type="string">
-            <column length="45" name="role"/>
+            <column name="role" length="45" />
         </property>
         <property name="regTime" type="timestamp">
-            <column length="19" name="reg_time"/>
+            <column name="reg_time" length="19" />
+        </property>
+        <property name="regApprove" type="java.lang.Boolean">
+            <column name="reg_approve" />
         </property>
         <property name="activTime" type="timestamp">
-            <column length="19" name="activ_time"/>
-        </property>
-        <property name="lastLogin" type="timestamp">
-            <column length="19" name="last_login"/>
-        </property>
-        <property name="deleted" type="java.lang.Boolean">
-            <column name="deleted"/>
+            <column name="activ_time" length="19" />
         </property>
         <property name="activStatus" type="java.lang.Boolean">
-            <column name="Activ_status"/>
+            <column name="Activ_status" />
         </property>
-        <property name="fname" type="string">
-            <column length="50" name="fname"/>
+        <property name="lastLogin" type="timestamp">
+            <column name="last_login" length="19" />
         </property>
-        <property name="lname" type="string">
-            <column length="50" name="lname"/>
+        <property name="deleted" type="java.lang.Boolean">
+            <column name="deleted" />
         </property>
         <property name="accessIp" type="string">
-            <column length="15" name="access_ip"/>
-        </property>
-        <property name="theme" type="string">
-            <column length="10" name="theme"/>
-        </property>
-        <property name="picture" type="string">
-            <column length="65535" name="Picture"/>
-        </property>
-        <property name="filetype" type="string">
-            <column length="10" name="filetype"/>
-        </property>
-        <property name="univName" type="string">
-            <column length="65535" name="univ_name"/>
-        </property>
-        <property name="univRegNo" type="string">
-            <column length="45" name="univ_reg_no"/>
-        </property>
-        <property name="programe" type="string">
-            <column length="65535" name="programe"/>
+            <column name="access_ip" length="15" />
         </property>
         <property name="instituteId" type="java.lang.Integer">
-            <column name="institute_id"/>
+            <column name="institute_id" />
         </property>
+        <property name="departmentId" type="java.lang.Integer">
+            <column name="department_id" />
+        </property>
+       <many-to-one class="org.IGNOU.ePortfolio.Model.Programme" fetch="select" name="programme" lazy="false" cascade="merge">
+            <column name="programme_id"/>
+        </many-to-one>
+        <property name="univRegNo" type="string">
+            <column name="univ_reg_no" length="45" />
+        </property>
+        <property name="fname" type="string">
+            <column name="fname" length="50" />
+        </property>
+        <property name="mname" type="string">
+            <column name="mname" length="50" />
+        </property>
+        <property name="lname" type="string">
+            <column name="lname" length="50" />
+        </property>
+        <property name="fatherName" type="string">
+            <column name="father_name" length="100" />
+        </property>
+        <property name="motherName" type="string">
+            <column name="mother_name" length="100" />
+        </property>
+        <property name="otherGardian" type="string">
+            <column name="other_gardian" length="100" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="10" />
+        </property>
+        <property name="dateOfBirth" type="date">
+            <column name="date_of_birth" length="10" />
+        </property>
+        <property name="pbirth" type="string">
+            <column name="pBirth" length="100" />
+        </property>
+        <property name="mstatus" type="string">
+            <column name="mstatus" length="15" />
+        </property>
+        <property name="aadhaarNo" type="java.lang.Long">
+            <column name="aadhaar_no" />
+        </property>
+        <property name="passportNo" type="string">
+            <column name="passport_no" length="15" />
+        </property>
+        <property name="panNo" type="string">
+            <column name="pan_no" length="15" />
+        </property>
+        <property name="castCategory" type="string">
+            <column name="cast_category" length="15" />
+        </property>
+        <property name="physicalHandicapt" type="java.lang.Boolean">
+            <column name="physical_handicapt" />
+        </property>
+        <property name="physicalHandicaptSupportDoc" type="string">
+            <column name="physical_handicapt_support_doc" length="65535" />
+        </property>
+        <property name="religion" type="string">
+            <column name="religion" length="50" />
+        </property>
+        <property name="nationality" type="string">
+            <column name="nationality" length="100" />
+        </property>
+        <property name="languageKnown" type="string">
+            <column name="language_known" length="100" />
+        </property>
+        <property name="theme" type="string">
+            <column name="theme" length="10" />
+        </property>
+        <property name="picture" type="binary">
+            <column name="Picture" />
+        </property>
+        <property name="filetype" type="string">
+            <column name="filetype" length="10" />
+        </property>
+        
+        
+        
+        
         <set fetch="select" inverse="true" lazy="false" name="profileEmployments">
             <key>
                 <column length="100" name="user_id"/>
@@ -175,15 +233,8 @@
             </key>
             <one-to-many class="org.IGNOU.ePortfolio.Model.StudentExchange"/>
         </set>
-        <set inverse="true" lazy="false" name="persi">
-            <key>
-                <column length="100" name="email_id"/>
-            </key>
-            <one-to-many class="org.IGNOU.ePortfolio.Model.PersonalInfo"/>
-        </set>
-        <many-to-one class="org.IGNOU.ePortfolio.Model.Programme" fetch="select" name="programme" lazy="false" cascade="merge">
-            <column name="programme_id"/>
-        </many-to-one>
+       
+      
         <set name="testimonialsesForTestiReqTo" inverse="true" lazy="false">
             <key>
                 <column name="testi_req_to" length="100" />

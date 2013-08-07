@@ -5,7 +5,9 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
+import java.util.Date;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.CourseDao;
 
 /**
  *
@@ -13,7 +15,9 @@ import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
  */
 public class CourseRegistrationAction extends ActionSupport {
 
-    private ProgrammeCourseDao dao = new ProgrammeCourseDao();
+    private static final long serialVersionUID = 1L;
+    private String user_id = new UserSession().getUserInSession();
+    private CourseDao dao = new CourseDao();
     private int programmeId;
     private String courseCode;
     private String courseName, msg, Saved = getText("msg.infoSaved");
@@ -23,7 +27,7 @@ public class CourseRegistrationAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        dao.CourseSave(programmeId, courseCode, courseName);
+        dao.CourseSave(programmeId, courseCode, courseName, user_id, new Date());
         msg = Saved;
         return SUCCESS;
     }

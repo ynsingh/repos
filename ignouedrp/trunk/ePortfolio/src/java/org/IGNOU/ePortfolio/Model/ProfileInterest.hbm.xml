@@ -26,28 +26,5 @@
       <column length="100" name="my_hobbies"/>
     </property>
   </class>
-  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileInterestList" table="profile_interest">
-    <id name="interestId" type="long">
-      <column name="interest_id"/>
-      <generator class="identity"/>
-    </id>
-    <property name="userId" type="string">
-      <column length="45" name="user_id"/>
-    </property>
-    <property name="acadInterest" type="string">
-      <column length="100" name="acad_interest"/>
-    </property>
-    <property name="persInterest" type="string">
-      <column length="100" name="pers_interest"/>
-    </property>
-    <property name="techInterest" type="string">
-      <column length="100" name="tech_interest"/>
-    </property>
-    <property name="reserInterst" type="string">
-      <column length="100" name="reser_interst"/>
-    </property>
-    <property name="myHobbies" type="string">
-      <column length="100" name="my_hobbies"/>
-    </property>
-  </class>
+ 
 </hibernate-mapping>

@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
-import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
+import org.IGNOU.ePortfolio.DAO.InstituteDAO;
 import org.IGNOU.ePortfolio.DAO.UserListDao;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Evidence;
@@ -24,7 +23,7 @@ import org.IGNOU.ePortfolio.Model.User;
 public class InstituteInfoAction extends ActionSupport {
 
     private Institute ins = new Institute();
-    private ProgrammeCourseDao dao = new ProgrammeCourseDao();
+    private InstituteDAO dao = new InstituteDAO();
     private List<Institute> InsList;
     private List<User> usrList;
     private int instituteId, evidenceId;
@@ -40,12 +39,11 @@ public class InstituteInfoAction extends ActionSupport {
     private List<String> stList = new ArrayList<String>();
     private int submissionId;
     private String userId;
-    private InstituteDao insDao = new InstituteDao();
-
+   
     public InstituteInfoAction() {
     }
      public String ShowRegisteredInstitute() throws Exception {
-        InsList = insDao.InstituteList();
+        InsList = dao.InstituteList();
         if (InsList == null || InsList.isEmpty()) {
             return INPUT;
         } else {

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.InstituteDAO;
 import org.IGNOU.ePortfolio.Model.Institute;
 
 /**
@@ -21,7 +21,7 @@ public class RegUserInstituteAction extends ActionSupport {
     private static final long serialVersionUID = -2223948287805083119L;
     private String user_id = new UserSession().getUserInSession();
     private Map<String, String> univList = null;
-    private InstituteDao instDao = new InstituteDao();
+    private InstituteDAO instDao = new InstituteDAO();
     private List<Institute> InstList;
 
     @Override
@@ -41,14 +41,14 @@ public class RegUserInstituteAction extends ActionSupport {
     /**
      * @return the instDao
      */
-    public InstituteDao getInstDao() {
+    public InstituteDAO getInstDao() {
         return instDao;
     }
 
     /**
      * @param instDao the instDao to set
      */
-    public void setInstDao(InstituteDao instDao) {
+    public void setInstDao(InstituteDAO instDao) {
         this.instDao = instDao;
     }
 

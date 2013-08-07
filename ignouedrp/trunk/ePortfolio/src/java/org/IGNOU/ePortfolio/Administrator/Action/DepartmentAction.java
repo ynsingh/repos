@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.DepartmentDao;
 import org.IGNOU.ePortfolio.Model.Department;
 import org.IGNOU.ePortfolio.Model.Institute;
@@ -17,7 +18,8 @@ import org.IGNOU.ePortfolio.Model.Institute;
  */
 public class DepartmentAction extends ActionSupport {
 
-    //private String user_id = new UserSession().getUserInSession();
+    private static final long serialVersionUID = 1L;
+    private String user_id = new UserSession().getUserInSession();
     private Department dept = new Department();
     private DepartmentDao dao = new DepartmentDao();
     private String instituteId, univCode;

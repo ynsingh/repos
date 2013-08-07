@@ -8,7 +8,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.FacultyGroupDao;
-import org.IGNOU.ePortfolio.DAO.PeerGroupDao;
 import org.IGNOU.ePortfolio.Model.UserList;
 
 /**
@@ -16,10 +15,10 @@ import org.IGNOU.ePortfolio.Model.UserList;
  * @author Vinay
  */
 public class MyFacultyAction extends ActionSupport {
+    private static final long serialVersionUID = 1L;
 
     private String user_id = new UserSession().getUserInSession();
     private FacultyGroupDao dao = new FacultyGroupDao();
-    private UserList userModel = new UserList();
     private List<UserList> MyFacultyList;
     private String title = getText("title.myFaculty");
     private int listSize;
@@ -47,19 +46,6 @@ public class MyFacultyAction extends ActionSupport {
         this.user_id = user_id;
     }
 
-    /**
-     * @return the userModel
-     */
-    public UserList getUserModel() {
-        return userModel;
-    }
-
-    /**
-     * @param userModel the userModel to set
-     */
-    public void setUserModel(UserList userModel) {
-        this.userModel = userModel;
-    }
 
     /**
      * @return the FacultyListByEmailId

@@ -15,7 +15,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class ResetLoginPasswordAction extends ActionSupport {
 

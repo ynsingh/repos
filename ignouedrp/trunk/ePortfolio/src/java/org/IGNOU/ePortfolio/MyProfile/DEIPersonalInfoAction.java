@@ -22,7 +22,7 @@ import org.jdom2.input.SAXBuilder;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  * @version 2
  * @since 09-08-2012
  */

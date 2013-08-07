@@ -78,6 +78,7 @@
                                                                 headerValue="Please Select University/Institute"
                                                                 label="Select University/Institute"
                                                                 sortable="false"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -96,6 +97,7 @@
                                                                 headerValue="Please Select a Department/School/Collage"
                                                                 label="Programme"
                                                                 onChangeTopics="reloadprogrammelist"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -114,6 +116,7 @@
                                                                 headerValue="Please Select Programme/Degree"
                                                                 label="Programme"
                                                                 onChangeTopics="reloadProCourselist"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>

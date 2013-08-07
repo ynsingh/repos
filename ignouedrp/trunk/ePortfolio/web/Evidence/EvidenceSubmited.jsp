@@ -60,15 +60,15 @@
                                             <th align="center">Course</th>
                                             <th align="center">Title</th>
                                         </tr>
-                                        <s:iterator value="StdevList" status="stat">
+                                        <s:iterator value="EviSubList" status="stat">
                                             <tr>
                                                 <td align="center">
                                                     <s:property value="#stat.count" />
                                                 </td>
-                                                <td align="center"><s:property value=" CourseList[#stat.index]"/></td>
-                                                <td><s:property value="evTitle"/><br/>
-                                                    <a href="ViewComments?evidenceId=<s:property value="evidenceId"/>">View Comments</a>
-                                                    <a class="marl5" href="TaskSubmited?evidenceId=<s:property value="evidenceId"/>">Peer Group</a>
+                                                <td align="center"><s:property value="evidence.course.courseCode"/></td>
+                                                <td><s:property value="evidence.evTitle"/><br/>
+                                                    <a href="ViewComments?evidenceId=<s:property value="evidence.evidenceId"/>">View Comments</a>
+                                                    <a class="marl5" href="TaskSubmited?evidenceId=<s:property value="evidence.evidenceId"/>">Peer Group</a>
                                                 </td>
                                             </tr>
                                         </s:iterator>

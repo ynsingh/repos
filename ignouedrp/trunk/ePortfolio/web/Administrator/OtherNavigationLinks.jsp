@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>University Logo</title>
+        <title>Left Navigation Links</title>
         <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
@@ -45,9 +45,9 @@
                             <div class="w100 fl-l mart10">
                                 <div class="w98 mar0a">
                                     <div class="w100 fl-l mart15">
-                                        <s:form action="AddNavigationLink" method="post" namespace="/Administrator" theme="simple" >
-                                            <fieldset class="mar0a" style="width:600px;">
-                                                <legend class="fbld">Left Navigation Others URL</legend> 
+                                        <fieldset class="mar0a" style="width:600px;">
+                                            <legend class="fbld">Left Navigation Others URL</legend> 
+                                            <s:form action="AddNavigationLink" method="post" namespace="/Administrator" theme="simple" >
                                                 <table width="90%" align="center" class="mar0a" cellpadding="2" cellspacing="0" border="0">
                                                     <tr>
                                                         <td class="fbld">Link Caption</td>
@@ -69,17 +69,20 @@
                                                         </td>
                                                     </tr>
                                                 </table>
-                                            </fieldset>
-                                        </s:form>
+                                            </s:form>
+                                        </fieldset>
                                     </div>
                                     <div class="mart15 w100 fl-l">
-                                        <table width="80%" class="mar0a" cellpadding="4" cellspacing="0" border="0">
-                                            <tr><th>S.No.</th><th>Caption</th><th>URL</th></tr>
+                                        <table class="tablepaging" id="tablepaging" cellspacing="0" cellpadding="5" border="1">
+                                            <thead
+                                                <tr><td>S.No.</td><td>Caption</td><td>URL</td><td>Delete</td></tr>
+                                            </thead>
                                             <s:iterator value="CaptionList" status="stat">
                                                 <tr>
-                                                    <th><s:property value="#stat.count"/></th>
-                                                    <th><s:property value="CaptionList[#stat.index]"/></th>
-                                                    <th><s:property value="UrlList[#stat.index]"/></th>
+                                                    <td><s:property value="#stat.count"/></td>
+                                                    <td><s:property value="CaptionList[#stat.index]"/></td>
+                                                    <td><s:property value="UrlList[#stat.index]"/></td>
+                                                    <td><a href="DeleteLinksNode?Id=<s:property value="#stat.index"/>"><img src="../icons/delete.gif"/></a></td>
                                                 </tr>
                                             </s:iterator>
                                         </table>

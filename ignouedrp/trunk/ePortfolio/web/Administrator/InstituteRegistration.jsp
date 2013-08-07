@@ -51,8 +51,9 @@
                                     <div class="bradcum"> 
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<s:a action="ShowRegisteredInstitute">Registered Institutes</s:a>&nbsp;>&nbsp; Add New Institute
                                     </div>
+                                        <s:actionerror/>
                                     <div class="w100 fl-l mart10">
-                                        <s:form method="post" action="AddInst" id="InstiRegId" theme="simple" namespace="/Registration">
+                                        <s:form method="post" action="AddInst" id="InstiRegId" theme="simple" namespace="/Administrator">
                                             <fieldset class="w550p mar0a">
                                                 <legend class="fbld">Institute Registration</legend>
                                                 <table width="100%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
@@ -72,6 +73,7 @@
                                                                 headerValue="Please Select Country"
                                                                 label="Country"
                                                                 sortable="true"
+                                                                required="true"
                                                                 /> 
                                                         </td>
                                                     </tr>
@@ -88,6 +90,7 @@
                                                                 headerValue="Please Select City"
                                                                 label="City"
                                                                 sortable="true"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>

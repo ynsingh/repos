@@ -22,11 +22,11 @@
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -51,42 +51,39 @@
                         <div class="right_box">
                             <div class="my_account_bg">Add Certification</div>
                             <div class="v_gallery">
-                                <div class="w98 mar0a">
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowCertificateInfo">Certifications</s:a>&nbsp;>&nbsp;Add Certification </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
+                                        <s:property value="msg"/>
+                                    </div>
                                     <div class="w100 fl-l mart10">
-                                        <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowCertificateInfo">Certifications</s:a>&nbsp;>&nbsp;Add Certification </div>
-                                        </div>
-                                        <div class="w100 fl-l mart10">
-                                            <div class="w100 fl-l tc fbld fcgreen">
-                                            <s:property value="msg"/>
-                                        </div>
-                                        <div class="w100 fl-l mart5">
-                                            <fieldset class="w450p mar0a">
-                                                <legend class="fbld">Add Certification</legend>
-                                                <s:form action="AddCertificateInfo" method="post" name="myform" namespace="/MyProfile">
-                                                    <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
-                                                        <s:textfield name="certificationName" label="Certification Name"/>
-                                                        <s:textfield name="certificationAuthority" label="Certification Authority"/>
-                                                        <s:textfield name="license" label="License Number"/>
-                                                        <sj:datepicker id="date0" label="Valid From" name="certificationDate"
-                                                                       value="today" displayFormat="MM, yy"                                                            
-                                                                       changeMonth="true" changeYear="true"
-                                                                       onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
-                                                                       />
-                                                        <sj:datepicker id="date1" label="Valid Upto" name="validDate"
-                                                                       value="today" displayFormat="MM, yy"                                                            
-                                                                       changeMonth="true" changeYear="true"
-                                                                       onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
-                                                                       />
-                                                        <tr>
-                                                            <td>&nbsp;</td>
-                                                            <td><s:submit value="Save" theme="simple" />
-                                                                <s:reset value="Cancel" theme="simple" onClick="history.go(-1);" /></td>
-                                                        </tr>
-                                                    </table>
-                                                    <br/>
-                                                </s:form>
-                                            </fieldset>
-                                        </div>
+                                        <fieldset class="w450p mar0a">
+                                            <legend class="fbld">Add Certification</legend>
+                                            <s:form action="AddCertificateInfo" method="post" name="myform" namespace="/MyProfile">
+                                                <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                    <s:textfield name="certificationName" label="Certification Name"/>
+                                                    <s:textfield name="certificationAuthority" label="Certification Authority"/>
+                                                    <s:textfield name="license" label="License Number"/>
+                                                    <sj:datepicker id="date0" label="Valid From" name="certificationDate"
+                                                                   value="today" displayFormat="MM, yy"                                                            
+                                                                   changeMonth="true" changeYear="true"
+                                                                   onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
+                                                                   />
+                                                    <sj:datepicker id="date1" label="Valid Upto" name="validDate"
+                                                                   value="today" displayFormat="MM, yy"                                                            
+                                                                   changeMonth="true" changeYear="true"
+                                                                   onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
+                                                                   />
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td><s:submit value="Save" theme="simple" />
+                                                            <s:reset value="Cancel" theme="simple" onClick="history.go(-1);" /></td>
+                                                    </tr>
+                                                </table>
+                                                <br/>
+                                            </s:form>
+                                        </fieldset>
                                     </div>
                                 </div>
                             </div>
@@ -99,18 +96,18 @@
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("certificationName","req","Please enter Certification Name");
-            frmvalidator.addValidation("certificationName","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("certificationName","alpha_s","Alphabetic chars only");
-            frmvalidator.addValidation("certificationAuthority","req","Please enter Certification Authority");
-            frmvalidator.addValidation("certificationAuthority","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("certificationAuthority","alpha_s","Alphabetic only");
-            frmvalidator.addValidation("license","req","Please enter License Number");
-            frmvalidator.addValidation("license","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("license","alphanumeric_space","Alphanumeric only");
-            frmvalidator.addValidation("certificationDate","req","Please enter Valid From");
-            frmvalidator.addValidation("validDate","req","Please enter Valid From");
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("certificationName", "req", "Please enter Certification Name");
+            frmvalidator.addValidation("certificationName", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("certificationName", "alpha_s", "Alphabetic chars only");
+            frmvalidator.addValidation("certificationAuthority", "req", "Please enter Certification Authority");
+            frmvalidator.addValidation("certificationAuthority", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("certificationAuthority", "alpha_s", "Alphabetic only");
+            frmvalidator.addValidation("license", "req", "Please enter License Number");
+            frmvalidator.addValidation("license", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("license", "alphanumeric_space", "Alphanumeric only");
+            frmvalidator.addValidation("certificationDate", "req", "Please enter Valid From");
+            frmvalidator.addValidation("validDate", "req", "Please enter Valid From");
         </script>
     </body>
 </html>

@@ -9,10 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 
 /**
  *

@@ -12,6 +12,8 @@ import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
@@ -36,20 +38,25 @@ public class EvidenceSubmissionAction extends ActionSupport {
     private Boolean submitted;
     private Boolean post;
     private Boolean saveDraft;
+    final Logger logger = Logger.getLogger(this.getClass());
 
     public String EvidSubmissionSave() throws IOException {
 
+        PropertyConfigurator.configure("log4j.properties");
+        logger.warn("The Following Data Entered by User " + user_id + " Evidence ID:" + evidenceId + ", Instruction:" + getInstructions() + ", Attachment:" + attachment + ", Submission Date:" + getSubDate() + ", Submitted:" + getSubmitted() + ", Post:" + getPost() + ", Save as Draft:" + getSaveDraft());
         if (stuData != null) {
             attachment = evFilePath + "/" + user_id + "/";
             new FileUploadCommon().UploadFile(stuData, stuDataFileName, attachment);
             setAttachment(getStuDataFileName());
             evdao.EvidenceSubmissionSave(evidenceId, user_id, getInstructions(), attachment, getSubDate(), getSubmitted(), getPost(), getSaveDraft());
+            logger.warn("The Activity Submmited by User " + user_id + " Evidence ID:" + evidenceId + ", Instruction:" + getInstructions() + ", Attachment:" + attachment + ", Submission Date:" + getSubDate() + ", Submitted:" + getSubmitted() + ", Post:" + getPost() + ", Save as Draft:" + getSaveDraft());
             msg = infoSaved;
             return SUCCESS;
         } else {
             setAttachment("null");
 
             evdao.EvidenceSubmissionSave(evidenceId, user_id, getInstructions(), attachment, getSubDate(), getSubmitted(), getPost(), getSaveDraft());
+            logger.warn("The Activity Submmited by User " + user_id + " Evidence ID:" + evidenceId + ", Instruction:" + getInstructions() + ", Attachment:" + attachment + ", Submission Date:" + getSubDate() + ", Submitted:" + getSubmitted() + ", Post:" + getPost() + ", Save as Draft:" + getSaveDraft());
             msg = infoSaved;
             return SUCCESS;
         }

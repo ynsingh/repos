@@ -17,9 +17,23 @@ public class ReadPropertiesFile {
 
     private static Properties prop = new Properties();
     private static String getValue;
-    private static String propertiesFilePath = System.getProperty("catalina.home") + "\\conf\\eportfolio.properties";
+    private static String propertiesFilePath, TomcateConfig = System.getProperty("catalina.home");
+    private static String OS = System.getProperty("os.name").toLowerCase();
 
     public static String ReadPropertyFile(String str) {
+        if (isWindows()) {
+            propertiesFilePath = TomcateConfig + "\\conf\\eportfolio.properties";
+            // System.out.println("This is Windows");
+        } else if (isMac()) {
+            System.out.println("This is Mac");
+        } else if (isUnix()) {
+            propertiesFilePath = TomcateConfig + "/conf/eportfolio.properties";
+            //System.out.println("This is Unix or Linux");
+        } else if (isSolaris()) {
+            // System.out.println("This is Solaris");
+        } else {
+            // System.out.println("Your OS is not support!!");
+        }
         try {
             prop.load(new FileInputStream(propertiesFilePath));
             setGetValue(prop.getProperty(str));
@@ -42,5 +56,29 @@ public class ReadPropertiesFile {
      */
     public static void setGetValue(String aGetValue) {
         getValue = aGetValue;
+    }
+
+    public static boolean isWindows() {
+
+        return (OS.indexOf("win") >= 0);
+
+    }
+
+    public static boolean isMac() {
+
+        return (OS.indexOf("mac") >= 0);
+
+    }
+
+    public static boolean isUnix() {
+
+        return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0);
+
+    }
+
+    public static boolean isSolaris() {
+
+        return (OS.indexOf("sunos") >= 0);
+
     }
 }

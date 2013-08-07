@@ -6,7 +6,7 @@ package org.IGNOU.ePortfolio.Dropdown;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Programme;
 
 /**
@@ -17,7 +17,7 @@ public class ProgrammeInfoAction extends ActionSupport {
 
     private static long serialVersionUID = -2223948287805083119L;
     private int programmeId;
-    private InstituteDao instDao = new InstituteDao();
+    private ProgrammeDao dao = new ProgrammeDao();
     private List<Programme> PrograList;
     private String ProgrammeNotFound = getText("msg.programmeNotFound");
 
@@ -30,7 +30,7 @@ public class ProgrammeInfoAction extends ActionSupport {
      */
     @Override
     public String execute() throws Exception {
-        PrograList = instDao.ProgrammeListByProgrammeId(getProgrammeId());
+        PrograList = dao.ProgrammeListByProgrammeId(getProgrammeId());
         return SUCCESS;
     }
 
@@ -50,20 +50,6 @@ public class ProgrammeInfoAction extends ActionSupport {
      */
     public void setProgrammeId(int programmeId) {
         this.programmeId = programmeId;
-    }
-
-    /**
-     * @return the instDao
-     */
-    public InstituteDao getInstDao() {
-        return instDao;
-    }
-
-    /**
-     * @param instDao the instDao to set
-     */
-    public void setInstDao(InstituteDao instDao) {
-        this.instDao = instDao;
     }
 
     /**

@@ -1,7 +1,7 @@
 <%-- 
     Document   : EditPersonalDetails
     Created on : Sep 14, 2012, 12:01:12 PM
-    Author     : Vinay Kr. Sharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

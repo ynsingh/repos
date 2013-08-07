@@ -91,8 +91,12 @@
                                                         </tr>
                                                     </s:iterator>                                
                                                 </s:iterator>
-                                                <tr><td colspan="3" align="center"><s:submit value="Save Changes"/></td></tr>
-                                            </s:form>
+                                                <tr><td colspan="3" align="center">
+                                                        <s:submit value="Submit"/>&nbsp;
+                                                        <s:reset value="Reset"/>&nbsp;
+                                                        <s:reset value="Back" onClick="history.go(-1);" />
+                                                    </td></tr>
+                                                </s:form>
                                         </table>
                                     </fieldset>  
                                 </div>

@@ -19,7 +19,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <sx:head/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
                 $( "#accordion" ).accordion();
             });
@@ -31,7 +31,7 @@ Version      : 1
                 <!--Header Starts Here-->
                 <div class="w100 fl-l">
                     <div class="header">
-                       <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
+                        <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
                     </div>
                     <div class="menu_bg">
                         <div class="wau fl-l"><img src="images/blank.gif" alt="" width="20" height="10" /></div>
@@ -56,16 +56,19 @@ Version      : 1
                         <div class="middle_cont">
                             <div class="my_account_bg">Contact Us</div>
                             <div class="v_gallery">
-                                <div class="w100 fl-l tc fbld fcgreen"><s:property value="feedbackmsg"/></div>
                                 <table align="center">
-                                    <tr><td><strong>Prof. Uma Kanjilal, PI</strong></td></tr>
-                                    <tr><td>Room No: 105, Block: A</td></tr>
-                                    <tr><td>eGyankosh, Computer Division</td></tr>
-                                    <tr><td>Academic Complex, IGNOU</td></tr>
-                                    <tr><td>Maidan Garhi, New Delhi-110068</td></tr>
-                                    <tr><td>Office No: 011-29571923</td></tr>
-                                    <tr><td>Email: ukanjilal@ignou.ac.in</td></tr>
+                                    <s:iterator value="contactList">
+                                        <tr><td><strong> <s:property value="contactName"/></strong></td></tr>
 
+                                        <s:generator separator="," val="%{contactAddress}" count="4">
+                                            <s:iterator >
+                                                <tr><td><s:property /></td></tr>  
+                                            </s:iterator>
+                                        </s:generator>
+                                        <tr><td><strong>Office No:</strong> <s:property value="contactOff" /></td></tr>
+                                        <tr><td><strong>Mobile No:</strong> <s:property value="contactMob" /></td></tr>
+                                        <tr><td><strong> Email-Id: </strong><s:property value="contactEmail" /></td></tr>
+                                    </s:iterator>
                                 </table>
                             </div>
                             <!--Right box End Here-->
@@ -79,7 +82,7 @@ Version      : 1
         <!--Footer Section Starts Here-->
         <div class="footer">
             <div class="f_menu"> 
-                <a href="<s:url value="/About.jsp"/>" target="_Blank">About</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a>
+                <s:a action="ShowAboutUs" namespace="/Administrator">About Us</s:a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a>
             </div>
         </div>
         <div class="footer_panel">

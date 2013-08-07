@@ -21,7 +21,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
@@ -50,7 +50,7 @@ Version      : 1
         <div class="w100 fl-l">
             <div class="w990p mar0a">
                 <!--Header Starts Here-->
-                <s:include  value="./Header.jsp"/>
+                <s:include  value="/Header.jsp"/>
                 <!--Header Ends Here-->
 
                 <!--Middle Section Starts Here-->
@@ -69,7 +69,7 @@ Version      : 1
                             </div>
 
                             <% } else {%>
-                            <div class="my_account_bg">My Account</div>
+                            <div class="my_account_bg">Home</div>
                             <s:url id="RefID" action="ShowReference" namespace="/MyProfile"></s:url>                    
                             <% if (role.contains("faculty")) {%>     
                             <s:url id="TestiReqID" action="StdTestiReq" namespace="/MyProfile"/>
@@ -85,19 +85,22 @@ Version      : 1
                                             <li><a href="<s:url value="/MyProfile/MyProfile.jsp"/>"><img src="<s:url value="/icons/my-profile.gif"/>" alt="My Profile" /><span>My Profile</span></a></li>
                                             <li><s:a href="%{TestiReqID}"><img src="<s:url value="/icons/testmonials.gif"/>" alt="Testimonials" /><span>Testimonials</span></s:a></li>
                                             <li><s:a href="%{RefID}"><img src="<s:url value="/icons/references.gif"/>" alt="References" /><span>References</span></s:a></li>
-                                        </ul>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="w100 fl-l mart10">
-                                    <div class="hdng_gallery"><span>My Education and Work</span></div>
+                                    <div class="w100 fl-l mart10">
+                                        <div class="hdng_gallery"><span>My Education and Work</span></div>
                                     <% if (role.contains("faculty")) {%>     
                                     <s:url id="EviID" action="FacultyTaskShow" namespace="/Evidence"/>
+                                    <s:url id="ActId" action="myAnnouncedActivities" namespace="/Activities"/>
                                     <% } else if (role.contains("student")) {%>
                                     <s:url id="EviID" action="StudentTaskList" namespace="/Evidence"/>
+                                    <s:url id="ActId" action="announcedActivities" namespace="/Activities"/>
                                     <% }%> 
                                     <div class="gallery">
                                         <ul id="myconnectionicon" class="jcarousel-skin-tango">
-                                            <li><s:a href="%{EviID}"><img src="<s:url value="/icons/task-activities.gif"/>" width="60" height="60"/><span>Task / Activities</span></s:a></li>
+                                            <li><s:a href="%{EviID}"><img src="<s:url value="/icons/task-activities.gif"/>" width="60" height="60"/><span>Activities&nbsp;(Evidence)</span></s:a></li>
+                                      <!--      <li><s:a href="%{ActId}"><img src="<s:url value="/icons/task-activities.gif"/>" width="60" height="60"/><span>Activities</span></s:a></li> -->
                                             <li><a href="<s:url value="/MyWorkspace/MyWorkspace.jsp"/>"><img src="<s:url value="/icons/my-workspace.gif"/>" alt="My Workspace" /><span>My Workspace</span></a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/institute.gif"/>" alt="Institute" /><span>Institute</span></a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/course.gif"/>" alt="Course" /><span>Courses</span></a></li>
@@ -113,9 +116,9 @@ Version      : 1
                                             <li><s:a href="%{PSID}"><img src="<s:url value="/icons/social-network.gif"/>" alt="Social Networking" /><span>Social Networking</span></s:a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/chat.gif"/>" alt="Chat" /><span>Chat</span></a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/blog.gif"/>" alt="Blog" /><span>Blog</span></a></li>
-                                            <li><a href="<s:url value="http://14.139.40.226:8080/jamwiki-1.2.3/en/StartingPoints"/>" target="_blank"><img src="<s:url value="/icons/wiki.gif"/>" alt="Wiki" /><span>Wiki</span></a></li>
+                                            <li><a href="<s:url value="http://wiki.edrp.ac.in/wiki/index.php/Main_Page"/>" target="_blank"><img src="<s:url value="/icons/wiki.gif"/>" alt="Wiki" /><span>Wiki</span></a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/communication.gif"/>" alt="Communication" /><span>Communication</span></a></li>
-                                            <li><a href="<s:url value="http://14.139.40.226:8080/ePortfolioJforum/forums/list.page"/>" target="_blank"><img src="<s:url value="/icons/forum.gif"/>" alt="Discussion" /><span>Discussion</span></a></li>
+                                            <li><a href="<s:url value="http://forum.edrp.ac.in/forum/"/>" target="_blank"><img src="<s:url value="/icons/forum.gif"/>" alt="Discussion" /><span>Discussion</span></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -134,7 +137,6 @@ Version      : 1
                             <% }%> 
                             <!--Right box Starts Here-->
                         </div>
-
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>

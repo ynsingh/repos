@@ -19,11 +19,11 @@
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -48,14 +48,13 @@
                         <div class="right_box">
                             <div class="my_account_bg">Edit Interests</div>
                             <div class="v_gallery">
-                                <div class="w98 mar0a">
-                                    <div class="w100 fl-l mart10">
-                                        <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowInterestInfo">Interest</s:a>&nbsp;>&nbsp; Edit Interest </div>
-                                        </div>
-                                        <div class="w100 fl-l tc fbld fcgreen">
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowInterestInfo">Interest</s:a>&nbsp;>&nbsp; Edit Interest </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
                                         <s:property value="msg"/>
                                     </div>
-                                    <div class="w100 fl-l mart10">
+                                    <div class="w100 fl-l">
                                         <fieldset class="w400p mar0a">
                                             <legend class="fbld">Edit Interests</legend>
                                             <s:form action="UpdateInt" method="post" name="myform">
@@ -91,27 +90,27 @@
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("acadInterest","req","Please enter your Academic Interest");
-            frmvalidator.addValidation("acadInterest","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("acadInterest","alphabetic_space","Academic Interest should be Alphabetic with comma seperated only.");
-                
-            frmvalidator.addValidation("persInterest","req","Please enter your Personal Interest");
-            frmvalidator.addValidation("persInterest","maxlen=200", "Max length is 200");
-            frmvalidator.addValidation("persInterest","alphabetic_space","Personal Interest should be Alphabetic with comma seperated only");
-  
-            frmvalidator.addValidation("techInterest","req","Please enter your Technical Interest");
-            frmvalidator.addValidation("techInterest","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("techInterest","alphabetic_space","Technical Interest should be Alphabetic with comma seperated only");
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("acadInterest", "req", "Please enter your Academic Interest");
+            frmvalidator.addValidation("acadInterest", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("acadInterest", "alphabetic_space", "Academic Interest should be Alphabetic with comma seperated only.");
 
-            frmvalidator.addValidation("reserInterst","req","Please enter your Research Interest");
-            frmvalidator.addValidation("reserInterst","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("reserInterst","alphabetic_space","Research Interest should be Alphabetic with comma seperated only");
-  
-            frmvalidator.addValidation("myHobbies","req","Please enter your Research Interest");
-            frmvalidator.addValidation("myHobbies","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("myHobbies","alphabetic_space","Research Interest should be Alphabetic with comma seperated only");
-        
+            frmvalidator.addValidation("persInterest", "req", "Please enter your Personal Interest");
+            frmvalidator.addValidation("persInterest", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("persInterest", "alphabetic_space", "Personal Interest should be Alphabetic with comma seperated only");
+
+            frmvalidator.addValidation("techInterest", "req", "Please enter your Technical Interest");
+            frmvalidator.addValidation("techInterest", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("techInterest", "alphabetic_space", "Technical Interest should be Alphabetic with comma seperated only");
+
+            frmvalidator.addValidation("reserInterst", "req", "Please enter your Research Interest");
+            frmvalidator.addValidation("reserInterst", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("reserInterst", "alphabetic_space", "Research Interest should be Alphabetic with comma seperated only");
+
+            frmvalidator.addValidation("myHobbies", "req", "Please enter your Research Interest");
+            frmvalidator.addValidation("myHobbies", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("myHobbies", "alphabetic_space", "Research Interest should be Alphabetic with comma seperated only");
+
         </script>
     </body>
 </html>

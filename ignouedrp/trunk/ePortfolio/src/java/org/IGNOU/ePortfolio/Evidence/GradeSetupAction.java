@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.DAO.GradeTypeDao;
 import org.IGNOU.ePortfolio.Model.Course;
 import org.IGNOU.ePortfolio.Model.GradeTypeDetailsMaster;
@@ -41,7 +41,7 @@ public class GradeSetupAction extends ActionSupport {
     private List<Institute> InsList;
     private List<Programme> ProgList;
     private List<Course> CourseListList;
-    private ProgrammeCourseDao pDao = new ProgrammeCourseDao();
+    private ProgrammeDao pDao = new ProgrammeDao();
     private String[] gradeValue;
     private String[] gradeValue1;
     private String details;
@@ -288,14 +288,14 @@ public class GradeSetupAction extends ActionSupport {
     /**
      * @return the pDao
      */
-    public ProgrammeCourseDao getpDao() {
+    public ProgrammeDao getpDao() {
         return pDao;
     }
 
     /**
      * @param pDao the pDao to set
      */
-    public void setpDao(ProgrammeCourseDao pDao) {
+    public void setpDao(ProgrammeDao pDao) {
         this.pDao = pDao;
     }
 

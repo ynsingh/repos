@@ -14,7 +14,7 @@ import org.IGNOU.ePortfolio.DAO.RequestDao;
 
 /**
  *
- * @author Vinay Kr. Sharma
+ * @author Vinay
  */
 public class ChangeRequestAction extends ActionSupport  {
 

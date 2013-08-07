@@ -26,10 +26,10 @@
     </head>
     <body>
         <%
- String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
             }
+            String role = session.getAttribute("role").toString();
         %>
 
         <div class="w100 fl-l">
@@ -51,11 +51,11 @@
                                     <div class="bradcum"> 
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<s:a action="ShowRegisteredInstitute">Registered Institutes</s:a>&nbsp;>&nbsp; Departments/School
                                         </div>
- <% if (role.contains("admin")) {%>
+                                         <% if (role.contains("admin")) {%>
                                         <div class="w98 maroa tr">
                                             <a href="DepartmentAdd.jsp">Add Department/School</a>
                                         </div>
- <% } %>
+                                         <% } %>
                                         <div class="w100 fl-l tc fbld fcred">
                                         <s:property value="msg"/>
                                     </div>
@@ -65,7 +65,7 @@
                                         <s:form method="post" id="FormId" theme="simple" namespace="/Dropdown">
                                             <table class="tablepaging" id="tablepaging" width="95%" cellspacing="0" cellpadding="5" border="1">
                                                 <thead>
-                                                    <tr><td width="180px;">Select University/Institute</td>
+                                                    <tr><td width="180px;">University/Institute</td>
                                                         <td>
                                                             <sj:select 
                                                                 href="%{Univer}" 
@@ -78,6 +78,7 @@
                                                                 headerValue="Please Select University"
                                                                 label="Select University/Institute"
                                                                 sortable="false"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>

@@ -42,12 +42,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.FileDAO;
-import org.IGNOU.ePortfolio.Model.UserDocsList;
+import org.IGNOU.ePortfolio.Model.Userdocs;
 import org.apache.log4j.Logger;
 
 /**
@@ -58,17 +57,15 @@ import org.apache.log4j.Logger;
 public class FileListAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
-    private UserDocsList imagelist;
-    private List<UserDocsList> imagelistlist;
+    private Userdocs imagelist;
+    private List<Userdocs> imagelistlist;
     private FileDAO dao = new FileDAO();
-    private Integer fileid;
+    private long fileid;
     private String user_id = new UserSession().getUserInSession();
     private String filename, description, filepath;
     private InputStream fis;
     private String filepathN, filename1, filepath1, filetype;
-    Calendar c_Date = Calendar.getInstance();
-    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-    private String filedate = f.format(c_Date.getTime());
+    private String filedate;
     final Logger logger = Logger.getLogger(this.getClass());
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
@@ -104,7 +101,7 @@ public class FileListAction extends ActionSupport {
         }
         File oldfile = new File(filepathN);
 
-        dao.UserDocsUpdate(getFileid(), getFilename(), getDescription(), getFiledate());
+        dao.UserDocsUpdate(getFileid(), getFilename(), getDescription(), new Date().toString());
 
         imagelistlist = dao.UserDocsListByFileId(getFileid());
         filename = imagelistlist.iterator().next().getFilename();
@@ -156,42 +153,42 @@ public class FileListAction extends ActionSupport {
     /**
      * @return the imagelist
      */
-    public UserDocsList getImagelist() {
+    public Userdocs getImagelist() {
         return imagelist;
     }
 
     /**
      * @param imagelist the imagelist to set
      */
-    public void setImagelist(UserDocsList imagelist) {
+    public void setImagelist(Userdocs imagelist) {
         this.imagelist = imagelist;
     }
 
     /**
      * @return the imagelistlist
      */
-    public List<UserDocsList> getImagelistlist() {
+    public List<Userdocs> getImagelistlist() {
         return imagelistlist;
     }
 
     /**
      * @param imagelistlist the imagelistlist to set
      */
-    public void setImagelistlist(List<UserDocsList> imagelistlist) {
+    public void setImagelistlist(List<Userdocs> imagelistlist) {
         this.imagelistlist = imagelistlist;
     }
 
     /**
      * @return the fileid
      */
-    public Integer getFileid() {
+    public long getFileid() {
         return fileid;
     }
 
     /**
      * @param fileid the fileid to set
      */
-    public void setFileid(Integer fileid) {
+    public void setFileid(long fileid) {
         this.fileid = fileid;
     }
 

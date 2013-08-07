@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.InterestDao;
-import org.IGNOU.ePortfolio.Model.ProfileInterestList;
+import org.IGNOU.ePortfolio.Model.ProfileInterest;
 
 /**
  *
@@ -48,9 +48,9 @@ public class ProfileInterestInfoAction extends ActionSupport {
 
     private String user_id = new UserSession().getUserInSession();
     private InterestDao Intdao = new InterestDao();
-    private ProfileInterestList IntList;
-    private List<ProfileInterestList> IntListList;
-    private List<ProfileInterestList> editIntList;
+    private ProfileInterest IntList;
+    private List<ProfileInterest> IntListList;
+    private List<ProfileInterest> editIntList;
     private long interestId;
     private String userId;
     private String acadInterest;
@@ -105,42 +105,42 @@ public class ProfileInterestInfoAction extends ActionSupport {
     /**
      * @return the IntList
      */
-    public ProfileInterestList getIntList() {
+    public ProfileInterest getIntList() {
         return IntList;
     }
 
     /**
      * @param IntList the IntList to set
      */
-    public void setIntList(ProfileInterestList IntList) {
+    public void setIntList(ProfileInterest IntList) {
         this.IntList = IntList;
     }
 
     /**
      * @return the IntListList
      */
-    public List<ProfileInterestList> getIntListList() {
+    public List<ProfileInterest> getIntListList() {
         return IntListList;
     }
 
     /**
      * @param IntListList the IntListList to set
      */
-    public void setIntListList(List<ProfileInterestList> IntListList) {
+    public void setIntListList(List<ProfileInterest> IntListList) {
         this.IntListList = IntListList;
     }
 
     /**
      * @return the editIntList
      */
-    public List<ProfileInterestList> getEditIntList() {
+    public List<ProfileInterest> getEditIntList() {
         return editIntList;
     }
 
     /**
      * @param editIntList the editIntList to set
      */
-    public void setEditIntList(List<ProfileInterestList> editIntList) {
+    public void setEditIntList(List<ProfileInterest> editIntList) {
         this.editIntList = editIntList;
     }
 

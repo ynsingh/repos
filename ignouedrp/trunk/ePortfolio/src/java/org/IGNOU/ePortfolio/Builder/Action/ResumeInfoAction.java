@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ResumeDao;
-import org.IGNOU.ePortfolio.Model.ResumeList;
+import org.IGNOU.ePortfolio.Model.Resume;
 
 /**
  *
@@ -22,8 +22,8 @@ import org.IGNOU.ePortfolio.Model.ResumeList;
 public class ResumeInfoAction extends ActionSupport{
     private ResumeDao rsdao=new ResumeDao();
     private String user_id=new UserSession().getUserInSession();
-    private List<ResumeList> resumelist;
-    private ResumeList rslist;
+    private List<Resume> resumelist;
+    private Resume rslist;
     private long idResume;
     private String resumeName,resumeType;
     private byte[] resume;
@@ -32,7 +32,7 @@ public class ResumeInfoAction extends ActionSupport{
     
     public String ListResume() 
     {
-        setResumelist(getRsdao().ResumeListByUserId(getUser_id()));
+        setResumelist(getRsdao().ResumeByUserId(getUser_id()));
         return "success";
 
     }
@@ -85,28 +85,28 @@ public class ResumeInfoAction extends ActionSupport{
     /**
      * @return the resumelist
      */
-    public List<ResumeList> getResumelist() {
+    public List<Resume> getResumelist() {
         return resumelist;
     }
 
     /**
      * @param resumelist the resumelist to set
      */
-    public void setResumelist(List<ResumeList> resumelist) {
+    public void setResumelist(List<Resume> resumelist) {
         this.resumelist = resumelist;
     }
 
     /**
      * @return the rslist
      */
-    public ResumeList getRslist() {
+    public Resume getRslist() {
         return rslist;
     }
 
     /**
      * @param rslist the rslist to set
      */
-    public void setRslist(ResumeList rslist) {
+    public void setRslist(Resume rslist) {
         this.rslist = rslist;
     }
 

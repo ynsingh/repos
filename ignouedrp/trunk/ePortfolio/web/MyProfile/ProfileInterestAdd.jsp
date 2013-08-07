@@ -19,11 +19,11 @@
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -48,14 +48,13 @@
                         <div class="right_box">
                             <div class="my_account_bg">Add Interests</div>
                             <div class="v_gallery">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowInterestInfo">Interest</s:a>&nbsp;>&nbsp; Add Profile Interest </div>
-                                </div>
-                                <div class="w100 fl-l mart10">
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <s:a action="ShowInterestInfo">Interest</s:a>&nbsp;>&nbsp; Add Profile Interest </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l">
                                     <div class="w100 fl-l tc fbld fcgreen">
                                         <s:property value="msg"/>
                                     </div>
-                                    <div class="w100 fl-l mart5">
+                                    <div class="w100 fl-l">
                                         <fieldset class="w400p mar0a">
                                             <legend class="fbld">Add Certification</legend>
                                             <s:form action="AddInterest" method="post" name="myform">
@@ -120,27 +119,27 @@
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("acadInterest","req","Please enter your Academic Interest");
-            frmvalidator.addValidation("acadInterest","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("acadInterest","alnum_s","decimal","AlphaNumeric chars only");
-    
-            frmvalidator.addValidation("persInterest","req","Please enter your Personal Interest");
-            frmvalidator.addValidation("persInterest","maxlen=200", "Max length is 200");
-            frmvalidator.addValidation("persInterest","alnum_s","AlphaNumeric chars only");
-  
-            frmvalidator.addValidation("techInterest","req","Please enter your Technical Interest");
-            frmvalidator.addValidation("techInterest","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("techInterest","alnum_s","AlphaNumeric chars only");
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("acadInterest", "req", "Please enter your Academic Interest");
+            frmvalidator.addValidation("acadInterest", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("acadInterest", "alnum_s", "decimal", "AlphaNumeric chars only");
 
-            frmvalidator.addValidation("reserInterst","req","Please enter your Research Interest");
-            frmvalidator.addValidation("reserInterst","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("reserInterst","alnum_s","AlphaNumeric chars only");
-  
-            frmvalidator.addValidation("myHobbies","req","Please enter your Research Interest");
-            frmvalidator.addValidation("myHobbies","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("myHobbies","alpha_s","Alphabetic chars only");
-         
+            frmvalidator.addValidation("persInterest", "req", "Please enter your Personal Interest");
+            frmvalidator.addValidation("persInterest", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("persInterest", "alnum_s", "AlphaNumeric chars only");
+
+            frmvalidator.addValidation("techInterest", "req", "Please enter your Technical Interest");
+            frmvalidator.addValidation("techInterest", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("techInterest", "alnum_s", "AlphaNumeric chars only");
+
+            frmvalidator.addValidation("reserInterst", "req", "Please enter your Research Interest");
+            frmvalidator.addValidation("reserInterst", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("reserInterst", "alnum_s", "AlphaNumeric chars only");
+
+            frmvalidator.addValidation("myHobbies", "req", "Please enter your Research Interest");
+            frmvalidator.addValidation("myHobbies", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("myHobbies", "alpha_s", "Alphabetic chars only");
+
         </script>
     </body>
 </html>

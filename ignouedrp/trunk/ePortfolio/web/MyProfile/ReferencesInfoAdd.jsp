@@ -19,11 +19,11 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -48,14 +48,13 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Add References</div>
                             <div class="v_gallery">
-                                <div class="w98 mar0a mart10">
-                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="ShowReference">References</a> > Add Reference </div>
-                                </div>
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="ShowReference">References</a> > Add Reference </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
                                 <div class="w100 fl-l mart10">
                                     <div class="w100 fl-l tc fbld fcgreen">
                                         <s:property value="msg"/>
                                     </div>
-                                    <div class="w100 fl-l mart5">
+                                    <div class="w100 fl-l">
                                         <fieldset class="w400p mar0a">
                                             <legend><strong>Add References</strong></legend>
                                             <s:form action="AddReferenceInfo" method="post" namespace="/MyProfile" name="myform">
@@ -336,44 +335,44 @@ Version      : 1
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("name","req","Please enter your Name");
-            frmvalidator.addValidation("name","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("name","alpha_s","Alphabetic chars only");
-    
-            frmvalidator.addValidation("designation","req","Please enter your designation");
-            frmvalidator.addValidation("designation","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("designation","alpha_s","Alphabetic chars only");
-  
-            frmvalidator.addValidation("department","req","Please enter Department / School");
-            frmvalidator.addValidation("department","maxlen=30","Max length is 30");
-            frmvalidator.addValidation("department","alpha_s","Alphabetic chars only");
-            
-            frmvalidator.addValidation("orgUniv","req","Please enter University / Organization");
-            frmvalidator.addValidation("orgUniv","maxlen=50","Max length is 50");
-            frmvalidator.addValidation("orgUniv","alpha_s","Alphabetic chars only");
-    
-            frmvalidator.addValidation("place","req","Please enter Address");
-            frmvalidator.addValidation("place","maxlen=200");
-            frmvalidator.addValidation("place","alphanumeric_space","Alphanumeric chars only");
-  
-            frmvalidator.addValidation("city","req","Please enter City");
-            frmvalidator.addValidation("city","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("city","alpha_s","Alphabetic chars only");
-  
-            frmvalidator.addValidation("state","req","Please enter State");
-            frmvalidator.addValidation("state","maxlen=30","Max length is 30");
-            frmvalidator.addValidation("state","alpha_s","Alphabetic chars only");
-            
-            frmvalidator.addValidation("country","req","Please enter Country");
-            
-            frmvalidator.addValidation("mobileno","req","Please enter Mobile No");
-            frmvalidator.addValidation("mobileno","maxlen=10","Max length is 10");
-            frmvalidator.addValidation("mobileno","numeric","numeric chars only");
-  
-            frmvalidator.addValidation("emailId","req","Please enter Email ID");
-            frmvalidator.addValidation("emailId","email","");
-        
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("name", "req", "Please enter your Name");
+            frmvalidator.addValidation("name", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("name", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("designation", "req", "Please enter your designation");
+            frmvalidator.addValidation("designation", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("designation", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("department", "req", "Please enter Department / School");
+            frmvalidator.addValidation("department", "maxlen=30", "Max length is 30");
+            frmvalidator.addValidation("department", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("orgUniv", "req", "Please enter University / Organization");
+            frmvalidator.addValidation("orgUniv", "maxlen=50", "Max length is 50");
+            frmvalidator.addValidation("orgUniv", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("place", "req", "Please enter Address");
+            frmvalidator.addValidation("place", "maxlen=200");
+            frmvalidator.addValidation("place", "alphanumeric_space", "Alphanumeric chars only");
+
+            frmvalidator.addValidation("city", "req", "Please enter City");
+            frmvalidator.addValidation("city", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("city", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("state", "req", "Please enter State");
+            frmvalidator.addValidation("state", "maxlen=30", "Max length is 30");
+            frmvalidator.addValidation("state", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("country", "req", "Please enter Country");
+
+            frmvalidator.addValidation("mobileno", "req", "Please enter Mobile No");
+            frmvalidator.addValidation("mobileno", "maxlen=10", "Max length is 10");
+            frmvalidator.addValidation("mobileno", "numeric", "numeric chars only");
+
+            frmvalidator.addValidation("emailId", "req", "Please enter Email ID");
+            frmvalidator.addValidation("emailId", "email", "");
+
         </script>
     </body>
 </html>

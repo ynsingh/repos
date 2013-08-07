@@ -56,8 +56,8 @@ Author : IGNOU Team
                                         <s:a href="AddEvidence.jsp" cssClass="marl5">Create Activity</s:a>
                                         <s:a action="EviDraftList" cssClass="marl5">Draft</s:a>
                                         <s:a action="GetGradeSetupList" cssClass="marl5">Grade Setup</s:a>
-                                        </div>                                    
-                                        <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
+                                    </div>                                    
+                                    
                                     <table class="w100 mar0a fl-l mart10 tablepaging" id="tablepaging" cellpadding="4" border="1" cellspacing="0">
                                         <thead>
                                             <tr>
@@ -67,11 +67,15 @@ Author : IGNOU Team
                                                 <td>Start Date</td>
                                                 <td>Closing Date</td>
                                             </tr>
+                                           
                                         </thead>
-                                        <s:iterator value="StdevList" status="stat">
+                                        <tr><td colspan="5" align="center">   
+                                                <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
+                                      </td></tr>
+                                       <s:iterator value="StdevList" status="stat">
                                             <tr> 
                                                 <td> <s:property value="#stat.count" /></td>
-                                                <td> <s:property value="CourseList[#stat.index]"/>
+                                                <td> <s:property value="course.courseCode"/>
                                                 </td>
                                                 <td class="lh16"><s:property value="evTitle"/><br/>
                                                     <s:if test="oarList[#stat.index]=='null'">
@@ -81,8 +85,8 @@ Author : IGNOU Team
                                                     </s:elseif>
                                                     <a href="EviReview?evidenceId=<s:property value="evidenceId"/>">Review</a>
                                                 </td>
-                                                <td><s:date name="openDate" format="MMM dd, YYYY"/></td>
-                                                <td><s:date name="closeDate" format="MMM dd, YYYY"/></td>
+                                                <td><s:date name="openDate" format="MMM dd, yyyy"/></td>
+                                                <td><s:date name="closeDate" format="MMM dd, yyyy"/></td>
                                             </tr>
                                         </s:iterator>
                                     </table>
@@ -93,8 +97,8 @@ Author : IGNOU Team
                                 </div>
                                 <div align="right">
                                     <s:a action="SubmitedEvi">Submitted Task / Activities</s:a>
-                                    </div>
-                                    <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
+                                </div>
+                                <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
                                 <table  class="w100 mar0a fl-l mart10 tablepaging" id="tablepaging" cellpadding="4" border="1" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -112,7 +116,7 @@ Author : IGNOU Team
                                                     <s:property value="#stat.count" />
                                                 </td>
                                                 <td>
-                                                    <s:property value="CourseList[#stat.index]"/>
+                                                    <s:property value="course.courseCode"/>
                                                 </td>
                                             </s:if>
                                             <s:if test="oarList[#stat.index]!='null'">
@@ -121,10 +125,10 @@ Author : IGNOU Team
                                                 </td> </s:if>
 
                                             <s:if test="oarList[#stat.index]!='null'">
-                                                <td><s:date name="openDate" format="MMM dd, YYYY"/></td>
+                                                <td><s:date name="openDate" format="MMM dd, yyyy"/></td>
                                             </s:if>
                                             <s:if test="oarList[#stat.index]!='null'">
-                                                <td><s:date name="closeDate" format="MMM dd, YYYY"/></td>
+                                                <td><s:date name="closeDate" format="MMM dd, yyyy"/></td>
                                             </s:if>
                                         </tr>
                                     </s:iterator>

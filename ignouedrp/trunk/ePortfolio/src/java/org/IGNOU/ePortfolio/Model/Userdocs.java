@@ -1,7 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
-
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -37,9 +34,7 @@
  */
 package org.IGNOU.ePortfolio.Model;
 
-import java.io.File;
 import java.io.Serializable;
-import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -50,9 +45,37 @@ public class Userdocs implements Serializable {
     private String user_id;
     private long fileid;
     private Long size;
-    private String filepath, filetype, filename;
-    private File userImage;
-    private String userImageFileName, filedate;
+    private String filetype;
+    private String filename;
+    private String filepath, description, filedate;
+
+    public Userdocs(String user_id, long fileid, Long size, String filetype, String filename, String filepath, String description, String filedate) {
+        this.user_id = user_id;
+        this.fileid = fileid;
+        this.size = size;
+        this.filetype = filetype;
+        this.filename = filename;
+        this.filepath = filepath;
+        this.description = description;
+        this.filedate = filedate;
+    }
+
+    public Userdocs() {
+    }
+
+    /**
+     * @return the user_id
+     */
+    public String getUser_id() {
+        return user_id;
+    }
+
+    /**
+     * @param user_id the user_id to set
+     */
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
     /**
      * @return the fileid
@@ -72,7 +95,6 @@ public class Userdocs implements Serializable {
      * @return the size
      */
     public Long getSize() {
-        size = (userImage.length()) / 1024;
         return size;
     }
 
@@ -80,50 +102,13 @@ public class Userdocs implements Serializable {
      * @param size the size to set
      */
     public void setSize(Long size) {
-
         this.size = size;
-    }
-
-    /**
-     * @return the filepath
-     */
-    public String getFilepath() {
-        filetype = userImageFileName.substring(userImageFileName.indexOf(".", 4));
-        if (filetype.equals(".jpg") || filetype.equals(".gif") || filetype.equals(".png")
-                || filetype.equals(".txt") || filetype.equals(".doc") || (filetype.equals(".docx")
-                || filetype.equals(".pdf") || filetype.equals(".java") || filetype.equals(".ppt"))) {
-
-            filepath = filepath ;
-        } else {
-            filepath = filepath ;
-        }
-        try {
-            File folder = new File(filepath);
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-            File fileToCreate = new File(filepath, filename + filetype);
-            FileUtils.copyFile(userImage, fileToCreate);
-        } catch (Exception e) {
-            System.out.println("Exception" + e);
-        }
-        return filepath;
-    }
-
-    /**
-     * @param filepath the filepath to set
-     */
-    public void setFilepath(String filepath) {
-
-
-        this.filepath = filepath;
     }
 
     /**
      * @return the filetype
      */
     public String getFiletype() {
-        filetype = userImageFileName.substring(userImageFileName.indexOf(".", 4));
         return filetype;
     }
 
@@ -131,7 +116,6 @@ public class Userdocs implements Serializable {
      * @param filetype the filetype to set
      */
     public void setFiletype(String filetype) {
-
         this.filetype = filetype;
     }
 
@@ -139,53 +123,42 @@ public class Userdocs implements Serializable {
      * @return the filename
      */
     public String getFilename() {
-        if (filename.isEmpty()) {
-            filename = userImageFileName;
-            return filename;
-        } else {
-
-            return filename;
-        }
-
+        return filename;
     }
 
     /**
      * @param filename the filename to set
      */
     public void setFilename(String filename) {
-
         this.filename = filename;
-
     }
 
     /**
-     * @return the userImage
+     * @return the filepath
      */
-    public File getUserImage() {
-        return userImage;
+    public String getFilepath() {
+        return filepath;
     }
 
     /**
-     * @param userImage the userImage to set
+     * @param filepath the filepath to set
      */
-    public void setUserImage(File userImage) {
-        this.userImage = userImage;
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
     }
 
     /**
-     * @return the userImageFileName
+     * @return the description
      */
-    public String getUserImageFileName() {
-        userImageFileName = userImage.getName();
-        return userImageFileName;
-
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * @param userImageFileName the userImageFileName to set
+     * @param description the description to set
      */
-    public void setUserImageFileName(String userImageFileName) {
-        this.userImageFileName = userImageFileName;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -200,19 +173,5 @@ public class Userdocs implements Serializable {
      */
     public void setFiledate(String filedate) {
         this.filedate = filedate;
-    }
-
-    /**
-     * @return the user_id
-     */
-    public String getUser_id() {
-        return user_id;
-    }
-
-    /**
-     * @param user_id the user_id to set
-     */
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
     }
 }

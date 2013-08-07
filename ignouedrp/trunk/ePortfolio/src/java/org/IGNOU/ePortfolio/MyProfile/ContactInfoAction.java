@@ -33,7 +33,7 @@ public class ContactInfoAction extends ActionSupport {
     private ProfileContact ProfileContact;
     private List<ProfileContact> contactListList;
     private long contactInfoId;
-    private Long HTelephone, OTelephone, mobileNo,faxNo;
+    private Long HTelephone, OTelephone, mobileNo, faxNo;
     private Integer pin;
     private String address1, address2, city, state, country, email1, email2, email3, owebsite, pwebsite;
     private String msg;

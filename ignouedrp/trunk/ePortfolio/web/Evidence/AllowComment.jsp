@@ -65,37 +65,11 @@
                                         <legend class="fbld">Allow Comment</legend>
 
                                         <table width="70%" class="mart10" align="center" cellpadding="4" border="0" cellspacing="0">
-                                            <s:iterator value="evdInfo">
-                                                <tr><th align="left">Title</th><td><s:property value="evTitle"/></td></tr>
-                                             <!--
-                                                <tr><th align="left">Start Date (MM/DD/YY)</th>
-                                                    <td><s:property value="openDate"/></td></tr>
-                                                <tr><th align="left">Closing Date (MM/DD/YY)</th>
-                                                    <td><s:property value="closeDate"/></td></tr>
-                                                <tr>
-                                                    <th align="left">Instruction</th>
-                                                    <td><s:property value="instruction" escape="false"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <th align="left">File</th>
-                                                    <td>
-                                                        <s:if test="assAttach!='null'">
-                                                            <a href="downnloadAttach?facultyId=<s:property value="facultyId"/>&amp;assAttach=<s:property value="assAttach"/>" target="_blank"><s:property value="assAttach"/></a>
-                                                        </s:if>
-                                                        <s:elseif test="assAttach=='null'">
-
-                                                        </s:elseif>
-                                                    </td>
-                                                </tr>
-                                             -->
-                                            </s:iterator>
+                                           
                                             <s:form action="AllowedStudent"  namespace="/Evidence" theme="simple" method="post" onsubmit="chkform();">
                                                 <s:hidden name="submissionId"/>
                                                 <s:hidden name="evidenceId"/>
-                                                <s:hidden name="courseId"/>
-                                                <s:hidden name="instituteId"/>
-                                                <s:hidden name="programmeId"/>
-                                                <tr> 
+                                            <tr> 
                                                     <td colspan="2"> <s:optiontransferselect 
                                                             label="Student List"
                                                             name="stName"

@@ -72,6 +72,7 @@
                                                                 headerValue="Please Select University"
                                                                 label="Select University/Institute"
                                                                 sortable="false"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>

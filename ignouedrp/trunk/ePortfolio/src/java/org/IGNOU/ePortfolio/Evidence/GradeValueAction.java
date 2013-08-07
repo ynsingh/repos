@@ -8,7 +8,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ProgrammeCourseDao;
+import org.IGNOU.ePortfolio.DAO.CourseDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.DAO.GradeTypeDao;
 import org.IGNOU.ePortfolio.Model.Course;
 import org.IGNOU.ePortfolio.Model.GradeValue;
@@ -34,7 +35,7 @@ public class GradeValueAction extends ActionSupport {
     private String str = new String();
     private String str1 = new String();
     private List<Course> CourseProInsList;
-    private ProgrammeCourseDao pDao = new ProgrammeCourseDao();
+    private CourseDao cDao = new CourseDao();
     private List<GradeValue> GradeSetupList;
     private int gradeValId;
     private String msg;
@@ -62,7 +63,7 @@ public class GradeValueAction extends ActionSupport {
     }
 
     public String UpdateGradeSetupValue() throws Exception {
-        setCourseProInsList(pDao.CourseDetailByCourseId(courseId));
+        setCourseProInsList(cDao.CourseListByCourseId(courseId));
         setSplitDetails(getDetails().split(","));
         for (int i = 0; i < getSplitDetails().length; i++) {
             setStr1(getStr1() + getSplitDetails()[i]);
@@ -83,8 +84,8 @@ public class GradeValueAction extends ActionSupport {
         GradeSetupList = dao.GradeValueListByUserId(user_id);
         if (GradeSetupList.isEmpty()) {
             msg = recordNotFound;
-        } 
-         return SUCCESS;
+        }
+        return SUCCESS;
     }
 
     /**
@@ -311,7 +312,7 @@ public class GradeValueAction extends ActionSupport {
         this.gradeValId = gradeValId;
     }
 
-   /**
+    /**
      * @return the msg
      */
     public String getMsg() {

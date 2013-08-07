@@ -1,7 +1,7 @@
 <%-- 
     Document   : TestimonialRequestDetails
     Created on : Sep 17, 2012, 5:11:36 PM
-    Author     : Vinay Kr. Sharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

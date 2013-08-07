@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.InstituteDAO;
 import org.IGNOU.ePortfolio.Model.Institute;
 
 /**
@@ -19,7 +19,7 @@ public class UnivProgAction extends ActionSupport {
 
     private static final long serialVersionUID = -2223948287805083119L;
     private Map<String, String> univList = null;
-    private InstituteDao instDao = new InstituteDao();
+    private InstituteDAO instDao = new InstituteDAO();
     private List<Institute> InstList;
 
     @Override
@@ -39,14 +39,14 @@ public class UnivProgAction extends ActionSupport {
     /**
      * @return the instDao
      */
-    public InstituteDao getInstDao() {
+    public InstituteDAO getInstDao() {
         return instDao;
     }
 
     /**
      * @param instDao the instDao to set
      */
-    public void setInstDao(InstituteDao instDao) {
+    public void setInstDao(InstituteDAO instDao) {
         this.instDao = instDao;
     }
 

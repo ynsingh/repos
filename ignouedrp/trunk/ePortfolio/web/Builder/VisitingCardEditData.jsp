@@ -65,16 +65,15 @@
                                                         <s:form action="UpdateVisiCard"  method="post" namespace="/" validate="true">
                                                             <table width="80%" class="mar0a" cellpadding="1" cellspacing="4">
                                                                 <s:hidden name="visitcardId"/>
-                                                                <s:textfield name="displayName" label="Display Name"/>
-                                                                <s:textfield name="designation" label="Designation"/>
-                                                                <s:textfield name="company" label="Company Name"/>
-                                                                <s:textfield name="email" label="Email-Id"/>
-
-                                                                <s:textfield name="mobile" label="Mobile No"/>
-                                                                <s:textfield name="officePh" label="Office No"/>
-                                                                <s:textfield name="fax" label="Fax No"/>
-                                                                <s:textfield name="websiteOff" label="Website(off)"/>
-                                                                <s:textfield name="websitePer" label="Website(Per)"/>
+                                                                <s:textfield name="displayName" label="Display Name" required="true"/>
+                                                                <s:textfield name="designation" label="Designation" required="true"/>
+                                                                <s:textfield name="company" label="Company Name" required="true"/>
+                                                                <s:textfield name="email" label="Email-Id" required="true"/>
+                                                                <s:textfield name="mobile" label="Mobile No" required="true"/>
+                                                                <s:textfield name="officePh" label="Office No" required="true"/>
+                                                                <s:textfield name="fax" label="Fax No" required="true"/>
+                                                                <s:textfield name="websiteOff" label="Website(off)" required="true"/>
+                                                                <s:textfield name="websitePer" label="Website(Per)" required="true"/>
                                                                 <td align="center" colspan="5"><s:submit value="Save" theme="simple" />
                                                                     <s:reset value="Reset" theme="simple"/>
                                                                 </td>

@@ -33,7 +33,6 @@ package org.IGNOU.ePortfolio.DAO;
  */
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.MyNotes;
-import org.IGNOU.ePortfolio.Model.MyNotesList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -70,15 +69,15 @@ public class MyNoteDao {
     }
 
     @SuppressWarnings({"unchecked"})
-    public List<MyNotesList> MyNotesListByUserId(String user_id) {
+    public List<MyNotes> MyNotesListByUserId(String user_id) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
 
-            List<MyNotesList> MyNotesListList = null;
+            List<MyNotes> MyNotesListList = null;
             try {
-                MyNotesListList = s.createQuery("from MyNotesList where user_id='" + user_id + "'").list();
+                MyNotesListList = s.createQuery("from MyNotes where user_id='" + user_id + "'").list();
             } catch (HibernateException HE) {
                 System.out.println(HE);
             }
@@ -96,15 +95,15 @@ public class MyNoteDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<MyNotesList> MyNotesListByNotesId(long notesId) {
+    public List<MyNotes> MyNotesListByNotesId(long notesId) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
 
-            List<MyNotesList> editNotelist = null;
+            List<MyNotes> editNotelist = null;
             try {
-                editNotelist = s.createQuery("from MyNotesList where notesId='" + notesId + "'").list();
+                editNotelist = s.createQuery("from MyNotes where notesId='" + notesId + "'").list();
             } catch (HibernateException HE) {
                 System.out.println(HE);
             }
@@ -122,12 +121,12 @@ public class MyNoteDao {
     }
 
     @SuppressWarnings("unchecked")
-    public MyNotesList MyNotesDelete(long notesId) {
+    public MyNotes MyNotesDelete(long notesId) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
-            MyNotesList DeleteNote = (MyNotesList) s.load(MyNotesList.class, notesId);
+            MyNotes DeleteNote = (MyNotes) s.load(MyNotes.class, notesId);
             if (DeleteNote != null) {
                 s.delete(DeleteNote);
             }
@@ -145,13 +144,13 @@ public class MyNoteDao {
     }
 
     @SuppressWarnings("unchecked")
-    public MyNotesList MyNotesUpdate(long notesId, String userId, String note, String date, String topic) {
+    public MyNotes MyNotesUpdate(long notesId, String userId, String note, String date, String topic) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
 
-            MyNotesList UpdateNotesInfo = (MyNotesList) s.load(MyNotesList.class, notesId);
+            MyNotes UpdateNotesInfo = (MyNotes) s.load(MyNotes.class, notesId);
             UpdateNotesInfo.setNote(note);
             UpdateNotesInfo.setTopic(topic);
             UpdateNotesInfo.setDate(date);

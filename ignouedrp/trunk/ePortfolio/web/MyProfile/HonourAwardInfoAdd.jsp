@@ -21,13 +21,13 @@ Version      : 1
         <link href="<s:url value="/css/MonthYearPicker.css"/>" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -35,7 +35,7 @@ Version      : 1
         <%
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
-    }%>
+            }%>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
                 <!--Header Starts Here-->
@@ -51,16 +51,15 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Add Honors &amp; Awards</div>
                             <div class="v_gallery">
-            <div class="w98 mar0a">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> &nbsp;> <s:a action="ShowHonor">Honors / Awards</s:a>&nbsp;>&nbsp;Add Honors / Award </div>
-                                    <div class="w100 fl-l mart10">
-                                        <div class="w100 fl-l tc fbld fcgreen">
-                                            <s:property value="msg"/>
-                                        </div>
-                                        <div class="w100 fl-l mart5">
-                                            <fieldset class="w400p mar0a">
-                                                <legend class="fbld">Add Honors &amp; Awards</legend>
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> &nbsp;> <s:a action="ShowHonor">Honors / Awards</s:a>&nbsp;>&nbsp;Add Honors / Award </div>
+                                <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
+                                <div class="w100 fl-l"> 
+                                    <div class="w100 fl-l tc fbld fcgreen">
+                                        <s:property value="msg"/>
+                                    </div>
+                                    <div class="w100 fl-l">
+                                        <fieldset class="w400p mar0a">
+                                            <legend class="fbld">Add Honors &amp; Awards</legend>
                                             <s:form action="AddHonor" method="post" namespace="/MyProfile" name="myform">
                                                 <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                     <s:textfield name="haTitle" label="Title"/>
@@ -80,11 +79,9 @@ Version      : 1
                                                 </table>
                                                 <br/>
                                             </s:form>
-                                            </fieldset>
-                                        </div>
+                                        </fieldset>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                         <!--Right box End Here-->
@@ -95,21 +92,21 @@ Version      : 1
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("haTitle","req","Please enter Title");
-            frmvalidator.addValidation("haTitle","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("haTitle","alpha_s","Alphabetic chars only");
-    
-            frmvalidator.addValidation("issuer","req","Please enter Issuer");
-            frmvalidator.addValidation("issuer","maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("issuer","alpha_s","Alphabetic chars only");
-  
-            frmvalidator.addValidation("haDate","req","Please enter Issue Date");
-            frmvalidator.addValidation("issuer","alphanumeric_space","alphaNumeric chars only");
-  
-            frmvalidator.addValidation("haDescription","req","Please enter Description");
-            frmvalidator.addValidation("haDescription","maxlen=200", "Max length is 200");
-            frmvalidator.addValidation("haDescription","alphanumeric_space","Alphanumeric chars only");
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("haTitle", "req", "Please enter Title");
+            frmvalidator.addValidation("haTitle", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("haTitle", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("issuer", "req", "Please enter Issuer");
+            frmvalidator.addValidation("issuer", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("issuer", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("haDate", "req", "Please enter Issue Date");
+            frmvalidator.addValidation("issuer", "alphanumeric_space", "alphaNumeric chars only");
+
+            frmvalidator.addValidation("haDescription", "req", "Please enter Description");
+            frmvalidator.addValidation("haDescription", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("haDescription", "alphanumeric_space", "Alphanumeric chars only");
         </script>
     </body>
 </html>

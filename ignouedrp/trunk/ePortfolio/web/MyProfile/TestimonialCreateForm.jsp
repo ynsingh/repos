@@ -1,7 +1,7 @@
 <%-- 
     Document   : TestimonialCreateForm
     Created on : Sep 14, 2012, 4:35:07 PM
-    Author     : Vinay Kr. Sharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -76,7 +76,7 @@
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">Testimonial Request Form</div>
-                            <div class="w100 fl-l mart10">
+                           
                                 <div class="bradcum">
                                     <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial 
                                 </div>
@@ -87,6 +87,7 @@
                                     || <a href="TestimonialRequestForm.jsp">New Request</a> || Inbox || Sent Request ||
                                     <% }%> 
                                 </div>
+                                 <div class="w100 fl-l mart10">
                                 <s:iterator value="ReqsentList" status="stat">
                                     <s:if test="testiType=='Academic'">
                                         <s:form action="priviewTestiInfo" method="post" theme="simple">

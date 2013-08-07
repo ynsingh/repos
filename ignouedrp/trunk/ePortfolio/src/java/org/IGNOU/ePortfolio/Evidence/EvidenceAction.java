@@ -13,6 +13,8 @@ import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.EvidenceDao;
 import org.IGNOU.ePortfolio.Model.Evidence;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
@@ -30,16 +32,21 @@ public class EvidenceAction extends ActionSupport {
     private File myAttach;
     private int gradeScale, coursesId, gradeId;
     private String evFilePath = ReadPropertyFile("Filepath");
+    final Logger logger = Logger.getLogger(this.getClass());
 
     public String EvidenceSave() throws IOException {
-           if (myAttach != null) {
+        PropertyConfigurator.configure("log4j.properties");
+        logger.warn("The following Record Entered by the User " + user_id + "  Title:" + evTitle + ", Instruction:" + instruction + ", Attachment:" + myAttachFileName + ", Start Date:" + openDate + ", End Date:" + closeDate + ", Last Accept Date:" + lastAcceptDate + ", Add Closing Date to Schedule:" + addDateSchedule + ", Start Date to Announcements:" + addAnnoOdate + ", Add Assignment to Gradebook:" + addtoGradebook + ", Save as Draft:" + saveEvid + ", Course:" + coursesId + ", Grade Type:" + gradeId);
+        if (myAttach != null) {
             assAttach = evFilePath + "/" + user_id + "/";
             new FileUploadCommon().UploadFile(myAttach, myAttachFileName, assAttach);
             evdao.EvidenceSave(evTitle, instruction, myAttachFileName, user_id, openDate, closeDate, lastAcceptDate, addDateSchedule, addAnnoOdate, addtoGradebook, saveEvid, coursesId, gradeId);
+            logger.warn("The Activity Announced by User " + user_id + "  Title:" + evTitle + ", Instruction:" + instruction + ", Attachment:" + myAttachFileName + ", Start Date:" + openDate + ", End Date:" + closeDate + ", Last Accept Date:" + lastAcceptDate + ", Add Closing Date to Schedule:" + addDateSchedule + ", Start Date to Announcements:" + addAnnoOdate + ", Add Assignment to Gradebook:" + addtoGradebook + ", Save as Draft:" + saveEvid + ", Course:" + coursesId + ", Grade Type:" + gradeId);
             return SUCCESS;
         } else {
-           setAssAttach("null");
+            setAssAttach("null");
             evdao.EvidenceSave(evTitle, instruction, assAttach, user_id, openDate, closeDate, lastAcceptDate, addDateSchedule, addAnnoOdate, addtoGradebook, saveEvid, coursesId, gradeId);
+            logger.warn("The Activity Announced by User " + user_id + " Title:" + evTitle + ", Instruction:" + instruction + ", Attachment:" + myAttachFileName + ", Start Date:" + openDate + ", End Date:" + closeDate + ", Last Accept Date:" + lastAcceptDate + ", Add Closing Date to Schedule:" + addDateSchedule + ", Start Date to Announcements:" + addAnnoOdate + ", Add Assignment to Gradebook:" + addtoGradebook + ", Save as Draft:" + saveEvid + ", Course:" + coursesId + ", Grade Type:" + gradeId);
             return SUCCESS;
         }
     }

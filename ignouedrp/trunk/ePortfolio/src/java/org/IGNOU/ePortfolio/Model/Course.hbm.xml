@@ -10,6 +10,9 @@
         <many-to-one name="programme" class="org.IGNOU.ePortfolio.Model.Programme" fetch="select" lazy="false" cascade="merge">
             <column name="programme_id" />
         </many-to-one>
+        <many-to-one name="coursCreator" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
+            <column name="course_creator" />
+        </many-to-one>
         <property name="instituteId" type="java.lang.Integer">
             <column name="institute_id" />
         </property>
@@ -19,6 +22,8 @@
         <property name="courseName" type="string">
             <column name="course_name" length="65535" />
         </property>
-         
+        <property name="courceCreatorDate" type="timestamp">
+            <column name="course_create_date" />
+        </property>
     </class>
 </hibernate-mapping>

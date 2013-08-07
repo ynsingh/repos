@@ -78,7 +78,7 @@
                                                         <td valign="top">Instruction</td>
                                                         <td valign="top"><s:property value="evidence.instruction" escape="false"/></td>
                                                     </tr>
-                                                    <s:if test="assAttach!='null'">
+                                                    <s:if test="evidence.assAttach!='null'">
                                                         <tr>
                                                             <td>Supporting File</td>
                                                             <td>   
@@ -86,7 +86,7 @@
                                                             </td>
                                                         </tr>
                                                     </s:if>
-                                                    <s:elseif test="assAttach=='null'">
+                                                    <s:elseif test="evidence.assAttach=='null'">
 
                                                     </s:elseif>
                                                     <tr>
@@ -166,7 +166,7 @@
                                                                 <th colspan="2" align="center">
                                                                     <s:submit value="Submit"/>&nbsp;
                                                                     <s:reset value="Reset"/>&nbsp;
-                                                                    <s:reset value="Cancel" onClick="history.go(-1);" />
+                                                                    <s:reset value="Back" onClick="history.go(-1);" />
                                                                 </th>
                                                             </tr>
                                                         </table>

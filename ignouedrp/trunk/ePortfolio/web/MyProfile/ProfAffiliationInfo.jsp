@@ -21,7 +21,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -48,76 +48,72 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Professional Affiliation</div>
                             <div class="v_gallery">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum">  
-                                        <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Professional Affiliation
+                                <div class="bradcum"><a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Professional Affiliation</div>
+                                <div class="w100 fl-l">
+                                    <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                                    <div class="wau fl-r mart10"><a href="ProfAffiliationInfoAdd.jsp"><img src=" <s:url value="/icons/add.gif"/>" title="Add Qualification"/></a>
                                     </div>
-                                    <div class="w100 fl-l mart10">
-                                        <div class="w98 mar0a tr">
-                                            <a href="ProfAffiliationInfoAdd.jsp">
-                                                <img src=" <s:url value="/icons/add.gif"/>" title="Add Qualification"/>
-                                            </a>
-                                        </div>
-                                        <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
-                                        <div class="w100 fl-l mart5">
-                                            <table width="98%" class="mar0a" cellpadding="4" border="1" cellspacing="0"> 
-                                                <tr>
-                                                    <th>S.No</th>
-                                                    <th>Role</th>
-                                                    <th>Organization/Body</th>
-                                                    <th >Duration</th>
-                                                    <th>Place</th>
-                                                    <th>Country</th>
-                                                    <th >Summary</th>
-                                                    <th>Edit</th>
-                                                    <th>Delete</th>
+                                </div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
+                                    <div class="w100 fl-l">
+                                        <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0"> 
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Role</th>
+                                                <th>Organization/Body</th>
+                                                <th >Duration</th>
+                                                <th>Place</th>
+                                                <th>Country</th>
+                                                <th >Summary</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            <s:iterator value="AffiliationList" var="ProfAffili" status="stat">
+                                                <tr>  
+                                                    <td align="center"><s:property value="%{#stat.count}"/></td>
+                                                    <td>
+                                                        <s:property value="role"/>
+                                                    </td><td>
+                                                        <s:property value="orgBody"/>
+                                                    </td><td>
+                                                        <s:property value="vfrom"/>&nbsp;-&nbsp;<s:property value="vupto"/>
+                                                    </td><td>
+                                                        <s:property value="place"/>
+                                                    </td><td>
+                                                        <s:property value="country"/>
+                                                    </td><td>
+                                                        <s:generator separator=" " val="%{summary}" count="8">
+                                                            <s:iterator >
+                                                                <s:property/>
+                                                            </s:iterator>
+                                                        </s:generator>
+                                                        <sj:dialog  id="%{#stat.count}" 
+                                                                    autoOpen="false" 
+                                                                    modal="true" 
+                                                                    width="300"
+                                                                    height="175"
+                                                                    >
+                                                            <s:property value="summary" escape="false"/>
+                                                        </sj:dialog>
+                                                        <sj:a 
+                                                            openDialog="%{#stat.count}" 
+                                                            button="false"
+                                                            cssClass="cursor"
+                                                            >
+                                                            more...
+                                                        </sj:a>
+                                                    </td>
+                                                    <td valign="middle" style="vertical-align:middle;" align="center">
+                                                        <a href="editAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>">
+                                                            <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/>
+                                                        </a></td>
+                                                    <td><a href="deleteAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>" onclick="return confirm('Are you sure you want to delete this record')">
+                                                            <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/>
+                                                        </a></td>                                                        
                                                 </tr>
-                                                <s:iterator value="AffiliationList" var="ProfAffili" status="stat">
-                                                    <tr>  
-                                                        <td align="center"><s:property value="%{#stat.count}"/></td>
-                                                        <td>
-                                                            <s:property value="role"/>
-                                                        </td><td>
-                                                            <s:property value="orgBody"/>
-                                                        </td><td>
-                                                            <s:property value="vfrom"/>&nbsp;-&nbsp;<s:property value="vupto"/>
-                                                        </td><td>
-                                                            <s:property value="place"/>
-                                                        </td><td>
-                                                            <s:property value="country"/>
-                                                        </td><td>
-                                                            <s:generator separator=" " val="%{summary}" count="8">
-                                                                <s:iterator >
-                                                                    <s:property/>
-                                                                </s:iterator>
-                                                            </s:generator>
-                                                            <sj:dialog  id="%{#stat.count}" 
-                                                                        autoOpen="false" 
-                                                                        modal="true" 
-                                                                        width="300"
-                                                                        height="175"
-                                                                        >
-                                                                <s:property value="summary" escape="false"/>
-                                                            </sj:dialog>
-                                                            <sj:a 
-                                                                openDialog="%{#stat.count}" 
-                                                                button="false"
-                                                                cssClass="cursor"
-                                                                >
-                                                                more...
-                                                            </sj:a>
-                                                            </td>
-                                                        <td valign="middle" style="vertical-align:middle;" align="center">
-                                                            <a href="editAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>">
-                                                                <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/>
-                                                            </a></td>
-                                                        <td><a href="deleteAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                                                <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/>
-                                                            </a></td>                                                        
-                                                    </tr>
-                                                </s:iterator>
-                                            </table>
-                                        </div>
+                                            </s:iterator>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

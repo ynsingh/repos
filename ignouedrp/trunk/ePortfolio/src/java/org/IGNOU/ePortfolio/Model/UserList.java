@@ -15,20 +15,37 @@ public class UserList implements java.io.Serializable {
     private String password;
     private String role;
     private Date regTime;
+    private Boolean regApprove;
     private Date activTime;
+    private Boolean activStatus;
     private Date lastLogin;
     private Boolean deleted;
-    private Boolean activStatus;
-    private String fname;
-    private String lname;
     private String accessIp;
-    private String theme;
-    private String picture;
-    private String filetype;
-    private String univName;
-    private String univRegNo;
-    private String programe;
     private Integer instituteId;
+    private Integer departmentId;
+    private String univRegNo;
+    private String fname;
+    private String mname;
+    private String lname;
+    private String fatherName;
+    private String motherName;
+    private String otherGardian;
+    private String gender;
+    private Date dateOfBirth;
+    private String pbirth;
+    private String mstatus;
+    private Long aadhaarNo;
+    private String passportNo;
+    private String panNo;
+    private String castCategory;
+    private Boolean physicalHandicapt;
+    private String physicalHandicaptSupportDoc;
+    private String religion;
+    private String nationality;
+    private String languageKnown;
+    private String theme;
+    private byte[] picture;
+    private String filetype;
     private Programme programme;
     private Set profileContacts = new HashSet(0);
     private Set profileAcademics = new HashSet(0);
@@ -52,7 +69,6 @@ public class UserList implements java.io.Serializable {
     private Set studentExchanges = new HashSet(0);
     private Set testimonialsesForTestiReqTo = new HashSet(0);
     private Set testimonialsesForTestiRequestor = new HashSet(0);
-    private Set persi = new HashSet(0);
     private Set gradeValues = new HashSet(0);
     private Set evidenceSubmissions = new HashSet(0);
     private Set evidences = new HashSet(0);
@@ -67,298 +83,550 @@ public class UserList implements java.io.Serializable {
         this.registrationId = registrationId;
     }
 
-    public UserList(String emailId, long registrationId, String password, String role, Date regTime, Date activTime, Date lastLogin, Boolean deleted, Boolean activStatus, String fname, String lname, String accessIp, String theme, String picture, String filetype, String univName, String univRegNo, String programe, Integer instituteId, Set testimonialsesForTestiReqTo, Set testimonialsesForTestiRequestor, Set gradeValues, Set evidenceSubmissions, Set evidences, Set activitiesCommentsesForSubmitorId, Set activitiesCommentsesForCommentorId) {
+    public UserList(String emailId, long registrationId, String password, String role, Date regTime, Boolean regApprove, Date activTime, Boolean activStatus, Date lastLogin, Boolean deleted, String accessIp, Integer instituteId, Integer departmentId, String univRegNo, String fname, String mname, String lname, String fatherName, String motherName, String otherGardian, String gender, Date dateOfBirth, String pbirth, String mstatus, Long aadhaarNo, String passportNo, String panNo, String castCategory, Boolean physicalHandicapt, String physicalHandicaptSupportDoc, String religion, String nationality, String languageKnown, String theme, byte[] picture, String filetype, Programme programme) {
         this.emailId = emailId;
         this.registrationId = registrationId;
         this.password = password;
         this.role = role;
         this.regTime = regTime;
+        this.regApprove = regApprove;
         this.activTime = activTime;
+        this.activStatus = activStatus;
         this.lastLogin = lastLogin;
         this.deleted = deleted;
-        this.activStatus = activStatus;
-        this.fname = fname;
-        this.lname = lname;
         this.accessIp = accessIp;
+        this.instituteId = instituteId;
+        this.departmentId = departmentId;
+        // this.programmeId=programmeId;
+        this.univRegNo = univRegNo;
+        this.fname = fname;
+        this.mname = mname;
+        this.lname = lname;
+        this.fatherName = fatherName;
+        this.motherName = motherName;
+        this.otherGardian = otherGardian;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.pbirth = pbirth;
+        this.mstatus = mstatus;
+        this.aadhaarNo = aadhaarNo;
+        this.passportNo = passportNo;
+        this.panNo = panNo;
+        this.castCategory = castCategory;
+        this.physicalHandicapt = physicalHandicapt;
+        this.physicalHandicaptSupportDoc = physicalHandicaptSupportDoc;
+        this.religion = religion;
+        this.nationality = nationality;
+        this.languageKnown = languageKnown;
         this.theme = theme;
         this.picture = picture;
         this.filetype = filetype;
-        this.univName = univName;
-        this.univRegNo = univRegNo;
-        this.programe = programe;
-        this.instituteId = instituteId;
-        // this.programmeId = programmeId;
-        this.testimonialsesForTestiReqTo = testimonialsesForTestiReqTo;
-        this.testimonialsesForTestiRequestor = testimonialsesForTestiRequestor;
-        this.gradeValues = gradeValues;
-        this.evidenceSubmissions = evidenceSubmissions;
-        this.evidences = evidences;
-        this.activitiesCommentsesForSubmitorId = activitiesCommentsesForSubmitorId;
-        this.activitiesCommentsesForCommentorId = activitiesCommentsesForCommentorId;
+        this.programme = programme;
+
     }
 
+    /**
+     * @return the emailId
+     */
     public String getEmailId() {
-        return this.emailId;
+        return emailId;
     }
 
+    /**
+     * @param emailId the emailId to set
+     */
     public void setEmailId(String emailId) {
         this.emailId = emailId;
     }
 
+    /**
+     * @return the registrationId
+     */
     public long getRegistrationId() {
-        return this.registrationId;
+        return registrationId;
     }
 
+    /**
+     * @param registrationId the registrationId to set
+     */
     public void setRegistrationId(long registrationId) {
         this.registrationId = registrationId;
     }
 
+    /**
+     * @return the password
+     */
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
+    /**
+     * @param password the password to set
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * @return the role
+     */
     public String getRole() {
-        return this.role;
+        return role;
     }
 
+    /**
+     * @param role the role to set
+     */
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * @return the regTime
+     */
     public Date getRegTime() {
-        return this.regTime;
+        return regTime;
     }
 
+    /**
+     * @param regTime the regTime to set
+     */
     public void setRegTime(Date regTime) {
         this.regTime = regTime;
     }
 
-    public Date getActivTime() {
-        return this.activTime;
+    /**
+     * @return the regApprove
+     */
+    public Boolean getRegApprove() {
+        return regApprove;
     }
 
+    /**
+     * @param regApprove the regApprove to set
+     */
+    public void setRegApprove(Boolean regApprove) {
+        this.regApprove = regApprove;
+    }
+
+    /**
+     * @return the activTime
+     */
+    public Date getActivTime() {
+        return activTime;
+    }
+
+    /**
+     * @param activTime the activTime to set
+     */
     public void setActivTime(Date activTime) {
         this.activTime = activTime;
     }
 
-    public Date getLastLogin() {
-        return this.lastLogin;
-    }
-
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
-    }
-
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
+    /**
+     * @return the activStatus
+     */
     public Boolean getActivStatus() {
-        return this.activStatus;
+        return activStatus;
     }
 
+    /**
+     * @param activStatus the activStatus to set
+     */
     public void setActivStatus(Boolean activStatus) {
         this.activStatus = activStatus;
     }
 
-    public String getFname() {
-        return this.fname;
+    /**
+     * @return the lastLogin
+     */
+    public Date getLastLogin() {
+        return lastLogin;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    /**
+     * @param lastLogin the lastLogin to set
+     */
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
-    public String getLname() {
-        return this.lname;
+    /**
+     * @return the deleted
+     */
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
+    /**
+     * @param deleted the deleted to set
+     */
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
+    /**
+     * @return the accessIp
+     */
     public String getAccessIp() {
-        return this.accessIp;
+        return accessIp;
     }
 
+    /**
+     * @param accessIp the accessIp to set
+     */
     public void setAccessIp(String accessIp) {
         this.accessIp = accessIp;
     }
 
-    public String getTheme() {
-        return this.theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public String getPicture() {
-        return this.picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getFiletype() {
-        return this.filetype;
-    }
-
-    public void setFiletype(String filetype) {
-        this.filetype = filetype;
-    }
-
-    public String getUnivName() {
-        return this.univName;
-    }
-
-    public void setUnivName(String univName) {
-        this.univName = univName;
-    }
-
-    public String getUnivRegNo() {
-        return this.univRegNo;
-    }
-
-    public void setUnivRegNo(String univRegNo) {
-        this.univRegNo = univRegNo;
-    }
-
-    public String getPrograme() {
-        return this.programe;
-    }
-
-    public void setPrograme(String programe) {
-        this.programe = programe;
-    }
-
+    /**
+     * @return the instituteId
+     */
     public Integer getInstituteId() {
-        return this.instituteId;
+        return instituteId;
     }
 
+    /**
+     * @param instituteId the instituteId to set
+     */
     public void setInstituteId(Integer instituteId) {
         this.instituteId = instituteId;
     }
 
     /**
-     * @return the profileEmployments
+     * @return the departmentId
      */
-    public Set getProfileEmployments() {
-        return profileEmployments;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
     /**
-     * @param profileEmployments the profileEmployments to set
+     * @param departmentId the departmentId to set
      */
-    public void setProfileEmployments(Set profileEmployments) {
-        this.profileEmployments = profileEmployments;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     /**
-     * @return the projectses
+     * @return the univRegNo
      */
-    public Set getProjectses() {
-        return projectses;
+    public String getUnivRegNo() {
+        return univRegNo;
     }
 
     /**
-     * @param projectses the projectses to set
+     * @param univRegNo the univRegNo to set
      */
-    public void setProjectses(Set projectses) {
-        this.projectses = projectses;
+    public void setUnivRegNo(String univRegNo) {
+        this.univRegNo = univRegNo;
     }
 
     /**
-     * @return the profileProAffiliations
+     * @return the fname
      */
-    public Set getProfileProAffiliations() {
-        return profileProAffiliations;
+    public String getFname() {
+        return fname;
     }
 
     /**
-     * @param profileProAffiliations the profileProAffiliations to set
+     * @param fname the fname to set
      */
-    public void setProfileProAffiliations(Set profileProAffiliations) {
-        this.profileProAffiliations = profileProAffiliations;
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 
     /**
-     * @return the patents
+     * @return the mname
      */
-    public Set getPatents() {
-        return patents;
+    public String getMname() {
+        return mname;
     }
 
     /**
-     * @param patents the patents to set
+     * @param mname the mname to set
      */
-    public void setPatents(Set patents) {
-        this.patents = patents;
+    public void setMname(String mname) {
+        this.mname = mname;
     }
 
     /**
-     * @return the profileCertifications
+     * @return the lname
      */
-    public Set getProfileCertifications() {
-        return profileCertifications;
+    public String getLname() {
+        return lname;
     }
 
     /**
-     * @param profileCertifications the profileCertifications to set
+     * @param lname the lname to set
      */
-    public void setProfileCertifications(Set profileCertifications) {
-        this.profileCertifications = profileCertifications;
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 
     /**
-     * @return the journals
+     * @return the fatherName
      */
-    public Set getJournals() {
-        return journals;
+    public String getFatherName() {
+        return fatherName;
     }
 
     /**
-     * @param journals the journals to set
+     * @param fatherName the fatherName to set
      */
-    public void setJournals(Set journals) {
-        this.journals = journals;
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
     }
 
     /**
-     * @return the profileSkills
+     * @return the motherName
      */
-    public Set getProfileSkills() {
-        return profileSkills;
+    public String getMotherName() {
+        return motherName;
     }
 
     /**
-     * @param profileSkills the profileSkills to set
+     * @param motherName the motherName to set
      */
-    public void setProfileSkills(Set profileSkills) {
-        this.profileSkills = profileSkills;
+    public void setMotherName(String motherName) {
+        this.motherName = motherName;
     }
 
     /**
-     * @return the resumes
+     * @return the otherGardian
      */
-    public Set getResumes() {
-        return resumes;
+    public String getOtherGardian() {
+        return otherGardian;
     }
 
     /**
-     * @param resumes the resumes to set
+     * @param otherGardian the otherGardian to set
      */
-    public void setResumes(Set resumes) {
-        this.resumes = resumes;
+    public void setOtherGardian(String otherGardian) {
+        this.otherGardian = otherGardian;
+    }
+
+    /**
+     * @return the gender
+     */
+    public String getGender() {
+        return gender;
+    }
+
+    /**
+     * @param gender the gender to set
+     */
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * @return the dateOfBirth
+     */
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    /**
+     * @param dateOfBirth the dateOfBirth to set
+     */
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    /**
+     * @return the pbirth
+     */
+    public String getPbirth() {
+        return pbirth;
+    }
+
+    /**
+     * @param pbirth the pbirth to set
+     */
+    public void setPbirth(String pbirth) {
+        this.pbirth = pbirth;
+    }
+
+    /**
+     * @return the mstatus
+     */
+    public String getMstatus() {
+        return mstatus;
+    }
+
+    /**
+     * @param mstatus the mstatus to set
+     */
+    public void setMstatus(String mstatus) {
+        this.mstatus = mstatus;
+    }
+
+    /**
+     * @return the aadhaarNo
+     */
+    public Long getAadhaarNo() {
+        return aadhaarNo;
+    }
+
+    /**
+     * @param aadhaarNo the aadhaarNo to set
+     */
+    public void setAadhaarNo(Long aadhaarNo) {
+        this.aadhaarNo = aadhaarNo;
+    }
+
+    /**
+     * @return the passportNo
+     */
+    public String getPassportNo() {
+        return passportNo;
+    }
+
+    /**
+     * @param passportNo the passportNo to set
+     */
+    public void setPassportNo(String passportNo) {
+        this.passportNo = passportNo;
+    }
+
+    /**
+     * @return the panNo
+     */
+    public String getPanNo() {
+        return panNo;
+    }
+
+    /**
+     * @param panNo the panNo to set
+     */
+    public void setPanNo(String panNo) {
+        this.panNo = panNo;
+    }
+
+    /**
+     * @return the castCategory
+     */
+    public String getCastCategory() {
+        return castCategory;
+    }
+
+    /**
+     * @param castCategory the castCategory to set
+     */
+    public void setCastCategory(String castCategory) {
+        this.castCategory = castCategory;
+    }
+
+    /**
+     * @return the physicalHandicapt
+     */
+    public Boolean getPhysicalHandicapt() {
+        return physicalHandicapt;
+    }
+
+    /**
+     * @param physicalHandicapt the physicalHandicapt to set
+     */
+    public void setPhysicalHandicapt(Boolean physicalHandicapt) {
+        this.physicalHandicapt = physicalHandicapt;
+    }
+
+    /**
+     * @return the physicalHandicaptSupportDoc
+     */
+    public String getPhysicalHandicaptSupportDoc() {
+        return physicalHandicaptSupportDoc;
+    }
+
+    /**
+     * @param physicalHandicaptSupportDoc the physicalHandicaptSupportDoc to set
+     */
+    public void setPhysicalHandicaptSupportDoc(String physicalHandicaptSupportDoc) {
+        this.physicalHandicaptSupportDoc = physicalHandicaptSupportDoc;
+    }
+
+    /**
+     * @return the religion
+     */
+    public String getReligion() {
+        return religion;
+    }
+
+    /**
+     * @param religion the religion to set
+     */
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
+
+    /**
+     * @return the nationality
+     */
+    public String getNationality() {
+        return nationality;
+    }
+
+    /**
+     * @param nationality the nationality to set
+     */
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    /**
+     * @return the languageKnown
+     */
+    public String getLanguageKnown() {
+        return languageKnown;
+    }
+
+    /**
+     * @param languageKnown the languageKnown to set
+     */
+    public void setLanguageKnown(String languageKnown) {
+        this.languageKnown = languageKnown;
+    }
+
+    /**
+     * @return the theme
+     */
+    public String getTheme() {
+        return theme;
+    }
+
+    /**
+     * @param theme the theme to set
+     */
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    /**
+     * @return the picture
+     */
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    /**
+     * @param picture the picture to set
+     */
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    /**
+     * @return the filetype
+     */
+    public String getFiletype() {
+        return filetype;
+    }
+
+    /**
+     * @param filetype the filetype to set
+     */
+    public void setFiletype(String filetype) {
+        this.filetype = filetype;
     }
 
     /**
@@ -376,17 +644,143 @@ public class UserList implements java.io.Serializable {
     }
 
     /**
-     * @return the conferences
+     * @return the profileAcademics
      */
-    public Set getConferences() {
-        return conferences;
+    public Set getProfileAcademics() {
+        return profileAcademics;
     }
 
     /**
-     * @param conferences the conferences to set
+     * @param profileAcademics the profileAcademics to set
      */
-    public void setConferences(Set conferences) {
-        this.conferences = conferences;
+    public void setProfileAcademics(Set profileAcademics) {
+        this.profileAcademics = profileAcademics;
+    }
+
+    /**
+     * @return the profileEmployments
+     */
+    public Set getProfileEmployments() {
+        return profileEmployments;
+    }
+
+    /**
+     * @param profileEmployments the profileEmployments to set
+     */
+    public void setProfileEmployments(Set profileEmployments) {
+        this.profileEmployments = profileEmployments;
+    }
+
+    /**
+     * @return the profileProAffiliations
+     */
+    public Set getProfileProAffiliations() {
+        return profileProAffiliations;
+    }
+
+    /**
+     * @param profileProAffiliations the profileProAffiliations to set
+     */
+    public void setProfileProAffiliations(Set profileProAffiliations) {
+        this.profileProAffiliations = profileProAffiliations;
+    }
+
+    /**
+     * @return the profileSkills
+     */
+    public Set getProfileSkills() {
+        return profileSkills;
+    }
+
+    /**
+     * @param profileSkills the profileSkills to set
+     */
+    public void setProfileSkills(Set profileSkills) {
+        this.profileSkills = profileSkills;
+    }
+
+    /**
+     * @return the profileCertifications
+     */
+    public Set getProfileCertifications() {
+        return profileCertifications;
+    }
+
+    /**
+     * @param profileCertifications the profileCertifications to set
+     */
+    public void setProfileCertifications(Set profileCertifications) {
+        this.profileCertifications = profileCertifications;
+    }
+
+    /**
+     * @return the profileHonorAwards
+     */
+    public Set getProfileHonorAwards() {
+        return profileHonorAwards;
+    }
+
+    /**
+     * @param profileHonorAwards the profileHonorAwards to set
+     */
+    public void setProfileHonorAwards(Set profileHonorAwards) {
+        this.profileHonorAwards = profileHonorAwards;
+    }
+
+    /**
+     * @return the profileInterests
+     */
+    public Set getProfileInterests() {
+        return profileInterests;
+    }
+
+    /**
+     * @param profileInterests the profileInterests to set
+     */
+    public void setProfileInterests(Set profileInterests) {
+        this.profileInterests = profileInterests;
+    }
+
+    /**
+     * @return the profileReferenceses
+     */
+    public Set getProfileReferenceses() {
+        return profileReferenceses;
+    }
+
+    /**
+     * @param profileReferenceses the profileReferenceses to set
+     */
+    public void setProfileReferenceses(Set profileReferenceses) {
+        this.profileReferenceses = profileReferenceses;
+    }
+
+    /**
+     * @return the projectses
+     */
+    public Set getProjectses() {
+        return projectses;
+    }
+
+    /**
+     * @param projectses the projectses to set
+     */
+    public void setProjectses(Set projectses) {
+        this.projectses = projectses;
+    }
+
+    /**
+     * @return the resumes
+     */
+    public Set getResumes() {
+        return resumes;
+    }
+
+    /**
+     * @param resumes the resumes to set
+     */
+    public void setResumes(Set resumes) {
+        this.resumes = resumes;
     }
 
     /**
@@ -432,17 +826,59 @@ public class UserList implements java.io.Serializable {
     }
 
     /**
-     * @return the profileReferenceses
+     * @return the extraActivitieses
      */
-    public Set getProfileReferenceses() {
-        return profileReferenceses;
+    public Set getExtraActivitieses() {
+        return extraActivitieses;
     }
 
     /**
-     * @param profileReferenceses the profileReferenceses to set
+     * @param extraActivitieses the extraActivitieses to set
      */
-    public void setProfileReferenceses(Set profileReferenceses) {
-        this.profileReferenceses = profileReferenceses;
+    public void setExtraActivitieses(Set extraActivitieses) {
+        this.extraActivitieses = extraActivitieses;
+    }
+
+    /**
+     * @return the patents
+     */
+    public Set getPatents() {
+        return patents;
+    }
+
+    /**
+     * @param patents the patents to set
+     */
+    public void setPatents(Set patents) {
+        this.patents = patents;
+    }
+
+    /**
+     * @return the journals
+     */
+    public Set getJournals() {
+        return journals;
+    }
+
+    /**
+     * @param journals the journals to set
+     */
+    public void setJournals(Set journals) {
+        this.journals = journals;
+    }
+
+    /**
+     * @return the conferences
+     */
+    public Set getConferences() {
+        return conferences;
+    }
+
+    /**
+     * @param conferences the conferences to set
+     */
+    public void setConferences(Set conferences) {
+        this.conferences = conferences;
     }
 
     /**
@@ -460,62 +896,6 @@ public class UserList implements java.io.Serializable {
     }
 
     /**
-     * @return the extraActivitieses
-     */
-    public Set getExtraActivitieses() {
-        return extraActivitieses;
-    }
-
-    /**
-     * @param extraActivitieses the extraActivitieses to set
-     */
-    public void setExtraActivitieses(Set extraActivitieses) {
-        this.extraActivitieses = extraActivitieses;
-    }
-
-    /**
-     * @return the profileAcademics
-     */
-    public Set getProfileAcademics() {
-        return profileAcademics;
-    }
-
-    /**
-     * @param profileAcademics the profileAcademics to set
-     */
-    public void setProfileAcademics(Set profileAcademics) {
-        this.profileAcademics = profileAcademics;
-    }
-
-    /**
-     * @return the profileInterests
-     */
-    public Set getProfileInterests() {
-        return profileInterests;
-    }
-
-    /**
-     * @param profileInterests the profileInterests to set
-     */
-    public void setProfileInterests(Set profileInterests) {
-        this.profileInterests = profileInterests;
-    }
-
-    /**
-     * @return the profileHonorAwards
-     */
-    public Set getProfileHonorAwards() {
-        return profileHonorAwards;
-    }
-
-    /**
-     * @param profileHonorAwards the profileHonorAwards to set
-     */
-    public void setProfileHonorAwards(Set profileHonorAwards) {
-        this.profileHonorAwards = profileHonorAwards;
-    }
-
-    /**
      * @return the studentExchanges
      */
     public Set getStudentExchanges() {
@@ -530,17 +910,104 @@ public class UserList implements java.io.Serializable {
     }
 
     /**
-     * @return the persi
+     * @return the testimonialsesForTestiReqTo
      */
-    public Set getPersi() {
-        return persi;
+    public Set getTestimonialsesForTestiReqTo() {
+        return testimonialsesForTestiReqTo;
     }
 
     /**
-     * @param persi the persi to set
+     * @param testimonialsesForTestiReqTo the testimonialsesForTestiReqTo to set
      */
-    public void setPersi(Set persi) {
-        this.persi = persi;
+    public void setTestimonialsesForTestiReqTo(Set testimonialsesForTestiReqTo) {
+        this.testimonialsesForTestiReqTo = testimonialsesForTestiReqTo;
+    }
+
+    /**
+     * @return the testimonialsesForTestiRequestor
+     */
+    public Set getTestimonialsesForTestiRequestor() {
+        return testimonialsesForTestiRequestor;
+    }
+
+    /**
+     * @param testimonialsesForTestiRequestor the
+     * testimonialsesForTestiRequestor to set
+     */
+    public void setTestimonialsesForTestiRequestor(Set testimonialsesForTestiRequestor) {
+        this.testimonialsesForTestiRequestor = testimonialsesForTestiRequestor;
+    }
+
+    /**
+     * @return the gradeValues
+     */
+    public Set getGradeValues() {
+        return gradeValues;
+    }
+
+    /**
+     * @param gradeValues the gradeValues to set
+     */
+    public void setGradeValues(Set gradeValues) {
+        this.gradeValues = gradeValues;
+    }
+
+    /**
+     * @return the evidenceSubmissions
+     */
+    public Set getEvidenceSubmissions() {
+        return evidenceSubmissions;
+    }
+
+    /**
+     * @param evidenceSubmissions the evidenceSubmissions to set
+     */
+    public void setEvidenceSubmissions(Set evidenceSubmissions) {
+        this.evidenceSubmissions = evidenceSubmissions;
+    }
+
+    /**
+     * @return the evidences
+     */
+    public Set getEvidences() {
+        return evidences;
+    }
+
+    /**
+     * @param evidences the evidences to set
+     */
+    public void setEvidences(Set evidences) {
+        this.evidences = evidences;
+    }
+
+    /**
+     * @return the activitiesCommentsesForSubmitorId
+     */
+    public Set getActivitiesCommentsesForSubmitorId() {
+        return activitiesCommentsesForSubmitorId;
+    }
+
+    /**
+     * @param activitiesCommentsesForSubmitorId the
+     * activitiesCommentsesForSubmitorId to set
+     */
+    public void setActivitiesCommentsesForSubmitorId(Set activitiesCommentsesForSubmitorId) {
+        this.activitiesCommentsesForSubmitorId = activitiesCommentsesForSubmitorId;
+    }
+
+    /**
+     * @return the activitiesCommentsesForCommentorId
+     */
+    public Set getActivitiesCommentsesForCommentorId() {
+        return activitiesCommentsesForCommentorId;
+    }
+
+    /**
+     * @param activitiesCommentsesForCommentorId the
+     * activitiesCommentsesForCommentorId to set
+     */
+    public void setActivitiesCommentsesForCommentorId(Set activitiesCommentsesForCommentorId) {
+        this.activitiesCommentsesForCommentorId = activitiesCommentsesForCommentorId;
     }
 
     /**
@@ -555,61 +1022,5 @@ public class UserList implements java.io.Serializable {
      */
     public void setProgramme(Programme programme) {
         this.programme = programme;
-    }
-
-    public Set getTestimonialsesForTestiReqTo() {
-        return this.testimonialsesForTestiReqTo;
-    }
-
-    public void setTestimonialsesForTestiReqTo(Set testimonialsesForTestiReqTo) {
-        this.testimonialsesForTestiReqTo = testimonialsesForTestiReqTo;
-    }
-
-    public Set getTestimonialsesForTestiRequestor() {
-        return this.testimonialsesForTestiRequestor;
-    }
-
-    public void setTestimonialsesForTestiRequestor(Set testimonialsesForTestiRequestor) {
-        this.testimonialsesForTestiRequestor = testimonialsesForTestiRequestor;
-    }
-
-    public Set getGradeValues() {
-        return this.gradeValues;
-    }
-
-    public void setGradeValues(Set gradeValues) {
-        this.gradeValues = gradeValues;
-    }
-
-    public Set getEvidenceSubmissions() {
-        return this.evidenceSubmissions;
-    }
-
-    public void setEvidenceSubmissions(Set evidenceSubmissions) {
-        this.evidenceSubmissions = evidenceSubmissions;
-    }
-
-    public Set getEvidences() {
-        return this.evidences;
-    }
-
-    public void setEvidences(Set evidences) {
-        this.evidences = evidences;
-    }
-
-    public Set getActivitiesCommentsesForSubmitorId() {
-        return this.activitiesCommentsesForSubmitorId;
-    }
-
-    public void setActivitiesCommentsesForSubmitorId(Set activitiesCommentsesForSubmitorId) {
-        this.activitiesCommentsesForSubmitorId = activitiesCommentsesForSubmitorId;
-    }
-
-    public Set getActivitiesCommentsesForCommentorId() {
-        return this.activitiesCommentsesForCommentorId;
-    }
-
-    public void setActivitiesCommentsesForCommentorId(Set activitiesCommentsesForCommentorId) {
-        this.activitiesCommentsesForCommentorId = activitiesCommentsesForCommentorId;
     }
 }

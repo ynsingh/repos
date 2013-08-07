@@ -1,7 +1,7 @@
 <%-- 
     Document   : RequestIndex
     Created on : Sep 7, 2012, 5:34:04 PM
-    Author     : Vinay Kr. Sharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,7 +19,7 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -54,24 +54,24 @@
                                 </div>
                                 <div class="marr15 fl-r mart10">
                                     || <s:a action="UserReqList">New Request</s:a> || <s:a action="UserReqUpdated">Processed Requests</s:a> ||
-                                </div>
-                                <div class="w100 fl-l mart15">
-                                    <table width="95%" class="mar0a" cellpadding="4" cellspacing="0" border="1">
-                                        <tr>
-                                            <th width="5%" align="left">S.No.</th>
-                                            <th width="18%">Requestor</th>
-                                            <th width="18%">Type</th>
-                                            <th width="20%">Purpose</th>
-                                            <th width="22%">New Record</th>
-                                            <th width="15%">Request Date</th>
-                                        </tr>
+                                    </div>
+                                    <div class="w100 fl-l mart15">
+                                        <table width="95%" class="mar0a" cellpadding="4" cellspacing="0" border="1">
+                                            <tr>
+                                                <th width="5%" align="left">S.No.</th>
+                                                <th width="18%">Requestor</th>
+                                                <th width="18%">Type</th>
+                                                <th width="20%">Purpose</th>
+                                                <th width="22%">New Record</th>
+                                                <th width="15%">Request Date</th>
+                                            </tr>
                                         <s:iterator value="UsrReqList" status="stat">
                                             <s:if test="status==0">
                                                 <tr class="fbld">
                                                     <td><s:property value="%{#stat.count}"/></td>
                                                     <td>
-                                                        <a href="EditUserPerInfo?requestId=<s:property value="requestId"/>&amp;requestorId=<s:property value="requestorId"/>">
-                                                            <s:property value="NameList[#stat.index]"/>
+                                                        <a href="EditUserPerInfo?requestId=<s:property value="requestId"/>&amp;requestorId=<s:property value="user.emailId"/>">
+                                                            <s:property value="user.fname"/>&nbsp;<s:property value="user.lname"/>
                                                         </a>
                                                     </td>
                                                     <td><a href="EditUserPerInfo?requestId=<s:property value="requestId"/>&amp;requestorId=<s:property value="requestorId"/>">
@@ -86,7 +86,7 @@
                                                             <s:property value="newRecord"/>
                                                         </a>
                                                     </td>
-                                                    <td><s:date name="requestDate" format="dd-MM-yyyy"/>
+                                                    <td><s:date name="requestDate" format="MMM dd, yyyy"/>
                                                     </td>
                                                 </tr>
                                             </s:if>
@@ -99,17 +99,17 @@
                                                     height="550"
                                                     title="Request Details"
                                                     >
-                                                    <p><span class="fbld">Requestor Name: </span><s:property value="NameList[#stat.index]"/></p>
+                                                    <p><span class="fbld">Requestor Name: </span><s:property value="user.fname"/>&nbsp;<s:property value="user.lname"/></p>
                                                     <p><span class="fbld">Type: </span><s:property value="requestType"/></p>
                                                     <p><span class="fbld">Reason: </span><s:property value="reason"/></p>
                                                     <p><span class="fbld">New Record: </span><s:property value="newRecord"/></p>
-                                                    <p><span class="fbld">Request Date: </span><s:date name="requestDate" format="dd-MM-yyyy"/></p>
+                                                    <p><span class="fbld">Request Date: </span><s:date name="requestDate" format="MMM dd, yyyy"/></p>
                                                     <p><span class="fbld">Archived Record: </span><s:property value="recordArchive" escape="false"/></p>
-                                                    <p><span class="fbld">Updated Date: </span><s:date name="updatedDate" format="dd-MM-yyyy"/></p>
+                                                    <p><span class="fbld">Updated Date: </span><s:date name="updatedDate" format="MMM dd, yyyy"/></p>
                                                 </sj:dialog>
                                                 <tr>
                                                     <td><s:property value="%{#stat.count}"/></td>
-                                                    <td><s:property value="NameList[#stat.index]"/><br/>
+                                                    <td><s:property value="user.fname"/>&nbsp;<s:property value="user.lname"/><br/>
                                                         <sj:a 
                                                             openDialog="%{#stat.count}" 
                                                             button="false"
@@ -121,7 +121,7 @@
                                                     <td><s:property value="requestType"/></td>
                                                     <td><s:property value="reason"/></td>
                                                     <td><s:property value="newRecord"/></td>
-                                                    <td><s:date name="requestDate" format="dd-MM-yyyy"/>
+                                                    <td><s:date name="requestDate"  format="MMM dd, yyyy"/>
                                                     </td>
                                                 </tr>   
                                             </s:if>

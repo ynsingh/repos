@@ -10,7 +10,7 @@ Last Modified on : 24-02-2012-->
     <class name="org.IGNOU.ePortfolio.Model.BookChapterAuthor" table="book_chapter_author" catalog="eportfolio">
         <id name="authorId" type="java.lang.Long">
             <column name="author_id" />
-            <generator class="identity" />
+            <generator class="increment" />
         </id>
         <many-to-one name="bookChapter" class="org.IGNOU.ePortfolio.Model.BookChapter" fetch="select">
             <column name="bc_id" not-null="true" />

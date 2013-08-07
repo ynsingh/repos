@@ -17,9 +17,9 @@ Version      : 1
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -44,46 +44,45 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Test Score</div>
                             <div class="v_gallery">
-                                <div class="w98 mar0a">
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Test Score </div>
+                                <div class="w100 fl-l mart10">
+                                    <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                                    <div class="wau fl-r mart10"> <a href="TestScoreInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif"/>" title="Add Test Score"/> </a> </div>
+                                </div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
+                                        <s:property value="msg"/>
+                                    </div>
                                     <div class="w100 fl-l mart10">
-                                        <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Test Score </div>
-                                        <div class="w100 fl-l mart10">
-                                            <div class="w98 mar0a tr"> <a href="TestScoreInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif"/>" title="Add Test Score"/> </a> </div>
-                                            <div class="w100 fl-l tc fbld fcgreen">
-                                                <s:property value="msg"/>
-                                            </div>
-                                            <div class="w100 fl-l mart5">
-                                                <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0">
-                                                    <tr>
-                                                        <th>S. No</th>
-                                                        <th width="150">Name of Test</th>
-                                                        <th>Score</th>
-                                                        <th>Date</th>
-                                                        <th  width="200">Description</th>
-                                                        <th width="65">Edit</th>
-                                                        <th width="65">Delete</th>
-                                                    </tr>
-                                                    <s:iterator value="ScoreList" var="Score" status="stat">
-                                                        <tr>
-                                                            <td align="center"><s:property value="%{#stat.count}"/></td>
-                                                            <td><s:property value="tname"/>
-                                                            </td>
-                                                            <td align="center"><s:property value="score"/>
-                                                            </td>
-                                                            <td><s:property value="tdate"/>
-                                                            </td>
-                                                            <td><s:property value="tdescription" escape="false"/>
-                                                            </td>
-                                                            <td valign="middle" style="vertical-align:middle;" align="center"><a href="editTest?testId=<s:property value="testId"/>"> <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/> </a> </td>
+                                        <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0">
+                                            <tr>
+                                                <th>S. No</th>
+                                                <th width="150">Name of Test</th>
+                                                <th>Score</th>
+                                                <th>Date</th>
+                                                <th  width="200">Description</th>
+                                                <th width="65">Edit</th>
+                                                <th width="65">Delete</th>
+                                            </tr>
+                                            <s:iterator value="ScoreList" var="Score" status="stat">
+                                                <tr>
+                                                    <td align="center"><s:property value="%{#stat.count}"/></td>
+                                                    <td><s:property value="tname"/>
+                                                    </td>
+                                                    <td align="center"><s:property value="score"/>
+                                                    </td>
+                                                    <td><s:property value="tdate"/>
+                                                    </td>
+                                                    <td><s:property value="tdescription" escape="false"/>
+                                                    </td>
+                                                    <td valign="middle" style="vertical-align:middle;" align="center"><a href="editTest?testId=<s:property value="testId"/>"> <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/> </a> </td>
 
 
-                                                            <td align="center"><a href="deleteTest?testId=<s:property value="testId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a> </td>
+                                                    <td align="center"><a href="deleteTest?testId=<s:property value="testId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a> </td>
 
-                                                        </tr>
-                                                    </s:iterator>
-                                                </table>
-                                            </div>
-                                        </div>
+                                                </tr>
+                                            </s:iterator>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

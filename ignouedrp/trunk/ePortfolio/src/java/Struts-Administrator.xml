@@ -8,6 +8,11 @@
     <!-- Add your configuration elements here -->
     <!--Feedback And Other Actions -->
     <package name="org.IGNOU.ePortfolio.Administrator.Action" namespace="/Administrator" extends="struts-default"> 
+        <action name="AddInst" class="org.IGNOU.ePortfolio.Registration.InstituteRegAction">
+            <result name="success" type="redirectAction">ShowRegisteredInstitute</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./InstituteRegistration.jsp</result>
+        </action>
         <action name="ShowRegisteredInstitute" class="org.IGNOU.ePortfolio.Administrator.Action.InstituteInfoAction" method="ShowRegisteredInstitute">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -26,8 +31,7 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">/Administrator/ShowFeedback.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-      
+        </action>      
         <action name="ShowArchiveFBInfo" class="org.IGNOU.ePortfolio.Administrator.Action.FeedbackInfoAction" method="ShowArchiveFeedback">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -40,19 +44,15 @@
         <action name="ArchiveFeedBackInfo" class="org.IGNOU.ePortfolio.Administrator.Action.FeedBackArchiveAction" method="MoveFbsToArchive">
             <result name="success" type="redirectAction">ShowFeedBackInfo</result>
             <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-      
+        </action>      
         <action name="DetailFback" class="org.IGNOU.ePortfolio.Administrator.Action.FeedbackInfoAction" method="DetailFeedback" >
             <result name="success">/Administrator/DetailFeedBack.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-      
+        </action>      
         <action name="DeleteFeedBackInfo" class="org.IGNOU.ePortfolio.Administrator.Action.FeedbackInfoAction" method="DeleteFeedBack">
             <result name="success" type="redirectAction">ShowFeedBackInfo</result>
             <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-        
-       
+        </action>     
         <action name="ReplyFback" class="org.IGNOU.ePortfolio.Administrator.Action.FeedbackInfoAction" method="ReplyFeedBack">
             <result name="success">ReplyFeedback.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
@@ -65,46 +65,28 @@
             <result name="success" type="redirectAction">/ShowFeedBackInfo</result>
             <result name="error">../ErrorPage/error.jsp</result>
         </action>
-        
-        <!--
-            * @author IGNOU Team
-            * date:21-04-2012
-        -->
-        <!--   <action name="RegPro" class="org.IGNOU.ePortfolio.Administrator.Action.InstituteInfoAction" method="InstituteInfo">
-            <result name="success">./ProgrammeRegistration.jsp</result>
-            <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-        -->
-        <!--      <action name="AddProCourse" class="org.IGNOU.ePortfolio.Administrator.Action.ProgrammeCourseAction">
-            <result name="success">./InsDeptPro.jsp</result>
-            <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-        -->
-        <!--
-            * @author IGNOU Team
-            * date:23-04-2012
-        -->
-        <!--    <action name="AddDept" class="org.IGNOU.ePortfolio.Administrator.Action.InstituteInfoAction" method="InstituteInfo">
-            <result name="success">./DepartmentAdd.jsp</result>
-            <result name="error">../ErrorPage/error.jsp</result>
-        </action>
-        -->
         <action name="AddDepartment" class="org.IGNOU.ePortfolio.Administrator.Action.DepartmentAction">
             <result name="success" type="redirect">Departments.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
             <result name="input">DepartmentAdd.jsp</result>
-        </action>    
-        
+        </action>            
         <action name="AddDeptProgramme" class="org.IGNOU.ePortfolio.Administrator.Action.ProgrammeRegsitrationAction">
             <result name="success">Programmes.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
         </action>
-        
         <action name="AddProCourse" class="org.IGNOU.ePortfolio.Administrator.Action.CourseRegistrationAction">
-            <result name="success">../Welcome-Index.jsp</result>
+            <result name="success" type="redirectAction">myCourse</result>
             <result name="error">../ErrorPage/error.jsp</result>
         </action>
-        
+        <action name="myCourse" class="org.IGNOU.ePortfolio.Administrator.Action.CourseInfoAction" method="MyCoursesforFaculty">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">CourseInfo.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>   
         
         <action name="UpdateUnivLogo" class="org.IGNOU.ePortfolio.Administrator.Action.LogoAction" method="ChangeUnivLogo">
             <interceptor-ref name="fileUpload">
@@ -127,9 +109,37 @@
             <result name="success">OtherNavigationLinks.jsp</result>
             <result name="error">../Error/error.jsp</result>
         </action> 
+        <action name="DeleteLinksNode" class="org.IGNOU.ePortfolio.Administrator.Action.NavigationLinkAction" method="DeleteXMLNode">
+            <result name="success" type="redirectAction">ShowNavLinks</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
         <action name="ShowOtherLinks" class="org.IGNOU.ePortfolio.Administrator.Action.NavigationLinkAction" method="ShowOthersLink">
             <result name="success">OtherLinks.jsp</result>
             <result name="error">../Error/error.jsp</result>
+        </action>        
+        <action name="ShowContactUs" class="org.IGNOU.ePortfolio.Administrator.Action.ContactUsAction" >
+            <result name="success" >../Contact.jsp</result>
+            <result name="input" >../PageUnderConstruction.jsp</result>
+        </action>
+        <action name="ShowContactUsAdmin" class="org.IGNOU.ePortfolio.Administrator.Action.ContactUsAction" >
+            <result name="success" >./ShowContactUs.jsp</result>
+            <result name="input" >./AddContactUs.jsp</result>
+        </action>
+        <action name="AddContactUs" class="org.IGNOU.ePortfolio.Administrator.Action.ContactUsAction" method="contactAdd">
+            <result name="success" type="redirectAction">./ShowContactUsAdmin</result>
+            <result name="input" >./AddContactUs.jsp</result>
+        </action>
+        <action name="EditContactUs" class="org.IGNOU.ePortfolio.Administrator.Action.ContactUsAction" method="ContactEdit">
+            <result name="success" >./EditContactUs.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="UpdateContactUs" class="org.IGNOU.ePortfolio.Administrator.Action.ContactUsAction" method="ContactUpdate">
+            <result name="success" type="redirectAction">./ShowContactUsAdmin</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="ShowAboutUs" class="org.IGNOU.ePortfolio.Administrator.Action.ContactUsAction" >
+            <result name="success" >../About.jsp</result>
+            <result name="input" >../PageUnderConstruction.jsp</result>
         </action>
     </package>
 </struts>

@@ -16,9 +16,9 @@ Version      : 1
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -43,59 +43,57 @@ Version      : 1
                         <div class="right_box">
                             <div class="my_account_bg">Employment Information</div>
                             <div class="v_gallery">
-            <div class="w98 mar0a">
-                                <div class="w100 fl-l mart10">
-                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Employment </div>
+                                <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Employment </div>
+                                <div class="w100 fl-l">
+                                    <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                                    <div class="wau fl-r mart10"> <a href="EmployeeInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif" />" title="Add Employment"/> </a> </div>
+                                </div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen">
+                                        <s:property value="msg"/>
+                                    </div>
                                     <div class="w100 fl-l mart10">
-                                        <div class="w98 mar0a tr"> <a href="EmployeeInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif" />" title="Add Employment"/> </a> </div>
-                                        <div class="w100 fl-l tc fbld fcgreen">
-                                            <s:property value="msg"/>
-                                        </div>
-                                        <div class="w100 fl-l mart5">
-                                            <table width="98%" class="mar0a" cellpadding="4" border="1" cellspacing="0">
+                                        <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0">
+                                            <tr>
+                                                <th width="81">S. No</th>
+                                                <th width="79">Job Title</th>
+                                                <th width="134">Organization Name</th>
+                                                <th width="216">Address</th>
+                                                <th width="86">Joining Date</th>
+                                                <th width="156">Relieved On</th>
+                                                <th>Role/Description</th>
+                                                <th width="53">Edit</th>
+                                                <th width="76">Delete</th>
+                                            </tr>
+                                            <s:iterator value="employmentListList" var="ProfileEmployment" status="groupStatus">
                                                 <tr>
-                                                    <th width="81">S. No</th>
-                                                    <th width="79">Job Title</th>
-                                                    <th width="134">Organization Name</th>
-                                                    <th width="216">Address</th>
-                                                    <th width="86">Joining Date</th>
-                                                    <th width="156">Relieved On</th>
-                                                  <th>Role/Description</th>
-                                                    <th width="53">Edit</th>
-                                                    <th width="76">Delete</th>
+                                                    <td align="center" valign="top"><s:property value="%{#groupStatus.count}"/></td>
+                                                    <td valign="top"><s:property value="jtitle"/></td>
+                                                    <td valign="top"><s:property value="orgName"/></td>
+                                                    <td valign="top"><s:property value="oaddress"/>
+                                                        <s:property value="ocity"/>
+                                                        <s:property value="ostate"/>
+                                                        <s:property value="ocountry"/>
+                                                    </td>
+                                                    <td valign="top"><s:property value="jdate"/></td>
+                                                    <td valign="top"><s:property value="ldate"/>
+                                                        &nbsp;</td>
+                                                    <td valign="top" width="223"><s:property value="description"/></td>
+                                                    <td align="center" valign="top"><a href="EditEmpInfo?employmentInfoId=<s:property value="employmentInfoId"/>"> <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/> </a> </td>
+                                                    <td align="center" valign="top"><a href="DeleteEmpInfo?employmentInfoId=<s:property value="employmentInfoId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a> </td>
                                                 </tr>
-                                                <s:iterator value="employmentListList" var="ProfileEmployment" status="groupStatus">
-                                                    <tr>
-                      									<td align="center" valign="top"><s:property value="%{#groupStatus.count}"/></td>
-                                                        <td valign="top"><s:property value="jtitle"/></td>
-                                                        <td valign="top"><s:property value="orgName"/></td>
-                                                        <td valign="top"><s:property value="oaddress"/>
-                                                            <s:property value="ocity"/>
-                                                            <s:property value="ostate"/>
-                                                            <s:property value="ocountry"/>
-                                                        </td>
-                                                      <td valign="top"><s:property value="jdate"/></td>
-                                                        <td valign="top"><s:property value="ldate"/>
-                                                            &nbsp;</td>
-                                                        <td valign="top" width="223"><s:property value="description"/></td>
-                                                      <td align="center" valign="top"><a href="EditEmpInfo?employmentInfoId=<s:property value="employmentInfoId"/>"> <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/> </a> </td>
-                                                        <td align="center" valign="top"><a href="DeleteEmpInfo?employmentInfoId=<s:property value="employmentInfoId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a> </td>
-                                                    </tr>
-                                                </s:iterator>
-                                            </table>
-                                        </div>
+                                            </s:iterator>
+                                        </table>
                                     </div>
                                 </div>
-                                </div>
+                                <!--Right box End Here-->
                             </div>
-                            <!--Right box End Here-->
+
                         </div>
-                        
+                        <!--Middle Section Ends Here-->
                     </div>
-                    <!--Middle Section Ends Here-->
                 </div>
             </div>
-        </div>
-        <s:include value="/Footer.jsp"/>
+            <s:include value="/Footer.jsp"/>
     </body>
 </html>

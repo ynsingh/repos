@@ -12,7 +12,7 @@ Version      : 1
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Welcome to ePortfolio</title>
+        <title>About us</title>
         <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
@@ -55,9 +55,13 @@ Version      : 1
                         <!--Right box Starts Here-->
                         <div class="middle_cont">
                             <div class="my_account_bg">About us</div>
-                            <div class="v_gallery">
-                                <div class="w100 fl-l tc fbld fcgreen"><s:property value="feedbackmsg"/></div>
-                                <img src="<s:url value="/icons/website_under_construction.jpg"/>"/>
+                            <div class="v_gallery mart20 fl-l">
+                                <table align="center" class="mart20 fl-l">
+                                    <s:iterator value="contactList">
+                                         <s:property value="aboutUs" />
+                                    </s:iterator>
+                                </table>
+                               
                             </div>
                             <!--Right box End Here-->
                         </div>
@@ -70,7 +74,7 @@ Version      : 1
         <!--Footer Section Starts Here-->
         <div class="footer">
             <div class="f_menu"> 
-                <a href="<s:url value="/About.jsp"/>" target="_Blank">About</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a>
+                <s:a action="ShowAboutUs" namespace="/Administrator">About Us</s:a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a>
             </div>
         </div>
         <div class="footer_panel">

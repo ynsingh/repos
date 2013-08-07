@@ -18,34 +18,34 @@
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
 
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-        function lprintf()
-        {
-        var DocumentContainer = document.getElementById('live');
-        var WindowObject = window.open('', 'PrintWindow','width=550,height=350,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
-        WindowObject.document.writeln(DocumentContainer.innerHTML);
-        WindowObject.document.close();
-        WindowObject.focus();
-        WindowObject.print();
-        WindowObject.close(); 
-        }
+            function lprintf()
+            {
+                var DocumentContainer = document.getElementById('live');
+                var WindowObject = window.open('', 'PrintWindow', 'width=550,height=350,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
+                WindowObject.document.writeln(DocumentContainer.innerHTML);
+                WindowObject.document.close();
+                WindowObject.focus();
+                WindowObject.print();
+                WindowObject.close();
+            }
         </script>
-         <script type="text/javascript">
-        function pdfPrintf()
-        {
-        var DocumentContainer = document.getElementById('live');
-        var WindowObject = window.open('', 'PrintWindow','width=550,height=350,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
-        WindowObject.document.writeln(DocumentContainer.innerHTML);
-        WindowObject.document.close();
-        WindowObject.focus();
-        WindowObject.print();
-        WindowObject.close(); 
-        }
+        <script type="text/javascript">
+            function pdfPrintf()
+            {
+                var DocumentContainer = document.getElementById('live');
+                var WindowObject = window.open('', 'PrintWindow', 'width=550,height=350,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
+                WindowObject.document.writeln(DocumentContainer.innerHTML);
+                WindowObject.document.close();
+                WindowObject.focus();
+                WindowObject.print();
+                WindowObject.close();
+            }
         </script>
     </head>
     <body>
@@ -54,7 +54,7 @@
                 response.sendRedirect("../Login.jsp");
             }
         %>
-         
+
         <div class="w100 fl-l">
             <div class="w990p mar0a">
                 <!--Header Starts Here-->
@@ -74,19 +74,17 @@
                             <div class="v_gallery">
                                 <div class="w100 fl-l mart10">
                                     <div class="bradcum" >
-
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyBuilder.jsp"/>">My Builder</a>&nbsp;>&nbsp;<a href="<s:url value="/Builder/indexResume.jsp"/>">My Resume</a> > Build Resumes 
-
                                     </div>
-                                    <hr/>
-                                   
-                                    <table width="98%" class="mar0a" border="1" id="live">
+                                    <table width="98%" class="mar0a mart30" border="" id="live">
                                         <tr>
-                                            <th colspan="2"><s:property value="resumeTitle"/></th>
+                                            <th colspan="2"><h3><s:property value="resumeTitle"/></h3></th>
                                         </tr>
                                         <tr>
-                                            <th>Objective</th>
-                                            <td><s:property value="resumeObjective" escape="false"/></td>
+                                            <th colspan="2" align="left">Objective</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><s:property value="resumeObjective" escape="false"/></td>
                                         </tr>
                                         <s:iterator value="userDetaillist">
                                             <tr>
@@ -394,10 +392,10 @@
                                             <tr><td colspan="2">
                                                     <table align="center" border="1" width="100%">
                                                         <tr><th align="left">Name</th><td><s:property value="fname"/>&nbsp;<s:property value="lname"/></td></tr>
-                                                        <tr><th align="left">Father Name</th><td>&nbsp;</td></tr>
-                                                        <tr><th align="left">Date of Birth</th><td>&nbsp;</td></tr>
-                                                        <tr><th align="left">Place of Birth</th><td>&nbsp;</td></tr>
-                                                        <s:iterator value="profileContacts" >
+                                                        <tr><th align="left">Father Name</th><td><s:property value="fatherName"/>&nbsp;</td></tr>
+                                                        <tr><th align="left">Date of Birth</th><td><s:property value="dateOfBirth"/>&nbsp;</td></tr>
+                                                        <tr><th align="left">Place of Birth</th><td><s:property value="pbirth"/>&nbsp;</td></tr>
+                                                                <s:iterator value="profileContacts" >
                                                             <tr><th align="left">Mailing Address: </th><td>
                                                                     <s:property value="address1"/>&nbsp;
                                                                     <s:property value="address2"/>&nbsp;
@@ -460,19 +458,21 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th align="left" valign="top" height="50px;">Date</th>
-                                                <th align="right" valign="top">Signature</th>
+                                                <td align="left" width="50%" valign="top">Date: <s:property value="currentDate"/></td>
+                                                <td align="right" valign="top" width="50%">Signature<br/><s:property value="fname"/>&nbsp;<s:property value="mname"/>&nbsp;<s:property value="lname"/></td>
                                             </tr>
                                         </s:iterator>
                                     </table>
-                                    
-                                    <a href="ResumeExport.jsp?word=1&amp;rTitle=<s:property value="resumeTitle"/>&amp;rObjective=<s:property value="resumeObjective"/>">Export to Word</a>
-                                            &nbsp;
+
+<!--       <a href="ResumeExport.jsp?word=1&amp;rTitle=<s:property value="resumeTitle"/>&amp;rObjective=<s:property value="resumeObjective"/>">Export to Word</a>
+        &nbsp;
+<input type="button" value="Print as Pdf" onclick="pdfPrintf()"/>
+        &nbsp;  
+                                    -->
                                     <input type="button" value="Print" onclick="lprintf()"/>
-                                            &nbsp;
-                                    <input type="button" value="Print as Pdf" onclick="pdfPrintf()"/>
-                                            &nbsp;    
-                                    </div>
+                                    &nbsp;
+
+                                </div>
                             </div>
                             <!--Right box End Here-->
                         </div>

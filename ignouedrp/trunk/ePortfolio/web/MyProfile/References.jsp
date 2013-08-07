@@ -18,9 +18,9 @@
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
 
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -47,57 +47,52 @@
                         <div class="right_box">
                             <div class="my_account_bg">My References</div>
                             <div class="v_gallery">
-                                <div class="w98 mar0a mart10">
-                                    <div class="bradcum"> 
-                                        <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > References
-                                    </div>
+                                <div class="bradcum"><a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > References</div>
+                                <div class="w100 fl-l">
+                                    <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                                    <div class="wau fl-r mart10"><a href="<s:url value="ReferencesInfoAdd.jsp"/>"><img src="<s:url value="/icons/add.gif"/>" align="right" title="Add Reference"/></a></div>
+                                </div>
+                                <div class="w100 fl-l">
+                                    <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
                                     <div class="w100 fl-l mart10">
-                                        <div class="w100 fl-l">
-                                            <a href="<s:url value="ReferencesInfoAdd.jsp"/>">
-                                                <img src="<s:url value="/icons/add.gif"/>" align="right" title="Add Reference"/>
-                                            </a>
-                                        </div>
-                                        <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
-                                        <div class="w100 fl-l mart10">
-                                            <table width="100%" class="mar0a" cellpadding="4" border="1" cellspacing="0">   
+                                        <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0">   
+                                            <tr>
+                                                <th width="10%">S. No</th>
+                                                <th width="20%">Name &amp; Designation</th>
+                                                <th width="50%">Address, Email ID, Phone No.</th>
+                                                <th width="10%">Edit</th>
+                                                <th width="10%">Delete</th>                                                        
+                                            </tr>
+                                            <s:iterator value="RefList" var="ProRef" status="stat">
                                                 <tr>
-                                                    <th width="10%">S. No</th>
-                                                    <th width="20%">Name &amp; Designation</th>
-                                                    <th width="50%">Address, Email ID, Phone No.</th>
-                                                    <th width="10%">Edit</th>
-                                                    <th width="10%">Delete</th>                                                        
+                                                    <td align="center" valign="top"><s:property value="%{#stat.count}"/></td>
+                                                    <td align="left" valign="top"><strong>
+                                                            <s:property value="name"/>
+                                                        </strong><br/>
+                                                        <s:property value="designation"/></td>
+                                                    <td>
+                                                        <s:property value="department"/><br/>
+                                                        <s:property value="orgUniv"/><br/>
+                                                        <s:property value="place"/>
+                                                        <s:property value="city"/>
+                                                        <s:property value="state"/>
+                                                        <s:property value="country"/><br/>
+                                                        <s:property value="phoneno"/>
+                                                        <s:property value="mobileno"/><br/>
+                                                        <s:property value="emailId"/><br/>
+                                                        <s:property value="website"/>
+                                                    </td>
+                                                    <td valign="top" align="center">
+                                                        <a href="editReference?referencesId=<s:property value="referencesId"/>">
+                                                            <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/>
+                                                        </a></td>
+                                                    <td valign="top" align="center">
+                                                        <a href="deleteReference?referencesId=<s:property value="referencesId"/>" onclick="return confirm('Are you sure you want to delete this record')">
+                                                            <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/>
+                                                        </a></td>                                                        
                                                 </tr>
-                                                <s:iterator value="RefList" var="ProRef" status="stat">
-                                                    <tr>
-                                                        <td align="center" valign="top"><s:property value="%{#stat.count}"/></td>
-                                                        <td align="left" valign="top"><strong>
-                                                                <s:property value="name"/>
-                                                            </strong><br/>
-                                                            <s:property value="designation"/></td>
-                                                        <td>
-                                                            <s:property value="department"/><br/>
-                                                            <s:property value="orgUniv"/><br/>
-                                                            <s:property value="place"/>
-                                                            <s:property value="city"/>
-                                                            <s:property value="state"/>
-                                                            <s:property value="country"/><br/>
-                                                            <s:property value="phoneno"/>
-                                                            <s:property value="mobileno"/><br/>
-                                                            <s:property value="emailId"/><br/>
-                                                            <s:property value="website"/>
-                                                        </td>
-                                                        <td valign="top" align="center">
-                                                            <a href="editReference?referencesId=<s:property value="referencesId"/>">
-                                                                <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/>
-                                                            </a></td>
-                                                        <td valign="top" align="center">
-                                                            <a href="deleteReference?referencesId=<s:property value="referencesId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                                                <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/>
-                                                            </a></td>                                                        
-                                                    </tr>
-                                                </s:iterator>
-                                            </table>
-                                        </div>
+                                            </s:iterator>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

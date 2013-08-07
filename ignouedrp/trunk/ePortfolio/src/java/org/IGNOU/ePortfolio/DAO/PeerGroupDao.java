@@ -20,8 +20,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class PeerGroupDao {
 
-    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();;
-    private Session s ;
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    ;
+    private Session s;
+
     @SuppressWarnings("unchecked")
     public List<UserList> UserListPeerByuserId(String emailId) {
         s = sessionFactory.openSession();
@@ -40,17 +42,17 @@ public class PeerGroupDao {
 
     @SuppressWarnings("unchecked")
     public List<UserList> UserListDetailByUserId(String emailId) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
-        List<UserList> PeerGroupList = null;
+        List<UserList> UserDetailsList = null;
         try {
-            PeerGroupList = s.createQuery("from UserList as ul where ul.emailId='" + emailId + "'").list();
+            UserDetailsList = s.createQuery("from UserList as ul where ul.emailId='" + emailId + "'").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
         t.commit();
         s.close();
         sessionFactory.close();
-        return PeerGroupList;
+        return UserDetailsList;
     }
 }

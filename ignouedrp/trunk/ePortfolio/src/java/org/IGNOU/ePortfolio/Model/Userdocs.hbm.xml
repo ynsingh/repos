@@ -11,6 +11,7 @@
     <property column="filepath" name="filepath"/>
     <property column="filetype" name="filetype"/>
     <property column="filedate" name="filedate"/>
+    <property column="description" name="description"/>
   </class>
   <class name="org.IGNOU.ePortfolio.Model.UserdocsFolder" table="userdocs">
     <id column="fileid" name="fileid">
@@ -23,16 +24,4 @@
     <property column="filetype" name="filetype"/>
     <property column="filedate" name="filedate"/>
   </class>
-  <class name="org.IGNOU.ePortfolio.Model.UserDocsList" table="userdocs">
-    <id column="fileid" name="fileid">
-         <generator class="identity"/>
-        </id>
-    <property column="filename" name="filename"/>
-    <property column="user_id" name="user_id"/>
-    <property column="size" name="size"/>
-    <property column="filepath" name="filepath"/>
-    <property column="filedate" name="filedate"/>
-    <property column="filetype" name="filetype"/>
-    <property column="description" name="description"/>
-  </class>
-</hibernate-mapping>
+  </hibernate-mapping>

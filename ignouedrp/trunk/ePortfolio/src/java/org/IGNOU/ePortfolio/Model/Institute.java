@@ -1,7 +1,6 @@
 package org.IGNOU.ePortfolio.Model;
 // Generated Nov 6, 2012 1:18:51 PM by Hibernate Tools 3.2.1.GA
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -9,6 +8,7 @@ import java.util.Set;
  */
 public class Institute implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Integer instituteId;
     private String instituteName;
     private String shortName;

@@ -21,22 +21,5 @@
             <column name="topic" length="45" />
         </property>
     </class>
-    <class name="org.IGNOU.ePortfolio.Model.MyNotesList" table="my_notes" catalog="eportfolio">
-        <id name="notesId" type="long">
-            <column name="notes_id" />
-            <generator class="identity" />
-        </id>
-        <property name="userId" type="string">
-            <column name="user_id" length="45" not-null="true" />
-        </property>
-        <property name="note" type="string">
-            <column name="note" length="200" />
-        </property>
-        <property name="date" type="string">
-            <column name="date" length="50" not-null="true" />
-        </property>
-        <property name="topic" type="string">
-            <column name="topic" length="45" />
-        </property>
-    </class>
+   
 </hibernate-mapping>

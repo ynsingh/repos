@@ -51,7 +51,7 @@
                                     <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;> <a href="FacultyTaskShow">Task / Activities</a> > Create Task / Activity
                                     </div>
-                                    <div class="w100 fl-l">
+                                    <div class="w100 fl-l mart15">
                                         <fieldset class="w5500p mar0a">
                                             <legend class="fbld">Add Task/Activity</legend>
                                             <s:form id="FormId" action="AddEvidence" namespace="/Evidence" theme="simple" method="post" enctype="multipart/form-data">
@@ -72,6 +72,7 @@
                                                                 headerValue="Please Select Course/Subject"
                                                                 label="Select Course"
                                                                 sortable="false"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -89,6 +90,7 @@
                                                                 headerKey="-1" 
                                                                 headerValue="Please Select a Grade Type"
                                                                 label="Grade Type"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -98,19 +100,19 @@
                                                     <tr>
                                                         <td>Start Date (MM/DD/YY)</td>
                                                         <td>
-                                                            <sj:datepicker id="date0" name="openDate" changeMonth="true" changeYear="true"/>
+                                                            <sj:datepicker id="date0" name="openDate" changeMonth="true" changeYear="true" minDate="0"/>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Closing Date (MM/DD/YY)</td>
                                                         <td> 
-                                                            <sj:datepicker id="date1" name="closeDate" changeMonth="true" changeYear="true"/>
+                                                            <sj:datepicker id="date1" name="closeDate" changeMonth="true" changeYear="true" minDate="0"/>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Accept Until</td>
                                                         <td> 
-                                                            <sj:datepicker id="date2" name="lastAcceptDate" changeMonth="true" changeYear="true"/>
+                                                            <sj:datepicker id="date2" name="lastAcceptDate" changeMonth="true" changeYear="true" minDate="0"/>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -157,7 +159,7 @@
                                                         <td colspan="2" align="center">
                                                             <s:submit value="Submit"/>&nbsp;
                                                             <s:reset value="Reset"/>&nbsp;
-                                                            <s:reset value="Cancel" onClick="history.go(-1);" />
+                                                            <s:reset value="Back" onClick="history.go(-1);" />
                                                         </td>
                                                     </tr>
                                                 </table>

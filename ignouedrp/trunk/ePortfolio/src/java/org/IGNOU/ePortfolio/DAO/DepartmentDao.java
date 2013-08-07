@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.DAO;
 
 import java.util.Date;
+import java.util.List;
 import org.IGNOU.ePortfolio.Model.Department;
 import org.IGNOU.ePortfolio.Model.Institute;
 import org.hibernate.Session;
@@ -56,4 +57,23 @@ public class DepartmentDao {
         }
     }
 
+    public List<Department> DepartmentListByInstituteId(Integer instituteId) {
+        s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+
+        List<Department> Deptlist = null;
+        try {
+            Deptlist = s.createQuery("from Department where institute='" + instituteId + "'").list();
+            t.commit();
+            return Deptlist;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sessionFactory.close();
+        }
+    }
 }

@@ -20,7 +20,7 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -50,8 +50,8 @@
                                 </div>
                                 <div class="marr15 fl-r mart10">
                                     || <s:a action="StdTestiReq">Inbox</s:a> || <s:a action="MailedTestimonial">Sent</s:a> || <s:a action="FacultyDraftTesti">Draft</s:a> ||
-                                </div>
-                                <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
+                                    </div>
+                                            <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
                                 <div class="w100 fl-l mart5">
                                     <s:form action="UpdateTestimonial" method="post" theme="simple" namespace="/MyProfile">   
                                         <fieldset class="w550p mar0a">

@@ -19,7 +19,7 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -75,6 +75,7 @@
                                                                 headerValue="Please Select University/Institute"
                                                                 label="Select University/Institute"
                                                                 sortable="false"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -93,6 +94,7 @@
                                                                 headerValue="Please Select a Department/School/Collage"
                                                                 label="Programme"
                                                                 onChangeTopics="reloadprogrammelist"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -111,6 +113,7 @@
                                                                 headerValue="Please Select Programme/Degree"
                                                                 label="Programme"
                                                                 onChangeTopics="reloadProCourselist"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
@@ -129,6 +132,7 @@
                                                                 headerKey="-1" 
                                                                 headerValue="Please Select Course/Subject"
                                                                 onChangeTopics="reloadGradelist"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>                      
@@ -146,12 +150,15 @@
                                                                 label="Select Grade Type"
                                                                 sortable="false"
                                                                 value="%{gradeMasterL}"
+                                                                required="true"
                                                                 />
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3" align="center">
-                                                            <s:submit value="Set Grade Value"/>
+                                                            <s:submit value="Set Grade Value"/>&nbsp;
+                                                            <s:reset value="Reset"/>&nbsp;
+                                                            <s:reset value="Back" onClick="history.go(-1);" />
                                                         </td>
                                                     </tr>
                                                 </table>

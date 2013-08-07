@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.IGNOU.ePortfolio.DAO.InstituteDao;
+import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Programme;
 
 /**
@@ -19,14 +19,14 @@ public class ProgrammAction extends ActionSupport {
 
     private static final long serialVersionUID = -2223948287805083119L;
     private Map<String, String> programmeL;
-    private String instituteId;
-    private InstituteDao instDao = new InstituteDao();
+    private String departmentId;
+    private ProgrammeDao dao = new ProgrammeDao();
     private List<Programme> PrograList;
     private String ProgrammeNotFound = getText("msg.programmeNotFound");
 
     @Override
     public String execute() {
-        PrograList = instDao.ProgrammeListByInstituteId(Integer.valueOf(instituteId));
+        PrograList = dao.ProgrammeListByDepartmentId(Integer.valueOf(departmentId));
         programmeL = new HashMap<String, String>();
         if (PrograList.isEmpty()) {
             programmeL.put("NULL", getProgrammeNotFound());
@@ -42,22 +42,8 @@ public class ProgrammAction extends ActionSupport {
         return execute();
     }
 
-    public void setInstituteId(String instituteId) {
-        this.instituteId = instituteId;
-    }
-
-    /**
-     * @return the instDao
-     */
-    public InstituteDao getInstDao() {
-        return instDao;
-    }
-
-    /**
-     * @param instDao the instDao to set
-     */
-    public void setInstDao(InstituteDao instDao) {
-        this.instDao = instDao;
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 
     /**

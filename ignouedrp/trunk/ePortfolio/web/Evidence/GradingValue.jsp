@@ -82,10 +82,10 @@
                                                     <tr>
                                                         <th align="left">File</th>
                                                         <td align="left">
-                                                            <s:if test="assAttach!='null'">
+                                                            <s:if test="evidence.assAttach!='null'">
                                                                 <a href="downnloadAttach?facultyId=<s:property value="evidence.user.emailId"/>&amp;assAttach=<s:property value="evidence.assAttach"/>" target="_blank"><s:property value="evidence.assAttach"/></a>
                                                             </s:if>
-                                                            <s:elseif test="assAttach=='null'">
+                                                            <s:elseif test="evidence.assAttach=='null'">
 
                                                             </s:elseif>
                                                         </td>
@@ -101,88 +101,93 @@
                                                     </tr>
                                                     <tr>
                                                         <th align="left">Submitted On</th>
-                                                        <td align="left"><s:date name="subDate" format="MMM dd, YYYY"/></td></tr>
+                                                        <td align="left"><s:date name="subDate" format="MMM dd, yyyy"/></td></tr>
                                                     <tr>
                                                         <th align="left">Student Reply</th>
                                                         <td align="left"><s:property value="instructions" escape="false" /></td></tr>
                                                     <tr>
                                                         <th align="left">Student's Attachment</th>
                                                         <td align="left"> <s:if test="attachment!='null'">
-                                                                <a href="downloadStuAtt?userId=<s:property value="userId"/>&amp;attachment=<s:property value="attachment"/>" target="_blank">  <s:property value="attachment"/></a>
+                                                                <a href="downloadStuAtt?userId=<s:property value="user.emailId"/>&amp;attachment=<s:property value="attachment"/>" target="_blank">  <s:property value="attachment"/></a>
                                                             </s:if>
                                                             <s:elseif test="attachment=='null'">
 
                                                             </s:elseif></td></tr>
-                                                        </s:iterator>
-                                                        <s:form action="UpdateMarks" method="post" theme="simple" namespace="/Evidence" enctype="multipart/form-data">
-                                                            <s:hidden name="submissionId"/>
-                                                            <s:hidden name="instituteId"/>
-                                                            <s:hidden name="evidenceId"/>
-                                                    <tr><th align="center" colspan="2">Grading Details</th></tr>
-                                                    <s:if test='title.equals("Points Grade")'>
-                                                        <tr><th align="left">Maximum Points</th>
-                                                            <td>      
-                                                                <s:iterator value="splitValue1" status="stat">                         
-                                                                    <s:property value="GradeValueRange[#stat.index]"/>
-                                                                </s:iterator>
+
+                                                    <s:form action="UpdateMarks" method="post" theme="simple" namespace="/Evidence" enctype="multipart/form-data">
+                                                        <s:hidden name="submissionId"/>
+                                                        <s:hidden name="instituteId"/>
+                                                        <s:hidden name="evidenceId"/>
+                                                        <tr><th align="center" colspan="2">Grading Details</th></tr>
+                                                        <s:if test='evidence.gradeValue.gradeTypeDetailsMaster.gradeTypeMaster.title.equals("Points Grade")'>
+                                                            <tr><th align="left">Maximum Points</th>
+                                                                <td>      
+                                                                    <s:iterator value="splitValue1" status="stat">                         
+                                                                        <s:property value="GradeValueRange[#stat.index]"/>
+                                                                    </s:iterator>
+                                                                </td>
+                                                            </tr>
+                                                            <tr><th align="left">Obtained Points</th>
+                                                                <td align="left">                                       
+                                                                    <s:textfield name="gradesObtained"/>
+                                                                </td>
+                                                            </tr>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <tr><th>Select Grade</th>
+                                                                <td valign="middle">
+                                                                    <div style="width: auto; float: left; margin-top: 100px;" align="left">
+                                                                        <select name="gradesObtained">
+                                                                            <s:iterator value="splitValue1" status="stat">
+                                                                                <option value="<s:property value="GradeLable[#stat.index]"/>">
+                                                                                    <s:property value="GradeLable[#stat.index]"/>
+                                                                                </option>
+                                                                            </s:iterator>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div style="width: auto; float: left; margin-left: 30px;" align="right">
+                                                                        <table border="1">
+                                                                            <s:iterator value="splitValue1" status="stat">
+                                                                                <tr>
+                                                                                    <th><s:property value="GradeLable[#stat.index]"/></th>
+                                                                                    <td><s:property value="GradeValueRange[#stat.index]"/></td>
+                                                                                </tr>
+                                                                            </s:iterator>
+                                                                        </table>
+                                                                    </div>
+                                                                </td>
+                                                            </tr> 
+                                                        </s:else>
+                                                        <tr><th>Comment</th><td>
+                                                                <sjr:tinymce
+                                                                    id="richtextTinymceAdvancedEditor"
+                                                                    name="facultyComment"
+                                                                    rows="10"
+                                                                    cols="10"
+                                                                    editorLocal="en"
+                                                                    editorTheme="advanced"
+                                                                    editorSkin="o2k7"
+                                                                    toolbarAlign="left"
+                                                                    toolbarLocation="top"
+                                                                    toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
+                                                                    toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
+                                                                    toolbarButtonsRow3=" "
+                                                                    />
                                                             </td>
                                                         </tr>
-                                                        <tr><th align="left">Obtained Points</th>
-                                                            <td align="left">                                       
-                                                                <s:textfield name="gradesObtained"/>
-                                                            </td>
+                                                        <tr><th>Attachment</th>
+                                                            <td><s:file name="facData"/></td>
                                                         </tr>
-                                                    </s:if>
-                                                    <s:else>
-                                                        <tr><th>Select Grade</th>
-                                                            <td valign="middle">
-                                                                <div style="width: auto; float: left; margin-top: 100px;" align="left">
-                                                                    <select name="gradesObtained">
-                                                                        <s:iterator value="splitValue1" status="stat">
-                                                                            <option value="<s:property value="GradeLable[#stat.index]"/>">
-                                                                                <s:property value="GradeLable[#stat.index]"/>
-                                                                            </option>
-                                                                        </s:iterator>
-                                                                    </select>
-                                                                </div>
-                                                                <div style="width: auto; float: left; margin-left: 30px;" align="right">
-                                                                    <table border="1">
-                                                                        <s:iterator value="splitValue1" status="stat">
-                                                                            <tr>
-                                                                                <th><s:property value="GradeLable[#stat.index]"/></th>
-                                                                                <td><s:property value="GradeValueRange[#stat.index]"/></td>
-                                                                            </tr>
-                                                                        </s:iterator>
-                                                                    </table>
-                                                                </div>
-                                                            </td>
-                                                        </tr> 
-                                                    </s:else>
-                                                    <tr><th>Comment</th><td>
-                                                            <sjr:tinymce
-                                                                id="richtextTinymceAdvancedEditor"
-                                                                name="facultyComment"
-                                                                rows="10"
-                                                                cols="10"
-                                                                editorLocal="en"
-                                                                editorTheme="advanced"
-                                                                editorSkin="o2k7"
-                                                                toolbarAlign="left"
-                                                                toolbarLocation="top"
-                                                                toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
-                                                                toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
-                                                                toolbarButtonsRow3=" "
-                                                                />
-                                                        </td>
-                                                    </tr>
-                                                    <tr><th>Attachment</th>
-                                                        <td><s:file name="facData"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>&nbsp;</th>
-                                                        <td align="left"><s:submit/></td></tr>
-                                                    </s:form>
-                                            </table>
+                                                        <tr>
+                                                            <th>&nbsp;</th>
+                                                            <td align="left">  
+                                                                <s:submit value="Submit"/>&nbsp;
+                                                                <s:reset value="Reset"/>&nbsp;
+                                                                <s:reset value="Back" onClick="history.go(-1);" />
+                                                            </td></tr>
+                                                        </s:form>
+                                                </table>
+                                            </s:iterator>       
                                         </fieldset>
                                     </div>
                                 </div>

@@ -66,10 +66,10 @@
                                                 <td><s:property value="title"/></td></tr>                                
                                             <tr>
                                                 <td class="w100p">Start Date</td>
-                                                <td><s:date name="openDate" format="MMM dd, YYYY"/></td></tr>
+                                                <td><s:date name="openDate" format="MMM dd, yyyy"/></td></tr>
                                             <tr>
                                                 <td align="left">Closing Date</td>
-                                                <td><s:date name="closeDate" format="MMM dd, YYYY"/></td></tr>
+                                                <td><s:date name="closeDate" format="MMM dd, yyyy"/></td></tr>
                                             <tr>
                                                 <td class="w100p">File</td>
                                                 <td>
@@ -102,7 +102,7 @@
                                                                 <s:elseif test="gradesObtained==null">
                                                                     <a class="marl5" href="ActivityGrade?submissionId=<s:property value="submissionId"/>&amp;evidenceId=<s:property value="evidenceId"/>&amp;userId=<s:property value="user.emailId"/>">Grade</a>
                                                                 </s:elseif>
-                                                                <a class="marl5" href="StudentPop?evidenceId=<s:property value="evidenceId"/>&amp;submissionId=<s:property value="submissionId"/>&amp;userId=<s:property value="user.emailId"/>">Allow-Comment</a>
+                                                                <a class="marl5" href="StudentPop?evidenceId=<s:property value="evidenceId"/>&amp;submissionId=<s:property value="submissionId"/>&amp;userId=<s:property value="user.emailId"/>&amp;programmeId=<s:property value="evidence.course.programme.programmeId"/>">Allow-Comment</a>
                                                                 <a class="marl5" href="ViewCommentsGrade?submissionId=<s:property value="submissionId"/>&amp;evidenceId=<s:property value="evidenceId"/>&amp;userId=<s:property value="user.emailId"/>">View Comments</a>
                                                             </form>
                                                         </s:if>
@@ -112,7 +112,7 @@
                                                     </td>
                                                     <td align="center">
                                                         <s:if test="submitted==1">
-                                                            <s:date name="subDate" format="MMM dd, YYYY"/>
+                                                            <s:date name="subDate" format="MMM dd, yyyy"/>
                                                         </s:if>
                                                         <s:elseif test="submitted==0">
                                                             &nbsp;

@@ -20,10 +20,10 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
-        
+
     </head>
     <body>
         <div class="w100 fl-l">
@@ -48,50 +48,41 @@
                 <!--Middle Section Starts Here-->
                 <div class="w100 fl-l">
                     <div class="middle_bg">
+                        <div class="w50 mar0a tc fbld fcgreen mart50">
+                            <s:property value="msg"/>
+                        </div>
                         <div class="login_cont">
-                            <div class="w50 fl-l mart70">
-                                <table width="100%" class="fl-l" border="0" cellspacing="0" cellpadding="2">
-                                    
-                                    <s:form action="Login" method="post" theme="simple">
-                                        <tr><td colspan="4" align="center"><s:property value="msg"/></td></tr>
-                                         <tr>
-                                            <td width="10%">&nbsp;</td>
-                                            <td>Username</td>
-                                            <td><s:textfield name="email_id" /></td>
-                                            <td width="5%">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="10%">&nbsp;</td>
-                                            <td>Password</td>
-                                            <td><s:password name="password" /></td>
-                                            <td width="5%">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="10%">&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td><s:submit type="image" src="images/login_btn.gif" /></td>
-                                            <td width="5%">&nbsp;</td>
-                                        </tr>
-                                            <s:token/>
-                                    </s:form>
+                            <div class="w68 fl-l mart70">
 
-                                    <tr>
-                                        <td width="10%">&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td><input name="" type="checkbox" value="" />
-                                            Remember me</td>
-                                        <td width="5%">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td width="10%">&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td><a href="<s:url value="/ForgotPassword.jsp"/>">Forgot Password</a><br />
-                                            <a href="http://eportfolio.edrp.ac.in:8080/ePortfolio/remote_Login.jsp">Login with Brihaspati</a></td>
-                                        <td width="5%">&nbsp;</td>
-                                    </tr>
+                                <table width="100%" class="fl-l" border="0" cellspacing="0" cellpadding="2">
+                                    <s:form action="Login" method="post" theme="simple">
+                                        <tr>
+                                            <td width="10%">&nbsp;</td>
+                                            <td width="80%"><s:textfield cssClass="txt_field" placeholder="Username" name="email_id" /></td>
+                                            <td width="10%">&nbsp;</td> 
+                                        </tr>
+                                        <tr>
+                                            <td width="10%">&nbsp;</td>
+                                            <td><s:password cssClass="txt_field mart5" placeholder="Password"  name="password" /></td>
+                                            <td width="5%">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="10%">&nbsp;</td>
+                                            <td>
+                                                <p><input name="" type="checkbox" value="" />
+                                                    Remember me</p><p class="wau fl-l mart5"><a href="<s:url value="/ForgotPassword.jsp"/>">Forgot Password</a></p>
+                                                <p class="wau fl-r mart5"><s:submit type="image" src="images/login_btn.gif" /></p>
+                                                <p class="wau fl-l mart5"><a href="http://14.139.40.232:8080/ePortfolio/remote_Login.jsp">Login with Brihaspati</a></p>
+
+                                            </td>
+                                            <td width="5%">&nbsp;</td>
+                                        </tr>
+
+                                        <s:token/>
+                                    </s:form>
                                 </table>
                             </div>
-                            <div class="w50 fl-l mart50">
+                            <div class="w32 fl-l mart50">
                                 <table width="100%" class="fl-l" border="0" cellspacing="3" cellpadding="0">
                                     <tr>
                                         <td width="15#">&nbsp;</td>
@@ -100,8 +91,8 @@
                                     </tr>
                                     <tr>
                                         <td>&nbsp;</td>
-                                        <td><a href="<s:url value="/Registration/StudentRegistration.jsp"/>"><img src="images/student_btn.gif" alt="" width="69" height="28" /></a>
-                                            <a href="<s:url value="/Registration/FacultyRegistration.jsp"/>"><img src="images/faculty_btn.gif" alt="" width="69" height="28" class="marl15" /></a></td>
+                                        <td>
+                                            <a href="<s:url value="/RegistrationForm.jsp"/>"><img src="images/sign_up_btn.gif" alt="" width="69" height="28" class="mart90 " /></a></td>
                                         <td>&nbsp;</td>
                                     </tr>
                                 </table>
@@ -118,8 +109,8 @@
                 <%
                     session.putValue("requri", request.getRequestURI());
                     //  out.println(request.getRequestURI());
-%>
-                <a href="<s:url value="/About.jsp"/>" target="_Blank">About</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a>
+                %>
+                <s:a action="ShowAboutUs" namespace="/Administrator">About Us</s:a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a>
             </div>
         </div>
         <div class="footer_panel">

@@ -1,7 +1,7 @@
 <%-- 
     Document   : TestimonialMailed
     Created on : 28 Sep, 2012, 5:36:39 PM
-    Author     : VinayKrSharma
+    Author     : Vinay
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -99,7 +99,7 @@
                                                 </td>
                                                 <td valign="top"><s:property value="createDate"/></td>
                                                 <s:if test="sent==1">
-                                                    <td valign="top"><s:date name="sentDate"/></td>   
+                                                    <td valign="top"><s:date name="sentDate" format="MMM dd, yyyy"/></td>   
                                                 </s:if>
                                             </tr>
                                         </s:iterator>

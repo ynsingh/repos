@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import org.IGNOU.ePortfolio.Model.ProfilePicture;
-import org.IGNOU.ePortfolio.DAO.ProfilePictureDAO;
+import org.IGNOU.ePortfolio.DAO.UserListDao;
+import org.IGNOU.ePortfolio.Model.User;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
@@ -22,19 +22,19 @@ import org.apache.struts2.interceptor.SessionAware;
  */
 public class ShowProfilePicture implements SessionAware {
 
-    private ProfilePicture ppm = new ProfilePicture();
     private String user_id = new UserSession().getUserInSession();
-    private ProfilePictureDAO ppDao = new ProfilePictureDAO();
-    private static List<ProfilePicture> spp;
+    private UserListDao ppDao = new UserListDao();
+    private static List<User> spp;
+    private String filtype;
     private Map session = ActionContext.getContext().getSession();
 
     public String ProPict() throws IOException {
-        spp = ppDao.ProfilePictureListByUserId(user_id);
-        if (spp.isEmpty()) {
-               String reqUri = session.get("requri").toString();
-                 String filepath = "images/user.png";
-                session.put("picname", filepath);
-                return filepath;
+        spp = ppDao.UserListByUserId(user_id);
+        filtype = spp.iterator().next().getFiletype();
+        if (filtype == null) {
+            String filepath = "images/user.png";
+            session.put("picname", filepath);
+            return filepath;
         } else {
             byte bp[] = spp.iterator().next().getPicture();
             String ftype = "gif";
@@ -46,7 +46,7 @@ public class ShowProfilePicture implements SessionAware {
             ImageIO.write(bImage, ftype, f);
             String filen = user_id.substring(0, 4) + "." + ftype;
             String fipath = "images/" + filen;
-           return fipath;         
+            return fipath;
         }
     }
 

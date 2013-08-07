@@ -26,7 +26,7 @@
             String PageTheme = "./style/" + theme + "/style.css";
             String calTheme = "./style/" + theme + "/date_cal.css";
             String login = "./Login.jsp" + "?theme=" + theme;
-            String Registration = "./Registration/StudentRegistration.jsp" + "?theme=" + theme;
+            String Registration = "./Registration/RegistrationForm.jsp" + "?theme=" + theme;
         %>
 
         <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
@@ -105,7 +105,7 @@
         <!--Footer Section Starts Here-->
         <div class="footer">
             <div class="f_menu">
-                <a href="<s:url value="/About.jsp"/>" target="_Blank">About Us</a> | <a href="#">Sitemap</a> |  <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a>
+                <a href="<s:url value="/About.jsp"/>" target="_Blank">About Us</a> | <a href="#">Sitemap</a> |  <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a>
             </div>
         </div>
         <div class="footer_panel">

@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MyNoteDao;
-import org.IGNOU.ePortfolio.Model.MyNotesList;
+import org.IGNOU.ePortfolio.Model.MyNotes;
 
 /**
  *
@@ -49,10 +49,9 @@ import org.IGNOU.ePortfolio.Model.MyNotesList;
 public class MyNotesInfoAction extends ActionSupport {
 
     private String user_id = new UserSession().getUserInSession();
-    private MyNotesList mynoteslist = new MyNotesList();
     private MyNoteDao notesDao = new MyNoteDao();
-    private List<MyNotesList> noteslistlist;
-    private List<MyNotesList> editNoteList;
+    private List<MyNotes> noteslistlist;
+    private List<MyNotes> editNoteList;
     private long notesId;
     private String userId;
     private String note;
@@ -105,20 +104,6 @@ public class MyNotesInfoAction extends ActionSupport {
     }
 
     /**
-     * @return the mynoteslist
-     */
-    public MyNotesList getMynoteslist() {
-        return mynoteslist;
-    }
-
-    /**
-     * @param mynoteslist the mynoteslist to set
-     */
-    public void setMynoteslist(MyNotesList mynoteslist) {
-        this.mynoteslist = mynoteslist;
-    }
-
-    /**
      * @return the notesDao
      */
     public MyNoteDao getNotesDao() {
@@ -135,14 +120,14 @@ public class MyNotesInfoAction extends ActionSupport {
     /**
      * @return the noteslistlist
      */
-    public List<MyNotesList> getNoteslistlist() {
+    public List<MyNotes> getNoteslistlist() {
         return noteslistlist;
     }
 
     /**
      * @param noteslistlist the noteslistlist to set
      */
-    public void setNoteslistlist(List<MyNotesList> noteslistlist) {
+    public void setNoteslistlist(List<MyNotes> noteslistlist) {
         this.noteslistlist = noteslistlist;
     }
 
@@ -219,14 +204,14 @@ public class MyNotesInfoAction extends ActionSupport {
     /**
      * @return the editNoteList
      */
-    public List<MyNotesList> getEditNoteList() {
+    public List<MyNotes> getEditNoteList() {
         return editNoteList;
     }
 
     /**
      * @param editNoteList the editNoteList to set
      */
-    public void setEditNoteList(List<MyNotesList> editNoteList) {
+    public void setEditNoteList(List<MyNotes> editNoteList) {
         this.editNoteList = editNoteList;
     }
 

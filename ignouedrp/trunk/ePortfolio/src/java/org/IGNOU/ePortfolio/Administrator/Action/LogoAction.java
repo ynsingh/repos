@@ -17,23 +17,22 @@ import org.apache.struts2.interceptor.SessionAware;
  *
  * @author Amit
  */
-public class LogoAction extends ActionSupport implements SessionAware{
+public class LogoAction extends ActionSupport implements SessionAware {
+
+    private static final long serialVersionUID = 1L;
     private File uniLogo;
     private String user_id = new UserSession().getUserInSession();
     private String logopath;
     private Map session = ActionContext.getContext().getSession();
-    
 
-     
-     public String ChangeUnivLogo() throws IOException {
-            
-            logopath = session.get("appPath").toString();
-            File fileToCreate = new File(logopath, getText("logoName"));
-            FileUtils.copyFile(getUniLogo(), fileToCreate);
-            return SUCCESS;
-           
-     }
+    public String ChangeUnivLogo() throws IOException {
 
+        logopath = session.get("appPath").toString();
+        File fileToCreate = new File(logopath, getText("logoName"));
+        FileUtils.copyFile(getUniLogo(), fileToCreate);
+        return SUCCESS;
+
+    }
 
     /**
      * @return the session
@@ -78,7 +77,6 @@ public class LogoAction extends ActionSupport implements SessionAware{
         this.logopath = logopath;
     }
 
-    
     /**
      * @return the uniLogo
      */
@@ -92,6 +90,4 @@ public class LogoAction extends ActionSupport implements SessionAware{
     public void setUniLogo(File uniLogo) {
         this.uniLogo = uniLogo;
     }
-    
-    
 }
