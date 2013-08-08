@@ -17,6 +17,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
+import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
@@ -31,7 +32,7 @@ public class SinglePortServer {
 	
 	private HttpServer server =null;
 	private static SinglePortServer singleportserver=null;
-	private int server_port = RuntimeDataObject.getController().getSinglePortServer();//8080;
+	private int server_port = CertificateVerify.getController().getSinglePortServer();//8080;
 	
 	public static SinglePortServer getController() throws Exception {
                 if(singleportserver==null)
@@ -171,7 +172,7 @@ class MyHandler implements HttpHandler {
                                 	                responseBody.write(sendbytes);
                                         	}
 					} else if(type.equals("stop")) {
-						org.bss.brihaspatisync.reflector.LogoutReflector.getController().stopReflector();
+						org.bss.brihaspatisync.reflector.LogoutReflector.stopReflector();
 						byte[] sendbytes="Reflector is Successfully Loggedout ".getBytes("UTF-8");
 						responseBody.write(sendbytes);
 						org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().stop();

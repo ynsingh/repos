@@ -64,37 +64,8 @@ public class HttpsUtil{
    	 * The URL class is capable of handling http:// and https:// URLs
    	 */
    	public HttpsURLConnection createHTTPConnection(URL url) throws IOException {
-		/*try{
-                	Properties prop=new Properties();
-                        prop.load(new FileInputStream("./conf/conn.ini"));
-                        netType=Integer.parseInt(prop.getProperty("Type"));
-                        if(netType!=1){
-                                proxyhost=prop.getProperty("ProxyHost");
-                                proxyport=prop.getProperty("ProxyPort");
-                                proxyuser=prop.getProperty("ProxyUser");
-                                proxypass=prop.getProperty("ProxyPass");
-                        }
-        	}catch (Exception e){
-                        System.out.println("Error in reading of conn.ini file=====>"+e);
-        	}*/
-		
-		//Properties sysprops = System.getProperties();
-                //Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-                //sysprops.put("java.protocol.handler.pkgs","javax.net.ssl.internal.www.protocol");
-
-        	//if(netType==1){
-                	connection = (HttpsURLConnection) url.openConnection();
-        	/*}else{
-                	sysprops.put("http.proxyHost",proxyhost);
-                	sysprops.put("http.proxyPort", proxyport);
-                	sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-                	String proxyAuth=proxyuser+":"+proxypass;
-                	String encodedUserPwd =encoder.encode(proxyAuth.getBytes());
-                	connection = (HttpsURLConnection) url.openConnection();
-                	connection.setRequestProperty("Proxy-Authorization", "Basic " + encodedUserPwd);
-        	}*/
-	      	
-		//SSL Certificate
+               	connection = (HttpsURLConnection) url.openConnection();
+	      	//SSL Certificate
       		connection.setHostnameVerifier(new HostnameVerifier() {
       			public boolean verify(String rserver, SSLSession sses) {
 				try{
@@ -106,9 +77,7 @@ public class HttpsUtil{
 						return true;
    					else
    						return false;
-   				}catch(Exception e){
-				//	System.out.println("Error On Line 61"+e.getMessage());
-				}
+   				}catch(Exception e){ }
 				return false;
 			}		
 		});
@@ -164,8 +133,8 @@ public class HttpsUtil{
          * Verify the Organisation Name and Issuer Common Name
          */
         private Boolean verifyCertificate(String Subject_OrgName, String IssuerCN_Name){
-                String orgName=RuntimeDataObject.getController().getCertOrgName();
-                String issuerName=RuntimeDataObject.getController().getcertIssuerName();
+                String orgName=CertificateVerify.getController().getCertOrgName();
+                String issuerName=CertificateVerify.getController().getcertIssuerName();
 
                 if (Subject_OrgName.equals(orgName)&&(IssuerCN_Name.equals(issuerName)))
                         return true;

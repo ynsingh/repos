@@ -29,24 +29,13 @@ import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 
 public class LogoutReflector {
 
-	private static LogoutReflector logoutref=null;
-    	private RegisterToIndexServer riserver=RegisterToIndexServer.getController();
-	/**
-	 * Controller for this calss
-	 */
-	public static LogoutReflector getController(){
-		if(logoutref==null)
-			logoutref=new LogoutReflector();
-		return logoutref;
-	}
-
-	public void stopReflector(){
+	public static void stopReflector(){
 		try {	
 			System.out.println("stop ref 1");	
-			String indexServer=riserver.getIServerIP();
+			String indexServer=org.bss.brihaspatisync.reflector.util.RuntimeDataObject.getController().getindexServerAddr();
 			System.out.println("indexServer "+indexServer);	
 			if(!indexServer.equals("")) {	
-				String req_url=indexServer+"/ProcessRequest?req=reflector_logout";
+				String req_url=indexServer+"req=reflector_logout";
 				URL indexurl = new URL(req_url);
                                	HttpsURLConnection connection=HttpsUtil.getController().createHTTPConnection(indexurl);
                                	if(connection != null){
@@ -63,7 +52,7 @@ public class LogoutReflector {
                                			}
 					}
                        		}
-				Timer UL_Timer =riserver.getTimer();
+				Timer UL_Timer =RegisterToIndexServer.getTimer();
 				if(UL_Timer != null) {
 					UL_Timer.cancel();
 					System.out.println("Logout Reflector Successfully !! ");			

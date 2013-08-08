@@ -50,61 +50,12 @@ public class RuntimeDataObject {
 	/**
  	 * Controller for this class
  	 */  
-        public static RuntimeDataObject getController(){
+        public static RuntimeDataObject getController() {
                 if(obj==null) {
                         obj=new RuntimeDataObject();
-                        obj.start();
                 }
                 return obj;
-        }
-
-	/**
- 	 * Loading properties file to get resource
- 	 */  
-        private void start(){
-                prop=new Properties();
-                try{
-                        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/config/Reflector.properties");
-                        prop.load(inputStream);
-                }catch(Exception e){ }
-        }
-
-	/**
- 	 * Load Master Indexing server url from properties file
- 	 */  
-        public String getMasterUrl(){
-		return prop.getProperty("MasterServerURL");
-        }
-
-	/**
-         * Load Certificate issuer organization name from properties file
-         */
-        public String getCertOrgName(){
-                return prop.getProperty("cert_ORG_Name");
-        }
-
-	/**
-         * Load Certificate issuer Authority name from properties file
-         */
-        public String getcertIssuerName(){
-                return prop.getProperty("cert_Issuer_Name");
-        }
-
-	/**
-	 * Load Reflector HTTP server port from which clients will connect to receive media stream
-	 */
-        public int getSinglePortServer(){
-                return Integer.parseInt(prop.getProperty("singleport_server"));
-        }
-	
-	/**
-         * Load Reflector TCP port to communicate with peer reflector
-         **/  
-	public int getTcpPort(){
-        	return Integer.parseInt(prop.getProperty("ref_tcp_port"));
-     	}	
-	
-	/*****************************/
+         }
 
 	public Vector getCourseid_IP(String course_id){
                 Vector v=new Vector();
@@ -145,7 +96,7 @@ public class RuntimeDataObject {
  	 * Set indexing server url 
  	 */  
         public void setindexServerAddr(String value){
-                if(indexServerAddr.equals(""))
+                if(!value.equals(""))
                         indexServerAddr=value+"/ProcessRequest?";
         }
         public String getindexServerAddr(){

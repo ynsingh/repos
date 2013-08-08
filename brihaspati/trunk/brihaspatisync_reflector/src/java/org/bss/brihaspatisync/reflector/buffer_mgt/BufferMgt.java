@@ -47,7 +47,7 @@ public class  BufferMgt {
 					buffer.removeRange(0,p1,type);
                              	}
                      	}
-            	}catch(Exception e){}
+            	}catch(Exception e){System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage()); }
     	}
 	
 	/**
@@ -63,22 +63,26 @@ public class  BufferMgt {
 			if(curpointer < size){
 				byte[] str=null;	
 				while( curpointer < size) {
-					String str1=(buffer.get(curpointer)).toString();
-                                        str1=str1.trim();
+					String get_userid=(buffer.get(curpointer)).toString();
                                         user_id=user_id.trim();
-                                        if(!(str1.startsWith(user_id))){
-						str=buffer.getObject(curpointer);
-                                                curpointer++;
-                                                setPointer(user_id,curpointer,type);
-                                                break;
-                                        }
-                                        curpointer++;
-                                        setPointer(user_id,curpointer,type);
+					if(get_userid != null) {
+	                                        if(!(get_userid.startsWith(user_id))) {
+							str=buffer.getObject(curpointer);
+							if(str != null) {
+	                	                                curpointer++;
+        	                	                        setPointer(user_id,curpointer,type);
+							}
+                                                	break;
+	                                        }
+        	                                curpointer++;
+                	                        setPointer(user_id,curpointer,type);
+					}
 				}
 				removeBufferAndSetPointer(type);
 				return str;
 			}  
-		} catch(Exception e){System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage());}	  	       return null;
+		} catch(Exception e){ System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage());}
+		return null;
 	 }
 
 

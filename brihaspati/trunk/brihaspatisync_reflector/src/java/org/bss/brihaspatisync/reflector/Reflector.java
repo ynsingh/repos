@@ -44,7 +44,7 @@ public class Reflector {
 	/**
 	 * Controller for this class
 	 */
-	public static Reflector getController(){
+	private static Reflector getController(){
 		if(reflector==null)
 			reflector=new Reflector();
 		return reflector;
@@ -60,27 +60,26 @@ public class Reflector {
 		}else if(str.equals("start")){
 			// start reflector via command line.
 			if(!flag) {
-				Vector indexServerList=RegisterToIndexServer.getController().connectToMasterServer();
+				Vector indexServerList=RegisterToIndexServer.connectToMasterServer();
 				if(indexServerList.size() >0){
 					for(int i=0;i<indexServerList.size();i++) {
-						System.out.println(" "+i+"      "+indexServerList.get(i).toString());
+						System.out.println("\n "+i+"    "+indexServerList.get(i).toString());
 					}
-					System.out.print(" Enter option:");
+					System.out.print("\nEnter option: \n");
 					java.util.Scanner in = new java.util.Scanner(System.in);
 					int inexno  = Integer.parseInt(in.nextLine());
-					System.out.println();
 					if((inexno>-1) && (indexServerList.size()>inexno)) {
 						String iserver_ip=indexServerList.get(inexno).toString();
-						RegisterToIndexServer.getController().setIServerIP(iserver_ip);
-						String start_or_stop=RegisterToIndexServer.getController().connectToIndexServer();
+						org.bss.brihaspatisync.reflector.util.RuntimeDataObject.getController().setindexServerAddr(iserver_ip);
+						String start_or_stop=RegisterToIndexServer.connectToIndexServer();
 						if(!(start_or_stop.equals("fail_registeration")))
-		                        		System.out.println("Reflector started successfuly.");
+		                        		System.out.println("Reflector started successfuly ");
 						else
-               						System.out.println("Some problem in starting Reflector.");
+               						System.out.println("Reflector is not started successfuly ");
 					} else
-						System.out.println("Give the IP for Indexing Server. ");
+						System.out.println("Give the IP for Indexing Server  ");
 				}else
-					System.out.println("Reflector could not connect master server. ");
+					System.out.println("Reflector could not connect master server  ");
                      	}else {
                         	System.out.println("Reflector is already running.");
 			}
@@ -106,7 +105,7 @@ public class Reflector {
                         frame.setVisible(true);
                         frame.setDefaultCloseOperation(frame.DO_NOTHING_ON_CLOSE);
 		}catch(Exception e){
-                	System.out.println("Error on starting reflector :"+e.getCause());
+                	System.out.println("Exception on starting reflector :"+e.getCause());
               	}
 	}	
 
@@ -118,7 +117,8 @@ public class Reflector {
 	 * registration it will return list of indexing servers. 
 	 */
 	private boolean startReflector() {
-		Vector indexServerList=RegisterToIndexServer.getController().connectToMasterServer();
+		Vector indexServerList=RegisterToIndexServer.connectToMasterServer();
+		System.out.println(indexServerList.toString());
 		String str1[]=new String[indexServerList.size()];
                 for(int i=0;i<indexServerList.size();i++)
                 	str1[i]=indexServerList.get(i).toString();
@@ -126,7 +126,7 @@ public class Reflector {
                 Object[] message = new Object[] {"Select I_Server ",combo};
                 int r = JOptionPane.showConfirmDialog(null, message, "I_Server", JOptionPane.OK_CANCEL_OPTION);
                 if (r == JOptionPane.OK_OPTION) {
-			RegisterToIndexServer.getController().setIServerIP((String)combo.getSelectedItem());
+			org.bss.brihaspatisync.reflector.util.RuntimeDataObject.getController().setindexServerAddr((String)combo.getSelectedItem());
 		}	
                 if(indexServerList.size()>0){
                 	flag=true;
@@ -138,7 +138,7 @@ public class Reflector {
 		public void actionPerformed(ActionEvent actionEvent) {
                         Component source = (Component) actionEvent.getSource();
 			if(!startflag) {
-				if(!startReflector()){
+				if(!startReflector()) {
         	                	label1.setText("There is problem in starting Reflector.");
 					return;
                        		}
@@ -149,13 +149,12 @@ public class Reflector {
                         if(response1.startsWith("Start Reflector")) {
                                 if(!startflag) {
 					startflag=true;
-					RegisterToIndexServer.getController().connectToIndexServer();
+					RegisterToIndexServer.connectToIndexServer();
 					label1.setText("Reflector started successfully.");
-                                }else {
+                                } else 
                                       	System.out.println("Reflector is already running.");
-                                }
-                        }else if(response1.startsWith("Stop Reflector")) {
-                                LogoutReflector.getController().stopReflector();
+                        } else if(response1.startsWith("Stop Reflector")) {
+                                LogoutReflector.stopReflector();
                                 label1.setText("Reflector stoped successfully.");
                                 System.exit(0);
 			} 

@@ -19,13 +19,13 @@ import  java.util.LinkedList;
 
 public class Buffer { 
 
-	private Vector ipstore; 
+	private Vector userid_store; 
   	private LinkedList<byte[]> data;  
 	/**
          * Create an empty Buffer
          */
 	public Buffer(){
-		ipstore= new Vector(11);
+		userid_store= new Vector(11);
 		data=new LinkedList<byte[]>();
 	} 
     
@@ -33,25 +33,25 @@ public class Buffer {
          * Return the Buffer head 
          */ 
 	
-	public synchronized Object get(int temp) throws QueueEmptyException { 
-           	if(isEmpty()) 
-                	throw new QueueEmptyException(); 
-               	Object obj = ipstore.elementAt(temp); 
-               	return obj; 
+	protected synchronized Object get(int temp) throws QueueEmptyException { 
+		if((size() > temp) && (!isEmpty())) 
+	              	return userid_store.elementAt(temp); 
+		else	
+			return null;
        	} 
 		
-	public synchronized byte[] getObject(int temp) throws QueueEmptyException {
-                if(isEmpty())
-                      return null;
-                byte[] obj = data.get(temp);      
-                return obj;
+	protected synchronized byte[] getObject(int temp) throws QueueEmptyException {
+		if((size() > temp) && (!isEmpty())) 
+                        return data.get(temp); 
+                else    
+                        return null;
         }
         
-	public synchronized void put(Object x) {
-                ipstore.add(x);
+	protected synchronized void put(Object x) {
+                userid_store.add(x);
         }
     	
-	public synchronized void putObject(byte[] x) {
+	protected synchronized void putObject(byte[] x) {
                 data.addLast(x);
         }
 	
@@ -59,10 +59,10 @@ public class Buffer {
 	 * remove element from buffer 
 	 */
 	
-	public synchronized void removeRange(int fromIndex, int endIndex,String type) {
-		if(ipstore.size() > endIndex){
+	protected synchronized void removeRange(int fromIndex, int endIndex,String type) {
+		if(userid_store.size() > endIndex){
 			for(int j=fromIndex;j<endIndex;j++){
-				ipstore.removeElementAt(0);
+				userid_store.removeElementAt(0);
 				data.remove(0);
 			}
 		}
@@ -72,25 +72,19 @@ public class Buffer {
          * Return <b>true</b> if the buffer is empty.
          */
         
-	public boolean isEmpty() {
-                return ipstore.size() == 0;
+	private boolean isEmpty() {
+		if(userid_store.size() == 0)
+			return true;
+		else
+			return false;
         }
 
         /**
          * Return the size of the buffer
          */
-
-        public int size() {
-                return ipstore.size();
+        protected synchronized int size() {
+                return userid_store.size();
         }
-	
-	/**
-         * Notify Queue
-         */
-        
-	public synchronized void Notify(){
-        	ipstore.notify();
-	}
 }
 
 class QueueEmptyException extends Exception { }

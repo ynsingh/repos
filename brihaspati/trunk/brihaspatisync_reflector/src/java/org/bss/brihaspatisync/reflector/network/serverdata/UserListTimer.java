@@ -46,7 +46,7 @@ public class UserListTimer extends TimerTask{
                         for(int i=0;i<masterReflector.size();i++){
                                 String lect_id = "lect_id="+URLEncoder.encode(masterReflector.get(i).toString(),"UTF-8");
                                 String url=index_url+lect_id;
-                                RegisterToIndexServer.getController().getUserListToMasterServer(url,masterReflector.get(i).toString());
+                                RegisterToIndexServer.getUserListToMasterServer(url,masterReflector.get(i).toString());
                         }
 			
               	}catch(Exception ex){

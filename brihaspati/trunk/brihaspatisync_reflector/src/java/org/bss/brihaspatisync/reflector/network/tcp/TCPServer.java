@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import org.bss.brihaspatisync.reflector.Reflector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 //import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
 
 /**
@@ -34,7 +35,7 @@ public class TCPServer implements Runnable{
        
 	private MaintainLog log=MaintainLog.getController();
  
-	private int TCP_Port=RuntimeDataObject.getController().getTcpPort();
+	private int TCP_Port=CertificateVerify.getController().getTcpPort();
 	
 	private static TCPServer tcpr=null;
 	

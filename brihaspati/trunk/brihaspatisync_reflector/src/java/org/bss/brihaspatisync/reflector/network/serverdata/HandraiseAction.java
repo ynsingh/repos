@@ -20,7 +20,7 @@ public class HandraiseAction {
 
         private void startHandraiseAction(String handraise) {
                 try{
-                	RegisterToIndexServer.getController().requestToChangeStatus(handraise);
+                	RegisterToIndexServer.requestToChangeStatus(handraise);
                 }catch(Exception e){  System.out.println("Error on HandraiseAction :"+e.getCause()); }
         }
 

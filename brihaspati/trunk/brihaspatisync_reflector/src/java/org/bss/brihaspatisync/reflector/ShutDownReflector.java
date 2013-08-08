@@ -17,9 +17,9 @@ import org.apache.commons.httpclient.methods.PostMethod;
 public class ShutDownReflector {
 	
 	public ShutDownReflector(){}
+	
 	public static void main(String ar[]) {
 		try {
-			
 			HttpClient client = new HttpClient();
                         PostMethod postMethod = new PostMethod("http://localhost:8081");	
 			postMethod.setRequestBody(new java.io.ByteArrayInputStream("sdasdada".getBytes()));
