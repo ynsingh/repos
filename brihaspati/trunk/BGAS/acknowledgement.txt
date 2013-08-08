@@ -1,5 +1,6 @@
-List of contributors
+List of persons who have contributed to this project technically or in other manner.
 
-1. Mr. A K Bokshi, Consultant, MHRD Govt of India. 
+1. Mr.A N Bokshi, Consultant, MHRD Govt of India. 
 2. Dr.Y.N.Singh, IIT Kanpur, ynsingh@iitk.ac.in
-3. Mr. Nagendra Kumar Singh, IIT Kanpur, singhnk@iitk.ac.in 
+3. Mr.Nagendra Kumar Singh, IIT Kanpur, singhnk@iitk.ac.in 
+4. Mr.Munish Malik, Finance Officer IIT Kanpur, malikm@iitk.ac.in	
