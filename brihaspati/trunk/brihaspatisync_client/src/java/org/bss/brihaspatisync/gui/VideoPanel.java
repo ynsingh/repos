@@ -78,7 +78,7 @@ public class VideoPanel {
                 welcome.setFont(new Font("Arial", Font.PLAIN, 12));
 
                 JLabel userLogin=new JLabel(org.bss.brihaspatisync.util.ClientObject.getController().getwelcomeUserName());
-                userLogin.setForeground(new Color(24,116,205));
+                userLogin.setForeground(new Color(0,0,0));
                 userLogin.setFont(new Font("Arial", Font.BOLD, 12));
                 labelPane.add(welcome);
                 labelPane.add(userLogin);
@@ -86,11 +86,11 @@ public class VideoPanel {
                 av_Pane.add(labelPane,BorderLayout.NORTH);
 		
 		mainPanel=new JLayeredPane();
-		mainPanel.setBackground(new Color(1, 0, 0, 0.5f));
+		//mainPanel.setBackground(new Color(1, 0, 0, 0.5f));
 	
 		leftPanel=new JPanel();
 		leftPanel.setLayout(new BorderLayout());
-	        leftPanel.setBackground(new Color(1, 0, 0, 0.5f));
+	        //leftPanel.setBackground(new Color(1, 0, 0, 0.5f));
 		
 		selfimageDisplay = new JLabel();	
 		js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -99,7 +99,7 @@ public class VideoPanel {
 		
 		centerPanel=new JPanel();
 		centerPanel.setLayout(new BorderLayout());
-		centerPanel.setBackground(new Color(1, 0, 0, 0.5f));
+		//centerPanel.setBackground(new Color(1, 0, 0, 0.5f));
 		centerPanel.setLocation(0,0);
 		centerPanel.setSize(0,0);
 		

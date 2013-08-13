@@ -90,16 +90,16 @@ public class HttpsUtil{
                 	runtime_object.setProxyHost(proxy_addr.getHostName());
                       	runtime_object.setProxyPort(Integer.toString(proxy_addr.getPort()));
 			ProxyAuthenticator.getController().createGUI();
-		
 			if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
 				Properties sysProps = System.getProperties();
 	        	     	sysProps.put( "proxySet", "true" );
         	       		sysProps.put( "proxyHost", runtime_object.getProxyHost());
               			sysProps.put( "proxyPort", runtime_object.getProxyPort());
-              			Authenticator authenticator = new Authenticator() {
-                						public PasswordAuthentication getPasswordAuthentication() {
-                                        				return (new PasswordAuthentication(runtime_object.getProxyUser(),runtime_object.getProxyPass().toCharArray()));
-         							}};
+	       			Authenticator authenticator = new Authenticator() {
+        				public PasswordAuthentication getPasswordAuthentication() {
+                				return (new PasswordAuthentication(runtime_object.getProxyUser(),runtime_object.getProxyPass().toCharArray()));
+         				}
+				};
 	             		Authenticator.setDefault(authenticator);
 			}
 		}
@@ -117,7 +117,7 @@ public class HttpsUtil{
 						return true;
    					else
    						return false;
-   				}catch(Exception e){System.out.println("Error On Line 61"+e.getMessage());}
+   				} catch(Exception e){System.out.println("Exception on createHTTPConnection in HttpsUtil class"+e.getMessage());}
 				return false;
 			}		
 		});
@@ -169,28 +169,27 @@ public class HttpsUtil{
    		
    	}
 	
-	public synchronized boolean getIndexingMessage(String indexServer){
+	public synchronized boolean getIndexingMessage(String indexServer) {
         	boolean flag=false;
                	try {
 			URL indexurl = new URL(indexServer);
 			connection=createHTTPConnection(indexurl);
-			if(connection==null){
-				System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
-       	        	}else{
+			if(connection != null){
 	                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         	                String str="";
-                	        try{
-                        	        if((str=in.readLine())!=null){
-                                	        if(str.equals("Successfull")){
+                	        try {
+                        	        if((str=in.readLine())!=null) {
+                                	        if(str.equals("Successfull")) {
                                         	        flag=true;
 	                                        }
                         	        }
-                               	}finally {
+                               	} finally {
                         		if(in != null) in.close();
                            	}
-			}
-                }catch(Exception e){
-                        System.out.println("Error on getIndexingMessage(connection) HttpsUtil.java "+e.getMessage());
+			} else 
+				System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+                }catch(Exception e) {
+                        System.out.println("Exception on getIndexingMessage(connection) HttpsUtil.java "+e.getMessage());
                 }
 		return flag;
         }
@@ -204,9 +203,7 @@ public class HttpsUtil{
                 try {
                         URL indexurl = new URL(indexServer);
                         connection=createHTTPConnection(indexurl);
-                        if(connection==null){
-                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog1"));
-                        }else{
+                        if(connection != null){
                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				String str="";
                                 try{
@@ -222,15 +219,12 @@ public class HttpsUtil{
 								parent_ref_ip="parent"+str1[1].replaceAll("parent","");
 								// set parent reflector ipaddress of current reflector in ClientObject 
 								// for use in runtime
-								String handraise_port=str1[2].replaceAll("port=","");
-								//RuntimeDataObject.getController().setAudioHandraisePort(handraise_port);
-								// for use in runtime
 								ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
-								String a_status=str1[3].replaceAll("A=","");
+								String a_status=str1[2].replaceAll("A=","");
 								AudioUtilObject.setAudioStatus(a_status);
-								String v_status=str1[4].replaceAll("V=","");
+								String v_status=str1[3].replaceAll("V=","");
 								AudioUtilObject.setVideoStatus(v_status);
-							}catch(Exception e){ System.out.println("Error in HttpsUtil.java "+e.getMessage());}
+							}catch(Exception e){ System.out.println("Exception on getIndexingMessage(connection) HttpsUtil.java "+e.getMessage());}
 						}else if(str.startsWith("date")) {					
 							str=str.replaceAll("date","");
 							return str;
@@ -242,9 +236,10 @@ public class HttpsUtil{
                                 }finally {
                                         if(in != null) in.close();
                                 }
-                        }
+                        } else
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog1"));
                 }catch(Exception e){
-                        System.out.println("Error on getReflectorAddress() in HttpsUtil.java "+e.getMessage());
+                        System.out.println("Exception on getReflectorAddress() in HttpsUtil.java "+e.getMessage());
                 }
                 return ref_ip;
         }
@@ -253,9 +248,7 @@ public class HttpsUtil{
                 try {
                         URL url = new URL(sendurl);
                         connection=createHTTPConnection(url);
-                        if(connection==null){
-                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
-                        }else{
+                        if(connection != null) {
                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
                                 try{
@@ -267,9 +260,10 @@ public class HttpsUtil{
                                 }finally {
                                         if(in != null) in.close();
                                 }
-                        }
+                        } else
+                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
                 }catch(Exception e){
-                        System.out.println("Error on getStringMessage(connection) HttpsUtil.java "+e.getMessage());
+                        System.out.println("Exception on getStringMessage(connection) HttpsUtil.java "+e.getMessage());
                 }
                 return null;
         }
@@ -280,7 +274,7 @@ public class HttpsUtil{
 		try {
                 	URL url = new URL(sendurl);
                         connection=createHTTPConnection(url);
-                        if(connection!=null){
+                        if(connection != null) {
                         	BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
                                 try{
@@ -298,7 +292,7 @@ public class HttpsUtil{
                         }else 
                                 System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
                 }catch(Exception e){
-                        System.out.println("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
+                        System.out.println("Exception on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
                         msgList.clear();
                         return msgList;
                 }
@@ -310,14 +304,12 @@ public class HttpsUtil{
 		if(courseList !=null) {
 			Vector sessionList=new Vector();
 			for(int i=0;i<courseList.size();i++){
-                        	try{
+                        	try {
                                 	String courseName="cn="+java.net.URLEncoder.encode((String)courseList.get(i),"UTF-8");
 	                                String indexServer=indexServerName+"/ProcessRequest?req=getSession&"+courseName;
         	                	URL indexurl = new URL(indexServer);
 	        	                connection=createHTTPConnection(indexurl);	
-					if(connection==null){
-	                        	        System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
-	        	                }else{
+					if(connection != null) {
         	        	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 	        	        String str="";
                         	        	try{
@@ -332,23 +324,23 @@ public class HttpsUtil{
                         	        	}finally {
                                 	        	if(in != null) in.close();
                                 		}
-	                        	}
-				}catch(Exception e){
-                	                System.out.println("Error at getSessionList()in HttpsConnection : "+e.getMessage());
+	        	                } else
+	                        	        System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+				} catch(Exception e) {
+                	                System.out.println("Exception at getSessionList() in HttpsConnection : "+e.getMessage());
                         	}
 			}
                 	return sessionList;
-		}else
+		} else
 			return null;
         }
 
 	/**
      	 * Verify the Organisation Name and Issuer Common Name 
      	 */
-   	private Boolean verifyCertificate(String Subject_OrgName, String IssuerCN_Name){
+   	private Boolean verifyCertificate(String Subject_OrgName, String IssuerCN_Name) {
 		String orgName=RuntimeDataObject.getController().getCertOrgName();
 		String issuerName=RuntimeDataObject.getController().getcertIssuerName();
-   	
    		if (Subject_OrgName.equals(orgName)&&(IssuerCN_Name.equals(issuerName)))
 			return true;
 		else
@@ -357,7 +349,7 @@ public class HttpsUtil{
    	}
 	
 		
-	public int getNetType(){
+	public int getNetType() {
 		return netType;
 	}
 	

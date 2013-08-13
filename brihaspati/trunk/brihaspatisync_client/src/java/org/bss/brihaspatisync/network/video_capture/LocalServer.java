@@ -81,10 +81,8 @@ public class LocalServer implements Runnable {
  	 * and put the image in buffer .
  	 */
 	public void run() {
-		
 		while(flag && ThreadController.getController().getThreadFlag()) {
 		        try {
-				
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					String ip=runtime_object.getVideoServer();
 					BufferedImage image=null;
@@ -92,7 +90,7 @@ public class LocalServer implements Runnable {
 				        if((os.startsWith("Windows")) || (!(ip.equals("127.0.0.1")))) {
 						HttpClient client = new HttpClient();
 						HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
-					        //client.setConnectionTimeout(80000);
+					        client.setConnectionTimeout(80000);
                         		        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 		                               	int statusCode1 = client.executeMethod(method);
 	        		                byte[] bytes1=method.getResponseBody();
@@ -111,7 +109,6 @@ public class LocalServer implements Runnable {
 						}
 						image=grabber.grab();
 					}
-						
 					if(image != null) {
                                         	BufferImage.getController().handleBuffer();
                                                 BufferImage.getController().put(image);

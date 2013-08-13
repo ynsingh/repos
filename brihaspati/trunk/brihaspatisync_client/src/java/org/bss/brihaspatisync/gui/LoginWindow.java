@@ -155,7 +155,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 		add(loginGUIPanel,BorderLayout.CENTER);
 		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((((int)dim.getWidth()/2)-180),((int)dim.getHeight()/5));
+		setLocation((((int)dim.getWidth()/2)-180),((int)dim.getHeight()/2)-300);
     		setSize(355,520); 
     		setVisible(true);
 		setResizable(false);
