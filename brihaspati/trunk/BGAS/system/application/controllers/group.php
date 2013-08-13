@@ -2,10 +2,12 @@
 
 class Group extends Controller {
 
+var $group_code = 0;
 	function Group()
 	{
 		parent::Controller();
 		$this->load->model('Group_model');
+		$this->load->model('Ledger_model');
 		return;
 	}
 
@@ -18,7 +20,10 @@ class Group extends Controller {
 	function add()
 	{
 		$this->load->library('validation');
+		$this->load->library('accountlist');
 		$this->template->set('page_title', 'New Group');
+		$asset = new Accountlist();
+	       
 
 		/* Check access */
 		if ( ! check_access('create group'))
@@ -40,10 +45,11 @@ class Group extends Controller {
 		
 		$data['group_code'] = array(
 			'name' => 'group_code',
-			'id' => 'group_code',
+			'id' => 'group-code',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => '', 
+//			'readonly' => 'readonly',
 		);
 		
 		$data['group_name'] = array(
@@ -51,11 +57,13 @@ class Group extends Controller {
 			'id' => 'group_name',
 			'maxlength' => '100',
 			'size' => '40',
+			//'value' => 'group_name',
 			'value' => '',
 		);
 		$data['group_parent'] = $this->Group_model->get_all_groups();
 		$data['group_parent_active'] = 0;
 		$data['affects_gross'] = 0;
+//		$data['group_code'] = 0;
 
 		/* Form validations */
 		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|unique[groups.code]');
@@ -80,6 +88,8 @@ class Group extends Controller {
 		else
 		{
 			$data_code = $this->input->post('group_code', TRUE);
+			//$this->logger->write_message("success", "group code = " . $data_code);
+//			$data_code = $this->group_code;
 			$data_name = $this->input->post('group_name', TRUE);
 			$data_parent_id = $this->input->post('group_parent', TRUE);
 
@@ -104,9 +114,38 @@ class Group extends Controller {
 				$data_affects_gross = 0;
 			}
 
+			/* This code has been moved to view */
+		/*	$num = $this->Group_model->get_numOfChild($data_parent_id);
+			$this->logger->write_message("error","value of num " . $num);
+			$g_code = $this->Group_model->get_group_code($data_parent_id);
+			$this->logger->write_message("error","value of g_code " . $g_code);
+			if($num == 0)
+			{
+				$data_code = $g_code . '01';
+			} else{
+				$data_code=$this->get_code($num, $g_code);
+				$this->logger->write_message("error","Error getting group code called -1 and the value of num is ".$num ."code is" . $data_code);
+			}
+							$i=0;
+						do{
+							$this->logger->write_message("error","Error getting group code called -2 and the value of num is".$num." code is" . $data_code);
+							
+							if($i>0)
+								{
+								$num=$num+$i;
+								$data_code=$this->get_code($num, $g_code);
+								}			
+						 $this->db->from('ledgers');
+		                                 $this->db->select('id')->where('code =',$data_code);
+                                                 $ledger_q = $this->db->get();
+						$i++;
+						}while($ledger_q->num_rows()>0);
+						$this->logger->write_message("error","Error getting group code called -3 and the value of num is ".$num ." code is ".$data_code);				
+		*/			
 			$this->db->trans_start();
 			$insert_data = array(
-				'code' => $data_code,
+		      		'code' => $data_code,
+				//'code' => '',
 				'name' => $data_name,
 				'parent_id' => $data_parent_id,
 				'affects_gross' => $data_affects_gross,
@@ -128,6 +167,73 @@ class Group extends Controller {
 		}
 		return;
 	}
+	
+	function get_numOfChild($parent_id)
+        {
+		$num = $this->Group_model->get_numOfChild($parent_id);
+                $data = array("NUM"=>$num);
+                //return Json($num, JsonRequestBehavior.AllowGet);
+                //return $num;
+                echo json_encode ($data) ;
+        }
+
+	function get_group_code($parent_id)
+        {
+		$g_code = $this->Group_model->get_group_code($parent_id);
+                $data = array("GCODE"=>$g_code);
+                echo json_encode ($data);
+        }
+
+	function get_Groupcode($data_code)
+        {
+                $this->db->from('groups');
+                $this->db->select('id')->where('code =',$data_code);
+                $group_q = $this->db->get();
+                $num = $group_q->num_rows();
+                $data = array("ROWS"=>$num);
+                echo json_encode ($data);
+        }
+
+	function get_ledgerCode($data_code)
+        {
+		$this->db->from('ledgers');
+                $this->db->select('id')->where('code =',$data_code);
+                $ledger_q = $this->db->get();
+                $num = $ledger_q->num_rows();
+                $data = array("ROWS"=>$num);
+                echo json_encode ($data);
+        }
+
+	function set_groupCode($group_code)
+	{
+		$this->group_code = $group_code;
+		return;
+	}
+
+/*	function get_code($num, $code)
+	{
+			if($num < 9)
+                	{
+                		$i = 0;
+                       		do{
+                        		$i++;
+                                	$data_code = $code . '0' . $num+$i;
+                                	$this->db->from('groups');
+                                	$this->db->select('id')->where('code =',$data_code);
+                                	$group_q = $this->db->get();
+                         	}while($group_q->num_rows() > 0);
+                	} else{
+                        	 $i = 0;
+                         	do{
+                                	$i++;
+                                	$data_code = $code . $num+$i;
+                                	$this->db->from('groups');
+                                	$this->db->select('id')->where('code =',$data_code);
+                                	$group_q = $this->db->get();
+                         	}while($group_q->num_rows() > 0);
+        		}
+		return $data_code;
+	}*/
 
 	function edit($id)
 	{
@@ -173,6 +279,7 @@ class Group extends Controller {
 			return;
 		}
 		$group_data = $group_data_q->row();
+                 
 
 		/* Form fields */
 		$data['group_code'] = array(
@@ -180,7 +287,8 @@ class Group extends Controller {
 			'id' => 'group_code',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => $group_data->code,
+			'value' => '',
+			'readonly' => 'readonly',
 		);
 
 		$data['group_name'] = array(
@@ -188,7 +296,7 @@ class Group extends Controller {
 			'id' => 'group_name',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => $group_data->name,
+			'value' => '',
 		);
 		$data['group_parent'] = $this->Group_model->get_all_groups($id);
 		$data['group_parent_active'] = $group_data->parent_id;

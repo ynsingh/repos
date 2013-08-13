@@ -33,4 +33,30 @@ class Group_model extends Model {
 		}
 		return $options;
 	}
+
+       function get_numOfChild($id)
+        {
+                $num = 0;
+		$sql = "SELECT id FROM groups WHERE parent_id =?";
+                $query = $this->db->query($sql, array($id));
+		$num = $query->num_rows();
+                return $num;
+        }
+
+	function get_group_code($id)
+	{
+		$g_code = 0;
+		$this->db->from('groups');
+		$this->db->select('code')->where('id =', $id);
+		$group_q = $this->db->get();
+		foreach($group_q->result() as $row)
+		{
+			$g_code = $row->code;
+		}
+		return $g_code;
+	}
 }
+
+?>
+
+     

@@ -200,4 +200,19 @@ class Ledger_model extends Model {
 		$this->db->where('ledger_id', $ledger_id)->update('entry_items', $update_data);
 		return;
 	}
+ function get_numOfChild($id)
+        {
+                $num = 0;
+		$sql = "SELECT id FROM ledgers WHERE group_id =?";
+		$query = $this->db->query($sql, array($id));
+		$num = $query->num_rows();
+		return $num;
+
+	}
+
+
 }
+?>
+
+
+

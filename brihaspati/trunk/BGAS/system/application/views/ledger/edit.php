@@ -1,10 +1,190 @@
+<script type="text/javascript">
+$(document).ready(function() {
+var num = "0";
+var parent_code = "0";
+var data_code = "0";
+var i = "0";
+var j = "0";
+var rows = "0";
+
+	var jsFloatOps = function(param1, param2, op) {
+                param1 = param1 * 100;
+                param2 = param2 * 100;
+                param1 = param1.toFixed(0);
+                param2 = param2.toFixed(0);
+                param1 = Math.floor(param1);
+                param2 = Math.floor(param2);
+                var result = 0;
+                if (op == '+') {
+                        result = param1 + param2;
+                        result = result/100;
+                        return result;
+                }
+		if (op == '>') {
+                        if (param1 > param2)
+                                return true;
+                        else
+                                return false;
+                }
+		if (op == '==') {
+                        if (param1 == param2)
+                                return true;
+                        else
+                                return false;
+                }
+        }
+
+        /* Calculate ledger code */
+        $('.ledger-parent').change(function() {
+		var parent_id = $(".ledger-parent").val();
+
+		$.ajax({
+                        url: <?php echo '\'' . site_url('ledger/get_numOfChild') . '/\''; ?> + parent_id,
+                        success: function(json) {
+				var obj = jQuery.parseJSON(json);
+				num = obj['NUM'];
+                        }
+                });
+
+		$.ajax({
+                        url: <?php echo '\'' . site_url('ledger/get_group_code') . '/\''; ?> + parent_id,
+                        success: function(json) {
+				var obj = jQuery.parseJSON(json);
+				parent_code = obj['LCODE'];
+                        }
+                });
+
+		//alert("parent id = "+parent_id);
+		//alert("num = "+num);
+		//alert("parent code = "+parent_code);
+		if(jsFloatOps('0', num, '=='))
+                {
+                	data_code = parent_code + "01";
+                } else{
+			if(jsFloatOps('9', num, '>'))
+                	{
+                        	i = 0;
+                        	do{
+					//alert("inside if 1");
+					i = parseFloat(i);
+                                	i = jsFloatOps(i, '1', '+');
+					num = parseFloat(num);
+					var l_num = jsFloatOps(num, i, '+');
+                                	data_code = parent_code + "0" + l_num;
+					//alert("data code 1 = "+data_code);
+					$.ajax({
+                                		url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
+                                		success: function(json) {
+                                        		var obj = jQuery.parseJSON(json);
+                                        		rows = obj['ROWS'];
+							//alert("rows inside if 1 = "+rows);
+                                		}
+                        		});
+                         	}while(jsFloatOps(rows, '0', '>'));
+                	} else{
+                        	i = 0;
+                        	do{
+					//alert("inside else 1");
+					i = parseFloat(i);
+                                	i = jsFloatOps(i, '1', '+');
+					num = parseFloat(num);
+					var l_num = jsFloatOps(num, i, '+');
+                                	data_code = parent_code + l_num;
+					//alert("data code 2 = "+data_code);
+					$.ajax({
+                                                url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
+                                                success: function(json) {
+                                                        var obj = jQuery.parseJSON(json);
+                                                        rows = obj['ROWS'];
+							//alert("rows inside else 1 = "+rows);
+                                                }
+                                        });
+                        	}while(jsFloatOps(rows, '0', '>'));
+                	}
+                }//else
+
+                j = 0;
+                do{
+                	if(jsFloatOps(j, '0', '>'))
+                        {
+				num = parseFloat(num);
+				j = parseFloat(j);
+	                        //var g_num = jsFloatOps(num, j, '+');
+	                        num = jsFloatOps(num, j, '+');
+				if(jsFloatOps('9', num, '>'))
+				{
+					i = 0;
+					do{
+						//alert("inside if 2");
+						i = parseFloat(i);
+						i = jsFloatOps(i, '1', '+');
+						num = parseFloat(num);
+						var temp = jsFloatOps(num, i, '+');
+						data_code = parent_code + "0" + temp;
+						//alert("data code 3 = "+data_code);
+						$.ajax({
+                                                	url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
+                                                	success: function(json) {
+                                                        	var obj = jQuery.parseJSON(json);
+                                                        	rows = obj['ROWS'];
+								//alert("rows inside if 2 = "+rows);
+                                                	}
+                                        	});
+					}while(jsFloatOps(rows, '0', '>'));
+				} else{
+                                	i = 0;
+                                	do{
+						//alert("inside else 2");
+						i = parseFloat(i);
+                                        	i = jsFloatOps(i, '1', '+');
+						num = parseFloat(num);
+                                        	var temp = jsFloatOps(num, i, '+');
+                                        	data_code = parent_code + temp;
+						//alert("data code 4 = "+data_code);
+                                        	$.ajax({
+                                                	url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
+                                                	success: function(json) {
+                                                        	var obj = jQuery.parseJSON(json);
+                                                        	rows = obj['ROWS'];
+								//alert("rows inside else 2 = "+rows);
+                                                	}
+                                        	});
+                                	}while(jsFloatOps(rows, '0', '>'));
+                        	}	
+                        }
+			$.ajax({
+                        	url: <?php echo '\'' . site_url('ledger/get_groupCode') . '/\''; ?> + data_code,
+                                success: function(json) {
+                                	var obj = jQuery.parseJSON(json);
+                                        rows = obj['ROWS'];
+					//alert("rows in group = "+rows);
+                                }
+                        });
+			//alert("rows = "+rows);
+			j = jsFloatOps(j, '1', '+');
+                }while(jsFloatOps(rows, '0', '>'));
+		//alert("final data code = "+data_code);
+		$("#ledger").val(data_code);
+        });
+
+        $('.ledger-parent').trigger('change');
+});
+</script>
+
 <?php
 	echo form_open('ledger/edit/' . $ledger_id);
-
+	
 	echo "<p>";
 	echo form_label('Ledger code', 'ledger_code');
 	echo "<br />";
-	echo form_input($ledger_code);
+	$data = array(
+        'name'        => 'ledger_code',
+        'id'          => 'ledger',
+        'value'       => $ledger_code,
+	'readonly'    => 'readonly',
+        );
+        //echo form_input($ledger_code);
+        echo form_input($data);
 	echo "</p>";
 
 	echo "<p>";
@@ -16,7 +196,7 @@
 	echo "<p>";
 	echo form_label('Parent group', 'ledger_group_id');
 	echo "<br />";
-	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active);
+	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
 	echo "</p>";
 
 	echo "<p>";
@@ -52,4 +232,4 @@
 	echo "</p>";
 
 	echo form_close();
-
+?>

@@ -2,6 +2,8 @@
 
 class Ledger extends Controller {
 
+var $ledger_code = 0;
+
 	function Ledger()
 	{
 		parent::Controller();
@@ -19,6 +21,8 @@ class Ledger extends Controller {
 	function add()
 	{
 		$this->template->set('page_title', 'New Ledger');
+		$this->load->library('accountlist');
+                $asset = new Accountlist();
 
 		/* Check access */
 		if ( ! check_access('create ledger'))
@@ -39,11 +43,14 @@ class Ledger extends Controller {
 		/* Form fields */
 		$data['ledger_code'] = array(
 			'name' => 'ledger_code',
-			'id' => 'ledger_code',
+			'id' => 'ledger-code',
 			'maxlength' => '100',
 			'size' => '40',
 			'value' => '',
-		);
+		//	'readonly' => 'readonly',
+		); 
+	
+	
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
 			'id' => 'ledger_name',
@@ -133,6 +140,39 @@ class Ledger extends Controller {
 				$data_reconciliation = 0;
 			}
 
+			/* The following code has been moved to view */
+
+		/*	$num = $this->Ledger_model->get_numOfChild($data_group_id);
+			$this->logger->write_message("error","value of num " . $num);
+                        $l_code = $this->Group_model->get_group_code($data_group_id);
+			$this->logger->write_message("error","value of g_code " . $g_code);
+
+                      
+			if($num == 0)
+                        {
+                                $data_code = $l_code . '01';
+                        } else{
+                                $data_code=$this->get_code($num, $l_code);
+                                $this->logger->write_message("error","Error getting group code called -1 and value of num is" .$num. "code is" .$data_code);
+                        }
+							$i=0;	
+                                                do{
+                                                        $this->logger->write_message("error","Error getting group code called -2 and value of num is" .$num ."code is" . $data_code);
+                                                        
+                                                        if($i>0)
+                                                                {
+                                                                $num=$num+$i;
+                                                                $data_code=$this->get_code($num, $l_code);
+                                                                }
+                                                 $this->db->from('groups');
+                                                 $this->db->select('id')->where('code =',$data_code);
+                                                 $group_q = $this->db->get();
+                                                $i++;
+                                                }while($group_q->num_rows()>0);
+                                                $this->logger->write_message("error","Error getting group code called -3 and value of num is " .$num ."code is" . $data_code);
+		*/
+
+
 			$this->db->trans_start();
 			$insert_data = array(
 				'code' => $data_code,
@@ -160,6 +200,73 @@ class Ledger extends Controller {
 			}
 		}
 		return;
+	}
+
+	function get_numOfChild($parent_id)
+ 	{
+    		$num = $this->Ledger_model->get_numOfChild($parent_id);
+		$data = array("NUM"=>$num);
+    		//return Json($num, JsonRequestBehavior.AllowGet);
+		//return $num;
+		echo json_encode ($data) ;
+ 	}
+
+	function get_group_code($parent_id)
+	{
+		$l_code = $this->Group_model->get_group_code($parent_id);
+		$data = array("LCODE"=>$l_code);
+		echo json_encode ($data);
+	}
+
+	function set_ledgerCode($ledger_code)
+	{
+		$this->ledger_code = $ledger_code;
+		return;
+	}
+
+        function get_code($num, $code)
+        {
+                        if($num < 9)
+                        {
+                                $i = 0;
+                                do{
+                                        $i++;
+                                        $data_code = $code . '0' . $num+$i;
+                                        $this->db->from('ledgers');
+                                        $this->db->select('id')->where('code =',$data_code);
+                                        $ledger_q = $this->db->get();
+                                }while($ledger_q->num_rows() > 0);
+                        } else{
+                                 $i = 0;
+                                do{
+                                        $i++;
+                                        $data_code = $code . $num+$i;
+                                        $this->db->from('ledgers');
+                                        $this->db->select('id')->where('code =',$data_code);
+                                        $ledger_q = $this->db->get();
+                                }while($ledger_q->num_rows() > 0);
+                        }
+                return $data_code;
+        }
+
+	function get_ledger_code($data_code)
+	{
+		$this->db->from('ledgers');
+		$this->db->select('id')->where('code =',$data_code);
+		$ledger_q = $this->db->get();
+		$num = $ledger_q->num_rows();
+		$data = array("ROWS"=>$num);
+                echo json_encode ($data);
+	}
+
+	function get_groupCode($data_code)
+	{
+		$this->db->from('groups');
+                $this->db->select('id')->where('code =',$data_code);
+                $group_q = $this->db->get();
+		$num = $group_q->num_rows();
+                $data = array("ROWS"=>$num);
+                echo json_encode ($data);
 	}
 
 	function edit($id)
@@ -211,7 +318,9 @@ class Ledger extends Controller {
 			'maxlength' => '100',
 			'size' => '40',
 			'value' => $ledger_data->code,
+			'readonly' => 'readonly',
 		);
+
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
 			'id' => 'ledger_name',
@@ -326,6 +435,8 @@ class Ledger extends Controller {
 			} else {
 				$data_reconciliation = 0;
 			}
+                        
+
 
 			$this->db->trans_start();
 			$update_data = array(
@@ -437,6 +548,8 @@ class Ledger extends Controller {
 			echo "";
 		return;
 	}
+
+
 }
 
 /* End of file ledger.php */
