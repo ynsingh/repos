@@ -36,7 +36,7 @@ var ledger_code = "0";
         }
 
 	/* Calculate ledger code */
-        $('.ledger-parent').change(function() {
+/*        $('.ledger-parent').change(function() {
                 var parent_id = $(".ledger-parent").val();
 
                 $.ajax({
@@ -158,26 +158,26 @@ var ledger_code = "0";
 		//alert ("final data code = "+data_code);
 //		 $("#ledger").val(data_code);
 		ledger_code = data_code;
-        });
-        $('.ledger-parent').trigger('change');
+        });*/
+//        $('.ledger-parent').trigger('change');
 
-	$('#myform').submit(function() {
+/*	$('#myform').submit(function() {
                 
         /*        $.ajax({
                         url: ?php echo '\'' . site_url('ledger/set_ledgerCode') . '/\''; ? + ledger_code,
                         success: function() {
                         }
-                });*/
+                });
                 
 		$('input[name=ledger_code]').val(ledger_code);
-       });
+       });*/
 
 });
 </script>
 <?php
-//	echo form_open('ledger/add');
-	$attributes = array('id' => 'myform');
-        echo form_open('ledger/add/', $attributes);
+	echo form_open('ledger/add');
+//	$attributes = array('id' => 'myform');
+  //      echo form_open('ledger/add/', $attributes);
 
 /*	echo "<p>";
 	echo form_label('Ledger code', 'ledger_code');
@@ -191,7 +191,7 @@ var ledger_code = "0";
 	echo form_input($data);
 	echo "</p>";
 */
-	$data = array(
+/*	$data = array(
               'name'  => 'ledger_code',
               'value' => '',
               'id'   => 'ledger-code',
@@ -199,7 +199,7 @@ var ledger_code = "0";
         );
 
         echo form_input($data);
-
+*/
 	echo "<p>";
 	echo form_label('Ledger name', 'ledger_name');
 	echo "<br />";

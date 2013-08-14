@@ -43,7 +43,7 @@ var $group_code = 0;
 
 		/* Form fields */
 		
-		$data['group_code'] = array(
+/*		$data['group_code'] = array(
 			'name' => 'group_code',
 			'id' => 'group-code',
 			'maxlength' => '100',
@@ -51,7 +51,7 @@ var $group_code = 0;
 			'value' => '', 
 //			'readonly' => 'readonly',
 		);
-		
+*/		
 		$data['group_name'] = array(
 			'name' => 'group_name',
 			'id' => 'group_name',
@@ -66,14 +66,14 @@ var $group_code = 0;
 //		$data['group_code'] = 0;
 
 		/* Form validations */
-		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|unique[groups.code]');
+//		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|unique[groups.code]');
 		$this->form_validation->set_rules('group_name', 'Group name', 'trim|required|min_length[2]|max_length[100]|unique[groups.name]');
 		$this->form_validation->set_rules('group_parent', 'Parent group', 'trim|required|is_natural_no_zero');
 
 		/* Re-populating form */
 		if ($_POST)
 		{
-			$data['group_code']['value'] = $this->input->post('group_code', TRUE);
+//			$data['group_code']['value'] = $this->input->post('group_code', TRUE);
 			$data['group_name']['value'] = $this->input->post('group_name', TRUE);
 			$data['group_parent_active'] = $this->input->post('group_parent', TRUE);
 			$data['affects_gross'] = $this->input->post('affects_gross', TRUE);
@@ -87,7 +87,7 @@ var $group_code = 0;
 		}
 		else
 		{
-			$data_code = $this->input->post('group_code', TRUE);
+//			$data_code = $this->input->post('group_code', TRUE);
 			//$this->logger->write_message("success", "group code = " . $data_code);
 //			$data_code = $this->group_code;
 			$data_name = $this->input->post('group_name', TRUE);
@@ -115,33 +115,29 @@ var $group_code = 0;
 			}
 
 			/* This code has been moved to view */
-		/*	$num = $this->Group_model->get_numOfChild($data_parent_id);
-			$this->logger->write_message("error","value of num " . $num);
+			$num = $this->Group_model->get_numOfChild($data_parent_id);
 			$g_code = $this->Group_model->get_group_code($data_parent_id);
-			$this->logger->write_message("error","value of g_code " . $g_code);
 			if($num == 0)
 			{
 				$data_code = $g_code . '01';
 			} else{
 				$data_code=$this->get_code($num, $g_code);
-				$this->logger->write_message("error","Error getting group code called -1 and the value of num is ".$num ."code is" . $data_code);
 			}
-							$i=0;
-						do{
-							$this->logger->write_message("error","Error getting group code called -2 and the value of num is".$num." code is" . $data_code);
-							
-							if($i>0)
-								{
-								$num=$num+$i;
-								$data_code=$this->get_code($num, $g_code);
-								}			
-						 $this->db->from('ledgers');
-		                                 $this->db->select('id')->where('code =',$data_code);
-                                                 $ledger_q = $this->db->get();
-						$i++;
-						}while($ledger_q->num_rows()>0);
-						$this->logger->write_message("error","Error getting group code called -3 and the value of num is ".$num ." code is ".$data_code);				
-		*/			
+
+			$i=0;
+			do{
+				if($i>0)
+				{
+					$num=$num+$i;
+					$data_code=$this->get_code($num, $g_code);
+				}			
+				 $this->db->from('ledgers');
+	                        $this->db->select('id')->where('code =',$data_code);
+                                $ledger_q = $this->db->get();
+				$i++;
+			}while($ledger_q->num_rows()>0);
+		
+					
 			$this->db->trans_start();
 			$insert_data = array(
 		      		'code' => $data_code,
@@ -168,7 +164,7 @@ var $group_code = 0;
 		return;
 	}
 	
-	function get_numOfChild($parent_id)
+/*	function get_numOfChild($parent_id)
         {
 		$num = $this->Group_model->get_numOfChild($parent_id);
                 $data = array("NUM"=>$num);
@@ -208,9 +204,9 @@ var $group_code = 0;
 	{
 		$this->group_code = $group_code;
 		return;
-	}
+	}*/
 
-/*	function get_code($num, $code)
+	function get_code($num, $code)
 	{
 			if($num < 9)
                 	{
@@ -233,7 +229,7 @@ var $group_code = 0;
                          	}while($group_q->num_rows() > 0);
         		}
 		return $data_code;
-	}*/
+	}
 
 	function edit($id)
 	{
@@ -282,7 +278,7 @@ var $group_code = 0;
                  
 
 		/* Form fields */
-		$data['group_code'] = array(
+/*		$data['group_code'] = array(
 			'name' => 'group_code',
 			'id' => 'group_code',
 			'maxlength' => '100',
@@ -290,13 +286,13 @@ var $group_code = 0;
 			'value' => '',
 			'readonly' => 'readonly',
 		);
-
+*/
 		$data['group_name'] = array(
 			'name' => 'group_name',
 			'id' => 'group_name',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $group_data->name,
 		);
 		$data['group_parent'] = $this->Group_model->get_all_groups($id);
 		$data['group_parent_active'] = $group_data->parent_id;
@@ -304,14 +300,14 @@ var $group_code = 0;
 		$data['affects_gross'] = $group_data->affects_gross;
 
 		/* Form validations */
-		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.code.' . $id . ']');
+//		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.code.' . $id . ']');
 		$this->form_validation->set_rules('group_name', 'Group name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.name.' . $id . ']');
 		$this->form_validation->set_rules('group_parent', 'Parent group', 'trim|required|is_natural_no_zero');
 
 		/* Re-populating form */
 		if ($_POST)
 		{
-			$data['group_code']['value'] = $this->input->post('group_code', TRUE);
+//			$data['group_code']['value'] = $this->input->post('group_code', TRUE);
 			$data['group_name']['value'] = $this->input->post('group_name', TRUE);
 			$data['group_parent_active'] = $this->input->post('group_parent', TRUE);
 			$data['affects_gross'] = $this->input->post('affects_gross', TRUE);
@@ -325,7 +321,7 @@ var $group_code = 0;
 		}
 		else
 		{
-			$data_code = $this->input->post('group_code', TRUE);
+//			$data_code = $this->input->post('group_code', TRUE);
 			$data_name = $this->input->post('group_name', TRUE);
 			$data_parent_id = $this->input->post('group_parent', TRUE);
 			$data_id = $id;
@@ -359,6 +355,30 @@ var $group_code = 0;
 				$data_affects_gross = 0;
 			}
 
+			/* This code has been moved to view */
+                        $num = $this->Group_model->get_numOfChild($data_parent_id);
+                        $g_code = $this->Group_model->get_group_code($data_parent_id);
+                        if($num == 0)
+                        {
+                                $data_code = $g_code . '01';
+                        } else{
+                                $data_code=$this->get_code($num, $g_code);
+                        }
+
+                        $i=0;
+                        do{
+                                if($i>0)
+                                {
+                                        $num=$num+$i;
+                                        $data_code=$this->get_code($num, $g_code);
+                                }
+                                 $this->db->from('ledgers');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $ledger_q = $this->db->get();
+                                $i++;
+                        }while($ledger_q->num_rows()>0);
+
+	
 			$this->db->trans_start();
 			$update_data = array(
 				'code' => $data_code,

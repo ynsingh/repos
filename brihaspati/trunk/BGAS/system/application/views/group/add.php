@@ -45,8 +45,8 @@ var group_code = "0";
                 } else {
                         $('.affects-gross').hide();
                 }
-		
-		/* Calculate group code */
+	});	
+		/* Calculate group code 
                 var parent_id = $(".group-parent").val();
 
                 $.ajax({
@@ -186,7 +186,7 @@ var group_code = "0";
 //        });
   //      $('.group-parent').trigger('change');
 
-	});
+	});*/
 	$('.group-parent').trigger('change');
 
 });
@@ -208,14 +208,14 @@ var group_code = "0";
 	echo form_input($data);
 	echo "</p>";*/
 
-	$data = array(
+/*	$data = array(
               'name'  => 'group_code',
               'value' => '',
               'id'   => 'group-code',
 		'style' => 'display:none;',
         );
 
-	echo form_input($data);
+	echo form_input($data);*/
 
 	echo "<p>";
 	echo form_label('Group name', 'group_name');

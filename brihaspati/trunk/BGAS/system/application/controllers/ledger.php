@@ -41,7 +41,7 @@ var $ledger_code = 0;
 		}
 
 		/* Form fields */
-		$data['ledger_code'] = array(
+/*		$data['ledger_code'] = array(
 			'name' => 'ledger_code',
 			'id' => 'ledger-code',
 			'maxlength' => '100',
@@ -49,7 +49,7 @@ var $ledger_code = 0;
 			'value' => '',
 		//	'readonly' => 'readonly',
 		); 
-	
+*/	
 	
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
@@ -72,7 +72,7 @@ var $ledger_code = 0;
 		$data['reconciliation'] = FALSE;
 
 		/* Form validations */
-		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|unique[ledgers.code]');
+//		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|unique[ledgers.code]');
 		$this->form_validation->set_rules('ledger_name', 'Ledger name', 'trim|required|min_length[2]|max_length[100]|unique[ledgers.name]');
 		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required|is_natural_no_zero');
 		$this->form_validation->set_rules('op_balance', 'Opening balance', 'trim|currency');
@@ -81,7 +81,7 @@ var $ledger_code = 0;
 		/* Re-populating form */
 		if ($_POST)
 		{
-			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
+//			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
 			$data['ledger_name']['value'] = $this->input->post('ledger_name', TRUE);
 			$data['op_balance']['value'] = $this->input->post('op_balance', TRUE);
 			$data['ledger_group_active'] = $this->input->post('ledger_group_id', TRUE);
@@ -98,7 +98,7 @@ var $ledger_code = 0;
 		}
 		else
 		{
-			$data_code = $this->input->post('ledger_code', TRUE);
+//			$data_code = $this->input->post('ledger_code', TRUE);
 			$data_name = $this->input->post('ledger_name', TRUE);
 			$data_group_id = $this->input->post('ledger_group_id', TRUE);
 			$data_op_balance = $this->input->post('op_balance', TRUE);
@@ -142,37 +142,28 @@ var $ledger_code = 0;
 
 			/* The following code has been moved to view */
 
-		/*	$num = $this->Ledger_model->get_numOfChild($data_group_id);
-			$this->logger->write_message("error","value of num " . $num);
+			$num = $this->Ledger_model->get_numOfChild($data_group_id);
                         $l_code = $this->Group_model->get_group_code($data_group_id);
-			$this->logger->write_message("error","value of g_code " . $g_code);
-
                       
 			if($num == 0)
                         {
                                 $data_code = $l_code . '01';
                         } else{
                                 $data_code=$this->get_code($num, $l_code);
-                                $this->logger->write_message("error","Error getting group code called -1 and value of num is" .$num. "code is" .$data_code);
                         }
-							$i=0;	
-                                                do{
-                                                        $this->logger->write_message("error","Error getting group code called -2 and value of num is" .$num ."code is" . $data_code);
-                                                        
-                                                        if($i>0)
-                                                                {
-                                                                $num=$num+$i;
-                                                                $data_code=$this->get_code($num, $l_code);
-                                                                }
-                                                 $this->db->from('groups');
-                                                 $this->db->select('id')->where('code =',$data_code);
-                                                 $group_q = $this->db->get();
-                                                $i++;
-                                                }while($group_q->num_rows()>0);
-                                                $this->logger->write_message("error","Error getting group code called -3 and value of num is " .$num ."code is" . $data_code);
-		*/
-
-
+			$i=0;	
+                        do{
+                                if($i>0)
+                                {
+        	                        $num=$num+$i;
+                                        $data_code=$this->get_code($num, $l_code);
+                                }
+                                $this->db->from('groups');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $group_q = $this->db->get();
+                                $i++;
+                       }while($group_q->num_rows()>0);
+		
 			$this->db->trans_start();
 			$insert_data = array(
 				'code' => $data_code,
@@ -202,7 +193,7 @@ var $ledger_code = 0;
 		return;
 	}
 
-	function get_numOfChild($parent_id)
+/*	function get_numOfChild($parent_id)
  	{
     		$num = $this->Ledger_model->get_numOfChild($parent_id);
 		$data = array("NUM"=>$num);
@@ -223,33 +214,33 @@ var $ledger_code = 0;
 		$this->ledger_code = $ledger_code;
 		return;
 	}
-
+*/
         function get_code($num, $code)
         {
-                        if($num < 9)
-                        {
-                                $i = 0;
-                                do{
-                                        $i++;
-                                        $data_code = $code . '0' . $num+$i;
-                                        $this->db->from('ledgers');
-                                        $this->db->select('id')->where('code =',$data_code);
-                                        $ledger_q = $this->db->get();
-                                }while($ledger_q->num_rows() > 0);
-                        } else{
-                                 $i = 0;
-                                do{
-                                        $i++;
-                                        $data_code = $code . $num+$i;
-                                        $this->db->from('ledgers');
-                                        $this->db->select('id')->where('code =',$data_code);
-                                        $ledger_q = $this->db->get();
-                                }while($ledger_q->num_rows() > 0);
-                        }
-                return $data_code;
+	        if($num < 9)
+                {
+        	        $i = 0;
+                        do{
+                	        $i++;
+                                $data_code = $code . '0' . $num+$i;
+                                $this->db->from('ledgers');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $ledger_q = $this->db->get();
+                        }while($ledger_q->num_rows() > 0);
+                } else{
+                        $i = 0;
+                        do{
+                	        $i++;
+                                $data_code = $code . $num+$i;
+                                $this->db->from('ledgers');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $ledger_q = $this->db->get();
+                        }while($ledger_q->num_rows() > 0);
+               }
+               return $data_code;
         }
 
-	function get_ledger_code($data_code)
+/*	function get_ledger_code($data_code)
 	{
 		$this->db->from('ledgers');
 		$this->db->select('id')->where('code =',$data_code);
@@ -268,7 +259,7 @@ var $ledger_code = 0;
                 $data = array("ROWS"=>$num);
                 echo json_encode ($data);
 	}
-
+*/
 	function edit($id)
 	{
 		$this->template->set('page_title', 'Edit Ledger');
@@ -312,7 +303,7 @@ var $ledger_code = 0;
 
 		/* Form fields */
 
-		$data['ledger_code'] = array(
+/*		$data['ledger_code'] = array(
 			'name' => 'ledger_code',
 			'id' => 'ledger_code',
 			'maxlength' => '100',
@@ -320,7 +311,7 @@ var $ledger_code = 0;
 			'value' => $ledger_data->code,
 			'readonly' => 'readonly',
 		);
-
+*/
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
 			'id' => 'ledger_name',
@@ -346,7 +337,7 @@ var $ledger_code = 0;
 		$data['reconciliation'] = $ledger_data->reconciliation;
 
 		/* Form validations */
-		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.code.' . $id . ']');
+//		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.code.' . $id . ']');
 		$this->form_validation->set_rules('ledger_name', 'Ledger name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.name.' . $id . ']');
 		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required|is_natural_no_zero');
 		$this->form_validation->set_rules('op_balance', 'Opening balance', 'trim|currency');
@@ -355,7 +346,7 @@ var $ledger_code = 0;
 		/* Re-populating form */
 		if ($_POST)
 		{
-			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
+//			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
 			$data['ledger_name']['value'] = $this->input->post('ledger_name', TRUE);
 			$data['ledger_group_active'] = $this->input->post('ledger_group_id', TRUE);
 			$data['op_balance']['value'] = $this->input->post('op_balance', TRUE);
@@ -372,7 +363,7 @@ var $ledger_code = 0;
 		}
 		else
 		{
-			$data_code = $this->input->post('ledger_code', TRUE);
+//			$data_code = $this->input->post('ledger_code', TRUE);
 			$data_name = $this->input->post('ledger_name', TRUE);
 			$data_group_id = $this->input->post('ledger_group_id', TRUE);
 			$data_op_balance = $this->input->post('op_balance', TRUE);
@@ -436,7 +427,28 @@ var $ledger_code = 0;
 				$data_reconciliation = 0;
 			}
                         
+			$num = $this->Ledger_model->get_numOfChild($data_group_id);
+                        $l_code = $this->Group_model->get_group_code($data_group_id);
 
+
+                        if($num == 0)
+                        {
+                                $data_code = $l_code . '01';
+                        } else{
+                                $data_code=$this->get_code($num, $l_code);
+                        }
+                        $i=0;
+                        do{
+                                if($i>0)
+                                {
+                                        $num=$num+$i;
+                                        $data_code=$this->get_code($num, $l_code);
+                                }
+                                $this->db->from('groups');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $group_q = $this->db->get();
+                                $i++;
+                       }while($group_q->num_rows()>0);
 
 			$this->db->trans_start();
 			$update_data = array(

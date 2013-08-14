@@ -35,7 +35,7 @@ var rows = "0";
         }
 
         /* Calculate ledger code */
-        $('.ledger-parent').change(function() {
+/*        $('.ledger-parent').change(function() {
 		var parent_id = $(".ledger-parent").val();
 
 		$.ajax({
@@ -167,14 +167,14 @@ var rows = "0";
 		$("#ledger").val(data_code);
         });
 
-        $('.ledger-parent').trigger('change');
+        $('.ledger-parent').trigger('change');*/
 });
 </script>
 
 <?php
 	echo form_open('ledger/edit/' . $ledger_id);
 	
-	echo "<p>";
+/*	echo "<p>";
 	echo form_label('Ledger code', 'ledger_code');
 	echo "<br />";
 	$data = array(
@@ -186,7 +186,7 @@ var rows = "0";
         //echo form_input($ledger_code);
         echo form_input($data);
 	echo "</p>";
-
+*/
 	echo "<p>";
 	echo form_label('Ledger name', 'ledger_name');
 	echo "<br />";

@@ -43,10 +43,10 @@ var counter = "1";
 		} else {
 			$('.affects-gross').hide();
 		}
-		
+	});		
 		/* Calculate group code */
 		
-                var parent_id = $(".group-parent").val();
+/*                var parent_id = $(".group-parent").val();
 
                 $.ajax({
                         url: <?php echo '\'' . site_url('group/get_numOfChild') . '/\''; ?> + parent_id,
@@ -162,13 +162,13 @@ var counter = "1";
                //alert("data_code = "+data_code); 
                  $("#group").val(data_code);
 
-	});
+	});*/
 	$('.group-parent').trigger('change');
 });
 </script>
 <?php
 	echo form_open('group/edit/' . $group_id);
-	echo "<p>";
+/*	echo "<p>";
 	echo form_label('Group code', 'group_code');
 	echo "<br />";
 //if($group_code=='readonly')
@@ -179,10 +179,10 @@ var counter = "1";
 	'readonly' => 'readonly',
         );
 
-//	echo form_input($group_code);
-	echo form_input($data);
+	echo form_input($group_code);
+//	echo form_input($data);
 	echo "</p>";
-
+*/
 
 	echo "<p>";
 	echo form_label('Group name', 'group_name');
