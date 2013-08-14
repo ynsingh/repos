@@ -1,8 +1,10 @@
 #*
  * @(#) Quiz_Score.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra
 *#
 
@@ -16,21 +18,7 @@ $page.setBgColor($ui.bgcolor)
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($flag=false)
-## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=left>
-			## If some message has been set, that is retrieved and displayed.
-			<font face="$ui.sansSerifFonts">
-				$!data.getMessage()
-			</font>
-		</td>
-		<td align=right>
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
-		</td>
-	</tr>
-</table>
-
+$!data.getMessage()
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #if($data.getUser().getTemp("modulename7") == "7")
 	#set($flag=true)
@@ -38,17 +26,17 @@ $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
 	<td>
-		<b>
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |	
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
+	<b>
+	<a href=$link.setPage("call,IndexHome.vm")  style='text-decoration:none'>$brih_home</a> |	
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> | 
         #set($role = $data.getUser().getTemp("role").toString())
         #if(($role=="instructor")||(($user_role == "teacher_assistant")&&($flag)))
-         <a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result")>$brih_quiz </a> | 
+         <a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style='text-decoration:none'>$brih_quiz </a> | 
         #elseif(($role=="student")||(($user_role == "teacher_assistant")&&($flag==false)))
         	#if($!type=="practice")
-        		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2")>$brih_quiz </a> | 
+        		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>$brih_quiz </a> | 
         	#else
-        	      <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_quiz </a> | 
+        	      <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3").addPathInfo("type","practice") style='text-decoration:none'>$brih_quiz </a> | 
         	#end
 
         #end 
@@ -59,6 +47,10 @@ $page.setBgColor($ui.bgcolor)
 		$brih_answer $brih_sheet
 	#end                
     </td>
+## Creating the links for help regarding FAQ 
+	 <td align=right>
+                        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin") style='text-decoration:none'>$brih_help</a>
+                </td>
 </tr>
 </table>
 
@@ -66,7 +58,7 @@ $page.setBgColor($ui.bgcolor)
 #if($!answerSheetFlag!="yes")
 <table bgcolor="$ui.tableColor" width="100%">
 	<tr>
-		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> <u>$brih_score $brih_card $brih_for $!quizName</i></b></font>
+		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i>$brih_score $brih_card $brih_for $!quizName</i></b></font>
 		</td>
 	</tr>
 	#if($hbtn != "true")	
@@ -103,7 +95,7 @@ $page.setBgColor($ui.bgcolor)
 <table width=100% bgcolor="$ui.tableColor">
 	<tr>
 		<td colspan=5>
-			<font color="$ui.fontColorBlue" size="4"><b><i> <u>$brih_answer $brih_sheet $brih_for $!quizName</i></b></font>
+			<font color="$ui.fontColorBlue" size="4"><b><i> $brih_answer $brih_sheet $brih_for $!quizName</i></b></font>
 		</td>
 		
 	</tr>

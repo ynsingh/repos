@@ -257,9 +257,9 @@ background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 
 background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
 }
-.button-ftextstyle {width:105px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
+.button-ftextstyle {background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
 
-.drop {width:100px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
+.drop {background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
 }
 .input_button {width:300px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
 

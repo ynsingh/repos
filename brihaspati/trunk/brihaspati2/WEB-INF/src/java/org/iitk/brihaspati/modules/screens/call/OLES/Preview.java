@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Preview.java
  *
- *  Copyright (c) 2010 MHRD, DEI Agra.
+ *  Copyright (c) 2010-13 MHRD, DEI Agra.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -65,6 +65,8 @@ import org.iitk.brihaspati.modules.utils.XmlWriter;
 /**
  * This class manages the preview feature of quiz questions 
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 
 public class Preview extends  SecureScreen{
@@ -161,7 +163,9 @@ public class Preview extends  SecureScreen{
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquiz",LangFile));
 				return;
 			}	                
-			String topicName,questionType,questionLevel,fileName,noquestion,markperquestion; 
+			String topicName,questionType,questionLevel,fileName,noquestion,markperquestion;
+			String tempusername[]=quizID.split("_"); 
+			username=tempusername[1];
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			QuizMetaDataXmlReader questionReader=null;
 			Vector<QuizFileEntry> question=new Vector<QuizFileEntry>();

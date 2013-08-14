@@ -1,9 +1,11 @@
 #*
  * @(#)View_QB.vm
- * Copyright (c) 2010,2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("QuestionBank")
@@ -21,18 +23,13 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
 <tr><td><b>
-	<font face="$ui.sansSerifFonts">
-	<a href=$link.setPage("Index.vm")>$brih_home</a>|
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
+	<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_queBank</a> |
 	$brih_view $brih_qus$brih_bank
 </b></td>
-</tr>
-</table>
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-<tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 </tr>
 </table>
 ##creating form for FAQ
@@ -125,6 +122,14 @@ $!data.getMessage()
 </tr>
 </table>
 <table width="100%" bgcolor="$ui.tableColor">
+#if($allQues.size()!=0)
+<tr align="center"bgcolor="$ui.menuColor">
+	<td><b>$brih_serialNo</td>
+	<td><b>$brih_queBank</td>
+	<td colspan=2><b>$brih_availableAction</td>
+</tr>
+#end
+		#set($sno=1)
 		#foreach ($Ques in $allQues)
 				#if($velocityCount%2==0)
                                 <tr bgcolor="$ui.menuColor">
@@ -132,34 +137,36 @@ $!data.getMessage()
                                 <tr bgcolor="$ui.tableColor">
                                 #end
 					##<td>$Ques.question</td>
+					<td>$sno</td>
 					#if($questype=="mcq")
-					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
-					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")" style='text-decoration:none'>$Ques.ques</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")" style='text-decoration:none'>$brih_edit</a></td>
 					#end
 					#if($questype=="sat" || $questype=="lat")
-					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
-					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")" style='text-decoration:none'>$Ques.ques</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")" style='text-decoration:none'>$brih_edit</a></td>
 					#end
 					#if($questype=="tft")
-					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
-					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")" style='text-decoration:none'>$Ques.ques</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")" style='text-decoration:none'>$brih_edit</a></td>
 					#end
 					#if($questype=="All")
                                         #if($Ques.Qtype=="mcq")
-                                        <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
-                                        <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")" style='text-decoration:none'>$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")" style='text-decoration:none'>$brih_edit</a></td>
                                         #end
                                         #if($Ques.Qtype=="sat" || $Ques.Qtype=="lat")
-                                        <td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
-                                        <td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")" style='text-decoration:none'>$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")" style='text-decoration:none'>$brih_edit</a></td>
                                         #end
                                         #if($Ques.Qtype=="tft")
-                                        <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
-                                        <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")" style='text-decoration:none'>$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")" style='text-decoration:none'>$brih_edit</a></td>
                                         #end
                                         #end
-				      <td><a href="$link.setPage("call,OLES,View_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","quesdel").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("actionName","eventSubmit_dodeletetopic")" onclick="javascript:return confirm('Do you want to delete this Question')">$brih_delete $brih_qus</a></td>
+				      <td><a href="$link.setPage("call,OLES,View_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","quesdel").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("actionName","eventSubmit_dodeletetopic").addPathInfo("username","$Ques.UserName")" onclick="javascript:return confirm('Do you want to delete this Question')" style='text-decoration:none'>$brih_delete</a></td>
                                 </tr>
+			#set($sno=$sno+1)
 		#end
 		#if($questype!="" && $difflevel!="" && $checkstatus=="blank")
 		<tr></td>$brih_Quesbankmsg</td></tr>

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Oles_QB.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -58,10 +58,16 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
-
+import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
+import org.iitk.brihaspati.modules.utils.QuizFileEntry;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+* @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+* @modify date:14aug2013 
 */
 
 public class Oles_QB extends SecureScreen{
@@ -96,23 +102,38 @@ public class Oles_QB extends SecureScreen{
 
 			String instid=(String)user.getTemp("Institute_id");
 			String checkstatus=pp.getString("checkstatus","");
-			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);
-			File f=new File(filePath+"/QBtopiclist.xml");
-			TopicMetaDataXmlReader topicmetadata=null;
+			File dir=new File(data.getServletContext().getRealPath("/QuestionBank"));
+		
                         Vector allTopics=new Vector();
                         Vector allcomtopics=new Vector();
-			if(f.exists())
-                        {
-				topicmetadata=new TopicMetaDataXmlReader(filePath+"/QBtopiclist.xml");
-                        	allTopics=topicmetadata.getQuesBanklist_Detail();
-				if(allTopics!=null){
-					for(int i=0;i<allTopics.size();i++)
-        	                        {//for
-						String topicnew=((FileEntry) allTopics.elementAt(i)).getTopic();
-						if(!allcomtopics.contains(topicnew))
-                                	        {
-                                                	allcomtopics.addElement(topicnew);
-                                        	}
+			int GID=GroupUtil.getGID(crsId);
+			Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
+			for(int j= 0; j< UDetail.size(); j++)
+			{
+				String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
+				String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+uname+"/"+crsId);
+				File f=new File(filePath+"/QBtopiclist.xml");
+				TopicMetaDataXmlReader topicmetadata=null;
+				if(f.exists())
+                        	{
+					topicmetadata=new TopicMetaDataXmlReader(filePath+"/QBtopiclist.xml");
+                        		allTopics=topicmetadata.getQuesBanklist_Detail();
+					if(allTopics!=null){
+						for(int i=0;i<allTopics.size();i++)
+        	                        	{//for
+							String topicnew=((FileEntry) allTopics.elementAt(i)).getTopic();
+							if(!allcomtopics.contains(topicnew))
+                                	        	{
+								QuizFileEntry fileEntry=new QuizFileEntry();
+								String questiontype=((FileEntry) allTopics.elementAt(i)).getTypeofquestion();
+								String difflevel=((FileEntry) allTopics.elementAt(i)).getDifflevel();
+								Vector qno=ViewAllQuestionUtil.ReadTopicAllFile(topicnew,filePath,questiontype,difflevel);
+                                        			fileEntry.setTopic(topicnew);
+								fileEntry.setUserID(uname);
+                                        			fileEntry.setQuestionNumber(Integer.toString(qno.size()));
+                                        			allcomtopics.add(fileEntry);
+                                        		}
+						}
 					}
 				}
 			}

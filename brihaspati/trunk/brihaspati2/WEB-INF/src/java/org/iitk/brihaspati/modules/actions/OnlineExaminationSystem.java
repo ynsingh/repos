@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)OnlineExaminationSystem.java	
  *
- *  Copyright (c) 2010,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -65,6 +65,8 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a> 
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a> 
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012, 05march2013 
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 public class OnlineExaminationSystem extends SecureAction
 {
@@ -312,7 +314,8 @@ public class OnlineExaminationSystem extends SecureAction
 			crsId=(String)data.getUser().getTemp("course_id");
                         ParameterParser pp=data.getParameters();
 			User user=data.getUser();
-                       	String username=data.getUser().getName();
+                       	//String username=data.getUser().getName();
+                       	String username=pp.getString("username","");
                         String deltype=pp.getString("deltype","");
                         String questiontype=pp.getString("qtype","");
 			String topicname_quesid="";

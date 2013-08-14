@@ -1,8 +1,10 @@
 #*
  * @(#) OLES_ReEvaluation.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:dev.singha93@gmail.com ">Devendra Singhal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project, DEI Agra
 *#
 
@@ -11,23 +13,16 @@ $page.setBgColor($ui.bgcolor)
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #if($flag)
-<font size="4">
-	$!data.getMessage()
-</font>
+$!data.getMessage()
 #end
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
-		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>Home</a> |
-                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>$online_online $brih_examat $brih_system </a>| $brih_reevaluate    
-        </b></td> </tr>    
-</table>
-
+                <a href=$link.setPage("Index.vm") style='text-decoration:none'>Home</a> |
+                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$online_online $brih_examat $brih_system </a>| $brih_reevaluate    
+        </b></td>    
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

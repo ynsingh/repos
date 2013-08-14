@@ -3,6 +3,8 @@
  * Copyright (c) 2010 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra
 *#
 
@@ -14,33 +16,27 @@ $page.setBgColor("bgcolor")
 </head>
 
 ## If some message has been set, that is retrieved and displayed.
-<font face="$ui.sansSerifFonts">
 $!data.getMessage()
-</font>
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("Index.vm")  style='text-decoration:none'>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
 		#if($mode == "QuizDetail")		
-			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")>$brih_quiz $brih_detail </a>|
+			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_quiz $brih_detail </a>|
 				$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_update
 		#else
 				$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_setup
 		#end
-	</b></td></tr>
-</table>
+	</b></td>
 
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 
@@ -105,7 +101,7 @@ $!data.getMessage()
 			<td><input type="text" name="maxMarks" value="$Quiz.getMaxMarks()"></td>
 		</tr>
 		<tr>
-			<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td> 
+			<td><b>$brih_maximum $brih_time ($brih_minute)</b><font color=Red>*</font></td> 
 			#set($len = $Quiz.getMaxTime().indexOf(":")) 
   			#set($mtime=$Quiz.getMaxTime().substring(0,$len))			
 			<td><input type="text" name="maxTime" value="$mtime"></td>       	
@@ -131,7 +127,7 @@ $!data.getMessage()
         	<td><input type="text" name="maxMarks" value=""></td>
         </tr>
         <tr>
-           	<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td>
+           	<td><b>$brih_maximum $brih_time ($brih_minute)</b><font color=Red>*</font></td>
            	       	
 	        <td><input type="text" name="maxTime" value=""></td>
         </tr>

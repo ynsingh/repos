@@ -56,6 +56,8 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
  * @author: <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>03jan2013
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 
 public class QuizMetaDataXmlReader{
@@ -1318,7 +1320,7 @@ public class QuizMetaDataXmlReader{
                     			fileEntry.setExpiryDate(expiryDate);
                     			fileEntry.setEndTime(endTime);
                     			fileEntry.setAllowPractice(allowPractice);
-                    			if((userName.trim()).equalsIgnoreCase(uname.trim())){
+                    		//	if((userName.trim()).equalsIgnoreCase(uname.trim())){
 						if(examDate==null){
 							if(quizStatus.equalsIgnoreCase("act")){							
 	                        				vt.add(fileEntry);	
@@ -1350,7 +1352,7 @@ public class QuizMetaDataXmlReader{
 								}
 							}//end status if
 						}//end else	
-                    			}//end if username
+                    			//}//end if username
 				}//end for	
 				//============code to eliminate all the quizzes which are attempted by student
 				String quizIDAll;

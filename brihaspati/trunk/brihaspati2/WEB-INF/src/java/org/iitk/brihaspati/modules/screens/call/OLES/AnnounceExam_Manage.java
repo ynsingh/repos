@@ -57,6 +57,8 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
 * This class displays the list of quizzes to announce/update that quiz
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi Sr</a>
+* @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+* @modify date:14aug2013 
 */
 
 public class AnnounceExam_Manage extends SecureScreen{

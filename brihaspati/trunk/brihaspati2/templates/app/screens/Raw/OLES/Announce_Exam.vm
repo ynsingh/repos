@@ -1,10 +1,12 @@
 #*
  * @(#)Announce_Exam.vm
- * Copyright (c) 2010 DEI Agra,.
+ * Copyright (c) 2010-13 DEI Agra,.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com ">Aayushi</a>
  * @author <a href="mailto:palseema30@gmail.com ">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra, IITK
 *#
 $page.setTitle("Announce Exam")
@@ -15,26 +17,19 @@ $page.setBgColor("bgcolor")
 </head>
 
 ## If some message has been set, that is retrieved and displayed.
-<font size="4">
 $!data.getMessage()
-</font>
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3")>$brih_select $brih_quiz</a> |
+		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+		<a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_select $brih_quiz</a> |
 		$brih_QDannounce $brih_exam
-	</b></td></tr>
-</table>
-
+	</b></td>
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 

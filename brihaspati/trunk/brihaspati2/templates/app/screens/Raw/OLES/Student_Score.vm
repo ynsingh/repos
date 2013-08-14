@@ -1,11 +1,12 @@
 #*
  * @(#) Student_Score.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * Copyright (c) 2010-13MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD, DEI Agra.
 *#
-
 
 $page.setTitle("Quiz Score")
 $page.setBgColor("#ffffff")
@@ -13,17 +14,14 @@ $page.setBgColor("#ffffff")
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 
-
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #set($flag=false)
-<font face="$ui.sansSerifFonts">
-
 $!data.getMessage()
 <table width=100%  bgcolor="$ui.menuColor">
 <tr><td>
-	<b>	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
+	<b>	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> | 
 		#if($type=="gradeCard")
 			$brih_grade $brih_card
 		#else
@@ -36,7 +34,7 @@ $!data.getMessage()
 #end
 ## Creating the links for help regarding FAQ 
 <td align="right">
-<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin") style='text-decoration:none'>$brih_help</a>
 </td>
 </tr>
 </table>
@@ -56,21 +54,21 @@ $!data.getMessage()
 	#end	        						
 #end	
 
-<tr  bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.tableColor">
 	#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
 		#if($tdcolor != "1")
     		<td width="25%">
 		#elseif($tdcolor == "1")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end
-				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1")> #if($lang == "hindi") $brih_quiz $brih_attempt  #else $brih_attempt $brih_quiz #end </a>
+				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style='text-decoration:none'> #if($lang == "hindi") $brih_quiz $brih_attempt  #else $brih_attempt $brih_quiz #end </a>
 			</td>
 		#if($tdcolor != "2")
 			<td width="25%"> 
 		#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end
-				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice")>  $brih_Practice $brih_quiz  </a>
+				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>  $brih_Practice $brih_quiz  </a>
 			</td>
 			
 		#if($tdcolor != "3")
@@ -78,14 +76,14 @@ $!data.getMessage()
 		#elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end	
-			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_score $brih_card</a>
+			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_score $brih_card</a>
 			</td>
 		#if($tdcolor != "4")
 			<td width="25%">
 		#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end	
-        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a>
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard") style='text-decoration:none'>$brih_grade $brih_card</a>
         	</td>
 	#end		
 	
@@ -94,16 +92,15 @@ $!data.getMessage()
 </tr>
 </table>
 	##Drop down list to select a quiz
-<table border=1 align="left" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
-	<tr bgcolor="$ui.menuColor" colspan="4">
+<table align="left" width="100%" bgcolor="$ui.tableColor">
+	<tr bgcolor="$ui.menuColor">
 		<td  align="left">
-	      		<b><font face="$ui.sansSerifFonts"> $brih_select  $brih_quiz</font></b>
+	      		<b>$brih_select  $brih_quiz</b>
 	   </td>
-	   	<td  align="left"  >
-	        	<font face="$ui.sansSerifFonts">
+	   	<td  align="left" >
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
-	        			<select name=quizList class="drop">
+	        			<select name="quizList" class="drop">
 	        				#foreach($qid in $quizList)	
 	        					       				
 	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getQuestionNumber(),$qid.getMaxTime()">$qid.getQuizName()</option>

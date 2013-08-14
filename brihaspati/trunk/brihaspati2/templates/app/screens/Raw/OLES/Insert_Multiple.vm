@@ -1,9 +1,11 @@
 #*
  * @(#)Insert_Multiple.vm
- * Copyright(c)2010,2012 ETRG,IIT Kanpur.
+ * Copyright(c)2010,2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="jaivirpal@gmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -19,11 +21,11 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
         <td><b>
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
+	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style='text-decoration:none'>$brih_queBank</a> |
 	#if($acttype=="viewques" || $acttype=="editques")
-        <a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)>$brih_view  $brih_queBank</a> |
+        <a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel) style='text-decoration:none'>$brih_view  $brih_queBank</a> |
 	#end
 	#if($acttype=="viewques")
 	$brih_view $brih_qus
@@ -35,7 +37,6 @@ $!data.getMessage()
         </b></td>
 </tr>
 </table>
-<br>
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Multiple.vm").setAction("OnlineExaminationSystem")>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
 #if(($acttype=="editques")||($acttype=="viewques"))  
@@ -46,7 +47,7 @@ $!data.getMessage()
 </table>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2"> 
 ##if($acttype!="editques") 
-<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+<tr bgcolor="$ui.tableColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
 ##end
   <tr>
    <td width=30% align="centre">

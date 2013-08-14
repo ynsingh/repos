@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /* @(#)Insert_Multiple.java
  *
- *  Copyright (c) 2010,2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2012-13 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -33,11 +33,14 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  *
  *
  *  Contributors: Members of ETRG, I.I.T. Kanpur
- *
+ */
 /**
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
+import java.io.File;
 //Jdk
 import java.util.Vector;
 //apache
@@ -53,6 +56,9 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen; 
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 public class Insert_Multiple extends SecureScreen
 {
     
@@ -106,26 +112,35 @@ public class Insert_Multiple extends SecureScreen
 				String seldifflevel=pp.getString("difflevel","");
 				context.put("difflevel",seldifflevel);
 				String fulltopic=edtopic+"_"+difflevel12+"_"+questiontype;
-				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+			
+	                        int GID=GroupUtil.getGID(crsId);
 				Vector Read=new Vector();
-				TopicMetaDataXmlReader tr=null;
-				tr =new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
-                        	Read=tr.getQuesBank_Detail();
-				if(Read != null)
+        	                Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
+                	        for(int j= 0; j< UDetail.size(); j++)
                         	{
-                        	        for(int n=0;n<Read.size();n++)
-                        	        {
-                                	        String questionid=((FileEntry)Read.elementAt(n)).getquestionid();
-                                	        String ques=((FileEntry)Read.elementAt(n)).getquestion();
-                                	        String opt1=((FileEntry)Read.elementAt(n)).getoptionA();
-                                	        String opt2=((FileEntry)Read.elementAt(n)).getoptionB();
-                                	        String opt3=((FileEntry)Read.elementAt(n)).getoptionC();
-                                	        String opt4=((FileEntry)Read.elementAt(n)).getoptionD();
-                                        	String Ans=((FileEntry)Read.elementAt(n)).getAnswer();
-                                        	String desc=((FileEntry)Read.elementAt(n)).getDescription();
-						String Quesimage=((FileEntry)Read.elementAt(n)).getUrl();
-                                        	if(questionid.equals(quesid))
-                                        	{
+                                String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
+				String filepath=QuestionBankPath+"/"+uname+"/"+crsId;
+				File f =new File(filepath+"/"+fulltopic+".xml");
+				if(f.exists())
+				{
+					TopicMetaDataXmlReader tr=null;
+					tr =new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
+                        		Read=tr.getQuesBank_Detail();
+					if(Read != null)
+                        		{
+                        	        	for(int n=0;n<Read.size();n++)
+                        	        	{
+                                	        	String questionid=((FileEntry)Read.elementAt(n)).getquestionid();
+                                	        	String ques=((FileEntry)Read.elementAt(n)).getquestion();
+                                	        	String opt1=((FileEntry)Read.elementAt(n)).getoptionA();
+                                	        	String opt2=((FileEntry)Read.elementAt(n)).getoptionB();
+                                	        	String opt3=((FileEntry)Read.elementAt(n)).getoptionC();
+                                	        	String opt4=((FileEntry)Read.elementAt(n)).getoptionD();
+                                        		String Ans=((FileEntry)Read.elementAt(n)).getAnswer();
+                                        		String desc=((FileEntry)Read.elementAt(n)).getDescription();
+							String Quesimage=((FileEntry)Read.elementAt(n)).getUrl();
+                                        		if(questionid.equals(quesid))
+                                        		{
 							context.put("quesid",questionid);
                 					context.put("Ques",ques);
                 					context.put("opt1",opt1);
@@ -137,9 +152,11 @@ public class Insert_Multiple extends SecureScreen
 							context.put("quesimage",Quesimage);
 							 if(!Quesimage.equals(""))
                                                         context.put("typeques","imgtypeques");
-                                        	}
-                                	}
-                        	}
+                                        		}
+                                		}
+                        		}
+				}
+				}
 			}
 			/**
                          *Time calculaion for how long user use this page.
@@ -155,7 +172,7 @@ public class Insert_Multiple extends SecureScreen
 		}//try
                 catch(Exception e){
                                    ErrorDumpUtil.ErrorLog("Error in screen[Insert_Multiple] !!"+e);
-                                   data.setMessage("See ExceptionLog !! " );
+                                   data.setMessage("See ExceptionLog !! " +e.getMessage());
                                 }
 	}
 }

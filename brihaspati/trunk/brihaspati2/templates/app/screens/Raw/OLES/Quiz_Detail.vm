@@ -1,10 +1,12 @@
 #*
  * @(#) Quiz_Detail.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:palseema@rediffmail.com ">Manorama Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project, DEI Agra, IITK
 *#
 $page.setTitle("Quiz Management")
@@ -71,20 +73,15 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr>
-		<td><b><font face="$ui.sansSerifFonts">
-			<a href=$link.setPage("Index.vm")>$brih_home</a>|	
-	        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-			<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
-		        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		<td><b>
+			<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|	
+	        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+			<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
+		        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
 		        $brih_quiz $brih_detail 
         	</td>
-	</tr>
-</table>
-
-## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	## Creating the links for help regarding FAQ 
+	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 
@@ -135,7 +132,7 @@ $!data.getMessage()
 			</td>
    			<td> 
    			#if($qid.getAllowPractice()=="yes")
-   				$qid.getQuizName()<b>($brih_practice $brih_quiz)
+   				$qid.getQuizName() <b>( $brih_practice $brih_quiz )</b>
 			#else
 				$qid.getQuizName()
 			#end   				
@@ -143,25 +140,25 @@ $!data.getMessage()
 			<td width="30%">			 	
 				#set($quizName="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()")	
 				#if($qid.getAllowPractice()=="yes")
-					<a href=$link.setPage("call,OLES,Practice_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>		
+					<a href=$link.setPage("call,OLES,Practice_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true" style='text-decoration:none'>$brih_add $brih_more $brih_qus </a>		
 				#else
 					#if($qid.getQuizMode()=="random")			
-						<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+						<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true" style='text-decoration:none'>$brih_add $brih_more $brih_qus </a>
 					#else
-						<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+						<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true" style='text-decoration:none'>$brih_add $brih_more $brih_qus </a>
 					#end
 				#end
 			</td>
 			<td>
-				<a href=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz").addPathInfo("quizID",$qid.getQuizID()).addPathInfo("deltype","quizDel").addPathInfo("actionName","eventSubmit_doUpdate").addPathInfo("count","$tdcolor") onclick="javascript:return confirm('Do you want to delete this Quiz')"> $brih_delete </a>
+				<a href=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz").addPathInfo("quizID",$qid.getQuizID()).addPathInfo("deltype","quizDel").addPathInfo("actionName","eventSubmit_doUpdate").addPathInfo("count","$tdcolor") onclick="javascript:return confirm('Do you want to delete this Quiz')" style='text-decoration:none'> $brih_delete </a>
 			</td>
 			<td>
 				<ul id="sddm" >
 		    			<li >
-						<a href="#" onmouseover="mopen('$qid.getQuizID()')" onmouseout="mclosetime()" >$brih_update</a>
+						<a href="#" onmouseover="mopen('$qid.getQuizID()')" onmouseout="mclosetime()"  style='text-decoration:none'>$brih_update</a>
 					        <div id="$qid.getQuizID()" onmouseover="mcancelclosetime()" onmouseout="mclosetime()" >
-						        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("qname",$qid.getQuizID()).addPathInfo("mode","QuizDetail") >$brih_update $brih_quiz $brih_setting</a>
-						        <a href=$link.setPage("call,OLES,Update_Quiz_Question.vm").addPathInfo("quizName",$qid.getQuizName()).addPathInfo("quizDetail",$quizName).addPathInfo("quizMode",$qid.getQuizMode())>$brih_update $brih_qus $brih_setting</a>				        
+						        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("qname",$qid.getQuizID()).addPathInfo("mode","QuizDetail") style='text-decoration:none'>$brih_update $brih_quiz $brih_setting</a>
+						        <a href=$link.setPage("call,OLES,Update_Quiz_Question.vm").addPathInfo("quizName",$qid.getQuizName()).addPathInfo("quizDetail",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) style='text-decoration:none'>$brih_update $brih_qus $brih_setting</a>				        
 					        </div>
 		    			</li>
 				</ul>

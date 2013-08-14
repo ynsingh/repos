@@ -4,6 +4,8 @@
  * All Rights Reserved.
  * @author <a href="mailto:dev.singha93@gmail.com">Devendra singhal</a>
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD, DEI Agra, IITK.
 *#
 $page.setTitle("Show Security String")
@@ -16,28 +18,21 @@ $page.setBgColor($ui.bgcolor)
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 ## If some message has been set, that is retrieved and displayed.
-<font size="4">
-	$!data.getMessage()
-</font>
+$!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
-		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>$brih_home</a> |
-                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>$online_online $brih_examat $brih_system</a>|
+                <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
+                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$online_online $brih_examat $brih_system</a>|
               	#if($flag1 == "show") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show")></a>$RemoteShow $brith_security $brih_string 
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'>$RemoteShow $brith_security $brih_string</a>
               	#else 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show")></a>$brih_generate $brith_security $brih_string
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'>$brih_generate $brith_security $brih_string</a>
               	#end
-        </b></td> </tr>    
-</table>
+        </b></td>   
 ## Creating the links for help regarding QUIZ 
-
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 ##==================

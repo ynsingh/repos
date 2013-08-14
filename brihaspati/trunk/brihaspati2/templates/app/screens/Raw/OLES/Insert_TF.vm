@@ -1,9 +1,11 @@
 #*
  * @(#) Insert_TF.vm
- * Copyright(c)2010,2012 ETRG,IIT Kanpur.
+ * Copyright(c)2010,2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -21,11 +23,11 @@ $!data.getMessage()
 <tr>
         <td colspan=3>
         <b>
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
+	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+        <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style='text-decoration:none'>$brih_queBank</a> |
 	 #if($acttype=="viewques" || $acttype=="editques")
-	 <a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)>$brih_view $brih_queBank</a> |
+	 <a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel) style='text-decoration:none'>$brih_view $brih_queBank</a> |
 	#end
 	#if($acttype=="viewques")
         $brih_view $brih_qus

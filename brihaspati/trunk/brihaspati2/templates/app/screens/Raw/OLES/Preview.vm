@@ -1,10 +1,12 @@
 #*
  * @#Preview.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:palseema@rediffmail.com ">Manorama Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra, IITK.
 *#
 
@@ -18,23 +20,17 @@ $page.setBgColor("bgcolor")
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 
 #set($lang = $data.getUser().getTemp("lang").toString())
-## Creating the links for help regarding Quiz 
-<table width="100%">
-<tr>
-##<td align=left> <font face="$ui.sansSerifFonts">$!data.getMessage()</font> </td>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>Help</a></td>
-</tr>
-</table>
-
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
-		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4")>$brih_preview</a> | 
+		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4") style='text-decoration:none'>$brih_preview</a> | 
 		$!quizName	
-	</b></td></tr>
+	</b></td>
+## Creating the links for help regarding Quiz 
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>Help</a></td>
+</tr>
 </table>
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Preview_Quiz.vm").setAction("OLES_Quiz")>
@@ -189,10 +185,8 @@ $page.setBgColor("bgcolor")
 	#end
 	<hr style="height:1px;border-width:0;color:black;background-color:black" />				               
 #end 
-</table>		
 </div>			
-<div style="border:1px solid black;">
-	<table align=center bgcolor="$ui.tableColor" cellpadding="5" width=100% >
+	<table style="border:1px solid black;" align=center bgcolor="$ui.tableColor" cellpadding="5" width=100% >
 		<tr>
 			<td align=center>	
 				<input type="button" class="button-ftextstyle" name="eventSubmit_ShowPreview" value="$brih_showpreview" onClick="checkValue(document.frm,this);" $exist>
@@ -200,15 +194,13 @@ $page.setBgColor("bgcolor")
 				<input type="button" class="button-ftextstyle" name="eventSubmit_RejectQuiz" value="$online_reject $brih_preview" onClick="checkValue(document.frm,this);">	
 			</td>
 		</tr>
-	</table>
-</div>	
-
 <input type="hidden" name="actionName" value="">		
 <input type="hidden" name="finalQuestion" value="$finalq">	
 <input type="hidden" name="quizID" value="$quizID">	
 <input type="hidden" name="count" value="$tdcolor">	
 <input type="hidden" name="quizDetail" value="$quizDetail">	
 <input type="hidden" name="quizName" value="$quizName">	
+	</table>
 </form>
 <SCRIPT LANGUAGE="javascript">
 

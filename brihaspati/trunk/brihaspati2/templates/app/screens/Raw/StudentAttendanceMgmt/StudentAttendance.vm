@@ -38,7 +38,7 @@ $!data.getMessage()
 
 <table width="100%" bgcolor="$ui.tableColor">
 <tr bgcolor="$ui.menuColor">
-	<td colspan=2>
+	<td colspan=2><b>
 	#if($data.getUser().getTemp("role") == "institute_admin")
 		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_ad $brih_home | </a>
 	#else
@@ -81,8 +81,8 @@ $!data.getMessage()
 	<td><p><b>$brih_attend $brih_sheet : $!course</b></p>
                 <form name="frm" method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
         	<table width="80%" align="center" border="1"bgcolor="$ui.menuColor" style="border-collapse:collapse; border:1px solid black;">
-        	<tr align="center">
-                	<td width="30%"><b>$brih_select $brih_Da : </b><input type="text" value="$currentdate" id="datepick" name="searchdate" class="button-ftextstyle" /></td>
+        	<tr align="left">
+                	<td width="14%"><b>$brih_select $brih_Da : </b></td><td width="15%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="datepick" class="button-ftextstyle" style="width:90px;"/></div></td>
 			#if($data.getUser().getTemp("role") == "institute_admin")
                 	<td width="55%"><b>$brih_course : </b> 
 				#if($mode =="attend")
@@ -145,7 +145,7 @@ $!data.getMessage()
          			<tr bgcolor="$ui.menuColor">
                 			<td colspan=5>
                 			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doAttendance" VALUE="$brih_submit" onClick="CheckExpire(document.frm,this);">
-                			<INPUT TYPE="reset" class="button-ftextstyle" NAME="$brih_reset" >
+                			<INPUT TYPE="reset" class="button-ftextstyle" VALUE="$brih_reset" NAME="$brih_reset" >
                 			<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doAttendance">
                 			<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="$studattendlist">
 					<input type="hidden" name="count" value="$tdcolor"/>
@@ -408,7 +408,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
                 	<td colspan=5>
                 		<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doUpdate" VALUE="$brih_update">
-                		<INPUT TYPE="reset" class="button-ftextstyle" NAME="$brih_reset" >
+                		<INPUT TYPE="reset" class="button-ftextstyle" NAME="$brih_reset" VALUE="$brih_reset">
                 		<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doUpdate">
                 		<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="$studattendlist">
 				<INPUT TYPE="hidden" NAME="loginName" VALUE="$loginName">

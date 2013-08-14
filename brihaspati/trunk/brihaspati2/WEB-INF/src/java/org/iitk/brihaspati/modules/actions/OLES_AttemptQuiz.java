@@ -73,6 +73,8 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a> 
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>28jan2013
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 public class OLES_AttemptQuiz extends SecureAction{
 
@@ -396,7 +398,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			if(!quizIDTime.isEmpty()){
 				String quizIDTimeArray[] = quizIDTime.split(",");				                               	
 				quizID = quizIDTimeArray[0];        		
-				maxTime = quizIDTimeArray[1];        						
+				maxTime = quizIDTimeArray[1];        	
 			}
 			else{
 				quizID = data.getParameters().getString("quizID","");
@@ -420,7 +422,9 @@ public class OLES_AttemptQuiz extends SecureAction{
 					data.setMessage(MultilingualUtil.ConvertedString("brih_noquiz",LangFile));
 					return;
 				}	                
-				String topicName,questionType,questionLevel,fileName,noquestion,markperquestion; 
+				String topicName,questionType,questionLevel,fileName,noquestion,markperquestion;
+				String temp[]= quizID.split("_");
+                                instructorName=temp[1];
 				String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+instructorName+"/"+courseid);
 				QuizMetaDataXmlReader questionReader=null;
 				Vector<QuizFileEntry> question=new Vector<QuizFileEntry>();

@@ -74,6 +74,7 @@ import org.iitk.brihaspati.modules.utils.OnlineExamSystemMail;
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28jan2013 		 
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>14aug2013 		 
  */
 public class OLES_Quiz extends SecureAction{
 
@@ -419,10 +420,10 @@ public class OLES_Quiz extends SecureAction{
 			context.put("quizName",quizName);			
 			String[] temp = quizName.split(",");
 			String allowPractice=temp[3];
-			if(allowPractice.equalsIgnoreCase("yes")){
+		//	if(allowPractice.equalsIgnoreCase("yes")){
 				context.put("type","createQuiz");
 				data.setScreenTemplate("call,OLES,Practice_Quiz.vm");				
-			}			
+		//	}			
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:generateQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -2070,7 +2071,7 @@ public class OLES_Quiz extends SecureAction{
 			String username=data.getUser().getName();
 			String courseid=(String)data.getUser().getTemp("course_id");
 
-			String topicName = pp.getString("topicName","");
+			String temptopicName = pp.getString("topicName","");
 			String typeName = pp.getString("typeName","");
 			String levelName = pp.getString("levelName","");
 			String quizID=pp.getString("quizID","");
@@ -2080,6 +2081,9 @@ public class OLES_Quiz extends SecureAction{
 			String mode=data.getParameters().getString("mode","");
 			String quizMode=data.getParameters().getString("quizMode","");
 			String page = data.getParameters().getString("page","");
+			String temp[]= temptopicName.split(",");
+			String topicName=temp[0];
+			username=temp[1];
 			//String quizID=data.getParameters().getString("quizID","");
 			pp.setString("count","3");
 			String quizStatus="ACT";

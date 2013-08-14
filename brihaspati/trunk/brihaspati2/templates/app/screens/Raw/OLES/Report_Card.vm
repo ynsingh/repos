@@ -1,8 +1,10 @@
 #*
  * @(#) Report_Card.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra
 *#
 
@@ -15,32 +17,21 @@ $page.setBgColor($ui.bgcolor)
 
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=left>
-			## If some message has been set, that is retrieved and displayed.
-			<font face="$ui.sansSerifFonts">
-				$!data.getMessage()
-			</font>
-		</td>
-		<td align=right>
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
-		</td>
-	</tr>
-</table>
-
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
+$!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
 	<td>
-		<b>
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |	
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |  
-        <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")>$brih_quiz </a> |         
-			Report $brih_card 		                
+	<b>
+	<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |	
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |  
+        <a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard") style='text-decoration:none'>$brih_quiz </a> | $brih_reports $brih_card 
     </td>
+## Creating the links for help regarding FAQ 
+	<td align=right>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin") style='text-decoration:none'>$brih_help</a>
+	</td>
 </tr>
 </table>
 
@@ -48,7 +39,7 @@ $page.setBgColor($ui.bgcolor)
 
 <table bgcolor="$ui.tableColor" width="100%">
 	<tr>
-		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> <u>Report $brih_card $brih_for $!quizName</i></b></font>
+		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i>Report $brih_card $brih_for $!quizName</i></b></font>
 		</td>
 	</tr>
 	#if($hbtn != "true")

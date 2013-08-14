@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Practice_Quiz.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra. 
+ *  Copyright (c) 2010-13 MHRD, DEI Agra. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -52,10 +52,18 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
-
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.QuizFileEntry;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
 /**
 * This class is used to create quiz randomly 
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+* @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+* @modify date: 14aug2013
 */
 
 public class Practice_Quiz extends SecureScreen{
@@ -85,20 +93,49 @@ public class Practice_Quiz extends SecureScreen{
 			context.put("courseID",courseID);
 			
 			String username=user.getName();
-            		String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseID+"/");
-            		String quizPath="/QBtopiclist.xml";
-            
-           		File file=new File(filePath+"/"+quizPath);
-            		Vector topicList=new Vector();
-			QuizMetaDataXmlReader topipcmetadata=null;
+			int GID=GroupUtil.getGID(courseID);
+                        Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
+                        Vector topicList=new Vector();
+			Vector allTopics=new Vector();
+                        for(int j= 0; j< UDetail.size(); j++)
+                        {
+                                String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
+            			String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+uname+"/"+courseID);
+            			String quizPath="/QBtopiclist.xml";
+           			File file=new File(filePath+"/"+quizPath);
+				//QuizMetaDataXmlReader topipcmetadata=null;
+				TopicMetaDataXmlReader topicmetadata=null;
 			
-			if(file.exists()){
-				topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				topicList=topipcmetadata.getTopicNames();
-					if(topicList.size()!=0){
-						context.put("topicList",topicList);
-					}	            
-			}			
+				if(file.exists())
+                        	{
+                        		topicmetadata=new TopicMetaDataXmlReader(filePath+"/QBtopiclist.xml");
+                                	allTopics=topicmetadata.getQuesBanklist_Detail();
+                                	if(allTopics!=null)
+					{
+                                		for(int i=0;i<allTopics.size();i++)
+                                		{//for
+                                			String topicnew=((FileEntry) allTopics.elementAt(i)).getTopic();
+                                           		QuizFileEntry fileEntry=new QuizFileEntry();
+                                                	String questiontype=((FileEntry) allTopics.elementAt(i)).getTypeofquestion();
+                                                	String difflevel=((FileEntry) allTopics.elementAt(i)).getDifflevel();
+                                                	Vector qno=ViewAllQuestionUtil.ReadTopicAllFile(topicnew,filePath,questiontype,difflevel);
+                                                	fileEntry.setTopic(topicnew);
+                                                	fileEntry.setUserID(uname);
+                                                	fileEntry.setQuestionNumber(Integer.toString(qno.size()));
+                                                	topicList.add(fileEntry);
+                                 		}
+                              		}
+                  		}
+			}
+
+			//if(file.exists()){
+			//	topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+			//	Vector topicList1=topipcmetadata.getTopicNames();
+			//	topicList.addAll(topicList1);
+			//	}
+			if(topicList.size()!=0){
+				context.put("topicList",topicList);
+			}	            
 			if(mode.equalsIgnoreCase("update")){
 				quizDetail = pp.getString("quizDetail","");
 				String quizName = pp.getString("quizName","");

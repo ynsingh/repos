@@ -1,11 +1,12 @@
 #*
  * @(#) Evaluate.vm
-  * Copyright (c) 2010 DEI Agra, 2013 IITK.
+ * Copyright (c) 2010-13 DEI Agra, 2013 IITK.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * @author <a href="mailto:jaivirpal@gmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
  * Contributors: Members of MHRD Project DEI Agra, IITK
- * @modified date: 22may2013(Manorama Pal)
+ * @modified date: 22may2013(Manorama Pal),14aug2013
 *#
 
 $page.setTitle("quiz Evaluation")
@@ -16,17 +17,14 @@ $page.setBgColor("bgcolor")
 </head>
 
 ## If some message has been set, that is retrieved and displayed.
-<font face="$ui.sansSerifFonts">
-	$!data.getMessage()
-</font>
+$!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
-		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>$brih_home</a> |
-                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
+                <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
+                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
                 #if($!type == "result")
                 	$brih_result
                 #else
@@ -53,15 +51,11 @@ $page.setBgColor("bgcolor")
                 #end
 
         </td>
-</tr>
-</table>
 ## Creating the link for help 
-<table width="100%">
-	<tr>
-		<td align=right>
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
-		</td>
-	</tr>
+	<td align=right>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin") style='text-decoration:none'>$brih_help</a>
+	</td>
+</tr>
 </table>
 
 
@@ -216,18 +210,18 @@ $page.setBgColor("bgcolor")
                         #elseif($startIndex == $userConf_string)
                         <img src="$content.getURI("images/First_blank.png")">
                         <img src="$content.getURI("images/Previous_blank.png")">
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$startIndex).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Next.png")"></a>
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_last).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type) "><img src="$content.getURI("images/Last.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$startIndex).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/Next.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_last).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/Last.png")"></a>
                         #elseif($endIndex == $total_size || $endIndex > $total_size)
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_first).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/First.png")"></a>
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_pre).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Previous.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_first).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/First.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_pre).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/Previous.png")"></a>
                         <img src="$content.getURI("images/Next_blank.png")">
                         <img src="$content.getURI("images/Last_blank.png")">
                         #else
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_first).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/First.png")"></a>
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_pre).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Previous.png")"></a>
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Next.png")"></a>
-                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_last).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)"><img src="$content.getURI("images/Last.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_first).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/First.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_pre).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/Previous.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/Next.png")"></a>
+                        <a href="$link.setPage("call,OLES,Evaluate.vm").addPathInfo("startIndex",$check_last).addPathInfo("quizID",$quizID).addPathInfo("quizName",$quizName).addPathInfo("count",$tdcolor).addPathInfo("type",$type)" style='text-decoration:none'><img src="$content.getURI("images/Last.png")"></a>
                         #end
                         </td></tr></table>
                 #end                  

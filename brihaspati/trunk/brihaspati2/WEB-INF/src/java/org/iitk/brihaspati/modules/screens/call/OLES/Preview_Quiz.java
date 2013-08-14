@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Preview_Quiz.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra. 
+ *  Copyright (c) 2010-13 MHRD, DEI Agra. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -59,6 +59,8 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
 * This class displays the list of quizzes for preview in online examination system 
 * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+* @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+* @modify date:14aug2013 
 */
 
 public class Preview_Quiz extends SecureScreen{
@@ -108,9 +110,9 @@ public class Preview_Quiz extends SecureScreen{
 					String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
 					String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();						
 					if(quizMode.equalsIgnoreCase("random")){
-						if(allowPractice.equalsIgnoreCase("no")){
+						//if(allowPractice.equalsIgnoreCase("no")){
 							finalQuizList.add(quizList.get(i));				
-						}
+					//	}
 					}						
 				}					
 				if(finalQuizList.size()==0){
