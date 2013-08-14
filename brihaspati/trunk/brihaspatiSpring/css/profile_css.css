@@ -196,9 +196,9 @@ a.rm, a.com {
         width:623px;
 }
 
-.button-ftextstyle {width:105px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
+.button-ftextstyle {width:115px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
 
-.drop_Val {width:100px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
+.drop_Val {background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
 }
 
 .poll {
