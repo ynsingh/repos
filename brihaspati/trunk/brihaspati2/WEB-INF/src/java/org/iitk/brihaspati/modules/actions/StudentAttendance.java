@@ -260,22 +260,23 @@ public class StudentAttendance extends SecureAction
 				String loginname="";
 				String userId="";	
 				// Get loginname and userid according to user role.
-				if(data.getUser().getTemp("role").equals("institute_admin") || data.getUser().getTemp("role").equals("instructor"))
+				if(data.getUser().getTemp("role").equals("student"))
 				{
-					
-					userId=pp.getString("userid","");
-					if(userId.equals("")){
-						loginname=pp.getString("loginName","");
-						if(!loginname.equals(""))
-						{
-							userId= Integer.toString(UserUtil.getUID(loginname));
-						}
-					}
+					loginname=data.getUser().getName();
+                                        userId= Integer.toString(UserUtil.getUID(loginname));
 				}
 				else{
-					loginname=data.getUser().getName();
-					userId= Integer.toString(UserUtil.getUID(loginname));
+					userId=pp.getString("userid","");
+                                        if(userId.equals(""))
+					{
+                                                loginname=pp.getString("loginName","");
+                                                if(!loginname.equals(""))
+                                                {
+                                                        userId= Integer.toString(UserUtil.getUID(loginname));
+                                                }
+                                        }
 				}
+				
 				// put values in context for showing in template.
 				context.put("userid",userId);
 				context.put("loginName",loginname);

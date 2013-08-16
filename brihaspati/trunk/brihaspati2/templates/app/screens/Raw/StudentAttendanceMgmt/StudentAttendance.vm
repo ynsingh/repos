@@ -51,7 +51,7 @@ $!data.getMessage()
 	</td>
 </tr>
 <tr bgcolor="$ui.menuColor" align="left">
-#if(($data.getUser().getTemp("role") == "institute_admin") || ($data.getUser().getTemp("role") =="instructor"))
+#if(($data.getUser().getTemp("role") == "institute_admin") || ($data.getUser().getTemp("role") =="instructor") || ($data.getUser().getTemp("role") =="teacher_assistant"))
         #if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
@@ -217,14 +217,14 @@ $!data.getMessage()
         	<table  width="100%" align="center"  border="1" style="border-collapse:collapse; border:1px solid black;">
         	<tr bgcolor="$ui.menuColor" align="center">
                 	<th rowspan="2"><font size=3>$brih_serialNo</font></th>
-			#if($data.getUser().getTemp("role") == "institute_admin" || $data.getUser().getTemp("role") == "instructor")
-                	<th rowspan="2"><font size=3>$brih_student $brih_name</font></th>
-                	<th rowspan="2"><font size=3>$brih_email</font></th>
-                	<th colspan="3"><font size=3>$brih_attend $brih_status [<font color="blue"> $searchdate</font>]</th>
-                	<th width="20%" rowspan="2"><font size=3><b>$brih_action</b></font></th>
-                	#else
+                	#if($data.getUser().getTemp("role") =="student")
                 	<th colspan="3"><font size=3>$brih_attend $brih_status (<font color="blue"> $brih_total $brih_attend = $attendreport.size() $brih_day</font>)</th>
 			<th rowspan="2"><font size=3>$brih_attend $brih_Da</font></th>
+			#else
+			<th rowspan="2"><font size=3>$brih_student $brih_name</font></th>
+                        <th rowspan="2"><font size=3>$brih_email</font></th>
+                        <th colspan="3"><font size=3>$brih_attend $brih_status [<font color="blue"> $searchdate</font>]</th>
+                        <th width="20%" rowspan="2"><font size=3><b>$brih_action</b></font></th>
                 	#end
         	</tr>
 		<tr align="center" bgcolor="$ui.menuColor">
@@ -244,22 +244,21 @@ $!data.getMessage()
                                 <tr align="center" bgcolor="$ui.tableColor">
                        		#end        
                 			<td>$sno</td>
-					#if($data.getUser().getTemp("role") == "institute_admin" || $data.getUser().getTemp("role") == "instructor")
-                			<td align="left">$!urecord.getLoginName()</td>
-                			<td align="left">$!urecord.getEmail()</td>
-					<td>$!urecord.getPresent()</td>
-                			<td>$!urecord.getAbsent()</td>
-                			<td>$!urecord.getLeave()</td>
-					<td>
-					   	<a href="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance").addPathInfo("actionName","eventSubmit_doSearch").addPathInfo("userid",$urecord.getUserId()).addPathInfo("count",$tdcolor).addPathInfo("mode","All").addPathInfo("group",$course_id)" style="text-decoration:none;"><font color="blue"> $brih_full $brih_attend</font> | </a>
-						<a href="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance").addPathInfo("actionName","eventSubmit_doSearch").addPathInfo("userid",$urecord.getUserId()).addPathInfo("count",$tdcolor).addPathInfo("mode","update").addPathInfo("group",$course_id).addPathInfo("date",$encodedate)" style="text-decoration:none;" ><font color="blue"> $brih_update</font></a>
-					</td>
-
-					#else
+					#if($data.getUser().getTemp("role") == "student")
 					<td>$!urecord.getPresent()</td>
                                         <td>$!urecord.getAbsent()</td>
                                         <td>$!urecord.getLeave()</td>
-                			<td>$!urecord.getCreateDate()</td>
+                                        <td>$!urecord.getCreateDate()</td>
+					#else
+					<td align="left">$!urecord.getLoginName()</td>
+                                        <td align="left">$!urecord.getEmail()</td>
+                                        <td>$!urecord.getPresent()</td>
+                                        <td>$!urecord.getAbsent()</td>
+                                        <td>$!urecord.getLeave()</td>
+                                        <td>
+                                                <a href="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance").addPathInfo("actionName","eventSubmit_doSearch").addPathInfo("userid",$urecord.getUserId()).addPathInfo("count",$tdcolor).addPathInfo("mode","All").addPathInfo("group",$course_id)" style="text-decoration:none;"><font color="blue"> $brih_full $brih_attend</font> | </a>
+                                                <a href="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance").addPathInfo("actionName","eventSubmit_doSearch").addPathInfo("userid",$urecord.getUserId()).addPathInfo("count",$tdcolor).addPathInfo("mode","update").addPathInfo("group",$course_id).addPathInfo("date",$encodedate)" style="text-decoration:none;" ><font color="blue"> $brih_update</font></a>
+                                        </td>
 					#end
                 			#set($sno=$sno+1)
 					

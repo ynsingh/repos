@@ -1,4 +1,3 @@
-
 package org.iitk.brihaspati.modules.screens.call.OLES; 
 
 /*
@@ -61,7 +60,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *   @author  <a href="palseema30@gmail.com">Manorama Pal</a> 
+ * @author  <a href="palseema30@gmail.com">Manorama Pal</a> 
+ * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date : 16aug2013
  */
 
 public class PracticeQuizInfo extends  SecureScreen{               
@@ -107,9 +108,9 @@ public class PracticeQuizInfo extends  SecureScreen{
 						String userName = quizid.substring((quizid.lastIndexOf("_")+1),(quizid.length()));
 						String allowpractice = ((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();
 						String quizname =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
-						if((userName.trim()).equalsIgnoreCase(uname.trim())&&(allowpractice.equals("yes"))){
+						//if((userName.trim()).equalsIgnoreCase(uname.trim())&&(allowpractice.equals("yes"))){
 							instructorQuizList.add((QuizFileEntry)quizList.get(i));
-						}
+						//}
 						if(quizid.equals(quizlstid)){
 							newquizname=quizname;
 						}

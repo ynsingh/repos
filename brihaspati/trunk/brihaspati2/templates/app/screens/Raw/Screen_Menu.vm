@@ -295,6 +295,16 @@
         </tr>
         #end
 
+	#if($data.getUser().getTemp("modulename13") == "13")
+        <tr>
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
+                </tr>
+        #else
+        <tr bgcolor="$ui.menuColor">
+                <td class="dt"><font color="#B2B2B2">$brih_attend $brih_mgmt</font></td>
+        </tr>
+        #end
+
  #end
 
 ## --------------------
