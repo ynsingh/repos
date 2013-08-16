@@ -91,7 +91,8 @@ public class EditInstituteCourse extends SecureAction_Institute_Admin
 		 * Update the course deatils
 		 * @see CourseManagement from Utils
 		 */
-			if(S.checkString(CourseName)==-1 && S.checkString(dept)==-1 && S.checkString(desc)==-1 )
+			//if(S.checkString(CourseName)==-1 && S.checkString(dept)==-1 && S.checkString(desc)==-1 )
+			if(S.checkString(dept)==-1 && S.checkString(desc)==-1 )
                        	{
 				//Add last parameter 'schname' for course registration with school/center.
 				msg=CourseManagement.UpdateCourseDetails(CourseId,CourseName,dept,desc,act,file,scname);

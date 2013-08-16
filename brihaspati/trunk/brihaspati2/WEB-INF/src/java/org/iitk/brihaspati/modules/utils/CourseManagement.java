@@ -320,7 +320,7 @@ public class CourseManagement
 				String insname=UserUtil.getFullName(UserUtil.getUID(pieml));
 				CourseUserDetail cuDetail=new CourseUserDetail();
 				
-				if(!groupName.equals("All"))
+				/*if(!groupName.equals("All"))
 				{
 					int index=gAlias.length();
 					String loginName=groupName.substring(index);
@@ -349,7 +349,9 @@ public class CourseManagement
 					cuDetail.setLoginName(loginName);
 					cuDetail.setUserName(userName);
 					cuDetail.setEmail(email);
-				}
+				}*/
+				cuDetail.setLoginName(pieml);
+				cuDetail.setUserName(insname);
 				cuDetail.setEmail(pieml);
 				cuDetail.setGroupName(GName);
 				cuDetail.setInstName(InstituteIdUtil.getIstName(Integer.parseInt(instituteId)));
@@ -569,7 +571,6 @@ public class CourseManagement
                            SystemIndependentUtil.deleteFile(f);
 			   File f_Index=new File(fileName+"_Index");
                            SystemIndependentUtil.deleteFile(f_Index);
-
                            	/**
                             	* Remove the group completely from the system
                             	*/
