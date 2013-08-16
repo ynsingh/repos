@@ -70,7 +70,7 @@ $!data.getMessage()
 		#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end
-				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>  $brih_Practice $brih_quiz  </a>
+				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice") style='text-decoration:none'>  $brih_practice $brih_quiz  </a>
 			</td>
 			
 		#if($tdcolor != "3")

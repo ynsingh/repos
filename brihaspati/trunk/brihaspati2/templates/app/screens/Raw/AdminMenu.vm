@@ -94,7 +94,7 @@
 </tr>
 <tr bgcolor="$ui.menuColor">
       <td class="dt">
-         <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>
+         <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1") style=text-decoration:none>$brih_FAQ</a>
       </td>
 </tr>
 <tr>

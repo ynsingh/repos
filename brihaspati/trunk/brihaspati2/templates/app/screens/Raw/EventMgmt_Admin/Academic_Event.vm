@@ -70,7 +70,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.tableColor">
 	<td colspan=5><i>$brih_nt</i></td>
                 <td align=right>
-<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/acdcal.html","newWin");>$brih_help</a>
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati/docs/acdcal.html","newWin") style='text-decoration:none'>$brih_help</a>
                 </td>
         </tr>
 ##</table>
@@ -165,7 +165,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
 		<td>$brih_Ev</td>
                 <td colspan=3><textarea name="detail" wrap="physical" rows=4 cols=50>$!element</textarea>
-		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");>$brih_hint</a>
+		<a href=javascript:popupWin("/brihaspati2/docs/acdevent.html","newWin");style=text-decoration:none>$brih_hint</a>
 		</td>
                 </tr>
 	#end
