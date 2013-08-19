@@ -181,6 +181,7 @@ class Entry extends Controller {
 	}
 
 	function view($entry_type, $entry_id = 0)
+	
 	{
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
@@ -237,6 +238,7 @@ class Entry extends Controller {
 
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
+		//$this->messages->add('Line No 241==>.' .$entry_type_id );
 		if ( ! $entry_type_id)
 		{
 			$this->messages->add('Invalid Entry type.', 'error');
@@ -247,6 +249,10 @@ class Entry extends Controller {
 		}
 
 		$this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Entry');
+
+		/*if($entry_type_id == '2'){
+			$this->messages->add('Payment type.');
+		}*/
 
 		/* Form fields */
 		$data['entry_number'] = array(
@@ -275,6 +281,8 @@ class Entry extends Controller {
 		$data['entry_tags'] = $this->Tag_model->get_all_tags();
 		$data['entry_tag'] = 0;
 
+		
+
 		/* Form validations */
 		if ($current_entry_type['numbering'] == '2')
 			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
@@ -287,15 +295,19 @@ class Entry extends Controller {
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 
 		/* Debit and Credit amount validation */
+			
+		
+		
 		if ($_POST)
 		{
 			foreach ($this->input->post('ledger_dc', TRUE) as $id => $ledger_data)
 			{
+					
 				$this->form_validation->set_rules('dr_amount[' . $id . ']', 'Debit Amount', 'trim|currency');
 				$this->form_validation->set_rules('cr_amount[' . $id . ']', 'Credit Amount', 'trim|currency');
 			}
 		}
-
+	
 		/* Repopulating form */
 		if ($_POST)
 		{
@@ -312,6 +324,7 @@ class Entry extends Controller {
 		else {
 			for ($count = 0; $count <= 3; $count++)
 			{
+				
 				if ($count == 0 && $entry_type == "payment")
 					$data['ledger_dc'][$count] = "C";
 				else if ($count == 1 && $entry_type != "payment")
@@ -323,7 +336,7 @@ class Entry extends Controller {
 				$data['cr_amount'][$count] = "";
 			}
 		}
-
+		
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->messages->add(validation_errors(), 'error');
@@ -361,10 +374,12 @@ class Entry extends Controller {
 					{
 						if ($data_all_ledger_dc[$id] == 'D' && $valid_ledger->type == 1)
 						{
+						
 							$bank_cash_present = TRUE;
 						}
 						if ($valid_ledger->type != 1)
 							$non_bank_cash_present = TRUE;
+
 					} else if ($current_entry_type['bank_cash_ledger_restriction'] == '3')
 					{
 						if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
@@ -391,7 +406,6 @@ class Entry extends Controller {
 						}
 					}
 				}
-
 				if ($data_all_ledger_dc[$id] == "D")
 				{
 					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
@@ -439,7 +453,6 @@ class Entry extends Controller {
 					return;
 				}
 			}
-
 			/* Adding main entry */
 			if ($current_entry_type['numbering'] == '2')
 			{
@@ -463,7 +476,6 @@ class Entry extends Controller {
 			$data_type = $entry_type_id;
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$entry_id = NULL;
-
 			$this->db->trans_start();
 			$insert_data = array(
 				'number' => $data_number,
@@ -473,6 +485,8 @@ class Entry extends Controller {
 				'tag_id' => $data_tag,
 				'update_date' => $data_date,
 			);
+			 //echo random_element($insert_data);
+
 			if ( ! $this->db->insert('entries', $insert_data))
 			{
 				$this->db->trans_rollback();
@@ -490,23 +504,170 @@ class Entry extends Controller {
 			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
 
-			$dr_total = 0;
-			$cr_total = 0;
+			//$dr_total = 0;
+			//$cr_total = 0;
+			$ledg_code = 0;
+			$budgetamt = 0;
+			$data_amount = 0;
+			$useamt = 0;
+			$allow = 0;
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
 			{
 				$data_ledger_dc = $data_all_ledger_dc[$id];
 				$data_ledger_id = $data_all_ledger_id[$id];
+				
 				if ($data_ledger_id < 1)
 					continue;
-				$data_amount = 0;
+				//$data_amount = 0;
 				if ($data_all_ledger_dc[$id] == "D")
 				{
 					$data_amount = $data_all_dr_amount[$id];
 					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+					
 				} else {
+					
 					$data_amount = $data_all_cr_amount[$id];
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
-				}
+					 $data_ledger_id;
+
+					//get ledger code
+
+				 	$this->db->from('ledgers')->where('id', $data_ledger_id);	
+					$query_q = $this->db->get();
+		                        $query_n = $query_q->row();
+                		        $this->id = $query_n->id;
+                        		$this->code = $query_n->code;
+					$ledg_code=$this->code;
+
+					//get budget amnt 
+
+
+					$this->db->from('budgets')->where('code', $ledg_code);
+                                        $query_l = $this->db->get();
+                                        $query_l = $query_l->row();
+                                        //$this->id = $query_l->id;
+                                        $this->amt = $query_l->bd_balance;
+					$this->useamt = $query_l->consume_amount;
+					$this->allow=$query_l->allowedover;
+                                        $budgetamt=$this->amt;
+					$useamt=$this->useamt;
+					$allow=$this->allow;
+
+					//echo  $this->messages->add('Test 01==>' .$budgetamt);
+					//echo  $this->messages->add('Test 02==>' .$useamt);
+					//echo  $this->messages->add('Test 03==>' .$allow);
+					/* If entry type is payment */
+					if($entry_type_id == '2'){
+					/* if alloted budget amount is more than consume amount*/
+
+					if($budgetamt > $useamt)
+					{
+						$available_amount=$budgetamt - $useamt ;//its wrong
+						/**  payment amount is greater than or equal to available amount **/
+
+						if($data_amount >= $available_amount)
+						{
+							/* check for allowed over expense*/
+
+							if(($allow == -1) || ($allow == 0))
+                                                	{
+                                                        	$this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                        	$this->template->load('template', 'entry/add',$data);
+                                                        	return;
+                                                	}
+							else
+							{
+								/* check for payment amount by adding allowd over amount + consume amount */
+								$available_amount = $budgetamt - $useamt + $allow;
+								if($data_amount >= $available_amount)
+								{
+	                                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
+        	                                                        $this->template->load('template', 'entry/add',$data);
+                	                                                return;
+
+								}
+								else
+								{
+									/* Update budget table */
+									$sumamt=$data_amount + $useamt;
+									$allow_left = $available_amount - $data_amount ;
+									$update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
+						                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                        						{
+                                						$this->db->trans_rollback();
+                                						$this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                						$this->template->load('template', 'entry/add', $data);
+                                						return;
+                        						}
+								}
+								
+							}
+
+						}
+						else
+						{
+							$sumamt=$data_amount + $useamt;
+							$update_data1 = array('consume_amount' => $sumamt );
+                                                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                        {
+                                                                     $this->db->trans_rollback();
+                                                                     $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                     $this->template->load('template', 'entry/add', $data);
+                                                                     return;
+                                                        }
+						}
+					}	
+					//elseif($useamt > $budgetamt)
+					/* consume amount is greater than allocated budget amount*/ 
+					if($useamt >= $budgetamt)
+					{
+						/* check for allowed over expenses */
+						if(($allow == -1) || ($allow == 0))
+	                                        {
+                                                	$this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                	$this->template->load('template', 'entry/add',$data);
+                                                	return;
+						}
+						/** get over consume amount and check with allowed left **/
+				
+						
+						$overconsume_amount = $useamt - $budgetamt ;
+						/* payment amount is greater than allowed over amount*/
+						if($data_amount > $allow)
+						{
+
+
+
+							$this->messages->add('Budget is not sufficient to make this payment.','error');
+	                                                $this->template->load('template', 'entry/add',$data);
+							return;
+						}
+						 /* payment amount is less than allowed over amount*/
+						if($data_amount <= $allow)
+						{
+							$overconsume_amount = $useamt - $budgetamt ;
+							$available_amount = $allow ;
+							$allowed_left = $allow - $data_amount;
+							$consume_amount = $useamt + $data_amount;
+							$update_data1 = array('consume_amount' => $consume_amount, 'allowedover' => $allowed_left);
+                                                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                        {
+                                                                $this->db->trans_rollback();
+                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                $this->template->load('template', 'entry/add', $data);
+                                                                return;
+                                                        }
+
+							
+						}	
+
+							
+					}
+					}
+
+				
+				}//main if
+				
 				$insert_ledger_data = array(
 					'entry_id' => $entry_id,
 					'ledger_id' => $data_ledger_id,
@@ -522,6 +683,7 @@ class Entry extends Controller {
 					$this->template->load('template', 'entry/add', $data);
 					return;
 				}
+				
 			}
 
 			/* Updating Debit and Credit Total in entries table */
@@ -540,14 +702,12 @@ class Entry extends Controller {
 
 			/* Success */
 			$this->db->trans_complete();
-
 			$this->session->set_userdata('entry_added_show_action', TRUE);
 			$this->session->set_userdata('entry_added_id', $entry_id);
 			$this->session->set_userdata('entry_added_type_id', $entry_type_id);
 			$this->session->set_userdata('entry_added_type_label', $current_entry_type['label']);
 			$this->session->set_userdata('entry_added_type_name', $current_entry_type['name']);
 			$this->session->set_userdata('entry_added_number', $data_number);
-
 			/* Showing success message in show() method since message is too long for storing it in session */
 			$this->logger->write_message("success", "Added " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 			redirect('entry/show/' . $current_entry_type['label']);
@@ -556,6 +716,7 @@ class Entry extends Controller {
 		}
 		return;
 	}
+//end of Payment 
 
 	function edit($entry_type, $entry_id = 0)
 	{
@@ -1314,3 +1475,6 @@ class Entry extends Controller {
 
 /* End of file entry.php */
 /* Location: ./system/application/controllers/entry.php */
+
+
+

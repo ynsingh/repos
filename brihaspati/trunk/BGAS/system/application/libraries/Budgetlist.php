@@ -10,9 +10,9 @@ class Budgetlist
 	var $status = "";
 	var $total = 0;
 	var $bd_balance = 0.00;
-//	var $op_balance = "";
 	var $optype = "";
 	var $opbalance = 0;
+	var $consume = 0;
 	var $children_groups = array();
 	var $children_ledgers = array();
 	var $counter = 0;
@@ -43,9 +43,11 @@ class Budgetlist
 				$this->budget[$counter]['code'] = $row->code;
                         	$this->budget[$counter]['name'] = $row->budgetname;
                         	$this->budget[$counter]['bd_balance'] = $row->bd_balance;
-//                        	$this->budget[$counter]['op_balance'] = $row->op_balance_dc;
 				$this->budget[$counter]['type'] = $row->type;
 	                        $this->budget[$counter]['over'] = $row->allowedover;
+	                        $this->budget[$counter]['consume'] = $row->consume_amount;
+                       		// list ($this->budget[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
+                 //       	$this->total = float_ops($this->total, $this->budget[$counter]->total, '+');
                         	$counter++;
 			}//for
 		}//if
@@ -57,9 +59,11 @@ class Budgetlist
 			$this->code = $budget_n->code;
 			$this->name = $budget_n->budgetname;
 			$this->bd_balance = $budget_n->bd_balance;
-//			$this->op_balance = $budget_n->op_balance_dc;
 			$this->type = $budget_n->type;
 			$this->over = $budget_n->allowedover;
+			$this->consume = $budget_n->consume_amount;
+			//$this->status = $group->status ;
+			//	$this->total = 0;
 		}//else
 	}//function
 
@@ -132,14 +136,15 @@ class Budgetlist
 				echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $this->bd_balance;
 			echo "</td>";
-/*			echo "<td>";
-				echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $this->op_balance;
-			echo "</td>";*/
 			echo "<td>";
 				echo $this->print_space($this->counter);
 				echo "&nbsp;" .  $this->over;
 			echo " </td>";
+			echo "<td>";
+                                echo $this->print_space($this->counter);
+                                echo "&nbsp;" .  $this->consume;
+                        echo " </td>";
+
 			if ($this->id <= 4)
 			{
 				echo "<td class=\"td-actions\"></tr>";
@@ -160,6 +165,7 @@ class Budgetlist
 			$this->counter++;
 			foreach ($this->budget as $id => $data)
                 	{
+				
                         	//"$this->counter++ ";
 				echo "<tr class=\"tr-ledger\">";
                                 echo "<td class=\"td-ledger\">";
@@ -179,14 +185,22 @@ class Budgetlist
                                 echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $data['bd_balance'];
                         	echo "</td>";
-/*                        	echo "<td>";
-                                echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $data['op_balance'];
-                        	echo "</td>";*/
                         	echo "<td>";
                                 echo $this->print_space($this->counter);
                                 echo "&nbsp;" .  $data['over'];
                         	echo " </td>";
+				$available_amount=$data['bd_balance'] - $data['consume'];
+
+				echo "<td>";
+				echo $this->print_space($this->counter);
+                                echo "&nbsp;" .  $available_amount;
+                                echo " </td>";
+
+                        //	if ($data['id'] <= 4)
+                        //	{
+                          //     	echo "<td class=\"td-actions\"></tr>";
+                        //	} else {
+                                //echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
 				if(!($data['code'] == '50'))
 				{
                                 	echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
