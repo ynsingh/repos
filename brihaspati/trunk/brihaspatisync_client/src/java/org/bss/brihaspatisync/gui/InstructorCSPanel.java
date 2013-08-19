@@ -36,6 +36,7 @@ import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 
+import org.apache.commons.codec.binary.BinaryCodec;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Creadted on 2008, Modified on 2011, modified by 2012. 
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
@@ -496,8 +497,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
         }
 
 	private String decrypt(String encryptedData) throws Exception {
-                byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(encryptedData);
-                String decryptedValue = new String(decordedValue);
+		String decryptedValue = new String(org.apache.commons.codec.binary.Base64.decodeBase64(encryptedData.getBytes()));
                 return decryptedValue;
         }
 }	

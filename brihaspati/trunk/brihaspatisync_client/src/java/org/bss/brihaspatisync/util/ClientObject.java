@@ -19,18 +19,22 @@ import org.bss.brihaspatisync.http.HttpCommManager;
 public class ClientObject {
 
 	private static ClientObject cb=null;
-	private Vector indexServerList=null;
+	private float quality = 0.5f;
+	
 	private String indexServerName="";
 	
+	private String lect_id="";
 	private String localIP="";
 	private String usr_name="";
 	private String usr_role="";
-	private String lect_id="";
 	private String reflector_ip=null;
-	private String parent_reflector_ip="";
 	private String courseForAnnounce="";
-	private Vector usrStatusVector=null;
+	private String parent_reflector_ip="";
+	
 	private Vector usrNameVector=null;
+	private Vector usrStatusVector=null;
+	private Vector indexServerList=null;
+	
 	private HttpCommManager commMgr = HttpCommManager.getController();
 	
 	public static ClientObject getController(){
@@ -246,6 +250,14 @@ public class ClientObject {
 	
         public int getLectureInfoIndex(){
                 return LectureInfoindex;
+        }
+	
+	public void setImageQuality(float quality) {
+		this.quality = quality;
+	}
+	
+	public float getImageQuality(){
+		return quality;
         }
 }
 

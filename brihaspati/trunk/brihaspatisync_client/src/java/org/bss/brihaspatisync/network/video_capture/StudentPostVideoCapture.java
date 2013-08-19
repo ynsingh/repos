@@ -7,22 +7,22 @@ package org.bss.brihaspatisync.network.video_capture;
  * Copyright (c) 2012,2013  ETRG, IIT Kanpur.
  */
 
-import  java.util.LinkedList;
 import javax.imageio.ImageIO;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageWriter;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import java.awt.image.BufferedImage;
 
 import org.bss.brihaspatisync.gui.StatusPanel;
 import org.bss.brihaspatisync.gui.VideoPanel;
-
+import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
-
 import org.bss.brihaspatisync.network.util.UtilObject;
-
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
@@ -86,14 +86,9 @@ public class StudentPostVideoCapture implements Runnable {
 					/****   send student video image to reflector ****/
 					if(!getflag) {	
 						if(BufferImage.getController().bufferSize()>0) {
-							BufferedImage bimg=BufferImage.getController().get(0);
+							BufferedImage image=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
-							
-                	               	        	JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
-	                                        	JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-		                       	                enParam.setQuality(0.25F, true);
-        		                       	        jencoder.setJPEGEncodeParam(enParam);
-                		                       	jencoder.encode(bimg);
+							encode(image);	
 							LinkedList send_queue=UtilObject.getController().getSendQueue("stud_video");
                                                         if(send_queue.size()==0 ){
                                                                 send_queue.addLast(os.toByteArray());
@@ -134,5 +129,26 @@ public class StudentPostVideoCapture implements Runnable {
                         }
                 }
                 return left.length - right.length;
+        }
+	
+	private void encode(BufferedImage image) {
+                try {
+                        // get all image writers for JPG format
+                        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+                        ImageWriter writer = (ImageWriter) writers.next();
+                        ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+                        writer.setOutput(ios);
+                        ImageWriteParam param = writer.getDefaultWriteParam();
+                        // compress to a given quality
+                        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                        param.setCompressionQuality(ClientObject.getController().getImageQuality());
+                        // appends a complete image stream containing a single image and
+                        // associated stream and image metadata and thumbnails to the output
+                        writer.write(null, new IIOImage(image, null, null), param);
+                        // close all streams
+                        os.close();
+                        ios.close();
+                        writer.dispose();
+                } catch(Exception e) { System.out.println("Exception in StudentPostVideoCapture class at encode method  ");  }
         }
 }

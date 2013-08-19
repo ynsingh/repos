@@ -32,10 +32,11 @@ public class SinglePortClient implements Runnable {
 	private Thread runner=null;
 	private boolean flag=false;
 	private Vector type_vector=new Vector();
-	private static SinglePortClient post_screen=null;
-	private int port=RuntimeDataObject.getController().client_single_port();
 	private ClientObject clientObject=ClientObject.getController();
+	private int port=RuntimeDataObject.getController().client_single_port();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	
+	private static SinglePortClient post_screen=null;
 	
 	/**
  	 * Controller for the class.
@@ -105,13 +106,14 @@ public class SinglePortClient implements Runnable {
 								if(receive_data_fromserver !=null) {
 							   		if(receive_data_fromserver.length>0) {
 										LinkedList audio_queue=UtilObject.getController().getQueue("Audio_Data");
-        	                               	       				audio_queue.addLast(receive_data_fromserver);											}
+        	                               	       				audio_queue.addLast(receive_data_fromserver);
+									}
 						   		} else
 						        		break;
 						   		i--;
 						 	}
 					    	} catch(Exception e) { System.out.println("Exception in http Client in Audio_Data "+e);}
-					}else if(type.equals("Desktop_Data")) {
+					} else if(type.equals("Desktop_Data")) {
 						try {
 							LinkedList sendqueue=UtilObject.getController().getSendQueue("Desktop_Data");
 							byte[] send_data=null;
@@ -124,7 +126,7 @@ public class SinglePortClient implements Runnable {
 									audio_queue.addLast(receive_data_fromserver);
 								}
 							}
-						}catch(Exception e){ System.out.println("Exception in http Client in Desktop_Data "+e);}
+						}catch(Exception e){ System.out.println("Exception in http Client in Desktop_Data "+e); }
 					} else if(type.equals("ch_wb_Data")) {
 						try {
 							LinkedList sendqueue=UtilObject.getController().getSendQueue("ch_wb_Data");
@@ -172,7 +174,7 @@ public class SinglePortClient implements Runnable {
 					runner.sleep(5);
 					runner.yield();
 				}
-			}catch(Exception ep){ System.out.println(this.getClass()+" Exception  "+ep.getMessage());}
+			}catch(Exception ep) { System.out.println(this.getClass()+" Exception  "+ep.getMessage()); }
 			System.gc();
 		}
 	}

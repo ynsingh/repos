@@ -8,19 +8,20 @@ package org.bss.brihaspatisync.network.video_capture;
  */
 
 import javax.imageio.ImageIO;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageWriter;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
 
-import  java.util.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.awt.image.BufferedImage;
 
 import org.bss.brihaspatisync.gui.VideoPanel;
 import org.bss.brihaspatisync.gui.StatusPanel;
-
+import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.network.util.UtilObject;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
@@ -53,8 +54,6 @@ public class PostVideoCapture implements Runnable {
                 if (runner == null) {
 			flag=true;
 			getflag=getscreen;
-			//if(getflag)
-			//	org.bss.brihaspatisync.gui.JoinSessionPanel.getController().getAV_Panel().add(org.bss.brihaspatisync.gui.VideoPanel.getController().createGUI());
                         runner = new Thread(this);
                         runner.start();
 			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("ins_video");
@@ -83,15 +82,9 @@ public class PostVideoCapture implements Runnable {
 					if(!getflag) {	
 						/****  send video image to reflector ****/
 						if(BufferImage.getController().bufferSize()>0) {
-							BufferedImage bimg=BufferImage.getController().get(0);
+							BufferedImage image=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
-								
-	                                	        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
-        	                               		JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-	        	                               	enParam.setQuality(0.25F, true);
-	        		                        jencoder.setJPEGEncodeParam(enParam);
-        	        		                jencoder.encode(bimg);
-							
+							encode(image);	
 							LinkedList send_queue=UtilObject.getController().getSendQueue("ins_video");
 							if(send_queue.size()==0 ){
                                                         	send_queue.addLast(os.toByteArray());
@@ -133,5 +126,25 @@ public class PostVideoCapture implements Runnable {
                 }
                 return left.length - right.length;
         }
-
+	
+	private void encode(BufferedImage image) {
+                try {
+                        // get all image writers for JPG format
+                        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+                        ImageWriter writer = (ImageWriter) writers.next();
+                        ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+                        writer.setOutput(ios);
+                        ImageWriteParam param = writer.getDefaultWriteParam();
+                        // compress to a given quality
+                        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                        param.setCompressionQuality(ClientObject.getController().getImageQuality());
+                        // appends a complete image stream containing a single image and
+                        //associated stream and image metadata and thumbnails to the output
+                        writer.write(null, new IIOImage(image, null, null), param);
+                        // close all streams
+                        os.close();
+                        ios.close();
+                        writer.dispose();
+                } catch(Exception e){  System.out.println("Exception in PostVideoCapture class at encode method  ");  }
+        }
 }

@@ -525,8 +525,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         }
 	
 	private String decrypt(String encryptedData) throws Exception {
-                byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(encryptedData);
-                String decryptedValue = new String(decordedValue);
+		String decryptedValue = new String(org.apache.commons.codec.binary.Base64.decodeBase64(encryptedData.getBytes()));
                 return decryptedValue;
         }
 }//end of class

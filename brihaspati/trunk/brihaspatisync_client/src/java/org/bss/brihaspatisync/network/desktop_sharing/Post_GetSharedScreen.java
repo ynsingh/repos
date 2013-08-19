@@ -7,7 +7,9 @@ package org.bss.brihaspatisync.network.desktop_sharing;
  * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
-import  java.util.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import java.io.ByteArrayOutputStream;
 
 import java.awt.AWTException;
@@ -23,12 +25,19 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+
+
+import javax.imageio.ImageIO;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageWriter;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
 
 import org.bss.brihaspatisync.gui.StatusPanel;
 import org.bss.brihaspatisync.gui.Desktop_Sharing;
 
+import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
@@ -119,12 +128,11 @@ public class Post_GetSharedScreen implements Runnable {
 	public void run() {
 		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
-				
 				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					/****   send the image to reflector **********/
 					if(!getflag) {
 						BufferedImage image=captureScreen();
-						ImageIO.write(image, "jpeg", os);
+						encode(image);
 						LinkedList send_queue=clientobject.getSendQueue("Desktop_Data");
 						if(send_queue.size() ==0 ) {
 							send_queue.addLast(os.toByteArray());
@@ -173,7 +181,28 @@ public class Post_GetSharedScreen implements Runnable {
         	}
         	return left.length - right.length;
     	}
-	
+
+	private void encode(BufferedImage image) {
+		try {
+			// get all image writers for JPG format
+			Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+			ImageWriter writer = (ImageWriter) writers.next();
+			ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+			writer.setOutput(ios);
+			ImageWriteParam param = writer.getDefaultWriteParam();
+			// compress to a given quality
+			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			param.setCompressionQuality(ClientObject.getController().getImageQuality());
+			// appends a complete image stream containing a single image and
+		    	// associated stream and image metadata and thumbnails to the output
+			writer.write(null, new IIOImage(image, null, null), param);
+			// close all streams
+			os.close();
+			ios.close();
+			writer.dispose();
+		} catch(Exception e) { System.out.println("Exception in Post_GetSharedScreen class at encode method  "); }
+	}
+
 	public void setFlag(boolean f) {
 		screen_mode=f;
 	}
