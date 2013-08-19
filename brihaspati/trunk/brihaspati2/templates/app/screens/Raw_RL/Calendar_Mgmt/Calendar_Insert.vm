@@ -1,117 +1,119 @@
 #*
  * @(#)Calendar_Insert.vm
- * Copyright (c)2006-2007 ETRG,IIT Kanpur.
+ * Copyright (c)2005-2006 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>  
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir singh</a>
- * @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
+
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
+
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right">
 <td>
-	<font face="$ui.sansSerifFonts"><b>
+        <font face="$ui.sansSerifFonts"><b>
 #if($data.getUser().getUserName()=="admin")
 <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> |
- 	#if($mode=='insert')
-  		$page.setTitle("$brih_ad $brih_home | $brih_calendar | $day of $month_name ' $year' | $brih_insert $brih_event $brih_detail")
- 	#else
-  		$page.setTitle("$brih_ad $brih_home | $brih_calendar | $day of $month_name ' $year' | $brih_update $brih_event $brih_detail")
- 	#end
-  		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$brih_ad $brih_Of1 $personal $brih_calendar</a> | 
-  		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)> $month_name $day' $year</a> &nbsp;|&nbsp;
-	#if($mode=='insert')  
-		$brih_insert $brih_event $brih_Of  $brih_detail
- 	#else
-		$brih_event $brih_Of $brih_detail $brih_in $brih_edit
- 	#end
+        #if($mode=='insert')
+                $page.setTitle("$brih_ad $brih_home | $brih_calendar | $day of $month_name ' $year' | $brih_insert $brih_event $brih_detail")
+        #else
+                $page.setTitle("$brih_ad $brih_home | $brih_calendar | $day of $month_name ' $year' | $brih_update $brih_event $brih_detail")
+        #end
+                <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$brih_ad $brih_Of1 $personal $brih_calendar</a> |
+                <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)> $month_name $day' $year</a> &nbsp;|&nbsp;
+        #if($mode=='insert')  
+                $brih_insert $brih_event $brih_Of  $brih_detail
+        #else
+                $brih_event $brih_Of $brih_detail $brih_in $brih_edit
+        #end
 #elseif($path=='personal')
-	 <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
- 	#if($mode=='insert')
-  		$page.setTitle("$brih_home | $personal $brih_calendar | $day of $month_name ' $year' | $brih_insert $brih_event $brih_detail")
- 	#else
-  		$page.setTitle("$brih_home | $personal $brih_calendar | $day of $month_name ' $year' | $brih_update $brih_event $brih_detail")
- 	#end
-  		 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$personal $brih_calendar</a> |&nbsp; 
-  		 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)> $month_name $day' $year</a> &nbsp;|&nbsp;
- 	
-	#if($mode=='insert')  
-		$brih_insert $brih_event $brih_Of $brih_detail
- 	#else
-		 $brih_event $brih_Of $brih_detail $brih_in $brih_edit
- 	#end
-		
+         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        #if($mode=='insert')
+                $page.setTitle("$brih_home | $personal $brih_calendar | $day of $month_name ' $year' | $brih_insert $brih_event $brih_detail")
+        #else
+                $page.setTitle("$brih_home | $personal $brih_calendar | $day of $month_name ' $year' | $brih_update $brih_event $brih_detail")
+        #end
+                 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$personal $brih_calendar</a> |&nbsp;
+                 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)> $month_name $day' $year</a> &nbsp;|&nbsp;
+
+        #if($mode=='insert')  
+                $brih_insert $brih_event $brih_Of $brih_detail
+        #else
+                 $brih_event $brih_Of $brih_detail $brih_in $brih_edit
+        #end
+
 #else
- 
-	#if($mode=='insert')
-  		$page.setTitle("$brih_home | $course | $brih_calendar | $day of $month_name ' $year' | $brih_insertt $brih_event $brih_detail")
- 	#else
-  		$page.setTitle("$brih_home | $course | $brih_calendar | $day of $month_name ' $year' | $brih_update $brih_event $brih_detail")
-	#end
 
-	 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$brih_course $brih_calendar</a> |
-	 <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)> $month_name $day' $year</a> &nbsp;|&nbsp;
+        #if($mode=='insert')
+                $page.setTitle("$brih_home | $course | $brih_calendar | $day of $month_name ' $year' | $brih_insertt $brih_event $brih_detail")
+        #else
+                $page.setTitle("$brih_home | $course | $brih_calendar | $day of $month_name ' $year' | $brih_update $brih_event $brih_detail")
+        #end
 
-	#if($mode=='insert')
-		$brih_insert $brih_event $brih_Of $brih_detail
- 	#else
-		 $brih_event $brih_Of $brih_detail $brih_in $brih_edit
-	#end
-	  | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	  <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+         <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$brih_course $brih_calendar</a> |
+         <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)> $month_name $day' $year</a> &nbsp;|&nbsp;
+
+        #if($mode=='insert')
+                $brih_insert $brih_event $brih_Of $brih_detail
+        #else
+                 $brih_event $brih_Of $brih_detail $brih_in $brih_edit
+        #end
+          | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+          <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
 
 #end 
 
-	</font>
+        </font>
 </td>
-</tr>
+</table>
+<table align="right" width=100% bgcolor="$ui.tableColor">
+<tr>
 	#if($mode=='insert' || $mode=='update')
-	<table  align ="right" > <tr><td>
-		<tr align="right"> <td> <b><I>$brih_mnd</I><br><td size="5%"><font color="$ui.fontColorRed" size="4">*</td></font><td></tr>
-		<tr align="right"><td> <b><u><I>$brih_note</I></u></b></tr>
+		<td align="right"><b><u><I>$brih_note</I></u></b></td>
+		<td align="right"><b><I>$brih_mnd</I><font color=RED size="4">*</font></td>
 	#end
-	</td></tr></table>
-
-<div align="right"> <br> <br> <br>
 <body bgcolor="$ui.bgcolor">
  	#set($min=["00","05","10","15","20","25","30","35","40","45","50","55"])
 #if($mode=='insert')
-<form name=frm method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Insert.vm").setAction("Calendar_Actions")">
- 
-<table align="center" bgcolor="$ui.bgcolor" border="1" cellspacing="1" cellpadding="1">
-
-		<tr align="right" bgcolor="$ui.tableColor">
-		<td><I>$day $month_num - $year</I></td>
-        	<td bgcolor="$ui.tableColor"><b><I>$brih_Da</I></b></td>
+<form name=frm method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").setAction("Calendar_Actions")">
+<div align="left">
+##<table align=center bgcolor="$ui.bgcolor" border="1" cellspacing="1" cellpadding="1">
+	<tr align="right" bgcolor="$ui.menuColor">
+		<td><I>$day - $month_num - $year</I></td>
+        	<td><b><I>$brih_Da</I></b></td>
         </tr>
         <tr align="right">
 		<td><textarea name="detail" cols=40 rows=5></textarea></td>
-		<td bgcolor="$ui.tableColor"><b><I><font color="$ui.fontColorRed" size="4">* </font> $brih_notice </I></b></td>
+		<td bgcolor="$ui.tableColor"><b><I>$brih_notice</I></b><font color=RED size="4">* </font></td>
         </tr>
-        <tr align="right" bgcolor="$ui.tableColor">
+        <tr align="right" bgcolor="$ui.menuColor">
 		<td>
                 	<select name="Start_hr" class="drop">
 			#foreach($hr in $hour)
-                        <option value="$hr">$hr
+                        	<option value="$hr">$hr
 		    	#end
 			</select>
                  	&nbsp;<b><font size=+1>:: </font></b>&nbsp;
             		<select name="Start_min" class="drop">
 			#foreach($m in $min)
-	          	<option value="$m">$m	
+	          		<option value="$m">$m	
 			#end
        			</select>
      		</td>
-		<td bgcolor="$ui.tableColor"><b><I>$brih_start $brih_time</I></b></td>
+		<td align="right"><b><I>$brih_start $brih_time</I></b><font color=RED size="4">* </font></td>
    	</tr>
-       	<tr align="right" bgcolor="$ui.tableColor">
-		<td>
+       	<tr>
+		<td align="right">
 			<select name="Last_hr" class="drop">
          		#foreach($hr in $hour)
            		<option value="$hr">$hr
@@ -124,38 +126,36 @@ $!data.getMessage()
 	  		#end
        			</select>
 		</td>
-		<td bgcolor="$ui.tableColor"><b><I>$brih_end $brih_time</I></b></td>
+		<td align="right"><b><I>$brih_end $brih_time </I></b><font color=RED size="4">* </font></td>
 	</tr>
-	<tr align="right" bgcolor="$ui.tableColor">
-                ## #formCell("Deletion Time (in days)" "expiry" "1")
-                <td> <input type="txt" size="30%" name="expiry" value="1"> </td>
+     	<tr align="right" bgcolor="$ui.menuColor">  
+        ##	#formCell("$Notice_NoticeSend_msg4 " "expiry" "1")
+               <td> <input type="txt" size="30%" name="expiry" value="1"> </td>
                 <td bgcolor="$ui.tableColor"><b>$brih_expiry </b></td>
-        </tr>
-  	<tr bgcolor="$ui.menuColor">
-		<td align=center colspan=2>
-         	<input type ="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_insert" onClick="checkField(document.frm,this)"> 
-		<input type="hidden" name="uname" value=$name>
+
+	</tr>
+  	<tr align="right">
+		<td colspan=2>
                 <input type= "reset" class="button-ftextstyle" value="$brih_reset">
+		<input type="hidden" name="uname" value=$name>
+         	<input type ="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_insert" onClick="checkField(document.frm,this)"> 
 		</td>
 	</tr>
 </table>
-	</td></tr></table>
 
 #else        
 <form name=frm method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").setAction("Calendar_Actions")">
-   
-<div align="left">
-<table align=center bgcolor="$ui.tableColor" border="1" cellspacing="1" cellpadding="1">
-	<tr align="right">
-
+<div align="right">
+<table align="right" bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor">
 		<td><I>$day - $month_num - $year<I></td>
-		<td bgcolor="$ui.tableColor" ><b><I>$brih_Da</b></I></td>
+		<td><b><I>$brih_Da</b></I></td>
         </tr>
         <tr align="right">
 		<td><textarea name="detail" cols=40 rows=5>$description</textarea></td>
-        	<td bgcolor="$ui.tableColor"><b><I> <font color="$ui.fontColorRed" size="4">* </font> $brih_notice </I></b></td>
+        	<td bgcolor="$ui.tableColor"><b><I>$brih_notice</I></b><font color=RED size="4">* </font></td>
         </tr>
-	<tr align="right" bgcolor="$ui.tableColor">
+	<tr align="right" bgcolor="$ui.menuColor">
 		<td>
 			<select name="Start_hr" class="drop">
 			<option value="$st_hr">$st_hr
@@ -175,9 +175,9 @@ $!data.getMessage()
 			#end
        			</select>
 		</td>
-		<td bgcolor="$ui.tableColor"><b><I>$brih_start $brih_time</b><I></td>
+		<td><b><I>$brih_start $brih_time</b><I></td>
 	</tr>
-	<tr align="right" bgcolor="$ui.tableColor">
+	<tr align="right">
        		<td>
 			<select name="Last_hr" class="drop">
            		<option value="$end_hr">$end_hr
@@ -187,7 +187,7 @@ $!data.getMessage()
 				#end
 			#end
 			</select>
-			&nbsp;<b><font size=+1>:: </font></b>&nbsp;
+			&nbsp;<b><font size=+1>::</font></b>&nbsp;
 			<select name="Last_min" class="drop">
 			<option value="$end_min">$end_min
 			#foreach($m in $min)
@@ -197,17 +197,14 @@ $!data.getMessage()
 			#end
 			</select>
 		</td>
-
-		<td bgcolor="$ui.tableColor"><b><I>$brih_end $brih_time</I></b></td>
+		<td><b><I>$brih_end $brih_time</I></b></td>
 	</tr>
-	<tr align="right" bgcolor="$ui.tableColor">
-		## #formCell("Deletion Time (in days)" "expiry" $expiry)
-		<td> <input type="txt" size="30%" name="expiry" value="$expiry"> </td>
-                <td bgcolor="$ui.tableColor"><b>$brih_expiry </b></td>
+	<tr align="right" bgcolor="$ui.menuColor">
+	#formCell("$Notice_NoticeSend_msg4" "expiry" $expiry)
 
 	</tr>
-	<tr bgcolor="$ui.menuColor">
-		<td align=center colspan=2 bgcolor="$ui.menuColor">
+	<tr align="right">
+		<td align="right" colspan=2>
          	<input type ="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this)"> 
 		</td>
 	</tr>
@@ -217,15 +214,12 @@ $!data.getMessage()
 		<input type="hidden" name="path" value=$path>
 		<input type="hidden" name="day" value=$day>
 		<input type="hidden" name="mon" value=$month_num>
-		##<input type="hidden" name="month" value=$month_name>
 		<input type="hidden" name="year" value=$year>
 		<input type="hidden" name="mode" value=$mode>
 		<input type="hidden" name="info_id" value=$info_id>
-	
 </div>
 </form>
 </body>
-
 <SCRIPT LANGUAGE="javascript">
 function checkField(frm,field)
 {
@@ -278,4 +272,5 @@ function checkField(frm,field)
                 }
                         return true;
         }
+
 </SCRIPT>

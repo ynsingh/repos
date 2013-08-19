@@ -1,58 +1,72 @@
 #*
  * @(#)Calendar_Display.vm
- * Copyright (c) 2006-2007,2013 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2006,2009,2011,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a>
- *@author <a href="mailto:smita37uiet@gmail.com">Smita</a>
+ * @author <a href="mailto:prashant.22feb1986@gmail.com">Prashant Mathur</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
-<br>
+##<table bgcolor="$ui.tableColor" width=100%>
+
 <table bgcolor="$ui.menuColor" width="100%">
-<tr align=right>
-	<td>
-	<font face="$ui.sansSerifFonts"><b>
-	 #if($data.getUser().getUserName() == "admin")
+<tr>
+ <td>
+       <img src="$content.getURI("/images/Lefthand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/CourseCalendar.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        </td>
+
+      <td align="right">
+        <font face="$ui.sansSerifFonts"><b>
+         #if($data.getUser().getUserName() == "admin")
          $page.setTitle("$brih_ad $brih_home ")
-         <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_ad $brih_Of1 $personal $brih_calendar 
-	#elseif($path =="personal")
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		$page.setTitle("$brih_home | $personal $brih_calendar")
-		$personal $brih_calendar
-	#else
-		$brih_for $brih_calendar $course |
-		$page.setTitle("brih_home | $course | $brih_calendar for $course")
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a>  |
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
-	#end
-	</font>
-	</td>
+         <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_ad $brih_Of1 $personal $brih_calendar
+        #elseif($path =="personal")
+                <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+                $page.setTitle("$brih_home | $personal $brih_calendar")
+        #else
+                $brih_for $brih_calendar $course |
+                $page.setTitle("brih_home | $course | $brih_calendar for $course")
+        #end
+                $personal $brih_calendar
+                |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a>
+                |<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+        </font>
+        </td>
+</tr>
+
+        </td>
 </tr>
 </table>
-<table width="100%">
-<tr align=right><td><font color="Gray"><I>$brih_col3</font></I></td>
-<td><font color="green"><I>$brih_rh</I></font></td><td><font color="magenta"><I>$brih_col1</I></font></td>
-<td><font color="green"><I>$brih_col2</I></font></td><td><I>$brih_star *</I></td> 
-<td>
-#if(($data.getUser().getUserName() == "admin") || ($path =="personal"))
-	<a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm") style=text-decoration:none>$brih_col1</a>
-#end
-</td>
-</tr>
+<table width="100%" bgcolor="$ui.tableColor">
+	<tr>
+		<td>
+		#if(($data.getUser().getUserName() == "admin") || ($path =="personal"))
+		<a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm") style=text-decoration:none>$brih_col1</a>
+		#end
+		</td>
+		<td><font color="Gray"><I>$brih_col3</font></I></td>
+		<td><font color="green"><I>(R)$brih_rh</I></font></td> 
+		<td><font color="magenta"><I>$brih_col1</I></font></td>
+		<td><font color="green"><I>$brih_col2</I></font></td>
+		<td><I>* $brih_star</I></td>
+	</tr>
 </table>
 
 ## This is main table
 <table align="center" width="100%">
-<tr><td align="center">
-		 <table align=right bgcolor="$ui.tableColor" border=1>
+<tr><td align="center"  valign="top">
+                 <table align=right bgcolor="$ui.tableColor">
                 <tr><td align=center><font color="green">$brih_col2</font></td></tr>
                 <tr><td align=center><b><I>$M</I></b></td></tr>
                 #if($hday.size() > 0)
@@ -71,78 +85,82 @@ $!data.getMessage()
                 </table>
 
 </td>
-<td align="center" valign="top">
-## width added by Shaista
-<table align="center" border=1 cellspacing=1 width="100%">
+<td align="center" valign="top" >
+## width add by nksingh
+
+<table align="center" bgcolor="$ui.menuColor" cellspacing="1" width="80%">
 <tr>
 	<td align=center>
-		<font color="blue" size=3><b><I>$date</I></b></font>
+		<font size=2><b><I>$brih_Da & $brih_time</b></I></font>
 	</td>
 	<td align=center>
-		<font size=3><b><I>$brih_Da & $brih_time</b></I></font>
+		<font color="blue" size=2><b><I>$date</I></b></font>
 	</td>
 </tr>
 </table>
-## width added by Shaista
-<table align=center bgcolor="$ui.tableColor" border=1 width="100%">
+<table align=center bgcolor="$ui.menuColor" width="80%">
 <tr>
 	<td>
-		<font face="$ui.sansSerifFonts" size=2><b>
-		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","previous").addPathInfo("path",$path)><I>$brih_pre $brih_month</I></a>
+		<font face="$ui.sansSerifFonts" size=1><b>
+		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","previous").addPathInfo("path",$path) style=text-decoration:none><I>$brih_pre $brih_month</I></a>
           	</font>
 	</td>
-	<td align=center>
-		<font face="$ui.sansSerifFont" size=3>
+	<td align=center bgcolor="$ui.menuColor">
+		<font face="$ui.sansSerifFont" size=1>
 		<b>$M - $year1</b>
 		</font>
 	</td>
-	<td align=right>
-		<font face="$ui.sansSerifFonts" size=2><b>
-        	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","next").addPathInfo("path",$path)><I>$brih_nxt $brih_month</I></a>
+	<td align=right bgcolor="$ui.menuColor">
+		<font face="$ui.sansSerifFonts" size=1><b>
+        	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","next").addPathInfo("path",$path) style=text-decoration:none><I>$brih_nxt $brih_month</I></a>
 		</font>
 	</td>
 </tr>
 </table>
+    	
 <form name="frm" method="post" action="$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm")">
 	#set($mon=["$brih_January","$brih_February","$brih_March","$brih_April","$brih_May","$brih_June","$brih_July","$brih_August","$brih_September","$brih_October","$brih_November","$brih_December"])
-## width added by Shaista
-	   <table align=center bgcolor="$ui.tableColor" width="100%">
-	<tr bgcolor="$ui.menuColor"><td >
-	<input type ="submit" class="button-ftextstyle"  value="$brih_go">
-	#set($count=1)
-	<font size=2>	
-		<select name="month" class="drop" >
-       		<option value="$M">$M
-		#foreach($month_name in $mon)
-			#if($month_name!=$M)
-			<option value="$count">$month_name
+## width add by nksingh
+	   <table align="center" bgcolor="$ui.tableColor" width="80%">
+		<tr bgcolor="$ui.tableColor"><td align="center">
+		#set($count=1)
+		##<font size=2>	
+		<font size=1>	
+			<select name="month" class="drop">
+       			<option value="$M">$M
+			#foreach($month_name in $mon)
+				#if($month_name!=$M)
+					<option value="$count">$month_name
+				#end
+			#set($count=$count+1)
 			#end
-		#set($count=$count+1)
-		#end
 			</option>
-       		</select>
-       <select name="year" class="drop" >
-       <option value="$year1">$year1
-	#foreach($list in $year_list)
-		#if($list!=$year1)
-		<option value="$list">$list
-		#end
-	#end	
-       		</option>
-	</select>
-	</font>
-	<input type="hidden" name="status" value="current">
-	<input type="hidden" name="path" value="$path">
-       </td>
+	       		</select>
+       			<select name="year" class="drop">
+		       <option value="$year1">$year1
+			#foreach($list in $year_list)
+				#if($list!=$year1)
+					<option value="$list">$list
+				#end
+			#end	
+       			</option>
+			</select>
+		</font>
+		<input type ="submit" class="button-ftextstyle" value="$brih_Go" class="button-ftextstyle">
+		<input type="hidden" name="status" value="current">
+		<input type="hidden" name="path" value="$path">
+	       </td>
        </tr></table>
-## width="100%"  addaed by Shaista at place of 20%
-        <table border=1 align=center bgcolor="$ui.tableColor" cellspacing="1" cellpadding="3" width="100%">
+## width add by nksingh previous is 20%
+        <table align=center bgcolor="$ui.tableColor" cellspacing="0" cellpadding="2" width=80%>
         ## For printing name of days*****************************************
         <tr>
+		##set ($DAY =[" SUN "," MON "," TUE "," WED "," THR "," FRI "," SAT "])
 		#set ($DAY =[" $brihSUN "," $brihMON "," $brihTUE "," $brihWED "," $brihTHU "," $brihFRI "," $brihSAT "])
               	#foreach ($element in $DAY)
-               	<td bgcolor="$ui.menuColor">
-                	<b><font size=2>$element</font> </b>
+               	<td bgcolor="$ui.tableColor">
+                	##<b><font size=2>$element</font> </b>
+                	<font size=1>$element</font>
 		</td>
               	#end
         </tr>
@@ -185,16 +203,18 @@ $!data.getMessage()
 	##Verify the current date and then highlighted***************
 		#if($element == $p && $currentyear == $year1)
 			#if($currentmonth == $month1)
-                	<td bgcolor="$ui.menuColor">
+                	##<td bgcolor="$ui.menuColor">
+                	<td>
 			#elseif($nm == $d)
-                 	<td bgcolor="$ui.bgcolor">
+                 	##<td bgcolor="$ui.bgcolor">
+                 	<td>
 			#else
 				<td>
 			#end
                 #elseif($nm == $d)
-                 	<td bgcolor="$ui.bgcolor">
+                 	<td>
 		#else
-				<td>
+				<td >
                 #end
 
 		#set($flag="")
@@ -230,8 +250,9 @@ $!data.getMessage()
 					#set($flag="*")
 				#end
 			#end
-			<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path)>
-			 #if($nm==$d)
+			##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("month",$M).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path)><I>$element <font color="black">$flag</font></a></I>
+			<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path) style=text-decoration:none>
+			#if($nm==$d)
                                 <font color="red">
                         #elseif($hday.containsKey($element))
                                 <font color="green">
@@ -258,7 +279,7 @@ $!data.getMessage()
 </td>
 <td align="center" valign="top">
 ## width added by Shaista
-		<table align="center" bgcolor="$ui.tableColor" border=1 width="100%">
+                <table align="center" bgcolor="$ui.tableColor" width="100%">
                 <tr><td align=center><font color="magenta">$brih_col1</font></td></tr>
                 <tr><td align=center><b><I>$M</b></I></td></tr>
                 #if($acal.size() > 0)
