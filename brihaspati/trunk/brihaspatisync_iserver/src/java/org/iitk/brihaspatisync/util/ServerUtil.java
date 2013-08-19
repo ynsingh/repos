@@ -177,9 +177,7 @@ public class ServerUtil {
         }	
 	
 	private static String encrypt(String Data) throws Exception {
-                byte[] encVal = Data.getBytes();
-                String encryptedValue = new sun.misc.BASE64Encoder().encode(encVal);
-                return encryptedValue;
+	        return new String(org.apache.commons.codec.binary.Base64.encodeBase64(Data.getBytes()));
         }
 
 }//end of class	
