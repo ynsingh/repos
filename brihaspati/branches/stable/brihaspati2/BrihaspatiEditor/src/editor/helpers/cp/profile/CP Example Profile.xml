@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<!-- RELOAD Content Packaging Profile -->
-<!-- This is an example profile that can be edited to point to alternative helper and vocab files -->
-<profile vocabfile="IMS CP Vocab.xml" schemahelperfile="IMS CP Helper.xml">
-
-
-</profile>

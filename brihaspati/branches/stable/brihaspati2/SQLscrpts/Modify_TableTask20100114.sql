@@ -1,2 +1,0 @@
-use brihaspati;
-ALTER TABLE TASK ADD SEQ_NO INTEGER NOT NULL;

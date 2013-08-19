@@ -1,3 +1,0 @@
-use brihaspati;
-
-ALTER TABLE TURBINE_USER DROP OBJECTDATA;

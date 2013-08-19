@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<!-- RELOAD Schema Vocabulary Helper File v1.0 -->
-<vocab lang="en">
-  <!-- Paths take order of precedence. Therefore the ordering of this list is important -->
-  <!-- Paths nearer the start of the list take precedence; start with the longest path and end with the shortest path -->
-  <!-- For example, "source/langstring@xml:lang" will resolve before "langstring@xml:lang" -->
-</vocab>
