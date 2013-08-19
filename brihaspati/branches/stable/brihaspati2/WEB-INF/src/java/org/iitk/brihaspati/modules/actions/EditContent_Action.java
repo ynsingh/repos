@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) EditContent_Action.java	
  *
- *  Copyright (c) 2005-2006,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2010, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -69,7 +69,7 @@ import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.InstructorPermissions;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This Class responsible for all type editing after publish contents file then write and
@@ -82,6 +82,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka rawat</a> 
+ * @modified date : 01-08-2013
  */
 
 public class EditContent_Action extends SecureAction
@@ -510,6 +512,8 @@ public class EditContent_Action extends SecureAction
                 String quiz=pp.getString("quiz","null");
                 String labwork=pp.getString("labwork","null");
                 String endsem=pp.getString("endsem","null");
+                String classnote=pp.getString("classnote","null");
+                String assignment=pp.getString("assignment","null");
                 String message=pp.getString("message","null");
 		String labinst=pp.getString("labinst","null");
 		String labinst1=pp.getString("labinst1","null");
@@ -533,37 +537,61 @@ public class EditContent_Action extends SecureAction
                 fileItem = pp.getFileItem("file");
                 String fileName=fileItem.getName();
 		fileName=fileName.toLowerCase();
-		//file upload only .txt, .pdf and .html extension
-                if(fileName.endsWith(".txt")||fileName.endsWith(".pdf")||fileName.endsWith(".html"))
-                {//if1
+		//file or instruction is compulssary
+		String ffileName="";
+		if((StringUtils.isNotBlank(fileName)) ||(StringUtils.isNotBlank(message))){
+				String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)data.getUser().getTemp("course_id")+"/coursemgmt";
+                        	File f=new File(filePath);
+                        	if(!f.exists())
+                                	f.mkdir();
 
-			int startIndex=fileName.lastIndexOf(".")+1;
-                	String fileExt="."+fileName.substring(startIndex);
-			String ffileName=courseid+fileExt;
+		//file upload only .txt, .pdf and .html extension
+			if((StringUtils.isNotBlank(fileName))){
+        	        	if(fileName.endsWith(".txt")||fileName.endsWith(".pdf")||fileName.endsWith(".html"))
+	                	{//if1
+					int startIndex=fileName.lastIndexOf(".")+1;
+		                	String fileExt="."+fileName.substring(startIndex);
+					ffileName=courseid+fileExt;
+					try {
+                        		        File filewrite=new File(filePath+"/"+ffileName);
+                                		fileItem.write(filewrite);
+					}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception file write in do select method under EditContent_action===="+e);}
+        		         }else {
+                		        msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);
+                        		data.setMessage(msg);
+		                }
+			}
+
 			//file path where save xml file
-			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)data.getUser().getTemp("course_id")+"/coursemgmt";
+			/*String filePath=data.getServletContext().getRealPath("/Courses")+"/"+(String)data.getUser().getTemp("course_id")+"/coursemgmt";
 			File f=new File(filePath);
 			if(!f.exists())		
-				f.mkdir();
+				f.mkdir();*/
 			String message1 =XMLWriter_Cms.searchElement(filePath+"/Coursemgmt.xml",courseid);		
 			if(message1.equals("Successfull")) {
 				File deletefile=new File(filePath+"/Coursemgmt.xml");	
 				deletefile.delete();
 			}
 			//if(message1.equals("Successfull")) {
-			XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+			XMLWriter_Cms.CourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,assignment,classnote,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
+              		msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
+			if((StringUtils.isNotBlank(fileName)))	
+                                data.addMessage(msg);
+			else
+				data.setMessage(msg);
 			//}else{
 			//	String ss=XMLWriter_Cms.updateCourseManageMentSystem(filePath+"/Coursemgmt.xml",courseid,sch4,sch5,midsem,quiz,labwork,endsem,message,ffileName,labinst,labinst1,tute,tute1,t,t1,t2,t3,t4,t5,sch,sch1,sch2,sch3);
 			//}
-			try {
-                               	File filewrite=new File(filePath+"/"+ffileName);
-                               	fileItem.write(filewrite);
-              			msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
-                                data.setMessage(msg);
-			}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);}
-		}else {
-			msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);
-                 	data.setMessage(msg);
+		//	try {
+                        //       	File filewrite=new File(filePath+"/"+ffileName);
+                          //     	fileItem.write(filewrite);
+              		//	msg= MultilingualUtil.ConvertedString("cms_msg",LangFile);
+                          //      data.setMessage(msg);
+		//	}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e);}
+//		}else {
+//			msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);
+  //               	data.setMessage(msg);
+//		}
 		}
 	}
 	/**

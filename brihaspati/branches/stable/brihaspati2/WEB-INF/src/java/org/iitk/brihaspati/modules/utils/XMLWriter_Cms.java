@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)XMLWriter_Cms.java
  *
- *  Copyright (c) 2011 conditions are met:
+ *  Copyright (c) 2011, 2013 conditions are met:
  *
  *  Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka rawat</a> 
+ * @modified date : 01-08-2013
  */
 
 public class XMLWriter_Cms {
@@ -121,6 +123,27 @@ public class XMLWriter_Cms {
                                         	        else
 								v.add(Mid_Sem);
 						}catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+				//add assignment and classnote
+						try {
+                                                        NodeList node1 = doc.getElementsByTagName("assignment");
+                                                        node = node1.item(i);
+                                                        String assignment=(String)(node.getFirstChild()).getNodeValue();
+                                                        if(assignment.equals("null"))
+                                                                v.add("");
+                                                        else
+                                                                v.add(assignment);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+			
+						try {
+                                                        NodeList node1 = doc.getElementsByTagName("classnote");
+                                                        node = node1.item(i);
+                                                        String classnote=(String)(node.getFirstChild()).getNodeValue();
+                                                        if(classnote.equals("null"))
+                                                                v.add("");
+                                                        else
+                                                                v.add(classnote);
+                                                }catch(Exception e){ErrorDumpUtil.ErrorLog("The Exception in do select method under EditContent_action===="+e); v.add("");}
+
 						try {							
 							 NodeList node1 = doc.getElementsByTagName("Quiz");
         	                                        node = node1.item(i);
@@ -315,7 +338,7 @@ public class XMLWriter_Cms {
                 return v;
         }	
 	
-	public static String  updateCourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3){	
+	public static String  updateCourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem,String assignment, String classnote,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3){	
 		try {
 			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -334,6 +357,17 @@ public class XMLWriter_Cms {
                                         Node node2 = Sch5.item(i);
                                         node2.getFirstChild().setNodeValue(sch5);
                                         saveXML(doc,filePath);
+					//add classnote and assignment
+					NodeList ClassNote = doc.getElementsByTagName("classnote");
+                                        Node node23 = ClassNote.item(i);
+                                        node23.getFirstChild().setNodeValue(classnote);
+                                        saveXML(doc,filePath);
+				
+					NodeList Assignment = doc.getElementsByTagName("assignment");
+                                        Node node24 = Assignment.item(i);
+                                        node24.getFirstChild().setNodeValue(assignment);
+                                        saveXML(doc,filePath);
+
 					NodeList Mid_Sem = doc.getElementsByTagName("Mid_Sem");
                                         Node node3 = Mid_Sem.item(i);
                                         node3.getFirstChild().setNodeValue(mid_sem);
@@ -425,7 +459,7 @@ public class XMLWriter_Cms {
 		}catch(Exception e){ErrorDumpUtil.ErrorLog("Error in updateCourseManageMentSystem "+e.getMessage());}
 		return "";
 	}
-	public static String  CourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3){
+	public static String  CourseManageMentSystem(String filePath,String couse_id,String sch4,String sch5,String mid_sem, String assignment, String classnote,String quiz,String labwork,String end_sem,String instrction,String filename,String labinst,String labinst1,String tute,String tute1,String t,String t1,String t2,String t3,String t4,String t5,String sch,String sch1,String sch2,String sch3){
 		String message="UnSuccessfull";
                 try{
 	               	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -450,6 +484,14 @@ public class XMLWriter_Cms {
                         Element courses = doc.createElement("Mid_Sem");
        	                Text coursesText = doc.createTextNode(mid_sem);
                	        courses.appendChild(coursesText);
+
+                        Element assignmnt = doc.createElement("assignment");
+       	                Text assignmntText = doc.createTextNode(assignment);
+               	        assignmnt.appendChild(assignmntText);
+
+                        Element class_note = doc.createElement("classnote");
+       	                Text classnoteText = doc.createTextNode(classnote);
+               	        class_note.appendChild(classnoteText);
 
                        	Element load = doc.createElement("Quiz");
                         Text loadText = doc.createTextNode(quiz);
@@ -532,6 +574,8 @@ public class XMLWriter_Cms {
 			Cms.appendChild(sch4_e);
 			Cms.appendChild(sch5_e);
                	        Cms.appendChild(courses);
+			Cms.appendChild(assignmnt);
+			Cms.appendChild(class_note);
                         Cms.appendChild(load);
        	                Cms.appendChild(labwork_e);
        	                Cms.appendChild(end_sem_e);

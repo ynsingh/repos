@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
 /*
  * @(#)ASS_subm.java
  *
- *  Copyright (c) 2005-2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2010, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -55,13 +55,14 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
@@ -115,7 +116,7 @@ public class  ASS_subm  extends  SecureScreen
 			 if((Role.equals("student")) || (Role.equals("instructor"))||(Role.equals("teacher_assistant")))
                          {
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
                          }
@@ -235,6 +236,7 @@ public class  ASS_subm  extends  SecureScreen
                         */
 
 			String cdate="";
+			String topic="";
    			if(mode.equals("Update")) {
                         	lst.clear();
                         	String tcid=pp.getString("cid","");
@@ -247,7 +249,7 @@ public class  ASS_subm  extends  SecureScreen
                                 	for(int i=0;i<uu.size();i++)
                                 	{
                                         	Assignment element=(Assignment)(uu.get(i));
-	                                        String topic=(element.getTopicName());
+	                                        topic=(element.getTopicName());
 	                                        cdate=(element.getDueDate()).toString();
 						cdate=cdate.substring(0,10);
                	        			cdate=cdate.replace("-","");
@@ -266,6 +268,23 @@ public class  ASS_subm  extends  SecureScreen
 
                                 String topicname=pp.getString("DB_subject1","");
                                 context.put("DB_subject",topicname);				
+                                int gid=GroupUtil.getGID(courseid);
+				String str="";
+                                String g_Id=Integer.toString(gid);
+                                crit=new Criteria();
+                                crit.add(NewsPeer.GROUP_ID,gid);
+                                List news=NewsPeer.doSelect(crit);
+                                for(int i=0;i<news.size();i++)
+                                {
+                                        String news_desc=new String(((News)news.get(i)).getNewsDescription());
+
+                                        boolean flag=StringUtils.contains(news_desc, topic);
+                                        if(flag)
+                                        {
+                                                str = StringUtils.substringAfter(news_desc, "Instructions is");
+                                        }
+                                }
+				context.put("message", str);
 			}else{
 				cdate=ExpiryUtil.getCurrentDate("");
                       	}//mode update close

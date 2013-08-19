@@ -321,7 +321,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 
                  		for (int i=0; i<listOfFiles.length; i++){
 		                        String filename=listOfFiles[i];
-					String flName = StringUtils.substringBeforeLast(filename,"-");
+					String flName = StringUtils.substringBefore(filename,"-");
                 		        //String flName[]=filename.split("\\-");
 
 		 	               if( alias.equals(flName)){

@@ -66,9 +66,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 public class Addmembers extends SecureScreen
 {
@@ -266,10 +264,8 @@ public class Addmembers extends SecureScreen
 			 int uid=UserUtil.getUID(user.getName());
                          if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 		}//try

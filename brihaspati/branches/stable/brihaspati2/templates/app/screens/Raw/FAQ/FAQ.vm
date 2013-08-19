@@ -188,10 +188,10 @@ $!data.getMessage()
                 <tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">&nbsp;&nbsp;&nbsp;
 		#if($data.getUser().getUserName() == "admin" ||$user_role == "institute_admin")
                <input type="button" name="eventSubmit_doSaveQues" value="$WikiSave" onClick="checkField(document.frm,this);"/>
-		<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		#else
                <input type="button" name="eventSubmit_doSaveQues" value="$WikiSave" onClick="checkBlank(document.frm,this);"/>
-		<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
                 #end
                 </td></tr><br><br>
          #end

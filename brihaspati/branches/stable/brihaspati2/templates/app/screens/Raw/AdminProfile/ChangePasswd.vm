@@ -14,13 +14,15 @@ $page.setTitle("Admin Home | Change Password")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr>
 	<td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<b>
-     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_changePassword
+		<font face="$ui.sansSerifFonts" size=3><b><a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_changePassword </font>
 	</td>
+        <td align="right">
+          	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ChangePassword.html","newWin"); style=text-decoration:none><font size=4>$brih_help</a></font>
+        </td>
 </tr>
 </table>
 <form name=frm method="post" action="$link.setAction("changePW").setPage("call,AdminProfile,ChangePasswd.vm")">

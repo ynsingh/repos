@@ -58,6 +58,7 @@ public class Twtwin extends SecureScreen{
 				User user=data.getUser();
 				String username=user.getName();
 				ParameterParser pp=data.getParameters();
+				String mode=pp.getString("mode","");
         	                String ip=data.getServerName();
                 	        String port=Integer.toString(data.getServerPort());
                         	String sch=data.getServerScheme();
@@ -77,6 +78,7 @@ public class Twtwin extends SecureScreen{
                         	context.put("lastname",lname);
                         	context.put("username",username);
                         	context.put("Uid",uid);
+                        	context.put("mode",mode);
 
 			}catch(Exception exp){}
 	}

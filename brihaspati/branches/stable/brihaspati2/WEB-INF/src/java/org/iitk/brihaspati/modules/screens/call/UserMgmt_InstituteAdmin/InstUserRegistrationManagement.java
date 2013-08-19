@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /*
  * @(#)InstUserRegistrationManagement.java	
  *
- *  Copyright (c) 2010,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2011,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -40,13 +40,12 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh 20100810</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh - 20100810</a>
- * @modified date: 22-11-2010
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 22-11-2010,22-04-2013,31-05-2013
  */
 
 
 import java.io.File;
-import org.apache.turbine.services.servlet.TurbineServlet;
-
 import java.util.Vector;
 import java.util.List;
 import org.apache.turbine.util.RunData;
@@ -65,6 +64,7 @@ import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /* Class for registering of single or multiple courses by Institute admin,
  * and display of course list of the institute in the screen.
@@ -80,13 +80,13 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
         */
     public void doBuildTemplate( RunData data, Context context )
     {
-/* Get the values of mode (used to decide what has to be done - single course
- * registration, multiple course registration.)
- */
+		/* Get the values of mode (used to decide what has to be done - single course
+ 		* registration, multiple course registration.)
+ 		*/
 		String mode=data.getParameters().getString("mode","");
 		context.put("mode",mode);
-/* Get value of count used to (TBD)
- */
+		/* Get value of count used to (TBD)
+ 		*/
 		String counter=data.getParameters().getString("count","");
 		context.put("tdcolor",counter);
                 String DomainName=data.getParameters().getString("domainName","");
@@ -110,8 +110,14 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                         String minststat=data.getParameters().getString("minststat","1");
 			User user=data.getUser();
 			user.setTemp("mInststat",minststat);
-                        String instituteId=data.getParameters().getString("instituteId","");
+                        String instituteId=data.getParameters().getString("instituteid","");
                         context.put("instituteId",instituteId);
+			// Get mapped Department List according the institute for showing in template
+			List DeptList=ListManagement.getMapDeptList(instituteId);
+                        context.put("deptlist",DeptList);
+			// Get mapped School List according the institute for showing in template
+			List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                        context.put("schlist",mapschlist);
 			/**
  			*Check Institute Profile exist or not
  			*/ 

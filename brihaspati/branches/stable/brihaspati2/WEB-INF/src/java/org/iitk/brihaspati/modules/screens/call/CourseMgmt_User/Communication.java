@@ -41,9 +41,7 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *  Communication functionality for Instructors and Students 
  *  @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
@@ -91,12 +89,10 @@ public class Communication extends SecureScreen
                          */
 			String username=user.getName();
 			int uid=UserUtil.getUID(username);
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
 
                         }
 

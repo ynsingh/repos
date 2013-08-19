@@ -6,7 +6,8 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:20-10-2010, 05-08-2011
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date:20-10-2010, 05-08-2011, 15-03-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 <head>
@@ -29,17 +30,9 @@ $page.setBgColor($ui.bgcolor)
       |<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a> 
 
         #if ($stat=="remove")
-                #if($lang=="hindi")
                         | $brih_userDetail $brih_remove
-                #else
-                        | $brih_remove $brih_usr
-                #end
         #else
-                #if($lang=="hindi")
                         | $brih_userDetail $brih_update
-                #else
-                        | $brih_update $brih_usr
-                #end
         #end
         |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> 
         |<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a>
@@ -48,10 +41,11 @@ $page.setBgColor($ui.bgcolor)
     </tr>
 </table>
 <table align="right" bgcolor="$ui.tableColor" width=100%>
+<tr align="right">
 #if($tdcolor != "5")
-        <td>
+        <td colspan="2">
         #elseif($tdcolor == "5")        
-        <td bgcolor="#AFDCEC">
+        <td bgcolor="#AFDCEC" colspan="2">
         #end
         <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a></td>
  #if($tdcolor != "4")
@@ -66,7 +60,7 @@ $page.setBgColor($ui.bgcolor)
         #elseif($tdcolor == "3")        
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a></td>
+        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> $brih_multiple1 $brih_student $brih_add </a></td>
 #if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")        
@@ -78,16 +72,15 @@ $page.setBgColor($ui.bgcolor)
         #elseif($tdcolor == "1")        
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_student $brih_add #else $brih_add $brih_students #end </a>
+        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_student $brih_add </a>
         </td>
 </tr>
 
 ##</table>
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_User,StudentList.vm").setAction("UserAction_Instructor")">
 ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="5">
-<tr bgcolor="$ui.menuColor">
-	<td colspan=5>
-	<td align="right"><b>$brih_userDetail</b></td>
+<tr bgcolor="$ui.menuColor" align="right">
+	<td align="right" colspan="6"><b>$brih_userDetail</b></td>
 </tr>
 <tr align="right"><td colspan=4>
 ##<table width=100% bgcolor="$ui.tableColor">
@@ -98,125 +91,62 @@ $page.setBgColor($ui.bgcolor)
 			<td>$brih_usr $brih_name </td>
                         </tr>
 			## All information should be display if status is update or type is more when click on more link
-			#if(($stat=="update")||($type=="more"))
+			#if($stat=="update")
 			
                          	<tr align="right" bgcolor="$ui.menuColor">
 				## #formCell ("$brih_first $brih_name" "firstname" $!user.FirstName)
-				<td colspan=4></td> 
-				<td ><input type="text" name="firstname" value="$!user.FirstName"></td> 
+				<td colspan="5"><input type="text" name="firstname" value="$!user.FirstName"></td> 
 				<td>$brih_first $brih_name</td> 
                                 </tr>
 				<tr align="right">
 				## #formCell ("$brih_last $brih_name" "lastname" $!user.LastName)
-				<td colspan=4></td>
-                                <td ><input type="text" name="lastname" value= "$!user.LastName"></td>
-                                <td>$brih_last $brih_name</td> 
+                                <td colspan="5"><input type="text" name="lastname" value= "$!user.LastName"></td>
+                                <td> $brih_last $brih_name</td> 
                                 </tr>
 				<tr align="right" bgcolor="$ui.menuColor">
 			##	 #formCell ("$brih_email $brih_ID" "email" $!user.Email)
-				<td align="right" colspan=4></td> 
-                                <td ><input type="text" name="email" value= "$!user.Email"></td>
+                                <td colspan="5"><input type="text" name="email" value= "$!user.Email"></td>
                                 <td>$brih_email $brih_ID</td> 
                                 </tr>
 
                                         <tr align="right">
-                                        <td colspan=3></td>
-                                        <td>$brih_rollno</td>
-                                        <td>$brih_program $brih_name</td>
-                                        <td>$RemoteInstitute $brih_name</td>
+                                        <td colspan="5"> $brih_rollno </td>
+                                        <td> $brih_program $brih_Of1 $brih_name </td>
                                    </tr>
 
-    <tr align="right" bgcolor="$ui.menuColor">
-                                #set($flag=true)
-                                ## If counter value is less than 1 then it set to be 1 for display blank field of program,institute and rollno
-                                ## after this check type, if it is "more", then set counter to 2 for display one more entry of program,institute and rollno
-                                ## for the student.
-                                #if($counter<1)
-                                        #set($counter=1)
-                                #elseif($type=="more")
-                                        #set($counter=2)
+				<tr align="right" bgcolor="$ui.menuColor">
+				#if($UDetail.size()==0)
+					<td colspan=5 id="rl1">
+                                        </td>
+					<td><select name="prg1" id="pg1" class="drop" size=1 onChange="showList(document.frm,this);">
+	                                       <option value="Select Program">$brih_program $brih_select </option>
+						#foreach($instplist in $rlprglist)
+							<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+						#end
+					</td>
+                                </tr>
                                 #end
-                                #set($temp=0)
-                                ##loop for display Institute id, program and rollno
-                                #foreach($num in [1..$counter])
-                                        #if($num==2)
-                                        <tr align="right">
-                                        #end
-					<td colspan=3></td>
-                                        <td><select id="instnm" class="drop" name="instName$num" size=1>
-                                        #set($temp1=0)
-                                        ## get one record from the list
-                                        ## get institute name from that record
-                                        ## display in drop down list otherwise display registered institute list for instructor.
-                                        #foreach($st in $UDetail)
-                                                #if($temp == $temp1)
-                                                #set($tmpInst = $!st.getInstName())
-                                                        <option value="$st.getInstId()">$!st.getInstName() </option>
-                                                #end
-                                                #set($temp1=$temp1+1)
-                                        #end
-                                        ## check value of sizecount,if it is zero this shows user is not register in any institute
-                                        ## or type is "more" and num value is 2 this shows add new row with blank field of institute,program and rollno 
-                                        ## else show registered institute name of that user
-                                                        #if((($flag==false)&&($num==2)&&($type=="more"))||($sizecount==0))
-                                                                <option value="Select Institute">Select Institute </option>
-                                                                        #foreach($name in $InsDetail)
-                                                                                <option value="$name.getInstId()">$name.getInstName() </option>
-                                                                        #end
-                                                        #else
-                                                                #foreach($name in $InsDetail)
-                                                                        #if($tmpInst!=$name.getInstName())
-                                                                                <option value="$name.getInstId()">$name.getInstName() </option>
-                                                                        #end
-                                                                #end
-                                                        #end
-                                       </select></td>
-                                       <td><select name="prg$num" class="drop" size=1>
-                                       #set($temp1=0)
-                                       ## get program name from record
-                                       ## display in drop down list
-                                       #foreach($st in $UDetail)
-                                                #if($temp == $temp1)
-                                                #set($tmpPrg = $!st.getPrgName())
-                                                       <option value="$st.getPrgCode()">$!st.getPrgName() </option>
-                                                #end
-                                                #set($temp1=$temp1+1)
-                                        #end
-                                                        #if((($flag==false)&&($num==2)&&($type=="more"))||($sizecount==0))
-                                                                <option value="Select Program">Select Program </option>
-                                                                          #foreach($instplist in $PrgDetail)
-                                                                                <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
-                                                                          #end
-                                                        #else
-                                                                #foreach($instplist in $PrgDetail)
-                                                                        #if($tmpPrg!=$instplist.getPrgName())
-                                                                                <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
-                                                                        #end
-                                                                #end
-                                                        #end
-                                        </select></td>
-       <td colspan=3>
-                                        ##get rollno from record
-                                        #set($temp1=0)
-                                        #foreach($st in $UDetail)
-                                                #if($temp == $temp1)
-                                                           <input type="text" name="rollno$num" value="$!st.getRollNo()" >
-                                                           <input type="hidden" name="Srid$num" value="$!st.getStudsrid()" >
-                                                                #set($flag=false)
-                                                #end
-                                                #set($temp1=$temp1+1)
-                                        #end
-                                                #if((($flag==false)&&($num==2)&&($type=="more"))||($sizecount==0))
-                                                        <input type="text" name="rollno$num" value="" >
-                                                #end
-                                                        #set($temp=$temp+1)
-                                #end                                                   
-                                        ##<td colspan=3></td> </tr>
-                                        ## Display more link
-                                        #if(($UDetail.size()!=0)&&($counter!=2))
-                                                <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$user.UserName).addPathInfo("count","4").addPathInfo("type","more") style=text-decoration:none>$brih_more</a>
-                                        #end
-                                                        </td></tr>
+                                #foreach($st in $UDetail)
+	                                #if($velocityCount%2==0)
+		                                <tr align="right" bgcolor="$ui.tableColor">
+                	                #else
+                        	                <tr align="right" bgcolor="$ui.menuColor">
+                                	#end
+					<td colspan="5" id="rl1">
+						## get rollno from record
+	 	                                $st.rlno
+	                                </td>
+                                	<td><select class="drop" name="prg1" size=1 id="pg1" onChange="showList(document.frm,this);">
+					#set($tmpPrg = $st.pgname)
+						<option value="$st.pgcode">$st.pgname </option>
+						#foreach($instplist in $rlprglist)
+							#if($tmpPrg!=$instplist.getPrgName())
+								<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+							#end
+						#end
+						</select></td>
+						</tr>
+				#end
 
 			#else
 				<tr align="right" bgcolor="$ui.menuColor">
@@ -231,20 +161,18 @@ $page.setBgColor($ui.bgcolor)
 					<td align="right" colspan=5>$!user.Email</td>
 					<td align="right" width=30%>$brih_email $brih_ID</b></td>
 				</tr>
+				#if($UDetail.size()!=0)
 				<tr align="right">
-					<td colspan=2></td>
-					<td align="right" >$brih_rollno</td>
+					<td align="right" colspan=5>$brih_rollno</td>
 					<td align="right">$brih_program $brih_name</td>
-					<td align="right">$RemoteInstitute $brih_name</td>
 				</tr>
-				<tr>
-				#set($temp1=0)
+				<tr align="right" bgcolor="$ui.menuColor">
 	                                #foreach($st in $UDetail)
-                                        		<td align="right"colspan=3>$!st.getRollNo()</td>
-		                                        <td align="right">$!st.getPrgName()</td>
-                                        		<td align="right">$!st.getInstName()</td>
+                                        		<td align="right"colspan=5>$st.rlno</td>
+		                                        <td align="right">$st.pgname</td>
 				</tr>
 					#end
+				#end
 			#end
 			<tr align="right">
 				<td align="right" colspan=3>
@@ -257,17 +185,15 @@ $page.setBgColor($ui.bgcolor)
 	<tr align="right" bgcolor="$ui.menuColor">
 	#end
                        <td align="right" colspan=6  bgcolor="$ui.menuColor">
-			#if(($stat== "update")||($type=="more"))
+			#if($stat== "update")
 				<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			#elseif ($stat == "remove")
 				<input type="submit" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_remove"/>
 			#end
 			<input type=hidden name="mode" value="All">
 			<input type=hidden name="count" value="$tdcolor">
-			<input type=hidden name="counter" value="$counter">
-			<input type=hidden name="sizecount" value="$sizecount">
+			<input type=hidden name="counter" value="$$UDetail.size()">
 			<input type=hidden name="actionName" >
-			<input type=hidden name="type" value="$type" >
 
 		</td>
 	</tr>
@@ -280,253 +206,27 @@ $page.setBgColor($ui.bgcolor)
 <SCRIPT LANGUAGE="javascript">
 function checkField(frm,field)
 {
-	#set($flag=false)
-	#foreach($st in $UDetail)
-        var Insid = "$st.getInstId()";
-        var prgcode = "$st.getPrgCode()";
-        var rlno = "$st.getRollNo()";
-	if($flag==false)
-	{
-               	if(document.frm.instName1.value==Insid)
-               	{
-                       	if(document.frm.prg1.value==prgcode)
-                       	{
-                               	if(document.frm.rollno1.value==rlno)
-                               	{
-					if(($UDetail.size()==1)&&(document.frm.type.value!="more"))
-					{
-						if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
-                                                {
-	                                        	frm.actionName.value=field.name;
-		                                        frm.submit();
-						}
-                                                else
-                                                        alert("Please select program and institute");
-					}
-	                        }
-                                else
-                                {
-					if(document.frm.rollno1.value!="")
-                                        {
-	                                        var x = confirm("Do you want to change rollno.");
-        	                                {
-                	                                if(x)
-                        	                        {
-								if($UDetail.size()==1)
-								{
-									if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
-                                                                        {
-		                                                        	frm.actionName.value=field.name;
-			                                                        frm.submit();
-									}
-									else
-										alert("Please select program and institute");
-								}
-                        	                        }
-                                	        }
-					}
-					else
-					{
-						var x = confirm("Do you want to change profile without rollno.");
-                                                {
-                                                        if(x)
-                                                        {
-                                                                if($UDetail.size()==1)
-                                                                {
-                                                                                frm.actionName.value=field.name;
-                                                                                frm.submit();
-
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                }
+	frm.actionName.value=field.name;
+        frm.submit();
+}
+function showList(frm,field)
+{
+        var flag="false";
+        var pgid = document.getElementById("pg1");
+        var pgval = pgid.value;
+	#foreach ($i in $rlprglist)
+		if(flag=="false"){
+                        var prgcode = "$i.getPrgCode()";
+                        var rlno = "$i.getRollNo()";
+                        if(prgcode == pgval){
+                                document.getElementById("rl1").innerHTML=rlno;
+                                flag="true";
                         }
-	                else
-			{
-				if(document.frm.instName1.value=="0")
-                                        alert("Please select Institute name");
-                                else
-				{
-		                	var x = confirm("Do you want to change program ");
-		                        {
-		                          	if(x)
-		                                {
-							if($UDetail.size()==1)
-							{
-			                                       	frm.actionName.value=field.name;
-			                                        frm.submit();
-							}
-		                                }
-		                         }
-				}
+                        else{
+                                document.getElementById("rl1").innerHTML="";
                         }
                 }
-                else
-                {
-			if(document.frm.prg1.value=="")
-                                alert("Please select program name");
-                        else
-                        {
-	                        var x = confirm("Do you want to change institute ");
-	                        {
-	                        	if(x)
-	                                {
-	                                	frm.actionName.value=field.name;
-	                                        frm.submit();
-	                                }
-	                        }
-			}
-                }
-	}	
-	if($flag)
-	{
-		if(document.frm.instName2.value==Insid)
-	        {
-	        	if(document.frm.prg2.value==prgcode)
-	                {
-	                	if(document.frm.rollno2.value==rlno)
-	                        {
-	                        	frm.actionName.value=field.name;
-	                                frm.submit();
-	                        }
-	                        else
-	                        {
-	                                var x = confirm("Do you want to change rollno.");
-	                                {
-	                        	         if(x)
-	                                         {
-	                                	         frm.actionName.value=field.name;
-	                                                 frm.submit();
-	                                         }
-	                                }
-	                        }
-	                }
-	                else
-	                {
-	                	var x = confirm("Do you want to change second program ");
-        	                {
-	                        	if(x)
-	                        	{
-		                		frm.actionName.value=field.name;
-	                               		frm.submit();
-	                        	}
-	                        }
-	                }
-		}
-	        else
-		{
-	        	var x = confirm("Do you want to change second institute ");
-	                {
-	                	if(x)
-	                        {
-	                        	frm.actionName.value=field.name;
-	                                frm.submit();
-	                        }
-	                }
-        	}
-	}
-	#set($flag=true)
-	#end
-	if(document.frm.type.value=="more")
-        {
-                if(document.frm.instName2.value=="Select Institute")
-                {
-                        if(document.frm.prg2.value=="Select Program")
-                        {
-                                if(document.frm.rollno2.value=="")
-                                {
-					if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
-					{
-	                                        frm.actionName.value=field.name;
-	                                        frm.submit();
-					}
-					else
-                                                alert("Please select first institute & program.");
-                                }
-                                else
-                                {
-                                        alert("Please fill second rollno field");
-                                }
-                        }
-                        else if(document.frm.instName2.value=="Select Institute")
-                        {
-                                alert("Please select second institute name");
-                        }
-                        else if(document.frm.rollno2.value=="")
-                        {
-                                alert("Please fill second rollno field");
-                        }
-                        else
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                }
-                else if(document.frm.prg2.value=="Select Program")
-                {
-                        alert("Please select second program name");
-                }
-                else if(document.frm.rollno2.value=="")
-                {
-                        alert("Please fill second rollno field");
-                }
-                else
-                {
-			if(document.frm.prg1.value!="Select Program" && document.frm.instName1.value!="0")
-			{
-	                        frm.actionName.value=field.name;
-	                        frm.submit();
-			}
-			else
-                                alert("Please select first program and institute");
-                }
-        }
-       else if($sizecount==0)
-      	{
-                if(document.frm.instName1.value=="Select Institute")
-                {
-                        if(document.frm.prg1.value=="Select Program")
-                        {
-                                if(document.frm.rollno1.value=="")
-                                {
-                                        frm.actionName.value=field.name;
-                                        frm.submit();
-                                }
-                                else
-                                {
-                                        alert("Please fill rollno field");
-                                }
-                        }
-                        else if(document.frm.instName1.value=="Select Institute")
-                        {
-                                alert("Please select institute name");
-                        }
-                        else if(document.frm.rollno1.value=="")
-                        {
-                                alert("Please fill rollno field");
-                        }
-                        else
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                }
-                else if(document.frm.prg1.value=="Select Program")
-                {
-                        alert("Please select program name");
-                }
-                else if(document.frm.rollno1.value=="")
-                {
-                        alert("Please fill rollno field");
-                }
-                else
-                {
-                        frm.actionName.value=field.name;
-                        frm.submit();
-                }
-        }
-	
+	#end	
 }
 
 </script>

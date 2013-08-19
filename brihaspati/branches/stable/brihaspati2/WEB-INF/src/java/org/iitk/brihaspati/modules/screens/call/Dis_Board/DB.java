@@ -54,9 +54,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 //import org.iitk.brihaspati.modules.utils.CourseUtil; 
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.om.DbReceivePeer;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 /**
  *   This class contains code for all discussions in workgroup
@@ -191,12 +189,10 @@ public class DB extends SecureScreen
 			if((!dir.equals("instituteWise")) || (!dir.equals("general")) || (!dir.equals(" ")))
 			{
 				String Role = (String)user.getTemp("role");
-				if((Role.equals("student")) || (Role.equals("instructor")))
+				if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         	{
-                                	//CourseTimeUtil.getCalculation(user_id);
-                                	//ModuleTimeUtil.getModuleCalculation(user_id);
 					int eid=0;
-					MailNotificationThread.getController().CourseTimeSystem(user_id,eid);
+					ModuleTimeThread.getController().CourseTimeSystem(user_id,eid);
                         	}
 				
 				///////////////////////////////////////////////

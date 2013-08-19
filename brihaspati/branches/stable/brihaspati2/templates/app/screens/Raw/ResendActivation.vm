@@ -11,12 +11,18 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 </head>
 
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td>
-<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login</a> | $brih_resend $brih_mail
-</td></tr>
+<tr>
+	<td>
+		<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login</a> | $brih_resend $brih_mail
+        </td>
+        <td align="right">
+        	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ResendMail.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+                </td>
+</tr>
 </table>
 
 <form name=frm method="post" action="$link.setPage("ResendActivation.vm").setAction("ResendActivation")">

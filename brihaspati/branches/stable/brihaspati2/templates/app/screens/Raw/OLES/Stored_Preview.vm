@@ -1,8 +1,10 @@
 #*
  * @#Stored_Preview.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra
 *#
 
@@ -20,19 +22,17 @@ $page.setBgColor("bgcolor")
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
-	</tr>
 </table>
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
-		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4")>$brih_preview</a> | 
-		$!quizName
-	</b></td></tr>
+		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4") style='text-decoration:none'>$brih_preview</a> | $!quizName
+	</b></td>
+	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
+	</tr>
 </table>
 
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
@@ -111,14 +111,14 @@ $page.setBgColor("bgcolor")
 	        <td>
 			<table align=center border=0 cellpadding="5" width=100% >	
 				#set($a="")
-				#set($b="")
+				#set($k="")
 				#set($c="")
 				#set($d="")			
 				#if($finalQ.getQuestionType() == "mcq")
 					#if($finalQ.getAnswer()=="$brih_a")
 						#set($a="checked")
 					#elseif($finalQ.getAnswer()=="$brih_b")
-						#set($b="checked")
+						#set($k="checked")
 					#elseif($finalQ.getAnswer()=="$brih_c")
 						#set($c="checked")
 					#else
@@ -130,7 +130,7 @@ $page.setBgColor("bgcolor")
 						$!finalQ.getOption1()	
         	      	        	</td>
 					<td align=left colspan=2 ><b> $brih_b </b>
-						<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $b disabled>
+						<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $k disabled>
 						$!finalQ.getOption2()
 					</td>
 				</tr>
@@ -148,9 +148,9 @@ $page.setBgColor("bgcolor")
 				#if($finalQ.getQuestionType() == "tft")
 					#if($finalQ.getAnswer()=="true")
 						#set($a="checked")
-						#set($b="")
+						#set($k="")
 					#elseif($finalQ.getAnswer()=="false")
-						#set($b="checked")
+						#set($k="checked")
 						#set($a="")
 					#end
 				<tr>	
@@ -159,7 +159,7 @@ $page.setBgColor("bgcolor")
 						$brih_true	
 					</td>
 					<td align=left colspan=2 >
-						<input type="RADIO" name="$velocityCount" value="B" $!b disabled>							
+						<input type="RADIO" name="$velocityCount" value="B" $!k disabled>							
 						$brih_false
 					</td>	
 				</tr>

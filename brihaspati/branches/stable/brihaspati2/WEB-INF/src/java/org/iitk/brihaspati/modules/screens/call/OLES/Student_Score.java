@@ -71,9 +71,7 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils. MailNotificationThread;
+import org.iitk.brihaspati.modules.utils. ModuleTimeThread;
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -95,177 +93,81 @@ public class Student_Score extends SecureScreen
 			context.put("user_role",Role);
 
 			String count = pp.getString("count","");
-			ErrorDumpUtil.ErrorLog("inside Student_Score count is:"+count);
 			if(count.isEmpty()){
 				count=(String)user.getTemp("count");
 			}			
 			String type = pp.getString("type","");
 			context.put("type",type);
-			ErrorDumpUtil.ErrorLog("type is "+type);
 			if(type.isEmpty())
 				count="3";
 			else
 				count = "4";
-			ErrorDumpUtil.ErrorLog("type is count"+count);
 			context.put("tdcolor",count);
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
 			String quizPath="/Quiz.xml";  
 			String scorePath="/score.xml";
-//			String questionSettingPath=quizID+"_QuestionSetting.xml";
-			ErrorDumpUtil.ErrorLog("type is count 2"+count);
 			File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
 			Vector attemptedQuizList=new Vector();
-//			Vector finalQuizList=new Vector();
 			Vector futureQuizList = new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;			
-						
-//			if(!type.isEmpty()){
-//				if(!file.exists()){
-//					data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));									
-//				}
-//				else{
-//					context.put("isFile","exist");	
-//					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
-//					quizList=quizmetadata.getPracticeQuiz_Detail();
-//					if(quizList!=null){
-//						if(quizList.size()!=0){
-//							context.put("quizList",quizList);	              
-//						}
-//						else
-//							data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
-//					}
-//					else
-//						data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
-//				}	
-//			}
-//			else{
-				ErrorDumpUtil.ErrorLog("inside else");
-				if(!file.exists()){
-					data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));				
+					
+			if(!file.exists()){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));				
+			}
+			else{
+				context.put("isFile","exist");
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
+				futureQuizList = quizmetadata.listFutureQuiz();
+				context.put("futureQuizList",futureQuizList);
+				File scoreFile=new File(filePath+"/"+scorePath);
+				if(!scoreFile.exists()){
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
 				}
 				else{
-					ErrorDumpUtil.ErrorLog("inside inner else 1");
-					context.put("isFile","exist");
+					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
+					attemptedQuizList=quizmetadata.getFinalScore(user_id);
+					Vector quizDetail = new Vector();
+					Vector<QuizFileEntry> finalQuizList = new Vector();
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
-//					quizList=quizmetadata.readyToAttemptQuiz();
-					futureQuizList = quizmetadata.listFutureQuiz();
-					ErrorDumpUtil.ErrorLog("inside inner else 2::"+futureQuizList.size());
-//					if(futureQuizList==null || futureQuizList.size()==0){
-					ErrorDumpUtil.ErrorLog("after future quiz list"+futureQuizList);
-						context.put("futureQuizList",futureQuizList)
-//						return;
-//					}
-					;
-//					else{
-						
-//					}					
-					ErrorDumpUtil.ErrorLog("after adding to context");
-					File scoreFile=new File(filePath+"/"+scorePath);
-					ErrorDumpUtil.ErrorLog("inside inner else");
-//					if(quizList==null || quizList.size()==0){
-//						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
-//						return;
-//					}
-					if(!scoreFile.exists()){
-						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
-					}
+					if(attemptedQuizList!=null && attemptedQuizList.size()!=0){
+						for(int j=0;j<attemptedQuizList.size();j++){
+							QuizFileEntry q = (QuizFileEntry)attemptedQuizList.get(j);
+							String quizid1 = q.getQuizID();
+							//==========================================
+						    	String questionSettingPath=quizid1+"_QuestionSetting.xml";
+							QuizMetaDataXmlReader quesmetadata=null;
+							quesmetadata = new QuizMetaDataXmlReader(filePath+"/"+quizid1+"/"+questionSettingPath);
+							HashMap maxMarksQuestion = quesmetadata.getQuizQuestionNoMarks(quesmetadata,quizid1);
+							int insertedMarksQuiz =((Integer)maxMarksQuestion.get("marks"));
+							int insertedQuestionQuiz = ((Integer)maxMarksQuestion.get("noQuestion"));
+							 //===========================================
+							q.setMaxMarks(String.valueOf(insertedMarksQuiz));
+							q.setQuestionNumber(String.valueOf(insertedQuestionQuiz));
+							quizDetail = quizmetadata.getQuiz_Detail(q.getQuizID());
+							for(int k=0;k<quizDetail.size();k++){
+								String quizName = (((QuizFileEntry) quizDetail.elementAt(k)).getQuizName());
+								String maxTime = (((QuizFileEntry) quizDetail.elementAt(k)).getMaxTime());
+								q.setQuizName(quizName);
+								q.setMaxTime(maxTime);
+							}
+							finalQuizList.add(q);
+						}
+						context.put("quizList",finalQuizList);
+					}//if
 					else{
-						quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
-						attemptedQuizList=quizmetadata.getFinalScore(user_id);
-//						String quizid,userid,quizid1;
-//						boolean found = false;
-//						ErrorDumpUtil.ErrorLog("The value of attempted quiz list is::"+attemptedQuizList);
-//					if(quizList!=null && quizList.size()!=0){
-						Vector quizDetail = new Vector();
-						Vector<QuizFileEntry> finalQuizList = new Vector();
-						quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
-						if(attemptedQuizList!=null && attemptedQuizList.size()!=0){
-//							for(int i=0;i<quizList.size();i++){
-								for(int j=0;j<attemptedQuizList.size();j++){
-//									quizid = (((QuizFileEntry) quizList.elementAt(i)).getQuizID());
-									QuizFileEntry q = (QuizFileEntry)attemptedQuizList.get(j);
-									ErrorDumpUtil.ErrorLog("quiz id "+q.getQuizID()+"score:"+q.getScore());									
-									String quizid1 = q.getQuizID();
-									
-									//==========================================
-									    String questionSettingPath=quizid1+"_QuestionSetting.xml";
-										QuizMetaDataXmlReader quesmetadata=null;
-										quesmetadata = new QuizMetaDataXmlReader(filePath+"/"+quizid1+"/"+questionSettingPath);
-										HashMap maxMarksQuestion = quesmetadata.getQuizQuestionNoMarks(quesmetadata,quizid1);
-										int insertedMarksQuiz =((Integer)maxMarksQuestion.get("marks"));
-										int insertedQuestionQuiz = ((Integer)maxMarksQuestion.get("noQuestion"));
-										ErrorDumpUtil.ErrorLog("max marks and max questions"+insertedMarksQuiz+" ; "+insertedQuestionQuiz);
-//										context.put("maxMarks",insertedMarksQuiz);
-//										context.put("maxQuestion",insertedQuestionQuiz);
-									 //===========================================
-										q.setMaxMarks(String.valueOf(insertedMarksQuiz));
-										q.setQuestionNumber(String.valueOf(insertedQuestionQuiz));
-									quizDetail = quizmetadata.getQuiz_Detail(q.getQuizID());
-									ErrorDumpUtil.ErrorLog("quiz detail size "+quizDetail.size());
-									for(int k=0;k<quizDetail.size();k++){
-										String quizName = (((QuizFileEntry) quizDetail.elementAt(k)).getQuizName());
-										String maxTime = (((QuizFileEntry) quizDetail.elementAt(k)).getMaxTime());
-										ErrorDumpUtil.ErrorLog("quiz name "+quizName);
-										q.setQuizName(quizName);
-										q.setMaxTime(maxTime);
-										ErrorDumpUtil.ErrorLog("max marks & questions "+q.getMaxMarks()+" : "+q.getQuestionNumber());
-//										q.setMarksPerQuestion(markperquestion);
-									}
-									finalQuizList.add(q);
-									ErrorDumpUtil.ErrorLog("final quiz list "+finalQuizList.size());
-								}
-								ErrorDumpUtil.ErrorLog("final quiz list "+finalQuizList.size());
-								context.put("quizList",finalQuizList);
-						}
-						else{
-							data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattemptyet",LangFile));
-						}
-//									userid = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getUserID());
-//									if(quizid.equalsIgnoreCase(quizid1)){
-//										if(userid.equalsIgnoreCase(user_id)){
-//											found = true;
-//											break;
-//										}
-//										else{
-//											found = false;
-//											break;													
-//										}
-//									}
-//									else
-//										found = false;
-//								}//end for
-//								if(!found){
-//									QuizFileEntry q = (QuizFileEntry)quizList.get(i);
-//									finalQuizList.add(q);
-//									ErrorDumpUtil.ErrorLog("size of final quiz list ::"+finalQuizList);
-//								}
-//							}//end outer for
-//							if(finalQuizList!=null && finalQuizList.size()!=0){
-//								context.put("quizList",finalQuizList);
-//							}
-//							else
-//								data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
-//						}									
-//						else
-//							context.put("quizList",quizList);								
-//					}
-//					else
-//						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
-				}
-				}
-//			}          
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattemptyet",LangFile));
+					}
+				}//else
+			}//else
 			/**
                          *Time calculaion for how long user use this page.
                          */
                          int userid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
-                         }
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);                         }
   		
 		}catch(Exception e)
 		{

@@ -18,6 +18,7 @@ $!data.getMessage()
 <head>
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
@@ -52,6 +53,9 @@ $!data.getMessage()
 		#end
 	#end
 	</td>
+        <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ListManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        </td>
 </tr>
 </table>
 <table width=100% align=left bgcolor="$ui.tableColor">

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_InstituteAdmin;
 /*
  * @(#)InstEditCourse.java	
  *
- *  Copyright (c) 2004-2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2005,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,14 +38,17 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_InstituteAdmin;
 
 /**
  *  @author: <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a> 
+ *  @author: <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
+ *  @modify date: 22-04-2013,31-05-2013
  */
+import java.util.List;
 import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import org.iitk.brihaspati.modules.utils.ListManagement;
 public class InstEditCourse extends SecureScreen_Institute_Admin{
 	/**
 	 * Display all details of a specific course
@@ -63,14 +66,18 @@ public class InstEditCourse extends SecureScreen_Institute_Admin{
 			String LangFile=null;
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String GName = data.getParameters().getString("gName");
-			ErrorDumpUtil.ErrorLog("gnamedfjghsdfjkfhsdkfhsdk=="+GName);
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			Vector CDetail=CourseManagement.getInstituteCourseNUserDetails(GName,instituteId);
-			ErrorDumpUtil.ErrorLog("hdfjghsdfjkfhsdkfhsdk=="+CDetail);
 			context.put("CourseDetail",CDetail);
 			context.put("Courseid",GName);
 			String counter = data.getParameters().getString("count","");
 			context.put("tdcolor",counter);
+                        // Get mapped Department List from table for showing in template
+			List DeptList=ListManagement.getMapDeptList(instituteId);
+                        context.put("deptlist",DeptList);
+                        // Get mapped School List from table for showing in template
+			List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                        context.put("schlist",mapschlist);
 		}
 		catch(Exception e)
 		{

@@ -1,9 +1,12 @@
 #*
- * @#Random_Quiz.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * @(#) SecurityString.vm
+ * Copyright (c) 2010,2013 MHRD, DEI Agra, IITK.
  * All Rights Reserved.
  * @author <a href="mailto:dev.singha93@gmail.com">Devendra singhal</a>
- * Contributors: Members of MHRD, DEI Agra.
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
+ * Contributors: Members of MHRD, DEI Agra, IITK.
 *#
 $page.setTitle("Show Security String")
 $page.setBgColor($ui.bgcolor)
@@ -15,110 +18,148 @@ $page.setBgColor($ui.bgcolor)
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 ## If some message has been set, that is retrieved and displayed.
-<font size="4">
-	$!data.getMessage()
-</font>
+$!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td><b>
-		<font face="$ui.sansSerifFonts">
-                <a href=$link.setPage("Index.vm")>$brih_home</a> |
-                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
-                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>$online_online $brih_examat $brih_system</a>|
-                #if($flag == "security")
-              	  $brith_security $brih_string   
-              	#elseif($flag == "show") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| $RemoteShow $brith_security $brih_string 
-              	#elseif($flag == "generate") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security")>$brith_security</a>| $brih_generate $brith_security $brih_string
-              	#else
-			$brith_security $brih_string              	
+                <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
+                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
+                <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$online_online $brih_examat $brih_system</a>|
+              	#if($flag1 == "show") 
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'>$RemoteShow $brith_security $brih_string</a>
+              	#else 
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'>$brih_generate $brith_security $brih_string</a>
               	#end
-        </b></td> </tr>    
-</table>
-## Creating the links for help regarding FAQ 
-
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+        </b></td>   
+## Creating the links for help regarding QUIZ 
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
+##==================
+<table width="100%" bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.tableColor">
+                #if($tdcolor != "1")
+                        <td>
+                #elseif($tdcolor == "1")
+                        <td bgcolor="#AFDCEC">
+                #end
+                <b><I><a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</I></b></a></td>
+                #if($tdcolor != "2")
+                        <td>
+                #elseif($tdcolor == "2")
+                        <td bgcolor="#AFDCEC">
+                #end
+                <b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_generate $brih_exam</I></b></a></td>
+                #if($tdcolor != "3")
+                        <td>
+                #elseif($tdcolor == "3")
+                        <td bgcolor="#AFDCEC">
+                #end
+                <b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+                #if($tdcolor != "4")
+                        <td>
+                #elseif($tdcolor == "4")
+                        <td bgcolor="#AFDCEC">
+                #end
+                <b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation &nbsp;&nbsp;</I></b></a></td>
+                #if($tdcolor != "5")
+                        <td>
+                #elseif($tdcolor == "5")
+                <td bgcolor="#AFDCEC">
+                #end
+                <b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result &nbsp;&nbsp;</I></b></a></td>
+		#if($tdcolor != "6")
+                <td>
+                #elseif($tdcolor == "6")
+                <td bgcolor="#AFDCEC">
+        	#end
+        	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security &nbsp;&nbsp;</I></b></a></td>
+         	#if($tdcolor != "7")
+                <td>
+                #elseif($tdcolor == "7")
+                <td bgcolor="#AFDCEC">
+        	#end
+        	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation &nbsp;&nbsp;</I></b></a></td>
+         	#if($tdcolor != "8")
+                <td>
+                #elseif($tdcolor == "8")
+                <td bgcolor="#AFDCEC">
+        	#end
+        	<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice $brih_quiz $brih_qinfo &nbsp;&nbsp;</I></b></a></td>
+        </tr>
+</table>
+##=============================
+<table width="100%" bgcolor="$ui.menuColor">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+#if($flag1=="show")
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("flag1",$flag1).addPathInfo("flag",$flag).addPathInfo("counttemp","2")>
+#else
 <form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,SecurityString.vm").setAction("OLES_AttemptQuiz")>
+#end
 #if($flag == "security")
-<table width="100%" bgcolor="$ui.tableColor">
-	<tr bgcolor="$ui.tableColor">
-		#if($tdcolor != "1")
+	<tr bgcolor="$ui.menuColor">
+		#if($tdcolor1 != "1")
 		  	<td>
-		 #elseif($tdcolor == "1")
+		 #elseif($tdcolor1 == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","1").addPathInfo("flag","generate") style=text-decoration:none>$brith_generateSecurity</I></b></a></td>
-		#if($tdcolor != "2")
+		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("count","6").addPathInfo("flag1","generate").addPathInfo("flag","security") style=text-decoration:none>$brith_generateSecurity</I></b></a></td>
+		#if($tdcolor1 != "2")
 			<td>
-		 #elseif($tdcolor == "2")
+		 #elseif($tdcolor1 == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","2").addPathInfo("flag","show") style=text-decoration:none>$brith_showSecurity</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("count","6").addPathInfo("flag1","show").addPathInfo("flag","security") style=text-decoration:none>$brith_showSecurity</I></b></a></td>
 	</tr>
 </table>
-<table bgcolor="$ui.tableColor" width="100%">
-	<tr bgcolor="$ui.menuColor" width="100%">
-		<td align="left" width="100%" colspan="6"><b><i><font size="3"> $brith_security $brih_string </font><b></i></td>
-	</tr>
-</table>
-#elseif($flag == "show")
+#if($flag1 == "show")
 	<table bgcolor="$ui.tableColor" width="100%">
-		<tr bgcolor="$ui.menuColor">
-			<td>
-	        	<b>$brih_usr $brih_name </b>
-      	  </td>
-			<td>
-    			<SELECT name=userList class="drop">	
-    			<option value="1" > #if($lang =="hindi" || $lang=="gujarati") $brih_student $brih_select #else $brih_select $brih_student #end </option>
-				#foreach($topic in $userList2)
-					#if($!topic.getLoginName()==$!studentLoginName)
-						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
-					#else
-						<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
-					#end              			
-				#end			
-	       	 </SELECT>
-			</td>
-		</tr>
-		<tr bgcolor="$ui.menuColor">
-			<td>
+		<tr bgcolor="$ui.menuColor"  width="100%">
+			<td width="50%">
 				<b> $brih_quiz $brih_name  </b>
     		</td>
-			<td>
-        		<SELECT name=quizlist class="drop">       		
-				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>			
+			<td width="50%">
+			<SELECT name=quizlist class="drop" onChange="checkField(document.frm);">
+                                #if($quizlist=="")
+				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>
+				 #else                   
+                                <option value="$!quizname">$!quizname</option>  #end
 					#foreach($topic in $quizList)
-						#if($!topic.getQuizID()==$!quizID)
 							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
-						#else
-							<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
-						#end               		 		
 					#end			
     			</SELECT>
 			</td>
 		</tr>
-	
-		<tr bgcolor="$ui.menuColor">
-			<td colspan="2">
-				<input type="button" class="button-ftextstyle" name="eventSubmit_Security" value="$brith_showSecurity" onClick="checkField(document.frm,this);"/>		
-			</td>
-		</tr>    
-		<input type="hidden" name="actionName">
-		<input type="hidden" name="quizID">
-		<input type="hidden" name="quizName">
-		<input type="hidden" name="studentLoginName">
+		#if($quizname!="" && $filemode!="blank")
+                <table width="100%" bgcolor="$ui.tableColor">
+                        <tr bgcolor="$ui.tableColor">
+                                <td width="50%"><b>$brih_student $brih_name</b></td>
+                                <td width="50%"><b>$brih_secritystrs</b></td></tr>
+                        #foreach($secstrs in $securitydetail)
+                        #if($velocityCount%2==0)
+                                <tr bgcolor="$ui.tableColor">
+                                #else
+                                <tr bgcolor="$ui.menuColor">
+                                #end
+
+                        <td>$secstrs.StudentID</td>
+                        <td>$secstrs.SecurityID</td>
+                        #end
+                        </tr>
+                <tr bgcolor="$ui.menuColor">
+                        <td colspan="2">
+                        <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/>
+                        </td>
+                </tr>
+                </table>
+                #end
 	</table>
 	
-#elseif($flag == "generate")
+#else
 
 	<table bgcolor="$ui.tableColor" width="100%">
+			<tr><td><INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"><b>$Notice_Send $brih_mail</b></td><tr>
 		<tr bgcolor="$ui.menuColor">
 			<td>
 				<b> $brih_quiz $brih_name  </b>
@@ -139,7 +180,7 @@ $page.setBgColor($ui.bgcolor)
 	
 	
 		<tr bgcolor="$ui.menuColor">
-			<td colspan="2">
+			<td colspan="3">
 				<input type="button" class="button-ftextstyle" name="eventSubmit_generateSecurity" value="$brith_generateSecurity" onClick="checkField1(document.frm,this);"/>		
 			</td>
 		</tr>    
@@ -148,11 +189,13 @@ $page.setBgColor($ui.bgcolor)
 		<input type="hidden" name="quizName">
 	</table>
 #end	
+#end	
 </form>
 </body>
 
 <input type="hidden" name="count" value="$!tdcolor">
 <input type="hidden" name="flag" value="$flag">
+<input type="hidden" name="flag1" value="$flag1">
 
 <SCRIPT LANGUAGE="javascript">
 	function popupWin(url,popupName){
@@ -160,40 +203,31 @@ $page.setBgColor($ui.bgcolor)
         }
         
 	function checkField(frm,field){
-		quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-		userid = frm.userList.options[frm.userList.selectedIndex].value;	
-			if(userid==1){
-				alert("kindly select the Student Name")		
-				frm.userList.focus();
-				return false;
-			}
-			else{
-				if(quizid ==1){
-					alert("kindly select the quiz")
-					frm.quizlist.focus();
-					return false;
-				}
-				else{
-					frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-					frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;
-					frm.studentLoginName.value = frm.userList.options[frm.userList.selectedIndex].value;	
-					frm.actionName.value=field.name;
-	       			frm.submit();
-			}
-		}
+	 	frm.submit();
 	}	
 	function checkField1(frm,field){
 		quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;			
-			if(quizid ==1){
-					alert("kindly select the quiz")
-					frm.quizlist.focus();
-					return false;
-			}
-			else{
+		if(quizid ==1){
+			alert("kindly select the quiz")
+			frm.quizlist.focus();
+			return false;
+		}
+		else{
+			if(document.frm.sendMail.checked){
+				if(confirm('Do you want to send mail of Security String')){
 					frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
 					frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;			
 					frm.actionName.value=field.name;
-	       			frm.submit();
+	       				frm.submit();
+				}
 			}
+                        else{
+                                frm.quizID.value = frm.quizlist.options[frm.quizlist.selectedIndex].value;
+                                frm.quizName.value = frm.quizlist.options[frm.quizlist.selectedIndex].text;
+                                frm.actionName.value=field.name;
+                               	frm.submit();
+                       }
+
+		}
 	}	
 </SCRIPT>

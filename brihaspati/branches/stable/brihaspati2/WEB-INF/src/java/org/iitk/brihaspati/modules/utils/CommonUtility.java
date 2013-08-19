@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)CommonUtility.java
- *  Copyright (c) 2005-2008,2010-2011,2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2008,2010-2011,2012,2013 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -53,8 +53,9 @@ import java.util.Iterator;
 
 import com.workingdogs.village.Record;
 
-import java.sql.Date;
-
+//import java.sql.Date;
+import java.util.Date;
+import java.math.BigDecimal;
 //turbine
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
@@ -93,6 +94,7 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteQuotaPeer;
+import org.iitk.brihaspati.om.InstituteQuota;
 import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.LecturePeer;
 import org.iitk.brihaspati.om.LearnerScoPeer;
@@ -144,6 +146,7 @@ import org.iitk.brihaspati.om.VenuePeer;
 import org.iitk.brihaspati.om.ModulePermissionPeer;
 import org.iitk.brihaspati.om.CourseModulePeer;
 
+import org.apache.commons.io.FileSystemUtils;
 import org.iitk.brihaspati.modules.actions.UploadAction;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -151,7 +154,7 @@ import org.iitk.brihaspati.modules.actions.Groupmanagement;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
-//Lucene
+//Lucenei
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
@@ -163,6 +166,12 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.GraphUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import org.iitk.brihaspati.om.PollPeer;
+import org.iitk.brihaspati.om.Poll;
 
 /**
  * This class is used for call the method in mylogin 
@@ -178,7 +187,8 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:piyushm45@gmail.com">PiyushMishra</a>	
  * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
- * @modified date:12-09-2012,10-10-2012,23-10-2012
+ * @modified date:12-09-2012,10-10-2012,23-10-2012,24-03-2013,19-03-2013
+ * @modified date:23-04-2013(Priyanka Rawat)
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -240,7 +250,7 @@ public class CommonUtility{
 	public static boolean CleanSystem(){
 	try {
 		String c_date=ExpiryUtil.getCurrentDate("-");
-                Date current_date=Date.valueOf(c_date);
+                java.sql.Date current_date=java.sql.Date.valueOf(c_date);
                 Criteria crit=new Criteria();
                 crit.add(SystemCleantimePeer.ID,1);
                 List z=SystemCleantimePeer.doSelect(crit);
@@ -287,6 +297,9 @@ public class CommonUtility{
 				grpLeader();
 				//Call method removeNonce();
 				boolean nonce = removeNonce();
+				boolean uquota = setQuota();
+				//Calling Quotation Thread to select quotation
+				QuotationThread.getController().Quotation();
 				//Calling Emailspooling file to send Failure mail
 				 MailNotificationThread.getController().emailXMLRead();
 				
@@ -1113,28 +1126,22 @@ public static void grpLeader()
 
          	int cnt=0;
         	try{
-                	//ErrorDumpUtil.ErrorLog("inside removeNonce");
                 	long boundary = System.currentTimeMillis() - ONE_HOUR;
                 	crit = new Criteria();
                 	List list = OpenidPeer.doSelect(crit);
                 	for (Iterator i = list.iterator();i.hasNext() ;)
                 	{
-                	//	ErrorDumpUtil.ErrorLog("removeNonce");
                         	Openid openid = (Openid) i.next();
                         	long date = openid.getToDate();
-			//	ErrorDumpUtil.ErrorLog("date is "+date);
                         	if(date<boundary)
                         	{
                                 	String exp_nonce = openid.getNonce();
-                          //      	ErrorDumpUtil.ErrorLog("Nonce from db is "+exp_nonce);
                                 	String exp_provider = openid.getProvider();
-                            //    	ErrorDumpUtil.ErrorLog("Provider from db is "+exp_provider);
                                         criteria = new Criteria();
                                         criteria.add(OpenidPeer.NONCE,exp_nonce);
                                         criteria.add(OpenidPeer.PROVIDER,exp_provider);
                                         OpenidPeer.doDelete(criteria);
                                         cnt++;
-                              //  	ErrorDumpUtil.ErrorLog("count is "+cnt);
                                 }//if
 			}//for
 		}//try
@@ -1214,6 +1221,181 @@ public static void grpLeader()
                 }
                 return true;
         }
+	 /**
+         * This method remove shutdown.properties file after Expity Time
+         * This method also return shutdown message for showing in template.
+         * @return string
+         */
+	
+	public static String removeShutDownNotice(String ShutdNoticePath){
+		String Shutdownnotice="";
+		try{
+			//Get File path Shutdown.properties
+			File ExistShutdFile=new File(ShutdNoticePath);
+			//Check file exist.
+                        if(ExistShutdFile.exists()){
+                        /**
+			* Get Current time using SimpleDateFormat.
+			* Get Expity datetime from Properties file
+			* Get Current system datetime.
+			*/
+                        Date CurrentDateTime = new Date();
+                        String TempShutdownExpDate = AdminProperties.getValue(ShutdNoticePath,"brihaspati.admin.ShutdownExpDate.value");
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date ShutdownExpDateTime=dateFormat.parse(TempShutdownExpDate);
+			/**
+			 * Compare System DateTime from File Expiry DateTime
+			 * If System DateTime is equal to File Expiry DateTime then delete existing file.
+			 * else return Message of Shutdown notices.
+			 */
+                        if(CurrentDateTime.compareTo(ShutdownExpDateTime)>=0){
+                        	//Delete file
+                                ExistShutdFile.delete();
+                       		}
+                        else {
+				// Get Shutdown Message form Properties file.
+                        	Shutdownnotice = AdminProperties.getValue(ShutdNoticePath,"brihaspati.admin.ShutdownHeading.value");
+                        	}
+                  	}
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("error in removing Shutdown notice and return message : "+e);
+		}
+		// Return Message
+		return Shutdownnotice;
+	}
+
+	/**
+ 	 * This method calculates the total space
+ 	 * used by all the courses of a particular 
+ 	 * institute and updates the same in
+ 	 * the database
+	 */
+	public static boolean setQuota()
+	{
+		boolean quota=false;
+		Criteria crit = new Criteria();
+		int inst_id;
+		long inst_quota;
+		int l, i, j, k, inst;
+		//String group_name[], courses[];
+		long size=0, avail_size=0;
+		File dir;
+
+		try{
+			String path = TurbineServlet.getRealPath("/Courses");
+			File file = new File(path);
+                        String[] contents = file.list();
+
+			//Getting list of all courses
+			crit.addGroupByColumn(TurbineGroupPeer.GROUP_NAME);
+			List l2 = TurbineGroupPeer.doSelect(crit);
+			l=l2.size();
+			String group_name[] = new String[l];
+			
+			for(i=0;i<l;i++)
+			{
+				group_name[i] = ((TurbineGroup)l2.get(i)).getGroupName();
+			}
+			
+			//Getting id of all institutes
+			crit = new Criteria();
+			crit.addGroupByColumn(InstituteQuotaPeer.INSTITUTE_ID);
+                        List list = InstituteQuotaPeer.doSelect(crit);
+                        l=list.size();
+                        //int inst_id[] = new int[l];
+                        //Getting quota alloted to all institutes
+
+			/**
+ 			 * Computing the available space for 
+ 			 * each institute, on the basis of list
+ 			 * fetched from Institute_Quota table
+ 			 */
+                        for(i=0; i<l; i++)
+                        {
+                                inst_id = ((InstituteQuota)list.get(i)).getInstituteId();
+				crit = new Criteria();
+				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
+                        	List list1 = InstituteQuotaPeer.doSelect(crit);
+				BigDecimal uquota =((InstituteQuota)list1.get(0)).getInstituteAquota();
+				inst_quota = uquota.longValue();
+
+				/**
+ 				 * Getting courses from the list
+ 				 * fetched from Turbine_Group table
+ 				 * that belongs to "this" institute.
+ 				 */
+				for(j=0; j<group_name.length; j++)
+				{
+					k= group_name[j].lastIndexOf("_");
+					if(!group_name[j].substring(k+1).equals("admin"))
+					{
+						if(k>0)
+						{
+                                        		inst = Integer.parseInt(group_name[j].substring(k+1));
+							if(inst==inst_id)
+							{
+								/**
+ 								 * Getting the size of each course
+ 								 * of "this" particular Institute
+ 								 * In future, we'll compute user space
+ 								 * as well.
+ 								 */
+								for(k=0; k<contents.length; k++)
+								{
+									if(contents[k].contains(group_name[j]))
+									{
+										dir = new File(path+"/"+contents[k]);
+                        							size = size+QuotaUtil.getDirSizeInMegabytes(dir);		
+									}  	
+								}//for3
+							}//if3	
+						}//if2
+					}//if1													
+				}//for2
+			
+				/**
+ 				 * Changing size from Mb to Gb
+				 */
+				size=size/1024;
+				/**
+ 				 * Updating Institute_Quota table
+ 				 * with the computed value of used space
+				 */
+				crit.add(InstituteQuotaPeer.INSTITUTE_ID,inst_id);
+                                crit.add(InstituteQuotaPeer.INSTITUTE_UQUOTA,size);
+                                InstituteQuotaPeer.doUpdate(crit);
+
+			}//for1
+
+						
+			quota=true;
+		}
+		catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("Error inside CommonUtility: setQuota "+e);
+                }       
+                return quota;
+	}
+	 public static void updatePoll(){
+                try{
+                        /**
+                        *This method uses outdated polls
+                        *prints the txt  document to file
+
+                        */
+                        java.util.Date date_Now = new java.util.Date();
+                        Criteria crit_upDate=new Criteria();
+                        crit_upDate.add(PollPeer.VALID_TILL,(Object)date_Now,crit_upDate.LESS_EQUAL);
+                        PollPeer.doDelete(crit_upDate);
+                }
+                catch(Exception ez){
+                 ErrorDumpUtil.ErrorLog("error in update poll : "+ez);
+                }
+        }
+
+
+
 
 //Add method
 }//end of class

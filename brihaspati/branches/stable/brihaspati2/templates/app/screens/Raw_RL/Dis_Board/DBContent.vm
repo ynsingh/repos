@@ -1,176 +1,318 @@
 #*
  * @(#)DBContent.vm
- * Copyright (c)2006-2007 ETRG,IIT Kanpur.
+ * Copyright (c)2005-2006,2009, 2010, 2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
- * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  * @author <a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
+ * @ modified date: 13-Oct-2010 (Shaista), 08-Aug-2011 (Sunil Kr)
  *#
- 
-$page.setTitle("$brih_home | $cname | $brih_communication |$DiscussionBoard |$DisBoard_DB_msg23")
+
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-<table bgcolor="$ui.tableColor" width=100%>
-	<tr align="right"><td>
-		<font face="$ui.sansSerifFonts"><b>
-		<a href =$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | 
-		<a href =$link.setPage("call,Dis_Board,DB.vm")>$DiscussionBoard</a> | 
-		#if($mode=="All")
-			$LocalMail_show $brih_all $brih_msg2
-		#else
-			$brih_unreadMsg
-		#end
-		| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | 
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
-		</font>
-	</td></tr>
-</table>
+ 
+$page.setTitle("$brih_home | $cname | $brih_communication |$DiscussionBoard |$DisBoard_DB_msg23")
 $!data.getMessage()
-<table align=center>
-	<tr>
-		#if($data.getUser().getUserName()!="guest")
-			<td>
-			       <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$workgroup)>$LocalMail_MailContent_msg1</a> <td><li></td>
-			</td>
+
+<table bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor" align="right"><td colspan=5>
+		<b>
+		#if ($stats == "fromIndex") ## Use for general discussion group #sk
+     			<a href=$link.setPage("Index.vm")>$brih_home</a> 
+                       |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>| #if($mode=="All") $LocalMail_MailContent_msg3 #else$brih_unreadMsg #end
+
+		#elseif ($mode2 == "instituteWise")  ##Use for insititue wise discussion group ## sk
+		        <a href=$link.setPage("Index.vm")>$brih_home</a> 
+                       |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>| #if($mode=="All") $LocalMail_MailContent_msg3 #else $brih_unreadMsg #end
+
+		#else
+			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
+			<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> | #if($mode=="All") $LocalMail_MailContent_msg3 #else $brih_unreadMsg #end
+			| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>|
+			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
 		#end
+	</td></tr>
+<tr align="right">
+	#if ($stats == "fromIndex")
+   		#if($tdcolor != "4")
+      			<td>
+   		#elseif($tdcolor=="4")
+      			<td bgcolor="#AFDCEC">
+   		#end
+      			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</td>
+	#elseif ($mode2 == "instituteWise")
+        	#if($tdcolor != "8")
+           		<td>
+        	#elseif($tdcolor=="8")
+           		<td bgcolor="#AFDCEC">
+        	#end
+           	<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
+	#else
+
+		#if($user_role != "student")
+	        	#if($tdcolor != "5")
+	        		<td>
+		        #elseif($tdcolor=="5")
+	        		<td bgcolor="#AFDCEC">
+		        #end
+		      <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+	        #end
+        	#if($tdcolor != "4")
+	        <td>
+        	#elseif($tdcolor=="4")
+	        <td bgcolor="#AFDCEC">
+        	#end
+	        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+	        #if($tdcolor != "3")
+        	<td>
+	        #elseif($tdcolor=="3")
+        	<td bgcolor="#AFDCEC">
+	        #end
+		#if($user_role == "student")
+       		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+		#else
+        	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+		#end
+	        #if($tdcolor != "2")
+        	<td>
+	        #elseif($tdcolor=="2")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+	        #if($tdcolor != "1")
+        	<td>
+	        #elseif($tdcolor=="1")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+	#end
+</tr>
+</table>
+<table width=100% bgcolor="$ui.tableColor">
+	<tr align="right">
 		#if($mode=="All")
-			<td>
-				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("course_id",$workgroup)>$LocalMail_MailContent_msg2</a><td> <li></td>
+                	#if($tdcolor1 != "4")
+        	                <td>
+	                #elseif($tdcolor1 == "4")
+                        	<td bgcolor="#AFDCEC">
+                	#end
+			#if($stats == "fromIndex")
+                	        <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("stats","fromIndex").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","4")>$brih_thread</a>
+	                #elseif ($mode2 == "instituteWise")
+        	                <a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("mode2","instituteWise").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","8")>$brih_thread</a>
+                	#else
+        	        	<a href=$link.setPage("call,Dis_Board,Multithread.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp","4")>$brih_thread</a>
+			#end
+                	</td>
+        		#if($tdcolor1 == "2")
+        			<td bgcolor="#AFDCEC">
+			#else
+				<td>
+			#end
+			#if($stats == "fromIndex")
+                		#if($tdcolor1 == "2")
+                        		<td bgcolor="#AFDCEC">
+	                   	#else
+        	                        <td>
+                	   	#end
+                        	<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("stats","fromIndex")>$LocalMail_MailContent_msg2</a>
+	                #elseif ($mode2 == "instituteWise")
+        	        	#if($tdcolor1 == "8")
+                	        	<td bgcolor="#AFDCEC">
+                   		#else
+                        		<td>
+	                   	#end
+        	                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$LocalMail_MailContent_msg2</a>
+                	#else
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","Unread").addPathInfo("course_id",$workgroup).addPathInfo("countTemp","2").addPathInfo("count","4")>$LocalMail_MailContent_msg2</a>
+			#end
 			</td>
 		#else
-			<td>
-				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup)>$LocalMail_show $brih_all $brih_msg2</a> 
+                	#if($tdcolor1 != "2")
+        	                <td>
+	                #elseif($tdcolor1 == "2")
+                        	<td bgcolor="#AFDCEC">
+                	#end
+			#if($stats=="fromIndex")
+                	        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg3</a>
+	                #elseif ($mode2 == "instituteWise")
+        	                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$LocalMail_MailContent_msg3</a>
+                	#else
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("course_id",$workgroup).addPathInfo("countTemp","2").addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg3</a>
+			#end
 			</td>
-			<td><li></td>
 	        #end	
+		#if($data.getUser().getUserName()!="guest")
+	        	#if($tdcolor1 == "1")
+        			<td bgcolor="#AFDCEC">
+			#else
+				<td>
+		        #end
+			#if(($stats !="fromIndex") || ($mode2 != "instituteWise"))
+				#if($stat == "1")
+					<blink><font color="Green" size="3"> $brih_greenasterisk </font> </blink>  -> $brih_msgmove <blink> <font color="Green" size="3"> &nbsp;<b>*</b> </blink> <br>
+				#end
+			#end
+			#if($stats == "fromIndex")
+                		<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("stats","fromIndex")>$LocalMail_MailContent_msg1</a>
+	                #elseif ($mode2 == "instituteWise")
+        	        	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("mode2","instituteWise")>$LocalMail_MailContent_msg1</a>
+                	#else
+			       <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$workgroup).addPathInfo("check","more").addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg1</a>
+			#end
+			</td>
+		#end
 	</b></tr>
 </table>
-
-<br><br>
-
-
-<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DBContent.vm").setAction("SendDB")">
-
+   <form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DBContent.vm").setAction("SendDB")">
 	#if($status!="blank")
-	<table border=2 align=center cellpadding=10 cellspacing=0>
- 		<tr>
-  			<td colspan=8 align=center bgcolor="$ui.menuColor">
-  				<font face="$ui.sansSerifFonts">
-     					<b>$brih_Of2 $DiscussionBoard $DisBoard_DBCont_msg20  
-					<font color="$ui.fontColorBlue">$username</font> 
-					$brih_course $brih_ID $brih_in -
-					<font color="$ui.fontColorGreen"> $workgroup</font>
-  				</font>
+	<table width=100% bgcolor="$ui.tableColor">
+ 		<tr bgcolor="$ui.menuColor" align="right">
+  			<td colspan=8>
+                	                        <b><font color=blue>$username</font> $brih_instructor $brih_Of2 $brih_course $brih_in $DiscussionBoard $DisBoard_DBCont_msg20 </b>
+
   			</td>
  		</tr>
 
-		#set($headings=["$DisBoard_Expiry $brih_Da","$brih_status","$LocalMail_Task","$Notice_Subject","$DisBoard_posting $brih_Of2 $brih_Da","$Notice_Sender","$brih_select"])
-		<tr bgcolor="$ui.menuColor">
+		###set($headings=["$brih_select","$Notice_Sender","$DisBoard_posting $brih_Da","$Notice_Subject","$LocalMail_Task","$brih_status","$DisBoard_Expiry $brih_Da"])
+		#set($headings=["$DisBoard_Expiry $brih_Da", "$brih_status", "$LocalMail_Task", "$Notice_Subject", "$DisBoard_posting $brih_Of $brih_Da", "$Notice_Sender", "$brih_select"])
+		<tr align="right">
 			#foreach($heading in $headings)
-			<td align="center" bgcolor="$ui.menuColor">
-  					<b>$heading</b>
-					
-			</td>
+			<td> <b>$heading</b> </td>
 			#end
 		</tr>
 		#foreach($e in $entry)
-			#if($e.getStatus()=="0")
-				<tr bgcolor="$ui.tableColor">
+			#if(($e.getStatus()=="0")&& ($e.getGrpmgmtType()!="1"))
+				<tr bgcolor="$ui.tableColor" align="right">
+			#elseif($e.getGrpmgmtType()=="1")
+                                <tr bgcolor="$ui.fontColorPink" align="right">
 			#else
-				<tr bgcolor="$ui.bgcolor">
+			<tr bgcolor="$ui.tableColor" align="right">
 			#end
-			<td align="Center">$e.getExpiryDate()</td>
-     			
-						#if($e.getStatus() == "0")
-			<td width="2%" align=center>
-						<font face="$ui.sansSerifFonts" color="$ui.fontColorRed"> 
-							#if($mode=="All")
-								$brih_unread
-							#else
-								$brih_new
-							#end
-	 					</font>
-			</td>
-						#else
-			<td width="5%" align=center>
-						<font face="$ui.sansSerifFonts">
-							$Notice_Read
-	 					</font>
-			</td>
-						#end
-			<td width="48%" align="center"> 
-						<a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID())>
-							<font face="$ui.sansSerifFonts">
-	       							$brih_view
-							</font>
-						</a>&nbsp
-						#if($user_role=="instructor")
-    		 					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup)>
-								<font face="$ui.sansSerifFonts">
-									$brih_edit
-		     						</font>
-							</a>&nbsp;
-						#end	        
-	        
-						#if($user_role == "student")
-							#if($e.getSender()== $UserName)
-     								<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup)>
-									<font face="$ui.sansSerifFonts">
-										$brih_edit
-		     							</font>
-								</a>&nbsp;
-	      						#else 
-	         				       		<font color="white"><u>$brih_edit</u></font>&nbsp;
-				      			#end
- 			     			#end
-   
-  						#if($data.getUser().getUserName()!="guest")
-       				 			<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup) >
-	 							<font face="$ui.sansSerifFonts">
-	   			   					$LocalMail_Reply 
-	 							</font>
-							</a>&nbsp
-	 					#end
-	 			 		</td>
-					
-					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("course_id",$workgroup) >
-			<td width="1%" align="Center">$e.getMSubject()</td>
-			<td width="50%" align="Center">$e.getPDate()</td>
-			<td width="1%" align="Center">$e.getSender()</td>
- 	       		<td width="2%" align="Center">
-			 
-			 	#if($user_role == "student")
-                                	#if(($e.getSender()== $UserName)&&($e.getPermission() == "1"))
-                                        	<INPUT TYPE="CHECKBOX" NAME="$e.getMsgID()" VALUE ="$e.getMSubject()" onClick="addDeleteList(this,document.frm);">
+			<td>$e.getExpiryDate()</td>
+     			#if($e.getStatus() == "0")
+				<td> <font face="$ui.sansSerifFonts" color="RED"> 
+				#if($mode=="All")
+					$Notice_Unread
 				#else
-					<input type="CHECKBOX" disabled="true">
-	 			#end
-	 		#end
-			#if($user_role == "instructor")
-						<INPUT TYPE="CHECKBOX" NAME="$e.getMsgID()" VALUE ="$e.getMSubject()" onClick="addDeleteList(this,document.frm);">
+					$brih_new
+				#end
+				</font> </td>
+			#else
+				<td> <font face="$ui.sansSerifFonts"> $Notice_Read </font> </td>
+			#end
+			<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1) >
+			<td> 
+				#if($stats=="fromIndex") 
+					<a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor).addPathInfo("stats","fromIndex")> 
+				#elseif ($mode2 == "instituteWise")
+        	                	<a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor).addPathInfo("mode2","instituteWise")>
+				#else
+					<a href=$link.setPage("call,Dis_Board,DBView.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("course_id",$workgroup).addPathInfo("msgid",$e.getMsgID()).addPathInfo("count",$tdcolor)>
+				#end
+				<font face="$ui.sansSerifFonts"> $brih_view </font> </a>&nbsp
+				#if($user_role=="instructor")
+					<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1)>
+					<font face="$ui.sansSerifFonts"> $brih_edit </font> </a>&nbsp;
+				#end	        
+       				#if($user_role == "student")
+					#if($e.getSender()== $UserName)
+						<a href=$link.setPage("call,Dis_Board,Edit.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("sender",$e.getSender()).addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("countTemp",$tdcolor1)> <font face="$ui.sansSerifFonts"> $brih_edit </font> </a>&nbsp;
+					#else 
+						<font color="$ui.tableColor"><u>$brih_edit</u></font>&nbsp;
+	      				#end
+     				#end
+   
+				#if($data.getUser().getUserName()!="guest")
+					#if($from == "Grpmgmt")
+						<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("from","Grpmgmt").addPathInfo("count",$tdcolor)>
+					#elseif($stats=="fromIndex")
+						<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("stats","fromIndex")>
+					#elseif ($mode2 == "instituteWise")
+        	                        	<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("mode2","instituteWise")>
+					#else
+		 				<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("topic",$e.getMSubject()).addPathInfo("msgid",$e.getMsgID()).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>
+					#end
+
+		 			<font face="$ui.sansSerifFonts"> $LocalMail_Reply </font> </a>&nbsp
+				#end
+				</td>
+				<td>$e.getMSubject()</td>
+				<td>$e.getPDate()</td>
+				#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
+					<td> $e.getSender() </td>
+				#else
+					<td>  #if($user_role != "student") $e.getSender() #elseif (($e.getSender()== $UserName) || ($e.getReplyId()!=0)) $e.getSender() #end  #if($e.getPrgCode()=="1") <blink><font color="Green"> <b>*</b></font></blink> #else &nbsp; #end </td>
+				#end
+ 	       			<td>
+			 	#if($user_role == "student")
+        	                       	#if(($e.getSender()== $UserName)&&($e.getPermission() == "1"))
+                	                       	<INPUT TYPE="CHECKBOX" NAME="$e.getMsgID()" VALUE ="$e.getMSubject()" onClick="addDeleteList(this,document.frm);">
+					#else
+						<input type="CHECKBOX" disabled="true">
+					#end
+				#end
+				#if(($user_role == "instructor") || ($stats == "fromIndex") || ($mode2 == "instituteWise"))
+					<INPUT TYPE="CHECKBOX" NAME="$e.getMsgID()" VALUE ="$e.getMSubject()" onClick="addDeleteList(this,document.frm);">
 	    
-	   		#end
-	 
-			</td>
+		   		#end
+				</td>
 
-
-		</tr>
+			</tr>
 			
       		#end ## foreach ends
-       		<tr>
-     	         <td colspan=8 align="right">
+      		<tr>
+                        <td colspan=8 align="right">
+                        #if($total_size<= $userConf)
+                                <img src="$content.getURI("images/Last_blank.png")">
+                                <img src="$content.getURI("images/Previous_blank.png")">
+                                <img src="$content.getURI("images/Next_blank.png")">
+                        	<img src="$content.getURI("images/First_blank.png")">
+			#elseif($startIndex== $userConf_str)
+                                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+                                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+                                <img src="$content.getURI("images/Previous_blank.png")">
+				<img src="$content.getURI("images/First_blank.png")">
+			#elseif($endIndex == $total_size || $endIndex > $total_size)
+                                <img src="$content.getURI("images/Last_blank.png")">
+                                <img src="$content.getURI("images/Next_blank.png")">
+                                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+			#else
+                                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+                                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+                                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+                     #end
+                     	</td>
+                </tr>
+       		<tr bgcolor="$ui.menuColor" align="right">
+     	         <td colspan=8>
+		#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
 			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
-                	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
+		#else
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMove" VALUE="$brih_move" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+                #end	
+			<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 	     		<INPUT TYPE="hidden" NAME="actionName">
 			<INPUT TYPE="hidden" name="msg_id" value="$msgid">
 			<INPUT TYPE="hidden" name="DB_subject" value="">
 			<INPUT TYPE="hidden" name="user_id" value="$userid">
 			<INPUT TYPE="hidden" name="course_id" value="$course_id">
 			<INPUT TYPE="hidden" NAME="mode" VALUE="$mode">
-			<INPUT TYPE="hidden" NAME="" VALUE="">
+			<INPUT TYPE="hidden" NAME="mode2" VALUE="$mode2">
+			<INPUT TYPE="hidden" NAME="stats" VALUE="$stats">
+			<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
+			<INPUT TYPE="hidden" NAME="countTemp" VALUE="$tdcolor1">
 	        </td>
 		</tr>
       #end  ## if ends

@@ -95,16 +95,16 @@ public class StringUtil
 	 */
 
 	public static String replaceXmlSpecialCharacters(String data){
-		int[] special={34,38,39,60,62};
+		int[] special={34,38,39,60,62,47};
 
 		/**
 		 * ASCII values
-		 * " = 34 , & = 38 , ' = 39, < = 60 , > = 62
+		 * " = 34 , & = 38 , ' = 39, < = 60 , > = 62, / = 47 
 		 */
 
 		StringBuffer sb=new StringBuffer(data);
-
-		for(int i=0;i<5;i++){
+		
+		for(int i=0;i<6;i++){
 			int character=special[i];
 			int start_index=0;
 			int from_index=0;
@@ -136,6 +136,9 @@ public class StringUtil
 					}
 					else if(character==34){
 						sb.replace(start_index,index,"&quot;");
+					}
+					else if(character==47){
+						sb.replace(start_index,index,"&amp;frasl;");
 					}
 					data=new String(sb);
 					from_index=data.indexOf(";",start_index);

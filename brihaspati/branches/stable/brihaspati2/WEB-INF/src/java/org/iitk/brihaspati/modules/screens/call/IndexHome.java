@@ -71,7 +71,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.om.ModulePermissionPeer;
@@ -80,7 +80,7 @@ import org.iitk.brihaspati.om.ModulePermission;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
-
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
@@ -326,7 +326,7 @@ public class IndexHome extends SecureScreen{
                         /*entry id from COURSE_TIME */
                         int eid2=CourseTimeUtil.getentryid(u_id);
                         if(eid1==eid2){
-                        	MailNotificationThread.getController().CourseTimeSystem(u_id,eid2);
+                        	ModuleTimeThread.getController().CourseTimeSystem(u_id,eid2);
 			}
 
 		}

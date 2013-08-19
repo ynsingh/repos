@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call;
 /*
  * @(#)ViewNews_Photo.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,6 +35,7 @@ package org.iitk.brihaspati.modules.screens.call;
  * 
  */
 import java.util.List;
+import java.util.Vector;
 import javax.servlet.ServletOutputStream;
 
 import org.apache.torque.util.Criteria;
@@ -42,10 +43,15 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.apache.turbine.modules.screens.VelocityScreen;
+import org.apache.commons.lang.StringUtils;
 
 import org.iitk.brihaspati.modules.utils.ViewFileUtil;
 import org.iitk.brihaspati.om.NewsPeer;
 import org.iitk.brihaspati.om.News;
+import org.apache.turbine.om.security.User;
+import org.apache.commons.lang.StringUtils;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  * In this class, Display of contents for any file.
@@ -66,15 +72,43 @@ public class ViewNews_Photo extends VelocityScreen
      	{
 		try{
                         ParameterParser pp=data.getParameters();
+			User user=data.getUser();
 			ServletOutputStream out=data.getResponse().getOutputStream();
 			String date_string=pp.getString("date");
 			String news_id=pp.getString("newsid");
-			Criteria crit=new Criteria();
-			crit.add(NewsPeer.NEWS_ID,news_id);
-			List news=NewsPeer.doSelect(crit);
-			String news_details=new String(((News)news.get(0)).getNewsDescription());
+			String topicName=pp.getString("TopicName","");
 			String user_name=pp.getString("user");
-		
+			String news_details="";
+			String str="";
+			Vector entry=new Vector();
+			if(StringUtils.isBlank(topicName))
+			{
+				Criteria crit=new Criteria();
+				crit.add(NewsPeer.NEWS_ID,news_id);
+				List news=NewsPeer.doSelect(crit);
+				news_details=new String(((News)news.get(0)).getNewsDescription());
+			}
+			else
+			{
+				String courseid=(String)user.getTemp("course_id");
+				int gid=GroupUtil.getGID(courseid);
+                                String g_Id=Integer.toString(gid);
+				Criteria crit=new Criteria();
+                                crit.add(NewsPeer.GROUP_ID,gid);
+                                List news=NewsPeer.doSelect(crit);
+				for(int i=0;i<news.size();i++)
+				{
+					String news_title=new String(((News)news.get(i)).getNewsTitle());
+					String news_desc=new String(((News)news.get(i)).getNewsDescription());
+					
+					boolean flag=StringUtils.contains(news_desc, topicName);
+					if(flag)
+					{
+						str = StringUtils.substringAfter(news_desc, "Instructions is");
+					}
+				}
+			}
+			
 			/**
 		 	* Split the date into day,month and year and get the
 		 	* corresponding month name
@@ -123,7 +157,8 @@ public class ViewNews_Photo extends VelocityScreen
 				month_name="December";
 				break;
 			}
-	 		String str=day+" "+month_name+" "+year+"\n\t"+news_details+"\n\t\t\t...."+user_name;
+			if(StringUtils.isBlank(topicName))
+		 		str=day+" "+month_name+" "+year+"\n\t"+news_details+"\n\t\t\t...."+user_name;
 
 		/**
 		 * Set the output in the desired format in

@@ -55,7 +55,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 
 public class Insert_Short extends SecureScreen
@@ -144,7 +144,7 @@ public class Insert_Short extends SecureScreen
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 		}//try

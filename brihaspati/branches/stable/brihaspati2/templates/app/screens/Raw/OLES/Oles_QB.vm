@@ -1,8 +1,10 @@
 #*
  * @(#)Oles_QB.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("QuestionBank")
@@ -15,11 +17,9 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
 <tr><td><b>
-	<font face="$ui.sansSerifFonts">
-	<a href=$link.setPage("Index.vm")>$brih_home</a>|
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
-	$brih_queBank
+	<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>| $brih_queBank
 </b></td>
  <td align=right>
                 #if( $total_size!=0 )
@@ -36,12 +36,8 @@ $!data.getMessage()
                         #end
                 #end
                 </td>
-</tr>
-</table>
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-<tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 </tr>
 </table>
 ##creating form for FAQ
@@ -72,46 +68,65 @@ $!data.getMessage()
 			#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation &nbsp;&nbsp;</I></b></a></td>
 			#if($tdcolor != "5")
 			<td>
-            #elseif($tdcolor == "5")
-            	<td bgcolor="#AFDCEC">
-            #end
-			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+            		#elseif($tdcolor == "5")
+            		<td bgcolor="#AFDCEC">
+            		#end
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result &nbsp;&nbsp;</I></b></a></td>
 			#if($tdcolor != "6")
-				<td>
+			<td>
 			 #elseif($tdcolor == "6")
-            	<td bgcolor="#AFDCEC>
-            #end
-           	<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security") style=text-decoration:none>$brith_security</I></b></a></td>
-           	#if($tdcolor != "7")
-				<td>
+            		<td bgcolor="#AFDCEC">
+            		#end
+           		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security").addPathInfo("counttemp","1") style=text-decoration:none>$brith_security &nbsp;&nbsp;</I></b></a></td>
+           		#if($tdcolor != "7")
+			<td>
 			 #elseif($tdcolor == "7")
-            	<td bgcolor="#AFDCEC>
-            #end
-           	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
+            		<td bgcolor="#AFDCEC">
+            		#end
+           		<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","7") style=text-decoration:none>$brih_reevaluation &nbsp;&nbsp;</I></b></a></td>
+           		#if($tdcolor != "8")
+			<td>
+			 #elseif($tdcolor == "8")
+            		<td bgcolor="#AFDCEC">
+            		#end
+           		<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice$brih_quiz $brih_qinfo</I></b></a></td>
 		</tr>
-		<tr bgcolor="$ui.menuColor"><td colspan="7">
+		<tr bgcolor="$ui.menuColor"><td colspan="8">
 		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_new $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_queBank #end </a></b>
 		</td></tr>
-		#if( $total_size!=0 )
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
+#*		#if( $total_size!=0 )
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="8"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
 		#else
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="7"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_in $brih_question $brih_arenotexists #else $brih_question $brih_arenotexists $brih_in $brih_queBank #end </td></tr>
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="8"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_in $brih_question $brih_arenotexists #else $brih_question $brih_arenotexists $brih_in $brih_queBank #end </td></tr>
 		#end
+*#
 </table>
 <table width="100%" bgcolor="$ui.tableColor">
+		  #if( $total_size!=0 )
+                        <tr bgcolor="$ui.menuColor" width="100%" align="center">
+				<td><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td>
+				<td colspan=3 ><b><i><font size="3"> $brih_availableAction</font><b></i></td>
+                                <td><b><i><font size="3">$brih_total $brih_qus2</font><b></i></td>
+			</tr>
+                #else
+                        <tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="8"> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_in $brih_question $brih_arenotexists #else $brih_question $brih_arenotexists $brih_in $brih_queBank #end </td></tr>
+                #end
+
+
 		#foreach ($topics in $allTopics)
 				#if($velocityCount%2==0)
                                 <tr bgcolor="$ui.menuColor">
                                 #else
                                 <tr bgcolor="$ui.tableColor">
                                 #end
-					<td width="30%">$topics</td>
-				       	<td><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("addques","addques").addPathInfo("Topicname",$topics).addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_qus $brih_add #else $brih_add $brih_qus #end </a></td>
-                                        <td><a href="$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topics).addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_qus $brih_Of1 $brih_view #else $brih_view $brih_qus #end </a></td>
-					<td><a href="$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","topicdel").addPathInfo("topic",$topics).addPathInfo("actionName","eventSubmit_dodeletetopic")" style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this topic')"> #if($lang =="hindi" || $lang == "gujarati") $brih_topic $brih_delete #else $brih_delete $brih_topic #end </a></td>
+					<td>$topics.getTopic()</td>
+				       	<td><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("addques","addques").addPathInfo("Topicname",$topics.getTopic()).addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_qus $brih_add #else $brih_add $brih_qus #end </a></td>
+                                        <td><a href="$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topics.getTopic()).addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_qus $brih_Of1 $brih_view #else $brih_view $brih_qus #end </a></td>
+					<td><a href="$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","topicdel").addPathInfo("topic",$topics.getTopic()).addPathInfo("actionName","eventSubmit_dodeletetopic").addPathInfo("username",$topics.getUserID())" style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this topic')"> #if($lang =="hindi" || $lang == "gujarati") $brih_topic $brih_delete #else $brih_delete $brih_topic #end </a></td>
+					<td> $topics.getQuestionNumber()  $brih_qus</td>
                                 </tr>
 		#end
 		#if( $total_size!=0 )
@@ -124,18 +139,18 @@ $!data.getMessage()
                 	#elseif($startIndex == $userConf_string)
 	                <img src="$content.getURI("images/First_blank.png")">
         	        <img src="$content.getURI("images/Previous_blank.png")">
-                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex)"><img src="$content.getURI("images/Next.png")"></a>
-	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)"><img src="$content.getURI("images/Last.png")"></a>
+                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex)" style='text-decoration:none'><img src="$content.getURI("images/Next.png")"></a>
+	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)" style='text-decoration:none'><img src="$content.getURI("images/Last.png")"></a>
         	        #elseif($endIndex == $total_size || $endIndex > $total_size)
-                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)"><img src="$content.getURI("images/First.png")"></a>
-	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)"><img src="$content.getURI("images/Previous.png")"></a>
+                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)" style='text-decoration:none'><img src="$content.getURI("images/First.png")"></a>
+	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)" style='text-decoration:none'><img src="$content.getURI("images/Previous.png")"></a>
         	        <img src="$content.getURI("images/Next_blank.png")">
                 	<img src="$content.getURI("images/Last_blank.png")">
 	                #else
-        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)"><img src="$content.getURI("images/First.png")"></a>
-                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)"><img src="$content.getURI("images/Previous.png")"></a>
-	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)"><img src="$content.getURI("images/Next.png")"></a>
-        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)"><img src="$content.getURI("images/Last.png")"></a>
+        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)" style='text-decoration:none'><img src="$content.getURI("images/First.png")"></a>
+                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)" style='text-decoration:none'><img src="$content.getURI("images/Previous.png")"></a>
+	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)" style='text-decoration:none'><img src="$content.getURI("images/Next.png")"></a>
+        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)" style='text-decoration:none'><img src="$content.getURI("images/Last.png")"></a>
                 	#end
 	                </td></tr></table>
 		#end

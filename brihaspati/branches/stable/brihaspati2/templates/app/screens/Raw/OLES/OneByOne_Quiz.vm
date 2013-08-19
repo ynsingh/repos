@@ -1,9 +1,13 @@
 #*
  * @#OneByOne_Quiz.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * Copyright (c) 2010-13 MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
- * Contributors: Members of MHRD, DEI Agra.
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
+ * Contributors: Members of MHRD, DEI Agra, IITK.
 *#
 $page.setTitle("Quiz Creation")
 $page.setBgColor("bgcolor")
@@ -20,19 +24,18 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
 		#if($quizMode == "one")
-			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")> 
+			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3") style='text-decoration:none'> 
 			$brih_quiz #if($lang =="hindi")  #end $brih_detail </a>|
 			$brih_onebyone
 			#if($mode == "update")				
 				$mode	
 			#end
 		#else	
-			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a> |
+			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_quiz $brih_creation</a> |
 			#if($tdcolor=="1")
 				$brih_onebyone
 			#else
@@ -43,13 +46,9 @@ $!data.getMessage()
 				#end
 			#end
 		#end	
-	</b></td></tr>
-</table>
-
+	</b></td>
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 
@@ -118,7 +117,7 @@ $!data.getMessage()
 		#if($typeName=="mcq" || $typeName=="tft")
 			<td><input type="text" name="answer" value="$answer" readonly></td>        
 		#else
-			<td><textarea rows="2" cols="23 name="answer" readonly>$answer</textarea></td>        
+			<td><textarea rows="2" cols=23 name="answer" readonly>$answer</textarea></td>        
 		#end
         </tr>   
 	<tr>

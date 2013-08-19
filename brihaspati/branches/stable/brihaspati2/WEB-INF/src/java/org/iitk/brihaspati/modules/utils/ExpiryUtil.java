@@ -466,11 +466,14 @@ public class ExpiryUtil{
 				else if(str[i].equals("Institutedel"))
 				{
 					String filePath=TurbineServlet.getRealPath("/InstituteRegistration"+"/InstituteRejectList.xml");
-					XMLWriter_InstituteRegistration.RemoveElementRejectxml(filePath,current_date);
-					crit=new Criteria();
-					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
-					crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
-					InstituteAdminRegistrationPeer.doDelete(crit);
+					File f = new File(filePath);
+					if(f.exists()){
+						XMLWriter_InstituteRegistration.RemoveElementRejectxml(filePath,current_date);
+						crit=new Criteria();
+						crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
+						crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
+						InstituteAdminRegistrationPeer.doDelete(crit);
+					}
 				}
 				/**
 				* update status field in table

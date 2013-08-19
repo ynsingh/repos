@@ -52,17 +52,13 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class is used to show score of student after attempting the quiz
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
  */
 
 public class Evaluate_Quiz extends SecureScreen{
-//	MultilingualUtil mu=new MultilingualUtil();
-
 	public void doBuildTemplate( RunData data,Context context ){
 		ParameterParser pp=data.getParameters();
 		String file=data.getUser().getTemp("LangFile").toString();
@@ -79,31 +75,14 @@ public class Evaluate_Quiz extends SecureScreen{
 			String count=pp.getString("count","");
 			context.put("tdcolor",count);
 			String type1=pp.getString("type","");
-			ErrorDumpUtil.ErrorLog("type in evaluate Quiz"+type1);
 			context.put("type",type1);
 			
 			String studentLoginName=pp.getString("studentLoginName","0");
 			context.put("studentLoginName",studentLoginName);	
-			ErrorDumpUtil.ErrorLog(" quizID, studentLoginName "+quizID+" : "+studentLoginName);	
 			String studentID=Integer.toString(UserUtil.getUID(studentLoginName));
 			String fullName = UserUtil.getFullName(Integer.valueOf(studentID));
 			context.put("fullName",fullName);
-//			Double passingMarks=0.0;			
-//			Double passingPercentage = 33.0;
-//			String finalResult="";
-//			ErrorDumpUtil.ErrorLog("max marks "+maxMarks);
-//			passingMarks = (Double.parseDouble(maxMarks)/100)*passingPercentage;
-//			ErrorDumpUtil.ErrorLog("passing marks of student"+passingMarks);
-//			
-//			context.put("passingMarks",Math.round(passingMarks));
 			Vector answerDetail=new Vector();
-//			int studentMarks=0;
-			//									
-			//			if(QuizID.equals("")) {
-			//				context.put("checkedQuiz","Uncheked");
-			//				return;
-			//			}
-			//			context.put("checkedQuiz","cheked");
 
 			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
 			String quizAnswerFile = studentID+".xml";						
@@ -129,19 +108,6 @@ public class Evaluate_Quiz extends SecureScreen{
 					}
 					context.put("flag",flag);
 					context.put("answerDetail",answerDetail);
-//					for(int i=0;i<answerDetail.size();i++){
-//						int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());					
-//						studentMarks +=studentMark;
-//					}
-//					ErrorDumpUtil.ErrorLog("total marks of student"+studentMarks);
-//					context.put("studentMarks",studentMarks);
-//					String percentageScore = String.valueOf((studentMarks*100)/(Integer.parseInt(maxMarks)));
-//					context.put("percentageScore",percentageScore);
-//					if(Integer.parseInt(percentageScore)>=passingPercentage)
-//						finalResult="Pass";
-//					else
-//						finalResult="Fail";
-//					context.put("finalResult",finalResult);
 				}				
 			}					
 			/**
@@ -150,12 +116,10 @@ public class Evaluate_Quiz extends SecureScreen{
 			
 			String Role = (String)user.getTemp("role");	
 			int userid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				 int eid=0;
-                                MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+                                ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
 
                          }
 

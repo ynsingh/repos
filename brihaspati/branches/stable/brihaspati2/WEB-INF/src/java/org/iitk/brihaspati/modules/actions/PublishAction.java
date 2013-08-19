@@ -39,12 +39,17 @@ package org.iitk.brihaspati.modules.actions;
 import java.io.File;
 import java.util.Date;
 import java.util.Vector;
+import java.util.List;
 import java.util.StringTokenizer;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.util.parser.ParameterParser;
 //Brihaspati
 import org.iitk.brihaspati.om.CoursesPeer;
@@ -56,6 +61,10 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 /**
  * This class is responsible of manage file for Visible Accessible, Unpublish, Accessible and Deletion.
@@ -206,10 +215,16 @@ public class PublishAction extends SecureAction_Instructor
 		String username=pp.getString("uname","");
 		context.put("username",username);
 		String cName=data.getParameters().getString("cName","");
-		context.put("cName",cName);		
+		context.put("cName",cName);	
+		//ErrorDumpUtil.ErrorLog("\n\n\n status="+status+"\t username="+username+"\t cName="+cName, data.getServletContext().getRealPath("/msgDisp.txt"));
 		String visibleList=pp.getString("visibleList","");
 		String accessibleList=pp.getString("accessibleList","");
+///////////////////////////// Start (Shaista) /////////////////
+		String mailStatus=pp.getString("mailInfo","");
+///////////////////////////// End (Shaista) /////////////////
 		String unpublishedList=pp.getString("unpublishedList","");
+		//ErrorDumpUtil.ErrorLog(" \n\nvisibleList="+visibleList+"\t accessibleList="+accessibleList+"\t unpublishedList="+unpublishedList+"\t mailStatus="+mailStatus, data.getServletContext().getRealPath("/msgDisp.txt"));
+
 		try{
                 	XmlWriter xmlWriter=null;
 			String group,dir,filePath=null;
@@ -707,6 +722,64 @@ public class PublishAction extends SecureAction_Instructor
 					}
                                	} //inner if
 			} //status if
+
+///////////////////////////// Start (Shaista) /////////////////
+			/**
+ 			 * Sending Mail to student and secondary instructor of this course 
+ 			 * to inform that a new course content is publised  
+			 */
+			if(mailStatus.equals("sendMail")){
+				 try{
+					int uid = UserUtil.getUID(username);
+					String fullName = UserUtil.getFullName(uid);
+					String grpName = (String)user.getTemp("course_id","");
+                                        String courseName = CourseUtil.getCourseName(grpName);
+					//ErrorDumpUtil.ErrorLog("grpName=="+grpName, data.getServletContext().getRealPath("/msgDisp.txt"));
+					/**
+					* Getting a Vector of user to send mail
+					*/
+					int gid = GroupUtil.getGID(grpName);
+                                        int roleId[]={2,3};
+                                        int userId[]={uid,0};
+                                        Criteria crit = new Criteria();
+                                        crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+                                        crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
+                                        crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,userId);
+                                        List v1=TurbineUserGroupRolePeer.doSelect(crit);
+					//ErrorDumpUtil.ErrorLog("v111111111="+v1,  data.getServletContext().getRealPath("/msgDisp.txt"));
+					String LangFile=(String)user.getTemp("LangFile");
+                                        String Mail_msg = "";
+					/**
+					 * if vector have user list, getting email to inform a new course is uploaded.
+					 * if Vector size is null, a proper message display
+					*/
+                                        if(v1.size() >0){
+                                                for(int i=0; i < v1.size(); i ++) {
+                                                        int usrId =( (TurbineUserGroupRole) v1.get(i)).getUserId();
+                                                        crit = new Criteria();
+                                                        crit.add(TurbineUserPeer.USER_ID, usrId);
+                                                        List usrList = TurbineUserPeer.doSelect(crit);
+                                                        String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
+                                                        Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName.trim()+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
+                                                }
+                                                if(Mail_msg.equals("Success"))
+                                                {
+							crit = new Criteria();
+       							crit.add(TurbineUserPeer.USER_ID, uid);
+                	                                List usrList = TurbineUserPeer.doSelect(crit);
+                        	                        String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
+                                	                Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName.trim()+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
+
+                                                        Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                                                        data.addMessage(Mail_msg);
+                                                }
+                                        }
+					else
+						data.addMessage(MultilingualUtil.ConvertedString("noUserToSendMail",LangFile));
+                                        }
+                                        catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in Upload Action class on 773 line "+e.getMessage());}
+			}
+///////////////////////////// End (Shaista) /////////////////
 		}//try
 		catch(Exception ex)
 		{

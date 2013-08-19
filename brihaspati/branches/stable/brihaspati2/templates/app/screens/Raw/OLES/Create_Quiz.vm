@@ -1,8 +1,10 @@
 #*
  * @#Create_Quiz.vm
- * Copyright (c) 2010 MHRD, DEI Agra.
+ * Copyright (c) 2010-13 MHRD, DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD, DEI Agra.
 *#
 $page.setTitle("Quiz Creation")
@@ -20,19 +22,14 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
-		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>$brih_home</a>|
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("Index.vm")  style='text-decoration:none'>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
 		$brih_quiz $brih_creation	
-	</b></td></tr>
-</table>
-
+	</b></td>
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 	</tr>
 </table>
 
@@ -68,18 +65,23 @@ $!data.getMessage()
 </table>
 
 ##Drop down list to select a quiz
-<table border=1 align="center" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
+<table align="center" width="100%" bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor" >
 		<td width=30% align="centre">
-	      		<b><font face="$ui.sansSerifFonts"> #if($lang == "hindi" || $lang == "gujarati") $brih_quiz $brih_select #else $brih_select  $brih_quiz #end </font></b>
+	      		<b> #if($lang == "hindi" || $lang == "gujarati") $brih_quiz $brih_select #else $brih_select  $brih_quiz #end</b>
 	   	</td>
 	   	<td  width=70% align="left"  >
-	        	<font face="$ui.sansSerifFonts">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList class="drop">
 	        				#foreach($qid in $quizList)
-	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()">$qid.getQuizName()</option>
+	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()">
+						#if($qid.getAllowPractice()=="yes")
+                                		$qid.getQuizName() ( $brih_practice $brih_quiz )
+                       				#else
+                                		$qid.getQuizName()
+                        			#end
+						</option>
 	        				#end
 	        			</select> &nbsp;
 	        			<input type="button" class="button-ftextstyle" name="eventSubmit_generateQuiz" value="$brih_submit" onClick="checkValue(document.frm,this);">

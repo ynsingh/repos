@@ -6,9 +6,7 @@
  * Contributors: Members of MHRD, DEI Agra.
 *#
 
-<head>
-<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-</head>
+<head> <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/> </head>
 $page.setTitle("Quiz Management")
 $page.setBgColor("#ffffff")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -17,19 +15,19 @@ $page.setBgColor("#ffffff")
 
 $!data.getMessage()
 <table width=100%  bgcolor="$ui.menuColor">
-<tr><td>
-	<b>	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
+<tr align="right">
+## Creating the links for help regarding FAQ 
+<td align="left"> <a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+<td>
+	<b>	
 		#if($type=="practice")
 			$brih_practice $brih_quiz
 		#else
 			$brih_attempt $brih_quiz
 		#end
+		| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
+		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
 	</b>
-</td>
-## Creating the links for help regarding FAQ 
-<td align="right">
-<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
 </td>
 </tr>
 </table>
@@ -40,61 +38,56 @@ $!data.getMessage()
 #else
 <form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
 #end
-<table width=100% align="left">
+<table width=100% align="right">
 
 #if($futureQuizList.size()!=0)
 	#foreach($futureqid in $futureQuizList)
-		<tr>	
-			<td>$velocityCount .<td colspan="5">Quiz "$futureqid.getQuizName()" is scheduled but it will start at $futureqid.getExamDate() at $futureqid.getStartTime()</td>
+		<tr align="right">	
+			##<td>$velocityCount .<td colspan="5">Quiz "$futureqid.getQuizName()" is scheduled but it will start at $futureqid.getExamDate() at $futureqid.getStartTime()</td>
+			<td colspan="5">$brih_quiz "$futureqid.getQuizName()" $brih_quizSchedule $futureqid.getExamDate() $brih_at $futureqid.getStartTime()</td><td align="right"> .$velocityCount </td>
 		</tr>
 	#end	        						
 #end	
 
-<tr bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.tableColor" align="right">
 	#if($user_role == "student")
-		#if($tdcolor != "1")
-    		<td width="25%">
-		#elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC" width="25%">
-		#end
-				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("type","attempt")> #if($lang == "hindi") $brih_quiz $brih_attempt  #else $brih_attempt $brih_quiz #end </a>
-			</td>
-		#if($tdcolor != "2")
-			<td width="25%"> 
-		#elseif($tdcolor == "2")
-			<td bgcolor="#AFDCEC" width="25%">
-		#end
-				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice")>  $brih_Practice $brih_quiz  </a>
-			</td>
 			
-		#if($tdcolor != "3")
-			<td width="25%">
-		#elseif($tdcolor == "3")
-			<td bgcolor="#AFDCEC" width="25%">
-		#end	
-			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_score $brih_card</a>
-			</td>
 		#if($tdcolor != "4")
 			<td width="25%">
 		#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end	
-        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a>
-
-        	</td>
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a> </td>
+		#if($tdcolor != "3")
+			<td width="25%">
+		#elseif($tdcolor == "3")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end	
+		<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_score $brih_card</a> </td>
+		#if($tdcolor != "2")
+			<td width="25%"> 
+		#elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end
+		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice")>  $brih_quiz $brih_practice </a></td>
+		#if($tdcolor != "1")
+    		<td width="25%">
+		#elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end
+		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("type","attempt")> $brih_quiz $brih_attempt </a> </td>
 	#end		
 	
    	</tr>
-	<tr>
-</tr>
+	<tr> </tr>
 </table>
 	##Drop down list to select a quiz
-<table border=1 align="left" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
-	<tr bgcolor="$ui.menuColor" colspan="4">
-		<td  align="left">
-	      		<b><font face="$ui.sansSerifFonts"> $brih_select  $brih_quiz</font></b>
+<table border=1 align="right" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
+	<tr bgcolor="$ui.menuColor"align="right" >
+		<td>
+	      		<b><font face="$ui.sansSerifFonts">  $brih_quiz $brih_select</font></b>
 	   </td>
-	   	<td  align="left">
+	   	<td align="right">
 	        	<font face="$ui.sansSerifFonts">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
@@ -104,28 +97,26 @@ $!data.getMessage()
 	        				#end
 	        			</select> &nbsp;&nbsp;&nbsp;&nbsp;
 				#else
-					$!data.getMessage() !!!!
+					$!data.getMessage() 
 				#end	
 	        	#else
-	        		$!data.getMessage() !!!!
+	        		$!data.getMessage() 
 	        	#end
 		</td>
 	</tr>
 	#if($type!="practice")
 		#if($isFile!="")
 			#if($quizList.size()!=0)
-				<tr bgcolor="$ui.menuColor" colspan="4">
-					<td align="left"><b><font face="$ui.sansSerifFonts">Enter Security String</font></b></td>
-					<td align="left">
-						<input type="text" name="textBox" value=""  MaxLength="5" size="10">	
-					</td>
+				<tr bgcolor="$ui.menuColor" colspan="4" align="right">
+					<td> <input type="text" name="textBox" value=""  MaxLength="5" size="10"> </td>
+					<td><b><font face="$ui.sansSerifFonts"> $brih_enterSecurityStr </font></b></td>
 				</tr>
 			#end
 		#end
 	#end
-	<tr bgcolor="$ui.menuColor" colspan="4">
-		<td align=left colspan="4">
-			#if($type=="practice")
+	<tr bgcolor="$ui.menuColor" align="right">
+		<td colspan="4">
+		#if($type=="practice")
 	        	<input type="button" class="button-ftextstyle" name="eventSubmit_attemptPracticeQuiz" value="$brih_startquiz" onClick="confirmQuizStart1(document.frm,this);">
         	#else
 	        	<input type="button" name="eventSubmit_attemptQuiz" class="button-ftextstyle" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this,'$securityData','$ip');">

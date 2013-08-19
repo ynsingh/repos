@@ -25,8 +25,8 @@ $!data.getMessage()
                 <tr>
                         <td><b>
                         <font face="$ui.sansSerifFonts">
-                        <a href=$link.setPage("call,InstituteAdmin.vm")>Home</a> |
-                         <a href=$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>Browser Statistics</a>
+                        <a href=$link.setPage("call,InstituteAdmin.vm")>$brih_home</a> |
+                         <a href=$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a>
                         </td>
               </tr>
         </table>

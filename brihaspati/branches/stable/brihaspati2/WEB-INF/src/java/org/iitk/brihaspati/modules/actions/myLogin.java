@@ -36,16 +36,13 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.modules.actions.VelocityAction;
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
@@ -55,11 +52,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
-//import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -75,11 +71,10 @@ import org.apache.turbine.TurbineConstants;
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @author <a href="mailto:palseema30@gmail.com">Manorama pal</a>
  *  @author modified date 04 Oct 2011<a href="mailto:kishore.shukla@gmail.com">kishore shukla</a>
- * @author modified date 09-08-2012, 01-10-2012 <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *  @author modifieddate 09-08-2012, 01-10-2012, 09-05-2013 <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 
 public class myLogin extends VelocityAction{
-	private Log log = LogFactory.getLog(this.getClass());
 		
 	/**
 	 * This method is invoked upon when user logging in
@@ -89,89 +84,70 @@ public class myLogin extends VelocityAction{
 	
 	public void doPerform( RunData data, Context context )
 	{
+		//Start time
+		long startTime = System.nanoTime();
+		int load_flag =0;
+
 		System.gc();
-		Criteria crit = null;
-		String userLanguage = "";
-		String a_key = "";	
-		String str;	
-		List list = null;	
 
 		/** Getting Language according to Selection of Language in lang Variable
                  *  Getting Property file  according to Selection of Language
 		 */
+		// This flag is used to update language in database if previous selected language is different
 		String flag=data.getParameters().getString("flag");
-                //String LangFile =data.getParameters().getString("Langfile","");
+		// Getting language selected by user
                 String lang=data.getParameters().getString("lang","");
+		//Getting  language tag file on the basis of selected language
 		String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
+		//Getting user name and checks for legal character
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
+		// Getting base name for ldap auth
 		String lcat = data.getParameters().getString("lcate", "" );
+
 		String password = data.getParameters().getString("password", "" );
-		if (StringUtils.isEmpty(password)){
+		if ((StringUtils.isEmpty(password))||(StringUtils.isEmpty(username))){
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
 
 			/**
-			 * If you make any change below the code then make sure that 
-			 * make the same change in LoginFromBrihspti.java action
+			 * If you make any change code below then make sure that 
+			 * the similer change in LoginFromBrihspti.java action
 			 */
                                          
 			int uid=UserUtil.getUID(username);
 			// uid will be returned as -1 if user does not exists.
 
 			if(uid != -1){
-		// Following lines added by Priyanka
+					String str;
+					List list = null;
 				try{
-					crit = new Criteria();
+					Criteria crit = new Criteria();
 					crit.add(UserPrefPeer.USER_ID,uid);
 					list = UserPrefPeer.doSelect(crit);
-				//	list_size = list.size();
-			//		ErrorDumpUtil.ErrorLog("LIST IS	"+list);		
-					a_key = ((UserPref)list.get(0)).getActivation(); 
-					//len = str.indexOf("Activation");
-					 
-					//ErrorDumpUtil.ErrorLog("I M HERE......"+a_key+" ACTIVATE");
+					String a_key = ((UserPref)list.get(0)).getActivation(); 
  
 					if (a_key == null || a_key.equalsIgnoreCase("NULL"))
 					{
 						 try{
                 	                              	str=MultilingualUtil.ConvertedString("act_prb",LangFile);
                                                         data.setMessage(str);
-							//data.setMessage("Your account has some problem, contact to administrator or re register.");
-                        	                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                        	                        data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                  	         }
 	                                         catch (Exception ex){
                 	                                ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
          	                                 }
 					}
-					              
-					if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
+					else if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
 					{
-			//..........			
 						/** 
 				 		*  Get the session if exist then remove and create new session
 				 		**/
-						User user=null;
-						LoginUtils.CheckSession(username);
-						ErrorDumpUtil.ErrorLog("After checking the session");
-
-						// Provide a logger with the class name as category. This
-						// is recommended because you can split your log files
-						// by packages in the Log4j.properties. You can provide
-						// any other category name here, though.
-						log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
-
-						user = null;
 						lang=LoginUtils.SetUserData(username, password, lcat, flag, lang, data);
 						context.put("lang",lang);
-						ErrorDumpUtil.ErrorLog("After setting User data");
-
-						userLanguage = null;
-						crit = null;
 						LoginUtils.UpdateUsageData(uid);
-						ErrorDumpUtil.ErrorLog("After updating usage data");
-
+					//	ErrorDumpUtil.ErrorLog("After updating usage data");
 						//If there is an error redirect to login page with a message"Cannot Login"
 						try{
 							AccessControlList acl = data.getACL();
@@ -185,53 +161,97 @@ public class myLogin extends VelocityAction{
 						}
 						catch(Exception ex){
 							ErrorDumpUtil.ErrorLog("Error in setting Access rules :- "+ex +" The account '' does not exist Or password is incorrect");
-							data.setMessage("The account does not exist Or password is incorrect");
+							data.setMessage(MultilingualUtil.ConvertedString("accountNotCorrect", LangFile));
 						}
-						ErrorDumpUtil.ErrorLog("After setting the ACL");
+						//ErrorDumpUtil.ErrorLog("After setting the ACL");
 			
 						/*calling UpdateMailThread Util*/
 						UpdateMailthread.getController().UpdateMailSystem();
 						Date date=new Date();
+						//Update login entry in database
 						boolean AB=CommonUtility.IFLoginEntry(uid,date);
-						
+						// Call change password after configured time		
 						LoginUtils.getChangePasswordtemp(date,uid,data);
 
 						/**
         	                  		*Check the user for hint question when login at the first time.
                 	          		*/
 						LoginUtils.SetHintQues(uid, data);
-						ErrorDumpUtil.ErrorLog("After checking hint question");
+					//	ErrorDumpUtil.ErrorLog("After checking hint question");
 						/**
 	 					* Called the method from utils for Insert record when user (Student) already exist
  						* in Turbine User Table
  						*/
+						//Calculating time taken to execute the above code
+						try
+						{
+							String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                					String normalTrafficTime = AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
+							double normal_trafficTime = Double.parseDouble(normalTrafficTime);
+							String highTrafficTime = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
+							double high_trafficTime = Double.parseDouble(highTrafficTime);
+							long estimatedTime = System.nanoTime() - startTime;
+							//double elapsedTime = (double)estimatedTime / 60000000000.0;
+							//in seconds
+							double elapsedTime = (double)estimatedTime / 1000000000.0;
+							if(elapsedTime < normal_trafficTime)
+							{
+								load_flag=0;	
+							}
+							else if(elapsedTime < high_trafficTime)
+							{
+								load_flag=1;
+							}
+							else 
+							{
+								load_flag=2;
+							}
+
+							/**
+				 			 * Number of active users is being calculated here.
+				 			 * When a user visits Brihaspati's login page
+				 			 * and load flag has value 2, then
+				 			 * this number will then be compared with the
+				 			 * number of active users at that time. If number 
+				 			 * of active users would have been decreased then 
+				 			 * the value of load_flag will be set to "0".
+				 			 * Decreased number of active users signifies that
+				 			 * some of the users who have logged in are not active,
+				 			 * thus load on the system will be low.
+  			 				*/
+							Collection au=org.apache.turbine.services.session.TurbineSession.getActiveUsers();
+							QuotationThread.getController().setActiveUser(au.size());
+							QuotationThread.getController().setLoadFlag(load_flag);
+							QuotationThread.getController().setLoginTime(elapsedTime);
+						}
+						catch(Exception ex)
+						{
+							ErrorDumpUtil.ErrorLog("An exception occurred while calculating loadfactor: myLogin class "+ex);
+						}	
 						System.gc();
 					}
-			// Foolowing check added by Priyanka
+					// Foolowing check added by Priyanka
 					else
 					{
 						try{
 							str=MultilingualUtil.ConvertedString("reAct_mail",LangFile);
                                                         data.setMessage(str);
-                                                      //data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
-                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                                                        data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                                  }
                                                  catch (Exception ex){
-							String msg = "Error in login";
-                                                        ErrorDumpUtil.ErrorLog("User's account not activated........... "+ex);
-							 throw new RuntimeException(msg,ex);
+                                                        ErrorDumpUtil.ErrorLog("User's account is not activated........... "+ex);
+							data.setMessage(MultilingualUtil.ConvertedString("accountNotActivate", LangFile));
                                                  }
 
 					}
 				}
 				catch(Exception e){
-                	                String message = "Error in activation   ";
-        	                        throw new RuntimeException(message, e);
+					ErrorDumpUtil.ErrorLog("User's account is not activated........... "+e);
+                                        data.setMessage(MultilingualUtil.ConvertedString("accountNotActivate", LangFile));
 	                        }
-		//..........
 			}//if for uid (-1)
 			else{
-				data.setMessage("User does not exist.");
+				data.setMessage(MultilingualUtil.ConvertedString("accountNotCorrect", LangFile));
                                 data.setScreenTemplate("BrihaspatiLogin.vm");
 			}
        		}//end else of password check

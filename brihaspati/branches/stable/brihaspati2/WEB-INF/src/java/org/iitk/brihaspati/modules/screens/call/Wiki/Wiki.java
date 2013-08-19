@@ -48,7 +48,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;  
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
@@ -72,6 +72,7 @@ public class Wiki extends SecureScreen{
 			 String username=user.getName();
 			 String firstname=user.getFirstName();
                          String lastname=user.getLastName();
+			 int uid=UserUtil.getUID(user.getName());
 			 String cId=(String)user.getTemp("course_id");
 			 context.put("courseid",cId);
 			 context.put("course",(String)user.getTemp("course_name"));
@@ -155,6 +156,12 @@ public class Wiki extends SecureScreen{
 			flog=null;
 			ff=null;
 			fh=null;
+			if((userrole.equals("student")) || (userrole.equals("instructor"))||(userrole.equals("teacher_assistant")))
+                         {
+                                int eid=0;
+                                ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+                         }
+
 
 		   }//try
 		   catch(Exception e)

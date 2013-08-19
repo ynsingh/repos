@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)TopicMetaDataXmlWriter.java
  *
- *  Copyright (c) 2005-2008, 2009,2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008, 2009,2010-13 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -60,7 +60,8 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 20-10-2010, 23-12-2010
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 09-08-2012, 25-09-2012 (Priyanka)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 09-08-2012, 25-09-2012 (Priyanka),06-06-2013
  */
 
 public class TopicMetaDataXmlWriter
@@ -180,14 +181,13 @@ public class TopicMetaDataXmlWriter
 	* @param gname String
 	* @param roleName String
 	*/
-	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno,String program, String instAdminName, String actionKey, String flag)
+	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String email,String gname,String roleName, String registerationDate,String rollno,String program, String instAdminName, String actionKey, String flag)
 	      {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","uname","","",StringUtil.replaceXmlSpecialCharacters(uname));
                 ats.addAttribute("","passwd","","",StringUtil.replaceXmlSpecialCharacters(passwd));
 		ats.addAttribute("","fname","","",StringUtil.replaceXmlSpecialCharacters(fname));
 		ats.addAttribute("","lname","","",StringUtil.replaceXmlSpecialCharacters(lname));
-		ats.addAttribute("","orgtn","","",StringUtil.replaceXmlSpecialCharacters(orgtn));
                 ats.addAttribute("","email","","",StringUtil.replaceXmlSpecialCharacters(email));
                 ats.addAttribute("","gname","","",StringUtil.replaceXmlSpecialCharacters(gname));
                 ats.addAttribute("","roleName","","",StringUtil.replaceXmlSpecialCharacters(roleName));
@@ -206,20 +206,25 @@ public class TopicMetaDataXmlWriter
 	* This method append course registration information in existing on line course file
         * @param xmlWriter XmlWriter
         * @param gname String
-i        * @param cname String
+        * @param cname String
         * @param uname String
         * @param email String
         * @param fname String
         * @param lname String
+        * @param registerationDate String
+        * @param instid String
+        * @param actionKey String
+        * @param flag String
+        * @param dept String
+        * @param sch_center String
         */
 
-        public static void appendOnlineCrsElement(XmlWriter xmlWriter,String gname,String cname,String uname,String orgtn,String email,String fname,String lname, String registerationDate,String instid, String actionKey, String flag )
+        public static void appendOnlineCrsElement(XmlWriter xmlWriter,String gname,String cname,String uname,String email,String fname,String lname, String registerationDate,String instid, String actionKey, String flag, String dept,String sch_center )
         {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","gname","","",StringUtil.replaceXmlSpecialCharacters(gname));
                 ats.addAttribute("","cname","","",StringUtil.replaceXmlSpecialCharacters(cname));
                 ats.addAttribute("","uname","","",StringUtil.replaceXmlSpecialCharacters(uname));
-		ats.addAttribute("","orgtn","","",StringUtil.replaceXmlSpecialCharacters(orgtn));
                 ats.addAttribute("","email","","",StringUtil.replaceXmlSpecialCharacters(email));
                 ats.addAttribute("","fname","","",StringUtil.replaceXmlSpecialCharacters(fname));
                 ats.addAttribute("","lname","","",StringUtil.replaceXmlSpecialCharacters(lname));
@@ -228,6 +233,9 @@ i        * @param cname String
 		//For confirmation purpose
 		ats.addAttribute("","actionKey","","",StringUtil.replaceXmlSpecialCharacters(actionKey));
                 ats.addAttribute("","flag","","",StringUtil.replaceXmlSpecialCharacters(flag));
+		//For add school/center and department.
+                ats.addAttribute("","dept","","",StringUtil.replaceXmlSpecialCharacters(dept));
+                ats.addAttribute("","sch_center","","",StringUtil.replaceXmlSpecialCharacters(sch_center));
                 xmlWriter.appendElement("File",null,ats);
 
         }
@@ -358,7 +366,6 @@ i        * @param cname String
                                         String roleName=((CourseUserDetail)v.get(i)).getRoleName();
 					String fname=((CourseUserDetail)v.get(i)).getInstructorName();
 					String lname=((CourseUserDetail)v.get(i)).getUserName();
-					String orgtn=((CourseUserDetail)v.get(i)).getDept();
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
 					String rollno=((CourseUserDetail)v.get(i)).getRollNo();
 					String program=((CourseUserDetail)v.get(i)).getPrgCode();
@@ -368,7 +375,7 @@ i        * @param cname String
 					//ErrorDumpUtil.ErrorLog("roll no in write xml---------->\n"+rollno);
 					//ErrorDumpUtil.ErrorLog("program in write xml---------->\n"+program);
                                         //appendElement1(xmlWriter,uname,passwd,email,gname,roleName);
-                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
+                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
                                 }
                         }
                 }
@@ -412,7 +419,6 @@ public static boolean WriteXml_OnlineUser(String filePath1,String xmlFile1,Strin
                                         String roleName=((CourseUserDetail)v.get(i)).getRoleName();
                                         String fname=((CourseUserDetail)v.get(i)).getInstructorName();
                                         String lname=((CourseUserDetail)v.get(i)).getUserName();
-                                        String orgtn=((CourseUserDetail)v.get(i)).getDept();
                                         String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
                                         String rollno=((CourseUserDetail)v.get(i)).getRollNo();
                                         String program=((CourseUserDetail)v.get(i)).getPrgCode();
@@ -423,13 +429,13 @@ public static boolean WriteXml_OnlineUser(String filePath1,String xmlFile1,Strin
                                         {
                                                if(a_key.equals(akey))
                                                 {
-							appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,"1");
+							appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,"1");
 							set=true;
 						}
         				}	
 					else
 					{
-						appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
+						appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
                               		}
 						xmlWriter.writeXmlFile();
                         		//}
@@ -474,24 +480,28 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
                                         String email=((CourseUserDetail)v.get(i)).getEmail();
                                         String fname=((CourseUserDetail)v.get(i)).getInstructorName();
                                         String lname=((CourseUserDetail)v.get(i)).getUserName();
-                                        String orgtn=((CourseUserDetail)v.get(i)).getDept();
                                         String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
                                         int instid=((CourseUserDetail)v.get(i)).getInstId();
                                         String inst_id=Integer.toString(instid);
                                         String a_key=((CourseUserDetail)v.get(i)).getActivation();
-                                         String flag=((CourseUserDetail)v.get(i)).getFlag();
+                                        String flag=((CourseUserDetail)v.get(i)).getFlag();
+					//Get department and school/center name
+                                        String dept=((CourseUserDetail)v.get(i)).getDept();
+                                        String scname=((CourseUserDetail)v.get(i)).getSchoolCenter();
 				
 					if(mail.equals(email))
                                         {
                                                if(a_key.equals(akey))
                                                 {
-		                                        appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,"1");
+							//Add last two parameter 'dept' and 'scname' for online course registration
+		                                        appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,registerationDate,inst_id,a_key,"1",dept,scname);
 					                 set=true;
                                                 }
                                 	}        
 					else
                                         {
-                                               	appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,flag);
+						//Add last two parameter 'dept' and 'scname' for online course registration
+                                               	appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,registerationDate,inst_id,a_key,flag,dept,scname);
 	                                }
                                         	xmlWriter.writeXmlFile();
                                        // }
@@ -536,14 +546,17 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
                                         String email=((CourseUserDetail)v.get(i)).getEmail();
                                         String fname=((CourseUserDetail)v.get(i)).getInstructorName();
                                         String lname=((CourseUserDetail)v.get(i)).getUserName();
-					String orgtn=((CourseUserDetail)v.get(i)).getDept();
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
 					int instid=((CourseUserDetail)v.get(i)).getInstId();
                                         //appendElementC(xmlWriter,gname,cname,uname,email,fname,lname);
                                         String inst_id=Integer.toString(instid);
 					String a_key=((CourseUserDetail)v.get(i)).getActivation();
-	                                 String flag=((CourseUserDetail)v.get(i)).getFlag();
-	                                appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,flag);
+	                                String flag=((CourseUserDetail)v.get(i)).getFlag();
+					//Get department and school/center name
+	                                String dept=((CourseUserDetail)v.get(i)).getDept();
+	                                String scname=((CourseUserDetail)v.get(i)).getSchoolCenter();
+					//Add last two parameter 'dept' and 'scname' for online course registration
+	                                appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,registerationDate,inst_id,a_key,flag,dept,scname);
                                 }
 
 

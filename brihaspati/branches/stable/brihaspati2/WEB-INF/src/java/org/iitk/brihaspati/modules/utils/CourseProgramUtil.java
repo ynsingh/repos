@@ -187,6 +187,41 @@ public class CourseProgramUtil
 
 	/**
          * In this method, get roll no of specific user
+         * @param uid String The loginid of the user
+         * @param cid String Courseid of user
+         * @return string
+         */
+	public static String getUserRollNo(String uid, String cid)
+        {
+                String rno="";
+                try
+                {
+			List roll=getUserCourseProgram(uid,cid);
+			String prg="";
+			if(roll.size()>0)
+                        {
+                        	CourseProgram element = (CourseProgram)roll.get(0);
+				prg=element.getProgramCode();
+			}
+                        Criteria crit=new Criteria();
+                        crit.add(StudentRollnoPeer.EMAIL_ID,uid);
+			crit.add(StudentRollnoPeer.PROGRAM,prg);
+                        List v=StudentRollnoPeer.doSelect(crit);
+			if(v.size()>0){
+				StudentRollno ele=(StudentRollno)v.get(0);
+				rno=ele.getRollNo();
+			}
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("This is the exception in get Roll No of specific user ( uid and cid) -utils(CourseProgramUtil)  :- "+e);
+
+                }
+                return rno;
+	}
+
+	/**
+         * In this method, get roll no of specific user
          * @param uid String The userid of the user
          * @return List 
          */
@@ -232,6 +267,8 @@ public class CourseProgramUtil
                 }
                 return v;
         }
+		
+
 	/**
          * In this method, get list of course and program of user
          * @param studid Integer student id of the user

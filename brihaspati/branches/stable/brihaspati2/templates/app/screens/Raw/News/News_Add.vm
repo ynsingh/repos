@@ -1,14 +1,16 @@
 #*
  * @(#) News_Add.vm
- * Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009,2010-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com ">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 31-12-2009, 07-09-2010,
- * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
+ * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr),27-07-2013
 *#
 <head>
 ##This Script use for Fck Editor in Textarea.
@@ -26,7 +28,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 ## Representation of TOP BAR
 
 <table bgcolor="$ui.menuColor" width=100%>
@@ -34,24 +36,24 @@ $!data.getMessage()
                 <td><b>
 			#if($data.getUser().getUserName() == "admin")
 			$page.setTitle("Admin Home ")
-			<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+			<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_ad $brih_home</a> |
 			#elseif($data.getUser().getTemp("role") != "")
                         $page.setTitle("Home ")
-                        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+                        <a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
                         #else
                         $page.setTitle("Home ")
-                        <a href=$link.setPage("Index.vm")>$brih_home</a> |
+                        <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
 			#end
 			#if($status=="fromIndex")
 				$page.setTitle("| General News | Add News")
-				<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status",$status)>$brih_genNews</a> |
+				<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status",$status) style='text-decoration:none'>$brih_genNews</a> |
 				#if ($lang!="english") $brih_news $brih_add #else $brih_add $brih_news #end
 			#else
 			$page.setTitle("| $course | Communication | News | Addnews")
-			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
+			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> | 
 			##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> |
-			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
-			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status",$status).addPathInfo("count","5")>$brih_course
+			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> |
+			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status",$status).addPathInfo("count","5") style='text-decoration:none'>$brih_course
 			#if ($lang!="english") $brih_Of2 $brih_news</a> |$brih_news $brih_add #else $brih_news</a> | $brih_add $brih_news #end
 
 			#end
@@ -67,35 +69,35 @@ $!data.getMessage()
 		#elseif($tdcolor=="1")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_localmail</a></td>
 		#if($tdcolor !="2")
 		<td>
 		#elseif($tdcolor=="2")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_chat</a></td>
 		#if($tdcolor !="3")
 		<td>
 		#elseif($tdcolor=="3")
 		<td bgcolor="#AFDCEC">
 		#end
                 ##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
-                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","2")>$Notice_NoticeContent_msg1</td>
+                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","2") style='text-decoration:none'>$Notice_NoticeContent_msg1</td>
 		#if($tdcolor !="4")
 		<td>
 		#elseif($tdcolor=="4")
 		<td bgcolor="#AFDCEC">
 		#end
-                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</td>
 		#if($tdcolor !="5")
 		<td>
 		#elseif($tdcolor=="5")
 		<td bgcolor="#AFDCEC">
 		#end
-                <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+                <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style='text-decoration:none'>$brih_news</td>
 		#end
                 <td align=right>
-                       <img src="$content.getURI("/images/hand.gif")"> <a href="/brihaspati/docs/news.html">$brih_help</a>
+                       <img src="$content.getURI("/images/hand.gif")"> <a href="/brihaspati/docs/news.html" style='text-decoration:none'>$brih_help</a>
                 </td>
         </tr>
 </table>
@@ -157,7 +159,7 @@ $!data.getMessage()
                         </tr>
                         <tr bgcolor="$ui.menuColor">
 				<td><b>$brih_news $brih_desc<font color=RED> *</font></b></td>
-				<td align="left" width="2"><textarea id="ta" name="news" wrap="physical" rows=10 cols=80></textarea></td>
+				<td align="left" width="2"><textarea id="ta" name="news" wrap="physical" rows=10 cols=80>$!msg</textarea></td>
 
 			</tr>
                         <tr>
@@ -167,10 +169,12 @@ $!data.getMessage()
                         <tr bgcolor="$ui.menuColor">
                                 <td align=left colspan=2>
                                <font face="$ui sanSerif fonts">
-			     <input type=button class="button-ftextstyle" name="eventSubmit_doInsert" value=$brih_submit onClick="checkNews(document.frm,this);"/>
-			     <input type=button class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);">
+			     <input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value=$brih_submit onClick="checkNews(document.frm,this);"/>
+			     <input type="button" class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);">
+			     <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.frm,this);"/>
 			     <input type="hidden" name="actionName">
 			     <input type="hidden" name="count" value="$tdcolor" >
+			     <input type="hidden" name="page" value="gnews" >
                                 </font>
                                 </td>
                         </tr>
@@ -211,4 +215,16 @@ $!data.getMessage()
                 }
         	editor.setMode("wysiwyg");
         }
+	function check(frm,field){
+        	editor.setMode("textmode");
+        	frm.actionName.value=field.name;
+        	frm.submit();
+        	editor.setMode("wysiwyg");
+	}
+	tt= $time;
+        autosavetime = (tt-30)*1000;
+	setInterval(function() {
+       		$("#autoclick1").click();
+   	}, autosavetime);
+
 </SCRIPT>

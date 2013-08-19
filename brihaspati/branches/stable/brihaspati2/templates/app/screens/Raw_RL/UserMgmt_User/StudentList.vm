@@ -11,10 +11,9 @@
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
  * @modified date: 07-04-2010
  * @modified date: 20-10-2010,3-11-2010
- * @modified date: 22-11-2010 (Shaista), 30-05-2011,20-05-2012
+ * @modified date: 22-11-2010 (Shaista), 30-05-2011, 20-05-2012, 15-03-2013
  *     
  *#
-#set($lang = $data.getUser().getTemp("lang" ).toString())
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
@@ -32,14 +31,14 @@ $!data.getMessage()
 		#if( $endIndex < $total_size )
         	        #if( $endIndex < $userConf )
                 	        ##[$k - $total_size] of $total_size
-                        	#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+				[$k - $total_size ] $brih_in $brih_from1 <td width="10%" align="left"> $total_size </td> 
 	                #else
         	                ##[$k - $endIndex] of $total_size
-                	         #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
+				[$k - $endIndex] $brih_in $brih_from1 <td width="10%" align="left"> $total_size </td>
 	                #end
 	       #else
         	       ##[$k - $total_size] of $total_size
-                	#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+			[$k - $total_size ] $brih_in $brih_from1 <td width="10%" align="left"> $total_size</td> 
 	       #end
 	#end
 	</td>
@@ -50,11 +49,7 @@ $!data.getMessage()
         #if($mode!="Search")
                |$brih_listAllStudent
         #else
-                #if($lang == "hindi")
-                        Selected Students  View
-                #else
-                        View Selected Students
-                #end
+		$brih_viewSel $brih_students 
         #end
         | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a>
         | <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a>
@@ -63,37 +58,38 @@ $!data.getMessage()
 </table>
 
 <table bgcolor="$ui.tableColor" width=100%>
-<tr>
+<tr align="right">
+#if($status=="notempty")
                 #if($tdcolor != "6")
-                <td colspan=2>
+                <td colspan=5>
                 #elseif($tdcolor=="6")
-                <td bgcolor="#AFDCEC">
+                <td bgcolor="#AFDCEC" colspan=5>
                 #end
                 <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","6") style=text-decoration:none>$brih_listOfStudent $brih_download </a></td>
-
+#end
 #if($tdcolor != "5")
-      <td colspan=4>
+      <td colspan=6>
         #elseif($tdcolor == "5")        
-        <td bgcolor="#AFDCEC" colspan=4>
+        <td bgcolor="#AFDCEC" colspan=6>
         #end
         <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a></td>
  #if($tdcolor != "4")
-        <td colspan=3>
+        <td>
         #elseif($tdcolor == "4")        
-        <td bgcolor="#AFDCEC" colspan=3>
+        <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a></td>
 
         #if($tdcolor != "3")
-        <td colspan=2>
+        <td>
         #elseif($tdcolor == "3")        
-        <td bgcolor="#AFDCEC" colspan=2>
+        <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a></td>
+        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> $brih_multiple1 $brih_student $brih_add </a></td>
         #if($tdcolor != "2")
-        <td colspan=2>
+        <td>
         #elseif($tdcolor == "2")        
-        <td bgcolor="#AFDCEC" colspan=2>
+        <td bgcolor="#AFDCEC">
         #end
    <a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("count","2") style=text-decoration:none>$brih_rem_student</a></td>
   #if($tdcolor != "1")
@@ -101,20 +97,15 @@ $!data.getMessage()
         #elseif($tdcolor == "1")        
         <td bgcolor="#AFDCEC" colspan=2>
         #end
-        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_student $brih_add #else $brih_add $brih_students #end </a></td>
+        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_student $brih_add </a></td>
 </tr>
 
 ##</table>
-#if($lang == "hindi")
-	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
-#else
-	#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
-	 #set($headings = ["$brih_availableAction"," ","($brih_program) $brih_rollno","$brih_email $brih_ID","$brih_name","$brih_usr $brih_name"] )
-#end
+	 #set($headings = ["$brih_availableAction"," ","$brih_program / $brih_rollno","$brih_email $brih_ID","$brih_name","$brih_usr $brih_Of1 $brih_name"] )
 
 #*if($status=="notempty")
 <table width=100% bgcolor="$ui.menuColor">
-        <tr><td>
+        <tr align="right"><td>
                 <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listOfStudent $brih_download </a>
         </td></tr>
 </table>
@@ -125,7 +116,7 @@ $!data.getMessage()
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("status","ForallUser")">
 ##<table bgcolor="$ui.tableColor" cellpadding=1 cellspacing=1>
 ##<table bgcolor="$ui.menuColor" width=100% align="left">
-        <tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor" align="right" >
 <td align="Left" colspan=10><a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listAllStudent</a></td>
 
                 <td align="left">
@@ -142,7 +133,7 @@ $!data.getMessage()
 
                         <td align="right">
                         <select name="queryList" class="drop">
-                                <option value="UserName"> $brih_usr #if($lang == "hindi")  #end $brih_name</option>
+                                <option value="UserName"> $brih_usr $brih_Of1 $brih_name</option>
                                 <option value="FirstName">$brih_first $brih_name</option>
                                 <option value="LastName">$brih_last $brih_name</option>
                                 <option value="Email">$brih_email $brih_ID</option>
@@ -158,10 +149,10 @@ $!data.getMessage()
 ##</table>
 #if($status=="notempty")
 ##<table width=100% bgcolor="$ui,tableColor" align="left">
-  <tr>
+  <tr align="right">
     <td colspan=16>
       <table width=100% align=left bgcolor="$ui.tableColor">
-        <tr>
+        <tr align="right">
           #foreach ($heading in $headings)
 		#headerCell($heading)
           #end
@@ -169,9 +160,9 @@ $!data.getMessage()
 		## get the user record list
                 #foreach ($urecord in $userlist)
                         #if($velocityCount%2==0)
-                        	<tr bgcolor="$ui.tableColor">
+                        	<tr bgcolor="$ui.tableColor" align="right">
                         #else
-                                <tr bgcolor="$ui.menuColor">
+                                <tr bgcolor="$ui.menuColor" align="right">
                        #end                    
                 	## Get one record from the list
 	                ## get login name of user
@@ -222,6 +213,7 @@ $!data.getMessage()
 							#end
 						#end
 					#end
+					<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("status","viewmarks").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count","1") style=text-decoration:none>$brih_view $brih_marks</a> &nbsp;
 					</td>
 
   ## get the list of student RollNO of that course 
@@ -261,48 +253,48 @@ $!data.getMessage()
 	 <td colspan=16 bgcolor="$ui.menuColor">
 	 #if($mode!="Search")
 	 #if($total_size<= $userConf)
-	 <font color="white">$brih_first</font> &nbsp;
-	 <font color="white">$brih_nxt</font> &nbsp;
-	 <font color="white">$brih_pre</font> &nbsp;
-	 <font color="white">$brih_last</font> &nbsp;
+         	<img src="$content.getURI("images/Last_blank.png")">
+	        <img src="$content.getURI("images/Previous_blank.png")">
+        	<img src="$content.getURI("images/Next_blank.png")">
+		<img src="$content.getURI("images/First_blank.png")">
 	  #elseif($startIndex== $userConf_str)
-	  <font color="white">$brih_first</font> &nbsp;
-	  <font color="white">$brih_pre</font> &nbsp;
-	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+        	 <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+	         <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+	         <img src="$content.getURI("images/Previous_blank.png")">
+		 <img src="$content.getURI("images/First_blank.png")">
 	 #elseif($endIndex == $total_size || $endIndex > $total_size)
-         <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
- 	 <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-	 <font color="white">$brih_nxt</font>&nbsp;
-         <font color="white">$brih_last</font>&nbsp;
-	  #else
-	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-	    <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-     #end
-     #else
-	 #if($total_size<= $userConf)
-	 <font color="white">$brih_first</font>&nbsp;
-	 <font color="white">$brih_nxt</font>&nbsp;
-	 <font color="white">$brih_pre</font>&nbsp;
-	 <font color="white">$brih_last</font>&nbsp;
-	  #elseif($startIndex== $userConf_str)
-	 <font color="white">$brih_first</font>&nbsp;
-	 <font color="white">$brih_pre</font>&nbsp;
-	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+	        <img src="$content.getURI("images/Last_blank.png")">
+        	<img src="$content.getURI("images/Next_blank.png")">
+	        <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+		<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+	#else
+		  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+        	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+	          <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+		  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+	#end
+	#else
+	#if($total_size<= $userConf)
+		<img src="$content.getURI("images/Last_blank.png")">
+	        <img src="$content.getURI("images/Previous_blank.png")">
+        	<img src="$content.getURI("images/Next_blank.png")">
+		<img src="$content.getURI("images/First_blank.png")">
+	#elseif($startIndex== $userConf_str)
+        	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+	        <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+	        <img src="$content.getURI("images/Previous_blank.png")">
+		<img src="$content.getURI("images/First_blank.png")">
 	 #elseif($endIndex == $total_size || $endIndex > $total_size)
-         <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
- 	 <a href=$link.setPage("call,UsertMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-	 <font color="white">$brih_nxt</font>&nbsp;
-         <font color="white">$brih_last</font>&ibsp;
-	  #else
-	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &ibsp;
-	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-	    <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-     #end
+	        <img src="$content.getURI("images/Last_blank.png")">
+	        <img src="$content.getURI("images/Next_blank.png")">
+        	<a href=$link.setPage("call,UsertMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+		<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &nbsp;
+	#else
+        	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a> &nbsp;
+           	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a> &nbsp;
+           	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+	  	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a> &ibsp;
+     	#end
     #end
     </td>
  </tr>
@@ -311,7 +303,7 @@ $!data.getMessage()
 </form>
 <table width=100% bgcolor="$ui.tableColor" align=left>
         #foreach( $entry in $error_Messages )
-        <tr bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.tableColor" align="right">
         <td align=center>
         <font face="$ui.sansSerifFonts">$brih_usr $brih_name <font color="brown">"$entry.getErr_User()"</font></font>
         </td>

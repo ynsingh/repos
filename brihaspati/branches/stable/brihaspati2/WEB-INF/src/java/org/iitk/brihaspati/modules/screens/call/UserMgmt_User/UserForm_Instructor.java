@@ -61,10 +61,7 @@ import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
-
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
@@ -101,12 +98,10 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
                  *Time calculaion for how long user use this page.
                  */
                  int uid=UserUtil.getUID(userName);
-                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                  {
-	                 //CourseTimeUtil.getCalculation(uid);
-        	         //ModuleTimeUtil.getModuleCalculation(uid);
 			 int eid=0;
-			 MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+			 ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                  }
 
 		/**

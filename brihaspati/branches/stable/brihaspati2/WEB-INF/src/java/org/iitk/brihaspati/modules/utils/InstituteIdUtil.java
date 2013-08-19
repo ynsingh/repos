@@ -208,7 +208,8 @@ public class InstituteIdUtil
 				} else {
                                         String gname=GroupUtil.getGroupName(s);
 					e=StringUtils.substringAfterLast(gname,"_");
-                                        instidlist.add(e);
+					if (StringUtils.isNotBlank(e))
+	                                        instidlist.add(e);
                                 	}
                         }
                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getting all institute id according to  user id --[InstituteIdUtil]"+ex);}

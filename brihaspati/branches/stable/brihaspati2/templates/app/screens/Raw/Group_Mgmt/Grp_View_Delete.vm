@@ -8,7 +8,7 @@
  *  @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- *  @modified date:Feb 15- 2011,Feb 07-2013
+ *  @modified date:Feb 15- 2011,Feb 07-2013, April 22-2013
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -87,7 +87,7 @@ $!data.getMessage()
 		<td bgcolor="#AFDCEC">
 		#end
         	<a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5") style="text-decoration:none">$brih_grp #if($lang =="hindi") $brih_Of #end $brih_activity</a></td>
-		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/view-deletegroup.html","newWin");style="text-decoration:none">$brih_help</a>
+		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/view-deletegroup.html","newWin") style="text-decoration:none">$brih_help</a>
 		</td>
 	</tr>
 </table> ## table 2 end
@@ -190,9 +190,9 @@ $!data.getMessage()
         <tr>
         <td>
          #if($lang=="english")
-        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="Delete Group" onClick="deleteConfirm(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
         #else
-        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="Group Delete" onClick="deleteConfirm(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
         #end
         </td>
 </tr>

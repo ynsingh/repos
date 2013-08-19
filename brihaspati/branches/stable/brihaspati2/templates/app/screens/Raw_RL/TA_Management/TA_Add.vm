@@ -3,6 +3,7 @@
  * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -13,68 +14,96 @@ $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-	<table bgcolor="$ui.tableColor" width=100%>
-	<tr bgcolor="$ui.menuColor"><td colspan=7>
-	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a> | $brih_reg1 $bri_ta 
-	</td>
-	</tr>
-	</table>
-	<table bgcolor="$ui.tableColor" width=100%>
-	<tr >
-	#if($tdcolor != "1")
+        <table bgcolor="$ui.tableColor" width=100%>
+        <tr align="right" bgcolor="$ui.menuColor"><td colspan=7>
+         $brih_reg1 $bri_ta
+        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a>
+        |<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a>
+        </td>
+        </tr>
+        </table>
+        <table bgcolor="$ui.tableColor" width=100%>
+        <tr align="right">
+       #* #if($tdcolor != "3")
         <td>
-        #elseif($tdcolor == "1")
+        #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_listOf $bri_ta #else $brih_listOf $bri_ta #end </a>
-        </td>
+        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>*#
         #if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $brih_reg1 $bri_ta </a></td>
-	 #if($tdcolor != "3")
+        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $bri_ta $brih_reg </a></td>
+        #if($tdcolor != "1")
         <td>
-        #elseif($tdcolor == "3")
+        #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>
+        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> $bri_ta $brih_Of $brih_list </a>
+        </td>
+        </tr>
+        </table>
 
-	</tr>
-	</table>
-	
-	<table bgcolor="$ui.tableColor" width=100%>
-	<form name=frm method="post" action="$link.setPage("call,TA_Management,TA_Add.vm").setAction("TA_Registeration")">
-	<tr bgcolor="$ui.menuColor">
-        <td><b>$brih_course $brih_ID</b></td>
+        <table bgcolor="$ui.tableColor" width=100%>
+        <form name=frm method="post" action="$link.setPage("call,TA_Management,TA_Add.vm").setAction("TA_Registeration")">
+        <tr align="right" bgcolor="$ui.menuColor">
+       #* <td><b>$brih_course $brih_ID</b></td>
         <td><b>$course1</b></td>
-	</tr>
-	<tr>
-	        #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-	</tr>
-	<tr bgcolor="$ui.menuColor">
-	        #formPasswordCell ("$brih_pwd" "PASSWD" "")
-	</tr>
-	<tr>
-	        #formCell ("$brih_first $brih_name" "FNAME" "")
-	</tr>
-	<tr bgcolor="$ui.menuColor">
-	        #formCell("$brih_last $brih_name" "LNAME" "")
-	</tr>
-	<tr>
-	        <td colspan=5 align="left">
-	        <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
-	        <input type="hidden" name="actionName">
-	        <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
-	        <input type="hidden" name="count" Value="$tdcolor"/>
-		<input type="hidden" name="cName" value="$cName">
+        </tr>
+        <tr>
+                #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                #formPasswordCell ("$brih_pwd" "PASSWD" "")
+        </tr>
+        <tr>
+                #formCell ("$brih_first $brih_name" "FNAME" "")
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                #formCell("$brih_last $brih_name" "LNAME" "")
+        </tr>*#
 
-	        </td>
-	</tr>
-	</form>
-	</table>
+        <td align="right" colspan="3"><b>$course1</b></td>
+        <td align="right" colspan="3"><b>$brih_course $brih_ID</b></td>
+                </tr>
+
+                ## #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "$!st.usrname")
+                <td align="right" colspan="3"> <input type="text" name="EMAIL" value="$!st.usrname"> </td>
+                <td align="right"> <font color=red>*</font> $brih_email $brih_ID </td>
+                </tr>
+                <tr bgcolor="$ui.menuColor" align="right">
+                        ##formPasswordCell ("$brih_pwd" "PASSWD" "$!st.Pswd")
+                        <td align="right" colspan="3"> <input type="password" name="PASSWD" value="$!st.Pswd"> </td>
+                        <td> $brih_pwd </td>
+                </tr>
+                <tr align="right">
+                        ##formCell ("$brih_first $brih_name" "FNAME" "$!st.Fstname")
+                        <td align="right" colspan="3"> <input type="text" name="FNAME" value="$!st.Fstname"> </td>
+                        <td> $brih_first $brih_name </td>
+                </tr>
+                <tr bgcolor="$ui.menuColor" align="right">
+                        ###formCell("$brih_last $brih_name" "LNAME" "$!st.Lstname")
+                        <td align="right" colspan="3"> <input type="text" name="LNAME" value="$!st.Lstname"> </td>
+                        <td> $brih_last $brih_name </td>
+</tr>
+
+<tr align="right">
+                <td colspan=5>
+                <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
+                <input type="hidden" name="actionName">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+                <input type="hidden" name="count" Value="$tdcolor"/>
+                <input type="hidden" name="cName" value="$cName">
+
+                </td>
+        </tr>
+        </form>
+        </table>
+
+
+
 	<SCRIPT LANGUAGE="javascript">
 	        function checkField(frm,field)
 	        {

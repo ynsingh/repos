@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)InstituteRemoveStudentCourse.java	
  *
- *  Copyright (c) 2010,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.actions;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
- i* @modified date: 20-10-2010,23-12-2010,3-03-2011, 16-06-2011, 08-08-2012, 30-10-2012(Richa)
+ * @modified date: 20-10-2010,23-12-2010,3-03-2011, 16-06-2011, 08-08-2012, 30-10-2012(Richa)
  */
 import java.util.Vector;
 import java.util.List;
@@ -89,19 +89,8 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 		MultilingualUtil m_u=new MultilingualUtil();
 		String uname=data.getParameters().getString("username");
 		try{
-		/**
-		 * Here Courselist have student Name and GroupName from Selected
-		 * CheckBoxes in String for Removing
-		 */
-		String CourseList=data.getParameters().getString("deleteFileNames","");
-		if(!CourseList.equals("")){  
 			User user= data.getUser();
-//			String server_name=TurbineServlet.getServerName();
-  //                     	String srvrPort=TurbineServlet.getServerPort();
-//			String server_scheme = TurbineServlet.getServerScheme();
 			String luserName = user.getName();
-	                //int luserId=UserUtil.getUID(luserName);
-        	        //ErrorDumpUtil.ErrorLog("\n\n\n\n login User id in Institute Remove Student Course"+ luserId);
                 	String instId= user.getTemp("Institute_id").toString();
 			boolean flag = org.apache.commons.lang.StringUtils.isEmpty(instId);
 			String instName = "";
@@ -119,101 +108,52 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 	                        }
         	                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in InstituteRemoveStudentCourse class in acion at line 107");}
 			}
-			//String info_new = "", subject = "" , info_Opt="", msgRegard="", msgInstAdmin="";
 			String subject = "" , msgRegard="", msgInstAdmin="";
-			/*if(srvrPort.equals("8080")){
-                		info_new = "deleteUser";
-				info_Opt = "newUser";
-			}
-               		else{
-       	        		info_new = "deleteUserhttps";	
-       	        		info_Opt = "newUserhttps";	
-			}*/
 			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-			//subject = MailNotification.subjectFormate(info_new, "", pr );
 			subject = MailNotification.subjectFormate("deleteUser", "", pr );
-			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
                         msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
-			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
                         msgRegard = MailNotification.replaceServerPort(msgRegard);
-			//msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
 			msgInstAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
 			msgInstAdmin = MailNotification.getMessage_new(msgInstAdmin, "", "", instFirstLastName, "");
-			StringTokenizer st=new StringTokenizer(CourseList,"^");
-			for(int i=0;st.hasMoreTokens();i++){ 
-				String s=st.nextToken();
-				/**
-				 * preString have course id
-				 * postString have user name
-				 */
-				//int index=s.indexOf(":",0);
-				String preString=StringUtils.substringBeforeLast(s,":");
-				/*String preString=s.substring(0,index);
-				String postString=s.substring(index+1);*/
-				/**
-				 * Get the user id from the user name obtained 
-				 * @see UserUtil in utils
-				 */
-				UserManagement umt=new UserManagement();
-				Vector Err_user=new Vector();
-				Vector Err_type=new Vector();
-				/**
-				 * Remove the users selected for removal
-				 * @see UserManagement in utils
-				String server_name=TurbineServlet.getServerName();
-                        	String srvrPort=TurbineServlet.getServerPort();
-				String info_new = "", subject = "";
-				if(srvrPort.equals("8080"))
-	                		info_new = "deleteUser";
-                		else
-        	        		info_new = "deleteUserhttps";	
-				 */
-				//int uId=UserUtil.getUID(postString);
-				int uId=UserUtil.getUID(uname);
-		                String uid=Integer.toString(uId);
-				TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
-				String email=element.getEmail();
-				//String message = MailNotification.getMessage(info_new, preString, "", "", "", pr);
-				String message = MailNotification.getMessage("deleteUser", preString, "", "", "", pr);
-				message = message.replaceAll("institute_admin",instName);	
-				//ErrorDumpUtil.ErrorLog("\n\n\n\n in RemoveStudentCourse message="+message+"      subject="+subject);
-                                //String Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-				//String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instId,"");//last parameter added by Priyanka
-				String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                if(Mail_msg.equals("Success"))
-				{
-					Mail_msg=m_u.ConvertedString("mail_msg",LangFile);
-					data.setMessage(Mail_msg);
-				}
-				//String msg=umt.removeUserProfile(postString,preString,LangFile);
-				String msg=umt.removeUserProfile(uname,preString,LangFile);
-				if(umt.flag.booleanValue()==false){ 
-					//Err_user.addElement(postString);
-					Err_user.addElement(uname);
-					Err_type.addElement(msg);
-				} 
-				context.put("error_user",Err_user);
-				context.put("error_type",Err_type);
+			//Get courseid from parameter parser for deletion
+			String course_id=data.getParameters().getString("courseid","");
+			/**
+			 * Get the user id from the user name obtained 
+			 * @see UserUtil in utils
+			 */
+			UserManagement umt=new UserManagement();
+			Vector Err_user=new Vector();
+			Vector Err_type=new Vector();
+			/**
+			 * Remove the users selected for removal
+			 * @see UserManagement in utils
+			 */
+			int uId=UserUtil.getUID(uname);
+	                String uid=Integer.toString(uId);
+			TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
+			String email=element.getEmail();
+			String message = MailNotification.getMessage("deleteUser", course_id, "", "", "", pr);
+			message = message.replaceAll("institute_admin",instName);	
+			String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile);
+                        if(Mail_msg.equals("Success"))
+			{
+				Mail_msg=m_u.ConvertedString("mail_msg",LangFile);
+				data.setMessage(Mail_msg);
+			}
+			String msg=umt.removeUserProfile(uname,course_id,LangFile);
+			if(umt.flag.booleanValue()==false){ 
+				Err_user.addElement(uname);
+				Err_type.addElement(msg);
+			} 
+			context.put("error_user",Err_user);
+			context.put("error_type",Err_type);
 		 	String varStudent=m_u.ConvertedString("varStudent",LangFile);
 			String remStudent=m_u.ConvertedString("remStudent",LangFile);
 			if(LangFile.endsWith("en.properties")){
-				//data.setMessage(varStudent+" "+"'" +postString+"'"+" "+remStudent);}
 				data.setMessage(varStudent+" "+"'" +uname+"'"+" "+remStudent);}
 			else 
-				//data.setMessage(varStudent +" "+remStudent+"'" +postString+"'");
 				data.setMessage(varStudent +" "+remStudent+"'" +uname+"'");
-			}
-		} 
-		/**
-		 * This 'else' is executed when course is not selected
-		 */
-		else{ 
-			String courseMsg=m_u.ConvertedString("c_msg12",LangFile);
-			data.setMessage(courseMsg);
-		} 
 		}
 		catch(Exception e)
 		{
@@ -285,7 +225,7 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 	}
 	public void doUpdate(RunData data,Context context)
 	{
-		String CourseList=data.getParameters().getString("deleteFileNames","");	
+		String CourseList=data.getParameters().getString("updateFileNames","");	
 		MultilingualUtil m_u=new MultilingualUtil();
 		//ErrorDumpUtil.ErrorLog("inside do update method in action file"+CourseList);
 		String instId= data.getUser().getTemp("Institute_id").toString();
@@ -295,9 +235,8 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                 ParameterParser pp=data.getParameters();
        	        String uname=pp.getString("username");
        	        String Rollno="";
-		int count=Integer.parseInt(pp.getString("counter",""));
-		//ErrorDumpUtil.ErrorLog("counter for do update method in action file\n"+count);
-		if(!CourseList.equals("")){
+		//ErrorDumpUtil.ErrorLog("CourseList in update click----------------"+CourseList);
+		if(StringUtils.isNotBlank(CourseList)){
 			StringTokenizer st=new StringTokenizer(CourseList,"^");
                         for(int i=0;st.hasMoreTokens();i++){
 	                                String s=st.nextToken();
@@ -315,7 +254,7 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 			data.setMessage(msg);
 		}
 		else{
-                        String courseMsg=m_u.ConvertedString("c_msg12",LangFile);
+                        String courseMsg=m_u.ConvertedString("prgm_msg9",LangFile);
                         data.setMessage(courseMsg);
                 }
 		}
@@ -342,6 +281,8 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                         doRegister(data,context);
 		else if(action.equals("eventSubmit_doUpdate"))
 			doUpdate(data,context);
+		else if(action.equals("eventSubmit_doRemove"))
+			doRemove(data,context);
 		else{
 			String usrMsg=m_u.ConvertedString("usr_prof2",LangFile);
 			data.setMessage(usrMsg);

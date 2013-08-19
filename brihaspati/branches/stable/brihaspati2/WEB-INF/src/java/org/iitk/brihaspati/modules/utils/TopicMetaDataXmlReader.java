@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)TopicMetaDataXmlReader.java
  *
- *  Copyright (c) 2005-2008,2009,2010,2013 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008,2009-10,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -61,7 +61,7 @@ import org.iitk.brihaspati.om.TurbineUser;
  * @modify 23-12-2010
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modify date: 09-08-2012 (Priyanka),07-02-2013
+ * @modify date: 09-08-2012 (Priyanka),07-02-2013,10-06-2013
  */
 
 public class TopicMetaDataXmlReader
@@ -135,6 +135,7 @@ public class TopicMetaDataXmlReader
 		}
 	return null;	
 	}
+
 	/**
         * This method get all details of file element for Permission
         * @return Vector
@@ -265,6 +266,7 @@ public class TopicMetaDataXmlReader
 		}
 		return null;	
 	}
+	
 	/**
         * This method get all Topic names
         * @return String[]
@@ -294,6 +296,7 @@ public class TopicMetaDataXmlReader
 		}
                 return null;
         }
+	
 	public String[] getNames()
         {
                 try
@@ -319,6 +322,7 @@ public class TopicMetaDataXmlReader
 		}
                 return null;
         }
+	
 	/**
         * This method get all Details of Questions in Quiz
         * @return Vector
@@ -371,6 +375,7 @@ public class TopicMetaDataXmlReader
 		}
         return null;
         }
+	
 	/**
         * This method get all Details of Assignment result for user
         * @return Vector
@@ -417,7 +422,7 @@ public class TopicMetaDataXmlReader
         * @return Vector
         */
 
-         public Vector getAssignmentDetails1()
+        public Vector getAssignmentDetails1()
         {
                 Vector vt=new Vector();
                 try
@@ -456,7 +461,8 @@ public class TopicMetaDataXmlReader
         return null;
         //return 0;
         }
- 	/**
+ 	
+	/**
         *This method get all details of ResearchRepository
         *@return Vector
         */
@@ -498,6 +504,11 @@ public class TopicMetaDataXmlReader
                 }
         return null;
         }
+	 
+	/**
+         *This method get all details of Online user registration request
+         *@return Vector
+         */
 
 	public Vector getOnlineUserDetails(){
 	Vector v=new Vector();
@@ -507,7 +518,7 @@ public class TopicMetaDataXmlReader
                 if(file!=null)
                 {
                         Attributes ats;
-                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,flag,activation;
+                        String uname,passwd,fname,lname,email,gname,roleName,registerationDate,rollno,program, instAdminName,flag,activation;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -518,7 +529,7 @@ public class TopicMetaDataXmlReader
                                 passwd=ats.getValue("passwd");
 				fname=ats.getValue("fname");
 				lname=ats.getValue("lname");
-				orgtn=ats.getValue("orgtn");	
+				//orgtn=ats.getValue("orgtn");	
                                 email=ats.getValue("email");
                                 gname=ats.getValue("gname");
                                 roleName=ats.getValue("roleName");
@@ -533,7 +544,7 @@ public class TopicMetaDataXmlReader
                                 fileEntry.setActive(passwd);
 				fileEntry.setInstructorName(fname);
 				fileEntry.setUserName(lname);
-				fileEntry.setDept(orgtn);
+				//fileEntry.setDept(orgtn);
                                 fileEntry.setEmail(email);
                                 fileEntry.setGroupName(gname);
                                 fileEntry.setRoleName(roleName);
@@ -550,7 +561,12 @@ public class TopicMetaDataXmlReader
                 }catch(Exception e){ return null ;}
         return null;
         }
-	
+	 
+	/**
+         *This method get all details of Online course registration request
+         *@return Vector
+         */
+
 	public Vector getOnlineCourseDetails(){
         try
         {
@@ -559,7 +575,7 @@ public class TopicMetaDataXmlReader
                 {
                         Vector v=new Vector();
                         Attributes ats;
-                        String gname,cname,uname,orgtn,email,fname,lname,registerationDate,instid,flag,activation;
+                        String gname,cname,uname,email,fname,lname,registerationDate,instid,flag,activation,dept,scname;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -569,7 +585,7 @@ public class TopicMetaDataXmlReader
                                 gname=ats.getValue("gname");
                                 cname=ats.getValue("cname");
                                 uname=ats.getValue("uname");
-				orgtn=ats.getValue("orgtn");
+				//orgtn=ats.getValue("orgtn");
                                 email=ats.getValue("email");
                                 fname=ats.getValue("fname");
                                 lname=ats.getValue("lname");
@@ -578,12 +594,15 @@ public class TopicMetaDataXmlReader
 				//For confirmation purpose
 				flag = ats.getValue("flag");
                                 activation = ats.getValue("actionKey");
+				//Get department and school/center name from xml file
+                                dept = ats.getValue("dept");
+                                scname = ats.getValue("sch_center");
 
 				int InstId=Integer.parseInt(instid);
                                 fileEntry.setGroupName(gname);
                                 fileEntry.setCourseName(cname);
                                 fileEntry.setLoginName(uname);
-				fileEntry.setDept(orgtn);
+				//fileEntry.setOrganisation(orgtn);
                                 fileEntry.setEmail(email);
                                 fileEntry.setInstructorName(fname);
                                 fileEntry.setUserName(lname);
@@ -592,6 +611,8 @@ public class TopicMetaDataXmlReader
 				fileEntry.setInstId(InstId);
 				fileEntry.setFlag(flag);
                                 fileEntry.setActivation(activation);
+                                fileEntry.setDept(dept);
+                                fileEntry.setSchoolCenter(scname);
                                 v.addElement(fileEntry);
                         }
                         return v;
@@ -632,7 +653,8 @@ public class TopicMetaDataXmlReader
 		}
                 return null;
         }
- 	/**
+ 	
+	/**
         *This method get all details of Bookmarks 
         *@return Vector
         */
@@ -716,6 +738,7 @@ public class TopicMetaDataXmlReader
 		}
 	return null;	
 	}
+	
 	/**
         *This method get all details of FAQ
         *@return Vector
@@ -757,11 +780,12 @@ public class TopicMetaDataXmlReader
                 }
         return null;
         }
+
 	//OLES
 	 /**
- *         *This method get all details of OLES
- *                 *@return Vector
- *                         */
+         *This method get all details of OLES
+         *@return Vector
+         */
         public Vector getQuesBank_Detail()
         {
                         Vector vt=new Vector();
@@ -807,10 +831,11 @@ public class TopicMetaDataXmlReader
                 }
         return null;
         }
-/**
- *         *This method get all details of OLES
- *                 *@return Vector
- *                         */
+
+	/**
+         *This method get all details of OLES
+         *@return Vector
+         */
         public Vector getQuesBanklist_Detail()
         {
                         Vector vt=new Vector();
@@ -847,12 +872,12 @@ public class TopicMetaDataXmlReader
                         System.out.println("See Exception message inExceptionLog.txt file:: ");
                 }
         return null;
-}
-/**
- *          *This method get all details of OLES
- *                  *@return Vector
- *                          */
-        public Vector getQuesBank_Detail1()
+	}
+	/**
+         *This method get all details of OLES
+         *@return Vector
+         */
+	public Vector getQuesBank_Detail1()
         {
                         Vector vt=new Vector();
                 try
@@ -888,7 +913,6 @@ public class TopicMetaDataXmlReader
                         System.out.println("See Exception message inExceptionLog.txt file:: ");
                 }
         return null;
-}	
-
+	}	
 }//end of  file
 

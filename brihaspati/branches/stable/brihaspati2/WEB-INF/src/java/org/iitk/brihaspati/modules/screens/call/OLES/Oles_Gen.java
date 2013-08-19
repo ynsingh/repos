@@ -52,9 +52,7 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
  * This class manage Quiz Generation process 
@@ -91,10 +89,8 @@ public class Oles_Gen extends SecureScreen{
                          int uid=UserUtil.getUID(uname);
                          if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			context.put("tdcolor",pp.getString("count",""));

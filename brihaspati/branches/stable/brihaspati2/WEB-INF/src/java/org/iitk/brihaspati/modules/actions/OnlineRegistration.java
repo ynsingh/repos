@@ -1,10 +1,9 @@
-
 package org.iitk.brihaspati.modules.actions;
 
 /**
  * @(#)OnlineRegistration.java	
  *  
- *  Copyright (c) 2008-2010,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008-2010,2012-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -45,7 +44,6 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
-import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.velocity.context.Context;
 
@@ -85,15 +83,15 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modify 20-03-09
- * @modified date: 08-07-2010
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>3May2012
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify 20-03-09, 08-07-2010
  * @modified date: 20-10-2010,23-12-2010, 16-06-2011,20-04-2012
- * @modified date: 09-08-2012, 25-09-2012, 06-11-2012 (Priyanka)
+ * @modified date: 09-08-2012, 25-09-2012, 06-11-2012 (Priyanka),06-06-2013
  */
 
 
@@ -130,14 +128,14 @@ public class OnlineRegistration extends VelocitySecureAction
                 return true;
         }
 
-/**
- *
- * Method for registered a user as Secondary Instructor,Student
- * and Content Author
- * @param data RunData instance
- * @param context Context instance
- *
- */
+	/**
+ 	*
+ 	* Method for registered a user as Secondary Instructor,Student
+ 	* and Content Author
+ 	* @param data RunData instance
+ 	* @param context Context instance
+ 	*
+ 	*/
 	public void UserRegister(RunData data, Context context) throws Exception
 	{
 		Vector indexList= new Vector();
@@ -145,7 +143,7 @@ public class OnlineRegistration extends VelocitySecureAction
 		int group_id =0;
 			
 		ParameterParser pp=data.getParameters();
-	//following check added by Priyanka
+		//following check added by Priyanka
 		u_mode=pp.getString("mode");
 		if(u_mode.equals("cnfrm_u"))
 		{
@@ -157,7 +155,7 @@ public class OnlineRegistration extends VelocitySecureAction
                 XmlWriter xmlWriter=null;
 		fname=pp.getString("FNAME","");
 		lname=pp.getString("LNAME","");
-		orgtn=pp.getString("ORGTN","");
+		//orgtn=pp.getString("ORGTN","");
                 email=pp.getString("EMAIL");
                 rollno=pp.getString("rollno","").trim();
                 program=pp.getString("prg","");
@@ -338,14 +336,14 @@ public class OnlineRegistration extends VelocitySecureAction
 						flag1="0";
 				     		stat = sendMail(email, a_key, u_mode, data, lang);
 						
-							TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);//last two parameters added by Priyanka
+							TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);//last two parameters added by Priyanka
 							xmlWriter.writeXmlFile();
 
 							}//if
 							else
 							{
 								flag1="1";
-				                		TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,"",flag1);//last two parameters added by Priyanka
+				                		TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,curDate,rollno,program, instName,"",flag1);//last two parameters added by Priyanka
 								xmlWriter.writeXmlFile();
 								if(gname.equals("author"))
 		                                                        sendMailToApproval(gname,LangFile,uname,"","","",0);
@@ -380,13 +378,13 @@ public class OnlineRegistration extends VelocitySecureAction
                                          flag1="0";
 					stat = sendMail(email, a_key, u_mode, data, lang);
 
-					       	TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);
+					       	TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);
         		        		xmlWriter.writeXmlFile();
 					}//if
 					else
 					{	
 						flag1="1";
-                                                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,"",flag1);//last two parameters added by Priyanka
+                                                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,email,gname,roleName,curDate,rollno,program, instName,"",flag1);//last two parameters added by Priyanka
                                                 xmlWriter.writeXmlFile();
 						sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
 					}//else
@@ -415,7 +413,7 @@ public class OnlineRegistration extends VelocitySecureAction
                         int srvrPort=data.getServerPort();
                         //String serverPort=Integer.toString(srvrPort);
                         //String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,orgtn,email,gname,"student",serverName,serverPort,LangFile,rollno,program,"cnfrm_u");// last parameter added by Priyanka  
-                        String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,orgtn,email,gname,"student",LangFile,rollno,program,"cnfrm_u");
+                        String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,"student",LangFile,rollno,program,"cnfrm_u");
 			data.setMessage(msg);
 
 		}
@@ -470,7 +468,7 @@ public class OnlineRegistration extends VelocitySecureAction
 		String instAdminName ="";
 		//Vector vc = new Vector();
                 ParameterParser pp=data.getParameters();
-        //following check added by Priyanka
+	        //following check added by Priyanka
         	u_mode=pp.getString("mode");
         	if(u_mode.equals("cnfrm_c"))
                 {
@@ -489,11 +487,13 @@ public class OnlineRegistration extends VelocitySecureAction
 		//int instid =Instid.getIst_Id(instname);
                 gname=pp.getString("COURSEID","").toUpperCase();
                 String cname=pp.getString("CNAME","");
+		//Get school/center and Department name for Online Course Registeration
+                String schname=pp.getString("SCHNAME","");
                 String dept=pp.getString("DEPT","");
                 passwd=pp.getString("PASS");
                 fname=pp.getString("FNAME","");
                 lname=pp.getString("LNAME","");
-		String orgtn=pp.getString("ORGTN","");
+		//String orgtn=pp.getString("ORGTN","");
                 email=pp.getString("EMAIL","");
 		uname=email;
                 if(passwd.equals("")){
@@ -510,7 +510,8 @@ public class OnlineRegistration extends VelocitySecureAction
 		 * Below line added by Shaista 
 		 * Getting institute admin's First n Last Name according to instituteId
 		 */
-		 try{   crit=new Criteria();
+		 try{   
+			crit=new Criteria();
                         crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteid);
                         List inm=InstituteAdminUserPeer.doSelect(crit);
                         InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
@@ -628,7 +629,8 @@ public class OnlineRegistration extends VelocitySecureAction
 					//indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
                                         indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, LangFile, instAdminName, InstituteId);
 					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-					TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
+					//Add last parameter 'dept' and 'schname' for course registration with school/center.
+					TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,curDate,InstituteId,a_key,flag2,dept,schname);
                                         xmlWriter.writeXmlFile();
 					}//if
 					else
@@ -637,7 +639,8 @@ public class OnlineRegistration extends VelocitySecureAction
 					//indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
                                         indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, LangFile, instAdminName, InstituteId);
 					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-                                        TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,"",flag2);
+					//Add last parameter 'dept' and 'schname' for course registration with school/center.
+                                        TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,curDate,InstituteId,"",flag2,dept,schname);
                                         xmlWriter.writeXmlFile();
 					sendMailToApproval("fromCourse",LangFile,uname,fname,lname, cname,instituteid);
 					}//else
@@ -659,14 +662,16 @@ public class OnlineRegistration extends VelocitySecureAction
 				
 				stat = sendMail(email, a_key, u_mode, data, lang);
                                 xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-                                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
+				//Add last parameter 'dept' and 'schname' for course registration with school/center.
+                                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,curDate,InstituteId,a_key,flag2,dept,schname);
                                 xmlWriter.writeXmlFile();
 				}//if
 				else
 				{
 				flag2="1";
 				xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-                                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,"",flag2);
+				//Add last parameter 'dept' and 'schname' for course registration with school/center.
+                                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,email,fname,lname,curDate,InstituteId,"",flag2,dept,schname);
                                 xmlWriter.writeXmlFile();
 				sendMailToApproval("fromCourse",LangFile,uname,fname,lname,cname,instituteid);
 				}//else
@@ -931,21 +936,35 @@ public class OnlineRegistration extends VelocitySecureAction
 
         public void doSearch(RunData data, Context context) throws Exception
         {
-		/**
- 		*Get only those courses in which instructor allowed the student for online Registration
-		*@see CourseManagement util in utils
- 		*/ 
-		String LangFile=(String)data.getUser().getTemp("LangFile");
-		ParameterParser pp=data.getParameters();
-		String instName=pp.getString("instName");
-		String status=pp.getString("status");
-		Criteria crit=new Criteria();
-		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instName);
-		List lst=InstituteAdminRegistrationPeer.doSelect(crit);
-		int instituteId=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
-		//Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(Integer.toString(instituteId));	
-		Vector courseList=CourseManagement.getCrsOnlinDetails(Integer.toString(instituteId));	
-		context.put("courseList",courseList);
+		try 
+		{
+			/**
+ 			*Get only those courses in which instructor allowed the student for online Registration
+			*@see CourseManagement util in utils
+ 			*/ 
+			ParameterParser pp=data.getParameters();
+			String instName=pp.getString("instName");
+			String instituteId = Integer.toString(InstituteIdUtil.getIst_Id(instName));
+			Vector courseList=CourseManagement.getCrsOnlinDetails(instituteId);	
+			context.put("courseList",courseList);
+			/**
+                	* Get only those department which is mapped with institute and school/center.
+               		* @param instName: Getting instName as a String from Parameter Parser .
+                	* @param instId: Getting instId as an String .
+                	* @see ListManagement util in utils.
+                	*/
+			//Get mapped department list
+                	List DeptList=ListManagement.getMapDeptList(instituteId);
+                	context.put("deptlist",DeptList);
+                	//Get mapped school/center list
+                	List mapschlist = ListManagement.getMapSchoolDeptList(instituteId,"school");
+                	context.put("schlist",mapschlist);
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Exception in online course registration or getting mapped department list or school/center list ---"+e.getMessage());
+		}
+
 	}
 
 /**
@@ -1033,7 +1052,6 @@ private boolean sendMail(String email, String a_key, String u_mode, RunData data
                         CourseRegister(data,context);
 		else if(action.equals("eventSubmit_doSearch"))
                         doSearch(data,context);
-
 		else
 		{
 			data.setMessage("Action not found");

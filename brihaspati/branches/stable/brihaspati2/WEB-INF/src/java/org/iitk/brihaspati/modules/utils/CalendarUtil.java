@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)CalendarUtil.java
  *
- *  Copyright (c) 2005-2008,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2008,2011,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -41,7 +41,14 @@ import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-
+import java.util.GregorianCalendar;
+import java.util.Calendar;
+//import org.joda.time.*;
+//import org.joda.time.chrono.*;
+//import org.joda.time.field.*;
+import org.joda.time.DateTimeField;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.LocalDate;
 /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
@@ -190,5 +197,20 @@ public class CalendarUtil
 		}
 		catch(Exception e){}
 		return getDate;
+	}
+	public static int correctEntry(String mon,String year)
+	{
+			int maxvalue=0;
+		try{	
+			int year1=Integer.parseInt(year);
+			int month= Integer.parseInt(mon);
+			GregorianChronology calendar = GregorianChronology.getInstance();
+        		DateTimeField field = calendar.dayOfMonth();
+			LocalDate date = new LocalDate(year1,month,1, calendar);
+			maxvalue=(field.getMaximumValue(date));
+			
+			
+		}catch(Exception e){ ErrorDumpUtil.ErrorLog("Error in CalendarUtil method correctEntry()-------"+e);}
+		return maxvalue;
 	}
 }	

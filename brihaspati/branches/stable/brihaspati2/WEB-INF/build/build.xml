@@ -26,7 +26,7 @@
     <fileset dir="${tdk.home}/webapps/${tdk.project}/WEB-INF/lib">
       <include name="**/*.jar"/>
     </fileset>
-	<fileset dir="${tdk.home}/common/lib">
+	<fileset dir="${tdk.home}/lib">
 	  <include name="**/servlet*.jar"/>
 	</fileset>
   </path>
@@ -652,17 +652,19 @@
 	<delete dir="${Multilingual.TemplatePath}/english" />
 	<delete dir="${Multilingual.TemplatePath}/french" />
 	<delete dir="${Multilingual.TemplatePath}/german" />
-	<delete dir="${Multilingual.TemplatePath}/gujrati" />
+	<delete dir="${Multilingual.TemplatePath}/gujarati" />
 	<delete dir="${Multilingual.TemplatePath}/greek" />
 	<delete dir="${Multilingual.TemplatePath}/gurmukhi" />
 	<delete dir="${Multilingual.TemplatePath}/hindi" />
 	<delete dir="${Multilingual.TemplatePath}/italian" />
 	<delete dir="${Multilingual.TemplatePath}/japanese" />
-	<delete dir="${Multilingual.TemplatePath}/korean" />
+	<delete dir="${Multilingual.TemplatePath}/korean" />        
+	<delete dir="${Multilingual.TemplatePath}/kannada" />
 	<delete dir="${Multilingual.TemplatePath}/malayalam" />
 	<delete dir="${Multilingual.TemplatePath}/marathi" />
 	<delete dir="${Multilingual.TemplatePath}/nepali" />
 	<delete dir="${Multilingual.TemplatePath}/persian" />
+	<delete dir="${Multilingual.TemplatePath}/portuguese" />
 	<delete dir="${Multilingual.TemplatePath}/russian" />
 	<delete dir="${Multilingual.TemplatePath}/spanish" />
 	<delete dir="${Multilingual.TemplatePath}/tamil" />

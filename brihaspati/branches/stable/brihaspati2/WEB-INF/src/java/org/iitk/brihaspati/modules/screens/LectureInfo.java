@@ -1,9 +1,8 @@
 package org.iitk.brihaspati.modules.screens;
-
 /*
- * @(#)LectureInfo.java	
+ * @(#) LectureInfo.java	
  *
- *  Copyright (c) 2004-2005,2013 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2009,2010,2012,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,134 +35,101 @@ package org.iitk.brihaspati.modules.screens;
  * 
  */
 
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
-import org.apache.turbine.util.parser.ParameterParser;       
-import org.apache.turbine.modules.screens.VelocityScreen;
-import org.apache.turbine.util.parser.ParameterParser;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.apache.turbine.services.servlet.TurbineServlet;
 import java.util.List;
 import java.util.Date;
-import java.util.Vector;
-import org.apache.torque.util.Criteria;
-import org.apache.xmlrpc.XmlRpc;
-import java.text.SimpleDateFormat;
+
 import java.text.Format;
+import java.text.SimpleDateFormat;
+
+import org.apache.torque.util.Criteria;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.modules.screens.VelocityScreen;
+import org.apache.turbine.util.parser.ParameterParser;
+
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+
 import org.iitk.brihaspati.om.Lecture;
 import org.iitk.brihaspati.om.LecturePeer;
-import org.iitk.brihaspati.om.TurbineUser;
-import org.iitk.brihaspati.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.Courses;
-import org.iitk.brihaspati.om.CoursesPeer;
-import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
-import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.UrlConectionPeer;
 import org.iitk.brihaspati.om.UrlConection;
-import java.text.DateFormat;
-import java .util.GregorianCalendar;
-import java .util.Calendar;
 
 /**
- * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
+ * This class contains code for display details of all registered courses 
+ * in System 
+ * 
+ * @author <a href="arvindjss17@gmail.com">Arvind Pal</a>
+ * @author <a href="shikhashuklaa@gmail.com">Shikha Shukla</a>
  */
 public class LectureInfo extends VelocityScreen
 {
-    /**
-     * Place all the data object in the context
-     * for use in the template.
-     */
-    public void doBuildTemplate( RunData data, Context context )
-    {
-		boolean flag = false;
-		System.gc();
-                try{
-                        ParameterParser pp=data.getParameters();
-                        String lang=pp.getString("lang","");
-                        if(lang.equals(""))
-			{
-				flag = true;
-				lang= "english";
-			}
-
-				context.put("flag",flag);
-				context.put("lang",lang);
-				lang= "";
-			pp.add("str","session");	
-			int Sessionkey=0;
-			String lecname=null;
-			String courseName=null;
-			String iName=null;
-
+    	/**
+     	* @param data Rundata
+     	* @param context Context
+     	* @see CourseUserDetail in Utils
+     	*/
+	public void doBuildTemplate( RunData data, Context context ) 
+        {
+		try
+               	{	
+			org.apache.turbine.om.security.User user=data.getUser();
+			ParameterParser pp=data.getParameters();
+			String lang=pp.getString("lang","english");
+                        context.put("lang",lang);
+			pp.add("str","session");
+                        String mode=pp.getString("mode","");
                         String LecId = pp.getString("lectureId","");
 
-			// Get Instrutor Name,Course Name, Lecture Name, Time ,Date from Lecture Table
-			Criteria lec = new Criteria();
+                        Criteria lec = new Criteria();
                         lec.add(LecturePeer.LECTUREID,LecId);
                         List ltable_list = LecturePeer.doSelect(lec);
                         Lecture element=(Lecture)ltable_list.get(0);
-			lecname = element.getLecturename();
-			String user_name=element.getUrlname();
-			Criteria name = new Criteria();
-                        name.add(TurbineUserPeer.LOGIN_NAME,user_name);
-                        List nam = TurbineUserPeer.doSelect(name);
-                        TurbineUser ele=(TurbineUser)nam.get(0);
-                        String firstName=ele.getFirstName();
-                        String lastName=ele.getLastName();
-                        iName=firstName+" "+lastName;
-			String gName=element.getGroupName();
-                        Criteria cName = new Criteria();
-                        cName.add(CoursesPeer.GROUP_NAME,gName);
-                        List course = CoursesPeer.doSelect(cName);
-                        Courses c=(Courses)course.get(0);
-                        String lName=c.getCname();
-                        String gAlias=c.getGroupAlias();
-                        courseName=gAlias+"-"+lName;
-                        Date lDate=element.getSessiondate();
+                        String lecname = element.getLecturename();
+                        String user_name=element.getUrlname();
+                        String courseid=element.getGroupName();
+                        int uid=UserUtil.getUID(user_name);
+                        String userfullname=UserUtil.getFullName(uid);
+			String courseName=org.iitk.brihaspati.modules.utils.CourseUtil.getCourseAlias(courseid)+"-"+org.iitk.brihaspati.modules.utils.CourseUtil.getCourseName(courseid);
+			Date lDate=element.getSessiondate();
                         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
                         String lDate_str = formatter.format(lDate);
                         String lDate_split[]=lDate_str.split(" ");
                         String lTime=element.getSessiontime();
                         String lDuration=element.getDuration();
                         String sGuest=element.getGroupName();
-                        int gid=GroupUtil.getGID(sGuest);
-
-                        Criteria guestf = new Criteria();
-                        guestf.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
-                        List gList = TurbineUserGroupRolePeer.doSelect(guestf);
-
-			//get Session Key for guest from url_connection Table if Session is active for guest. 
-                        for(int j=0;j<gList.size();j++){
-                                TurbineUserGroupRole g=(TurbineUserGroupRole)gList.get(j);
-                            	int gflag=g.getRoleId();
-                                    if(gflag==3){
-                                       try{
-                                           int lid=element.getLectureid();
-                                           Criteria role = new Criteria();
-                                           role.add(UrlConectionPeer.LECTUREID,lid);
-                                           role.add(UrlConectionPeer.LOGIN_ID,"guest");
-                                           role.add(UrlConectionPeer.ROLE,"student");
-                                           List urlconection=UrlConectionPeer.doSelect(role);
-                                           UrlConection urlcon=(UrlConection)urlconection.get(0);
-                                           Sessionkey = urlcon.getSessionKey();
-                                        }catch(Exception excp){}
-                                    }
-                        }
-			context.put("key",Sessionkey);
+			String iName=org.iitk.brihaspati.modules.utils.CourseManagement.IsPrimaryInstructor(courseid);
+			boolean guestatus=org.iitk.brihaspati.modules.utils.CourseUtil.getCourseGuestStatus(GroupUtil.getGID(sGuest));
+			int Sessionkey=0;
+			if(!(mode.equals("Clecture"))) {
+				Criteria role = new Criteria();
+				role.add(UrlConectionPeer.LECTUREID,Integer.parseInt(LecId));
+        	                role.add(UrlConectionPeer.LOGIN_ID,"guest");
+                	        role.add(UrlConectionPeer.ROLE,"student");
+                        	List urlconection=UrlConectionPeer.doSelect(role);
+	                        UrlConection urlcon=(UrlConection)urlconection.get(0);
+        	                Sessionkey = urlcon.getSessionKey();	
+			}else if(mode.equals("Clecture")) {
+				Criteria role = new Criteria();
+                                role.add(UrlConectionPeer.LECTUREID,Integer.parseInt(LecId));
+                                role.add(UrlConectionPeer.LOGIN_ID,user.getName());
+                                List urlconection=UrlConectionPeer.doSelect(role);
+                                UrlConection urlcon=(UrlConection)urlconection.get(0);
+                                Sessionkey = urlcon.getSessionKey();		
+			}
+                        context.put("key",Sessionkey);
                         context.put("date",lDate_split[0]);
                         context.put("duration",lDuration);
                         context.put("time",lTime);
                         context.put("InstructorName",iName);
-                        context.put("lecname",lecname);
+			context.put("lecname",lecname);
                         context.put("coursename",courseName);
-
-		}
-                catch(Exception e)
+		}//end try
+	       	catch(Exception e)
 		{
-			ErrorDumpUtil.ErrorLog("The Error in Lecture Info !!"+e);
-		}
-
-    }
+			data.setMessage("The error in View Registered Course List !!"+e);
+		}  
+	}          
 }

@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
 
 /*
  * @(#) PostAns.java 
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -55,13 +55,12 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.parser.ParameterParser;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 	/** 
 	* This class contains code of Post Answer to the Assignment
 	* @author<a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
 	* @author<a href="smita37uiet@gmail.com">Smita Pal</a>
+	* @author<a href="tejdgurung20@gmail.com">Tej Bahadur</a>
 	*/
  
 public class PostAns extends  SecureScreen
@@ -84,18 +83,17 @@ public class PostAns extends  SecureScreen
 			context.put("coursename",(String)user.getTemp("course_name"));
 			context.put("Ans","Ans");
 			context.put("tdcolor",data.getParameters().getString("count",""));
+			context.put("topicnm",data.getParameters().getString("topicname",""));
 			Date curDate=new Date();
                         long longCurDate= curDate.getTime();
 			/*
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                               // CourseTimeUtil.getCalculation(uid);
-                               // ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			Vector v=new Vector();
@@ -157,7 +155,7 @@ public class PostAns extends  SecureScreen
 						ErrorDumpUtil.ErrorLog("arvind no "+path);
 						context.put("answerfile1","no");			
 					}
-					} catch(Exception e){ ErrorDumpUtil.ErrorLog("ssssssss arvind  "+e);  }
+					} catch(Exception e){ ErrorDumpUtil.ErrorLog(" "+e);  }
 					
 				} else
 					context.put("answerfilecheck","checked");

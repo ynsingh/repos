@@ -69,6 +69,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
@@ -83,7 +84,12 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 
+import java.util.Calendar;
+//import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 /**
  * In this class,we send notice and delete self copy or all(Only Sender) notices
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
@@ -92,9 +98,11 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date: 28-01-2010
  * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011, 16-06-2011 (Shaista)
- * @modified date: 24-08-2012 (Sunil Yadav)
+ * @modified date: 24-08-2012 (Sunil Yadav),23-02-2013
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -366,12 +374,34 @@ public class Notice_Send_Delete extends SecureAction
                                 data.setScreenTemplate("call,Notice_User,Notices.vm");
 
                         data.setMessage(msg1);
+			AutoSave.doDelete((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page",""));
 		}
 		catch(Exception ex)
 		{
 			data.setMessage("The Error in Send Notice .."+ex);
 		}
 	}
+
+	/**
+        * In this method, We save message/s or Local_mail for users(Local)
+        * @param data RunData
+        * @param context Context
+        * @exception Exception a generic exception
+        */
+        public void doSave(RunData data, Context context)
+        {
+                try{
+                        User user = data.getUser();
+                        ParameterParser pp=data.getParameters();
+                        String id = (String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page","");
+                        String message = pp.getString("message");//pp.getString("hexaStr").trim();
+                        AutoSave.doSave(id,message);
+                        data.setScreenTemplate("call,Notice_User,Notices.vm");
+                }
+                catch(Exception e){
+                }
+        }
+
 	/**
         * In this method,we insert notice to database
         * @param msg_id int
@@ -531,35 +561,96 @@ public class Notice_Send_Delete extends SecureAction
 	}
 
 	/**
-        * In this method,we configure flash heading
+        * In this method,we configure flash heading and System Shutdown Notice
         * @param data Rundata
         * @param context Context
         */
         public void doWrite(RunData data,Context context)
         {
                 try{
+			/**
+		         *Getting file value from temporary variable according to selection
+         		 *Replacing the value from Property file
+         		 **/
                         String LangFile=(String)data.getUser().getTemp("LangFile");
-			//String nflag=pp.getString("flag","");
 			ParameterParser pp=data.getParameters();
-			String nflag=pp.getString("nflag","");
-			context.put("nflag",nflag);
+			User user = data.getUser();
+			/**
+         		  * @param htype: Getting heading Type as a String from Parameter Parser 
+          		  * @param Fheading: Getting Message as a String from Parameter Parser 
+          		  * @param fhrole: Getting user role String from rundata 
+          		  */
+
+			String htype=pp.getString("htype","");
+                        context.put("hflag",htype);
 			String Fheading=pp.getString("message","");
-		//	String Fheadexp=pp.getString("expiry","");
-			//String fhrole=pp.getString("role");
-			//String fhrole=(String)data.getUser().getTemp("role");
 			String fhrole=data.getUser().getName();
-			//if(fhrole.equals("turbine_root")){
-			if(fhrole.equals("admin")){
+			/**
+			* Check User role and Heading Type
+			* if heading is Flash Heading
+			* set message in Notificartion.properties file 
+			*/
+			if(fhrole.equals("admin") && htype.equals("Flash Heading")){
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
 			(new File(path)).delete();
 			AdminProperties.setValue(path,Fheading,"brihaspati.admin.flashHeading.value");
 			}
-		//	AdminProperties.setValue(path,Fheadexp,"brihaspati.admin.flashHeadExp.value");
+			/**
+                        * Check User role and Heading Type
+                        * if heading is Shutdown Notice
+			* @param shtime: Get shutdown time as a String from Parameter Parser 
+			* @param ExpiryDate: Get ExpiryTime as a String. 
+                        * set message in Shutdown.properties file 
+                        */
+			if((fhrole.equals("admin")) && (htype.equals("Shutdown Notices"))){
+			String shtime=pp.getString("shtime","");
+                        int stime=Integer.parseInt(shtime);
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        java.util.Date date = new java.util.Date();
+			// Create Calender instance
+                        Calendar now = Calendar.getInstance();
+                        //add minutes to current date using Calendar.add method
+                        now.add(Calendar.MINUTE,stime);
+                        //Get Expiry date for Shutdown Notices.
+                        String ExpiryDate=dateFormat.format(now.getTime());
+                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Shutdown.properties";
+                        (new File(path)).delete();
+			/**
+			* Set Message in Shutdown.Notification properties file
+			* Set ExpiryDate in Shutdown.Notification properties file
+			*/
+                        AdminProperties.setValue(path,ExpiryDate,"brihaspati.admin.ShutdownExpDate.value");
+                        AdminProperties.setValue(path,Fheading,"brihaspati.admin.ShutdownHeading.value");
+                        }
 			String Fhupdate=MultilingualUtil.ConvertedString("cal_ins",LangFile);
                         data.setMessage(Fhupdate);
-
+			AutoSave.doDelete((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page",""));
 		}
 		catch(Exception ex){data.setMessage("The error in do Write method in Notice Send"+ex);}
+	}
+
+	public void doSendMsg(RunData data, Context context)
+        {
+		try
+                {
+                        String mailMsg = "";
+                        User user = data.getUser();
+                        String username=user.getName();
+                        ParameterParser pp=data.getParameters();
+                        String LangFile=user.getTemp("LangFile").toString();
+                        String subject =pp.getString("subject","");
+                        String semail = pp.getString("senderMail","");
+                        String message = pp.getString("msg_val","");
+                        if( semail != null && semail != "")
+                                mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", semail, subject, "", LangFile);
+			String msg1=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+                        data.setMessage(msg1);
+                        //ErrorDumpUtil.ErrorLog("mailMsg reply---------"+mailMsg);
+                }
+                catch(Exception ex)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in doSend method!! "+ex);
+                }
 	}
 
     /**
@@ -570,13 +661,20 @@ public class Notice_Send_Delete extends SecureAction
 	public void doPerform( RunData data,Context context )throws Exception
 	{
 		String action=data.getParameters().getString("actionName","");
+		if(StringUtils.isBlank(action))
+			action=data.getParameters().getString("actionValue","");
 		if(action.equals("eventSubmit_doSend"))
 			doSend(data,context);
 		else if(action.equals("eventSubmit_doDelete"))
 			doDelete(data,context);
 		else if(action.equals("eventSubmit_doWrite"))
                         doWrite(data,context);
-
+		else if(action.equals("eventSubmit_doSave"))
+                        doSave(data,context);
+		else if(action.equals("eventSubmit_doChange"))
+			data.setMessage("");
+		else if(action.equals("eventSubmit_doSendMsg"))
+			doSendMsg(data,context);
 		else
 			data.setMessage("Cannot find the button");
 	}

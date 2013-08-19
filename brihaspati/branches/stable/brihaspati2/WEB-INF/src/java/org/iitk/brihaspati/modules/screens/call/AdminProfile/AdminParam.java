@@ -58,7 +58,7 @@ import org.apache.commons.lang.StringUtils;
  * @modified date: 29-09-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  *@modified date: 10-01-2013
- * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Vipul Kumar Pal</a>
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
  */
 
 
@@ -145,6 +145,10 @@ public class AdminParam extends SecureScreen{
                         context.put("spoolingMailResendTime", mailResendTime);
                 else
                         context.put("spoolingMailResendTime","60");
+		String normal_traffic = AdminProperties.getValue(path,"brihaspati.admin.normalTraffic.value");
+                context.put("normalTraffic", normal_traffic);
+		String high_traffic = AdminProperties.getValue(path,"brihaspati.admin.highTraffic.value");
+                context.put("highTraffic", high_traffic);
 
 		// --------------------------------Telephone Directory------------------
 	Criteria crt=new Criteria();
@@ -201,7 +205,11 @@ public class AdminParam extends SecureScreen{
                  context.put("FaqExp",new Integer(FaqExp));
 		//----------------------------------FAQ---------------------------
                  String fupldsze = AdminProperties.getValue(path,"services.UploadService.size.max");
-                 context.put("upldsze",fupldsze);
+		 long newSize = Long.parseLong(fupldsze);
+		 long fupldszemb = newSize/1024/1024;
+		 String upldsize = Long.toString(fupldszemb);
+		
+                 context.put("upldsze",upldsize);
 
 		}
 		catch(Exception e) {	

@@ -179,7 +179,7 @@ public class ForgotPassword extends VelocitySecureAction
                 	List check_ans=UserConfigurationPeer.doSelect(crit);
 			UserConfiguration element=(UserConfiguration)check_ans.get(0); 
                 	String ansOfDb=element.getAnswer();	
-			if(ansOfDb.equals(ansOfInput))
+			if(ansOfDb.equalsIgnoreCase(ansOfInput))
 		        {
 				User user = TurbineSecurity.getUser(loginName);
                 		String mailId=user.getEmail();

@@ -8,13 +8,23 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $!data.getMessage()
+
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
-	        <script type="text/javascript" src="/brihaspati2/scrpts/dygraph-dev.js"></script>
-		##<script type="text/javascript" src="/brihaspati2/scrpts/CommonScripts/CommonScript.js")"></script>
-	</head>
+<head>
+	<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+	<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+	<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+	<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+	<script type="text/javascript">
+        	$(function () {
+	            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        	});
+	 </script>
+	<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+        <script type="text/javascript" src="/brihaspati2/scrpts/dygraph-dev.js"></script>
+	##<script type="text/javascript" src="/brihaspati2/scrpts/CommonScripts/CommonScript.js")"></script>
+</head>
 #if($valuestr!=" ")
 	<body onload="graph()">
 #else
@@ -22,6 +32,7 @@ $!data.getMessage()
 #end
 	<table bgcolor="$ui.menuColor" width=100%>
 		<tr align="right">
+			<td align="right"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
 			<td><b>
 			<font face="$ui.sansSerifFonts">
 			 <a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a> |

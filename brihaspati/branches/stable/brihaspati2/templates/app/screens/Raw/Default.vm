@@ -2,7 +2,6 @@
  * @(#) Default.vm
  * Copyright (c) 2005,2009,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
- *
  * @author<a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  * @author<a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author<a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
@@ -10,13 +9,15 @@
  * @author<a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author<a href="mailto:smita37uiet@gmail.com">smita Pal</a>
  * @author<a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @modified date:27-09-2010
- *
+ * @author<a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date:27-09-2010,28-02-2013,29-04-2013,17-07-2013,22-07-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 $page.DefaultDoctype
 
 <html>
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 $page.setBgColor("$ui.bgcolor")
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 ##$page.addStyleSheet($content.getURI("resources/css/brihaspati.css"))
@@ -30,7 +31,7 @@ $page.setBgColor("$ui.bgcolor")
 <body valign="left">
   $screen_placeholder
 </body>
-#elseif(($result=="video")||($result=="document")|| ($result=="twitter")||($result=="session"))
+#elseif(($result=="video")||($result=="document")|| ($result=="twitter")||($result=="session")||($result=="studentinfo"))
 <body valign="left">
         <table align="center"  height="600px" width="100%">
                 <tr valign="middle">
@@ -49,9 +50,14 @@ $page.setBgColor("$ui.bgcolor")
 	<tr> ##1#t tr
 		<td colspan="2">$navigation.setTemplate("/DefaultTop.vm")</td>
 	</tr> ##1#t tr closed
+##Show ShutDown Notification
+<tr><td colspan=2>
+<iframe id="iframe0" src='$link.setPage("Shutdown.vm").addPathInfo("lang",$lang)' style="height:15px;width:100%; overflow:hidden;" frameborder="0"></iframe>
+</td></tr>
+##end
 	<tr> ##2#d tr
 		<td colspan=2>  ##1#t td of 2nd tr
-         			<table style="width:1100px; margin:0px auto;"> ##2#d table
+         			<table style="width:1105px; margin:0px auto;"> ##2#d table
 	 				##<tr bgcolor="$ui.headerLinkColor"> ##3#d tr
 	 				<tr bgcolor="$ui.menuColor"> ##3#d tr
 	    					#if($data.getUser().hasLoggedIn()) ##if(7)
@@ -183,5 +189,18 @@ $page.setBgColor("$ui.bgcolor")
 </body>
 </div>
 #end
+<script type="text/javascript">
+        function getIframeText() {
+
+            var iframe0 = document.getElementById("iframe0");
+
+            var iframe0document=iframe0.contentDocument||iframe0.contentWindow.document;
+
+            var inputIframe = iframe0document.getElementById("frame_text");
+                if(inputIframe.value==""){
+                document.getElementById('iframe0').style.display = 'none';
+                }
+        }
+    </script>
 </html>
 

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Practice_Quiz.java	
  *
- *  Copyright (c) 2010 MHRD, DEI Agra. 
+ *  Copyright (c) 2010-13 MHRD, DEI Agra. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -51,57 +51,91 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
-
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.QuizFileEntry;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
 /**
 * This class is used to create quiz randomly 
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+* @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+* @modify date: 14aug2013
 */
 
 public class Practice_Quiz extends SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
 		/**
-        *Retrieve the Parameters by using the Parameter Parser
-        *Get the UserName and put it in the context
-        *for template use
-        */
-        ParameterParser pp=data.getParameters();
-	String lang=data.getUser().getTemp("LangFile").toString();
-        try{
-        	ErrorDumpUtil.ErrorLog("inside practice quiz.java");
-        	User user=data.getUser();
+        	*Retrieve the Parameters by using the Parameter Parser
+        	*Get the UserName and put it in the context
+        	*for template use
+        	*/
+        	ParameterParser pp=data.getParameters();
+		String lang=data.getUser().getTemp("LangFile").toString();
+        	try{
+        		User user=data.getUser();
         	
-        	String mode =pp.getString("mode"," ");
-        	String quizMode =pp.getString("quizMode"," ");        			
-        	String type = pp.getString("type","");
-        	String count = pp.getString("count","");
-        	String courseID=(String)user.getTemp("course_id");
-        	String quizDetail="";
+        		String mode =pp.getString("mode"," ");
+        		String quizMode =pp.getString("quizMode"," ");        			
+        		String type = pp.getString("type","");
+        		String count = pp.getString("count","");
+        		String courseID=(String)user.getTemp("course_id");
+        		String quizDetail="";
         	
-        	context.put("tdcolor",count);
-        	context.put("course",(String)user.getTemp("course_name"));
+        		context.put("tdcolor",count);
+        		context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
 			context.put("quizMode",quizMode);
 			context.put("type",type);
 			context.put("courseID",courseID);
 			
 			String username=user.getName();
-            String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseID+"/");
-            String quizPath="/QBtopiclist.xml";
-            
-            File file=new File(filePath+"/"+quizPath);
-            Vector topicList=new Vector();
-			QuizMetaDataXmlReader topipcmetadata=null;
+			int GID=GroupUtil.getGID(courseID);
+                        Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
+                        Vector topicList=new Vector();
+			Vector allTopics=new Vector();
+                        for(int j= 0; j< UDetail.size(); j++)
+                        {
+                                String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
+            			String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+uname+"/"+courseID);
+            			String quizPath="/QBtopiclist.xml";
+           			File file=new File(filePath+"/"+quizPath);
+				//QuizMetaDataXmlReader topipcmetadata=null;
+				TopicMetaDataXmlReader topicmetadata=null;
 			
-			if(file.exists()){
-				topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				topicList=topipcmetadata.getTopicNames();
-					if(topicList.size()!=0){
-						context.put("topicList",topicList);
-					}	            
-			}			
+				if(file.exists())
+                        	{
+                        		topicmetadata=new TopicMetaDataXmlReader(filePath+"/QBtopiclist.xml");
+                                	allTopics=topicmetadata.getQuesBanklist_Detail();
+                                	if(allTopics!=null)
+					{
+                                		for(int i=0;i<allTopics.size();i++)
+                                		{//for
+                                			String topicnew=((FileEntry) allTopics.elementAt(i)).getTopic();
+                                           		QuizFileEntry fileEntry=new QuizFileEntry();
+                                                	String questiontype=((FileEntry) allTopics.elementAt(i)).getTypeofquestion();
+                                                	String difflevel=((FileEntry) allTopics.elementAt(i)).getDifflevel();
+                                                	Vector qno=ViewAllQuestionUtil.ReadTopicAllFile(topicnew,filePath,questiontype,difflevel);
+                                                	fileEntry.setTopic(topicnew);
+                                                	fileEntry.setUserID(uname);
+                                                	fileEntry.setQuestionNumber(Integer.toString(qno.size()));
+                                                	topicList.add(fileEntry);
+                                 		}
+                              		}
+                  		}
+			}
+
+			//if(file.exists()){
+			//	topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+			//	Vector topicList1=topipcmetadata.getTopicNames();
+			//	topicList.addAll(topicList1);
+			//	}
+			if(topicList.size()!=0){
+				context.put("topicList",topicList);
+			}	            
 			if(mode.equalsIgnoreCase("update")){
 				quizDetail = pp.getString("quizDetail","");
 				String quizName = pp.getString("quizName","");
@@ -141,18 +175,16 @@ public class Practice_Quiz extends SecureScreen{
                          */
 			String Role = (String)user.getTemp("role");
 			int uid=UserUtil.getUID(user.getName());
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				 MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				 ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                         }
 			
-        }
-        catch(Exception e) {
+        	}
+        	catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
-        	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));
-        }
-    }
+        		data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));
+        	}
+    	}
 }

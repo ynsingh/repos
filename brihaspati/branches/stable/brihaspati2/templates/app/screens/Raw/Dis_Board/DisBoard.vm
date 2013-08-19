@@ -1,6 +1,6 @@
 #*
  * @(#)DisBoard.vm
- * Copyright (c) 2005-2006,2009, 2010, 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2006,2009, 2010, 2011, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *@author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
@@ -8,8 +8,10 @@
  *@author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *@author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 31-12-2009, 20-08-2010
- * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
+ * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr),27-07-2013
  *#
 <head>
 ##This Script use for Fck Editor in Textarea.
@@ -36,19 +38,19 @@ $!data.getMessage()
 ##($stats == "fromIndex") Use for general discussion group ## sk
 ##($mode2 == "instituteWise") Use for insititue wise discussion group ## sk
 #if($stats == "fromIndex")
-        <b><a href=$link.setPage("Index.vm")> $brih_home</a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style=text-decoration:none>$brih_general $DiscussionBoard </a>|
+        <b><a href=$link.setPage("Index.vm") style='text-decoration:none'> $brih_home</a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style='text-decoration:none'>$brih_general $DiscussionBoard </a>|
 #elseif ($mode2 == "instituteWise")
-        <b><a href=$link.setPage("Index.vm")> $brih_home </a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8") style=text-decoration:none>$RemoteInstitute $brih_wise $DiscussionBoard </a>|
+        <b><a href=$link.setPage("Index.vm") style='text-decoration:none'> $brih_home </a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8") style='text-decoration:none'>$RemoteInstitute $brih_wise $DiscussionBoard </a>|
 #else
-		<b><a href=$link.setPage("Index.vm")>$brih_home</a> | 
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		<b><a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 		#if($mode1 == "grpmgmt")
-                   <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_grp $brih_mgmt</a> |
+                   <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm") style='text-decoration:none'>$brih_grp $brih_mgmt</a> |
                 	#else
-			   <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
-			   <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> |
+			   <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> |
+			   <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</a> |
 			   #if($check!="first") 
-				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","2")>$LocalMail_MailContent_msg3</a> |</b>
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("countTemp","2") style='text-decoration:none'>$LocalMail_MailContent_msg3</a> |</b>
 			#end
 		   #end
 #end		
@@ -68,14 +70,14 @@ $!data.getMessage()
         #elseif($tdcolor=="4")
                 <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a></td>
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex") style='text-decoration:none'>$brih_general $DiscussionBoard</a></td>
 #elseif ($mode2 == "instituteWise")
         #if($tdcolor !="8")
         <td>
         #elseif($tdcolor=="8")
                 <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise") style='text-decoration:none'>$RemoteInstitute $brih_wise $DiscussionBoard</a></td>
 #else
 		#if($data.getUser().getTemp("role") == "guest")
 			#if($tdcolor!="4")
@@ -83,29 +85,29 @@ $!data.getMessage()
 		#elseif($tdcolor == "4")
         		<td bgcolor="#AFDCEC">
 		#end
-        	        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+        	        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</td>
 	#else
 		#if($tdcolor !="1")
 		<td>
 		#elseif($tdcolor=="1")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_localmail</a></td>
 		#if($tdcolor !="2")
 		<td>
 		#elseif($tdcolor=="2")
 		<td bgcolor="#AFDCEC">
 		#end
-        	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+        	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_chat</a></td>
 		#if($tdcolor !="3")
 		<td>
 		#elseif($tdcolor=="3")
 		<td bgcolor="#AFDCEC">
 		#end
 		#if($data.getUser().getTemp("role") == "student")
-			 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
+			 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style='text-decoration:none'> $Notice_NoticeContent_msg1</a>
 		#else
-        		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</a>
+        		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style='text-decoration:none'>$brih_Notices</a>
 		#end
 		</td>
 		#if($tdcolor !="4")
@@ -113,30 +115,30 @@ $!data.getMessage()
 		#elseif($tdcolor=="4")
 		<td bgcolor="#AFDCEC">
 		#end
-	        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a></td>
+	        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style='text-decoration:none'>$DiscussionBoard</a></td>
 		#if($data.getUser().getTemp("role")!= "student")
 	        	#if($tdcolor != "5")
 			        <td>
 	        	#elseif($tdcolor=="5")
         			<td bgcolor="#AFDCEC">
 		        #end
-        		<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</a></td>
+        		<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style='text-decoration:none'>$brih_news</a></td>
 		#end
 	#end
 #end
 </tr>
 </table>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
+#set($time = $data.getSession().getMaxInactiveInterval())
 #set($Repid=0)
 <form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")>
 ##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
 <table align="left" bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
 #if ($stats == "fromIndex")
-        <td colspan=2><b>WorkGroup:&nbsp<font color="Green"> $brih_general $DiscussionBoard </font></b>
+        <td colspan=2><b> $DisBoard_WorkGroup:&nbsp<font color="Green"> $brih_general $DiscussionBoard </font></b>
 #elseif ($mode2 == "instituteWise")
-        <td colspan=2><b>WorkGroup:&nbsp<font color="Green">$RemoteInstitute $brih_wise $DiscussionBoard </font></b>
+        <td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green">$RemoteInstitute $brih_wise $DiscussionBoard </font></b>
 #else
 	<td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green"> $cid </font></b>
 #end
@@ -161,7 +163,7 @@ $!data.getMessage()
 			</tr>
 			<tr>
 				<td><b>$brih_msg2<font color=Red>*</font></b></td>
-				<td><textarea id="ta" name="message" rows=10 cols=80 wrap=physical></textarea></td>
+				<td><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!msg</textarea></td>
 				<td><input type="hidden" name="Repid" value=$Repid></td>
 			</tr>
 		#else
@@ -173,7 +175,7 @@ $!data.getMessage()
 				<b><font face="$ui.sansSerifFonts">$brih_msg2 </font> </b>
 				</td>
 				<td>
-				<font face="$ui.sansSerifFonts" size=4><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!rep_msg</textarea></font>
+				<font face="$ui.sansSerifFonts" size=4><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!rep_msg $!msg</textarea></font>
 				</td>
 			</tr>
                         <input type="hidden" name="Repid" value="$msg_id">				
@@ -202,8 +204,10 @@ $!data.getMessage()
 			<input type="hidden" name="stats" value="$stats">
 	 		<INPUT TYPE="hidden" NAME="count" value="$tdcolor">
 			<input type="hidden" NAME="mode2" value="$mode2">
+			<input type="hidden" NAME="page" value="disboard">
 			##<input type="button" name="eventSubmit_doSend" value="$DisBoard_DB_msg25" onClick="checkBlank(document.uploadform,this);"/>&nbsp;&nbsp	
 			<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$brih_save" id="autoclick1" onClick="check(document.uploadform,this);"/>
 			</td>
 		</tr>
 		</table>
@@ -292,6 +296,18 @@ $!data.getMessage()
 	        	alert("Please fill all mandatory  fields.");
 		editor.setMode("wysiwyg")
 	}
+	function check(uploadform,field){
+	        editor.setMode("textmode");
+        	uploadform.actionName.value=field.name;
+	        uploadform.submit();
+        	editor.setMode("wysiwyg");
+        }
+	tt= $time;
+        autosavetime = (tt-30)*1000;
+        setInterval(function() {
+          $("#autoclick1").click();
+        }, autosavetime);
+
 	function insertminus(uploadform)	
 	{
 		 if(uploadform.status[1].checked)

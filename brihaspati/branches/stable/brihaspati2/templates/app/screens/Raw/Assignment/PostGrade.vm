@@ -1,8 +1,10 @@
 #*
  * @(#)  PostGrade.vm
- * Copyright (c) 2007,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2007,2009,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto: arvindjss17@yahoo.co.in ">Arvind Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 18-03-2013(Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -14,10 +16,10 @@
 $!data.getMessage()  
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $coursename </a> | </b>
-        <a href=$link.setPage("call,Assignment,ASS_subm.vm")addPathInfo("count","1")> $brih_assignment  </a>|</b>
-        <a href=$link.setPage("call,Assignment,AssView.vm")> </a> $brih_post $brih_marks </b>
+        <a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> | </b>
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm")addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>|</b>
+        <a href=$link.setPage("call,Assignment,AssView.vm") style="text-decoration:none"> </a> $brih_post $brih_marks </b>
         </td></tr>
 </table> ##table 1 end
 <form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,PostGrade.vm").setAction("Assignments")>

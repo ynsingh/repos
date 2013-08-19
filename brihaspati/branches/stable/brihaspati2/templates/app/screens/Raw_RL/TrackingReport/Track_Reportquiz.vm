@@ -5,6 +5,7 @@
  *
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:rekha20july@gmail.com ">Rekha Devi Pal</a>
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -14,40 +15,45 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td><b>
-	<font face="$ui.sansSerifFonts">
-	#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
-	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
-        #if($type =="System")
-     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
-        $brih_system #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports
-        #end
-	#else
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
-	#if($type =="user")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
-        $brih_usr $brih_reports
-        #end
-        #if($type =="course")
-     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
-        $brih_course $brih_reports
-        #end
-        #if($type =="quiz")
-      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
-        $brih_quiz $brih_reports
-        #end
-	#end
-	</font>
-</b></td>
-<td align=right>
+<tr align="right">
+<td>
         #if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
+      <a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
         #else
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a>
+      <a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
         #end
 </td>
-<td align=right>
+
+<td align="right"><b>
+
+       <font face="$ui.sansSerifFonts">
+        #if($data.getUser().getUserName() == "admin" ||$data.getUser().getTemp("role")=="institute_admin")
+                <a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+                #if($mode == "repotype")
+                $brih_tracking $brih_reports
+                #end
+                #if($type =="user")
+                <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports</a> | $brih_usr $brih_reports
+                #end
+        #else
+                #if($type =="user")
+                        <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> | $brih_usr $brih_reports
+                #end
+                #if($type =="course")
+                <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> | $brih_course $brih_reports
+                #end
+                #if($type =="quiz")
+                        <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> | $brih_quiz $brih_reports
+                #end
+                 #if($mode == "repotype")
+                        $brih_tracking $brih_reports
+                #end
+               |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>
+               |<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+        #end
+        </font>
+</b></td></tr>
+<td align="right">
                 #if( $total_size!=0 )
                         #if( $endIndex < $total_size )
                                 #if( $endIndex < $userConf )
@@ -74,12 +80,12 @@ $!data.getMessage()
 #if($mode == "repoinfo")
 #if($type =="quiz")
 <table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
-<tr><td><b><i>$brih_test/$brih_quiz #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports</b></td></tr>
-<tr bgcolor="$ui.menuColor" width="100%">
+<tr align="right"><td><b><i>$brih_test/$brih_quiz #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_reports</b></td></tr>
+<tr align="right" bgcolor="$ui.menuColor" width="100%">
         <td width ="100%" colspan="5"><i><b> #if($lang == "hindi" || $lang == "gujarati") 
-							$brih_reports $brih_for $brih_quiz $brih_select 
-						#else 
 							$brih_select $brih_quiz $brih_for $brih_reports 
+						#else 
+							$brih_reports $brih_for $brih_quiz $brih_select 
 						#end </i></b>
 				#if($value=="noempty")
                                 #foreach($Quiz in $Quizid)
@@ -357,11 +363,10 @@ $!data.getMessage()
           <a href="$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("startIndex",$check_last).addPathInfo("chktype","userlog").addPathInfo("type",$type).addPathInfo("mode",$mode).addPathInfo("grouptype",$grouptype).addPathInfo("fStart_year",$fStart_year).addPathInfo("fStart_mon",$fStart_mon).addPathInfo("fStart_day",$fStart_day).addPathInfo("tStart_year",$tStart_year).addPathInfo("tStart_mon",$tStart_mon).addPathInfo("tStart_day",$tStart_day).addPathInfo("actionName",$actionName)">$brih_last</a> &nbsp;
                 #end
 </td></tr>
-</table>
-</table>
+
 #end
 #end
-</table>
+
 	<input type="hidden" name="actionName" 
         <input type="hidden" name="type" value="$type">
         <input type="hidden" name="mode" value="$mode">

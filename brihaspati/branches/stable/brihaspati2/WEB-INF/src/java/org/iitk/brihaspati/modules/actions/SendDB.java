@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * Copyright (c) 2005-2007, 2010, 2011, 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2007, 2010, 2011, 2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -91,6 +91,7 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.FaqmovePeer;
 import org.iitk.brihaspati.om.Faqmove;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 
 
 /** This class contains code of Sending Message to the Discussion Board 
@@ -102,6 +103,7 @@ import org.iitk.brihaspati.om.Faqmove;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @ modified date: 08-Aug-2011 (Sunil Kr)
  * @ modified date: 13-Oct-2010, 05-Aug-2012 (Shaista)
  */
@@ -120,6 +122,7 @@ public class SendDB extends SecureAction
 
 			int Status=0; 
 			//boolean Status=false;
+			User user = data.getUser();
 			context.put("count",data.getParameters().getString("count",""));
 		        String LangFile=data.getUser().getTemp("LangFile").toString();
 			ParameterParser pp=data.getParameters();
@@ -356,6 +359,7 @@ public class SendDB extends SecureAction
 					msg=MultilingualUtil.ConvertedString("db_msg1",LangFile);
 					data.setMessage(msg);
 				}
+			AutoSave.doDelete((String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+data.getUser().getName()+pp.getString("page",""));
 		    	}//try
         	    	catch(Exception e){data.setMessage("Some Error Occured in Sending Discussion !!!!" +e);}
 			}//method(doSend)												
@@ -623,7 +627,8 @@ public class SendDB extends SecureAction
 			        	                //ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
                         				SystemIndependentUtil.deleteFile(AssDir);
 			                        	//AssDir.delete();
-				                        data.setMessage("DiscussionBoard deleted successfully !!");
+							String delmsg=MultilingualUtil.ConvertedString("db_delmsg",LangFile);
+                                                        data.setMessage(delmsg);
 						
 							if(stats.equals("fromIndex"))
                 	        			{
@@ -1191,14 +1196,32 @@ public class SendDB extends SecureAction
 		}
 		catch(Exception e) {  data.addMessage("Some Error Occured in Send_DB class's copyFile method !!!!" +e);}
 	}
+	/**
+        * In this method, We save message/s or Local_mail for users(Local)
+        * @param data RunData
+        * @param context Context
+        * @exception Exception a generic exception
+        */
+        public void doSave(RunData data, Context context)
+        {
+                try{
+                        User user = data.getUser();
+                        ParameterParser pp=data.getParameters();
+                        String id = (String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page","");
+                        String message = pp.getString("message");
+                        AutoSave.doSave(id,message);
+                        data.setScreenTemplate("call,Dis_Board,DisBoard.vm");
+                }
+                catch(Exception e){
+                }
+        }
+
         public void doPerform(RunData data,Context context)
 	{
 		try{
 			String action=data.getParameters().getString("actionName","");
 			if(action.equals("eventSubmit_doSend"))
-			{
 				doSend(data,context);
-			}
 			else if(action.equals("eventSubmit_doPermission"))
 				doPermission(data,context);
 			else if(action.equals("eventSubmit_doUpdate"))
@@ -1213,6 +1236,8 @@ public class SendDB extends SecureAction
 				doShowArchive(data,context);
                         else if(action.equals("eventSubmit_doMove"))
 				doMove(data,context);
+			else if(action.equals("eventSubmit_doSave"))
+	                        doSave(data,context);
 			else
 			{ 
 		        	String LangFile=data.getUser().getTemp("LangFile").toString();

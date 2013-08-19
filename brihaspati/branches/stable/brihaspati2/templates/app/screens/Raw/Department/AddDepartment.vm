@@ -1,0 +1,616 @@
+#*
+ * @(#) AddDepartment.vm
+ * Copyright (c) 2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modify date: 06-06-2013,27-07-2013
+*#
+$page.setTitle("Admin Home | Add Department")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
+        <script type="text/javascript">
+                $(function(){
+                        $("#scroll").slimScroll({
+                                height: '560px',
+                                disableFadeOut: true
+                        });
+                });
+        </script>
+
+</head>
+
+#set($lang = $data.getUser().getTemp("lang" ).toString()) 
+#set($InstituteId = $data.getUser().getTemp("Institute_id" ))
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+	<td>
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad #if($lang == "hindi" || $lang =="gujarati")$brih_Of #end $brih_home </a> |
+        #if($mode=="dept")
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1").addPathInfo("mode","dept") style=text-decoration:none>  #if($lang == "hindi" || $lang =="gujarati") $brih_dept  $brih_add #else $brih_add $brih_dept #end </a>
+        #elseif ($mode=="school")
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","school") style=text-decoration:none>  #if($lang == "hindi" || $lang =="gujarati") $brih_schce  $brih_add #else $brih_add $brih_schce #end </a>
+ #elseif ($mode=="lstdept" || $mode=="deptdel")
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3").addPathInfo("mode","lstdept") style=text-decoration:none>$brih_dept #if($lang == "hindi" || $lang =="gujarati") $brih_Of #end $brih_list</a>
+ #elseif ($mode=="lstschool" || $mode=="schdel" )
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","4").addPathInfo("mode","lstschool") style=text-decoration:none>$brih_schce #if($lang == "hindi" || $lang =="gujarati") $brih_Of #end $brih_list</a>
+ #elseif ($mode=="deptmap")
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","5").addPathInfo("mode","deptmap") style=text-decoration:none>  #if($lang == "hindi" || $lang =="gujarati") $brih_dept  $brih_map #else $brih_map $brih_dept #end</a>
+ #elseif ($mode=="schoolmap")
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","6").addPathInfo("mode","schoolmap") style=text-decoration:none>  #if($lang == "hindi" || $lang =="gujarati")  $brih_schce  $brih_map #else $brih_map $brih_schce #end </a>
+        #end
+        </td>
+	 <td align=right colspan="10">
+        <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Department.html","newWin") style="text-decoration:none">$brih_help</a>
+        </td>
+</tr>
+</table>
+
+<table width=100% align=left bgcolor="$ui.tableColor">
+<tr>
+#if($data.getUser().getTemp("role") != "institute_admin")
+        #if($tdcolor != "1")
+        <td width="15%" align="left">
+        #elseif($tdcolor == "1")
+        <td width="15%" bgcolor="#AFDCEC" align="left">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1").addPathInfo("mode","lstdept") style=text-decoration:none> $brih_dept #if($lang == "hindi" || $lang =="gujarati")$brih_Of #end $brih_list</a>
+        </td>
+        #if($tdcolor != "2")
+        <td width="16%" align="left">
+        #elseif($tdcolor == "2")
+        <td width="16%" bgcolor="#AFDCEC" align="left">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","lstschool") style=text-decoration:none> $brih_schce  #if($lang == "hindi" || $lang =="gujarati")$brih_Of #end $brih_list</a>
+        </td>
+#else
+        #if($tdcolor != "1")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "1")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("mode","deptmap").addPathInfo("count","1") style=text-decoration:none>  #if($lang == "hindi" || $lang =="gujarati") $brih_dept  $brih_map #else $brih_map $brih_dept #end </a>
+	</td>
+	#if($tdcolor != "2")
+        <td width="15%" align="center">
+        #elseif($tdcolor == "2")
+        <td width="15%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2").addPathInfo("mode","lstdept") style=text-decoration:none>$brih_dept #if($lang == "hindi" || $lang =="gujarati") $brih_Of #end $brih_list</a>
+	</td>
+	#if($tdcolor != "3")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "3")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+	<a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3").addPathInfo("mode","dept") style=text-decoration:none>  #if($lang == "hindi" || $lang =="gujarati") $brih_dept  $brih_add #else $brih_add $brih_dept #end </a>
+	</td>
+	#if($tdcolor != "4")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "4")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","4").addPathInfo("mode","schoolmap") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati")  $brih_schce  $brih_map #else $brih_map $brih_schce #end </a>
+	</td>
+	#if($tdcolor != "5")
+        <td width="16%" align="center">
+        #elseif($tdcolor == "5")
+        <td width="16%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","5").addPathInfo("mode","lstschool") style=text-decoration:none> $brih_schce #if($lang == "hindi" || $lang =="gujarati") $brih_Of #end $brih_list </a>
+	</td>
+	#if($tdcolor != "6")
+        <td width="18%" align="center">
+        #elseif($tdcolor == "6")
+        <td width="18%" bgcolor="#AFDCEC" align="center">
+        #end
+        <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","6").addPathInfo("mode","school") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_schce  $brih_add #else $brih_add $brih_schce #end</a>
+	</td>
+	#end
+</tr>
+</table>
+
+<table bgcolor="$ui.tableColor" align=left width=100%>
+
+########################################## Add and Edit Department ####################################
+	
+#if($mode=="dept")
+<tr>
+	<td>
+	<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+    	<table align="left" width=100%>
+	<tr bgcolor="$ui.menuColor">
+        	<td> $brih_dept #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_code<span style="color:red;">*</span> </td>
+        	<td> <input type="text" name="dcode" value="$!dptcode"> </td>
+        </tr>
+      	<tr>
+        	<td> $brih_dept #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_name <span style="color:red;">*</span> </td>
+        	<td> <input type="text" name="deptname" value="$!dptname"> </td>
+	</tr>
+        <tr bgcolor="$ui.menuColor">
+        	<td> $brih_dept #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_nick $brih_name <span style="color:red;">*</span> </td>
+        	<td>  <input type="text" name="dnick" value="$!dptnckame"> </td>
+        </tr>
+        <tr>
+        	<td> $brih_floor</td>
+        	<td> <input type="text" name="fcount" value="$!fcount" onkeyup="isInteger(this.value)" id="checkint"> </td>
+        </tr>
+        <tr bgcolor="$ui.tableColor">
+        	<td align=left colspan=2 bgcolor="$ui.menuColor">
+    		<input type="hidden" name="mode" value="$mode" >
+		<input type="hidden" name="count" value="$tdcolor" >
+        	<input type="hidden" name="instituteId" value="$instituteId" >
+        	<input type="hidden" name="actionName"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="checkdept(document.frm,this);"/>
+        	<input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+		</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+#end
+
+#################################### Add and Edit school ##################################
+
+#if($mode=="school") 
+<tr>
+	<td>
+	<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+        <table align="left" width=100%>
+        <tr bgcolor="$ui.menuColor">
+        	<td> $brih_schce #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_code <span style="color:red;">*</span> </td>
+        	<td> <input type="text" name="schcode" value="$!schoolcode"> </td>
+        </tr>
+        <tr>
+        	<td> $brih_schce #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_name <span style="color:red;">*</span> </td>
+        	<td> <input type="text" name="schname" value="$!schoolname"> </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+        	<td> $brih_schce #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_nick $brih_name <span style="color:red;">*</span> </td>
+        	<td>  <input type="text" name="schnick" value="$!schoolnickname"> </td>
+        </tr>
+        <tr>
+        	<td> $brih_schce #if($lang == "hindi" || $lang =="gujarati") $brih_Of1 #end $brih_desc </td>
+        	<td> <textarea name="schdesc">$!schooldesc</textarea> </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+        	<td align=left colspan=2>
+        	<input type="hidden" name="mode" value="$mode" >
+        	<input type="hidden" name="count" value="$tdcolor" >
+        	<input type="hidden" name="instituteId" value="$instituteId" >
+        	<input type="hidden" name="actionName"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="checkschool(document.frm,this);"/>
+        	<input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+		</td>
+	</tr>
+	</table>
+	</form>
+	</td>
+</tr>
+#end
+
+###################################### List of Department ###############################
+
+#if(($mode == "lstdept")||($mode == "deptunmap"))
+	#if($mapdeptlist.size()==0)
+       	<tr>
+		<td><font color="red" size="3"><b>* <i>$brih_deptnoexist</i></b></font></td>
+	</tr>
+        #else
+		#if($lang == "hindi" || $lang =="gujarati") 
+			#set ( $headings = ["$brih_dept $brih_Of1 $brih_code", "$brih_dept $brih_Of1 $brih_name", "$brih_nick $brih_name", "$brih_floor", "$brih_action"] )
+		#else
+			#set ( $headings = ["$brih_dept $brih_code", "$brih_dept $brih_name", "$brih_nick $brih_name", "$brih_floor", "$brih_action"] )
+		#end
+	<tr>
+		<td>
+		<div id="scroll" style="width:900px;overflow-x:auto;">
+		<table width="100%">
+		<tr bgcolor="$ui.menuColor">
+        	#foreach ($heading in $headings)
+          		#headerCell($heading)
+        	#end
+        	</tr>
+		#foreach ($lsdept in $mapdeptlist)
+          		#if($velocityCount%2==0)
+        		<tr bgcolor="$ui.menuColor">
+            			#set($bg=$ui.menuColor)
+        		#else
+        		<tr bgcolor="$ui.tableColor">
+            			#set($bg=$ui.tableColor)
+        		#end
+        			<td>$!lsdept.getDepartmentCode()</td>
+        			<td>$!lsdept.getName()</td>
+        			<td>$!lsdept.getNickName()</td>
+        			<td>$!lsdept.getFloorsCount()</td>
+			#if($data.getUser().getTemp("role") != "institute_admin")
+				<td><a href="$link.setPage("call,Department,AddDepartment.vm").addPathInfo("deptid",$lsdept.getDepartmentId()).addPathInfo("mode","deptdel")" style="text-decoration:none;">$brih_delete</a></td>
+	 		#else
+				<td> <a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("deptid",$lsdept.getDepartmentId()).addPathInfo("mode","deptunmap").addPathInfo("instituteId",$instituteId)" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to unmap this department')">$brih_deptunmap</a>
+</td>
+			#end
+			</tr>
+		#end
+		</table>
+		</div>
+		</td>
+	</tr>
+	#end
+#end
+
+###################################### Deletion of Department by Super Admin ###############################
+
+#if(($data.getUser().getTemp("role") != "institute_admin") && ($mode== "deptdel"))
+	#if($lang == "hindi" || $lang =="gujarati") 
+		#set ( $headings = ["$brih_dept $brih_Of1 $brih_name", "$RemoteInstitute $brih_name", "$brih_action"] )
+	#else
+		#set ( $headings = ["$brih_dept $brih_name", "$RemoteInstitute $brih_name", "$brih_action"] )
+	#end
+	#if($!depname != "")
+      	<tr>
+		<td>
+		<div id="scroll" style="width:900px;overflow-x:auto;">
+        	<table width="100%">
+        	<tr bgcolor="$ui.menuColor">
+        	#foreach ($heading in $headings)
+          		#headerCell($heading)
+        	#end
+        	</tr>
+          	#if($velocityCount%2==0)
+        	<tr bgcolor="$ui.menuColor">
+        	#else
+        	<tr bgcolor="$ui.tableColor">
+        	#end
+        		<td>$depname</td>
+        		<td>
+			#if($instname.size()!=0)
+				$instname
+			#else
+				<span style="color:red">$brih_admndeptdel</span>
+			#end
+			</td>
+			<td>
+        		#if(($instname.size()==1) || ($instname.size()==0))
+        			<a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("deptid",$depid).addPathInfo("mode","deptdel")" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to delete this department')">$brih_remove</a>
+        		#else
+        			<a id="deldept" style="text-decoration:none; cursor:pointer; color:blue">$brih_remove</a>
+        		#end
+	 		</td>
+        	</tr>
+        	</table>
+		</div>
+		</td>
+        </tr>
+	#end
+#end
+
+############################### List of School ############################
+
+#if (($mode == "lstschool") || ($mode == "schunmap"))
+	#if($lstschool.size()==0)
+       	<tr>
+		<td><font color="red" size="3"><b>* <i>$brih_schoolnoexist</i></b></font></td>
+	</tr>
+       	#else
+		#if($data.getUser().getTemp("role") == "institute_admin")
+			#set ( $headings = ["$brih_select","$brih_schce $brih_name","$brih_schce $brih_code", "$brih_nick $brih_name", "$brih_desc" , "$brih_availableAction"] )
+		#else
+			#set ( $headings = ["$brih_schce $brih_name","$brih_schce $brih_code", "$brih_nick $brih_name", "$brih_desc" , "$brih_availableAction"] )
+		#end
+		<tr>
+			<td>
+			<div id="scroll">
+			<table width="100%">
+			<tr bgcolor="$ui.menuColor">
+        		#foreach ($heading in $headings)
+                		#headerCell($heading)
+         		#end
+        		</tr>
+			#set($cnt=0)
+        		#foreach ($lsschool in $lstschool)
+			 	#set($cnt = $cnt+1)
+				#if($data.getUser().getTemp("role") != "institute_admin")
+                                        #if($velocityCount%2==0)
+                                        <tr bgcolor="$ui.menuColor">
+                                        #else
+                                        <tr bgcolor="$ui.tableColor">
+                                        #end
+                                #else
+                                        <tr bgcolor="$ui.tableColor">
+                                #end
+					#if($data.getUser().getTemp("role") == "institute_admin")
+					<td><INPUT TYPE="CHECKBOX" onClick="javascript:showTable$cnt();" id="$cnt" title="click for see mapped department associated with school"></td>
+					#end
+              				<td width="30%">$!lsschool.getName()</td>
+              				<td>$!lsschool.getSchoolCode()</td>
+              				<td>$!lsschool.getNickName()</td>
+              				<td>$!lsschool.getDescription()</td>
+					#if($data.getUser().getTemp("role") != "institute_admin")
+	      				<td><a href="$link.setPage("call,Department,AddDepartment.vm").addPathInfo("schid",$lsschool.getSchoolId()).addPathInfo("mode","schdel")" style="text-decoration:none;">$brih_delete</a></td>
+					#else
+					<td width="25%"> <a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("schid",$lsschool.getSchoolId()).addPathInfo("mode","schunmap").addPathInfo("instituteId",$instituteId)" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to unmap this School!! It will unmap all mapped Department with school !!')">$brih_deptunmap</a> |
+					 <a id="$cnt" onClick="javascript:showTable$cnt();" style="text-decoration:none; cursor:pointer; color:blue" title="View Mapped Department">$brih_dept $brih_list</a>
+					</td>
+        				#end
+				</tr>
+				 #if($data.getUser().getTemp("role") == "institute_admin")
+                		<tr bgcolor="$ui.menuColor">
+                        		<td></td>
+                        		<td id='tabl$cnt' style="display:none;width:350px;overflow-x:auto;" >
+                                        	##Get Mapped Department list associated with School/Centre
+                                        	#foreach($deptlist in $lstdeptschool)
+                                        	#set($id= "$lsschool.getSchoolId()")
+                                                	#if($id==$deptlist.get("schid"))
+								<ul type="square">
+                                                                        <li><font style="text-decoration:none; cursor:pointer;color:blue;" title="$deptlist.get("deptname")">$deptlist.get("deptname")</font></li>
+                                                                </ul>
+                                                	#end
+                                		#end
+                        		</td>
+                        		<td  colspan='5'></td>
+                		</tr>
+				#end
+##### Script for displaying Mapped Department with in each School#######
+<script type="text/javascript" language="javascript">
+function showTable$cnt(){
+	var disp = document.getElementById('tabl$cnt');
+        if( disp.style.display == 'block' ){
+        	disp.style.display = 'none';
+        }
+        else {
+        	disp.style.display = 'block';
+        }
+        return disp ;
+}
+</script>
+########### END OF SCHOOL ####################         
+			#end
+			</table>
+			</div>
+			</td>
+		</tr>
+	#end
+#end
+
+###################################### Deletion of School by Super Admin ###############################
+
+#if(($data.getUser().getTemp("role") != "institute_admin") && ($mode== "schdel"))
+	#if($lang == "hindi" || $lang =="gujarati") 
+        	#set ( $headings = ["$brih_schce $brih_name","$RemoteInstitute $brih_name","$brih_action"] )
+	#else
+        	#set ( $headings = ["$brih_schce $brih_name","$RemoteInstitute $brih_name","$brih_action"] )
+	#end
+       	#if($!schname != "")
+       	<tr>
+		<td>
+		<div id="scroll" style="width:900px;overflow-x:auto;">
+        	<table width="100%">
+        	<tr bgcolor="$ui.menuColor">
+        	#foreach ($heading in $headings)
+        		#headerCell($heading)
+        	#end
+        	</tr>
+          	#if($velocityCount%2==0)
+        	<tr bgcolor="$ui.menuColor">
+        	#else
+        	<tr bgcolor="$ui.tableColor">
+        	#end
+        		<td>$schname</td>
+			<td>
+        		#if($instname.size()==0)
+        			<span style="color:red">$brih_admnschdel</span>
+        		#else
+        			$instname
+        		#end
+			</td>
+			<td>
+        		#if(($instname.size()==1) ||($instname.size()==0))
+        			<a href="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("schid",$schid).addPathInfo("mode","schdel")" style="text-decoration:none;" onclick="javascript:return confirm('Do you want to delete this school')">$brih_remove</a>
+        		#else
+        			<a id="delsch" style="text-decoration:none; cursor:pointer; color:blue">$brih_remove</a>
+        		#end
+        		</td>
+        	</tr>
+        	</table>
+		</div>
+        	</td>
+	</tr>
+        #end
+#end
+
+###################################### Map Department ##################################
+
+#if ($mode == "deptmap") 
+<tr>
+	<td>
+	<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+	#if($deptmap.size()==0)
+        <tr><font color="red" size="3"><b>* <i> $brih_nodeptmap</i></b></font></tr>
+        #else
+	<div id="scroll" style="width:930px;overflow-x:auto;">
+	<table bgcolor="$ui.menuColor" width=100%>
+        <tr bgcolor="$ui.menuColor">
+        	<td width=5%>$brih_select</td>
+        	<td colspan=2><b> $brih_dept <b></td>
+        </tr>
+        #set($flag=false)
+        #set( $count = "" )
+        ##### Get Department list #######
+        #foreach($department in $deptmap)
+                #if($velocityCount%2==0)
+                <tr bgcolor="$ui.menuColor">
+        	#else
+                <tr bgcolor="$ui.tableColor">
+        	#end
+		#set($deptcodeid = "$department.getDepartmentId()" )
+		#foreach($mapdpt in $lsdsu)
+                	##### check DepartmentId #####
+                	## match shows that Department already mapped then set flag true
+           		
+			#if(("$mapdpt.getDeptId()")==("$department.getDepartmentId()"))
+               			#set($flag=true)
+             		#end    
+         	#end
+                ##If flag true then disable that check box ###
+         	#if($flag)
+              		<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" DISABLED></td>
+	 		#set($flag=false)
+         	#else
+              		<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" ></td>
+         	#end
+              		<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
+        	#set($count = "$count$!deptcodeid^")
+        	</tr>
+        #end
+        <tr bgcolor="$ui.tableColor">
+        	<td colspan=3>
+                <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="$brih_map $brih_dept" onClick="checkValue(document.frm,this);">
+                <INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
+                <INPUT TYPE="hidden" NAME="actionName" VALUE="eventSubmit_doMap">
+                <INPUT TYPE="hidden" NAME="mode" VALUE="deptmap">
+              	</td>
+        </tr>
+        </table>
+	</div>
+	#end
+	</form>
+	</td>
+</tr>
+#end
+
+############################## Map School ###############################
+
+#if ($mode == "schoolmap") 
+<tr>
+	<td>
+	<form name=frm method="post" action="$link.setPage("call,Department,AddDepartment.vm").setAction("AddDepartment")">
+	#if ($schoolmap.size() == 0)
+        	<tr><font color="red" size="3"><b>* <i> $brih_noschoolmap</i></b></font></tr>
+        #else
+	<div id="scroll">
+	<table bgcolor="$ui.menuColor" width=100%>
+        <tr bgcolor="$ui.menuColor">
+        	<td width=5%>$brih_select</td>
+        	<td colspan=2><b> $brih_schce<b></td>
+        </tr>
+        #set($flag=false)
+        ##Get School list
+	#set($cnt = 0)
+        #foreach($school in $schoolmap)
+		#set($cnt = $cnt+1)
+               	#if($velocityCount%2==0)
+                <tr bgcolor="$ui.menuColor">
+                #else
+                <tr bgcolor="$ui.tableColor">
+                #end
+                #set($schcodeid = "$school.getSchoolId()" )
+		#if($deptmap.size()==0)
+                       	<td><INPUT TYPE="CHECKBOX" NAME="$!schcodeid" onClick="javascript:showTable$cnt(); addSelectedList(this,document.frm);" value="$schcodeid" id="$cnt"></td>
+                       	<INPUT TYPE="hidden" NAME="sdept" value="sdept">
+                #else
+                       	<td><INPUT TYPE="CHECKBOX" NAME="$!schcodeid" onClick="javascript:showTable$cnt();" value="$schcodeid" id="$cnt"></td>
+                #end
+                       	<td colspan=2>$school.getName()  ($school.getSchoolCode())</td>
+
+########################## show Department for every School ###########################
+
+		#if($velocityCount%2==0)
+         	<tr bgcolor="$ui.menuColor">
+                #else
+                <tr bgcolor="$ui.tableColor">
+                #end
+			<td bgcolor="$ui.menuColor"></td>
+			<td id='tabl$cnt' style="display:none;width:850px;overflow-x:auto;" bgcolor="$ui.tableColor">
+			<table bgcolor="" width="100%">
+			#if ($deptmap.size() == 0)
+                	<tr><font color="red" size="3"><b>* <i> $brih_deptnoexist</i></b></font></tr>
+                	#else
+				<td width=5% bgcolor="$ui.menuColor">$brih_choose</td>
+        			<td colspan=2 bgcolor="$ui.menuColor"><b> $brih_dept <b></td>
+        		</tr>
+                 		<td><INPUT TYPE="CHECKBOX" NAME="$schcodeid:null" value="null" onClick="addSelectedList(this,document.frm);"></td>
+                		<td colspan=2>$brih_No $brih_dept</td>
+        			#set( $count = "" )
+        			##Get Department list
+        			#foreach($department in $deptmap)
+               				#if($velocityCount%2==0)
+                        		<tr bgcolor="$ui.menuColor">
+                			#else
+                 	       		<tr bgcolor="$ui.tableColor">
+                			#end
+                         		#set($deptcodeid = "$schcodeid:$department.getDepartmentId()" )
+                			#foreach($mapdpt in $lsdsu)
+                        		
+					##check DepartmentId
+                        		##if match it shows, this Department already mapped
+                        		##then set flag true
+                        		
+						#if(("$mapdpt.getDeptId()")==("$department.getDepartmentId()") && ("$mapdpt.getSchoolId()")==("$school.getSchoolId()"))
+                                			#set($flag=true)
+                        			#end    
+                			#end
+                			##If flag true then disable that check box 
+                			#if($flag)
+                        			<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" DISABLED></td>
+                        			#set($flag=false)
+                			#else
+                        			<td><INPUT TYPE="CHECKBOX" NAME="$!deptcodeid" onClick="addSelectedList(this,document.frm);" ></td>
+                			#end
+                        			<td colspan=2>$department.getName()  ($department.getDepartmentCode())</td>
+       					 	#set($count = "$count$!deptcodeid^")
+        				</tr>
+       				#end
+			#end
+        		</table>
+			</td>
+        	</tr>
+
+########################## end of show Department for every School ###############################
+
+########################## Script for displaying Department with in each School###################
+
+		<script type="text/javascript" language="javascript">
+		function showTable$cnt(){
+		var disp = document.getElementById('tabl$cnt');
+		if( disp.style.display == 'block' ) {
+		    disp.style.display = 'none';
+  		}
+		else {
+    		    disp.style.display = 'block';
+ 		 }
+		  return disp ;
+		}
+		</script>
+
+########################## end of Script for displaying Department with in each School############
+
+        #set($count = "$count$!schcodeid^")
+        #end
+        </tr>
+        <tr bgcolor="$ui.tableColor">
+                <td colspan=3>
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMap" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
+                        <INPUT TYPE="hidden" NAME="actionName" VALUE="eventSubmit_doMap">
+                        <INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
+                        <INPUT TYPE="hidden" NAME="mode" VALUE="schoolmap">
+                </td>
+        </tr>
+        </table>
+	</div>
+	</form>
+	#end
+######################### end of school map #######################
+	</td>
+</tr>
+#end
+</table>

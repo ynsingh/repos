@@ -1,39 +1,87 @@
-
 #*
  * @(#) ViewAss.vm 
- * Copyright (c) 2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2009, 2010,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href=" mailto:arvindjss17@gmail.com "> Arvind Pal </a>
  * @modify <a href ="mailto:shaistashekh@hotmail.com"> Shaista</a>
- * @date 22-05-09, 25-03-2010
+ * @modify <a href ="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @date 22-05-09, 25-03-2010,22-03-2013(Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr align="right"> 
 		<td>
-        		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| $brih_view $brih_assignment</b>
-	        	| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $coursename </a> |
-			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+        		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>| $brih_view $brih_assignment</b>
+	        	| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> |
+			<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> 
         	</td>
 	</tr>
 </table> ##table 1 end
+<table width=100% bgcolor="$ui.tableColor">
+        <tr>
+        #if($user_role == "instructor")
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+        #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else  $brih_edit/$brih_delete $brih_assignment #end </a></td>
+                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin"); style="text-decoration:none">$brih_help</a></td>
+        #else
+                        #if($tdcolor != "3")
+                         <td>
+                        #elseif($tdcolor=="3")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost #else $brih_repost $brih_answer #end </a></td>
+                         #if($tdcolor != "2")
+                        <td>
+                        #elseif($tdcolor=="2")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+                        #if($tdcolor != "1")
+                        <td>
+                        #elseif($tdcolor=="1")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer  $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end</a></td>
+        #end
+</tr>
+</table>
+
 <Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,ViewAss.vm").setAction("Assignments")>   
 
-<table width=100% bgcolor="$ui.tableColor">
+<table width=100% bgcolor="$ui.menuColor">
         <tr align="right">
 		<td>
         		#if($user_role == "instructor")
-				<a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin");>$brih_help</a>
+				<a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin"); style="text-decoration:none" >$brih_help</a>
 	               		<img src="$content.getURI("/images/Lefthand.gif")">
 	 		#end	
 		</td>
         	<td>
-	        	<input type="button" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
+	        	<input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
 	        	<input type="hidden" name="actionName"> &nbsp;
-			<SELECT name=topicList>
+			<SELECT name='topicList' class='drop'>
         		<option value="" ></option>
 		        #foreach($topic in $allTopics)
 			        <option value="$topic" > $topic </option>
@@ -60,13 +108,13 @@ $!data.getMessage()
 			##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<tr bgcolor="$ui.tableColor"><b> $brih_topic $brih_name   </b> &nbsp;
                 	##<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-                	<SELECT name=topicList>
+                	<SELECT name='topicList' class='drop'>
 				<option value="" ></option>
 				#foreach($topic in $allTopics)
 					<option value="$topic" > $topic </option>
                         	#end
                 	</SELECT> &nbsp;
-                	<input type="button" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
+                	<input type="button" name="dosubmitView" class="button-ftextstyle" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
                        	<input type="hidden" name="actionName">
                 </td>
         </tr>*#
@@ -77,6 +125,7 @@ $!data.getMessage()
         		<td align="center">  <b> $brih_feedback  </b> </td>
 		        <td align="center">  <b> $brih_marks  </b> </td>
 		#end
+			<td  align="Center"> <b> $brih_action </b> </td>
 		        <td  align="Center"> <b> $brih_marks $brih_Of $brih_max </b> </td>
         		<td  align="Center"> <b> $brih_assignment $brih_Of $brih_Da  </b> </td>
         	#if($anscheck == "ok")
@@ -89,7 +138,7 @@ $!data.getMessage()
         		<td align="center">  <b> $brih_post $brih_Of $brih_Da </b> </td>
         	#end
         	<td align="center">  <b> $brih_assignment $brih_Of $brih_file  </b> </td>
-		<td align="center"> <b> $brih_usr $brih_Of1 $brih_name</b> </td>
+		<td align="center"> <b> $brih_topic $brih_Of1 $brih_name</b> </td>
 	#end	
 	#if($user_role ==  "instructor")
 	<tr bgcolor="$ui.menuColor" align="right">
@@ -127,7 +176,7 @@ $!data.getMessage()
 		#if($studentfilecheck == "ok")
                         <td width="10%" align="Center">
 				#if($!e.getStudentfile() != "")
-					<a href=$link.setPage("call,Assignment,PostGrade.vm").addPathInfo("qname",$topicList).addPathInfo("studentsname",$!e.getStudentname())> $brih_marks </a>				
+					<a href=$link.setPage("call,Assignment,PostGrade.vm").addPathInfo("qname",$topicList).addPathInfo("studentsname",$!e.getStudentname()) style='text-decoration:none'> $brih_marks </a>				
 				#end
 			</td>	
 		#end
@@ -155,19 +204,19 @@ $!data.getMessage()
 		#if($studentfilecheck == "ok")
 		<td width="10%" align="center"> ##Student file
 			#if($!e.getStudentfile() != "")
-				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getStudentfile())","newWin");>$brih_view</a>
+				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getStudentfile())","newWin"); style='text-decoration:none'>$brih_view</a>
 			#end
 		</td>
 		#end
 		#if($anscheck == "ok")
 		<td width="10%" align="center"> ## Answer file  
 			#if($!e.getanswerfile() != "")
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getanswerfile())","newWin");>$brih_answer </a>
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getanswerfile())","newWin"); style='text-decoration:none'>$brih_answer </a>
 			#end
 		</td>
 		#end
 		<td width="10%">   ##  Assignment file
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin");>$brih_assignment </a>
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin");style='text-decoration:none'>$brih_assignment </a>
 		</td>
 		<td width="10%"> $!e.getStudentname()  </td>  ##student name
 	</tr>
@@ -193,6 +242,7 @@ $!data.getMessage()
                         #end
                         </td>
                 #end
+		 <td width="10%" align="Center">  <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList") style="text-decoration:none"> $brih_answer $brih_post</a></td> ##post Ans
                 <td width="10%" align="Center"> $!e.getmaxgrade() </td> ## max grade
 		<td width="10%" align="Center"> $!e.getAssignmentDuedate() </td>  ## Duedate
                 #if($datecheck == "ok")
@@ -205,21 +255,22 @@ $!data.getMessage()
                 #if($studentfilecheck == "ok")
                 <td width="10%" align="center"> ##Student file
                         #if($!e.getStudentfile() != "")
-	                      <a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getStudentfile())","newWin");>$brih_view</a>
+	                      <a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getStudentfile())","newWin"); style='text-decoration:none'>$brih_view</a>
                         #end
                 </td>
                 #end
                 #if($anscheck == "ok")
                 <td width="10%" align="center"> ## Answer file
                         #if($!e.getanswerfile() != "")
-				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getanswerfile())","newWin");>$brih_answer </a>
+				<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getanswerfile())","newWin"); style='text-decoration:none'>$brih_answer </a>
                         #end
                 </td>
                 #end
                 <td width="10%" align="center">   ##  Assignment file
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin");>$brih_assignment </a>
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style='text-decoration:none'>$brih_assignment </a>
                 </td>
-                <td width="10%" align="Center"> $!e.getStudentname()  </td>  ##student name
+                ##<td width="10%" align="Center"> $!e.getStudentname()  </td>  ##student name
+                <td width="10%" align="Center">  $topicList</td>  ##topic name
 
         </tr>
 	#end

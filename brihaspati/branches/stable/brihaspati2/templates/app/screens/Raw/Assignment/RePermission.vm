@@ -1,10 +1,11 @@
 #*
  * @(#) RePermission.vm 
- * Copyright (c) 2007, 2009, 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2007, 2009, 2011,2013ETRG,IIT Kanpur.
  * All Rights Reserved
  * @author <a href=" mailto:arvindjss17@gmail.com ">Arvind Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 04-04-2011 (Shaista)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 04-04-2011 (Shaista),18-03-2013(Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -16,21 +17,51 @@
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $coursename </a> | </b>
-        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>|</b>
-        <a href=$link.setPage("call,Assignment,AssView.vm")> </a>$brih_repost #if($lang == "hindi") $brih_Of #end $Repo_Perm   </b>
+        <a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> | </b>
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>|</b>
+        <a href=$link.setPage("call,Assignment,AssView.vm") style="text-decoration:none"> </a>$brih_repost #if($lang == "hindi") $brih_Of #end $Repo_Perm   </b>
         </td></tr>
 </table> 
 <table width=100% bgcolor="$ui.tableColor">
-<tr><td align=right colspan=3>
+<tr>
+#if($data.getUser().getTemp("role") =="instructor")
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor=="1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+                #if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor=="2")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+                #if($tdcolor != "5")
+                <td>
+                #elseif($tdcolor=="5")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else $brih_edit/$brih_delete $brih_assignment #end </a></td>
+#end
+<td>
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RePostPermission.html","newWin"); style="text-decoration:none">$brih_help</a>
+</td>
+</tr>
+</table>
+#########
+<table width='100%' bgcolor="$ui.tableColor">
+##<tr>
+##<td align=right colspan=3>
                 ##if($user_role == "instructor")
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RePostPermission.html","newWin");>$brih_help</a>
+  ##              <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RePostPermission.html","newWin"); style="text-decoration:none">$brih_help</a>
  
-                #*else
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RePostPermission.html","newWin");>$brih_help</a>
-                #end*#
-</td></tr>
+    ##            #*else
+  ##              <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RePostPermission.html","newWin");>$brih_help</a>
+      ##          #end*#
+##</td>
+##</tr>
 ##</table>
 
 
@@ -44,7 +75,7 @@ $!data.getMessage()
 	<td> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da</b> </td>
 <tr>
        	<td width="15%"> 
-	<SELECT id="std_name" name=topicList1 onFocus=changeTopic1(document.uploadform) onChange=changeTopic1(document.uploadform)>
+	<SELECT id='std_name' class='drop' name='topicList1' onFocus='changeTopic1(document.uploadform)' onChange='changeTopic1(document.uploadform)'>
         <option> All  </option>
         #foreach($topic1 in $userList)
 	<option> $!topic1.getLoginName() </option>
@@ -52,7 +83,7 @@ $!data.getMessage()
         </SELECT>			
 	</td>
 	<td width="1%">
-	<SELECT  name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+	<SELECT  class='drop' name='topicList' onFocus='changeTopic(document.uploadform)' onChange='changeTopic(document.uploadform)'>
         #foreach($topic in $allTopics)
         <option>$topic</option>
         #end

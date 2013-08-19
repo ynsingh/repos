@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)View_QB.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -54,18 +54,20 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
 import org.iitk.brihaspati.modules.utils.NotInclude;
 //import org.apache.commons.lang.StringUtils;
 //import org.iitk.brihaspati.modules.utils.XmlWriter;
 //import org.iitk.brihaspati.modules.utils.FileEntry;
-
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+* @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+* @modify date:14aug2013 
 */
 
 public class View_QB extends SecureScreen{
@@ -90,12 +92,21 @@ public class View_QB extends SecureScreen{
 			String difflevel=pp.getString("difflevel","");
 			context.put("difflevel",difflevel);
 			String checkstatus=pp.getString("checkstatus","");
-			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);
-			TopicMetaDataXmlReader topicmetadata=null;
+			File dir=new File(data.getServletContext().getRealPath("/QuestionBank"));
+
                         Vector allQuestions=new Vector();
-			if(!questiontype.equals("")&&(!difflevel.equals("")))
-			{
-				allQuestions=ViewAllQuestionUtil.ReadTopicAllFile(topic,filePath,questiontype,difflevel);
+			int GID=GroupUtil.getGID(crsId);
+                        Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
+                        for(int j= 0; j< UDetail.size(); j++)
+                        {
+                                String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
+                                String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+uname+"/"+crsId);
+				TopicMetaDataXmlReader topicmetadata=null;
+				if(!questiontype.equals("")&&(!difflevel.equals("")))
+				{
+					Vector allQuestion=ViewAllQuestionUtil.ReadTopicAllFile(topic,filePath,questiontype,difflevel);
+					allQuestions.addAll(allQuestion);
+				}
 			}
 			if(allQuestions==null)
                         return;
@@ -121,12 +132,10 @@ public class View_QB extends SecureScreen{
                          */
 			 String Role = (String)user.getTemp("role");
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 		}//try
 		catch(Exception ex)

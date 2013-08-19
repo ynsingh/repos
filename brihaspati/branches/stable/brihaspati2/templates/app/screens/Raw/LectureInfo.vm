@@ -1,5 +1,5 @@
 #*
- * @(#) LoginInfo.vm
+ * @(#) LectureInfo.vm
  * Copyright (c) 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
@@ -8,8 +8,17 @@
 
 
 <table border="1" width="620" style="margin-top:-290px; font-family:Arial;">
-<tr><td bgcolor="$ui.tableColor" width="620" colspan="15" style="font-weight:bold;font-size:12px;text-align:center;">$lec_list</td></tr>
-<tr bgcolor="$ui.menuColor"><td width="25%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_course</td><td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_Instructor</td><td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_lecture</td><td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_Da</td><td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_time</td><td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_duration</td><td width="25%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_guestaccess</td>
+<tr>
+	<td bgcolor="$ui.tableColor" width="620" colspan="15" style="font-weight:bold;font-size:12px;text-align:center;">$lec_list</td>
+</tr>
+<tr bgcolor="$ui.menuColor">
+	<td width="25%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_course</td>
+	<td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_Instructor</td>
+	<td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_lecture</td>
+	<td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_Da</td>
+	<td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_time</td>
+	<td width="15%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_duration</td>
+	<td width="25%" style="font-weight:bold;font-size:12px;text-align:center;">$brih_join</td>
 </tr>
 <tr>
         <td>$coursename</td>
@@ -18,11 +27,8 @@
         <td>$date</td>
         <td>$time</td>
         <td>$duration</td>
-        #if($key==0)
-                <td><font color="red">Disable</font></td>
-        #else
-                <td><blink><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$key">Enable</a></blink></td>
+        #if($key!=0)
+                <td><blink><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$key">$brih_join</a></blink></td>
         #end
-
 </tr>
 </table>

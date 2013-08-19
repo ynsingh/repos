@@ -76,7 +76,7 @@ public class SecureAction_Instructor_InsAdmin extends VelocitySecureAction
                         User user=data.getUser();
                         String g=user.getTemp("course_id").toString();
 
-                        if(acl.hasRole("instructor",g) || acl.hasRole("teacher_assistant",g) || acl.hasRole("turbine_root")|| acl.hasRole("institute_admin"))
+                        if(acl.hasRole("instructor",g) || acl.hasRole("teacher_assistant",g) || acl.hasRole("turbine_root")|| acl.hasRole("institute_admin","institute_admin"))
                         {
                                 isAuthorized = true;
                         }

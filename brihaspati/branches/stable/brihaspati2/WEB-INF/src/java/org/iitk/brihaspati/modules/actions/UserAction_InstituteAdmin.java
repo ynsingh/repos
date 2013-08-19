@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserAction_InstituteAdmin.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2010, 2011,2012,2013 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2008-10,2011-12,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -98,7 +98,7 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 08-07-2010, 20-10-2010, 26-12-2010, 27-07-2011, 05-08-2011,07-02-2012
- * @modified date:30-10-2012(Richa),01-02-2013(Richa)
+ * @modified date:30-10-2012(Richa),01-02-2013(Richa),31-05-2013
  */
 
 public class UserAction_InstituteAdmin extends SecureAction{
@@ -713,7 +713,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                 data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
                                return;
                         }
-			if(StringUtils.isNotBlank(uname) && StringUtils.isNotBlank(rollno) && StringUtils.isNotBlank(prgcode) && StringUtils.isNotBlank(InstId))
+			if(StringUtils.isNotBlank(uname) && StringUtils.isNotBlank(rollno) && StringUtils.isNotBlank(InstId) && !prgcode.equals("Select Program"))
 			{
 				msg=CourseProgramUtil.InsertRollno(uname, prgcode, rollno, InstId, LangFile);
 			}
@@ -1087,7 +1087,8 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                                 else
                                                         coursestatus="0";
 
-                                                String updatecoursestatus=CourseManagement.UpdateCourseDetails(groupname,coursename,"","",coursestatus,LangFile);
+						//Add last parameter as blank for school/center.
+                                                String updatecoursestatus=CourseManagement.UpdateCourseDetails(groupname,coursename,"","",coursestatus,LangFile,"");
                                                 msg=UserManagement.DeleteInstructor(groupname,LangFile);	
 						//message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
 	                                        message = MailNotification.getMessage("deleteUser", coursename, "", "", "", pr);

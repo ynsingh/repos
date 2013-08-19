@@ -52,11 +52,13 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 /**
      
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date: 13-Feb-2011 (Shaista), 05-09-12, 07-12-2012 (Shaista)
  */
 
@@ -89,6 +91,13 @@ public class MailCompose extends SecureScreen
 		
 		String Role=(String)user.getTemp("role");
 		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		// load saved msg
+		try{
+                String savemsg = AutoSave.doLoad(dir+instituteId+Role+uname+"mailcompose");
+                context.put("msg",savemsg);
+                }
+                catch(Exception e){}
+
 		// Get file path
 		File filepath=new File("");
 		if(Role.equals("")){

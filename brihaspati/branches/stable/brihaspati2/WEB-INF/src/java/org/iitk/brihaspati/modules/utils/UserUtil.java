@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  * @(#) UserUtil.java 
- *  Copyright (c) 2004-2006,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2011, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -31,12 +31,20 @@ package org.iitk.brihaspati.modules.utils;
  */  
 import java.util.List;
 import java.util.Vector;
+import java.util.Date;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Properties;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.AssignmentPeer;
+import org.iitk.brihaspati.om.Assignment;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.apache.commons.lang.StringUtils;
@@ -189,6 +197,74 @@ public class UserUtil
         return v;
 
         }
+
+	/**
+         * Get Email on the basis of uid        
+         * @param uid Integer
+         * @return String
+         * @Author Jaivir Singh/Manorama Pal
+         */
+        public static String getEmail(int uid){
+                String email=null;
+                try{
+
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserPeer.USER_ID,uid);
+                        List v=TurbineUserPeer.doSelect(crit);
+                        TurbineUser element=(TurbineUser)v.get(0);
+                        email=element.getEmail().toString();
+                }
+                catch(Exception e){ErrorDumpUtil.ErrorLog("Exception inside getEmail() UserUtil.java!!"+e);}
+                return email;
+      }
+
+        /**
+  	 * Below method is used to send reminder mail to students when their assignment date is going to expired. 
+ 	 */ 
+
+	public static void sendAssignmentReminderMail(){
+		try{
+			   DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			   //get current date time with Date()
+		           Date date = new Date();
+			   String dt = dateFormat.format(date);
+			   Criteria crit=new Criteria();
+                           crit.add(AssignmentPeer.DUE_DATE,java.sql.Date.valueOf(dt));
+                           List u=AssignmentPeer.doSelect(crit);
+			   if(u.size()>0)
+			   {
+				for(int i=0; i<u.size(); i++)
+				{
+					Assignment element=(Assignment)(u.get(i));
+					String Assid=(element.getAssignId());
+					String Topicname=(element.getTopicName());
+					String GrpName=element.getGroupName();
+					int gid = GroupUtil.getGID(GrpName);
+					String Crsname = CourseUtil.getCourseName(GrpName);
+					Vector UID = UserGroupRoleUtil.getUID(gid,3);
+					for(int j=0; j<UID.size(); j++)
+					{
+						String uid = (UID.get(j)).toString();
+						String email = getEmail(Integer.parseInt(uid));
+						String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+          					Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+						String msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+						msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+						String msgformat=pr.getProperty("brihaspati.Mailnotification.newAssignment.message");
+						msgformat=MailNotification.getAssignmentMessage(msgformat, Crsname, Topicname);
+					        String subject=pr.getProperty("brihaspati.Mailnotification.newAssignment.subject");
+						subject = MailNotification.getAssignmentMessage(subject, Crsname, Topicname);
+			                        String Mailmsg = MailNotificationThread.getController().set_Message(msgformat, msgDear, "", "", email, subject, "", "");
+					}
+				}
+			}
+
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Exception inside sendAssignmentReminderMail() UserUtil.java!!"+e);
+		}
+	}
 	
 
 }

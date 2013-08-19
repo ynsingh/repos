@@ -75,7 +75,11 @@ $!data.getMessage()
     	#end
       	<tr>
 	#if($marksDSize == "0")
-		<td colspan=3> $brih_MarksMsg2 '$data.getUser().getUserName()'!!	</td>
+		#if($data.getUser().getTemp("role" ).toString()=="instructor")
+			<td colspan=3> $brih_MarksMsg2 '$UsrName'.</td>
+		#else
+			<td colspan=3> $brih_MarksMsg2 '$data.getUser().getUserName()'.</td>
+		#end
 	#end
 	#if($Exp == "MExp")
 		<td colspan=3> $brih_MarksMsg3 </td>

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) OnlineRegistration_Admin.java	
  *
- *  Copyright (c) 2008, 2009, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008-09,2010-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -73,7 +73,8 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
  * @modify 20-03-09, 08-07-2010, 20-10-2010, 23-12-2010, 05-08-2011, 16-08-2011
  * @modify 20-04-12
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 09-08-2012 (Priyanka)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 09-08-2012 (Priyanka),31-05-2013,10-06-2013
  */
 
 /**
@@ -415,11 +416,16 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 	                data.setMessage("Please see Error log or Contact to administrator");
 			}
         }
+	
+	 /**
+         * This method Accept Course/Instructor request for online registration.
+         * get detail of user request from xml file to create profile of user.
+         */
 
         public void doAcceptCourses(RunData data, Context context)
         {
                 try{
-			String gidUname="", passwd="", cname="", instName="";
+			String gidUname="", passwd="", cname="", instName="",dept="",scname="";
 			String instituteId=(data.getUser().getTemp("Institute_id").toString());
 			int instId=Integer.parseInt(instituteId);
 			instName= InstituteIdUtil.getIstName(instId);
@@ -460,6 +466,9 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                                                         gname=((CourseUserDetail) courselist.elementAt(i)).getGroupName().replace("&colon",":");
                                                         cname=((CourseUserDetail) courselist.elementAt(i)).getCourseName();
                                                         uname=((CourseUserDetail) courselist.elementAt(i)).getLoginName();
+							// Get new field 'department' and 'scool/center' name for online course registration
+							dept=((CourseUserDetail) courselist.elementAt(i)).getDept();
+                                                        scname=((CourseUserDetail) courselist.elementAt(i)).getSchoolCenter();
 							/**
 							*Set the Password if empty.
 							*password is the value of 0th position of mailid
@@ -475,7 +484,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                                                        {
                                                                 try{
                                                                         //String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");//last parameter added by Priyanka
-									String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c");
+									//Add parameter "dept" and  "scname" for accept online course(Instructor) registration.
+									String msg=CourseManagement.CreateCourse(gname,cname,dept,"",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c",scname);
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

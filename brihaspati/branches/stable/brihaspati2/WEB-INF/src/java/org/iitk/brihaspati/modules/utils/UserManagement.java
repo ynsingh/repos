@@ -155,7 +155,7 @@ public class UserManagement
 		 * getting institute id as a string  to pass in mail Notification Thread to compare
 		 * getting instid as an integer to use in criteria to get admin's First & Last name
 		 */	
-		if(!Role.equals("turbine_root")) {
+		if(!Role.equals("turbine_root") && (!Role.equals("parent"))) {
 			if(i_name.equals("")){
 				instituteid=InstituteDetailsManagement.getInsId(GroupName);
 				instIdint=Integer.parseInt(instituteid);
@@ -176,7 +176,9 @@ public class UserManagement
 			}
 			catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
 		}
-
+		
+		UName = UName.replaceAll("\\s", "");
+		Email = Email.replaceAll("\\s", "");
 		int userid=UserUtil.getUID(UName);
 		/**
 		 * Checks if there are any illegal characters in the values
@@ -209,7 +211,6 @@ public class UserManagement
 			 	*/
 				Group user_group=TurbineSecurity.getGroupByName(GroupName);
 				Role user_role=TurbineSecurity.getRoleByName(Role);
-				
 				
 				/**
 				* Check if the user profile already exists 
@@ -286,6 +287,14 @@ public class UserManagement
                                                           //      userRole="newTeacherAssistanthttps";
                                                 }
 
+						else if(Role.equals("parent")){
+                                                        //if(serverPort.equals("8080"))
+                                                                userRole="newParent";
+                                                        //else
+                                                          //      userRole="newTeacherAssistanthttps";
+                                                }
+
+
                         			else if(Role.equals("student")){
                                 			//if(serverPort.equals("8080"))
                                         			userRole="newStudent";
@@ -339,13 +348,15 @@ public class UserManagement
 							try{
         				                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
 	                                			List inm=InstituteAdminUserPeer.doSelect(crit);
-	                                		        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+								if(inm.size()>0){
+		                                		        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
 								/**modify by jaivir,seema 
 								*Getting full name of user using UserUtil.
 								*@see UserUtil in utils
 								*/
-	                                		        Auid=UserUtil.getUID(element.getAdminUname());
-								instFirstLastName=UserUtil.getFullName(Auid);
+		                                		        Auid=UserUtil.getUID(element.getAdminUname());
+									instFirstLastName=UserUtil.getFullName(Auid);
+								}
                         			       }
 			                               catch(Exception ex){
                         			               ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 282 to 288 !!"+ex);
@@ -424,6 +435,9 @@ public class UserManagement
                                                         //else
                                                           //      userRole="newTeacherAssistanthttps";
                                                 }
+						else if(Role.equals("parent")){
+                                                                userRole="newParent";
+                                                }
 						else if(Role.equals("student")){
                                 			//if(serverPort.equals("8080"))
                                         			userRole="newStudent";
@@ -452,7 +466,7 @@ public class UserManagement
 						else
 						{
 						
-							if(!Role.equals("author") && (!Role.equals("institute_admin")))
+							if(!Role.equals("author") && (!Role.equals("institute_admin")) && (!Role.equals("parent")))
 							{
 								crit=new Criteria();
         	                                        	crit.add(CoursesPeer.GROUP_NAME,GroupName);
@@ -481,7 +495,9 @@ public class UserManagement
 						* Update last login, user quota  and create date field of turbine user
 						*/
 						//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+						//ErrorDumpUtil.ErrorLog("instituteid-------------"+instituteid);
 						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";	
+						//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf/"+instituteid+"Admin.properties";	
 						if(!((new File(path)).exists())){
 							path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 						}
@@ -630,7 +646,6 @@ public class UserManagement
 						}
 						
 						subject = ""; messageFormate =""; msgBrihAdmin="";
-						//ErrorDumpUtil.ErrorLog("to test----------------->else3 part");
 						if(Role.equals("author") || Role.equals("institute_admin"))
                                                         //msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
                                                 	msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
@@ -639,14 +654,16 @@ public class UserManagement
                                                                 crit=new Criteria();
                                                                 crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
                                                                 List inm=InstituteAdminUserPeer.doSelect(crit);
-                                                                InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+								if(inm.size()>0){
+	                                                                InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
 								/**modify by jaivir,seema 
                                                                 *Getting full name of user using UserUtil.
                                                                 *@see UserUtil in utils
                                                                 */
-
-								Auid=UserUtil.getUID(element.getAdminUname());
-                                                                instFirstLastName=UserUtil.getFullName(Auid);
+	
+									Auid=UserUtil.getUID(element.getAdminUname());
+                	                                                instFirstLastName=UserUtil.getFullName(Auid);
+								}
                                                        }
                                                        catch(Exception ex){
                                                                ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 506 to 513 !!"+ex);
@@ -655,7 +672,6 @@ public class UserManagement
                                                         msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
 							msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
                                                 }
-						//ErrorDumpUtil.ErrorLog("to test----------------->else4 part");
 						//if(!(mode.equals("cnfrm_i")&&(check>0)))
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
 						if(Role.equals("author"))
@@ -1110,6 +1126,7 @@ public class UserManagement
 		{
 			String rollmsg = "";
 			int stdntid=0;
+			eMail = eMail.replaceAll("\\s", "");	
                 	User user = TurbineSecurity.getUser(userName);
                 	user.setFirstName(fName);
                 	user.setLastName(lName);

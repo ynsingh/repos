@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)CourseManagement.java
  *
- *  Copyright (c) 2004-2006,2009,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2006,2009-10,2013 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -69,7 +69,8 @@ import org.iitk.brihaspati.om.InstructorPermissions;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
- * @modified date: 20-10-2010,23-12-2010,14-07-2011
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 20-10-2010,23-12-2010,14-07-2011,31-05-2013
  */
 public class CourseManagement
 {
@@ -86,13 +87,14 @@ public class CourseManagement
 		 * @param lname String The user last name who has be registered in the new course
 		 * @param email String The user email-id who has be registered in the new course
 		 * @param mode String Defines whether activation link shoulb sent in the mail or not
+		 * @param schname String Defines user's school/centerin which who has be registered in the new course
 		 * @return String
 		 * @see StringUtil In this utils check illegal characters
 		 * @see UserManagement In this utils manage all details of user
 		 * 
 		 */
 		//public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id,String iname,String mode) throws Exception//last parameter added by Priyanka
-		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String file,int institute_id,String iname,String mode)
+		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String file,int institute_id,String iname,String mode, String schname)
 		{
 			String message=new String();
 			/**
@@ -168,6 +170,7 @@ public class CourseManagement
                           			crit.add(CoursesPeer.GROUP_NAME,newcid);
                           			crit.add(CoursesPeer.CNAME,cname);
                           			crit.add(CoursesPeer.GROUP_ALIAS,groupalias);
+                          			crit.add(CoursesPeer.SCHOOL_CENTER,schname);
                           			crit.add(CoursesPeer.DEPT,dept);
                           			crit.add(CoursesPeer.DESCRIPTION,desc);
                           			crit.add(CoursesPeer.ACTIVE,"1");
@@ -304,6 +307,7 @@ public class CourseManagement
 				
 				if(GName.endsWith(instituteId)){	
 				String courseName=((Courses)v.get(i)).getCname();
+				String schname=((Courses)v.get(i)).getSchoolCenter();
 				String dept=((Courses)v.get(i)).getDept();
 				String gAlias=((Courses)v.get(i)).getGroupAlias();
 				String description=((Courses)v.get(i)).getDescription();
@@ -316,7 +320,7 @@ public class CourseManagement
 				String insname=UserUtil.getFullName(UserUtil.getUID(pieml));
 				CourseUserDetail cuDetail=new CourseUserDetail();
 				
-				if(!groupName.equals("All"))
+				/*if(!groupName.equals("All"))
 				{
 					int index=gAlias.length();
 					String loginName=groupName.substring(index);
@@ -345,13 +349,16 @@ public class CourseManagement
 					cuDetail.setLoginName(loginName);
 					cuDetail.setUserName(userName);
 					cuDetail.setEmail(email);
-				}
+				}*/
+				cuDetail.setLoginName(pieml);
+				cuDetail.setUserName(insname);
 				cuDetail.setEmail(pieml);
 				cuDetail.setGroupName(GName);
 				cuDetail.setInstName(InstituteIdUtil.getIstName(Integer.parseInt(instituteId)));
 				cuDetail.setInstructorName(insname);
 				cuDetail.setCourseName(courseName);
 				cuDetail.setCAlias(gAlias);
+				cuDetail.setSchoolCenter(schname);
 				cuDetail.setDept(dept);
 				cuDetail.setActive(act);
 				cuDetail.setDescription(description);
@@ -452,10 +459,11 @@ public class CourseManagement
 	 * @param desc String 
 	 * @param active String 
 	 * @param file String 
+	 * @param scname (School/center name) String 
 	 * @return String
 	 */ 
 	
-	public static String UpdateCourseDetails(String groupName,String courseName,String dept,String desc,String active,String file)
+	public static String UpdateCourseDetails(String groupName,String courseName,String dept,String desc,String active,String file,String scname)
 	{
 		String message="";
 		try
@@ -464,6 +472,7 @@ public class CourseManagement
 			Criteria crit=new Criteria();
 			crit.add(CoursesPeer.GROUP_NAME,groupName);
 			crit.add(CoursesPeer.CNAME,courseName);
+			crit.add(CoursesPeer.SCHOOL_CENTER,scname);
 			crit.add(CoursesPeer.DEPT,dept);
 			crit.add(CoursesPeer.DESCRIPTION,desc);
 			crit.add(CoursesPeer.ACTIVE,active);
@@ -562,7 +571,6 @@ public class CourseManagement
                            SystemIndependentUtil.deleteFile(f);
 			   File f_Index=new File(fileName+"_Index");
                            SystemIndependentUtil.deleteFile(f_Index);
-
                            	/**
                             	* Remove the group completely from the system
                             	*/
@@ -591,6 +599,31 @@ public class CourseManagement
 		}
 		return(message);
 	}
+
+	/**
+          * Check if the user obtained is a primary instructor of 
+          * this course
+          * @param groupName String
+          * @return instructor login id in string formate .
+          */
+		
+	public static String IsPrimaryInstructor(String groupName)
+        {
+                try
+                {
+                        String grpAlias=CourseUtil.getCourseAlias(groupName);
+                        String unmwIid=StringUtils.substringAfter(groupName,grpAlias);
+                        String ins_name[]=unmwIid.split("_");
+			return ins_name[0];
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in IsPrimaryInstructor() - CourseManagement Utils "+e);
+                }
+                return null;
+        }
+
+
 	/**
 	  * Check if the user obtained is a primary instructor of 
 	  * this course

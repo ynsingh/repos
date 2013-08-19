@@ -57,7 +57,7 @@ $page.setBgColor("#ffffff")
         </tr>
 </table>
 	 #if($topic_wiki =="")
-	         <h3>Please Create Your page</h3>
+	         <h3>$Wikimain10</h3>
          #end
 </body>
 <div id="debug"></div>

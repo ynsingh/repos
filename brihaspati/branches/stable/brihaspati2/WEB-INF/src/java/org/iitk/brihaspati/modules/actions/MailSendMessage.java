@@ -68,6 +68,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.AutoSave;
 import org.iitk.brihaspati.om.MailSendPeer;
 import org.iitk.brihaspati.om.MailReceivePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
@@ -80,6 +81,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  *  @author<a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @modified date 28-12-2009, 14-05-2010, 07-12-2012 (Shaista)
 
  */
@@ -109,16 +111,6 @@ public class MailSendMessage extends SecureAction
 			String name="",gpath="";
 			int msgid = 0,Status=0,receiver_id=0,readf=0,index=0;
 			RomanToUnicode romanToUni = new RomanToUnicode();
-/*
-			//cerMsg = pp.getString("hexaStr");
-			String lang = (String)user.getTemp("lang");
-			 if( lang.equals("hindi") || lang.equals("marathi"))
-			{
-				
-				message= romanToUni.getstrUnicode(cerMsg,lang).trim();
-			}
-			else
-*/
 			message = pp.getString("hexaStr").trim();
 			if(!Add_SndList.equals(""))
 			{
@@ -161,11 +153,6 @@ public class MailSendMessage extends SecureAction
                                 crit.add(MailSendPeer.REPLY_STATUS,0);
                                 crit.add(MailSendPeer.POST_TIME,d);
                                 MailSendPeer.doInsert(crit);
-/**
-                               	String mailMsg="";
-				String serverName= TurbineServlet.getServerName();
-		                String serverPort= TurbineServlet.getServerPort();
-**/
 				StringTokenizer st=new StringTokenizer(AddList,", ");
                       		for(int i=0;st.hasMoreTokens();i++)
 				{ //first 'for' loop
@@ -211,12 +198,38 @@ public class MailSendMessage extends SecureAction
 				data.setMessage(msg4+" "+msg5);
 				Status=0;
 			}
+		// For deleting tmp file of mail message after sending that mail
+		AutoSave.doDelete(dir+(String)user.getTemp("Institute_id")+(String)user.getTemp("role")+user.getName()+pp.getString("page",""));
  		}//close outer 'try'
 		catch(Exception e)
 		{
 			data.setMessage("Some Error Occured in Sending Mail !!!!");
 		}
 	}//method
+
+	/**
+        * In this method, We save message/s or Local_mail for users(Local)
+        * @param data RunData
+        * @param context Context
+        * @exception Exception a generic exception
+        */
+	public void doSave(RunData data, Context context)
+        {
+		try{
+			User user = data.getUser();
+			String role = (String)user.getTemp("role");
+			ParameterParser pp=data.getParameters();
+			String id = (String)user.getTemp("course_id")+(String)user.getTemp("Institute_id")+role+user.getName()+pp.getString("page","");
+			String message = pp.getString("hexaStr").trim();
+			AutoSave.doSave(id,message);
+			if(role.equals("") || role.equals("institute_admin"))
+			data.setScreenTemplate("call,Local_Mail,MailCompose.vm");
+			else
+			data.setScreenTemplate("call,Local_Mail,MailTestMessage.vm");
+		}
+		catch(Exception e){
+		}
+	}
 	/**
 	* In this method, We deleted message/s or Local_mail for users(Local)
      	* @param data RunData
@@ -305,6 +318,8 @@ public class MailSendMessage extends SecureAction
 			doSend(data,context);
 		else if(action.equals("eventSubmit_doDelete"))
 			doDeleteMessage(data,context);
+		else if(action.equals("eventSubmit_doSave"))
+			doSave(data,context);
 		else
 		{
 			User user = data.getUser();

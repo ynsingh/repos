@@ -1,9 +1,8 @@
 package org.iitk.brihaspati.modules.actions;
-
 /*
- * @(#)AcademicAction.java	
+ * @(#)AcademicAction.java
  *
- *  Copyright (c) 2007,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2008,2011,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -33,7 +32,9 @@ package org.iitk.brihaspati.modules.actions;
  * 
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
+ *
  */
+
 
 
 import java.io.File;
@@ -51,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CalendarUtil;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.apache.commons.lang.StringUtils;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.StringTokenizer;
@@ -59,6 +61,7 @@ import org.apache.commons.logging.LogFactory;
 /*
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:smita@iitk.ac.in">SmitaPal</a>
  */
 
 public class AcademicAction extends SecureAction
@@ -72,7 +75,7 @@ public class AcademicAction extends SecureAction
 	 */
 	private Log log = LogFactory.getLog(this.getClass());
 
-	public void doInsert(RunData data, Context context)
+	/*public void doInsert(RunData data, Context context)
 	{
 		try
 		{
@@ -84,14 +87,14 @@ public class AcademicAction extends SecureAction
 			if(instituteId.equals("")){
 				instituteId="Admin";
 			}	
-			String event=pp.getString("event");
-			StringTokenizer st=new StringTokenizer(event,";"); 
+			String detail=pp.getString("detail");
+			StringTokenizer st=new StringTokenizer(detail,";"); 
 			Vector v=new Vector();
-			for(int i=0;i<event.length();i++){
+			for(int i=0;i<detail.length();i++){
 				while(st.hasMoreTokens())
                                 {
-                                        event=st.nextToken();
-					v.addElement(event);	
+                                        detail=st.nextToken();
+					v.addElement(detail);	
                                 }
 			}
 			String month=pp.getString("Start_mon");
@@ -129,7 +132,7 @@ public class AcademicAction extends SecureAction
 			}
 			else
 			{
-				if(event.contains("#")){
+				if(detail.contains("#")){
 				String ph="";
                                 fw.write("\r\n");
                                 fw.write(prpdate);
@@ -156,8 +159,8 @@ public class AcademicAction extends SecureAction
 			ErrorDumpUtil.ErrorLog("The error in insert method !!"+e);	
 			data.setMessage("See ExceptionLog !!");
 		}
-	}
-	public void doGet(RunData data, Context context)
+	}*/
+	/*public void doGet(RunData data, Context context)
 	{
 		try
 		{
@@ -218,25 +221,44 @@ public class AcademicAction extends SecureAction
 			ErrorDumpUtil.ErrorLog("The error in get method !!"+e);	
 			data.setMessage("See ExceptionLog !!");
 		}
-	}	
+	}*/	
 	public void doUpdate(RunData data, Context context)
 	{
 		try
 		{
 			String LangFile=data.getUser().getTemp("LangFile").toString();  
 			ParameterParser pp=data.getParameters();
+			/*Get values from vm and contextput for maintain 
+                         *the values after form reload.
+                         */
+			String type=pp.getString("type"," ");
+			String vmonth=pp.getString("Start_mon"," ");
+			context.put("vmonth",vmonth);
+			String vyear=pp.getString("Start_year"," ");
+			context.put("vyear",vyear);
 			String etype=pp.getString("etype");
+			context.put("etype",etype);
+			String maxValue=pp.getString("maxValue"," ");
+			context.put("maxValue",maxValue);
 			String detail=pp.getString("detail");
+			context.put("detail",detail);
 			StringTokenizer st=new StringTokenizer(detail,";"); 
+			
 			Vector v=new Vector();
+			/*Split the event value and get in a vector*/
 			for(int i=0;i<detail.length();i++){
 				while(st.hasMoreTokens())
                                 {
                                         detail=st.nextToken();
-					v.addElement(detail);	
+					v.addElement(detail);
+	
                                 }
 			}
-			String date=pp.getString("date");	
+			String date=pp.getString("date"," ");
+			context.put("date",date);
+			/*Get Path for AcademicCalendar.properties
+                         *and CalendarHolidays.properties";
+                         */
 			String path=data.getServletContext().getRealPath("/WEB-INF") +"/conf";
 			String acdPath=path+"/"+"AcademicCalendar.properties";
 			String hldPath=path+"/"+"CalendarHolidays.properties";
@@ -244,13 +266,23 @@ public class AcademicAction extends SecureAction
 			if(etype.equals("Academic")){
 				fpath=acdPath;
 			}
-			else{
+			else if(etype.equals("Holidays")){
 				fpath=hldPath;
 			}
-			CalendarUtil.DeleteLine(fpath,date);
 			String msg="";
 			FileWriter fw=new FileWriter(fpath,true);
-			if(detail.contains("#")){
+
+			/*If details contains(#).
+                         *events save in propertiesfile.
+                         *in given formate.
+                         *InstituteId.Month.Year=todayDate#event;NextDate#event.
+			 *Else If details isNotBlank .
+			 *show the error message to give event datails in proper formate.
+                         *else delete the selected events and show the message.
+                         */
+
+			if(detail.contains("#")){ 
+				CalendarUtil.DeleteLine(fpath,date);
 				String ph="";
 				fw.write(date);
                         	fw.write("=");
@@ -259,40 +291,141 @@ public class AcademicAction extends SecureAction
 					ph=v.get(j).toString();
                                		fw.write(ph);
                                		fw.write(";");
+		
 				}
 				msg=MultilingualUtil.ConvertedString("brih_event",LangFile)+MultilingualUtil.ConvertedString("update_msg",LangFile);
+				data.setMessage(msg);
                         fw.close();
 			}
-                        else
+			else if((!detail.contains("#")) && (StringUtils.isNotBlank(detail)))
+			{	
 				msg=MultilingualUtil.ConvertedString("ac_msg2",LangFile);
+                                data.setMessage(msg);
+
+			}
+                        else{
+				CalendarUtil.DeleteLine(fpath,date);
+				msg=MultilingualUtil.ConvertedString("cal_del",LangFile);
                           	data.setMessage(msg);
+			}
 				// Maintain Log
                                 log.info("User Name --> Admin | Operation --> Update event | IP Address --> "+data.getRemoteAddr());
-		}
+		
+
+	}
 		catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The error in Update method !!"+e);	
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
+
+	public void doSave(RunData data, Context context)
+
+        {
+		try{
+			String LangFile=data.getUser().getTemp("LangFile").toString();
+			String msg="";
+		        ParameterParser pp=data.getParameters();
+			/*Get values from vm and contextput for maintain 
+			 *the values after form reload.
+			 */
+                        String type=pp.getString("type"," ");
+                         String vmonth=pp.getString("Start_mon"," ");
+                        context.put("vmonth",vmonth);
+                        String vyear=pp.getString("Start_year"," ");
+                        context.put("vyear",vyear);
+                        String etype=pp.getString("etype");
+                        context.put("etype",etype);
+                        String detail=pp.getString("detail");
+                        context.put("detail",detail);
+                        StringTokenizer st=new StringTokenizer(detail,";");
+			Vector v=new Vector();
+			/*Split the event value and get in a vector*/
+                        for(int i=0;i<detail.length();i++){
+                                while(st.hasMoreTokens())
+                               {
+                                        detail=st.nextToken();
+                                        v.addElement(detail);
+                                }
+                        }
+			String date=pp.getString("date"," ");
+			context.put("date",date);
+			String maxValue=pp.getString("maxValue"," ");
+                        context.put("maxValue",maxValue);
+
+			/*Get Path for AcademicCalendar.properties
+                         *and CalendarHolidays.properties";
+                         */
+			String path=data.getServletContext().getRealPath("/WEB-INF") +"/conf";
+                        String acdPath=path+"/"+"AcademicCalendar.properties";
+	                String hldPath=path+"/"+"CalendarHolidays.properties";
+                        String fpath="";
+			
+			if(etype.equals("Academic"))
+                                fpath=acdPath;
+                        else
+                                fpath=hldPath;
+			File file=new File(fpath);
+                        FileWriter fw=new FileWriter(fpath,true);
+			/*If details contains(#)
+			 *events save in propertiesfile
+			 *in given formate
+			 *InstituteId.Month.Year=todayDate#event;NextDate#event
+			 *else shows an error message.
+			 */
+                        if(detail.contains("#"))
+			{
+	                	String ph="";
+                                fw.write("\r\n");
+                                fw.write(date);
+                                fw.write("=");
+                                for(int j=0;j<v.size();j++)
+                                {
+                                        ph=v.get(j).toString();
+                                        fw.write(ph);
+                                        fw.write(";");
+                                }
+                                fw.close();
+                                msg=MultilingualUtil.ConvertedString("cal_ins",LangFile);
+                                data.setMessage(msg);
+                    }
+                    else{
+         	   	msg=MultilingualUtil.ConvertedString("ac_msg2",LangFile);
+                        data.setMessage(msg);
+		}
+		//}
+	}
+	catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The error in save method !!"+e);
+                        data.setMessage("See ExceptionLog !!");
+		}
+	}
+
+
 	public void doPerform(RunData data,Context context) throws Exception
 	{
 		String LangFile=data.getUser().getTemp("LangFile").toString();  
 		String msg=MultilingualUtil.ConvertedString("action_msg",LangFile);
 		String action=data.getParameters().getString("actionName","");
 		context.put("actionName",action);
-		if(action.equals("eventSubmit_doInsert"))
+		/*if(action.equals("eventSubmit_doInsert"))
 		{
 			doInsert(data,context);
 		}
 		else if(action.equals("eventSubmit_doGet"))
 		{
 			doGet(data,context);
-		}
-		else if(action.equals("eventSubmit_doUpdate"))
+		}*/
+		if(action.equals("eventSubmit_doUpdate"))
 		{
 			doUpdate(data,context);
 		}
+		else if(action.equals("eventSubmit_doSave"))
+		{
+			doSave(data,context);
+		}
+	
 		else
 		{
 			data.setMessage(msg);

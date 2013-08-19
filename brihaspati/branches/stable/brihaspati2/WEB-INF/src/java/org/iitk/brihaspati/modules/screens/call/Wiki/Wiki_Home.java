@@ -62,7 +62,7 @@ import org.iitk.brihaspati.om.Courses;
 import org.apache.torque.util.Criteria;
 import java.io.*;
 import org.iitk.brihaspati.modules.utils.ListManagement;
-
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  * Last modify 17 Sep 2012
@@ -87,6 +87,8 @@ public class Wiki_Home extends SecureScreen{
 			String filenameforedit=pp.getString("filename","");
                         String cId=(String)user.getTemp("course_id");
                         //String filename="brihaspati3";
+			String user_role = (String)user.getTemp("role");
+			int uid=UserUtil.getUID(user.getName());
                         String filename=cId;
                         if(!filenameforedit.equals("")){
                                 filename=filenameforedit;
@@ -150,6 +152,14 @@ public class Wiki_Home extends SecureScreen{
                         context.put("topic_wiki",msg);
                         context.put("v",v);
                         context.put("topic_name_file_name",filename);
+			if((user_role.equals("student")) || (user_role.equals("instructor"))||(user_role.equals("teacher_assistant")))
+                         {
+                                int eid=0;
+                                ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+                                //CourseTimeUtil.getCalculation(uid);
+                                //ModuleTimeUtil.getModuleCalculation(uid);
+                         }
+
 		}//try
 		catch(Exception e)
 		{

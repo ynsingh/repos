@@ -1,6 +1,6 @@
 #*
  * @(#) CourseManagement.vm
- * Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005, 2009-2010, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -8,22 +8,31 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+  @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
  * @modified date: 30-03-2010
- * @modified date: 15-02-2011
+ * @modified date: 15-02-2011, 20-04-2012,04-10-2012, 04-01-2013, 22-04-2013 (Shaista)
 *#
+
+$page.setTitle("Home | $course | Course management")
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-$page.setTitle("Home | $course | Course management")
+<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+ </script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())  
-
-<table bgcolor="$ui.tableColor" width=100%>
+<table bgcolor="$ui.menuColor" width=100%>
 <tr align="right">
 <td>
-        <font face="$ui.sansSerifFonts"><b> $brih_course $brih_mgmt |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
-        </font>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_course </a> | $brih_course $brih_content $brih_upload |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> 
 </td>
 </tr>
 </table>
@@ -35,11 +44,15 @@ $page.setTitle("Home | $course | Course management")
 #else
         <tr >
         #if($uploadStatus=="full")
-                <td align="right">
+                <td>
                 #if($pub=="Publish")
                 $brih_uploadSucessfully $brih_and $brih_published
                 #else
                 $brih_uploadSucessfully
+                #end
+		&nbsp;&nbsp;$!data.getMessage()
+                #if($XmlMsg!="")
+ 	               $XmlMsg
                 #end
                 </td>
         #else
@@ -49,7 +62,11 @@ $page.setTitle("Home | $course | Course management")
                         $brih_uploadSomeFile  <br>
 
                        ## Following files already existed, so were not uploaded :
-                        $brih_uploadFileExist $brih_commaexist<br>
+                        $brih_uploadFileExist $brih_commaexist
+			&nbsp;&nbsp;$!data.getMessage() <br>
+			#if($XmlMsg!="")
+ 	                       $XmlMsg
+	                #end
                 
 		#elseif($totalFilesEntries.Count>0)
                         <td>
@@ -57,10 +74,15 @@ $page.setTitle("Home | $course | Course management")
                         ##All of the following  Existed at Server :
 			$brih_uploadNonefile <br>
                         $brih_uploadFileOnServer $brih_commaexist<br>
+			#if($XmlMsg!="")
+	                        $XmlMsg
+	                #end
                 #elseif($uploadStatus!="")
                         <td>
                         ##There is nothing to Upload
                         $brih_uploadNothin <br>
+		#elseif($tmpupload=="uploadXmlMsg")
+	                $XmlMsg
                 #end
                  <br>
                 #set($count=1)
@@ -75,101 +97,220 @@ $page.setTitle("Home | $course | Course management")
         </tr>
 #end
 </table>
-##<table width=100% bgcolor="$ui.tableColor" align="right">
 <table width=100% bgcolor="$ui.tableColor">
-	<tr align="right">
-		<td align=right>
-                <a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin"); style=text-decoration:none>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td> 
-
-		
-	##<a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin");style=text-decoration:none>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
-		<td align="right"><b>$brih_usedspace   $!TUSize $quota_sze </b></td>
-	       <td align="right" ><b>$brih_space $!aSize $quota_sze</b></td>
-	</tr>
+<tr>
+        <td align=right>
+	<a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin"); style=text-decoration:none>$brih_help</a>
+        <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> | $brih_VideoHelp</font></a>
+        <img src="$content.getURI("/images/Lefthand.gif")"> 
+	</td>
+	<td align="right" ><b>$brih_usedspace $!TUSize $quota_sze</b></td>
+        <td align="right"><b>$brih_space $!aSize $quota_sze </b></td>
+</tr>
 </table>
-
 #if($user_role == "instructor")
         <table width="100%" align="left" bgcolor="$ui.tableColor">
-        	<tr bgcolor="$ui.menuColor">
+        <tr bgcolor="$ui.menuColor" align="right">
 		#if($tdcolor != "7")
-			<td>
-	        #elseif($tdcolor == "7")
-		        <td bgcolor="#AFDCEC">
+                <td>
+                #elseif($tdcolor == "7")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a> </td>
+                #if($tdcolor != "6")
+                <td>
+                #elseif($tdcolor == "6")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") >$brih_scorm $brih_packager</a></td>
+                #if($tdcolor != "5")
+                <td>
+                #elseif($tdcolor == "5")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") > $brih_grade $brih_Of $RemoteConfiguration </a></td>
+                #if($tdcolor != "4")
+                <td>
+                #elseif($tdcolor == "4")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") > $brih_course $brih_Of $brih_header  $brih_upload </a></td> 
+                #if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")>$brih_course $RemoteConfiguration</a></td>
+		#if($tdcolor != "2")
+		<td>
+		#elseif($tdcolor == "2")
+		<td bgcolor="#AFDCEC">
 		#end
-				<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7") style=text-decoration:none> $brih_scorm $Repo_Player </a>
-			</td>
-	        #if($tdcolor != "6")
-	        	<td>
-        	#elseif($tdcolor == "6")
-		        <td bgcolor="#AFDCEC">
-        	#end
-        			<a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none> $brih_scorm $brih_packager </a></td>
-	        #if($tdcolor != "5")    
-		        <td>
-	        #elseif($tdcolor == "5")
-		        <td bgcolor="#AFDCEC">
-	        #end
-		        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
-	        #if($tdcolor != "4")    
-		        <td>
-	        #elseif($tdcolor == "4")
-		        <td bgcolor="#AFDCEC">
-	        #end
-			        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
-	        #if($tdcolor != "3")    
-		        <td>
-		#elseif($tdcolor == "3")
-		        <td bgcolor="#AFDCEC">
-		#end
-		        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration </a></td>
-	        #if($tdcolor != "2")    
-			 <td>
-	        #elseif($tdcolor == "2")
-	        	<td bgcolor="#AFDCEC">
-	        #end
-			<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
-	        #if($tdcolor != "0")  
-		        <td>
+		<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > $brih_course $brih_content $brih_upload </a></td>
+		#if($tdcolor != "0")  
+		<td>
 	        #elseif($tdcolor == "0")
-		        <td bgcolor="#AFDCEC">
+        	<td bgcolor="#AFDCEC">
 	        #end
-		        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td><td>
-	        #if($tdcolor != "1")
-		        <td>
-	        #elseif($tdcolor == "1")
-		        <td bgcolor="#AFDCEC">
-	        #end
-		        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
-                </td>
+        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td>
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") > $brih_course $brih_content  </a></td>
 	</tr>
 	</table>
 #else
 	<table width="100%" align="left" bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
-		 #if($tdcolor != "1")
-                <td>
-                #elseif($tdcolor == "1")
-                <td bgcolor="#AFDCEC">
-                #end
-                <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "english")$brih_course  $brih_content #else $brih_content #end </a></td>
-                #if($tdcolor != "0")  
-                <td>
-                #elseif($tdcolor == "0")
-                <td bgcolor="#AFDCEC">
-                #end
-                <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user</a></td><td>
                 #if($tdcolor != "2")
                 <td>
                 #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none > #if($lang == "english") $brih_upload $brih_course $brih_content #else $brih_content $brih_upload #end </a></td>
+                <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > $brih_course $brih_content $brih_upload </a></td>
+                #if($tdcolor != "0")  
+                <td>
+                #elseif($tdcolor == "0")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td><td>
+		 #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") > $brih_course $brih_content </a></td>
 	 </tr>
         </table>
 #end
-
+######################################
  ## Upload.vm
-<script LANGUAGE="JAVASCRIPT">
+<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UploadAction")">
+<table width="100%" align="left">
+      #if ($errorTemplate)
+      <tr>
+        <td colspan="4">
+          <table bgcolor="$ui.bgcolor">
+            <tr>
+              <td>
+                <img src="$ui.image($ui.alertImage,$data)">
+              </td>
+              <td>
+                #parse ($errorTemplate)
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      #end
+        <tr width=100% bgcolor="$ui.menuColor" align="right">
+		<td colspan="5" > <font color="red">$brih_UploadMsg</font> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+        </tr>
+	
+	#if($user_role == "instructor")
+	      <tr width=100% bgcolor="$ui.tableColor">
+		<td align="right"  colspan="2"> <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"> <b> $brih_mail $Notice_Send </b> </td>
+	        <td align="right" width=10%> <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b> </td>
+		<td align="right"> <input type="RADIO" name=topicExisting value="NEWTOPIC" > $brih_new $brih_topic </td>
+		<td align="right">
+		        <SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+        		  <option></option>
+		        #foreach($topic in $allTopics)
+        		        <option>$topic</option>
+	        	  #end
+	        	</SELECT>
+		         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
+			<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
+			<b> $brih_Exist $brih_topic </b>
+		</td>
+	        </tr>
+	#else
+		<tr width=100% bgcolor="$ui.tableColor" align="right">
+		<td> <input type="RADIO" name=topicExisting value="NEWTOPIC" ><b> $brih_new $brih_topic </b></td>
+		<td colspan=5>
+        	<SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform) class="drop">
+	          <option></option>
+        	#foreach($topic in $allTopics)
+                	<option>$topic</option>
+	          #end
+        	</SELECT>
+		<INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
+	        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)> <b> $brih_Exist $brih_topic </b>
+	        </td>
+		</tr>	
+	#end
+      <tr bgcolor="$ui.menuColor" width=100% align="right">
+        ##formCell ("Topic Name" "contentTopic" "")
+        <td colspan=4> <input type="text" name=contentTopic onFocus=checkRadio() size=20> </td>
+        <td> <b><font face="$ui.sansSerifFonts">$brih_topic $brih_Of1 $brih_name</font> </b> </td>
+      <tr bgcolor="$ui.tableColor">
+              ##fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td></td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
+		<td> <input type="file" name="file6"> </td>
+                <td align="right"> 6.&nbsp; $brih_at_file &nbsp; </td>
+                <td></td>
+                <td> <input type="file" name="file1"> </td>
+                <td align="right"> 1. &nbsp; $brih_at_file </td>
+
+      </tr>
+      <tr bgcolor="$ui.menuColor">
+##              #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td></td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
+		<td> <input type="file" name="file7"> </td>
+                <td align="right"> 7.&nbsp; $brih_at_file &nbsp; </td>
+                <td></td>
+                <td> <input type="file" name="file2"> </td>
+                <td align="right"> 2. &nbsp; $brih_at_file </td>
+      </tr>
+      <tr bgcolor="$ui.tableColor">
+              ###fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td></td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
+		<td> <input type="file" name="file8"> </td>
+                <td align="right"> 8.&nbsp; $brih_at_file &nbsp; </td>
+                <td></td>
+                <td> <input type="file" name="file3"> </td>
+                <td align="right"> 3. &nbsp; $brih_at_file </td>
+      </tr>
+      <tr bgcolor="$ui.menuColor">
+		##fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td></td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
+		 <td> <input type="file" name="file9"> </td>
+                <td align="right"> 9.&nbsp; $brih_at_file &nbsp; </td>
+                <td></td>
+                <td> <input type="file" name="file4"> </td>
+                <td align="right"> 4. &nbsp; $brih_at_file </td>
+        </tr>
+	<tr bgcolor="$ui.tableColor">
+              ##fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td></td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
+		<td> <input type="file" name="file9"> </td>
+                <td align="right"> 9.&nbsp; $brih_at_file &nbsp; </td>
+                <td></td>
+                <td> <input type="file" name="file5"> </td>
+                <td align="right"> 5. &nbsp; $brih_at_file </td>
+      </tr>
+
+      <tr align="right">
+        <td colspan=5 bgcolor="$ui.buttonBoxColor">
+          #*
+            Check for a mode, the update and delete buttons
+            shouldn't appear when inserting a new user.
+          *#
+	<font face="$ui.sansSerifFonts">
+
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
+	        <input type="hidden" name="actionName" value="">
+        	<input type="hidden" name="count" value="$tdcolor">
+
+          </font>
+        </td>
+      </tr>
+    </table>
+</form>
+
+<SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+        }
+
         function blurTopicName(frm)
         {
                 frm.contentTopic.value=frm.topicList.options[frm.topicList.selectedIndex].text;
@@ -186,7 +327,7 @@ $page.setTitle("Home | $course | Course management")
                         frm.contentTopic.focus();
                 }
         }
-	 function checkRadio()
+         function checkRadio()
         {
                 if(document.uploadform.topicExisting[0].checked)
                 {
@@ -194,7 +335,7 @@ $page.setTitle("Home | $course | Course management")
                 }
 
         }
-	function validate(uploadform,field)
+        function validate(uploadform,field)
         {
                 var tList=uploadform.topicList;
                 var cTopic=uploadform.contentTopic;
@@ -228,181 +369,5 @@ $page.setTitle("Home | $course | Course management")
                         alert("Topic Name Can not Empty !!");
                 }
         }
-</script>
-##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,Upload.vm").setAction("UploadAction")">
-<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UploadAction")">
-<table width="100%" align="right">
-    ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="0">
-#*      #if ($errorTemplate)
-      <tr>
-        <td colspan="4">
-          <table bgcolor="$ui.bgcolor">
-            <tr>
-              <td>
-                <img src="$ui.image($ui.alertImage,$data)">
-              </td>
-              <td>
-                #parse ($errorTemplate)
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      #end*#
-      ##<tr width=100% bgcolor="$ui.menuColor" align="right">
-	<tr align="right">
-	<td colspan=7 align="right">
-	<font color="red">$brih_UploadMsg</font><img src="$content.getURI("/images/Lefthand.gif")">
-	</td>
-	</tr>
-	#if($user_role == "instructor")
-		<tr align="right" width=100% bgcolor="$ui.tableColor">
-			 <td align="right">  
-				<b> $brih_mail $Notice_Send </b> 
-				<INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"> 
-			</td>
-		        <td align="right">
-				<b>$brih_publish</b>
-			</td>
-		        <td align="right">
-			        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> 
-		        </td>
-	        	<td colspan="3" align="right">
-			         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-			        <b> $brih_Exist $brih_topic
-				<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
-			        <SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-					<option></option>
-		        #foreach($topic in $allTopics)
-        		        <option>$topic</option>
-        		#end
-			        </SELECT>
-			</b> </td>
-			<td> <b> $brih_new $brih_topic </b> </td>
-			<td>
-				<input type="RADIO" name=topicExisting value="NEWTOPIC" >
-		        </td>
-        ##</tr>
-        ##<tr>
-	        </tr>
-	#else
-		<tr align="right" width=100% bgcolor="$ui.tableColor">
-		         <td colspan=7>
-			         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-			        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-			        <SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-				          <option></option>
-					  #foreach($topic in $allTopics)
-				                <option>$topic</option>
-				          #end
-			        </SELECT>
-	        <input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
-		        </td>
-			
-		</tr>	
-	#end
-         <tr align="right" bgcolor="$ui.menuColor" width=100%>
-        ##formCell ("Topic Name" "contentTopic" "")
-         <td align="right" colspan=5>
-        <input type="text" name=contentTopic onFocus=checkRadio() size=20>
-        </td>
-         <td>
-        <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end Name</font> </b>
-        </td>
-		<tr align="right" bgcolor="$ui.tableColor">
-              ##fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
-			<td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file6"> </td>
-                	<td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .6 </td></b>&nbsp;
-                       	<td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file1"> </td>
-                	<td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .1 </td></b></td>
-      		</tr>
-      		<tr align="right"  bgcolor="$ui.tableColor">
-              ## #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file7"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .7 </td></b>&nbsp;
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file2"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .2 </td></b></td>
-      </tr>
-      <tr align="right"  bgcolor="$ui.tableColor">
-              ## #fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file8"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .8 </td></b>&nbsp;
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file3"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .3 </td></b></td>
-      </tr>
-      <tr align="right"  bgcolor="$ui.tableColor">
-              ## #fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
-                <td align="right"bgcolor="$ui.tableColor"> <input type="file" size="40" name="file9"> </td>
-                <td  align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .9 </td></b>&nbsp;
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file4"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .4 </td></b></td>
-      </tr>
-      <tr align="right"  bgcolor="$ui.tableColor">
-              ## #fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file10"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .10 </td></b>&nbsp;
-                <td align="right" bgcolor="$ui.tableColor"> <input type="file" size="40" name="file5"> </td>
-                <td align="right" bgcolor="$ui.tableColor"><b> $brih_at_file &nbsp;</td><td bgcolor="$ui.tableColor" size=10%> .5 </td></b></td>
-      </tr>
 
-#*      <tr>
-        <td bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">$brih_topic $brih_desc </font> </b>
-        </td>
-        <td>
-        <font face="$ui.sansSerifFonts"><textarea name="topicDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>
-*#
-#*    <tr>
-        <td bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">$brih_file $brih_info </font> </b>
-        </td>
-        <td>
-        <font face="$ui.sansSerifFonts"><textarea name="fileDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>
-*#
-      <tr>
-        <td colspan=6 align="center" bgcolor="$ui.buttonColor">
-      #*<tr>
-        <td align="right" bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">Topic Description </font> </b>
-        </td>
-        <td align="right">
-        <font face="$ui.sansSerifFonts"><textarea name="topicDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>*#
-
-   #* <tr>
-        <td align="right" bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">File Information </font> </b>
-        </td>
-        <td align="right">
-        <font face="$ui.sansSerifFonts"><textarea name="fileDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>*#
-
-      <tr align="right">
-        <td colspan=6 align="right" bgcolor="$ui.buttonBoxColor">
-#*
-            Check for a mode, the update and delete buttons
-            shouldn't appear when inserting a new user.
-          *#
-	<font face="$ui.sansSerifFonts">
-
-          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
-        <input type="hidden" name="actionName" value="">
-        <input type="hidden" name="count" value="$tdcolor">
-
-          </font>
-        </td>
-      </tr>
-</table>
-</form>
-<SCRIPT language="JavaScript">
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
 </SCRIPT>

@@ -73,9 +73,7 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
 import javax.servlet.http.*;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 /**
  *   This class contains code for quiz attempt part from student login
  *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
@@ -102,7 +100,6 @@ public class Student_Quiz extends SecureScreen
 			}			
 			String type = pp.getString("type","");
 			context.put("type",type);
-			ErrorDumpUtil.ErrorLog("type is here"+type);
 			if(type.equalsIgnoreCase("practice"))
 				count="2";
 			context.put("tdcolor",count);
@@ -110,23 +107,19 @@ public class Student_Quiz extends SecureScreen
 			String quizPath="/Quiz.xml";  
 			String scorePath="/score.xml";
 			File file=new File(filePath+"/"+quizPath);
-			ErrorDumpUtil.ErrorLog("second to check");
 			Vector quizList=new Vector();
 			Vector attemptedQuizList=new Vector();
 			Vector finalQuizList=new Vector();
 			Vector futureQuizList = new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			if(type.equalsIgnoreCase("practice")){
-				ErrorDumpUtil.ErrorLog("inside practice");
 				if(!file.exists()){
-					ErrorDumpUtil.ErrorLog("inside file not exist");
 					data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));									
 				}
 				else{
 					context.put("isFile","exist");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 					quizList=quizmetadata.getPracticeQuiz_Detail();
-					ErrorDumpUtil.ErrorLog("inside else "+quizList.size());
 					if(quizList!=null){
 						if(quizList.size()!=0){
 							context.put("quizList",quizList);	              
@@ -155,7 +148,6 @@ public class Student_Quiz extends SecureScreen
 					//String IPAddr=request.getRemoteAddr();
 					String IPAddr=getClientIpAddr(data.getRequest());
 					context.put("ip",IPAddr);
-					ErrorDumpUtil.ErrorLog("IP Address is: "+IPAddr);
 					
 					if(quizList!=null && quizList.size()!=0){
 						for(int i=0;i<quizList.size();i++){
@@ -164,15 +156,12 @@ public class Student_Quiz extends SecureScreen
 							File secFile=new File(path+"/"+quizid+"_Security.xml");
 							Vector collect=new Vector();
 							if(secFile.exists()){
-								ErrorDumpUtil.ErrorLog("inside if file exists :: "+path+"/"+quizid+"_Security.xml");
 								QuizMetaDataXmlReader reader=new QuizMetaDataXmlReader(path+"/"+quizid+"_Security.xml");
 								collect=reader.getSecurityDetail();
 								if(collect!=null && collect.size()!=0){
-									ErrorDumpUtil.ErrorLog("inside for collect not null "+collect.size());
 									for(int j=0;j<collect.size();j++){
 										String student=((QuizFileEntry) collect.elementAt(j)).getStudentID();
 										if(student.equals(loginname)){
-											ErrorDumpUtil.ErrorLog("inside for if student is "+student+" and login name is "+loginname);
 											String securityString=((QuizFileEntry) collect.elementAt(j)).getSecurityID();
 											String ip=((QuizFileEntry) collect.elementAt(j)).getIP();
 											String temp=securityString+":"+ip;
@@ -184,7 +173,6 @@ public class Student_Quiz extends SecureScreen
 						}
 					}
 					context.put("securityData",securityData);
-					ErrorDumpUtil.ErrorLog("inside Student_Quiz file user is: "+user+" and hash map is"+securityData.size()+" : "+securityData);
 					
 					//----------------------------------------------------END------------------------------------------------------------------
 					
@@ -192,7 +180,6 @@ public class Student_Quiz extends SecureScreen
 					futureQuizList = quizmetadata.listFutureQuiz();
 					context.put("futureQuizList",futureQuizList);
 					File scoreFile=new File(filePath+"/"+scorePath);
-					ErrorDumpUtil.ErrorLog("Qiuz List for AttempQuiz"+quizList.size());
 					if(quizList==null || quizList.size()==0){
 						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
 						return;
@@ -202,11 +189,9 @@ public class Student_Quiz extends SecureScreen
 					}
 					else{
 						quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
-						ErrorDumpUtil.ErrorLog("student user id is "+user_id);
 						attemptedQuizList=quizmetadata.getFinalScore(user_id);
 						String quizid,userid,quizid1;
 						boolean found = false;
-						ErrorDumpUtil.ErrorLog("The value of attempted quiz list is::"+attemptedQuizList.size()+"Quiz List ::"+quizList.size());
 					if(quizList!=null && quizList.size()!=0){
 						if(attemptedQuizList!=null && attemptedQuizList.size()!=0){
 							for(int i=0;i<quizList.size();i++){
@@ -214,8 +199,6 @@ public class Student_Quiz extends SecureScreen
 									quizid = (((QuizFileEntry) quizList.elementAt(i)).getQuizID());
 									quizid1 = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getQuizID());
 //									userid = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getUserID());
-									ErrorDumpUtil.ErrorLog("\n total quiz list :"+ i +" : "+quizid);
-									ErrorDumpUtil.ErrorLog("\n attempted :"+j+" : "+quizid1 );									
 									if(quizid.equalsIgnoreCase(quizid1)){
 //										if(userid.equalsIgnoreCase(user_id)){
 											found = true;
@@ -229,11 +212,9 @@ public class Student_Quiz extends SecureScreen
 									else
 										found = false;
 								}//end for
-								ErrorDumpUtil.ErrorLog("\n found "+found);
 								if(!found){
 									QuizFileEntry q = (QuizFileEntry)quizList.get(i);
 									finalQuizList.add(q);
-									ErrorDumpUtil.ErrorLog("size of final quiz list ::"+finalQuizList);
 								}
 							}//end outer for
 							if(finalQuizList!=null && finalQuizList.size()!=0){
@@ -256,12 +237,10 @@ public class Student_Quiz extends SecureScreen
                          *Time calculaion for how long user use this page.
                          */
                          int userid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("assistant_teacher")))
                          {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 		}catch(Exception e)

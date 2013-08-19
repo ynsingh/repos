@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)RegisterICInstructor.java	
  *
- *  Copyright (c) 2009-2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009-2010,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -54,7 +54,8 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:vipulk@iitk.ac.in">vipul pal</a>
- * @modify date: 09-08-2012 (Priyanka)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 09-08-2012 (Priyanka),31-05-2013
  */
 public class RegisterICInstructor extends SecureAction_Institute_Admin
 {
@@ -90,6 +91,8 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		  		*/
 		 		String gname=pp.getString("COURSEID").toUpperCase();
 		 		String cname=pp.getString("CNAME");
+				//Get school/center name for Course Registeration
+		 		String schname=pp.getString("SCHNAME");
 		 		String dept=pp.getString("DEPARTMENT","");
 		 		String description=pp.getString("DESCRIPTION","");
 		 		//String uname=pp.getString("UNAME");
@@ -123,7 +126,8 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 	 			boolean check=QuotaUtil.CompareAllotedQuota(instId);
 				if(check){
 	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName,"act"); //modified by Shikha. Last parameter added by Priyanka                   
-		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,LangFile,instituteId,instName,"act");
+				//Add last parameter 'schname' for course registration with school/center.
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,LangFile,instituteId,instName,"act",schname);
 				data.setMessage(msg);
 				}
 				else{

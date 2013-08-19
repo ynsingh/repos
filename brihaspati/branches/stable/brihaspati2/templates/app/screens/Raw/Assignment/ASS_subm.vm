@@ -1,12 +1,13 @@
 #*
  * @(#) ASS_subm.vm
- * Copyright (c) 2007,2009,2010,2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2007,2009,2010,2011,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 04-04-2011 (Shaista)
- * @modified date: 31-12-2009, 22-02-2010, 10-08-2010, 09-Aug-2011 (sunil kr)
+ * @modified date: 31-12-2009, 22-02-2010, 10-08-2010, 09-Aug-2011 (sunil kr), 18-03-2013(Tej)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 <head>
@@ -24,12 +25,12 @@
 $!data.getMessage() 
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>|
+        <a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none">$coursename </a>|
 	#if($user_role == "instructor")	
-	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </b>
+	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </b>
 	#else
-	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </b>
+	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </b>
 	#end
         </td></tr>
 </table> ##table 1 end  
@@ -41,21 +42,21 @@ $!data.getMessage()
 		#elseif($tdcolor=="1")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
+		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </a></td>
                	#if($u == true)
 		#if($tdcolor != "2")
 		<td>
 		#elseif($tdcolor=="2")
 		<td bgcolor="#AFDCEC">
 		#end
-               	<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2")> #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+               	<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
 		#if($u == true)
                 #if($tdcolor != "5")
                 <td>
                 #elseif($tdcolor=="5")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5")> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else $brih_edit/$brih_delete $brih_assignment #end </a></td>
+                <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else $brih_edit/$brih_delete $brih_assignment #end </a></td>
                 #end
         	       	#if($u1 == true)
 			#if($tdcolor != "3")
@@ -63,16 +64,16 @@ $!data.getMessage()
 			#elseif($tdcolor=="3")
 			<td bgcolor="#AFDCEC">
 			#end
-                	<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3")> #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+                	<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
 			#if($tdcolor != "4")
 			<td>
 			#elseif($tdcolor=="4")
 			<td bgcolor="#AFDCEC">
 			#end
-                        <a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4")> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm</a></td>
+                        <a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4") style="text-decoration:none"> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm</a></td>
                 	#end
         	#end
-		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Ass.html","newWin");>$brih_help</a></td>
+		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Ass.html","newWin"); style="text-decoration:none">$brih_help</a></td>
 	#else
 		#if($u == true)
 			#if($tdcolor != "1")
@@ -80,14 +81,14 @@ $!data.getMessage()
 			#elseif($tdcolor=="1")
 			<td bgcolor="#AFDCEC">
 			#end
-                	<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1")> #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
+                	<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </a></td>
         	#if($u1 == true)
 			#if($tdcolor != "2")
 			<td>
 			#elseif($tdcolor=="2")
 			<td bgcolor="#AFDCEC">
 			#end
-                	<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2")> #if($lang == "hindi") $brih_answer $brih_post  #else $brih_post $brih_answer #end </a></td>
+                	<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_post  #else $brih_post $brih_answer #end </a></td>
         	#end
         	#if($u2 == true)
 			#if($tdcolor != "3")
@@ -95,10 +96,10 @@ $!data.getMessage()
 			#elseif($tdcolor=="3")
 			<td bgcolor="#AFDCEC">
 			#end
-                	<a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3")> #if($lang == "hindi") $brih_answer $brih_repost  #else $brih_repost $brih_answer #end </a></td>
+                	<a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_answer $brih_repost  #else $brih_repost $brih_answer #end </a></td>
         	#end
    		#end
-		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin");>$brih_help</a></td>
+		<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin"); style="text-decoration:none">$brih_help</a></td>
         #end
 </tr>
 </table>
@@ -153,7 +154,7 @@ $!data.getMessage()
                 </td>
 	</tr>
         <tr bgcolor="$ui.menuColor">
-		<td><b> $brih_instruction  <font color=RED> * </font></b></td>
+		<td><b> $brih_instruction  </b></td>
 		#if($mode == "")
             	<td align="left" width="3"><textarea id="ta" name="message" wrap="physical" rows=9 cols=80 > $!DB_message </textarea></td>
 		#else
@@ -170,9 +171,9 @@ $!data.getMessage()
 	</tr>
         <tr bgcolor="$ui.menuColor">
 			#if($mode!="Update")
-        	                #fileUpload ("<b> $brih_at_file <font color=RED> * </font></b> " "file")
+        	                #fileUpload ("<b> $brih_at_file </b> " "file")
 			#else
-                        	#fileUpload ("<b> $brih_at_file <font color=RED> * </font></b> " "file")
+                        	#fileUpload ("<b> $brih_at_file </b> " "file")
 			#end
 	</tr>
 	<tr>
@@ -207,25 +208,33 @@ $!data.getMessage()
         function checkBlank(uploadform,field)
         {
 		editor.setMode("textmode")
-                if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
+                //if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
+		if((uploadform.contentTopic.value!="") && (uploadform.grade.value!=""))
                 {
-                        if(isNumberString(uploadform.grade.value))
+			if(uploadform.message.value!="" || uploadform.file.value!="")
                         {
-                                alert("Max Grade should be an positive value");
-                                frm.grade.focus();
-                                return false;
-                        }
+	                        if(isNumberString(uploadform.grade.value))
+        	                {
+                	                alert("Max Grade should be an positive value");
+                        	        frm.grade.focus();
+                                	return false;
+	                        }
+	
+        	                var temp=uploadform.message.value+uploadform.contentTopic.value;
+	                        if(isString(temp))
+        	                {
+	
+        	                        alert("Please check the special character !!");
+                	                return false;
+	                        }
 
-                        var temp=uploadform.message.value+uploadform.contentTopic.value;
-                        if(isString(temp))
+                        	uploadform.actionName.value=field.name;
+	                        uploadform.submit();
+			}
+                        else
                         {
-
-                                alert("Please check the special character !!");
-                                return false;
-                        }
-
-                        uploadform.actionName.value=field.name;
-                        uploadform.submit();
+                                alert("Please fill Instruction field or attach any file !!");
+                        }		
                 }else{
                         alert("Please fill all mandatory  fields. !!");
 		}

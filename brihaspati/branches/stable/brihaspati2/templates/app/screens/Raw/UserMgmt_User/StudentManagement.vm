@@ -7,12 +7,13 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date:09-04-2010 , 20-10-2010,3-11-2010,23-12-2010, 11-01-2011, 30-05-2011, 10-12-2011, 07-02-2012
+ * @modified date:09-04-2010 , 20-10-2010,3-11-2010,23-12-2010, 11-01-2011, 30-05-2011, 10-12-2011, 07-02-2012,21-06-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 
 $page.setTitle("$brih_home | $brih_course | $brih_student $brih_reg")
@@ -25,7 +26,11 @@ $!data.getMessage()
 <tr><td>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | $brih_student $brih_reg
-</td></tr>
+        </td>
+        <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/AddStudent.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        </td>
+</tr>
 </table>
 ## #if($user_role == "instructor")
 ## modify by sunil

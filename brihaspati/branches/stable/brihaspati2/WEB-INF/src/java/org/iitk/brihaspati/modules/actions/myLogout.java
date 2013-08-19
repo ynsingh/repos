@@ -51,15 +51,19 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati class
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
+import org.iitk.brihaspati.om.SystemCleantimePeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils. MailNotificationThread;
+import org.iitk.brihaspati.modules.utils. ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.QuotationThread;
 
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifieddate 09-05-2013 (Priyanka Rawat)
  **/
 
 public class myLogout extends VelocityAction{
@@ -78,6 +82,8 @@ public class myLogout extends VelocityAction{
     	{
 		try
 		{
+			Criteria criteria;
+			int load_flag = 0;
 		/*
 		 * Check user exist in this session or not
                  */
@@ -125,7 +131,7 @@ public class myLogout extends VelocityAction{
                                 	int eid2=CourseTimeUtil.getentryid(uid);
                                 	if(eid1==eid2)
                                 	{
-						MailNotificationThread.getController().CourseTimeSystem(uid,eid2);
+						ModuleTimeThread.getController().CourseTimeSystem(uid,eid2);
                         		}
 				/**
 				* Create log file for user
@@ -146,6 +152,13 @@ public class myLogout extends VelocityAction{
 		        	        data.setScreenTemplate("Login.vm");
 		               		data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
                 	}
+
+			/*criteria = new Criteria();
+                        criteria.add(SystemCleantimePeer.ID,"1");
+                        criteria.add(SystemCleantimePeer.LOAD_FLAG,load_flag);
+                        SystemCleantimePeer.doUpdate(criteria);*/
+			//Updating load factor in QuotationThread
+			QuotationThread.getController().setLoadFlag(load_flag);
 		}
 		catch ( Exception e ){
 			ErrorDumpUtil.ErrorLog("The Exception in logout action is "+e);

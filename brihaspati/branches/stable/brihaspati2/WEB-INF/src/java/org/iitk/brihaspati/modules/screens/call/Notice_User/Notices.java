@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /*
  * @(#)Notices.java	
  *
- *  Copyright (c) 2005, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2010,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -42,8 +42,10 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
  * @ modified date: 13-Oct-2010 (Shaista),01-feb-2012(Dewanshu Singh Sisaudiya)
- * @ modified date: 24-08-2012 (Sunil Yadav)
+ * @ modified date: 24-08-2012 (Sunil Yadav),08-03-2013
  */
 
 import java.util.Vector;
@@ -65,11 +67,13 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import com.workingdogs.village.Record;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.Notification;
+import org.iitk.brihaspati.modules.utils.AutoSave;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 public class Notices extends SecureScreen
 {
@@ -98,6 +102,9 @@ public class Notices extends SecureScreen
                         String flag=pp.getString("nflag","");
 			
                         context.put("nflag",flag);
+                        // Get Type of Hedaing 
+			String htype=pp.getString("htype","");
+                        context.put("hflag",htype);
 			String dir=(String)user.getTemp("course_id");
                         String counter=pp.getString("count","");
                         context.put("tdcolor",counter);
@@ -106,6 +113,27 @@ public class Notices extends SecureScreen
                         String mode2=data.getParameters().getString("mode2","");
                         String dev = Notification.DisBoardNf(user_name,dir,stats,mode2);
                         context.put("unreadm",dev);
+			//Code for showing message in FCK editor
+			try{
+			String path="";
+			String fhead="";
+			String fhrole=data.getUser().getName();
+			//Code for showing existing Notification message in FCK editor.
+			if((fhrole.equals("admin")) && ((htype.equals("Flash Heading")) || (flag.equals("Flash Heading")))){
+			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
+                        fhead = AdminProperties.getValue(path,"brihaspati.admin.flashHeading.value");
+                        context.put("fNoti",fhead);
+			}
+			//Code for showing existing Shutdown message in FCK editor.
+			if((fhrole.equals("admin")) && ((htype.equals("Shutdown Notices")) || (flag.equals("Shutdown Notices")))){
+			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Shutdown.properties";
+                        String shead = AdminProperties.getValue(path,"brihaspati.admin.ShutdownHeading.value");
+                        context.put("sNoti",shead);
+                        }
+			}
+		catch(Exception e){
+
+			}
 
                         /**
                          * Retreives all courses for use of Admin and Institute Admin
@@ -113,6 +141,17 @@ public class Notices extends SecureScreen
 
 			String rolename=(user.getTemp("role")).toString();
 			String instituteId=(user.getTemp("Institute_id")).toString();
+			//for getting saved msg
+			try{
+				String page = "";
+				if(flag.equals("fh")){ 
+					page="flash";}
+				else{
+					page="notices";}
+		                String savemsg = AutoSave.doLoad(dir+instituteId+rolename+user_name+page);
+                		context.put("msg",savemsg);
+	                }
+                	catch(Exception e){}
 			List CList=null;
                         if(loginname.equals("admin"))	{
                         	CList=ListManagement.getCourseList();
@@ -156,16 +195,13 @@ public class Notices extends SecureScreen
 			String courseid="", C_Name="", userInCourse ="";
 			courseid=pp.getString("courseId","");
 			userInCourse=(String)user.getTemp("course_id");
-			ErrorDumpUtil.ErrorLog("\n\n\n\nfrom Notices.java  courseId="+courseid+"\n userInCourse="+userInCourse);
 			if( userInCourse!=null && !userInCourse.equals("") && courseid.equals(""))
 			{
-				ErrorDumpUtil.ErrorLog("\n\nin if from Notices.java  courseId="+courseid+"\n userInCourse="+userInCourse);
 				courseid = userInCourse;
                         	C_Name=(String)(user.getTemp("course_name"));
 			}
 			else
 			{
-				ErrorDumpUtil.ErrorLog("\n\nin else from Notices.java  courseId="+courseid+"\n userInCourse="+userInCourse);
 				user.setTemp("course_id",courseid);
 				C_Name=CourseUtil.getCourseName(courseid);
 				user.setTemp("course_name",C_Name);
@@ -182,10 +218,8 @@ public class Notices extends SecureScreen
 		String Role=(String)data.getUser().getTemp("role");
 		if((Role.equals("instructor"))||(Role.equals("student")) || (Role.equals("teacher_assistant")))
 		{
-			//CourseTimeUtil.getCalculation(user_id);
-        	        //ModuleTimeUtil.getModuleCalculation(user_id);
 			int eid=0;
-			MailNotificationThread.getController().CourseTimeSystem(user_id,eid);
+			ModuleTimeThread.getController().CourseTimeSystem(user_id,eid);
 		}
                 }
                 catch(Exception e){data.setMessage("the error in notice send java---->"+e);}

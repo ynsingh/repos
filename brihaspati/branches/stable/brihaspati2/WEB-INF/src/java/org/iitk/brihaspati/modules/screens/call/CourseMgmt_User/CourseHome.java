@@ -71,9 +71,11 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.apache.turbine.services.session.TurbineSession;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
-
+import org.iitk.brihaspati.modules.utils.BrihaspatiSyncRunningSession;
+import org.iitk.brihaspati.modules.utils.ActiveUserCourseListThread;
+import org.iitk.brihaspati.modules.utils.ActiveUserCourseController;
 import org.iitk.brihaspati.om.ModulePermissionPeer;
 import org.iitk.brihaspati.om.ModulePermission;
 
@@ -130,6 +132,7 @@ public class CourseHome extends SecureScreen{
 			 */
 			String C_Name=CourseUtil.getCourseName(courseid);
  			String username=user.getName();
+			context.put("lec_details",BrihaspatiSyncRunningSession.getRunningSession(courseid,username));
 			int userid=UserUtil.getUID(username);
 			String User_Id=Integer.toString(userid);
 			/**
@@ -305,20 +308,17 @@ public class CourseHome extends SecureScreen{
 		         /*
                          *Time calculaion for how long user use this page.
                          */
-                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
-                        {
-				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+			if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
+                         {
+                                ModuleTimeThread.getController().CourseTimeSystem(userid,0);
                          }
 			Vector weektime=ModuleTimeUtil.LastweekModuleTime(courseid,userid);
                         context.put("weektime",weektime);
-			
-			 /*
-                        *method for how much time user spend in this page.
-                        *These lines add by Smita
-                        */
-                        Vector userList=CourseTimeUtil.getCourseActiveList(gid,groupName);
-                        context.put("uList",userList);
+			/*
+			 * These lines of code shows the no of student in course area.
+			 */	
+			ActiveUserCourseListThread.getController().setActiveUserId(userid,gid);
+                        context.put("uList",ActiveUserCourseController.getController().getUserListVector(gid,username));
 
 			/*
 			 * code for authorization in CourseHome.vm

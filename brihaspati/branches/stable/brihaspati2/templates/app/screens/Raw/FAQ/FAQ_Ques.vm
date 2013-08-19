@@ -60,7 +60,8 @@ $!data.getMessage()
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 <tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/FAQAdmin.html","newWin");>$brih_help</a></td>
+                <td align=right>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/FAQAdmin.html","newWin"); style=text-decoration:none>$brih_help</a></td>
 </tr>
 </table>
 ##creating form for FAQ
@@ -144,11 +145,11 @@ $!data.getMessage()
 				#if($mode=="delete")
 					<td>
                        				<input type=checkbox name="$!catlist" onClick="addDeleteList(this,document.frm);">
-						<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$catlist).addPathInfo("mode","alllist")">$catlist</a>
+						<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$catlist).addPathInfo("mode","alllist")" style=text-decoration:none>$catlist</a>
 					</td>
 				#else
-					<td><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$catlist).addPathInfo("mode","alllist")">$catlist</a></td>
-					<td><a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("category",$catlist).addPathInfo("mode","edit")"> #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end </a></td>
+					<td><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$catlist).addPathInfo("mode","alllist")" style=text-decoration:none>$catlist</a></td>
+					<td><a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("category",$catlist).addPathInfo("mode","edit")"style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati" ) $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end </a></td>
 				#end
                 		</tr>
 		#set ( $count= "$count$!catlist^")

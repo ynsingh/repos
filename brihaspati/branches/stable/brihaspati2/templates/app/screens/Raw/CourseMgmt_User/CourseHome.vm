@@ -1,4 +1,3 @@
-
 #*
  * @(#) CourseHome.vm
  * Copyright (c) 2004-2005, 2009, 2010, 2013 ETRG,IIT Kanpur.
@@ -9,8 +8,11 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author<a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author<a href="mailto:sunil0711@gmail.com">Sunil Yadav </a>
+ * @author<a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
+ * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012 
  * @author<a href="mailto:richa.tandon11@gmail.com">Richa Tandon </a>
- * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012, 07-Feb-2013(Richa)
+ * @author<a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012, 07-Feb-2013(Richa),18-03-2013,22-07-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -19,6 +21,8 @@ $!data.getMessage()
 
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
 </head>
 
 <body>
@@ -75,11 +79,11 @@ $!data.getMessage()
 ## main table
 <table width="100%" valign="top">
 	## main row 1 open
-	<tr>
+	<tr valign='top' bgcolor="$ui.tableColor">
 		## main column 1 open
 		<td width="70%">
  			## inner table
-			<table width="100%" cellpadding=10 bgcolor="$ui.tableColor" cellspacing=0 valign="top" style="margin-top:-00px;">
+			<table width="100%" cellpadding="10" bgcolor="$ui.tableColor" cellspacing="0" valign="top">
 #if($guest_login == "false") ## for guestis not login
 		
 ## INSTRUCTOR	
@@ -184,7 +188,7 @@ $!data.getMessage()
 					<table border=0>
                                                   <tr><td align=center><a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete").addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")" class="img" ></a></td></tr>
                                                         
-						  <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete")).addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_ins $brih_mgmt</a><br></td></tr>
+						  <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete").addPathInfo("cname",$groupName).addPathInfo("mname","instructormanagement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_ins $brih_mgmt</a><br></td></tr>
 					</table>
                                       
 				</td>
@@ -270,8 +274,15 @@ $!data.getMessage()
 					</table>
 				</td>
 				## inner column 2 (5) close
-	
 				## inner column 3 (5) open
+                                <td align=center>
+                                        <table>
+                                            <tr><td align=center><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
+
+                                            <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td></tr>
+                                        </table>
+                                </td>
+                                ## inner column 3 (5) close
 			#*
 				<td align=center>
 					<table>
@@ -297,9 +308,13 @@ $!data.getMessage()
 						
 				<table border=0 valign="top">
                                             	
-					<tr><td align=center><a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/assignment.png")" class="img" >  </a></td></tr>
+					<tr><td align=center>
+<a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/assignment.png")" class="img" >  </a></td></tr>
                                             	
-					<tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a></td></tr>
+					<tr><td align=center><font face="$ui.sansSerifFonts">
+ <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1") style=text-decoration:none>$brih_assignment</a>
+##<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","assignement").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_assignment </a>
+				</td></tr>
                                           	
 				</table>
 					
@@ -425,7 +440,17 @@ $!data.getMessage()
 					</td>
 					## inner column 3 (1)close
 				</tr>
-		##inner row 3 close 
+		##inner row 4 open 
+				<tr>
+                                  <td align=center>
+                                        <table>
+                                            <tr><td align=center><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
+
+                                            <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none>$brih_attend $brih_mgmt </a><br></td></tr>
+                                        </table>
+                                </td>
+                                </tr>
+		##inner row 4 close 
 
 ## Condition for Teacher Assistant
 	
@@ -862,9 +887,43 @@ $!data.getMessage()
                                         
 		#end
 
-
         </tr>
         ## row 4 close
+	## row 5 open
+        <tr>
+                ## inner column 5 (1)open
+
+                #if($data.getUser().getTemp("modulename13") == "13")
+
+                        <td align=center>
+
+                                <table border=0>
+                                <tr><td align=center><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
+
+                                            <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td></tr>
+
+
+                                </table>
+
+                        </td>
+
+                #else
+                        <td align=center>
+
+                                <table border=0>
+
+                                        <tr><td align=center><a disabled href="#" onclick="javascript:return confirm('Sorry, permission denied !!')" style=text-decoration:none><img border=0 src="$content.getURI("/images/attendance.png")" class="img" ></a></td></tr>
+
+                                        <tr><td align=center><font face="$ui.sansSerifFonts"><a disabled href="#" onclick="javascript:return confirm('Sorry, permission denied !!')" style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td></tr>
+
+                                </table>
+
+                        </td>
+
+                #end
+                                        ## inner column 5 (1)close
+        </tr>
+        ## row 5 close
 
 ## Teacher Assistant all rows close
 			
@@ -918,8 +977,8 @@ $!data.getMessage()
 			<td width="30%" valign="top">
 				 ## Result of Survey for this course
                                                 #if(($user_role == "instructor")||($user_role == "teacher_assistant"))
-                                                <table width="100%"  border=1>
-                                                        <tr><td align="center" bgcolor="$ui.tableColor">
+                                                <table width="100%" bgcolor="$ui.tableColor">
+                                                        <tr><td align="center" bgcolor="$ui.menuColor">
                                                                 <font face="$ui.sansSerifFonts">
                                                                 <b>$brih_survey $brih_result </b>
                                                                 </font>
@@ -941,11 +1000,11 @@ $!data.getMessage()
 
                                                 #end
 
-						<table border="1" cellspacing="4" cellpadding="2" align="center" width="100%">
+						<table bgcolor="$ui.tableColor" align="center" width="100%">
 							<tr><td>
 								
-								<table width="100%"  bgcolor="$ui.tableColor">
-									<tr><td align="center"><font face="$ui.sansSerifFonts">
+								<table width="100%"  bgcolor="$ui.menuColor">
+									<tr  bgcolor="$ui.menuColor"><td align="center"><font face="$ui.sansSerifFonts">
 										<b>$brih_newsHeadline </b></font>
 									</td></tr>
 								</table>
@@ -979,14 +1038,17 @@ $!data.getMessage()
 									#end
 								</marquee>
 							</td></tr>	
-						</table>
-						
+							 <tr><td align="right">
+                                                                <a href=$link.setPage("call,News,News_Course.vm") style=text-decoration:none><font color="green">$brih_more $brih_news &raquo;</font></a></td></tr>
+
+					</table>
+#*						
 						<table align=center>
 							<tr><td align="center">
 								<a href=$link.setPage("call,News,News_Course.vm") style=text-decoration:none>$brih_more $brih_news &raquo;</a></td></tr>
 						
 						</table>
-						
+							*#						
 						#else
 							##No News Till Today's Date
 							$brih_newsNo
@@ -995,13 +1057,14 @@ $!data.getMessage()
 					##code for event today
                 			<tr><td>
 			                <table width="100%">
-				                <tr><td bgcolor="$ui.tableColor" align="center">
+				                <tr><td bgcolor="$ui.menuColor" align="center">
 				                <font face="$ui.sansSerifFonts">
 				                <b>$brih_today_ev </b>
 				                </font>
 				                </tr></td>
 				                </table>
 				                <table width="100%">
+						#if($information.size() != 0)
 					                #set ( $count1 = 1 )
 					                #foreach ($element in $information)
 				                        #set ( $count2 = 1 )	
@@ -1025,27 +1088,54 @@ $!data.getMessage()
 					                        #end
 					                #set ( $count1 = $count1 + 1 )
 					                #end
+						#else
+						$brih_noevent
+						#end
 				                </table>	
 			                </td></tr>
 		                </table>
+		  <div id="scroll1">
+                              <table  bgcolor="$ui.tableColor" width="100%"  align="left">
+                                    <tr>
+                                           <td colspan="3" align="center" bgcolor="$ui.menuColor" style="font-family:arial;"><b>$sec_session</b></td>
+                                    </tr>
+                                    #if($lec_details.size()==0)
+                                        <tr><td>$session_info</td></tr>
+                                    #else
+                                    #foreach($st in $lec_details)
+                                    ##if($velocityCount%2==0)
+                                    ##<tr bgcolor="$ui.menuColor">
+                                    ###else
+                                    <tr bgcolor="$ui.tableColor">
+                                    ###end
+                                    <td width="50%">$st.lecname</td>
+                                    <td><a href="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key=$st.key" style="text-decoration:none;" target="_blank">$brih_join</a></td>
+                                    <td><a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lectureId",$st.lid).addPathInfo("mode","Clecture")","newWin"); style="text-decoration:none;">$brih_more</a></td>
+
+                                   </tr>
+                                    #end
+                                    #end
+
+                              </table>
+                   </div>
 		#if($guest_login == "false")
 			#if($user_role != "instructor")
-			 <div style="overflow:auto;  height:120px; background:$ui.tableColor">
+			 <div id="scroll2">
 			#else
-			<div style="overflow:auto;  height:280px; background:$ui.tableColor">
+			<div id="scroll2">
 			#end
-                              <table  bgcolor="$ui.tableColor" width="98%"  align="left">
+                              <table  bgcolor="$ui.tableColor" width="100%"  align="left">
                            	    <tr>
                                 	   <td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_course $brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr></b>
                                            </td>
                                     </tr>
 
                        	           #foreach($element in $uList)
-                        	   #if($velocityCount%2==0)
-                                   <tr bgcolor="$ui.menuColor">
-                                   #else
+                        	   ##if($velocityCount%2==0)
+                                   ##<tr bgcolor="$ui.menuColor">
+                                   ##else
                                    <tr bgcolor="$ui.tableColor">
-                                   #end
+                                  ##end
 					  <td> $element </td>
                                    </tr>
                                    #end
@@ -1053,18 +1143,18 @@ $!data.getMessage()
                      </div>
 		#end
 		#if($weektime.size()!=0)
-			<div style="overflow:auto;  height:100px;">
-                        	<table  bgcolor="$ui.tableColor" width="98%"  align="left">
+			<div id="scroll">
+                        	<table  bgcolor="$ui.tableColor" width="100%"  align="left">
                                 	<tr>
                                         	<td colspan="2" align="center" bgcolor="$ui.menuColor"><b>$brih_module $brih_Usage $brih_time (7 $brih_days)</b></td></tr></b></td>
 					</tr>
 
                                         #foreach($timelist in $weektime)       
-                                        #if($velocityCount%2==0)
-                                        <tr bgcolor="$ui.menuColor">
-                                        #else
+                                        ##if($velocityCount%2==0)
+                                        ##<tr bgcolor="$ui.menuColor">
+                                        ##else
                                         <tr bgcolor="$ui.tableColor">
-                                        #end
+                                        ##end
 					#set($flag=false)
 					#if($timelist.getModuleName()=="assignment")
                                         	<td>$brih_assignment</td>
@@ -1122,4 +1212,40 @@ $!data.getMessage()
         {
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
         }
+	function popup(url,popupName)
+        {
+                var w=650;
+                var h=200;
+                var left = (screen.width/2)-(w/2);
+                var top = (screen.height/2)-(h/2);
+                Win2 = window.open (url,popupName, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                //Win2=window.open(url,popupName,"resizable,height=200,width=650");
+        }
+	window.onload = setupRefresh;
+
+	function setupRefresh() {
+        setTimeout("refreshPage();", 60000); // milliseconds
+        }
+        function refreshPage() {
+        window.location = location.href;
+        }
+$(function(){
+     $('#scroll').slimScroll({ 
+         height: '220px'
+         disableFadeOut: true
+          });
+      });
+$(function(){
+     $('#scroll1').slimScroll({
+         height: '100px',
+         disableFadeOut: true
+          });
+      });
+$(function(){
+     $('#scroll2').slimScroll({
+         height: '100px',
+         disableFadeOut: true
+          });
+      });
+
 </SCRIPT>

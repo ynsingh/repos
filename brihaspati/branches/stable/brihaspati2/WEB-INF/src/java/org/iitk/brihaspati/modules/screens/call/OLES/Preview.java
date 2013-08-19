@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Preview.java
  *
- *  Copyright (c) 2010 MHRD, DEI Agra.
+ *  Copyright (c) 2010-13 MHRD, DEI Agra.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -37,8 +37,12 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  */
 //Jdk
 import java.util.Collections;
-import java.util.*;
 import java.io.File;
+import java.util.Set;
+import java.util.Vector;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeSet;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -55,13 +59,14 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.XmlWriter;
 
 /**
  * This class manages the preview feature of quiz questions 
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 
 public class Preview extends  SecureScreen{
@@ -74,6 +79,7 @@ public class Preview extends  SecureScreen{
 	        ParameterParser pp=data.getParameters();
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try{
+			XmlWriter xmlWriter=null;
 			User user=data.getUser();
 			
 			String Role = (String)user.getTemp("role");
@@ -81,12 +87,10 @@ public class Preview extends  SecureScreen{
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
-				 MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+				 ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			String courseid=(String)user.getTemp("course_id");
@@ -159,7 +163,9 @@ public class Preview extends  SecureScreen{
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquiz",LangFile));
 				return;
 			}	                
-			String topicName,questionType,questionLevel,fileName,noquestion,markperquestion; 
+			String topicName,questionType,questionLevel,fileName,noquestion,markperquestion;
+			String tempusername[]=quizID.split("_"); 
+			username=tempusername[1];
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			QuizMetaDataXmlReader questionReader=null;
 			Vector<QuizFileEntry> question=new Vector<QuizFileEntry>();
@@ -175,16 +181,13 @@ public class Preview extends  SecureScreen{
 					noquestion = (((QuizFileEntry) allQuizSetting.elementAt(j)).getQuestionNumber());
 					markperquestion = (((QuizFileEntry) allQuizSetting.elementAt(j)).getMarksPerQuestion());
 					fileName = topicName +"_"+questionLevel+"_"+questionType+".xml";
-					ErrorDumpUtil.ErrorLog("file name"+fileName); 
 					questionReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+fileName);
 					question = questionReader.getRandomQuizQuestions(questionType);
 					for(int i=0;i<Integer.parseInt(noquestion);i++){
-						ErrorDumpUtil.ErrorLog("no of question"+noquestion+"loop no:"+i);
 						Collections.shuffle(question);
 						for(int k=0;k<question.size();k++){  
 							found = false;
 							QuizFileEntry q = question.get(k);
-							ErrorDumpUtil.ErrorLog("question and answer"+q.getQuestion()+"answer:"+q.getAnswer());
 							q.setFileName(fileName);
 							q.setMarksPerQuestion(markperquestion);
 							q.setQuestionType(questionType);
@@ -193,14 +196,11 @@ public class Preview extends  SecureScreen{
 								QuizFileEntry a = (QuizFileEntry) it.next();
 								 String que = a.getQuestion();
 								String an = a.getAnswer();
-								ErrorDumpUtil.ErrorLog("\n ques and answer in treeset "+que +": "+an);
-								if (que.equals(q.getQuestion())&& an.equals(q.getAnswer())){ // Are they exactly the same instance?							    	 
-							    	ErrorDumpUtil.ErrorLog("inside exactly same");
-							    	found=true;
-							    	break;
-							    }
+								if (que.equals(q.getQuestion())&& an.equals(q.getAnswer())){ // Are they exactly the same instance?
+							    		found=true;
+							    		break;
+							    	}
 							}
-							ErrorDumpUtil.ErrorLog("\n found "+found);
 							if(found){//question bank element in the treeset is already present
 								continue;
 							}
@@ -242,6 +242,9 @@ public class Preview extends  SecureScreen{
 						opt3=a.getOption3();
 						opt4=a.getOption4();
 					}
+					/**writing temporary xml file for final question list
+					 *@see QuizMetaDataXmlWriter in Util
+					 */
 					QuizMetaDataXmlWriter.xmlwriteFinalQuestion(filePath,quizQuestionPath,Quesid,Ques,opt1,opt2,opt3,opt4,Answer,markques,filename,questionty,Cur_date);
 				} 
 			}

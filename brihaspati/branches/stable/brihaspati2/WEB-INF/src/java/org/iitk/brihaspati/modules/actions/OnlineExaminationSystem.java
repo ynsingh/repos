@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)OnlineExaminationSystem.java	
  *
- *  Copyright (c) 2010,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -57,13 +57,16 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 //import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 //import org.apache.commons.lang.StringUtils;
 
 /**
  * This Action class for Online Examination system 
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a> 
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a> 
- * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012 
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012, 05march2013 
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 public class OnlineExaminationSystem extends SecureAction
 {
@@ -79,13 +82,23 @@ public class OnlineExaminationSystem extends SecureAction
 	public void doUploadQues_Bank(RunData data, Context context){
 		try
 		{//try
-			//CourseUserDetail MsgDetails=new CourseUserDetail();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			crsId=(String)data.getUser().getTemp("course_id");
 		 	ParameterParser pp=data.getParameters();
 			User user=data.getUser();
                         String username=data.getUser().getName();
 			String topic=pp.getString("Topicname","");
+			/**Check for Illegal character in topic name
+			 *@see StringUtil in Utils
+			 */
+			int checktopic=StringUtil.checkString(topic);
+			if(checktopic!=-1)
+                	{
+                        	String Mu_msg1=MultilingualUtil.ConvertedString("brih_illegalchar",LangFile);
+                        	data.setMessage(Mu_msg1);
+                        	return;
+                	}
+
 			String Questype=pp.getString("valQuestype","");
 			String difflevel=pp.getString("valdifflevel","");
 			String typeques=pp.getString("typeques","");
@@ -301,7 +314,8 @@ public class OnlineExaminationSystem extends SecureAction
 			crsId=(String)data.getUser().getTemp("course_id");
                         ParameterParser pp=data.getParameters();
 			User user=data.getUser();
-                       	String username=data.getUser().getName();
+                       	//String username=data.getUser().getName();
+                       	String username=pp.getString("username","");
                         String deltype=pp.getString("deltype","");
                         String questiontype=pp.getString("qtype","");
 			String topicname_quesid="";
@@ -398,7 +412,6 @@ public class OnlineExaminationSystem extends SecureAction
 			String questiontype=pp.getString("qtype","");
 			String oldquesimage=pp.getString("quesimage","");
 			String quesimg=new String();
-			ErrorDumpUtil.ErrorLog("in update method typeques===="+typeques);
 			String fulltopic=topic+"_"+difflevel+"_"+questiontype;
 			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                         if(typeques.equals("imgtypeques")){
@@ -609,6 +622,7 @@ public class OnlineExaminationSystem extends SecureAction
                         *@see TopicMetaDataXmlWriter in Util.
                         */
 			boolean found=false;
+			MultilingualUtil mU= new MultilingualUtil();
                         TopicMetaDataXmlReader topicmetadata=null;
                         File QBpathxml=new File(filepath+"/"+QBtopicpath);
                         if(!QBpathxml.exists())
@@ -632,7 +646,8 @@ public class OnlineExaminationSystem extends SecureAction
                                                 if(Question.equals(Ques))
                                                 {
                                                         found=true;
-                                                data.setMessage("Questions are already exists");
+                                                //data.setMessage("Questions are already exists");
+                                                data.setMessage(mU.ConvertedString("oles_qusAlreadyExist", LangFile));
                                                 }
                                           }//for
                                 }//if
@@ -640,7 +655,6 @@ public class OnlineExaminationSystem extends SecureAction
                         if(found==false)
                         {
 				if(!Quesid.equals("")){
-				ErrorDumpUtil.ErrorLog("Quesid in ques write method=========="+Quesid);
                         	if(Questiontype.equals("mcq"))
 				{
                         		xmlWriter=new XmlWriter(filepath+"/"+QBtopicpath);
@@ -654,12 +668,17 @@ public class OnlineExaminationSystem extends SecureAction
                        	        	TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,Quesid,Question,Answer,Description,ImgUrl);
                          	}
                 		xmlWriter.writeXmlFile();
-				if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques")))
-				data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
-				else
-				{
-				data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
-				data.setScreenTemplate("call,OLES,Oles_QB.vm");
+				if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques"))){
+					if(LangFile.endsWith("_urd.properties"))
+						data.setMessage(mU.ConvertedString("oles_msg2",LangFile)+" "+mU.ConvertedString("brih_Added",LangFile));
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
+				}else {
+					if(LangFile.endsWith("_urd.properties"))
+						data.setMessage(mU.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile));
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
+					data.setScreenTemplate("call,OLES,Oles_QB.vm");
 				}
 			}
 			}
@@ -747,7 +766,6 @@ public class OnlineExaminationSystem extends SecureAction
                         	Read=tr.getQuesBank_Detail();
                         else
                                 Read=tr.getQuesBank_Detail1();
-				//ErrorDumpUtil.ErrorLog("read in else getMaxQuesid action==="+Read);	
                         if(Read != null)
                         {
                                 for(int n=0;n<Read.size();n++)

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserAction_Admin.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2010,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008-10,2012-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -88,7 +88,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
- * @modified date: 08-07-2010, 20-10-2010, 23-12-2010, 27-07-2011, 18-04-2012
+ * @modified date: 08-07-2010, 20-10-2010, 23-12-2010, 27-07-2011, 18-04-2012,31-05-2013
  */
 
 public class UserAction_Admin extends SecureAction_Admin{
@@ -484,7 +484,8 @@ public class UserAction_Admin extends SecureAction_Admin{
 						act="0";
 					else
 						act="1";
-	                        	String CStatus=CourseManagement.UpdateCourseDetails(Gname,CourseName,"","",act,LangFile);
+					//Add last parameter as blank for school/center name .
+	                        	String CStatus=CourseManagement.UpdateCourseDetails(Gname,CourseName,"","",act,LangFile,"");
 					msg=UserManagement.DeleteInstructor(Gname,LangFile);
 				}
 			}

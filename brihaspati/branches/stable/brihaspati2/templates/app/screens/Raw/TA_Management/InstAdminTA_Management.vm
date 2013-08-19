@@ -4,6 +4,8 @@
  * All Rights Reserved.
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 08-04-2013 (Priyanka Rawat)
+ * @modified date: 21-06-2013 (Deepika Chaudhary)
  *#
 
 $page.setTitle("$brih_home | $brih_course $brih_mgmt")
@@ -12,6 +14,7 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <head>
 <link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 
 	<table bgcolor="$ui.tableColor" width=100%>
@@ -19,6 +22,9 @@ $!data.getMessage()
 	<td colspan=7>
 		<a href=$link.setPage("Index.vm") style=text-decoration:none> $brih_home</a> |$brih_course $brih_mgmt
 	</td>
+        <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Course_Management.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        </td>
 	</tr>
 	</table>
 	
@@ -36,7 +42,7 @@ $!data.getMessage()
 		#end
 		#foreach($cnamelist in $courseList)
 			#if($cname!=$cnamelist.getGroupName())
-				<option value="$link.setPage("call,TA_Management,InstAdminTA_Management.vm").addPathInfo("cname",$cnamelist.getGroupName())" style="width:275px;" title="$cnamelist.getCourseName()">$cnamelist.getCourseName()</option>
+				<option value="$link.setPage("call,TA_Management,InstAdminTA_Management.vm").addPathInfo("cname",$cnamelist.getGroupName())" style="width:275px;" title="$cnamelist.getCAlias(): $cnamelist.getCourseName()-$cnamelist.getUserName()">$cnamelist.getCAlias(): $cnamelist.getCourseName()-$cnamelist.getUserName()</option>
 			#end
 		#end
 		</td>

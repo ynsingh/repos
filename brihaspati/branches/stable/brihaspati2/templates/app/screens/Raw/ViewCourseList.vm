@@ -14,14 +14,18 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $WikiPage</a> |
-	$brih_reg2 $brih_courses
-	</font>
+<tr>
+	<td>
+		<font face="$ui.sansSerifFonts" size=3>
+		<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $WikiPage</a> |$brih_reg2 $brih_courses
+		</font>
+	</td>
+        <td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RegisteredCourses.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
 	</td>
 </tr>
 </table>

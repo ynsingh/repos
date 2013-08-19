@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)DbDetail.java
  *
- *  Copyright (c) 2005-2007,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007,2010-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -40,7 +40,8 @@ package org.iitk.brihaspati.modules.utils;
  *  @author(modify) <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *  @author (modify)<a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- *  @modified date: 20-10-2010, 23-12-2010
+ *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ *  @modified date: 20-10-2010, 23-12-2010,10-06-2013
  */
 
 /**
@@ -60,6 +61,8 @@ public class DbDetail
 	private String PrgCode;
 	private String Permission;
 	private String GrpmgmtType;
+	private int Reply_id;
+	private String schcenter;
 
 	public void setSender(String Sender)
 	{
@@ -142,6 +145,23 @@ public class DbDetail
         public String getGrpmgmtType()
         {
                 return GrpmgmtType;
+        }
+	public void setReplyId(int replyid)
+        {
+                this.Reply_id=replyid;
+        }
+        public int getReplyId()
+        {
+                return Reply_id;
+        }
+	// Set/Get 'school/center' name for Course Registration
+        public void setSchoolCenter(String schcenter)
+        {
+                this.schcenter=schcenter;
+        }
+        public String getSchoolCenter()
+        {
+                return schcenter;
         }
 
 }

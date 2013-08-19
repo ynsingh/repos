@@ -235,12 +235,14 @@ public class UploadAction extends SecureAction
                                 dc=topicMetaData.getFileDetailsModify();
 				for(int i=0;i<dc.size();i++){
 					String st=((FileEntry) dc.elementAt(i)).getName();
+					String guestaccess=((FileEntry) dc.elementAt(i)).getGuestAccess();	
 					if(st.equals(contentTopic)){
 						flag=true;
 						if(v.size()==0)
 							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"true");
 						else
-							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"false");
+							//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"false");
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,guestaccess);
                        				xmlWriter.writeXmlFile();
 					}
 				}
@@ -276,6 +278,7 @@ public class UploadAction extends SecureAction
 			int successfulUploadFilesCount=0;
 			int totalFilesEntries=0;
 			Vector failedFiles=new Vector();
+			String upldmsg="";
 
 			boolean flag1=false;
 			for(int count=0;count<10;count++)
@@ -286,93 +289,100 @@ public class UploadAction extends SecureAction
 				if(fileItem!=null && fileItem.getSize() != 0)
 				{
 					String temp=fileItem.getName();
-					int index=temp.lastIndexOf("\\");
-					++totalFilesEntries;
-					fileExists=false;
-					tempFile[count]=temp.substring(index+1);
-					File uploadedFileInUnpub=new File(f,tempFile[count]);
-					File uploadedFileInTopicDir=new File(topicDir,tempFile[count]);
-					if(uploadedFileInUnpub.exists() || uploadedFileInTopicDir.exists() || (temp.indexOf(',')!=-1) )
+					if(!temp.equals(contentTopic+"__des.xml"))
 					{
-						fileExists=true;
-						failedFiles.addElement(tempFile[count]);
-					}
-					if(fileExists)
-					continue;
-					++successfulUploadFilesCount;
-					new_files_uploaded.addElement(tempFile[count]);
-
-					//if start data storage on Local disk
-					if((StringUtils.equalsIgnoreCase(dstore,"Local"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
-						long fsize=fileItem.getSize()/1024/1024;
-						long uquota=QuotaUtil.getCrsQuota(courseHome);
-						uquota= uquota - dirS;
-						long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
-				//		ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
-						if((uquota>fsize)&&(disSpace>fsize))
+						int index=temp.lastIndexOf("\\");
+						++totalFilesEntries;
+						fileExists=false;
+						tempFile[count]=temp.substring(index+1);
+						File uploadedFileInUnpub=new File(f,tempFile[count]);
+						File uploadedFileInTopicDir=new File(topicDir,tempFile[count]);
+						if(uploadedFileInUnpub.exists() || uploadedFileInTopicDir.exists() || (temp.indexOf(',')!=-1) )
 						{
-                                        		f.mkdirs();
-	                                        	flag1=true;
-        	                			if(flag1)
+							fileExists=true;
+							failedFiles.addElement(tempFile[count]);
+						}
+						if(fileExists)
+						continue;
+						++successfulUploadFilesCount;
+						new_files_uploaded.addElement(tempFile[count]);
+	
+						//if start data storage on Local disk
+						if((StringUtils.equalsIgnoreCase(dstore,"Local"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
+							long fsize=fileItem.getSize()/1024/1024;
+							long uquota=QuotaUtil.getCrsQuota(courseHome);
+							uquota= uquota - dirS;
+							long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
+					//		ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
+							if((uquota>fsize)&&(disSpace>fsize))
 							{
-								String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
-                                                                String fospath=filePath+tempFile[count];
-                                                                writeData(descfilepath, fileItem, fospath);
-        	       	                                }
-	                                        }
-						else{
-							//data.setMessage("");
-							data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
-						}
-						System.gc();
-					}//if disk storage local
-					if((StringUtils.equalsIgnoreCase(dstore,"HDFS"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
-						// write the code here for storing data in hdfs file system
-						// check name node is running is running or not
-						boolean serverOn=false;
-						if(StringUtils.isNotBlank(hdfsurl)){
-			                        	try {
-                        			        	URL myURL = new URL(hdfsurl);
-				                                HttpURLConnection connection = (HttpURLConnection)myURL.openConnection();
-        	                			        connection.setDoOutput(true);
-				                                connection.setRequestMethod("POST");
-                        				        connection.connect();
-			        	                        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        				                serverOn=true;
-                                				}
-	                        			}
-				                        catch (MalformedURLException e) {
-                		       			        data.setMessage("The problem in connecting to server "+e);
-			        	                }
-                        				catch (IOException e) {
-			                	                data.setMessage("The problem in connecting to server (IO exception) "+e);
-                        				}
-							 // then write the name of file in xml file
-							if(serverOn){
-							// set the location of the file
-								if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
-									f.mkdirs();
+                                	        		f.mkdirs();
+	                                	        	flag1=true;
+        	                				if(flag1)
+								{
 									String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
-	                                        	                String fospath=filePath+tempFile[count];
-                                                        		writeData(descfilepath, fileItem, fospath);
-								}
-								HDFSClient.mkdir(filePath);
-								HDFSClient.addFile(filePath+temp, filePath);
-								if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
-									(new File(filePath+temp)).delete();
-								}
-						 	}
-                	        			else{
-				                                data.setMessage("The problem in connecting to server due to either network failure or server/service down");
-                        				}
-						}//if url is not blank
-						else{
-							ErrorDumpUtil.ErrorLog("The hdfs server url is blank so file is not stored on distributed server");
-							data.setMessage("The hdfs server url is blank so file is not stored on distributed server");
-						}
-                			}//if end data storage on hdfs
-
-				}//fileTiem
+                	                                                String fospath=filePath+tempFile[count];
+                        	                                        writeData(descfilepath, fileItem, fospath);
+        	       	        	                        }
+	                                	        }
+							else{
+								//data.setMessage("");
+								data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
+							}
+							System.gc();
+						}//if disk storage local
+						if((StringUtils.equalsIgnoreCase(dstore,"HDFS"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
+							// write the code here for storing data in hdfs file system
+							// check name node is running is running or not
+							boolean serverOn=false;
+							if(StringUtils.isNotBlank(hdfsurl)){
+			        	                	try {
+	                        			        	URL myURL = new URL(hdfsurl);
+					                                HttpURLConnection connection = (HttpURLConnection)myURL.openConnection();
+        		                			        connection.setDoOutput(true);
+					                                connection.setRequestMethod("POST");
+                        					        connection.connect();
+			        		                        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        					                serverOn=true;
+                                					}
+		                        			}
+					                        catch (MalformedURLException e) {
+                			       			        data.setMessage("The problem in connecting to server "+e);
+				        	                }
+                        					catch (IOException e) {
+			                		                data.setMessage("The problem in connecting to server (IO exception) "+e);
+                        					}
+								 // then write the name of file in xml file
+								if(serverOn){
+								// set the location of the file
+									if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+										f.mkdirs();
+										String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
+	                                        		                String fospath=filePath+tempFile[count];
+                                                        			writeData(descfilepath, fileItem, fospath);
+									}
+									HDFSClient.mkdir(filePath);
+									HDFSClient.addFile(filePath+temp, filePath);
+									if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+										(new File(filePath+temp)).delete();
+									}
+							 	}
+                	        				else{
+				                        	        data.setMessage("The problem in connecting to server due to either network failure or server/service down");
+	                        				}
+							}//if url is not blank
+							else{
+								ErrorDumpUtil.ErrorLog("The hdfs server url is blank so file is not stored on distributed server");
+								data.setMessage("The hdfs server url is blank so file is not stored on distributed server");
+							}
+	                			}//if end data storage on hdfs
+					}
+					else
+					{
+						upldmsg=temp+" "+MultilingualUtil.ConvertedString("topicUpload_msg",LangFile);
+						//data.addMessage(upldmsg);
+					}
+				}//fileTiem	
 			}//count
 			if(flag1){	
 			if(Pub.equals("Publish"))
@@ -394,7 +404,7 @@ public class UploadAction extends SecureAction
 				if(sendMail.equals("sendMail")){
 					try{
 					int roleId[]={2,3};
-					int userId[]={uid};
+					int userId[]={uid,0};
 					crit = new Criteria();
 			                crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 			                crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
@@ -402,18 +412,21 @@ public class UploadAction extends SecureAction
 			                List v1=TurbineUserGroupRolePeer.doSelect(crit);				
 					String Mail_msg = "";
 					if(v1.size() >0){
+						String courseName = CourseUtil.getCourseName(courseHome);	
 						for(int i=0; i < v1.size(); i ++) {
-							int usrId =( (TurbineUserGroupRole) v1.get(i)).getUserId();
+							int usrId =((TurbineUserGroupRole) v1.get(i)).getUserId();
 							crit = new Criteria();
 							crit.add(TurbineUserPeer.USER_ID, usrId);
 							List usrList = TurbineUserPeer.doSelect(crit);
 							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
-							String courseName = CourseUtil.getCourseName(courseHome);	
-							//Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile, "","");	
 							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
 						}
-						if(Mail_msg.equals("Success"))
-						{
+						if(Mail_msg.equals("Success")) {
+							crit = new Criteria();
+        	                                        crit.add(TurbineUserPeer.USER_ID, uid);
+                	                                List usrList = TurbineUserPeer.doSelect(crit);
+	                       	                        String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
+        						Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
 							Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
 							data.addMessage(Mail_msg);
 						}
@@ -438,7 +451,7 @@ public class UploadAction extends SecureAction
 				}
 			}
 			else
-			{			
+			{	
 			// nothing was uploaded
 			context.put("uploadStatus","nothing");	
 			context.put("totalFilesEntries",(new TotalFileCount(totalFilesEntries) ) );
@@ -447,6 +460,10 @@ public class UploadAction extends SecureAction
 			}//ifflag1
 			else
 			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
+			if(StringUtils.isNotBlank(upldmsg)){
+				context.put("tmpupload","uploadXmlMsg");		
+				context.put("XmlMsg",upldmsg);
+			}
 			//Maintain Log
 			String loginName = user.getName();
                         String strInstId =  (String)user.getTemp("Institute_id","");

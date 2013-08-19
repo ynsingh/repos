@@ -37,7 +37,8 @@ function trim(s){
 function validateEmail(fld) {
         var error="";
         var tfld = trim(fld.value);                        // value of field with whitespace trimmed off
-        var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+        //var emailFilter = /^[^@]+@[^@.]+\.[^@]*\w\w$/ ;
+        var emailFilter = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         var illegalChars= /[\(\)\<\>\,\;\:\\\"\[\]]/ ;
         if (fld.value == "")
         {
@@ -325,4 +326,153 @@ function ChkRollNo(fld){
 	}
         return error;
 }
+
+function isInteger(s) {
+      var cle=document.getElementById('checkint');
+      var i;
+      s = s.toString();
+ for (i = 0; i < s.length; i++) {
+      var c = s.charAt(i);
+ if (isNaN(c)) {
+      cle.value="";
+      cle.focus;
+      alert("Please Enter number Only");
+      return false;
+        }
+      }
+      return true;
+    }
+
+function  checkdept(frm,fld) {
+var reason = "";
+    reason += validatedeptname(frm.deptname);
+    reason += validatedcode(frm.dcode);
+    reason += validatednick(frm.dnick);
+if (reason != "") {
+        alert("Some fields need correction:\n\n"+reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+function validatedeptname(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered department name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function validatednick(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered nick name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function validatedcode(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered department code.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function  checkschool(frm,fld) {
+var reason = "";
+    reason += validateschname(frm.schname);
+    reason += validateschcode(frm.schcode);
+    reason += validateschnick(frm.schnick);
+if (reason != "") {
+        alert("Some fields need correction:\n\n"+reason);
+        return false;
+}
+        frm.actionName.value=fld.name;
+        frm.submit();
+}
+function validateschname(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered school name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+function validateschcode(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered school code.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function validateschnick(fld){
+var error = "";
+        if (fld.value == "") {
+                fld.style.background = 'Yellow';
+                error = "* you haven't entered nick name.\n";
+        } else {
+                fld.style.background = 'White';
+        }
+        return error;
+}
+
+function checkValue(frm,field)
+{
+        if(frm.selectFileNames.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+        {
+                alert("Please Select check box for School/Department Name !!");
+        }
+}
+
+
+function addSelectedList(field,frm)
+{
+if(field.checked)
+{
+ frm.selectFileNames.value=frm.selectFileNames.value+field.name+"^";
+}
+                else
+                {
+                        var slFile,index,actualString,preString,postString;
+                        actualString=frm.selectFileNames.value;
+                        index=actualString.indexOf(field.name+"^",0);
+                        preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+                        actualString=preString+postString;
+                        frm.selectFileNames.value=actualString;
+                }
+}
+function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+        }
+$(document).ready(function(){
+$("#deldept").click(function() {
+alert("Unable to delete Department, used in many institutes");
+});
+$("#delsch").click(function() {
+alert("Unable to delete School, used in many institutes");
+});
+});
 

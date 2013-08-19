@@ -42,7 +42,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
  * For Instructor Interface
@@ -68,7 +68,7 @@ public class addStudent extends SecureScreen_Instructor
                 if((Role.equals("student")) || (Role.equals("instructor"))||(Role.equals("teacher_assistant")))
                 {
 			int eid=0;
-			MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+			ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
                 }
 
 	}catch(Exception ex){data.setMessage("The Exception in addStudent java"+ex);}	

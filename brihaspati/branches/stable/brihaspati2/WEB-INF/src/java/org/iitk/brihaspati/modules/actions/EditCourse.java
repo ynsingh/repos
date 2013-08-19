@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)EditCourse.java	
  *
- *  Copyright (c) 2004-2006,2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2008,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -53,7 +53,8 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 08-08-2012
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 08-08-2012,31-05-2013
  */
  
 public class EditCourse extends SecureAction_Admin
@@ -87,6 +88,8 @@ public class EditCourse extends SecureAction_Admin
 			String CourseId=pp.getString("gName");
 			String CourseName=pp.getString("Cname");
 			String act=pp.getString("isactive");
+			//Get school/center name for Course Registeration
+			String schname=pp.getString("SCHNAME");
 			String dept=pp.getString("Department");
 			String desc=pp.getString("DESCRIPTION","");
 		/**
@@ -95,7 +98,8 @@ public class EditCourse extends SecureAction_Admin
 		 */
 			if(S.checkString(CourseName)==-1 && S.checkString(dept)==-1 && S.checkString(desc)==-1 )
                        	{
-				msg=CourseManagement.UpdateCourseDetails(CourseId,CourseName,dept,desc,act,file);
+				//Add last parameter 'schname' for course registration with school/center.
+				msg=CourseManagement.UpdateCourseDetails(CourseId,CourseName,dept,desc,act,file,schname);
 				data.setMessage(msg);
 			}
 			else

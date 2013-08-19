@@ -196,6 +196,8 @@ public class ViewFileContent extends SecureScreen
 
 			else if(Type.equals("Assignment")){
 				String dir=(String)data.getUser().getTemp("course_id")+"/";
+				if(dir.equals("/"))
+					dir=pp.getString("course_id","");
                                 String msg_id=pp.getString("msgid","");
 	                        filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Assignment/"+msg_id+"/"+fileID;
 			} 

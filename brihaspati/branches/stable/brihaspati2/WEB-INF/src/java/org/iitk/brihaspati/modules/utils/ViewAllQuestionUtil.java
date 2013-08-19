@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)ViewAllQuestionUtil.java
  *
- *  Copyright (c) 2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2012-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,14 +35,17 @@ package org.iitk.brihaspati.modules.utils;
  *
  */
 
+import java.io.File;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
- *  @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
- *  @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date:14aug2013 
  */
 
 public class ViewAllQuestionUtil{
@@ -111,6 +114,9 @@ public class ViewAllQuestionUtil{
                                 }
 				if(Read != null)
                         	{
+					File fpath= new File(filepath);
+					File fileName = new File(fpath.getParent());
+					String userName=fileName.getName();
                                		for(int n=0;n<Read.size();n++)
                                		{
                                        		quesid =((FileEntry)Read.elementAt(n)).getquestionid();
@@ -137,6 +143,7 @@ public class ViewAllQuestionUtil{
                                         		map.put("ImgUrl",ImgUrl);
                                         		map.put("Qtype",qtypeval);
                                         		map.put("dlevel",diffval);
+                                        		map.put("UserName",userName);
                                         	}
                                         	else{
                                         		map.put("quesid",quesid);
@@ -146,6 +153,7 @@ public class ViewAllQuestionUtil{
                                         		map.put("ImgUrl",ImgUrl);
                                         		map.put("Qtype",qtypeval);
                                         		map.put("dlevel",diffval);
+                                        		map.put("UserName",userName);
                                         	}
                                         	allques.add(map);
 					}//for

@@ -30,7 +30,6 @@ $!data.getMessage()
 <head>
 <link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
-</script>
 </head>
 
 <body onload="doLoad();">
@@ -52,12 +51,17 @@ $!data.getMessage()
 #if($Uid.toString()=="1")
 <div class="scroll">
 #end
+<form name="frm" method="post"  enctype="multipart/form-data"  action="$link.setPage("Index.vm")">
 
 <table>
 <td valign="top">
 <div style="overflow:auto; height:auto; ">
         <table  bgcolor="$ui.tableColor" style="width:310px;">
-                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr>
+		#if($uList.size()!=0)
+		#if($au==0)
+			#set($au=1)
+		#end
+                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($au)</b></td></tr>
 
                         #foreach($element in $uList)
                         #if($velocityCount%2==0)
@@ -69,14 +73,34 @@ $!data.getMessage()
                                 <td> $element </td>
                                   </tr>
                         #end
+			#if(($uList.size()) > 4)
+				#if($viewAll!="ViewAll")
+				<tr bgcolor="$ui.tableColor" align="right"><td>...</td></tr>
+				#end
+                        <tr bgcolor="$ui.menuColor"><td align="right"><input type="submit" value="$brih_more" onclick="checkBlankTest()"></td></tr>
+                        #end
+
+		#else
+			<tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>Active User #if($lang== "hindi") of #end List &nbsp;&nbsp;(0)</b></td></tr>
+                #end
+
         </table>
 </div>
+
 ##iframe is use to show brihaspati Twitter
 <div style="background:$ui.menuColor;" class="tweet_header">$brih_twitter</div>
 <iframe height="410" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang" frameborder="0"></iframe>
 <div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
-<a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
+<a href=javascript:popup("$link.setPage("call,Twtwin.vm").addPathInfo("mode","all")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
 </div>
+##iframe is use to show brihaspati poll
+#if($Uid.toString()!="1")
+<div style="position:auto; margin-top:3px; height:230px; background:$ui.menuColor;" >
+<iframe src="$ipadd/brihaspatiSpring/pollmodule/pollAttemptIndex.vm?user_Id=$UserId&f=$firstname&usrNme=$usrNme&instNme=$instN" style="height:230px; width:310px; border-radius:-5px;" scrolling="yes" frameborder="0"></iframe>
+</div><br>
+#end
+
+
 <td width="80%" valign="top">
 #if($Uid.toString()!="1")
 <div class="indexhomescroll">
@@ -138,7 +162,11 @@ $!data.getMessage()
                 #if($Role5=="AuthorRole") 
                 <tr><td align="center" colspan="7">
 		<a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("role","Author").addPathInfo("count","1") style=text-decoration:none>$brih_authorHome</a>
-                </td></tr>                                                                                #end                                                                      
+                </td></tr>                                                                                #end                                                                      	    #if($Role9=="ParentRole")
+                <tr><td align="center" colspan="7">
+                <a href=$link.setPage("call,ParentChildList.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_parent $brih_home</a>
+                </td></tr>
+                #end
 <tr bgcolor="$ui.menuColor">
 #if($guest_login=="false" )
 		#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole") || ($Role8=="TeacherAssistantRole"))
@@ -171,6 +199,8 @@ $!data.getMessage()
 	<input type="hidden" name="chatRoomName" value="">
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="mode2" value="">
+	<input type="hidden" name="viewAll" value="">
+</from>
 </td>
 </tr>
 </table>
@@ -184,13 +214,25 @@ function checkOption(field)
 {
 	  window.location = field.value;
 }
+
+function refresh()
+{
+window.location = '$link.setPage("Index.vm")';
+refresh='true';
+}
 function doLoad()
 {
 setTimeout( "refresh()", 5*60*1000 );
 }
+function checkBlankTest()
+{
+        document.frm.viewAll.value="ViewAll";
+        frm.submit();
+}
+
 function popup(url,popupName)
         {
-                var w=650;
+                var w=450;
                 var h=450;
                 var left = (screen.width/2)-(w/2);
                 var top = (screen.height/2)-(h/2);

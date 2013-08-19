@@ -1,8 +1,10 @@
 #*
  * @#Attempt_Quiz.vm
- * Copyright (c) 2010 DEI Agra.
+ * Copyright (c) 2010-13 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of MHRD Project DEI Agra
 *#
 
@@ -18,22 +20,17 @@ $page.setBgColor("bgcolor")
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=left>
-			## If some message has been set, that is retrieved and displayed.
-			<font face="$ui.sansSerifFonts">
-				$!data.getMessage()
-			</font>
-		</td>
-		<td align=right>
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
-		</td>
-	</tr>
-</table>
-
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
-
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width="100%">
+<tr>
+	<td><b><a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> | $brih_attempt $brih_quiz
+	</td>
+	<td align=right>
+		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin")  style='text-decoration:none'>$brih_help</a>
+	</td>
+</tr>
+</table>
 <form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
 <table  bgcolor="$ui.tableColor" border=0 cellpadding="2" width=100% >
 	<tr bgcolor="$ui.menuColor" >
@@ -57,7 +54,7 @@ $page.setBgColor("bgcolor")
 	</tr>
 	<tr>
 		<td align=left>
-			<table border="1" align=center cellpadding="2" width=100% >
+			<table  style="border-collapse:collapse; border:1px solid black;" border="1" align=center cellpadding="2" width=100% >
 				#foreach($qid in $quizQuestionList)
 				#set($rowNumber=$velocityCount)
 				#if($velocityCount%2==0)
@@ -104,7 +101,7 @@ $page.setBgColor("bgcolor")
 				</table>
 			</td>
 			<td align=right colspan="2">
-				<table border="1" align=center cellpadding="2" width=100% >				
+				<table  style="border-collapse:collapse; border:1px solid black;" border="1" align=center cellpadding="2" width=100% >				
 					<tr bgcolor="$ui.tableColor">				
 						<td width="30%">
                    			<input type="hidden" name="markPerQues" value="$!markPerQues"><b>$brih_qus</b>
@@ -341,6 +338,8 @@ var confAnswer = confirm("Are you sure to submit Quiz?After Submission you won't
       StartTimer();
     }    
  }
-
-
+ function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
 </script>

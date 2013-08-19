@@ -1,6 +1,6 @@
 #*
  * @(#) CourseMemt.vm
- * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2011, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
@@ -19,13 +19,13 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td>
 		 #if($isAdmin=="true")
-                <a href=$link.setPage("Index.vm") style=text-decoration:none> $brih_home </a> | $course |
+                <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> | $course |
 	        #elseif ($isInstructor=="true")
 		 <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
 		 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 		 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
 		#else
-                <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>Home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+                <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 		#end
 		#if($lang=="english")
 			$brih_course $Profile_user
@@ -258,13 +258,30 @@ $!data.getMessage()
 
 	</td></table>
 	<tr >
-                <td><b> $brih_marks/$brih_grading<font color=RED> *</font></b></td>
+                <td colspan=4><b> $brih_marks/$brih_grading<font color=RED> *</font></b></td>
+	</tr>
 	<tr>
 		<td>  $brih_midsem  </td>
 		#if($isInstructor=="true")
                 <td> <input type="text" size=3 name="midsem" value="$!midsem" ></td>
 		#else
                 <td> <input type="text" size=3 name="midsem" value="$!midsem" readonly></td>
+		#end
+        </tr>
+	<tr>
+		<td>  $brih_ClassNote  </td>
+		#if($isInstructor=="true")
+                <td> <input type="text" size=3 name="classnote" value="$!classnote" ></td>
+		#else
+                <td> <input type="text" size=3 name="classnote" value="$!classnote" readonly></td>
+		#end
+        </tr>
+	<tr>
+		<td>  $brih_assignment  </td>
+		#if($isInstructor=="true")
+                <td> <input type="text" size=3 name="assignment" value="$!assignment" ></td>
+		#else
+                <td> <input type="text" size=3 name="assignment" value="$!assignment" readonly></td>
 		#end
         </tr>
 
@@ -295,7 +312,7 @@ $!data.getMessage()
         </tr>
 
         <tr bgcolor="$ui.menuColor">
-                <td><b> $brih_instruction  <font color=RED> * </font></b></td>
+                <td><b> $brih_instruction  <font color=RED>  </font></b></td>
 		#if($isInstructor=="true")
 		<td align="left" width="3"> <textarea id="id" name="message" rows=10 cols=80 wrap=physical> $!message </textarea></td>
 		#else
@@ -304,7 +321,7 @@ $!data.getMessage()
 	</tr>
         <tr >
 		#if($isInstructor=="true")
-			#fileUpload ("<b> $brih_course $brih_syllabus<font color=RED> * </font></b> " "file")
+			#fileUpload ("<b> $brih_course $brih_syllabus<font color=RED>  </font></b> " "file")
 		#end
         </tr>
 		 #if($fileName !="")
@@ -330,11 +347,11 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
         function checkField(frm,field)
         {
-		if((frm.midsem.value!="") && (frm.quiz.value!="") && (frm.labwork.value!="")  && (frm.endsem.value!="") && (frm.file.value!="")) {
+		if(((frm.midsem.value!="") || (frm.quiz.value!="") || (frm.labwork.value!="")  || (frm.endsem.value!="")) && ((frm.file.value!="")||(frm.message.value!=""))) {
                        frm.actionName.value=field.name;
                        frm.submit();
 		}else
-			alert("Please Fill All The Mandatory(*) Fields");
+			alert("Please Fill All The Mandatory(*) Fields. You must fill instruction or attach file.");
         }
         function popupWin(urlName,popupName)
         {

@@ -46,7 +46,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context; 
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 /*
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
@@ -73,6 +74,14 @@ public class Adminwiki extends  SecureScreen{
 				context.put("course",(String)user.getTemp("course_name"));
 				String userrole=(String)user.getTemp("role");
 	                        context.put("userrole",userrole);
+				int uid=UserUtil.getUID(user.getName());
+				/* Code for time calculation*/
+				if((userrole.equals("student")) || (userrole.equals("instructor"))||(userrole.equals("teacher_assistant")))
+                         {
+                                int eid=0;
+                                ModuleTimeThread.getController().CourseTimeSystem(uid,eid);
+                         }
+
 				/**
 				* code below will send all pages in Wiki in that particular course to vm
 				*/

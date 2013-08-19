@@ -43,6 +43,7 @@ import java.io.OutputStream;
 /**
  *  @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  *  @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  */
 /** 
  * This class methods set and return the value of Admin.properties 
@@ -82,5 +83,21 @@ public class AdminProperties{
 		p.setProperty(key,Value);
 		p.store(os,"header");
 		os.close();
+	}
+	/**
+	 * This method sets the value of configuration parameters 
+	 * in TurbineResources.properties
+	 * @param path String
+	 * @param Value String
+	 * @exception a generic exception
+	 */ 
+
+	public static void setTRValue(String path,String Value,String key) throws Exception{
+		InputStream f = new FileInputStream(path);
+                CommentedProperties cP= new CommentedProperties();
+                cP.load(f);
+                FileOutputStream out = new FileOutputStream(path);
+                cP.add(key,Value);
+                cP.store(out,null);
 	}
 }

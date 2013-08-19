@@ -33,6 +33,7 @@
          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
       </td>
    </tr>
+
    <tr>
       <td class="dt">
          <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a>
@@ -93,7 +94,7 @@
 </tr>
 <tr bgcolor="$ui.menuColor">
       <td class="dt">
-         <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>
+         <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1") style=text-decoration:none>$brih_FAQ</a>
       </td>
 </tr>
 <tr>
@@ -104,7 +105,19 @@
 <tr bgcolor="$ui.menuColor">
 	<td class="dt">
 		<a href=$link.setPage("call,Directory.vm").addPathInfo("mode","psnl") style=text-decoration:none>$brih_directory</a>
-	</td>
+</td>
 </tr>
+
+<tr>
+      <td class="dt">
+         <a href=$link.setPage("call,Department,AddDepartment.vm").addPathInfo("mode","lstdept").addPathInfo("count","1") style=text-decoration:none>$brih_dept/$brih_sch</a>
+      </td>
+   </tr>
+<tr bgcolor="$ui.menuColor">
+        <td class="dt">
+                <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a>
+        </td>
+</tr>
+
 </table>
 

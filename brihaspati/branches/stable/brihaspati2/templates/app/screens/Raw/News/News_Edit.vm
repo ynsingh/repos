@@ -1,14 +1,15 @@
 #*
  * @(#) News_Edit.vm
- * Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:awadhesh_trivedi.yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com ">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 07-09-2010,
- * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
+ * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr),27-07-2013
 *#
 <head>
 ##This Script use for Fck Editor in Textarea.
@@ -31,22 +32,22 @@ $!data.getMessage()
 	<td><b>
 	#if($data.getUser().getUserName() == "admin")
         $page.setTitle("Admin Home ")
-	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+	<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_ad $brih_home</a> |
         #elseif($data.getUser().getTemp("role") != "")
 	$page.setTitle("Home ")
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        <a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> |
 	#else
 	$page.setTitle("Home ")
-        <a href=$link.setPage("Index.vm")>$brih_home</a> |
+        <a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a> |
         #end
         #if($status=="fromIndex")
 	$page.setTitle("| General News")
 	$brih_genNews
 	#else
 	$page.setTitle("| $course | Communication | News")
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $course</a> |
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'> $course</a> |
 	##<a href =$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_course 
-	<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $brih_course 
+	<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_communication</a> | $brih_course 
 	#if($lang=="hindi") $brih_Of2 #end $brih_news
         #end
         </td>
@@ -60,13 +61,13 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_localmail</a></td>
 	#if($tdcolor != "2")
 	<td>
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_chat</a></td>
 	#if($tdcolor != "3")
 	<td>
 	#elseif($tdcolor=="3")
@@ -94,7 +95,7 @@ $!data.getMessage()
 	#elseif($tdcolor=="5")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style='text-decoration:none'>$brih_news</td>
 </tr>
 </table>
 #end
@@ -136,13 +137,13 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 			#else
 				<td><input type="checkbox" disabled="true">
 			#end
-			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("Id",$entry.getNewsId()).addPathInfo("status",$status).addPathInfo("desc","true").addPathInfo("count",$tdcolor)>$entry.getNewsTitle()</a>
+			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("Id",$entry.getNewsId()).addPathInfo("status",$status).addPathInfo("desc","true").addPathInfo("count",$tdcolor) style='text-decoration:none'> $entry.getNewsTitle()</a>
 			#if("$News_Id" == "$entry.getNewsId()")
 				<img src="$content.getURI("/images/star_off_2.gif")">
 				#end
 			</td>
 			#if(("$entry.getUserId()" == "$currentUserId") || ("$currentUserId"=="1"))
-                        	<td><a href=$link.setPage("call,News,News_Update.vm").addPathInfo("Id",$entry.getNewsId()).addPathInfo("mode","Update").addPathInfo("status",$status).addPathInfo("count",$tdcolor)>$brih_update</a></td>
+                        	<td><a href=$link.setPage("call,News,News_Update.vm").addPathInfo("Id",$entry.getNewsId()).addPathInfo("mode","Update").addPathInfo("status",$status).addPathInfo("count",$tdcolor) style='text-decoration:none'>$brih_update</a></td>
 			#else
 				<td><font color="white"><u>$brih_update</u></font></td>
 			#end
@@ -181,9 +182,9 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 #end
 	#set($lang = $data.getUser().getTemp( "lang" ).toString())
 	#if($lang == "english")
-		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)>$brih_add $brih_news</a></b></td>
+		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor) style='text-decoration:none'>$brih_add $brih_news</a></b></td>
 	#else
-		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)> $brih_news $brih_add</a></b></td>
+		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor) style='text-decoration:none'> $brih_news $brih_add</a></b></td>
 	#end
 </tr>
 </td>

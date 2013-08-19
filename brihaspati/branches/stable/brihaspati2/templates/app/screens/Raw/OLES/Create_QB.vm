@@ -1,9 +1,10 @@
 #*
-
  * @#Create_QB.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
- *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * @author <a href="mailto:seema_020504@yahoo.com ">Manorama Pal</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ * @modify date: 14aug2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("QuestionBank")
@@ -15,30 +16,24 @@ $page.setBgColor("bgcolor")
 
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
-$!Msg
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
 <tr><td><b>
-	<font face="$ui.sansSerifFonts">
-	<a href=$link.setPage("Index.vm")>$brih_home</a>|
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> $online_online $brih_examat $brih_system</a>|
-	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
+	<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_queBank</a> |
 	#if($addques=="addques")
 		$brih_add $brih_question
 	#else
 		$WikiCreate $brih_new $brih_queBank
 	#end
 </b></td>
-</tr>
-</table>
 ## Creating the links for help regarding FAQ 
-<table width="100%">
-<tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 </tr>
 </table>
 ##creating form for FAQ
@@ -125,18 +120,6 @@ $!Msg
 		<input type="reset" name="reset" class="button-ftextstyle" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td></tr>
 	#end
-		##foreach( $e in $Msg )
-		 ##       <tr bgcolor="$ui.tableColor">
-		 ##       <td align=center>
-		 ##       <font face="$ui.sansSerifFonts">$brih_entry <font color="brown">"$e.getErr_User()"</font>
-		 ##       </font>
-		 ##       </td>
-		 ##       <td align=center>
-		 ##       <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
-		 ##       </td>
-		 ##       </tr>
-		##end
-		
 </table>
 	<input type="hidden" name="actionName">
 	<input type="hidden" name="valQuestype">

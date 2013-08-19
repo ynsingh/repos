@@ -53,9 +53,7 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 
 /**
  *   This class contains code for displaying list of all records for ReEvaluation
@@ -64,9 +62,8 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 public class OLES_ReEvaluation extends SecureScreen{
 	public void doBuildTemplate( RunData data,Context context ){
-		ErrorDumpUtil.ErrorLog("inside OLES_ReEvaluation.java file!!"); 
-			ParameterParser pp=data.getParameters();
-			String langfile=data.getUser().getTemp("LangFile").toString();
+		ParameterParser pp=data.getParameters();
+		String langfile=data.getUser().getTemp("LangFile").toString();
 		try {			
 			User user=data.getUser();
 			String uname=user.getName();
@@ -85,7 +82,6 @@ public class OLES_ReEvaluation extends SecureScreen{
 			String fullName = UserUtil.getFullName(Integer.valueOf(studentID));
 			context.put("fullName",fullName);
 			context.put("studentID",studentID);
-			ErrorDumpUtil.ErrorLog("courseID, quizID, quizName, count, studentLoginName, studentID,coursename "+courseid+" : "+quizID+" : "+quizName+" : "+count+" : "+studentLoginName+" : "+studentID+" : "+courseName);	
 			Vector collectScore=new Vector();
 			List collectStudentLoginName=new ArrayList();
 			String quizScorePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
@@ -105,7 +101,6 @@ public class OLES_ReEvaluation extends SecureScreen{
 				}
 				else{
 					context.put("collectScore",collectScore);
-					ErrorDumpUtil.ErrorLog("inside OLES_ReEvaluation.java file in else part !!"+collectScore.size());
 					for(int i=0;i<collectScore.size();i++){
 						String evaluate=((QuizFileEntry)collectScore.elementAt(i)).getEvaluate();
 						if(evaluate==null || evaluate.equals("complete") || evaluate.equals("partial")){
@@ -129,12 +124,10 @@ public class OLES_ReEvaluation extends SecureScreen{
                          */
 			String Role = (String)user.getTemp("role");
 			int userid=UserUtil.getUID(user.getName());
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
-                                //CourseTimeUtil.getCalculation(userid);
-                                //ModuleTimeUtil.getModuleCalculation(userid);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userid,eid);
                         }
 
 		}

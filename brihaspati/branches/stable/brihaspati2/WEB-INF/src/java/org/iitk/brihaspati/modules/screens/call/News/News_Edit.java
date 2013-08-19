@@ -44,9 +44,7 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import java.util.Iterator;
 import com.workingdogs.village.Record;
@@ -148,12 +146,10 @@ public class News_Edit extends SecureScreen
                          *method for how much time user spend in this page.
                          */
 			String Role = (String)data.getUser().getTemp("role");
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
-                                //CourseTimeUtil.getCalculation(userId);
-                                //ModuleTimeUtil.getModuleCalculation(userId);
 				int eid=0;
-				MailNotificationThread.getController().CourseTimeSystem(userId,eid);
+				ModuleTimeThread.getController().CourseTimeSystem(userId,eid);
                         }
 			////////////////////////////////////////////////////////////////////
                                  String stats=data.getParameters().getString("stats","");
