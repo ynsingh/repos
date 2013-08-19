@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.EmployeeTypeSalaryHead;
 import org.smvdu.payroll.beans.setup.SalaryHead;
 
@@ -48,6 +50,12 @@ public class EmployeeTypeSalaryHeadDB {
 
     private PreparedStatement ps;
     private ResultSet rs;
+    private UserInfo userBean;
+
+    public EmployeeTypeSalaryHeadDB() {
+        userBean =(UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+    }
+    
     public void save(ArrayList<EmployeeTypeSalaryHead> data,int type)
     {
        try
@@ -57,11 +65,12 @@ public class EmployeeTypeSalaryHeadDB {
             ps.setInt(1, type);
             ps.executeUpdate();
             ps.close();
-            ps=c.prepareStatement("insert into emp_salary_head_master values(?,?)");
+            ps=c.prepareStatement("insert into emp_salary_head_master values(?,?,?)");
             for(EmployeeTypeSalaryHead sh : data)
             {
                 ps.setInt(1, type);
                 ps.setInt(2, sh.getNumber());
+                ps.setInt(3, userBean.getUserOrgCode());
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -86,6 +95,7 @@ public class EmployeeTypeSalaryHeadDB {
            esh.setName(sh.getName());
            if(selected.contains(sh))
            {
+               System.out.println("Hello World");
                esh.setSelected(true);
            }
            allheads.add(esh);

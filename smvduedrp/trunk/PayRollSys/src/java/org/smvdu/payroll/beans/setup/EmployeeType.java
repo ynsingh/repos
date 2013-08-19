@@ -127,6 +127,15 @@ public class EmployeeType implements Serializable{
 
     public void save()
     {
+         FacesContext fc = FacesContext.getCurrentInstance();
+        if (this.getName().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Plz Enter Valid Name.No speacial characters allowed.");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
         new EmployeeTypeDB().save(name,pfApplies);
         name=null;
         FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Type Saved", ""));

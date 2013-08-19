@@ -70,7 +70,8 @@ public class PFTransactionDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select emp_code,emp_name,pf_amount,pf_ac_date from pf_account_master left join "
-                    + "employee_master on emp_id = pf_ac_id where emp_org_code= ?");
+                 //   + "employee_master on emp_id = pf_ac_id where emp_org_code= ?");
+		+ "employee_master on emp_id = pf_ac_id where emp_org_code= ? and pf_org_id='"+orgCode+"'");
             ps.setInt(1, orgCode);
             rs= ps.executeQuery();
             ArrayList<PFTransaction> data=  new ArrayList<PFTransaction>();
@@ -109,7 +110,8 @@ public class PFTransactionDB {
             dateFormat = new SimpleDateFormat("yy-MM-dd");
             date = (java.util.Date) dateFormat.parse(ap.getCurrentDate());
             ps=c.prepareStatement("insert into pf_account_master(pf_ac_id,pf_amount,"
-                    + "pf_sess_id,pf_type,pf_ac_date) values(?,?,?,?,'"+new java.sql.Date(date.getTime())+"')");
+                 //+ "pf_sess_id,pf_type,pf_ac_date) values(?,?,?,?,'"+new java.sql.Date(date.getTime())+"')");
+		+ "pf_sess_id,pf_type,pf_ac_date,pf_org_id) values(?,?,?,?,'"+new java.sql.Date(date.getTime())+"','"+orgCode+"')");
             ps.setInt(1, pft.getEmpId());
             ps.setInt(2, pft.getAmount());
             ps.setInt(3, session.getCurrentSession());

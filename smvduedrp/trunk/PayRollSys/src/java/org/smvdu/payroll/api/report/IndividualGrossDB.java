@@ -106,7 +106,7 @@ public class IndividualGrossDB {
     public Integer[][] fetchSalaryMatrix(String empCode) {
         ArrayList<String> sals = new SalaryHeadDB().getAllHeadAsString();
         Integer[][] dataset = new Integer[sals.size()][12];
-        String startDate = "2010-4-1";
+        String startDate = "2011-4-1";
         int dateOffset = 0;
         try {
             Connection c = new CommonDB().getConnection();

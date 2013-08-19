@@ -31,9 +31,14 @@
                 <rich:panel header="Exising Heads">
                     <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
                 <h:form id="investmentheads">
-                    
+                    <rich:messages>
+                       <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                       </f:facet>
+                    </rich:messages>
                     <h:panelGrid columns="3">
-                        <rich:dataTable  style="width:800px;" value="#{InvestmentHeadBean.allHeads}" var="dept">
+                        <rich:dataTable  style="width:800px;" binding="#{InvestmentHeadBean.dataGrid}"
+                                         value="#{InvestmentHeadBean.allHeads}" var="dept">
                             <rich:column width="5%">
                                 <f:facet name="header">
                                     <h:outputText value="Code"/>
@@ -60,7 +65,7 @@
                             </rich:column>
                         </rich:dataTable>
                         </h:panelGrid>
-                        <h:commandButton value="Update"/>
+                    <a4j:commandButton action="#{InvestmentHeadBean.update}" value="Update"/>
                     
                 </h:form>
                 </rich:panel>
@@ -71,7 +76,7 @@
                     <rich:panel header="Add New Investment Head">
 
                         <h:panelGrid
-                            columns="3"
+                            columns="5"
                             styleClass="data_entry_form"
                             columnClasses="label,field">                            
                             <h:outputText styleClass="Label" value="New Head"/>

@@ -1,0 +1,40 @@
+/* 
+    Document   : bankDetails
+    Created on : 15 Feb, 2012, 7:52:41 AM
+    Author     : ERP
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+.headerStyle
+{
+    background: white;
+    border-left: 2px solid #000;
+    border-bottom: 1px solid;
+}
+.rowStyle
+{
+    background: white;
+    border-bottom: 1px solid;
+}
+.rowStyle1
+{
+    background: white;
+    border-bottom: 1px solid;
+}
+.errorRowBack
+{
+    background: red;
+}
+.iconClose
+{
+    background-image: url("img/cross_icon.jpg");
+}

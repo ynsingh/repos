@@ -41,20 +41,39 @@ public class SimpleEmployee {
 
     private String code;
     private String name;
+    private boolean salaryStatus;
+    private String imageStatus = new String();
 
+    public String getImageStatus() {
+        return imageStatus;
+    }
+
+    public void setImageStatus(String imageStatus) {
+        this.imageStatus = imageStatus;
+    }
+    public boolean isSalaryStatus() {
+        return salaryStatus;
+    }
+    public void setSalaryStatus(boolean salaryStatus) {
+        this.salaryStatus = salaryStatus;
+    }
     public String getCode() {
+        System.out.println("DAta Should Be Write Here : in get code : "+code);
         return code;
     }
 
     public void setCode(String code) {
+        System.out.println("DAta Should Be Write Here : code : "+code);
         this.code = code;
     }
 
     public String getName() {
+        System.out.println("DAta Should Be Write Here : in get : "+name);
         return name;
     }
 
     public void setName(String name) {
+        System.out.println("DAta Should Be Write Here : "+name);
         this.name = name;
     }
     

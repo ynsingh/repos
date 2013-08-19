@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="investment" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="org_title" class="java.lang.String"/>
+	<parameter name="org_name" class="java.lang.String"/>
+	<parameter name="year" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="org_logo" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[select ih_id,ih_name,ip_year,ip_amount,ic_name,ip_emp_id, emp_pan_no,emp_name, emp_code, desig_name, dept_name, grd_max, grd_min from investment_heads
+                    left join investment_category_master on ic_id = ih_under
+                    left join investment_plan_master on ip_ins_id = ih_id
+                    left join employee_master on emp_code = ip_emp_id
+                    left join designation_master on desig_code = emp_desig_code
+                    left join department_master on dept_code = emp_dept_code
+                    left join salary_grade_master on grd_code = emp_salary_grade
+					 where ip_year = $P{year} group by emp_code]]>
+	</queryString>
+	<field name="ih_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ih_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ip_amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ic_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_code" class="java.lang.String"/>
+	<field name="dept_name" class="java.lang.String"/>
+	<field name="emp_pan_no" class="java.lang.String"/>
+	<field name="emp_name" class="java.lang.String"/>
+	<field name="desig_name" class="java.lang.String"/>
+	<field name="grd_max" class="java.lang.String"/>
+	<field name="grd_min" class="java.lang.String"/>
+	<field name="ip_year" class="java.lang.Integer"/>
+	<variable name="totala" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="174" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="87" width="81" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Code]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="131" y="64" width="272" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="87" width="60" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="101" width="157" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dept_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="87" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="101" width="60" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<line>
+				<reportElement x="418" y="126" width="13" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="103" y="87" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="103" y="115" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_pan_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="115" width="81" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAN No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="119" width="60" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pay Scale]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="379" y="119" width="35" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{grd_max}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="445" y="119" width="34" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{grd_min}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="101" width="81" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="375" y="102" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{desig_name}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="11" y="136" width="200" height="38"/>
+				<subreportParameter name="emp_code">
+					<subreportParameterExpression><![CDATA[$F{emp_code}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="year">
+					<subreportParameterExpression><![CDATA[$F{ip_year}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totala" toVariable="totala"/>
+				<subreportExpression class="java.lang.String"><![CDATA["investment_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="11" y="136" width="464" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="133" y="39" width="270" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_title}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Icon">
+				<reportElement x="10" y="26" width="79" height="58"/>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{org_logo}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="4" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch"/>
+	</summary>
+</jasperReport>

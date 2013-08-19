@@ -9,8 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.SalaryTypeMaster;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.SalaryHead;
+import org.smvdu.payroll.user.ActiveProfile;
 
 /**
  *
@@ -49,6 +52,17 @@ public class SalaryHeadDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
+
+    private final UserInfo userBean;
+    private ActiveProfile info;
+
+    public SalaryHeadDB()   {
+        info = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
+
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+
+
+    }
 
 
      public ArrayList<String> getAllHeadAsString()
@@ -174,7 +188,7 @@ public class SalaryHeadDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update salary_head_master set sh_name=?,"
-                    + "sh_calc_type=?,sh_type=?,sh_cat=?,sh_display=?,sh_process_type=? where sh_id=?");
+                    + "sh_calc_type=?,sh_type=?,sh_cat=?,sh_display=?,sh_process_type=? where sh_id=? and sh_org_id = ?");
             for(SalaryHead sh : heads)
             {
                 ps.setString(1, sh.getName().toUpperCase());
@@ -184,6 +198,7 @@ public class SalaryHeadDB {
                 ps.setBoolean(5, sh.isDisplay());
                 ps.setBoolean(6, sh.isProcessType());
                 ps.setInt(7, sh.getNumber());
+                ps.setInt(8, userBean.getUserOrgCode());
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -228,7 +243,7 @@ public class SalaryHeadDB {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("select sh_id,sh_name,sh_calc_type,sh_type "
                     + "from emp_salary_head_master left join salary_head_master"
-                    + " on sh_id = st_sal_code where st_code=? order by sh_type");
+                    + " on sh_id = st_sal_code where st_code=? and st_org_code='"+userBean.getUserOrgCode()+"' order by sh_type");
             ps.setInt(1, empType);
             //System.err.println(">>> Type Code : "+empType);
             rs=ps.executeQuery();
@@ -468,7 +483,7 @@ public class SalaryHeadDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into salary_head_master(sh_name,sh_type,"
-                    + "sh_alias,sh_calc_type,sh_scalable,sh_display,sh_type_code,sh_process_type) values(?,?,?,?,?,?,?,?)");
+                    + "sh_alias,sh_calc_type,sh_scalable,sh_display,sh_type_code,sh_process_type,sh_org_id) values(?,?,?,?,?,?,?,?,?)");
             ps.setString(1, form.getName().toUpperCase());
             ps.setBoolean(2, !form.isUnder());
             ps.setString(3, form.getAlias());
@@ -477,6 +492,7 @@ public class SalaryHeadDB {
             ps.setBoolean(6, form.isDisplay());
             ps.setInt(7, form.getTypeCode());
             ps.setBoolean(8, form.isProcessType());
+            ps.setInt(9, userBean.getUserOrgCode());
             ps.executeUpdate();            
             ps.close();
             c.close();

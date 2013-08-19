@@ -8,8 +8,11 @@ package org.smvdu.payroll.api.tool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.composite.SessionController;
 import org.smvdu.payroll.beans.db.CommonDB;
 
@@ -47,9 +50,14 @@ import org.smvdu.payroll.beans.db.CommonDB;
  */
 public class SalaryCopierDB {
 
-    private PreparedStatement ps;
-    private ResultSet rs;
+    private PreparedStatement ps,ps1;
+    private ResultSet rs,rs1;
+    private UserInfo userBean;
 
+    public SalaryCopierDB() {
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+    }
+    
     public ArrayList<SalaryCopy> loadDates(int year)  {
         try
         {
@@ -82,21 +90,25 @@ public class SalaryCopierDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-
-            ps=c.prepareStatement("delete from salary_data where month(sd_date)=month('"+to+"') and "
-                    + "year(sd_date) = year('"+to+"') and sd_sess_id = ?");
-            ps.setInt(1, sessionController.getCurrentSession());
-            ps.executeUpdate();
-            ps.close();
-            ps=c.prepareStatement("insert into salary_data (select sd_emp_code,"
-                    + "sd_head_code,?,sd_amount,? from salary_data where "
-                    + "month(sd_date)=? and year(sd_date)=?)");
+            DateFormat dateFormat;
+            dateFormat = new SimpleDateFormat("yy-MM-dd");
+            java.util.Date date;
+            date =(java.util.Date) dateFormat.parse(to);
             String[] bits = from.split("-");
-            ps.setString(1, to);
-            ps.setInt(2, Integer.parseInt(bits[1]));
-            ps.setInt(3, Integer.parseInt(bits[0]));
-            ps.setInt(4, sessionController.getCurrentSession());
-            ps.executeUpdate();
+            ps = c.prepareStatement("delete from salary_data where MONTH(sd_date) = MONTH('"+to+"') and year(sd_date)=year('"+to+"') and org_code='"+userBean.getUserOrgCode()+"'");
+            int i=ps.executeUpdate();
+            if(i>0)
+            {
+                System.out.println("Data Deleted");
+            }
+            ps=c.prepareStatement("select *from salary_data where month(sd_date) = '"+bits[1]+"' and year(sd_date) = '"+bits[0]+"' and org_code='"+userBean.getUserOrgCode()+"'");
+            rs=ps.executeQuery();
+            while(rs.next())
+            {
+                ps1=c.prepareStatement("insert into salary_data values('"+rs.getInt(1)+"','"+rs.getInt(2)+"','"+ new java.sql.Date(date.getTime())+"','"+rs.getInt(4)+"','"+sessionController.getCurrentSession()+"','"+userBean.getUserOrgCode()+"')");
+                ps1.executeUpdate();
+                ps1.close();
+            }
             ps.close();
             c.close();
             return null;

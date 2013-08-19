@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="432" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="salaryslip" language="groovy" pageWidth="595" pageHeight="432" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -7,7 +7,7 @@
 	<parameter name="year" class="java.lang.Integer"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["H:\\Active Java\\Payrroll_dev_jsf\\web\\"]]></defaultValueExpression>
-	</parameter>
+        </parameter>
 	<parameter name="org_name" class="java.lang.String"/>
 	<parameter name="org_title" class="java.lang.String"/>
 	<parameter name="org_logo" class="java.lang.Object"/>
@@ -83,7 +83,7 @@ employee_salary_summery left join
 				<reportElement x="23" y="115" width="462" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="24" y="69" width="81" height="14"/>
+				<reportElement x="24" y="69" width="110" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -104,7 +104,7 @@ employee_salary_summery left join
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="83" width="60" height="14"/>
+				<reportElement x="240" y="83" width="100" height="14"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -123,7 +123,7 @@ employee_salary_summery left join
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="totalS" toVariable="totalS"/>
-				<subreportExpression class="java.lang.String"><![CDATA["salincome.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["SalIncome.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement x="260" y="122" width="225" height="213"/>
@@ -138,9 +138,9 @@ employee_salary_summery left join
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="totalD" toVariable="totalD"/>
-				<subreportExpression class="java.lang.String"><![CDATA["saldeduct.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["SalDeduct.jasper"]]></subreportExpression>
 			</subreport>
-			<textField>
+                        <textField>
 				<reportElement x="103" y="6" width="328" height="18" forecolor="#FF6600"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
@@ -197,7 +197,7 @@ employee_salary_summery left join
 				<reportElement x="366" y="104" width="13" height="1"/>
 			</line>
 		</band>
-	</detail>
+	</detail> 
 	<columnFooter>
 		<band height="42">
 			<staticText>

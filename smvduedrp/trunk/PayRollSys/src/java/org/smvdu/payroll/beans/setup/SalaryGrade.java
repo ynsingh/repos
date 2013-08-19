@@ -6,6 +6,8 @@
 package org.smvdu.payroll.beans.setup;
 
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.smvdu.payroll.beans.db.SalaryGradeDB;
 
@@ -124,6 +126,16 @@ public class SalaryGrade {
 
    public void save()
     {
+         FacesContext fc = FacesContext.getCurrentInstance();
+         if (this.getMaxValue()< this.getMinValue())
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Plz Enter Valid Maximum and Minimum Values.");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
        new SalaryGradeDB().save(this);
        name=null;
        maxValue=0;

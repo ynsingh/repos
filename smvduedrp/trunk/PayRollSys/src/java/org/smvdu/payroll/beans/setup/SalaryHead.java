@@ -308,6 +308,23 @@ public class SalaryHead implements Serializable {
         return calculationType;
     }
     public void save()   {
+         FacesContext fc = FacesContext.getCurrentInstance();
+        if (this.getName().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Plz Enter Valid Salary Head Name");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
+        if (this.getAlias().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Plz Enter Valid Short Name");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
         Exception e = new SalaryHeadDB().save(this);
         if(e==null)
         {

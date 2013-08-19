@@ -58,7 +58,8 @@
                         <h:panelGrid columns="2">
                             <h:outputText value="Type Name*"/>
                             <h:inputText value="#{EmployeeTypeBean.name}"/>
-                            <h:commandButton  value="Save" action="#{EmployeeTypeBean.save}"/>
+                            <%--<h:commandButton  value="Save" action="#{EmployeeTypeBean.save}"/>--%>
+			    <a4j:commandButton  reRender="tbl" value="Save" action="#{EmployeeTypeBean.save}"/>
                             <h:commandButton onclick="Richfaces.hideModalPanel('pnl');" value="Close"/>
                         </h:panelGrid>
                         </h:form>

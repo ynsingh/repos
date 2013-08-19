@@ -29,11 +29,11 @@
         <Node id="DefaultSalaryData.jsp" x="650" y="150" zoom="true"/>
         <Node id="js/onpage-example.html" x="650" y="1050" zoom="true"/>
         <Node id="SalaryOption.jsp" x="900" y="150" zoom="true"/>
-        <Node id="js/Documentation.html" x="900" y="900" zoom="true"/>
-        <Node id="SalaryHead.jsp" x="1650" y="150" zoom="true"/>
         <Node id="index.jsp" x="400" y="150" zoom="true"/>
         <Node id="Login_1.jsp" x="1650" y="600" zoom="true"/>
         <Node id="account/UserManager.jsp" x="150" y="1050" zoom="true"/>
+        <Node id="js/Documentation.html" x="900" y="900" zoom="true"/>
+        <Node id="SalaryHead.jsp" x="1650" y="150" zoom="true"/>
         <Node id="MonthlySalarySingle.jsp" x="650" y="450" zoom="true"/>
         <Node id="org/NewProfile.jsp" x="650" y="1200" zoom="true"/>
         <Node id="SimpleSalaryProcessor.jsp" x="1400" y="450" zoom="true"/>

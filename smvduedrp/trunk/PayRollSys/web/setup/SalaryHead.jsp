@@ -43,83 +43,82 @@
                         </rich:menuItem>
                     </rich:menuGroup>
                 </rich:contextMenu>
-                            <h:panelGrid columns="2">
-                <rich:dataTable id="headTable" binding="#{SalaryHeadControllerBean.dataGrid}" style="width:70%;"
-                                value="#{SalaryHeadControllerBean.heads}" var="heads" >
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Head Name"/>
-                        </f:facet>
-                        <rich:inplaceInput value="#{heads.name}" />
-                    </h:column>
-                    
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Short Name"/>
-                        </f:facet>
-                        <rich:inplaceInput value="#{heads.alias}" />
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText style="width:100px;" value="Income"/>
-                        </f:facet>
-                        <h:selectBooleanCheckbox value="#{heads.under}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Formula"/>
-                        </f:facet>
-                        <h:selectBooleanCheckbox value="#{heads.calculationType}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Taxable"/>
-                        </f:facet>
-                        <h:selectBooleanCheckbox value="#{heads.type}"/>
-                    </h:column>
-                     <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Hidden"/>
-                        </f:facet>
-                        <h:selectBooleanCheckbox value="#{heads.display}"/>
-                    </h:column>
-                    
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Schedule Type"/>
-                        </f:facet>
-                        <h:selectBooleanCheckbox style="font-weight:1.2em;" value="#{heads.processType}"/>
-                        <h:outputText value="Regular" rendered="#{!heads.processType}"/>
-                        <h:commandButton value="Schedule" rendered="#{heads.processType}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Linked"/>
-                        </f:facet>
-                        <h:selectBooleanCheckbox disabled="true" readonly="true" value="#{heads.special}"/>
-                    </h:column>
-                     
-                </rich:dataTable>
+                <h:panelGrid columns="2">
+                    <rich:dataTable id="headTable" binding="#{SalaryHeadControllerBean.dataGrid}" style="width:70%;"
+                                    value="#{SalaryHeadControllerBean.heads}" var="heads" >
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Head Name"/>
+                            </f:facet>
+                            <rich:inplaceInput value="#{heads.name}" />
+                        </h:column>
 
-                                <rich:panel style="height:700px;" header="Important Points related to salary Heads">
-                                    <h:panelGrid columns="1">
-                                    <h:outputText value="1. Salary Heads marked with Income are Income , otherwise Deduction"/>
-                                    <h:outputText value="2. Salary Heads marked with Formula are Formula , otherwise Consolidated"/>
-                                    <h:outputText value="3. Salary Heads marked with Taxable are taxable , otherwise Non-Taxable"/>
-                                    <h:outputText value="4. Salary Heads marked with Hidden are neither Income nor Deduction. It will be contributiong to some Report Only."/>
-                                    <h:outputText value="5. Scheduled Salary Heads will be evaluated in choosen months only. Regular will be evaluated every month"/>
-                                    <h:outputText value="6. Salary Categories are just meant to organize salary heads . It doesnot do anything otherwise."/>
-                                    <h:outputText value="7. Sort Name of salary head is a Must. It is used to refer to salary heads while creating formula."/>
-                                    <h:outputText value="8. Name, Income/deduction, Formula etc  of salary heads can be edited any time."/>
-                                    <h:outputText value="9. Linked Salary heads are integrated with other modules, and automatically contribute in corresponding reports."/>
-                                    </h:panelGrid>
-                                </rich:panel>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Short Name"/>
+                            </f:facet>
+                            <rich:inplaceInput value="#{heads.alias}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText style="width:100px;" value="Income"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{heads.under}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Formula"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{heads.calculationType}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Taxable"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{heads.type}"/>
+                        </h:column>
+                        <%-- <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Hidden"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{heads.display}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Schedule Type"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox style="font-weight:1.2em;" value="#{heads.processType}"/>
+                            <h:outputText value="Regular" rendered="#{!heads.processType}"/>
+                            <h:commandButton value="Schedule" rendered="#{heads.processType}"/>
+                         </h:column> 04/05/12 Changed Currently Schudule Type And Hidden Are Not Used Or Activate--%>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Linked"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox disabled="true" readonly="true" value="#{heads.special}"/>
+                        </h:column>
+
+                    </rich:dataTable>
+
+                    <rich:panel style="height:700px;" header="Important Points related to salary Heads">
+                        <h:panelGrid columns="1">
+                            <h:outputText value="1. Salary Heads marked with Income are Income , otherwise Deduction"/>
+                            <h:outputText value="2. Salary Heads marked with Formula are Formula , otherwise Consolidated"/>
+                            <h:outputText value="3. Salary Heads marked with Taxable are taxable , otherwise Non-Taxable"/>
+                            <h:outputText value="4. Salary Heads marked with Hidden are neither Income nor Deduction. It will be contributiong to some Report Only."/>
+                            <h:outputText value="5. Scheduled Salary Heads will be evaluated in choosen months only. Regular will be evaluated every month"/>
+                            <h:outputText value="6. Salary Categories are just meant to organize salary heads . It doesnot do anything otherwise."/>
+                            <h:outputText value="7. Sort Name of salary head is a Must. It is used to refer to salary heads while creating formula."/>
+                            <h:outputText value="8. Name, Income/deduction, Formula etc  of salary heads can be edited any time."/>
+                            <h:outputText value="9. Linked Salary heads are integrated with other modules, and automatically contribute in corresponding reports."/>
+                        </h:panelGrid>
+                    </rich:panel>
 
                 </h:panelGrid>
                 <h:commandButton action="#{SalaryHeadControllerBean.update}" value="Update"/>
             </h:form>
         </rich:panel>
-                <rich:modalPanel width="300" height="240" autosized="true" id="pnl">
+        <rich:modalPanel width="300" height="240" autosized="true" id="pnl">
             <h:form>
                 <rich:panel header="Add New Salary Head">
                     <h:panelGrid columns="2">

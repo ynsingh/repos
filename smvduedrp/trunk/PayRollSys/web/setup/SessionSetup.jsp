@@ -49,16 +49,18 @@
         <f:view>
             <rich:panel header="Existing Financial years">
                 <h:panelGrid columns="2">
-                 <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
-                 <rich:messages>
-                       <f:facet name="infoMarker">
+                    <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
+                    <rich:messages>
+                        <f:facet name="infoMarker">
                             <h:graphicImage url="/img/success.png"/>
-                       </f:facet>
+                        </f:facet>
+                        <f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                        </f:facet>
                     </rich:messages>
-                 </h:panelGrid>
+                </h:panelGrid>
                 <h:form>
-
-                    <rich:dataTable  binding="#{SessionController.dataGrid}"  value="#{SessionController.sessions}" var="sess">
+                    <rich:dataTable id="tbl"  binding="#{SessionController.dataGrid}"  value="#{SessionController.sessions}" var="sess">
                         <h:column >
                             <f:facet name="header">
                                 <h:outputText value="Session Code"/>
@@ -83,11 +85,11 @@
                             </f:facet>
                             <h:outputText value="#{sess.endDate}" />
                         </h:column>
-                         <h:column >
+                        <h:column >
                             <f:facet name="header">
                                 <h:outputText value="Current Session"/>
                             </f:facet>
-                             <h:selectBooleanCheckbox value="#{sess.current}" />
+                            <h:selectBooleanCheckbox value="#{sess.current}" />
                         </h:column>
                     </rich:dataTable>
                     <h:panelGrid columns="2">
@@ -96,35 +98,35 @@
                 </h:form>
             </rich:panel>
             <rich:modalPanel id="pnl">
-                    <rich:panel header="Add New Session">
+                <rich:panel header="Add New Session">
                     <h:form>
                         <h:panelGrid columns="3">
                             <h:outputText value="Session Name"/>
                             <h:inputText id="deptName" required="true" requiredMessage="Please Enter Session Name (e.g 2011-12)"
-                                 value="#{SessionBean.name}"/>
+                                         value="#{SessionBean.name}"/>
                             <h:message styleClass="error" for="deptName" tooltip="Employee Type"/>
                             <h:outputText value="Session Start Date"/>
-                             <rich:calendar converter="dateConverter" showWeekDaysBar="false"
-                                               showFooter="false" styleClass="special"
-                                               datePattern="yyyy-MM-dd" id="startDate" popup="true"
-                                               required="true" requiredMessage="Select Session Start date"
-                                               value="#{SessionBean.startDate}">
-                                </rich:calendar>
+                            <rich:calendar converter="dateConverter" showWeekDaysBar="false"
+                                           showFooter="false" styleClass="special"
+                                           datePattern="yyyy-MM-dd" id="startDate" popup="true"
+                                           required="true" requiredMessage="Select Session Start date"
+                                           value="#{SessionBean.startDate}">
+                            </rich:calendar>
                             <h:message styleClass="error" for="deptName" tooltip="Employee Type"/>
                             <h:outputText value="Session End Date"/>
-                             <rich:calendar converter="dateConverter" showWeekDaysBar="false"
-                                               showFooter="false" styleClass="special"
-                                               datePattern="yyyy-MM-dd" id="endDate" popup="true"
-                                               required="true" requiredMessage="Select Session end date"
-                                               value="#{SessionBean.endDate}">
-                                </rich:calendar>
+                            <rich:calendar converter="dateConverter" showWeekDaysBar="false"
+                                           showFooter="false" styleClass="special"
+                                           datePattern="yyyy-MM-dd" id="endDate" popup="true"
+                                           required="true" requiredMessage="Select Session end date"
+                                           value="#{SessionBean.endDate}">
+                            </rich:calendar>
                             <h:message styleClass="error" for="deptName" tooltip="Employee Type"/>
-                    </h:panelGrid>
-                        <h:commandButton value="Save" action="#{SessionBean.save}"  />
-                    <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
-                </h:form>
+                        </h:panelGrid>
+                        <a4j:commandButton value="Save" action="#{SessionBean.save}" reRender="tbl" />
+                        <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
+                    </h:form>
                 </rich:panel>
-                </rich:modalPanel>
+            </rich:modalPanel>
         </f:view>
     </body>
 </html>

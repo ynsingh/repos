@@ -6,6 +6,8 @@
 package org.smvdu.payroll.api.email;
 
 import org.apache.commons.mail.HtmlEmail;
+import org.smvdu.payroll.api.UserOrgReg.RandomCharGen;
+import org.smvdu.payroll.api.UserOrgReg.UserOrgRegBeans;
 
 /**
  *
@@ -42,26 +44,30 @@ import org.apache.commons.mail.HtmlEmail;
 public class MailTest {
 
 
-    public static void main(String[] args)  {
+    public boolean sendMail(UserOrgRegBeans uor)  {
               try
               {
                   HtmlEmail email = new HtmlEmail();
                   email.setHostName("smtp.gmail.com");
                   email.setDebug(true);
                   email.setSSL(true);
-                  email.addTo("to", "Sushant Kumar");
-                  email.setFrom("from email", "");
+                  email.addTo(uor.getEmail(),uor.getName());
+                  email.setFrom("erpmission.smvdu@gmail.com", "workshop2011");
                   email.setSmtpPort(465);
-                  email.setAuthentication("email id", "password");
-                  email.setSubject("Testing SMTP");
-                  email.setHtmlMsg("Helllllllo");
-                  email.setTextMsg("Your email client does not support HTML messages");
+                  email.setAuthentication("erpmission.smvdu@gmail.com", "workshop2011");
+                  email.setSubject("Registration Code");
+                  email.setHtmlMsg("<html>" 
+                                    +"<font style='color:#4B4B4B;font-size:13px;'> Enter The Following Code For Confirming Your Registration Code</font><br><hr>"
+                                    +"<font style='color:red;font-size:13px;font-weight:bold;'>"+new RandomCharGen().nextSessionId(uor)+"</font><br><hr>"
+                          + "</html>");
+                  email.setTextMsg("Thanks And Regards");
                   email.send();
-
+                  return true;
               }
               catch(Exception e)
               {
                   e.printStackTrace();
+                  return false;
               }
     }
 

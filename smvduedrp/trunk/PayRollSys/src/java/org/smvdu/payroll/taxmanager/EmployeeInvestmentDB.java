@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.composite.SessionController;
 import org.smvdu.payroll.beans.db.CommonDB;
 
 /**
@@ -49,7 +50,9 @@ public class EmployeeInvestmentDB {
     
     private UserInfo userBean;
     
-    public EmployeeInvestmentDB()
+   SessionController sessionId = new SessionController();
+
+   public EmployeeInvestmentDB()
     {
         userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
     }
@@ -64,19 +67,21 @@ public class EmployeeInvestmentDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("delete from investment_plan_master where "
-                    + "ip_emp_id=? and ip_year=?");
+                    + "ip_emp_id=? and ip_year=? and ip_sess_id= '"+sessionId.getCurrentSession()+"' and ip_org_id= '"+userBean.getUserOrgCode()+"'");
             ps.setString(1, empCode);
             ps.setInt(2, userBean.getCurrentYear());
             ps.executeUpdate();
             ps.close();
             ps=c.prepareStatement("insert into investment_plan_master(ip_emp_id,"
-                    + "ip_ins_id,ip_amount,ip_year) values(?,?,?,?)");
+                    + "ip_ins_id,ip_amount,ip_year,ip_sess_id,ip_org_id) values(?,?,?,?,?,?)");
             for(EmployeeInvestment ei : data)
             {
                 ps.setString(1, empCode);
                 ps.setInt(2, ei.getCode());
                 ps.setFloat(3, ei.getAmount());
                 ps.setInt(4, userBean.getCurrentYear());
+                ps.setInt(5, sessionId.getCurrentSession());
+                ps.setInt(6, userBean.getUserOrgCode());
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -99,7 +104,7 @@ public class EmployeeInvestmentDB {
             String q = "select ih_id,ih_name,ip_amount,ic_name  from investment_heads "
                     + " left join investment_category_master on ic_id = ih_under "
                     + "left join investment_plan_master on ip_ins_id = ih_id and ip_emp_id=? "
-                    + "and ip_year=?";
+                    + "and ip_year=? and ip_sess_id = '"+sessionId.getCurrentSession()+"' where ih_org_id='"+userBean.getUserOrgCode()+"'";
             //System.err.println(empCode+","+userBean.getCurrentYear());
             ps=c.prepareStatement(q);
             ps.setString(1, empCode);

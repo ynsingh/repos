@@ -53,8 +53,7 @@ public class MasterPasswordDB {
         {
             int x = -1;
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select ms_id from system_master where ms_password=?");
-            ps.setString(1, password);
+	    ps=c.prepareStatement("select ms_id from system_master where ms_password='"+password+"'");
             rs = ps.executeQuery();
             if(rs.next())
             {

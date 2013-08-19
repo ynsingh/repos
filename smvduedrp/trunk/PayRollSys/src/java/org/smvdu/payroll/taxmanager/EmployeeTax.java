@@ -43,7 +43,38 @@ public class EmployeeTax extends BaseBean {
     
     
     private float amount;
+    public float netSaving;
+     private float effectiveIe;
+     private float educesse;
 
+    public float getEducesse() {
+        return educesse;
+    }
+
+    public void setEducesse(float educesse) {
+        this.educesse = educesse;
+    }
+
+     
+
+      public float getEffectiveIe() {
+        return effectiveIe;
+    }
+
+    public void setEffectiveIe(float effectiveIe) {
+        this.effectiveIe = effectiveIe;
+    }
+
+    
+    public float getNetSaving() {
+        return netSaving;
+    }
+
+    public void setNetSaving(float netSaving) {
+        System.out.println("Net Saving In Employee  : "+netSaving);
+        this.netSaving = netSaving;
+
+    }
     public float getAmount() {
         return amount;
     }

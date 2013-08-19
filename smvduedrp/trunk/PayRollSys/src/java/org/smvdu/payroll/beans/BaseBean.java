@@ -45,7 +45,15 @@ public class BaseBean implements Serializable{
     private int code;
     private float baseAmount;
     private boolean selected;
+    private float saving ;
 
+    public float getSaving() {
+        return saving;
+    }
+
+    public void setSaving(float saving) {
+        this.saving = saving;
+    }
     public boolean isSelected() {
         return selected;
     }
@@ -68,7 +76,24 @@ public class BaseBean implements Serializable{
         return code;
     }
     
-    
+    private float maxLimit;
+    private float effectivePercentage;
+
+    public float getEffectivePercentage() {
+        return effectivePercentage;
+    }
+
+    public void setEffectivePercentage(float effectivePercentage) {
+        this.effectivePercentage = effectivePercentage;
+    }
+
+    public float getMaxLimit() {
+        return maxLimit;
+    }
+
+    public void setMaxLimit(float maxLimit) {
+        this.maxLimit = maxLimit;
+    }
     public BaseBean()
     {
         

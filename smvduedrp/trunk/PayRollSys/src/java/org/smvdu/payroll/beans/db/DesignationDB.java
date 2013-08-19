@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.Designation;
 
 /**
@@ -48,6 +50,13 @@ public class DesignationDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    private int orgCode;
+
+    public DesignationDB()
+    {
+        UserInfo uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+        orgCode = uf.getUserOrgCode();
+    }
 
     public Designation convert(String code)    {
         try
@@ -76,7 +85,7 @@ public class DesignationDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update designation_master set desig_name=? where desig_code=?");
+            ps=c.prepareStatement("update designation_master set desig_name=? where desig_code=? and d_org_id='"+orgCode+"'");
             for(Designation dp : depts)
             {
                 ps.setString(1, dp.getName().toUpperCase());
@@ -96,7 +105,7 @@ public class DesignationDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select * from designation_master");
+            ps=c.prepareStatement("select * from designation_master where d_org_id = '"+orgCode+"'");
             rs=ps.executeQuery();
             ArrayList<Designation> data = new ArrayList<Designation>();
             while(rs.next())
@@ -120,14 +129,16 @@ public class DesignationDB {
     public Exception save(String desigName)   {
         try
         {
+
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into designation_master(desig_name) values(?)",1);
+            ps=c.prepareStatement("insert into designation_master(desig_name,d_org_id) values(?,?) ");
             ps.setString(1, desigName.toUpperCase());
+            ps.setInt(2, orgCode);
             ps.executeUpdate();
-            rs=ps.getGeneratedKeys();
-            rs.next();
-            int code = rs.getInt(1);
-            rs.close();
+            //rs=ps.getGeneratedKeys();
+            //rs.next();
+            //int code = rs.getInt(1);
+            //rs.close();
             ps.close();
             c.close();
             return null;

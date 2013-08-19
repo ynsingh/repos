@@ -48,11 +48,17 @@ import org.smvdu.payroll.user.ActiveProfile;
  */
 public class DepartmentDB {
     
-    
+
     private ActiveProfile info;
+    private final UserInfo userBean;
+    
     
     public DepartmentDB()   {
         info = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
+
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+
+               
     }
 
     private PreparedStatement ps;
@@ -85,7 +91,7 @@ public class DepartmentDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update department_master set dept_name=? where dept_code=?");
+            ps=c.prepareStatement("update department_master set dept_name=? where dept_code=? and dept_org_id = '"+userBean.getUserOrgCode()+"'");
             for(Department dp : depts)
             {
                 ps.setString(1, dp.getName().toUpperCase());
@@ -105,8 +111,9 @@ public class DepartmentDB {
         ArrayList<Department> data = new ArrayList<Department>();
         try
         {
+            System.out.println("Org Code : "+userBean.getUserOrgCode());
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select dept_code,dept_name from department_master");
+            ps=c.prepareStatement("select dept_code,dept_name from department_master where org_code = '"+userBean.getUserOrgCode()+"'");
            // ps.setInt(1, info.getUserOrgCode());
             rs=ps.executeQuery();
             
@@ -121,20 +128,23 @@ public class DepartmentDB {
             rs.close();
             ps.close();
             c.close();
+            return data;
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            return null;
         }
         
-            return data;
     }
     public Exception save(String dptName)   {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into department_master(dept_name) values(?)",1);
+            ps=c.prepareStatement("insert into department_master(dept_name, org_code) values(?,?)");
             ps.setString(1, dptName.toUpperCase());
+            ps.setInt(2, userBean.getUserOrgCode());
+            
             ps.executeUpdate();
             ps.close();
             c.close();

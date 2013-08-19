@@ -8,8 +8,13 @@ package org.smvdu.payroll.beans.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import org.smvdu.payroll.Admin.ServerDetails;
+import org.smvdu.payroll.api.Administrator.CollegeRequestStatus;
 import org.smvdu.payroll.api.email.Mail;
+import org.smvdu.payroll.api.email.OrgConformationEmail;
 
 import org.smvdu.payroll.beans.UserGroup;
 import org.smvdu.payroll.beans.setup.Org;
@@ -53,7 +58,7 @@ public class OrgProfileDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select org_id,org_name from org_profile");
+            ps=c.prepareStatement("select org_id,org_name from org_profile inner join user_master on org_email = user_name ");
             rs=ps.executeQuery();
             ArrayList<Org> data = new ArrayList<Org>();
             while(rs.next())
@@ -114,20 +119,45 @@ public class OrgProfileDB {
     public Exception save(Org org)  {
         try
         {
+            java.util.Date date = new java.util.Date();
+            java.util.Date dat = new java.util.Date();
+            DateFormat dateFormat;
+            dateFormat = new SimpleDateFormat("yy-MM-dd");
+            
+            /*int month = date.getMonth();
+            int year = date.getYear();
+            int day = date.getDate();*/
+            String d = String.valueOf(date.getDate())+"-"+String.valueOf(date.getMonth())+"-"+String.valueOf(date.getDate());
+            dat = (java.util.Date) dateFormat.parse(d);
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into org_profile(org_name,org_tagline,"
-                    + "org_email,org_web,org_phone,org_address1,org_address2,"
-                    + "org_master_password,org_recovery_id) "
-                    + "values(?,?,?,?,?,?,?,password(?),aes_encrypt(?,'mysecretkey'))",1);
+            ps=c.prepareStatement("insert into org_profile(org_name,"
+                    + "org_email,org_web,org_phone,org_address1,"
+                    + "org_master_password, org_city, org_pincode, org_state, org_ll, org_countrycode, org_regioncode, org_institutedomain, org_toi, org_affiliation, org_adminfn, org_adminln, org_admindesig,org_status,org_reg_date) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'"+0+"','"+new java.sql.Date(dat.getTime())+"')",1);
             ps.setString(1, org.getName());
-            ps.setString(2, org.getTagLine());
-            ps.setString(3, org.getEmail());
-            ps.setString(4, org.getWeb());
-            ps.setString(5, org.getPhone());
-            ps.setString(6, org.getAddress1());
-            ps.setString(7, org.getAddress2());
-            ps.setString(8, org.getMasterPassword());
-            ps.setString(9, org.getRecoveryEMailId());
+        //    ps.setString(2, org.getTagLine());
+            ps.setString(2, org.getEmail());
+            ps.setString(3, org.getWeb());
+            ps.setString(4, org.getPhone());
+            ps.setString(5, org.getAddress1());
+           // ps.setString(7, org.getAddress2());
+            ps.setString(6, org.getMasterPassword());
+        //    ps.setString(9, org.getRecoveryEMailId());
+         //   ps.setString(7,org.getTanno());
+            ps.setString(7, org.getCity());
+            ps.setInt(8, org.getPincode());
+            ps.setString(9, org.getState());
+            ps.setInt(10, org.getLl());
+            ps.setString(11, org.getCountryCode());
+            ps.setInt(12, org.getRegionCode());
+            ps.setString(13, org.getInstDomain());
+            ps.setString(14, org.getToi());
+            ps.setString(15, org.getAffiliation());
+            ps.setString(16, org.getAdminfn());
+            ps.setString(17, org.getAdminln());
+            ps.setString(18, org.getAdminDesig());
+
+
             ps.executeUpdate();
             rs=ps.getGeneratedKeys();
             rs.next();
@@ -136,16 +166,16 @@ public class OrgProfileDB {
             c.close();
             UserInfo info = new UserInfo();
             info.setGroupCode(4);
-            info.setUserName(org.getRecoveryEMailId());
+            info.setUserName(org.getEmail());
             info.setPassword(org.getMasterPassword());
             UserGroup ug = new UserGroup();
             ug.setId(4);
             info.setGroupCode(4);
             info.setUserOrgCode(code);
-            new UserDB().save(info);
-            
-            
-            
+            //new UserDB().save(info);
+            new OrgConformationEmail().sendPendingCollegeMail(org);
+            new CollegeRequestStatus().saveRequestStatus(org,code,info); 
+            new ServerDetails().saveServerDetail(org,code);
             return null;
         }
         catch(Exception e)
@@ -154,4 +184,42 @@ public class OrgProfileDB {
         }
     }
 
+    
+    public boolean updateFlagStatus(String emailid)
+    {
+        try
+        {
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            pst = cn.prepareStatement("update college_pending_status set org_request_status = '"+1+"' where org_pen_email= '"+emailid+"'");
+            pst.executeUpdate();
+            pst.close();
+            cn.close();
+            return true;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean updatePendingStatus(String emailid)
+    {
+        try
+        {
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst;
+            pst = cn.prepareStatement("update user_master set flag = '"+1+"' where user_name= '"+emailid+"'");
+            pst.executeUpdate();
+            pst.close();
+            cn.close();
+            return true;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }

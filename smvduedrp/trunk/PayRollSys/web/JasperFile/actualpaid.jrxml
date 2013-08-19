@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="actualnpaid" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="org_title" class="java.lang.String"/>
+	<parameter name="org_name" class="java.lang.String"/>
+	<parameter name="org_code" class="java.lang.String"/>
+	<parameter name="session" class="java.lang.String"/>
+	<parameter name="org_logo" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[select et_emp_id,et_amount, emp_name, dept_name, desig_name, emp_pan_no,SUM(sd_amount)  from `employee_master`
+                 left join designation_master on desig_code = emp_desig_code
+                 left join department_master on dept_code = emp_dept_code
+                 left join `emp_tax_master` on et_emp_id = emp_code
+                 left join `salary_data` on et_emp_id = sd_emp_code
+                 where  et_org_code = $P{org_code}
+                 and sd_head_code = 13 and sd_sess_id =2 group by emp_code]]>
+	</queryString>
+	<field name="et_emp_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="et_amount" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dept_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="desig_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_pan_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUM(sd_amount)" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="diff" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<image onErrorType="Icon">
+				<reportElement x="32" y="12" width="79" height="58"/>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{org_logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="146" y="30" width="237" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="50" width="237" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="92" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Employee Code]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{et_emp_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="20" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Designation ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="20" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{desig_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="40" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[PAN No]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="40" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_pan_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="302" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="40" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="418" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="40" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dept_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[After Calculation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Actual Paid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Difference]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="11" y="20" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{et_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="20" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SUM(sd_amount)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="302" y="20" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{et_amount}-$F{SUM(sd_amount)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="53" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="39" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

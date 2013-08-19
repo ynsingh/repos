@@ -14,6 +14,7 @@ import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.SalaryData;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.composite.SessionController;
+import org.smvdu.payroll.module.attendance.LoggedEmployee;
 
 /**
  *
@@ -52,9 +53,23 @@ public class SalaryDataDB {
     private PreparedStatement ps;
     private ResultSet rs;
     private UserInfo user;
-
+    private SessionController sessionId = new SessionController();
+    private int orgCode;
     public SalaryDataDB()  {
-        user = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+        //user = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+        try {
+            LoggedEmployee le = (LoggedEmployee) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
+            if (le == null) {
+                UserInfo uf = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+                orgCode = uf.getUserOrgCode();
+                System.out.println("DAta Should Be Write Here : 3214 : --" + orgCode);
+            } else {
+                orgCode = le.getUserOrgCode();
+                System.out.println("DAta Should Be Write Here : 32142323 : " + orgCode);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -93,19 +108,20 @@ public class SalaryDataDB {
     {
         try
         {
+            UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
             String date = user.getCurrentDate();
             String[] ds = date.split("-");
             int year = Integer.parseInt(ds[0]);
             int month = Integer.parseInt(ds[1]);
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("delete from employee_salary_summery where es_code=? and es_month=? and es_year=?");
+            ps=c.prepareStatement("delete from employee_salary_summery where es_code=? and es_month=? and es_year=? and es_org_id='"+orgCode+"' and es_sess_id = '"+sessionId.getCurrentSession()+"'");
             ps.setString(1, empCode);
             ps.setInt(2, month);
             ps.setInt(3, year);
             ps.executeUpdate();
             ps.close();
             ps=c.prepareStatement("insert into employee_salary_summery(es_code,es_month,es_year,"
-                    + "es_total_income,es_total_deduct,es_gross,es_last_update_date) values(?,?,?,?,?,?,date(now()))");
+                    + "es_total_income,es_total_deduct,es_gross,es_last_update_date,es_org_id,es_sess_id) values(?,?,?,?,?,?,date(now()),'"+orgCode+"','"+sessionId.getCurrentSession()+"')");
            
             ps.setString(1, empCode);
             ps.setInt(2, month);
@@ -211,6 +227,8 @@ public ArrayList<SalaryData> loadInit(Employee empCode)    {
         try
         {
             CommonDB cdb = new CommonDB();
+            //System.out.println("Month Name : "+user.getCurrentMonth());
+            UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
             int month = user.getCurrentMonth();
             int year = user.getCurrentYear();
             Connection c = cdb.getConnection();
@@ -309,6 +327,7 @@ public ArrayList<SalaryData> loadInit(Employee empCode)    {
     public boolean save(ArrayList<SalaryData> data,String empCode) {
         try
         {
+            UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
             SessionController ss = (SessionController) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SessionController");
             SessionController session = new SessionController();
             Connection c = new CommonDB().getConnection();
@@ -316,11 +335,12 @@ public ArrayList<SalaryData> loadInit(Employee empCode)    {
                     + "month(sd_date)=? and year(sd_date)=?");
             ps.setString(1, empCode);
             String[] dd = user.getCurrentDate().split("-");
+            System.out.println("Data is Here : "+user.getCurrentDate());
             ps.setInt(2, Integer.parseInt(dd[1]));
             ps.setInt(3, Integer.parseInt(dd[0]));
             ps.executeUpdate();
             ps.close();
-            ps=c.prepareStatement("insert into salary_data values(?,?,?,?,?)");
+            ps=c.prepareStatement("insert into salary_data values(?,?,?,?,?,?)");
             for(SalaryData sd : data)
             {
                 ps.setString(1, empCode);
@@ -328,6 +348,7 @@ public ArrayList<SalaryData> loadInit(Employee empCode)    {
                 ps.setString(3,user.getCurrentDate());
                 ps.setInt(4, sd.getHeadValue());
                 ps.setInt(5, session.getCurrentSession());
+                ps.setInt(6, orgCode);
                 ps.executeUpdate();
                 ps.clearParameters();
             }

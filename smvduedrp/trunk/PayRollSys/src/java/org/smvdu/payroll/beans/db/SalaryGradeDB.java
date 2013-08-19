@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.SalaryGrade;
 
 /**
@@ -48,7 +50,12 @@ public class SalaryGradeDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
+     private UserInfo userBean;
 
+    public SalaryGradeDB()
+    {
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+    }
 
     public void update(ArrayList<SalaryGrade> grades)
     {
@@ -56,7 +63,7 @@ public class SalaryGradeDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update salary_grade_master set grd_name=?"
-                    + ",grd_max=?,grd_min=?,grd_gp=? where grd_code=?");
+                    + ",grd_max=?,grd_min=?,grd_gp=? where grd_code=? and grd_org_id = ?");
             for(SalaryGrade sg : grades)
             {
                 ps.setString(1, sg.getName());
@@ -64,6 +71,7 @@ public class SalaryGradeDB {
                 ps.setInt(3, sg.getMinValue());
                 ps.setInt(4, sg.getGradePay());
                 ps.setInt(5, sg.getCode());
+                ps.setInt(6, userBean.getUserOrgCode());
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -80,7 +88,7 @@ public class SalaryGradeDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps = c.prepareStatement("select * from salary_grade_master");
+            ps = c.prepareStatement("select * from salary_grade_master where grd_org_id = '"+userBean.getUserOrgCode()+"'");
             rs=ps.executeQuery();
             ArrayList<SalaryGrade> grades = new ArrayList<SalaryGrade>();
             while(rs.next())
@@ -108,13 +116,14 @@ public class SalaryGradeDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into salary_grade_master(grd_name,"
-                    + "grd_max,grd_min,grd_gp) values(?,?,?,?)");
+                    + "grd_max,grd_min,grd_gp,grd_org_id) values(?,?,?,?,?)");
             ps.setString(1, sg.getName());
             ps.setInt(2, sg.getMaxValue());
             ps.setInt(3, sg.getMinValue());
             ps.setInt(4, sg.getGradePay());
+            ps.setInt(5, userBean.getUserOrgCode());
             ps.executeUpdate();
-            rs=ps.getGeneratedKeys();
+          //  rs=ps.getGeneratedKeys();
             rs.next();
             int code = rs.getInt(1);
             rs.close();

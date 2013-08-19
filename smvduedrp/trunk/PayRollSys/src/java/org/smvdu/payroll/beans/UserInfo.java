@@ -1,12 +1,16 @@
 package org.smvdu.payroll.beans;
 
 import java.io.Serializable;
+import java.sql.*;
 import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 //import javax.servlet.http.HttpSession;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+import org.smvdu.payroll.api.UserTask.ReadUserTaskList;
+import org.smvdu.payroll.api.UserTask.UserTaskDB;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
 import org.smvdu.payroll.beans.db.UserDB;
@@ -48,6 +52,17 @@ import org.smvdu.payroll.user.UserHistory;
  */
 public class UserInfo implements Serializable {
 
+    private String bankName = new String();
+
+    public String getBankName() {
+        
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        
+        this.bankName = bankName;
+    }
     private int userId = 0;
     private int currentMonth;
     private int currentYear;
@@ -361,6 +376,29 @@ public class UserInfo implements Serializable {
         return userName;
     }
 
+    private String userTaskId;
+
+    public String getUserTaskId() {
+        try
+        {
+            Connection cn = new CommonDB().getConnection();
+            PreparedStatement pst = cn.prepareStatement("");
+            return userTaskId;
+        }
+        catch(Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public void setUserTaskId(String userTaskId) {
+        this.userTaskId = userTaskId;
+    }
+
+     public String nameP()
+    {
+        return "em";
+    }
     public String logout() {
         ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
         ectx.invalidateSession();
@@ -374,12 +412,38 @@ public class UserInfo implements Serializable {
         currentYear = Integer.parseInt(dd[0]);
     }
 
+
     public String validate() {
-
-
-        int x = new UserDB().validate(userName, password, this);
-        System.err.println("Login status : "+x);
-        if (x > 0) {
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+         System.out.println("Login : "+request.getParameter("user1")+" :: Login1 : "+request.getParameter("user"));
+        int x = new UserDB().validate(userName, password,userOrgCode,this);
+        System.err.println("Login status : "+x); 
+        if(x == 2)
+        {
+            return "AdminLogin.jsf";
+        }
+        if (x == 3) {
+            new UserTaskDB().insertNewTaskList();
+            ActiveProfile ap = new ActiveProfile();
+            ap.setOrgId(userOrgCode);
+            if (profile != null) {
+                ap.setProfile(profile);
+            }
+            
+            currentDate = new CommonDB().getDate();
+            String[] dd = currentDate.split("-");
+            currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+            currentMonth = Integer.parseInt(dd[1]);
+            currentYear = Integer.parseInt(dd[0]);
+            ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+            ap.setMonth(currentMonth);
+            ap.setYear(currentYear);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+            return "MainPage.jsf";
+        } 
+        if (x == 1) {
+          //  new UserTaskDB().insertNewTaskList();
             ActiveProfile ap = new ActiveProfile();
             ap.setOrgId(userOrgCode);
             if (profile != null) {

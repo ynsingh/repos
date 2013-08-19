@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.setup.EmployeeType;
 
 /**
@@ -43,21 +45,35 @@ import org.smvdu.payroll.beans.setup.EmployeeType;
 *  Contributors: Members of ERP Team @ SMVDU, Katra
 *
  */
-public class EmployeeTypeDB {
+
+
+
+public class EmployeeTypeDB {                 // ADDED ORG CODE IN ALL QUERIES;
+
 
     private PreparedStatement ps;
     private ResultSet rs;
+
+    private UserInfo userBean;
+
+    public EmployeeTypeDB()
+    {
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+    }
+
+
     public void update(ArrayList<EmployeeType> grades)   {
         try
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("update employee_type_master set emp_type_name=?"
-                    + ",emp_pf_applies=? where emp_type_id=?");
+                    + ",emp_pf_applies=? where emp_type_id=? and emp_org_id = ?");
             for(EmployeeType sg : grades)
             {
                 ps.setString(1, sg.getName().toUpperCase());
                 ps.setBoolean(2, sg.isPfApplies());
                 ps.setInt(3, sg.getCode());
+                ps.setInt(4, userBean.getUserOrgCode());             // ADDED ORG CODE;
                 ps.executeUpdate();
                 ps.clearParameters();
             }
@@ -73,7 +89,7 @@ public class EmployeeTypeDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select * from employee_type_master");
+            ps=c.prepareStatement("select * from employee_type_master where emp_org_id = '"+userBean.getUserOrgCode()+"'");
             rs=ps.executeQuery();
             ArrayList<EmployeeType> data = new ArrayList<EmployeeType>();
             while(rs.next())
@@ -99,9 +115,10 @@ public class EmployeeTypeDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("insert into employee_type_master(emp_type_name,emp_pf_applies) values(?,?)",1);
+            ps=c.prepareStatement("insert into employee_type_master(emp_type_name,emp_pf_applies,emp_org_id) values(?,?,?)");
             ps.setString(1, dptName.toUpperCase());
             ps.setBoolean(2, b);
+            ps.setInt(3, userBean.getUserOrgCode());
             ps.executeUpdate();
             ps.close();
             c.close();

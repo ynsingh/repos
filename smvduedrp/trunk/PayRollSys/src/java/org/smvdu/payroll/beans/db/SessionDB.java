@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.SessionMaster;
+import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.user.ActiveProfile;
 
 /**
  *
@@ -48,17 +51,28 @@ public class SessionDB {
 
     private PreparedStatement ps;
     private ResultSet rs;
+    private ActiveProfile info;
+    private final UserInfo userBean;
+
+    public SessionDB() {
+        info = (ActiveProfile) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
+
+        userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
 
 
+    }
+
+    
+    private ArrayList<SessionMaster> currentSessionReport;
     public void setCurrentSession(int sessId)
     {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update session_master set ss_current=0");
+            ps=c.prepareStatement("update session_master set ss_current=0 where ss_org_id='"+userBean.getUserOrgCode()+"'");
             ps.executeUpdate();
             ps.close();
-            ps=c.prepareStatement("update session_master set ss_current=1 where ss_id=?");
+            ps=c.prepareStatement("update session_master set ss_current=1 where ss_id=? and ss_org_id='"+userBean.getUserOrgCode()+"' ");
             ps.setInt(1, sessId);
             ps.executeUpdate();
             ps.close();
@@ -79,13 +93,14 @@ public class SessionDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into session_master(ss_name,"
-                    + "ss_start_from,ss_end_to,ss_current) values(?,?,?,?)",1);
+                    + "ss_start_from,ss_end_to,ss_current,ss_org_id) values(?,?,?,?,?)");
             ps.setString(1, session.getName());
             ps.setString(2, session.getStartDate());
             ps.setString(3, session.getEndDate());
             ps.setBoolean(4, session.isCurrent());
+            ps.setInt(5, userBean.getUserOrgCode());
             ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
+       //     rs = ps.getGeneratedKeys();
             rs.next();
             int code =rs.getInt(1);
             rs.close();
@@ -105,7 +120,7 @@ public class SessionDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select * from session_master where ss_current=1");
+            ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
             rs = ps.executeQuery();
             SessionMaster sess = new SessionMaster();
             if(rs.next())
@@ -125,17 +140,58 @@ public class SessionDB {
             return null;
         }
     }
-
-
-
-    public void update(ArrayList<SessionMaster> sesss)
+    public ArrayList<SessionMaster> getCurrentSessionForReport()
     {
         try
         {
+            currentSessionReport = new ArrayList<SessionMaster>();
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("update session_master set ss_name=?,ss_current=? where ss_id=?");
+            ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
+            rs = ps.executeQuery();
+            while(rs.next())
+            {
+                SessionMaster sess = new SessionMaster();
+                sess.setCode(rs.getInt(1));
+                sess.setName(rs.getString(2));
+                currentSessionReport.add(sess); 
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return currentSessionReport;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    public boolean  update(ArrayList<SessionMaster> sesss)
+    {
+        try
+        {
+            boolean flag = false;
+            int currentStatus = 0;
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("update session_master set ss_name=?,ss_current=? where ss_id=? and ss_org_id='"+userBean.getUserOrgCode()+"'");
             for(SessionMaster sm : sesss)
             {
+                if(sm.isCurrent() == true)
+                {
+                    currentStatus++;
+                }
+                if(currentStatus>1)
+                {
+                    flag = false;
+                    break;
+                }
+                else
+                {
+                    flag = true;
+                }
                 ps.setString(1, sm.getName());
                 ps.setBoolean(2, sm.isCurrent());
                 ps.setInt(3, sm.getCode());
@@ -144,10 +200,12 @@ public class SessionDB {
             }
             ps.close();
             c.close();
+            return flag;
         }
         catch(Exception e)
         {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -158,7 +216,7 @@ public class SessionDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select * from session_master");
+            ps=c.prepareStatement("select * from session_master where ss_org_id='"+userBean.getUserOrgCode()+"'");
             rs = ps.executeQuery();
 
             while(rs.next())

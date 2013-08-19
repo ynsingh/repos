@@ -45,44 +45,110 @@
         <link rel="stylesheet" type="text/css" href="loginpage.css"/>
         <title>Payroll System | Login</title>
     </head>
-        <f:view>
-            <h:panelGrid style="margin-left:150px;margin-top:20px;" columns="2">
-                <h:graphicImage alt="Payroll System" url="img/pls.png"/>
-                <rich:panel style="height:480px;" header="">
-                    
-                    <h:form>
-                        <rich:messages>
-                            <f:facet name="errorMarker">
-                                <h:graphicImage url="/img/err.png"/>
-                            </f:facet>
-                        </rich:messages>
-                        <rich:panel>
-                            <h:graphicImage width="210px;" url="icons/lg.jpg"/>
-                            <h:outputText value="Login"  style="align:left;font-size:20px;"/>
-                            <h:panelGrid bgcolor="grey"  columns="2">
-                            <h:outputText value="Organization Name"/>
-                            <h:selectOneMenu value="#{UserBean.userOrgCode}">
-                                <f:selectItems value="#{OrgController.items}"/>
+    <f:view>
+        <h:panelGrid style="margin-left:150px;margin-top:20px;" columns="2">
+            <h:graphicImage alt="Payroll System" url="/img/pls.png"/>
+            <rich:panel style="height:480px;" header="">
+                <h:form>
+                    <rich:messages>
+                        <f:facet name="errorMarker">
+                            <h:graphicImage url="/img/err.png"/>
+                        </f:facet>
+                    </rich:messages>
+                    <rich:panel>
+                        <h:graphicImage width="210px;" url="/icons/lg.jpg"/>
+                        <h:outputText value="Login"  style="align:left;font-size:20px;"/>
+                        <h:panelGrid bgcolor="grey"  columns="2">
+                           <h:outputText value="Organization Name"/>
+                            <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}">
+                                <f:selectItem itemLabel="Administrator"/>
+                                <f:selectItems id="user1" value="#{OrgController.items}"/>
                             </h:selectOneMenu>
                             <h:outputText value="Username"/>
                             <h:inputText label="User Name" value="#{UserBean.userName}" />
                             <h:outputText value=" Password:"/>
                             <h:inputSecret label="Password" value="#{UserBean.password}"/>
                             <h:outputText value=" >> "/>
-                            <h:commandButton   action="#{UserBean.validate}" value="Login" />
+                            <h:commandButton  action="#{UserBean.validate}" value="Login" />
                         </h:panelGrid>
-                        </rich:panel>
-                        <rich:separator/>
-                        <rich:separator/>
-                        <h:outputText value=""/>
+                    </rich:panel>
+                    <h:outputText value=""/>
                     </h:form>
+                <rich:separator/>
+                <rich:separator/>
+                <a href="adminLogin/OrgMain.jsf">Register New Institute</a> 
+                <%--<a href="adminLogin/adminLogin.jsf">Administrator Login</a>--%>
                 </rich:panel>
-            </h:panelGrid>
-              <rich:panel style="margin-left:150px;width:80%;background-color:red;">
-                <h:panelGrid columns="4">
+                </h:panelGrid>
+        <rich:panel style="margin-left:150px;width:80%;background-color:red;">
+            <h:panelGrid columns="4">
                 <h:graphicImage width="50px;" height="50px;" />
                 <h:outputText value="Developed by SMVD University"/>
-                </h:panelGrid>
+            </h:panelGrid>
+        </rich:panel>
+            <rich:modalPanel id="newuser" height="470" width="400">
+            <h:panelGrid columns="1">
+                <rich:panel id="mes">
+                <rich:messages>
+                        <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                        </f:facet>
+                        <f:facet name="errorMarker">
+                            <h:graphicImage url="/img/error.png"/>
+                        </f:facet>
+                    </rich:messages>
             </rich:panel>
-             </f:view>
+               <rich:panel header="User Registration">
+                    <h:form>
+                    <h:panelGrid id="pnl" columns="2">
+                        <h:outputText value="Name"/>
+                        <h:inputText id="Name" requiredMessage="Name cannot be empty" required="true" value="#{userOrgRegBeans.name}"/>
+                        <h:outputText value="Father Name"/>
+                        <h:inputText id="fname" requiredMessage="Name cannot be empty" required="true" value="#{userOrgRegBeans.fatherName}"/>
+                       
+                        <h:outputText value="Gender"/>
+                        <h:inputText id="gender" requiredMessage="Gender cannot be empty" required="true" value="#{userOrgRegBeans.gender}"/>
+                        
+                        <h:outputText value="Organization Name"/>
+                        <h:selectOneMenu value="#{userOrgRegBeans.orgCode}">
+                            <f:selectItems value="#{OrgController.items}"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="Address"/>
+                        <h:inputTextarea id="insta1" value="#{userOrgRegBeans.address}"/>
+                        
+
+                        <h:outputText value="Date of Birth"/>
+                        <rich:calendar enableManualInput="false" converter="dateConverter" showWeekDaysBar="false"
+                                                   showFooter="false" styleClass="special"
+                                                   datePattern="yyyy-MM-dd" id="empDob" popup="true"
+                                                   required="true"   requiredMessage="*Enter Date Of Birth as yyyy-mm-dd"
+                                                   value="#{userOrgRegBeans.dateoffbirth}">
+                                    </rich:calendar>
+                        
+                        <h:outputText value="Phone"/>
+                        <h:inputText id="instph" value="#{userOrgRegBeans.phone}"/>
+                        
+                        <h:outputText value="E-Mail"/>
+                        <h:inputText id="instmail" value="#{userOrgRegBeans.email}"/>
+                        <h:selectBooleanCheckbox id="se" immediate="true" value="#{userOrgRegBeans.terms}">
+                            <a4j:support action="#{userOrgRegBeans.sendingMailToNewUser}" event="onclick" reRender="mes"/>
+                        </h:selectBooleanCheckbox>
+                        <h:commandLink value="Accept Terms And Condition"/>
+                        <rich:separator/>
+                        <rich:separator/>
+                        <%-- <h:outputText value="Registration Code "/>
+                        <h:inputText  id="reg" value="#{userOrgRegBeans.regCode}" required="true">
+                            <a4j:support event="onchange" action="#{userOrgRegBeans.registartionCode}" reRender="mes,suc"/>
+                        </h:inputText>--%>
+                            <h:panelGroup>
+                                <a4j:commandButton id="suc" value="Save" action="#{userOrgRegBeans.save}" disabled="#{userOrgRegBeans.enable}"/>
+                                <h:commandButton styleClass="panel" value="Reset" onclick="this.form.reset()"/>
+                            </h:panelGroup>
+                    </h:panelGrid>
+             </h:form>
+            </rich:panel>
+            </h:panelGrid>
+        </rich:modalPanel>    
+    </f:view>
 </html>

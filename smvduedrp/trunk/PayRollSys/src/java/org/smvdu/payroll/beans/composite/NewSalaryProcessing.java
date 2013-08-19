@@ -4,6 +4,7 @@
  */
 package org.smvdu.payroll.beans.composite;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,14 +59,16 @@ import org.smvdu.payroll.user.ActiveProfile;
  */
 public class NewSalaryProcessing {
 
+
     private int orgCode;
     public NewSalaryProcessing()  {
+        pendingList = new EmployeeDB().loadPendingEmployee();
         ActiveProfile le = (ActiveProfile)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ActiveProfile");
         orgCode = le.getOrgId();
     }
 
 
-    private int numberOfdays=30;
+    private int numberOfdays;
   //  private int numberOfdays1=20;
 
     private int typeCode = -1;
@@ -74,7 +77,34 @@ public class NewSalaryProcessing {
     private UIData deductGrid;
     private Employee employee;
     private boolean currentData;
+    private String errorClass = new String();
+    private String me = new String();
+    private UIData dataGridValue;
+    //01147772100
+    // 9873124287
+    public UIData getDataGridValue() {
+        return dataGridValue;
+    }
 
+    public void setDataGridValue(UIData dataGridValue) {
+        this.dataGridValue = dataGridValue;
+    }
+    public String getMe() {
+        System.out.println("DAta Should Be Write Here : "+me);
+        return me;
+    }
+
+    public void setMe(String me) {
+        System.out.println("DAta Should Be Write Here set : "+me);
+        this.me = me;
+    }
+    public String getErrorClass() {
+        return errorClass;
+    }
+
+    public void setErrorClass(String errorClass) {
+        this.errorClass = errorClass;
+    }
     private String copyDate;
 
     private boolean copyAllowed;
@@ -92,17 +122,12 @@ public class NewSalaryProcessing {
     private ArrayList<SimpleEmployee> pendingList;
 
     public ArrayList<SimpleEmployee> getPendingList() {
-        pendingList = new EmployeeDB().loadPendingEmployee();
         return pendingList;
     }
 
     public void setPendingList(ArrayList<SimpleEmployee> pendingList) {
         this.pendingList = pendingList;
     }
-    
-
-
-
     public void doUnLock()
     {
         new SalaryLockDB().doUnLock();
@@ -224,10 +249,12 @@ public class NewSalaryProcessing {
 
     
     public int getNumberOfdays() {
+        System.out.println("Number Of Days..."+numberOfdays);
         return numberOfdays;
     }
 
     public void setNumberOfdays(int numberOfdays) {
+        System.out.println("Number Of Days...set ..."+numberOfdays);
         this.numberOfdays = numberOfdays;
     }
     public ArrayList<SalaryHead> getDeductHeads() {
@@ -295,7 +322,8 @@ public class NewSalaryProcessing {
             if(sd.isScalable())
             {
                 System.err.println("Scalable field name : "+sd.getHeadName());
-                sd.setHeadValue((sd.getHeadValue()*numberOfdays)/30);
+                System.out.println("NUmber Of Days : "+this.getNumberOfdays());
+                sd.setHeadValue((sd.getHeadValue()*this.getNumberOfdays())/30);
                 System.err.println("Scalable field Value : "+sd.getHeadValue());
             }
         }
@@ -415,6 +443,34 @@ public class NewSalaryProcessing {
     public void save(ArrayList<SalaryHead> heads) {
         new SalaryHeadDB().updateDefault(heads, typeCode);
     }
+
+
+
+
+    // New Method For Updating Employee Salary
+
+    
+    public void updatingEmployeeSalary()
+    {
+        try
+        {
+            ArrayList<SimpleEmployee> simpleEmployee = (ArrayList<SimpleEmployee>) dataGridValue.getValue();
+            boolean b = new EmployeeDB().updateEmployeeSalaryStatus(simpleEmployee);
+            if(b == true)
+            {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Activated",""));
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+
+
     public void updateData() throws SQLException {
 
         

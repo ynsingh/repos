@@ -23,36 +23,31 @@
         <link rel="stylesheet" type="text/css" href="css/table.css"/>
     </head>
     <body class="subpage" id="">
-
         <div class="container_form">
             <f:view>
                 <rich:panel header="Existing Designations">
                     <h:panelGrid columns="2">
                         <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
                         <rich:messages  >
-                        <f:facet name="infoMarker">
-                            <h:graphicImage url="/img/success.png"/>
-                        </f:facet>
-                        <f:facet name="errorMarker">
-                            <h:graphicImage url="/img/err.png"/>
-                        </f:facet>
-                    </rich:messages>
+                            <f:facet name="infoMarker">
+                                <h:graphicImage url="/img/success.png"/>
+                            </f:facet>
+                            <f:facet name="errorMarker">
+                                <h:graphicImage url="/img/err.png"/>
+                            </f:facet>
+                        </rich:messages>
                     </h:panelGrid>
-
                     <h:form >
-
                         <h:panelGrid  columns="2">
                             <rich:dataTable  binding="#{DesignationControllerBean.dataGrid}" 
                                              id="designation" value="#{DesignationControllerBean.designations}" 
                                              var="desig" border="1">
-                                
                                 <h:column>
                                     <f:facet name="header">
                                         <h:outputText  value="Name"/>
                                     </f:facet>
                                     <rich:inplaceInput value="#{desig.name}" />
                                 </h:column>
-
                             </rich:dataTable>
                         </h:panelGrid>
                         <h:panelGrid columns="2">
@@ -61,13 +56,36 @@
                     </h:form>
                 </rich:panel>
                 <rich:modalPanel id="pnl">
-                    <rich:panel header="Add New Designation">
-                        <h:form>
-                            <h:inputText id="desigName" required="true" requiredMessage="Please Enter New Designation Name" value="#{DesignationBean.name}"/>
-                            <h:message for="desigName" styleClass="error"/>
-                            <a4j:commandButton value="Save" reRender="designation" action="#{DesignationBean.save}"  />
-                            <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
-                        </h:form>
+                    <f:facet name="header">
+                        <h:outputText value=""/>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <h:panelGroup>
+                            <h:graphicImage value="/img/close.png" id="hidelink"/>
+                            <rich:componentControl for="pnl" attachTo="hidelink" operation="hide" event="onclick"/>
+                        </h:panelGroup>
+                    </f:facet>
+                    <rich:panel>
+                        <h:panelGrid columns="1">
+                            <rich:panel>
+                                <rich:messages  >
+                                    <f:facet name="infoMarker">
+                                        <h:graphicImage url="/img/success.png"/>
+                                    </f:facet>
+                                    <f:facet name="errorMarker">
+                                        <h:graphicImage url="/img/err.png"/>
+                                    </f:facet>
+                                </rich:messages>
+                            </rich:panel>
+                            <rich:panel>
+                                <h:form>
+                                    <h:inputText id="desigName" required="true" requiredMessage="Please Enter New Designation Name" value="#{DesignationBean.name}"/>
+                                    <h:message for="desigName" styleClass="error"/>
+                                    <a4j:commandButton value="Save" reRender="designation" action="#{DesignationBean.save}"  />
+                                    <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
+                                </h:form>
+                            </rich:panel>
+                        </h:panelGrid>
                     </rich:panel>
                 </rich:modalPanel>
             </f:view>

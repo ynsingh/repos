@@ -49,6 +49,15 @@ import org.smvdu.payroll.beans.BaseBean;
  */
 public class Department extends BaseBean implements Converter,Serializable{
     public void save() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (this.getName().matches("^[a-zA-Z\\s]*$") == false) {
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Plz Enter Valid Department Name.No speacial characters allowed.");
+            //message.setDetail("First Name Must Be At Least Three Charecter ");
+            fc.addMessage("", message);
+            return;
+        }
         Exception e = new DepartmentDB().save(getName());
          if(e==null)
         {

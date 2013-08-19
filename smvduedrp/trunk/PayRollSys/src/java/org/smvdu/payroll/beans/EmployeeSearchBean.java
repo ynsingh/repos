@@ -5,9 +5,17 @@
 
 package org.smvdu.payroll.beans;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.smvdu.payroll.api.BankDetails.BankDetailsSearch;
+import org.smvdu.payroll.api.BankDetails.BankProfileDetails;
+import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.EmployeeDB;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
 
@@ -51,7 +59,7 @@ public class EmployeeSearchBean {
 
     public EmployeeSearchBean()
     {
-
+        nonBankedDetails = new EmployeeDB().selectNonBankedEmployee();
          LoggedEmployee le = (LoggedEmployee) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoggedEmployee");
         if(le==null)
         {
@@ -65,12 +73,32 @@ public class EmployeeSearchBean {
     }
 
 
+    private String bankName = new String();
+    private String bankBranchName = new String();
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        System.out.println("DAta Sho "+bankBranchName);
+        this.bankBranchName = bankBranchName;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        System.out.println("DAta Sho "+bankName);
+        this.bankName = bankName;
+    }
     private int typeCode = -1;
     private int deptCode = -1;
     private int desigCode = -1;
     private String name = "";
     private String st;
-
+    
     public String getSt() {
         return st;
     }
@@ -91,9 +119,79 @@ public class EmployeeSearchBean {
     public void setEmps(ArrayList<Employee> emps) {
         this.emps = emps;
     }
-    
-    private ArrayList<Employee> results;
+    private UIData dataGrid;
+    //private ArrayList<Empl//>
+    public UIData getDataGrid() {
+        return dataGrid;
+    }
 
+    private String bfsc = new String();
+
+    public String getBfsc() {
+        return bfsc.trim();
+    }
+
+    public void setBfsc(String bfsc) {
+        this.bfsc = bfsc.trim();
+    }
+    public void setDataGrid(UIData dataGrid) {
+        this.dataGrid = dataGrid;
+    }
+    private ArrayList<Employee> results;
+    private ArrayList<Employee> nonBankedDetails;
+
+    public ArrayList<Employee> getNonBankedDetails() {
+        //dataGrid.setValue(nonBankedDetails);
+        return nonBankedDetails;
+    }
+
+    public EmployeeSearchBean particularBankDetail(String bankIfsc)
+    {
+        try
+        {
+         //   BankProfileDetails bpd = new BankProfileDetails();
+            Connection cn = new CommonDB().getConnection();
+            EmployeeSearchBean e = new EmployeeSearchBean();
+            PreparedStatement pst;
+            ResultSet rst;
+            pst = cn.prepareStatement("select bank_name,bank_ifsc_code,branch_name from bankprofile where bank_ifsc_code = '"+bankIfsc+"'");
+            rst = pst.executeQuery();
+            System.out.println("DAta Sho            "+bankIfsc);
+            if(rst.next())
+            {
+                e.setBankName(rst.getString(1));
+                e.setBankBranchName(rst.getString(3));
+                //bpd.setBankBranch(rst.getString(3));
+            }
+            return e;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public void updateBankedEmployee()
+    {
+        try
+        {
+            ArrayList<Employee> nonBankedEmployees = (ArrayList<Employee>) dataGrid.getValue();
+           // BankSearchForEmployeeUpdation bud = new BankSearchForEmployeeUpdation();
+
+            BankProfileDetails bpd = new BankProfileDetails();
+            EmployeeSearchBean emp = new EmployeeSearchBean().particularBankDetail(this.getBfsc());
+           // System.out.println("DAta Should Be Write Here vbnm : "+bud.getBankIFSCEmploee());
+            boolean b = new EmployeeDB().updateNonBankedEmployee(nonBankedEmployees,this);
+            if (b)
+            {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee's Bank Detail Updated", ""));
+        }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
     public int getDeptCode() {
         return deptCode;
     }
@@ -151,9 +249,6 @@ public class EmployeeSearchBean {
         cri+=" emp_name like '"+name+"%' and emp_org_code="+orgCode;
         return cri;
     }
-
-
-
     private SelectItem[] asItem;
     private ArrayList<Employee> all;
 
@@ -179,6 +274,18 @@ public class EmployeeSearchBean {
         this.asItem = asItem;
     }
 
+
+    public void updateSelectedEmployee()
+    {
+        try
+        {
+
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
     
     
     

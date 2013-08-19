@@ -7,12 +7,16 @@ package org.smvdu.payroll.beans.setup;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.smvdu.payroll.beans.BaseBean;
 import org.smvdu.payroll.beans.TempDB;
 
 import org.smvdu.payroll.beans.db.InvestmentHeadDB;
+import org.smvdu.payroll.beans.db.InvestmentTypeDB;
 
 /**
  *
@@ -54,6 +58,15 @@ public class InvestmentHead extends BaseBean implements Serializable{
 
     private String  selectionLength = "Selection Length : ";
     private SelectItem[] selectedItems;
+    private UIData dataGrid;
+    public UIData getDataGrid() {
+
+        return dataGrid;
+    }
+
+    public void setDataGrid(UIData dataGrid) {
+        this.dataGrid = dataGrid;
+    }
 
     public SelectItem[] getSelectedItems() {
         ArrayList<InvestmentHead> deps = new InvestmentHeadDB().loadHeads();
@@ -137,10 +150,12 @@ public class InvestmentHead extends BaseBean implements Serializable{
     }
 
     public ArrayList<InvestmentHead> getAllHeads() {
+
         allHeads= new InvestmentHeadDB().loadHeads();
+        dataGrid.setValue(allHeads);
         return allHeads;
     }
-    
+   
 
     private ArrayList<InvestmentHead> allHeads;
 
@@ -168,13 +183,19 @@ public class InvestmentHead extends BaseBean implements Serializable{
     
     public ArrayList<InvestmentHead> getHeads() {
         ArrayList<InvestmentHead> deps = new InvestmentHeadDB().loadHeads();
+
         return deps;
     }
-    public SelectItem[] getAllHeadsAsOption() {
+    
+    
+
+
+public SelectItem[] getAllHeadsAsOption() {
 
 
         ArrayList<InvestmentHead> deps = new InvestmentHeadDB().loadHeads();
         allDepts =new SelectItem[deps.size()];
+
         InvestmentHead dep = null;
         for(int i=0;i<deps.size();i++)
         {
@@ -195,7 +216,25 @@ public class InvestmentHead extends BaseBean implements Serializable{
         //this.allDepts = allDepts;
     }
 
-   
+    public void update()
+    {
+     ArrayList<InvestmentHead> data = (ArrayList<InvestmentHead>)dataGrid.getValue();
+        for(InvestmentHead it : data)
+        {
+
+            System.out.println(it.getCode()+","+it.getName());
+        }
+        Exception e = new InvestmentHeadDB().update(data);
+        if(e==null)
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated", ""));
+        }
+        else
+        {
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+        }
+
+ } 
 
     public void save()
     {

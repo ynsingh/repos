@@ -42,18 +42,21 @@
                             </f:facet>
                             <rich:inplaceInput value="#{grades.name}" />
                         </h:column>
-                        <h:column >
-                            <f:facet name="header">
-                                <h:outputText  value="Max Amount"/>
-                            </f:facet>
-                            <rich:inplaceInput value="#{grades.maxValue}" />
-                        </h:column>
+                        
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText  value="Min Amount"/>
                             </f:facet>
                             <rich:inplaceInput  value="#{grades.minValue}" />
                         </h:column>
+                       
+                        <h:column >
+                            <f:facet name="header">
+                                <h:outputText  value="Max Amount"/>
+                            </f:facet>
+                            <rich:inplaceInput value="#{grades.maxValue}" />
+                        </h:column>
+
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText  value="Grade Pay"/>
@@ -77,16 +80,19 @@
                             <h:inputText id="grdName" required="true" requiredMessage="Enter New Grade Name" value="#{SalaryGradeBean.name}" />
                             <h:message for="grdName" styleClass="error"/>
                         </h:panelGrid>
+
+                         <h:panelGrid columns="2">
+                            <h:outputText value="Minimum"/>
+                            <h:inputText id="salMin" required="true" requiredMessage="Enter Minimum Value in Number"  value="#{SalaryGradeBean.minValue}" />
+                            <h:message for="salMax" styleClass="error"/>
+                        </h:panelGrid>
+
                         <h:panelGrid columns="2">
                             <h:outputText value="Maximum"/>
                             <h:inputText required="true" requiredMessage="Enter Maximum Value in Number" id="salMax" value="#{SalaryGradeBean.maxValue}" />
                             <h:message for="salMax" styleClass="error"/>
                         </h:panelGrid>
-                        <h:panelGrid columns="2">
-                            <h:outputText value="Minimum"/>
-                            <h:inputText id="salMin" required="true" requiredMessage="Enter Maximum Value in Number"  value="#{SalaryGradeBean.minValue}" />
-                            <h:message for="salMax" styleClass="error"/>
-                        </h:panelGrid>
+                       
                         <h:panelGrid columns="2">
                             <h:outputText value="Grade Pay"/>
                             <h:inputText id="salgp" required="true" requiredMessage="Enter Grade Pay amount"  value="#{SalaryGradeBean.gradePay}" />
