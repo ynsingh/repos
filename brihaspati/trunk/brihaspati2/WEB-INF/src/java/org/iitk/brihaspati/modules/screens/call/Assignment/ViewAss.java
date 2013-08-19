@@ -71,6 +71,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.NewsHeadlinesUtil;
 import org.iitk.brihaspati.modules.utils.NewsDetail;
 	/**
@@ -221,25 +222,25 @@ public class ViewAss extends  SecureScreen
 			if(stname.size()!=0)
 			{
 			for(int k=0;k<stname.size();k++)
-                        {
+			{
 				String fileAssignment="";
-	                        String fileanswer="";
-        	                String filedate="";
-                	        String filestudent="";
-                        	String filegrade="";
-                        	String grade="";
-                        	String feedback="";
-                        	String duedate="";
-                                String studentname=(String)stname.get(k);
-				
-				
+				String fileanswer="";
+				String filedate="";
+				String filestudent="";
+				String filegrade="";
+				String grade="";
+				String feedback="";
+				String duedate="";
+				String studentname=(String)stname.get(k);
+
+
 				for(int c=0;c<Assignmentlist.size();c++)
-                                {
-							
-                                	/**
-                                	* Getting the filename,  through xml file
-                                	*@see TopicMetaDataXmlReader in Util.
-                                	*/
+				{
+
+					/**
+					 * Getting the filename,  through xml file
+					 *@see TopicMetaDataXmlReader in Util.
+					 */
 					
 					String filereader =((FileEntry) Assignmentlist.elementAt(c)).getfileName();
                                 	String username=((FileEntry) Assignmentlist.elementAt(c)).getUserName();
@@ -315,11 +316,16 @@ public class ViewAss extends  SecureScreen
 					      	catch(Exception e){     }
                         		} //end else
 				}// for
-					
-							
+			// get the full of student 
+				String stFName=UserUtil.getFullName(UserUtil.getUID(studentname));
+			// Get the roll no of this student		
+				String  stRlNo=CourseProgramUtil.getUserRollNo(studentname,courseid);
+
 				AssignmentDetail assignmentdetail=new AssignmentDetail();
 				
 				assignmentdetail.setStudentname(studentname);
+				assignmentdetail.setFullName(stFName);
+				assignmentdetail.setRollNo(stRlNo);
 				assignmentdetail.setStudentfile(filestudent);
 	                        assignmentdetail.setAssignmentfile(fileAssignment);
                 	        assignmentdetail.setDuedate(duedate);

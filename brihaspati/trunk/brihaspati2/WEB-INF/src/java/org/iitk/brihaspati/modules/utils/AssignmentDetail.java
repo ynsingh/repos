@@ -56,6 +56,27 @@ public class AssignmentDetail
         private String Assignmentdate;
         private String Studentname;
         private String AssignmentId;
+        private String FullName;
+        private String RollNo;
+
+	public void setFullName(String FullName)
+        {
+                this.FullName=FullName;
+        }
+        public String getFullName()
+        {
+                return FullName;
+        }
+
+	public void setRollNo(String RollNo)
+        {
+                this.RollNo=RollNo;
+        }
+        public String getRollNo()
+        {
+                return RollNo;
+        }
+
 	public void setStudentname(String Studentname)
         {
                 this.Studentname=Studentname;

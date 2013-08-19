@@ -162,7 +162,7 @@ $!data.getMessage()
 		 #end
 	</td></tr>
 	<tr bgcolor="$ui.menuColor">
-		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b> </td>
+		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name , $brih_full $brih_name , $brih_rollno</b> </td>
 ##		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
 		#if($anscheck == "ok")
 		<td align="center">  <b> $brih_answer #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
@@ -193,7 +193,12 @@ $!data.getMessage()
 	#else
 	<tr bgcolor="$ui.tableColor">
 	#end
-		<td width="10%"> $!e.getStudentname()  </td>  ##student name
+		<td width="10%"> $!e.getStudentname() , 
+			#if($e.getStudentname() ==  $e.getFullName()) 
+			#else $!e.getFullName() , 
+			#end  
+			$!e.getRollNo()  </td>  ##student name Full Name RollNo
+
 ##		<td width="10%">   ##  Assignment file
 ##			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a>
 ##		</td>
