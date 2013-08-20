@@ -125,7 +125,7 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			 	  */
 				String group_id=(String)(gid.elementAt(j));
 				String gname=GroupUtil.getGroupName(Integer.parseInt(group_id));
-				String grpInsId = StringUtils.substringAfter(gname,"_");
+				String grpInsId = StringUtils.substringAfterLast(gname,"_");
 				//Below check is put by Richa to get institute wise grpname
 				if(instituteId.equals(grpInsId))
 	              			g.add(gname);

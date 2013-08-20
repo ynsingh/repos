@@ -160,7 +160,7 @@ public class ListManagement
                                                 //ErrorDumpUtil.ErrorLog("grpid in util file=="+gId);
                                                 String gname = GroupUtil.getGroupName(Integer.parseInt(gId));
                                                 //ErrorDumpUtil.ErrorLog("grpname in util file=="+gname);
-                                                String Instid = StringUtils.substringAfter(gname,"_");
+                                                String Instid = StringUtils.substringAfterLast(gname,"_");
                                                 //ErrorDumpUtil.ErrorLog("instid after split in util file=="+Instid);
                                                 if(Instid.equals(Instituteid)&&!lnamelist.contains(loginName))
                                                 {
@@ -545,7 +545,7 @@ public class ListManagement
 								//ErrorDumpUtil.ErrorLog("InsAdmin return from mysql==="+InsAdmin);
 							}
 							else{
-							Instid = StringUtils.substringAfter(gname,"_");
+							Instid = StringUtils.substringAfterLast(gname,"_");
 							//ErrorDumpUtil.ErrorLog("instid after split in util file=="+Instid);
 							}
 							if((Instid.equals(instituteId)&&!lnamelist.contains(loginName))||(InsAdmin.size()!=0))

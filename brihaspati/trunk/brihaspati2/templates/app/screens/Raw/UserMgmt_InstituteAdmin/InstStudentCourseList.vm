@@ -104,7 +104,7 @@ $page.setBgColor($ui.bgcolor)
 	#end
 		#foreach($i in $student)
 			<tr bgcolor="$ui.menuColor">
-				<td><b>$brih_listCourse</b></td> #if($mode != "instlist")<td colspan=2><b>$brih_program</b></td>#else <td colspan=4> </td> #end
+				<td><b>$brih_listCourse</b></td> #if($mode != "instlist")<td colspan=3><b>$brih_program</b></td>#else <td colspan=4> </td> #end
 			</tr>
 					#set($temp=0)
 					#set($counter=0)
@@ -168,7 +168,7 @@ $page.setBgColor($ui.bgcolor)
 ##</table>
 ##<table align=left width=100% bgcolor="$ui.menuColor"> 
 	<tr bgcolor="$ui.menuColor">
-		<td colspan=2><b> $brih_c_msg13 </b></td> #if($mode != "instlist") <td> <b>$brih_program $brih_name </b></td> #else <td></td><td></td>  #end </b>
+		<td colspan=2><b> $brih_c_msg13 </b></td> #if($mode != "instlist") <td colspan=2> <b>$brih_program $brih_name </b></td> #else <td></td><td></td>  #end </b>
 	</tr>
 	<tr>
 		<td colspan=2><select name="group" class="drop" size=1 style="width:300px;">
