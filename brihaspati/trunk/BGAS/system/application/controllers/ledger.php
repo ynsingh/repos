@@ -155,7 +155,8 @@ var $ledger_code = 0;
                         do{
                                 if($i>0)
                                 {
-        	                        $num=$num+$i;
+        	                        //$num=$num+$i;
+					$num = $num + 1;
                                         $data_code=$this->get_code($num, $l_code);
                                 }
                                 $this->db->from('groups');
@@ -330,6 +331,10 @@ var $ledger_code = 0;
 		$data['ledger_group_active'] = $ledger_data->group_id;
 		$data['op_balance_dc'] = $ledger_data->op_balance_dc;
 		$data['ledger_id'] = $id;
+
+		$old_ledger_parent = $ledger_data->group_id;
+		$data_code = $ledger_data->code;		
+
 		if ($ledger_data->type == 1)
 			$data['ledger_type_cashbank'] = TRUE;
 		else
@@ -427,28 +432,30 @@ var $ledger_code = 0;
 				$data_reconciliation = 0;
 			}
                         
-			$num = $this->Ledger_model->get_numOfChild($data_group_id);
-                        $l_code = $this->Group_model->get_group_code($data_group_id);
-
-
-                        if($num == 0)
-                        {
-                                $data_code = $l_code . '01';
-                        } else{
-                                $data_code=$this->get_code($num, $l_code);
-                        }
-                        $i=0;
-                        do{
-                                if($i>0)
-                                {
-                                        $num=$num+$i;
-                                        $data_code=$this->get_code($num, $l_code);
-                                }
-                                $this->db->from('groups');
-                                $this->db->select('id')->where('code =',$data_code);
-                                $group_q = $this->db->get();
-                                $i++;
-                       }while($group_q->num_rows()>0);
+			if($old_ledger_parent != $data_group_id)
+			{
+				$num = $this->Ledger_model->get_numOfChild($data_group_id);
+                        	$l_code = $this->Group_model->get_group_code($data_group_id);
+	                        if($num == 0)
+        	                {
+                	                $data_code = $l_code . '01';
+                        	} else{
+                                	$data_code=$this->get_code($num, $l_code);
+                        	}
+                        	$i=0;
+                        	do{
+                                	if($i>0)
+                               		{
+                                        	//$num=$num+$i;
+						$num = $num + 1;
+                                       	 	$data_code=$this->get_code($num, $l_code);
+                                	}
+                                	$this->db->from('groups');
+                                	$this->db->select('id')->where('code =',$data_code);
+                                	$group_q = $this->db->get();
+                                	$i++;
+                       		}while($group_q->num_rows()>0);
+			}
 
 			$this->db->trans_start();
 			$update_data = array(

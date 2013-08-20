@@ -88,7 +88,6 @@ var $group_code = 0;
 		else
 		{
 //			$data_code = $this->input->post('group_code', TRUE);
-			//$this->logger->write_message("success", "group code = " . $data_code);
 //			$data_code = $this->group_code;
 			$data_name = $this->input->post('group_name', TRUE);
 			$data_parent_id = $this->input->post('group_parent', TRUE);
@@ -128,7 +127,8 @@ var $group_code = 0;
 			do{
 				if($i>0)
 				{
-					$num=$num+$i;
+					//$num=$num+$i;
+					$num = $num + 1;
 					$data_code=$this->get_code($num, $g_code);
 				}			
 				 $this->db->from('ledgers');
@@ -150,13 +150,11 @@ var $group_code = 0;
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error addding Group account - ' . $data_name . '.', 'error');
-				$this->logger->write_message("error", "Error adding Group account called " . $data_name);
 				$this->template->load('template', 'group/add', $data);
 				return;
 			} else {
 				$this->db->trans_complete();
 				$this->messages->add('Added Group account - ' . $data_name . '.', 'success');
-				$this->logger->write_message("success", "Added Group account called " . $data_name);
 				redirect('account');
 				return;
 			}
@@ -294,6 +292,10 @@ var $group_code = 0;
 			'size' => '40',
 			'value' => $group_data->name,
 		);
+
+		$old_group_parent =  $group_data->parent_id;
+		$data_code = $group_data->code;
+
 		$data['group_parent'] = $this->Group_model->get_all_groups($id);
 		$data['group_parent_active'] = $group_data->parent_id;
 		$data['group_id'] = $id;
@@ -355,28 +357,30 @@ var $group_code = 0;
 				$data_affects_gross = 0;
 			}
 
-			/* This code has been moved to view */
-                        $num = $this->Group_model->get_numOfChild($data_parent_id);
-                        $g_code = $this->Group_model->get_group_code($data_parent_id);
-                        if($num == 0)
-                        {
-                                $data_code = $g_code . '01';
-                        } else{
-                                $data_code=$this->get_code($num, $g_code);
-                        }
+			if($old_group_parent != $data_parent_id){
+                        	$num = $this->Group_model->get_numOfChild($data_parent_id);
+                        	$g_code = $this->Group_model->get_group_code($data_parent_id);
+                        	if($num == 0)
+                        	{
+                                	$data_code = $g_code . '01';
+                        	} else{
+                                	$data_code=$this->get_code($num, $g_code);
+                        	}
 
-                        $i=0;
-                        do{
-                                if($i>0)
-                                {
-                                        $num=$num+$i;
-                                        $data_code=$this->get_code($num, $g_code);
-                                }
-                                 $this->db->from('ledgers');
-                                $this->db->select('id')->where('code =',$data_code);
-                                $ledger_q = $this->db->get();
-                                $i++;
-                        }while($ledger_q->num_rows()>0);
+                        	$i=0;
+                        	do{
+                                	if($i>0)
+                                	{
+                                        	//$num=$num+$i;
+						$num = $num + 1;
+                                        	$data_code=$this->get_code($num, $g_code);
+                                	}
+                                	$this->db->from('ledgers');
+                                	$this->db->select('id')->where('code =',$data_code);
+                                	$ledger_q = $this->db->get();
+                                	$i++;
+                        	}while($ledger_q->num_rows()>0);
+			}
 
 	
 			$this->db->trans_start();
