@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Create_QB.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010-13 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -79,6 +79,8 @@ public class Create_QB extends SecureScreen{
 			String addques=pp.getString("addques","");
                 	context.put("addques",addques);
 			String Role = (String)user.getTemp("role");
+			String username=pp.getString("username","");
+                	context.put("username",username);
 			/**
                          *Time calculaion for how long user use this page.
                          */

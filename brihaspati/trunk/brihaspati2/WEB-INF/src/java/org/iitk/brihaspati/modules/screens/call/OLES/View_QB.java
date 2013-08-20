@@ -78,9 +78,11 @@ public class View_QB extends SecureScreen{
 		try{
 
 			User user=data.getUser();
-			String crsId=(String)data.getUser().getTemp("course_id");
-			String username=data.getUser().getName();
 			ParameterParser pp=data.getParameters();
+			String crsId=(String)data.getUser().getTemp("course_id");
+			//String username=data.getUser().getName();
+			String username =pp.getString("username","");
+			context.put("username",username);
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
 			String mode =pp.getString("mode","");
@@ -95,18 +97,11 @@ public class View_QB extends SecureScreen{
 			File dir=new File(data.getServletContext().getRealPath("/QuestionBank"));
 
                         Vector allQuestions=new Vector();
-			int GID=GroupUtil.getGID(crsId);
-                        Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
-                        for(int j= 0; j< UDetail.size(); j++)
-                        {
-                                String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
-                                String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+uname+"/"+crsId);
-				TopicMetaDataXmlReader topicmetadata=null;
-				if(!questiontype.equals("")&&(!difflevel.equals("")))
-				{
-					Vector allQuestion=ViewAllQuestionUtil.ReadTopicAllFile(topic,filePath,questiontype,difflevel);
-					allQuestions.addAll(allQuestion);
-				}
+                        String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);
+			TopicMetaDataXmlReader topicmetadata=null;
+			if(!questiontype.equals("")&&(!difflevel.equals("")))
+			{
+				allQuestions=ViewAllQuestionUtil.ReadTopicAllFile(topic,filePath,questiontype,difflevel);
 			}
 			if(allQuestions==null)
                         return;

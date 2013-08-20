@@ -190,6 +190,8 @@ public class OnlineExaminationSystem extends SecureAction
             		String Questype=pp.getString("valQuestype","");
             		String difflevel=pp.getString("valdifflevel","");
             		String typeques=pp.getString("typeques","");
+			String username=pp.getString("username","");
+                        context.put("username",username);
 			if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques"))){
                 		if(Questype.equals("mcq"))
                         		data.setScreenTemplate("call,OLES,Insert_Multiple.vm");
@@ -218,7 +220,8 @@ public class OnlineExaminationSystem extends SecureAction
 			crsId=(String)data.getUser().getTemp("course_id");
         		ParameterParser pp=data.getParameters();
 			User user=data.getUser();
-        		String username=data.getUser().getName();
+        		//String username=data.getUser().getName();
+        		String username=pp.getString("username","");
 			String topic=pp.getString("Topicname","");
                		String Questype=pp.getString("valQuestype","");
                		String difflevel=pp.getString("valdifflevel","");

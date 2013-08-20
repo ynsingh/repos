@@ -1,15 +1,46 @@
 #*
  * @(#) Insert_Short.vm
- * Copyright(c)2010,2012 ETRG,IIT Kanpur.
+ * Copyright(c)2010,2012-13 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 20aug2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/autosaveform.js")"></script>
+<style>
+div.savestatus
+{
+ /* Style for the "Saving Form Contents" DIV that is shown at the top of the form */
+        width:180px;
+        padding:10px 10px;
+        margin: 60px 0 0 710px;
+        border:1px solid gray;
+        background:#fff6e5;
+        -webkit-box-shadow: 0 0 8px #818181;
+        box-shadow: 0 0 8px #818181;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius:5px;
+        color:red;
+        position:absolute;
+        top:-20px;
+}
+        form#feedbackform div{ /*CSS used by form*/
+        margin-bottom:9px;
+}
+</style>
+<script>
+var formsave1=new autosaveform({
+        formid: 'feedbackform2',
+        pause: 1000 //<--no comma following last option!
+})
+</script>
 </head>
 
 $page.setTitle("Enter the Question")
@@ -18,9 +49,8 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr>
         <td><b>
-        <b>
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
         <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
 	#if($acttype=="viewques" || $acttype=="editques")
 	<a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)>$brih_view $brih_queBank</a> |
@@ -35,13 +65,22 @@ $!data.getMessage()
         </b></td>
 </tr>
 </table>
-<br>
-<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Short.vm").setAction("OnlineExaminationSystem")>
+<form name="frm" id="feedbackform2" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Short.vm").setAction("OnlineExaminationSystem")>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
 #if($acttype=="editques" || $acttype=="viewques")
-<tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $topic</b></td></tr>
+<tr bgcolor="$ui.menuColor">
+<td><b> $brih_queBank $brih_topic : $topic</b></td>
+#if($qsize.size()>0)
+<td><b> $brih_qus $brih_number : $qsize.size()</b></td>
+#end
+</tr>
 #else
-<tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $Topicname</b></td></tr>
+<tr bgcolor="$ui.menuColor">
+<td><b> $brih_queBank $brih_topic : $Topicname</b></td>
+#if($qsize.size()>0)
+<td><b> $brih_qus $brih_number : $qsize.size()</b></td>
+#end
+</tr>
 #end
 </table>
 <table width="100%" bgcolor="$ui.menuColor" cellpadding="2"> 
@@ -113,6 +152,7 @@ $!data.getMessage()
   <input type="hidden" name="dlevel" value="$dlevel">
   <input type="hidden" name="qtype" value="$qtype">
   <input type="hidden" name="quesimage" value="$quesimage">
+  <input type="hidden" name="username" value="$username">
 </font>
 </td>
 </tr>

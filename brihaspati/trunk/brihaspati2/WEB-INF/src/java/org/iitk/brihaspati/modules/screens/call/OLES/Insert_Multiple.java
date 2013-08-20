@@ -59,6 +59,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
 public class Insert_Multiple extends SecureScreen
 {
     
@@ -75,7 +76,8 @@ public class Insert_Multiple extends SecureScreen
 			User user=data.getUser();
 			String crsId=(String)data.getUser().getTemp("course_id");
 			context.put("crsId",crsId);
-                	String username=data.getUser().getName();
+                	//String username=data.getUser().getName();
+			String username =pp.getString("username","");
 			context.put("username",username);
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
@@ -98,6 +100,10 @@ public class Insert_Multiple extends SecureScreen
                 	String option4=pp.getString("op4","");
 			String actype=pp.getString("acttype","");
                 	context.put("acttype",actype);
+			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+			Vector allQuestion=ViewAllQuestionUtil.ReadTopicAllFile(topic,filepath,Questype,difflevel);
+                        context.put("qsize",allQuestion);
+
 			if((actype.equals("editques"))||(actype.equals("viewques")))
 			{
 				String edtopic=pp.getString("topic","");
@@ -112,14 +118,7 @@ public class Insert_Multiple extends SecureScreen
 				String seldifflevel=pp.getString("difflevel","");
 				context.put("difflevel",seldifflevel);
 				String fulltopic=edtopic+"_"+difflevel12+"_"+questiontype;
-			
-	                        int GID=GroupUtil.getGID(crsId);
 				Vector Read=new Vector();
-        	                Vector UDetail=UserGroupRoleUtil.getUDetail(GID,2);
-                	        for(int j= 0; j< UDetail.size(); j++)
-                        	{
-                                String uname=((CourseUserDetail) UDetail.elementAt(j)).getLoginName();
-				String filepath=QuestionBankPath+"/"+uname+"/"+crsId;
 				File f =new File(filepath+"/"+fulltopic+".xml");
 				if(f.exists())
 				{
@@ -155,7 +154,6 @@ public class Insert_Multiple extends SecureScreen
                                         		}
                                 		}
                         		}
-				}
 				}
 			}
 			/**

@@ -20,9 +20,9 @@ $page.setBgColor($ui.bgcolor)
 div.savestatus
 { 
 /* Style for the "Saving Form Contents" DIV that is shown at the top of the form */
-	width:200px;
+	width:180px;
 	padding:10px 10px;
-	margin: 60px 0 0 680px;
+	margin: 60px 0 0 710px;
 	border:1px solid gray;
 	background:#fff6e5;
 	-webkit-box-shadow: 0 0 8px #818181;
@@ -32,7 +32,7 @@ div.savestatus
 	border-radius:5px;
 	color:red;
 	position:absolute;
-	top:-10px;
+	top:-20px;
 }
 	form#feedbackform div{ /*CSS used by form*/
 	margin-bottom:9px;
@@ -70,10 +70,20 @@ $!data.getMessage()
 </table>
 <form name="frm" id="feedbackform" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Multiple.vm").setAction("OnlineExaminationSystem")>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
-#if(($acttype=="editques")||($acttype=="viewques"))  
-<tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $topic</b></td></tr>
+#if($acttype=="editques" || $acttype=="viewques")
+<tr bgcolor="$ui.menuColor">
+<td><b> $brih_queBank $brih_topic : $topic</b></td>
+#if($qsize.size()>0)
+<td><b> $brih_qus $brih_number : $qsize.size()</b></td>
+#end
+</tr>
 #else
-<tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $Topicname</b></td></tr>
+<tr bgcolor="$ui.menuColor">
+<td><b> $brih_queBank $brih_topic : $Topicname</b></td>
+#if($qsize.size()>0)
+<td><b> $brih_qus $brih_number : $qsize.size()</b></td>
+#end
+</tr>
 #end
 </table>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2"> 
@@ -161,6 +171,7 @@ $!data.getMessage()
   <input type="hidden" name="difflevel" value="$difflevel">
   <input type="hidden" name="dlevel" value="$dlevel">
   <input type="hidden" name="qtype" value="$qtype">
+  <input type="hidden" name="username" value="$username">
 </font>
 </td>
 </tr>

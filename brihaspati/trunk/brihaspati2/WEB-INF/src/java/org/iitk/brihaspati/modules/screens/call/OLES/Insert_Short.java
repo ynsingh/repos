@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /* @(#)Insert_Short.java
  *
- *  Copyright (c) 2010,2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2012-13 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -33,11 +33,13 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  *
  *
  *  Contributors: Members of ETRG, I.I.T. Kanpur
- *
+ */
 /**
  *author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  *author <a href="mailto:omprakashkgp@gmail.com">Om Prakash</a>
  *author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
+ *author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ *@modify date: 20aug2013
  */
 //Jdk
 import java.util.Vector;
@@ -56,7 +58,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeThread;
-
+import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
 
 public class Insert_Short extends SecureScreen
 {
@@ -74,7 +76,8 @@ public class Insert_Short extends SecureScreen
 			User user=data.getUser();
 			String crsId=(String)data.getUser().getTemp("course_id");
                 	context.put("crsId",crsId);
-			String username=data.getUser().getName();
+			//String username=data.getUser().getName();
+			String username =pp.getString("username","");
                 	context.put("username",username);
                 	context.put("tdcolor",pp.getString("count",""));
                 	context.put("course",(String)user.getTemp("course_name"));
@@ -93,6 +96,10 @@ public class Insert_Short extends SecureScreen
                 	String Desc=pp.getString("hint","");
 			String actype=pp.getString("acttype","");
                         context.put("acttype",actype);
+                       	String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+			Vector allQuestion=ViewAllQuestionUtil.ReadTopicAllFile(topic,filepath,Questype,difflevel);
+                        context.put("qsize",allQuestion);
+
 			if((actype.equals("editques"))||(actype.equals("viewques")))
                 	{
                 		String edtopic=pp.getString("topic","");
@@ -107,7 +114,6 @@ public class Insert_Short extends SecureScreen
                                 String seldifflevel=pp.getString("difflevel","");
                                 context.put("difflevel",seldifflevel);
                                 String fulltopic=edtopic+"_"+difflevel12+"_"+questiontype;
-                       		String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                         	Vector Read=new Vector();
                         	TopicMetaDataXmlReader tr=null;
                         	tr =new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
