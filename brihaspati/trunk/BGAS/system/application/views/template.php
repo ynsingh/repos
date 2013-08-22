@@ -141,7 +141,9 @@ $(document).ready(function() {
 						echo "<li>" . anchor('entry/show/all', 'All', array('title' => 'All Entries')) . "</li>";
 						foreach ($entry_type_all as $id => $row)
 						{
+							if($row['name'] != 'Journal'){
 							echo "<li>" . anchor('entry/show/' . $row['label'], $row['name'], array('title' => $row['name'] . ' Entries')) . "</li>";
+							}
 						}
 						echo "</ul>";
 					}
