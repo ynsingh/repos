@@ -70,6 +70,7 @@ import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 
 	/** This class contains code of Sending Assignment  to the Assignment
 	*  with  attachments file txt formate
+	*  @author<a href="nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
 	*  @author<a href="arvindjss17@gmail.com">Arvind Pal</a>
 	*  @author<a href="sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
 	*/
@@ -234,7 +235,7 @@ public class Assignments extends SecureAction
                                 String fileName1=fileItem.getName();
 				//ErrorDumpUtil.ErrorLog("fileName1 in assignment-------------"+StringUtils.isNotBlank(fileName1));
 				if(StringUtils.isNotBlank(fileName1)){
-					if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
+					if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt"))
                                 	{//if1
                                         /**
                                         * Select the Topic Name According to Course Id
@@ -343,7 +344,7 @@ public class Assignments extends SecureAction
                                 else {
 					
 					/**
-                                        * Disply Message The file for uploading should have '.txt', '.pdf', '.html', '.zip.' extension.
+                                        * Disply Message The file for uploading should have '.txt', '.pdf', '.html', '.doc','.odt', '.zip.' extension.
 					*/
 
 					msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);               
@@ -457,7 +458,7 @@ public class Assignments extends SecureAction
 
 			/**
  			* Break Message in textarea if topic name same or
-                        * assignment file .txt, .pdf, .zip and .html format not found.
+                        * assignment file .txt, .pdf, .zip ,.doc, .odt and .html format not found.
                         */
 
 			if(!flag){
@@ -548,7 +549,7 @@ public class Assignments extends SecureAction
 
 		//		ErrorDumpUtil.ErrorLog("aaaa    "+fileName1);
                                 
-				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
+				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt"))
                                 {
 					int startIndex=fileName1.lastIndexOf(".")+1;
                                         String fileExt="."+fileName1.substring(startIndex);
@@ -658,7 +659,7 @@ public class Assignments extends SecureAction
                         FileItem fileItem;
                         fileItem = pp.getFileItem("file");
                         String fileName1=fileItem.getName();
-                        if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
+                        if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip")||fileName1.endsWith(".doc")||fileName1.endsWith(".odt"))
                         {
 				int startIndex=fileName1.lastIndexOf(".")+1;
                                 String fileExt="."+fileName1.substring(startIndex);
