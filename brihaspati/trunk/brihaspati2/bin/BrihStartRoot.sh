@@ -1,6 +1,6 @@
 #!/bin/sh
 # BrihStartRoot.sh
-# Modify 18-11-2005
+# Modified on 23 Aug 2013 1853hrs IST.  
 # This is used by /etc/rc.local to start the Brihaspati at boot time.
 # Please don't use this as Brihaspati to start the system.
 # Instead use BrihStart.sh
@@ -12,13 +12,14 @@ export JAVA_HOME PATH
 BRIHASPATI_HOME=/home/brihaspati 
 #ANT_HOME=$BRIHASPATI_HOME/apache-ant-1.6.1
 #PATH=$BRIHASPATI_HOME/apache-ant-1.6.1/bin:$PATH
+APACHE_DIR=apache-tomcat-7.0.42
 
 #SUDO_HOME=/usr/bin
-cd $BRIHASPATI_HOME/tdk-2.3_01/webapps/brihaspati2/babylon
+cd $BRIHASPATI_HOME/$APACHE_DIR/webapps/brihaspati2/babylon
 
-$BRIHASPATI_HOME/tdk-2.3_01/bin/startup.sh
+$BRIHASPATI_HOME/$APACHE_DIR/bin/startup.sh
 
-CLASSPATH=$CLASSPATH:$BRIHASPATI_HOME/tdk-2.3_01/webapps/brihaspati2/babylon/babylon.jar
+CLASSPATH=$CLASSPATH:$BRIHASPATI_HOME/$APACHE_DIR/webapps/brihaspati2/babylon/babylon.jar
 
 export CLASSPATH
 java babylon.babylonServerStart -nographics -chatlogs -usepasswords &
