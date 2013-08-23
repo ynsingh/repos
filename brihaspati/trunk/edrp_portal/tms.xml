@@ -1,0 +1,31 @@
+<CATALOG>
+                <TMS>
+                        <NAME>
+				Project Management System
+                        </NAME>
+
+                        <ANAME>
+				(PMS)
+                        </ANAME>
+                        
+                        <INFO>  
+                        Organization Managing Only Super Admin can add new organization, view organization details,update organization details.
+                        Project Monitoring Institute Admin can add new projects in his organization, view all project details, update project details according to authority.
+                        Task Monitoring User can add task under the project.
+                        Gantt Chart User can view the project status with graphical interface.
+                        Resource Managing User can assign task to his resources.
+                        Document Managing User can share documents for their projects.
+                        n-Level Role Roles can be created upto n-level.
+                        Reporting User can view project report,by project completion,planning or canceled etc..
+			</INFO>
+
+                        <URL>
+				http://202.141.40.218:8081/PMS/
+                        </URL>
+
+                        <IMG>   
+				images/home/PMS.jpg
+                        </IMG>
+                        
+                        </TMS>
+        </CATALOG>

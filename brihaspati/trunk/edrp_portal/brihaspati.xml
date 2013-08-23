@@ -1,0 +1,23 @@
+        <CATALOG>
+                <BRIH>
+                        <NAME>
+			Brihaspati Learning System
+                        </NAME>
+
+                        <ANAME>
+                        </ANAME>
+                        
+                        <INFO> 
+				The software developed by IIT Kanpur. It is the open  platform of learning. It is the java servlets based content delivery system. Administrator(admin) is the main authority of Brihaspati. The software is free of cost. We can enter in to Brihaspati as a student, instructor and admin mode.Guest can enter direct to Brihaspati but the instructor and student account is created by the admin. Brihaspati provides the features of glossary, calculator The login and password of guest is guest. Every instructor is independent to register student in their specified course. Instructor and student have their unique password of login. Brihaspati gave full freedom both to the instructor and Student to come in contact with each other through Mail, chat etc  
+                        </INFO>
+
+                        <URL>
+				http://202.141.40.215:8080/brihaspati/servlet/brihaspati	
+                        </URL>
+
+                        <IMG>   
+                             "images/home/BRIHASPATI.jpg" 
+                        </IMG>
+                        
+                        </BRIH>
+        </CATALOG>

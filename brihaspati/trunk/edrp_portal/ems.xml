@@ -1,0 +1,24 @@
+        <CATALOG>
+                <EMS>
+                        <NAME>
+					 Election Management System
+                        </NAME>
+
+                        <ANAME>
+				(EMS)
+                        </ANAME>
+                        
+                        <INFO>  
+                        	A web based Election Management System consist of two parts: a management system and voting system. By using management system administrator can create ballot paper on the basis of candidates. Voter can vote to the candidate through system and the result are declared. 
+			</INFO>
+
+                        <URL>
+                        	https://202.141.40.218:8443/EMS
+			</URL>
+
+                        <IMG>   
+				images/home/EMS.jpg
+                        </IMG>
+                        
+                        </EMS>
+        </CATALOG>
