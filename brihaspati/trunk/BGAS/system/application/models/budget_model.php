@@ -33,6 +33,13 @@ class Budget_model extends Model {
 		return $parent_code;
 	}
 	
+	/**
+	 * search the code of parent budget
+	 * for the given child budget.
+	 * The parent budget is first searched 
+	 * in ledgers table and if search is
+	 * unsuccessful, than in groups table.
+	 */
 	function get_parent($chld_budget)
 	{
 		$var = '';
@@ -54,6 +61,26 @@ class Budget_model extends Model {
                 	{
                         	$var = $row->code;
                 	}
+		}
+		else
+		{
+			$this->db->from('groups');
+			$this->db->select('parent_id')->where('name =', $chld_budget);
+			$parentId = $this->db->get();
+			foreach($parentId->result() as $row)
+			{
+				$parent_id = $row->parent_id;
+			}
+			if($parent_id != '')
+			{
+				$this->db->from('groups');
+                        	$this->db->select('code')->where('id =', $parent_id);
+                        	$parentId = $this->db->get();
+                        	foreach($parentId->result() as $row)
+                        	{
+                                	$var = $row->code;
+                        	}
+			}
 		}
 		return $var;
 	}
@@ -178,6 +205,7 @@ class Budget_model extends Model {
 
                 $this->db->from('groups');
 		$this->db->where('code LIKE', '40%');
+		$this->db->where('code NOT LIKE', '40');
 		$this->db->where('status', '0')->order_by('name', 'asc');
                 //$this->db->select('(SELECT name FROM groups WHERE code LIKE '40%' order by name ASC;)'); 
                 $group_code = $this->db->get();

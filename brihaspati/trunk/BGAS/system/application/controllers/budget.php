@@ -117,6 +117,7 @@ class Budget extends Controller {
 			$data_name = $this->input->post('group_expenses', TRUE);
 			$my_values = explode('#',$data_name);
 			
+			
 			if($my_values[1] != 'Main Budget')
 			{
 				$this->db->select('bd_balance')->from('budgets')->where('code = ', '50');
@@ -133,30 +134,18 @@ class Budget extends Controller {
 					return;
                 		}
 				 
-//				$data_parent_code = $this->Budget_model->get_parent($my_values[1]);
-//				$data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
-				//Get amount allocated to parent budget
-//				$parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
 			}
-				$data_amount = $this->input->post('budget_amount', TRUE);
-				$sum = $data_amount;
-				$data_parent_code = $this->Budget_model->get_parent($my_values[1]);
-                                $data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
-                                //Get amount allocated to parent budget
-                                $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
-			//	$sum = $data_amount;
-//			if($my_values[1] != 'Expenses')
-			if($my_values[1] != 'Expenses' && $my_values[1] != 'Main Budget')
+			$data_amount = $this->input->post('budget_amount', TRUE);
+			$sum = $data_amount;
+			$data_parent_code = $this->Budget_model->get_parent($my_values[1]);
+			if($data_parent_code == '40')
+				$data_parent_code = '50';
+                        $data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
+                        //Get amount allocated to parent budget
+                        $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
+
+			if($my_values[1] != 'Main Budget')
 			{
-			/*	$sum = $data_amount;
-				$this->messages->add('sum = ' . $sum, 'error');
-				$data_parent_code = $this->Budget_model->get_parent($my_values[1]);
-				$this->messages->add('data_parent_code = ' . $data_parent_code, 'error');
-                                $data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
-				$this->messages->add('data_parent_id = ' . $data_parent_id, 'error');
-                                //Get amount allocated to parent budget
-                                $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
-				$this->messages->add('parent amount = ' . $parent_amount, 'error');*/
 				$child_budget = $this->Budget_model->get_child_budgets($data_parent_id);
 				$count = 0;
 				foreach ($child_budget as $code => $chld)
@@ -177,162 +166,164 @@ class Budget extends Controller {
 					
 				}
 			}//new if
-				// else{
-                        		$data_type = $this->input->post('budget_type', TRUE);
-					$data_budget_over = $this->input->post('budget_over', TRUE);
-					$data_budget_over_expense = $this->input->post('budget_over_expense', TRUE);
 
-					if($my_values[1] != 'Main Budget')
+               		$data_type = $this->input->post('budget_type', TRUE);
+			$data_budget_over = $this->input->post('budget_over', TRUE);
+			$data_budget_over_expense = $this->input->post('budget_over_expense', TRUE);
+
+			if($my_values[1] != 'Main Budget')
+			{
+				/* Check if group expenses present */
+				$this->db->select('id')->from('groups')->where('code', $my_values[0]);
+				if ($this->db->get()->num_rows() < 1)
+              			{
+					$this->db->select('id')->from('ledgers')->where('code', $my_values[0]);
+					if ($this->db->get()->num_rows() < 1)
 					{
-						/* Check if group expenses present */
-						$this->db->select('id')->from('groups')->where('code', $my_values[0]);
-						if ($this->db->get()->num_rows() < 1)
-                        			{
-							$this->db->select('id')->from('ledgers')->where('code', $my_values[0]);
-							if ($this->db->get()->num_rows() < 1)
-							{
-                                				$this->messages->add('Invalid budget code.', 'error');
-								$this->template->load('template', 'budget/add', $data);
-                                				return;
-							}
-                        			}
+                       				$this->messages->add('Invalid budget code.', 'error');
+						$this->template->load('template', 'budget/add', $data);
+                       				return;
+					}
+               			}
 					
-					
-                        			/* Only if expenses over budget is allowed 
-					   	   0 means check box not selected
-					    	   -1 means no limit till the parent budget allowed
-					   	   otherwise input is added to the budget
-						*/
-                        			if ($data_budget_over == "1"){
-							if ($data_budget_over_expense == '')
-								$data_budget_over = -1;
-							else
-								$data_budget_over = $data_budget_over_expense;
-		                				//$data_budget_over = 1;
-						} else{
-                                			$data_budget_over = 0;
-						}
+               			/* Only if expenses over budget is allowed 
+			   	   0 means check box not selected
+			    	   -1 means no limit till the parent budget allowed
+			   	   otherwise input is added to the budget
+				*/
+               			if ($data_budget_over == "1"){
+					if ($data_budget_over_expense == '')
+						$data_budget_over = -1;
+					else
+						$data_budget_over = $data_budget_over_expense;
+                				//$data_budget_over = 1;
+				} else{
+                       			$data_budget_over = 0;
+				}
 
+				$this->db->trans_start();
+				$insert_data = array(
+					'code' => $my_values[0],
+					'group_id' => $data_parent_id,
+					'budgetname' => $my_values[1],
+                       			'bd_balance' => $data_amount,
+                              		//	'op_balance_dc' => NULL,
+                       			'type' => $data_type,
+                       			'allowedover' => $data_budget_over,
+           	 			);
 
-						$this->db->trans_start();
-						$insert_data = array(
-							'code' => $my_values[0],
-							'group_id' => $data_parent_id,
-							'budgetname' => $my_values[1],
-                                			'bd_balance' => $data_amount,
-                                		//	'op_balance_dc' => NULL,
-                                			'type' => $data_type,
-                                			'allowedover' => $data_budget_over,
-                       	 			);
-
-                        			if ( ! $this->db->insert('budgets', $insert_data))
-                        			{
-                                			$this->db->trans_rollback();
-                                			$this->messages->add('Error addding Budget - ' . $my_values[0] . $data_parent_id . $my_values[1] . $data_type . $data_budget_over  . ' by user ' . $username . '.', 'error');
-					
-                        		        	$this->logger->write_message("error", "Error adding Budget called " . $data_name  . ' by user ' . $username);
-							$this->template->load('template', 'budget/add', $data);
-                                			return;
-                        			} else {
-                                			$this->db->trans_complete();
-                                			$this->messages->add('Added Budget - ' . $my_values[0] . $data_parent_id . $my_values[1] . $data_type . $data_budget_over . ' by user ' . $username . '.', 'success');
-                                			$this->logger->write_message("success", "Added Budget called " . $data_name  . ' by user ' . $username);
+               			if ( ! $this->db->insert('budgets', $insert_data))
+               			{
+                      			$this->db->trans_rollback();
+                       			$this->messages->add('Error addding Budget - ' . $my_values[1] . ' by user ' . $username . '.', 'error');
+			
+              		        	$this->logger->write_message("error", "Error adding Budget called " . $data_name  . ' by user ' . $username);
+					$this->template->load('template', 'budget/add', $data);
+                       			return;
+               			} else {
+                      			$this->db->trans_complete();
+                       			$this->messages->add('Added Budget - ' . $my_values[1] . ' by user ' . $username . '.', 'success');
+                      			$this->logger->write_message("success", "Added Budget called " . $data_name  . ' by user ' . $username);
 //                                			redirect('budgetl');
 //                                			return;
-                        			}
+              			}
 
-						//Adding data to budget_allocate table
-						$today = date("Y-m-d H:i:s");
-						$this->db->trans_start();
-						$insert_data1 = array(
-                                			'code' => $my_values[0],
-                                			'allocation_amount' => $data_amount,
-                                			'creation_date' => $today,
-                        			);
+				//Adding data to budget_allocate table
+				$today = date("Y-m-d H:i:s");
+				$this->db->trans_start();
+				$insert_data1 = array(
+                       			'code' => $my_values[0],
+                       			'allocation_amount' => $data_amount,
+                      			'creation_date' => $today,
+              			);
 
-                        			if ( ! $this->db->insert('budget_allocate', $insert_data1))
-                        			{
-                                			$this->db->trans_rollback();
-                                			$this->messages->add('Error addding budget amount - ' . $data_amount  . ' by user ' . $username . '.', 'error');
-	
-	        	                        	$this->logger->write_message("error", "Error adding Budget amount " . $data_amount  . ' by user ' . $username);
-        	       		                 	$this->template->load('template', 'budget/add', $data);
-                	       		         	return;
-                        			} else {
-                                			$this->db->trans_complete();
-                                			$this->messages->add('Added Budget amount- ' . $data_amount . ' by user ' . $username . '.', 'success');
-                                			$this->logger->write_message("success", "Added Budget amount " . $data_amount  . ' by user ' . $username);
-                                			redirect('budgetl');
-                                			return;
-                        			}
-					}
-					else
-					{
-						/* Only if expenses over budget is allowed 
-                                                   0 means check box not selected
-                                                   -1 means no limit till the parent budget allowed
-                                                   otherwise input is added to the budget
-                                                */
-                                                if ($data_budget_over == "1"){
-                                                        if ($data_budget_over_expense == '')
-                                                                $data_budget_over = -1;
-                                                        else
-                                                                $data_budget_over = $data_budget_over_expense;
-                                                                //$data_budget_over = 1;
-                                                } else{
-                                                        $data_budget_over = 0;
-                                                }
+              			if ( ! $this->db->insert('budget_allocate', $insert_data1))
+               			{
+                      			$this->db->trans_rollback();
+                       			$this->messages->add('Error addding budget amount - ' . $data_amount  . ' by user ' . $username . '.', 'error');
+		                       	$this->logger->write_message("error", "Error adding Budget amount " . $data_amount  . ' by user ' . $username);
+        	                 	$this->template->load('template', 'budget/add', $data);
+                	         	return;
+                        	} else {
+                                	$this->db->trans_complete();
+                                	$this->messages->add('Added Budget amount- ' . $data_amount . ' by user ' . $username . '.', 'success');
+                                	$this->logger->write_message("success", "Added Budget amount " . $data_amount  . ' by user ' . $username);
+                                	redirect('budgetl');
+                                	return;
+                        	}
+			}
+			else
+			{
+				/* Only if expenses over budget is allowed 
+                                   0 means check box not selected
+	                          -1 means no limit till the parent budget allowed
+                                   otherwise input is added to the budget
+                                */
+                                /*if ($data_budget_over == "1"){
+        	                        if ($data_budget_over_expense == '')
+                	                        $data_budget_over = -1;
+                                        else
+                                                $data_budget_over = $data_budget_over_expense;
+                                        //$data_budget_over = 1;
+                                } else{
+                                        $data_budget_over = 0;
+                                }*/
 
-						$this->db->trans_start();
-                                                $update_data = array(
-                                                        'code' => $my_values[0],
-                                                        'budgetname' => $my_values[1],
-                                                        'bd_balance' => $data_amount,
-                                                        'type' => $data_type,
-                                                        'allowedover' => $data_budget_over,
-                                                );
+				$this->db->trans_start();
+                                $update_data = array(
+	                                'code' => $my_values[0],
+                                        'budgetname' => $my_values[1],
+                                        'bd_balance' => $data_amount,
+                                        'type' => $data_type,
+                                        'allowedover' => $data_budget_over,
+                                        );
 
-                                                if ( ! $this->db->where('code', $my_values[0])->update('budgets', $update_data))
-                                                {
-                                                        $this->db->trans_rollback();
-                                                        $this->messages->add('Error addding Budget - ' . $my_values[0] . $my_values[1] . $data_type . $data_budget_over  . ' by user ' . $username . '.', 'error');
+				/**
+				 * Here "budgets" table is being updated
+				 * because, the value for 'Main Budget'
+				 * is inserted by default at the time of 
+				 * database creation.
+				 */
+                                if ( ! $this->db->where('code', $my_values[0])->update('budgets', $update_data))
+                                {
+                 	                $this->db->trans_rollback();
+                                        $this->messages->add('Error addding Budget - ' . $my_values[1]  . ' by user ' . $username . '.', 'error');
+	                                $this->logger->write_message("error", "Error adding Budget called " . $data_name  . ' by user ' . $username);
+                                        $this->template->load('template', 'budget/add', $data);
+                                        return;
+                                } else {
+                                        $this->db->trans_complete();
+                                        $this->messages->add('Added Budget - ' . $my_values[1] . ' by user ' . $username . '.', 'success');
+                                        $this->logger->write_message("success", "Added Budget called " . $data_name  . ' by user ' . $username);
+//                                      redirect('budgetl');
+//                                      return;
+                                }
+					
+	 			//Adding data to budget_allocate table
+                                $today = date("Y-m-d H:i:s");
+                                $this->db->trans_start();
+                                $update_data1 = array(
+                 	               'code' => $my_values[0],
+                                       'allocation_amount' => $data_amount,
+                                       'creation_date' => $today,
+                                       );
 
-                                                        $this->logger->write_message("error", "Error adding Budget called " . $data_name  . ' by user ' . $username);
-                                                        $this->template->load('template', 'budget/add', $data);
-                                                        return;
-                                                } else {
-                                                        $this->db->trans_complete();
-                                                        $this->messages->add('Added Budget - ' . $my_values[0] . $my_values[1] . $data_type . $data_budget_over . ' by user ' . $username . '.', 'success');
-                                                        $this->logger->write_message("success", "Added Budget called " . $data_name  . ' by user ' . $username);
-//                                                      redirect('budgetl');
-//                                                      return;
-                                                }
-						
-						//Adding data to budget_allocate table
-                                                $today = date("Y-m-d H:i:s");
-                                                $this->db->trans_start();
-                                                $update_data1 = array(
-                                                        'code' => $my_values[0],
-                                                        'allocation_amount' => $data_amount,
-                                                        'creation_date' => $today,
-                                                );
+                                if ( ! $this->db->insert('budget_allocate', $update_data1))
+                                {
+                           		$this->db->trans_rollback();
+                                        $this->messages->add('Error addding budget amount - ' . $data_amount  . ' by user ' . $username . '.', 'error');
 
-                                                if ( ! $this->db->insert('budget_allocate', $update_data1))
-                                                {
-                                                        $this->db->trans_rollback();
-                                                        $this->messages->add('Error addding budget amount - ' . $data_amount  . ' by user ' . $username . '.', 'error');
-
-                                                        $this->logger->write_message("error", "Error adding Budget amount " . $data_amount  . ' by user ' . $username);
-                                                        $this->template->load('template', 'budget/add', $data);
-                                                        return;
-                                                } else {
-                                                        $this->db->trans_complete();
-                                                        $this->messages->add('Added Budget amount- ' . $data_amount . ' by user ' . $username . '.', 'success');
-                                                        $this->logger->write_message("success", "Added Budget amount " . $data_amount  . ' by user ' . $username);
-                                                        redirect('budgetl');
-                                                        return;
-                                                }
-					}
+                                        $this->logger->write_message("error", "Error adding Budget amount " . $data_amount  . ' by user ' . $username);
+                                        $this->template->load('template', 'budget/add', $data);
+                                        return;
+                                } else {
+					$this->db->trans_complete();
+                                        $this->messages->add('Added Budget amount- ' . $data_amount . ' by user ' . $username . '.', 'success');
+                                        $this->logger->write_message("success", "Added Budget amount " . $data_amount  . ' by user ' . $username);
+                                        redirect('budgetl');
+                                        return;
+                                }
+			}
 		}
 		return;
 	}
@@ -364,11 +355,6 @@ class Budget extends Controller {
 		$id = (int)$id;
 		if ($id < 1) {
 			$this->messages->add('Invalid Budget account.', 'error');
-			redirect('budgetl');
-			return;
-		}
-		if ($id <= 4) {
-			$this->messages->add('Cannot edit System Budget account.', 'error');
 			redirect('budgetl');
 			return;
 		}
@@ -500,11 +486,6 @@ class Budget extends Controller {
 		$id = (int)$id;
 		if ($id < 1) {
 			$this->messages->add('Invalid Budget account.', 'error');
-			redirect('budgetl');
-			return;
-		}
-		if ($id <= 4) {
-			$this->messages->add('Cannot delete System Budget account.', 'error');
 			redirect('budgetl');
 			return;
 		}
@@ -786,3 +767,4 @@ class Budget extends Controller {
 
 /* End of file budget.php */
 /* Location: ./system/application/controllers/budget.php */
+?>
