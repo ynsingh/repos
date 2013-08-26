@@ -81,7 +81,7 @@ $!data.getMessage()
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_Instructo $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_Instructor $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
