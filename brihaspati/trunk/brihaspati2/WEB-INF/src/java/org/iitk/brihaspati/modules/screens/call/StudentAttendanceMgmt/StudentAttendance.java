@@ -46,6 +46,8 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
@@ -56,6 +58,7 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_StudentAttendance;
 /**
  * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modifydate: 02-08-2013(Tej)
+ * @Video help file : 16 August 2013 (omprakash)
  */
 
 /* This screen class is called when User's selects a module Student Attendance Management.
@@ -88,6 +91,11 @@ public class StudentAttendance extends SecureScreen
 			//Get Institute Id
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			String date=data.getParameters().getString("searchdate","");
+			//Help Video Configuration
+                        String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+                        String v_Id = CommonUtility.GetBrihVideoId(h_Video,"Student_Attendance");
+                        context.put("vid",v_Id);
+
 			// Get current date using Calendar api
                         Calendar currentDate = Calendar.getInstance();
                         SimpleDateFormat formatter= new SimpleDateFormat("dd/MM/yyyy");
