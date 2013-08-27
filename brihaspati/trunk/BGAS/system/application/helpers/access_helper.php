@@ -37,6 +37,34 @@ if ( ! function_exists('check_access'))
 	{
 		$CI =& get_instance();
 		$user_role = $CI->session->userdata('user_role');
+		$permissions['administrator'] = array(
+			'upload logo',
+			'view entry',
+			'create entry',
+			'print entry',
+			'email entry',
+			'download entry',
+			'create ledger',
+			'edit ledger',
+			'delete ledger',
+			'create group',
+			'edit group',
+			'delete group',
+			'create tag',
+			'edit tag',
+			'delete tag',
+			'view reports',
+			'view log',
+			'clear log',
+			'change account settings',
+			'cf account',
+			'backup account',
+			'create budget',
+			'edit budget',
+			'delete budget',
+			'reappropriate budget',
+			'administer',
+		);
 		$permissions['manager'] = array(
 			'view entry',
 			'create entry',
@@ -102,9 +130,9 @@ if ( ! function_exists('check_access'))
 			return FALSE;
 
 		/* If user is administrator then always allow access */
-		if ($user_role == "administrator")
+/*		if ($user_role == "administrator")
 			return TRUE;
-
+*/
 		if ( ! isset($permissions[$user_role]))
 			return FALSE;
 
