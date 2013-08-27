@@ -52,10 +52,10 @@ else
 <?php 
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' .  $current_entry_type['name'] . ' Entries'));
 	echo " | ";
-	echo anchor('entry/edit/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Edit', array('title' => 'Edit ' . $current_entry_type['name'] . ' Entry'));
-	echo " | ";
-	echo anchor('entry/delete/' . $current_entry_type['label'] . "/" . $cur_entry->id, 'Delete', array('class' => "confirmClick", 'title' => "Delete entry", 'title' => 'Delete this ' . $current_entry_type['name'] . ' Entry'));
-	echo " | ";
+//	echo anchor('entry/edit/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Edit', array('title' => 'Edit ' . $current_entry_type['name'] . ' Entry'));
+//	echo " | ";
+//	echo anchor('entry/delete/' . $current_entry_type['label'] . "/" . $cur_entry->id, 'Delete', array('class' => "confirmClick", 'title' => "Delete entry", 'title' => 'Delete this ' . $current_entry_type['name'] . ' Entry'));
+//	echo " | ";
 	echo anchor_popup('entry/printpreview/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Print', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
 	echo " | ";
 	echo anchor_popup('entry/email/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Email', array('title' => 'Email this ' . $current_entry_type['name'] . ' Entry', 'width' => '400', 'height' => '200'));

@@ -40,8 +40,6 @@ if ( ! function_exists('check_access'))
 		$permissions['manager'] = array(
 			'view entry',
 			'create entry',
-			'edit entry',
-			'delete entry',
 			'print entry',
 			'email entry',
 			'download entry',
@@ -68,8 +66,6 @@ if ( ! function_exists('check_access'))
 		$permissions['accountant'] = array(
 			'view entry',
 			'create entry',
-			'edit entry',
-			'delete entry',
 			'print entry',
 			'email entry',
 			'download entry',
@@ -89,8 +85,6 @@ if ( ! function_exists('check_access'))
 		$permissions['dataentry'] = array(
 			'view entry',
 			'create entry',
-			'edit entry',
-			'delete entry',
 			'print entry',
 			'email entry',
 			'download entry',
