@@ -191,6 +191,10 @@ public class OnlineExaminationSystem extends SecureAction
             		String difflevel=pp.getString("valdifflevel","");
             		String typeques=pp.getString("typeques","");
 			String username=pp.getString("username","");
+			if(username.equals(""))
+			{
+        			username=data.getUser().getName();
+			}
                         context.put("username",username);
 			if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques"))){
                 		if(Questype.equals("mcq"))

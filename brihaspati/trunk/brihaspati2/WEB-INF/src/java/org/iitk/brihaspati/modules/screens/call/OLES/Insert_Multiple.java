@@ -76,8 +76,10 @@ public class Insert_Multiple extends SecureScreen
 			User user=data.getUser();
 			String crsId=(String)data.getUser().getTemp("course_id");
 			context.put("crsId",crsId);
-                	//String username=data.getUser().getName();
-			String username =pp.getString("username","");
+			String username=pp.getString("username","");
+			if(username.equals("")){
+                		username=data.getUser().getName();
+			}
 			context.put("username",username);
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
