@@ -95,6 +95,8 @@ public class CourseUserDetail
         private int present;
         private int absent;
         private int leave;
+        private String ClassType;
+	private String StudAttendKey;
 
 	/**
 	 * Course details
@@ -459,4 +461,23 @@ public class CourseUserDetail
         {
                 return leave;
         }
+	// set/get class Type "Regular or Extra/Special class" for Attendance Management
+	public void setClassType(String ClassType)
+        {
+                this.ClassType=ClassType;
+        }
+        public String getClassType()
+        {
+                return ClassType;
+        }
+	// set/get Studnet Unique Id for Attendance Management
+        public void setStudAttendKey(String StudAttendKey)
+        {
+                this.StudAttendKey=StudAttendKey;
+        }
+        public String getStudAttendKey()
+        {
+                return StudAttendKey;
+        }
+
 }

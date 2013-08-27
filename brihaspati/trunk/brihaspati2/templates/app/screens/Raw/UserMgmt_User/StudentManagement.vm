@@ -16,7 +16,7 @@
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 </head>
 
-$page.setTitle("$brih_home | $brih_course | $brih_student $brih_reg")
+$page.setTitle("Student Registration")
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.

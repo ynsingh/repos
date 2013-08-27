@@ -4,46 +4,46 @@
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @ModifyDate: 02-08-2013(Tej)
+ * @ModifyDate: 02-08-2013,27-08-2013(Tej)
  * @Video help file added by 16 August 2013(omprakash) 
 *#
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Student Attendance Management")
 $!data.getMessage()
-
-$!data.getMessage()
-<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
-<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
-<script type="text/javascript">
-        $(function () {
-            $("a.youtube").YouTubePopup({ autoplay: 0 });
-        });
- </script>
-
 <head>
-	#### CSS ###	
-	<link rel="stylesheet" href="$content.getURI("scrpts/css/ui.daterangepicker.css")" type="text/css" />
-	<link rel="stylesheet" href="$content.getURI("scrpts/css/datepickr.css")" type="text/css" />
-        <link rel="stylesheet" href="$content.getURI("scrpts/css/redmond/jquery-ui-1.7.1.custom.css")" type="text/css" title="ui-theme" />
-	
-	#### Java Script #####	
-	<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
-        <script type="text/javascript" src="$content.getURI("scrpts/jquery/js/daterangepicker.jQuery.js")"></script>
-	<script type="text/javascript" src="$content.getURI("/scrpts/jquery/js/datepickr.js")"></script>
-        <script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
+	##### Video Help CSS ########
+        <link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet">
 
-	<script type="text/javascript">
-        	$(function(){
-        		$("#scroll").slimScroll({
-                		height: '470px',
-                		disableFadeOut: true
-        		});
-                	$("#Calrange").daterangepicker({arrows:true});
-     		});
-	</script>
+        ##### Video Help Java Script ########
+        <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+        <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+        <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+        <script type="text/javascript">
+                $(function () {
+                        $("a.youtube").YouTubePopup({ autoplay: 0 });
+                });
+        </script>
+
+        #### DatePicker and Calender CSS ###    
+        <link rel="stylesheet" href="$content.getURI("scrpts/css/ui.daterangepicker.css")" type="text/css" />
+        <link rel="stylesheet" href="$content.getURI("scrpts/css/datepickr.css")" type="text/css" />
+        <link rel="stylesheet" href="$content.getURI("scrpts/css/redmond/jquery-ui-1.7.1.custom.css")" type="text/css" title="ui-theme" />
+
+        #### DatePicker and Calender Java Script #####  
+        <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+        <script type="text/javascript" src="$content.getURI("scrpts/jquery/js/daterangepicker.jQuery.js")"></script>
+        <script type="text/javascript" src="$content.getURI("/scrpts/jquery/js/datepickr.js")"></script>
+        <script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
+        <script type="text/javascript">
+                $(function(){
+                        $("#scroll").slimScroll({
+                                height: '470px',
+                                disableFadeOut: true
+                        });
+                        $("#Calrange").daterangepicker({arrows:true});
+                });
+        </script>
 </head>
 
 <body>
@@ -56,12 +56,17 @@ $!data.getMessage()
 	#else
 		<a href=$link.setPage("call,IndexHome.vm") style='text-decoration:none'>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 	#end
+	#if($data.getUser().getTemp("role") == "student")
+	 <a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style="text-decoration:none">$brih_attend $brih_mgmt </a> 
+	#else
 	 <a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style="text-decoration:none">$brih_attend $brih_mgmt </a> 
+	#end
 	#if($mode=="attend") | $brih_student $brih_attend #end
 	#if($mode=="list") | $brih_attendence #end
-	<td align="left"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
-        <td></td>
-
+	</td>
+	#if($data.getUser().getTemp("role") != "student")
+	<td align="center"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
+	#end
 </tr>
 <tr bgcolor="$ui.menuColor" align="left">
 #if(($data.getUser().getTemp("role") == "institute_admin") || ($data.getUser().getTemp("role") =="instructor") || ($data.getUser().getTemp("role") =="teacher_assistant"))
@@ -79,6 +84,7 @@ $!data.getMessage()
         #end
         	<a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","2").addPathInfo("mode","list") style="text-decoration:none">$brih_attendence</a>
         </td>
+        <td></td>
 #else
 	<td bgcolor="#AFDCEC">
       	<a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","2").addPathInfo("mode","list") style="text-decoration:none">$brih_attendence</a>
@@ -93,11 +99,11 @@ $!data.getMessage()
 <tr valign="top">
 	<td><p><b>$brih_attend $brih_sheet : $!course</b></p>
                 <form name="frm" method="post" action="$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").setAction("StudentAttendance")">
-        	<table width="80%" align="center" border="1"bgcolor="$ui.menuColor" style="border-collapse:collapse; border:1px solid black;">
+        	<table width="100%" align="center" border="1"bgcolor="$ui.menuColor" style="border-collapse:collapse; border:1px solid black;">
         	<tr align="left">
                 	<td width="14%"><b>$brih_select $brih_Da : </b></td><td width="15%"><div style="width: 10px; font-size: 80%;"><input type="text" value="$currentdate" name="searchdate" id="datepick" class="button-ftextstyle" style="width:90px;"/></div></td>
 			#if($data.getUser().getTemp("role") == "institute_admin")
-                	<td width="55%"><b>$brih_course : </b> 
+                	<td width="50%"><b>$brih_course : </b> 
 				#if($mode =="attend")
                 			<select id="group_id" class="drop" name="group" size=1 onChange="checkOption(document.frm,this);" style="width:300px;"/>
 					#if($!course_id != "")
@@ -120,6 +126,12 @@ $!data.getMessage()
                		 #else
 			<td width="50%"><b>$brih_course : </b><input type="text" value="$!courseAlias - $!course" title="$!courseAlias - $!course" class="input_button" readonly/></td>
                 	#end
+			<td width="7%"><b>$brih_class : </b></td>
+                        <td>
+                                <input type="radio" name="class" value="regular" checked="checked"><font size=2>$brih_regular</font><br>
+                                <input type="radio" name="class" value="extra"><font size=2>$brih_ext</font>
+                        </td>
+
         	</tr>
         	</table>
         	<br>
@@ -127,12 +139,17 @@ $!data.getMessage()
 	        #if(($status=="true") && ($studentlist.size()!=0))
 		<div id="scroll" style="font-size: 85%;">
         	<table width="100%" align="center"  border="1" style="border-collapse:collapse; border:1px solid black;">
-        	#set ( $headings = ["$brih_serialNo","$brih_student $brih_name","$brih_email ","$brih_attend","$brih_remark"] )
         	<tr bgcolor="$ui.menuColor" align="center">
-                	#foreach ($heading in $headings)
-                		<td><font size=3><b>$heading</font></td>
-                	#end
+			<th rowspan="2"><font size=3>$brih_serialNo</font></th>
+                        <th colspan="3"><font size=3>$brih_student $brih_detail</font></th>
+                        <th rowspan="2"><font size=3>$brih_attend</font></th>
+                        <th rowspan="2"><font size=3>$brih_remark</th>
         	</tr>
+		<tr align="center" bgcolor="$ui.menuColor">
+                        <td><font color="blue">$brih_rollno</font></td>
+                        <td><font color="blue">$brih_name</font></td>
+                        <td><font color="blue">$brih_email</font></td>
+                </tr>
                 #set($sno=1)
                 #set($studattendlist="")
                 	#foreach ($urecord in $studentlist)
@@ -141,22 +158,23 @@ $!data.getMessage()
                         	#else
                                 <tr bgcolor="$ui.tableColor">
                        		#end        
-                			<td width="5%"align="center">$sno</td>
-                			<td width="25%">$!urecord.getUserName()</td>
-                			<td width="25%">$!urecord.getEmail()</td>
+                			<td align="center">$sno</td>
+					<td>$!urecord.getRollNo()</td>
+					<td> #if ($!urecord.getUserName() !=  $!urecord.getEmail()) $!urecord.getUserName() #end</td>
+                			<td>$!urecord.getEmail()</td>
                 			#set($radioname="attendance$sno")
                 			#set($remark="remark$sno")
-               				<td  width="25%"align="center">
+               				<td width="25%" align="center">
                         			<input type="radio" name="$radioname" value="p" checked="checked">$brih_present
                         			<input type="radio" name="$radioname" value="a">$brih_absent
                   			      	<input type="radio" name="$radioname" value="l">$brih_leave
                				</td>
-                			<td  width="15%"align="center"><input name="$remark" type="text" value="" maxlength="500" size="10"/></td>
+                			<td align="center"><input name="$remark" type="text" value="" maxlength="500" size="10"/></td>
                 			#set($studattendlist="$studattendlist:$!urecord.getLoginName():$!urecord.getEmail():$!radioname:$!remark^")
                 			#set($sno=$sno+1)
                 	#end
          			<tr bgcolor="$ui.menuColor">
-                			<td colspan=5>
+                			<td colspan=6>
                 			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doAttendance" VALUE="$brih_submit" onClick="CheckExpire(document.frm,this);">
                 			<INPUT TYPE="reset" class="button-ftextstyle" VALUE="$brih_reset" NAME="$brih_reset" >
                 			<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doAttendance">
@@ -234,13 +252,17 @@ $!data.getMessage()
                 	<th colspan="3"><font size=3>$brih_attend $brih_status (<font color="blue"> $brih_total $brih_attend = $attendreport.size() $brih_day</font>)</th>
 			<th rowspan="2"><font size=3>$brih_attend $brih_Da</font></th>
 			#else
-			<th rowspan="2"><font size=3>$brih_student $brih_name</font></th>
-                        <th rowspan="2"><font size=3>$brih_email</font></th>
-                        <th colspan="3"><font size=3>$brih_attend $brih_status [<font color="blue"> $searchdate</font>]</th>
-                        <th width="20%" rowspan="2"><font size=3><b>$brih_action</b></font></th>
+			<th colspan="3"><font size=3>$brih_student $brih_detail</font></th>
+                        <th colspan="3"><font size=3>$brih_attend $brih_status</th>
+                        <th width="20%" rowspan="2"><font size=3>$brih_availableAction</font></th>
                 	#end
         	</tr>
 		<tr align="center" bgcolor="$ui.menuColor">
+			#if($data.getUser().getTemp("role") !="student")
+                        <td><font color="blue">$brih_rollno</font></td>
+                        <td><font color="blue">$brih_name</font></td>
+                        <td><font color="blue">$brih_email</font></td>
+                        #end
                 	<td><font color="green">$brih_present ($brih_inday)</font></td>
                 	<td><font color="dark red">$brih_absent ($brih_inday)</font></td>
                 	<td><font color="dark orange">$brih_leave ($brih_inday)</font></td>
@@ -263,7 +285,8 @@ $!data.getMessage()
                                         <td>$!urecord.getLeave()</td>
                                         <td>$!urecord.getCreateDate()</td>
 					#else
-					<td align="left">$!urecord.getLoginName()</td>
+					<td align="left">$!urecord.getRollNo()</td>
+                                        <td align="left">$!urecord.getLoginName()</td>
                                         <td align="left">$!urecord.getEmail()</td>
                                         <td>$!urecord.getPresent()</td>
                                         <td>$!urecord.getAbsent()</td>
@@ -351,7 +374,8 @@ $!data.getMessage()
         	<tr bgcolor="$ui.menuColor" align="center">
                 	<th rowspan="2" width="10%"><font size=3>$brih_serialNo</font></th>
                 	<th colspan="3"><font size=3>$brih_attend $brih_status (<font color="blue"> $brih_total $brih_attend = $attendreport.size() $brih_day</font>)</th>
-                	<th rowspan="2" width="20%"><font size=3><b>$brih_attend $brih_Da</b></font></th>
+                	<th rowspan="2" width="20%"><font size=3>$brih_attend $brih_Da</font></th>
+			<th rowspan="2"><font size=3>$brih_class</font></th>
         	</tr>
 		<tr align="center" bgcolor="$ui.menuColor">
                         <td><font color="green">$brih_present ($brih_inday)</font></td>
@@ -394,7 +418,15 @@ $!data.getMessage()
                                 <td>$!urecord.getLeave()</td>
                         #end
                 		<td>$!urecord.getCreateDate()</td>
-                		#set($studattendlist="$studattendlist:$!radioname:$!urecord.getCreateDate()^")
+				<td> #if ($!urecord.getClassType()== "extra") $brih_ext #else $brih_regular #end</td>
+
+                                #if($!urecord.getStudAttendKey()!="")
+                                        #set($attendKey=$!urecord.getStudAttendKey())
+                                #else
+                                        #set($attendKey="null")
+                                #end
+
+                		#set($studattendlist="$studattendlist:$!radioname:$!urecord.getCreateDate():$attendKey^")
                 		#set($sno=$sno+1)
 				
 				##### set attendance status for calculate grand total of attendance ############
@@ -413,12 +445,12 @@ $!data.getMessage()
                                 <td><font color="dark red"><b>$brih_absent ( $absent )</font></td>
                                 <td><font color="dark orange"><b>$brih_leave ( $leave )</font></td>
                                 #set( $presentStatus = $present * 100 /$attendreport.size())
-                                <td><font color="blue"> <b>$brih_present ( $presentStatus % )</font></td>
+                                <td colspan='2'><font color="blue"> <b>$brih_present ( $presentStatus % )</font></td>
                 	</tr>
 			#end
 		#if($mode!="All")
 		<tr bgcolor="$ui.menuColor">
-                	<td colspan=5>
+                	<td colspan=6>
                 		<INPUT TYPE="submit" class="button-ftextstyle" NAME="eventSubmit_doUpdate" VALUE="$brih_update">
                 		<INPUT TYPE="reset" class="button-ftextstyle" NAME="$brih_reset" VALUE="$brih_reset">
                 		<INPUT TYPE="hidden" NAME="actionName" value="eventSubmit_doUpdate">
@@ -476,7 +508,7 @@ function CheckExpire(frm,field)
 	var date_end = new Date(date2).getTime();
 
 	if(date_end > date_ini) {
-    		alert("Forward date attendance not allowed !!");
+    		alert("Future attendance not allowed !!");
 		return false;
 	}
 	else {

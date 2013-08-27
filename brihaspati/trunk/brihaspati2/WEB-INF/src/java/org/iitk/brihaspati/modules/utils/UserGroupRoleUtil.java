@@ -189,12 +189,15 @@ public class UserGroupRoleUtil{
                                 //String fName=element1.getFirstName();
                                 //String lName=element1.getLastName();
                                 String eMail=element1.getEmail();
+				// Get the roll no of this student              
+                                String  stRlNo=CourseProgramUtil.getUserRollNo(uName,GroupUtil.getGroupName(gid));
 				CourseUserDetail cDetails=new CourseUserDetail();
 				String userName=UserUtil.getFullName(Integer.parseInt(s)); // Get User Full Name
 				//String userName=fName+" "+lName;
 				cDetails.setLoginName(uName);
 				cDetails.setUserName(userName);
 				cDetails.setEmail(eMail);
+				cDetails.setRollNo(stRlNo);
 				 /* Get all role id of userid */
                                  	Vector v_new=getRoleAllID(element.getUserId());
                                         int k=0;

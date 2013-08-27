@@ -40,11 +40,7 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.io.File;
 
-import java.util.Map;
-import java.util.Date;
 import java.util.Vector;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.apache.turbine.util.RunData;
@@ -53,15 +49,14 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_StudentAttendance;
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
 
 import org.apache.turbine.services.servlet.TurbineServlet;
 
@@ -88,6 +83,7 @@ public class StudentAttendance extends SecureAction
                          * @param mode: Getting mode as a String from Parameter Parser 
                          * @param userid: Getting userid as a String from Parameter Parser 
                          * @param courseid: Getting courseid as a String from Parameter Parser 
+                         * @param classtype: Getting classtype as a String from Parameter Parser 
                          * @param instituteId: Getting instituteId as a String from Parameter Parser 
                          * @see UserUtil in Util.
                          **/
@@ -98,7 +94,8 @@ public class StudentAttendance extends SecureAction
                         LangFile=data.getUser().getTemp("LangFile").toString();
 			String userrole= user.getTemp("role").toString();
 			String currentdate=pp.getString("searchdate","");
-			String counter=data.getParameters().getString("count","");
+			String classtype=pp.getString("class","");
+			String counter=pp.getString("count","");
                         context.put("tdcolor",counter);
 			
 			// Get courseid according to user role
@@ -118,7 +115,7 @@ public class StudentAttendance extends SecureAction
 			boolean AttenDateExist=false;
 			
 			// check student attendance already done or not in attendance xml file. 
-	  		if(f.exists())
+	  		if(f.exists() && (classtype.equals("regular")))
 			{
 				AttenDateExist=XMLWriter_StudentAttendance.getAttendanceDate(sampath,currentdate);
 			}
@@ -137,7 +134,8 @@ public class StudentAttendance extends SecureAction
 			{
 				String AttendanceList=pp.getString("selectFileNames","");
 				Vector attend_list=new Vector();
-				
+				// Get Unique Key for Student Attendance.
+				String uniqId=PasswordUtil.randmPass();
 				/**
 				 * Get student attendance directory.
 				 * If not exist then create it and store attendance.
@@ -159,7 +157,6 @@ public class StudentAttendance extends SecureAction
                         	{	
                                 	String temp=(v.elementAt(i).toString());
                                 	String tempSplit[]=temp.split(":");
-					//String srno=tempSplit[0];
 					String loginname=tempSplit[1];	// Get Login Name
 					String userid=Integer.toString(UserUtil.getUID(loginname));	// Get UserId with the help of loginName.
 					String email=tempSplit[2];	// Get Email Id
@@ -175,6 +172,8 @@ public class StudentAttendance extends SecureAction
 					cu.setStatus(att_status);	// Set Status
 					cu.setRemarks(remark);		// Set Remarks
 					cu.setCreateDate(currentdate);	// Set Attendance Date 
+					cu.setClassType(classtype);	// Set Class Type 
+					cu.setStudAttendKey(uniqId);	// Set Student Attendance Key 
 					attend_list.add(cu);		// Add in Vector
 				}	
 				if(attend_list.size()!=0)
@@ -401,11 +400,13 @@ public class StudentAttendance extends SecureAction
                                 String att_status1=tempSplit[1];
                                 String att_status=pp.getString(att_status1,"");	// Get Attendance Status
                                 String creationdate=tempSplit[2];		// Get Attendance Date
+                                String studattendkey=tempSplit[3];		// Get Student Attendace Key
 				
 				// Set all values 
                                 CourseUserDetail cu=new CourseUserDetail();
                                 cu.setStatus(att_status);	// Set Attendance Status
                                 cu.setCreateDate(creationdate);	// Set Attendance Date
+                                cu.setStudAttendKey(studattendkey);	// Set Student Attendance Key
                                 attend_list.add(cu);		// Add in Vector
                         }
                                 if(attend_list.size()!=0)

@@ -55,7 +55,6 @@ import org.apache.xml.serialize.XMLSerializer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-
 /**
  * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modifydate: 02-08-2013(Tej)
@@ -68,7 +67,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 
 public class XMLWriter_StudentAttendance {
-
+	
 	/**
 	 * method for define the structure of xml file and store the attendance record.
 	 * @param filePath (String)
@@ -96,6 +95,8 @@ public class XMLWriter_StudentAttendance {
                         	String att_status=cud.getStatus().toString();	// Get Attendance Status
                         	String remark=cud.getRemarks().toString();   	// Get Remarks
                         	String date=cud.getCreateDate().toString();   	// Get Attendance Date
+                        	String classtype=cud.getClassType().toString(); // Get Class Type like "Regular or Extra/Special"
+                        	String attendkey=cud.getStudAttendKey(); 	// Get Student Attendace Key 
 
 				// root element
                       		Element root = doc.getDocumentElement();
@@ -191,7 +192,17 @@ public class XMLWriter_StudentAttendance {
 				attr = doc.createAttribute("Attendance_date");
                         	attr.setValue(date);
                         	attendance.setAttributeNode(attr);
+
+				// Set attribute Class Type 
+                                attr = doc.createAttribute("ClassType");
+                                attr.setValue(classtype);
+                                attendance.setAttributeNode(attr);
 			
+				// Set attribute Student Attendance Key
+                                attr = doc.createAttribute("AttendanceKey");
+                                attr.setValue(attendkey);
+                                attendance.setAttributeNode(attr);
+
 				//add in the root element and save attendance record.
                	        	root.appendChild(attendance);
                 		message=saveXML(doc,filePath);
@@ -404,7 +415,8 @@ public class XMLWriter_StudentAttendance {
 								String lve=eElement.getAttribute("Leave");	// Get Leave
                                                 		leave = Integer.parseInt(lve);
                                                 		String remark=eElement.getAttribute("Remark");	// Get Remarks
-                                                		
+                                                		String classtype=eElement.getAttribute("ClassType");	// Get Class Type
+                                                		String attendKey=eElement.getAttribute("AttendanceKey");	// Get Student Attendance Key                                                		
 								// Set all values
 								cu.setLoginName(fullname);	// Set LoginName 
                                                 		cu.setUserId(userid);		// set UserId
@@ -412,7 +424,9 @@ public class XMLWriter_StudentAttendance {
                                                 		cu.setPresent(present);		// Set Present
                                                 		cu.setAbsent(absent);		// Set Absent
                                                 		cu.setLeave(leave);		// Set Leave
-                                                		cu.setCreateDate(attendance_date);// Set Attendance date
+                                                		cu.setCreateDate(attendance_date);	// Set Attendance date
+                                                		cu.setClassType(classtype);	// Set Class Type
+                                                		cu.setStudAttendKey(attendKey);	// Set Student Attendance Key 
                                                 		v.add(cu);
 							}
                                                 }
@@ -450,6 +464,7 @@ public class XMLWriter_StudentAttendance {
                                                                 String lve=eElement.getAttribute("Leave");      // Get Leave
                                                                 leave = Integer.parseInt(lve);
                                                                 String remark=eElement.getAttribute("Remark");  // Get Remarks
+                                                		String classtype=eElement.getAttribute("ClassType");	// Get Class Type
 
                                                                 // Set all values
                                                                 cu.setLoginName(fullname);      // Set LoginName 
@@ -459,6 +474,7 @@ public class XMLWriter_StudentAttendance {
                                                                 cu.setAbsent(absent);           // Set Absent
                                                                 cu.setLeave(leave);             // Set Leave
                                                                 cu.setCreateDate(attendance_date);// Set Attendance date
+                                                		cu.setClassType(classtype);	// Set Class Type
                                                                 v.add(cu);
                                                         }
                                                 }
@@ -534,6 +550,7 @@ public class XMLWriter_StudentAttendance {
 			String email="";
 			String name="";
 			String fullname="";
+			String stRlNo="";
 			
 			/**
 			 * Check userid values.
@@ -547,6 +564,8 @@ public class XMLWriter_StudentAttendance {
 					int present=0;
 	                        	int absent=0;
         	                	int leave=0;
+					String classType="";
+					String attndKey="";
 					CourseUserDetail cu=(CourseUserDetail)userList.get(i);
 					String loginname=cu.getLoginName().toString();			// Get LoginName 
 					String userid1=Integer.toString(UserUtil.getUID(loginname));	// Get UserId
@@ -562,8 +581,12 @@ public class XMLWriter_StudentAttendance {
 						present=present + cud1.getPresent(); 	// Total present
 						absent=absent+cud1.getAbsent();		// Total absent
 						leave=leave+cud1.getLeave();		// Total leave
+						classType=cud1.getClassType();     	// Class Type
+                                                attndKey=cud1.getStudAttendKey(); 	// Student Attendance Key 
+
 					}
-					
+					// Get Roll No.	
+					stRlNo=CourseProgramUtil.getUserRollNo(loginname,CourseId);
 					// Get email and fullName.	
 					email=UserUtil.getEmail(Integer.parseInt(userid1));		// Email     
 					fullname=UserUtil.getFullName(Integer.parseInt(userid1));   	// FullName
@@ -575,6 +598,9 @@ public class XMLWriter_StudentAttendance {
                                 	cud.setPresent(present);	// set Present
                                 	cud.setAbsent(absent);		// set Absent
                                 	cud.setLeave(leave);		// set Leave
+					cud.setRollNo(stRlNo);		// set Roll No.
+					cud.setClassType(classType);    // Set Class Type
+                                        cud.setStudAttendKey(attndKey);	// Set Student Attendance Key 
                                 	v.add(cud);			// Store in Vector
 				}
 			}
@@ -608,8 +634,9 @@ public class XMLWriter_StudentAttendance {
 			for(int i=0;i<userList.size();i++) 
 			{
                         	CourseUserDetail cud=(CourseUserDetail)userList.get(i);
-                        	String att_status=cud.getStatus().toString();	//Attendance Status
+                        	String att_status=cud.getStatus().toString();	// Attendance Status
                         	String date=cud.getCreateDate().toString();	// Attendance date
+                        	String sakey=cud.getStudAttendKey().toString();	// Attendance Key
 	
 				/**
 				 * Create blank DOM Document
@@ -631,7 +658,8 @@ public class XMLWriter_StudentAttendance {
 							// get attribute value by passing Attribute name
 							String xml_attendance_date=eElement.getAttribute("Attendance_date");	// Attendance Date
 							String xml_userid=eElement.getAttribute("UserId");			// UserId
-							if(date.equals(xml_attendance_date) && userId.equals(xml_userid))	// Compare Attendance Date and UserId
+							String xml_sakey=eElement.getAttribute("AttendanceKey");		// Attendance Key
+							if(date.equals(xml_attendance_date) && userId.equals(xml_userid) && (sakey.equals(xml_sakey) || sakey.equals("null")))	// Compare Attendance Date, UserId and Attendance Key
 							{
 								//  Set attendance status Present as '1' if att_status is "p". Here "p" means present.
 								if(att_status.equals("p"))
