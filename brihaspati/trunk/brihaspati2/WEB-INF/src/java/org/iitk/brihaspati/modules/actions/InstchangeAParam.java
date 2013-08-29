@@ -276,6 +276,10 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 		//iname=Institute name
 		String path="";	
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteid+"Admin.properties";
+		File fpath = new File(path);
+		if (!fpath.exists()) {
+			fpath.mkdirs();
+		}
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){

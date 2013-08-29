@@ -451,7 +451,9 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".zip");
                                 file.write(f);
 				File photoDir=new File(TurbineServlet.getRealPath("/localImages")+"/Photo/");
-				photoDir.mkdirs();
+		                if (!photoDir.exists()) {
+					photoDir.mkdirs();
+                		}
 				GetUnzip guz=new GetUnzip(f.getAbsolutePath(),photoDir.getAbsolutePath());	
 				String photoArr[]=photoDir.list();
 				for(int i=0;i<photoArr.length;i++){
@@ -534,7 +536,9 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 {
                         try{
                                 File filePath=new File(imagesRealPath+"/Logo/");
-                                filePath.mkdirs();
+				if (!filePath.exists()) {
+                                	filePath.mkdirs();
+                                }
                                 filePath=new File(filePath+"/"+ImageName);
                                 file.write(filePath);
                                 msg1=MultilingualUtil.ConvertedString("c_msg5",LangFile);
