@@ -26,6 +26,10 @@ $page.setTitle("Home | $course | Course management")
             $("a.youtube").YouTubePopup({ autoplay: 0 });
         });
  </script>
+#set($flag=false)
+#if($data.getUser().getTemp("modulename5") == "5")
+	#set($flag=true)
+#end
 #set($lang = $data.getUser().getTemp("lang" ).toString())  
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -214,7 +218,7 @@ $page.setTitle("Home | $course | Course management")
                 <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
         </tr>
 	
-	#if($user_role == "instructor")
+	#if(($user_role == "instructor")||(($user_role == "teacher_assistant")&&($flag)))
       <tr width=100% bgcolor="$ui.tableColor">
          <td colspan=4>
          <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >

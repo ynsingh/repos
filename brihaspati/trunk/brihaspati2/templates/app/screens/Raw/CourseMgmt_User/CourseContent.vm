@@ -19,6 +19,9 @@ $page.setTitle("Course Content")
 #set ($loginusr=$data.getUser().getName().toString())
 #set($flag1=false)
 
+#if($data.getUser().getTemp("modulename5") == "5")
+        #set($flag1=true)
+#end
 $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
@@ -111,9 +114,6 @@ $!data.getMessage()
        <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
          </td>
 #end
-#if($data.getUser().getTemp("modulename5") == "5")
-        #set($flag1=true)
-#end
 #if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag1==false)))
 	#if($tdcolor != "1")
          <td>
@@ -192,7 +192,7 @@ $!data.getMessage()
         		</td>
       		</tr>
 	#end
-	#if($isInstructor=="true")
+	#if(($isInstructor=="true")||(($isTeacherAssistant=="true")&&($flag1)))
 		<tr><td colspan=6> <font color="green">(n)</font> / <font color="red">(n)</font> - $brih_number $brih_Of <font color="green">$brih_published </font>/ <font color="red">$brih_unpublish</font> $brih_file </td></tr>
 	#end
 	<tr> ##main tr for topic
@@ -206,7 +206,7 @@ $!data.getMessage()
 		</td>
 		<td align="center" colspan=4><font size=4><b> $brih_availableAction </font></td>
 		</tr>
-	#if($isInstructor=="true")
+	#if(($isInstructor=="true")||(($isTeacherAssistant=="true")&&($flag1)))
 		#foreach($file in $dirContent)
 		#if($velocityCount%2==0)
 		<tr bgcolor="$ui.tableColor">
@@ -292,7 +292,7 @@ $!data.getMessage()
 		
 	</table>
 	</td>
-	#if($isInstructor=="true")
+	#if(($isInstructor=="true")||(($isTeacherAssistant=="true")&&($flag1)))
         <td valign="top">
 		#if($dirContent.size()>1)
 		<table align="left" bgcolor="$ui.tableColor" width=100%>

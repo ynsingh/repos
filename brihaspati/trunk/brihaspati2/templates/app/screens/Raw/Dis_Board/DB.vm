@@ -101,7 +101,7 @@ $!data.getMessage()
 	</tr>
 		#end
 	#end
-#if(($data.getUser().getTemp("role") =="student" && $data.getUser().getUserName() == "guest") ||($data.getUser().getTemp("role") == "teacher_assistant" && $flag==false))
+#if(($data.getUser().getTemp("role") =="student" && $data.getUser().getUserName() == "guest"))
                 #if($tdcolor1 != "2")
                         <td>
                 #elseif($tdcolor1 == "2")
@@ -147,7 +147,7 @@ $!data.getMessage()
 			#if($data.getUser().getUserName() != "guest")
 			##<td><a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("course_id",$courseid).addPathInfo("count","$tdcolor")><b>$LocalMail_Mail_msg2</b></a></td>
                         <td><a href=$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("course_id",$courseid).addPathInfo("count","$tdcolor") style='text-decoration:none'><b>$brih_arch</b></a></td>
-                        <td colspan="2"><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","first").addPathInfo("course_id",$courseid).addPathInfo("count","4") style='text-decoration:none'><b>$LocalMail_MailContent_msg1</b></a></td>
+                        <td colspan="4"><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","first").addPathInfo("course_id",$courseid).addPathInfo("count","4") style='text-decoration:none'><b>$LocalMail_MailContent_msg1</b></a></td>
 			#end
 		#end
 	#end
