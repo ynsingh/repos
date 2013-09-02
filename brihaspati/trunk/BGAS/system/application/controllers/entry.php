@@ -528,20 +528,27 @@ class Entry extends Controller {
 					
 					$data_amount = $data_all_cr_amount[$id];
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+				}	
 					 $data_ledger_id;
 
 					//get ledger code
-
+				$this->load->library('GetParentlist');
+				if($data_ledger_dc == "D")
+				{//001 
 				 	$this->db->from('ledgers')->where('id', $data_ledger_id);	
 					$query_q = $this->db->get();
 		                        $query_n = $query_q->row();
                 		        $this->id = $query_n->id;
                         		$this->code = $query_n->code;
+					$this->group_id = $query_n->group_id;
 					$ledg_code=$this->code;
+					$groupid=$this->group_id;
+                                        //echo  $this->messages->add('Test 01==>' .$groupid);
+                                        //echo  $this->messages->add('Test 01==>' .$groupid);
 
 					//get budget amnt 
 
-
+					$parents;
 					$this->db->from('budgets')->where('code', $ledg_code);
                                         $query_l = $this->db->get();
                                         $query_l = $query_l->row();
@@ -552,16 +559,12 @@ class Entry extends Controller {
                                         $budgetamt=$this->amt;
 					$useamt=$this->useamt;
 					$allow=$this->allow;
-
-					//echo  $this->messages->add('Test 01==>' .$budgetamt);
-					//echo  $this->messages->add('Test 02==>' .$useamt);
-					//echo  $this->messages->add('Test 03==>' .$allow);
 					/* If entry type is payment */
-					if($entry_type_id == '2'){
+					if($entry_type_id == '2'){//01
 					/* if alloted budget amount is more than consume amount*/
 
 					if($budgetamt > $useamt)
-					{
+					{//if1
 						$available_amount=$budgetamt - $useamt ;//its wrong
 						/**  payment amount is greater than or equal to available amount **/
 
@@ -599,6 +602,17 @@ class Entry extends Controller {
                                 						$this->template->load('template', 'entry/add', $data);
                                 						return;
                         						}
+									$parents = new GetParentlist();
+				                                        $parents->init($groupid,$data_amount);
+
+									if ( ! $this->db->where('code', '50')->update('budgets', $update_data1))
+                                                                        {
+                                                                                $this->db->trans_rollback();
+                                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                                $this->template->load('template', 'entry/add', $data);
+                                                                                return;
+                                                                        }
+
 								}
 								
 							}
@@ -615,12 +629,23 @@ class Entry extends Controller {
                                                                      $this->template->load('template', 'entry/add', $data);
                                                                      return;
                                                         }
+							$parents = new GetParentlist();
+		                                        $parents->init($groupid,$data_amount);
+
+							if ( ! $this->db->where('code', '50')->update('budgets', $update_data1))
+                                                                        {
+                                                                                $this->db->trans_rollback();
+                                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                                $this->template->load('template', 'entry/add', $data);
+                                                                                return;
+                                                                        }
+
 						}
-					}	
+					}//1	
 					//elseif($useamt > $budgetamt)
 					/* consume amount is greater than allocated budget amount*/ 
 					if($useamt >= $budgetamt)
-					{
+					{//2
 						/* check for allowed over expenses */
 						if(($allow == -1) || ($allow == 0))
 	                                        {
@@ -657,16 +682,30 @@ class Entry extends Controller {
                                                                 $this->template->load('template', 'entry/add', $data);
                                                                 return;
                                                         }
+							$parents = new GetParentlist();
+		                                        $parents->init($groupid,$data_amount);
+
+							if ( ! $this->db->where('code', '50')->update('budgets', $update_data1))
+                                                       {
+                                                                                $this->db->trans_rollback();
+                                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                                $this->template->load('template', 'entry/add', $data);
+                                                                             return;
+                                                        }
 
 							
 						}	
 
 							
-					}
-					}
+					}//2
+					//$this->load->library('GetParentlist');
+                                        //$parents = new GetParentlist();
+                                        //$parents->init($groupid,$data_amount);
+
+					}//01
 
 				
-				}//main if
+				}//001
 				
 				$insert_ledger_data = array(
 					'entry_id' => $entry_id,
