@@ -58,6 +58,14 @@
 				Manage Entry Types
 			</div>
 		</div>
+		<div class="settings-container">
+			<div class="settings-title">
+				<?php echo anchor('setting/logo', 'Upload Logo', array('title' => 'Upload Logo')); ?>
+			</div>
+			<div class="settings-desc">
+				Upload Logo and set Institute Name
+			</div>
+		</div>
 	</div>
 </div>
 <div class="clear">

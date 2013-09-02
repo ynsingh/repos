@@ -56,7 +56,9 @@ $(document).ready(function(){
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
 				echo "</div>";
 			}
+
 		?>
+
 		<div id="info">
 		</div>
 	</div>
