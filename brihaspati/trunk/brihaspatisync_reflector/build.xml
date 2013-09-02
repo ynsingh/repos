@@ -38,10 +38,9 @@
         <target name="sign" depends="jar">
 		<copy file="${build.dir}/syncreflector.jar" tofile="${jnlp.dir}/syncreflector.jar"/>
 		<copy file="${lib.dir}/commons-io-1.1.jar" tofile="${jnlp.dir}/commons-io-1.1.jar"/>
+		<copy file="${lib.dir}/HttpClient.jar" tofile="${jnlp.dir}/HttpClient.jar"/>
 
-		<signjar keystore="jnlp/brihaspatisync"
-                         alias="brihaspati_sync"
-                         storepass="ashish">
+		<signjar keystore="jnlp/brihaspatisync" alias="client" storepass="arvind">
 			<path>
     				<fileset dir="${jnlp.dir}" includes="**/*.jar" />
 			</path>                         
