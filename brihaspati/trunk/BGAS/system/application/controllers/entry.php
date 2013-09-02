@@ -656,7 +656,7 @@ class Entry extends Controller {
                                                         $this->useamt1 = $query_ll->consume_amount;
                                                         $update_data2 = $this->useamt1 + $data_amount;
                                                         $update_data3 = array('consume_amount' => $update_data2);
-                                                        $this->messages->add("Test 002===>" .$update_data2);
+                                       //                 $this->messages->add("Test 002===>" .$update_data2);
 
 
 							if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
