@@ -1,11 +1,14 @@
 <div id="tag-sidebar">
-	<?php $this->load->view('sidebar/tag', $tag_id); ?>
+	<?php $this->load->view('sidebar/tag', $tag_id);?>
 </div>
-
+<?php
+	echo "<li>" . anchor('entry/sort/'.$entry_sort , 'Sorting by Updatedate') . "</li>";
+?>
 <table border=0 cellpadding=5 class="simple-table">
 	<thead>
 		<tr>
 			<th>Date</th>
+			<th>Update Date</th>
 			<th>No</th>
 			<th>Ledger Account</th>
 			<th>Type</th>
@@ -19,10 +22,10 @@
 		foreach ($entry_data->result() as $row)
 		{
 			$current_entry_type = entry_type_info($row->entry_type);
-
 			echo "<tr>";
 
 			echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
+			echo "<td>" . date_mysql_to_php_display($row->update_date) . "</td>";
 			echo "<td>" . anchor('entry/view/' . $current_entry_type['label'] . "/" . $row->id, full_entry_number($row->entry_type, $row->number), array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a')) . "</td>";
 
 			echo "<td>";

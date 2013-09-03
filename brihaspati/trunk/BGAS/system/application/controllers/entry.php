@@ -23,7 +23,6 @@ class Entry extends Controller {
 
 		$data['tag_id'] = 0;
 		$entry_type_id = 0;
-
 		if ($entry_type == 'tag')
 		{
 			$tag_id = (int)$this->uri->segment(4);
@@ -174,6 +173,7 @@ class Entry extends Controller {
 		}
 
 		$data['entry_data'] = $entry_q;
+		$data['entry_sort'] = $entry_type;
 
 		$this->template->load('template', 'entry/index', $data);
 		return;
@@ -1546,6 +1546,75 @@ class Entry extends Controller {
 		echo '</td>';
 		echo '</tr>';
 		return;
+	}
+	function sort($entry_sort)
+	{
+		$this->load->model('Tag_model');
+		$data['tag_id'] = 0;
+		$entry_type_id = 0;
+		if ($entry_sort == 'all') {
+                        $entry_type_id = 0;
+			$this->template->set('page_title', 'All Entries');
+		}else{	
+		$entry_type_id = entry_type_name_to_id($entry_sort);
+		}
+		if ($entry_sort != 'all') {
+		$current_entry_type = entry_type_info($entry_type_id);
+		$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
+		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry'));
+		}
+		/* Pagination setup */
+		
+		$this->load->library('pagination');
+		$page_count = (int)$this->uri->segment(4);
+		$page_count = $this->input->xss_clean($page_count);
+		if ( ! $page_count)
+			$page_count = "0";
+
+		/* Pagination configuration */
+		if ($entry_sort == 'all') {
+                        $config['base_url'] = site_url('entry/sort/all');
+                        $config['uri_segment'] = 4;
+		}else{
+		$config['base_url'] = site_url('entry/sort/' . $current_entry_type['label']);
+		$config['uri_segment'] = 4;
+		}
+		$pagination_counter = $this->config->item('row_count');
+		$config['num_links'] = 10;
+		$config['per_page'] = $pagination_counter;
+		$config['full_tag_open'] = '<ul id="pagination-flickr">';
+		$config['full_close_open'] = '</ul>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active">';
+		$config['cur_tag_close'] = '</li>';
+		$config['next_link'] = 'Next &#187;';
+		$config['next_tag_open'] = '<li class="next">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&#171; Previous';
+		$config['prev_tag_open'] = '<li class="previous">';
+		$config['prev_tag_close'] = '</li>';
+		$config['first_link'] = 'First';
+		$config['first_tag_open'] = '<li class="first">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'Last';
+		$config['last_tag_open'] = '<li class="last">';
+		$config['last_tag_close'] = '</li>';
+		if($entry_sort == 'all'){
+			$this->db->from('entries')->order_by('update_date', 'desc')->limit($pagination_counter, $page_count);
+			$entry_q = $this->db->get();
+			$config['total_rows'] = $this->db->count_all('entries');
+		}
+		else{
+			$this->db->from('entries')->where('entry_type', $entry_type_id)->order_by('update_date', 'desc')->limit($pagination_counter, $page_count);
+			$entry_q = $this->db->get();
+			$config['total_rows'] = $this->db->from('entries')->where('entry_type', $entry_type_id)->get()->num_rows();
+		}
+		$data['entry_data'] = $entry_q;
+		$data['entry_sort'] = $entry_sort;
+		$this->pagination->initialize($config);
+                $this->template->load('template', 'entry/index', $data);
+                return;
 	}
 }
 
