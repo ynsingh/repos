@@ -50,10 +50,10 @@ _editor_lang = "en";
 <td class="tableBottomColor"><font style="font-family:'Times New Roman',Georgia,Serif; Serif;font-size:19px;" class="serif" color="#000" >&nbsp;#springMessage("brih_expirypoll")</font></td>
 <td class="tableBottomColor">
 <select class="drop_Val" name="sel_Date" size="1"  onChange="ChangeGroup(document.frm,this);"/>
-<option value="30">One Month
-<option value="15">Two Weeks
-<option value="7">One Week
-<option value="2">One Day
+<option value="30">#springMessage("brih_month")
+<option value="15">#springMessage("brih_weeks")
+<option value="7">#springMessage("brih_week")
+<option value="2">#springMessage("brih_day")
 </option>
 </select>
 </td>
