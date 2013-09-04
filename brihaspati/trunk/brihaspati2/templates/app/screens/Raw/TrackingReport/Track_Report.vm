@@ -19,28 +19,28 @@ $!data.getMessage()
 	#if($data.getUser().getUserName() == "admin" ||$data.getUser().getTemp("role")=="institute_admin")
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
 	#if($mode == "repotype")
-	$brih_tracking $brih_reports 
+	#if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports 
 	#end
 	#if($type =="user")
-	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports</a> |
+	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
 	$brih_usr $brih_reports
 	#end
 	#else
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> | 
 	#if($mode == "repotype")
-	$brih_tracking $brih_reports
+	#if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports
 	#end
 	#if($type =="user")
-	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
 	$brih_usr $brih_reports	
 	#end
 	#if($type =="course")
-	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
 	$brih_course $brih_reports 
 	#end
 	#if($type =="quiz")
-	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> |
 	$brih_quiz $brih_reports
 	#end
 	#end

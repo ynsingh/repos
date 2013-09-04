@@ -245,7 +245,7 @@ $!data.getMessage()
 					<table border=0>
 						  <tr><td align=center><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none><img border=0 src="$content.getURI("/images/Tracking_icon.png")" class="img" ></a></td></tr>
 							
-						  <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a></td></tr>
+						  <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a></a></td></tr>
 					
 					</table>
 

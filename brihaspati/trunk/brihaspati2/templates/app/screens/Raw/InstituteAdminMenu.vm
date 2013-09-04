@@ -90,7 +90,7 @@
    </tr>
 <tr>
       <td class="dt">
-        <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
+        <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none> #if($lang=="hindi") $brih_perform #else $brih_tracking #end $brih_reports</a> 
       </td>
 </tr>
 
