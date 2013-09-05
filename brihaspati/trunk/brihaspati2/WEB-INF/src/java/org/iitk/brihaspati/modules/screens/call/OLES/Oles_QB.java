@@ -137,9 +137,9 @@ public class Oles_QB extends SecureScreen{
 					}
 				}
 			}
-			if(allTopics==null)
+			if(allcomtopics==null)
                         return;
-                        if(allTopics.size()!=0)
+                        if(allcomtopics.size()!=0)
                         {
 				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir"+"/"+instid+"Admin.properties";
                                 String AdminConf = AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
@@ -175,7 +175,6 @@ public class Oles_QB extends SecureScreen{
                                 context.put("startIndex",String.valueOf(eI));
                                 Vector splitlist=ListManagement.listDivide(allcomtopics,startIndex,Integer.parseInt(AdminConf));
                                 context.put("allTopics",splitlist);
-
                        	}
                        	else
                        	{

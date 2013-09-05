@@ -32,11 +32,13 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 import java.util.List;
 import java.util.Date;
 import java.util.Vector;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.Attr;
@@ -44,10 +46,13 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.FileOutputStream;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import org.iitk.brihaspati.om.ParentInfo;
+import org.iitk.brihaspati.om.ParentInfoPeer;
+
+import org.apache.torque.util.Criteria;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -156,12 +161,12 @@ public class XMLWriter_StudentAttendance {
 					* This method used for send mail to the parents for student attendance status
 					*/
 					//get Parent Email Id for sending attendance status of student by Email.
-					/*
-					String pemail=getParentEmail(userid);
-					String staus_msg= "Today "+email+" is absent.";
+					
+					//String pemail=getParentEmail(userid);
+					//String staus_msg= "Today Your "+email+" is absent.";
 				  	//mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile);
-					String MailMsg =  MailNotificationThread.getController().set_Message(staus_msg, "", "", "", pemail, "Attendance", "","");
-					*/
+					//String MailMsg =  MailNotificationThread.getController().set_Message(staus_msg, "", "", "", pemail, "Attendance", "","");
+					
 				}
 				 
 				/**
@@ -427,6 +432,7 @@ public class XMLWriter_StudentAttendance {
                                                 		cu.setCreateDate(attendance_date);	// Set Attendance date
                                                 		cu.setClassType(classtype);	// Set Class Type
                                                 		cu.setStudAttendKey(attendKey);	// Set Student Attendance Key 
+                                                		cu.setRemarks(remark);		// Set Student Attendance Remarks 
                                                 		v.add(cu);
 							}
                                                 }
@@ -475,6 +481,7 @@ public class XMLWriter_StudentAttendance {
                                                                 cu.setLeave(leave);             // Set Leave
                                                                 cu.setCreateDate(attendance_date);// Set Attendance date
                                                 		cu.setClassType(classtype);	// Set Class Type
+                                                		cu.setRemarks(remark);		// Set Student Attendance Remarks 
                                                                 v.add(cu);
                                                         }
                                                 }
@@ -566,6 +573,7 @@ public class XMLWriter_StudentAttendance {
         	                	int leave=0;
 					String classType="";
 					String attndKey="";
+					String remarks="";
 					CourseUserDetail cu=(CourseUserDetail)userList.get(i);
 					String loginname=cu.getLoginName().toString();			// Get LoginName 
 					String userid1=Integer.toString(UserUtil.getUID(loginname));	// Get UserId
@@ -578,12 +586,12 @@ public class XMLWriter_StudentAttendance {
                                         	String userid2=cud1.getUserId().toString();
 						
 						// Calculate total attendance of student.
-						present=present + cud1.getPresent(); 	// Total present
+						present=present+cud1.getPresent();	// Total present
 						absent=absent+cud1.getAbsent();		// Total absent
 						leave=leave+cud1.getLeave();		// Total leave
-						classType=cud1.getClassType();     	// Class Type
-                                                attndKey=cud1.getStudAttendKey(); 	// Student Attendance Key 
-
+						classType=cud1.getClassType();  	// Class Type
+                                                attndKey=cud1.getStudAttendKey();	// Student Attendance Key 
+                                                remarks=cud1.getRemarks(); 		// Student Attendance Remarks 
 					}
 					// Get Roll No.	
 					stRlNo=CourseProgramUtil.getUserRollNo(loginname,CourseId);
@@ -601,6 +609,7 @@ public class XMLWriter_StudentAttendance {
 					cud.setRollNo(stRlNo);		// set Roll No.
 					cud.setClassType(classType);    // Set Class Type
                                         cud.setStudAttendKey(attndKey);	// Set Student Attendance Key 
+                                        cud.setRemarks(remarks);	// Set Student Attendance Remarks 
                                 	v.add(cud);			// Store in Vector
 				}
 			}
@@ -715,14 +724,31 @@ public class XMLWriter_StudentAttendance {
         * @param: String StudentId
 	*/
 
-/*	public static String getParentEmail(String studentId) {
+	/*public static String getParentEmail(String studentId) {
 	String email=null;
 	try{	
 		Criteria crit=new Criteria();
 		crit.add(ParentInfoPeer.STUDENT_ID,studentId);
                 List v=ParentInfoPeer.doSelect(crit);
-		ParentInfo element=(ParentInfo)v.get(0);
-                String parentId=element.getParentId();
+		String parentId="";
+		for(int i=0;i<v.size();i++) 
+		{
+			ParentInfo element = (ParentInfo)v.get(i);
+                	String studId = element.getStudentId();
+			if(studId.indexOf('#') == -1) 
+			{
+				parentId=element.getParentId();
+			}
+			else{
+				StringTokenizer st=new StringTokenizer(studId,"#");
+		        	for(int j=0;st.hasMoreTokens();j++)
+           			{
+      					if(studentId.equals(st.nextToken())){
+						parentId=element.getParentId();
+					}
+          			}
+			}
+		}
 		email=UserUtil.getEmail(Integer.parseInt(parentId));
 	}
 	catch(Exception e){
@@ -730,5 +756,4 @@ public class XMLWriter_StudentAttendance {
 	}
 	return email;
 	}*/
-	
 }

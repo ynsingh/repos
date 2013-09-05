@@ -166,7 +166,8 @@ $!data.getMessage()
                 #else
   		<input type="reset" value="$brih_reset"i class="button-ftextstyle"> 
   		<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
-  		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);">
+		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" >$brih_back</a> 
 		#end
 		#end
   <input type="hidden" name="actionName" value="">

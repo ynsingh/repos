@@ -106,9 +106,9 @@ public class AnnounceExam_Manage extends SecureScreen{
 					String startDate = ((QuizFileEntry) quizList.elementAt(i)).getExamDate();
 					//=================================
 //					if(quizMode.equalsIgnoreCase("random")){
-						if(allowPractice.equalsIgnoreCase("no")){
+						//if(allowPractice.equalsIgnoreCase("no")){
 							finalQuizList.add(quizList.get(i));				
-						}
+					//	}
 //						}						
 				}	
 //				if(quizList.size()!=0){
