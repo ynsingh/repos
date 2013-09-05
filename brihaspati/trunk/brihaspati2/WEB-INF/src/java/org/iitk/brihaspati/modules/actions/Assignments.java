@@ -530,7 +530,7 @@ public class Assignments extends SecureAction
 
                         /** serching the file */
 
-                        for(int ss=0;ss<flist.length;ss++)
+                        /*for(int ss=0;ss<flist.length;ss++)
                         {
                                 if(flist[ss].startsWith("Answerfile"))
                                         br=true;
@@ -538,7 +538,7 @@ public class Assignments extends SecureAction
                                         br=true;
                         }
                         if(br==false)
-                        {
+                        {*/
                                 File file=new File(Assign+"/__file.xml");
 				String fileName="";
                                 FileItem fileItem;
@@ -580,13 +580,13 @@ public class Assignments extends SecureAction
 					//data.setMessage(" The file for uploading should have '.txt' extension !!   ");
 				
 				}
-                        }
+                        /*}
                         else { 
 				msg= MultilingualUtil.ConvertedString("assignment_msg9",LangFile);
 				data.setMessage(msg);
 
 				//data.setMessage(" Answer file already uploaded ");      
-			}
+			}*/
                 }
                 catch(Exception ex) {   data.setMessage(" Error in action !!       "+ex); }
 	}
@@ -1276,7 +1276,7 @@ public class Assignments extends SecureAction
         {       try
                 {
                         String action=data.getParameters().getString("actionName","");
-	//		ErrorDumpUtil.ErrorLog("actionname"+action);
+			//ErrorDumpUtil.ErrorLog("actionname"+action);
                         if(action.equals("brih_upload"))
                                 do_submit(data,context);
         	        else if(action.equals("eventSubmit_doDelete"))
