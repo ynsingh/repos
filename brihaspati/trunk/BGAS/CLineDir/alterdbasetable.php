@@ -54,7 +54,6 @@
                                                 while (false !== ($entry = $d->read())) {
 							if (substr($entry, -4) == ".sql")
 							{
-								echo"$entry\n";	
                                                         	$filepath = "{$sqlpath}{$entry}";
                                                         	if (is_file($filepath) && filectime($filepath) > $latest_ctime) {
                                                                 	$latest_ctime = date("F d Y " ,filectime($filepath));
