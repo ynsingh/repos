@@ -3,6 +3,7 @@
  * Copyright(c)2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar </a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a> 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle(" $brih_home | $course | $brih_Wiki")
@@ -15,51 +16,63 @@ $page.setBgColor("#ffffff")
 </head>
 <body>
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr>
-		<td>
-			<b>
-		        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-			<a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki </a> | $brih_Wiki $brih_home
-			</b>
-		</td>
+	<tr align="right">
+               <td>
+                     <a href=javascript:popupWin("/brihaspati2/docs/WikiHelp.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+                </td>
+
 		<td align="right">
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/WikiHelp.html","newWin");>$brih_help</a>
+			<b>
+			<a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki </a>|
+                        $brih_Wiki $brih_home
+		        |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> 
+		        |<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+			</b>
 		</td>
 	</tr>
 </table>
+
 <FORM  name=frm method="POST" action="$link.setPage("call,Wiki,Wiki_Home.vm").setAction("Wikieditaction")">
-<table width=100% align=left bgcolor="$ui.tableColor">
-	<tr bgcolor="$ui.tableColor">
-		<td colspan="2">
-			<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> &nbsp;|&nbsp;
-			#if($userrole == "instructor")
-                        	<a href=$link.setPage("call,Wiki,Wiki_Home.vm").addPathInfo("role","inst") style=text-decoration:none > Student Content </a> &nbsp;|&nbsp;
-			#end
-        	        <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>&nbsp;|&nbsp;
-                	<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp; &nbsp;
-		        <b> $brih_search </b><INPUT type="text" name="query" size="15">
-                        <input type="hidden" name="actionName" >
-                        <input type="submit" class="button-ftextstyle" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
-	        </td>
-	</tr>
+<table width=100% align="right" bgcolor="$ui.tableColor">
+<tr align="right" bgcolor="$ui.tableColor">
+                <td colspan="2">
+                   <input type="hidden" name="actionName">
+                     <b> $brih_search </b><INPUT type="text" name="query" size="15">
+                      <input type="submit" class="button-ftextstyle" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
+                        |<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>
+                        |<a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>
+                        | <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> 
+                        #if($userrole == "instructor")
+                                <a href=$link.setPage("call,Wiki,Wiki_Home.vm").addPathInfo("role","inst") style=text-decoration:none > Student Content </a>
+                             #end
+
+            </td>
+        </tr>
 </table>
 </form>
 <table width="100%" align=left bgcolor="$ui.tableColor">
-        <tr width="100%">
+
+ <tr align="right" width="100%">
+
                 <td bgcolor="#CEF6CE">
-                	<font size="6" color="blue"> $topic_name_file_name </font>
-                </td>
-                <td bgcolor="#CEF6CE" align="right">
-                        <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$topic_name_file_name)" style=text-decoration:none > <img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> $brih_edit </a>
+                        <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$topic_name_file_name)" style=text-decoration:none > <img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> $brih_edit</a>
                         <input type="hidden" name="filename" value=$filename>
+
+
+                   <td bgcolor="#CEF6CE" align="right">
+                        <font size="6" color="blue"> $topic_name_file_name </font>
+                </td>
+
                 </td>
         </tr>
 </table>
-	 #if($topic_wiki =="")
-	         <h3>Please Create Your page</h3>
+         #if($topic_wiki =="")
+                 <h3>Please Create Your page</h3>
          #end
 </body>
+
+
+
 <div id="debug"></div>
 <script>
         var kkk="$topic_wiki";
