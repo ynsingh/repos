@@ -452,7 +452,7 @@ $!msg
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {
-                Win1=window.open(url,popupName,"resizable,height=200,width=400");
+                Win1=window.open(url,popupName,"resizable,height=200,width=400, scrollbars=yes");
         }
 	
 	function popup(url,popupName)

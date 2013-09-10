@@ -23,7 +23,7 @@ $!data.getMessage()
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {
-                Win1=window.open(url,popupName,"resizable,height=200,width=300");
+                Win1=window.open(url,popupName,"resizable,height=200,width=300, scrollbars=yes");
         }
 </SCRIPT>
 <br>
