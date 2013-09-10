@@ -55,7 +55,7 @@ $!data.getMessage()
         </td>
 	#end
         <td align="right">
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ListManagement.html","newWin"); style=text-decoration:none><font size=4>Help</font></a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ListManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
         </td>
 </tr>
 </table>
