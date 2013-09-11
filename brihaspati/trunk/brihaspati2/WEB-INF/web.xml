@@ -53,6 +53,7 @@
       <url-pattern>/SQLscrpts/*</url-pattern>
       <url-pattern>/reports/*</url-pattern>
       <url-pattern>/EmailUpdation/*</url-pattern>
+      <url-pattern>/tmp/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
