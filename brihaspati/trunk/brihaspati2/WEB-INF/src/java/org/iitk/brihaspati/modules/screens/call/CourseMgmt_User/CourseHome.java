@@ -156,7 +156,8 @@ public class CourseHome extends SecureScreen{
 			/**
 			* For setting the course header
 			*/
-				File f=new File(TurbineServlet.getRealPath("/images")+"/Header/"+courseid);
+				//File f=new File(TurbineServlet.getRealPath("/images")+"/Header/"+courseid);
+				File f=new File(TurbineServlet.getRealPath("/localImages")+"/Header/"+courseid);
 				boolean istat=f.exists();
 				user.setTemp("istat",istat);
 			/**

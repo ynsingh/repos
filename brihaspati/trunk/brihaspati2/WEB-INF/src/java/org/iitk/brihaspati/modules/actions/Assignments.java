@@ -568,7 +568,8 @@ public class Assignments extends SecureAction
 
 					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date);
                                         xmlwriter.writeXmlFile();
-					msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
+					//msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
+					msg= MultilingualUtil.ConvertedString("assignment_msg5",LangFile);
 	                                data.setMessage(msg);
 
                                         //data.setMessage("Answer File has been uploaded successfully");
