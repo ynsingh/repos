@@ -31,8 +31,8 @@ public class SinglePortClient implements Runnable {
 	
 	private Thread runner=null;
 	private boolean flag=false;
-	private Vector type_vector=new Vector();
 	private ClientObject clientObject=ClientObject.getController();
+	private UtilObject utilobject=UtilObject.getController();
 	private int port=RuntimeDataObject.getController().client_single_port();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	
@@ -49,15 +49,6 @@ public class SinglePortClient implements Runnable {
 
 	public SinglePortClient(){ }
 	
-	public void addType(String type){
-		if(!(type_vector.contains(type)))
-			type_vector.add(type);
-	}
-
-	public void removeType(String type){
-                type_vector.remove(type);
-        }
-	
 	/**
  	 * Start Thread
  	 */  
@@ -66,7 +57,6 @@ public class SinglePortClient implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
-			ThreadController.getController().setReflectorStatusThreadFlag(true);
 			System.out.println("Single Port Client start successfully !!");
 		}
         }
@@ -89,14 +79,16 @@ public class SinglePortClient implements Runnable {
 	 */
 
 	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag()) {
+		Vector v=new Vector();
+		while(flag && ThreadController.getThreadFlag()) {
 			try {
-				Vector v=new Vector(); v.addAll(type_vector);
+				v.clear(); v.addAll(utilobject.getTypeVector());	
 				while((v.size()) !=0){
 					String type=v.get(0).toString(); v.remove(0);
 					if(type.equals("Audio_Data")) {	
 					    	try {	
-					        	LinkedList sendqueue=UtilObject.getController().getSendQueue("Audio_Data");
+							long l=System.currentTimeMillis();
+					        	LinkedList sendqueue=utilobject.getSendQueue("Audio_Data");
 						 	int i=10;
 						 	while(i !=0 ) {
 						   		byte[] send_data=null;
@@ -105,75 +97,88 @@ public class SinglePortClient implements Runnable {
 						   		byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
 								if(receive_data_fromserver !=null) {
 							   		if(receive_data_fromserver.length>0) {
-										LinkedList audio_queue=UtilObject.getController().getQueue("Audio_Data");
+										LinkedList audio_queue=utilobject.getQueue("Audio_Data");
         	                               	       				audio_queue.addLast(receive_data_fromserver);
 									}
 						   		} else
 						        		break;
 						   		i--;
 						 	}
+							long cur_time=System.currentTimeMillis()-l;
+							NetworkController.Hashtable(type,cur_time);		
 					    	} catch(Exception e) { System.out.println("Exception in http Client in Audio_Data "+e);}
 					} else if(type.equals("Desktop_Data")) {
 						try {
-							LinkedList sendqueue=UtilObject.getController().getSendQueue("Desktop_Data");
+							long l=System.currentTimeMillis();
+							LinkedList sendqueue=utilobject.getSendQueue("Desktop_Data");
 							byte[] send_data=null;
 							if(sendqueue.size() >1 ) 
 	                                                        send_data=(byte[])sendqueue.remove();
                        		                        byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
 							if(receive_data_fromserver !=null) {
 								if(receive_data_fromserver.length>0 ) {
-	                               		        		LinkedList audio_queue=UtilObject.getController().getQueue("Desktop_Data");
+	                               		        		LinkedList audio_queue=utilobject.getQueue("Desktop_Data");
 									audio_queue.addLast(receive_data_fromserver);
 								}
 							}
+							long cur_time=System.currentTimeMillis()-l;
+	                                                NetworkController.Hashtable(type,cur_time);
 						}catch(Exception e){ System.out.println("Exception in http Client in Desktop_Data "+e); }
 					} else if(type.equals("ch_wb_Data")) {
 						try {
-							LinkedList sendqueue=UtilObject.getController().getSendQueue("ch_wb_Data");
-							
+							long l=System.currentTimeMillis();
+							LinkedList sendqueue=utilobject.getSendQueue("ch_wb_Data");
 							if(sendqueue.size()> 0 ) {
 	                                                        byte[] send_data=(byte[])sendqueue.remove();
                        		                                byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
 								if(receive_data_fromserver !=null) {
 									if(receive_data_fromserver.length>0) {
-        	                       		                        	LinkedList audio_queue=UtilObject.getController().getQueue("ch_wb_Data");
+        	                       		                        	LinkedList audio_queue=utilobject.getQueue("ch_wb_Data");
 	        	                               		                audio_queue.addLast(receive_data_fromserver);
 									}
 								}
 							}
+							long cur_time=System.currentTimeMillis()-l;
+                                                        NetworkController.Hashtable(type,cur_time);
 						}catch(Exception e){ System.out.println("Exception in SinglePortClient in ch_wb_Data "+e.getMessage());}
 					}else if(type.equals("ins_video")) {
 						try {
-							LinkedList sendqueue=UtilObject.getController().getSendQueue("ins_video");
+							long l=System.currentTimeMillis();
+							LinkedList sendqueue=utilobject.getSendQueue("ins_video");
 							byte[] send_data=null;
 							if(sendqueue.size() >1 ) 
 	                                                        send_data=(byte[])sendqueue.remove();
                        	                                byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
 							if(receive_data_fromserver !=null) {
 								if(receive_data_fromserver.length>0) {
-               	        	                        		LinkedList audio_queue=UtilObject.getController().getQueue("ins_video");
+               	        	                        		LinkedList audio_queue=utilobject.getQueue("ins_video");
                        	        	                		audio_queue.addLast(receive_data_fromserver);
 								}
 							}
+							long cur_time=System.currentTimeMillis()-l;
+                                                        NetworkController.Hashtable(type,cur_time);
 						}catch(Exception e) { System.out.println("Exception in SinglePortClient in instructor video "+e.getMessage());}
 					}else if(type.equals("stud_video")) {
 						try {
-							LinkedList sendqueue=UtilObject.getController().getSendQueue("stud_video");
+							long l=System.currentTimeMillis();
+							LinkedList sendqueue=utilobject.getSendQueue("stud_video");
 							byte[] send_data=null;
 							if(sendqueue.size() >1 ) 
 	                                                        send_data=(byte[])sendqueue.remove();
                  					byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
 							if(receive_data_fromserver !=null) {
 								if(receive_data_fromserver.length>0) {
-	                       	                        		LinkedList audio_queue=UtilObject.getController().getQueue("stud_video");
+	                       	                        		LinkedList audio_queue=utilobject.getQueue("stud_video");
         	                       	                        	audio_queue.addLast(receive_data_fromserver);
 								}
-							}
+							}	
+							long cur_time=System.currentTimeMillis()-l;
+                                                        NetworkController.Hashtable(type,cur_time);
 						} catch(Exception e){ System.out.println("Exception in SinglePortClient in Student video "+e.getMessage());}
 					}
-					runner.sleep(5);
-					runner.yield();
 				}
+				runner.yield();
+				runner.sleep(5);
 			}catch(Exception ep) { System.out.println(this.getClass()+" Exception  "+ep.getMessage()); }
 			System.gc();
 		}
@@ -182,7 +187,7 @@ public class SinglePortClient implements Runnable {
 	/**
 	 * This method is used to send the data client to reflector .
 	 */
-	private byte[] sendDataToReflector(byte[] send_data,String type){
+	private byte[] sendDataToReflector(byte[] send_data,String type) {
 		try {
 			HttpClient client = new HttpClient();
                         PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
@@ -203,11 +208,11 @@ public class SinglePortClient implements Runnable {
                         postMethod.releaseConnection();
 			
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");	
-			ThreadController.getController().setReflectorStatusThreadFlag(true);
+			ThreadController.setReflectorStatusThreadFlag(true);
 			return receive_data_fromserver;
 		}catch(Exception e) { 
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
-			ThreadController.getController().setReflectorStatusThreadFlag(false);
+			ThreadController.setReflectorStatusThreadFlag(false);
 			System.out.println(this.getClass()+" in Send data from client to reflector "+e.getMessage());
 		} 
 		return null;

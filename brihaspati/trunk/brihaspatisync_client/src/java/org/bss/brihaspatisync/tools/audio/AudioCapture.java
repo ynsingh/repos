@@ -84,7 +84,7 @@ public class AudioCapture implements Runnable {
  	 */  
 	public void run() { 
                 try {
-			while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {	
+			while(flag && org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {	
 				try {
 					if(targetDataLine != null) {
 						byte audio_data[] = new byte[bufferSize];
@@ -92,6 +92,7 @@ public class AudioCapture implements Runnable {
 						audioVector.addLast(audio_data);
 					} else 
                          	       		targetDataLine = AudioUtilObject.getTargetLine();
+					runner.yield();
 				} catch(Exception ex){ System.out.println("Eception in capture Audio class "+ex.getCause()); }
 			}
                 } catch(Exception e){ System.out.println("Eception in capture Audio class "+e.getCause()); }

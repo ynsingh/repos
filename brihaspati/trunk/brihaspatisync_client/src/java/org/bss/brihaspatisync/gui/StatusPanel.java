@@ -35,16 +35,18 @@ public class StatusPanel extends JPanel implements Runnable {
 	private JLabel appLabel=null;
 	private JLabel label1=null;
 	
-	private JLabel ppt=new JLabel();
-	private JLabel destop=new JLabel();
-	private JLabel httpclient=new JLabel();
-	private JLabel audioclient=new JLabel();
-	
+	private JLabel ppt =new JLabel();
+	private JLabel destop =new JLabel();
+	private JLabel httpclient =new JLabel();
+	private JLabel audioclient =new JLabel();
+	private JLabel processbarlabel =new JLabel();
+
 	private Vector mess=new Vector();
 	private Vector pptmess=new Vector();
 	private Vector destopmess=new Vector();
 	private Vector httpclientmess=new Vector();
 	private Vector audioclientmess=new Vector();
+	private Vector processbarmess=new Vector();
 
 	private static StatusPanel labe =null;
 	private ClassLoader clr= this.getClass().getClassLoader();
@@ -54,11 +56,13 @@ public class StatusPanel extends JPanel implements Runnable {
 	private String pptmessage="";
 	private String destmessage="";
 	private String audiomessage="";
+	private String processbarpmessage="";
 	
 	private JPanel desktop_panel=null;
 	private JPanel ppt_panel=null;
 	private JPanel chatwb_panel=null;
 	private JPanel audio_panel=null;
+	private JPanel process_panel=null;
 
 	public StatusPanel() {
 		try {
@@ -72,7 +76,6 @@ public class StatusPanel extends JPanel implements Runnable {
 			label1 = new JLabel();	
 			west_panel.add(statusLabel,flowLayout);
 			west_panel.add(label1,flowLayout);
-			add(west_panel,BorderLayout.WEST);
 			
 			appLabel=new JLabel();
 			appLabel.setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
@@ -88,7 +91,10 @@ public class StatusPanel extends JPanel implements Runnable {
 			ppt_panel.setBackground(new Color(24,116,205));
 			ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
 			ppt_panel.add(ppt,flowLayout);
-
+			
+			process_panel=new JPanel();
+                        process_panel.setBackground(new Color(24,116,205));
+                        process_panel.add(processbarlabel,flowLayout);
 			
 			chatwb_panel=new JPanel();
                         chatwb_panel.setBackground(new Color(24,116,205));		
@@ -106,6 +112,9 @@ public class StatusPanel extends JPanel implements Runnable {
 			east_panel.add(audio_panel,flowLayout);
 			east_panel.add(chatwb_panel,flowLayout);
 			add(east_panel,BorderLayout.EAST);
+			add(west_panel,BorderLayout.WEST);
+			add(process_panel,BorderLayout.CENTER);
+			
 		}catch(Exception e){}
 	}
 	
@@ -152,7 +161,7 @@ public class StatusPanel extends JPanel implements Runnable {
                                 			audioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
 		                        	else
                 		                	audioclient.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-					} catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
+					} catch(Exception e){System.out.println("Exception in StatusPanel in method  setdestopClient");}
 				}
 				if(destopmess.size()>0 ) {
 					String message=destopmess.get(0).toString();
@@ -162,7 +171,7 @@ public class StatusPanel extends JPanel implements Runnable {
                 	                       		destop.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
                         	       		else
                                 	       		destop.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-					} catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
+					} catch(Exception e) { System.out.println("Exception in StatusPanel in method  setdestopClient"); }
 				} if(httpclientmess.size()>0) {
 					String message=httpclientmess.get(0).toString();
                                         httpclientmess.remove(0);
@@ -182,14 +191,49 @@ public class StatusPanel extends JPanel implements Runnable {
 					String message=mess.get(0).toString();
                                         mess.remove(0);
 					label1.setText("<html><blink><Font size=3 color=white><b>"+message+"</b></font></blink></html>");
-				}		
+				}
+				if(processbarmess.size()>0) {
+                                        String message=processbarmess.get(0).toString();
+                                        processbarmess.remove(0);
+                                        if(message.equals("yes")) {
+                                                processbarlabel.setIcon(new javax.swing.ImageIcon(clr.getResource("resources/images/loading.gif")));
+						processbarlabel.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("Load.panel")+"</b></font></html>");
+                                        } else {
+                                                processbarlabel.setIcon(null);	
+						processbarlabel.setText("");
+					}
+                                }
+				
+				try {
+					int sum = 0;	
+					java.util.Hashtable ht=org.bss.brihaspatisync.network.singleport.NetworkController.getHashtable();
+					java.util.Set<String> keys = ht.keySet();
+        				for(String key_type : keys) {
+						Vector value = (Vector)ht.get(key_type);
+						for (int i=0;i<value.size();i++) {
+							int temp=Integer.parseInt((String)value.get(i));
+							sum=sum +temp;
+						}
+						sum =sum / (value.size());
+						if((sum> 12) && (key_type.equals("ins_video"))) {
+							org.bss.brihaspatisync.util.ClientObject.getController().setInsImageQuality(0.2f);
+						}
+						if((sum> 12) && (key_type.equals("stud_video"))) {
+							org.bss.brihaspatisync.util.ClientObject.getController().setStdImageQuality(0.2f);
+						}
+						if((sum> 12) && (key_type.equals("Desktop_Data"))) {
+							org.bss.brihaspatisync.util.ClientObject.getController().setDesktopImageQuality(0.2f);
+						}
+							
+        				}
+				} catch(Exception e) {	System.out.println("Exception in StatusPanel in method  network slow "); }
 				runner.sleep(500);
                 		runner.yield();
                         } catch(Exception ep) {  
 				try {  
 					runner.sleep(1000); runner.yield(); 
 					System.out.println("Exception in StatusPanel class  "+ep.getMessage());
-				}catch(Exception e) { }
+				} catch(Exception e) { }
 			}
 		}
 	}	
@@ -225,6 +269,13 @@ public class StatusPanel extends JPanel implements Runnable {
                         httpmessage=message;
 			pptmess.add(message);
 		}
+        }
+	
+	public void setProcessBar(String message) {
+                if(!processbarpmessage.equals(message)) {
+                        processbarpmessage=message;
+                        processbarmess.add(message);
+                }
         }
 }
 

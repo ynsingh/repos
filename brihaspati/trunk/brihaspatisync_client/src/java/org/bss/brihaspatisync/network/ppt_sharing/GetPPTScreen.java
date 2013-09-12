@@ -77,7 +77,7 @@ public class GetPPTScreen implements Runnable {
         }
 
 	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag()) {
+		while(flag && ThreadController.getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);//5271");

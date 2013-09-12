@@ -199,14 +199,15 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		
                 passwordField.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
+				StatusPanel.getController().setProcessBar("yes");
 				checkUserNamePasswd();
+				StatusPanel.getController().setProcessBar("yes");
                         }
                 });
 		loginPanel.add(username);
                 loginPanel.add(usernameText);
                 loginPanel.add(password);
                 loginPanel.add(passwordField);
-
 
                 JPanel buttonPanel=new JPanel();
                 buttonPanel.setLayout(new FlowLayout());
@@ -259,7 +260,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 mainWindow.getContainer().validate();
                 mainWindow.getContainer().repaint();	
 		StatusPanel.getController().updateGUI();
-		//Update_Enable_Decable();		
 	}
   	
 	private void Update_Enable_Decable(){
@@ -297,7 +297,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			Language.getController().SelectLanguage(languageName);
 			if((languageName.equals("English")) ||(languageName.equals("Hindi"))||(languageName.equals("Tamil"))||(languageName.equals("Telugu"))||(languageName.equals("Bhojpuri"))||(languageName.equals("Arabic"))||(languageName.equals("Chinese")) ||(languageName.equals("Greek"))||(languageName.equals("Japanese"))||(languageName.equals("Korean"))||(languageName.equals("Persian"))||(languageName.equals("Russian"))||(languageName.equals("Bangala"))||(languageName.equals("French"))||(languageName.equals("Spanish"))||(languageName.equals("Dutch"))||(languageName.equals("Nepali"))||(languageName.equals("German"))||(languageName.equals("Italian"))) {
 				updateGUI();
-                        	System.out.println("language "+languageName);
 				return;
                         }
 		}
@@ -322,9 +321,11 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			ForgetPass.getController();
 			forgetpass.setCursor(defaultCursor);
 		}
+
                 if(e.getComponent().getName().equals("submit.Action")) {	
-			submitButton.setCursor(busyCursor);
+			StatusPanel.getController().setProcessBar("yes");
 			checkUserNamePasswd();
+			StatusPanel.getController().setProcessBar("no");
 			submitButton.setCursor(defaultCursor);
                 }
 		if(e.getComponent().getName().equals("cancel.Action")) {
@@ -349,13 +350,13 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                      	submitButton.setCursor(busyCursor);
                         if((!(usernameText.getText()).equals(""))) {
                         	boolean loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
-                                if(loginValue==false){
+				System.out.println(loginValue);
+                                if(loginValue==false) {
                                 	passwordField.setText("");
                                         setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                         submitButton.setCursor(defaultCursor);
-                                        //setSize(355,550);
-                           	}else {
+                           	} else {
                                 	client_obj.setUserName(usernameText.getText());
 					mainWindow.setMenuItemText();
 		                        mainWindow.getDesktop().removeAll();

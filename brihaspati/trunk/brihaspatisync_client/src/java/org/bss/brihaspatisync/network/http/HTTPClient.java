@@ -34,13 +34,13 @@ public class HTTPClient extends Thread {
 
 	public HTTPClient(String lect_id){
 		this.lect_id=lect_id;
-		org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("ch_wb_Data");
+		utilObject.addType("ch_wb_Data");
         }
 
 	public void run() {
-		while(ThreadController.getController().getThreadFlag()){
+		while(ThreadController.getThreadFlag()){
                      	try {
-				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 					String chat_wb_handraise_data="nodata";
 					if(utilObject.getSendQueueSize() != 0) {
         	                		chat_wb_handraise_data=utilObject.getSendQueue();
@@ -87,7 +87,8 @@ public class HTTPClient extends Thread {
 						}
 					}
 				}
-				this.sleep(2000);this.yield();
+				this.yield();
+				this.sleep(2000);
 			} catch(Exception ex) {	System.out.println("Error in HTTP Client "+ex.getMessage());   }
 		}
 		org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");

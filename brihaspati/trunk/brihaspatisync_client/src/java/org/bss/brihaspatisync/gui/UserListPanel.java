@@ -101,7 +101,7 @@ public class UserListPanel extends Thread {
  	 * This method is used to get all userlist from reflector. 
  	 */
 	public  void run() {
-		while(org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {
+		while(org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
 			userlist.clear(); 
 			try {
 				String str=RuntimeDataObject.getController().getUserList();

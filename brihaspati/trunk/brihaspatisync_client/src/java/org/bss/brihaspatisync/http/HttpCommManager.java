@@ -83,11 +83,9 @@ public class HttpCommManager {
   				String usr = "usr="+URLEncoder.encode(usr_name, "UTF-8");
       				String pass= "pass="+URLEncoder.encode(password, "UTF-8");
       				String ip="ip="+URLEncoder.encode((String)InetAddress.getLocalHost().getHostAddress(),"UTF-8");
-				
 				String req_url=indexServer+"/ProcessRequest?req=login&"+usr+"&"+pass+"&"+ip;
                                 loginResult=httpsUtil.getvectorMessage(req_url,"noLecture");
-                                //serverDate=(String)loginResult.get(2);
-				if(loginResult!=null){
+				if((loginResult != null) && (loginResult.size()>0)){
 					indexServerName=indexServer;
                                         index=true;
   				}

@@ -8,34 +8,27 @@ package org.bss.brihaspatisync.util;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
+ * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> // modified 2013
  */
 
 public class ThreadController {
 
-	private static ThreadController tc=null;
-	private boolean threadFlag=false;
-	private boolean reflector_status=false;
+	private static boolean threadFlag=false;
+	private static boolean reflector_status=false;
 
-	public static ThreadController getController(){
-		if(tc==null){
-			tc=new ThreadController();
-		}
-		return tc;
-	}
-
-	public void setThreadFlag(boolean value) {
-		this.threadFlag=value;
+	public static void setThreadFlag(boolean value) {
+		threadFlag=value;
 	}
 	
-	public boolean getThreadFlag(){
-		return this.threadFlag;
+	public static boolean getThreadFlag(){
+		return threadFlag;
 	}
 
-	public void setReflectorStatusThreadFlag(boolean value){
-                this.reflector_status=value;
+	public static void setReflectorStatusThreadFlag(boolean value){
+                reflector_status=value;
         }
 
-        public boolean getReflectorStatusThreadFlag(){
-                return this.reflector_status;
+        public static boolean getReflectorStatusThreadFlag(){
+                return reflector_status;
         }	
 }

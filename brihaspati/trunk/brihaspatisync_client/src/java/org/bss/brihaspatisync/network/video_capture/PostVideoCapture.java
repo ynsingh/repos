@@ -34,6 +34,7 @@ public class PostVideoCapture implements Runnable {
 	private Thread runner=null;
 	private boolean getflag=false;
 	private static PostVideoCapture post_capture=null;
+	private UtilObject utilobject=UtilObject.getController();	
 	private java.io.ByteArrayOutputStream os=new java.io.ByteArrayOutputStream();
 
 	/**
@@ -56,7 +57,7 @@ public class PostVideoCapture implements Runnable {
 			getflag=getscreen;
                         runner = new Thread(this);
                         runner.start();
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("ins_video");
+			utilobject.addType("ins_video");
 			System.out.println("Post Video Capture  start successfully !!");
 		}
         }
@@ -70,22 +71,22 @@ public class PostVideoCapture implements Runnable {
 			flag=false;
 			getflag=false;
                         runner = null;
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("ins_video");
+			utilobject.removeType("ins_video");
 			System.out.println("Post Video Capture  stop successfully !!");
                 }
         }
 
 	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag() ) {
+		while(flag && ThreadController.getThreadFlag() ) {
 			try {
-				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 					if(!getflag) {	
 						/****  send video image to reflector ****/
 						if(BufferImage.getController().bufferSize()>0) {
 							BufferedImage image=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
 							encode(image);	
-							LinkedList send_queue=UtilObject.getController().getSendQueue("ins_video");
+							LinkedList send_queue=utilobject.getSendQueue("ins_video");
 							if(send_queue.size()==0 ){
                                                         	send_queue.addLast(os.toByteArray());
 	                                                }else {
@@ -98,7 +99,7 @@ public class PostVideoCapture implements Runnable {
 						}
 					}else {
 						/****   receive the video image from reflector **********/
-						LinkedList desktop_queue=UtilObject.getController().getQueue("ins_video");
+						LinkedList desktop_queue=utilobject.getQueue("ins_video");
                                        		if(desktop_queue.size()>0) {
                                         		byte[] bytes1=(byte[])desktop_queue.get(0);
 	                                                desktop_queue.remove(0);
@@ -108,8 +109,8 @@ public class PostVideoCapture implements Runnable {
 						}
                               		}
 				}
-	                       	runner.sleep(30000); runner.yield();
-			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
+	                       	runner.yield(); runner.sleep(3000);
+			}catch(Exception e){System.out.println("Exception in PostSharedScreen in get and post video image "+e.getMessage());}
 		}
 	}
 
@@ -137,7 +138,7 @@ public class PostVideoCapture implements Runnable {
                         ImageWriteParam param = writer.getDefaultWriteParam();
                         // compress to a given quality
                         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                        param.setCompressionQuality(ClientObject.getController().getImageQuality());
+                        param.setCompressionQuality(ClientObject.getController().getInsImageQuality());
                         // appends a complete image stream containing a single image and
                         //associated stream and image metadata and thumbnails to the output
                         writer.write(null, new IIOImage(image, null, null), param);

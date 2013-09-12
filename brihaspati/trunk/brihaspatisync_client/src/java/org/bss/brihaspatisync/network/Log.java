@@ -66,7 +66,7 @@ public class Log implements Runnable{
          */
 	public void run(){
 		try {
-			while(ml_Flag && ThreadController.getController().getThreadFlag()) {	
+			while(ml_Flag && ThreadController.getThreadFlag()) {	
 				if(vector.size()>0){
 					ClientLog.getController().Log(vector.get(0).toString());	
 					vector.remove(0);

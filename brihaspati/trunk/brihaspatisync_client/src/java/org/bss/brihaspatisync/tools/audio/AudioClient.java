@@ -48,7 +48,7 @@ public class AudioClient implements Runnable {
             		runner = new Thread(this);
             		runner.start();
 			StatusPanel.getController().setaudioClient("yes");
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("Audio_Data");
+			utilobject.addType("Audio_Data");
 			System.out.println("AudioClient start successfully !!");
 		}
        }
@@ -62,7 +62,7 @@ public class AudioClient implements Runnable {
             		runner = null;	
 			StatusPanel.getController().setaudioClient("no");
 			postAudio(false);	
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("Audio_Data");	
+			utilobject.removeType("Audio_Data");	
 			System.out.println("AudioClient stop successfully !!");
       		}
    	}
@@ -80,9 +80,9 @@ public class AudioClient implements Runnable {
  	 */
 		
   	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag()) {
+		while(flag && ThreadController.getThreadFlag()) {
 			try {
-				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 					/****   send audio data to reflector ****/
 					if(audiostartstopFlag) {
 						byte [] audiodata=au_cap.getAudioData();
@@ -104,8 +104,8 @@ public class AudioClient implements Runnable {
 					StatusPanel.getController().setaudioClient("yes");
 				} else
 					StatusPanel.getController().setaudioClient("no");
-				runner.sleep(10);
 				runner.yield();
+				runner.sleep(10);
 			} catch(Exception epe) { 
 				StatusPanel.getController().setaudioClient("no"); 	
 				System.out.println("Exception in AudioClient class  "+epe.getMessage()); 

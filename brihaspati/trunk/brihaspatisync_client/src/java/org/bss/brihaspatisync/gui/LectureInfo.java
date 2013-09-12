@@ -148,7 +148,8 @@ public class LectureInfo extends JFrame implements MouseListener
 	
 	//Modified by pratibha
 	public void mouseClicked(MouseEvent e) {
-		 if(e.getComponent().getName().equals("closeLabel.Action")){
+		 if(e.getComponent().getName().equals("closeLabel.Action")) {
+			StatusPanel.getController().setProcessBar("yes");
 			closeLabel.setCursor(busyCursor);
 			try{
 				Thread.sleep(500);
@@ -159,6 +160,7 @@ public class LectureInfo extends JFrame implements MouseListener
 				closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 		 	frame.dispose();
+			StatusPanel.getController().setProcessBar("no");
 		 }
 		 	
 	}

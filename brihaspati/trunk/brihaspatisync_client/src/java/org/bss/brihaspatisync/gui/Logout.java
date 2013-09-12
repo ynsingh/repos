@@ -37,7 +37,7 @@ public class Logout {
 	public void sendLogoutRequest(){
 		String parentIP="";		
 		try{
-			org.bss.brihaspatisync.util.ThreadController.getController().setThreadFlag(false);	
+			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);	
 			String ref_addr=client_obj.getReflectorIP();
 			String username="",lectID="";
 			if(!(ref_addr.equals(""))) {	
@@ -64,7 +64,7 @@ public class Logout {
 	
 	public void sessionOutMessage(){
 		try {
-			org.bss.brihaspatisync.util.ThreadController.getController().setThreadFlag(false);
+			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
 			Thread.sleep(1000);
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
         		org.bss.brihaspatisync.gui.StatusPanel.getController().setaudioClient("no");	

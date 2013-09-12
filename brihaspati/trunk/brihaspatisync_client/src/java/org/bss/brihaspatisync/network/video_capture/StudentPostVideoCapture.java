@@ -36,6 +36,7 @@ public class StudentPostVideoCapture implements Runnable {
 	private boolean flag=false;
 	private boolean getflag=false;
 	private static StudentPostVideoCapture post_capture=null;
+	private UtilObject utilobject=UtilObject.getController();
 	private java.io.ByteArrayOutputStream os=new java.io.ByteArrayOutputStream();
 
 	/**
@@ -59,7 +60,7 @@ public class StudentPostVideoCapture implements Runnable {
                         runner = new Thread(this);
                         runner.start();
 			VideoPanel.getController().addStudentPanel();
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("stud_video");
+			utilobject.addType("stud_video");
 			System.out.println("Student Post Video Capture  start successfully !!");
 		}
         }
@@ -74,22 +75,22 @@ public class StudentPostVideoCapture implements Runnable {
 			getflag=false;
                         runner = null;
 			VideoPanel.getController().removeStudentPanel();
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("stud_video");
+			utilobject.removeType("stud_video");
 			System.out.println("Student Post Video Capture  stop successfully !!");
                 }
         }
 
 	public void run() {
-		while( flag && ThreadController.getController().getThreadFlag()) {
+		while( flag && ThreadController.getThreadFlag()) {
 			try {
-				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 					/****   send student video image to reflector ****/
 					if(!getflag) {	
 						if(BufferImage.getController().bufferSize()>0) {
 							BufferedImage image=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
 							encode(image);	
-							LinkedList send_queue=UtilObject.getController().getSendQueue("stud_video");
+							LinkedList send_queue=utilobject.getSendQueue("stud_video");
                                                         if(send_queue.size()==0 ){
                                                                 send_queue.addLast(os.toByteArray());
                                                         }else {
@@ -102,7 +103,7 @@ public class StudentPostVideoCapture implements Runnable {
 						}	
 					}else {
 						/****   receive student video image from reflector ****/
-                        	                LinkedList desktop_queue=UtilObject.getController().getQueue("stud_video");
+                        	                LinkedList desktop_queue=utilobject.getQueue("stud_video");
                                 	        if(desktop_queue.size()>0) {
                                         	        byte[] bytes1=(byte[])desktop_queue.get(0);
 	                                                desktop_queue.remove(0);
@@ -112,7 +113,7 @@ public class StudentPostVideoCapture implements Runnable {
 						}
                               		}
 				}
-                       		runner.sleep(3000);runner.yield();
+                       		runner.yield(); runner.sleep(3000);
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
 		}
 	}
@@ -141,7 +142,7 @@ public class StudentPostVideoCapture implements Runnable {
                         ImageWriteParam param = writer.getDefaultWriteParam();
                         // compress to a given quality
                         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                        param.setCompressionQuality(ClientObject.getController().getImageQuality());
+                        param.setCompressionQuality(ClientObject.getController().getStdImageQuality());
                         // appends a complete image stream containing a single image and
                         // associated stream and image metadata and thumbnails to the output
                         writer.write(null, new IIOImage(image, null, null), param);

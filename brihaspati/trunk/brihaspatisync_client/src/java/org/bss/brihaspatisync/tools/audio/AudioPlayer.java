@@ -79,7 +79,7 @@ public class AudioPlayer implements Runnable {
 
 	public void run() {
 		
-		while(flag && org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()){
+		while(flag && org.bss.brihaspatisync.util.ThreadController.getThreadFlag()){
 			try {
 				if(audioVector.size() > 7) {
 					byte[] bigArray=new byte[((getDecoder(audioVector.get(0)).length)*7)];

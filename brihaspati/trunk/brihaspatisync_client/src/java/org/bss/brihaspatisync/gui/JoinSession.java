@@ -38,7 +38,7 @@ public class JoinSession {
  	 */
 
 	private ClientObject client_obj=ClientObject.getController();
-	protected JoinSession(String Lecture_ID){
+	protected JoinSession(String Lecture_ID) {
                 try{
 			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
 			String usr_name=client_obj.getUserName();
@@ -59,26 +59,24 @@ public class JoinSession {
 					//get reflector ip from indexing server.
 					String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
 					if(!(ref_ip.equals(""))) {
+						if(!(ThreadController.getThreadFlag()))
+			                		ThreadController.setThreadFlag(true);	
 						System.out.println(ref_ip);
-						if(!(ThreadController.getController().getThreadFlag()))
-			                		ThreadController.getController().setThreadFlag(true);	
 						StatusPanel.getController().sethttpClient("no");
 						StatusPanel.getController().setdestopClient("no");
 						StatusPanel.getController().setpptClient("no");
 						// Thread for get userlist and other media data from reflector.
-	                			new HTTPClient(Lecture_ID).start();
-						org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
 						startGUIThread();
-						
-					}else {
+						startThread(Lecture_ID);
+						StatusPanel.getController().setProcessBar("no");
+					} else {
 						StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 					}
 				   } else
                                 	System.out.println("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
 				}
 			}
-			
-          	}catch(Exception ex) {  System.out.println("Error on Join Session==> "+ex.getMessage());}
+          	}catch(Exception ex) {  System.out.println("Exception on Join Session !! "+ex.getMessage());}
 	}
 
 	/**
@@ -97,9 +95,16 @@ public class JoinSession {
                         mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
                         mainWindow.getContainer().validate();
                         mainWindow.getContainer().repaint();
-	
-			// Timer to print user list in gui.
-			// start thread controller which can handle send and receive thread of network.
+		}catch(Exception e){}
+	}
+
+	private void startThread(String lecture_id) {	
+		// Timer to print user list in gui.
+		// start thread controller which can handle send and receive thread of network.
+		try {	
+			new HTTPClient(lecture_id).start();
+			ThreadController.setReflectorStatusThreadFlag(true);
+                        org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
 			HandRaiseThreadController.getController().start();

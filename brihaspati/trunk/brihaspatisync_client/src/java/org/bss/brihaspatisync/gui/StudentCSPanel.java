@@ -168,7 +168,6 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 				
 		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.ActionLabel")+"</font></U></b>"),0);
 		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.LectureLabel")+"</font></U></b>"),0);
-	
 		String str_curday="";
                 String str_curmonth="";
 		
@@ -185,44 +184,44 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		
 		for(int i=0;i<y;i++){
 			try {
-                        java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectureVector.get(i).toString(),",");
-                        String lectid=decrypt(str1.nextElement().toString());
-                        courseid.add(lectid);
-                        String lectCouseName=decrypt(str1.nextElement().toString());
-                        String lectUserName=decrypt(str1.nextElement().toString());
-                        String lectName=decrypt(str1.nextElement().toString());
-                        String lectInfo=decrypt(str1.nextElement().toString());
-                        String lectNo=decrypt(str1.nextElement().toString());
-                        String lectVedio=decrypt(str1.nextElement().toString());
-                        String lectAudio=decrypt(str1.nextElement().toString());
-                        String lectWhiteBoard=decrypt(str1.nextElement().toString());
-                        String lectDate=decrypt(str1.nextElement().toString());
-                        String lectTime=decrypt(str1.nextElement().toString());
-                        String lectDuration=decrypt(str1.nextElement().toString());
-                        String repeattime=decrypt(str1.nextElement().toString());
-                        String fortime=decrypt(str1.nextElement().toString());
+                	        java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectureVector.get(i).toString(),",");
+                        	String lectid=decrypt(str1.nextElement().toString());
+	                        courseid.add(lectid);
+                	        String lectCouseName=decrypt(str1.nextElement().toString());
+        	                String lectUserName=decrypt(str1.nextElement().toString());
+                        	String lectName=decrypt(str1.nextElement().toString());
+	                        String lectInfo=decrypt(str1.nextElement().toString());
+        	                String lectNo=decrypt(str1.nextElement().toString());
+                	        String lectVedio=decrypt(str1.nextElement().toString());
+                        	String lectAudio=decrypt(str1.nextElement().toString());
+	                        String lectWhiteBoard=decrypt(str1.nextElement().toString());
+        	                String lectDate=decrypt(str1.nextElement().toString());
+                	        String lectTime=decrypt(str1.nextElement().toString());
+                        	String lectDuration=decrypt(str1.nextElement().toString());
+	                        String repeattime=decrypt(str1.nextElement().toString());
+        	                String fortime=decrypt(str1.nextElement().toString());
 			
-			String time[]=lectTime.split(":");
-			int anausetime= (Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);	
-			nsPane[i]=new JPanel();
-                        nsPane[i].setBorder(BorderFactory.createLineBorder(Color.gray));
-			nameLabel[i]=new JLabel(lectName);
-			nsPane[i].add(nameLabel[i]);
-			lectDate=lectDate.substring(0,10);
-                        lectDate=lectDate.replaceAll("-","");
-			int checkintdate=Integer.parseInt(lectDate);
+				String time[]=lectTime.split(":");
+				int anausetime= (Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);	
+				nsPane[i]=new JPanel();
+        	                nsPane[i].setBorder(BorderFactory.createLineBorder(Color.gray));
+				nameLabel[i]=new JLabel(lectName);
+				nsPane[i].add(nameLabel[i]);
+				lectDate=lectDate.substring(0,10);
+        	                lectDate=lectDate.replaceAll("-","");
+				int checkintdate=Integer.parseInt(lectDate);
 			
-			int cue_finaltime =(cur_h*60)+cur_m;
-			time=lectDuration.split(":");
-			int durationtime=Integer.parseInt(time[0])*60;
-			durationtime=anausetime+durationtime;
-			if(checkintdate == curdate) {
-				if((anausetime <= cue_finaltime) && (durationtime >= cue_finaltime) ) {				
-	                    		runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.JoinBttn"));
-					runButton[i].addActionListener(this);
-				}else
-				runButton[i]=new JButton("");
-               		}
+				int cue_finaltime =(cur_h*60)+cur_m;
+				time=lectDuration.split(":");
+				int durationtime=Integer.parseInt(time[0])*60;
+				durationtime=anausetime+durationtime;
+				if(checkintdate == curdate) {
+					if((anausetime <= cue_finaltime) && (durationtime >= cue_finaltime) ) {				
+	                    			runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.JoinBttn"));
+						runButton[i].addActionListener(this);
+					}else
+					runButton[i]=new JButton("");
+               			}
 			else {
 				runButton[i]=new JButton("");
                     	
@@ -252,7 +251,9 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 
 	public void actionPerformed(ActionEvent e) {
 		// Action for Combobox
-  		if(e.getSource()==studCourseCombo){
+		StatusPanel.getController().setProcessBar("yes");
+  		if(e.getSource()==studCourseCombo) {
+			
       			JComboBox combo = (JComboBox)e.getSource();
         		mainPanel.remove(1);
 			if(((String)combo.getSelectedItem()).equals("--Show All--")){
@@ -263,14 +264,14 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                                 courseName.addElement((String)combo.getSelectedItem());
                                 mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
                         }
-
 			center_mainPanel.validate();
                         mainPanel.revalidate();
     		}
 		// Action for Join button
 		try{
                        	for(int i=0;i<runButton.length;i++){
-                               	if(e.getSource()==runButton[i]){
+                               	if(e.getSource()==runButton[i]){	
+					StatusPanel.getController().setProcessBar("yes");
 					lect_id=courseid.get(i).toString();
 					// store this lect_id in client objects for later use by this client.
                                         client_obj.setLectureID(lect_id);
@@ -280,11 +281,12 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                                        	new JoinSession(lect_id);
                                	}
                        	}
-                }catch(Exception exc){log.setLog("Can't open GUI");}
+                }catch(Exception ex) { System.out.println("Error in load session in "+this.getClass()+"  "+ex.getMessage()); }
+		StatusPanel.getController().setProcessBar("no");
 	}
 
 	public void mouseClicked(MouseEvent ev) {
-		 	 	
+		StatusPanel.getController().setProcessBar("yes"); 	 	
 		if(ev.getComponent().getName().equals("lectureInfo.Action")){
 			try{
 				for(int i=0;i<descLabel.length;i++) {
@@ -304,6 +306,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                        	mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
 			StatusPanel.getController().setStatus("reload Successfully");
 		}
+		StatusPanel.getController().setProcessBar("no");
 	}
 	
 	public void mousePressed(MouseEvent e) {}
@@ -327,13 +330,12 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                                 cur_h=Integer.parseInt(str2[0]);
                                 cur_m=Integer.parseInt(str2[1])+10;
                         }
-                }catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
+                } catch(Exception e){ System.out.println("Exception in getTimeIndexingServer() "+this.getClass()+" "+e.getMessage());}
         }
 	
 	private String decrypt(String encryptedData) throws Exception {
 		String decryptedValue = new String(org.apache.commons.codec.binary.Base64.decodeBase64(encryptedData.getBytes()));
                 return decryptedValue;
         }
-
 }
 	

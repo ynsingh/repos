@@ -77,7 +77,7 @@ public class Post_GetSharedScreen implements Runnable {
 			getflag=getscreen;
                         runner = new Thread(this);
                         runner.start();
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("Desktop_Data");
+			clientobject.addType("Desktop_Data");
 			System.out.println("PostSharedScreen start successfully !!");
 		}
         }
@@ -88,7 +88,7 @@ public class Post_GetSharedScreen implements Runnable {
         
 	public void stop() {
                 if (runner != null) {
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("Desktop_Data");	
+			clientobject.removeType("Desktop_Data");	
 			flag=false;
 			getflag=false;
                         runner = null;		
@@ -126,9 +126,9 @@ public class Post_GetSharedScreen implements Runnable {
 
 
 	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag()) {
+		while(flag && ThreadController.getThreadFlag()) {
 			try {
-				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 					/****   send the image to reflector **********/
 					if(!getflag) {
 						BufferedImage image=captureScreen();
@@ -161,7 +161,7 @@ public class Post_GetSharedScreen implements Runnable {
 					StatusPanel.getController().setdestopClient("yes");
 				}else 
 					StatusPanel.getController().setdestopClient("no");
-                       		runner.sleep(2000); runner.yield();
+                       		runner.yield(); runner.sleep(2000); 
 				System.gc();
 			}catch(Exception e){  StatusPanel.getController().setdestopClient("no"); }
 		}
@@ -192,7 +192,7 @@ public class Post_GetSharedScreen implements Runnable {
 			ImageWriteParam param = writer.getDefaultWriteParam();
 			// compress to a given quality
 			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-			param.setCompressionQuality(ClientObject.getController().getImageQuality());
+			param.setCompressionQuality(ClientObject.getController().getDesktopImageQuality());
 			// appends a complete image stream containing a single image and
 		    	// associated stream and image metadata and thumbnails to the output
 			writer.write(null, new IIOImage(image, null, null), param);

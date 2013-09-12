@@ -72,7 +72,7 @@ public class ReceiveQueueHandler implements Runnable{
          * Get Entry from Receive Queue and send it to appropriate tool for performing Action on GUI. 
          */
 	public void run(){
-		while(flag && ThreadController.getController().getThreadFlag()){
+		while(flag && ThreadController.getThreadFlag()){
 			try{
 				synchronized(utilobject){
 					while(utilobject.getRecQueueSize() != 0){

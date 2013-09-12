@@ -455,6 +455,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
       	 */
 	public void actionPerformed(ActionEvent e){
         	if(e.getSource()==annBttn){
+			StatusPanel.getController().setProcessBar("yes");
 			try {
 				annBttn.setCursor(busyCursor);
 				String lectValue = getLectureValues();
@@ -474,6 +475,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 					System.out.println("insufficient indexServer name in UpdateSession :" + indexServerName);
                                 annBttn.setCursor(defaultCursor);
 			} catch(Exception ex){log.setLog("Error at actionPerformed()in UpdateSessionPanel"+ex.getMessage());}
+			StatusPanel.getController().setProcessBar("no");
 		}//if
      	}
 
@@ -482,10 +484,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
          */
 
 	public void mouseClicked(MouseEvent ev) {
-        	if(ev.getComponent().getName().equals("")){
-		}
-		/*******  Modified *******/
-		if(ev.getComponent().getName().equals("closeLabel.Action")){
+        	if(ev.getComponent().getName().equals("")){ }
+		if(ev.getComponent().getName().equals("closeLabel.Action")) {
+			StatusPanel.getController().setProcessBar("yes");
 			closeLabel.setCursor(busyCursor);
 			try{
 				Thread.sleep(500);
@@ -494,9 +495,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			}finally{
 				closeLabel.setCursor(defaultCursor);
 			}
-                  frame.dispose();
+                  	frame.dispose();
+			StatusPanel.getController().setProcessBar("no");
                 }
-		/************************/
 	}
 	
 	public void mousePressed(MouseEvent e) {}

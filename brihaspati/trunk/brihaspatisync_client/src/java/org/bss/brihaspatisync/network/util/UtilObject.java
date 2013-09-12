@@ -7,6 +7,7 @@ package org.bss.brihaspatisync.network.util;
  * Copyright (c) 2007-2008
  */
 
+import  java.util.Vector;
 import  java.util.Hashtable;
 import  java.util.LinkedList;
 
@@ -23,9 +24,12 @@ public class UtilObject {
 	private Queue recQueue=null;	
 	private Queue sendQueue=null;
         private Queue frameQueue=null;
+	
 	private java.util.Hashtable ht_for_queue = null;
 	private java.util.Hashtable ht_for_send_queue = null;
 	
+	private Vector type_vector=new Vector();	
+
 	private static UtilObject nob=null;
 	
 	public static UtilObject getController(){
@@ -93,7 +97,7 @@ public class UtilObject {
                 sendQueue.putString(value);
         }
 	
-        public String getSendQueue(){
+        public String getSendQueue() {
 		String value="";
                 try {
 			value= sendQueue.getString().toString();
@@ -106,4 +110,18 @@ public class UtilObject {
                 return sendQueue.size();
         }
 	
+	public void addType(String type) {
+                if(!(type_vector.contains(type)))
+                        type_vector.add(type);
+
+        }
+
+        public void removeType(String type) {
+                type_vector.remove(type);
+                org.bss.brihaspatisync.network.singleport.NetworkController.remove_Ht_Key(type);
+        }
+	
+	public Vector getTypeVector(){
+		return type_vector;
+	}	
 }

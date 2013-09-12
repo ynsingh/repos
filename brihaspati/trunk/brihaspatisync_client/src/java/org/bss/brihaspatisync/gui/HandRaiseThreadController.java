@@ -74,7 +74,7 @@ public class HandRaiseThreadController implements Runnable{
         }
 
 	public void run(){
-		while(rec_Flag && ThreadController.getController().getThreadFlag()){
+		while(rec_Flag && ThreadController.getThreadFlag()){
 			try{
 				if(startpostpermission){ 
 					try {

@@ -81,9 +81,9 @@ public class LocalServer implements Runnable {
  	 * and put the image in buffer .
  	 */
 	public void run() {
-		while(flag && ThreadController.getController().getThreadFlag()) {
+		while(flag && ThreadController.getThreadFlag()) {
 		        try {
-				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 					String ip=runtime_object.getVideoServer();
 					BufferedImage image=null;
 					String os=System.getProperty("os.name");
@@ -117,9 +117,9 @@ public class LocalServer implements Runnable {
                                               	else  
                                                		VideoPanel.getController().runStudentVidio(image);
                                     	}   
-                                        runner.sleep(3000);runner.yield();
+                                        runner.yield(); runner.sleep(3000);
 				} else
-					runner.sleep(3000);runner.yield();
+					runner.yield(); runner.sleep(3000);
 			} catch(Exception e) { }
 		}
 	}

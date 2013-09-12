@@ -348,7 +348,6 @@ public class HttpsUtil{
 		
    	}
 	
-		
 	public int getNetType() {
 		return netType;
 	}

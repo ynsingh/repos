@@ -146,8 +146,8 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
         }
 
 	public void run(){
-		while(wb_Flag && ThreadController.getController().getThreadFlag()){
-			while(draw_vector.size() !=0 ){
+		while(wb_Flag && ThreadController.getThreadFlag()){
+			while(draw_vector.size() !=0 ) {
 				wbSize_Flag=true;
 				for(int i=0;i<draw_vector.size();i++){
 					StringTokenizer st = new StringTokenizer((String)draw_vector.get(i),"$");
