@@ -17,7 +17,7 @@
 		<all-permissions/> 
 	</security>
 	<resources>
-		<j2se version="1.6+" initial-heap-size="256m" max-heap-size="1024m" />  
+		<j2se version="1.6+" initial-heap-size="256m" max-heap-size="1024m" java-vm-args="-Xincgc"/>  
 		<property name="sun.java2d.d3d" value="false"/>
 		<jar href="brihaspatisync.jar"/>
 		<jar href="vlcj-2.3.1.jar"/>
