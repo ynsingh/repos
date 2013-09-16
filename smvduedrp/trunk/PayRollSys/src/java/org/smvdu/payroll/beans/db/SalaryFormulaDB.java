@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.faces.component.UIData;
 import org.smvdu.payroll.beans.SalaryFormula;
+import org.smvdu.payroll.beans.UserInfo;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -42,13 +44,18 @@ import org.smvdu.payroll.beans.SalaryFormula;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 16 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
  */
 public class SalaryFormulaDB {
     private PreparedStatement ps;
     private ResultSet rs;
+    private final UserInfo userBean;
 
-
+     public SalaryFormulaDB()
+     {
+         userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+     }
     public String loadFormula(int code)    {
         try
         {
@@ -120,6 +127,26 @@ public class SalaryFormulaDB {
         {
             e.printStackTrace();
             return false;
+        }
+    }
+	public void update(ArrayList<SalaryFormula> sfdata){
+        try
+        {
+        	Connection c = new CommonDB().getConnection();
+            	ps=c.prepareStatement("update salary_formula set sf_sal_formula=? where sf_sal_id=? and  sf_org_id= '"+userBean.getUserOrgCode()+"'");
+            	for(SalaryFormula sf : sfdata)
+            	{
+                	ps.setString(1, sf.getFormula());
+                        ps.setInt(2, sf.getSalCode());
+                	ps.executeUpdate();
+                	ps.clearParameters();
+            	}
+            	ps.close();
+            	c.close();
+        }
+        catch(Exception e)
+        {
+            //Logger.getAnonymousLogger().log(Log., e.getMessage());
         }
     }
 

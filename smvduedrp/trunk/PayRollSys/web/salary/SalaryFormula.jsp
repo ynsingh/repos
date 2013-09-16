@@ -27,6 +27,14 @@
                     <f:view>
                         <rich:panel header="Salary Formula Creator">
                          <h:form id="salaryformula">
+                          <rich:messages  >
+                                <f:facet name="infoMarker">
+                                <h:graphicImage url="/img/success.png"/>
+                                </f:facet>
+                                <f:facet name="errorMarker">
+                                <h:graphicImage url="/img/err.png"/>
+                                </f:facet>
+                           </rich:messages>
                              <rich:dataTable id="tbl" value="#{TableBean.data}" var="formula" binding="#{TableBean.myGrid}">
                                  <h:column>
                                      <f:facet name="header">

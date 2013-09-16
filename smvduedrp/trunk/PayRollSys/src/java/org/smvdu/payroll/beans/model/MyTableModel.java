@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import javax.faces.component.UIData;
 import org.smvdu.payroll.beans.SalaryFormula;
 import org.smvdu.payroll.beans.db.SalaryFormulaDB;
+import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -42,6 +44,7 @@ import org.smvdu.payroll.beans.db.SalaryFormulaDB;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 16 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
  */
 public class MyTableModel 
@@ -92,12 +95,15 @@ public class MyTableModel
     public void update()
     {
        ArrayList<SalaryFormula> datas = (ArrayList<SalaryFormula>) myGrid.getValue();
+        //ArrayList<SalaryFormula> datas =(ArrayList<SalaryFormula>) data.getValue();
        for(SalaryFormula sd : datas)
        {
            System.out.println(sd.getName()+" : "+sd.getFormula());
        }
        System.out.println("Saving Data ...");
-       new SalaryFormulaDB().save(myGrid);
+       //new SalaryFormulaDB().save(myGrid);
+       new SalaryFormulaDB().update(datas);
+       FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary formula Updated", ""));
     }
 
 
