@@ -1,23 +1,18 @@
-        <CATALOG>
-                <PAYROL>
-                        <NAME>
-			Payroll System
-                        </NAME>
-
-                        <ANAME>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CATALOG>
+  <PAYROL>
+    <NAME>			Payroll System&#13;
+                             </NAME>
+    <ANAME>&#13;
                         </ANAME>
-                        
-                        <INFO> 
-				Payroll System is Perfect Solution for maintenance of Employee Attendance and their Provident Fund, Professional Tax, ESIC etc. Payroll is very easy to operate and handle. System is developed by SMVD University this system will provide complete mechanism for salary computation, salary slip genration. Salary management, Attendence and leave management, Loan and advances processing and a systematic and comprehancive standard based reports. Payroll system will enable users to create customized Salary structure and Salary heads. 
-                        </INFO>
-
-                        <URL>
-				http://202.141.40.218:8081/PayrollSys/
-                        </URL>
-
-                        <IMG>   
-				images/home/pls.png
+    <INFO> &#13;
+				Payroll System is Perfect Solution for maintenance of Employee Attendance and their Provident Fund, Professional Tax, ESIC etc. Payroll is very easy to operate and handle. System is developed by SMVD University this system will provide complete mechanism for salary computation, salary slip generation. Salary management, Attendance and leave management, Loan and advances processing and a systematic and comprehensive standard based reports. Payroll system will enable users to create customized Salary structure and Salary heads.&#13;
+&#13;
+                                  </INFO>
+    <URL>				http://202.141.40.218:8081/PayrollSys/&#13;
+                                  </URL>
+    <IMG>   &#13;
+				images/home/pls.png&#13;
                         </IMG>
-                        
-                        </PAYROL>
-        </CATALOG>
+  </PAYROL>
+</CATALOG>

@@ -1,26 +1,19 @@
-        <CATALOG>
-                <LBMS>
-                        <NAME>
-			Library Management System
-                        </NAME>
-
-                        <ANAME>
-				(LibMS)
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CATALOG>
+  <LBMS>
+    <NAME>			Library Management System     </NAME>
+    <ANAME>&#13;
+				(LibMS)&#13;
                         </ANAME>
-                        
-                        <INFO>  
-                        The main functional modules of Library Management System (LibMS) are:-
-
-			Online Public Access Catalog, Serial, Acquisition, Cataloging, Administration and Security, Utility and System SetUp and Web Admin 
-			</INFO>
-
-                        <URL>
-                        	202.141.40.218:8080/LibMS/
-			</URL>
-
-                        <IMG>   
-				images/libms.gif
+    <INFO>  &#13;
+                        The main functional modules of Library Management System (LibMS) are:-&#13;
+&#13;
+			Online Public Access Catalog, Serial, Acquisition, Cataloging, Administration and Security, Utility and System SetUp and Web Admin adw&#13;
+			         </INFO>
+    <URL>202.141.40.218:8080/LibMS/&#13;
+			             </URL>
+    <IMG>   &#13;
+				images/libms.gif&#13;
                         </IMG>
-                        
-                        </LBMS>
-        </CATALOG>
+  </LBMS>
+</CATALOG>

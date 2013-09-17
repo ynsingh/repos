@@ -1,5 +1,66 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 2.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+$xmlDoc = new DOMDocument();
+$xmlDoc->load( 'main.xml' );
+$searchNode = $xmlDoc->getElementsByTagName( "CD" );
+
+foreach( $searchNode as $searchNode )
+{
+
+    $xmlAEM = $searchNode->getElementsByTagName( "AEM" );
+    $valueAEM = $xmlAEM->item(0)->nodeValue;
+    $xmlRES = $searchNode->getElementsByTagName( "RES" );
+    $valueRES = $xmlRES->item(0)->nodeValue;
+
+    $xmlCurrentProject = $searchNode->getElementsByTagName( "CP" );
+    $valueCurrentProject = $xmlCurrentProject->item(0)->nodeValue;
+
+}
+?>
+
+<?php session_start(); ?>
+<?php
+	include_once "db/connection.php"; 
+            if (isset($_POST['login'])){
+		if ($_POST['username']!="") {
+                        $username = $_POST['username'];
+
+                        $pass = $_POST['password'];
+
+                        $username = strip_tags($username);
+
+                        $pass = strip_tags($pass);
+
+                        $username = mysql_real_escape_string($username);
+
+                        $pass = mysql_real_escape_string($pass);
+                        $pass= md5($pass);
+			$sql = mysql_query("select * from member where username = '$username' and password = '$pass'");
+			$login_check = mysql_num_rows($sql);
+			if ($login_check == 0) {
+						header("Location: admin.php?errorMssg=".urlencode("The username or password you entered is incorrect."));
+			
+			}
+			while ($row = mysql_fetch_array($sql)) {
+
+						$username = $row['username'];
+						$_SESSION['username'] = $username;
+
+						$password = $row['password'];
+
+						$_SESSION['password'] = $password;
+
+						//header('brihaspati.php');
+						header("Location: index.php");
+				}
+
+			}
+
+		}
+
+	?>
+
 
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -25,9 +86,12 @@ xmlhttp.open("GET","main.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
 var x=xmlDoc.getElementsByTagName("CD");
-var y=xmlDoc.getElementsByTagName("FOOTER");
 var z=xmlDoc.getElementsByTagName("IP");
+xmlhttp.open("GET","headerfooter.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML; 
 var pro=xmlDoc.getElementsByTagName("PROJECTS");
+var y=xmlDoc.getElementsByTagName("FOOTER");
 </script>
 
 <div id="header">
@@ -47,7 +111,17 @@ var pro=xmlDoc.getElementsByTagName("PROJECTS");
                 document.write("</a></td><td>");
                         }
        
- </script>  </li>
+ </script>
+<div style="float:right;" >
+<?php
+if( !empty($_SESSION['username']) ) 
+{
+echo "<font color=\"white\">Wellcome Admin</font><a href=\"logout.php\">Log Out</a>";
+}
+?>
+</div>
+
+</li>
         </ul>
 </div>
 <div id="content"> 
@@ -59,45 +133,44 @@ var pro=xmlDoc.getElementsByTagName("PROJECTS");
 
 
 </div>
-	<div id="columnB">
-		<h3>ABOUT ERP MISSION</h3>
-      <script type="text/javascript">
-                for (i=0;i<x.length;i++)
-  { 
-  document.write("<tr><td>");
-  document.write(x[i].getElementsByTagName("AEM")[0].childNodes[0].nodeValue);
-  document.write("</td><td>");
-  }
-       
- </script>
- 
- </script>
-		<h3>Responsibilities
-		
-		</h3>
-		<script type="text/javascript">
-                for (i=0;i<x.length;i++)
-  { 
-  document.write("<tr><td>");
-  document.write(x[i].getElementsByTagName("RES")[0].childNodes[0].nodeValue);
-  document.write("</td><td>");
-  }
-       
- </script>
+<?php
+if( empty($_SESSION['username']) )
+{
+	echo "<div id=\"columnB\">";
+	echo "<h3>ABOUT ERP MISSION</h3>";
+        echo $valueAEM ;
+        echo "<h3>Responsibilities</h3>";
+        echo $valueRES;
 
-		<h3>CURRENT PROJECTS </h3>
-		<script type="text/javascript">
-                for (i=0;i<x.length;i++)
-  { 
-  document.write("<tr><td>");
-  document.write(x[i].getElementsByTagName("CP")[0].childNodes[0].nodeValue);
-  document.write("</td><td>");
-  }
-	</script>
+        echo "<h3>CURRENT PROJECTS </h3>";
+        echo $valueCurrentProject; 
+        echo "</div>";
 
-		<ul class="list1">
-		</ul>
-	</div>
+}
+else 
+{
+	echo "<div id=\"columnB\">";
+	echo "<form action=\"xmlsave.php\" method=\"post\">";
+        echo "<input name='filenm' type='hidden' value='main.xml'/>";
+        echo "<input name='redirect' type='hidden' value='index.php'/>";
+        echo "<h3>ABOUT ERP MISSION</h3>";
+	echo "<textarea name=\"UserAddress1\" rows=\"9\" cols=\"30\"> $valueAEM </textarea>";
+	echo "<input type='submit' value='update'>";
+        echo "<h3>Responsibilities</h3>";
+	echo "<textarea name=\"UserAddress2\" rows=\"17\" cols=\"30\"> $valueRES </textarea>";
+	echo "<input type='submit' value='update'>";
+
+	echo "<h3>CURRENT PROJECTS </h3>";
+	echo "<textarea name=\"UserAddress3\" rows=\"12\" cols=\"30\"> $valueCurrentProject </textarea>";
+        echo "<ul class=\"list1\">";
+	echo "</ul>";
+        echo "<input type='submit' value='update'>";
+        echo "</form>";
+        echo "</div>";
+}
+
+
+?>
 </div>
 <div  id="content">
 <div style="float:right;color:#333;margin-top:-53px;" class="container" id="columnA">

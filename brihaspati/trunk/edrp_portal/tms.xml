@@ -1,31 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <CATALOG>
-                <TMS>
-                        <NAME>
-				Project Management System
-                        </NAME>
-
-                        <ANAME>
-				(PMS)
+  <TMS>
+    <NAME>				Project Management System&#13;
+                           swq</NAME>
+    <ANAME>&#13;
+				(PMS)&#13;
                         </ANAME>
-                        
-                        <INFO>  
-                        Organization Managing Only Super Admin can add new organization, view organization details,update organization details.
-                        Project Monitoring Institute Admin can add new projects in his organization, view all project details, update project details according to authority.
-                        Task Monitoring User can add task under the project.
-                        Gantt Chart User can view the project status with graphical interface.
-                        Resource Managing User can assign task to his resources.
-                        Document Managing User can share documents for their projects.
-                        n-Level Role Roles can be created upto n-level.
-                        Reporting User can view project report,by project completion,planning or canceled etc..
-			</INFO>
-
-                        <URL>
-				http://202.141.40.218:8081/PMS/
-                        </URL>
-
-                        <IMG>   
-				images/home/PMS.jpg
+    <INFO>  &#13;
+                        Organization Managing Only Super Admin can add new organization, view organization details,update organization details.&#13;
+                        Project Monitoring Institute Admin can add new projects in his organization, view all project details, update project details according to authority.&#13;
+                        Task Monitoring User can add task under the project.&#13;
+                        Gantt Chart User can view the project status with graphical interface.&#13;
+                        Resource Managing User can assign task to his resources.&#13;
+                        Document Managing User can share documents for their projects.&#13;
+                        n-Level Role Roles can be created upto n-level.&#13;
+                        Reporting User can view project report,by project completion,planning or canceled etc..w&#13;
+			                 </INFO>
+    <URL>http://202.141.40.218:8081/PMS/&#13;
+                                         </URL>
+    <IMG>   &#13;
+				images/home/PMS.jpg&#13;
                         </IMG>
-                        
-                        </TMS>
-        </CATALOG>
+  </TMS>
+</CATALOG>

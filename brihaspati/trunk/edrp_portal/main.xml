@@ -1,53 +1,11 @@
-<!-- Edited by XMLSpy® -->
-
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <CATALOG>
-<PROJECTS>
-<TITLE>index.html</TITLE>
-<NAME>HOME</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>brihaspati.html</TITLE>
-<NAME>BRIHASPATI</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>bgas.html</TITLE>
-<NAME>BGAS</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>libms.html</TITLE>
-<NAME>LIBMS</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>payroll.html</TITLE>
-<NAME>PAYROLL</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>pico.html</TITLE>
-<NAME>PICO</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>tms.html</TITLE>
-<NAME>PMS</NAME>
-</PROJECTS>
-<PROJECTS>
-<TITLE>ems.html</TITLE>
-<NAME>EMS</NAME>
-</PROJECTS>
-<CD>
-<AEM>Tie ERP mission is to Implement, maintain, improve, and support the County's integrated financial, procurement, human resource and payroll information systems. </AEM>
-
-<RES>The ERP Department is responsible for: Ensure system functionality, operability, and security of the Lawson ERP System and Kronos Time Keeping System. Train and support County users of the enterprise applications. Provide accurate high-level analytical reporting services to departments. Assist departments in streamlining County processes using the ERP systems.
-</RES>
-
-
-<CP>
-Welcome to the ERP National Mission Project under NME ICT, Ministry of HRD, Govt. of India. A multi-institutional team headed by IIT Kanpur, many projects like Brihaspati, Brihaspati Genral Accounting system, Purchase and Inventory Control System etc are current projects of ERP MISSION which are running successfully
-</CP>
-</CD>
-<FOOTER>
-<p1>Opensource component development by Elearning Division Supported by MCIT and NMEICT, MHRD</p1>
-<p2>Opensource development available for download at Sourceforge.net</p2>
-<p3>For reporting bugs, suggestion, feature request, and maintainence support</p3>
-<p4>post at brihaspati_ERP_mission@yahoogroups.com</p4>
-</FOOTER>
+  <CD>
+    <AEM>               The ERP mission is to Implement, maintain, improve, and support the County's integrated financial, procurement, human resource and payroll information systems. </AEM>
+    <CP>               &#13;
+Welcome to the ERP National Mission Project under NME ICT, Ministry of HRD, Govt. of India. A multi-institutional team headed by IIT Kanpur, many projects like Brihaspati, Brihaspati Genral Accounting system, Purchase and Inventory Control System etc are current projects of ERP MISSION which are running successfully&#13;
+               </CP>
+    <RES>               The ERP Department is responsible for: Ensure system functionality, operability, and security of the Lawson ERP System and Kronos Time Keeping System. Train and support County users of the enterprise applications. Provide accurate high-level analytical reporting services to departments. Assist departments in streamlining County processes using the ERP systems.&#13;
+               </RES>
+  </CD>
 </CATALOG>
