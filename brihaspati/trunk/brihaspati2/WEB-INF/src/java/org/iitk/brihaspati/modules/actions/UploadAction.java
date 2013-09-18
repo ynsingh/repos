@@ -285,7 +285,7 @@ public class UploadAction extends SecureAction
 			{
 				boolean fileExists=false;
 				fileItem=pp.getFileItem("file"+(count+1));
-	//			ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
+				//ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
 				if(fileItem!=null && fileItem.getSize() != 0)
 				{
 					String temp=fileItem.getName();
@@ -384,6 +384,8 @@ public class UploadAction extends SecureAction
 					}
 				}//fileTiem	
 			}//count
+			String courseName = CourseUtil.getCourseName(courseHome);	
+			String Mail_msg = "";
 			if(flag1){	
 			if(Pub.equals("Publish"))
 			{
@@ -410,9 +412,8 @@ public class UploadAction extends SecureAction
 			                crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
 			                crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,userId);
 			                List v1=TurbineUserGroupRolePeer.doSelect(crit);				
-					String Mail_msg = "";
 					if(v1.size() >0){
-						String courseName = CourseUtil.getCourseName(courseHome);	
+						//String courseName = CourseUtil.getCourseName(courseHome);	
 						for(int i=0; i < v1.size(); i ++) {
 							int usrId =((TurbineUserGroupRole) v1.get(i)).getUserId();
 							crit = new Criteria();
@@ -437,6 +438,11 @@ public class UploadAction extends SecureAction
 			}//ifpublish
 			if(successfulUploadFilesCount>0) 
 			{	
+				String userRole = (String) user.getTemp("role");
+				if(userRole.equals("student")){
+					String insEmail = CourseUtil. getCourseInstrEmail(courseHome);
+					Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded by student named "+fullName +"in "+courseName+".", "", "", "", insEmail, "Course content is uploaded by student named "+fullName, "", LangFile);
+				}
 				if(successfulUploadFilesCount==totalFilesEntries)
 				{
 				// all the entries given were uploaded successfully
