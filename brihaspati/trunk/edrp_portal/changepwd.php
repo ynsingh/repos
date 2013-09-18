@@ -6,14 +6,12 @@
 <body>
 
 <?php
+include_once "db/connection.php";
 if ($_POST["new_pwd"] == $_POST["con_pwd"]) 
 {
 if(isset($_POST['update']))
 {
-$dbhost = 'localhost';
-$dbuser = 'arvind';
-$dbpass = 'arvind';
-$conn = mysql_connect($dbhost, $dbuser, $dbpass);
+$conn = mysql_connect($mysql_hostname, $mysql_user,  $mysql_password);
 if(! $conn )
 {
   die('Could not connect: ' . mysql_error());
@@ -28,7 +26,7 @@ $sql = "UPDATE member ".
        "SET password = '$new_pwd'".
        "WHERE password = '$old_pwd'" ;
 
-mysql_select_db('simple_login');
+mysql_select_db($mysql_database);
 $retval = mysql_query( $sql, $conn );
 if(! $retval )
 {
