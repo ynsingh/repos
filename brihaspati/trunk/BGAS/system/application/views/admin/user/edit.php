@@ -1,11 +1,15 @@
 <?php
-	echo form_open('admin/user/edit/' . $user_name);
 
-	echo "<p>";
-	echo 'Username';
-	echo "<br />";
-	echo $user_name;
-	echo "</p>";
+	echo form_open('admin/user/edit/' . $user_id);
+
+		
+        echo "<p>";
+        echo form_label('username', 'user_name');
+        echo "<br />";
+        echo form_input($user_name);
+        echo "</p>";	
+
+
 
 	echo "<p>";
 	echo form_label('Password', 'user_password');

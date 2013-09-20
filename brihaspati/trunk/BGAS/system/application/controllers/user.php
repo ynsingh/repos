@@ -44,7 +44,7 @@ class User extends Controller {
 		}
 
 		if ($this->form_validation->run() == FALSE)
-		{
+                    {
 			$this->messages->add(validation_errors(), 'error');
 			$this->template->load('user_template', 'user/login', $data);
 			return;
@@ -53,16 +53,40 @@ class User extends Controller {
 		{
 			$data_user_name = $this->input->post('user_name', TRUE);
 			$data_user_password = $this->input->post('user_password', TRUE);
+                        $user_name='';
+                        $user_password='';
+                        $user_account='';
+                        $user_role='';
+			$user_status='';
+                       // echo "the value---------------> $data_user_name";
+                                $this->db->from('bgasuser');
+                                $this->db->select('username,password,role,status,accounts')->where('username =', $data_user_name);
+                        //$this->db->select('password')->where('password=', $data_user_password);
 
-			/* Check user ini file */
-			if ( ! $active_user = $this->general->check_user($data_user_name))
+                                $user_name1 = $this->db->get();
+                                foreach($user_name1->result() as $row)
+                                {
+                                        $user_name1 = $row->username;
+                                        
+                                        $user_password = $row->password;
+                                        $user_account = $row->accounts;
+					$user_status = $row->status;
+                                        $user_role= $row->role;
+				}	
+			$user_name2 = $this->session->userdata('user_name');
+                	
+
+			/* Check user ini file*/
+			//if ( ! $active_user = $this->general->check_user($data_user_name))
+			if($data_user_name != $user_name1)
 			{
 				$this->template->load('user_template', 'user/login', $data);
 				return;
 			}
 
 			/* Check user status */
-			if ($active_user['status'] != 1)
+			//if ($active_user['status'] != 1)
+			if($user_status != 1)
 			{
 				$this->messages->add('User disabled.', 'error');
 				$this->template->load('user_template', 'user/login', $data);
@@ -70,11 +94,16 @@ class User extends Controller {
 			}
 
 			/* Password verify */
-			if ($active_user['password'] == $data_user_password)
+				$data_user_password = md5($data_user_password);
+                         if ($user_password == $data_user_password)
+       			//if ($active_user['password'] == $data_user_password)
 			{
 				$this->messages->add('Logged in as ' . $data_user_name . '.', 'success');
 				$this->session->set_userdata('user_name', $data_user_name);
-				$this->session->set_userdata('user_role', $active_user['role']);
+			//	$this->session->set_userdata('user_role', $active_user['role']);
+				$this->session->set_userdata('user_role', $user_role);
+			//	$this->session->set_userdata('active_account',$user_account);
+                                                
 				redirect('');
 				return;
 			} else {
@@ -119,8 +148,9 @@ class User extends Controller {
 		}
 
 		/* Currently active account */
-		$data['active_account'] = $this->session->userdata('active_account');
-
+		//$data['active_account'] = $this->session->userdata('active_account');
+		$data['user_account'] = $this->session->userdata('user_account');
+		
 		/* Getting list of files in the config - accounts directory */
 		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
 		$data['accounts'] = array();
@@ -136,21 +166,26 @@ class User extends Controller {
 				}
 			}
 		}
-
-		/* Check user ini file */
+               	//$user_name2 = $this->session->userdata('user_name'); 
+		//echo "the value is----------> $user_name2";
+                //$user_role = $this->session->userdata('user_role'); 
+		//echo "the value is----------> $user_role";
+                //$user_account_active = $this->session->userdata('active_account'); 
+		//echo "the value is----------> $user_account_active";
+		/* Check user ini file
 		if ( ! $active_user = $this->general->check_user($this->session->userdata('user_name')))
 		{
 			redirect('user/profile');
 			return;
 		}
 
-		/* Filter user access to accounts */
-		if ($active_user['accounts'] != '*')
+		/* Filter user access to accounts*/ 
+		/*if ($active_user['accounts'] != '*')
 		{
 			$valid_accounts = explode(",", $active_user['accounts']);
 			$data['accounts'] = array_intersect($data['accounts'], $valid_accounts);
-		}
-
+		}*/
+		
 		/* Form validations */
 		$this->form_validation->set_rules('account', 'Account', 'trim|required');
 
@@ -159,6 +194,7 @@ class User extends Controller {
 		{
 			$data['active_account'] = $this->input->post('account', TRUE);
 		}
+		  
 
 		/* Validating form : only if label name is not set from URL */
 		if ($this->form_validation->run() == FALSE)

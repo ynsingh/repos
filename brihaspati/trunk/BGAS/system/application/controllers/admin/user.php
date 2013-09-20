@@ -23,21 +23,29 @@ class User extends Controller {
 		$this->template->set('page_title', 'Manage users');
 		$this->template->set('nav_links', array('admin/user/add' => 'Add user'));
 
-		/* Getting list of files in the config - users directory */
+		/* Getting list of files in the config - users directory 
 		$users_list = get_filenames($this->config->item('config_path') . 'users');
-		$data['users'] = array();
+        	$data['users'] = array();
 		if ($users_list)
 		{
 			foreach ($users_list as $row)
 			{
-				/* Only include file ending with .ini */
+				/* Only include file ending with .ini 
 				if (substr($row, -4) == ".ini")
 				{
 					$ini_label = substr($row, 0, -4);
 					$data['users'][$ini_label] = $ini_label;
 				}
 			}
-		}
+		}*/  
+                $data['users'] = array();
+                $this->db->select('id,username,email,role,status,accounts')->from('bgasuser');
+
+		$query = $this->db->get();
+                $config['total_rows'] =$this->db->count_all('bgasuser');
+
+                $data['users']= $query;
+		$user_id='';
 
 		$this->template->load('admin_template', 'admin/user/index', $data);
 		return;
@@ -45,6 +53,7 @@ class User extends Controller {
 
 	function add()
 	{
+		$this->load->library('validation');
 		$this->template->set('page_title', 'Add user');
 
 		/* Form fields */
@@ -97,7 +106,7 @@ class User extends Controller {
 				{
 					$ini_label = substr($row, 0, -4);
 					$data['accounts'][$ini_label] = $ini_label;
-				}
+			}
 			}
 		}
 
@@ -113,9 +122,13 @@ class User extends Controller {
 		}
 
 		/* Form validations */
-		$this->form_validation->set_rules('user_name', 'Username', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
+		//$this->form_validation->set_rules('user_name', 'Username', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
+		$this->form_validation->set_rules('user_name', 'Username', 'trim|required|valid_email');
+
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required');
+		//$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
+
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 
@@ -155,11 +168,44 @@ class User extends Controller {
 					$data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
 					$data_accounts_string = implode(",", $data_accounts_valid);
 				}
+
+				$this->db->trans_start();
+				$insert_data = array(
+                                                        'username' => $data_user_name,
+                                                        'password'=>md5($data_user_password),
+                                                        'email' => $data_user_email,
+                                                        'role' =>$data_user_role,
+                                                        'status' => $data_user_status,
+                                                        'accounts'=>$data_accounts_string
+                                                        );
+				
+
+                                                if ( ! $this->db->insert('bgasuser', $insert_data))
+                                                {
+
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error addding User Account - ' . $data_user_name . '.', 'error');
+
+                                                        $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
+                                                        //$this->template->load('template', 'user/add');
+							$this->template->load('admin_template', 'admin/user/add', '');
+                                                        return;
+                                                }
+						else{
+						$this->db->trans_complete();
+
+                                                        $this->messages->add('Added User Account - ' . $data_user_name . ' success');
+			
+				 redirect('admin/user/');
+
+					return;	
+					}
+
 			}
 
-			$ini_file = $this->config->item('config_path') . "users/" . $data_user_name . ".ini";
+			//$ini_file = $this->config->item('config_path') . "users/" . $data_user_name . ".ini";
 
-			/* Check if user ini file exists */
+			/* Check if user ini file exists 
 			if (get_file_info($ini_file))
 			{
 				$this->messages->add('Username already exists.', 'error');
@@ -169,8 +215,9 @@ class User extends Controller {
 
 			$user_details = "[user]" . "\r\n" . "username = \"" . $data_user_name . "\"" . "\r\n" . "password = \"" . $data_user_password . "\"" . "\r\n" . "email = \"" . $data_user_email . "\"" . "\r\n" . "role = \"" . $data_user_role . "\"" . "\r\n" . "status = \"" . $data_user_status . "\"" . "\r\n" . "accounts = \"" . $data_accounts_string . "\"" . "\r\n";
 			$user_details_html = "[user]" . "<br />" . "username = \"" . $data_user_name . "\"" . "<br />" . "password = \"" . $data_user_password . "\"" . "<br />" . "email = \"" . $data_user_email . "\"" . "<br />" . "role = \"" . $data_user_role . "\"" . "<br />" . "status = \"" . $data_user_status . "\"" . "<br />" . "accounts = \"" . $data_accounts_string . "\"" . "<br />";
-
-			/* Writing the connection string to end of file - writing in 'a' append mode */
+                      echo $user_details;
+                      $this->messages->add('Tha values are ' . $data_user_name);
+			/* Writing the connection string to end of file - writing in 'a' append mode 
 			if ( ! write_file($ini_file, $user_details))
 			{
 				$this->messages->add('Failed to add user. Check if "' . $ini_file . '" file is writable.', 'error');
@@ -181,24 +228,43 @@ class User extends Controller {
 				$this->messages->add('Added user.', 'success');
 				redirect('admin/user');
 				return;
-			}
+			}*/
 		}
+		$this->template->load('admin_template', 'admin/user/add', $data);
 		return;
 	}
 
-	function edit($user_name)
+	function edit($user_id =0)
 	{
 		$this->template->set('page_title', 'Edit user');
+		$user_password='';
+		$user_email='';
+		$this->db->from('bgasuser')->where('id', $user_id);
+		$user_name1 = $this->db->get();
+		foreach($user_name1->result() as $row)
+                                {
+                             	$user_name = $row->username;       
+				$user_password = $row->password;
+				$user_email = $row->email;
+                                }
 
-		$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
 
 		/* Form fields */
+		$data['user_name'] = array(
+                        'name' => 'user_name',
+                        'id' => 'user_name',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => $user_name,
+		
+		);
+		
 		$data['user_password'] = array(
 			'name' => 'user_password',
 			'id' => 'user_password',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $user_password,
 		);
 
 		$data['user_email'] = array(
@@ -206,7 +272,7 @@ class User extends Controller {
 			'id' => 'user_email',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $user_email,
 		);
 
 		$data['user_roles'] = array(
@@ -217,20 +283,21 @@ class User extends Controller {
 			"guest" => "guest",
 		);
 
-		$data['user_name'] = $user_name;
+		$data['user_id'] = $user_id;
+		
 		$data['active_user_role'] = "";
 		$data['user_status'] = TRUE;
 
 		/* Accounts Form fields */
 		$data['accounts_active'] = array('(All Accounts)');
-		/* Getting list of files in the config - accounts directory */
+		/*Getting list of files in the config - accounts directory */
 		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
 		if ($accounts_list)
 		{
 			foreach ($accounts_list as $row)
 			{
-				/* Only include file ending with .ini */
+				//Only include file ending with .ini 
 				if (substr($row, -4) == ".ini")
 				{
 					$ini_label = substr($row, 0, -4);
@@ -242,26 +309,27 @@ class User extends Controller {
 		/* Repopulating form */
 		if ($_POST)
 		{
+			$data['user_name']['value'] = $this->input->post('user_name', TRUE);
 			$data['user_password']['value'] = $this->input->post('user_password', TRUE);
 			$data['user_email']['value'] = $this->input->post('user_email', TRUE);
 			$data['active_user_role'] = $this->input->post('user_role', TRUE);
 			$data['user_status'] = $this->input->post('user_status', TRUE);
 			$data['accounts_active'] = $this->input->post('accounts', TRUE);
 		} else {
-			/* Check if user ini file exists */
+			/* Check if user ini file exists 
 			if ( ! get_file_info($ini_file))
 			{
 				$this->messages->add('User file "' . $ini_file . '" does not exists.', 'error');
 				redirect('admin/user');
 				return;
 			} else {
-				/* Parsing user ini file */
+				/* Parsing user ini file 
 				$active_users = parse_ini_file($ini_file);
 				if ( ! $active_users)
 				{
 					$this->messages->add('Invalid user file.', 'error');
 				} else {
-					/* Check if all needed variables are set in ini file */
+					/* Check if all needed variables are set in ini file 
 					if (isset($active_users['username']))
 						$data['user_name'] = $user_name;
 					else
@@ -299,12 +367,13 @@ class User extends Controller {
 						$this->messages->add('Accounts missing from user file.', 'error');
 					}
 				}
-			}
+			}*/
 		}
 
 		/* Form validations */
-		$this->form_validation->set_rules('user_password', 'Password', 'trim|required');
-		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('user_name', 'username', 'trim|required' . $user_id);
+		$this->form_validation->set_rules('user_password', 'Password', 'trim|required' . $user_id);
+		$this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email' . $user_id);
 		$this->form_validation->set_rules('user_role', 'Role', 'trim|required');
 		$this->form_validation->set_rules('user_status', 'Active', 'trim');
 
@@ -317,6 +386,7 @@ class User extends Controller {
 		}
 		else
 		{
+			$data_user_name = $this->input->post('user_name', TRUE);
 			$data_user_password = $this->input->post('user_password', TRUE);
 			$data_user_email = $this->input->post('user_email', TRUE);
 			$data_user_role = $this->input->post('user_role', TRUE);
@@ -326,8 +396,41 @@ class User extends Controller {
 			else
 				$data_user_status = 0;
 			$data_accounts = $this->input->post('accounts', TRUE);
+			 
 
-			/* Forming account querry string */
+                         $this->db->trans_start();
+                         $update_data = array(
+                                             'username' => $data_user_name,						 
+					    'password'=>md5($data_user_password),
+                                            'email' => $data_user_email,
+                                            'role' =>$data_user_role,
+                                            'status' => $data_user_status,
+                                             );
+
+                         if ( ! $this->db->where('id', $user_id)->update('bgasuser', $update_data))
+                           {
+
+                                      $this->db->trans_rollback();
+                                      $this->messages->add('Error addding User Account - ' . $budget_data->username . '.', 'error');
+
+                                                        $this->logger->write_message("error", "Error adding User Account " . $budget_data->username);
+                                                        $this->template->load('admin_template', 'admin/user/add', $data);
+                                                        return;
+                                                }
+                                                else{
+                                                $this->db->trans_complete();
+						         $this->messages->add('Update User Account - ' . $budget_data->username . ' success');
+                                                     
+                                                redirect('admin/user/');
+
+                                                 return;
+                                                }
+                                    
+
+                                        return;
+
+
+			/* Forming account querry string 
 			$data_accounts_string = '';
 			if ( ! $data_accounts)
 			{
@@ -339,18 +442,18 @@ class User extends Controller {
 				{
 					$data_accounts_string = '*';
 				} else {
-					/* Filtering out bogus accounts */
+					/* Filtering out bogus accounts 
 					$data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
 					$data_accounts_string = implode(",", $data_accounts_valid);
 				}
 			}
 
-			$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
+			//$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
 
 			$user_details = "[user]" . "\r\n" . "username = \"" . $user_name . "\"" . "\r\n" . "password = \"" . $data_user_password . "\"" . "\r\n" . "email = \"" . $data_user_email . "\"" . "\r\n" . "role = \"" . $data_user_role . "\"" . "\r\n" . "status = \"" . $data_user_status . "\"" . "\r\n" . "accounts = \"" . $data_accounts_string . "\"" . "\r\n";
 			$user_details_html = "[user]" . "<br />" . "username = \"" . $user_name . "\"" . "<br />" . "password = \"" . $data_user_password . "\"" . "<br />" . "email = \"" . $data_user_email . "\"" . "<br />" . "role = \"" . $data_user_role . "\"" . "<br />" . "status = \"" . $data_user_status . "\"" . "<br />" . "accounts = \"" . $data_accounts_string . "\"" . "<br />";
-
-			/* Writing the connection string to end of file - writing in 'a' append mode */
+              
+			/* Writing the connection string to end of file - writing in 'a' append mode 
 			if ( ! write_file($ini_file, $user_details))
 			{
 				$this->messages->add('Failed to edit user. Check if "' . $ini_file . '" file is writable.', 'error');
@@ -361,23 +464,53 @@ class User extends Controller {
 				$this->messages->add('Updated user.', 'success');
 				redirect('admin/user');
 				return;
-			}
+			}*/
 		}
 		return;
 	}
 
-	function delete($user_name)
+
+	function delete($user_id)
 	{
 		$this->template->set('page_title', 'Delete user');
-
-		if ($this->session->userdata('user_name') == $user_name)
+		echo"$user_id";	
+		/* Get the User details */
+		$this->db->from('bgasuser')->where('id', $user_id);
+		$budget_q = $this->db->get();
+		if ($budget_q->num_rows() < 1)
 		{
-			$this->messages->add('Cannot delete currently logged in user.', 'error');
-			redirect('admin/user');
+			$this->messages->add('Invalid Budget account.', 'error');
+			redirect('admin/user/');
 			return;
+		} else {
+			$budget_data = $budget_q->row();
 		}
-		$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
-		$this->messages->add('Delete ' . $ini_file . ' file manually.', 'error');
+			
+			$this->db->trans_start();
+
+		         if ( ! $this->db->delete('bgasuser', array('id' => $user_id)))
+                             {
+
+                                $this->db->trans_rollback();
+                            	$this->messages->add('Error delete User Account - ' . $budget_data->username . '.', 'error');
+
+                                $this->logger->write_message("error", "Error delete User Account " . $budget_data->username);
+                              
+					  redirect('admin/user/');
+
+                                    return;
+                            }
+                               else{
+                             $this->db->trans_complete();
+                             $this->messages->add('delete User Account - ' . $budget_data->username . '.', 'success');
+                                 
+                             redirect('admin/user/');
+
+                             return;
+                                                }
+
+	//	$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
+	//	$this->messages->add('Delete ' . $ini_file . ' file manually.', 'error');
 		redirect('admin/user');
 		return;
 	}

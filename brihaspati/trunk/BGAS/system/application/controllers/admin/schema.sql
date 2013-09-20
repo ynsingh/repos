@@ -135,3 +135,112 @@ CREATE TABLE IF NOT EXISTS settings (
   uni_name varchar(255) default NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS studentmaster (
+  reg_no varchar(20) NOT NULL, 
+  entry_no varchar(20) default NULL,
+  batch varchar(20) default NULL,
+  program varchar(20) default NULL,
+  student_opbal_amount double(15,2) default NULL,
+  degree_code int(11) default NULL,
+  org_id varchar(400) default NULL,
+  department_id int(11) default NULL,
+  PAR_seq_id int(11) NOT NULL auto_increment,
+  branch_id int(11) default NULL,
+  sem_code int(11) default NULL,
+  fee_head_code int(11) default NULL,
+  PRIMARY KEY  (PAR_seq_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS employeemaster (
+  emp_name varchar(70) NOT NULL,
+  emp_code varchar(30) NOT NULL,
+  emp_dept_code int(11) NOT NULL,
+  emp_desig_code int(11) NOT NULL,
+  emp_type_code int(11) NOT NULL,
+  emp_phone varchar(30) default NULL,
+  emp_email varchar(30) default NULL,
+  emp_dob date default NULL,
+  emp_doj date default NULL,
+  emp_id int(11) NOT NULL auto_increment,
+  emp_salary_grade int(11) NOT NULL,
+  emp_bank_accno varchar(20) default NULL,
+  emp_pf_accno varchar(20) default NULL,
+  emp_pan_no varchar(20) default NULL,
+  emp_gender varchar(10) NOT NULL default '1',
+  emp_org_code int(11) NOT NULL default '0',
+  emp_father varchar(100) default NULL,
+  emp_basic int(11) NOT NULL default '0',
+  emp_title varchar(50) NOT NULL default 'Prof.',
+  emp_exp int(11) NOT NULL,
+  emp_qual varchar(100) NOT NULL,
+  emp_yop int(11) NOT NULL,
+  emp_prev_emp varchar(200) NOT NULL,
+  emp_address varchar(200) NOT NULL,
+  emp_active tinyint(4) default '1',
+  bank_ifsc_code varchar(500) default NULL,
+  emp_bank_status tinyint(1) default '0',
+  dor varchar(100) default NULL,
+  emp_leaving varchar(100) default NULL,
+  emp_noti_day int(11) default NULL,
+  citizen varchar(100) default NULL,
+  PRIMARY KEY  (emp_code),
+  UNIQUE KEY(emp_id),
+  UNIQUE KEY(emp_code,emp_org_code)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS party (
+  PAR_Name int(10) unsigned NOT NULL 
+  PAR_IM_Id int(5) unsigned NOT NULL,
+  PAR_Id varchar(50) NOT NULL,AUTO_INCREMENT,
+  PAR_Supplier_Type int(10) unsigned DEFAULT NULL,
+  PAR_Ownership_Type int(10) unsigned DEFAULT NULL,
+  PAR_Deals_With varchar(200) DEFAULT NULL,
+  PAR_Year_Establishment date DEFAULT NULL,
+  PAR_PAN_No varchar(15) DEFAULT NULL,
+  PAR_TAN_No varchar(15) DEFAULT NULL,
+  PAR_STATE_ST_VAT_RGN_NO varchar(15) DEFAULT NULL,
+  PAR_CEN_ST_VAT_RGN_NO varchar(15) DEFAULT NULL,
+  PAR_ED_RGN_NO varchar(15) DEFAULT NULL,
+  PAR_ECC_CODE varchar(15) DEFAULT NULL,
+  PAR_ENTREPRENURE_MEM_NO varchar(15) DEFAULT NULL,
+  PAR_REG_DATE date NOT NULL,
+  PAR_Remarks varchar(100) DEFAULT NULL,
+  PAR_CEO_OR_PROPRIETOR_NAME varchar(100) DEFAULT NULL,
+  PRIMARY KEY (PAR_Id),
+  UNIQUE KEY(PAR_IM_Id,PAR_Name),
+  UNIQUE KEY(PAR_IM_Id,PAR_PAN_No),
+  UNIQUE KEY(PAR_IM_Id,PAR_TAN_No)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS erpm_item_master (
+  ERPMIM_ID int(10) unsigned NOT NULL auto_increment,
+  ERPMIM_IM_ID PARallint(5) unsigned default NULL COMMENT 'This filed stores Institution fotr which Item has been created',
+  ERPMIM_Item_Brief_Desc varchar(500) NOT NULL,
+  ERPMIM_Item_Cat1 int(11) unsigned NOT NULL,
+  ERPMIM_Item_Cat2 int(11) unsigned NOT NULL,
+  ERPMIM_Item_Cat3 int(11) unsigned NOT NULL,
+  ERPMIM_UOP int(10) unsigned NOT NULL,
+  ERPMIM_Make varchar(20) default NULL,
+  ERPMIM_Model varchar(20) default NULL,
+  ERPMIM_Capital_Cat int(10) unsigned default NULL,
+  ERPMIM_Detailed_Desc varchar(2000) NOT NULL,
+  ERPMIM_Remarks varchar(100) default NULL,
+  PRIMARY KEY  (ERPMIM_ID)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ;
+
+CREATE TABLE bgasuser
+(
+id INTEGER (20)  NOT NULL AUTO_INCREMENT,
+username VARCHAR (200) NOT NULL,
+password VARCHAR (200) NOT NULL,
+email VARCHAR (200) NOT NULL,
+role VARCHAR (200) NOT NULL,
+status VARCHAR (200) NOT NULL,
+accounts VARCHAR (200) NOT NULL,
+PRIMARY KEY(id)
+);
+			
+
+
+

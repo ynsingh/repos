@@ -82,7 +82,7 @@ class General {
 					}
 					$this->check_database_version();
 
-					$table_names = array('groups', 'ledgers', 'budgets', 'budget_allocate', 'entry_types', 'entries', 'entry_items', 'tags', 'logs', 'settings');
+					$table_names = array('groups', 'ledgers', 'budgets', 'budget_allocate', 'entry_types', 'entries', 'entry_items', 'tags', 'logs', 'settings', 'bgasuser');
 					foreach ($table_names as $id => $tbname)
 					{
 						$valid_db_q = mysql_query('DESC ' . $tbname);
@@ -174,7 +174,8 @@ class General {
 		if ( ! isset($user_data['role']))
 		{
 			$CI->messages->add('Role missing from user file. Defaulting to "guest" role.', 'error');
-			$user_data['role'] = 'guest';
+			$user_data['role'] = $user_role;
+			//$user_data['role'] = 'guest';
 		}
 		if ( ! isset($user_data['accounts']))
 		{
