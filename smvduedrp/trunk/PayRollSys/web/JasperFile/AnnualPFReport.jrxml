@@ -74,7 +74,7 @@ emp_id = apf_emp_id left join
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{session_master_ss_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="393" y="78" width="150" height="20"/>
+				<reportElement x="393" y="78" width="200" height="20"/>
 				<box leftPadding="3" rightPadding="2"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_title}+" "+$F{employee_master_emp_name}]]></textFieldExpression>
@@ -88,7 +88,7 @@ emp_id = apf_emp_id left join
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{department_master_dept_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="393" y="99" width="150" height="20"/>
+				<reportElement x="393" y="99" width="200" height="20"/>
 				<box leftPadding="3" rightPadding="2"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation_master_desig_name}]]></textFieldExpression>

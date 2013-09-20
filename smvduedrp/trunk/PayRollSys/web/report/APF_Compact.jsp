@@ -131,21 +131,21 @@
                 else if(type.equals("PDF") == true)
                 {
                        //  Getting The Name Of The System Where Project Is Going On
-                    com.sun.security.auth.module.NTSystem NTSystem = new com.sun.security.auth.module.NTSystem();
+                    //com.sun.security.auth.module.NTSystem NTSystem = new com.sun.security.auth.module.NTS   ystem();
                     response.setContentType("application/pdf;charset=UTF-8");
                     response.setContentLength((path + "/" + "PFReport.jasper").length());
 
 
                     //Code For Creating Empty PDF Document For Genrating Report
 
-                    OutputStream file = new FileOutputStream(new File("C:\\Users\\" + NTSystem.getName() + "\\Desktop\\Commulative.pdf"));
+                    /*OutputStream file = new FileOutputStream(new File("C:\\Users\\" + NTSystem.getName() + "\\Desktop\\Commulative.pdf"));
                     Document document = new Document();
                     PdfWriter.getInstance(document, file);
                     document.open();
                     document.add(new Paragraph(""));
                     document.add(new Paragraph("k"));
                     document.close();
-                    file.close();
+                    file.close();*/
 
                     // Code For Printing Report In PDF Document
 
@@ -154,7 +154,7 @@
                     Map<JRExporterParameter, Object> parameterExport = new HashMap<JRExporterParameter, Object>();
                     parameterExport.put(JRExporterParameter.JASPER_PRINT, jasperPrint);
                     parameterExport.put(JRPdfExporterParameter.OUTPUT_WRITER, out1);
-                    parameterExport.put(JRPdfExporterParameter.OUTPUT_FILE_NAME, "C:\\Users\\" + NTSystem.getName() + "\\Desktop\\Commulative.pdf");
+                    //parameterExport.put(JRPdfExporterParameter.OUTPUT_FILE_NAME, "C:\\Users\\" + NTSystem.getName() + "\\Desktop\\Commulative.pdf");
                     exporter1.setParameters(parameterExport);
                     exporter1.exportReport();
                     out1.flush();

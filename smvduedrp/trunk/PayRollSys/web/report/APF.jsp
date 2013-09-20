@@ -29,12 +29,13 @@
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 17 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
 --%>
 
-<%@page import="org.smvdu.payroll.api.pf.ReportGen.AnnualPfReport"%>
+<%--@page import="org.smvdu.payroll.api.pf.ReportGen.JasperToXml"--%>
 <%@page import="org.smvdu.payroll.api.annualreport.AnnualPFReport"%>
-<%@page import="org.smvdu.payroll.api.pf.ReportGen.ButtonText"%>
+<%--  @page import="org.smvdu.payroll.api.pf.ReportGen.ButtonText" --%>
 <%@page import="org.smvdu.payroll.api.pf.ReportGen.ReportClass"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="net.sf.jasperreports.engine.JasperRunManager"%>
@@ -107,8 +108,8 @@
             map.put("month", ub.getCurrentMonth());
             map.put("year", ub.getCurrentYear());
             Image img = new OrgLogoDB().loadLogoImage();
-
-            new PFOpeningBalanceDB().refreshReport();
+            
+            //new PFOpeningBalanceDB().refreshReport();
             map.put("org_logo", img);
             map.put("fin_session", ssCode);
 
@@ -119,7 +120,7 @@
             OutputStream ouputStream = response.getOutputStream();
             try
             {
-                JasperPrint jasperPrint = JasperFillManager.fillReport(path + "/" + "JasperFile/AnnualPFReport.jasper", map, conn);
+               JasperPrint jasperPrint = JasperFillManager.fillReport(path + "/" + "JasperFile/AnnualPFReport.jasper", map, conn);
                 JRExporter exporter = new JRHtmlExporter();
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
                 exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, ouputStream);
