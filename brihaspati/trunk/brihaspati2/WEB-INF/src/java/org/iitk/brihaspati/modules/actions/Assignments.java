@@ -230,6 +230,7 @@ public class Assignments extends SecureAction
                                 */
 
                                 String str3="";
+				 String flist[] = f.list();
                                 FileItem fileItem;
                                 fileItem = pp.getFileItem("file");
                                 String fileName1=fileItem.getName();
@@ -256,6 +257,14 @@ public class Assignments extends SecureAction
 						int startIndex=fileName1.lastIndexOf(".")+1;
         		                        String fileExt=fileName1.substring(startIndex);
                                                 String fileName="AssignmentFile."+fileExt;
+						for(int ss=0;ss<flist.length;ss++)
+                                        	{
+                                                	if(flist[ss].startsWith("AssignmentFile"))
+	                                                {
+        	                                                File fl = new File(Assign+"/"+flist[ss]);
+                	                                        fl.delete();
+                        	                        }
+                                	        }	
                                                 File scormDir1=new File(Assign+"/"+fileName);
                                                 fileItem.write(scormDir1);
 
@@ -309,7 +318,7 @@ public class Assignments extends SecureAction
 						}else{
                                                 	if(mode.equals("Update")){
                                                         	kk=0;
-                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
+                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","update", username);
                                                 	}else {
                                                        		//xmlwriter=new XmlWriter(Assign+"/__file.xml",kk);
 								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
@@ -415,7 +424,7 @@ public class Assignments extends SecureAction
 						}else{
                                                 	if(mode.equals("Update")){
                                                         	kk=0;
-                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
+                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","update", username);
                                                 	}else {
                                                        		//xmlwriter=new XmlWriter(Assign+"/__file.xml",kk);
 								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
@@ -558,14 +567,23 @@ public class Assignments extends SecureAction
                                                 fileName=userid+fileExt;
                                         if(user_role.equals("instructor"))
                                                 fileName="Answerfile"+fileExt;
+					for(int ss=0;ss<flist.length;ss++)
+                        		{
+						if(flist[ss].startsWith(userid1))
+						{
+							File fl = new File(Assign+"/"+flist[ss]);
+							fl.delete();
+						}
+					}
 					File scormDir1=new File(Assign+"/"+fileName);
                                         fileItem.write(scormDir1);
                                         XmlWriter xmlwriter=null;
-					xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);            
+					xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml","submit",username);            
                                         String Grade="10";
 
                                         //String Duedate=pp.getString("date");
-
+                                        
+					//xmlwriter=new XmlWriter(Assign+"/__file.xml");
 					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date);
                                         xmlwriter.writeXmlFile();
 					//msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
@@ -1124,7 +1142,7 @@ public class Assignments extends SecureAction
 				{
 					String filereader =((FileEntry) Assignmentlist.elementAt(c)).getfileName();
                                         String stdname =((FileEntry) Assignmentlist.elementAt(c)).getUserName();
-                                        if(filereader.startsWith("Assign"))
+                                        if(filereader.startsWith("Assign")||StringUtils.isBlank(filereader))
 						comgrade1 =((FileEntry) Assignmentlist.elementAt(c)).getGrade();
 					if(stdname.equals(username1))
                                         	foundstd=true;

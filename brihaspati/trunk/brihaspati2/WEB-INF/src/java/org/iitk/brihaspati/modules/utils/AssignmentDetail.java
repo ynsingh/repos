@@ -54,6 +54,7 @@ public class AssignmentDetail
 	private String AssignmentDuedate;
 	private String Topicname;
         private String Assignmentdate;
+        private String PostAnsMode;
         private String Studentname;
         private String AssignmentId;
         private String FullName;
@@ -201,6 +202,15 @@ public class AssignmentDetail
         public String getAssignmentId()
         {
                 return AssignmentId;
+	}
+        public void setPostAnsMode(String mode)
+        {
+                this.PostAnsMode=mode;
         }
+        public String getPostAnsMode()
+        {
+                return PostAnsMode;
+        }
+	
 	
 }

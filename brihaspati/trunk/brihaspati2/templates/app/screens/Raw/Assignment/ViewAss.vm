@@ -76,10 +76,10 @@ $!data.getMessage()
 	## #if($user_role == "instructor")
 	#if(($user_role == "instructor")||($user_role == "teacher_assistant"))
 	<td><b>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
+	<input type="text" name="GetUser"  size=26 /></td>
         #end
         <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-	<SELECT name=topicList class="drop" onChange="checkBlank(document.uploadform);">
+	<SELECT name=topicList class="drop" >
 	#if($topicList!="")
 	        <option value="$topicList" >$topicList</option>
 	#else
@@ -91,6 +91,7 @@ $!data.getMessage()
 		#end
         #end
         </SELECT> &nbsp;
+        <input type="button" class="button-ftextstyle" name="dosubmitView" value="Search" onClick="checkBlank(document.uploadform,this);"  />
         <input type="hidden" name="actionName">
         </td>
 	<td>
@@ -131,9 +132,9 @@ $!data.getMessage()
         	<td align="center">  <b> #if($lang == "hindi") $brih_answer $brih_Of1 $brih_view #else $brih_view $brih_answer #end </b> </td>
         	#end
         	#if($datecheck == "ok")
-        	<td align="center">  <b> $brih_post #if($lang == "hindi") $brih_Of #end $brih_Da </b> </td>
+        	<td align="center">  <b> $brih_assignment $brih_post #if($lang == "hindi") $brih_Of #end $brih_Da </b> </td>
         	#end
-        	<td  align="Center"> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
+        	<td  align="Center"> <b> $brih_assignment $brih_due #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
 	        <td  align="Center"> <b> $brih_max $brih_marks </b> </td>
 	        <td  align="Center"> <b> $brih_action </b> </td>
         	#if($gradecheck == "ok")
@@ -173,7 +174,7 @@ $!data.getMessage()
 		#if($datecheck == "ok")
 		<td align="center">  <b> $brih_post #if($lang == "hindi") $brih_Of #end $brih_Da </b> </td>
 		#end
-		<td  align="Center"> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
+		<td  align="Center"> <b> $brih_assignment $brih_due #if($lang == "hindi") $brih_Of #end $brih_Da  </b> </td>
 		<td  align="Center"> <b> $brih_max $brih_marks </b> </td>
 		#if($gradecheck == "ok")
 		<td align="center">  <b> $brih_marks  </b> </td>
@@ -294,8 +295,11 @@ $!data.getMessage()
                 #end
 		<td width="10%" align="Center"> $!e.getAssignmentDuedate() </td>  ## Duedate
                 <td width="10%" align="Center"> $!e.getmaxgrade() </td> ## max grade
-		<td width="10%" align="Center">  <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td> ##post Ans
-
+		#if($!e.getPostAnsMode()=="Yes")
+			<td width="10%" align="Center">  <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2").addPathInfo("topicname","$topicList") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td> ##post Ans
+		#else
+			<td width="10%" align="Center">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </td> ##post Ans
+		#end
 		#if($gradecheck == "ok")
                         <td width="10%" align="Center">
                         #if($!e.getgrade() != "")
@@ -328,10 +332,6 @@ $!data.getMessage()
 
         }
 	
-        function popupWin(urlName,popupName)
-        {
-                window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
-        }
 </script>
 
 

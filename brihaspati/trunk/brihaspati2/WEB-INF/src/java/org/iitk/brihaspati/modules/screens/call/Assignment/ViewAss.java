@@ -37,6 +37,8 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
  */
 
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 import java.io.File; 
 import java.util.List;
@@ -214,6 +216,7 @@ public class ViewAss extends  SecureScreen
                         String datecheck="notok";
                         String gradecheck="notok";
                         String studentfilecheck="notok";
+			String postAnsChk="no";
 			if(stname.size()==0)
 				context.put("startpage",stname.size());	
 			else
@@ -321,6 +324,14 @@ public class ViewAss extends  SecureScreen
 			// Get the roll no of this student		
 				String  stRlNo=CourseProgramUtil.getUserRollNo(studentname,courseid);
 
+				Date date1 = new Date();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				String dateFormatted = dateFormat.format(date1);
+				Date todayDate = dateFormat.parse(dateFormatted);
+				Date newDueDate = dateFormat.parse(filedate);
+ 				if ((todayDate.compareTo(newDueDate)<0)||(todayDate.compareTo(newDueDate)==0))
+					postAnsChk = "Yes";
+
 				AssignmentDetail assignmentdetail=new AssignmentDetail();
 				
 				assignmentdetail.setStudentname(studentname);
@@ -334,8 +345,9 @@ public class ViewAss extends  SecureScreen
                         	assignmentdetail.setgrade(grade);
                         	assignmentdetail.setanswerfile(fileanswer);
                         	assignmentdetail.setfeedback(feedback);
+                        	assignmentdetail.setPostAnsMode(postAnsChk);
                        		assignmentDetail.add(assignmentdetail); 	
-				ErrorDumpUtil.ErrorLog("   "+studentname);		
+				//ErrorDumpUtil.ErrorLog("   "+studentname);		
 					
 			} // for
 			context.put("gradecheck",gradecheck);

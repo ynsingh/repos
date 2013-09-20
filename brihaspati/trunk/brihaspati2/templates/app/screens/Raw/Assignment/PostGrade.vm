@@ -18,7 +18,7 @@ $!data.getMessage()
         <tr> <td><b>
         <a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> |
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a> | </b>
-        <a href=$link.setPage("call,Assignment,ASS_subm.vm")addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>|</b>
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style="text-decoration:none"> $brih_assignment  </a>|</b>
         <a href=$link.setPage("call,Assignment,AssView.vm") style="text-decoration:none"> </a> $brih_post $brih_marks </b>
         </td></tr>
 </table> ##table 1 end
@@ -49,8 +49,8 @@ $!data.getMessage()
         }
 
 	function checkBlank(uploadform,field)
-        {
-		if((uploadform.grade.value!="") && (uploadform.feedback.value!=""))
+        
+		if(uploadform.grade.value!="") 
 		{
 			if(isNumberString(uploadform.grade.value))
 			{
@@ -58,20 +58,12 @@ $!data.getMessage()
                         	frm.noofques.focus();
                         	return false;
 			}
-			if(isString(uploadform.feedback.value))
-                        {
-				alert("Please check the special character !!");
-                                frm.noofques.focus();
-                                return false;
-                        }
-			
-
 
     		        uploadform.actionName.value=field.name;
                 	uploadform.submit();
 		}
 		else
-			 alert(" Grade and FeedBack Name can not empty !!");
+			 alert(" Grade can not be empty !!");
         }
 	function isNumberString(chString)
         {

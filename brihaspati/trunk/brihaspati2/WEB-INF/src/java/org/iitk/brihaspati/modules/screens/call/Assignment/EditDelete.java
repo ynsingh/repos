@@ -164,8 +164,8 @@ public class EditDelete extends  SecureScreen
                                                 	fileAssignment=filereader;
                                                 	filegrade =((FileEntry)val).getGrade();
                                                 	filedate  =((FileEntry)val).getDuedate();
+							break;
                                         	}
-						break;
 					}
 					AssignmentDetail assignmentdetail=new AssignmentDetail();
 					assignmentdetail.setStudentname(topicname);

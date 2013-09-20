@@ -1229,7 +1229,7 @@ $!data.getMessage()
         function refreshPage() {
         window.location = location.href;
         }
-$(function(){
+/*$(function(){
      $('#scroll').slimScroll({ 
          height: '220px'
          disableFadeOut: true
@@ -1247,5 +1247,5 @@ $(function(){
          disableFadeOut: true
           });
       });
-
+*/
 </SCRIPT>

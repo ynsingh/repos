@@ -720,23 +720,55 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
                         if(xmlFile1.equals("/__file.xml"))
                                 v=topicMetaData.getAssignmentDetails();
 
-                        descFile.delete();
-                        if(xmlFile1.equals("/__file.xml"))
-                                writeWithRootOnly1(descFile.getAbsolutePath());
-                        else
-                                writeWithRootOnly1(descFile.getAbsolutePath());
+                        //descFile.delete();
+                        writeWithRootOnly1(descFile.getAbsolutePath());
                         xmlWriter=new XmlWriter(filePath1+xmlFile1);
-                        for(int i=0;i<v.size();i++)
-                        {
-                                if(xmlFile1.equals("/__file.xml"))
-                                {
-                                        String fileName=((FileEntry)v.get(i)).getfileName();
-                                        String username=((FileEntry)v.get(i)).getUserName();
-                                        String grade=((FileEntry)v.get(i)).getGrade();
-                                        String Duedate=((FileEntry)v.get(i)).getDuedate();
+			if(v.size()>0)
+			{
+	                        for(int i=0;i<v.size();i++)
+        	                {
+                	                if(xmlFile1.equals("/__file.xml"))
+                        	        {
+	                                        String fileName=((FileEntry)v.get(i)).getfileName();
+        	                                String username=((FileEntry)v.get(i)).getUserName();
+                	                        String grade=((FileEntry)v.get(i)).getGrade();
+                        	                String Duedate=((FileEntry)v.get(i)).getDuedate();
+		
+                	                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate);
+                        	        }
+				}
+                        }
+                }
+                catch(Exception e){}
+                return xmlWriter;
+       }
+	public static XmlWriter writeXml_Assignment(String filePath1,String xmlFile1,String mode, String usrName)
+        {
+                XmlWriter xmlWriter=null;
+                Vector v= new Vector();
+                File descFile=new File(filePath1+xmlFile1);
+                try{
+                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath1+xmlFile1);
+                        if(xmlFile1.equals("/__file.xml"))
+                                v=topicMetaData.getAssignmentDetails();
 
-                                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate);
-                                }
+                        //descFile.delete();
+                        writeWithRootOnly1(descFile.getAbsolutePath());
+                        xmlWriter=new XmlWriter(filePath1+xmlFile1);
+			if(v.size()>0)
+			{
+	                        for(int i=0;i<v.size();i++)
+        	                {
+                	                if(xmlFile1.equals("/__file.xml"))
+	                                {
+        	                                String fileName=((FileEntry)v.get(i)).getfileName();
+                	                        String username=((FileEntry)v.get(i)).getUserName();
+                        	                String grade=((FileEntry)v.get(i)).getGrade();
+                                	        String Duedate=((FileEntry)v.get(i)).getDuedate();
+						if(!usrName.equals(username))	
+		                                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate);
+                	                }
+				}
                         }
                 }
                 catch(Exception e){}
