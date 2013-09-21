@@ -82,7 +82,7 @@ class General {
 					}
 					$this->check_database_version();
 
-					$table_names = array('groups', 'ledgers', 'budgets', 'budget_allocate', 'entry_types', 'entries', 'entry_items', 'tags', 'logs', 'settings', 'bgasuser');
+					$table_names = array('groups', 'ledgers', 'budgets', 'budget_allocate', 'entry_types', 'entries', 'entry_items', 'tags', 'logs', 'settings');
 					foreach ($table_names as $id => $tbname)
 					{
 						$valid_db_q = mysql_query('DESC ' . $tbname);
@@ -137,49 +137,64 @@ class General {
 	function check_user($user_name)
 	{
 		$CI =& get_instance();
+			
+//		$db=$this->database('login', TRUE);
+		$db->load->database('login', TRUE);
+                $CI->db->from('bgasuser');
+                $CI->db->select('username,password,role,status,accounts')->where('username =', $user_name);
+		$user_data = $CI->db->get();
+                foreach($user_data->result() as $row)
+                {
+                	$user_name1 = $row->username;
+                        $user_password = $row->password;
+                        $user_account = $row->accounts;
+                        $user_status = $row->status;
+                        $user_role= $row->role;
+                }
+
 
 		/* User validation */
-		$ini_file = $CI->config->item('config_path') . "users/" . $user_name . ".ini";
+//		$ini_file = $CI->config->item('config_path') . "users/" . $user_name . ".ini";
 
-		/* Check if user ini file exists */
-		if ( ! get_file_info($ini_file))
+		/* Check if user data exists in sql database */
+		if (!($user_data->num_rows() > 0) )
 		{
 			$CI->messages->add('User does not exists.', 'error');
 			return FALSE;
 		}
 
 		/* Parsing user ini file */
-		$user_data = parse_ini_file($ini_file);
+//		$user_data = parse_ini_file($ini_file);
 		if ( ! $user_data)
 		{
-			$CI->messages->add('Invalid user file.', 'error');
+			$CI->messages->add('Invalid user data.', 'error');
 			return FALSE;
 		}
 
-		if ( ! isset($user_data['username']))
+		if ( ! isset($user_name1))
 		{
-			$CI->messages->add('Username missing from user file.', 'error');
+			$CI->messages->add('Username missing from user data.', 'error');
 			return FALSE;
 		}
-		if ( ! isset($user_data['password']))
+		if ( ! isset($user_password))
 		{
-			$CI->messages->add('Password missing from user file.', 'error');
+			$CI->messages->add('Password missing from user data.', 'error');
 			return FALSE;
 		}
-		if ( ! isset($user_data['status']))
+		if ( ! isset($user_status))
 		{
-			$CI->messages->add('Status missing from user file.', 'error');
+			$CI->messages->add('Status missing from user data.', 'error');
 			return FALSE;
 		}
-		if ( ! isset($user_data['role']))
+		if ( ! isset($user_role))
 		{
-			$CI->messages->add('Role missing from user file. Defaulting to "guest" role.', 'error');
+			$CI->messages->add('Role missing from user data. Defaulting to "guest" role.', 'error');
 			$user_data['role'] = $user_role;
 			//$user_data['role'] = 'guest';
 		}
-		if ( ! isset($user_data['accounts']))
+		if ( ! isset($user_account))
 		{
-			$CI->messages->add('Accounts missing from user file.', 'error');
+			$CI->messages->add('Accounts missing from user data.', 'error');
 		}
 		return $user_data;
 	}

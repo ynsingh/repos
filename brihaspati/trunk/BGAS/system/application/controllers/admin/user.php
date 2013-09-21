@@ -39,15 +39,17 @@ class User extends Controller {
 			}
 		}*/  
                 $data['users'] = array();
-                $this->db->select('id,username,email,role,status,accounts')->from('bgasuser');
+		$db1=$this->load->database('login', TRUE);
+                $db1->select('id,username,email,role,status,accounts')->from('bgasuser');
 
-		$query = $this->db->get();
-                $config['total_rows'] =$this->db->count_all('bgasuser');
+		$query = $db1->get();
+                $config['total_rows'] =$db1->count_all('bgasuser');
 
                 $data['users']= $query;
 		$user_id='';
 
 		$this->template->load('admin_template', 'admin/user/index', $data);
+		$db1->close();
 		return;
 	}
 
@@ -168,8 +170,16 @@ class User extends Controller {
 					$data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
 					$data_accounts_string = implode(",", $data_accounts_valid);
 				}
-
-				$this->db->trans_start();
+				$db1=$this->load->database('login', TRUE);
+			//Check this user exist or not
+			// if not then create account else skip
+	//			{
+          //                      $this->messages->add('Username already exists.', 'error');
+            //                    $this->template->load('admin_template', 'admin/user/add', $data);
+              //                  return;
+	        //                }
+			// Create new user
+				$db1->trans_start();
 				$insert_data = array(
                                                         'username' => $data_user_name,
                                                         'password'=>md5($data_user_password),
@@ -180,10 +190,10 @@ class User extends Controller {
                                                         );
 				
 
-                                                if ( ! $this->db->insert('bgasuser', $insert_data))
+                                                if ( ! $db1->insert('bgasuser', $insert_data))
                                                 {
 
-                                                        $this->db->trans_rollback();
+                                                        $db1->trans_rollback();
                                                         $this->messages->add('Error addding User Account - ' . $data_user_name . '.', 'error');
 
                                                         $this->logger->write_message("error", "Error adding User Account " . $data_user_name);
@@ -192,7 +202,7 @@ class User extends Controller {
                                                         return;
                                                 }
 						else{
-						$this->db->trans_complete();
+						$db1->trans_complete();
 
                                                         $this->messages->add('Added User Account - ' . $data_user_name . ' success');
 			
@@ -231,6 +241,7 @@ class User extends Controller {
 			}*/
 		}
 		$this->template->load('admin_template', 'admin/user/add', $data);
+		$db1->close();
 		return;
 	}
 
@@ -239,8 +250,9 @@ class User extends Controller {
 		$this->template->set('page_title', 'Edit user');
 		$user_password='';
 		$user_email='';
-		$this->db->from('bgasuser')->where('id', $user_id);
-		$user_name1 = $this->db->get();
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasuser')->where('id', $user_id);
+		$user_name1 = $db1->get();
 		foreach($user_name1->result() as $row)
                                 {
                              	$user_name = $row->username;       
@@ -397,20 +409,38 @@ class User extends Controller {
 				$data_user_status = 0;
 			$data_accounts = $this->input->post('accounts', TRUE);
 			 
+			/* Forming account querry string */
+                        $data_accounts_string = '';
+                        if ( ! $data_accounts)
+                        {
+                                $this->messages->add('Please select account.', 'error');
+                                $this->template->load('admin_template', 'admin/user/edit', $data);
+                                return;
+                        } else {
+                                if (in_array('(All Accounts)', $data_accounts))
+                                {
+                                        $data_accounts_string = '*';
+                                } else {
+                                        /* Filtering out bogus accounts */
+                                        $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
+                                        $data_accounts_string = implode(",", $data_accounts_valid);
+                                }
+                        }
 
-                         $this->db->trans_start();
+                         $db1->trans_start();
                          $update_data = array(
                                              'username' => $data_user_name,						 
 					    'password'=>md5($data_user_password),
                                             'email' => $data_user_email,
                                             'role' =>$data_user_role,
                                             'status' => $data_user_status,
+					    'accounts' => $data_accounts,	
                                              );
 
-                         if ( ! $this->db->where('id', $user_id)->update('bgasuser', $update_data))
+                         if ( ! $db1->where('id', $user_id)->update('bgasuser', $update_data))
                            {
 
-                                      $this->db->trans_rollback();
+                                      $db1->trans_rollback();
                                       $this->messages->add('Error addding User Account - ' . $budget_data->username . '.', 'error');
 
                                                         $this->logger->write_message("error", "Error adding User Account " . $budget_data->username);
@@ -418,7 +448,7 @@ class User extends Controller {
                                                         return;
                                                 }
                                                 else{
-                                                $this->db->trans_complete();
+                                                $db1->trans_complete();
 						         $this->messages->add('Update User Account - ' . $budget_data->username . ' success');
                                                      
                                                 redirect('admin/user/');
@@ -466,6 +496,7 @@ class User extends Controller {
 				return;
 			}*/
 		}
+		$db1->close();
 		return;
 	}
 
@@ -473,10 +504,11 @@ class User extends Controller {
 	function delete($user_id)
 	{
 		$this->template->set('page_title', 'Delete user');
-		echo"$user_id";	
+	//	echo"$user_id";	
 		/* Get the User details */
-		$this->db->from('bgasuser')->where('id', $user_id);
-		$budget_q = $this->db->get();
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasuser')->where('id', $user_id);
+		$budget_q = $db1->get();
 		if ($budget_q->num_rows() < 1)
 		{
 			$this->messages->add('Invalid Budget account.', 'error');
@@ -486,12 +518,12 @@ class User extends Controller {
 			$budget_data = $budget_q->row();
 		}
 			
-			$this->db->trans_start();
+			$db1->trans_start();
 
-		         if ( ! $this->db->delete('bgasuser', array('id' => $user_id)))
+		         if ( ! $db1->delete('bgasuser', array('id' => $user_id)))
                              {
 
-                                $this->db->trans_rollback();
+                                $db1->trans_rollback();
                             	$this->messages->add('Error delete User Account - ' . $budget_data->username . '.', 'error');
 
                                 $this->logger->write_message("error", "Error delete User Account " . $budget_data->username);
@@ -501,14 +533,14 @@ class User extends Controller {
                                     return;
                             }
                                else{
-                             $this->db->trans_complete();
+                             $db1->trans_complete();
                              $this->messages->add('delete User Account - ' . $budget_data->username . '.', 'success');
                                  
                              redirect('admin/user/');
 
                              return;
                                                 }
-
+		$db1->close();
 	//	$ini_file = $this->config->item('config_path') . "users/" . $user_name . ".ini";
 	//	$this->messages->add('Delete ' . $ini_file . ' file manually.', 'error');
 		redirect('admin/user');

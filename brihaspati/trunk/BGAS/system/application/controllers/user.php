@@ -59,11 +59,12 @@ class User extends Controller {
                         $user_role='';
 			$user_status='';
                        // echo "the value---------------> $data_user_name";
-                                $this->db->from('bgasuser');
-                                $this->db->select('username,password,role,status,accounts')->where('username =', $data_user_name);
-                        //$this->db->select('password')->where('password=', $data_user_password);
+			//connect with login database for authentication. The alias is login
+				$db1=$this->load->database('login', TRUE);
+                                $db1->from('bgasuser');
+                                $db1->select('username,password,role,status,accounts')->where('username =', $data_user_name);
 
-                                $user_name1 = $this->db->get();
+                                $user_name1 = $db1->get();
                                 foreach($user_name1->result() as $row)
                                 {
                                         $user_name1 = $row->username;
@@ -94,7 +95,7 @@ class User extends Controller {
 			}
 
 			/* Password verify */
-				$data_user_password = md5($data_user_password);
+			 $data_user_password = md5($data_user_password);
                          if ($user_password == $data_user_password)
        			//if ($active_user['password'] == $data_user_password)
 			{
@@ -102,7 +103,7 @@ class User extends Controller {
 				$this->session->set_userdata('user_name', $data_user_name);
 			//	$this->session->set_userdata('user_role', $active_user['role']);
 				$this->session->set_userdata('user_role', $user_role);
-			//	$this->session->set_userdata('active_account',$user_account);
+				$this->session->set_userdata('active_account',$user_account);
                                                 
 				redirect('');
 				return;
@@ -115,6 +116,7 @@ class User extends Controller {
 				return;
 			}
 		}
+		$db1->close();
 		return;
 	}
 
@@ -172,7 +174,7 @@ class User extends Controller {
 		//echo "the value is----------> $user_role";
                 //$user_account_active = $this->session->userdata('active_account'); 
 		//echo "the value is----------> $user_account_active";
-		/* Check user ini file
+		/* Check user ini/sql db file */
 		if ( ! $active_user = $this->general->check_user($this->session->userdata('user_name')))
 		{
 			redirect('user/profile');
@@ -180,11 +182,11 @@ class User extends Controller {
 		}
 
 		/* Filter user access to accounts*/ 
-		/*if ($active_user['accounts'] != '*')
+		if ($active_user['accounts'] != '*')
 		{
 			$valid_accounts = explode(",", $active_user['accounts']);
 			$data['accounts'] = array_intersect($data['accounts'], $valid_accounts);
-		}*/
+		}
 		
 		/* Form validations */
 		$this->form_validation->set_rules('account', 'Account', 'trim|required');

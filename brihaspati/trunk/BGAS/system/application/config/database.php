@@ -51,5 +51,19 @@ $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_general_ci";
 
 
+$db['login']['hostname'] = "127.0.0.1";
+$db['login']['username'] = "bgas";
+$db['login']['password'] = "bgas";
+$db['login']['database'] = "login";
+$db['login']['dbdriver'] = "mysql";
+$db['login']['dbprefix'] = "";
+$db['login']['pconnect'] = FALSE;
+$db['login']['db_debug'] = FALSE;
+$db['login']['cache_on'] = FALSE;
+$db['login']['cachedir'] = "";
+$db['login']['char_set'] = "utf8";
+$db['login']['dbcollat'] = "utf8_general_ci";
+
+
 /* End of file database.php */
 /* Location: ./system/application/config/database.php */
