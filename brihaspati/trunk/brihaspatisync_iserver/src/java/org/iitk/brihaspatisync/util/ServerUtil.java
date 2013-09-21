@@ -141,7 +141,6 @@ public class ServerUtil {
 				String mail=encrypt(element.getMailNotification());
                                 message=message+"$$"+lectid+","+lectCouseName+","+lectName+","+lectInfo+","+lectUserName+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime+","+mail;
 			}
-			ServerLog.log("getSessionList in ServerUtil class  "+message);
                 }catch(Exception e){ ServerLog.log("Error getSessionList in ServerUtil class "+e.getMessage());}
              	return message;
         }
@@ -170,7 +169,6 @@ public class ServerUtil {
                                 String fortime=encrypt(element.getFortime());
                                 String mail=encrypt(element.getMailNotification());
                                 message=lectid+","+lectCouseName+","+lectName+","+lectInfo+","+lectUserName+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime+","+mail;
-				ServerLog.log("getLectureInfo in ServerUtil class  "+message);
                         }
                 }catch(Exception e) { ServerLog.log("Error Log in Lecture select "+e.getMessage());}
                 return message;

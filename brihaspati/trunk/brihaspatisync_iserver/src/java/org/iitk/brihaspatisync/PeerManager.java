@@ -122,21 +122,7 @@ public class PeerManager
                                 	        attrNode.setValue(action);
                                         	saveXML(document,getFile(LectureID));
 						message="Successfull";
-        	                     	}else{
-						String status=element.getAttribute("Status");
-						if(status.equals("Allow-Permission")){
-							Attr attrNode = element.getAttributeNode("Status");
-                                                        attrNode.setValue("available");
-                                                        saveXML(document,getFile(LectureID));
-							message="Successfull";
-						}
-						if(status.equals("Share-Screen")){
-							Attr attrNode = element.getAttributeNode("Status");
-                                                        attrNode.setValue("available");
-                                                        saveXML(document,getFile(LectureID));
-							message="Successfull";
-						}
-					}
+        	                     	}
 				}
 			}
 		}catch(Exception e) { ServerLog.log(" Exception in updateStatus method of PeerManager class "+e.getMessage()); }	
