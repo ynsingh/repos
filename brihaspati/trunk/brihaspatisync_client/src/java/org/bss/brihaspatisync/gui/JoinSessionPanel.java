@@ -30,18 +30,17 @@ import org.bss.brihaspatisync.tools.presentation.PresentationViewPanel;
 
 public class JoinSessionPanel extends JPanel { 
 
+	
 	/**
          * Cretae GUI for JoinSessionPanel.
          */
 	protected JoinSessionPanel() {
 		setLayout(new BorderLayout());
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		
                 int screen_width= (int)dim.getWidth();
                 int screen_height= (int)dim.getHeight();
 		setSize(screen_width, screen_height-113);
 		VideoPanel.getController().resetController();
-		UserListPanel.getController().resetController();	
 		
 		// left panel ************************************
 		final JSplitPane av_userlist_split=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -56,7 +55,7 @@ public class JoinSessionPanel extends JPanel {
         		}
     		});
 		av_userlist_split.setDividerSize(2);
-		userlist_chat_Split.setTopComponent(UserListPanel.getController().createGUI());
+		userlist_chat_Split.setTopComponent(new UserListPanel().createGUI());
 		userlist_chat_Split.setBottomComponent(chat_pp_Split);
 		userlist_chat_Split.addAncestorListener(new BaseAncestorListener() {
                         public void ancestorAdded(AncestorEvent event) {

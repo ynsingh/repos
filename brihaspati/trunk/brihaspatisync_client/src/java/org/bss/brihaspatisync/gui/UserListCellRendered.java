@@ -49,7 +49,7 @@ class UserListCellRendered implements ListCellRenderer {
                 }
                 if (isSelected) {
                         renderer.setForeground(theForeground);
-			Allow_Deny_Permission.getController().setSelectedUsername(userid);				
+			org.bss.brihaspatisync.util.ClientObject.getController().setSelectedUserListname(userid);				
                 }
                 if (theIcon != null) {
                         renderer.setIcon(theIcon);

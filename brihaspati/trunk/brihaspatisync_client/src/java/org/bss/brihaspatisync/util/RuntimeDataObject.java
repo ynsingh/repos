@@ -32,6 +32,7 @@ public class RuntimeDataObject {
 	private String videoServer="127.0.0.1";
 	private String videoServerPort="8090";
 	
+	
         public static RuntimeDataObject getController(){
                 if(obj==null) {
                         obj=new RuntimeDataObject();
@@ -180,6 +181,5 @@ public class RuntimeDataObject {
        	public String getVideoServerPort(){
                return videoServerPort;
        	}
-	
 	
 }	

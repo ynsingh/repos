@@ -32,6 +32,7 @@ public class ClientObject {
 	private String reflector_ip=null;
 	private String courseForAnnounce="";
 	private String parent_reflector_ip="";
+	private String selectedUserlistname="";
 	
 	private Vector usrNameVector=null;
 	private Vector usrStatusVector=null;
@@ -276,6 +277,14 @@ public class ClientObject {
 
         public float getStdImageQuality(){
                 return stdquality;
+        }
+	
+	public void setSelectedUserListname(String str){
+                selectedUserlistname=str;
+        }
+
+        public String getSelectedListUsername(){
+                return selectedUserlistname;
         }
 }
 
