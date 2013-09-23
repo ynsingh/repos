@@ -37,10 +37,6 @@ foreach( $searchNode as $searchNode )
 
 }
 ?>
-<?php session_start();
-$a=$_POST["password"];
-echo $a;
-?>
 
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />

@@ -37,8 +37,6 @@ foreach( $searchNode as $searchNode )
 
 }
 ?>
-<?php session_start();
-?>
 
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />

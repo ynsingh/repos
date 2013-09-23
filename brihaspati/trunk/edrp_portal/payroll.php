@@ -37,8 +37,6 @@ foreach( $searchNode as $searchNode )
 
 }
 ?>
-<?php session_start();
-?>
 
 
 <head>

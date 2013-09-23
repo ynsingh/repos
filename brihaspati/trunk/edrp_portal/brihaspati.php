@@ -36,10 +36,6 @@ foreach( $searchNode as $searchNode )
 
 }
 ?>
-<?php session_start(); 
-$a=$_POST["password"];
-echo $a;
-?>
 
 
 	<head>
