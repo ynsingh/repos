@@ -62,7 +62,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * @author <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modifydate: 02-08-2013(Tej)
+ * @modifydate: 02-08-2013,22-09-2013(Tej)
  */
 
 /**
@@ -85,6 +85,31 @@ public class XMLWriter_StudentAttendance {
 		String message="UnSuccessfull";
                 try
 		{
+			/**
+			* Get instructor's full name for send information regarding absent students to their parent. 
+			* file.getName()- This method returns the file name.
+			* lastIndexOf()- This method returns the index within this string.
+			* file.length()- This method returns the length of the file.
+			* substring(0, index)-  This method returns a new string that is a substring of this string.
+			* @see Util: UserUtil
+			*/
+			File fileName = new File(filePath);
+			// This method returns the index within this string.
+			int index = fileName.getName().lastIndexOf('.');
+			String instFullName="";
+			String groupName="";
+      			if (index>0&& index <= fileName.getName().length() - 2 )
+			{
+				// Get file name
+				groupName=fileName.getName().substring(0, index);
+				// Get instructor Email if from GroupName(fileName)
+				String instEmail= CourseUtil.getCourseInstrEmail(groupName);
+				// Get instructor UserId from Email
+				int instUid= UserUtil.getUID(instEmail);
+				// Get Instructor FullName from UserID
+				instFullName= UserUtil.getFullName(instUid);
+      			}
+			String courseName=CourseUtil.getCourseName(groupName);
 			//Create instance of DocumentBuilderFactory
 	               	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			//Get the DocumentBuilder	
@@ -157,16 +182,29 @@ public class XMLWriter_StudentAttendance {
                         		attendance.setAttributeNode(attr);
 
 					/**
-					* Note:  This method commented for commit parent intimation  system. after that it will reused for sending mail to the parents.
-					* This method used for send mail to the parents for student attendance status
+					* This code is written for send absent students attendance to their parents.
+					* Get parent information in vector array using student's UserId
+					* @see util: CourseUserDetail
+					* @see util: MailNotificationThread  
 					*/
-					//get Parent Email Id for sending attendance status of student by Email.
-					
-					//String pemail=getParentEmail(userid);
-					//String staus_msg= "Today Your "+email+" is absent.";
-				  	//mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile);
-					//String MailMsg =  MailNotificationThread.getController().set_Message(staus_msg, "", "", "", pemail, "Attendance", "","");
-					
+					Vector parentInfo=getParentInfo(userid);	// Get parent information
+					if(parentInfo.size()>0)
+					{
+						try{
+							// Get parent infromation
+                                			CourseUserDetail cu=(CourseUserDetail)parentInfo.get(0);
+                                			String parentEmail=cu.getEmail().toString();         	// Get Parent Email Id
+                                			String parentFullName=cu.getUserName().toString();  	// Get Parent FullName
+							String StudFullName= UserUtil.getFullName(Integer.parseInt(userid));// Get Student FullName
+							// Set Message for sending mail to the parent
+							String staus_msg= "Dear "+parentFullName +", <br><br>Your ward "+StudFullName +" ("+email+") is absent today. <br><br> With Regards,<br><br>"+instFullName+"<br>"+courseName;
+							// This MailNotificationThread is used for send mail.
+							String MailMsg =  MailNotificationThread.getController().set_Message(staus_msg, "", "", "", parentEmail, "Attendance status of your ward", "","");
+					}
+					catch(Exception e){
+					ErrorDumpUtil.ErrorLog(" Exception in send mail to the parent---->>"+e);
+					}
+					}
 				}
 				 
 				/**
@@ -719,41 +757,61 @@ public class XMLWriter_StudentAttendance {
 	}//method
 	
 	/**
-	* Note:  This method commented for commit parent intimation  system. after that it will reused for sending mail to the parents.
-	* This method is used for getting Parent Email Id for sending student attendance status.
+	* This method is used for getting Parent Informatio.
         * @param: String StudentId
+        * @return: Vector
 	*/
 
-	/*public static String getParentEmail(String studentId) {
-	String email=null;
-	try{	
-		Criteria crit=new Criteria();
-		crit.add(ParentInfoPeer.STUDENT_ID,studentId);
-                List v=ParentInfoPeer.doSelect(crit);
-		String parentId="";
-		for(int i=0;i<v.size();i++) 
-		{
-			ParentInfo element = (ParentInfo)v.get(i);
-                	String studId = element.getStudentId();
-			if(studId.indexOf('#') == -1) 
+	public static Vector getParentInfo(String studentId)
+	{
+		Vector parentInfo=new Vector();
+		try{	
+			 //Initialize criteria for database query and get list of parent information
+			Criteria crit=new Criteria();
+			crit.addGroupByColumn(ParentInfoPeer.ID);
+                	List v=ParentInfoPeer.doSelect(crit);
+			String parentId="";
+			String parentFullName="";
+			String email="";
+			for(int i=0;i<v.size();i++) 
 			{
-				parentId=element.getParentId();
+				ParentInfo element = (ParentInfo)v.get(i);
+                		String studId = element.getStudentId();		// Get Studnet UserId
+				// check condtion if parent has more than one studnet id which is separate from "#" smbol.
+				if(studId.equals(studentId) && studId.indexOf('#') == -1)
+				{
+					// get parentId if parent has single studnet Id
+					parentId=element.getParentId();
+				}
+				else
+				{
+					// get all student Id which is separate from "#" symbol.
+					StringTokenizer st=new StringTokenizer(studId,"#");
+		        		for(int j=0;st.hasMoreTokens();j++)
+           				{	
+						// compare student id and get Parent Id.
+      						if(studentId.equals(st.nextToken())){
+							parentId=element.getParentId();	// Get Paret Id
+						}
+          				}
+				}
 			}
-			else{
-				StringTokenizer st=new StringTokenizer(studId,"#");
-		        	for(int j=0;st.hasMoreTokens();j++)
-           			{
-      					if(studentId.equals(st.nextToken())){
-						parentId=element.getParentId();
-					}
-          			}
-			}
+			// Get parent's EmailId
+			email=UserUtil.getEmail(Integer.parseInt(parentId));
+			// Get parent's FullName
+			parentFullName=UserUtil.getFullName(Integer.parseInt(parentId));
+			/**
+			* Set parent's Email and fullName
+			* @see Util: CourseUserDetail 
+			*/
+			CourseUserDetail cu=new CourseUserDetail();
+			cu.setEmail(email);           	// set Parent Email
+        		cu.setUserName(parentFullName); // set Parent FullName
+			parentInfo.add(cu);		// add parent infromation into Vector
 		}
-		email=UserUtil.getEmail(Integer.parseInt(parentId));
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Exception in getting parent email id --- "+e.getMessage());
+		}
+		return parentInfo;
 	}
-	catch(Exception e){
-		ErrorDumpUtil.ErrorLog("Exception in getting parent email id --- "+e.getMessage());
-	}
-	return email;
-	}*/
 }
