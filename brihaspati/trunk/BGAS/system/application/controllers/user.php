@@ -53,12 +53,10 @@ class User extends Controller {
 		{
 			$data_user_name = $this->input->post('user_name', TRUE);
 			$data_user_password = $this->input->post('user_password', TRUE);
-                        $user_name='';
                         $user_password='';
                         $user_account='';
                         $user_role='';
 			$user_status='';
-                       // echo "the value---------------> $data_user_name";
 			//connect with login database for authentication. The alias is login
 				$db1=$this->load->database('login', TRUE);
                                 $db1->from('bgasuser');
@@ -67,26 +65,20 @@ class User extends Controller {
                                 $user_name1 = $db1->get();
                                 foreach($user_name1->result() as $row)
                                 {
-                                        $user_name1 = $row->username;
-                                        
                                         $user_password = $row->password;
                                         $user_account = $row->accounts;
 					$user_status = $row->status;
                                         $user_role= $row->role;
 				}	
-			$user_name2 = $this->session->userdata('user_name');
-                	
 
-			/* Check user ini file*/
-			//if ( ! $active_user = $this->general->check_user($data_user_name))
-			if($data_user_name != $user_name1)
+			/* Check user exist in ini/db file*/
+			if($data_user_name != ($row->username))
 			{
 				$this->template->load('user_template', 'user/login', $data);
 				return;
 			}
 
-			/* Check user status */
-			//if ($active_user['status'] != 1)
+			/* Check user status if disabled then redirect to login page*/
 			if($user_status != 1)
 			{
 				$this->messages->add('User disabled.', 'error');
@@ -95,13 +87,11 @@ class User extends Controller {
 			}
 
 			/* Password verify */
-			 $data_user_password = md5($data_user_password);
-                         if ($user_password == $data_user_password)
-       			//if ($active_user['password'] == $data_user_password)
+			$data_user_password = md5($data_user_password);
+                        if ($user_password == $data_user_password)
 			{
 				$this->messages->add('Logged in as ' . $data_user_name . '.', 'success');
 				$this->session->set_userdata('user_name', $data_user_name);
-			//	$this->session->set_userdata('user_role', $active_user['role']);
 				$this->session->set_userdata('user_role', $user_role);
 				$this->session->set_userdata('active_account',$user_account);
                                                 
@@ -150,8 +140,8 @@ class User extends Controller {
 		}
 
 		/* Currently active account */
-		//$data['active_account'] = $this->session->userdata('active_account');
-		$data['user_account'] = $this->session->userdata('user_account');
+		$data['active_account'] = $this->session->userdata('active_account');
+		//$data['user_account'] = $this->session->userdata('user_account');
 		
 		/* Getting list of files in the config - accounts directory */
 		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
@@ -168,23 +158,23 @@ class User extends Controller {
 				}
 			}
 		}
-               	//$user_name2 = $this->session->userdata('user_name'); 
-		//echo "the value is----------> $user_name2";
-                //$user_role = $this->session->userdata('user_role'); 
-		//echo "the value is----------> $user_role";
-                //$user_account_active = $this->session->userdata('active_account'); 
-		//echo "the value is----------> $user_account_active";
+                $user_account_active = $this->session->userdata('active_account'); 
 		/* Check user ini/sql db file */
 		if ( ! $active_user = $this->general->check_user($this->session->userdata('user_name')))
 		{
 			redirect('user/profile');
 			return;
 		}
-
+        
 		/* Filter user access to accounts*/ 
-		if ($active_user['accounts'] != '*')
+		foreach($active_user->result() as $row)
+                {
+                        $user_account = $row->accounts;
+                }
+		
+		if ($user_account != '*')
 		{
-			$valid_accounts = explode(",", $active_user['accounts']);
+			$valid_accounts = explode(",", $user_account);
 			$data['accounts'] = array_intersect($data['accounts'], $valid_accounts);
 		}
 		

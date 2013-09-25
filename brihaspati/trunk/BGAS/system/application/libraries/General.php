@@ -12,9 +12,9 @@ class General {
 	function check_account($account_name)
 	{
 		$CI =& get_instance();
-
+		
 		$ini_file = $CI->config->item('config_path') . "accounts/" . $account_name . ".ini";
-
+	
 		/* Check if database ini file exists */
 		if ( ! get_file_info($ini_file))
 		{
@@ -137,12 +137,19 @@ class General {
 	function check_user($user_name)
 	{
 		$CI =& get_instance();
+		$logndb = $CI->load->database('login', TRUE);
+		$this->logndb =& $logndb; 
 			
 //		$db=$this->database('login', TRUE);
-		$db->load->database('login', TRUE);
-                $CI->db->from('bgasuser');
-                $CI->db->select('username,password,role,status,accounts')->where('username =', $user_name);
-		$user_data = $CI->db->get();
+//		$db->load->database('login', TRUE);
+                //$CI->db->from('bgasuser');
+                //$CI->db->select('username,password,role,status,accounts')->where('username =', $user_name);
+		//$user_data = $CI->db->get();
+
+                $this->logndb->from('bgasuser');
+                $this->logndb->select('username,password,role,status,accounts')->where('username =', $user_name);
+		$user_data = $this->logndb->get();
+		
                 foreach($user_data->result() as $row)
                 {
                 	$user_name1 = $row->username;

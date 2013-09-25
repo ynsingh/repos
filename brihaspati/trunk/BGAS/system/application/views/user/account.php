@@ -12,7 +12,7 @@
 		echo "<p>";
 		echo "Select account";
 		echo "<br />";
-		echo form_dropdown('account', $accounts, $active_account);
+		echo form_dropdown('account', $accounts, $current_active_account);
 		echo "</p>";
 
 		echo "<p>";
