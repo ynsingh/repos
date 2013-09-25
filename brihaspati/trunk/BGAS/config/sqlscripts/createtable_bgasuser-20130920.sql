@@ -7,7 +7,8 @@ CREATE TABLE bgasuser
 			role VARCHAR (200) NOT NULL,
 			status VARCHAR (200) NOT NULL,
 			accounts VARCHAR (200) NOT NULL,
-			PRIMARY KEY(id)
+			PRIMARY KEY(id),
+			UNIQUE (username)
 );
 			
 
