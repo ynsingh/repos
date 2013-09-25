@@ -53,6 +53,7 @@ class User extends Controller {
 		{
 			$data_user_name = $this->input->post('user_name', TRUE);
 			$data_user_password = $this->input->post('user_password', TRUE);
+			$db_user_name='';
                         $user_password='';
                         $user_account='';
                         $user_role='';
@@ -65,6 +66,7 @@ class User extends Controller {
                                 $user_name1 = $db1->get();
                                 foreach($user_name1->result() as $row)
                                 {
+					$db_user_name = $row->username;
                                         $user_password = $row->password;
                                         $user_account = $row->accounts;
 					$user_status = $row->status;
@@ -72,8 +74,9 @@ class User extends Controller {
 				}	
 
 			/* Check user exist in ini/db file*/
-			if($data_user_name != ($row->username))
+			if($data_user_name != $db_user_name)
 			{
+				$this->messages->add('Authentication failed.', 'error');
 				$this->template->load('user_template', 'user/login', $data);
 				return;
 			}
