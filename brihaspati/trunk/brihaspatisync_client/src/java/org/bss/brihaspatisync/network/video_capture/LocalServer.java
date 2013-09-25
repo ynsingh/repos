@@ -58,6 +58,7 @@ public class LocalServer implements Runnable {
          */
         public void start(){
                 if (runner == null) {	
+			grabber=new VLCCapture(600,400);
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
@@ -72,6 +73,8 @@ public class LocalServer implements Runnable {
                 if (runner != null) {
 			flag=false;
                         runner = null;
+			grabber.close();
+			grabber=null;
 			System.out.println("Video Captureing  stop Successfully !!");
                 }
         }
@@ -105,7 +108,7 @@ public class LocalServer implements Runnable {
 					                //        cap_device="v4l2:///dev/video0";
 					                //if(os.startsWith("MAC"));
 					                //        cap_device="qtcapture://";
-					                grabber=new VLCCapture(600,400);			
+					                //grabber=new VLCCapture(600,400);			
 						}
 						image=grabber.grab();
 					}
