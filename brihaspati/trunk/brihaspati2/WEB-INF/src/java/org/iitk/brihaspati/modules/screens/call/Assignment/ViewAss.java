@@ -100,7 +100,7 @@ public class ViewAss extends  SecureScreen
                         String DB_subject1=pp.getString("topicList","");
 			context.put("topicList",DB_subject1);
                         context.put("tdcolor",pp.getString("count",""));
-        		                
+        		
 			String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment");
                         Vector w=new Vector();
                         String Role="";
@@ -206,6 +206,8 @@ public class ViewAss extends  SecureScreen
 		//	}
 			context.put("allTopics",w);
                         //read the xml file
+			if(StringUtils.isNotBlank(DB_subject1))
+			{                
                         TopicMetaDataXmlReader topicmetadata=null;
                         Vector Assignmentlist=new Vector();
                         topicmetadata=new TopicMetaDataXmlReader(Assign+"/__file.xml");
@@ -360,7 +362,8 @@ public class ViewAss extends  SecureScreen
 			{
 				String LangFile=data.getUser().getTemp("LangFile").toString();
 				data.setMessage(MultilingualUtil.ConvertedString("assignment_msg17",LangFile));
-			}	
+			}
+		}	
 
 		} //try
                 catch(Exception e){ ErrorDumpUtil.ErrorLog("The Error in View asignment screen for student and instructor "+e); }
