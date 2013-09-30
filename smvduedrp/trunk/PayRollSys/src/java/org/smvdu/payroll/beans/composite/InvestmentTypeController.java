@@ -43,6 +43,7 @@ import org.smvdu.payroll.beans.setup.InvestmentType;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 27 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
  */
 public class InvestmentTypeController {
@@ -50,17 +51,19 @@ public class InvestmentTypeController {
 
     private UIData dataGrid;
     private ArrayList<InvestmentType> types;
-
+    
+    public InvestmentTypeController()
+    {
+        types = new InvestmentTypeDB().load();
+    }
+     
     public UIData getDataGrid() {
-        
         return dataGrid;
     }
 
     public void setDataGrid(UIData dataGrid) {
         this.dataGrid = dataGrid;
     }
-    
-    
     
     private SelectItem[] asItems;
 
@@ -81,34 +84,31 @@ public class InvestmentTypeController {
         this.asItems = asItems;
     }
     
-    
-
     public ArrayList<InvestmentType> getTypes() {
-        types = new InvestmentTypeDB().load();
+       // types = new InvestmentTypeDB().load();
         return types;
     }
 
-    public void setTypes(ArrayList<InvestmentType> types) {
-        this.types = types;
+    public void setTypes(ArrayList<InvestmentType> insttypes) {
+        this.types = insttypes;
     }
     
     public void update()
     {
-        ArrayList<InvestmentType> data = (ArrayList<InvestmentType>)dataGrid.getValue();
-        for(InvestmentType it : data)
+        ArrayList<InvestmentType> datas = (ArrayList<InvestmentType>)dataGrid.getValue();
+        for(InvestmentType it : datas)
         {
-            System.out.println(it.getCode()+","+it.getName());
+            System.out.println("ic====="+it.getName());
         }
-        Exception e = new InvestmentTypeDB().update(data);
-        if(e==null)
+        Exception e = new InvestmentTypeDB().update(datas);
+        if(e == null)
         {
-            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated", ""));
+           FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated", ""));
         }
         else
         {
-            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+          FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
         }
     }
-    
     
 }

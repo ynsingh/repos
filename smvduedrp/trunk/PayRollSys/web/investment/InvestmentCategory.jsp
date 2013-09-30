@@ -3,6 +3,7 @@
     Created on      : 3:02 AM Saturday, October 02, 2010
     Last Modified   : 3:21 AM Saturday, October 02, 2010
     Author          : Saurabh Kumar
+    Modified        : 27 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)	
 --%>
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
@@ -30,15 +31,19 @@
             <f:view>
                 <rich:panel header="Investment Categories">
                     <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
-                <h:form id="investmentheads">
+                <h:form id="investmentcategory">
                      <rich:messages>
                        <f:facet name="infoMarker">
                             <h:graphicImage url="/img/success.png"/>
                        </f:facet>
+                       <f:facet name="errorMarker">
+                       <h:graphicImage url="/img/err.png"/>
+                       </f:facet>
                     </rich:messages>
                     <h:panelGrid columns="3">
-                        <rich:dataTable  style="width:800px;" binding="#{InvestmentTypeController.dataGrid}" 
-                                         value="#{InvestmentTypeController.types}" var="dept">
+                     <rich:dataTable  style="width:800px;" binding="#{InvestmentTypeController.dataGrid}"
+                                      value="#{InvestmentTypeController.types}" var="dept">
+                                             
                             <rich:column width="5%">
                                 <f:facet name="header">
                                     <h:outputText value="Code"/>
@@ -51,7 +56,7 @@
                                 </f:facet>
                                 <rich:inplaceInput value="#{dept.name}" />
                             </rich:column>
-                            <rich:column width="25%" id="group">
+                            <rich:column width="25%">
                                 <f:facet name="header">
                                     <h:outputText  value="Maximum Investment Allowed "/>
                                 </f:facet>
@@ -65,16 +70,14 @@
                             </rich:column>
                         </rich:dataTable>
                         </h:panelGrid>
-                    <h:commandButton action="#{InvestmentTypeController.update}" value="Update"/>
-                    
-                </h:form>
+                    <a4j:commandButton action="#{InvestmentTypeController.update}" value="Update"/>
+                    </h:form>
                 </rich:panel>
                 <br />
                 <hr/>
                 <rich:modalPanel id="pnl">
                 <h:form>
                     <rich:panel header="Add New Investment Category">
-
                         <h:panelGrid
                             columns="3"
                             styleClass="data_entry_form"

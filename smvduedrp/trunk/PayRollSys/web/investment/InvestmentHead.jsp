@@ -3,6 +3,7 @@
     Created on      : 3:02 AM Saturday, October 02, 2010
     Last Modified   : 3:21 AM Saturday, October 02, 2010
     Author          : Saurabh Kumar
+    Modified        : 27 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 --%>
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
@@ -55,7 +56,7 @@
                                 <f:facet name="header">
                                     <h:outputText  value="Under"/>
                                 </f:facet>
-                                <rich:inplaceInput value="#{dept.underGroupName}" />
+                                <h:outputText value="#{dept.underGroupName}" />
                             </rich:column>
                             <rich:column width="50%">
                                 <f:facet name="header">

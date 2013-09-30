@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.composite.SessionController;
 import org.smvdu.payroll.beans.setup.InvestmentType;
 
 /**
@@ -41,23 +44,30 @@ import org.smvdu.payroll.beans.setup.InvestmentType;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 27 Sep 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
- */
+*/
 public class InvestmentTypeDB {
 
      private PreparedStatement ps;
      private ResultSet rs;
-
+     private UserInfo userBean;
+             
+     public InvestmentTypeDB()
+     {
+         userBean = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+     }
+     
      public Exception update(ArrayList<InvestmentType> data)
      {
          try
          {
              Connection c = new CommonDB().getConnection();
-             ps=c.prepareStatement("update investment_category_master set ic_name=?,"
-                     + "ic_max_limit=?,ic_deduction=? where ic_id=?");
+             ps=c.prepareStatement("update investment_category_master set ic_name= ?, ic_max_limit= ?,"
+                     + " ic_deduction=? where ic_id=? and ic_org_id='"+userBean.getUserOrgCode()+"' ");
              for(InvestmentType it : data)
              {
-                 ps.setString(1, it.getName());
+                 ps.setString(1, it.getName().toUpperCase());
                  ps.setFloat(2, it.getMaxLimit());
                  ps.setFloat(3, it.getEffectivePercentage());
                  ps.setInt(4, it.getCode());
@@ -78,7 +88,7 @@ public class InvestmentTypeDB {
          try
          {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select * from investment_category_master");
+            ps=c.prepareStatement("select * from investment_category_master where ic_org_id = '"+userBean.getUserOrgCode()+"'");
             rs=ps.executeQuery();
             ArrayList<InvestmentType> data = new ArrayList<InvestmentType>();
             while(rs.next())
@@ -106,10 +116,11 @@ public class InvestmentTypeDB {
          {
              Connection c = new CommonDB().getConnection();
              ps=c.prepareStatement("insert into investment_category_master(ic_name,"
-                     + "ic_max_limit,ic_deduction) values(?,?,?)");
+                     + "ic_max_limit,ic_deduction,ic_org_id) values(?,?,?,?)");
              ps.setString(1, it.getName().toUpperCase());
              ps.setFloat(2, it.getMaxLimit());
              ps.setFloat(3, it.getEffectivePercentage());
+             ps.setInt(4, userBean.getUserOrgCode());          
              ps.executeUpdate();
              ps.close();
              c.close();
