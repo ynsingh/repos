@@ -61,6 +61,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -208,10 +209,19 @@ public class Assignments extends SecureAction
                                 * Assignment id is created
                                 */
 				String agroup_name;
+				int assno=0;
 				if(mode.equals("Update")){
 					agroup_name=cid;
 				}else{
-                                	agroup_name=courseid+"-"+u.size();
+					for(int i=0;i<u.size();i++)
+                        		{
+                                		Assignment element=(Assignment)(u.get(i));
+                		                String assgnid=(element.getAssignId());
+		                                assno=Integer.parseInt(StringUtils.substringAfterLast(assgnid,"-"));
+                        		}
+                                	//agroup_name=courseid+"-"+u.size();
+					assno=assno+1;
+                                	agroup_name=courseid+"-"+assno;
 				}
 
                                 String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment"+"/"+agroup_name);
