@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS budgets (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
-CREATE TABLE budget_allocate(
+CREATE TABLE IF NOT EXISTS budget_allocate(
   id INTEGER (11)  NOT NULL AUTO_INCREMENT,
   code VARCHAR (25) NOT NULL,
   allocation_amount DECIMAL (15, 2) DEFAULT 0.00,
@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS settings (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS studentmaster (
+  PAR_seq_id int(11) NOT NULL auto_increment,
   reg_no varchar(20) NOT NULL, 
   entry_no varchar(20) default NULL,
   batch varchar(20) default NULL,
@@ -145,14 +146,14 @@ CREATE TABLE IF NOT EXISTS studentmaster (
   degree_code int(11) default NULL,
   org_id varchar(400) default NULL,
   department_id int(11) default NULL,
-  PAR_seq_id int(11) NOT NULL auto_increment,
   branch_id int(11) default NULL,
   sem_code int(11) default NULL,
   fee_head_code int(11) default NULL,
   PRIMARY KEY  (PAR_seq_id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS employeemaster (
+  emp_id int(11) NOT NULL auto_increment,
   emp_name varchar(70) NOT NULL,
   emp_code varchar(30) NOT NULL,
   emp_dept_code int(11) NOT NULL,
@@ -162,7 +163,6 @@ CREATE TABLE IF NOT EXISTS employeemaster (
   emp_email varchar(30) default NULL,
   emp_dob date default NULL,
   emp_doj date default NULL,
-  emp_id int(11) NOT NULL auto_increment,
   emp_salary_grade int(11) NOT NULL,
   emp_bank_accno varchar(20) default NULL,
   emp_pf_accno varchar(20) default NULL,
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS employeemaster (
   emp_org_code int(11) NOT NULL default '0',
   emp_father varchar(100) default NULL,
   emp_basic int(11) NOT NULL default '0',
-  emp_title varchar(50) NOT NULL default 'Prof.',
+  emp_title varchar(50) NOT NULL default 'Mr.',
   emp_exp int(11) NOT NULL,
   emp_qual varchar(100) NOT NULL,
   emp_yop int(11) NOT NULL,
@@ -187,12 +187,12 @@ CREATE TABLE IF NOT EXISTS employeemaster (
   PRIMARY KEY  (emp_code),
   UNIQUE KEY(emp_id),
   UNIQUE KEY(emp_code,emp_org_code)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS party (
+  PAR_Id varchar(50) NOT NULL AUTO_INCREMENT,
   PAR_Name int(10) unsigned NOT NULL 
   PAR_IM_Id int(5) unsigned NOT NULL,
-  PAR_Id varchar(50) NOT NULL,AUTO_INCREMENT,
   PAR_Supplier_Type int(10) unsigned DEFAULT NULL,
   PAR_Ownership_Type int(10) unsigned DEFAULT NULL,
   PAR_Deals_With varchar(200) DEFAULT NULL,
@@ -211,11 +211,11 @@ CREATE TABLE IF NOT EXISTS party (
   UNIQUE KEY(PAR_IM_Id,PAR_Name),
   UNIQUE KEY(PAR_IM_Id,PAR_PAN_No),
   UNIQUE KEY(PAR_IM_Id,PAR_TAN_No)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1  AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS erpm_item_master (
-  ERPMIM_ID int(10) unsigned NOT NULL auto_increment,
-  ERPMIM_IM_ID PARallint(5) unsigned default NULL COMMENT 'This filed stores Institution fotr which Item has been created',
+  ERPMIM_ID int(11) unsigned NOT NULL auto_increment,
+  ERPMIM_IM_ID int(11) unsigned default NULL COMMENT 'This filed stores Institution for which Item has been created',
   ERPMIM_Item_Brief_Desc varchar(500) NOT NULL,
   ERPMIM_Item_Cat1 int(11) unsigned NOT NULL,
   ERPMIM_Item_Cat2 int(11) unsigned NOT NULL,
@@ -227,18 +227,7 @@ CREATE TABLE IF NOT EXISTS erpm_item_master (
   ERPMIM_Detailed_Desc varchar(2000) NOT NULL,
   ERPMIM_Remarks varchar(100) default NULL,
   PRIMARY KEY  (ERPMIM_ID)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ;
-
-CREATE TABLE bgasuser
-(
-id INTEGER (20)  NOT NULL AUTO_INCREMENT,
-username VARCHAR (200) NOT NULL,
-password VARCHAR (200) NOT NULL,
-email VARCHAR (200) NOT NULL,
-role VARCHAR (200) NOT NULL,
-status VARCHAR (200) NOT NULL,
-accounts VARCHAR (200) NOT NULL,
-PRIMARY KEY(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ;
 );
 			
 

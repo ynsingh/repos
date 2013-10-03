@@ -2,7 +2,7 @@
 	echo form_open('user/login');
 
 	echo "<p>";
-	echo form_label('User name', 'user_name');
+	echo form_label('Email', 'user_name');
 	echo "<br />";
 	echo form_input($user_name);
 	echo "</p>";

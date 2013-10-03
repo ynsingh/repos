@@ -1,3 +1,5 @@
+use login;
+
 CREATE TABLE bgasuser
 (
                         id INTEGER (20)  NOT NULL AUTO_INCREMENT,
@@ -11,4 +13,5 @@ CREATE TABLE bgasuser
 			UNIQUE (username)
 );
 			
-
+insert into bgasuser values (1,'admin', md5('admin'),'ynsingh@iitk.ac.in','administrator',1,'*'); 
+insert into bgasuser values (2,'guest', md5('guest'),'ynsingh@iitk.ac.in','guest',1,'*'); 
