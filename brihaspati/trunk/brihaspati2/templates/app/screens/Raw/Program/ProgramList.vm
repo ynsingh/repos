@@ -37,7 +37,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
 		<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> $brih_map $brih_program </a></td>
+	<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brih_program $brih_map #else $brih_map $brih_program #end </a></td>
         #if($tdcolor != "2")
                 <td>
         #elseif($tdcolor == "2")

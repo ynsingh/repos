@@ -235,7 +235,7 @@ $!data.getMessage()
 
 				#if($nolist == "yeslist")
 				#if(($val == "") && ($modd=="All"))
-					<td bgcolor="$ui.menuColor" align="center"><i><font color="blue" size=4><b>Please select any group for viewing the group members !!</font><i></td>
+					<td bgcolor="$ui.menuColor" align="center"><i><font color="blue" size=4><b>$brih_grp23</font><i></td>
 				#else
 					#if($lang =="hindi" || $lang =="gujarati")
                         		#set($headings=["","<font color=green>$val</font> $brih_grp $brih_Of2 $brih_selected $brih_student "])

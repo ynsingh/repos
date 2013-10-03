@@ -25,7 +25,7 @@ $!data.getMessage()
                 <td>
                 <font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-                <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> |$brih_map $brih_program
+                <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> | #if($lang =="hindi" || $lang == "gujarati")$brih_program $brih_map #else $brih_map $brih_program #end
                 </td>
                 <td align="right">
                         <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ProgramManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
@@ -41,7 +41,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
 		<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> $brih_map $brih_program </a></td>
+	<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brih_program $brih_map #else $brih_map $brih_program #end </a></td>
 	#if($tdcolor != "2")
 		<td align="center">
 	#elseif($tdcolor == "2")

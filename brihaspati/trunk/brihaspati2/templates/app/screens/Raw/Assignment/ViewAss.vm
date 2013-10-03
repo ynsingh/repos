@@ -91,7 +91,7 @@ $!data.getMessage()
 		#end
         #end
         </SELECT> &nbsp;
-        <input type="button" class="button-ftextstyle" name="dosubmitView" value="Search" onClick="checkBlank(document.uploadform,this);"  />
+        <input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
         <input type="hidden" name="actionName">
         </td>
 	<td>
