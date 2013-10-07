@@ -405,6 +405,8 @@ public class UploadAction extends SecureAction
 				
 				if(sendMail.equals("sendMail")){
 					try{
+					String newText=pp.getString("text1","");
+					//ErrorDumpUtil.ErrorLog("newText from screens------"+newText);
 					int roleId[]={2,3};
 					int userId[]={uid,0};
 					crit = new Criteria();
@@ -420,14 +422,14 @@ public class UploadAction extends SecureAction
 							crit.add(TurbineUserPeer.USER_ID, usrId);
 							List usrList = TurbineUserPeer.doSelect(crit);
 							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
-							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
+							Mail_msg=  MailNotificationThread.getController().set_Message(newText+"\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
 						}
 						if(Mail_msg.equals("Success")) {
 							crit = new Criteria();
         	                                        crit.add(TurbineUserPeer.USER_ID, uid);
                 	                                List usrList = TurbineUserPeer.doSelect(crit);
 	                       	                        String senderEmail = ((TurbineUser) usrList.get(0)).getEmail();
-        						Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
+        						Mail_msg=  MailNotificationThread.getController().set_Message(newText+"\n\nCourse content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", senderEmail, "Course content uploaded", "", LangFile);
 							Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
 							data.addMessage(Mail_msg);
 						}

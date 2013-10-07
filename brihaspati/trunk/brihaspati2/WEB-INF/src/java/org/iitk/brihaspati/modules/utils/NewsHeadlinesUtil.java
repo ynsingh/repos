@@ -72,6 +72,7 @@ public class NewsHeadlinesUtil{
                 Criteria crit=new Criteria();
                 crit.add(NewsPeer.GROUP_ID,group_id);
                 crit.add(NewsPeer.PUBLISH_DATE,(Object)cdate,crit.LESS_EQUAL);
+                crit.addDescendingOrderByColumn(NewsPeer.PUBLISH_DATE);
                 List news=NewsPeer.doSelect(crit);
                         /**
                          * Get the news details for a set of specific

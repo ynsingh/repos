@@ -63,6 +63,18 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5") style="text-decoration:none"> #if($lang == "hindi") $brih_assignment $brih_Of1 $brih_edit/$brih_delete #else $brih_edit/$brih_delete $brih_assignment #end </a></td>
+	#if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","3") style="text-decoration:none">  #if($lang == "hindi") $brih_answer $brih_post #else $brih_post $brih_answer #end </a></td>
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+	<a href=$link.setPage("call,Assignment,RePermission.vm").addPathInfo("count","4") style="text-decoration:none"> $brih_repost  #if($lang == "hindi") $brih_Of #end $Repo_Perm </a></td>
         <td>
         #if($Status!="Edit")
         <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Ass.html","newWin"); style="text-decoration:none">$brih_help</a></td>

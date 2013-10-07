@@ -49,7 +49,7 @@ $!data.getMessage()
         }
 
 	function checkBlank(uploadform,field)
-        
+        { 
 		if(uploadform.grade.value!="") 
 		{
 			if(isNumberString(uploadform.grade.value))

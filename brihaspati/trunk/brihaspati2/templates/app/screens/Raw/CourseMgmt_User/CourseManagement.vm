@@ -234,9 +234,16 @@ $page.setTitle("Home | $course | Course management")
         ##</tr>
         ##<tr>
         <td>
-        <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp;
+        <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail" onchange="javascript:showTextBox()" id="check"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp;
         <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
         </td>
+        </tr>
+	<tr bgcolor="$ui.tableColor">
+        	<td colspan=6>
+                        <div style="display:none;" id="textboxDiv">
+	                        <b> $brih_desc </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="text1" size=35/>
+        		</div>
+        	</td>
         </tr>
 	#else
 	<tr width=100% bgcolor="$ui.tableColor">
@@ -259,7 +266,7 @@ $page.setTitle("Home | $course | Course management")
         <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
         </td>
         <td colspan=4>
-        <input type="text" name=contentTopic onFocus=checkRadio() size=20>
+        <input type="text" name=contentTopic onFocus=checkRadio() size=35>
         </td>
       <tr bgcolor="$ui.tableColor">
               #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td></td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
@@ -377,5 +384,13 @@ $page.setTitle("Home | $course | Course management")
                         alert("Topic Name Can not Empty !!");
                 }
         }
+	function showTextBox() {
+        if ($('#check').is(':checked')) {
+            $("#textboxDiv").show();
+        }
+        else {
+            $("#textboxDiv").hide();
+        }
+    }
 
 </SCRIPT>

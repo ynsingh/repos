@@ -108,33 +108,33 @@ $!data.getMessage()
                 </td>
                 <td >
  
-                        $e.getSender()
+                        $!e.getSender()
                 </td>
 		<td>
-			$e.getExpiryDate()
+			$!e.getExpiryDate()
 		</td>
 		<td>
-			$e.getPermission()
+			$!e.getPermission()
 		</td>
 		<td>
-			$e.getGrpmgmtType()
+			$!e.getGrpmgmtType()
 		</td>
                 <td>
-                        $e.getMSubject()
+                        $!e.getMSubject()
  
                 </td>
 		<td>
-                        $e.getRollno()
+                        $!e.getRollno()
                 </td>
 		<td>
-                        $e.getPrgCode()
+                        $!e.getPrgCode()
                 </td>
                 <td>
-                        $e.getStatus()
+                        $!e.getStatus()
                 </td>
  
                 <td>
-                        $e.getMsgID()
+                        $!e.getMsgID()
                 </td>
         </tr>
         #end
