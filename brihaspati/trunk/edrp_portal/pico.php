@@ -63,6 +63,7 @@ xmlhttp.open("GET","pico.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
 var info=xmlDoc.getElementsByTagName("PICO");
+var server=xmlDoc.getElementsByTagName("SERVER");
 xmlhttp.open("GET","headerfooter.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML; 
@@ -175,24 +176,33 @@ if( empty($_SESSION['username']) )
                 ?>
 
 		 Login Page:-</i></b></p>
-             <script type="text/javascript">
-                for (i=0;i<x.length;i++)
-                { 
-			                document.write("<tr><td><a href=");
-                document.write(info[i].getElementsByTagName("URL")[0].childNodes[0].nodeValue);
+                <script type="text/javascript">
+                for (i=0;i<server.length;i++)
+                {
+                var count = i+1 
+                document.write("<tr><td><a href=");
+                document.write(server[i].getElementsByTagName("URL")[0].childNodes[0].nodeValue);
                 document.write(">");
-                document.write(info[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue);
-                document.write("</a></td><td>");
+                document.write("PICO SERVER"+count);
+                document.write("</a></td><td><br>");
                         }
-       
  </script>
-   <br>
-	<?php
+   <br>	
+
+
+<?php
 if( !empty($_SESSION['username']) )
 {
-        echo    "<form action=\"project.php\" method=\"post\">";
-        echo "<textarea name=\"UserAddress2\" rows=\"2\" cols=\"70\">$valueUrl </textarea>";
-        echo "<input type='submit'value='update'>";
+	  echo "<b>Add Server Here:-</b>";
+	echo "<form action=\"project.php\" method=\"post\">";
+        echo "<input name='filenm' type='hidden' value='pico.xml'/>";
+         echo "<input name='redirect' type='hidden' value='pico.php'/>";
+        echo "<div id=\"my_div\">";
+        echo "</div>";
+        echo "<p>";
+        echo "<textarea name=\"SERVER\" rows=\"2\" cols=\"70\"></textarea>";
+        echo "<br>";
+        echo "<input type='submit'value='ADD'>";
         echo "</form>";
 }
        echo"</div>";
