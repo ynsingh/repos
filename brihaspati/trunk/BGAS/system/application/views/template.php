@@ -37,7 +37,7 @@ if (isset($add_css))
 <script type="text/javascript" src="<?php echo asset_url(); ?>js/ezpz_tooltip.min.js"></script>
 <script type="text/javascript" src="<?php echo asset_url(); ?>js/shortcutslibrary.js"></script>
 <script type="text/javascript" src="<?php echo asset_url(); ?>js/shortcuts.js"></script>
-
+<script type="text/javascript">var BASE_URI = "<?php echo base_url(); ?>";</script>
 <?php
 /* Dynamically adding javascript files from controllers */
 if (isset($add_javascript))
@@ -72,9 +72,13 @@ $(document).ready(function() {
 <body>
 <div id="container">
 	<div id="header">
+
+
 		<div id="logo">
-			<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); $iname = $this->config->item('account_ins_name'); echo $iname;?>
-		</div>
+		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); $iname = $this->config->item('account_ins_name'); echo $iname;?>
+ 
+	</div>
+
 		<?php
 			if ($this->session->userdata('user_name')) {
 				echo "<div id=\"admin\">";
@@ -88,12 +92,36 @@ $(document).ready(function() {
 				echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
 				echo " | ";
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
+				echo " | ";
+				//echo anchor('admin/masterdata', 'Master Data', array('title' => "Master Data", 'class' => 'anchor-link-b'));
 				echo "</div>";
 			}
 		?>
+
+		 <?php 
+/*file_list = get_filenames($this->upload_path);
+                //echo "$file_list";
+                //print_r($file_list);
+                if ($file_list)
+                {
+                        foreach ($file_list as $row)
+                        {
+                                //Only include file ending with .ini 
+                                if (substr($row, -4) == ".png")
+                                {
+                                        //echo $row;
+                                        $ini_label = substr($row, 0, -4);
+                                //        $data['accounts'][$ini_label] = $ini_label;
+                                }
+                        }
+                }*/
+
+echo img(array('src' => base_url() . "uploads/logo/IIT_Bombay_logo.png")); $this->db->from('settings');$this->db->select('ins_name')->where('id', 1); $ins_name1 = $this->db->get(); foreach($ins_name1->result() as $row){
+$ins_name2 = $row->ins_name;}echo "$ins_name2";
+?>  
 		<div id="info">
 			<?php
-				echo $this->config->item('account_name');
+		/*		echo $this->config->item('account_name');
 				echo " (";
 				echo anchor('user/account', 'change', array('title' => 'Change active account', 'class' => 'anchor-link-a'));
 				echo ")<br />";
@@ -107,14 +135,14 @@ $(document).ready(function() {
 				echo date_mysql_to_php_display($this->config->item('account_fy_end'));
 				echo "<br/>";
 				echo "Date : ";
-				echo Date("l, d F Y");
+				echo Date("l, d F Y");*/
 			?>
 		</div>
 	</div>
 	<div id="menu">
 		<ul class="sf-menu">
 			<li class="current">
-				<a href="<?php print base_url(); ?>" title="Dashboard">Dashboard</a>
+			<a href="<?php print base_url(); ?>" title="Dashboard">Dashboard</a>
 			</li>
 			<li>
 				<?php echo anchor('budgetl', 'Budgets', array('title' => 'Budget accounts')); ?>
@@ -152,8 +180,20 @@ $(document).ready(function() {
 			<li>
 				<?php echo anchor('report', 'Reports', array('title' => 'Reports')); ?>
 				<ul>
-					<li><?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?></li>
-					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?></li>
+					<li>
+				<?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?>
+				      	<ul>
+	<li><?php echo anchor('report/balancesheet', 'Balance Sheet Corporate', array('title' => 'Balance Sheet Corporate')); ?></li>
+        <li><?php echo anchor('report/academic', 'Balance Sheet Academic', array('title' => 'Balance Sheet Academic')); ?></li>
+					</ul>
+					</li>	
+					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?>
+				      	<ul>
+	<li><?php echo anchor('report/balancesheet', 'Balance Sheet Corporate', array('title' => 'Balance Sheet Corporate')); ?></li>
+        <li><?php echo anchor('report/academic', 'Balance Sheet Academic', array('title' => 'Balance Sheet Academic')); ?></li>
+					</ul>
+
+					</li>
 					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
 					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>
 					<li><?php echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation')); ?></li>
@@ -163,14 +203,17 @@ $(document).ready(function() {
 				<?php echo anchor('setting', 'Settings', array('title' => 'Settings')); ?>
 			</li>
 			<li>
-				<?php echo anchor('help', 'Help', array('title' => 'Help', 'class' => 'last')); ?>
+				<?php echo anchor('help', 'Help', array('title' => 'Help',)); ?>
 			</li>
+			<li>
+                                <?php echo anchor('changepassword', 'Changepassword', array('title' => 'changepassword', 'class' => 'last')); ?>
+                        </li>
 		</ul>
 	</div>
 	<div id="content">
 		<div id="sidebar">
 			<?php if (isset($page_sidebar)) echo $page_sidebar; ?>
-		</div>
+			</div>
 		<div id="main">
 			<div id="main-title">
 				<?php if (isset($page_title)) echo $page_title; ?>

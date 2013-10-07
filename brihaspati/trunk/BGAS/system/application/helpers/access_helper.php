@@ -44,6 +44,7 @@ if ( ! function_exists('check_access'))
 			'print entry',
 			'email entry',
 			'download entry',
+			'print selected entry',
 			'create ledger',
 			'edit ledger',
 			'delete ledger',
@@ -64,11 +65,22 @@ if ( ! function_exists('check_access'))
 			'delete budget',
 			'reappropriate budget',
 			'administer',
+			'add student',
+			'edit student',
+			'delete student',
+			'add employee',
+			'edit employee',
+			'delete employee',
+			'add party',
+			'edit party',
+			'delete party',
+			'change password',
 		);
 		$permissions['manager'] = array(
 			'view entry',
 			'create entry',
 			'print entry',
+			'print selected entry',
 			'email entry',
 			'download entry',
 			'create ledger',
@@ -88,6 +100,7 @@ if ( ! function_exists('check_access'))
 			'backup account',
 			'create budget',
 			'edit budget',
+			'change password',
 			'delete budget',
 			'reappropriate budget',
 		);
@@ -95,6 +108,7 @@ if ( ! function_exists('check_access'))
 			'view entry',
 			'create entry',
 			'print entry',
+			'print selected entry',
 			'email entry',
 			'download entry',
 			'create ledger',
@@ -109,21 +123,26 @@ if ( ! function_exists('check_access'))
 			'view reports',
 			'view log',
 			'clear log',
+			'change password',
 		);
 		$permissions['dataentry'] = array(
 			'view entry',
 			'create entry',
 			'print entry',
+			'print selected entry',
 			'email entry',
 			'download entry',
 			'create ledger',
 			'edit ledger',
+			'change password',
 		);
 		$permissions['guest'] = array(
 			'view entry',
 			'print entry',
+			'print selected entry',
 			'email entry',
 			'download entry',
+			'change password',
 		);
 
 		if ( ! isset($user_role))
