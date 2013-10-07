@@ -887,11 +887,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                     session.setAttribute("opacListd", empty);
                     session.setAttribute("opacLista", a);
                     session.setAttribute("button", button);
-                    System.out.println(button+"  "+doc_type);
-                    if(doc_type.equalsIgnoreCase("Diss"))
-                        return mapping.findForward("griddiss");
-                    else if(doc_type.equalsIgnoreCase("Book"))
-                        return mapping.findForward("grid");
+                    return mapping.findForward("grid");
                 } else {
                      String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
                     request.setAttribute("msg1", msg3);
@@ -1019,10 +1015,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                     session.setAttribute("opacListc", empty);
                     session.setAttribute("opacListd", empty);
                     session.setAttribute("button", button);
-                   if(doc_type.equalsIgnoreCase("Diss"))
-                        return mapping.findForward("griddiss");
-                    else if(doc_type.equalsIgnoreCase("Book"))
-                        return mapping.findForward("grid");
+                    return mapping.findForward("grid");
                 } else {
                      String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
                     request.setAttribute("msg1", msg3);
@@ -1087,487 +1080,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         session.setAttribute("opacListc", empty);
                         session.setAttribute("opacListd", empty);
                     session.setAttribute("button", button);
-                   if(doc_type.equalsIgnoreCase("Diss"))
-                        return mapping.findForward("griddiss");
-                    else if(doc_type.equalsIgnoreCase("Book"))
-                        return mapping.findForward("grid");
-                } else {
-                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
-                    request.setAttribute("msg1", msg3);
-                    String msg2 = "";
-                    request.setAttribute("msg2", msg2);
-                    return mapping.findForward("fail");
-                }
-            }
-            if (button.equals("Back")) {
-                return mapping.findForward("main");
-            }
-        }
-         //CD Entry
-         //Disseration Entry
-        if (doc_type.equalsIgnoreCase("cd")) {
-
-            if (button.equals("New")) {
-               // if (StringUtils.isEmpty(isbn10)) {
-                    if (!a.isEmpty()) {
-                        session.setAttribute("title", title);
-                        session.setAttribute("isbn10", isbn10);
-                        session.setAttribute("doc_type", doc_type);
-                        session.setAttribute("opacLista", a);
-                        session.setAttribute("opacListb", empty);
-                        session.setAttribute("opacListc", empty);
-                        session.setAttribute("opacListd", empty);
-                        session.setAttribute("button", button);
-                        return mapping.findForward("gridcd");
-                    }
-//                    if (!d.isEmpty()) {
-//                        session.setAttribute("title", title);
-//                        session.setAttribute("isbn10", isbn10);
-//                        session.setAttribute("doc_type", doc_type);
-//                        session.setAttribute("opacLista", empty);
-//                        session.setAttribute("opacListb", empty);
-//                        session.setAttribute("opacListc", empty);
-//                        session.setAttribute("opacListd", d);
-//                        session.setAttribute("button", button);
-//                        return mapping.findForward("grid");
-//                    }
-//                     else if (!b.isEmpty()) {
-//                        session.setAttribute("title", title);
-//                        session.setAttribute("isbn10", isbn10);
-//                        session.setAttribute("doc_type", doc_type);
-//                        session.setAttribute("opacLista", empty);
-//                        session.setAttribute("opacListb", b);
-//                        session.setAttribute("opacListc", empty);
-//                        session.setAttribute("opacListd", empty);
-//                        session.setAttribute("button", button);
-//                        return mapping.findForward("grid");
-//                    }
-//                    else if (!c.isEmpty()) {
-//                        session.setAttribute("opacLista", empty);
-//                        session.setAttribute("opacListb", empty);
-//                        session.setAttribute("opacListc", c);
-//                        session.setAttribute("opacListd", empty);
-//                        session.setAttribute("button", button);
-//                        return mapping.findForward("grid");
-//                    }
-                    else {
-                        bibform.setDocument_type(doc_type);
-                        bibform.setTitle(title);
-                       // bibform.setSubtitle("");
-                      //  bibform.setStatement_responsibility("");
-                       // bibform.setMain_entry("");
-                       // bibform.setAdded_entry("");
-                       // bibform.setPublisher_name("");
-                       // bibform.setPublication_place("");
-                      //  bibform.setPublishing_year("");
-                      //  bibform.setLCC_no("");
-                      //  bibform.setIsbn10(StringUtils.deleteWhitespace(isbn10));
-                      //  bibform.setIsbn13("");
-                      //  bibform.setEdition("");
-                        bibform.setCall_no("");
-                        bibform.setSubject("");
-                        bibform.setThesis_abstract("");
-                        bibform.setNotes("");
-                        bibform.setNo_of_copies(0);
-                        bibform.setSubmittedBy("");
-                       // bibform.setLast("");
-                        bibform.setGuide_name("");
-                        bibform.setDegree("");
-                        bibform.setAcceptance_year("");
-                        bibform.setEmail("");
-
-                        session.setAttribute("button", button);
-                        return mapping.findForward("newcd");
-                    }
-//                } else if (!StringUtils.isEmpty(isbn10)) {
-//                    bib = dao.search1Isbn10(isbn10, library_id, sub_library_id);
-//                    if (bib != null) {
-//                        String msg1 = resource.getString("cataloguing.catoldtitle.isbnduplicate");//"This isbn already exists enter different";
-//                        request.setAttribute("msg1", msg1);
-//                        return mapping.findForward("fail");
-//                    } else {
-//                        bibform.setDocument_type(doc_type);
-//                        bibform.setTitle(title);
-//                        bibform.setSubtitle("");
-//                        bibform.setStatement_responsibility("");
-//                        bibform.setMain_entry("");
-//                        bibform.setAdded_entry("");
-//                        bibform.setPublisher_name("");
-//                        bibform.setPublication_place("");
-//                        bibform.setPublishing_year("");
-//                        bibform.setLCC_no("");
-//                        bibform.setIsbn10(StringUtils.deleteWhitespace(isbn10));
-//                        bibform.setIsbn13("");
-//                        bibform.setEdition("");
-//                        bibform.setCall_no("");
-//                        bibform.setAlt_title("");
-//                        bibform.setAlt_title("");
-//                        bibform.setSubject("");
-//                        bibform.setThesis_abstract("");
-//                        bibform.setNotes("");
-//                        bibform.setBook_type("");
-//                        bibform.setNo_of_copies(0);
-//                        session.setAttribute("button", button);
-//                        return mapping.findForward("new");
-//                    }
-//                } else {
-//                    bibform.setDocument_type(doc_type);
-//                    bibform.setTitle(title);
-//                    bibform.setSubtitle("");
-//                    bibform.setStatement_responsibility("");
-//                    bibform.setMain_entry("");
-//                    bibform.setAdded_entry("");
-//                    bibform.setPublisher_name("");
-//                    bibform.setPublication_place("");
-//                    bibform.setPublishing_year("");
-//                    bibform.setLCC_no("");
-//                    bibform.setIsbn10(StringUtils.deleteWhitespace(isbn10));
-//                    bibform.setIsbn13("");
-//                    bibform.setEdition("");
-//                    bibform.setCall_no("");
-//                    bibform.setAlt_title("");
-//                    bibform.setAlt_title("");
-//                    bibform.setSubject("");
-//                    bibform.setThesis_abstract("");
-//                    bibform.setNotes("");
-//                    bibform.setBook_type("");
-//                    bibform.setNo_of_copies(0);
-//                    session.setAttribute("button", button);
-//
-//                    return mapping.findForward("new");
-//                }
-             } else if (button.equals("Update")) {
-                if (!StringUtils.isEmpty(isbn10)) {
-                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
-                   if(bib != null)
-                   {
-                       //bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setThesis_abstract(bib.getAbstract_());
-                        bibform.setNotes(bib.getNotes());
-                        bibform.setSubject(bib.getSubject());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        bb_id=bib.getId().getBiblioId();
-                        biblang=dao.searchlangbyBiblioid(bb_id, library_id, sub_library_id);
-                   }
-                    if (bib != null && biblang!=null) {
-                        bibform.setMain_entry1(biblang.getMainEntry());
-                        bibform.setAdded_entryl(biblang.getAddedEntry());
-                        bibform.setAdded_entry01(biblang.getAddedEntry1());
-                        bibform.setAdded_entry11(biblang.getAddedEntry2());
-                        bibform.setAdded_entry21(biblang.getAddedEntry3());
-                        bibform.setSer_note1(biblang.getSeries());
-                        bibform.setLCC_no1(biblang.getLccNo());
-                        bibform.setEdition1(biblang.getEdition());
-                        bibform.setIsbn101(biblang.getIsbn10());
-                        bibform.setIsbn131(biblang.getIsbn13());
-                        bibform.setPublication_place1(biblang.getPublicationPlace());
-                        bibform.setPublisher_name1(biblang.getPublisherName());
-                        bibform.setPublishing_year1(biblang.getPublishingYear());
-                        bibform.setSubtitle1(biblang.getSubtitle());
-                        bibform.setTitle1(biblang.getTitle());
-                        bibform.setCall_no1(biblang.getCallNo());
-                        bibform.setSubject1(biblang.getSubject());
-                        bibform.setThesis_abstract1(biblang.getAbstract_());
-                        bibform.setNotes1(biblang.getNotes());
-                        bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
-                        bibform.setAlt_title1(biblang.getAltTitle());
-                        bibform.setLanguage(biblang.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    }
-                    else if(bib != null){
-                       // bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                          if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    }
-                    else {
-                         String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
-                         request.setAttribute("msg1", msg3);
-                        String msg2 = "";
-                        request.setAttribute("msg2", msg2);
-                        return mapping.findForward("fail");
-                    }
-                }
-                if (!a.isEmpty()) {
-                    session.setAttribute("opacListb", empty);
-                    session.setAttribute("opacListc", empty);
-                    session.setAttribute("opacListd", empty);
-                    session.setAttribute("opacLista", a);
-                    session.setAttribute("button", button);
-                    System.out.println(button+"  "+doc_type);
-                    if(doc_type.equalsIgnoreCase("Diss"))
-                        return mapping.findForward("griddiss");
-                    else if(doc_type.equalsIgnoreCase("Book"))
-                        return mapping.findForward("grid");
-                } else {
-                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
-                    request.setAttribute("msg1", msg3);
-                    String msg2 = "";
-                    request.setAttribute("msg2", msg2);
-                    return mapping.findForward("fail");
-                }
-           } else if (button.equals("Delete")) {
-                if (!StringUtils.isEmpty(isbn10)) {
-                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
-                   if(bib != null)
-                   {
-                       bb_id=bib.getId().getBiblioId();
-                       biblang=dao.searchlangbyBiblioid(bb_id, library_id, sub_library_id);
-                   }
-                    if (bib != null && biblang!=null) {
-                       // bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setThesis_abstract(bib.getAbstract_());
-                        bibform.setNotes(bib.getNotes());
-                        bibform.setSubject(bib.getSubject());
-                        bibform.setMain_entry1(biblang.getMainEntry());
-                        bibform.setAdded_entryl(biblang.getAddedEntry());
-                        bibform.setAdded_entry01(biblang.getAddedEntry1());
-                        bibform.setAdded_entry11(biblang.getAddedEntry2());
-                        bibform.setAdded_entry21(biblang.getAddedEntry3());
-                        bibform.setSer_note1(biblang.getSeries());
-                        bibform.setLCC_no1(biblang.getLccNo());
-                        bibform.setEdition1(biblang.getEdition());
-                        bibform.setIsbn101(biblang.getIsbn10());
-                        bibform.setIsbn131(biblang.getIsbn13());
-                        bibform.setPublication_place1(biblang.getPublicationPlace());
-                        bibform.setPublisher_name1(biblang.getPublisherName());
-                        bibform.setPublishing_year1(biblang.getPublishingYear());
-                        bibform.setSubtitle1(biblang.getSubtitle());
-                        bibform.setTitle1(biblang.getTitle());
-                        bibform.setCall_no1(biblang.getCallNo());
-                        bibform.setSubject1(biblang.getSubject());
-                        bibform.setThesis_abstract1(biblang.getAbstract_());
-                        bibform.setNotes1(biblang.getNotes());
-                        bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
-                        bibform.setAlt_title1(biblang.getAltTitle());
-                        bibform.setLanguage(biblang.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    }
-                     else if(bib != null){
-                      //  bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                          if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                     }
-                    else {
-                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
-                        request.setAttribute("msg1", msg3);
-                        String msg2 = "";
-                        request.setAttribute("msg2", msg2);
-                        return mapping.findForward("fail");
-                    }
-                }
-                if (!a.isEmpty()) {
-                    session.setAttribute("opacLista", a);
-                    session.setAttribute("opacListb", empty);
-                    session.setAttribute("opacListc", empty);
-                    session.setAttribute("opacListd", empty);
-                    session.setAttribute("button", button);
-                   if(doc_type.equalsIgnoreCase("Diss"))
-                        return mapping.findForward("griddiss");
-                    else if(doc_type.equalsIgnoreCase("Book"))
-                        return mapping.findForward("grid");
-                } else {
-                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
-                    request.setAttribute("msg1", msg3);
-                    String msg2 = "";
-                    request.setAttribute("msg2", msg2);
-                    return mapping.findForward("fail");
-                }
-            } else if (button.equals("View")) {
-                if (!StringUtils.isEmpty(isbn10)) {
-                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
-                    if (bib != null) {
-                       // bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setThesis_abstract(bib.getAbstract_());
-                        bibform.setNotes(bib.getNotes());
-                        bibform.setSubject(bib.getSubject());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    } else {
-                         String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
-                        request.setAttribute("msg1", msg3);
-                        String msg2 = "";
-                        request.setAttribute("msg2", msg2);
-                        return mapping.findForward("fail");
-                    }
-                }
-                if (!a.isEmpty()) {
-                        session.setAttribute("opacLista", a);
-                        session.setAttribute("opacListb", empty);
-                        session.setAttribute("opacListc", empty);
-                        session.setAttribute("opacListd", empty);
-                    session.setAttribute("button", button);
-                   if(doc_type.equalsIgnoreCase("Diss"))
-                        return mapping.findForward("griddiss");
-                    else if(doc_type.equalsIgnoreCase("Book"))
-                        return mapping.findForward("grid");
+                    return mapping.findForward("grid");
                 } else {
                      String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
                     request.setAttribute("msg1", msg3);
@@ -1594,7 +1107,7 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                         session.setAttribute("opacListc", empty);
                         session.setAttribute("opacListd", empty);
                         session.setAttribute("button", button);
-                        return mapping.findForward("grid");
+                        return mapping.findForward("gridthesis");
                     }
 //                    if (!d.isEmpty()) {
 //                        session.setAttribute("title", title);
@@ -1713,134 +1226,133 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
 //                    return mapping.findForward("new");
 //                }
              } else if (button.equals("Update")) {
-                if (!StringUtils.isEmpty(isbn10)) {
-                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
-                   if(bib != null)
-                   {
-                       //bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setThesis_abstract(bib.getAbstract_());
-                        bibform.setNotes(bib.getNotes());
-                        bibform.setSubject(bib.getSubject());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        bb_id=bib.getId().getBiblioId();
-                        biblang=dao.searchlangbyBiblioid(bb_id, library_id, sub_library_id);
-                   }
-                    if (bib != null && biblang!=null) {
-                        bibform.setMain_entry1(biblang.getMainEntry());
-                        bibform.setAdded_entryl(biblang.getAddedEntry());
-                        bibform.setAdded_entry01(biblang.getAddedEntry1());
-                        bibform.setAdded_entry11(biblang.getAddedEntry2());
-                        bibform.setAdded_entry21(biblang.getAddedEntry3());
-                        bibform.setSer_note1(biblang.getSeries());
-                        bibform.setLCC_no1(biblang.getLccNo());
-                        bibform.setEdition1(biblang.getEdition());
-                        bibform.setIsbn101(biblang.getIsbn10());
-                        bibform.setIsbn131(biblang.getIsbn13());
-                        bibform.setPublication_place1(biblang.getPublicationPlace());
-                        bibform.setPublisher_name1(biblang.getPublisherName());
-                        bibform.setPublishing_year1(biblang.getPublishingYear());
-                        bibform.setSubtitle1(biblang.getSubtitle());
-                        bibform.setTitle1(biblang.getTitle());
-                        bibform.setCall_no1(biblang.getCallNo());
-                        bibform.setSubject1(biblang.getSubject());
-                        bibform.setThesis_abstract1(biblang.getAbstract_());
-                        bibform.setNotes1(biblang.getNotes());
-                        bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
-                        bibform.setAlt_title1(biblang.getAltTitle());
-                        bibform.setLanguage(biblang.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    }
-                    else if(bib != null){
-                       // bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                          if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    }
-                    else {
-                         String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
-                         request.setAttribute("msg1", msg3);
-                        String msg2 = "";
-                        request.setAttribute("msg2", msg2);
-                        return mapping.findForward("fail");
-                    }
-                }
+//                if (!StringUtils.isEmpty(isbn10)) {
+//                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
+//                   if(bib != null)
+//                   {
+//                       //bibform.setNo_of_copies(bib.getNoOfCopies());
+//                        bibform.setMain_entry(bib.getMainEntry());
+//                        bibform.setAdded_entry(bib.getAddedEntry());
+//                        bibform.setAdded_entry0(bib.getAddedEntry1());
+//                        bibform.setAdded_entry1(bib.getAddedEntry2());
+//                        bibform.setAdded_entry2(bib.getAddedEntry3());
+//                        bibform.setSer_note(bib.getSeries());
+//                        bibform.setBiblio_id(bib.getId().getBiblioId());
+//                        bibform.setLCC_no(bib.getLccNo());
+//                        bibform.setDocument_type(bib.getDocumentType());
+//                        bibform.setEdition(bib.getEdition());
+//                        bibform.setIsbn10(bib.getIsbn10());
+//                        bibform.setIsbn13(bib.getIsbn13());
+//                        bibform.setLibrary_id(bib.getId().getLibraryId());
+//                        bibform.setSub_library_id(bib.getId().getSublibraryId());
+//                        bibform.setPublication_place(bib.getPublicationPlace());
+//                        bibform.setPublisher_name(bib.getPublisherName());
+//                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
+//                        bibform.setSubtitle(bib.getSubtitle());
+//                        bibform.setTitle(bib.getTitle());
+//                        bibform.setCall_no(bib.getCallNo());
+//                        bibform.setAccession_type(bib.getAccessionType());
+//                        bibform.setBook_type(bib.getBookType());
+//                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
+//                        bibform.setAlt_title(bib.getAltTitle());
+//                        bibform.setThesis_abstract(bib.getAbstract_());
+//                        bibform.setNotes(bib.getNotes());
+//                        bibform.setSubject(bib.getSubject());
+//                        bibform.setLanguage(bib.getEntryLanguage());
+//                                           if (bib != null) {
+//                        if (bib.getNoOfCopies() == null) {
+//                            i = 0;
+//                        } else {
+//                            i = bib.getNoOfCopies();
+//                        }
+//                    }
+//                        bb_id=bib.getId().getBiblioId();
+//                        biblang=dao.searchlangbyBiblioid(bb_id, library_id, sub_library_id);
+//                   }
+//                    if (bib != null && biblang!=null) {
+//                        bibform.setMain_entry1(biblang.getMainEntry());
+//                        bibform.setAdded_entryl(biblang.getAddedEntry());
+//                        bibform.setAdded_entry01(biblang.getAddedEntry1());
+//                        bibform.setAdded_entry11(biblang.getAddedEntry2());
+//                        bibform.setAdded_entry21(biblang.getAddedEntry3());
+//                        bibform.setSer_note1(biblang.getSeries());
+//                        bibform.setLCC_no1(biblang.getLccNo());
+//                        bibform.setEdition1(biblang.getEdition());
+//                        bibform.setIsbn101(biblang.getIsbn10());
+//                        bibform.setIsbn131(biblang.getIsbn13());
+//                        bibform.setPublication_place1(biblang.getPublicationPlace());
+//                        bibform.setPublisher_name1(biblang.getPublisherName());
+//                        bibform.setPublishing_year1(biblang.getPublishingYear());
+//                        bibform.setSubtitle1(biblang.getSubtitle());
+//                        bibform.setTitle1(biblang.getTitle());
+//                        bibform.setCall_no1(biblang.getCallNo());
+//                        bibform.setSubject1(biblang.getSubject());
+//                        bibform.setThesis_abstract1(biblang.getAbstract_());
+//                        bibform.setNotes1(biblang.getNotes());
+//                        bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
+//                        bibform.setAlt_title1(biblang.getAltTitle());
+//                        bibform.setLanguage(biblang.getEntryLanguage());
+//                                           if (bib != null) {
+//                        if (bib.getNoOfCopies() == null) {
+//                            i = 0;
+//                        } else {
+//                            i = bib.getNoOfCopies();
+//                        }
+//                    }
+//                        session.setAttribute("button", button);
+//                        return mapping.findForward("new");
+//                    }
+//                    else if(bib != null){
+//                       // bibform.setNo_of_copies(bib.getNoOfCopies());
+//                        bibform.setMain_entry(bib.getMainEntry());
+//                        bibform.setAdded_entry(bib.getAddedEntry());
+//                        bibform.setAdded_entry0(bib.getAddedEntry1());
+//                        bibform.setAdded_entry1(bib.getAddedEntry2());
+//                        bibform.setAdded_entry2(bib.getAddedEntry3());
+//                        bibform.setSer_note(bib.getSeries());
+//                        bibform.setBiblio_id(bib.getId().getBiblioId());
+//                        bibform.setLCC_no(bib.getLccNo());
+//                        bibform.setDocument_type(bib.getDocumentType());
+//                        bibform.setEdition(bib.getEdition());
+//                        bibform.setIsbn10(bib.getIsbn10());
+//                        bibform.setIsbn13(bib.getIsbn13());
+//                        bibform.setLibrary_id(bib.getId().getLibraryId());
+//                        bibform.setSub_library_id(bib.getId().getSublibraryId());
+//                        bibform.setPublication_place(bib.getPublicationPlace());
+//                        bibform.setPublisher_name(bib.getPublisherName());
+//                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
+//                        bibform.setSubtitle(bib.getSubtitle());
+//                        bibform.setTitle(bib.getTitle());
+//                        bibform.setCall_no(bib.getCallNo());
+//                        bibform.setAccession_type(bib.getAccessionType());
+//                        bibform.setBook_type(bib.getBookType());
+//                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
+//                        bibform.setAlt_title(bib.getAltTitle());
+//                        bibform.setLanguage(bib.getEntryLanguage());
+//                                          if (bib != null) {
+//                        if (bib.getNoOfCopies() == null) {
+//                            i = 0;
+//                        } else {
+//                            i = bib.getNoOfCopies();
+//                        }
+//                    }
+//                        session.setAttribute("button", button);
+//                        return mapping.findForward("new");
+//                    }
+//                    else {
+//                         String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
+//                         request.setAttribute("msg1", msg3);
+//                        String msg2 = "";
+//                        request.setAttribute("msg2", msg2);
+//                        return mapping.findForward("fail");
+//                    }
+//                }
                 if (!a.isEmpty()) {
                     session.setAttribute("opacListb", empty);
                     session.setAttribute("opacListc", empty);
                     session.setAttribute("opacListd", empty);
                     session.setAttribute("opacLista", a);
                     session.setAttribute("button", button);
-                   
                     return mapping.findForward("gridthesis");
                 } else {
                      String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
@@ -1850,119 +1362,119 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                     return mapping.findForward("fail");
                 }
            } else if (button.equals("Delete")) {
-                if (!StringUtils.isEmpty(isbn10)) {
-                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
-                   if(bib != null)
-                   {
-                       bb_id=bib.getId().getBiblioId();
-                       biblang=dao.searchlangbyBiblioid(bb_id, library_id, sub_library_id);
-                   }
-                    if (bib != null && biblang!=null) {
-                       // bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setThesis_abstract(bib.getAbstract_());
-                        bibform.setNotes(bib.getNotes());
-                        bibform.setSubject(bib.getSubject());
-                        bibform.setMain_entry1(biblang.getMainEntry());
-                        bibform.setAdded_entryl(biblang.getAddedEntry());
-                        bibform.setAdded_entry01(biblang.getAddedEntry1());
-                        bibform.setAdded_entry11(biblang.getAddedEntry2());
-                        bibform.setAdded_entry21(biblang.getAddedEntry3());
-                        bibform.setSer_note1(biblang.getSeries());
-                        bibform.setLCC_no1(biblang.getLccNo());
-                        bibform.setEdition1(biblang.getEdition());
-                        bibform.setIsbn101(biblang.getIsbn10());
-                        bibform.setIsbn131(biblang.getIsbn13());
-                        bibform.setPublication_place1(biblang.getPublicationPlace());
-                        bibform.setPublisher_name1(biblang.getPublisherName());
-                        bibform.setPublishing_year1(biblang.getPublishingYear());
-                        bibform.setSubtitle1(biblang.getSubtitle());
-                        bibform.setTitle1(biblang.getTitle());
-                        bibform.setCall_no1(biblang.getCallNo());
-                        bibform.setSubject1(biblang.getSubject());
-                        bibform.setThesis_abstract1(biblang.getAbstract_());
-                        bibform.setNotes1(biblang.getNotes());
-                        bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
-                        bibform.setAlt_title1(biblang.getAltTitle());
-                        bibform.setLanguage(biblang.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    }
-                     else if(bib != null){
-                      //  bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                          if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                     }
-                    else {
-                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
-                        request.setAttribute("msg1", msg3);
-                        String msg2 = "";
-                        request.setAttribute("msg2", msg2);
-                        return mapping.findForward("fail");
-                    }
-                }
+//                if (!StringUtils.isEmpty(isbn10)) {
+//                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
+//                   if(bib != null)
+//                   {
+//                       bb_id=bib.getId().getBiblioId();
+//                       biblang=dao.searchlangbyBiblioid(bb_id, library_id, sub_library_id);
+//                   }
+//                    if (bib != null && biblang!=null) {
+//                       // bibform.setNo_of_copies(bib.getNoOfCopies());
+//                        bibform.setMain_entry(bib.getMainEntry());
+//                        bibform.setAdded_entry(bib.getAddedEntry());
+//                        bibform.setAdded_entry0(bib.getAddedEntry1());
+//                        bibform.setAdded_entry1(bib.getAddedEntry2());
+//                        bibform.setAdded_entry2(bib.getAddedEntry3());
+//                        bibform.setSer_note(bib.getSeries());
+//                        bibform.setBiblio_id(bib.getId().getBiblioId());
+//                        bibform.setLCC_no(bib.getLccNo());
+//                        bibform.setDocument_type(bib.getDocumentType());
+//                        bibform.setEdition(bib.getEdition());
+//                        bibform.setIsbn10(bib.getIsbn10());
+//                        bibform.setIsbn13(bib.getIsbn13());
+//                        bibform.setLibrary_id(bib.getId().getLibraryId());
+//                        bibform.setSub_library_id(bib.getId().getSublibraryId());
+//                        bibform.setPublication_place(bib.getPublicationPlace());
+//                        bibform.setPublisher_name(bib.getPublisherName());
+//                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
+//                        bibform.setSubtitle(bib.getSubtitle());
+//                        bibform.setTitle(bib.getTitle());
+//                        bibform.setCall_no(bib.getCallNo());
+//                        bibform.setAccession_type(bib.getAccessionType());
+//                        bibform.setBook_type(bib.getBookType());
+//                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
+//                        bibform.setAlt_title(bib.getAltTitle());
+//                        bibform.setThesis_abstract(bib.getAbstract_());
+//                        bibform.setNotes(bib.getNotes());
+//                        bibform.setSubject(bib.getSubject());
+//                        bibform.setMain_entry1(biblang.getMainEntry());
+//                        bibform.setAdded_entryl(biblang.getAddedEntry());
+//                        bibform.setAdded_entry01(biblang.getAddedEntry1());
+//                        bibform.setAdded_entry11(biblang.getAddedEntry2());
+//                        bibform.setAdded_entry21(biblang.getAddedEntry3());
+//                        bibform.setSer_note1(biblang.getSeries());
+//                        bibform.setLCC_no1(biblang.getLccNo());
+//                        bibform.setEdition1(biblang.getEdition());
+//                        bibform.setIsbn101(biblang.getIsbn10());
+//                        bibform.setIsbn131(biblang.getIsbn13());
+//                        bibform.setPublication_place1(biblang.getPublicationPlace());
+//                        bibform.setPublisher_name1(biblang.getPublisherName());
+//                        bibform.setPublishing_year1(biblang.getPublishingYear());
+//                        bibform.setSubtitle1(biblang.getSubtitle());
+//                        bibform.setTitle1(biblang.getTitle());
+//                        bibform.setCall_no1(biblang.getCallNo());
+//                        bibform.setSubject1(biblang.getSubject());
+//                        bibform.setThesis_abstract1(biblang.getAbstract_());
+//                        bibform.setNotes1(biblang.getNotes());
+//                        bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
+//                        bibform.setAlt_title1(biblang.getAltTitle());
+//                        bibform.setLanguage(biblang.getEntryLanguage());
+//                                           if (bib != null) {
+//                        if (bib.getNoOfCopies() == null) {
+//                            i = 0;
+//                        } else {
+//                            i = bib.getNoOfCopies();
+//                        }
+//                    }
+//                        session.setAttribute("button", button);
+//                        return mapping.findForward("new");
+//                    }
+//                     else if(bib != null){
+//                      //  bibform.setNo_of_copies(bib.getNoOfCopies());
+//                        bibform.setMain_entry(bib.getMainEntry());
+//                        bibform.setAdded_entry(bib.getAddedEntry());
+//                        bibform.setAdded_entry0(bib.getAddedEntry1());
+//                        bibform.setAdded_entry1(bib.getAddedEntry2());
+//                        bibform.setAdded_entry2(bib.getAddedEntry3());
+//                        bibform.setSer_note(bib.getSeries());
+//                        bibform.setBiblio_id(bib.getId().getBiblioId());
+//                        bibform.setLCC_no(bib.getLccNo());
+//                        bibform.setDocument_type(bib.getDocumentType());
+//                        bibform.setEdition(bib.getEdition());
+//                        bibform.setIsbn10(bib.getIsbn10());
+//                        bibform.setIsbn13(bib.getIsbn13());
+//                        bibform.setLibrary_id(bib.getId().getLibraryId());
+//                        bibform.setSub_library_id(bib.getId().getSublibraryId());
+//                        bibform.setPublication_place(bib.getPublicationPlace());
+//                        bibform.setPublisher_name(bib.getPublisherName());
+//                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
+//                        bibform.setSubtitle(bib.getSubtitle());
+//                        bibform.setTitle(bib.getTitle());
+//                        bibform.setCall_no(bib.getCallNo());
+//                        bibform.setAccession_type(bib.getAccessionType());
+//                        bibform.setBook_type(bib.getBookType());
+//                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
+//                        bibform.setAlt_title(bib.getAltTitle());
+//                        bibform.setLanguage(bib.getEntryLanguage());
+//                                          if (bib != null) {
+//                        if (bib.getNoOfCopies() == null) {
+//                            i = 0;
+//                        } else {
+//                            i = bib.getNoOfCopies();
+//                        }
+//                    }
+//                        session.setAttribute("button", button);
+//                        return mapping.findForward("new");
+//                     }
+//                    else {
+//                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
+//                        request.setAttribute("msg1", msg3);
+//                        String msg2 = "";
+//                        request.setAttribute("msg2", msg2);
+//                        return mapping.findForward("fail");
+//                    }
+//                }
                 if (!a.isEmpty()) {
                     session.setAttribute("opacLista", a);
                     session.setAttribute("opacListb", empty);
@@ -1978,56 +1490,56 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                     return mapping.findForward("fail");
                 }
             } else if (button.equals("View")) {
-                if (!StringUtils.isEmpty(isbn10)) {
-                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
-                    if (bib != null) {
-                       // bibform.setNo_of_copies(bib.getNoOfCopies());
-                        bibform.setMain_entry(bib.getMainEntry());
-                        bibform.setThesis_abstract(bib.getAbstract_());
-                        bibform.setNotes(bib.getNotes());
-                        bibform.setSubject(bib.getSubject());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry(bib.getAddedEntry());
-                        bibform.setAdded_entry0(bib.getAddedEntry1());
-                        bibform.setAdded_entry1(bib.getAddedEntry2());
-                        bibform.setAdded_entry2(bib.getAddedEntry3());
-                        bibform.setBiblio_id(bib.getId().getBiblioId());
-                        bibform.setLCC_no(bib.getLccNo());
-                        bibform.setDocument_type(bib.getDocumentType());
-                        bibform.setEdition(bib.getEdition());
-                        bibform.setIsbn10(bib.getIsbn10());
-                        bibform.setIsbn13(bib.getIsbn13());
-                        bibform.setLibrary_id(bib.getId().getLibraryId());
-                        bibform.setSub_library_id(bib.getId().getSublibraryId());
-                        bibform.setPublication_place(bib.getPublicationPlace());
-                        bibform.setPublisher_name(bib.getPublisherName());
-                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
-                        bibform.setSubtitle(bib.getSubtitle());
-                        bibform.setTitle(bib.getTitle());
-                        bibform.setCall_no(bib.getCallNo());
-                        bibform.setSer_note(bib.getSeries());
-                        bibform.setAccession_type(bib.getAccessionType());
-                        bibform.setBook_type(bib.getBookType());
-                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
-                        bibform.setAlt_title(bib.getAltTitle());
-                        bibform.setLanguage(bib.getEntryLanguage());
-                                           if (bib != null) {
-                        if (bib.getNoOfCopies() == null) {
-                            i = 0;
-                        } else {
-                            i = bib.getNoOfCopies();
-                        }
-                    }
-                        session.setAttribute("button", button);
-                        return mapping.findForward("new");
-                    } else {
-                         String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
-                        request.setAttribute("msg1", msg3);
-                        String msg2 = "";
-                        request.setAttribute("msg2", msg2);
-                        return mapping.findForward("fail");
-                    }
-                }
+//                if (!StringUtils.isEmpty(isbn10)) {
+//                    bib = dao.search2Isbn10(title, isbn10, library_id, sub_library_id);
+//                    if (bib != null) {
+//                       // bibform.setNo_of_copies(bib.getNoOfCopies());
+//                        bibform.setMain_entry(bib.getMainEntry());
+//                        bibform.setThesis_abstract(bib.getAbstract_());
+//                        bibform.setNotes(bib.getNotes());
+//                        bibform.setSubject(bib.getSubject());
+//                        bibform.setAdded_entry(bib.getAddedEntry());
+//                        bibform.setAdded_entry(bib.getAddedEntry());
+//                        bibform.setAdded_entry0(bib.getAddedEntry1());
+//                        bibform.setAdded_entry1(bib.getAddedEntry2());
+//                        bibform.setAdded_entry2(bib.getAddedEntry3());
+//                        bibform.setBiblio_id(bib.getId().getBiblioId());
+//                        bibform.setLCC_no(bib.getLccNo());
+//                        bibform.setDocument_type(bib.getDocumentType());
+//                        bibform.setEdition(bib.getEdition());
+//                        bibform.setIsbn10(bib.getIsbn10());
+//                        bibform.setIsbn13(bib.getIsbn13());
+//                        bibform.setLibrary_id(bib.getId().getLibraryId());
+//                        bibform.setSub_library_id(bib.getId().getSublibraryId());
+//                        bibform.setPublication_place(bib.getPublicationPlace());
+//                        bibform.setPublisher_name(bib.getPublisherName());
+//                        bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
+//                        bibform.setSubtitle(bib.getSubtitle());
+//                        bibform.setTitle(bib.getTitle());
+//                        bibform.setCall_no(bib.getCallNo());
+//                        bibform.setSer_note(bib.getSeries());
+//                        bibform.setAccession_type(bib.getAccessionType());
+//                        bibform.setBook_type(bib.getBookType());
+//                        bibform.setStatement_responsibility(bib.getStatementResponsibility());
+//                        bibform.setAlt_title(bib.getAltTitle());
+//                        bibform.setLanguage(bib.getEntryLanguage());
+//                                           if (bib != null) {
+//                        if (bib.getNoOfCopies() == null) {
+//                            i = 0;
+//                        } else {
+//                            i = bib.getNoOfCopies();
+//                        }
+//                    }
+//                        session.setAttribute("button", button);
+//                        return mapping.findForward("new");
+//                    } else {
+//                         String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound");//Title corresponding to the isbn is not found.
+//                        request.setAttribute("msg1", msg3);
+//                        String msg2 = "";
+//                        request.setAttribute("msg2", msg2);
+//                        return mapping.findForward("fail");
+//                    }
+//                }
                 if (!a.isEmpty()) {
                         session.setAttribute("opacLista", a);
                         session.setAttribute("opacListb", empty);
@@ -2047,6 +1559,90 @@ public class BibliographicDetailEntryAction1 extends org.apache.struts.action.Ac
                 return mapping.findForward("main");
             }
         }
+
+        if (doc_type.equalsIgnoreCase("journal")) {
+
+            if (button.equals("New")) {
+               // if (StringUtils.isEmpty(isbn10)) {
+                    if (!a.isEmpty()) {
+                        session.setAttribute("title", title);
+                        session.setAttribute("isbn10", isbn10);
+                        session.setAttribute("doc_type", doc_type);
+                        session.setAttribute("opacLista", a);
+                        session.setAttribute("opacListb", empty);
+                        session.setAttribute("opacListc", empty);
+                        session.setAttribute("opacListd", empty);
+                        session.setAttribute("button", button);
+                        return mapping.findForward("gridjournal");
+                    }
+                    else {
+                        bibform.setDocument_type(doc_type);
+                        bibform.setTitle(title);
+                        bibform.setLast_Modified("");
+                        bibform.setPublisher_name("");
+                        bibform.setWebsite("");
+                        bibform.setClas("");
+                        bibform.setFrequency("");
+                        bibform.setHistory("");
+                        bibform.setCall_no("");
+                        bibform.setIssn("");
+                        bibform.setSubject("");
+                        bibform.setNotes("");
+
+                        session.setAttribute("button", button);
+                        return mapping.findForward("journal");
+                    }
+             } else if (button.equals("Update")) {
+                if (!a.isEmpty()) {
+                    session.setAttribute("opacListb", empty);
+                    session.setAttribute("opacListc", empty);
+                    session.setAttribute("opacListd", empty);
+                    session.setAttribute("opacLista", a);
+                    session.setAttribute("button", button);
+                    return mapping.findForward("gridjournal");
+                } else {
+                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
+                    request.setAttribute("msg1", msg3);
+                    String msg2 = "";
+                    request.setAttribute("msg2", msg2);
+                    return mapping.findForward("fail");
+                }
+           } else if (button.equals("Delete")) {
+                if (!a.isEmpty()) {
+                    session.setAttribute("opacLista", a);
+                    session.setAttribute("opacListb", empty);
+                    session.setAttribute("opacListc", empty);
+                    session.setAttribute("opacListd", empty);
+                    session.setAttribute("button", button);
+                    return mapping.findForward("gridjournal");
+                } else {
+                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
+                    request.setAttribute("msg1", msg3);
+                    String msg2 = "";
+                    request.setAttribute("msg2", msg2);
+                    return mapping.findForward("fail");
+                }
+            } else if (button.equals("View")) {
+                if (!a.isEmpty()) {
+                        session.setAttribute("opacLista", a);
+                        session.setAttribute("opacListb", empty);
+                        session.setAttribute("opacListc", empty);
+                        session.setAttribute("opacListd", empty);
+                    session.setAttribute("button", button);
+                    return mapping.findForward("gridjournal");
+                } else {
+                     String msg3 = resource.getString("cataloguing.catoldtitle.titlenotfound1");//Title is not found.
+                    request.setAttribute("msg1", msg3);
+                    String msg2 = "";
+                    request.setAttribute("msg2", msg2);
+                    return mapping.findForward("fail");
+                }
+            }
+            if (button.equals("Back")) {
+                return mapping.findForward("main");
+            }
+        }
+
 
         return mapping.findForward("fail");
     }

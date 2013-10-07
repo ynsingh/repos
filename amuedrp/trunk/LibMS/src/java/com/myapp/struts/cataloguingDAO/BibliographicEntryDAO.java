@@ -278,6 +278,29 @@ public class BibliographicEntryDAO {
         }
     }
 
+    /**
+     * This method updates Document details.
+     * @param bibDetails
+     */
+    public void updateAcc(DocumentDetails bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(bibDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+
+            tx.rollback();
+           e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
      /**
      * This method updates bibliographic details.
      * @param bibDetails
@@ -1470,8 +1493,15 @@ public List<DocumentDetails> searchDoc3(String call_no, String library_id, Strin
         }
         return obj;
     }
-
-
+    private int rec;
+    public void setTotalRecord(int rec)
+    {
+    this.rec=rec;
+    }
+    public int getTotalRecord()
+    {
+    return rec;
+    }
     /**
      *
      * @param search_by
@@ -1479,21 +1509,26 @@ public List<DocumentDetails> searchDoc3(String call_no, String library_id, Strin
      * @param sort_by
      * @return List
      */
-  public List getBiblio(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by,int pageNumber) {
+  public List getBiblio(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by,int pageNumber,String doc_type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List obj=new ArrayList();
         session.beginTransaction();
         try {
             Criteria criteria = session.createCriteria(BibliographicDetails.class)
                     .add(Restrictions.eq("id.libraryId", library_id))
+                    
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id));
+
+            if(doc_type!=null && doc_type.equalsIgnoreCase("select")==false)
+                    criteria.add(Restrictions.ilike("documentType",doc_type));
+
             if(search_by!=null && search_by.isEmpty()==false)
                     criteria.add(Restrictions.ilike(search_by,search_keyword+"%"));
             if(sort_by==null || sort_by.isEmpty()==true)
                 sort_by="id.biblioId";
 
                criteria.addOrder(Property.forName(sort_by).asc());
-
+setTotalRecord(criteria.list().size());
 
                if(pageNumber==0)
             {
@@ -1514,6 +1549,48 @@ public List<DocumentDetails> searchDoc3(String call_no, String library_id, Strin
         }
         return obj;
     }
+
+
+  /**
+     *
+     * @param search_by
+     * @param search_keyword
+     * @param sort_by
+     * @return List
+     */
+  public List getBiblioXport(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by,String doc_type) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List obj=new ArrayList();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    .add(Restrictions.eq("id.libraryId", library_id))
+
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id));
+
+            if(doc_type!=null && doc_type.equalsIgnoreCase("select")==false)
+                    criteria.add(Restrictions.ilike("documentType",doc_type));
+
+            if(search_by!=null && search_by.isEmpty()==false)
+                    criteria.add(Restrictions.ilike(search_by,search_keyword+"%"));
+            if(sort_by==null || sort_by.isEmpty()==true)
+                sort_by="id.biblioId";
+
+               criteria.addOrder(Property.forName(sort_by).asc());
+setTotalRecord(criteria.list().size());
+
+
+                obj=criteria.list();
+
+
+               session.getTransaction().commit();
+
+        } finally {
+            session.close();
+        }
+        return obj;
+    }
+
 
   /**
      *

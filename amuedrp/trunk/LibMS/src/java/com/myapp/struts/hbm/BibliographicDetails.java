@@ -128,6 +128,12 @@ private String rating;
      private String fileType;
      private Set accessionRegisters = new HashSet(0);
      private Set documentDetailses = new HashSet(0);
+     private String clas;
+     private String history;
+     private String frequency;
+     private String latest;
+     private String website;
+
 
     public String getThesisStatus() {
         return thesisStatus;
@@ -146,7 +152,7 @@ private String rating;
         this.id = id;
         this.library = library;
     }
-    public BibliographicDetails(BibliographicDetailsId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, int publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, Set accessionRegisters, Set documentDetailses,String image,String digitalData,String digitalComment,String Last,String tstatus) {
+    public BibliographicDetails(BibliographicDetailsId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, int publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, Set accessionRegisters, Set documentDetailses,String image,String digitalData,String digitalComment,String Last,String tstatus,String clas,String history,String frequency,String latest,String website) {
        this.id = id;
        this.library = library;
        this.documentType = documentType;
@@ -204,7 +210,54 @@ private String rating;
        this.digitalData=digitalData;
        this.lastModified=Last;
        this.thesisStatus=tstatus;
+       this.history=history;
+       this.clas=clas;
+       this.frequency=frequency;
+       this.latest=latest;
+       this.website=website;
     }
+
+    public String getClas() {
+        return clas;
+    }
+
+    public void setClas(String clas) {
+        this.clas = clas;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public String getLatest() {
+        return latest;
+    }
+
+    public void setLatest(String latest) {
+        this.latest = latest;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+
    
     public BibliographicDetailsId getId() {
         return this.id;

@@ -32,9 +32,10 @@ public class ViewAllBiblioAction extends org.apache.struts.action.Action {
         String search_by = institute.getSearch_by();
         String sort_by = institute.getSort_by();
         String search_keyword = institute.getSearch_keyword();
+	String doc_type=institute.getDocument_type();
            int pageno=Integer.parseInt((String)(request.getParameter("page")==null || request.getParameter("page").isEmpty() ?"0":request.getParameter("page")));
        System.out.println(pageno);
-           List rst = dao.getBiblio(library_id, sub_library_id,search_by,search_keyword, sort_by,pageno);
+           List rst = dao.getBiblio(library_id, sub_library_id,search_by,search_keyword, sort_by,pageno,doc_type);
         session.setAttribute("opacList", rst);
         return mapping.findForward("all");
     }

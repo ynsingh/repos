@@ -182,5 +182,20 @@
     <property name="thesisStatus" type="string">
       <column length="100" name="thesis_status"/>
     </property>
+    <property name="clas" type="string">
+      <column length="100" name="clas"/>
+    </property>
+    <property name="history" type="string">
+      <column length="100" name="history"/>
+    </property>
+    <property name="frequency" type="string">
+      <column length="10" name="frequency"/>
+    </property>
+    <property name="latest" type="string">
+      <column length="10" name="latest"/>
+    </property>
+    <property name="website" type="string">
+      <column length="100" name="website"/>
+    </property>
   </class>
 </hibernate-mapping>

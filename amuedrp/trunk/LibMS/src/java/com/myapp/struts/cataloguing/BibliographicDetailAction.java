@@ -27,12 +27,13 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         String library_id = (String) session1.getAttribute("library_id");
         String sub_library_id = (String) session1.getAttribute("sublibrary_id");
         String buttonhand=bibform.getButton();
+      System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFFGGGGGGGGHHHHHHHH");
         System.out.println(buttonhand+"................");
         if(buttonhand==null || buttonhand.isEmpty())
             buttonhand=(String)session1.getAttribute("edit");
         System.out.println("MASTIIIIIIIIIIII"+buttonhand+"/");
 
-       
+        session1.removeAttribute("edit");
 
         if(buttonhand.equalsIgnoreCase("View"))
         {
@@ -69,10 +70,19 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
                 bibform.setGuide_name(bib.getGuideName());
                 bibform.setSubmitted_on(bib.getSubmittedOn());
                 bibform.setDegree(bib.getDegree());
-        //FOR THESIS
+
+         //FOR THESIS
         bibform.setThesis_status(bib.getThesisStatus());
         bibform.setAcceptance_year(bib.getAcceptanceYear());
         bibform.setLast_Modified(bib.getLastModified());
+
+        //FOR JOURNAL
+        bibform.setWebsite(bib.getWebsite());
+        bibform.setClas(bib.getClas());
+        bibform.setFrequency(bib.getFrequency());
+        bibform.setHistory(bib.getHistory());
+        bibform.setIssn(bib.getIssn());
+        bibform.setLatest(bib.getLatest());
 
         bibform.setAlt_title(bib.getAltTitle());
                         if (bib.getNoOfCopies() == null) {
@@ -113,21 +123,26 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
                 bibform.setGuide_name(biblang.getGuideName());
                 bibform.setSubmitted_on(biblang.getSubmittedOn());
                 bibform.setDegree(biblang.getDegree());
-                //FOR THESIS
+
+        //FOR THESIS
         bibform.setThesis_status(biblang.getThesisStatus());
         bibform.setAcceptance_year(biblang.getAcceptanceYear());
-        bibform.setLast_Modified(biblang.getLastModified());
+        bibform.setLast_Modified1(biblang.getLastModified());
+         //FOR JOURNAL
+        bibform.setWebsite(biblang.getWebsite());
+        bibform.setClas(biblang.getClas());
+        bibform.setFrequency(biblang.getFrequency());
+        bibform.setHistory(biblang.getHistory());
+        bibform.setIssn(biblang.getIssn());
+        bibform.setLatest(biblang.getLatest());
         }
         String msg3 = "";
         request.setAttribute("msg1", msg3);
-        session1.setAttribute("button", "View");
-       // session1.removeAttribute("edit");
         return mapping.findForward("success");
-         
         }
-         if(buttonhand.equalsIgnoreCase("Edit")||buttonhand.equalsIgnoreCase("Delete"))
+         if(buttonhand.equalsIgnoreCase("Import Data")||buttonhand.equalsIgnoreCase("Edit")||buttonhand.equalsIgnoreCase("Delete"))
         {
-           
+           System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFF");
         int ii=bibform.getBiblio_id();
         BibliographicDetails bib = dao.getBiblio(bibform.getLibrary_id(),bibform.getSublibrary_id(), ii);
         bibform.setMain_entry(bib.getMainEntry());
@@ -147,7 +162,7 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setPublishing_year(String.valueOf(bib.getPublishingYear()));
         bibform.setThesis_abstract(bib.getAbstract_());
         bibform.setSubject(bib.getSubject());
-        System.out.println(bib.getAbstract_()+"  "+bib.getNotes()+bib.getDegree()+"............");
+        System.out.println(bib.getAbstract_()+"  "+bib.getNotes());
         bibform.setNotes(bib.getNotes());
         bibform.setSubtitle(bib.getSubtitle());
         bibform.setTitle(bib.getTitle());
@@ -157,18 +172,6 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setSer_note(bib.getSeries());
         bibform.setStatement_responsibility(bib.getStatementResponsibility());
         bibform.setLanguage(bib.getEntryLanguage());
-         //Disseration Entry
-                bibform.setSubmittedBy(bib.getSubmittedBy());
-                bibform.setGuide_name(bib.getGuideName());
-                bibform.setSubmitted_on(bib.getSubmittedOn());
-                bibform.setDegree(bib.getDegree());
-        //FOR THESIS
-        bibform.setThesis_status(bib.getThesisStatus());
-        bibform.setAcceptance_year(bib.getAcceptanceYear());
-        bibform.setLast_Modified(bib.getLastModified());
-
-
-
         bibform.setAlt_title(bib.getAltTitle());
                         if (bib.getNoOfCopies() == null) {
                             i = 0;
@@ -176,6 +179,16 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
                             i = bib.getNoOfCopies();
                         }
         bibform.setNo_of_copies(i);
+        bibform.setLast_Modified(bib.getLastModified());
+
+        //Journal
+        bibform.setLatest(bib.getLatest());
+        bibform.setWebsite(bib.getWebsite());
+        bibform.setClas(bib.getClas());
+        bibform.setFrequency(bib.getFrequency());
+        bibform.setHistory(bib.getHistory());
+        bibform.setIssn(bib.getIssn());
+
         BibliographicDetailsLang  biblang=dao.searchlangbyBiblioid(ii, library_id, sub_library_id);
         if(biblang!=null)
         {
@@ -203,26 +216,26 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
         bibform.setStatement_responsibility1(biblang.getStatementResponsibility());
         bibform.setAlt_title1(biblang.getAltTitle());
         bibform.setLanguage(biblang.getEntryLanguage());
-         //Disseration Entry
-                bibform.setSubmittedBy(biblang.getSubmittedBy());
-                bibform.setGuide_name(biblang.getGuideName());
-                bibform.setSubmitted_on(biblang.getSubmittedOn());
-                bibform.setDegree(biblang.getDegree());
-                //FOR THESIS
-        bibform.setThesis_status(biblang.getThesisStatus());
-        bibform.setAcceptance_year(biblang.getAcceptanceYear());
-        bibform.setLast_Modified(biblang.getLastModified());
+        bibform.setLast_Modified1(biblang.getLastModified());
+
+        //Journal
+        bibform.setLatest(biblang.getLatest());
+        bibform.setWebsite(biblang.getWebsite());
+        bibform.setClas(biblang.getClas());
+        bibform.setFrequency(biblang.getFrequency());
+        bibform.setHistory(biblang.getHistory());
+        bibform.setIssn(biblang.getIssn());
+
         }
         String msg3 = "";
         request.setAttribute("msg1", msg3);
-      //  if(bib.getDocumentType().equals("Book")){
-      //  return mapping.findForward("new");
-       // }
+        if(bib.getDocumentType().equals("Book")){
+        return mapping.findForward("new");
+        }
 //        else if(bib.getDocumentType().equals("CD")){
 //
 //        }
-     //   session1.removeAttribute("edit");
-        return mapping.findForward("success");
+        return mapping.findForward("new");
         }
         if (buttonhand.equalsIgnoreCase("New")) {
             bibform.setTitle(bibform.getTitle());
@@ -234,19 +247,8 @@ public class BibliographicDetailAction extends org.apache.struts.action.Action {
             bibform.setCall_no("");
             bibform.setMain_entry("");
             bibform.setNo_of_copies(0);
-             bibform.setSubmittedBy("");
-                bibform.setGuide_name("");
-                bibform.setSubmitted_on("");
-                bibform.setDegree("");
-
-        bibform.setThesis_status("");
-        bibform.setAcceptance_year("");
-        bibform.setLast_Modified("");
-
-
             String msg1 = "";
             request.setAttribute("msg1", msg1);
-//session1.removeAttribute("edit");
             return mapping.findForward("new");
         }
         return null;

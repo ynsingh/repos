@@ -82,34 +82,13 @@ public class DocumentDetails  implements java.io.Serializable {
      private String status;
      private int biblioId;
      private String submittedBy;
-       private String lastModified;
+     private String lastModified;
      private String thesisStatus;
-
-    public String getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(String lastModified) {
-        this.lastModified = lastModified;
-    }
-
-    public String getThesisStatus() {
-        return thesisStatus;
-    }
-
-    public void setThesisStatus(String thesisStatus) {
-        this.thesisStatus = thesisStatus;
-    }
-   
-
-    public String getSubmittedBy() {
-        return submittedBy;
-    }
-
-    public void setSubmittedBy(String submittedBy) {
-        this.submittedBy = submittedBy;
-    }
-
+     private String clas;
+     private String history;
+     private String frequency;
+     private String latest;
+     private String website;
 
     public DocumentDetails() {
     }
@@ -120,7 +99,7 @@ public class DocumentDetails  implements java.io.Serializable {
         this.bibliographicDetails = bibliographicDetails;
       //,BibliographicDetailsLang bibliographicDetailsLang  this.bibliographicDetailsLang=bibliographicDetailsLang;
     }
-    public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails,int biblioId, String documentType,String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String physicalForm, String colour, String typeOfDisc, String fileType, String accessionNo, Integer recordNo, String callNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String status, String bindType,String submiitedBy,String lastModified,String thesisStatus) {
+    public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails,int biblioId, String documentType,String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String physicalForm, String colour, String typeOfDisc, String fileType, String accessionNo, Integer recordNo, String callNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String status, String bindType,String submittedBy,String lastModified,String thesisStatus,String clas,String history,String frequency,String latest,String website) {
        this.id = id;
        this.biblioId = biblioId;
        this.bibliographicDetails = bibliographicDetails;
@@ -185,11 +164,82 @@ public class DocumentDetails  implements java.io.Serializable {
        this.physicalWidth = physicalWidth;
        this.bindType = bindType;
        this.status = status;
-       this.submittedBy=submiitedBy;
-       this.thesisStatus=thesisStatus;
+       this.submittedBy=submittedBy;
        this.lastModified=lastModified;
+       this.thesisStatus=thesisStatus;
+       this.clas=clas;
+       this.history=history;
+       this.frequency=frequency;
+       this.latest=latest;
+       this.website=website;
     }
-   
+
+    public String getClas() {
+        return clas;
+    }
+
+    public void setClas(String clas) {
+        this.clas = clas;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public String getLatest() {
+        return latest;
+    }
+
+    public void setLatest(String latest) {
+        this.latest = latest;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+
+    public String getThesisStatus() {
+        return thesisStatus;
+    }
+
+    public void setThesisStatus(String thesisStatus) {
+        this.thesisStatus = thesisStatus;
+    }
+
+
     public DocumentDetailsId getId() {
         return this.id;
     }

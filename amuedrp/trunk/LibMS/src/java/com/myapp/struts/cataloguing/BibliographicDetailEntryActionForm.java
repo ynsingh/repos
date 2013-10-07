@@ -114,6 +114,129 @@ public class BibliographicDetailEntryActionForm extends org.apache.struts.valida
     private String last_Modified;
     private String last_Modified1;
 
+    private String clas;
+    private String clas1;
+    private String history;
+    private String history1;
+    private String website;
+    private String website1;
+    private String frequency;
+    private String frequency1;
+    private String latest;
+    private String latest1;
+    private String country1;
+    private String issn1;
+    private String button1;
+
+    public String getButton1() {
+        return button1;
+    }
+
+    public void setButton1(String button1) {
+        this.button1 = button1;
+    }
+
+    
+    public String getIssn1() {
+        return issn1;
+    }
+
+    public void setIssn1(String issn1) {
+        this.issn1 = issn1;
+    }
+
+    
+    public String getCountry1() {
+        return country1;
+    }
+
+    public void setCountry1(String country1) {
+        this.country1 = country1;
+    }
+
+
+    public String getClas() {
+        return clas;
+    }
+
+    public void setClas(String clas) {
+        this.clas = clas;
+    }
+
+    public String getClas1() {
+        return clas1;
+    }
+
+    public void setClas1(String clas1) {
+        this.clas1 = clas1;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getFrequency1() {
+        return frequency1;
+    }
+
+    public void setFrequency1(String frequency1) {
+        this.frequency1 = frequency1;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public String getHistory1() {
+        return history1;
+    }
+
+    public void setHistory1(String history1) {
+        this.history1 = history1;
+    }
+
+    public String getLatest() {
+        return latest;
+    }
+
+    public void setLatest(String latest) {
+        this.latest = latest;
+    }
+
+    public String getLatest1() {
+        return latest1;
+    }
+
+    public void setLatest1(String latest1) {
+        this.latest1 = latest1;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getWebsite1() {
+        return website1;
+    }
+
+    public void setWebsite1(String website1) {
+        this.website1 = website1;
+    }
+
+    
+
     public String getLast_Modified() {
         return last_Modified;
     }

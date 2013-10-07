@@ -2496,6 +2496,64 @@
 
               </action>
 
+	<action attribute="BibliographicDetailEntryActionForm" path="/catNewTitle" input="/cataloguing/cat_biblio.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction1">
+                      <forward name="fail" path="/cataloguing/cat_biblio.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
+                       <forward name="newdis" path="/cataloguing/cat_disseration_entry.jsp"/>
+                       <forward name="thesis" path="/cataloguing/cat_thesis_entry.jsp"/>
+                       <forward name="gridthesis" path="/cataloguing/cat_view_own_biblio_grid2.jsp"/>
+                      <forward name="grid" path="/cataloguing/cat_view_own_biblio_grid.jsp"/>
+                      <forward name="griddiss" path="/cataloguing/cat_view_own_biblio_grid1.jsp"/>
+                      <forward name="main" path="/admin/main.jsp" />
+                      <forward name="journal" path="/cataloguing/cat_journal_entry.jsp"/>
+                      <forward name="gridjournal" path="/cataloguing/cat_view_own_biblio_grid3.jsp"/>
+            </action>
+
+
+
+
+<!--ENTRY FOR JOURNAL-->
+             <action attribute="BibliographicDetailEntryActionForm" path="/catMultiLang3" input="/cataloguing/cat_journal_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction1">
+                      <forward name="failure" path="/cataloguing/cat_journal_entry.jsp"/>
+                      <forward name="accession" path="/cataloguing/cat_accession_entry.jsp"/>
+                      <forward name="fail" path="/cataloguing/cat_biblio_entry.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
+                      <forward name="failjournal" path="/cataloguing/cat_journal_entry.jsp"/>
+                      <forward name="accessionjournal" path="/cataloguing/cat_accessionjournal_entry.jsp"/>
+            </action>
+
+  <!--Journal view -->
+            <action  path="/cataloguing/viewOwnLangjournal" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid2.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_journal_entry_lang_delete.jsp"/>
+            </action>
+            <!--journal duplicate new -->
+            <action  path="/cataloguing/viewOwnLangNewJournal" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid3.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_journal_entry_lang_delete.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_journal_entry.jsp"/>
+            </action>
+            <!--journal acceessioning -->
+            <action attribute="BibliographicDetailEntryActionForm" path="/accessionEntryJournal" input="/cataloguing/cat_accessionjournal_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryJournalAction">
+                      <forward name="failure" path="/cataloguing/cat_old_title.jsp"/>
+                      <forward name="accession" path="/cataloguing/cat_accessionjournal_entry.jsp"/>
+                      <forward name="fail" path="/cataloguing/cat_old_title_entry1.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_accessionjournal_entry.jsp"/>
+  </action>
+
+
+<action path="/accexportxml" scope="request" name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.AccXMLExportAction">
+                      <forward name="success" path="/cataloguing/cat_search.jsp" />
+                      <forward name="fail" path="/cataloguing/cat_search.jsp" />
+                    </action>
+
+                     <action path="/accexport" scope="request" name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.AccExportAction">
+                      <forward name="success" path="/cataloguing/cat_search.jsp" />
+                      <forward name="fail" path="/cataloguing/cat_search.jsp" />
+                    </action>
+
+                    <action path="/accexportpdf" scope="request" name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.AccExportPDFAction">
+
+                    </action>
+
 
 <controller>
 <set-property property="processorClass"
