@@ -54,6 +54,7 @@ public class BufferImage {
         public synchronized void put(BufferedImage obj) {
         	buffer.addElement(obj);
         }
+
 	/**
  	 * Remove an Obect in the buffer
  	 */
@@ -66,7 +67,7 @@ public class BufferImage {
 	/**
 	 * Remove an Obect in the buffer if buffer is full .
 	 */
-	public synchronized void handleBuffer(){
+	public synchronized void handleBuffer() {
 		if(bufferSize()>10) {
 			for(int k=0; k<5; k++){
                 	       	buffer.remove(0);

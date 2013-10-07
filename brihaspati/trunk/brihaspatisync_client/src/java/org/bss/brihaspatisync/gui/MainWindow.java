@@ -48,7 +48,6 @@ public class MainWindow  extends JFrame implements ActionListener {
 	private JMenuItem menuItem6;
 	private JMenuItem menuItem7;
 	
-	private JLabel label=null;
 	private static Container content=null;
 	private static MainWindow fw=null;
 	private static JDesktopPane desktop=null;

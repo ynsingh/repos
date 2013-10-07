@@ -42,7 +42,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.network.Log;
-
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
@@ -56,7 +56,6 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 	private JSplitPane splitPane;
 	private JPanel mainPanel;
 	private boolean connFlag=false;
-	private static PreferenceWindow preWin=null;
 	protected JPanel window_mainPanel;
 	private JPanel rbttnPanel;
 	private JPanel centerPanel;
@@ -84,19 +83,14 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 	private Log log=Log.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-	
-	public static PreferenceWindow getController(){
-		if (preWin==null){
-			preWin=new PreferenceWindow();
-		}
-		return preWin;
-	}
+	private java.net.URL indexurl=null;
 
 	public PreferenceWindow(){
-		createWindow();
+		createWindow(indexurl);
 	}
   	
-	protected void createWindow(){
+	public void createWindow(java.net.URL indexServer) {
+		indexurl=indexServer;
     	   	setTitle(Language.getController().getLangValue("PreferenceWindow.SetTitle"));
     		con=this.getContentPane();
 		window_mainPanel=new JPanel();
@@ -303,7 +297,6 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		File f=createFile();
 		if(rb1.isSelected()==true){
 			try{
-				log.setLog("1234");
 				//	BufferedWriter out = new BufferedWriter(new FileWriter(f));
 				fos = new FileOutputStream(f);
       				dos=new DataOutputStream(fos);
@@ -312,24 +305,32 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		  		//	out.write("Type="+"1"+"\n");
 			}catch(IOException e){}
 		}else {
-			if(	rb3.isSelected()==true){
+			if(rb3.isSelected()==true){
 				if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("")))||(!(proxyusertext.getText().equals("")))||(!(proxypasstext.getText().equals("")))){
-		
-					String host=proxyhosttext.getText();
-					String port=proxyporttext.getText();
-					String user=proxyusertext.getText();
-					String pass=proxypasstext.getText();
 					try {
-        					fos = new FileOutputStream(f);
-      						dos=new DataOutputStream(fos);
-		      				dos.writeBytes("Type="+"2"+"\n");       
-        					log.setLog("this is a test");
-        					dos.writeBytes("ProxyHost="+host+"\n");
-        					dos.writeBytes("ProxyPort="+port+"\n");
-	        				dos.writeBytes("ProxyUser="+user+"\n");
-		        			dos.writeBytes("ProxyPass="+pass);
-			       			dos.flush();        	
-    					}catch (IOException e) {}
+						
+						String host=proxyhosttext.getText();
+						String port=proxyporttext.getText();
+						String user=proxyusertext.getText();
+						String pass=proxypasstext.getText();
+						RuntimeDataObject.getController().setProxyHost(host);
+		                	        RuntimeDataObject.getController().setProxyPort(port);
+						RuntimeDataObject.getController().setProxyUser(user);
+		                                RuntimeDataObject.getController().setProxyPass(pass);
+						if(indexurl != null)
+							HttpsUtil.getController().createHTTPConnection(indexurl);		
+						/***
+        						fos = new FileOutputStream(f);
+      							dos=new DataOutputStream(fos);
+		      					dos.writeBytes("Type="+"2"+"\n");       
+	        					log.setLog("this is a test");
+        						dos.writeBytes("ProxyHost="+host+"\n");
+        						dos.writeBytes("ProxyPort="+port+"\n");
+	        					dos.writeBytes("ProxyUser="+user+"\n");
+		        				dos.writeBytes("ProxyPass="+pass);
+			       				dos.flush();        	
+						*********/
+	    				}catch (IOException e) {}
 				}
 			}
 		}
@@ -391,78 +392,55 @@ public class PreferenceWindow extends JFrame implements ActionListener{
   		}
   		
 		if(e.getSource()==appbttn){
-		
-		appbttn.setCursor(busyCursor);
-		
-  		try{Thread.sleep(500);
-		}catch(InterruptedException ie){
+			appbttn.setCursor(busyCursor);
 			appbttn.setCursor(defaultCursor);
-		}finally{
-			appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-  		log.setLog("NetType="+netType);
-  		
-  		
-  			if(rb1.isSelected()==true){
+			//appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	  		log.setLog("NetType="+netType);
+  	 		
+  			if(rb1.isSelected()==true) {
   					log.setLog("this is direct net type");
   			}
-  			if(rb3.isSelected()==true){
-  				if(((proxyhosttext.getText().equals("")))){
+  			if(rb3.isSelected()==true) {
+  				if(((proxyhosttext.getText().equals("")))) {
   					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog2"));
   					proxyhosttext.requestFocus();
   					return;
 				}
-  				if(((proxyporttext.getText().equals("")))){
+  				if(((proxyporttext.getText().equals("")))) {
   					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog3"));
   					proxyporttext.requestFocus();
   					return;
   				}
-  				if(((proxyusertext.getText().equals("")))){
+  				if(((proxyusertext.getText().equals("")))) {
   					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog4"));
   					proxyusertext.requestFocus();
   					return;
   				}
   
-  				if(((proxypasstext.getText().equals("")))){
+  				if(((proxypasstext.getText().equals("")))) {
   					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog5"));
   					proxyhosttext.requestFocus();
   					return;
   				}
   
-  
-if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("")))||(!(proxyusertext.getText().equals("")))||(!(proxypasstext.getText().equals("")))){	
-  		
-  				//proxyhost.setEnabled(false);
-  				proxyhosttext.setEnabled(false);
-  				//proxyport.setEnabled(false);
-  				proxyporttext.setEnabled(false);
-  				//proxyuser.setEnabled(false);
-  				proxyusertext.setEnabled(false);
-  				//proxypass.setEnabled(false);
-  				proxypasstext.setEnabled(false);	
+ 				if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("")))||(!(proxyusertext.getText().equals("")))||(!(proxypasstext.getText().equals("")))) {
+	  				//proxyhost.setEnabled(false);
+  					proxyhosttext.setEnabled(false);
+  					//proxyport.setEnabled(false);
+  					proxyporttext.setEnabled(false);
+  					//proxyuser.setEnabled(false);
+	  				proxyusertext.setEnabled(false);
+  					//proxypass.setEnabled(false);
+  					proxypasstext.setEnabled(false);	
   				}
-  		}	
-  		
-  		saveProxySetting();
-  		
-  		dispose();
-  			 			
-  } 
-}
-  if(e.getSource()==cancelbttn){
-			cancelbttn.setCursor(busyCursor);
-			try{
-				Thread.sleep(300);
-			}catch(InterruptedException ie){
-				cancelbttn.setCursor(defaultCursor);
-			}finally{
-				cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
+  			}	
+  			saveProxySetting();
   			dispose();
-         	    } 
-  }	
-
-
-/*******************************************************************************************************************/
-
-
+  		} 
+		
+		if(e.getSource()==cancelbttn){
+			cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+  			dispose();
+  		} 
+  	}
 }

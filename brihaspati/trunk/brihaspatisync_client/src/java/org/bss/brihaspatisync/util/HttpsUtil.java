@@ -37,7 +37,6 @@ import org.bss.brihaspatisync.gui.Language;
 
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
-import org.bss.brihaspatisync.gui.ProxyAuthenticator;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
@@ -75,54 +74,58 @@ public class HttpsUtil{
    	 * The URL class is capable of handling http:// and https:// URLs
    	 */
    	public HttpsURLConnection createHTTPConnection(URL url) throws IOException {
-
 		try {
-                        System.setProperty("java.net.useSystemProxies","true");
-                        list = ProxySelector.getDefault().select( new URI(url.toString()));
-                        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
-                                proxy = (Proxy) iter.next();
-                                proxy_addr = (InetSocketAddress)proxy.address();
+			if(runtime_object.getProxyHost().equals("")) {
+	                        System.setProperty("java.net.useSystemProxies","true");
+        	                list = ProxySelector.getDefault().select( new URI(url.toString()));
+                	        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
+                        	        proxy = (Proxy) iter.next();
+                                	proxy_addr = (InetSocketAddress)proxy.address();
+				}
+				System.out.println("org.bss.brihaspatisync.gui=================>>>>>>>>>>>>>  "+proxy+" "+list.get(0).toString());
+				if(!(list.get(0).toString()).equals("DIRECT")) {
+					new org.bss.brihaspatisync.gui.PreferenceWindow().createWindow(url);
+				}
 			}
 
-		}catch (Exception e) { e.printStackTrace();}
 
-              	if(proxy_addr != null) {
-                	runtime_object.setProxyHost(proxy_addr.getHostName());
-                      	runtime_object.setProxyPort(Integer.toString(proxy_addr.getPort()));
-			ProxyAuthenticator.getController().createGUI();
-			if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-				Properties sysProps = System.getProperties();
-	        	     	sysProps.put( "proxySet", "true" );
-        	       		sysProps.put( "proxyHost", runtime_object.getProxyHost());
-              			sysProps.put( "proxyPort", runtime_object.getProxyPort());
-	       			Authenticator authenticator = new Authenticator() {
-        				public PasswordAuthentication getPasswordAuthentication() {
-                				return (new PasswordAuthentication(runtime_object.getProxyUser(),runtime_object.getProxyPass().toCharArray()));
-         				}
-				};
-	             		Authenticator.setDefault(authenticator);
+              		if(!runtime_object.getProxyHost().equals("")) {
+                		runtime_object.setProxyHost(proxy_addr.getHostName());
+	                      	runtime_object.setProxyPort(Integer.toString(proxy_addr.getPort()));
+				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+					Properties sysProps = System.getProperties();
+	        		     	sysProps.put( "proxySet", "true" );
+        	       			sysProps.put( "proxyHost", runtime_object.getProxyHost());
+	              			sysProps.put( "proxyPort", runtime_object.getProxyPort());
+		       			Authenticator authenticator = new Authenticator() {
+        					public PasswordAuthentication getPasswordAuthentication() {
+                					return (new PasswordAuthentication(runtime_object.getProxyUser(),runtime_object.getProxyPass().toCharArray()));
+         					}
+					};
+		             		Authenticator.setDefault(authenticator);
+				}
 			}
-		}
 		
-               	connection = (HttpsURLConnection) url.openConnection();
-		//SSL Certificate
-      		connection.setHostnameVerifier(new HostnameVerifier() {
-      			public boolean verify(String rserver, SSLSession sses) {
-				try{
-					Certificate[] certificates= getCertificates(connection);
-   					X509Certificate cert = X509Certificate.getInstance(certificates[0].getEncoded());
-					String subjectOrg_Name=getSubjectOrg_Name(cert);
-					String issuerCN_Name=getIssuerCN_Name(cert);
-					if(verifyCertificate(subjectOrg_Name,issuerCN_Name)==true)
-						return true;
-   					else
-   						return false;
-   				} catch(Exception e){System.out.println("Exception on createHTTPConnection in HttpsUtil class"+e.getMessage());}
-				return false;
-			}		
-		});
-		if(connection==null)
-	        	System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog1"))				;
+	               	connection = (HttpsURLConnection) url.openConnection();
+			//SSL Certificate
+      			connection.setHostnameVerifier(new HostnameVerifier() {
+	      			public boolean verify(String rserver, SSLSession sses) {
+					try{
+						Certificate[] certificates= getCertificates(connection);
+   						X509Certificate cert = X509Certificate.getInstance(certificates[0].getEncoded());
+						String subjectOrg_Name=getSubjectOrg_Name(cert);
+						String issuerCN_Name=getIssuerCN_Name(cert);
+						if(verifyCertificate(subjectOrg_Name,issuerCN_Name)==true)
+							return true;
+   						else
+   							return false;
+   					} catch(Exception e){System.out.println("Exception on createHTTPConnection in HttpsUtil class"+e.getMessage());}
+					return false;
+				}		
+			});
+			if(connection==null)
+		        	System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog1"))				;
+		}catch (Exception e) { e.printStackTrace();}
 		return connection;
 	}
 	
