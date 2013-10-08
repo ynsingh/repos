@@ -362,26 +362,26 @@ try{
 						DegreeListInfoGetter object = (DegreeListInfoGetter) iterator
 								.next();
 
-						headerTable.addCell(new Phrase(i, cellFont));
-						headerTable.addCell(new Phrase(object.getRollNumber(),
-								cellFont));
-						headerTable.addCell(new Phrase(object.getStudentName()+"\n"+
-								URLDecoder.decode(object.getStudentNameInHindi(), "utf-8"),
-								cellFont));
-						headerTable.addCell(new Phrase(object.getFatherName()+"\n"+
-								URLDecoder.decode(object.getFatherNameInHindi(),"utf-8"),
-								cellFont));
-						headerTable.addCell(new Phrase(object.getDob(),
-								cellFont));
-						headerTable.addCell(new Phrase(object
-								.getDivisionInTheory(), cellFont));
-						if (resultSystem == "MK") {
-							headerTable.addCell(new Phrase(object
-									.getCumPercentage(), cellFont));
-						} else {
-							headerTable.addCell(new Phrase(object.getCgpa(),
+							headerTable.addCell(new Phrase(i, cellFont));
+							headerTable.addCell(new Phrase(object.getRollNumber(),
 									cellFont));
-						}
+							headerTable.addCell(new Phrase(object.getStudentName()+"\n"+
+									((object.getStudentNameInHindi()==null)?"":URLDecoder.decode(object.getStudentNameInHindi(), "utf-8")),
+									cellFont));
+							headerTable.addCell(new Phrase(object.getFatherName()+"\n"+
+									((object.getFatherNameInHindi()==null)?"":URLDecoder.decode(object.getFatherNameInHindi(),"utf-8")),
+									cellFont));
+							headerTable.addCell(new Phrase(object.getDob(),
+									cellFont));
+							headerTable.addCell(new Phrase(object
+									.getDivisionInTheory(), cellFont));
+							if (resultSystem == "MK") {
+								headerTable.addCell(new Phrase(object
+										.getCumPercentage(), cellFont));
+							} else {
+								headerTable.addCell(new Phrase(object.getCgpa(),
+										cellFont));
+							}
 
 						headerTable.addCell(new Phrase(object.getCourseName(),
 								cellFont));
@@ -494,26 +494,26 @@ try{
 						DegreeListInfoGetter object = (DegreeListInfoGetter) iterator
 								.next();
 
-						headerTable.addCell(new Phrase(i, cellFont));
-						headerTable.addCell(new Phrase(object.getRollNumber(),
-								cellFont));
-						headerTable.addCell(new Phrase(object.getStudentName()+"\n"+
-								URLDecoder.decode(object.getStudentNameInHindi(), "utf-8"),
-								cellFont));
-						headerTable.addCell(new Phrase(object.getFatherName()+"\n"+
-								URLDecoder.decode(object.getFatherNameInHindi(),"utf-8"),
-								cellFont));
-						headerTable.addCell(new Phrase(object
-								.getDivisionInTheory(), cellFont));
-						if (resultSystem == "MK") {
-							headerTable.addCell(new Phrase(object
-									.getCumPercentage(), cellFont));
-						} else {
-							headerTable.addCell(new Phrase(object.getCgpa(),
+							headerTable.addCell(new Phrase(i, cellFont));
+							headerTable.addCell(new Phrase(object.getRollNumber(),
 									cellFont));
-						}
-						headerTable.addCell(new Phrase(object.getCourseName(),
-								cellFont));
+							headerTable.addCell(new Phrase(object.getStudentName()+"\n"+
+									((object.getStudentNameInHindi()==null)?"":URLDecoder.decode(object.getStudentNameInHindi(), "utf-8")),
+									cellFont));
+							headerTable.addCell(new Phrase(object.getFatherName()+"\n"+
+									((object.getFatherNameInHindi()==null)?"":URLDecoder.decode(object.getFatherNameInHindi(),"utf-8")),
+									cellFont));
+							headerTable.addCell(new Phrase(object
+									.getDivisionInTheory(), cellFont));
+							if (resultSystem == "MK") {
+								headerTable.addCell(new Phrase(object
+										.getCumPercentage(), cellFont));
+							} else {
+								headerTable.addCell(new Phrase(object.getCgpa(),
+										cellFont));
+							}
+							headerTable.addCell(new Phrase(object.getCourseName(),
+									cellFont));
 
 						i = Integer.parseInt(i) + 1 + "";
 					}
@@ -594,7 +594,7 @@ try{
 
 					pdfPTable.addCell(new Phrase("S.N.", cellFonts));
 					pdfPTable.addCell(new Phrase("Roll Number", cellFonts));
-					pdfPTable.addCell(new Phrase("Name", cellFonts));
+					pdfPTable.addCell(new Phrase("Name In English", cellFonts));
 					pdfPTable.addCell(new Phrase("Name In Hindi", cellFonts));
 
 					pdfPTable.addCell(new Phrase("Division", cellFonts));
@@ -613,7 +613,7 @@ try{
 
 					pdfPTable.addCell(new Phrase("S.N.", cellFonts));
 					pdfPTable.addCell(new Phrase("Roll Number", cellFonts));
-					pdfPTable.addCell(new Phrase("Name", cellFonts));
+					pdfPTable.addCell(new Phrase("Name In English", cellFonts));
 					pdfPTable.addCell(new Phrase("Name In Hindi", cellFonts));
 
 					pdfPTable.addCell(new Phrase("Div. Th.", cellFonts));
@@ -736,29 +736,32 @@ try{
 					
 					
 
-					if (infoGetter.getProgramPrintType()
-							.equalsIgnoreCase("SAG")) {
-						pdfPTable.addCell(new Phrase(i, cellFonts));
-						pdfPTable.addCell(new Phrase(object.getRollNumber(),
-								cellFonts));
-						pdfPTable.addCell(new Phrase(object.getStudentName(),
-								cellFonts));
-						/*
-						 * student name in hindi+father's name in hindi
-						 */
-						
-						if(object.getGender().equalsIgnoreCase("m")){
-							
-							pdfPTable.addCell(new Phrase(URLDecoder.decode(object.getStudentNameInHindi()+" "
-									+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C"+" "+object.getFatherNameInHindi(), "utf-8"),cellFonts));
+						if (infoGetter.getProgramPrintType()
+								.equalsIgnoreCase("SAG")) {
+							pdfPTable.addCell(new Phrase(i, cellFonts));
+							pdfPTable.addCell(new Phrase(object.getRollNumber(),
+									cellFonts));
+							pdfPTable.addCell(new Phrase(object.getStudentName(),
+									cellFonts));
+							/*
+							 * student name in hindi+father's name in hindi
+							 */
+
+						if(object.getStudentName().contains("/")){
+							if(object.getGender().equalsIgnoreCase("m")){
+
+								pdfPTable.addCell(new Phrase(((object.getStudentNameInHindi()==null)&&(object.getFatherNameInHindi()==null))?"-":(URLDecoder.decode(object.getStudentNameInHindi()+" "
+										+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C"+" "+object.getFatherNameInHindi(), "utf-8")),cellFonts));
+							}else{
+
+								pdfPTable.addCell(new Phrase(((object.getStudentNameInHindi()==null)&&(object.getFatherNameInHindi()==null))?"-":(URLDecoder.decode(object.getStudentNameInHindi()+" "
+										+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C%E0%A4%BE"+" "+object.getFatherNameInHindi(), "utf-8")),cellFonts));
+}
 						}else{
-							
-							pdfPTable.addCell(new Phrase(URLDecoder.decode(object.getStudentNameInHindi()+" "
-									+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C%E0%A4%BE"+" "+object.getFatherNameInHindi(), "utf-8"),cellFonts));
-							
-						}
-						pdfPTable.addCell(new Phrase(object
-								.getDivisionInTheory(), cellFonts));
+							pdfPTable.addCell(new Phrase(object.getStudentNameInHindi()));
+							}
+							pdfPTable.addCell(new Phrase(object
+									.getDivisionInTheory(), cellFonts));
 
 						if (resultSystem == "MK") {
 							pdfPTable.addCell(new Phrase(object
@@ -771,41 +774,41 @@ try{
 					} else if (infoGetter.getProgramPrintType()
 							.equalsIgnoreCase("TAP")) {
 
-						pdfPTable.addCell(new Phrase(i, cellFonts));
-						pdfPTable.addCell(new Phrase(object.getRollNumber(),
-								cellFonts));
-						pdfPTable.addCell(new Phrase(object.getStudentName(),
-								cellFonts));
-						/*
-						 * student name in hindi+father's name in hindi
-						 */
-						
-						if(object.getGender().equalsIgnoreCase("m")){
-							
-							pdfPTable.addCell(new Phrase(URLDecoder.decode(object.getStudentNameInHindi()+" "
-									+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C"+" "+object.getFatherNameInHindi(), "utf-8"),cellFonts));
-						}else{
-							
-							pdfPTable.addCell(new Phrase(URLDecoder.decode(object.getStudentNameInHindi()+" "
-									+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C%E0%A4%BE"+" "+object.getFatherNameInHindi(), "utf-8"),cellFonts));
-							
-						}
-						
-						pdfPTable.addCell(new Phrase(object
-								.getDivisionInTheory(), cellFonts));
-						pdfPTable.addCell(new Phrase(object
-								.getDivisionInPractical(), cellFonts));
-						if (resultSystem == "MK") {
+							pdfPTable.addCell(new Phrase(i, cellFonts));
+							pdfPTable.addCell(new Phrase(object.getRollNumber(),
+									cellFonts));
+							pdfPTable.addCell(new Phrase(object.getStudentName(),
+									cellFonts));
+							/*
+							 * student name in hindi+father's name in hindi
+							 */
+
+							if(object.getGender().equalsIgnoreCase("m")){
+
+								pdfPTable.addCell(new Phrase(((object.getStudentNameInHindi()==null)&&(object.getFatherNameInHindi()==null))?"-":(URLDecoder.decode(object.getStudentNameInHindi()+" "
+										+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C"+" "+object.getFatherNameInHindi(), "utf-8")),cellFonts));
+							}else{
+
+								pdfPTable.addCell(new Phrase(((object.getStudentNameInHindi()==null)&&(object.getFatherNameInHindi()==null))?"-":(URLDecoder.decode(object.getStudentNameInHindi()+" "
+										+"%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%9C%E0%A4%BE"+" "+object.getFatherNameInHindi(), "utf-8")),cellFonts));
+
+							}
+
 							pdfPTable.addCell(new Phrase(object
-									.getTheoryCWP(), cellFonts));
+									.getDivisionInTheory(), cellFonts));
 							pdfPTable.addCell(new Phrase(object
-									.getPractialCWP(), cellFonts));
-						} else {
-							pdfPTable.addCell(new Phrase(object
-									.getTheoryCGPA(), cellFonts));
-							pdfPTable.addCell(new Phrase(object
-									.getPracticalCGPA(), cellFonts));
-						}
+									.getDivisionInPractical(), cellFonts));
+							if (resultSystem == "MK") {
+								pdfPTable.addCell(new Phrase(object
+										.getTheoryCWP(), cellFonts));
+								pdfPTable.addCell(new Phrase(object
+										.getPractialCWP(), cellFonts));
+							} else {
+								pdfPTable.addCell(new Phrase(object
+										.getTheoryCGPA(), cellFonts));
+								pdfPTable.addCell(new Phrase(object
+										.getPracticalCGPA(), cellFonts));
+							}
 
 					}
 

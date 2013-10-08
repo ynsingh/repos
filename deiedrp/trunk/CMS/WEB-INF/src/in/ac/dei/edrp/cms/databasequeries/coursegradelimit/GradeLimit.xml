@@ -56,7 +56,7 @@
 		internal_external_active internalActive FROM
 		instructor_course ic,course_master cm,entity_master em where cm.course_code=ic.course_code and ic.employee_id=#employeeId#
   		and ic.status='ACT' and cm.university_code=#universityCode# and ic.entity_id=em.entity_id and ic.course_code like concat(#courseCode#,'%') and grade_limit_active='1' and
-   		(ic.semester_start_date between #startDate# and #endDate#);
+   		(ic.semester_start_date between #startDate# and #endDate#) group by ic.course_code;
 		
 	</select>
 
@@ -154,7 +154,9 @@
 	
 	<select id="getCourseGradeDetailsRemedial" resultClass="gradelimitinfo">
 		select courseCode,
-		max(if(strcmp(grade,'D'),null,marksFrom))as lowerD,
+		max(if(strcmp(grade,'D-'),null,marksFrom))as lowerDM,
+		max(if(strcmp(grade,'E'),null,marksFrom))as lowerE,
+		max(if(strcmp(grade,'E-'),null,marksFrom))as lowerEM,
 		max(if(strcmp(grade,'F'),null,marksFrom))as lowerF
 		from(Select courseCode,if(marksFrom<![CDATA[<=>]]>-1,null,marksFrom) marksFrom,grade from
 		(SELECT set1.*, cgl.lower_cut_point marksFrom, cgl.grade grade FROM

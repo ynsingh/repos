@@ -121,9 +121,9 @@
 		<mx:ComboBox x="154.5" y="92" width="150" id="courseCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="courseChange(event)" 
 		enabled="false" toolTip="{courseCombo.selectedItem}"></mx:ComboBox>
 		<mx:Label x="21" y="134" text="{commonFunction.getConstants('minimumCredit')}*" />
-		<mx:NumericStepper x="154.5" y="132" id="minCreditCombo" width="150" minimum="0" maximum="100" enabled="false"/>
+		<mx:TextInput x="154.5" y="132" id="minCreditCombo" width="150" maxChars="4" restrict="0-9." enabled="false"/>
 		<mx:Label x="330" y="134" text="{commonFunction.getConstants('maximumCredit')}*" />
-		<mx:NumericStepper x="450" y="132" id="maxCreditCombo" width="150" minimum="0" maximum="100" enabled="false"/>
+		<mx:TextInput x="450" y="132" id="maxCreditCombo" width="150" maxChars="4" restrict="0-9." enabled="false"/>
 		<mx:Button x="232.5" y="181" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="checkValidations()" width="70.5"/>
 		<mx:Button x="334" y="182" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelFunction()" width="84"/>
 	</mx:Canvas>

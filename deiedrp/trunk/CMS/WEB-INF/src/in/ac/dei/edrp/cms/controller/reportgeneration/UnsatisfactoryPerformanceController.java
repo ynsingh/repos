@@ -3,6 +3,7 @@ package in.ac.dei.edrp.cms.controller.reportgeneration;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -649,9 +650,9 @@ public String generateCollationDifferenceReport(HttpServletRequest request,HttpS
 		List<StudentInfoGetter> dataList=unsatisfactoryPerformanceDao.getCollationDifferences(input);
 		
 		//check size of data
-		if(dataList.size()==0){
-			return "false-No Record Found For This Combination";
-		}
+//		if(dataList.size()==0){
+//			return "false-No Record Found For This Combination";
+//		}
 		
 		
 
@@ -683,10 +684,14 @@ public String generateCollationDifferenceReport(HttpServletRequest request,HttpS
 		if(!request.getParameter("branchName").equalsIgnoreCase("NONE")){branch="-"+request.getParameter("branchName").toUpperCase();}else{branch="";}
 		if(!request.getParameter("specializationName").equalsIgnoreCase("NONE")){spec="-"+request.getParameter("specializationName").toUpperCase();}else{spec="";}
 		
+		Calendar cal=Calendar.getInstance();			
+		SimpleDateFormat df=new SimpleDateFormat("dd-mm-yyyy");
+		String currDate=df.format(cal.getTime());
+		
 		Phrase headerPhrase = new Phrase(
-				"LIST OF DIFFERENCES AFTER COLLATION OF AWARD BLANK"+"\n"+request.getParameter("entityName").toUpperCase()+
+				"LIST OF DIFFERENCES"+"\n"+request.getParameter("entityName").toUpperCase()+
 				" ( "+request.getParameter("programName").toUpperCase()+branch+spec+" )"+" - "
-						+ reportSession+"\n"+input.getSemesterCode()+"("+input.getSemesterStartDate()+"-"+input.getSemesterEndDate()+")",
+						+ reportSession+"\n"+request.getParameter("semesterName")+" ("+input.getSemesterStartDate()+"-"+input.getSemesterEndDate()+")"+"                                          RUN DATE ---"+currDate,
 				FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD,
 						new Color(0, 0, 0)));
 
@@ -729,9 +734,25 @@ public String generateCollationDifferenceReport(HttpServletRequest request,HttpS
 		
 		//setting no. of row of table as header
 		contentTable.setHeaderRows(1);
+		
+		//check size of data
+		if(dataList.size()==0){
 			
-		//adding all data in pdf
-		for (int j = 0; j <dataList.size(); j++) {
+				addSpace(contentTable,7,3);
+		
+				//adding blank data in pdf if record zero			
+				cell = new PdfPCell(new Phrase("No Differences Found"));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setBorderWidth(0);
+				cell.setColspan(7);
+				contentTable.addCell(cell);
+				
+				addSpace(contentTable,7,3);
+		}
+			
+		else{
+			//adding all data in pdf
+			for (int j = 0; j <dataList.size(); j++) {
 			
 				cell = new PdfPCell(new Phrase(dataList.get(j).getCourseCode()));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -761,6 +782,7 @@ public String generateCollationDifferenceReport(HttpServletRequest request,HttpS
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				contentTable.addCell(cell);
 
+			}
 		}
 		
 		

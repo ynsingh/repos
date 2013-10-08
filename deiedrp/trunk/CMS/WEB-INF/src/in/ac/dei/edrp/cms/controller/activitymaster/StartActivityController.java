@@ -33,6 +33,7 @@
 
 package in.ac.dei.edrp.cms.controller.activitymaster;
 
+
 import in.ac.dei.edrp.cms.constants.CRConstant;
 import in.ac.dei.edrp.cms.dao.activitymaster.StartActivityDao;
 import in.ac.dei.edrp.cms.domain.activitymaster.CountProcessRecorList;
@@ -461,13 +462,26 @@ public class StartActivityController extends MultiActionController {
 					request.getParameter("branchName"),request.getParameter("specializationName"),request.getParameter("semesterName"),universityName,ssd,sed,request.getParameter("activityName"));
 			
 			//added by ashish mohan
-			sendmail.mainWithAttachment("Course Management System Information Mail:Please See The Attachment for Error Details",
-										"dheeraj.singh181@gmail.com",
-										"Error Occured When Running "+actvty+" For "+request.getParameter("programName")+"_"+request.getParameter("branchName")+"_"+request.getParameter("specializationName")+"_"+request.getParameter("semesterName"),
-										filepath+actvty+"_"+prgkey+".pdf");
-			//ashish mohan addition ends 
+			//changed by Dheeraj
+		try{
+			List<StartActivityBean> getMailUsers = startActivityDao.getMailUsers();
+			List toUsers = new ArrayList();
+			for(int k = 0 ; k < getMailUsers.size() ; k++){
+				toUsers.add(getMailUsers.get(k).getMailId());
 			}
-		
+			String[] to = (String[]) toUsers.toArray(new String[0]);
+			//DS
+			sendmail.mainWithAttachment("Course Management System Information Mail:Please See The Attachment for Error Details",
+										to,
+										"Error Occured When Running "+actvty+" For "+request.getParameter("programName")+"_"+request.getParameter("branchName")+"_"+request.getParameter("specializationName")+"_"+request.getParameter("semesterName"),
+										filepath+actvty+"_"+prgkey+".pdf",universityId);
+			//ashish mohan addition ends 
+		}catch(Exception ex){
+				System.out.println("Exception In Sending Mail");
+				return new ModelAndView("activitymaster/CountProcessedRecord",
+						"countList", countList);
+			}
+		}
 		
 		return new ModelAndView("activitymaster/CountProcessedRecord",
 				"countList", countList);
@@ -537,7 +551,7 @@ public class StartActivityController extends MultiActionController {
 						Font.NORMAL, new Color(0, 0, 0));
 				Font cellFont2 = FontFactory.getFont(FontFactory.HELVETICA, 12,
 						Font.BOLD, new Color(0, 0, 0));
-				addCell(cells, cellFont1, clastable, "Entity :");
+				addCell(cells, cellFont1, clastable, "ENTITY :");
 				addCell(cells, cellFont2, clastable, ent.toUpperCase());
 				addCell(cells, cellFont1, clastable, "PROGRAM :");
 				addCell(cells, cellFont2, clastable, prg.toUpperCase());
@@ -572,7 +586,7 @@ public class StartActivityController extends MultiActionController {
 				headerTable.setWidthPercentage(90);
 				headerTable.setHorizontalAlignment(Element.ALIGN_CENTER);
 				
-				if((act=="ABV")||(act=="ABR")){
+				if((act.equalsIgnoreCase("ABV"))||(act.equalsIgnoreCase("ABR"))){
 					addCell1(cel, cellFontt, headerTable, "Course Codes");
 				}else{
 				addCell1(cel, cellFontt, headerTable, "Registration/Roll Number");

@@ -41,7 +41,7 @@ public class SemesterWisePdfView extends AbstractPdfView {
 		String logResult="";		
 		int reportGenerated = 0;
 		HttpSession session=request.getSession(true);
-		
+		String entityCode = request.getParameter("entityCode");
 		System.out.println("in semester generation");
 		String rollNo = null;
 		String entityId = null;
@@ -51,6 +51,9 @@ public class SemesterWisePdfView extends AbstractPdfView {
 		String semesterSequence = null;
 		String specialization=null;
 		String genAttempt=null;
+		if(studentsInfo==null){
+			return "false";
+		}
 		String sessionStartDate=studentsInfo.get(0).getProgressCardInfo().getSessionStartDate();
 		String sessionEndDate=studentsInfo.get(0).getProgressCardInfo().getSessionEndDate();
 		String sessionDate  = sessionStartDate+"-"+sessionEndDate.substring(2,4);
@@ -106,8 +109,9 @@ public class SemesterWisePdfView extends AbstractPdfView {
 			//semesterId=sifas.getProgressCardInfo().getSemesterId();
 			genAttempt=sifas.getProgressCardInfo().getGenAttempt();
 			semesterSequence = sifas.getProgressCardInfo().getSemesterSequence();			
-	
-		headerTable.addCell(new Phrase(Integer.parseInt(entityId.substring(4,8))+programCode+branchId+semesterSequence,cellFont));
+				
+		headerTable.addCell(new Phrase(entityCode+programCode+branchId+semesterSequence,cellFont));
+//		headerTable.addCell(new Phrase(Integer.parseInt(entityId.substring(4,8))+programCode+branchId+semesterSequence,cellFont));
 		headerTable.addCell(new Phrase(rollNo,cellFont));
 		headerTable.addCell(new Phrase(name,cellFont));
 		headerTable.addCell(new Phrase(genAttempt,cellFont));

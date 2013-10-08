@@ -58,7 +58,10 @@ public class ProgramMaster {
 	private String sessionEndDate;
 	private String universityId;
 	private String entityId;
-	
+	private String maxCredit;
+	private String minCredit;
+	private String maxLecCredit;
+	private String minLecCredit;
 	
 		
 	/**
@@ -265,6 +268,30 @@ public class ProgramMaster {
 	}
 	public String getUniversityId() {
 		return universityId;
+	}
+	public void setMaxCredit(String maxCredit) {
+		this.maxCredit = maxCredit;
+	}
+	public String getMaxCredit() {
+		return maxCredit;
+	}
+	public void setMinCredit(String minCredit) {
+		this.minCredit = minCredit;
+	}
+	public String getMinCredit() {
+		return minCredit;
+	}
+	public void setMaxLecCredit(String maxLecCredit) {
+		this.maxLecCredit = maxLecCredit;
+	}
+	public String getMaxLecCredit() {
+		return maxLecCredit;
+	}
+	public void setMinLecCredit(String minLecCredit) {
+		this.minLecCredit = minLecCredit;
+	}
+	public String getMinLecCredit() {
+		return minLecCredit;
 	}
 	
 	

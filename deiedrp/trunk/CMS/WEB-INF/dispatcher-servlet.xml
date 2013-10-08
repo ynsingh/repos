@@ -5,10 +5,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />
-  
+   <!-- Devendra Starts -->		
+												
+		<context:component-scan base-package="in.ac.dei.edrp.cms"></context:component-scan>		
+	<!-- Devendra Ends -->
   <!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 
 <property name="viewClass" value=
@@ -254,6 +260,9 @@ p:reportDao-ref="reportDao"/>
     <bean name="/transcript/*.htm"
 	class="in.ac.dei.edrp.cms.controller.reportgeneration.TranscriptController"
 	p:transcriptDao-ref="transcriptDao" p:reportDao-ref="reportDao" />
+    <bean name="/instructCourse/*.htm"
+	class="in.ac.dei.edrp.cms.controller.instructorcourse.InstructorCourseController"
+	p:instructorCourseDao-ref="instructorCourseDao" />
 <!-- nupur final semester result cate process end -->
 
 <!-- Devendra code starts--> 
@@ -265,6 +274,8 @@ p:reportDao-ref="reportDao"/>
 	 <bean name="/cancelcoursegroup/*.htm" class="in.ac.dei.edrp.cms.controller.cancelcoursegroup.CancelCourseGroupController" p:cancelCourseGroupService-ref="cancelCourseGroupService" />
 	 <bean name="/finalstudentlist/*.htm" class="in.ac.dei.edrp.cms.controller.finalstudentlist.FinalStudentListController" p:finalStudentService-ref="finalStudentService" p:reportDao-ref="reportDao" />
 	 <bean name="/withdrawstudent/*.htm" class="in.ac.dei.edrp.cms.controller.withdrawstudent.WithdrawStudentController" p:withdrawStudentService-ref="withdrawStudentService" p:cancelRegistrationDao-ref="CancelStudentRegistrationDao"/>
+	 <bean name="/remark/*.htm" class="in.ac.dei.edrp.cms.controller.remark.RemarkController" p:remarkService-ref="remarkService"/>
+	 <bean name="/userInfoService/*.htm" class="in.ac.dei.edrp.cms.controller.userInformationInterface.UserInformationController" p:userInfoService-ref="userInfoService"/>
 <!-- Devendra code Ends--> 
 <!-- ashish mohan start -->
 <bean name="/performance/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.UnsatisfactoryPerformanceController" p:unsatisfactoryPerformanceDao-ref="unsatisfactoryPerformanceDao"
@@ -272,6 +283,7 @@ p:meritListCPPdf-ref="MeritListCP"/>
 <bean name="/cancelfinalregistration/*.htm" class="in.ac.dei.edrp.cms.controller.cancelfinalregistration.CancelController" p:cancelDao-ref="cancelDao"/>
 <bean name="/coursegradelimit/*.htm" class="in.ac.dei.edrp.cms.controller.coursegradelimit.GradeLimitController" p:gradeLimitDao-ref="gradeLimitDao"/>
 <bean name="/awardBlankRequestCorrection/*.htm" class="in.ac.dei.edrp.cms.controller.correctionInAwardBlank.AwardBlankRequestResolved" p:awardBlankRequestResolvedDao-ref="AwardBlankRequestResolvedDao"/>
+<bean name="/insertInPrestaging/*.htm" class="in.ac.dei.edrp.cms.controller.insertToPrestaging.insertInPrestagingController" p:prestagingService-ref="service" />
 <!-- ashish mohan ends -->
 <!-- Mandeep External Examinar Detail Start -->
  <bean name="/externalExaminarDetail/*.htm" class="in.ac.dei.edrp.cms.controller.externalexaminercourse.ExternalExaminarDetailController" p:externalExaminarDetailDao-ref="externalExaminarDetailDao"/>
@@ -293,5 +305,15 @@ p:meritListCPPdf-ref="MeritListCP"/>
 <bean name="/awardBlankCorrection/*.htm" class="in.ac.dei.edrp.cms.controller.correctionInAwardBlank.AwardBlankCorrectionController" p:awardBlankCorrectionDao-ref="awardBlankCorrectionDao"/>
 <bean name="/admissionIntegration/*.htm" class="in.ac.dei.edrp.cms.controller.admissionIntegration.AdmissionIntegrationController" p:admissionIntegrationDao-ref="admissionIntegrationDao"/>
 <bean name="/withdrawMarksTransfer/*.htm" class="in.ac.dei.edrp.cms.controller.withdrawmarkstransfer.WithdrawMarksTransferController" p:withdrawMarksTransferDao-ref="withdrawMarksTransferDao"/>
+<bean name="/revertResultProcess/*.htm" class="in.ac.dei.edrp.cms.controller.revertResultProcess.RevertResultProcessController" p:revertResultProcessDao-ref="revertResultProcessDao"/>
+<bean name="/mailConfiguration/*.htm" class="in.ac.dei.edrp.cms.controller.mailConfiguration.MailConfigurationController" p:mailConfigurationDao-ref="mailConfigurationDao"/>
 <!-- Dheeraj Code Ends -->
+<bean name="/studentMasterAPI/*.htm" class="in.ac.dei.edrp.apicontroller.StudentMasterAPIController" p:studentMasterService-ref="studentMasterService"/>
+<!-- Upasana code Starts -->
+<bean name="/programCourseHeaderCredit/*.htm" class="in.ac.dei.edrp.cms.controller.programCourseHeaderCredit.ProgramCourseCreditController"
+ p:programCourseCreditDAO-ref="programCourseCreditDAO"/>
+<bean name="/registrationForInstAndAdmin/*.htm" class="in.ac.dei.edrp.cms.controller.registrationForInstAndAdmin.InstAdminRegistrationController"
+ p:instAdminRegistrationDAO-ref="instAdminRegistrationDAO"/>
+
+<!-- Upasana code Ends -->
 </beans>

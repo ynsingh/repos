@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" title="Reports" 
-	xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" creationComplete="onCreationComplete()">
+	xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"
+	xmlns:controls="common.Components.com.iwobanas.controls.*" creationComplete="onCreationComplete()">
 	<mx:Script source="asFiles/PrintReports.as"/>
 	<mx:Script>
 		<![CDATA[			
@@ -112,8 +113,8 @@
 	<mx:Canvas x="20" y="132"  height="235" styleName="GridCanvas" visible="false" id="gridCanvasId">
 	<mx:Label text="{commonFunction.getConstants('details')}" fontWeight="bold" fontSize="14" x="22" y="0"/>
 	
-	<mx:DataGrid x="5" y="28" id="reportsDetails" editable="true" height="182" width="100%" sortableColumns="false">
-		<mx:columns>							
+	<controls:MDataGrid x="5" y="28" id="reportsDetails" editable="true" height="182" width="100%" sortableColumns="false">
+		<controls:columns>							
 			<!--<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('branchName')}" width="150" dataField="branchName" draggable="false" textAlign="center" color="#000000"/>
 			<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('specializationName')}" width="150" dataField="specializationName" draggable="false" textAlign="center" color="#000000"/>
 			<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('semesterName')}" width="110" dataField="semesterName" draggable="false" textAlign="center" color="#000000"/>
@@ -151,8 +152,8 @@
 					</mx:Component>
 				</mx:itemRenderer>		
 			</mx:DataGridColumn>
-		</mx:columns>
-	</mx:DataGrid>
+		</controls:columns>
+	</controls:MDataGrid>
 	
 	</mx:Canvas>
 	<mx:Label x="20" y="85" text="{commonFunction.getConstants('entityName')}" visible="false" id="entityLabel"/>

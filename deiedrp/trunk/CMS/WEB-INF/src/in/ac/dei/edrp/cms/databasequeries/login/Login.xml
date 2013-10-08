@@ -42,11 +42,19 @@
 		stt
 		WHERE ui.password=sha1(#password#) and ui.user_name=#userName#
 		and
-		ui.status='ACT' and um.university_code=ui.university_code and ui.application=#application#
+		ui.status='ACT' and um.university_code=ui.university_code
 		and
 		stt.group_code='UNROLE' and stt.component_code=ui.user_group_id
 		and
 		um.current_status=1 and stt.university_code=um.university_code
+	</select>
+	
+	<select id="getRoleDetails" resultClass="loginBean">
+		SELECT ui.user_group_id AS userGroupId, stt.component_description AS userGroupName, ui.application AS application 
+		FROM user_info ui JOIN system_table_two stt
+		ON ui.user_group_id = stt.component_code AND ui.university_code = stt.university_code
+		WHERE ui.user_id = #userId# AND ui.user_name = #userName# AND ui.university_code = #universityId#
+		AND ui.application = #application# AND stt.group_code='UNROLE';
 	</select>
 
 	<update id="updateLastLogin">

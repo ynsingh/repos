@@ -65,10 +65,12 @@ public function createForm():void
 	urlPrefix=commonFunction.getConstants('url')+"/courseMaster/";
 	params['time']=new Date();
 	
-	getEntityList.send(params);
+//	getEntityList.send(params);
 }
 
+
 /** get entity success handler **/
+/*
 public function getEntitySuccess(event:ResultEvent):void
 {
 	Mask.close();
@@ -91,8 +93,9 @@ public function getEntitySuccess(event:ResultEvent):void
 	ownerEntityComboBox.setFocus();
 	Mask.close();
 }
-
+*/
 /** On change of entity **/
+/*
 public function onEntityChange():void
 {
 	try{
@@ -101,8 +104,9 @@ public function onEntityChange():void
 	getProgramList.send(params);
 	}catch(e:Error){}
 }
-
+*/
 /** get programs success handler **/
+/*
 public function getProgramSuccess(event:ResultEvent):void
 {
 	Mask.close();
@@ -126,8 +130,9 @@ public function getProgramSuccess(event:ResultEvent):void
 	Mask.close();
 	onEntityGet();
 }
-
+*/
 /** on change of program **/
+/*
 public function onProgramChange():void
 {
 	try{
@@ -138,8 +143,9 @@ public function onProgramChange():void
 	}
 	catch(e:Error){}
 }
-
+*/
 /** get branches success handler **/
+/*
 public function getBranchSuccess(event:ResultEvent):void
 {
 	Mask.close();
@@ -163,6 +169,7 @@ public function getBranchSuccess(event:ResultEvent):void
 }
 
 /** on chnage of branch **/
+/*
 public function onBranchChange():void
 {
 	try{
@@ -173,8 +180,9 @@ public function onBranchChange():void
 	}
 	catch(e:Error){}
 }
-
+*/
 /** get specialization success handler **/
+/*
 public function getSpecializationSuccess(event:ResultEvent):void
 {
 	Mask.close();
@@ -196,7 +204,7 @@ public function getSpecializationSuccess(event:ResultEvent):void
 	ownerSpecializationComboBox.dataProvider=specializationXml.Details.name;
 	Mask.close();
 }
-
+*/
 /** fault handler **/
 public function onFailure(event:FaultEvent):void
 {
@@ -207,59 +215,49 @@ public function onFailure(event:FaultEvent):void
 /** getting course details **/
 public function showCourseDetails(flag:String):void
 {
-	if(Validator.validateAll([entityValidator]).length==0)
-	{
+	/*
+	if(Validator.validateAll([entityValidator]).length==0){
 		params['flag']=flag;
 		params['entityId']=entityXml.Details.(name==ownerEntityComboBox.selectedLabel).code;
 		//Alert.show(entityXml.Details.(name==ownerEntityComboBox.selectedLabel).code+"");
-		if(ownerProgramComboBox.selectedIndex>=0)
-		{
+		if(ownerProgramComboBox.selectedIndex>=0){
 			params['programId']=programXml.Details.(name==ownerProgramComboBox.selectedLabel).id;
 		}
-		else
-		{
+		else{
 			params["programId"]='%';
 		}
 		
-		if(ownerBranchComboBox.selectedIndex>=0)
-		{
+		if(ownerBranchComboBox.selectedIndex>=0){
 			params['branchId']=branchXml.Details.(name==ownerBranchComboBox.selectedLabel).id;
 		}
-		else
-		{
+		else{
 			params["branchId"]='%';
 		}
 		
-		if(ownerSpecializationComboBox.selectedIndex>=0)
-		{
+		if(ownerSpecializationComboBox.selectedIndex>=0){
 			params['specializationId']=specializationXml.Details.(name==ownerSpecializationComboBox.selectedLabel).id;
 		}
-		else
-		{
+		else{
 			params["specializationId"]='%';
 		}
-		
-		params["courseCode"]=courseCodeTextInput.text+'%';
-		
-		params['time']=new Date();
-		
+		*/
+		params["courseCode"]=courseCodeTextInput.text+'%';		
+		params['time']=new Date();		
 		Mask.show(commonFunction.getMessages('pleaseWait'));
 		getCourseDetails.send(params);
-	}
+	/*}
 	else
 	{
 		Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
 	}
+	*/
 }
 
 /** get course details success handler **/
-public function getCourseDetailsSuccess(event:ResultEvent):void
-{
+public function getCourseDetailsSuccess(event:ResultEvent):void{
 	Mask.close();
-	try
-	{
-		if(event.result.sessionConfirm == true)
-		{
+	try{
+		if(event.result.sessionConfirm == true){
 	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
 				    var url:String="";
 				    url=commonFunction.getConstants('navigateHome');
@@ -269,15 +267,11 @@ public function getCourseDetailsSuccess(event:ResultEvent):void
 		}
 	}
  	catch(e:Error){}
-
     editButton.enabled=false;
 	deleteButton.enabled=false;
-	courseDetailsXml=event.result as XML;
-	
-	var courseData:ArrayCollection=new ArrayCollection();
-	
-	for each(var obj:Object in courseDetailsXml.Details)
-	{
+	courseDetailsXml=event.result as XML;	
+	var courseData:ArrayCollection=new ArrayCollection();	
+	for each(var obj:Object in courseDetailsXml.Details){
 		courseData.addItem({select:false,ownerEntityId:obj.ownerEntityId,ownerEntityName:obj.ownerEntityName,ownerProgramId:obj.ownerProgramId,ownerProgramName:obj.ownerProgramName,
 			ownerBranchId:obj.ownerBranchId,ownerBranchName:obj.ownerBranchName,ownerSpecializationId:obj.ownerSpecializationId,
 			ownerSpecializationName:obj.ownerSpecializationName,courseGroupId:obj.courseGroupId,courseGroupName:obj.courseGroupName,courseTypeId:obj.courseTypeId,
@@ -286,15 +280,12 @@ public function getCourseDetailsSuccess(event:ResultEvent):void
 			lectures:obj.lectures,tutorials:obj.tutorials,practicals:obj.practicals,sinceSession:obj.sinceSession,resultSystem:obj.resultSystem,dummyFlag:obj.dummyFlag,gradeLimit:obj.gradeLimit,edeiStatus:obj.edeiStatus});
 	}
 	courseDetailGrid.dataProvider=courseData;
-	if(courseData.length>0)
-	{
+	if(courseData.length>0){
 	    courseDetailPanel.visible=true;
 	}
-	else
-	{
+	else{
 		courseDetailPanel.visible=false;
-		if(params['flag']=="")
-		{
+		if(params['flag']==""){
 			Alert.show(commonFunction.getMessages('noRecordFound'),commonFunction.getMessages('error'),0,null,null,errorIcon);
 		}
 	}
@@ -302,18 +293,17 @@ public function getCourseDetailsSuccess(event:ResultEvent):void
 }
 
 /** this metthod show edit or delete screen **/
-public function editOrDeleteCourseDetails(event:Event):void
-{
+public function editOrDeleteCourseDetails(event:Event):void{
 	Mask.show(commonFunction.getMessages('pleaseWait'));
 	var selectedValues:ArrayCollection=commonFunction.getSelectedRowData(courseDetailGrid);
-	var editWindow:CourseMaster=CourseMaster(PopUpManager.createPopUp(this,CourseMaster,true));
-			
+	var editWindow:CourseMaster=CourseMaster(PopUpManager.createPopUp(this,CourseMaster,true));			
+			/*
 			editWindow.ownerEntityComboBox.enabled=false;
 			editWindow.ownerProgramComboBox.enabled=false;
 			editWindow.ownerBranchComboBox.enabled=false;
 			editWindow.ownerSpecializationComboBox.enabled=false;
 			editWindow.courseCodeTextInput.editable=false;
-			
+			*/
 			editWindow.ownerEntity=selectedValues[0].ownerEntityName;
 			editWindow.ownerProgram=selectedValues[0].ownerProgramName;
 			editWindow.ownerBranch=selectedValues[0].ownerBranchName;
@@ -376,6 +366,7 @@ public function editOrDeleteCourseDetails(event:Event):void
 }
 
 //on change of entity
+/*
 public function onEntityGet():void
 {
 	courseDetailPanel.visible=false;
@@ -391,3 +382,4 @@ public function onEntityGet():void
 	ownerSpecializationComboBox.enabled=false;
 	courseCodeTextInput.editable=true;
 }
+*/

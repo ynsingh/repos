@@ -245,7 +245,7 @@ public class PreProcessForResult {
 											listOfStudent.getSemesterStatus(),
 											errstatus,startActivityBean.getProcessCounter());
 									
-									failStudentList.add(new UnProcessedStduent(listOfStudent.getRollNumber(),errstatus));
+//									failStudentList.add(new UnProcessedStduent(listOfStudent.getRollNumber(),errstatus));
 								}
 								
 								

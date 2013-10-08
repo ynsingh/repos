@@ -60,7 +60,7 @@
 classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
     <target name="en_US">
-		<mxmlc>
+		<mxmlc fork="true" maxmemory="1024m">
         <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/> 
 			<locale>en_US</locale>
 			<source-path>../../../../webapps/CMS/CMS_FLEX/locale/{locale}</source-path>
@@ -70,7 +70,7 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 		</mxmlc>
 	</target>
 	<target name="en_CM">
-		<mxmlc>
+		<mxmlc fork="true" maxmemory="1024m">
 			<locale>en_CM</locale>
 			<source-path>../../../../webapps/CMS/CMS_FLEX/locale/{locale}</source-path>
             <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/> 
@@ -96,13 +96,27 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
                         <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
 
         </mxmlc> 
+		
         <mxmlc
                 file="${flex.src}/MAIN_HOME.mxml"
                 output="${flex.bin}/${swf.name2}.swf"
-                debug="false" 
+                debug="false"
+                fork="true" maxmemory="1024m"
                 keep-generated-actionscript="false">
                         <source-path path-element="${FLEX_HOME}/frameworks"/>
                         <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
+
+        </mxmlc> 
+		
+        <mxmlc
+                file="${flex.src}/REMOTE_LOGIN.mxml"
+                output="${flex.bin}/${swf.name3}.swf"
+                debug="false" 
+                fork="true" maxmemory="1024m"
+                keep-generated-actionscript="false">
+                        <source-path path-element="${FLEX_HOME}/frameworks"/>
+                        <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
+
         </mxmlc> 
         <mxmlc
                 file="${flex.src}/REMOTE_LOGIN.mxml"
@@ -111,6 +125,7 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
                 keep-generated-actionscript="false">
                         <source-path path-element="${FLEX_HOME}/frameworks"/>
                         <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
+
         </mxmlc> 		
 
     </target>
@@ -134,15 +149,16 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
             version-major="10" version-minor="2" version-revision="0"
             history="true"
             template="express-installation" 
-            output="${flex.bin}"/>	    
-        <html-wrapper title="Remote Login"
+            output="${flex.bin}"/>	 
+			
+      <html-wrapper title="Remote Login"
             file="REMOTE_LOGIN.html"
             height="100%" width="100%" bgcolor="#000000"
             application="REMOTE_LOGIN"
             swf="REMOTE_LOGIN"
             version-major="10" version-minor="2" version-revision="0"
             history="true"
-            template="express-installation"
+            template="express-installation" 
             output="${flex.bin}"/>	
       </target> 
   <!-- ================================================================ -->
@@ -162,12 +178,23 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
     <antcall target="wrapper"></antcall>
     <antcall target="compile"/>
     <antcall target="copy-props"/>
-    <antcall target="javadoc"/>
-    <antcall target="createadminaccount"/>
+   <antcall target="javadoc"/> 
+   <!--<antcall target="createadminaccount"/>-->
     
   </target>
 
+ <target
+    name="update"
+    description="--> Compile and compile flex for the application">
+    <echo message="####### update started ###########"/>
+    <antcall target="en_US"></antcall>
+    <antcall target="en_CM"></antcall>
+    <antcall target="compile-flex"></antcall>
+    <antcall target="wrapper"></antcall>
+    <antcall target="compile"/>
+    <antcall target="copy-props"/>
 
+  </target>
   <!-- ============================================================================ -->
   <!-- COPY  MESSAGE PROPERTIES, DATABASE SETTING PROPETIES AND DATABASE XML QUERIES-->
   <!-- ============================================================================ -->
@@ -216,7 +243,7 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
       		<classpath refid="classpath"/>
 	</sql>
 	<echo message="====================================================="/>
-	<echo message="The account to login is deepak and password is deepak"/>
+	<echo message="The account to login is admin and password is admin  "/>
 	<echo message="====================================================="/>
   </target>
 
@@ -252,7 +279,7 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
   <target
     name="compile"
-    description="--> compiles the source code">
+    description="compiles the source code">
     <echo message="####### inside compile ########### ${build.webappRoot}"/>
      <mkdir dir="${build.dest}"/>
     <javac srcdir="${src.dir}\in"
@@ -270,7 +297,7 @@ classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
   <target
     name="clean"
-    description="--> cleans up the build directory">
+    description="cleans up the build directory">
     <delete dir="${build.dest}"/>
     <mkdir dir="${build.dest}"/>
   </target>

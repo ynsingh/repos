@@ -107,13 +107,18 @@ AdvancedDataGrid{
 	fontSize: 10;
 	fontWeight: normal;	
 }
-
+				
 Alert{
-	fontFamily: Verdana;
+	background-alpha: .5;
+	background-color: #ffffff;
+	color: #000000;
+	border-color: #ffffff;
+	border-alpha: .75;
+	theme-color: gray;
+	fontFamily: Georgia;
 	fontSize: 12;
 	fontWeight: normal;
-}				
-
+}
 TextArea{
     fontFamily: Verdana;
     fontSize: 12;

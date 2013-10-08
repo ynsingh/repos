@@ -77,10 +77,10 @@
 	<mx:Label text="{commonFunction.getConstants('remedialDetails')}" top="6" left="10" fontWeight="bold"  />
 	<mx:LinkButton label="{commonFunction.getConstants('applyButton')}" enabled="false" id="applyButton" x="854.5" y="4" width="106.5" click="openApplyWindow()"/>   
 		
-    <mx:DataGrid editable="true" id="remedialsGrid" draggableColumns="true" textAlign="center" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="934">
-	<mx:columns>
-	<mx:DataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
-	<mx:itemRenderer>
+    <controls:MDataGrid editable="true" id="remedialsGrid" draggableColumns="true" textAlign="center" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="934">
+	<controls:columns>
+	<dataGridClasses:MDataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+	<dataGridClasses:itemRenderer>
 	<mx:Component>
 	<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.remedialsGrid,[outerDocument.applyButton],[new LinkButton])">
 	<mx:Script>
@@ -91,20 +91,25 @@
 	</mx:Script>
 	</mx:CheckBox>
 	</mx:Component>
-	</mx:itemRenderer>
-	</mx:DataGridColumn>
-	<mx:DataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('program')}" dataField="program" showDataTips="true" />
-	<mx:DataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('branch')}" dataField="branch" showDataTips="true" />
-	<mx:DataGridColumn editable="false" width="122" headerText="{commonFunction.getConstants('specialization')}" dataField="specialisation" showDataTips="true" />
-	<mx:DataGridColumn editable="false" width="100" headerText="{commonFunction.getConstants('semester')}" dataField="semester" showDataTips="true" />
-	<mx:DataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode" showDataTips="true" />
-    <mx:DataGridColumn editable="false" width="172" headerText="{commonFunction.getConstants('semesterStartDate')}" dataField="semesterStartDate" showDataTips="true" />
-	<mx:DataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('semesterEndDate')}" dataField="semesterEndDate" showDataTips="true" />
-    <mx:DataGridColumn editable="false" width="119" headerText="{commonFunction.getConstants('attemptNo')}" dataField="attemptNumber" showDataTips="true"/>
-    <mx:DataGridColumn editable="false" width="123" headerText="{commonFunction.getConstants('courseStatus')}" dataField="courseStatus" showDataTips="true"/>
-    <mx:DataGridColumn editable="false" width="88" headerText="{commonFunction.getConstants('applied')}" dataField="applied" showDataTips="true" />
-    </mx:columns>
-	</mx:DataGrid>
+	</dataGridClasses:itemRenderer>
+	<dataGridClasses:headerRenderer>
+		<mx:Component>
+			<mx:Label/>
+		</mx:Component>
+	</dataGridClasses:headerRenderer>
+	</dataGridClasses:MDataGridColumn>
+	<dataGridClasses:MDataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('program')}" dataField="program" showDataTips="true" />
+	<dataGridClasses:MDataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('branch')}" dataField="branch" showDataTips="true" />
+	<dataGridClasses:MDataGridColumn editable="false" width="122" headerText="{commonFunction.getConstants('specialization')}" dataField="specialisation" showDataTips="true" />
+	<dataGridClasses:MDataGridColumn editable="false" width="100" headerText="{commonFunction.getConstants('semester')}" dataField="semester" showDataTips="true" />
+	<dataGridClasses:MDataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode" showDataTips="true" />
+    <dataGridClasses:MDataGridColumn editable="false" width="172" headerText="{commonFunction.getConstants('semesterStartDate')}" dataField="semesterStartDate" showDataTips="true" />
+	<dataGridClasses:MDataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('semesterEndDate')}" dataField="semesterEndDate" showDataTips="true" />
+    <dataGridClasses:MDataGridColumn editable="false" width="119" headerText="{commonFunction.getConstants('attemptNo')}" dataField="attemptNumber" showDataTips="true"/>
+    <dataGridClasses:MDataGridColumn editable="false" width="123" headerText="{commonFunction.getConstants('courseStatus')}" dataField="courseStatus" showDataTips="true"/>
+    <dataGridClasses:MDataGridColumn editable="false" width="88" headerText="{commonFunction.getConstants('applied')}" dataField="applied" showDataTips="true" />
+    </controls:columns>
+	</controls:MDataGrid>
     </mx:Canvas>
     <mx:Button x="402" y="443" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
 </mx:Panel>

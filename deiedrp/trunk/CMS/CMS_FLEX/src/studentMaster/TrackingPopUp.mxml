@@ -36,7 +36,8 @@
  -->
 
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1286" height="402" showCloseButton="true"
-	 close="closePopUp()" creationComplete="onCreationComplete()" title="{resourceManager.getString('Constants','studentTracking')}">
+	 close="closePopUp()" creationComplete="onCreationComplete()" title="{resourceManager.getString('Constants','studentTracking')}"
+	 xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
 	<mx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -127,21 +128,21 @@ public function closePopUp():void{
 					fault="onFailure(event)"
 					useProxy="false"/>
 	
-	<mx:DataGrid x="10" y="32" width="1246" height="290" id="trackingGrid">
-		<mx:columns>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','rollNumber')}" dataField="rollNumber" width="80" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','sequenceNumber')}" dataField="sequenceNumber" width="110" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','programName')}" dataField="programName" width="120" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','branchName')}" dataField="componentDescription" width="120" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','specializationName')}" dataField="componentCode" width="130" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','semester')}" dataField="semesterCode" width="60" showDataTips="true"/>						
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','semesterStatus')}" dataField="statusInSemester" width="100" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','programStatus')}" dataField="status" width="100" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','trackingDate')}" dataField="insertTime" width="90" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','activity')}" dataField="activityId" width="100" showDataTips="true"/>
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','processName')}" dataField="processId" width="130" showDataTips="true"/>
-		</mx:columns>
-	</mx:DataGrid>
+	<controls:MDataGrid x="10" y="32" width="1246" height="290" id="trackingGrid">
+		<controls:columns>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','rollNumber')}" dataField="rollNumber" width="80" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','sequenceNumber')}" dataField="sequenceNumber" width="110" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','programName')}" dataField="programName" width="120" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','branchName')}" dataField="componentDescription" width="120" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','specializationName')}" dataField="componentCode" width="130" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','semester')}" dataField="semesterCode" width="60" showDataTips="true"/>						
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','semesterStatus')}" dataField="statusInSemester" width="100" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','programStatus')}" dataField="status" width="100" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','trackingDate')}" dataField="insertTime" width="90" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','activity')}" dataField="activityId" width="100" showDataTips="true"/>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','processName')}" dataField="processId" width="130" showDataTips="true"/>
+		</controls:columns>
+	</controls:MDataGrid>
 	<mx:Button x="611.5" y="330" label="OK" click="closePopUp()"/>
 	
 </mx:TitleWindow>

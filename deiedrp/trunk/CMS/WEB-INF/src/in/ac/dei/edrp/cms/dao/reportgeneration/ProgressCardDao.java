@@ -59,4 +59,7 @@ public interface ProgressCardDao {
 	public ProgressCardInfo cummulativeForFinalResultCard(ProgressCardInfo progressCardInfo);
 	public ProgressCardInfo checkStatusOfAwradSheet(ProgressCardInfo progressCardInfo);
 	public List<ProgressCardInfo> getPreviousProgramCourseKey(ProgressCardInfo progressCardInfo);	
+	public List<ProgressCardInfo> checkSwitch(ProgressCardInfo progressCardInfo);	
+	public List<ProgressCardInfo> getPreviousProgramCourseKeySwitch(ProgressCardInfo progressCardInfo,ProgressCardInfo progressCardInfo1);
+	public ProgressCardInfo checkInSemester(ProgressCardInfo progressCardInfo);
 }

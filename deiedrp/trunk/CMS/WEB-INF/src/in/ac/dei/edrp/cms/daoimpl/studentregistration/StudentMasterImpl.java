@@ -164,11 +164,9 @@ public class StudentMasterImpl implements StudentMasterConnect {
 					 */
 					savepoint = transaction.createSavepoint();
 
-					String enrollmentNumber = null;
+					String EnrollSeqNo = null;
 
-					String session = (activityMasterBean.getSemesterStartDate()
-							.substring(2, 4));
-
+					
 					/*
 					 * to check if any record with status other than V exists
 					 */
@@ -184,48 +182,77 @@ public class StudentMasterImpl implements StudentMasterConnect {
 						flagValue=false;
 
 					} else {
-
+						String year = (activityMasterBean.getSemesterStartDate().substring(0, 4));
+						String month=(activityMasterBean.getSemesterStartDate().substring(5, 7));
+						ActivityMasterBean inputBean=new ActivityMasterBean();
+						inputBean.setType("ENROL");
+						inputBean.setUniversityId(activityMasterBean.getUniversityId());
+						List<ActivityMasterBean>formatList=sqlMapClient.queryForList("studentenrollment.getRollFormatRecord", inputBean);
+						int diff=4;	//Default	
+						for(int i=0;i<formatList.size();i++){
+							if(formatList.get(i).getFormat().equals("SN")){
+								diff=(formatList.get(i).getToPosition()-formatList.get(i).getFromPosition())+1;
+							}					
+						}
+						StudentNumbersInfoGetter temoSysObj = (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.sysvalue",systemvalue);
+						int tempValue = Integer.parseInt(temoSysObj.getSystemValue());
+						String tempSeqNo=String.format("%0"+diff+"d", tempValue);						
+						systemvalue.setSystemValue(tempSeqNo);
+						sqlMapClient.update("studentenrollment.updatesysvalue",systemvalue);
+						String entityId=activityMasterBean.getEntityId().toString();
+						//Get Entity code for particular entity id
+						StudentNumbersInfoGetter entityCodeObject= (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.getentityid",entityId );
 						/*
 						 * to get the students with no enrollment numbers &
 						 * admission_mode=NEW
 						 */
-						studentlist = sqlMapClient.queryForList(
-								"studentenrollment.getlistforenrollments",
-								beanobject);
-
-
+						studentlist = sqlMapClient.queryForList("studentenrollment.getlistforenrollments",beanobject);
 						Iterator iteratorObject = studentlist.iterator();
-
 						while (iteratorObject.hasNext()) {
-							StudentInfoGetter listObject = (StudentInfoGetter) iteratorObject
-									.next();
+							StudentInfoGetter listObject = (StudentInfoGetter) iteratorObject.next();
 
 							/*
 							 * to get the value for the code for enrollment
 							 * number generation
 							 */
-							sysObject = (StudentNumbersInfoGetter) sqlMapClient
-									.queryForObject(
-											"studentenrollment.sysvalue",
-											systemvalue);
+							sysObject = (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.sysvalue",systemvalue);
 
-							int value = Integer.parseInt(sysObject
-									.getSystemValue()) + 1;
-
-							enrollmentNumber = String.format("%04d", value);
-
-							systemvalue.setSystemValue(enrollmentNumber);
+							int value = Integer.parseInt(sysObject.getSystemValue()) + 1;
+							EnrollSeqNo = String.format("%0"+diff+"d", value);
+							systemvalue.setSystemValue(EnrollSeqNo);
 
 							/*
 							 * update the value for the code for enrollment
 							 * number generation
 							 */
-							sqlMapClient.update(
-									"studentenrollment.updatesysvalue",
-									systemvalue);
-
-							listObject.setEnrollmentNumber(session
-									+ enrollmentNumber);
+							sqlMapClient.update("studentenrollment.updatesysvalue",systemvalue);
+							String enrollmentNumber="";
+							int index=0;
+							for(int i=0;i<formatList.size();i++){
+								if(formatList.get(i).getFromPosition()==index+1){
+									if(formatList.get(i).getFormat().equals("YY")){
+										enrollmentNumber=enrollmentNumber+year.substring(2);
+									}
+									else if(formatList.get(i).getFormat().equals("YYYY")){
+										enrollmentNumber=enrollmentNumber+year;
+									}
+									else if(formatList.get(i).getFormat().equals("SN")){
+										enrollmentNumber=enrollmentNumber+EnrollSeqNo;
+									}
+									else if(formatList.get(i).getFormat().equals("ENTCD")){
+										enrollmentNumber=enrollmentNumber+entityCodeObject.getEntityCode();
+									}
+									else if(formatList.get(i).getFormat().equals("MM")){
+										enrollmentNumber=enrollmentNumber+month;
+									}
+									else{
+										enrollmentNumber=enrollmentNumber+formatList.get(i).getFormat();
+									}
+									index=formatList.get(i).getToPosition();
+								}
+							}
+							
+							listObject.setEnrollmentNumber(enrollmentNumber);
 							listObject.setStudentId(listObject.getStudentId());
 							listObject.setStatus("V");
 							listObject.setUserId(activityMasterBean.getUserId());
@@ -234,10 +261,7 @@ public class StudentMasterImpl implements StudentMasterConnect {
 							 * to update the enrollment number in temporary
 							 * tables for student
 							 */
-							counter =counter + sqlMapClient
-									.update(
-											"studentenrollment.updateenrollmentstables",
-											listObject);
+							counter =counter + sqlMapClient.update("studentenrollment.updateenrollmentstables",listObject);
 						}
 						
 						if(counter>0){							
@@ -316,6 +340,7 @@ public class StudentMasterImpl implements StudentMasterConnect {
 	 * @param activityMasterBean
 	 *            object of the referenced bean file
 	 */
+	@SuppressWarnings("unchecked")
 	public CountProcessRecorList generateRollNumbers(
 			final ActivityMasterBean activityMasterBean) {
 
@@ -324,8 +349,7 @@ public class StudentMasterImpl implements StudentMasterConnect {
 			CountProcessRecorList processRecorLists1 = new CountProcessRecorList();
 
 			Object savepoint = null;
-
-			@SuppressWarnings("unchecked")
+		
 			public CountProcessRecorList doInTransaction(
 					TransactionStatus status) {
 
@@ -333,7 +357,8 @@ public class StudentMasterImpl implements StudentMasterConnect {
 				String CODE = "ROL";
 				String year = (activityMasterBean.getSessionStartDate())
 						.toString().substring(0, 4);
-
+				String month=(activityMasterBean.getSessionStartDate())
+				.toString().substring(5, 7);
 				StudentNumbersInfoGetter beanobject = new StudentNumbersInfoGetter(
 						activityMasterBean.getEntityId(), activityMasterBean
 								.getProgramId(), activityMasterBean
@@ -355,9 +380,8 @@ public class StudentMasterImpl implements StudentMasterConnect {
 				StudentNumbersInfoGetter entitysystemvalue = new StudentNumbersInfoGetter();
 				StudentInfoGetter switchingobject;
 
-				beanobject.setCode(CODE);
+				beanobject.setCode(CODE);				
 				beanobject.setYear(year);
-
 				loggerObject
 						.info("********************************in roll number generation*************************");
 
@@ -371,7 +395,7 @@ public class StudentMasterImpl implements StudentMasterConnect {
 				 * to get the roll number(counter value) for a particular
 				 * student id
 				 */
-				StudentNumbersInfoGetter systemObject;
+				StudentNumbersInfoGetter systemObject = null;
 
 				/*
 				 * to check if the program is locked or unlocked
@@ -390,9 +414,8 @@ public class StudentMasterImpl implements StudentMasterConnect {
 				
 				int counter = 0;
 				
-				try {
-					entitysystemvalue.setEntityId(activityMasterBean
-							.getEntityId());
+				try {											
+					entitysystemvalue.setEntityId(activityMasterBean.getEntityId());
 					/*
 					 * modified 
 					 * @param before activityMasterBean.getProgramId()
@@ -418,28 +441,37 @@ public class StudentMasterImpl implements StudentMasterConnect {
 					 * to check if record exist for the entity in
 					 * system_table_one
 					 */
-					entitylistObject = (StudentNumbersInfoGetter) sqlMapClient
-							.queryForObject("studentenrollment.checkvalues",
-									entitysystemvalue);
-
+					entitylistObject = (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.checkvalues",entitysystemvalue);
+					ActivityMasterBean inputBean=new ActivityMasterBean();
+					inputBean.setType("ROL");
+					inputBean.setUniversityId(activityMasterBean.getUniversityId());
+					List<ActivityMasterBean>formatList=sqlMapClient.queryForList("studentenrollment.getRollFormatRecord", inputBean);
+					int diff=3;	//Default	
+					for(int i=0;i<formatList.size();i++){
+						if(formatList.get(i).getFormat().equals("SN")){
+							diff=(formatList.get(i).getToPosition()-formatList.get(i).getFromPosition())+1;
+						}					
+					}
+					String tempSeqNo=String.format("%0"+diff+"d", 0);	
+					boolean flag=false;
 					if (entitylistObject == null) {
+						flag=true;
 						/*
 						 * modified 
 						 * @param before activityMasterBean.getProgramId()
 						 * @param now "All"							
-						 */
+						 */						
 						StudentNumbersInfoGetter insertbeanobject = new StudentNumbersInfoGetter(
 								activityMasterBean.getEntityId(),
 								"All", CODE, year,
 								activityMasterBean.getUserId());
+						insertbeanobject.setSystemValue(tempSeqNo);
 
 						/*
 						 * insert a record in system_table_one if no record
 						 * exist for the entity
 						 */
-						sqlMapClient.insert(
-								"studentenrollment.insertprogramsystemvalue",
-								insertbeanobject);
+						sqlMapClient.insert("studentenrollment.insertprogramsystemvalue",insertbeanobject);
 					} else if (entitylistObject.getStatusFlag()
 							.equalsIgnoreCase("U")) {
 						entitysystemvalue.setStatusFlag("L");
@@ -448,9 +480,11 @@ public class StudentMasterImpl implements StudentMasterConnect {
 						 * if record found then update flag status before
 						 * generating roll numbers for the students
 						 */
-						sqlMapClient.update(
-								"studentenrollment.updateentitysatusflag",
-								entitysystemvalue);
+						sqlMapClient.update("studentenrollment.updateentitysatusflag",entitysystemvalue);				
+						entitysystemvalue.setSystemValue(String.format("%0"+diff+"d", Integer.parseInt(entitylistObject.getSystemValue())));
+						entitysystemvalue.setCode(CODE);
+						sqlMapClient.update("studentenrollment.updaterollvalue",entitysystemvalue);
+						System.out.println("After update value in system table one");
 					} else if (entitylistObject.getStatusFlag()
 							.equalsIgnoreCase("L")) {
 
@@ -462,10 +496,10 @@ public class StudentMasterImpl implements StudentMasterConnect {
 					 * to get the list of students(for NEW & SWT mode) for roll
 					 * number generation
 					 */
-					studentlist = sqlMapClient.queryForList(
-							"studentenrollment.getlistofstudentsforrolls",
-							beanobject);
-
+					studentlist = sqlMapClient.queryForList("studentenrollment.getlistofstudentsforrolls",beanobject);
+					//Check Roll Number Group Code in temp student program Added by Devendra
+					int rollNoGroupCodeStatus=(Integer)sqlMapClient.queryForObject("studentenrollment.checkRollNumberGroupCode",beanobject);					
+					
 					if (studentlist.size() == 0) {
 						entitysystemvalue.setStatusFlag("U");
 
@@ -483,19 +517,42 @@ public class StudentMasterImpl implements StudentMasterConnect {
 						infoStudentInfoGetter.setProcessCounter(1);
 
 						Iterator iteratorObject = studentlist.iterator();
-
+						
+						List<String>tempList=new ArrayList<String>();//Added By Devendra
+						
+						
+						int num=0;
+						StudentNumbersInfoGetter bean=new StudentNumbersInfoGetter();
+						bean.setUniversityId(activityMasterBean.getUniversityId());
+						bean.setCode("ROLLBF");
+						StudentNumbersInfoGetter input=(StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.sysvalue",bean);
+						if(!flag){						
+							num=Integer.parseInt(input.getSystemValue());
+						}
+						
 						while (iteratorObject.hasNext()) {
 							StudentInfoGetter numbersObject = (StudentInfoGetter) iteratorObject
-									.next();
-
-							/*
-							 * get the system value for the program from
-							 * system_table_one
-							 */
-							systemObject = (StudentNumbersInfoGetter) sqlMapClient
-									.queryForObject(
-											"studentenrollment.sysvalueforroll",
-											systemvalue);
+									.next();							
+							if(rollNoGroupCodeStatus==0){
+								/*
+								 * get the system value for the program from
+								 * system_table_one
+								 */
+								systemObject = (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.sysvalueforroll",systemvalue);
+							}
+							else{							
+								if(tempList.indexOf(numbersObject.getRollNumberGroupCode())<0){	
+									if(tempList.size()>0){
+										num=Integer.parseInt(input.getSystemValue());
+									}
+									tempList.add(numbersObject.getRollNumberGroupCode());											
+									systemObject = (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.sysvalueforroll",systemvalue);
+									systemObject.setSystemValue(String.valueOf(Integer.parseInt(systemObject.getSystemValue())+num));
+								}
+								else{										
+									systemObject = (StudentNumbersInfoGetter) sqlMapClient.queryForObject("studentenrollment.sysvalueforroll",systemvalue);
+								}
+							}
 							/*
 							 * when admission_mode==NEW
 							 */
@@ -509,7 +566,7 @@ public class StudentMasterImpl implements StudentMasterConnect {
 										.getSystemValue(), year,
 										activityMasterBean.getEntityId(),
 										numbersObject.getStudentId(),
-										activityMasterBean.getProgramId());
+										activityMasterBean.getProgramId(),formatList,month);
 
 								infoStudentInfoGetter
 										.setRecordsProcessed(studentlist.size());
@@ -572,7 +629,7 @@ public class StudentMasterImpl implements StudentMasterConnect {
 											year,
 											activityMasterBean.getEntityId(),
 											numbersObject.getStudentId(),
-											activityMasterBean.getProgramId());
+											activityMasterBean.getProgramId(),formatList,month);
 									loggerObject
 											.info("********************************in Switch successful********************************");
 								} else if (ruleCodeOneObject.getRuleCodeOne()
@@ -670,11 +727,11 @@ public class StudentMasterImpl implements StudentMasterConnect {
 	 */
 	private int methodUpdateRollNumbers(String userId, String code,
 			String year, String entityId, String studentId,
-			String programId) throws SQLException {
-		int value = Integer.parseInt(code) + 1;
-
-		String rollNumber = "";
+			String programId,List<ActivityMasterBean>formatList,String month) throws SQLException {
 		
+		String formatStr="%0"+code.length()+"d";		
+		int value = Integer.parseInt(code) + 1;
+		String seqNo = "";		
 		int counter = 0;
 
 		/*
@@ -688,29 +745,46 @@ public class StudentMasterImpl implements StudentMasterConnect {
 		StudentNumbersInfoGetter beanObject;
 		StudentNumbersInfoGetter numbersObject = new StudentNumbersInfoGetter();
 
-		if ((Integer.parseInt(code) >= 0) && (Integer.parseInt(code) < 999)) {
-			rollNumber = String.format("%03d", value);
-		} else if (Integer.parseInt(code) == 999) {
-			rollNumber = "1000";
-		} else if (Integer.parseInt(code) > 999) {
-			rollNumber = ("" + value);
-		}
+		seqNo = String.format(formatStr, value);		
 
 		/*
 		 * @param before programId
 		 * @param now "All"
 		 */
 		beanObject = new StudentNumbersInfoGetter(entityId, "All",
-				rollNumber, year, "ROL", userId);
+				seqNo, year, "ROL", userId);
 
 		/*
 		 * Query to update roll number in system_table_one prior using the
 		 * number
 		 */
 		sqlMapClient.update("studentenrollment.updaterollvalue", beanObject);
-
-		numbersObject.setRollNumber(year.substring(2)
-				+ entityCodeObject.getEntityCode() + rollNumber);
+		String rollNumber="";
+		int index=0;
+		for(int i=0;i<formatList.size();i++){
+			if(formatList.get(i).getFromPosition()==index+1){
+				if(formatList.get(i).getFormat().equals("YY")){
+					rollNumber=rollNumber+year.substring(2);
+				}
+				else if(formatList.get(i).getFormat().equals("YYYY")){
+					rollNumber=rollNumber+year;
+				}
+				else if(formatList.get(i).getFormat().equals("SN")){
+					rollNumber=rollNumber+seqNo;
+				}
+				else if(formatList.get(i).getFormat().equals("ENTCD")){
+					rollNumber=rollNumber+entityCodeObject.getEntityCode();
+				}
+				else if(formatList.get(i).getFormat().equals("MM")){
+					rollNumber=rollNumber+month;
+				}
+				else{
+					rollNumber=rollNumber+formatList.get(i).getFormat();
+				}
+				index=formatList.get(i).getToPosition();
+			}
+		}
+		numbersObject.setRollNumber(rollNumber);
 		numbersObject.setStudentId(numbersObject.getStudentId());
 		numbersObject.setModifierId(userId);
 		numbersObject.setStudentId(studentId);

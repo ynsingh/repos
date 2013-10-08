@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="StagingTableReport">
+   <typeAlias alias="stagingTableBean" type = "in.ac.dei.edrp.cms.domain.reportgeneration.StagingTableReportBean"/>
+    <select id="getCurrentSession" resultClass="stagingTableBean">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master 
+		where university_code=#universityId# and current_status='1';
+   </select>  
+   <select id="getProgramCourseKey" resultClass="stagingTableBean">
+   SELECT
+   		p.program_id as programId,(select program_name from program_master where program_id=p.program_id) programName,
+ 		p.branch_id as branchId,(select component_description from system_table_two where group_code='brncod' and university_code='0001' and
+ 		component_code=p.branch_id) as branchName,
+  		p.specialization_id as specializationId,(select component_description from system_table_two where group_code='spclcd' and university_code='0001' and
+ 		component_code=p.specialization_id) as specializationName,
+  		p.semester_code as semesterCode, (select component_description from system_table_two where group_code='semcod' and university_code='0001' and
+ 		component_code=p.semester_code) as semesterName,p.program_course_key as programCourseKey
+  FROM
+  	program_course_header p
+  WHERE
+  	p.program_id=#programId# AND p.branch_id=#branchId# AND p.specialization_id=#specializationId# AND p.semester_code=#semesterCode#; 
+</select>
+
+<select id="getStagingTableDetail" resultClass="stagingTableBean">
+SELECT registration_roll_number as newRollNumber,st.enrollment_number as enrollmentNumber,st.old_roll_number as oldRollNumber,
+	 concat_ws(' ', st.student_first_name, st.student_middle_name, st.student_last_name) as studentName,
+	concat_ws(' ',st.father_first_name, st.father_middle_name, st.father_last_name) as fatherName,
+	concat_ws(' ',st.mother_first_name, st.mother_middle_name, st.mother_last_name) as motherName,
+st.new_entity_id as newEntityId,st.new_program_id as newProgramId,st.new_branch_id as newBranchId,st.new_specialization_id as newSpecializationId,
+concat_ws(' | ',
+(select entity_name from entity_master where university_id='0001' and entity_id=st.new_entity_id) ,
+(select program_name from program_master where program_id=st.new_program_id),
+(select component_description from system_table_two where group_code='brncod' and university_code='0001' and
+ component_code=st.new_branch_id),
+ (select component_description from system_table_two where group_code='spclcd' and university_code='0001' and
+ component_code=st.new_specialization_id))as newClassName,
+st.old_entity_id as oldEntityId,st.old_program_id as oldProgramId,st.old_branch_id as oldBranchId,st.old_specialization_id as oldSpecializationId,
+concat_ws(' | ',
+(select entity_name from entity_master where university_id='0001' and entity_id=st.old_entity_id) ,
+(select program_name from program_master where program_id=st.old_program_id),
+(select component_description from system_table_two where group_code='brncod' and university_code='0001' and
+ component_code=st.old_branch_id),
+ (select component_description from system_table_two where group_code='spclcd' and university_code='0001' and
+ component_code=st.old_specialization_id))as oldClassName,
+st.new_semester_id,
+(select component_description from system_table_two where group_code='semcod' and university_code='0001' and
+ component_code=st.new_semester_id) as newSemester,
+st.old_semester_code,
+(select component_description from system_table_two where group_code='semcod' and university_code='0001' and
+ component_code=st.old_semester_code) as oldSemester,
+ (case st.processed_flag when 'P' then 'Processed' when 'N' then 'UnProcessed' end) as processFlag
+	FROM staging_table st
+	where new_entity_id=#entityId#
+and
+new_program_id=#programId#
+and
+new_branch_id=#branchId#
+and
+new_specialization_id=#specializationId#
+and
+new_semester_id=#semesterCode#
+and
+processed_flag=#processFlag#;
+</select>
+</sqlMap>

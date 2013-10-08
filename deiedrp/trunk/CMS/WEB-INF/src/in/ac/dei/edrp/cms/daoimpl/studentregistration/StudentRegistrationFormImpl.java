@@ -82,33 +82,50 @@ public class StudentRegistrationFormImpl extends SqlMapClientDaoSupport
             List<?> resultList1;
             StudentInfoGetter stdObject = new StudentInfoGetter();
             stdObject.setRollNumber(registrationRollNumber);
-
-            resultList1 = getSqlMapClientTemplate()
-                              .queryForList("studentRegistration.checkStudentRecord",
-                    stdObject);
-            stdResultObject1 = resultList1.toArray(new StudentInfoGetter[resultList1.size()]);
-
-            
+            resultList1 = getSqlMapClientTemplate().queryForList("studentRegistration.checkStudentRecord",stdObject);
+            stdResultObject1 = resultList1.toArray(new StudentInfoGetter[resultList1.size()]);            
             if (stdResultObject1.length > 0) {
-                if (stdResultObject1[0].getAdmissionMode()
-                                           .equalsIgnoreCase("SWT")) {
-                    resultList = getSqlMapClientTemplate()
-                                     .queryForList("studentRegistration.getStudentDetailsForSwt",
-                            stdObject);
-                } else if (stdResultObject1[0].getAdmissionMode()
-                                                  .equalsIgnoreCase("NOR")) {
-                	System.out.println("coming in normal");
-                	
-                    resultList = getSqlMapClientTemplate()
-                                     .queryForList("studentRegistration.getStudentDetailsForNor",
-                            stdObject);
-                    System.out.println("details length "+resultList.size());
+                if (stdResultObject1[0].getAdmissionMode().equalsIgnoreCase("SWT")) {
+                       resultList = getSqlMapClientTemplate().queryForList("studentRegistration.getStudentDetailsForSwt",stdObject);                    
+                 	   StudentInfoGetter obj = new StudentInfoGetter();
+                 	   obj.setStudentId(resultList.get(0).getStudentId());
+                 	   StudentInfoGetter result=(StudentInfoGetter) getSqlMapClientTemplate().queryForObject("studentRegistration.getAddressMasterAddr", obj);
+                 	   if(result==null){
+                 		   result=new StudentInfoGetter();
+                 	   }
+                 	   resultList.get(0).setPerAddress(result.getPerAddress());
+                 	   resultList.get(0).setPerCity(result.getPerCity());
+                 	   resultList.get(0).setPerState(result.getPerState());
+                 	   resultList.get(0).setPerPincode(result.getPerPincode());
+                 	   resultList.get(0).setExtraPhone(result.getExtraPhone());
+                 	   resultList.get(0).setOtherPhone(result.getOtherPhone());                    
+                } else if (stdResultObject1[0].getAdmissionMode().equalsIgnoreCase("NOR")) {                	
+                       resultList = getSqlMapClientTemplate().queryForList("studentRegistration.getStudentDetailsForNor",stdObject);                   
+                	   StudentInfoGetter obj = new StudentInfoGetter();
+                	   obj.setStudentId(resultList.get(0).getStudentId());
+                	   StudentInfoGetter result=(StudentInfoGetter) getSqlMapClientTemplate().queryForObject("studentRegistration.getAddressMasterAddr", obj);
+                	   if(result==null){
+                		   result=new StudentInfoGetter();
+                	   }
+                	   resultList.get(0).setPerAddress(result.getPerAddress());
+                	   resultList.get(0).setPerCity(result.getPerCity());
+                	   resultList.get(0).setPerState(result.getPerState());
+                	   resultList.get(0).setPerPincode(result.getPerPincode());
+                	   resultList.get(0).setExtraPhone(result.getExtraPhone());
+                	   resultList.get(0).setOtherPhone(result.getOtherPhone());
                     
-                } else if (stdResultObject1[0].getAdmissionMode()
-                                                  .equalsIgnoreCase("NEW")) {
-                    resultList = getSqlMapClientTemplate()
-                                     .queryForList("studentRegistration.getStudentDetailsForNew",
-                            stdObject);
+                } else if (stdResultObject1[0].getAdmissionMode().equalsIgnoreCase("NEW")) {
+                	   resultList = getSqlMapClientTemplate().queryForList("studentRegistration.getStudentDetailsForNew",stdObject); 
+                 	   StudentInfoGetter result=(StudentInfoGetter) getSqlMapClientTemplate().queryForObject("studentRegistration.getStagingAddr", stdObject);
+                 	   if(result==null){
+                 		   result=new StudentInfoGetter();
+                 	   }
+                 	   resultList.get(0).setPerAddress(result.getPerAddress());
+                 	   resultList.get(0).setPerCity(result.getPerCity());
+                 	   resultList.get(0).setPerState(result.getPerState());
+                 	   resultList.get(0).setPerPincode(result.getPerPincode());
+                 	   resultList.get(0).setExtraPhone(result.getExtraPhone());
+                 	   resultList.get(0).setOtherPhone(result.getOtherPhone());
                 } else {
                     throw new MyException("Invalid registration mode");
                 }
@@ -122,7 +139,6 @@ public class StudentRegistrationFormImpl extends SqlMapClientDaoSupport
                 throw new MyException("Registration not allowed");
             }
         } catch (MyException e) {
-//        	System.out.println(e.getMessage());
             throw new MyException(e.getMessage());
         }catch (Exception e) {
             logObj.error("Exception in getStudentDetails" + " : " + e);

@@ -13,8 +13,11 @@
 			public var tenCodes:String;
 			public var printAggregate:String;
 			public var fixedOrVariable:String;
-		
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
 			public var updateButtonFunction:Function;
+			public var domainComboText:String;
+			public var editDomain:String;
 			
 			[Embed(source="/images/question.png")]private var questionIcon:Class;
 			
@@ -39,6 +42,7 @@ public function updateClickHandler():void{
 
 public function updateConfirm(event:CloseEvent):void{
 	if(event.detail==Alert.YES){
+		editDomain=result.domain.(domainName==domainCombo.selectedLabel).domainCode;
 		updateButtonFunction.call()
 	}
 } 
@@ -49,16 +53,51 @@ public function closePopUp():void{
 }
 
 public function setValues():void{
-	
+		httpProgramDomain.send(new Date());
 ugOrPgCombo.selectedItem=ugpgXML.option.(code==ugOrPg).name.toString();
 printAggregateCombo.selectedItem=aggregateXML.option.(code==printAggregate).name.toString();
 tenCodesCombo.selectedItem=tenCodesXML.option.(code==tenCodes).name.toString();
 	
 }
+	
+private function faultHandler_ProgramDomain(event:FaultEvent):void{
+         mx.controls.Alert.show(event.fault.message,resourceManager.getString('Messages','error'));
+    }
+    
+  /**
+  * Result Handler of Domain Code
+  * Added By Mandeep
+  */ 
+  
+    
+  public	var result:XML;
+private function resultHandler_ProgramDomain(event:ResultEvent):void{
+	result=event.result as XML;
+	if(result.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          var url:String="";
+ 			url=commonFunction.getConstants('navigateHome');
+ 			var urlRequest:URLRequest=new URLRequest(url);
+ 			urlRequest.method=URLRequestMethod.POST;
+ 			navigateToURL(urlRequest,"_self");
+            } 	
+
+           domainCombo.dataProvider=result.domain.domainName;
+           domainCombo.selectedItem=result.domain.(domainCode==domainComboText).domainName.toString();
+            
+}  	
 		]]>
 		
 	</mx:Script>	
 	
+    <mx:HTTPService id="httpProgramDomain" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/getProgramDomain.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_ProgramDomain(event)"
+        fault="faultHandler_ProgramDomain(event)"
+        useProxy="false"/>
+        
 	   <mx:Model id="aggregateModel" source="xmlFiles/aggregate.xml"/>
     <mx:ArrayCollection id="aggregateAC" source="{aggregateModel.option}" />
     
@@ -119,4 +158,6 @@ tenCodesCombo.selectedItem=tenCodesXML.option.(code==tenCodes).name.toString();
 	<mx:RadioButton x="660" y="215" value="F"  label="{commonFunction.getConstants('fixed')}" groupName="fixOrVariableGroup"/>
 	<mx:RadioButton x="734" y="215" value="V" label="{commonFunction.getConstants('variable')}" groupName="fixOrVariableGroup"/>
 <mx:Button label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="PopUpManager.removePopUp(this)"  y="278" x="303"/>	
+	<mx:Label x="445" y="244" width="144" text="{commonFunction.getConstants('domain')}"/>
+	<mx:ComboBox x="660" y="242" id="domainCombo" width="150" toolTip="{domainCombo.text}" labelField="@domainName"></mx:ComboBox>
 </mx:TitleWindow>

@@ -32,6 +32,8 @@
  */
 package in.ac.dei.edrp.cms.domain.reportgeneration;
 
+import java.util.List;
+
 import javax.print.PrintService;
 
 public class ProgressCardInfo {
@@ -113,7 +115,12 @@ public class ProgressCardInfo {
 	private String theoryDivision;
 	private String practicalDivision;
     private String genAttempt;
-	
+    private String divisionDescription;
+    private String theoryDivisionDesc;
+    private String practicalDivisionDesc;
+	private String externalGradeFlag;
+	private String ruleId;//Add By Devendra
+	private List<ProgressCardInfo>list;//Add By Devendra
 	
 	public String getEntityId() {
 		return entityId;
@@ -618,6 +625,60 @@ public class ProgressCardInfo {
 	 */
 	public String getGenAttempt() {
 		return genAttempt;
+	}
+	public void setDivisionDescription(String divisionDescription) {
+		this.divisionDescription = divisionDescription;
+	}
+	public String getDivisionDescription() {
+		return divisionDescription;
+	}
+	public void setTheoryDivisionDesc(String theoryDivisionDesc) {
+		this.theoryDivisionDesc = theoryDivisionDesc;
+	}
+	public String getTheoryDivisionDesc() {
+		return theoryDivisionDesc;
+	}
+	public void setPracticalDivisionDesc(String practicalDivisionDesc) {
+		this.practicalDivisionDesc = practicalDivisionDesc;
+	}
+	public String getPracticalDivisionDesc() {
+		return practicalDivisionDesc;
+	}
+	/**
+	 * @return the externalGradeFlag
+	 */
+	public String getExternalGradeFlag() {
+		return externalGradeFlag;
+	}
+	/**
+	 * @param externalGradeFlag the externalGradeFlag to set
+	 */
+	public void setExternalGradeFlag(String externalGradeFlag) {
+		this.externalGradeFlag = externalGradeFlag;
+	}
+	/**
+	 * @return the ruleId
+	 */
+	public String getRuleId() {
+		return ruleId;
+	}
+	/**
+	 * @param ruleId the ruleId to set
+	 */
+	public void setRuleId(String ruleId) {
+		this.ruleId = ruleId;
+	}
+	/**
+	 * @return the list
+	 */
+	public List<ProgressCardInfo> getList() {
+		return list;
+	}
+	/**
+	 * @param list the list to set
+	 */
+	public void setList(List<ProgressCardInfo> list) {
+		this.list = list;
 	}
 }
 

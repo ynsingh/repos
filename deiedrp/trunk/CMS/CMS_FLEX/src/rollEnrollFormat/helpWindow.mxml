@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="420" height="438" title="{commonFunction.getConstants('helpWindowTitle')}" showCloseButton="true" close="exit()" fontFamily="Georgia" x="{(screen.width/2)-(this.width/2)}" y="{(screen.height/2)-(this.height/2)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import common.commonFunction;
+			
+			/**
+			 * Mthod to remove popup
+			 **/
+			public function exit():void{
+				PopUpManager.removePopUp(this);
+			}
+			/**
+			 * On Mouse Down
+			 **/
+			private function onMouseDown(str:String):void{			
+				if(str=="closeLink"){
+					closeLink.height=22;	
+					closeLink.width=111;	
+				}				
+			}
+			/**
+			 * On Mouse UP
+			 **/
+			private function onMouseUp(str:String):void{			
+				if(str=="closeLink"){
+					closeLink.height=25;	
+					closeLink.width=114;
+					exit();		
+				}				
+			}
+			/**
+			 * On Mouse OUT
+			 **/
+			private function omMouseOut(str:String):void{				
+				if(str=="closeLink"){
+					closeLink.height=25;	
+					closeLink.width=114;			
+				}				
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas y="10" width="380" height="372" styleName="BorderCanvas" horizontalCenter="0">
+		<mx:LinkButton y="334" label="{commonFunction.getConstants('closeWindow')}" fontFamily="Georgia" id="closeLink"  color="#383636" cornerRadius="9" alpha="1.0" textAlign="left" mouseDown="onMouseDown('closeLink')" mouseUp="onMouseUp('closeLink')"  mouseOut="omMouseOut('closeLink')" themeColor="#CBC9C9" width="114" height="25" horizontalCenter="6"/>
+		<mx:Text x="10" y="10" text="FROM Position :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="125" y="10" text="Starting Position of Format" fontWeight="normal" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="10" y="29" text="To Position :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="10" y="48" text="Format :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="10" y="139" text="YY          :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="10" y="229" text="YYYY    :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text y="267" text="-----X-----" fontWeight="bold" fontFamily="Courier New" fontSize="12" color="#151593" horizontalCenter="-8"/>
+		<mx:Text x="10" y="157" text="MM         :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="10" y="118" text="ENTCD :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="10" y="176" text="SN           :-" fontWeight="bold" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="125" y="29" text="End Position of Format" fontWeight="normal" fontFamily="Georgia" fontSize="12"/>
+		<mx:Text x="78" y="49" text="A value that is used in Roll Number/Enrollment Number, Difference of To Position and From Position define the length of Format,Some Built In Formats are :" fontWeight="normal" fontFamily="Georgia" fontSize="12" width="289"/>
+		<mx:Text x="78" y="139" text="Two Digit of Year(University Session year)" fontWeight="normal" fontFamily="Georgia" fontSize="12" width="289"/>
+		<mx:Text x="78" y="229" text="Four Digit of Year(University Session year)" fontWeight="normal" fontFamily="Georgia" fontSize="12" width="289"/>
+		<mx:Text x="78" y="157" text="Two Digit of Month(University Session month)" fontWeight="normal" fontFamily="Georgia" fontSize="12" width="289"/>
+		<mx:Text x="78" y="118" text="One Digit Entity Code" fontWeight="normal" fontFamily="Georgia" fontSize="12" width="289"/>
+		<mx:Text x="78" y="176" text="Sequence Number,A Unique number that differentiate different Roll Number/Enrollment Number" fontWeight="normal" fontFamily="Georgia" fontSize="12" width="289"/>
+	</mx:Canvas>
+	
+</mx:TitleWindow>

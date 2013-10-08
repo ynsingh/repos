@@ -34,7 +34,7 @@
  *
  */
  -->
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" showCloseButton="true" close="closePopUp(event)" layout="absolute" width="320" height="326">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" showCloseButton="true" creationComplete="createNewMarks()" close="closePopUp(event)" layout="absolute" width="320" height="326">
 
 	<mx:HTTPService id="resolvedIssue"
 					url="{commonFunction.getConstants('url')}/awardBlankRequestCorrection/resolvedIssue.htm"
@@ -53,7 +53,7 @@
 	<mx:Label x="133" y="90" id="requestedMarks"/>
 	<mx:CheckBox id="newMarkVisible" x="13" y="116" label="{commonFunction.getConstants('changeMark')}" change="visibleMarks()" width="232.5"/>
 	<mx:Label id="newMarksLabel" x="10" y="148" text="{commonFunction.getConstants('newMark')} :" width="85" height="22" visible="false"/>
-	<mx:TextInput id="newMarks" x="133" y="146" width="39" height="23" restrict="0-9" maxChars="3" visible="false"/>
+	<mx:ComboBox id="newMarks" x="133" y="146" width="60" height="23" visible="false"/>
 	<mx:Label x="10" y="187" text="{commonFunction.getConstants('teacherRemark')} :"/>
 	<mx:TextArea id="teacherRemark" maxChars="200" x="133" y="172" width="140" height="53"/>
 	<mx:CheckBox id="issueStatus" x="89.5" y="225" change="onSubmitClick()" label="{commonFunction.getConstants('issueResolve')}"/>
@@ -77,8 +77,20 @@
 		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
 		public var param:Object={};
 		public var refreshGrid:Function;
+		public var maxNum:Number;
 		
-
+		/** this method create combo 
+ 		* */
+		public function createNewMarks():void
+		{			
+			var maxNumArray:ArrayCollection=new ArrayCollection;
+			maxNumArray.addItem({code:'A',text:'A'});
+			for(var i:int=0;i<=maxNum;i++){
+				maxNumArray.addItem({code:i,text:i});
+			}
+			newMarks.dataProvider=maxNumArray;
+			newMarks.labelField="text";
+		}
 		
 		/** this method fires on click of close button and closes pop up
  		* */
@@ -115,7 +127,7 @@
 		}
 		
 		private function visibleMarks():void{
-			newMarks.text="";
+			newMarks.selectedIndex=-1;
 			if(newMarkVisible.selected==true)
 			{
 				newMarksLabel.visible=true;
@@ -136,7 +148,7 @@
 			if(event.detail==Alert.YES){
 				param['rollNumber']=roll.text;
 				param['evaluationId']=component.text;
-				if(newMarks.text.length!=0){
+				if(newMarks.selectedIndex>-1){
 					param['newMarks']=newMarks.text;
 				}
 				param['teacherRemark']=teacherRemark.text;

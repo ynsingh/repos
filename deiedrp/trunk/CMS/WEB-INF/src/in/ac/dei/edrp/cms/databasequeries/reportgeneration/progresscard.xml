@@ -130,7 +130,7 @@
 		FROM program_master WHERE program_id = #programId#;
 	</select>
 	<select id="getProgressCardMarks" resultClass="progressCardInfo">
-	SELECT sc.roll_number AS rollNumber,sc.program_course_key
+		SELECT sc.roll_number AS rollNumber,sc.program_course_key
 		programCourseKey,sc.course_code courseCode,sc.student_status as
 		studentStatus,cm.course_name AS courseName,cm.marks_cont_eval AS
 		totalMarksInternal,cm.marks_end_semester AS totalMarksExternal
@@ -139,8 +139,8 @@
    		else(sms.internal_grade) end) AS studentInternal,
    		(case when(sms.external_grade='F') then (case when(sm1.attendence='ABS') then ('ABS') else(sms.external_grade) end)
    		else(sms.external_grade) end) AS studentExternal,
-   		final_grade_point AS studentTotalMarks,credits AS credits,sm.attendence,sm1.attendence
-    FROM (student_course sc LEFT JOIN course_master cm ON
+   		round(final_grade_point,2) AS studentTotalMarks,credits AS credits,sm.attendence,sm1.attendence,cm.internal_external_active AS externalGradeFlag
+    	FROM (student_course sc LEFT JOIN course_master cm ON
 		sc.course_code = cm.course_code) LEFT JOIN student_marks_summary
 		sms ON sc.course_code = sms.course_code AND
 		sc.program_course_key = sms.program_course_key AND
@@ -159,11 +159,12 @@
 		sm1.semester_start_date=sms.semester_start_date and
 		sm1.semester_end_date=sms.semester_end_date and
 		sm1.roll_number=sc.roll_number and
-		sm1.evaluation_id='EXT'
-    WHERE sc.roll_number = #rollNoForDetail#
+		sm1.evaluation_id='EXT' 
+		LEFT JOIN system_table_two stts ON cm.course_type=stts.component_code
+    	WHERE stts.group_code='CRSTYP' AND sc.roll_number = #rollNoForDetail#
 		AND sc.semester_start_date = #semesterStartDate# AND
 		sc.semester_end_date = #semesterEndDate# AND
-		sc.program_course_key = #programCourseKey#;
+		sc.program_course_key = #programCourseKey# ORDER BY stts.dummy_flag_two, sc.course_code;
 	
 	<!-- 
 		SELECT sc.roll_number AS rollNumber,sc.program_course_key
@@ -328,9 +329,22 @@
 	AND session = #session# AND student_roll_number = #rollNumber#;
  	</select>
  	<select id="getCummulativeForFC" resultClass="progressCardInfo">
- 	select cgpa,division,theory_division AS theoryDivision,practical_division AS practicalDivision,theory_cgpa AS cummulativeTheoryCgpa,practical_cgpa AS cummulativePracticalCgpa FROM student_program
-	WHERE roll_number = #rollNoForDetail# AND enrollment_number = #enrollmentNumber# AND program_id = #programId# AND entity_id = #entityId# AND branch_id = #branchId# AND specialization_id = #specializationId#
-	AND program_status = 'PAS' ;
+ 		select cgpa,division,stt.component_description as divisionDescription,
+		theory_division AS theoryDivision,stt1.component_description AS theoryDivisionDesc,
+		practical_division AS practicalDivision,stt2.component_description AS practicalDivisionDesc,
+		theory_cgpa AS cummulativeTheoryCgpa,
+		practical_cgpa AS cummulativePracticalCgpa
+		FROM student_program,system_table_two stt,system_table_two stt1,system_table_two stt2
+		WHERE roll_number = #rollNoForDetail#
+		AND enrollment_number = #enrollmentNumber# AND program_id = #programId#
+		AND entity_id = #entityId# AND branch_id = #branchId# AND specialization_id = #specializationId#
+		AND program_status = 'PAS'
+		AND stt.group_code='DVSCOD'
+		AND stt1.group_code=stt.group_code
+		AND stt2.group_code=stt.group_code
+		AND division=stt.component_code
+		AND stt1.component_code=theory_division
+		AND stt2.component_code=practical_division
  	</select>
  	
  	<select id="checkABVStatus" resultClass="progressCardInfo">
@@ -339,6 +353,7 @@
 		program_course_key=#programCourseKey# and activity_status='COM';
  	</select>
  	
+ 	<!-- Update by Devendra to get previous program course key -->
  	<select id="getPreviousProgramCourseKey" resultClass="progressCardInfo">
  		SELECT srsh.session_start_date as semesterStartDate, srsh.session_end_date as semesterEndDate,
  		srsh.program_course_key as programCourseKey, roll_number as rollNoForDetail
@@ -348,6 +363,57 @@
 		where program_course_key <![CDATA[<>]]> #programCourseKey# and srsh1.status  in ('PAS' ,'REM','UFM','INC') and  roll_number = #rollNumber# 
 		and session_start_date <![CDATA[<]]> #semesterStartDate#) ;
  	</select>
- 	 	
+ 	
+ 	<!-- Added By Devendra to check student switch case -->
+ 	<select id="checkStudentSwitch" resultClass="progressCardInfo">
+ 		SELECT pch.program_id AS programId,pch.branch_id AS branchId,pch.specialization_id AS specializationId,pch.semester_code AS semesterId,
+ 		pcd.semester_sequence AS semesterSequence,srsh.program_course_key AS programCourseKey,srsh.switch_rule AS ruleId,
+ 		srsh.session_start_date,srsh.session_end_date AS semesterEndDate 
+ 		FROM student_registration_semester_header srsh,program_course_header pch,program_term_details pcd
+		WHERE pcd.semester_code=pch.semester_code AND pcd.program_id=pch.program_id AND srsh.program_course_key like concat(pch.program_id,'%') 
+		AND pch.program_course_key=#programCourseKey# AND pch.semester_status='ACT' AND srsh.roll_number=#rollNumber# AND srsh.entity_id=#entityId# AND srsh.switch_type='LAT';
+	</select> 	
+	
+	<!-- Added By Devendra to check insemester is equal to switched semester -->
+ 	<select id="checkInSemester" resultClass="progressCardInfo"> 
+		SELECT pch.program_id AS programId,pch.branch_id AS branchId,pch.specialization_id AS specializationId,pch.semester_code AS semesterId,ptd.semester_sequence AS semesterSequence
+		FROM student_program sp,program_course_header pch ,program_term_details ptd
+		WHERE  sp.program_id=pch.program_id AND sp.branch_id=pch.branch_id  AND sp.specialization_id=pch.specialization_id
+		AND sp.in_semester=pch.semester_code AND ptd.program_id=pch.program_id AND ptd.semester_code=pch.semester_code
+		AND pch.program_course_key=#programCourseKey# AND pch.semester_status='ACT' AND sp.roll_number=#rollNumber# AND sp.entity_id=#entityId#;
+ 	</select>
+ 	
+ 	<!-- Added By Devendra to get the rule formula -->
+ 	<select id="getRuleFormula" resultClass="progressCardInfo"> 
+		SELECT rule_code_two AS ruleCodeTwo,rule_formula AS switchRuleFormula FROM switch_rule 
+		WHERE rule_id=#ruleId# AND university_code=#universityCode#;
+ 	</select>
+ 	
+ 	<!-- Added By Devendra to get semester sequence -->
+ 	<select id="getSemesterSequence" resultClass="progressCardInfo"> 
+		SELECT ptd.semester_code AS semesterId,ptd.semester_sequence AS semesterSequence FROM program_term_details ptd,program_course_header pch
+		WHERE ptd.program_id=pch.program_id AND ptd.semester_sequence=#semesterSequence# AND pch.program_course_key=#programCourseKey# AND pch.semester_status='ACT';
+ 	</select>
+ 	
+ 	<!-- Added By Devendra to get previous switch program course key  -->
+ 	<select id="getPreviousSwitchedProgramCourseKey" resultClass="progressCardInfo">
+ 		SELECT sp.entity_id AS entityId,pch.program_course_key AS programCourseKey,
+ 		srsh.session_start_date AS semesterStartDate,srsh.session_end_date AS semesterEndDate
+ 		FROM student_program sp,program_course_header pch,student_registration_semester_header srsh
+		WHERE sp.program_id=pch.program_id AND sp.branch_id=pch.branch_id AND sp.specialization_id=pch.specialization_id
+		AND srsh.entity_id=sp.entity_id AND srsh.program_course_key=pch.program_course_key AND srsh.roll_number=sp.roll_number
+		AND srsh.status='PAS' AND pch.semester_status='ACT' AND pch.semester_code=#semesterId# AND sp.roll_number=#rollNumber# 
+		AND sp.sequence_number=#semesterSequence# ;	
+ 	</select>
+ 	
+ 	<!-- Added By Devendra to get previous program course key  -->
+ 	<select id="getPreviousProgramCourseKeyAfterSwitch" resultClass="progressCardInfo">
+ 			SELECT srsh.entity_id AS entityId,srsh.program_course_key AS programCourseKey,srsh.session_start_date AS semesterStartDate,srsh.session_end_date AS semesterEndDate 
+ 			FROM program_course_header pch,student_registration_semester_header srsh,program_term_details ptd,program_course_header pch1
+			WHERE ptd.program_id=pch.program_id AND ptd.semester_code=pch.semester_code AND srsh.program_course_key=pch.program_course_key 
+			AND srsh.entity_id=#entityId# AND srsh.roll_number=#rollNumber#  AND srsh.status  in ('PAS' ,'REM','UFM','INC')  AND pch1.program_course_key=#programCourseKey#
+			AND ptd.semester_sequence=#semesterSequence# AND pch.program_id=pch1.program_id AND pch.branch_id=pch1.branch_id AND pch.specialization_id=pch1.specialization_id 
+			AND pch.semester_status='ACT' AND pch1.semester_status='ACT';
+ 	</select>
 </sqlMap>
 

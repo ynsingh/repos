@@ -40,6 +40,7 @@ import in.ac.dei.edrp.cms.domain.programmaster.ProgramMasterInfoGetter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -223,6 +224,7 @@ public class ProgramMasterController extends MultiActionController {
         inputObject.setMinimunDuration(request.getParameter("min_duration").trim());
         inputObject.setStartdate(request.getParameter("startdate").trim());
         inputObject.setActiveSemester(request.getParameter("active_sem_list").trim());
+        inputObject.setDomainCode(request.getParameter("domainCode"));
 
         String result = "";
 
@@ -330,6 +332,7 @@ public class ProgramMasterController extends MultiActionController {
         inputObject.setFixedOrVariableCredit(request.getParameter(
                 "fixed_or_variable_credit").trim());
         inputObject.setProgramDescription(request.getParameter("programDescription").trim());
+        inputObject.setDomainCode(request.getParameter("domainCode"));
 
         programMasterDao.methodUpdateProgBasicDetails(session.getAttribute("userId").toString(), inputObject);
 
@@ -578,5 +581,30 @@ try{
                 "result", e.getMessage());
         }
        
+    }
+    
+    /**
+     * Method to get program's domain
+     * @param request
+     * @author Mandeep Sodhi
+     * @param response
+     * @return object of ModelAndView
+     * @throws Exception
+     */   
+    public ModelAndView  getProgramDomain(HttpServletRequest request,
+    HttpServletResponse response) throws Exception {
+    	HttpSession session=request.getSession(true);
+    	ProgramMasterInfoGetter input = new ProgramMasterInfoGetter();
+    	String userId = (String) session.getAttribute("userId");
+    	if(userId == null)
+        {
+        return new ModelAndView("general/SessionInactive","sessionInactive",true);
+        }
+    	
+    	input.setUniversityId(session.getAttribute("universityId").toString());
+    	List<ProgramMasterInfoGetter> domainList = new ArrayList<ProgramMasterInfoGetter>(); 
+    								domainList= programMasterDao.getPrograDomainList(input);
+    	
+        return new ModelAndView("programmaster/BranchList", "branchList",domainList);  	
     }
 }

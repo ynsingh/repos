@@ -104,6 +104,10 @@ public class TransferPSTRDYInSTBean {
 	private String otherPhone = "";
 	private String fax = "";
 	private int sequenceNumber;
+    //****New fields added by Nupur*********
+	private String rollNumberGroupCode;
+	private String longField;
+	//**************************************
 
 	public String getEntityId() {
 		return entityId;
@@ -650,5 +654,20 @@ public class TransferPSTRDYInSTBean {
 		this.fax = fax;
 		
 	}
+	
+public void setRollNumberGroupCode(String rollNumberGroupCode) {
+		this.rollNumberGroupCode = rollNumberGroupCode;
+	}
 
+	public String getRollNumberGroupCode() {
+		return rollNumberGroupCode;
+	}
+
+	public void setLongField(String longField) {
+		this.longField = longField;
+	}
+
+	public String getLongField() {
+		return longField;
+	}
 }

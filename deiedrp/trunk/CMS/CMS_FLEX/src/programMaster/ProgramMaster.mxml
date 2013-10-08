@@ -49,6 +49,13 @@
         result="resultHandler_ProgramCode(event)"
         fault="faultHandler_ProgramCode(event)"
         useProxy="false"/>
+        
+    <mx:HTTPService id="httpProgramDomain" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/getProgramDomain.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_ProgramDomain(event)"
+        fault="faultHandler_ProgramDomain(event)"
+        useProxy="false"/>       
     
     
     <mx:StringValidator id="programCodeValidator" tooLongError="{commonFunction.getMessages('lengthTooLong')}" maxLength="3" minLength="1" source="{programCodeText}"  property="text" required="true" trigger="{nextButton}" triggerEvent="click"/>
@@ -62,6 +69,7 @@
     <mx:Validator id="tenCodesValidator" source="{tenCodesCombo}" property="selectedItem" required="true" trigger="{nextButton}" triggerEvent="click"/>
     <mx:Validator id="printAggregateValidator" source="{printAggregateCombo}" property="selectedItem" required="true" trigger="{nextButton}" triggerEvent="click" />
     <mx:StringValidator id="programDescriptionValidator" maxLength="100" source="{programDescription}" property="text" required="true" trigger="{nextButton}" triggerEvent="click"/>
+    <mx:Validator id="programDomainValidator"  source="{domainCombo}" property="selectedItem" required="true" trigger="{nextButton}" triggerEvent="click"/>    
 	
     <mx:ViewStack id="programMasterStack" selectedIndex="0" width="100%" height="100%">
     
@@ -81,20 +89,20 @@
 		    <mx:Label text="{commonFunction.getConstants('creditsRequired')}" x="453" y="189" />
 		    <mx:Label text="{commonFunction.getConstants('printAggregate')}" x="48" y="223" />
 	    	<mx:TextInput x="209" y="39" color="#000000" width="150" restrict="0-9,a-z,A-Z" id="programCodeText" maxChars="3" />
-	    	<mx:TextInput x="209" y="69" color="#000000" width="150" id="programNameText" restrict="a-z, ,.,A-Z"/>
+	    	<mx:TextInput x="209" y="69" color="#000000" width="150" id="programNameText" restrict="a-z, ,.,A-Z(-)"/>
 	    	<mx:ComboBox selectedIndex="-1" x="209" y="99" color="#000000" width="150" id="programTypeCombo" toolTip="{programTypeCombo.text}" prompt="{commonFunction.getConstants('select')}"  />
 	    	<mx:ComboBox selectedIndex="-1" x="209" y="129" color="#000000" width="150" id="programModeCombo" toolTip="{programModeCombo.text}" prompt="{commonFunction.getConstants('select')}"   />
-	    	<mx:NumericStepper x="209" y="159" color="#000000" width="150" id="noOfTermsText" minimum="1" maximum="99"  />
+	    	<mx:NumericStepper x="209" y="159" color="#000000" width="150" id="noOfTermsText" minimum="1" maximum="20"  />
 		    <mx:TextInput x="174" y="221" color="#000000" width="150" id="totalCreditsText" visible="false"  />
 		    <mx:TextInput x="209" y="191" color="#000000" width="150" id="dgpaText" restrict="0-9,." />
 		    <mx:ComboBox selectedIndex="-1" x="209" y="220" color="#000000" width="150" id="printAggregateCombo" toolTip="{printAggregateCombo.text}" prompt="{commonFunction.getConstants('select')}" dataProvider="{aggregateAC}" labelField="name" />
-		    <mx:TextInput x="209" y="250" width="150" id="programDescription" restrict="0-9,a-z,A-Z, ,."/>
+		    <mx:TextInput x="209" y="250" width="150" id="programDescription" restrict="0-9,a-z,A-Z, ,.(-)"/>
 		    <mx:Label x="48" y="252" width="153" height="20" text="{commonFunction.getConstants('program_description')}"/>
 	        <mx:ComboBox selectedIndex="-1" x="668" y="39" color="#000000" width="150" id="ugOrPgCombo" toolTip="{ugOrPgCombo.text}" prompt="{commonFunction.getConstants('select')}" dataProvider="{ugpgAC}" labelField="name" />
 		    <mx:ComboBox selectedIndex="-1" x="668" y="69" color="#000000" width="150" id="tenCodesCombo" toolTip="{tenCodesCombo.text}" prompt="{commonFunction.getConstants('select')}" dataProvider="{tenCodesAC}" labelField="name" />
-		    <mx:NumericStepper x="668" y="99" color="#000000" width="150" minimum="1" id="maxAttemptAllowedText" maximum="99" />
-		    <mx:NumericStepper x="668" y="129" color="#000000" width="150" id="maxFailSubjectText" maximum="99" />
-		    <mx:NumericStepper x="668" y="159" color="#000000" width="150" minimum="1" id="maxRegSemText" maximum="99"/>
+		    <mx:NumericStepper x="668" y="99" color="#000000" width="150" minimum="1" id="maxAttemptAllowedText" maximum="20" />
+		    <mx:NumericStepper x="668" y="129" color="#000000" width="150" id="maxFailSubjectText" maximum="20" />
+		    <mx:NumericStepper x="668" y="159" color="#000000" width="150" minimum="1" id="maxRegSemText" maximum="20"/>
 		    <mx:TextInput x="668" y="189" color="#000000" width="150" id="creditsRequiredText" restrict="0-9,." />
 		    <mx:Label x="453" y="223" text="{commonFunction.getConstants('fixOrVariable')}"/>
 		    <mx:RadioButtonGroup id="fixOrVariableGroup"/>
@@ -102,25 +110,29 @@
 		    <mx:RadioButton x="742" y="221" value="V" label="{commonFunction.getConstants('variable')}" groupName="fixOrVariableGroup"/>
 		    <mx:Button id="nextButton" x="380" y="280" label="{commonFunction.getConstants('nextButton')}" click="goToDurationDetails()"  />
 		    <mx:Button id="cancelButton" x="668" y="280" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"  />
+		    <mx:Label x="453" y="252" width="144" text="{commonFunction.getConstants('domain')}"/>
+		    <mx:ComboBox id="domainCombo"  width="150" toolTip="{domainCombo.text}" x="668" y="249" selectedIndex="-1"  prompt="{commonFunction.getConstants('select')}" labelField="domainName" ></mx:ComboBox>
 		    
 	    </mx:TitleWindow>
 		
 		
 	    <mx:TitleWindow layout="absolute" title="{commonFunction.getConstants('programDurationDetails')}" width="100%" height="100%" borderThickness="2" borderStyle="solid" borderColor="#000000">
 	        <mx:Label x="237" y="2" text="{commonFunction.getConstants('duration')}" />
-	    <mx:Label x="237" y="51" text="{commonFunction.getConstants('minimumDuration')}" />
-	    <mx:Label x="237" y="80" text="{commonFunction.getConstants('maximumDuration')}" />
+	    <mx:Label x="151" y="51" text="{commonFunction.getConstants('minimumDuration')}" />
+	    <mx:Label x="151" y="80" text="{commonFunction.getConstants('maximumDuration')}" />
 	    <mx:Label x="84" y="114" text="{resourceManager.getString('Messages','howManyTimesProgramStartsInASession')}" />
 	    <mx:RadioButtonGroup id="fixedDurationRadio" labelPlacement="right" selectedValue="Y" change="showDurationBox()"/>
 	    <mx:RadioButton x="374" y="-1" value="Y" label="{commonFunction.getConstants('fixedDuration')}" groupName="fixedDurationRadio"  fontWeight="bold"/>
 	    <mx:RadioButton x="374" y="21" value="N" label="{commonFunction.getConstants('floatingDuration')}" groupName="fixedDurationRadio"  fontWeight="bold"/>
-	    <mx:NumericStepper x="375" y="49" color="#000000" width="130" id="minDurationText" minimum="1" maximum="999" />
-	    <mx:NumericStepper x="375" y="78" color="#000000" width="130" id="maxDurationText" enabled="false" minimum="1" maximum="999" />
+	    <mx:NumericStepper x="375" y="49" color="#000000" width="130" id="minDurationText" minimum="1" maximum="100" />
+	    <mx:NumericStepper x="375" y="78" color="#000000" width="130" id="maxDurationText" enabled="false" minimum="1" maximum="100" />
 	        <mx:NumericStepper x="375" y="112" width="130" id="noOfTime" change="addStartDayMonth()"  />
 	        <mx:Panel id="addStartDatePanel" x="161" y="146" width="344" visible="false" title="{commonFunction.getConstants('programStartDate')}" height="125">
 	        </mx:Panel>
 	        <mx:Button x="380" y="280" label="{commonFunction.getConstants('nextButton')}" click="goToBranchDetails()"  />
 	        <mx:Button x="95" y="280" label="{commonFunction.getConstants('previousButton')}" click="goBackToBasicDetails()"  />
+	        <mx:Label x="282" y="51" text="(in months)"/>
+	        <mx:Label x="282" y="80" text="(in months)"/>
 	    </mx:TitleWindow>
 		
 		

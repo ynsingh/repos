@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="remark">
+<typeAlias alias="progressCardInfo" type = "in.ac.dei.edrp.cms.domain.reportgeneration.ProgressCardInfo"/>
+
+<select id="getSemesterDetail" resultClass="progressCardInfo">
+	SELECT em.entity_name AS entityName,pm.program_name AS programName,pch.semester_code AS semesterId,stt.component_description AS semesterName
+	,srsh.session_start_date AS semesterStartDate,srsh.session_end_date AS semesterEndDate,srsh.program_course_key AS programCourseKey
+	FROM student_program sp,program_course_header pch,student_registration_semester_header srsh,system_table_two stt,program_master pm,entity_master em
+	WHERE sp.program_id=pch.program_id AND sp.entity_id=srsh.entity_id AND pch.program_course_key=srsh.program_course_key 
+	AND srsh.roll_number=sp.roll_number AND pm.program_id=sp.program_id AND stt.component_code=pch.semester_code AND em.entity_id=sp.entity_id 
+	AND stt.group_code='SEMCOD' AND sp.roll_number=#rollNumber# AND srsh.status in('PAS','FAL','REM') AND stt.university_code=#universityCode#;
+</select>
+
+<select id="getRemarkDetail" resultClass="progressCardInfo">
+	SELECT pm.program_name AS programName,stt1.component_description AS branchName,stt2.component_description AS specializationId,
+	stt3.component_description AS semesterName,sa.program_course_key AS programCourseKey,sa.semester_start_date AS semesterStartDate,
+	sa.semester_end_date AS semesterEndDate,sa.remarks AS remark
+	FROM student_aggregate sa,program_course_header pch,program_master pm,system_table_two stt1,system_table_two stt2,system_table_two stt3
+	WHERE sa.program_course_key=pch.program_course_key AND pch.program_id=pm.program_id AND stt1.university_code=stt2.university_code 
+	AND stt2.university_code=stt3.university_code AND stt1.component_code=pch.branch_id AND stt2.component_code=pch.specialization_id 
+	AND stt3.component_code=pch.semester_code AND stt1.group_code='BRNCOD' AND stt2.group_code='SPCLCD' AND stt3.group_code='SEMCOD' 
+	AND stt1.university_code=#universityCode# AND sa.roll_number=#rollNumber# AND sa.program_course_key=#programCourseKey#
+	AND sa.semester_start_date=#semesterStartDate# AND sa.semester_end_date=#semesterEndDate#;
+</select>
+
+<update id="updateRemark">
+	UPDATE student_aggregate SET remarks=#remark# 
+	WHERE roll_number=#rollNumber# AND semester_start_date=#semesterStartDate# 
+	AND semester_end_date=#semesterEndDate# AND program_course_key=#programCourseKey#;
+</update>
+
+</sqlMap>

@@ -260,7 +260,7 @@
 		AND sys.group_code='BRNCOD'
 		AND
 		sys.university_code=substr(#entityId#,1,4) AND
-		pob.offered_by=#entityId#;
+		pob.offered_by=#entityId# group by pob.branch_id;;
 	
 	</select>
 

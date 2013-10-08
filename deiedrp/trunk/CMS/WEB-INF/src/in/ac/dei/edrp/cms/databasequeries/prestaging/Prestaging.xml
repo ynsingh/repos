@@ -44,11 +44,17 @@
 		type="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferPSTRDYInSTBean" />
 	<typeAlias alias="cmBean"
 		type="in.ac.dei.edrp.cms.domain.coursemaster.CourseMasterBean" />
-	
+			
+	<!-- previous query is dependent on parentEntity AND We want all entities related for particular university-->
 	<select id="getChildEntity" resultClass="cmBean">
+		<!--
 	    SELECT entity_id as componentId,entity_name as componentDescription
 	    FROM entity_master
 	    WHERE parent_entity_id like #parentEntity# and university_id=#universityId#
+		-->
+	 	SELECT entity_id as componentId,entity_name as componentDescription
+	    FROM entity_master
+	    WHERE university_id=#universityId# ;
 	</select>
 	
 	<select id="getEntityProgram" resultClass="cmBean">
@@ -87,7 +93,7 @@
 		admission_mode,attempt_number,primary_email_id,
 		insert_time,creator_id,per_address,per_city,per_state,per_pincode,
 		cor_address,cor_city,cor_state,cor_pincode,
-		office_phone,extra_phone,other_phone,fax,registration_due_date)
+		office_phone,extra_phone,other_phone,fax,registration_due_date,roll_number_group_code,long_field)
 		VALUES 
 		(#enrollmentNo#,#studentId#,#registrationNo#,
 		#entityId#,#programId#,#branchId#,#specializationId#,#semesterId#,
@@ -99,7 +105,7 @@
 		#admissionMode#,#attemptNo#,#primaryEmail#,
 		now(),#userId#,#perAddress#,#perCity#,#perState#,#perPinCode#,
 		#corAddress#,#corCity#,#corState#,#corPinCode#,
-		#officePhone#,#homePhone#,#otherPhone#,#fax#,#registrationDueDate#);
+		#officePhone#,#homePhone#,#otherPhone#,#fax#,#registrationDueDate#,#rollNoGroupCode#,#longField#);
 	</insert>
 	
 	<select id="getRegistrationDueDate" resultClass="in.ac.dei.edrp.cms.domain.prestaging.PrestagingInfoGetter">

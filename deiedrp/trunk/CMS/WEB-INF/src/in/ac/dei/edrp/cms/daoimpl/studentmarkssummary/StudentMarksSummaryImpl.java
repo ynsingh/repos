@@ -209,6 +209,28 @@ public class StudentMarksSummaryImpl extends SqlMapClientDaoSupport implements
 		}
 	}
 
+	
+	/**
+     * Method get status of student request for marks correction
+     * @param input bean containing required fields
+     * @return List  
+     * @author Ashish Mohan
+     */
+	public List<StudentMarksSummaryBean> getCorrectionRequestStatus(
+			StudentMarksSummaryBean input) {
+		List<StudentMarksSummaryBean> list = new ArrayList<StudentMarksSummaryBean>();
+		try{
+			input.setEntityId((String)getSqlMapClientTemplate().queryForObject("studentMarksSummary.getEntityId", input));
+			list = getSqlMapClientTemplate().queryForList("studentMarksSummary.getRequestDetails", input);			
+		}
+		catch (Exception e){
+			logObj.error(e.getMessage());	
+		}
+		return list;
+	}
+	
+	
+	
 	public StudentMarksSummaryBean getPathParameters(StudentMarksSummaryBean input) throws Exception {
 		StudentMarksSummaryBean parameters = new StudentMarksSummaryBean();
 		
@@ -221,4 +243,6 @@ public class StudentMarksSummaryImpl extends SqlMapClientDaoSupport implements
 		
 		return parameters;
 	}
+	 
+
 }

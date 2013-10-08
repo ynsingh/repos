@@ -63,6 +63,11 @@ var userInfoXml:XML;
 
         import flash.net.navigateToURL;
         import common.Mask;
+        import flash.sampler.getSize;
+        import flash.net.URLLoader;
+        import flash.display.Loader;
+        import flash.utils.ByteArray;
+        import common.validations.CommonValidations;
         private var bm:IBrowserManager;
         [Bindable]
         private var userGrpId:String;
@@ -89,7 +94,7 @@ var userInfoXml:XML;
              userName=o.userName;
              application=o.application;
              universityName=o.university;
-            
+            universityId=o.universityId;
             getMenues(userGrpId,userGroup,application);   
             Mask.show("Please Wait");          
         }
@@ -101,6 +106,12 @@ public function getMenues(roleId:String,roleName:String,application:String):void
 	param["userGroupName"]=roleName;
 	param["application"]=application;
 	menuHttpService.send(param);
+}
+
+public function setLogo():void{
+
+	logoImage.load(commonFunction.getConstants('url')+'/UniversityLogos/'+universityId+'.png');	
+
 }
 
 //login fault handler

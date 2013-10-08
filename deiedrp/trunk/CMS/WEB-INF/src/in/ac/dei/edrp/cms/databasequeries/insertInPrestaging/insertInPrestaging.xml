@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) insertInPrestaging.xml
+* @Author :Ashish Mohan
+* @Date :11/10/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="insertInPrestaging">
+
+	<typeAlias alias="enrollmentInfo" type="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo" />
+	<typeAlias alias="addStudentInMaster" type="in.ac.dei.edrp.cms.domain.studentmaster.StudentMasterInfoBean" />
+	<typeAlias alias="studentMasterAPI" type="in.ac.dei.edrp.api.StudentMasterBeanAPI"/>
+	<typeAlias alias="enrollmentInfo" type="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo" />
+	<typeAlias alias="consolidatedChartInfo" type="in.ac.dei.edrp.cms.domain.consolidatedchart.ConsolidatedChartBean" />
+
+	<insert id="setPersonalInfo">
+		INSERT into enrollment_personal_details
+		(registration_number,student_id,student_first_name,student_middle_name,student_last_name,
+		father_first_name,father_middle_name,father_last_name,mother_first_name,mother_middle_name,
+		mother_last_name,primary_email_id,secondary_email_id,guardian_name,date_of_birth,nationality,
+		religion,category_code,entity_id,program_id,branch_id,specialization_id,
+		status,session_start_date,session_end_date,faculty_reg_no,gender,insert_time,creator_id,
+		roll_number_group_code,long_field,name_in_hindi)
+		VALUES
+		(#registrationNo#,#studentId#,#studentFirstName#,#studentMiddleName#,#studentLastName#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#motherFirstName#,#motherMiddleName#,
+		#motherLastName#,#primaryMail#,#secondaryMail#,#guardianName#,#dob#,#nationality#,
+		#religion#,#categoryCode#,#entityCode#,#programCode#,#branchCode#,#specializationCode#,
+		'SUB',#sessionStartDate#,#sessionEndDate#,#facRegNo#,#gender#,now(),#creatorId#,
+		#rollNoGroupCode#,#longField#,#hindiName#)
+	</insert>
+	
+	
+	<resultMap id="getStudentDetailresult" class="addStudentInMaster">
+		<result property="studentId" column="sm.student_id"/>
+		<result property="studentFirstName" column="sm.student_first_name"/>
+		<result property="studentMiddleName" column="sm.student_middle_name"/>
+		<result property="studentLastName" column="sm.student_last_name"/>
+		<result property="fatherFirstName" column="sm.father_first_name"/>
+		<result property="fatherMiddleName" column="sm.father_middle_name"/>
+		<result property="fatherLastName" column="sm.father_last_name"/>
+		<result property="motherFirstName" column="sm.mother_first_name"/>
+		<result property="motherMiddleName" column="sm.mother_middle_name"/>
+		<result property="motherLastName" column="sm.mother_last_name"/>
+		<result property="primaryEmailId" column="sm.primary_email_id"/>
+		<result property="secondaryEmailId" column="sm.secondary_email_id"/>
+		<result property="registeredInSession" column="sm.registered_in_session"/>
+		<result property="status" column="sm.status"/>
+		<result property="dateOfBirth" column="sm.date_of_birth"/>
+		<result property="categoryName" column="stt.component_code"/>
+		<result property="gender" column="sm.gender"/>
+		<result property="parentEntity" column="sm.parent_entity"/>
+		<result property="path" column="sm.photo_path"/>
+		<result property="hindiName" column="sm.name_in_hindi"/>
+		<result property="fatherHindiName" column="sm.father_name_in_hindi"/>
+		<result property="motherHindiName" column="sm.mother_name_in_hindi"/>
+		<result property="nationality" column="sm.nationality"/>
+		<result property="religion" column="sm.religion"/>
+		<result property="guardian" column="sm.guardian_name"/>
+	</resultMap>
+	
+	<select id="getStudentDetail" resultMap="getStudentDetailresult">
+		SELECT sm.student_id, sm.registered_in_session, sm.parent_entity,
+		sm.student_first_name, sm.student_middle_name, sm.student_last_name,
+		sm.father_first_name, sm.father_middle_name, sm.father_last_name,
+		sm.mother_first_name, sm.mother_middle_name, sm.mother_last_name,
+		sm.primary_email_id, sm.secondary_email_id, sm.date_of_birth,
+		stt.component_code, sm.gender, sm.status, sm.photo_path,
+		sm.name_in_hindi, sm.father_name_in_hindi, sm.mother_name_in_hindi,
+		sm.nationality, sm.religion, sm.guardian_name
+		FROM student_master sm, system_table_two stt 
+		WHERE sm.enrollment_number=#enrollmentNumber# AND stt.component_code=sm.category_code
+		AND stt.group_code='STDCTG' AND sm.university_code=stt.university_code
+		AND stt.university_code=#universityId#;
+	</select>
+	
+	<resultMap id="getStudentAddressDetailresult" class="addStudentInMaster">
+		<result property="userType" column="user_type"/>
+		<result property="addressKey" column="address_key"/>
+		<result property="addressLineOne" column="address"/>
+		<result property="city" column="city"/>
+		<result property="state" column="state"/>
+		<result property="pinCode" column="pincode"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="otherPhone" column="other_phone"/>
+		<result property="homePhone" column="home_phone"/>
+		<result property="fax" column="fax"/>
+	</resultMap>
+	
+	<select id="getStudentAddressDetail" resultMap="getStudentAddressDetailresult">
+		select user_type, address_key,address,city,state,pincode,office_phone,other_phone,home_phone,
+		fax from addresses_master where user_id=#studentId#;
+	</select>
+	
+	
+	<resultMap id="getStudentIdresult" class="addStudentInMaster">
+		<result property="count" column="count(student_id)"/>
+	</resultMap>
+	
+	<select id="getStudentId" resultMap="getStudentIdresult">
+		select count(student_id) from student_master where enrollment_number=#enrollmentNumber#;
+	</select>
+	
+	
+	<insert id="insertDataIntoPreStaging">
+		INSERT into prestaging_table(enrollment_number,student_id,registration_roll_number,
+		new_entity,new_program,new_branch,new_specialization,new_semester,
+		student_first_name,student_middle_name,student_last_name,
+		father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,
+		student_category,gender,date_of_birth,
+		semester_start_date,semester_end_date,
+		admission_mode,attempt_number,primary_email_id,
+		insert_time,creator_id,per_address,per_city,per_state,per_pincode,
+		cor_address,cor_city,cor_state,cor_pincode,
+		office_phone,extra_phone,other_phone,fax,registration_due_date,roll_number_group_code,long_field)
+		VALUES 
+		(#enrollmentNo#,#studentId#,#registrationNo#,
+		#entityId#,#programId#,#branchId#,#specializationId#,#semesterId#,
+		#studentFirstName#,#studentMiddleName#,#studentLastName#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,
+		#category#,#gender#,#dob#,
+		#semesterStartDate#,#semesterEndDate#,
+		#admissionMode#,#attemptNo#,#primaryEmail#,
+		now(),#userId#,#perAddress#,#perCity#,#perState#,#perPinCode#,
+		#corAddress#,#corCity#,#corState#,#corPinCode#,
+		#officePhone#,#homePhone#,#otherPhone#,#fax#,#registrationDueDate#,#rollNoGroupCode#,#longField#);
+	</insert>
+	
+	<select id="getRegistrationDueDate" resultClass="in.ac.dei.edrp.cms.domain.prestaging.PrestagingInfoGetter">
+		SELECT registration_start_date as registrationDueDate,semester_start_date as semesterStartDate,
+		semester_end_date as semesterEndDate
+		FROM program_registration
+		WHERE session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+		and status='ACT' and program_course_key in
+		(
+		SELECT program_course_key
+		FROM program_course_header
+		WHERE program_id=#programCode# and branch_id=#branchCode#
+		and specialization_id=#specializationCode# and semester_code=#semesterCode#
+		)
+	</select>
+	
+	
+	<update id="updateSysValue">
+		UPDATE system_values
+		SET value=#seqNum#,modifier_id=#userType#,modification_time=now()
+		WHERE  code=#code# AND university_id=#universityId#
+	</update>
+	
+	<select id="getSysValue" resultClass="enrollmentInfo">
+		SELECT value as seqNum
+		FROM system_values
+		WHERE  code=#code# AND university_id=#universityId#
+	</select>
+	
+	<insert id="setAddress">
+		INSERT INTO enrollment_addresses_master
+		(user_type, address_key, address, city, state, pincode, home_phone, insert_time, creator_id, user_id)
+		VALUES
+		(#userType#,#addressKey#,#address#,#city#,#state#,#pinCode#,#homePhone#,now(),#creatorId#,#studentId#);
+	</insert>
+	
+	<insert id="setEmailTableData">
+		INSERT INTO email_table
+		(user_id,entity_id,program_id,branch_id,specialization_id,semester_code,
+		user_group_id,user_name,email_id,AIOrUI,is_ready,insert_time,creator_id)
+		VALUES
+		(#userId#,#entity#,#program#,#branch#,#specialization#,#semester#,
+		#userGroupId#,#userName#,#emailId#,#AIorUI#,#isReady#,now(),#creatorId#);
+	</insert>
+	
+	<select id="getSemSeqNo" resultClass="consolidatedChartInfo">
+		SELECT semester_code
+		semesterCode,semester_sequence semSeqNo,final_semester_code AS isFinalSem
+		FROM
+		program_term_details
+		WHERE
+		program_id=#programCode# AND semester_code
+		like #semesterCode#
+		AND
+		semester_sequence like #semSeqNo#;
+	</select>
+	
+	
+	<select id="getStudent" resultClass="addStudentInMaster">
+		SELECT sm.student_name as studentFirstName,
+		sm.father_name as fatherFirstName,sm.dob as dateOfBirth,
+		sm.category as categoryName,sm.gender, sm.status, sm.email as primaryEmailId,
+		sm.address as addressLineOne,
+		sm.hindi_name as hindiName,sm.roll_number_group_code as path,
+		sm.enrollment_number as enrollmentNumber
+		FROM student_list sm
+		WHERE session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+		and status='SAV' and  program_id=#programCode# and branch_id=#branchCode#
+		and specialization_id=#specializationCode# and entity_id=#entityCode# order by insert_time;
+	</select>
+	
+	<delete id="deleteTempData">
+		DELETE FROM student_list where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+		and status='SAV' and  program_id=#programCode# and branch_id=#branchCode#
+		and specialization_id=#specializationCode# and entity_id=#entityCode#;
+	</delete>
+	
+	<insert id="setTempData">
+		INSERT INTO student_list values
+		(#entityCode#,#programCode#,#branchCode#,#specializationCode#,#sessionStartDate#,#sessionEndDate#,
+		#studentFirstName#,#fatherFirstName#,#enrollmentNo#,#dob#,#categoryCode#,#gender#,#primaryMail#,
+		#address#,#rollNoGroupCode#,#hindiName#,'SAV',now());
+	</insert>
+	
+	<update id="updateTempData">
+		update student_list set status='SUB' where
+		session_start_date=(Select start_date from university_master where current_status='1' and university_code=#universityId#)
+		and session_end_date=(Select end_date from university_master where current_status='1' and university_code=#universityId#)
+		and status='SAV' and  program_id=#programId# and branch_id=#branchId#
+		and specialization_id=#specializationId# and entity_id=#entityId# and student_name=#studentFirstName#
+		and father_name=#fatherFirstName#;
+	</update>
+	
+	<update id="updateTempDataNewStudent">
+		update student_list set status='SUB' where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+		and status='SAV' and  program_id=#programCode# and branch_id=#branchCode#
+		and specialization_id=#specializationCode# and entity_id=#entityCode# and student_name=#studentFirstName#
+		and father_name=#fatherFirstName#;
+	</update>
+	
+	<update id="changeTempData">
+		update student_list set program_id=#programId#,branch_id=#branchId#,
+		specialization_id=#newSpecialization#,entity_id=#entityId# where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+		and status='SAV' and  program_id=#oldProgramId# and branch_id=#oldBranchId#
+		and specialization_id=#oldSpecialization# and entity_id=#oldEntityId# and student_name=#studentFirstName#
+		and father_name=#fatherFirstName#;
+	</update>
+	
+	
+
+
+
+</sqlMap>
+
+

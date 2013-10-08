@@ -169,8 +169,9 @@ public class SettingController extends MultiActionController {
 		login.setUserId(session.getAttribute("userId").toString());
 		login.setUserName(session.getAttribute("userName").toString());
 		login.setPassword(request.getParameter("password"));
-		login.setNewPassword(request.getParameter("newPassword"));
-
+		login.setNewPassword(request.getParameter("newPassword"));	
+		login.setApplication(request.getParameter("application"));
+		login.setUniversityId((String) session.getAttribute("universityId"));
 		Boolean isUpdated = settingService.changeUserPassword(login);
 
 		return new ModelAndView("enrollment/info", "info", isUpdated);

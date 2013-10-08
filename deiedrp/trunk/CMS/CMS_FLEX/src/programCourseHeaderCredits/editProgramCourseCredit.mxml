@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editProgramCourseCredit.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" title="{commonFunction.getConstants('manageProgramCourseWindow')}"
+        layout="absolute" showCloseButton="true" width="514"  height="452" creationComplete="init_ProgramCourseCredit();"
+        close="titleWindow_close();" borderColor="#332E2E" alpha="1.0" fontWeight="normal">
+    <mx:Script>
+        <![CDATA[
+        	import mx.binding.utils.BindingUtils;
+        	import common.commonFunction;
+       
+        	import mx.collections.ArrayCollection;
+           	import mx.controls.Alert;
+        	import mx.events.FlexEvent;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+            import mx.rpc.events.FaultEvent;
+            import mx.rpc.events.ResultEvent;
+            import mx.validators.NumberValidator;
+            import mx.validators.Validator;
+            import common.validations.CommonValidations;
+  	
+			[Bindable] public var courseDetails:ArrayCollection=null;
+			[Bindable] public var programCourseKey:String=null;
+			private var msg:String=null;
+			
+			[Embed(source="/images/warning.png")]private var warningIcon:Class;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			public var maxCreditsValid:NumberValidator = new NumberValidator();
+			public var minCreditsValid:NumberValidator = new NumberValidator();
+			public var maxLectureCreditsValid:NumberValidator = new NumberValidator();
+			public var minLectureCreditsValid:NumberValidator = new NumberValidator();
+			public var validate:CommonValidations=new CommonValidations();
+			
+			[Bindable] public var urlUpdateProgramCourseHeaderCredit:String = "";
+			[Bindable] public var urlSelectProgramCourseTermCredit:String ="";
+			[Bindable] public var xmldataUpdateCourseCredits:XML;
+			[Bindable] public var xmldata_ProgramTermDetail:XML;
+			public var url_DNS:String ="";
+			public var parentFun:Function;
+			
+			public function init_ProgramCourseCredit():void{
+				url_DNS = getString('url');
+    			urlUpdateProgramCourseHeaderCredit = url_DNS+"/programCourseHeaderCredit/updateProgramCourseCredit.htm";
+    			urlSelectProgramCourseTermCredit=url_DNS+"/programCourseHeaderCredit/selectProgramTermCredits.htm";
+    		}
+		
+			public function getString(pass_key:String):String{
+				return commonFunction.getConstants(pass_key);
+			}
+			
+            private function titleWindow_close():void {
+                PopUpManager.removePopUp(this);
+            }
+            
+            protected function cancelButton_ClickHandler(event:MouseEvent):void
+            {
+            	PopUpManager.removePopUp(this);
+            }
+           
+            protected function editButton_ClickHandler(event:MouseEvent):void
+			{	
+				var params:Object = {};
+				params["program_course_key"] = programCourseKey;
+				xmlSelectProgramCourseTermCredit.send(params);
+			}
+       		
+       		public function onOK(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var params:Object = {};
+					params["program_course_key"] = programCourseKey;
+					params["maxCredit"]=maxCredits.text;
+					params["minCredit"]=minCredits.text;
+					params["maxLecCredit"]=maxLectureCredits.text;
+					params["minLecCredit"]=minLectureCredits.text;
+					
+					xmlUpdateProgramCourseHeaderCredit.send(params);
+				}
+       		}
+			
+	        public function validateForm(xmldata_ProgramTermDetail:XML):Boolean
+			{
+				var flag:Boolean=true;
+				maxCreditsValid.source = maxCredits;
+				maxCreditsValid.property = "text";
+				maxCreditsValid.required=true;
+				maxCreditsValid.allowNegative=false;
+				maxCreditsValid.maxValue=999;
+				maxCreditsValid.minValue=.50;
+				maxCreditsValid.domain="real";
+				maxCreditsValid.precision=2;
+				
+				minCreditsValid.source = minCredits;
+				minCreditsValid.property = "text";
+				minCreditsValid.required=true;
+				minCreditsValid.allowNegative=false;
+				minCreditsValid.maxValue=999
+				minCreditsValid.minValue=.50;
+				minCreditsValid.domain="real";
+				minCreditsValid.precision=2;
+				
+				maxLectureCreditsValid.source = maxLectureCredits;
+				maxLectureCreditsValid.property = "text";
+				maxLectureCreditsValid.required=true;
+				maxLectureCreditsValid.allowNegative=false;
+				maxLectureCreditsValid.maxValue=999;
+				maxLectureCreditsValid.minValue=.50;
+				maxLectureCreditsValid.domain="real";
+				maxLectureCreditsValid.precision=2;
+				
+				minLectureCreditsValid.source = minLectureCredits;
+				minLectureCreditsValid.property = "text";
+				minLectureCreditsValid.required=true;
+				minLectureCreditsValid.allowNegative=false;
+				minLectureCreditsValid.maxValue=999;
+				minLectureCreditsValid.minValue=.50;
+				minLectureCreditsValid.domain="real";
+				minLectureCreditsValid.precision=2;
+				
+				if(Validator.validateAll([
+					maxCreditsValid, minCreditsValid,maxLectureCreditsValid,
+					minLectureCreditsValid]).length!=0){
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					flag=false;		
+				}
+				else if(validate.isGreater(xmldata_ProgramTermDetail.credits.maxCredit,maxCredits.text)){
+					maxCredits.errorString=resourceManager.getString('Messages','maximumCreditLimit',[xmldata_ProgramTermDetail.credits.maxCredit]);
+					Alert.show(resourceManager.getString('Messages','maximumCreditLimit',[xmldata_ProgramTermDetail.credits.maxCredit]),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					flag=false;	
+				}else if(validate.isGreater(xmldata_ProgramTermDetail.credits.minCredit,minCredits.text)){
+					
+					Alert.show(resourceManager.getString('Messages','minimumCreditLimit',[xmldata_ProgramTermDetail.credits.minCredit]),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					flag=false;	
+				}
+				else if(validate.isGreater( maxCredits.text,minCredits.text))
+				{
+					maxCredits.errorString=commonFunction.getMessages('maxCreditValidationMessage');
+					flag=false;	
+				}
+				else if(validate.isGreater(xmldata_ProgramTermDetail.credits.maxLecCredit,maxLectureCredits.text)){
+					maxLectureCredits.errorString=resourceManager.getString('Messages','maximumLectureCreditLimit',[xmldata_ProgramTermDetail.credits.maxLecCredit]);
+					Alert.show(resourceManager.getString('Messages','maximumLectureCreditLimit',[xmldata_ProgramTermDetail.credits.maxLecCredit]),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					flag=false;
+				}else if(validate.isGreater(xmldata_ProgramTermDetail.credits.minLecCredit,minLectureCredits.text)){
+					
+					Alert.show(resourceManager.getString('Messages','minimumLectureCreditLimit',[xmldata_ProgramTermDetail.credits.minLecCredit]),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					flag=false;
+				}else if(validate.isGreater( maxLectureCredits.text,minLectureCredits.text))
+				{
+					maxLectureCredits.errorString=commonFunction.getMessages('maxLectureCreditsValidationMessage');
+					flag=false;	
+				}
+				return flag;
+		  	}
+		  	
+		  	private function resultUpdatePCHCredit(event:ResultEvent):void{
+        		xmldataUpdateCourseCredits=event.result as XML;
+         		if(xmldataUpdateCourseCredits.sessionConfirm == true)
+    		    {
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+				    var url:String="";
+				    url=commonFunction.getConstants('navigateHome');
+				    var urlRequest:URLRequest=new URLRequest(url);
+				    urlRequest.method=URLRequestMethod.POST;
+				    navigateToURL(urlRequest,"_self");
+        		}
+		        if(xmldataUpdateCourseCredits.message=='1'){
+		          	msg=getString('updation_successful');
+		          	Alert.show(msg, getString('success'),0, null, alertListener,successIcon);
+		        }
+		        else if(xmldataUpdateCourseCredits.message=='0'){
+		            	msg=getString('noRecordUpdated');
+		          	Alert.show(msg, getString('info'),0, null, alertListener,successIcon);      	
+		        }
+		        else if(String(xmldataUpdateCourseCredits.message).search("updateError")>-1){
+		       	msg=xmldataUpdateCourseCredits.message
+		       	Alert.show(msg, getString('updateError'),0,null,alertListener,errorIcon);
+		       }
+		       else{
+		        	msg=xmldataUpdateCourseCredits.message
+		       	Alert.show(msg, getString('updateError'),0,null,alertListener,errorIcon);      	
+		       }
+		       
+			}
+			
+			private function faultPCHCredit(event:FaultEvent):void{
+		        mx.controls.Alert.show(event.fault.message,getString('errorInResult'),4,null,null,errorIcon);
+		    }
+		    
+		    private function alertListener(eventObj:CloseEvent):void {
+                if (eventObj.detail==Alert.OK) {
+                	parentFun.call();
+	                PopUpManager.removePopUp(this);
+                }
+            }
+            
+            private function resultSelectPCTCredit(event:ResultEvent):void{
+            	xmldata_ProgramTermDetail=event.result as XML;
+            	if(validateForm(xmldata_ProgramTermDetail))
+				{
+					maxCredits.errorString="";
+					maxLectureCredits.errorString="";
+						
+					Alert.show(commonFunction.getMessages('areyousure'),
+					commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onOK,questionIcon);	
+				}
+		   }
+		]]>
+    </mx:Script>
+    
+    <mx:HTTPService id="xmlUpdateProgramCourseHeaderCredit" method="post"
+        url="{urlUpdateProgramCourseHeaderCredit}"
+        resultFormat="e4x"
+        result="resultUpdatePCHCredit(event)"
+        fault="faultPCHCredit(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="xmlSelectProgramCourseTermCredit" method="post"
+    	url="{urlSelectProgramCourseTermCredit}"
+        resultFormat="e4x"
+        result="resultSelectPCTCredit(event)"
+        fault="faultPCHCredit(event)"
+        useProxy="false"
+    	/>
+    <mx:Canvas width="441" height="318" styleName="SimpleCanvas" left="26" top="24">
+		 
+	<mx:Label x="13" y="59" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:Label x="225" y="58.949997" text="{commonFunction.getConstants('semester')}:"/>
+	<mx:Label x="122.5" y="59" text="Label" width="160.5" id="specialization_lab" fontWeight="bold"/>
+	<mx:Label x="122.5" y="20" text="Label" width="160.5" id="program_name_lab" fontWeight="bold"/>
+	<mx:Label x="11.5" y="20" text="{commonFunction.getConstants('programName')}:"/>
+	<mx:Label x="225" y="20" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:Label x="299" y="20" text="Label" width="131" id="branch_name_lab" fontWeight="bold"/>
+	<mx:Label x="300" y="59" text="Label" width="130" id="semester_lab" fontWeight="bold"/>
+	<mx:Label x="13" y="99" text="{commonFunction.getConstants('maxCredits')}"/>
+	<mx:TextInput id="maxCredits" x="178" y="97" restrict="0-9,."/>
+	<mx:Label x="13" y="138" text="{commonFunction.getConstants('minCredits')}"/>
+	<mx:TextInput id="minCredits" x="178" y="135" restrict="0-9,."/>
+	<mx:Label x="13" y="177" text="{commonFunction.getConstants('maxLectureCredits')}"/>
+	<mx:TextInput id="maxLectureCredits" x="178" y="175" restrict="0-9,."/>
+	<mx:Label x="13" y="217" text="{commonFunction.getConstants('minLectureCredits')}"/>
+	<mx:TextInput id="minLectureCredits" x="178" y="215" restrict="0-9,."/>
+	<mx:Button x="13" y="272" label="{commonFunction.getConstants('updateButton')}" click="editButton_ClickHandler(event)"/>
+	
+	</mx:Canvas>
+	<mx:Button x="304" y="363" id="cancelButton" label="{getString('cancel_button')}" click="cancelButton_ClickHandler(event)"/>
+</mx:TitleWindow>
+
+

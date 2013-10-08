@@ -238,7 +238,7 @@ private function resultHandler_PopulateEntity(event:ResultEvent):void{
 
 
 private function getLevel():void{
-	chosenEntityLevel=entityTypeComboManage.selectedItem.level;
+	chosenEntityLevel=entityTypeComboManage.selectedItem.entity_id;
 	httpPopulateEntityGrid();
 }
 

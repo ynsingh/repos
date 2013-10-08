@@ -245,7 +245,7 @@ semester_code=#semesterCode# and semester_status='ACT')
 
 <resultMap id="getStudentDetails" class="studentInfo">
 	<result property="studentId" column="student_id" />
-		<result property="rollNumber" column="roll_number" />
+	<result property="rollNumber" column="roll_number" />
 	<result property="enrollmentNumber" column="enrollment_number" />
 	<result property="dateOfBirth" column="date_of_birth" />
 	<result property="category" column="category" />
@@ -284,7 +284,7 @@ semester_code=#semesterCode# and semester_status='ACT')
 	<result property="lastName" column="student_last_name" />
 	<result property="primaryEmailId" column="primary_email_id" />
 	<result property="sequenceNumber" column="sequence_number" />
-		<result property="probableSemester" column="probable_semester" />
+	<result property="probableSemester" column="probable_semester" />
 	<result property="probableSemesterStartDate" column="probable_semester_start_date" />
 	<result property="probableSemesterEndDate" column="probable_semester_end_date" />
 	<result property="probableAttemptNumber" column="probable_attempt_number" />
@@ -296,10 +296,14 @@ semester_code=#semesterCode# and semester_status='ACT')
 	<result property="motherFirstName" column="mother_first_name" />
 	<result property="motherMiddleName" column="mother_middle_name" />
 	<result property="motherLastName" column="mother_last_name" />
-
+	<result property="rollNumberGroupCode" column="roll_number_group_code" />
+	<result property="longField" column="long_field" />
+	<result property="startDate" column="start_date" />
+	<result property="endDate" column="end_date" />
+	
 </resultMap>
 
-
+<!-- Updated By Devendra -->
 <select id="getStudentDetailsForNew" resultMap="getStudentDetails">
 select st.student_id ,null roll_number,st.enrollment_number,st.date_of_birth,st.student_category category, 
 stt.component_description category_description, st.gender gender,  stt1.component_description 
@@ -319,10 +323,10 @@ st.old_semester_code old_semester, null old_semester_description, st.admission_m
 st.semester_start_date session_start_date,st.semester_end_date session_end_date,st.attempt_number,
 st.student_first_name,st.student_middle_name,st.student_last_name,st.primary_email_id,st.sequence_number,
 st.probable_semester, st.probable_semester_start_date, st.probable_semester_end_date,
-st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  
+st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester ,st.roll_number_group_code,st.long_field,um.start_date,um.end_date
 from staging_table st , system_table_two stt, system_table_two stt1, 
 system_table_two sttb, system_table_two stts, system_table_two sem, 
-entity_master em,program_master pm where 
+entity_master em,program_master pm,university_master um where 
 st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND now()>=st.registration_due_date 
 AND st.student_category=stt.component_code and stt.group_code='STDCTG' AND 
 stt.university_code=substring(st.new_entity_id,1,4) AND st.gender=stt1.component_code 
@@ -332,10 +336,11 @@ sttb.university_code=substring(st.new_entity_id,1,4) AND
 st.new_specialization_id=stts.component_code and stts.group_code='SPCLCD' AND 
 stts.university_code=substring(st.new_entity_id,1,4) AND st.new_semester_id=sem.component_code and 
 sem.group_code='SEMCOD' AND sem.university_code=substring(st.new_entity_id,1,4) 
-AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id
+AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id AND um.university_code=stt.university_code AND current_status='1';
 
 </select>
 
+<!-- Updated By Devendra -->
 <select id="getStudentDetailsForSwt" resultMap="getStudentDetails">
 select st.student_id ,st.registration_roll_number roll_number, st.enrollment_number,st.date_of_birth,st.student_category category, 
 stt.component_description category_description, st.gender gender,  stt1.component_description 
@@ -354,19 +359,20 @@ old_specialization_description, st.old_semester_code old_semester, null old_seme
 st.admission_mode,st.semester_start_date session_start_date,st.semester_end_date session_end_date,st.attempt_number,
 st.student_first_name,st.student_middle_name,st.student_last_name,st.primary_email_id,st.sequence_number,
 st.probable_semester, st.probable_semester_start_date, st.probable_semester_end_date,
-st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  
- from staging_table st , 
+st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  ,st.roll_number_group_code,st.long_field,um.start_date,um.end_date
+from staging_table st , 
 system_table_two stt, system_table_two stt1, system_table_two sttb, system_table_two stts, 
-system_table_two sem, entity_master em,program_master pm where 
+system_table_two sem, entity_master em,program_master pm ,university_master um where 
 st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND now()>=st.registration_due_date 
 AND st.student_category=stt.component_code and stt.group_code='STDCTG' AND stt.university_code=substring(st.new_entity_id,1,4) 
 AND st.gender=stt1.component_code and stt1.group_code='GENDER' AND stt1.university_code=substring(st.new_entity_id,1,4) 
 AND st.new_branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=substring(st.new_entity_id,1,4) 
 AND st.new_specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=substring(st.new_entity_id,1,4) 
 AND st.new_semester_id=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=substring(st.new_entity_id,1,4) 
-AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id
+AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id AND um.university_code=stt.university_code AND current_status='1';
 </select>
 
+<!-- Updated By Devendra -->
 <select id="getStudentDetailsForNor" resultMap="getStudentDetails">
 select st.student_id ,st.registration_roll_number roll_number, st.enrollment_number,st.date_of_birth,st.student_category category, 
 stt.component_description category_description, st.gender gender,  stt1.component_description 
@@ -385,17 +391,17 @@ old_specialization_description, st.old_semester_code old_semester, null old_seme
 st.admission_mode,st.semester_start_date session_start_date,st.semester_end_date session_end_date,st.attempt_number,
 st.student_first_name,st.student_middle_name,st.student_last_name,st.primary_email_id,st.sequence_number,
 st.probable_semester, st.probable_semester_start_date, st.probable_semester_end_date,
-st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  
+st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester,st.roll_number_group_code,st.long_field,um.start_date,um.end_date  
 from staging_table st , 
 system_table_two stt, system_table_two stt1, system_table_two sttb, system_table_two stts, 
-system_table_two sem, entity_master em,program_master pm where 
+system_table_two sem, entity_master em,program_master pm,university_master um where 
 st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND now()>=st.registration_due_date 
 AND st.student_category=stt.component_code and stt.group_code='STDCTG' AND stt.university_code=substring(st.new_entity_id,1,4) 
 AND st.gender=stt1.component_code and stt1.group_code='GENDER' AND stt1.university_code=substring(st.new_entity_id,1,4) 
 AND st.new_branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=substring(st.new_entity_id,1,4) 
 AND st.new_specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=substring(st.new_entity_id,1,4) 
 AND st.new_semester_id=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=substring(st.new_entity_id,1,4) 
-AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id
+AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id AND um.university_code=stt.university_code AND current_status='1';
 </select>
 
 
@@ -412,19 +418,18 @@ now()>=st.registration_due_date
 
 
 <resultMap id="getCreditDetailsFromTermDetails" class="studentInfo">
-	<result property="minimumCourses" column="minimum_credits" />
-	<result property="maximumCourses" column="maximum_credits" />
-	<result property="minimumLectureCredit" column="minimum_lecture_credit" />
-	<result property="maximumLectureCredit" column="maximum_lecture_credit" />
+	<result property="minimumCourses" column="min_credit" />
+	<result property="maximumCourses" column="max_credit" />
+	<result property="minimumLectureCredit" column="min_lecture_credit" />
+	<result property="maximumLectureCredit" column="max_lecture_credit" />
 </resultMap>
 
-
-<select id="getCreditDetailsFromTermDetails" resultMap="getCreditDetailsFromTermDetails">
-select minimum_credit minimum_credits ,maximum_credit maximum_credits,minimum_lecture_credit,maximum_lecture_credit from program_term_details
-where program_id=#programId# and semester_code=#semesterCode#
+<!-- Modified By Devendra Oct 8 2012 -->
+<select id="getCreditDetailsFromTermDetails" resultClass="studentInfo">
+	SELECT min_credit AS minimumCourses ,max_credit AS maximumCourses,min_lecture_credit AS minimumLectureCredit,max_lecture_credit AS maximumLectureCredit 
+	FROM program_course_header
+	WHERE program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId# AND semester_code=#semesterCode#;
 </select>
-
-
 
 
 
@@ -476,6 +481,7 @@ office_phone=#officePhone#,extra_phone=#extraPhone#,other_phone=#otherPhone#,fax
 where student_id=#studentId# and (enrollment_number=#enrollmentNumber# or enrollment_number is null);
 </update>
 
+<!-- Modified By Devendra -->
 <insert id="insertTempStudentProgram">
 insert into temp_student_program
 (enrollment_number,roll_number,registration_number, admission_mode,register_date,registration_status, insert_time,
@@ -484,14 +490,14 @@ old_entity_id, old_program_id, old_branch_id, old_specialization_id, from_semest
 student_id, to_semester_start_date, to_semester_end_date, sequence_number,
 probable_semester, probable_semester_start_date, probable_semester_end_date,
 probable_attempt_number, probable_register_due_date, status_in_semester,attempt_number,
-registered_credit,registered_credit_excluding_audit,registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit)
+registered_credit,registered_credit_excluding_audit,registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit,roll_number_group_code,long_field)
 values
 (#enrollmentNumber#,#rollNumber#,#registrationNumber#,#admissionMode#,now(),'N',#insertTime#,
 #creatorId#,#entityId#,#programId#,#branchCode#,
 #newSpecialization#,#oldEntityId#,#oldProgramId#,#oldBranchCode#,#oldSpecialization#,
 #oldSemesterCode#,#semesterCode#,#studentId#,#sessionStartDate#,#sessionEndDate#,#sequenceNumber#,
 #probableSemester#,#probableSemesterStartDate#,#probableSemesterEndDate#,
-#probableAttemptNumber#,#probableRegisterDueDate#,#statusInSemester#,#attempt#,#regCredit#,#creditExcludeAudit#,#theoryCredit#,#pracCredit#);
+#probableAttemptNumber#,#probableRegisterDueDate#,#statusInSemester#,#attempt#,#regCredit#,#creditExcludeAudit#,#theoryCredit#,#pracCredit#,#rollNumberGroupCode#,#longField#);
 </insert>
 
 <insert id="insertTempStudentCourse">
@@ -550,4 +556,12 @@ program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpec
 semester_code=#semesterCode# and semester_status='ACT')
 </select>
 
+<select id="getStagingAddr" resultClass="studentInfo">
+	SELECT per_address AS perAddress,per_city AS perCity,per_state AS perState ,per_pincode AS perPincode,extra_phone AS extraPhone,other_phone AS otherPhone
+	FROM staging_table where registration_roll_number=#rollNumber# AND  processed_flag != 'P' AND now()>=registration_due_date;
+</select>
+<select id="getAddressMasterAddr" resultClass="studentInfo">
+	SELECT address AS perAddress,city AS perCity,state AS perState ,pincode AS perPincode,home_phone AS extraPhone,other_phone AS otherPhone
+	FROM addresses_master WHERE user_id=#studentId#;
+</select>
 </sqlMap>

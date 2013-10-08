@@ -50,7 +50,7 @@ public interface SubjectWiseMeritListDAO {
      * Method to get the program course details.
      * @return List of program Course
      */
-	List<SubjectWiseMeritList> getProgramCourseKey(SubjectWiseMeritList subjectWiseMeritList, String semesterTokens);
+	List<SubjectWiseMeritList> getStudentDataList(SubjectWiseMeritList subjectWiseMeritList);
 	
 	/**
      * Method to get the program course details.

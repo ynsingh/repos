@@ -74,7 +74,7 @@ public class ProgramSwitchInfoGetter {
     private String entityId;
     private String fromEntityId;
     private String fromEntityName;
-    
+    private String semesterSequence;
     
     
 
@@ -539,4 +539,12 @@ public class ProgramSwitchInfoGetter {
     public void setOldSwitchRuleId(String oldSwitchRuleId) {
         this.oldSwitchRuleId = oldSwitchRuleId;
     }
+
+	public void setSemesterSequence(String semesterSequence) {
+		this.semesterSequence = semesterSequence;
+	}
+
+	public String getSemesterSequence() {
+		return semesterSequence;
+	}
 }

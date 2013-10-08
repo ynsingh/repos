@@ -33,7 +33,8 @@
  * Contributors: Members of EdRP, Dayalbagh Educational Institute
  */
  -->
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1028" height="656" creationComplete="setFirstFocous(label1Combo)" title="{commonFunction.getConstants('switchRule')}">	
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1028" height="656" creationComplete="setFirstFocous(label1Combo)" title="{commonFunction.getConstants('switchRule')}"
+	xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">	
 	<mx:Script>
 		<![CDATA[
 			import common.commonFunction;
@@ -111,17 +112,30 @@
 	<mx:Validator source="{label1Combo}" id="label1ComboValidator" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/> 
 	<mx:Validator source="{label2Combo}" id="label2ComboValidator" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/>
 	<mx:Validator source="{label3Combo}" id="label3ComboValidator" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:StringValidator source="{ruleFormulaField}" id="formulaFieldValidator" property="text" enabled="false" required="true" />
 	
 	<mx:Canvas styleName="GridCanvas" id="detail"  visible="true" width="978" height="190" x="20" y="410">
 		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" width="72" height="25"  enabled="false" id="editbutton" click="openEditPopUp()" x="829"  y="5"/>
 		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" enabled="false" id="deletebutton" x="902" click="deleteFunction()"  y="5"/>
 		<mx:Label x="6" y="5" text="{commonFunction.getConstants('ruleDetails')}" height="16"/>
-		<mx:DataGrid id="ruleDetailGrid" width="957" height="155" horizontalScrollPolicy="off" 
+		<controls:MDataGrid id="ruleDetailGrid" width="957" height="155" horizontalScrollPolicy="off" 
 					 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="29">
-			<mx:columns>
-				<mx:DataGridColumn editable="true"  rendererIsEditor="true" resizable="false" width="50" textAlign="center" sortable="false" 
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn editable="true"  rendererIsEditor="true" resizable="false" width="50" textAlign="center" sortable="false" 
 									editorDataField="selected" dataField="select" headerText=" ">
-					<mx:itemRenderer>
+					<dataGridClasses:headerRenderer>
+						<mx:Component>
+							<mx:CheckBox click="data.selected=!data.selected" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.ruleDetailGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:headerRenderer>				
+					<dataGridClasses:itemRenderer>
 						<mx:Component>
 							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.ruleDetailGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
 								<mx:Script>
@@ -132,17 +146,17 @@
 								</mx:Script>
 							</mx:CheckBox>
 						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn editable="false" dataField="ruleId" headerText="{commonFunction.getConstants('ruleId')}" textAlign="center" width="98" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleCodeOne" headerText="{commonFunction.getConstants('rollNumberGeneration')}" textAlign="center" width="200" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleCodeTwo" headerText="{commonFunction.getConstants('fromProgramMarks')}" textAlign="center" width="240" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleDescthree" headerText="{commonFunction.getConstants('rule3')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleDescfour" headerText="{commonFunction.getConstants('rule4')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleDescfive" headerText="{commonFunction.getConstants('rule5')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleDescsix" headerText="{commonFunction.getConstants('rule6')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="ruleFormula" headerText="{commonFunction.getConstants('ruleFormula')}" textAlign="center" width="150" sortable="true" showDataTips="true"/>		
-			</mx:columns>
-		</mx:DataGrid>
+					</dataGridClasses:itemRenderer>
+				</dataGridClasses:MDataGridColumn>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleId" headerText="{commonFunction.getConstants('ruleId')}" textAlign="center" width="98" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleCodeOne" headerText="{commonFunction.getConstants('rollNumberGeneration')}" textAlign="center" width="200" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleCodeTwo" headerText="{commonFunction.getConstants('fromProgramMarks')}" textAlign="center" width="240" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleDescthree" headerText="{commonFunction.getConstants('rule3')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleDescfour" headerText="{commonFunction.getConstants('rule4')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleDescfive" headerText="{commonFunction.getConstants('rule5')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleDescsix" headerText="{commonFunction.getConstants('rule6')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="ruleFormula" headerText="{commonFunction.getConstants('ruleFormula')}" textAlign="center" width="150" sortable="true" showDataTips="true"/>		
+			</controls:columns>
+		</controls:MDataGrid>
 	</mx:Canvas>	
 </mx:Panel>

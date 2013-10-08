@@ -107,8 +107,8 @@
 	
 	<mx:Script source="asFiles/AddProgramSwitchAction.as"/>
 	
-    <mx:Validator id="switchTypeValidator" property="selectedLabel" required="true" />
-    <mx:Validator id="switchRuleValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="switchTypeValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="switchRuleValidator" property="selectedLabel" required="true" />
     <mx:Validator id="newProgramValidator" property="selectedLabel" required="true"/>
     <mx:Validator id="newBranchValidator" property="selectedLabel" required="true"/>
     <mx:Validator id="newSpecializationValidator" property="selectedLabel" required="true"/>
@@ -134,16 +134,16 @@
 	<mx:Label x="150" y="141" text="" fontWeight="bold" id="oldSpecializationLabel"/>
 	<mx:ComboBox id="oldSemesterCombo"  toolTip="{oldSemesterCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="150" y="171" width="150" labelField="semesterName"/>
 	<mx:Label x="150" y="171" text="" fontWeight="bold" id="oldSemesterLabel" visible="false"/>
-	<mx:ComboBox id="switchRuleCombo"  toolTip="{switchRuleCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="30" width="150" />
-	<mx:ComboBox id="newProgramCombo" toolTip="{newProgramCombo.text}" change="programChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="83" width="150" />
-	<mx:ComboBox id="newBranchCombo" toolTip="{newBranchCombo.text}" change="branchChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="113" width="150"/>
-	<mx:ComboBox id="newSpecializationCombo" toolTip="{newSpecializationCombo.text}" change="specializationChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="143" width="150"/>
-	<mx:ComboBox id="newSemesterCombo" toolTip="{newSemesterCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="173" width="150"/>
+	<mx:ComboBox id="switchRuleCombo" labelField="ruleId"  toolTip="{switchRuleCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="30" width="150" />
+	<mx:ComboBox id="newProgramCombo" toolTip="{newProgramCombo.text}" change="programChange()" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="83" width="150" />
+	<mx:ComboBox id="newBranchCombo" toolTip="{newBranchCombo.text}" change="branchChange()" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="113" width="150"/>
+	<mx:ComboBox id="newSpecializationCombo" toolTip="{newSpecializationCombo.text}" change="specializationChange()" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="143" width="150"/>
+	<mx:ComboBox id="newSemesterCombo"  labelField="semesterName" toolTip="{newSemesterCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="173" width="150"/>
 	
 	<mx:Button x="150" y="200" visible="false" id="submitButton" label="{commonFunction.getConstants('submitButton')}" click="submitDetails()"/>
 	<mx:Button x="150" y="200" visible="false" id="updateButton" label="{commonFunction.getConstants('updateButton')}" click="updateDetails()"/>
 	<mx:Button x="240" y="200" visible="false" id="resetButton" label="{commonFunction.getConstants('resetButton')}" click="resetDetails()"/>
 	<mx:Button x="347" y="200" visible="true" label="{commonFunction.getConstants('cancelButton')}" click="PopUpManager.removePopUp(this)"/>
 	<mx:Label x="400" y="56" text="{commonFunction.getConstants('entity')}"/>
-	<mx:ComboBox id="entityCombo"  toolTip="{entityCombo.text}" change="entityChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="56" width="150" />
+	<mx:ComboBox id="entityCombo"  toolTip="{entityCombo.text}" change="entityChange()" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="56" width="150" />
 </mx:TitleWindow>

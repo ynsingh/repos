@@ -116,7 +116,13 @@ public class EnrollmentInfo {
 	private String semesterEndDate;//Add by Devendra
 	private String rollNumber;//Add by Devendara
 	private String creatorId;
-	
+	private String rollNoGroupCode;//Add By Devendra
+	private String longField;//Add By Devendra
+	private int rangeFrom;
+	private int rangeTo;
+	private String format;
+	private String type;
+	private String userId;
 	// defining getter and setter method for variables
 	
 	
@@ -750,4 +756,103 @@ public class EnrollmentInfo {
 	public void setCreatorId(String creatorId) {
 		this.creatorId = creatorId;
 	}
+
+	/**
+	 * @return the rollNoGroupCode
+	 */
+	public String getRollNoGroupCode() {
+		return rollNoGroupCode;
+	}
+
+	/**
+	 * @param rollNoGroupCode the rollNoGroupCode to set
+	 */
+	public void setRollNoGroupCode(String rollNoGroupCode) {
+		this.rollNoGroupCode = rollNoGroupCode;
+	}
+
+	/**
+	 * @return the longField
+	 */
+	public String getLongField() {
+		return longField;
+	}
+
+	/**
+	 * @param longField the longField to set
+	 */
+	public void setLongField(String longField) {
+		this.longField = longField;
+	}
+
+	/**
+	 * @return the rangeFrom
+	 */
+	public int getRangeFrom() {
+		return rangeFrom;
+	}
+
+	/**
+	 * @param rangeFrom the rangeFrom to set
+	 */
+	public void setRangeFrom(int rangeFrom) {
+		this.rangeFrom = rangeFrom;
+	}
+
+	/**
+	 * @return the rangeTo
+	 */
+	public int getRangeTo() {
+		return rangeTo;
+	}
+
+	/**
+	 * @param rangeTo the rangeTo to set
+	 */
+	public void setRangeTo(int rangeTo) {
+		this.rangeTo = rangeTo;
+	}
+
+	/**
+	 * @return the format
+	 */
+	public String getFormat() {
+		return format;
+	}
+
+	/**
+	 * @param format the format to set
+	 */
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 }

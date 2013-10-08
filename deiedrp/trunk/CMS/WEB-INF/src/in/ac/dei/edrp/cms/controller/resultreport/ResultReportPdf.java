@@ -209,7 +209,7 @@ try{
 									+ "-"
 									+ infoGetter.getPassedToSession()
 											.substring(2, 4)+"\n\n"+resourceBundle
-											.getString("division").toUpperCase()+":"+"\n"+divisionDetails+"\n"+resourceBundle
+											.getString("division").toUpperCase()+":"+"\n"+resourceBundle.getString("divisiondetails")+"\n"+resourceBundle
 											.getString("result")+"\n"+resourceBundle
 											.getString("resultdetails"),cellFonts),
 					false);
@@ -228,7 +228,7 @@ try{
 									+ "-"
 									+ infoGetter.getPassedToSession()
 											.substring(2, 4)+"\n\n"+resourceBundle
-											.getString("division").toUpperCase()+":"+"\n"+divisionDetails+"\n"+resourceBundle
+											.getString("division").toUpperCase()+":"+"\n"+resourceBundle.getString("divisiondetails")+"\n"+resourceBundle
 											.getString("result")+"\n"+resourceBundle
 											.getString("resultdetails"),cellFonts),
 					false);
@@ -259,7 +259,7 @@ try{
 		
 		Iterator<DegreeListInfoGetter> iterator = list.iterator();
 		
-		List<String> semesterList = new ArrayList<String>();
+		List<String> pckList = new ArrayList<String>();
 		
 		
 		
@@ -268,13 +268,13 @@ try{
 		int i=0,counter = 0;
 		List<String> strings = new ArrayList<String>();	
 		while (iterator.hasNext()) {
-			DegreeListInfoGetter semesterListInfoGetter = (DegreeListInfoGetter) iterator
+			DegreeListInfoGetter pckListInfoGetter = (DegreeListInfoGetter) iterator
 					.next();
 			
 			i=i+1;				
 			
-			if(semesterList.indexOf(semesterListInfoGetter.getSemesterCode())==-1){
-				semesterList.add(semesterListInfoGetter.getSemesterCode());	
+			if(pckList.indexOf(pckListInfoGetter.getProgramCourseKey())==-1){
+				pckList.add(pckListInfoGetter.getSemesterCode());	
 				
 				PdfPTable pTable=new PdfPTable(new float[]{1,1});
 				
@@ -282,13 +282,20 @@ try{
 				
 				pTable.setWidthPercentage(100);
 				
-				pcel=new PdfPCell(new Phrase(infoGetter.getProgramName(),cellFont));
-				pcel.setHorizontalAlignment(Element.ALIGN_LEFT);
-				pcel.setBorderWidth(0);
+				if(pckListInfoGetter.getBranchName().equalsIgnoreCase("XX") && pckListInfoGetter.getSpecializationName().equalsIgnoreCase("00")){
+					pcel=new PdfPCell(new Phrase(infoGetter.getProgramName(),cellFont));
+					pcel.setHorizontalAlignment(Element.ALIGN_LEFT);
+					pcel.setBorderWidth(0);
+					pTable.addCell(pcel);
+				}
+				else{
+					pcel=new PdfPCell(new Phrase(infoGetter.getProgramName()+" ("+pckListInfoGetter.getBranchName()+"  "+pckListInfoGetter.getSpecializationName()+")",cellFont));
+					pcel.setHorizontalAlignment(Element.ALIGN_LEFT);
+					pcel.setBorderWidth(0);
+					pTable.addCell(pcel);
+				}
 				
-				pTable.addCell(pcel);
-				
-				pcel=new PdfPCell(new Phrase(semesterListInfoGetter.getSemesterName(),cellFont));
+				pcel=new PdfPCell(new Phrase(pckListInfoGetter.getSemesterName(),cellFont));
 				pcel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				pcel.setBorderWidth(0);
 				
@@ -304,9 +311,9 @@ try{
 				document.add(pTable);
 				document.add(emptyParagraph);	
 			}
-			semesterListInfoGetter.setEntityId(infoGetter.getEntityId());
+			pckListInfoGetter.setEntityId(infoGetter.getEntityId());
 			
-			resultList = resultReportConnect.getStudentsForCombination(semesterListInfoGetter);
+			resultList = resultReportConnect.getStudentsForCombination(pckListInfoGetter);
 			String modifiedRollNo="";
 			int ii=0;
 				
@@ -351,8 +358,8 @@ try{
 					}
 				}			
 				
-				if("F".equalsIgnoreCase(semesterListInfoGetter.getFinalSemesterCode())){
-					pcel=new PdfPCell(new Phrase(rolToSet+"      ("+studentListGetter.getDivision()+")   ",cellFont));
+				if("F".equalsIgnoreCase(pckListInfoGetter.getFinalSemesterCode())){
+					pcel=new PdfPCell(new Phrase(rolToSet+"      ("+getAlphaDiv(studentListGetter.getDivision())+")   ",cellFont));
 					pcel.setBorderWidth(0);
 					pcel.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					roltable.addCell(pcel);
@@ -368,7 +375,7 @@ try{
 			}
 			pcel=new PdfPCell(new Phrase("",cellFont));
 			pcel.setBorderWidth(0);
-			for(int c=0;c<rollcount;c++){
+			for(int c=0;c<7;c++){
 				roltable.addCell(pcel);
 			}
 			
@@ -409,6 +416,25 @@ try{
 }
 //***************************************************************
 
+	}
+	
+	//Method added to give alphabet from division
+	private String getAlphaDiv(String division) {
+		if(division.endsWith("1")){
+			return "A";
+		}
+		else if(division.endsWith("2")){
+			return "B";
+		}
+		else if(division.endsWith("3")){
+			return "C";
+		}
+		else if(division.endsWith("4")){
+			return "D";
+		}
+		else{
+			return "F";
+		}
 	}
 
 }

@@ -54,6 +54,7 @@
 <toprogramcoursekey><c:out value="${record.toprogramcoursekey}"/></toprogramcoursekey>
 <tosemesterstartdate><c:out value="${record.tosemesterstartdate}"/></tosemesterstartdate>
 <tosemesterenddate><c:out value="${record.tosemesterenddate}"/></tosemesterenddate>
+<finalSemStatus><c:out value="${record.finalSemStatus}"/></finalSemStatus>
 
 
 </semesterdate>

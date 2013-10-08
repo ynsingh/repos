@@ -58,8 +58,8 @@ layout="absolute" width="537" height="356"
 	<mx:Label x="122" y="78" text="{commonFunction.getConstants('courseType')}"/>
 	<mx:Label x="125" y="112" text="{commonFunction.getConstants('minimumCredit')}"/>
 	<mx:Label x="125" y="155" text="{commonFunction.getConstants('maximumCredit')}"/>
-	<mx:NumericStepper x="240" y="112" width="82" minimum="0" maximum="999" id="changemincombo"/>
-	<mx:NumericStepper x="240" y="155" width="82" minimum="0" maximum="999" id="changemaxcombo"/>
+	<mx:TextInput x="240" y="112" width="82" maxChars="4" restrict="0-9." id="changemincombo"/>
+	<mx:TextInput x="240" y="155" width="82" maxChars="4" restrict="0-9." id="changemaxcombo"/>
 	<mx:Label x="10" y="10" text="{commonFunction.getConstants('program')}:"/>
 	<mx:Label x="107" y="10" id="programLabel"/>
 	<mx:Label x="259" y="10" text="{commonFunction.getConstants('branch')}:"/>

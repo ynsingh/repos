@@ -98,25 +98,26 @@
               system_table_two sys1,user_group ug where sys1.component_code=ug.menu_item_id AND
 		     ug.user_group_id=#roleId# AND ug.university_code=sys1.university_code
 		     AND sys1.university_code=#universityCode# AND
-		     sys1.active=1 and application=#applicationId#;
+		     sys1.active=1 and application=#applicationId# and sys1.group_code='MNUITM';
 			</isEqual>
-			<isEqual prepend=""
-             property="applicationId"
-             compareValue="UPM">
-               sys1.component_code componentId,sys1.component_description as  componentDescription from
-                system_table_two_upm sys1,user_group ug where sys1.component_code
-				=ug.menu_item_id AND
-				ug.user_group_id=#roleId# AND ug.university_code=sys1.university_code
-				AND sys1.university_code=#universityCode# AND
-				sys1.active=1 and application=#applicationId#;
-			</isEqual>
+
 			<isEqual prepend=""
              property="applicationId"
              compareValue="ADM">
                	 mil.menu_item_id as componentId,mil.menu_item_name as  componentDescription from menu_items_list mil ,user_group ug
-				where mil.menu_item_id=ug.menu_item_id and ug.application=#applicationId# and ug.user_group_id=#roleId# ;
+				where mil.menu_item_id=ug.menu_item_id and ug.application=#applicationId# and ug.user_group_id=#roleId# AND mil.university_code=#universityCode# ;
+			</isEqual>
+			
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="EDEI">
+             sys1.component_code as componentId,sys1.component_description as componentDescription from
+             system_table_two sys1,user_group ug where sys1.component_code=ug.menu_item_id AND
+		     ug.user_group_id=#roleId# AND ug.university_code=sys1.university_code
+		     AND sys1.university_code=#universityCode# AND sys1.group_code='EMENUS' AND
+		     sys1.active=1 and application=#applicationId#; 	
+				
 			</isEqual>	
-
 </select>
 
 	<select id="getsetuniversityroles" resultMap="defaulteroles">
@@ -195,11 +196,23 @@
              property="applicationId"
              compareValue="ADM">
               menu_item_id as componentId,menu_item_name as componentDescription  from
-               menu_items_list where menu_item_id NOT IN(select     menu_item_id from  user_group where     user_group_id=#roleId#  AND     university_code=#universityCode# and application=#applicationId#);
+               menu_items_list where university_code=#universityCode# and menu_item_id NOT IN(select     menu_item_id from  user_group where     user_group_id=#roleId#  AND     university_code=#universityCode# and application=#applicationId#);
                
 			</isEqual>			
 
-
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="EDEI">
+                component_code as componentId,component_description as componentDescription from
+			    system_table_two  where
+				group_code='EMENUS' AND active=1 AND dummy_flag_one=1 AND
+				university_code=#universityCode# AND
+				component_code NOT IN(select
+				menu_item_id from
+				user_group where
+				user_group_id=#roleId# AND
+				university_code=#universityCode# and application=#applicationId#);
+			</isEqual>
 </select>
  
 
@@ -246,40 +259,10 @@
 	
 	</select>
 
-	<select id="getmenulists" resultClass="unirolesetup" remapResults="true">
-
-<!--		select component_code as-->
-<!--		componentId,component_description as componentDescription from-->
-<!--		system_table_two where group_code='MNUITM' AND component_code!='MAAAC'-->
-<!--		AND dummy_flag_one=1;-->
-
-<!--  Query changed by Dheeraj for getting distinct menus  -->
-			select distinct 
-			<isEqual prepend=""
-             property="applicationId"
-             compareValue="CMS">
-             component_code as
-			componentId,component_description as componentDescription from
-               system_table_two where group_code='MNUITM' AND component_code!='MAAAC'
-				AND dummy_flag_one=1;
-			</isEqual>
-			<isEqual prepend=""
-             property="applicationId"
-             compareValue="UPM">
-             component_code as
-			componentId,component_description as componentDescription from
-               system_table_two_upm where group_code='MNUITM'
-			AND dummy_flag_one=1;
-			</isEqual>
-			<isEqual prepend=""
-             property="applicationId"
-             compareValue="UPM">
-             menu_item_id as
-			componentId,menu_item_name as componentDescription from menu_items_list;
-			</isEqual>
-			
-			
-	
+	<select id="getmenulists" resultClass="unirolesetup">
+			select code as componentId,description as componentDescription,
+			ifnull(dummy_flag_one,'0') as groupCode,application as applicationId from
+            default_codes  where  code not in ('MAAAC','MAAAA') and application!='VAL';
 	</select>
 
 	<select id="getuserswithid" resultClass="unirolesetup">
@@ -295,11 +278,39 @@
 		insert into user_info (user_id, user_name, password,
 		status,
 		registered_timestamp, university_code, user_group_id,application)
-		values(#creatorId#,#componentId#,SHA1(#componentDescription#),'INA',now(),#universityCode#,'ADM',#applicationId#
+		values(#creatorId#,#componentId#,SHA1(#componentDescription#),'INA',now(),#universityCode#,'ADM','CMS'
 		);
 	
 	</insert>
 
+
+	<insert id="populateMenusInSYS2">
+
+
+		insert into 
+		<isEqual prepend=""
+             property="applicationId"
+             compareValue="CMS">
+             system_table_two(university_code,
+		component_code,component_description,active,insert_time,creator_id,group_code,dummy_flag_one)
+		values(#universityCode#,#menuItemId#,#menuItemName#,1,now(),#userId#,'MNUITM',#groupCode#)
+	</isEqual>
+	<isEqual prepend=""
+             property="applicationId"
+             compareValue="EDEI">
+             system_table_two(university_code,
+		component_code,component_description,active,insert_time,creator_id,group_code,dummy_flag_one)
+		values(#universityCode#,#menuItemId#,#menuItemName#,1,now(),#userId#,'EMENUS',#groupCode#)
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="ADM">
+             menu_items_list(university_code,menu_item_id,menu_item_name) 
+			values(#universityCode#,#menuItemId#,#menuItemName#);
+			</isEqual>
+	</insert>
+	
+	
 	<insert id="insertdefaultitems">
 
 
@@ -311,11 +322,22 @@
 	</insert>
 	
 	<insert id="insertdefrole">
+
+replace into system_table_two (university_code, component_code, component_description, active, insert_time,
+creator_id, group_code,dummy_flag_one,dummy_flag_two) values
+(#universityCode#,'ADM','Administrator',1,now(),#creatorId#,'UNROLE',1,1);
+
+</insert>
 	
-	insert into system_table_two (university_code, component_code, component_description, active, insert_time,
-	creator_id, group_code) values(#universityCode#,'ADM','Administrator',1,now(),#creatorId#,'UNROLE');
+	<insert id="initializeUniversity">
+	
+	insert into system_values (university_id, code, value, insert_time,
+	creator_id) Select  #universityCode#,code,description,now(),#creatorId# 
+	from default_codes where application='VAL';
 	
 	</insert>
+	
+	
 
 	<update id="updatedefaultuser">
 
@@ -325,5 +347,12 @@
 	
 	</update>
 
-
+	<select id="getUserRoles" resultMap="defaulteroles">
+		select ui.user_group_id as component_code, stt.component_description  from user_info ui, system_table_two stt
+		where
+		ui.user_group_id=stt.component_code
+		and ui.user_name=#employeeCode# and ui.university_code=#universityCode# AND ui.application=#applicationId#
+		AND stt.group_code='UNROLE'
+		AND stt.university_code=#universityCode#
+	</select>
 </sqlMap>

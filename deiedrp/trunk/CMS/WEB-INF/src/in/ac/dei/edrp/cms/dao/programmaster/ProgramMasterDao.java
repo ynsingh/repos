@@ -180,4 +180,7 @@ public interface ProgramMasterDao {
      */
     String methodAddAnotherBranch(ProgramMasterInfoGetter progInfo)
         throws Exception;
+
+	List<ProgramMasterInfoGetter> getPrograDomainList(
+			ProgramMasterInfoGetter input);
 }

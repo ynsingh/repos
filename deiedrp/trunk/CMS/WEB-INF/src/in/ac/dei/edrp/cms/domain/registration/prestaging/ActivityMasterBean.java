@@ -59,7 +59,12 @@ public class ActivityMasterBean {
 
 	private String userId;
 	private int processCount;
-
+	
+	private String format;
+	private int fromPosition;
+	private int toPosition;
+	private String type;
+	
 	public ActivityMasterBean(String processName, String activityName,
 			String entityId, String programId, String branchId,
 			String specializationId, String semesterCode,
@@ -289,6 +294,62 @@ public class ActivityMasterBean {
 
 	public void setProcessCount(int processCount) {
 		this.processCount = processCount;
+	}
+
+	/**
+	 * @return the format
+	 */
+	public String getFormat() {
+		return format;
+	}
+
+	/**
+	 * @param format the format to set
+	 */
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	/**
+	 * @return the fromPosition
+	 */
+	public int getFromPosition() {
+		return fromPosition;
+	}
+
+	/**
+	 * @param fromPosition the fromPosition to set
+	 */
+	public void setFromPosition(int fromPosition) {
+		this.fromPosition = fromPosition;
+	}
+
+	/**
+	 * @return the toPosition
+	 */
+	public int getToPosition() {
+		return toPosition;
+	}
+
+	/**
+	 * @param toPosition the toPosition to set
+	 */
+	public void setToPosition(int toPosition) {
+		this.toPosition = toPosition;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

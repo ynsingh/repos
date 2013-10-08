@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) JoinClause.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="656" height="660" showCloseButton="true" close="exit()" title="{commonFunction.getConstants('joinConditionTitle')}" fontFamily="Georgia">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.events.ListEvent;
+			import common.commonFunction;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+						
+			[Embed(source="/images/success.png")]private var successIcon:Class;			
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			public var fun:Function=new Function();
+			public var selectedTablesArr:ArrayCollection=new ArrayCollection();
+			public var columnArr:ArrayCollection=new ArrayCollection();
+			public var joinConditionArr:ArrayCollection=new ArrayCollection();
+			var selectionTileData1:Array;//Store SelectionColumn Tile data for first field when selected
+			var expressionTileData:Array;//Store expression Tile data when selected
+			var selectionTileData2:Array;//Store SelectionColumn Tile data for second field when selected
+			var expressionArr:ArrayCollection=new ArrayCollection();//Expression Tile Dataprovider
+			var selectedTableColumns1:ArrayCollection;//SelectionColumn Tile Dataprovider for first field
+			var selectedTableColumns2:ArrayCollection;//SelectionColumn Tile Dataprovider for second field
+			
+			/**
+			 * Method to Close popup
+			 **/
+			private function exit():void{		
+				for each(var o:Object in joinConditionArr){
+					o.select=false;
+				}
+				fun.call(this,joinConditionArr);		
+				closeEffect.play([this]);
+			}
+			/**
+			 * On Change of Selected Table ComboBox
+			 **/
+			function onSelectedTableCBChange(str:String):void{	
+				radioAnd.selected=false;
+				radioOr.selected=false;							
+				if(str=="First"){
+					expressionTileData=null;
+					selectionTileData1=null;
+					selectedTableColumns1=new ArrayCollection();
+					for each(var obj:Object in columnArr){
+						if(obj.tableName==selectedTables.selectedItem.selectedColumn){
+							selectedTableColumns1.addItem({column:obj.column,table:obj.tableName,key:obj.key,dataType:obj.dataType});
+						}
+					}
+					expressionArr.removeAll();
+					expressionArr.addItemAt({expression:"=",expressionName:"Equal"},0);
+					expressionArr.addItemAt({expression:">",expressionName:"Greater"},1);
+					expressionArr.addItemAt({expression:"<",expressionName:"Less"},2);
+					expressionArr.addItemAt({expression:">=",expressionName:"Greater than or Equal"},3);
+					expressionArr.addItemAt({expression:"<=",expressionName:"Less than or Equal"},4);
+					expressionArr.addItemAt({expression:"!=",expressionName:"Not Equal"},5);
+				
+					selectedTableColumnsTile1.dataProvider=selectedTableColumns1;
+					expressionTile.dataProvider=expressionArr;
+				}
+				else{
+					selectionTileData2=null;
+					selectedTableColumns2=new ArrayCollection();
+					for each(var obj:Object in columnArr){
+						if(obj.tableName==selectedTables1.selectedItem.selectedColumn){
+							selectedTableColumns2.addItem({column:obj.column,table:obj.tableName,key:obj.key,dataType:obj.dataType});
+						}
+					}
+					selectedTableColumnsTile2.dataProvider=selectedTableColumns2;
+				}											
+			}
+			/**
+			 * On Change of Expression Tile list
+			 **/
+			private function onExpressionTileChange(event:ListEvent):void { 
+				expressionTileData=new Array();
+				expressionTileData=event.currentTarget.selectedItems;					
+        	}
+        	/**
+			 * On Change of Selected Column Tile List
+			 **/
+			private function selectionColumnTileChangedHandler(event:ListEvent,str:String):void { 
+				if(str=="First"){
+					selectionTileData1=new Array();
+					selectionTileData1=event.currentTarget.selectedItems;
+				}
+				else{
+					selectionTileData2=new Array();
+					selectionTileData2=event.currentTarget.selectedItems;
+				}													
+        	}
+        	/**
+			 *Method to reset fields
+			 **/
+			function reset():void{
+				selectedTables.selectedIndex=-1;
+				selectedTables1.selectedIndex=-1;
+				expressionArr.removeAll();
+				expressionTile.dataProvider.refresh();
+				expressionTile.selectedIndex=-1;
+				selectedTableColumnsTile1.selectedIndex=-1;
+				selectedTableColumnsTile2.selectedIndex=-1;	
+				radioAnd.selected=false;
+				radioOr.selected=false;	
+				selectionTileData1=null;
+				selectionTileData2=null;
+				expressionTileData=null;										
+				if(selectedTableColumns1!=null){
+					selectedTableColumns1.removeAll();
+					selectedTableColumnsTile1.dataProvider.refresh();
+				}
+				if(selectedTableColumns2!=null){
+					selectedTableColumns2.removeAll();
+					selectedTableColumnsTile2.dataProvider.refresh();
+				}		
+			}
+			/**
+			 * On Click of OK Button
+			 **/
+			function onClickOK():void{
+				if(selectionTileData1==null || selectionTileData1.length==0){
+					Alert.show(commonFunction.getMessages('selectColumnFirst'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
+				else if(expressionTileData==null || expressionTileData.length==0){
+					Alert.show(commonFunction.getMessages('selectExpression'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
+				else if(selectionTileData2==null || selectionTileData2.length==0){
+					Alert.show(commonFunction.getMessages('selectColumnSecond'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}								
+				else{
+					var condition:String="";
+					if(radioAnd.selected || radioOr.selected){
+						if(radioAnd.selected){
+							condition="AND";
+						}
+						else{
+							condition="OR";
+						}							
+					}														
+					add(condition);
+				}
+			}			
+			/**
+			 *Method to add data to joinConditionArr i.e. grid data provider
+			 **/
+			function add(condition:String):void{			
+				joinConditionArr.addItemAt({select:false,table1:selectionTileData1[0].table,column1:selectionTileData1[0].column,dataType1:selectionTileData1[0].dataType,expression:expressionTileData[0].expression,expressionName:expressionTileData[0].expressionName,table2:selectionTileData2[0].table,column2:selectionTileData2[0].column,dataType2:selectionTileData2[0].dataType,condition:condition},joinConditionArr.length);
+				grid.dataProvider.refresh();
+				selectedTableColumnsTile1.selectedIndex=-1;
+				selectedTableColumnsTile2.selectedIndex=-1;
+				expressionTile.selectedIndex=-1;
+				selectionTileData1=null;
+				selectionTileData2=null;	
+				expressionTileData=null;											
+				radioAnd.selected=false;
+				radioOr.selected=false;
+				if(joinConditionArr.length>1 && joinConditionArr.getItemAt(joinConditionArr.length-2)["condition"]==""){												
+					Alert.yesLabel="AND";
+					Alert.noLabel="OR";
+					Alert.show(commonFunction.getMessages('conditionAlert'),commonFunction.getMessages('info'), (Alert.YES|Alert.NO), null,addCondition,infoIcon);										
+				}
+				else{
+					Alert.show(commonFunction.getMessages('conditionAddedSuccess'),commonFunction.getMessages('success'), 4, null,null,successIcon);
+				}				
+			}
+			/**
+			 * Method to add Logical condtion for previous condition in which logical condition is not added
+			 * Method call on alert close event
+			 **/
+			function addCondition(event:CloseEvent):void{
+				Alert.yesLabel="YES";
+				Alert.noLabel="NO";
+				var table1:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["table1"];
+				var table2:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["table2"];
+				var column1:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["column1"];
+				var column2:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["column2"];
+				var dataType1:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["dataType1"];
+				var dataType2:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["dataType2"];
+				var expression:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["expression"];
+				var expressionName:String=joinConditionArr.getItemAt(joinConditionArr.length-2)["expressionName"];									
+				var select:Boolean=joinConditionArr.getItemAt(joinConditionArr.length-2)["select"];
+				joinConditionArr.removeItemAt(joinConditionArr.length-2);
+				if(event.detail==1){					
+					joinConditionArr.addItemAt({select:select,table1:table1,column1:column1,dataType1:dataType1,expression:expression,expressionName:expressionName,table2:table2,column2:column2,dataType2:dataType2,condition:"AND"},joinConditionArr.length-1);					
+				}
+				else{
+					joinConditionArr.addItemAt({select:select,table1:table1,column1:column1,dataType1:dataType1,expression:expression,expressionName:expressionName,table2:table2,column2:column2,dataType2:dataType2,condition:"OR"},joinConditionArr.length-1);
+				}
+				grid.dataProvider.refresh();				
+			}
+			
+			/**
+			 * Confirmation method for delete
+			 **/
+			function deleteRecord():void{
+				if(deleteLink.enabled==true){
+					Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,deleteConfirm,questionIcon);
+				}							
+			}	
+			/**
+			 * Method to delete selected records
+			 **/
+			private function deleteConfirm(event:CloseEvent):void{
+				if(event.detail==1){
+					var i:int=0;	
+					var j:int=0;		
+					var temp:ArrayCollection=new ArrayCollection();				
+					for each(var o:Object in joinConditionArr){
+						if(o.select==false){									
+							temp.addItemAt({select:joinConditionArr.getItemAt(i)["select"],table1:joinConditionArr.getItemAt(i)["table1"],column1:joinConditionArr.getItemAt(i)["column1"],dataType1:joinConditionArr.getItemAt(i)["dataType1"],expression:joinConditionArr.getItemAt(i)["expression"],expressionName:joinConditionArr.getItemAt(i)["expressionName"],table2:joinConditionArr.getItemAt(i)["table2"],column2:joinConditionArr.getItemAt(i)["column2"],dataType2:joinConditionArr.getItemAt(i)["dataType2"],condition:joinConditionArr.getItemAt(i)["condition"]},temp.length);				
+						}
+						i++;
+					}				
+					joinConditionArr.removeAll();
+					grid.dataProvider.refresh();
+					for each(var o:Object in temp){						
+						joinConditionArr.addItemAt({select:false,table1:temp.getItemAt(j)["table1"],column1:temp.getItemAt(j)["column1"],dataType1:temp.getItemAt(j)["dataType1"],expression:temp.getItemAt(j)["expression"],expressionName:temp.getItemAt(j)["expressionName"],table2:temp.getItemAt(j)["table2"],column2:temp.getItemAt(j)["column2"],dataType2:temp.getItemAt(j)["dataType2"],condition:temp.getItemAt(j)["condition"]},joinConditionArr.length);
+						j++;
+					}				
+					grid.dataProvider.refresh();
+					deleteLink.enabled=false;
+					Alert.show(commonFunction.getMessages('deleteSuccess'),commonFunction.getMessages('success'),4, null,null,successIcon);
+				}				
+			}	
+			/**
+			 * On Mouse UP
+			 **/
+			private function onMouseUp(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;
+					exit();		
+				}
+				else if(str=="OK"){
+					okBtn.height=25;	
+					okBtn.width=99;	
+					onClickOK();		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=25;	
+					resetBtn.width=99;	
+					reset();		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+					deleteRecord();
+				}
+			}
+			/**
+			 * On Mouse Down
+			 **/
+			private function onMouseDown(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=22;	
+					cancelBtn.width=96;	
+				}
+				else if(str=="OK"){
+					okBtn.height=22;	
+					okBtn.width=96;		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=22;	
+					resetBtn.width=96;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=22;	
+					deleteLink.width=70;		
+				}
+			}
+			/**
+			 * On Mouse OUT
+			 **/
+			private function omMouseOut(str:String):void{				
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;			
+				}
+				else if(str=="OK"){
+					okBtn.height=25;	
+					okBtn.width=99;		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=25;	
+					resetBtn.width=99;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="12" y="10" width="611" height="394" fontFamily="Georgia" styleName="BorderCanvas">
+		<mx:Label x="13" y="10" text="{commonFunction.getConstants('selectedTables')}" fontFamily="Georgia"/>
+		<mx:ComboBox x="118" y="10" id="selectedTables" fontFamily="Georgia" labelField="selectedColumn" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{selectedTables.selectedItem.selectedColumn}" width="160" change="onSelectedTableCBChange('First')"></mx:ComboBox>
+		<mx:Label  x="13" y="39" text="{commonFunction.getConstants('columnFirstField')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:Label x="357" y="39" text="{commonFunction.getConstants('columnSecondField')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:Label x="264" y="39" text="{commonFunction.getConstants('expression')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:TileList x="13" y="61" width="229" height="229"	
+			columnCount="1"
+            columnWidth="225"
+            rowCount="1" direction="horizontal"
+            rowHeight="28" 
+            themeColor="#5D78BD" 
+            showScrollTips="true" showDataTips="true"
+            cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+            shadowDirection="right" id="selectedTableColumnsTile1" labelField="column" 
+            dataTipField="column" alternatingItemColors="[#FCFAFA, #EEEFF2]" fontFamily="Georgia" change="selectionColumnTileChangedHandler(event,'First')">
+		</mx:TileList>
+		<mx:TileList y="61" width="64" height="229"	
+			columnCount="1"
+	        columnWidth="225"
+	        rowCount="1" direction="horizontal"
+	        rowHeight="28" 
+	        themeColor="#5D78BD" 
+	        showScrollTips="true" showDataTips="true"
+	        cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+	        shadowDirection="right" id="expressionTile" labelField="expression" 
+	        dataTipField="expressionName" alternatingItemColors="[#FCFAFA, #EEEFF2]" fontFamily="Georgia" textIndent="15"  textAlign="left" fontWeight="bold" x="265" fontSize="18" change="onExpressionTileChange(event)">
+		</mx:TileList>
+		<mx:TileList x="352" y="61" width="229" height="229"	
+			columnCount="1"
+	       columnWidth="225"
+	       rowCount="1" direction="horizontal"
+	       rowHeight="28" 
+	       themeColor="#5D78BD" 
+	       showScrollTips="true" showDataTips="true"
+	       cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+	       shadowDirection="right" id="selectedTableColumnsTile2" labelField="column" 
+	       dataTipField="column" alternatingItemColors="[#FCFAFA, #EEEFF2]" fontFamily="Georgia" change="selectionColumnTileChangedHandler(event,'Second')">
+		</mx:TileList>
+		<mx:Label x="331" y="10" text="{commonFunction.getConstants('selectedTables')}" fontFamily="Georgia"/>
+		<mx:ComboBox x="436" y="10" id="selectedTables1" fontFamily="Georgia" labelField="selectedColumn" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{selectedTables.selectedItem.selectedColumn}" width="160" change="onSelectedTableCBChange('Second')"></mx:ComboBox>
+		<mx:Label x="13" y="300" text="{commonFunction.getConstants('addLogicalCondition1')}{commonFunction.getConstants('addLogicalCondition2')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:RadioButton x="13" y="321" label="{commonFunction.getConstants('and')}" fontFamily="Georgia" groupName="Logical" id="radioAnd"/>
+		<mx:RadioButton x="83" y="321" label="{commonFunction.getConstants('or')}" fontFamily="Georgia" groupName="Logical" id="radioOr"/>
+		<mx:Button x="127" y="354" label="{commonFunction.getConstants('cancelButton')}" fontFamily="Georgia" id="cancelBtn" mouseDown="onMouseDown('Cancel')" mouseUp="onMouseUp('Cancel')" mouseOut="omMouseOut('Cancel')"  cornerRadius="6" width="99" height="25"/>
+		<mx:Button x="238" y="354" label="{commonFunction.getConstants('reset_button')}" fontFamily="Georgia" id="resetBtn" mouseDown="onMouseDown('Reset')" mouseUp="onMouseUp('Reset')" mouseOut="omMouseOut('Reset')"  cornerRadius="6" width="99" height="25"/>
+		<mx:Button x="16" y="354" label="{commonFunction.getConstants('okButton')}" fontFamily="Georgia" id="okBtn" mouseDown="onMouseDown('OK')" mouseUp="onMouseUp('OK')" mouseOut="omMouseOut('OK')"  cornerRadius="6" width="99" height="25"/>
+	</mx:Canvas>
+	<mx:Canvas x="12" y="412" width="611" height="193" fontFamily="Georgia" styleName="BorderCanvas">
+		<mx:DataGrid x="12" y="28" width="585" height="150" fontFamily="Verdana" id="grid" showScrollTips="true" dataTipField="true" editable="true">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('select')}" dataField="select" width="50" textAlign="center" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" selected="{data.select}" change="commonFunction.editDeleteEnable(event,outerDocument.grid,[],[outerDocument.deleteLink]);{data.select=!data.select}">
+								<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('tableFirstField')}" dataField="table1" showDataTips="true" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('columnFirstField')}" dataField="column1" showDataTips="true" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('expression')}" dataField="expression" showDataTips="true" editable="true"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('tableSecondField')}" dataField="table2" showDataTips="true" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('columnSecondField')}" dataField="column2" showDataTips="true" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('condition')}" dataField="condition" showDataTips="true" editable="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:LinkButton x="516" y="3" label="{commonFunction.getConstants('delete_link')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="deleteLink"  mouseDown="onMouseDown('deleteLink')" mouseUp="onMouseUp('deleteLink')"  mouseOut="omMouseOut('deleteLink')" themeColor="#CBC9C9" width="73" height="25" enabled="false"/>
+	</mx:Canvas>
+	<mx:Sequence id="closeEffect" effectEnd="{PopUpManager.removePopUp(this)}">
+        <mx:Parallel >
+            <mx:Zoom zoomWidthTo="0" zoomHeightTo="0" duration="800"/>
+            <mx:Fade duration="800"/>
+        </mx:Parallel>        
+    </mx:Sequence>
+</mx:TitleWindow>

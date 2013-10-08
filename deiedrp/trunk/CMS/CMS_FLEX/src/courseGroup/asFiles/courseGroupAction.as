@@ -259,10 +259,10 @@ public function getSemesterSuccess(event:ResultEvent):void{
 	
 	var detailslist:ArrayCollection =new ArrayCollection();
 	
-	for each (var o:Object in semesterDetails.role)
-	{
-		detailslist.addItem({id:o.id,description:o.description});	
-	}
+	for each (var o:Object in semesterDetails.semesterDetail)
+    {
+    detailslist.addItem({id:o.semesterCode,description:o.semesterName});
+    }
 	semesterCombo.dataProvider = detailslist;
 	semesterCombo.labelField="description";
 	semesterCombo.selectedIndex=-1;

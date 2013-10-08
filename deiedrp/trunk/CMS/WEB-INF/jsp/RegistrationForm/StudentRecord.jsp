@@ -197,6 +197,39 @@
 	<motherLastName>
 	<c:out value="${StudentDetails.motherLastName}" />
 	</motherLastName>
+	<rollNumberGroupCode>
+	<c:out value="${StudentDetails.rollNumberGroupCode}"/>
+	</rollNumberGroupCode>
+	<longField>
+	<c:out value="${StudentDetails.longField}"/>
+	</longField>
+	<startDate>
+	<c:out value="${StudentDetails.startDate}"/>
+	</startDate>
+	<endDate>
+	<c:out value="${StudentDetails.endDate}"/>
+	</endDate>	
+	<address>
+	<c:out value="${StudentDetails.perAddress}" />
+	</address>
+	<city>
+	<c:out value="${StudentDetails.perCity}" />
+	</city>
+	<state>
+	<c:out value="${StudentDetails.perState}" />
+	</state>
+	<pincode>
+	<c:out value="${StudentDetails.perPincode}"/>
+	</pincode>	
+	<homePhone>
+	<c:out value="${StudentDetails.extraPhone}"/>
+	</homePhone>
+	<otherPhone>
+	<c:out value="${StudentDetails.otherPhone}"/>
+	</otherPhone>
+	<admissionMode>
+	<c:out value="${StudentDetails.admissionMode}"/>
+	</admissionMode>
 	</student>
 
 </c:forEach>

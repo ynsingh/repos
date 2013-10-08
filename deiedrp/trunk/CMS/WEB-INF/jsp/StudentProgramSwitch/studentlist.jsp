@@ -51,8 +51,10 @@
 <switchstatus><c:out value="${record.switchstatus}"/></switchstatus>
 <processstatus><c:out value="${record.processstatus}"/></processstatus>
 <registrationduedate><c:out value="${record.registrationduedate}"/></registrationduedate>
-
-
+<soprogram><c:out value="${record.soprogram}"/></soprogram>
+<sobranch><c:out value="${record.sobranch}"/></sobranch>
+<sospecialization><c:out value="${record.sospecialization}"/></sospecialization>
+<sosemester><c:out value="${record.sosemester}"/></sosemester>
 </student>
 
 </c:forEach>

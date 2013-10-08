@@ -136,6 +136,7 @@ public class PrintReport extends SqlMapClientDaoSupport{
 					result = printPDFFile.print(reportPrintBean);				
 				} catch (Exception e) {
 					System.out.println("inside printPDFDoc exception");
+                    e.printStackTrace();
 					result = "false";
 					//break;
 				}
@@ -145,6 +146,7 @@ public class PrintReport extends SqlMapClientDaoSupport{
 					result = "true";
 				} catch (Exception e) {
 					System.out.println("inside printPDFDoc exception of doc");
+                    e.printStackTrace();
 					result = "false";
 				}					
 				//System.getRuntime().exec("start /min winword \"" + fileName + "\" /q /n /f /mFilePrint /mFileExit");								
@@ -204,10 +206,11 @@ public class PrintReport extends SqlMapClientDaoSupport{
 		
 		if(progressCardInfo.getSelectedService() == null){
 			pjob.printDialog();
-			selectedService = pjob.getPrintService();		
+			selectedService = pjob.getPrintService();	
+            System.out.println("selected service after dialog box "+selectedService);
 			progressCardInfo.setSelectedService(selectedService);
 		}
-		System.out.println("after getselectedservice null if ");
+		System.out.println("after getselectedservice null if selective service si "+selectedService);
 		 // Open the image file	    
 		try {
 			/*InputStream  is = new BufferedInputStream(new FileInputStream(progressCardInfo.getFileName()));		

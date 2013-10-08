@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) RegistrationForInsAndAdmin.mxml
+ * Author : Upasana
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="834" height="548" title="{resourceManager.getString('Constants','registrationInstAdmin')}" layout="absolute" creationComplete="initFields();">
+<mx:XML id="stateCity" source="/common/stateCity.xml" format="e4x"/>
+<mx:Script>
+
+	<![CDATA[
+		import common.commonFunction;
+		import mx.formatters.DateFormatter;
+		
+		public var city:String="";
+		public var state:String="";
+		public var btn:Button;
+		public var validationRequired:Boolean=false;
+		
+		//Setting city in combobox
+			private function setCity():void
+			{
+				cityField.dataProvider=stateCity.countries.state.(@name==stateField.selectedLabel).city;
+				cityField.selectedItem=city;
+			}
+			
+			//on Init of Page
+			private function initFields():void
+			{
+				country.dataProvider=stateCity.countries.@name;
+			}
+			private function setState():void
+			{
+				stateField.dataProvider=stateCity.countries.(@name==country.selectedLabel).state.@name;
+			}
+			private function checkPass():void{
+				if(confirmPass.text!=password.text){
+					confirmPass.errorString="Password should match";
+				}
+				else confirmPass.errorString="";
+			}
+	]]>
+</mx:Script>
+
+<mx:Script source="asFiles/InstituteAdminRegistration.as"/>
+<mx:HTTPService id="insertIntoInstituteAdmin" method="POST"
+					url="{commonFunction.getConstants('url')}/registrationForInstAndAdmin/insertIntoInstituteAdmin.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:TitleWindow x="10" y="10" width="794" height="251" layout="absolute" styleName="DetailTitleWindow" title="Institute Details">
+	
+		<mx:Label x="10" y="5" text="Institute Name:" width="113" height="20" fontWeight="normal"/>
+		<mx:TextInput x="160" y="3" width="193" id="instituteName" restrict="a-z () A-Z"/>
+		<mx:Label x="398" y="5" text="Institute Nick Name :"/>
+		<mx:TextInput x="539" y="3" width="188" id="instituteNickName" maxChars="3" restrict="a-zA-Z"/>
+		<mx:Label x="10" y="33" text="Institute Type:" width="113" fontWeight="normal"/>
+		<mx:TextInput x="160" y="31" width="193" id="instituteType" restrict="a-z () A-Z"/>
+		<mx:Label x="398" y="33" text="Institute  Domain :" fontWeight="normal"/>
+		<mx:TextInput x="539" y="31" width="188" id="instituteDomain" restrict="a-z () A-Z"/>
+		<mx:Label x="10" y="60" text="Institute Address:" width="128"/>
+		<mx:TextArea change="chars.text=(100-address.text.length)+' Char Left'" restrict="0-9 a-z A-Z - #   / , . + ( ) _" x="160" y="59" width="193" height="80" id="address" maxChars="100" />
+		<mx:Label fontSize="9" color="#FF0000" id="chars" x="10" y="90" text="{(100-address.text.length)} Char Left"/>
+		<mx:Label x="398" y="62" text="Institute Country:" width="128"/>
+		<mx:ComboBox x="539" y="60" width="188" id="country" toolTip="{country.text}" prompt="{commonFunction.getConstants('select')}" text="India" change="setState()"/>
+		<mx:Label x="398" y="92" text="Institute State :" width="121"/>
+		<mx:ComboBox x="539" y="90" width="188" id="stateField" toolTip="{stateField.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="setCity()"/>
+		<mx:Label x="398" y="122" text="Institute City:" width="121"/>
+		<mx:ComboBox x="539" y="120" width="188" id="cityField" toolTip="{cityField.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" />
+		<mx:Label x="10" y="145" text="Institute Pincode:" width="121"/>
+		<mx:TextInput x="161" y="143" width="192" id="pincode" maxChars="6" fontFamily="Times New Roman" fontSize="15" restrict="0-9"/>
+		<mx:Label x="10" y="178" text="Institute Phone :"/>
+		<mx:TextInput x="160" y="175" width="193" id="phoneNumber" restrict="0-9" maxChars="20"/>
+		<mx:Label x="398" y="176" text="Other Phone : "/>
+		<mx:TextInput x="539" y="174" width="188" id="otherPhone" restrict="0-9" maxChars="20"/>
+	</mx:TitleWindow>
+	<mx:TitleWindow x="10" y="269" width="794" height="150" layout="absolute" styleName="DetailTitleWindow" title="Administrator Details">
+		<mx:Label x="10" y="5" text="First Name: "/>
+		<mx:TextInput x="157" y="3" width="195" id="adminName" restrict="a-z () A-Z"/>
+		<mx:Label x="401" y="5" text="Last Name :" width="116"/>
+		<mx:TextInput x="537" y="3" width="192" id="adminLastName" restrict="a-z () A-Z"/>
+		<mx:Label x="10" y="33" text="Designation :"/>
+		<mx:TextInput x="157" y="31" width="195" id="adminDesignation" restrict="a-z () A-Z"/>
+		<mx:Label x="401" y="33" text="Email Id:"/>
+		<mx:TextInput x="537" y="31" width="192" id="adminEmail" />
+		<mx:Label x="10" y="61" text="Password:"/>
+		<mx:TextInput x="157" y="59" width="195" id="password" displayAsPassword="true"/>
+		<mx:Label x="401" y="61" text="Confirm Password:" width="128"/>
+		<mx:TextInput x="537" y="59" width="192" id="confirmPass" focusOut="checkPass()" displayAsPassword="true"/>
+	
+	</mx:TitleWindow>
+	<mx:Button x="218" y="436" label="{commonFunction.getConstants('submitButton')}" id="submitButton" click="saveForm()"/>
+	<mx:Button x="468" y="436" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelButtonAction()" />
+	
+	<mx:StringValidator source="{instituteName}" id="institutenamevalid" property="text" required="true"/>
+	<mx:StringValidator source="{instituteNickName}" id="institutenicknamevalid" property="text" required="true"/>
+	<mx:StringValidator source="{instituteType}" id="institutetypevalid" property="text" required="true"/>
+	<mx:StringValidator source="{instituteDomain}" id="institutedomainvalid" property="text" required="true"/>
+	
+	<mx:Validator source="{address}" id="addressvalidator" property="text" required="true"/>
+	<mx:StringValidator source="{stateField}" id="statevalidator" property="selectedLabel" trigger="{submitButton}" triggerEvent="click" required="true" />
+	<mx:StringValidator source="{cityField}" id="cityvalidator" property="selectedLabel"  trigger="{submitButton}" triggerEvent="click" required="true"/>
+	<mx:StringValidator source="{country}" id="countryvalid" property="selectedLabel" trigger="{submitButton}" triggerEvent="click" required="true"/>
+	
+	<mx:StringValidator source="{pincode}" id="pincodevalid" property="text" required="true"/>
+	<mx:StringValidator source="{adminName}" id="adminnamevalid" property="text" required="true"/>
+	<mx:StringValidator source="{adminLastName}" id="adminlastnamevalid" property="text" required="true"/>
+	<mx:StringValidator source="{adminDesignation}" id="admindesignationvalid" property="text" required="true"/>
+	<mx:EmailValidator source="{adminEmail}" id="adminemailvalid" property="text" required="true"/>
+	<mx:StringValidator source="{password}" id="passwordvalid" property="text" required="true"/>
+	<mx:StringValidator source="{confirmPass}" id="matchpassword" property="text" required="true"/>
+	
+	<mx:StringValidator source="{phoneNumber}" id="instphonevalid" minLength="10" maxLength="20" property="text" required="true"/>
+	<mx:StringValidator source="{otherPhone}" id="otherphonevalid" minLength="10" maxLength="20" property="text" required="false"/>
+	
+</mx:Panel>

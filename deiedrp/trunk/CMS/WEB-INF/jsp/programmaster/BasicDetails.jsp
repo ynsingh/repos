@@ -60,6 +60,8 @@
 <creditRequired><c:out value="${programList.creditRequired}"/></creditRequired>
 <fixedOrVariableCredit><c:out value="${programList.fixedOrVariableCredit}"/></fixedOrVariableCredit>
 <programDescription><c:out value="${programList.programDescription}"/></programDescription>
+<domainName><c:out value="${programList.domainName}"/></domainName>
+<domainCode><c:out value="${programList.domainCode}"/></domainCode>
 </program>
 
 </c:forEach>

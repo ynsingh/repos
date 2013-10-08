@@ -348,6 +348,7 @@ and stt.dummy_flag_one=stt1.dummy_flag_one ;-->
   WHERE stt.group_code='RPORTS' and ra.report_code=stt.component_code and ui.user_id=#userId#
         and ui.user_group_id=ra.user_role_id and stt1.group_code='REPTYP' AND stt.dummy_flag_two='GN'
         and stt.dummy_flag_three=stt1.component_code
+        and ui.application='CMS'
         order by cast(ra.report_code as signed);
 	</select>
 	

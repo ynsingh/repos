@@ -52,6 +52,7 @@
 			FROM program_course_header 
 			WHERE program_id=#programCode# AND branch_id=#branchCode#
 			AND specialization_id=#specializationCode# AND semester_code=#semesterCode# AND semester_status='ACT'
+			AND cm.university_code=#universityCode#
 		);
     </select>
 

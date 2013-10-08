@@ -67,6 +67,30 @@ public class Login {
 	private String enrollExtendDays;
 	private String regDays;
 	private String regExtDays;
+	private int maxLogins;
+	private int count;
+	private String value;
+	private String dummyFlagOne;
+	private String componentCode;
+	private String lastModifiedDate;
+	private int attempt;
+	private String sequence;
+	private String oldPassword;
+	
+	public int getMaxLogins() {
+		return maxLogins;
+	}
+
+	public void setMaxLogins(int maxLogins) {
+		this.maxLogins = maxLogins;
+	}
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 	
 	public String getNickName() {
 		return nickName;
@@ -371,5 +395,103 @@ public class Login {
 	 */
 	public void setRegExtDays(String regExtDays) {
 		this.regExtDays = regExtDays;
+	}
+
+	/**
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value the value to set
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * @return the dummyFlagOne
+	 */
+	public String getDummyFlagOne() {
+		return dummyFlagOne;
+	}
+
+	/**
+	 * @param dummyFlagOne the dummyFlagOne to set
+	 */
+	public void setDummyFlagOne(String dummyFlagOne) {
+		this.dummyFlagOne = dummyFlagOne;
+	}
+
+	/**
+	 * @return the componentCode
+	 */
+	public String getComponentCode() {
+		return componentCode;
+	}
+
+	/**
+	 * @param componentCode the componentCode to set
+	 */
+	public void setComponentCode(String componentCode) {
+		this.componentCode = componentCode;
+	}
+
+	/**
+	 * @return the lastModifiedDate
+	 */
+	public String getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+
+	/**
+	 * @param lastModifiedDate the lastModifiedDate to set
+	 */
+	public void setLastModifiedDate(String lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	/**
+	 * @return the attempt
+	 */
+	public int getAttempt() {
+		return attempt;
+	}
+
+	/**
+	 * @param attempt the attempt to set
+	 */
+	public void setAttempt(int attempt) {
+		this.attempt = attempt;
+	}
+
+	/**
+	 * @return the sequence
+	 */
+	public String getSequence() {
+		return sequence;
+	}
+
+	/**
+	 * @param sequence the sequence to set
+	 */
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
+
+	/**
+	 * @return the oldPassword
+	 */
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	/**
+	 * @param oldPassword the oldPassword to set
+	 */
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
 	}
 }

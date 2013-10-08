@@ -126,6 +126,7 @@ public class AwardBlankRequestResolved extends MultiActionController {
 	        inputObj.setCreatorId(session.getAttribute("userId").toString());
 	        inputObj.setUniversityId(session.getAttribute("userId").toString().substring(1, 5));
 	        inputObj.setDisplayType(request.getParameter("displayType"));
+	        inputObj.setCourseCode(request.getParameter("courseCode"));
 
 	        List<AwardSheetInfoGetter> courseList =  awardBlankRequestResolvedDao.getCourseList(inputObj);
 	        return new ModelAndView("awardsheet/CourseList", "result", courseList);

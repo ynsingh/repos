@@ -74,7 +74,9 @@ public class ConsolidatedChartBean {
 	private String componentId;
 	private String componentDescription;
 	private String groupCode;
-
+	private String cgpa;
+	private String isFinalSem;    
+    private String division;
 	/** defining setter and getter method for private variable **/
 	public String getComponentId() {
 		return componentId;
@@ -346,5 +348,35 @@ public class ConsolidatedChartBean {
 
 	public String getFinalGr() {
 		return finalGr;
+	}
+
+	public String getCgpa() {
+		return cgpa;
+	}
+
+	public void setCgpa(String cgpa) {
+		this.cgpa = cgpa;
+	}
+
+	public String getIsFinalSem() {
+		return isFinalSem;
+	}
+
+	public void setIsFinalSem(String isFinalSem) {
+		this.isFinalSem = isFinalSem;
+	}
+
+	/**
+	 * @return the division
+	 */
+	public String getDivision() {
+		return division;
+	}
+
+	/**
+	 * @param division the division to set
+	 */
+	public void setDivision(String division) {
+		this.division = division;
 	}
 }

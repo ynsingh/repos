@@ -106,5 +106,7 @@ public interface RoleConnect {
 	 * @return List
 	 */
 	List<UnivRoleInfoGetter> getUniversitieswithLogins(UnivRoleInfoGetter input);
+
+	List<UnivRoleInfoGetter> getUniversityUserRoles(UnivRoleInfoGetter input);
    
 }

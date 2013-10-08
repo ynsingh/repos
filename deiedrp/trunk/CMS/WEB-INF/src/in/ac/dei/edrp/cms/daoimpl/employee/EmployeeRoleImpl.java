@@ -34,6 +34,7 @@ package in.ac.dei.edrp.cms.daoimpl.employee;
 
 import in.ac.dei.edrp.cms.dao.employee.EmployeeRoleConnect;
 import in.ac.dei.edrp.cms.domain.employee.EmployeeRoleInfoGetter;
+import in.ac.dei.edrp.cms.domain.login.Login;
 
 import org.apache.log4j.Logger;
 
@@ -111,6 +112,8 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 			EmployeeRoleInfoGetter input) {
 		
 		input.setUniversityCode(input.getUserId().substring(1,5));
+		//DS
+		String universityId = input.getUserId().substring(1,5);
 		try {
 
 			EmployeeRoleInfoGetter employeeRoleInfoGetter = new EmployeeRoleInfoGetter();
@@ -135,9 +138,9 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 			if (employeeRoleInfoGetter == null) {
 
 				String password = generatePassword();
-
+				//DS
 				sendMailtoUser(input.getEmployeeCode(), password, input
-						.getPrimaryEmailId(), input.getRoleDescription());
+						.getPrimaryEmailId(), input.getRoleDescription(), universityId);
 
 				input.setPassword(password);
 				input.setComponentId(password);
@@ -147,11 +150,11 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 						"assignroletoemployee.insertemployeerole", input);
 
 			} else {
-
+				//DS
 				sendMailtoUser(input.getEmployeeCode(),
 						"You can use the same password for all logins", input
 								.getPrimaryEmailId(), input
-								.getRoleDescription());
+								.getRoleDescription(), universityId);
 
 				input.setPassword(employeeRoleInfoGetter.getPassword());
 				input.setComponentId(employeeRoleInfoGetter.getPassword());
@@ -241,7 +244,7 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 	 * @return String
 	 */
 	public String sendMailtoUser(String userName, String password,
-			String email, String role) {
+			String email, String role, String universityId) {
 		String text = "Your Account Information is as follows :" + "\n"
 				+ "Role :" + role + "\n" + "userName :" + userName + "\n"
 				+ "Password :" + password;
@@ -253,7 +256,7 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 		String subject = resourceBundle.getString("subject");
 
 		try {			
-			sendmail.main(text, to, from, subject);
+			sendmail.main(text, to, subject, universityId);
 
 			return "success";
 		} catch (Exception e) {
@@ -579,15 +582,16 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 	public String ResetEmployeePassword(EmployeeRoleInfoGetter input) {
 		
 		String success="failure";
-		
+		//DS
+		String universityId = input.getUniversityCode();
 		try{
 			
 			String password = generatePassword();
 			
 			if(!input.getPrimaryEmailId().equalsIgnoreCase("")){
-				
+				//DS
 				sendMailtoUser(input.getEmployeeCode(), password, input
-						.getPrimaryEmailId(), "Unchanged");
+						.getPrimaryEmailId(), "Unchanged", universityId);
 				
 			}			
 			input.setPassword(password);
@@ -599,11 +603,13 @@ public class EmployeeRoleImpl extends SqlMapClientDaoSupport implements
 				
 				success = password;			
 				
-			}else{
-				
-				getSqlMapClientTemplate().update(
-						"assignroletoemployee.resetpassword", input);
-				
+			}else{				
+				getSqlMapClientTemplate().update("assignroletoemployee.resetpassword", input);
+				Login login=new Login();
+				login.setAttempt(0);
+				login.setUserName(input.getEmployeeCode());
+				login.setApplication(input.getStatus());
+				getSqlMapClientTemplate().update("login.updatetLoginAttempt", login);
 				success = password;				
 			}		
 			

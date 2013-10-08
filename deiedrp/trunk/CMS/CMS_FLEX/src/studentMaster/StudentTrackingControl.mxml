@@ -87,7 +87,7 @@
 	<mx:Panel id="mainPanel" x="10" y="10" width="477" height="195" layout="absolute">
 		<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','rollNumber')+'*'}" width="117" fontWeight="bold" id="usernameid"/>
 		<mx:TextInput x="135" y="8" id="empId" focusOut="ddd()" />
-		<mx:CheckBox x="135" y="38" label="forget username" change="checkBoxChange()" id="checkBoxId"/>
+		<mx:CheckBox x="135" y="38" label="Forgot Roll Number" change="checkBoxChange()" id="checkBoxId"/>
 		<!--<mx:Label x="10" y="68" text="User Type*" fontWeight="bold"/>
 		<mx:ComboBox x="135" y="63" id="userType" dataProvider="{userTypeXml.id.@name}" prompt="Select" selectedIndex="-1" change="onComboChange()" toolTip="{userType.text}"/>		-->
 		<mx:TitleWindow x="10" y="5" width="359" height="140" visible="false" id="detailsCanvas" title="Search Criteria" styleName="DetailTitleWindow" layout="absolute">

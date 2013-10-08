@@ -100,8 +100,12 @@ public class ResultStatisticsGeneration extends AbstractPdfView {
 		String reportResult="";
 	try{	
 		List<ResultStatisticsInfo> outputList = (List<ResultStatisticsInfo>) map.get("outputList");
-		ResultStatisticsInfo headerData = outputList.get(outputList.size() - 1);
+		ResultStatisticsInfo headerData = outputList.get(outputList.size() - 1);		
 		outputList.remove(outputList.size() - 1);		
+		//*********nupur **************	
+		ResultStatisticsInfo facultyTotal = outputList.get(outputList.size() - 1);
+		outputList.remove(outputList.size() - 1);		
+		//**********nupur end ***************
 		String universityName = session.getAttribute("universityName") + "";
 		String universitySession = session.getAttribute("startDate").toString().substring(0, 4)+ "-"+ session.getAttribute("endDate").toString().substring(0, 4);
 		String reportSession = headerData.getSessionStartDate().substring(0, 4)+ "-" + headerData.getSessionEndDate().substring(2, 4);
@@ -190,6 +194,7 @@ public class ResultStatisticsGeneration extends AbstractPdfView {
 		footer.setBorderWidth(0);
 
 		Font dataCellFont = FontFactory.getFont("UTF-8", 8, Font.NORMAL,new Color(0, 0, 0));
+		Font dataHeadFont = FontFactory.getFont("UTF-8", 8, Font.BOLD,new Color(0, 0, 0));
 
 		PdfPTable dataTable = new PdfPTable(new float[] { 4.2f, 2.5f, 2.4f,2.4f, 1.1f, 2.6f, 1.9f, 1.3f, 1, 1, 1.2f, 3, 3, 3, 2 });
 		dataTable.setWidthPercentage(100f);
@@ -221,7 +226,31 @@ public class ResultStatisticsGeneration extends AbstractPdfView {
 			addCell(dataCellFont, dataTable, rowData.getFailedAt2());
 			addCell(dataCellFont,dataTable,String.valueOf(String.format("%.2f",
 							Double.parseDouble(rowData.getPassPercentage()))));
-		}
+		}	
+		//************nupur code ***************//
+		PdfPCell c1 = new PdfPCell(new Phrase(line+"_____________________________________________________",dataHeadFont ));
+		c1.setBorder(0);
+		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		c1.setVerticalAlignment(Element.ALIGN_BOTTOM);
+		c1.setColspan(15);
+		dataTable.addCell(c1);
+		addCell(dataCellFont, dataTable, " ");
+		addCell(dataHeadFont, dataTable, facultyTotal.getGender());
+		addCell(dataCellFont, dataTable, facultyTotal.getEnrolled());
+		addCell(dataCellFont, dataTable, facultyTotal.getAppeared());
+		addCell(dataCellFont, dataTable, facultyTotal.getUfm());
+		addCell(dataCellFont, dataTable, facultyTotal.getIncomplete());
+		addCell(dataCellFont, dataTable, facultyTotal.getPassed());
+		addCell(dataCellFont, dataTable, facultyTotal.getFstDic());
+		addCell(dataCellFont, dataTable, facultyTotal.getFstDiv());
+		addCell(dataCellFont, dataTable, facultyTotal.getScndDiv());
+		addCell(dataCellFont, dataTable, " ");
+		addCell(dataCellFont, dataTable, facultyTotal.getRemedial());
+		addCell(dataCellFont, dataTable, facultyTotal.getFailedAt1());
+		addCell(dataCellFont, dataTable, facultyTotal.getFailedAt2());
+		addCell(dataCellFont,dataTable,String.valueOf(String.format("%.2f",
+						Double.parseDouble(facultyTotal.getPassPercentage()))));
+		//********** nupur code end **********************//
 		document.setHeader(header);
 		document.setFooter(footer);
 		document.open();

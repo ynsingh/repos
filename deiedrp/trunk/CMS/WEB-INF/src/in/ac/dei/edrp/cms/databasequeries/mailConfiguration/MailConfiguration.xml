@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+    <sqlMap namespace="mailConfiguration">
+    
+    	<select id="getExistingConfigurationDetails" resultClass="in.ac.dei.edrp.cms.domain.mailConfiguration.MailConfigurationDomain">
+			SELECT university_id AS universityId, smtp_address AS smtpAddress, smtp_port AS smtpPort, user_name AS userName, password AS password
+			FROM mail_configuration WHERE university_id=#universityId#;
+		</select>
+		
+		<update id="updateExistingConfigurationDetails">
+			UPDATE mail_configuration SET smtp_address=#smtpAddress#, smtp_port=#smtpPort#, user_name=#userName#, password=#password#,
+			modifier_id=#modifierId#, modification_time=now() WHERE university_id=#universityId#;
+		</update>
+		
+		<insert id="insertConfigurationDetails">
+			INSERT INTO mail_configuration (university_id, smtp_address, smtp_port, user_name, password, creator_id, creation_time)
+			VALUES (#universityId#,#smtpAddress#,#smtpPort#,#userName#,#password#,#creatorId#,now());
+		</insert>
+    </sqlMap>

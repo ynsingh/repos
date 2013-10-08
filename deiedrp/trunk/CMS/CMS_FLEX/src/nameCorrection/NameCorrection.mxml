@@ -33,7 +33,8 @@
  * Contributors: Members of EdRP, Dayalbagh Educational Institute
  */
  -->
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="common.*" title="{commonFunction.getConstants('postRegistrationNameCorrection')}" creationComplete="setDateRangeAndFocus()" width="912" height="511">
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="common.*" title="{commonFunction.getConstants('postRegistrationNameCorrection')}" creationComplete="setDateRangeAndFocus()" width="912" height="511"
+	xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
 	<mx:Script>
 		<![CDATA[
 			import common.commonFunction;
@@ -93,12 +94,12 @@
 	<mx:Canvas styleName="GridCanvas" id="processGridCanvas"  x="67" y="255" width="763" height="185" visible="true">
 		
 		<mx:LinkButton x="673" y="8" enabled="false" visible="true" label="{commonFunction.getConstants('editButton')}" height="25" id="getButton" click="openCorrectionWindow()" width="78"/>
-		<mx:DataGrid  x="19" y="35" id="errorRecordGrid" width="715" height="129" 
+		<controls:MDataGrid  x="19" y="35" id="errorRecordGrid" width="715" height="129" 
 			visible="true" sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" >
-		<mx:columns>
-		<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" 
+		<controls:columns>
+		<dataGridClasses:MDataGridColumn rendererIsEditor="true" textAlign="center" sortable="false" 
 						    editorDataField="selected" dataField="select" headerText=" ">
-		<mx:itemRenderer>
+		<dataGridClasses:itemRenderer>
    		<mx:Component>
    		<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.errorRecordGrid,[outerDocument.getButton],[new LinkButton])">
  		<mx:Script>
@@ -109,13 +110,18 @@
        </mx:Script>
        </mx:CheckBox>
        </mx:Component>
-       </mx:itemRenderer>
-       </mx:DataGridColumn>
-	   <mx:DataGridColumn editable="false"  dataField="registrationNo" headerText="{commonFunction.getConstants('registraionNo')}" width="300" sortable="true" showDataTips="true"/>
-	   <mx:DataGridColumn editable="false" dataField="studentName" headerText="{commonFunction.getConstants('studentName')}" width="380" sortable="true" showDataTips="true"/>
-	   <mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="400" sortable="true" showDataTips="true"/>
-	   </mx:columns>
-	   </mx:DataGrid>
+       </dataGridClasses:itemRenderer>
+       <dataGridClasses:headerRenderer>
+       		<mx:Component>
+       			<mx:Label/>
+       		</mx:Component>
+       </dataGridClasses:headerRenderer>
+       </dataGridClasses:MDataGridColumn>
+	   <dataGridClasses:MDataGridColumn editable="false"  dataField="registrationNo" headerText="{commonFunction.getConstants('registraionNo')}" width="300" sortable="true" showDataTips="true"/>
+	   <dataGridClasses:MDataGridColumn editable="false" dataField="studentName" headerText="{commonFunction.getConstants('studentName')}" width="380" sortable="true" showDataTips="true"/>
+	   <dataGridClasses:MDataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="400" sortable="true" showDataTips="true"/>
+	   </controls:columns>
+	   </controls:MDataGrid>
 		<mx:Label x="19" y="11" text="{commonFunction.getConstants('errorRecords')}"/>
 		<mx:Label x="141" y="11" id="gridLabel"/>
 	  </mx:Canvas>

@@ -54,6 +54,7 @@
 <userGroupName><c:out value="${record.userGroupName}"/></userGroupName>
 <startDate><c:out value="${record.startDate}"/></startDate>
 <endDate><c:out value="${record.endDate}"/></endDate>
+<application><c:out value="${record.application}"/></application>
 
 </loginInfo>
 

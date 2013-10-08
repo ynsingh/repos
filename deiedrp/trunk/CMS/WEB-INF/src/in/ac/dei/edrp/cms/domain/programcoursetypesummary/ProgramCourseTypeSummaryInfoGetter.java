@@ -59,8 +59,8 @@ public class ProgramCourseTypeSummaryInfoGetter {
     private String semesterGroupCode;
     private String programCourseKey;
     private String activityFlag;
-    private int minCredits;
-    private int maxCredits;
+    private String minCredits;
+    private String maxCredits;
     private String creatorId;
     private String creationTime;
     private String modifierId;
@@ -68,7 +68,7 @@ public class ProgramCourseTypeSummaryInfoGetter {
     private String entityId;//Add by Devendra
     private String entityName;//Add by Devendra
     private String universityId;//Add by Devendra
-    
+    private String semesterSequence; // added by Nupur
     
     /**
 	 * @return the universityId
@@ -134,19 +134,19 @@ public class ProgramCourseTypeSummaryInfoGetter {
         this.programCourseKey = programCourseKey;
     }
 
-    public int getMinCredits() {
+    public String getMinCredits() {
         return minCredits;
     }
 
-    public void setMinCredits(int minCredits) {
+    public void setMinCredits(String minCredits) {
         this.minCredits = minCredits;
     }
 
-    public int getMaxCredits() {
+    public String getMaxCredits() {
         return maxCredits;
     }
 
-    public void setMaxCredits(int maxCredits) {
+    public void setMaxCredits(String maxCredits) {
         this.maxCredits = maxCredits;
     }
 
@@ -309,4 +309,12 @@ public class ProgramCourseTypeSummaryInfoGetter {
     public void setModificationTime(String modificationTime) {
         this.modificationTime = modificationTime;
     }
+
+	public void setSemesterSequence(String semesterSequence) {
+		this.semesterSequence = semesterSequence;
+	}
+
+	public String getSemesterSequence() {
+		return semesterSequence;
+	}
 }

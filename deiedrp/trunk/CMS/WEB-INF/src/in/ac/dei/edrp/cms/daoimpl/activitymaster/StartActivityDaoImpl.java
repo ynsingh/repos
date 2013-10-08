@@ -643,7 +643,8 @@ public class StartActivityDaoImpl implements StartActivityDao {
 												System.out.println("total course record"
 														+ courseList.size());
 
-												List<String> errorList = new ArrayList<String>();
+												List<UnProcessedStduent> errorList = new ArrayList<UnProcessedStduent>();
+												
 												Boolean bool = true;
 
 												for (int i = 0; i < courseList.size(); i++) {
@@ -657,7 +658,10 @@ public class StartActivityDaoImpl implements StartActivityDao {
 
 													if (Integer.parseInt(countAPR.getTotal()) <= Integer
 															.parseInt(courseList.get(i).getStatus())) {
-														errorList.add(courseList.get(i).getCourseCode());
+														UnProcessedStduent errorBean = new UnProcessedStduent();
+														errorBean.setRollNumber(courseList.get(i).getCourseCode());
+														errorBean.setProcessed("Award Blank Not Approved By Higher Approval Order Authorities");
+														errorList.add(errorBean);
 														bool = false;
 													}
 												}
@@ -669,7 +673,7 @@ public class StartActivityDaoImpl implements StartActivityDao {
 												System.out.println("is completed " + bool);
 												countList = new CountProcessRecorList(courseList.size(),
 														courseList.size() - errorList.size(),
-														errorList.size(), errorList.size(), bool);
+														errorList.size(), bool, errorList);
 
 
 
@@ -681,7 +685,7 @@ public class StartActivityDaoImpl implements StartActivityDao {
 					List<PreProcessCourseList> semesterList = sqlMapClient
 							.queryForList("remedialProcess.getSemesterList",
 									startActivityBean);
-					List<String> errorList = new ArrayList<String>();
+					List<UnProcessedStduent> errorList = new ArrayList<UnProcessedStduent>();
 					Integer total=0;
 					Boolean bool = true;
 
@@ -719,7 +723,10 @@ public class StartActivityDaoImpl implements StartActivityDao {
 											input);
 
 							if (Integer.parseInt(countAPR.getTotal()) <= 0) {
-								errorList.add(courseList.get(j).getCourseCode());
+								UnProcessedStduent errorBean = new UnProcessedStduent();
+								errorBean.setRollNumber(courseList.get(i).getCourseCode());
+								errorBean.setProcessed("Award Blank Not Approved By Higher Approval Order Authorities");
+								errorList.add(errorBean);
 								bool = false;
 							}
 						}
@@ -732,7 +739,7 @@ public class StartActivityDaoImpl implements StartActivityDao {
 					System.out.println("is completed " + bool);
 					countList = new CountProcessRecorList(total,
 							total - errorList.size(),
-							errorList.size(), errorList.size(), bool);
+							errorList.size(), bool, errorList);
 			}
 						}
 
@@ -958,5 +965,16 @@ public class StartActivityDaoImpl implements StartActivityDao {
 		c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 		c1.setVerticalAlignment(Element.ALIGN_TOP);
 		chartTable.addCell(c1);
+	}
+
+	public List<StartActivityBean> getMailUsers() {
+		List<StartActivityBean> mailUsers = null;
+		try{
+			mailUsers = sqlMapClient.queryForList("startActivity.getMailUsers");
+		}catch(Exception ex){
+			logger.info("Exception in getting mail users");
+			logger.error(ex);
+		}
+		return mailUsers;
 	}
 }

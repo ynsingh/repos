@@ -53,11 +53,11 @@ group by pcd.course_code;
 	student_master 
 	(university_code,student_id,enrollment_number,student_first_name,student_last_name,
 	primary_email_id,date_of_birth,category_code,gender,father_first_name,registered_in_session,status,
-	insert_time,creator_id,parent_entity) 
+	insert_time,creator_id,parent_entity,mother_first_name) 
 	values 
 	(#universityId#,#studentId#,#enrollmentNumber#,#studentFirstName#,#studentLastName#,
 	'XX','9999-01-01',#category#,#gender#,'XX',#yearOfRegistration#,
-	'ACT',now(),'manualProcess',#entityId#);
+	'ACT',now(),'manualProcess',#entityId#,'not available');
 </insert>
 
 <insert id="insertEnrollmentDetail">
@@ -73,7 +73,8 @@ group by pcd.course_code;
 
 <!--- Update data of system_values table --> 
  <update id="updateStudentId">
-   update system_values set value = #value# where code='FSTUID' and university_id=#universityId#;
+   update system_values set value = #value# ,modification_time=now(),modifier_id='manualProcess' 
+   where code='FSTUID' and university_id=#universityId#;
 </update> 
 
 <select id="selectStudentProgram" resultClass="studentUpload">
@@ -89,14 +90,20 @@ group by pcd.course_code;
 </select>
 
 <insert id="insertIntoStudentProgram">
-
+INSERT INTO student_program(cgpa,enrollment_number,roll_number,register_date,program_completion_date,current_semester,program_status,
+insert_time,creator_id,entity_id,program_id,branch_id,specialization_id,switch_number
+,sequence_number,in_semester,out_semester,mode_of_entry,division,switched_date,passed_from_session,passed_to_session,university_code) VALUES
+ (#CGPA#,#enrollmentNumber#,#rollNumber#,#registrationDate#,#semesterEndDate#,#semesterCode#
+ ,'ACT',now(),#creatorId#,#entityId#,#programId#,#branchId#,#specializationId#,NULL,NULL,'SM1',#finalSemesterCode#,'RG',
+ #division#,NULL,#passedFromSession#,#passedToSession#,#universityId#);
+<!-- 
 INSERT INTO student_program(cgpa,enrollment_number,roll_number,register_date,program_completion_date,current_semester,program_status,
 insert_time,creator_id,entity_id,program_id,branch_id,specialization_id,switch_number
 ,sequence_number,in_semester,out_semester,mode_of_entry,division,switched_date,passed_from_session,passed_to_session,university_code) VALUES
  (#CGPA#,#enrollmentNumber#,#rollNumber#,#registrationDate#,#semesterEndDate#,#semesterCode#
  ,#statusStudentProgram#,now(),#creatorId#,#entityId#,#programId#,#branchId#,#specializationId#,NULL,NULL,'SM1',#finalSemesterCode#,'RG',
  #division#,NULL,#passedFromSession#,#passedToSession#,#universityId#);
-
+ -->
 </insert>
 <!-- 
 <update id="updateStudentProgram">
@@ -110,9 +117,15 @@ where enrollment_number=#enrollmentNumber# and roll_number=#rollNumber#;
 <update id="updateStudentProgram">
 
 UPDATE student_program
+set program_completion_date=#semesterEndDate#,current_semester=#semesterCode#,
+modification_time=now(),modifier_id='manualProcess',division=#division#,passed_from_session=#passedFromSession#,passed_to_session=#passedToSession#
+where enrollment_number=#enrollmentNumber# and roll_number=#rollNumber#;
+<!-- 
+UPDATE student_program
 set program_completion_date=#semesterEndDate#,current_semester=#semesterCode#,program_status=#statusStudentProgram#,
 modification_time=now(),modifier_id='manualProcess',division=#division#,passed_from_session=#passedFromSession#,passed_to_session=#passedToSession#
 where enrollment_number=#enrollmentNumber# and roll_number=#rollNumber#;
+ -->
 </update>
 
 <insert id = "insertIntoSRSH">
@@ -141,6 +154,22 @@ program_course_key=#programCourseKey#;
 <update id = "updateFirstSRSH">
 UPDATE student_registration_semester_header
 set 
+register_Date=#registrationDate#,status=#statusSRSH#,modification_time=now(),modifier_id=#creatorId#,
+roll_number=#rollNumber#,session_start_date=#semesterStartDate#,session_end_date=#semesterEndDate#,
+attempt_number=#attemptNumber#,total_credit_earned=null,sgpa=#currentSemSGPA#,weighted_percentage=null,student_process_status='REG',
+register_due_date=#semesterStartDate#,entity_id=#entityId#,program_course_key=#programCourseKey#,registered_credit=#registeredCredit#,
+registered_theory_credit_excluding_audit=#registeredTheoryCreditExcludingAudit#,
+registered_practical_credit_excluding_audit=#registeredPracticalCreditExcludingAudit#,
+registration_credit_excluding_audit=#registrationCreditExcludingAudit#
+where
+roll_number=#rollNumber# and 
+session_start_date=#semesterStartDate# and 
+session_end_date=#semesterEndDate# and 
+entity_id=#entityId# and 
+program_course_key=#programCourseKey#;
+<!-- 
+UPDATE student_registration_semester_header
+set 
 register_Date=#registrationDate#,number_of_remedials=#noOfRemedials#,status=#statusSRSH#,modification_time=now(),modifier_id=#creatorId#,
 roll_number=#rollNumber#,session_start_date=#semesterStartDate#,session_end_date=#semesterEndDate#,
 attempt_number=#attemptNumber#,total_credit_earned=null,sgpa=#currentSemSGPA#,weighted_percentage=null,student_process_status='REG',
@@ -154,11 +183,12 @@ session_start_date=#semesterStartDate# and
 session_end_date=#semesterEndDate# and 
 entity_id=#entityId# and 
 program_course_key=#programCourseKey#;
+ -->
 </update>
 
 <update id = "updateSRSH">
 UPDATE student_registration_semester_header
-set number_of_remedials=(number_of_remedials-1),status=#statusSRSH#,modification_time=now(),modifier_id='manualProcess'
+set number_of_remedials=(number_of_remedials-1),modification_time=now(),modifier_id='manualProcess'
 where roll_number=#rollNumber# and program_course_key=#programCourseKey#;
 
 </update>
@@ -206,8 +236,8 @@ program_course_key,theory_sgpa,practical_sgpa,sgpa) VALUES
 
 <insert id="insertIntoErrorLog">
 INSERT INTO result_file_upload_error_log(program_id,branch_id,specialization_id,semester_code,session,
-roll_number,error_description,result_file,creator_id,insert_time) VALUES
-(#programId#,#branchId#,#specializationId#,#semesterCode#,#session#,#rollNumber#,#errorDescription#,#resultFile#,#creatorId#,now());
+enrollment_number,error_description,result_file,creator_id,insert_time) VALUES
+(#programId#,#branchId#,#specializationId#,#semesterCode#,#session#,#enrollmentNumber#,#errorDescription#,#resultFile#,#creatorId#,now());
 </insert>
 
 <select id="getCourseCredits" resultClass="studentUpload">
@@ -252,4 +282,136 @@ roll_number,error_description,result_file,creator_id,insert_time) VALUES
     component_description=ROUND(#cummulativeGrades#)
     AND university_code=#universityId#
 </select>
+
+<insert id="insertstudentmasterBackup">
+	insert into
+	student_master_backup 
+	(university_code,student_id,enrollment_number,student_first_name,student_last_name,
+	primary_email_id,date_of_birth,category_code,gender,father_first_name,registered_in_session,status,
+	insert_time,creator_id,parent_entity,mother_first_name) 
+	values 
+	(#universityId#,#studentId#,#enrollmentNumber#,#studentFirstName#,#studentLastName#,
+	'XX','9999-01-01',#category#,#gender#,'XX',#yearOfRegistration#,
+	'ACT',now(),'manualProcess',#entityId#,'not available');
+</insert>
+
+<insert id="insertEnrollmentDetailBackup">
+	insert into enrollment_personal_details_backup 
+	(registration_number,enrollment_number,student_id,student_first_name,student_last_name,father_first_name,
+	primary_email_id,date_of_birth,category_code,entity_id, program_id, branch_id, specialization_id,mother_first_name,nationality,status,gender
+	,session_start_date,session_end_date,creator_id,insert_time) 
+	values 
+	(#enrollmentNumber#,#enrollmentNumber#,#studentId#,#studentFirstName#,#studentLastName#,'XX',
+	'XX','9999-01-01',#category#,#entityId#,
+	#programId#,#branchId#,#specializationId#,'not available','Indian','ACT',#gender#,#sessionStartDate#,#sessionEndDate#,'manualProcess',now());
+</insert>
+<update id="updateStudentMasterBackup">
+   UPDATE student_master_backup 
+   SET date_of_birth=#dob#,father_first_name=#fatherNameEnglish#,father_middle_name=null,father_last_name=null,
+   mother_first_name=#motherNameEnglish#,mother_middle_name=null,mother_last_name=null,
+	modifier_id='nameUploadProcess',modification_time=now(),name_in_hindi=#studentNameHindi#,
+	father_name_in_hindi=#fatherNameHindi#,mother_name_in_hindi=#motherNameHindi#
+	WHERE enrollment_number=#enrollmentNumber#
+	AND parent_entity=#entityId#
+	AND university_code=#universityId#
+</update>
+
+<update id="updateEnrollmentPersonalDetailsBackup">
+   UPDATE enrollment_personal_details_backup 
+   SET date_of_birth=#dob#,father_first_name=#fatherNameEnglish#,father_middle_name=null,father_last_name=null,
+   mother_first_name=#motherNameEnglish#,mother_middle_name=null,mother_last_name=null,
+	modifier_id='nameUploadProcess',modification_time=now(),name_in_hindi=#studentNameHindi#,
+	father_name_in_hindi=#fatherNameHindi#,mother_name_in_hindi=#motherNameHindi#
+	WHERE enrollment_number=#enrollmentNumber#
+	AND entity_id=#entityId#
+</update>
+<insert id="insertIntoStudentProgramBackup">
+INSERT INTO student_program_backup(cgpa,enrollment_number,roll_number,register_date,program_completion_date,current_semester,program_status,
+insert_time,creator_id,entity_id,program_id,branch_id,specialization_id,switch_number
+,sequence_number,in_semester,out_semester,mode_of_entry,division,switched_date,passed_from_session,passed_to_session,university_code) VALUES
+ (#CGPA#,#enrollmentNumber#,#rollNumber#,#registrationDate#,#semesterEndDate#,#semesterCode#
+ ,#statusStudentProgram#,now(),#creatorId#,#entityId#,#programId#,#branchId#,#specializationId#,NULL,NULL,'SM1',#finalSemesterCode#,'RG',
+ #division#,NULL,#passedFromSession#,#passedToSession#,#universityId#);
+</insert>
+<update id="updateStudentProgramBackup">
+UPDATE student_program_backup
+set program_completion_date=#semesterEndDate#,current_semester=#semesterCode#,program_status=#statusStudentProgram#,
+modification_time=now(),modifier_id='manualProcess',division=#division#,passed_from_session=#passedFromSession#,passed_to_session=#passedToSession#
+where enrollment_number=#enrollmentNumber# and roll_number=#rollNumber#;
+</update>
+<insert id = "insertIntoSRSHBackup">
+INSERT INTO
+student_registration_semester_header_backup (register_Date,number_of_remedials,status,insert_time,creator_id,roll_number,session_start_date,session_end_date,
+attempt_number,total_credit_earned,sgpa,weighted_percentage,student_process_status,register_due_date,entity_id,program_course_key,registered_credit,
+registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit,registration_credit_excluding_audit)
+ VALUES
+ (#registrationDate#,#noOfRemedials#,#statusSRSH#,now(),#creatorId#,#rollNumber#,#semesterStartDate#,#semesterEndDate#,#attemptNumber#,null,#currentSemSGPA#,null,'REG',
+ #semesterStartDate#,#entityId#,#programCourseKey#,#registeredCredit#,#registeredTheoryCreditExcludingAudit#,#registeredPracticalCreditExcludingAudit#,
+ #registrationCreditExcludingAudit#);
+</insert>
+
+<update id = "updateFirstSRSHBackup">
+UPDATE student_registration_semester_header_backup
+set 
+register_Date=#registrationDate#,number_of_remedials=#noOfRemedials#,status=#statusSRSH#,modification_time=now(),modifier_id=#creatorId#,
+roll_number=#rollNumber#,session_start_date=#semesterStartDate#,session_end_date=#semesterEndDate#,
+attempt_number=#attemptNumber#,total_credit_earned=null,sgpa=#currentSemSGPA#,weighted_percentage=null,student_process_status='REG',
+register_due_date=#semesterStartDate#,entity_id=#entityId#,program_course_key=#programCourseKey#,registered_credit=#registeredCredit#,
+registered_theory_credit_excluding_audit=#registeredTheoryCreditExcludingAudit#,
+registered_practical_credit_excluding_audit=#registeredPracticalCreditExcludingAudit#,
+registration_credit_excluding_audit=#registrationCreditExcludingAudit#
+where
+roll_number=#rollNumber# and 
+session_start_date=#semesterStartDate# and 
+session_end_date=#semesterEndDate# and 
+entity_id=#entityId# and 
+program_course_key=#programCourseKey#;
+</update>
+
+<update id = "updateSRSHBackup">
+UPDATE student_registration_semester_header_backup
+set number_of_remedials=(number_of_remedials-1),status=#statusSRSH#,modification_time=now(),modifier_id='manualProcess'
+where roll_number=#rollNumber# and program_course_key=#programCourseKey#;
+</update>
+
+<insert id = "insertIntoStudentCourseBackup">
+	INSERT INTO student_course_backup (roll_number,program_course_key,semester_start_date,semester_end_date,course_code,orginal_course_code,
+	course_status,student_status,insert_time,creator_id,attempt_number,course_group,entity_id,course_name) VALUES
+	 (#rollNumber#,#programCourseKey#,#semesterStartDate#,#semesterEndDate#,#courseCode#,NULL,'REG',#studentStatus#,now(),#creatorId#,'1',#courseGroup#,
+	 #entityId#,(select course_name from course_master where course_code=#courseCode# and university_code=#universityId#));
+</insert>
+
+<update id = "updateStudentCourseBackup">
+	update student_course_backup
+	set student_status='PAS',modification_time=now(),modifier_id='manualProcess'
+	where roll_number=#rollNumber# and program_course_key=#programCourseKey# and course_code=#courseCode#;	
+</update>
+
+<insert id = "insertIntoSMSBackup">
+	INSERT INTO student_marks_summary_backup (university_code,entity_id,roll_number,program_course_key,semester_start_date,semester_end_date,
+	total_internal,total_external,total_marks,course_code,internal_grade,external_grade,final_grade_point,insert_time,
+	creator_id) VALUES
+	(#universityId#,#entityId#,#rollNumber#,#programCourseKey#,#semesterStartDate#,#semesterEndDate#,
+	#internalMarks#,#externalMarks#,#cummulativeMarks#,#courseCode#,#internalGrades#,#externalGrades#,#cummulativeGrades#,
+	now(),#creatorId#);	
+</insert>
+
+<update id = "updateSMSBackup">
+	UPDATE student_marks_summary_backup 
+	set internal_grade=#internalGrades#,external_grade=#externalGrades#,final_grade_point=#cummulativeGrades#,
+	modification_time=now(),modifier_id='manualProcess'
+	where roll_number=#rollNumber# and program_course_key=#programCourseKey# and course_code=#courseCode#;
+</update>
+
+<select id="selectSRSHBackup" resultClass="studentUpload">
+select roll_number as rollNumber from student_registration_semester_header_backup
+where
+roll_number=#rollNumber# and 
+session_start_date=#semesterStartDate# and 
+session_end_date=#semesterEndDate# and 
+entity_id=#entityId# and 
+program_course_key=#programCourseKey#;
+</select>
+
+
 </sqlMap>

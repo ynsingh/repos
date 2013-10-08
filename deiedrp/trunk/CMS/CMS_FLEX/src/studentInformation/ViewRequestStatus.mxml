@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="334" height="272"
+	styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" title="Request Details" showCloseButton="true" creationComplete="onCreationComp()" close="closeViewPopUp(event)" backgroundColor="#C19F9F">
+	
+	<mx:HTTPService id="getStatusOfRequest"
+					url="{commonFunction.getConstants('url')}/studentMarksSummary/getStatusOfRequest.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Canvas id="viewCanvas" styleName="SimpleCanvas" x="12" y="8" width="292" height="210" >
+		<mx:Label id="componentId" x="150" y="10" width="119"/>
+		<mx:Label id="requestMarks" x="150" y="50" width="119"/>
+		<mx:Label id="studentRemarks" x="150" y="90" width="119"/>
+		<mx:Label id="correctedMarks" x="150" y="130" width="119"/>
+		<mx:Label id="teacherRemarks" x="150" y="170" width="119"/>
+		<mx:Label x="29" y="10" text="Component" fontWeight="bold"/>
+		<mx:Label x="29" y="50" text="Requested Marks" fontWeight="bold"/>
+		<mx:Label x="29" y="90" text="Student Remarks" fontWeight="bold"/>
+		<mx:Label x="29" y="130" text="Corrected Marks" fontWeight="bold"/>
+		<mx:Label x="29" y="170" text="Teacher Remarks" fontWeight="bold"/>
+	</mx:Canvas>
+	
+	
+	<mx:Script>
+		<![CDATA[
+			
+		import common.Mask;
+		import common.commonFunction;
+		import mx.collections.*;
+		import mx.controls.Alert;
+		import mx.events.CloseEvent;
+		import mx.managers.PopUpManager;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/reset.png")]private var resetIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+		public var param:Object={};
+
+		/** this method fires on click of close button and closes pop up
+ 		* */
+		public function closeViewPopUp(event:CloseEvent):void
+		{
+			PopUpManager.removePopUp(this);
+		}
+
+		/**
+ 		* This fire on pressing down ESC key 
+ 		* and closes popup
+ 		* */
+		private function initializeForEsc(event:KeyboardEvent):void
+		{
+    		if (event.keyCode == Keyboard.ESCAPE)
+    		{
+				var evt:CloseEvent;
+				closeViewPopUp(evt);
+    		}
+		}
+		
+		private function onCreationComp():void{
+				param['evaluationId']=componentId.text;
+				getStatusOfRequest.send(param);
+		}
+		
+		
+		private function onSuccess(event:ResultEvent):void{
+			requestMarks.text=event.result.marks[0].totalMarks;
+			var sr:String=String(event.result.marks[0].displayStartDate);
+			var sr1:String=sr.slice(sr.indexOf("is",25)+3);
+			studentRemarks.text=sr1;
+			if(String(event.result.marks[0].status)=="RES"){
+				correctedMarks.text=event.result.marks[0].markSavedDate;
+				teacherRemarks.text=event.result.marks[0].displayEndDate;
+			}
+			else{
+				correctedMarks.text="Not Done Yet";
+				teacherRemarks.text="Not Done Yet";
+			}  
+		}
+		
+
+		
+		private function onFailure(event:FaultEvent):void{
+			Alert.show(event.fault+"",commonFunction.getMessages('error'),4,null,null,errorIcon);
+		}
+			
+		]]>
+	</mx:Script>
+</mx:TitleWindow>

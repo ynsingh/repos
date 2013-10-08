@@ -269,121 +269,95 @@ public class UnivRoleImpl extends SqlMapClientDaoSupport implements RoleConnect 
 	 * @return 
 	 */
 	@SuppressWarnings("unchecked")
-	public String addDefaultUser(final UnivRoleInfoGetter input) {
-		
-		EmployeeRoleImpl roleImpl = new EmployeeRoleImpl();
-		
-		String success = "false";
-		String dummyID = "0000000000";
-		
-		UnivRoleInfoGetter getter;
-		
-		
-		
-		input.setCreatorId("E"+input.getUniversityCode()+dummyID);
-		
-		getter = (UnivRoleInfoGetter) getSqlMapClientTemplate().queryForObject("unirolesetup.getuserswithid",input);
-		
-		if(getter.getAuthority()>0){
-			
-			success = "duplicate";
-			
-			return success;
-			
-		}else{
-			
-			String password = roleImpl.generatePassword();
-			
-			input.setComponentDescription(password);
-			
-			try {		
-			
-			if(input.getCounter().equalsIgnoreCase("insert")){			
-				
-				success = (String) transactionTemplate.execute(new TransactionCallback() {
-					
-					public Object doInTransaction(TransactionStatus transaction) {
-						
-						List menuList = null;
-						
-						Object savePoint = null;
-						
-						String flag = "false";						
-						
-						menuList = getSqlMapClientTemplate().queryForList("unirolesetup.getmenulists",input);
-						
-						Iterator iterator = menuList.iterator();
-						
-						try {
-							
-							savePoint = transaction.createSavepoint();	
-						
-						while (iterator.hasNext()) {
-							UnivRoleInfoGetter object = (UnivRoleInfoGetter) iterator.next();
-							
-							input.setMenuItemId(object.getComponentId());										
-							
-							getSqlMapClientTemplate().insert("unirolesetup.insertdefaultitems",input);							
-							
-						}
-						System.out.println(input.getComponentDescription()+"password");
-						getSqlMapClientTemplate().insert("unirolesetup.insertdefrole",input);
-						
-						getSqlMapClientTemplate().insert("unirolesetup.insertdefaultuser",input);	
-						
-						flag = "true";
-						
-						} catch (Exception e) {
-							System.out.println("inside default"+e);
-							transaction.rollbackToSavepoint(savePoint);
-							
-							flag="false";
-							
-						}
-						
-						return flag;
-					}
-				});			
-				
-			}else if(input.getCounter().equalsIgnoreCase("update")){			
-				
-				getSqlMapClientTemplate().insert("unirolesetup.updatedefaultuser",input);
-				
-				success = "true";
-				
-			}
-			
-			String msg = "Your Account Information is as follows:\nUser Name: "
-				+ input.getComponentId()
-				+ "\nRole:"
-				+ "Administrator"
-				+ "\nPassword:" + input.getComponentDescription();
-			msg = msg
-				+ "\n\n\nClick here to activate your account.\n\n "
-				+ resourceBundle.getString("url")
-				+ "/sendPassword/activateAccount.htm?userId="
-				+ input.getCreatorId()
-				+ "&UI="
-				+ input.getUniversityCode()
-				+ "&AIUI="
-				+ "UI"
-				+ "&asahs=asnasa&dssssss=%ab$$gfff";
-			
-			/*sendmail(message,email id(reciever),email id(sender),subject)*/
-				sendmail.main(msg,
-					input.getComponentId(),
-					resourceBundle.getString("emailId"),
-					resourceBundle.getString("subject"));
-			} catch (Exception e) {
-				loggerObject.error(" in addDefaultUser " + e);
-			}			
-		}
-		
-		
-		
-		return success;
-	}
-
+	public String addDefaultUser(final UnivRoleInfoGetter input) {        
+        EmployeeRoleImpl roleImpl = new EmployeeRoleImpl(); 
+        //DS
+        String universityId = input.getUniversityCode();
+        String success = "false";
+        String dummyID = "0000000000";        
+        UnivRoleInfoGetter getter;
+        input.setCreatorId("E"+input.getUniversityCode()+dummyID);        
+        getter = (UnivRoleInfoGetter) getSqlMapClientTemplate().queryForObject("unirolesetup.getuserswithid",input);
+        if(getter.getAuthority()>0){            
+            success = "duplicate";            
+            return success;            
+        }else{            
+            String password = roleImpl.generatePassword();            
+            input.setComponentDescription(password);            
+            try {                    
+            if(input.getCounter().equalsIgnoreCase("insert")){    
+                System.out.println("inside insert :");
+                success = (String) transactionTemplate.execute(new TransactionCallback() {                    
+                    public Object doInTransaction(TransactionStatus transaction) {                        
+                        List menuList = null;                        
+                        Object savePoint = null;                        
+                        String flag = "false";                                                
+                        menuList = getSqlMapClientTemplate().queryForList("unirolesetup.getmenulists",input);                        
+                        Iterator iterator = menuList.iterator();                        
+                        try {                            
+                            savePoint = transaction.createSavepoint();                            
+                            while (iterator.hasNext()) {
+                                UnivRoleInfoGetter object = (UnivRoleInfoGetter) iterator.next();                            
+                                input.setMenuItemId(object.getComponentId());    
+                                //added by Ashish Mohan
+                                input.setMenuItemName(object.getComponentDescription());
+                                input.setGroupCode(object.getGroupCode());//used for dummy flag
+                                input.setApplicationId(object.getApplicationId());
+                                
+                                getSqlMapClientTemplate().insert("unirolesetup.populateMenusInSYS2",input);
+                                if(object.getGroupCode().equalsIgnoreCase("1")){
+                                    getSqlMapClientTemplate().insert("unirolesetup.insertdefaultitems",input);
+                                }                        
+                            }
+                            System.out.println(input.getComponentDescription()+"password");
+                            getSqlMapClientTemplate().insert("unirolesetup.insertdefrole",input);                            
+                            getSqlMapClientTemplate().insert("unirolesetup.insertdefaultuser",input);                                
+                            getSqlMapClientTemplate().insert("unirolesetup.initializeUniversity", input);                    
+                            flag = "true";                        
+                        } catch (Exception e) {
+                            loggerObject.info("inside default user method" +e);
+                            System.out.println("inside default"+e);
+                            e.printStackTrace();
+                            transaction.rollbackToSavepoint(savePoint);                            
+                            flag="false";                            
+                        }                        
+                        return flag;
+                    }
+                });    
+                System.out.println("success string is :"+success);
+            }else if(input.getCounter().equalsIgnoreCase("update")){
+                System.out.println("inside update : ");
+                getSqlMapClientTemplate().insert("unirolesetup.updatedefaultuser",input);                
+                success = "true";                
+            }            
+            String msg = "Your Account Information is as follows:\nUser Name: "
+                + input.getComponentId()
+                + "\nRole:"
+                + "Administrator"
+                + "\nPassword:" + input.getComponentDescription()
+                + "\nApplication:" + input.getApplicationId();
+            msg = msg
+                + "\n\n\nClick here to activate your account.\n\n "
+                + resourceBundle.getString("url")
+                + "/sendPassword/activateAccount.htm?userId="
+                + input.getCreatorId()
+                + "&UI="
+                + input.getUniversityCode()
+                + "&AIUI="
+                + "UI"
+                + "&asahs=asnasa&dssssss=%ab$$gfff";        
+            /*sendmail(message,email id(reciever),email id(sender),subject)*/
+            //DS
+                sendmail.main(msg,input.getComponentId(),resourceBundle.getString("subject"),universityId);
+            } catch (Exception e) {
+                loggerObject.error(" in addDefaultUser " + e);
+                System.out.println("in outer catch ");
+                e.printStackTrace();
+                success = success+"mail";
+            }            
+        }        
+        return success;
+    }
 	/**
 	 * Method for getting the list of universities for who 
 	 * login already exists in the database 
@@ -406,5 +380,26 @@ public class UnivRoleImpl extends SqlMapClientDaoSupport implements RoleConnect 
 		}
 		
 		return universityList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<UnivRoleInfoGetter> getUniversityUserRoles(
+			UnivRoleInfoGetter input) {
+		List<UnivRoleInfoGetter> roleList;
+        UnivRoleInfoGetter beanobject = new UnivRoleInfoGetter();
+        String GROUP_CODE = "UNROLE";
+        String uniId = input.getUserId().substring(1, 5);
+        beanobject.setUniversityCode(uniId);
+        beanobject.setGroupCode(GROUP_CODE);
+        beanobject.setEmployeeCode(input.getEmployeeCode());
+        try {
+        	beanobject.setApplicationId(input.getApplicationId());
+            roleList = getSqlMapClientTemplate().queryForList("unirolesetup.getUserRoles",
+            		beanobject);               
+            return roleList;
+        } catch (Exception e) {
+            loggerObject.error("getUniversityRoles" + e);
+        }
+        return null;
 	}
 }

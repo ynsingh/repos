@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) UserDataInterface.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+ 
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="980" height="782" title="{commonFunction.getConstants('userDataInterfaceTitle')}" fontFamily="Georgia" creationComplete="onCreatrionComplete()">
+
+<mx:Script source="asFiles/UserDataInterfaceAs.as"/>
+<mx:Script>
+		<![CDATA[
+			import org.purepdf.pdf.Indentation;
+			import mx.events.ListEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import common.commonFunction;
+			function rotationDown(str:String):void{			
+				if(str=="tableLink"){
+					tableLink.rotationX=40;				
+				}				
+			}
+			function rotationUp(str:String):void{			
+				if(str=="tableLink"){
+					tableLink.rotationX=0;						
+				}		
+				var tables:String="";
+				if(selectedTableIndex==null){
+					Alert.show(commonFunction.getMessages('selectTables'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
+				else{
+					for(var i:int=0;i<selectedTableIndex.length;i++){
+						tables=tables+selectedTableData[i].tableName+",";
+					}											
+					var param:Object={};
+					param["tables"]=tables;
+					param["database"]=database;
+					param["date"]=new Date();
+					getColumnService.send(param);
+				}				
+			}
+			
+			private function myChangedHandler(event:ListEvent):void { 
+				selectedTableIndex=new Array();
+				selectedTableData=new Array();
+				selectedTableIndex=event.currentTarget.selectedIndices;    
+				selectedTableData=event.currentTarget.selectedItems;       		
+        	} 
+        	private function selectionDefaultTileChangedHandler(event:ListEvent):void { 
+				selectionDefaultTileIndex=new Array();
+				selectionDefaultTileData=new Array();
+				selectionDefaultTileIndex=event.currentTarget.selectedIndices;    
+				selectionDefaultTileData=event.currentTarget.selectedItems;       		
+        	}
+        	private function selectionFinalTileChangedHandler(event:ListEvent):void{
+        		selectionFinalTileIndex=new Array();
+				selectionFinalTileData=new Array();
+				selectionFinalTileIndex=event.currentTarget.selectedIndices;    
+				selectionFinalTileData=event.currentTarget.selectedItems;   
+        	}        	
+		]]>
+</mx:Script>
+<mx:HTTPService id="getDatabaseService" method="post"
+        url="{commonFunction.getConstants('url')}/userInfoService/getDatabase.htm"
+        resultFormat="e4x"
+        result="getDatabaseServiceResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+<mx:HTTPService id="getTableService" method="post"
+        url="{commonFunction.getConstants('url')}/userInfoService/getTables.htm"
+        resultFormat="e4x"
+        result="getTableServiceResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>     
+<mx:HTTPService id="getColumnService" method="post"
+        url="{commonFunction.getConstants('url')}/userInfoService/getColumn.htm"
+        resultFormat="e4x"
+        result="getColumnServiceResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>   
+<mx:HTTPService id="executeService" method="post"
+        url="{commonFunction.getConstants('url')}/userInfoService/execute.htm"
+        resultFormat="e4x"
+        result="executeServiceResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>                           
+	<mx:Canvas y="20" width="904" height="211" styleName="BorderCanvas" horizontalCenter="-6">
+		<mx:TileList x="12" y="37" height="156" width="879" id="tableTile" 
+			columnCount="3"
+            columnWidth="172"
+            rowCount="2" direction="horizontal"
+            rowHeight="50" labelField="tableName" allowMultipleSelection="true" 
+            verticalScrollPolicy="on" horizontalScrollPolicy="off"
+            alternatingItemColors="[#FCFAFA, #EEEFF2]"  themeColor="#5D78BD" 
+            showScrollTips="true" showDataTips="true" dataTipField="tableName" change="myChangedHandler(event)" 
+            cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" shadowDirection="right">                 
+       </mx:TileList>
+		<mx:Label x="12" y="10" text="{commonFunction.getConstants('tableLabel')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:LinkButton x="740" y="10" label="{commonFunction.getConstants('tableClickLink')}"  color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="tableLink"  mouseDown="rotationDown('tableLink')" mouseUp="rotationUp('tableLink')"  mouseOut="{tableLink.rotationX=0}" themeColor="#CBC9C9"/>
+	</mx:Canvas>
+	<mx:Canvas y="243" width="580" height="309" styleName="BorderCanvas" fontFamily="Georgia" left="24" id="selectionColumnContainer" visible="false">
+		<mx:Label x="13" y="10" text="{commonFunction.getConstants('selectedTables')}" fontFamily="Georgia"/>
+		<mx:ComboBox x="118" y="10" id="selectedTables" fontFamily="Georgia" labelField="selectedColumn" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{selectedTables.selectedItem.selectedColumn}" width="160" change="onSelectedTableCBChange()"></mx:ComboBox>
+		<mx:Label x="13" y="39" text="{commonFunction.getConstants('selectSelectionColumn')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:TileList x="13" y="61" width="229" height="229"	
+			columnCount="1"
+            columnWidth="225"
+            rowCount="1" direction="horizontal"
+            rowHeight="28" 
+            themeColor="#5D78BD" 
+            showScrollTips="true" showDataTips="true"
+            cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+            shadowDirection="right" id="selectedTableColumnsTile" labelField="column" 
+            dataTipField="column" alternatingItemColors="[#FCFAFA, #EEEFF2]" change="selectionDefaultTileChangedHandler(event)">
+		</mx:TileList>
+		<mx:TileList width="227" height="229" x="334" y="61"
+			columnCount="1"
+            columnWidth="225"
+            rowCount="1" direction="horizontal"
+            rowHeight="28"             
+            themeColor="#5D78BD" 
+            showScrollTips="true" showDataTips="true"
+            cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+            shadowDirection="right" id="finalSelectionColumnTile" labelField="column" dataTipField="tolTip" 
+            alternatingItemColors="[#FCFAFA, #EEEFF2]" change="selectionFinalTileChangedHandler(event)">
+		</mx:TileList>
+		<mx:Canvas x="251" y="61" width="77" height="229" backgroundColor="#EEEFF2" styleName="SimpleCanvas">
+			<mx:Image y="19" source="{nextIcon}" horizontalCenter="-2" id="addSelection" mouseDown="onMouseDown('addSelectionColumn')" mouseUp="onMouseUp('addSelectionColumn')" mouseOut="omMouseOut('addSelectionColumn')"/>
+			<mx:Image y="59" source="{previousIcon}" horizontalCenter="-2" id="removeSelection" mouseDown="onMouseDown('removeSelectionColumn')" mouseUp="onMouseUp('removeSelectionColumn')" mouseOut="omMouseOut('removeSelectionColumn')"/>
+			<mx:Image y="99" source="{doubleNextIcon}" horizontalCenter="-2" id="allAddSelection" mouseDown="onMouseDown('allAddSelectionColumn')" mouseUp="onMouseUp('allAddSelectionColumn')" mouseOut="omMouseOut('allAddSelectionColumn')"/>
+			<mx:Image y="138" source="{doublePreviousIcon}" horizontalCenter="-2" id="allRemoveSelection" mouseDown="onMouseDown('allRemoveSelectionColumn')" mouseUp="onMouseUp('allRemoveSelectionColumn')" mouseOut="omMouseOut('allRemoveSelectionColumn')"/>
+			<mx:Image y="177" source="{refreshIcon}" horizontalCenter="-2" id="refreshSelection" mouseDown="onMouseDown('refreshSelection')" mouseUp="onMouseUp('refreshSelection')" mouseOut="omMouseOut('refreshSelection')"/>			
+		</mx:Canvas>
+		<mx:Label x="334" y="39" text="{commonFunction.getConstants('selectedSelectionColumn')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>		
+	</mx:Canvas>	
+	<mx:Canvas x="612" y="243" width="314" height="309" styleName="BorderCanvas" id="conditionalContainer" visible="false">
+		<mx:Label x="13" y="10" text="{commonFunction.getConstants('expressionAndCondition')}" fontWeight="bold" fontStyle="italic" fontFamily="Georgia"/>
+		<mx:Button y="67" label="{commonFunction.getConstants('whereCondition')}" width="230" fontFamily="Georgia" horizontalCenter="-1" id="whereBtn" mouseDown="onMouseDown('WhereCondition')" mouseUp="onMouseUp('WhereCondition')" mouseOut="omMouseOut('WhereCondition')" height="27"/>
+		<mx:Button y="100" label="{commonFunction.getConstants('JoinCondition')}" width="230" fontFamily="Georgia" horizontalCenter="-1" id="joinBtn" mouseDown="onMouseDown('JoinCondition')" mouseUp="onMouseUp('JoinCondition')" mouseOut="omMouseOut('JoinCondition')" height="27"/>
+		<mx:Button y="198" label="{commonFunction.getConstants('orderByCondition')}" width="230" fontFamily="Georgia" horizontalCenter="-1" id="orderByBtn" mouseDown="onMouseDown('orderByCondition')" mouseUp="onMouseUp('orderByCondition')" mouseOut="omMouseOut('orderByCondition')" height="27"/>		
+		<mx:Button y="133" label="{commonFunction.getConstants('groupByCondition')}" width="230" fontFamily="Georgia" horizontalCenter="-1" id="groupByBtn" mouseDown="onMouseDown('groupByCondition')" mouseUp="onMouseUp('groupByCondition')" mouseOut="omMouseOut('groupByCondition')" height="27"/>
+		<mx:Button y="166" label="{commonFunction.getConstants('havingCondition')}" width="230" fontFamily="Georgia" horizontalCenter="-1" id="havingBtn" mouseDown="onMouseDown('havingCondition')" mouseUp="onMouseUp('havingCondition')" mouseOut="omMouseOut('havingCondition')" height="27"/>
+	</mx:Canvas>
+	<mx:Button x="37" y="241" label="{commonFunction.getConstants('cancelButton')}" width="99" height="25" fontFamily="Georgia" id="cancelBtn" mouseDown="onMouseDown('Cancel')" mouseUp="onMouseUp('Cancel')" mouseOut="omMouseOut('Cancel')"  cornerRadius="6"/>
+	<mx:Button x="142" y="241" label="{commonFunction.getConstants('executeButton')}" width="99" height="25" fontFamily="Georgia" id="executeBtn" mouseDown="onMouseDown('Execute')" mouseUp="onMouseUp('Execute')" mouseOut="omMouseOut('Execute')" cornerRadius="6" visible="false"/>	
+	<mx:Button x="247" y="241" label="{commonFunction.getConstants('showResult')}" width="137" height="25" fontFamily="Georgia" id="showResultBtn" mouseDown="onMouseDown('showResult')" mouseUp="onMouseUp('showResult')" mouseOut="omMouseOut('showResult')" cornerRadius="6" visible="false"/>
+	
+	<mx:Sequence id="openEffect">
+        <mx:Parallel >
+            <mx:Zoom duration="800"/>
+            <mx:Fade duration="800"/>
+        </mx:Parallel>        
+    </mx:Sequence>   
+    
+    <mx:Parallel id="resultCreationCompleteEffect">
+        <mx:Fade duration="500" />
+        <mx:Move xFrom="{0-this.width}"               
+                duration="800" />
+    </mx:Parallel> 
+</mx:Panel>

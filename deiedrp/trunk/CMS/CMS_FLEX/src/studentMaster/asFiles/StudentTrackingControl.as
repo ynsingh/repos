@@ -243,7 +243,8 @@ public function checkBoxChange():void{
 		dateofbirth.data = null;
 		empId.text="";
 		empId.errorString="";
-		textvalidate.source=null;
+		textvalidate.property=null;
+        textvalidate.source=null;
 		empId.editable=false;
 		detailsCanvas.y = 93;
 		okButton.y = detailsCanvas.height+20+detailsCanvas.y;
@@ -262,6 +263,7 @@ public function checkBoxChange():void{
 		usernameid.text=resourceManager.getString('Constants','rollNumber')+"*";
 		empId.editable=true;
 		textvalidate.source=empId;
+        textvalidate.property='text';
 		okButton.y = okButton.y-(detailsCanvas.height+15);
 		cancelButton.y = cancelButton.y-(detailsCanvas.height+15);
 		resetButton.y = resetButton.y-(detailsCanvas.height+15);

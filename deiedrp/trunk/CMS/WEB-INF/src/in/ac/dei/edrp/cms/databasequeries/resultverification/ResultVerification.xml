@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ResultVerification">
+<typeAlias alias="resultVerificationBean" type="in.ac.dei.edrp.cms.domain.resultverification.ResultVerificationBean"/>
+   <select id="getRequestNo" resultClass="resultVerificationBean">
+	SELECT max(request_no) as requestNo fROM result_verification_request_header
+	where request_no like concat(#extra#,'%') and university_id=#universityId# ;
+	</select>
+	
+	<select id="getRollNo" resultClass="resultVerificationBean">
+	select distinct roll_number as rollNumber from student_program where university_code=#universityId# and program_status='PAS';
+	</select>
+	
+	<select id="getRequestType" resultClass="resultVerificationBean">
+	select component_code as requestTypeCode, component_description as requestTypeName
+ 	from system_table_two where group_code = 'rqstyp' and university_code=#universityId#;
+	</select>
+	
+	<select id="getSystemValueDetail" resultClass="resultVerificationBean">
+		select value as requestNo from system_values
+		where university_id=#universityId#
+		and code=#requestCode#;		
+	</select>
+	
+	<update id="updateSystemValue">
+		update system_values SET
+		value=#requestNo# , modification_time=now(),modifier_id=#modifierId# 
+		where university_id=#universityId#
+		and code=#requestCode#;
+	</update>
+	
+	<insert id="insertResultVerHeader">
+		insert into result_verification_request_header (request_no,requester,request_type,company_name,company_add,
+		ref_no,ref_date, receive_date,creator_id,insert_time,university_id,process_status)
+		values(#requestNo#, #requester#,#requestType#,#compName#,#compAdd#,#refNo#,#refDate#,#receiveDate#,
+		#creatorId#, now(), #universityId#,'U');
+	</insert>
+	
+	<insert id="insertResultVerDetail">
+		insert into result_verification_request_detail (request_no,roll_no,
+		creator_id,insert_time,university_id)
+		values(#requestNo#, #rollNumber#,#creatorId#, now(), #universityId#);
+	</insert>
+	
+	<select id="getRequestHeader" resultClass="resultVerificationBean">
+		select 
+			rh.request_no as requestNo,rh.company_name as compName,rh.receive_date as receiveDate,rh.process_date as processDate,
+			rh.process_status as processStatus,
+			rh.request_type as requestType,rh.requester as requester,rh.company_add as compAdd, rh.ref_no as refNo, rh.ref_date as refDate 
+		from
+			result_verification_request_header rh
+			<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="receiveDate">
+			rh.receive_date >= #receiveDate#
+			</isNotNull>
+			<isNotNull prepend="AND" property="compName">
+			rh.company_name like #compName#
+			</isNotNull>
+			<isNotNull prepend="AND" property="requestType">
+			rh.request_type=#requestType#
+			</isNotNull>
+			and rh.university_id=#universityId#
+			</dynamic>
+		order by 
+			rh.process_status desc, rh.receive_date desc;		
+	</select>
+	
+	<select id="getRequestDetail" resultClass="resultVerificationBean">
+		select 
+			rd.roll_no as rollNumber 
+		from
+			result_verification_request_detail rd
+		where
+			rd.request_no=#requestNo#;					
+	</select>
+	
+	<update id="updateResultVerHeader">
+		update 
+			result_verification_request_header 
+		set
+			requester=#requester#,request_type=#requestType#,company_name=#compName#,company_add=#compAdd#,
+			ref_no=#refNo#,ref_date=#refDate#, receive_date=#receiveDate#,modifier_id=#modifierId#,modification_time=now()
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#
+	</update>
+	
+	<update id="updateResultVerDetail">
+		update
+			result_verification_request_detail 
+		set
+		roll_no=#rollNumber#,modifier_id=#modifierId#,modification_time=now()
+		where
+			request_no=#requestNo# and
+			university_id = #universityId# and
+			roll_no=#extra#
+	</update>
+	<delete id="deleteResultVerHeader">
+		delete  from
+			result_verification_request_header 		
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#
+	</delete>
+	
+	<delete id="deleteResultVerDetailAll">
+		delete  from
+			result_verification_request_detail 		
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#;
+	</delete>
+	
+	<delete id="deleteResultVerDetail">
+		delete  from
+			result_verification_request_detail 		
+		where
+			request_no=#requestNo# and
+			university_id = #universityId# and
+			roll_no=#rollNumber#
+	</delete>
+</sqlMap>

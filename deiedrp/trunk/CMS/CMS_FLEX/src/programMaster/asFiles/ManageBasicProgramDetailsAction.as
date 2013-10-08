@@ -11,6 +11,8 @@ import mx.rpc.events.ResultEvent;
 import programMaster.EditBasicProgramDetails;
 import programMaster.ProgramMaster;
 
+import systemTableTwo.EditWindow;
+
 [Embed(source="/images/error.png")]private var errorIcon:Class;
 [Embed(source="/images/success.png")]private var successIcon:Class;
 [Embed(source="/images/reset.png")]private var resetIcon:Class;
@@ -39,7 +41,6 @@ private function faultHandler_ProgramCode(event:FaultEvent):void{
          mx.controls.Alert.show(event.fault.message,resourceManager.getString('Messages','error'));
     }
 private function resultHandler_ProgramCode(event:ResultEvent):void{
-	 
    codeXML=event.result as XML;
     
      if(codeXML.sessionConfirm == true)
@@ -70,6 +71,7 @@ public function showDetails():void
 	programDetailPanel.visible=true;
 }
 
+public var domainCode:String;
 public function editDetails():void
 {
 	var selectedValues:ArrayCollection=commonFunction.getSelectedRowData(programDetailsGrid);
@@ -96,8 +98,10 @@ public function editDetails():void
 	editWindow.printAggregate=selectedValues[0].printAggregate;
 	editWindow.fixOrVariableGroup.selectedValue=selectedValues[0].fixedOrVariableCredit
 	editWindow.programDescriptionText.text=selectedValues[0].programDescription;
+	editWindow.domainComboText=selectedValues[0].domainCode;
 
 	editWindow.updateButtonFunction=updateDetails;
+
 	PopUpManager.centerPopUp(editWindow);	
 }
 
@@ -109,7 +113,9 @@ public function updateDetails():void
 	deleteButton.enabled=false;
 	if(editWindow.validateBasicProgramDetails())
 	{
+
 		 var progDetails:Object=new Object();
+		 
 			   progDetails["userId"]=pm.userId;
 	           progDetails["program_id"]=codeXML.branch.(branchName==programNameComboBox.selectedLabel).programId;
                progDetails["program_name"]=editWindow.programNameText.text;
@@ -126,6 +132,8 @@ public function updateDetails():void
                progDetails["credit_required"]=editWindow.creditsRequiredText.text;
                progDetails["fixed_or_variable_credit"]=editWindow.fixOrVariableGroup.selectedValue;
                progDetails["programDescription"]=editWindow.programDescriptionText.text;
+               //Domain Code added  by Mandeep
+               progDetails["domainCode"]=editWindow.editDomain;
                httpUpdateDetails(progDetails);
                
 	}
@@ -164,7 +172,9 @@ public function deleteDetails():void
 public function httpProgramDetails():void{
 	var params:Object=new Object();
 	params["userId"]=pm.userId;
-	if(programNameComboBox.selectedIndex>0){
+	//changes done by Mandeep (changed selectedIndex>0 to selctedIndex>-1)
+	if(programNameComboBox.selectedIndex>-1){
+
 	params["programId"]=codeXML.branch.(branchName==programNameComboBox.selectedLabel).programId;
 	}
 //	if(programCodeText.text != ""){
@@ -183,7 +193,6 @@ private function faultHandler_ProgramDetails(event:FaultEvent):void{
 private function resultHandler_ProgramDetails(event:ResultEvent):void{
 	 
    detailsXML=event.result as XML; 
-   
    if(detailsXML.sessionConfirm == true)
              {
             Alert.show(resourceManager.getString('Messages','sessionInactive'));
@@ -198,7 +207,8 @@ private function resultHandler_ProgramDetails(event:ResultEvent):void{
    		totalCredits:object.totalCredits,numberOfAttemptAllowed:object.numberOfAttemptAllowed,
    		maxNumberOfFailSubjects:object.maxNumberOfFailSubjects,printAggregate:object.printAggregate,
    		ugOrPg:object.ugOrPg,tencodes:object.tencodes,maxRegSemester:object.maxRegSemester,
-   		dgpa:object.dgpa,creditRequired:object.creditRequired,fixedOrVariableCredit:object.fixedOrVariableCredit,programDescription:object.programDescription});
+   		dgpa:object.dgpa,creditRequired:object.creditRequired,fixedOrVariableCredit:object.fixedOrVariableCredit,programDescription:object.programDescription
+   		,domainCode:object.domainCode,domainName:object.domainName});
    	}
    	
    programDetailsGrid.dataProvider=detailsAC;

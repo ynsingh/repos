@@ -139,10 +139,10 @@
 		<mx:Label text="{commonFunction.getConstants('evaluationComponentDetails')}" top="6" left="10" fontWeight="bold"  />
 		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" enabled="false" id="editButton" x="744" y="4" width="106.5" click="openEditWindow()"/>   
 		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" enabled="false" id="deleteButton" x="808.5" y="4" width="97.5" click="deleteRecords()"/>
-        <mx:DataGrid editable="true" id="componentsGrid"   draggableColumns="false" textAlign="center" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="896">
-		  <mx:columns>
-		  <mx:DataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
-			<mx:itemRenderer>
+        <controls:MDataGrid editable="true" id="componentsGrid"   draggableColumns="false" textAlign="center" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="896">
+		  <controls:columns>
+		  <dataGridClasses:MDataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+			<dataGridClasses:itemRenderer>
 			<mx:Component>
 			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.componentsGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
 			<mx:Script>
@@ -153,19 +153,24 @@
 			</mx:Script>
 			</mx:CheckBox>
 			</mx:Component>
-			</mx:itemRenderer>
-			</mx:DataGridColumn>
+			</dataGridClasses:itemRenderer>
+			<dataGridClasses:headerRenderer>
+				<mx:Component>
+					<mx:Label/>
+				</mx:Component>
+			</dataGridClasses:headerRenderer>
+			</dataGridClasses:MDataGridColumn>
 			
-			<mx:DataGridColumn showDataTips="true" editable="false" width="105" headerText="{commonFunction.getConstants('evaluationId')}" dataField="iddescription" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="105" headerText="{commonFunction.getConstants('group')}" dataField="groupName" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="110" headerText="{commonFunction.getConstants('rule')}" dataField="ruleName" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="100" headerText="{commonFunction.getConstants('examDate')}" dataField="examDate" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="120" headerText="{commonFunction.getConstants('maximumMarks')}" dataField="maximumMarks" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('dateFromDisplayMarks')}" dataField="daysFromDisplayMarks" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('dateToDisplayMarks')}" dataField="daysToDisplayMarks" />
-		    <mx:DataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('orderInMarksheet')}" dataField="orderInMarksheet" />
-            </mx:columns>
-	      </mx:DataGrid>
+			<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="105" headerText="{commonFunction.getConstants('evaluationId')}" dataField="iddescription" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="105" headerText="{commonFunction.getConstants('group')}" dataField="groupName" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="110" headerText="{commonFunction.getConstants('rule')}" dataField="ruleName" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="100" headerText="{commonFunction.getConstants('examDate')}" dataField="examDate" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="120" headerText="{commonFunction.getConstants('maximumMarks')}" dataField="maximumMarks" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('dateFromDisplayMarks')}" dataField="daysFromDisplayMarks" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('dateToDisplayMarks')}" dataField="daysToDisplayMarks" />
+		    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('orderInMarksheet')}" dataField="orderInMarksheet" />
+            </controls:columns>
+	      </controls:MDataGrid>
 		</mx:Canvas>
     	<mx:Button x="417" y="530" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancel()"/>
 </mx:Panel>

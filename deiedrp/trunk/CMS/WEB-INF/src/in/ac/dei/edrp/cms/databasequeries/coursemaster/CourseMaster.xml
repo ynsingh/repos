@@ -104,6 +104,7 @@
 	</delete>
 	
 	<select id="getCourseDetails" resultClass="courseMasterInfo">
+	<!-- 
 	    SELECT cm.course_code as courseCode,cm.course_name as courseName,cm.marks_cont_eval as marksContEval,
 	    cm.marks_end_semester as marksEndSemester,cm.marks_total as marksTotal,cm.course_classification as courseClassificationId,
 	    stt1.component_description as courseClassificationName,cm.owner_program as ownerProgramId,
@@ -125,5 +126,29 @@
         and cm.owner_entity=#ownerEntityId# and owner_program like #ownerProgramId# and cm.owner_branch like #ownerBranchId# 
         and cm.owner_specialization like #ownerSpecializationId# and cm.course_code like #courseCode#
         and cm.university_code=#universityCode#
+         -->
+         SELECT cm.course_code as courseCode,cm.course_name as courseName,cm.marks_cont_eval as marksContEval,
+		cm.marks_end_semester as marksEndSemester,cm.marks_total as marksTotal,cm.course_classification as courseClassificationId,
+		(select component_description from system_table_two where component_code=course_classification and
+		 group_code='CRCLSF' and university_code=#universityCode#) courseClassificationName,cm.owner_program as ownerProgramId,
+		(select program_name from program_master where program_id=cm.owner_program) ownerProgramName,
+		cm.owner_branch as ownerBranchId,
+		(select component_description from system_table_two where component_code=cm.owner_branch and group_code='BRNCOD' and
+		university_code=#universityCode#) ownerBranchName,
+		cm.owner_specialization as ownerSpecializationId,
+		(select component_description from system_table_two where component_code=cm.owner_specialization and group_code='SPCLCD'and
+		university_code=#universityCode#) as ownerSpecializationName
+		,cm.credits as credits,cm.lectures as lectures,cm.tutorials as tutorials,
+		cm.practicals as practicals,cm.since_session as sinceSession,cm.units as units,cm.course_type as courseTypeId,
+		(select component_description from system_table_two where component_code=cm.course_type and group_code='CRSTYP' and
+		university_code=#universityCode#) as courseTypeName
+		,cm.owner_entity as ownerEntityId,(select entity_name from entity_master where entity_id=cm.owner_entity) as ownerEntityName,
+		cm.subject_wise_group as courseGroupId,(select component_description from system_table_two where component_code=cm.subject_wise_group
+		and group_code='SBWGRP'
+		and university_code=#universityCode#)as courseGroupName
+		,cm.result_system as resultSystem,
+		internal_external_active as dummyFlag,grade_limit_active as gradeLimit,edei_status as edeiStatus
+		FROM course_master cm
+		where cm.course_code like #courseCode# and cm.university_code=#universityCode#;
 	</select>
 </sqlMap>

@@ -99,18 +99,18 @@
 		<result property="previousSemesterStartDate" column="session_start_date" />
 		<result property="previousSemesterEndDate" column="session_end_date" />
 		<result property="programCourseKey" column="program_course_key" />
-
+		<result property="status" column="status" />
 	</resultMap>
 	
 	 
      <select id="previousProgramcoursekey" resultMap="previouspck">
      <![CDATA[
-    	SELECT srsh.session_start_date,srsh.session_end_date,srsh.program_course_key 
+    	SELECT srsh.session_start_date,srsh.session_end_date,srsh.program_course_key,srsh.status
     	FROM student_registration_semester_header srsh
 		where srsh.roll_number = #rollNumber#
 		and srsh.entity_id =#entityId# and srsh.session_start_date = (select max(srsh1.session_start_date)
 		from student_registration_semester_header srsh1
-		where srsh1.program_course_key <> #programCourseKey# and srsh1.status  in ('PAS' ,'REM','UFM','INC') and  srsh1.roll_number = #rollNumber#
+		where srsh1.program_course_key <> #programCourseKey# and srsh1.status  in ('PAS' ,'REM','UFM','INC','REG') and  srsh1.roll_number = #rollNumber#
 		and session_start_date < #semesterStartDate#  ) and srsh.status not in ('YTR','WTH');
    
     ]]>
@@ -145,10 +145,20 @@
 		srsh.program_course_key=sa.program_course_key
 		and srsh.session_start_date=sa.semester_start_date and
 		srsh.session_end_date=sa.semester_end_date and
-		srsh.roll_number=sa.roll_number and  srsh.program_course_key = #programCourseKey#
+		srsh.roll_number=sa.roll_number and  srsh.program_course_key = #programCourseKey# and srsh.session_start_date=#previousSemesterStartDate#
+		and srsh.session_end_date=#previousSemesterEndDate#;
    </select>
  
  
+ <resultMap id="sequenceMap" class="programtermdetail">
+		<result property="semesterSequence" column="semesterSequence" />
+	</resultMap>
+ 	<select id="getSequence" resultMap="sequenceMap">
+ 		SELECT ptd.semester_sequence AS semesterSequence FROM program_term_details ptd JOIN program_course_header pch
+		ON ptd.program_id=pch.program_id AND ptd.semester_code=pch.semester_code
+		WHERE pch.program_course_key=#programCourseKey# AND pch.semester_status='ACT';
+ 	
+ 	</select>
 </sqlMap>
 
 

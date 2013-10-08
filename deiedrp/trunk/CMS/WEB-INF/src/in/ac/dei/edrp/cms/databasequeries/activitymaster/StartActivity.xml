@@ -230,6 +230,10 @@
 	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
 	    semester_end_date=#semesterEndDate# and process=#processId# and activity=#activityId# FOR UPDATE;
  	</select>
+ 	
+ 	<select id="getMailUsers" resultClass="startActivityBean">
+		SELECT email_id AS mailId FROM mail_users WHERE user_group='CMS-CARE';
+ 	</select>
 </sqlMap>
 
 

@@ -38,6 +38,7 @@ import in.ac.dei.edrp.cms.domain.degreelist.DegreeListInfoGetter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -319,7 +320,21 @@ public class DegreeListImpl extends SqlMapClientDaoSupport implements DegreeList
 				 */
 				distinctStudentsList = getSqlMapClient().queryForList("degreeList.getdistinctstudentdetails",infoGetter);
 				
+				for(int i = 0; i < list.size(); i++){
+					for(int j = 0; j < distinctStudentsList.size(); j++){
+						String roll1 = list.get(i).getRollNumber();
+						String roll2 = distinctStudentsList.get(j).getRollNumber();
+						if(roll1.equalsIgnoreCase(roll2)){
+							distinctStudentsList.remove(j);
+						}
+					}
+				}
 				list.addAll(distinctStudentsList);
+				Collections.sort(list,new Comparator<DegreeListInfoGetter>() {  
+		            public int compare(DegreeListInfoGetter c1, DegreeListInfoGetter c2) {  
+		               return c1.getRollNumber().compareTo(c2.getRollNumber());  
+		            }              
+		        });
 				
 			}			
 			

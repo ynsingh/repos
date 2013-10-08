@@ -39,6 +39,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -237,15 +238,24 @@ public class SubjectWiseMeritListController extends MultiActionController{
 		subjectWiseMeritList.setProgramId(request.getParameter("programId"));
 		subjectWiseMeritList.setBranchId(request.getParameter("branchId"));
 		subjectWiseMeritList.setSpecializationId(request.getParameter("specializationId"));
-		String semesterTokens=request.getParameter("selectedSemester");
-		subjectWiseMeritList.setCourseGroup(request.getParameter("courseGroup"));
+		subjectWiseMeritList.setSessionStartDate(request.getParameter("sessionStartDate"));
+		subjectWiseMeritList.setSessionEndDate(request.getParameter("sessionEndDate"));
+		subjectWiseMeritList.setGroup1(request.getParameter("group1"));
+		subjectWiseMeritList.setGroup2(request.getParameter("group2"));
+		subjectWiseMeritList.setGroup3(request.getParameter("group3"));
+		subjectWiseMeritList.setGroup4(request.getParameter("group4"));
+		subjectWiseMeritList.setGroup5(request.getParameter("group5"));
 		subjectWiseMeritList.setUniversityId(universityId);
-		List<SubjectWiseMeritList> StudentList = subjectWiseMeritListDAO.getProgramCourseKey(subjectWiseMeritList, semesterTokens);
-		if(StudentList!=null && StudentList.size()>0){
+//		String semesterTokens=request.getParameter("selectedSemester");
+//		subjectWiseMeritList.setCourseGroup(request.getParameter("courseGroup"));
+
+		List<SubjectWiseMeritList> StudentDataList = subjectWiseMeritListDAO.getStudentDataList(subjectWiseMeritList);
+		if(StudentDataList!=null && StudentDataList.size()>0){
 //			return new ModelAndView("GroupWiseMeritListPDFView","StudentList", StudentList);
-			String message = buildPdfDocument(StudentList,request,response);
+			String status = buildPdfDocument(subjectWiseMeritList,StudentDataList,request,response);
+			String message = status.substring(0, 7);
 			if(message.equalsIgnoreCase("success")){
-				return new ModelAndView("associatecoursewithinstructor/Result","message",message);
+				return new ModelAndView("associatecoursewithinstructor/Result","message",status);
 			}
 			else{
 				return new ModelAndView("associatecoursewithinstructor/Result","message",message);
@@ -256,7 +266,7 @@ public class SubjectWiseMeritListController extends MultiActionController{
 		}
 	}
 	
-	protected String buildPdfDocument(List<SubjectWiseMeritList> studentDataList,HttpServletRequest request,HttpServletResponse response) throws Exception
+	protected String buildPdfDocument(SubjectWiseMeritList subjectWiseMeritList, List<SubjectWiseMeritList> studentDataList,HttpServletRequest request,HttpServletResponse response) throws Exception
 	{
 		String sep = System.getProperty("file.separator");
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("in" + sep + "ac"
@@ -270,38 +280,67 @@ public class SubjectWiseMeritListController extends MultiActionController{
 		Document document = new Document();
 		PdfWriter writer=null;
 		String message="success";
-//		List<SubjectWiseMeritList> studentDataList= (List<SubjectWiseMeritList>) model.get("StudentList");
 		
 		try{
-			String programCode=studentDataList.get(0).getProgramCode();
+			String entityId=subjectWiseMeritList.getEntityId();
+			String programId=subjectWiseMeritList.getProgramId();
+			String programName = studentDataList.get(0).getProgramName();
 			String branchId=studentDataList.get(0).getBranchId();
-			String courseGroup=studentDataList.get(0).getCourseGroup();
+			String specializationId=subjectWiseMeritList.getSpecializationId();
+			
+			List<String>str=new ArrayList<String>();
+			str.add(subjectWiseMeritList.getGroup1());
+			if(subjectWiseMeritList.getGroup2()!=null && !(subjectWiseMeritList.getGroup2().equals(""))){
+				str.add("+"+subjectWiseMeritList.getGroup2());
+			}
+			if(subjectWiseMeritList.getGroup3()!=null && !(subjectWiseMeritList.getGroup3().equals(""))){
+				str.add("+"+subjectWiseMeritList.getGroup3());
+			}
+			if(subjectWiseMeritList.getGroup4()!=null && !(subjectWiseMeritList.getGroup4().equals(""))){
+				str.add("+"+subjectWiseMeritList.getGroup4());
+			}
+			if(subjectWiseMeritList.getGroup5()!=null && !(subjectWiseMeritList.getGroup5().equals(""))){
+				str.add("+"+subjectWiseMeritList.getGroup5());
+			}
+			String courseGroup="";
+			for(int i=0;i<str.size();i++){
+				courseGroup=courseGroup+str.get(i);				
+			}
+	
+			String sessionStartDate=studentDataList.get(0).getSessionStartDate().substring(0, 4);
+			String sessionEndDate=studentDataList.get(0).getSessionEndDate().substring(0,4);
 			
 			filePath = getServletContext().getRealPath("/")+resourceBundle.getString("directory");
 			
-			filePath = filePath+sep+session.getAttribute("universityName").toString()+sep+"Session-"+
-			session.getAttribute("startDate").toString().substring(0, 4)+"-"+
-			session.getAttribute("endDate").toString().substring(0, 4)+sep+"MajorGroupWiseMeritList"+sep+programCode;
-			
+			filePath = filePath+sep+session.getAttribute("universityName").toString()+sep
+					   +"PassOut-Session-"+sessionStartDate+"-"+sessionEndDate+sep
+					   +"MajorGroupWiseMeritList"+sep+entityId;
+
 			file = new File(filePath);
 			file.mkdirs();
 			
-			writer = PdfWriter.getInstance(document,new FileOutputStream(filePath+sep+"Major_Group_Wise_Merit_List_"+programCode+"_"+branchId+"_"+courseGroup+".pdf"));
-			
-			
-			Phrase header1= new Phrase("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+
-					session.getAttribute("universityName").toString().toUpperCase(),FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD,
-					new Color(0, 0, 0)));
-			Phrase header2= new Phrase("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+
+			String downloadPath = "/"+resourceBundle.getString("directory")+"/"+session.getAttribute("universityName").toString()+"/"+"PassOut-Session-"+sessionStartDate+"-"+sessionEndDate+"/"
+			   					+"MajorGroupWiseMeritList"+"/"+entityId+"/"+"Major_Group_Wise_Merit_List_"+programId+"_"+branchId+"_"+specializationId+"_"+courseGroup+".pdf";
+			  					
+			   					
+			writer = PdfWriter.getInstance(document,new FileOutputStream(filePath+sep+"Major_Group_Wise_Merit_List_"+programId+"_"+branchId+"_"+specializationId+"_"+courseGroup+".pdf"));
+				
+			Phrase header1= new Phrase(
+					session.getAttribute("universityName").toString().toUpperCase()+"\n"+
 					"Major-Group-Wise Merit List "+ session.getAttribute("startDate").toString().substring(0, 4)+"-"+
-					session.getAttribute("endDate").toString().substring(0, 4),FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD,new Color(0, 0, 0)));
+					session.getAttribute("endDate").toString().substring(0, 4)
+					,FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD,
+					new Color(0, 0, 0)));
 			
-			Phrase headers=new Phrase();
-	        headers.add(header1);
-	        headers.add(header2);       
-			HeaderFooter header = new HeaderFooter(headers,false);
+			
+			Phrase className= new Phrase("Class Name : " + programName,FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD,new Color(0, 0, 0)));
+			
+
+			HeaderFooter header = new HeaderFooter(new Phrase(header1),false);
 	        header.setBorderWidth(0);
+	        header.setAlignment(Element.ALIGN_CENTER);
 	        document.setHeader(header);
+	        
 	        
 	        Date printingDate = new Date();
 	        String toDay = DateFormat.getDateTimeInstance().format(printingDate);
@@ -315,7 +354,7 @@ public class SubjectWiseMeritListController extends MultiActionController{
 			document.open();
 			Font cellFont = new Font(Font.HELVETICA, 8);
 			Font headerFont = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD, new Color(25,25,112));
-			PdfPTable studentTable = new PdfPTable(new float[] {2,5,3,3,4,6,2,3});
+			PdfPTable studentTable = new PdfPTable(new float[] {2,2,2,5,3,6,1.5f,1.5f});
 			studentTable.setWidthPercentage(100f);
 			
 			PdfPCell c1 = new PdfPCell(new Phrase("", cellFont));
@@ -333,18 +372,21 @@ public class SubjectWiseMeritListController extends MultiActionController{
 					addCell(c1, cellFont, studentTable,ii);
 					addCell(c1, cellFont, studentTable,studentDataList.get(i).getProgramCode());
 					addCell(c1, cellFont, studentTable,studentDataList.get(i).getBranchId());
-					addCell(c1, cellFont, studentTable,studentDataList.get(i).getCourseGroup());
+//					addCell(c1, cellFont, studentTable,studentDataList.get(i).getCourseGroup());
+					addCell(c1, cellFont, studentTable,courseGroup);
 					addCell(c1, cellFont, studentTable,studentDataList.get(i).getRollNumber());
 					addCell(c1, cellFont, studentTable,studentDataList.get(i).getName());
 					addCell(c1, cellFont, studentTable,studentDataList.get(i).getGender());
-					addCell(c1, cellFont, studentTable,studentDataList.get(i).getMarks());
-	
+					addCell(c1, cellFont, studentTable,studentDataList.get(i).getMarks());	
 				}
-		
+				document.add(className);
 				document.add(studentTable);
 				document.close();
+				
+				message=message+downloadPath;
 		}
 		catch (Exception e) {
+			System.out.println(e);
 			logger.error("buildPdfDocument");
 			message="failure";
 		}

@@ -361,7 +361,7 @@
 		<result property="toSemester" column="to_semester" />
 		<result property="oldEntityId" column="old_entity_id" />
 		<result property="rollNumber" column="roll_number" />
-
+		<result property="rollNumberGroupCode" column="roll_number_group_code" />
 
 	</resultMap>
 
@@ -371,7 +371,7 @@
 		select
 		distinct
 		tsm.student_id,tsp.admission_mode,tsp.old_program_id,tsp.old_branch_id,
-		tsp.old_specialization_id,tsp.from_semester,tsp.to_semester,tsp.old_entity_id,tsp.roll_number
+		tsp.old_specialization_id,tsp.from_semester,tsp.to_semester,tsp.old_entity_id,tsp.roll_number,IF(tsp.roll_number_group_code IS NULL,'00',tsp.roll_number_group_code) roll_number_group_code
 		from
 		temp_student_master
 		tsm,temp_student_program
@@ -391,7 +391,7 @@
 		tsp.enrollment_number=tsc.enrollment_number AND
 		tsm.enrollment_number=tsp.enrollment_number AND
 		tsp.registration_status='V' AND tsp.admission_mode!='NOR' AND
-		(tsp.enrollment_number !='');
+		(tsp.enrollment_number !='') ORDER BY roll_number_group_code,CONCAT(tsm.first_name,'',tsm.middle_name,'',tsm.last_name);
 
 		</select>
 
@@ -519,15 +519,11 @@
 	<!--		</update>-->
 
 	<resultMap id="entitysystemvalue" class="studentenrollment">
-
 		<result property="statusFlag" column="status_flag" />
-
-
 	</resultMap>
 
-	<select id="checkvalues" resultMap="entitysystemvalue">
-
-		select status_flag from
+	<select id="checkvalues" resultClass="studentenrollment">
+		select status_flag AS statusFlag,value AS systemValue from
 		system_table_one where entity_id=#entityId# AND
 		program_id=#programId#
 		AND year=#year#;
@@ -548,7 +544,7 @@
 
 			insert into		
 			system_table_one(entity_id,program_id,code,year,status_flag,value,insert_time,creator_id)		
-			values(#entityId#,#programId#,#code#,#year#,'L','000',now(),#creatorId#);
+			values(#entityId#,#programId#,#code#,#year#,'L',#systemValue#,now(),#creatorId#);
 		
 
 	</insert>
@@ -761,7 +757,7 @@
 		(tsm.enrollment_number IS
 		NULL or
 		tsm.enrollment_number='') AND
-		tsp.admission_mode='NEW';
+		tsp.admission_mode='NEW' ORDER BY CONCAT(tsm.first_name,'',tsm.middle_name,'',tsm.last_name);
 
 		</select>
 
@@ -965,6 +961,15 @@
 
 		</select>
 
+<!-- Add By Devendra to check Roll Number Group Code exists or not -->
+	<select id="checkRollNumberGroupCode" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM temp_student_program WHERE entity_id=#entityId# AND program_id=#programId# AND branch_id=#branchId# 
+		AND specialization_id=#specializationId# AND to_semester=#semesterCode# AND to_semester_start_date=#semesterStartDate# 
+		AND to_semester_end_date=#semesterEndDate# AND registration_status='V' AND admission_mode!='NOR' AND (enrollment_number !='') AND roll_number_group_code IS NOT NULL;
+	</select>
 
-
+	<select id="getRollFormatRecord" resultClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ActivityMasterBean">
+		SELECT type AS type,field_from AS fromPosition,field_to AS toPosition,format AS format
+		FROM roll_enroll_format WHERE type=#type# AND university_id=#universityId#  ORDER BY field_from ASC;
+	</select>
 </sqlMap>

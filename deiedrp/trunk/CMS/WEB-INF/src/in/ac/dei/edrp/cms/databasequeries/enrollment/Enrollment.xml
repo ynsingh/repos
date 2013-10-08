@@ -55,7 +55,8 @@
 		stt3.component_description specialization,session_start_date sessionStartDate,
         session_end_date sessionEndDate,status,faculty_reg_no facRegNo,gender,
         registration_number as registrationNo,photo_path as photoPath, name_in_hindi as hindiName,
-        father_name_in_hindi as fatherHindiName,mother_name_in_hindi as motherHindiName
+        father_name_in_hindi as fatherHindiName,mother_name_in_hindi as motherHindiName,
+        epd.roll_number_group_code AS rollNoGroupCode,long_field AS longField
 		FROM enrollment_personal_details epd, system_table_two stt2,
 		system_table_two stt3,entity_master em, program_master pm
 		WHERE stt2.component_code=branch_id AND stt2.group_code='BRNCOD'
@@ -91,13 +92,13 @@
 		father_first_name,father_middle_name,father_last_name,mother_first_name,mother_middle_name,
 		mother_last_name,primary_email_id,secondary_email_id,guardian_name,date_of_birth,nationality,
 		religion,category_code,entity_id,program_id,branch_id,specialization_id,
-		status,session_start_date,session_end_date,faculty_reg_no,gender,insert_time,creator_id)
+		status,session_start_date,session_end_date,faculty_reg_no,gender,insert_time,creator_id,roll_number_group_code,long_field)
 		VALUES
 		(#registrationNo#,#studentId#,#studentFirstName#,#studentMiddleName#,#studentLastName#,
 		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#motherFirstName#,#motherMiddleName#,
 		#motherLastName#,#primaryMail#,#secondaryMail#,#guardianName#,#dob#,#nationality#,
 		#religion#,#categoryCode#,#entityCode#,#programCode#,#branchCode#,#specializationCode#,
-		'SUB',#sessionStartDate#,#sessionEndDate#,#facRegNo#,#gender#,now(),#creatorId#)
+		'SUB',#sessionStartDate#,#sessionEndDate#,#facRegNo#,#gender#,now(),#creatorId#,#rollNoGroupCode#,#longField#)
 	</insert>
 	
 	<update id="updatePersonalInfo">
@@ -176,13 +177,13 @@
 	</select>
 	
 	<select id="getStudentFinalList" resultClass="enrollmentInfo">
-		SELECT srsh.roll_number AS rollNumber,CONCAT(sm.student_first_name,' ',student_middle_name,' ',student_last_name) AS studentName,name_in_hindi AS hindiName,sp.enrollment_number AS enrollmentNo,CONCAT(sm.father_first_name,' ',sm.father_middle_name,' ',sm.father_last_name)  AS fatherName ,father_name_in_hindi AS fatherHindiName, sm.gender AS gender,
+		SELECT srsh.roll_number AS rollNumber,CONCAT(if(sm.student_first_name is null,'',sm.student_first_name),' ',if(sm.student_middle_name is null,'',sm.student_middle_name),' ',if(sm.student_last_name is null,'',sm.student_last_name)) AS studentName,name_in_hindi AS hindiName,sp.enrollment_number AS enrollmentNo,CONCAT(if(sm.father_first_name is null,'',sm.father_first_name),' ',if(sm.father_middle_name is null,'',sm.father_middle_name),' ',if(sm.father_last_name is null,'',sm.father_last_name))  AS fatherName ,father_name_in_hindi AS fatherHindiName, sm.gender AS gender,
 		student_first_name AS studentFirstName,student_middle_name AS studentMiddleName ,student_last_name AS studentLastName 
 		FROM student_master sm,program_course_header pch,student_registration_semester_header srsh ,student_program sp
 		WHERE pch.program_id=#program# AND pch.branch_id=#branch# AND pch.specialization_id=#specialization# AND pch.semester_code=#semesterCode# AND pch.semester_status='ACT'
 		ANd pch.program_course_key=srsh.program_course_key ANd srsh.session_start_date=#semesterStartDate# ANd srsh.session_end_date=#semesterEndDate# AND srsh.entity_id=#entity#
 		AND srsh.status != 'YTR' AND sp.roll_number=srsh.roll_number  ANd sp.program_status IN ('ACT','PAS','FAL')
-		AND sp.entity_id=srsh.entity_id ANd sp.program_id=pch.program_id ANd sp.branch_id=pch.branch_id ANd sp.specialization_id=pch.specialization_id AND sp.current_semester=pch.semester_code
+		AND sp.entity_id=srsh.entity_id ANd sp.program_id=pch.program_id ANd sp.branch_id=pch.branch_id ANd sp.specialization_id=pch.specialization_id 
 		AND sm.enrollment_number=sp.enrollment_number order by srsh.roll_number,CONCAT(sm.student_first_name),CONCAT(sm.student_first_name,' ',student_middle_name),CONCAT(sm.student_first_name,' ',student_middle_name,' ',student_last_name);
 	</select>
 	
@@ -219,4 +220,18 @@
 		(#userId#,#entity#,#program#,#branch#,#specialization#,#semester#,
 		#userGroupId#,#userName#,#emailId#,#AIorUI#,#isReady#,now(),#creatorId#);
 	</insert>
+	
+	<select id="getFormat" resultClass="enrollmentInfo">
+		SELECT type AS type,field_from AS rangeFrom,field_to AS rangeTo,format AS format
+		FROM roll_enroll_format WHERE type=#type# AND university_id=#universityId# ORDER BY field_from;
+	</select>
+	
+	<insert id="insertFormat">
+		INSERT INTO roll_enroll_format(type,field_from,field_to,format,university_id,insert_time,creator_id)
+		VALUES(#type#,#rangeFrom#,#rangeTo#,#format#,#universityId#,now(),#userId#);
+	</insert>
+	
+	<delete id="deleteFormat">
+		DELETE FROM roll_enroll_format WHERE type=#type# AND university_id=#universityId# AND format=#format#;
+	</delete>
 </sqlMap>

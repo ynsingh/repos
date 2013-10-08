@@ -215,14 +215,12 @@ public function onCreationComplete():void{
 				if(event.detail==Alert.YES){
 					
 					var infoObject:Object={};
-					infoObject["userId"]=new Date();
-				
+					infoObject["userId"]=new Date();				
 					infoObject["employeeCode"] = gridData.getItemAt(0).employeeId;
 					infoObject["userType"] = userTypeXml.id.(@name==userType.selectedLabel).@code;
-					infoObject["emailId"] = gridData.getItemAt(0).email_id;
-				
-					Mask.show(commonFunction.getMessages('pleaseWait'));				
-				
+					infoObject["emailId"] = gridData.getItemAt(0).email_id;	
+					infoObject["application"] = "CMS";				
+					Mask.show(commonFunction.getMessages('pleaseWait'));								
 					getempdetails.send(infoObject);	
 					
 				} 

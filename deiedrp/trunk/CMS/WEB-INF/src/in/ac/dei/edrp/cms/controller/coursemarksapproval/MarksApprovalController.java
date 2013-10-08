@@ -98,7 +98,8 @@ public class MarksApprovalController extends MultiActionController {
 	public ModelAndView getCourseList(HttpServletRequest request,
 			HttpServletResponse response) {
 		MarksApprovalInfo input = new MarksApprovalInfo();
-
+		HttpSession session = request.getSession(true);
+		input.setUniversityCode(session.getAttribute("universityId").toString());
 		input.setProgramCode(request.getParameter("program"));
 		input.setBranchCode(request.getParameter("branch"));
 		input.setSpecializationCode(request.getParameter("specialization"));

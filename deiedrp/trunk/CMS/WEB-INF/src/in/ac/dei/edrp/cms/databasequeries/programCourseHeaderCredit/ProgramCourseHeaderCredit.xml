@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProgramCourseHeaderCredit">
+ 	<typeAlias alias="ProgramMaster" type="in.ac.dei.edrp.cms.domain.programcoursesetup.ProgramMaster"/>
+ 
+ 	<select id="getProgramCourseHeaderList" resultClass="ProgramMaster">
+        select pch.program_course_key as programCourseKey,
+        	   pm.program_name as programName,
+        	   stt.component_description as branchName,
+			   stt1.component_description as specializationName,
+			   pch.semester_code as semesterCode,
+			   (case when pch.semester_status='ACT' then 'Active' else 'Inactive' end) as semesterStatus,
+			   (case when pch.min_credit is null then '' else min_credit end) as minCredit,
+			   (case when pch.max_credit is null then '' else max_credit end) as maxCredit,
+			   (case when pch.max_lecture_credit is null then '' else max_lecture_credit end) as maxLecCredit,
+			   (case when pch.min_lecture_credit is null then '' else min_lecture_credit end) as minLecCredit
+		from program_course_header pch,program_master pm,system_table_two stt,system_table_two stt1
+		where pm.program_id=pch.program_id and pch.program_id LIKE concat(#string#,'%') AND 
+			(pch.branch_id=stt.component_code and stt.group_code='BRNCOD' AND stt.university_code=#string#) and 
+			(pch.specialization_id=stt1.component_code and stt1.group_code='SPCLCD' AND stt1.university_code=#string#)
+			order by pch.program_course_key
+    </select>
+    <update id="updatePCHCredits">
+    	update program_course_header pch
+		set pch.min_credit=#minCredit#,
+		pch.max_credit=#maxCredit#,
+		pch.min_lecture_credit=#minLecCredit#,
+		pch.max_lecture_credit=#maxLecCredit#,
+		pch.modifier_id=#modifierId#,
+		pch.modification_time=now()
+		where pch.program_course_key=#programCourseKey#;
+    </update>
+    
+    <select id="getProgramTermCredit" resultClass="ProgramMaster">
+    	select minimum_credit minCredit,maximum_credit maxCredit,minimum_lecture_credit minLecCredit,maximum_lecture_credit maxLecCredit
+		from program_term_details ptd, program_course_header pch
+		where ptd.program_id=pch.program_id
+		AND ptd.semester_code=pch.semester_code
+		AND pch.program_course_key=#programCourseKey#;
+    </select>
+ 
+</sqlMap>

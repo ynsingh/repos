@@ -213,6 +213,7 @@ public class AwardBlankCorrectionController extends MultiActionController{
         	input.setEntityId(request.getParameter("entityId"));
         	input.setProgramCourseKey(request.getParameter("programCourseKey"));
     		input.setCourseCode(request.getParameter("courseCode"));
+			input.setDisplayType(request.getParameter("displayType"));
         	List<AwardSheetInfoGetter> list = awardBlankCorrectionDao.getEmployeeDetail(input);
             return new ModelAndView("correctionInAwardBlank/Details", "result", list);
     }
@@ -264,7 +265,7 @@ public class AwardBlankCorrectionController extends MultiActionController{
         	sheetHeaders.add("Student Name");
         	System.out.println("list size is "+componentList.size());
         	for(int i=0;i<componentList.size();i++){
-        		sheetHeaders.add(componentList.get(i).getEvaluationId());
+        		sheetHeaders.add(componentList.get(i).getEvaluationId()+"\n"+componentList.get(i).getMaximumMarks());
         		System.out.println("component is "+componentList.get(i).getEvaluationId());
         	}
         	sheetHeaders.add("Total Marks");

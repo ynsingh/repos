@@ -1,8 +1,9 @@
+        import common.Components.com.iwobanas.controls.MDataGrid;
+        import common.Components.com.iwobanas.controls.dataGridClasses.MDataGridColumn;
         import common.commonFunction;
         
         import mx.collections.ArrayCollection;
         import mx.controls.Alert;
-        import mx.controls.DataGrid;
         import mx.controls.LinkButton;
         import mx.events.CloseEvent;
         import mx.events.ListEvent;
@@ -71,7 +72,7 @@
         
         
 
-		public function getRegistrationRollNo(row:Object,col:DataGridColumn):String
+		public function getRegistrationRollNo(row:Object,col:MDataGridColumn):String
 		{
 			if(row.admission_mode.toString().toUpperCase()=="NEW")
 			{
@@ -83,12 +84,12 @@
 			}
 		}
 		
-		public function getName(row:Object,col:DataGridColumn):String
+		public function getName(row:Object,col:MDataGridColumn):String
 		{
 			return row.first_name+" "+row.middle_name+" "+row.last_name;
 		}
 		
-		public function getAdmissionMode(row:Object,col:DataGridColumn):String
+		public function getAdmissionMode(row:Object,col:MDataGridColumn):String
 		{
 		
 			if(row.admission_mode.toString().toUpperCase()=="NEW")
@@ -102,7 +103,7 @@
 			
 		}
 		
-		public function getRegistrationStatus(row:Object,col:DataGridColumn):String
+		public function getRegistrationStatus(row:Object,col:MDataGridColumn):String
 		{
 			if(row.status.toString().toUpperCase()=="V")
 			{
@@ -126,7 +127,7 @@
 		    }
 		}   
 	
-		public function showStudentCheckList(studentCheckListGrid:DataGrid,xmlData:XML):void
+		public function showStudentCheckList(studentCheckListGrid:MDataGrid,xmlData:XML):void
 		{
             if(studentCheckListGrid.selectedIndex<0)
 			{
@@ -154,7 +155,7 @@
 		}
 		
 		
-		public function showFullDetails(studentCheckListGrid:DataGrid):void
+		public function showFullDetails(studentCheckListGrid:MDataGrid):void
 		{
 			var rowIndex:int=studentCheckListGrid.selectedIndex;
 			if(rowIndex<0)

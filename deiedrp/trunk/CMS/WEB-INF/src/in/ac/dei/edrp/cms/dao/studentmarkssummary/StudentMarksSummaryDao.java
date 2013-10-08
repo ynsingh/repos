@@ -68,4 +68,7 @@ public interface StudentMarksSummaryDao {
 	
 	//added by ashish
 	String setCorrectionRequest(StudentMarksSummaryBean input);
+
+	List<StudentMarksSummaryBean> getCorrectionRequestStatus(
+			StudentMarksSummaryBean input);
 }

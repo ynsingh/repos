@@ -54,6 +54,7 @@ public function showMarks():void{
 	marksListWindow.courseNameLbl.text=courseDislpay.selectedItem.courseName;
 	marksListWindow.rollNoLbl.text=rollNumber;
 	marksListWindow.programCourseKey=programCourseKey;
+	marksListWindow.showMarks1=showMarks;
 	}
 	catch(e:Error){
 		Alert.show(e+" nupur");

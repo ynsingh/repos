@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  width="370" height="370" xmlns:net="flash.net.*" creationComplete="creationComplete()" borderStyle="solid" backgroundColor="#ffffff" borderColor="#000505" cornerRadius="20" fontSize="12" borderThickness="2" themeColor="#4B88EC">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/StagingTableReportAs.as"/>
+
+<mx:HTTPService id="generateReport" method="POST"
+					url="{urlPrefix1+'generateReport.htm'}"
+					resultFormat="e4x"
+					result="setGenerateReportSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getOwnerEntity" method="POST"
+					url="{urlPrefix+'getOwnerEntity.htm'}"
+					resultFormat="e4x"
+					result="getOwnerEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+<mx:HTTPService id="getProgramName" method="POST"
+					url="{urlPrefix+'getProgram.htm'}"
+					resultFormat="e4x"
+					result="getProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getBranch" method="POST"
+					url="{urlPrefix+'getBranch.htm'}"
+					resultFormat="e4x"
+					result="getBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>		
+<mx:HTTPService id="getSpecialization" method="POST"
+					url="{urlPrefix+'getSpecialization.htm'}"
+					resultFormat="e4x"
+					result="getSpecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+					
+<mx:HTTPService id="getSemester" method="POST"
+					url="{urlPrefix+'getSemester.htm'}"
+					resultFormat="e4x"
+					result="getSemesterSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+																													
+																							
+		<mx:Label x="38" y="64" text="Entity Name " fontWeight="normal" width="95" textAlign="left"/>
+		<mx:ComboBox x="168" y="61" width="160" enabled="true" id="entityName" toolTip="{entityName.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="programName.enabled=true,onEntityChange()"></mx:ComboBox>
+		<mx:Label x="38" y="95" text="Program Name " fontWeight="normal" width="116" textAlign="left"/>
+		<mx:ComboBox x="168" y="92" width="160" enabled="false" id="programName" toolTip="{programName.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="branch.enabled=true,onProgramChange()"></mx:ComboBox>
+		<mx:Label x="38" y="126" text="Branch " fontWeight="normal" width="63" textAlign="left"/>
+		<mx:ComboBox x="168" y="123" width="160" enabled="false" id="branch" toolTip="{branch.text}" prompt="Select" selectedIndex="-1" change="specialization.enabled=true,onBranchChange()" labelField="@name"></mx:ComboBox>
+		<mx:Label x="38" y="157" text="Specialization " fontWeight="normal" width="116" textAlign="left"/>
+		<mx:ComboBox x="168" y="154" width="160" enabled="false" id="specialization" toolTip="{specialization.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="semester.enabled=true,onSpecializationChange()"></mx:ComboBox>
+		<mx:Label x="38" y="188" text="Semester " fontWeight="normal" width="82" textAlign="left"/>
+		<mx:ComboBox x="168" y="185" width="160" enabled="false" id="semester" toolTip="{semester.text}" prompt="Select" selectedIndex="-1" labelField="@name"  change="processFlagCombo.enabled=true"></mx:ComboBox>
+		<mx:Label x="38" y="219" text="Process Flag" width="95"/>
+		<mx:ComboBox x="168" y="216" id="processFlagCombo" enabled="false" toolTip="{processFlagCombo.text}" prompt="Select" selectedIndex="-1"
+			 change="generateReportButton.enabled=true,downloadId.enabled=true,printId.enabled=true">
+		 <mx:ArrayCollection>
+         <mx:Object label="Processed" data="P"/>
+         <mx:Object label="Un-Processed" data="N"/>
+      </mx:ArrayCollection>
+		</mx:ComboBox>
+		<mx:Button x="83" y="262" icon="@Embed(source='/images/generate2.png')" click="submitData()" id="generateReportButton" enabled="false" height="23" 
+			width="37" toolTip="{commonFunction.getConstants('generateReport')}" />
+		<mx:Button id="downloadId" x="148" y="262" click="onButtonClick(event)"
+		icon="@Embed(source='/images/downloads1.png')" height="23" width="37" enabled="false" toolTip="{commonFunction.getConstants('downloadreport')}" />
+		<mx:Button id="printId"  visible="false" enabled="false" click="onButtonClick(event)"
+		icon="@Embed(source='/images/print1.png')" x="209" y="262" height="23" width="37" toolTip="{commonFunction.getConstants('printReport')}" />
+		<mx:Button x="271" y="262" label="Cancel" click="exit()"/>
+	
+	<mx:NumberValidator id="entityNameVal" source="{entityName}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{generateReportButton}" triggerEvent="click"/>
+	<mx:NumberValidator id="programNameVal" source="{programName}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{generateReportButton}" triggerEvent="click"/>
+	<mx:NumberValidator id="branchVal" source="{branch}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{generateReportButton}" triggerEvent="click"/>
+	<mx:NumberValidator id="specializationVal" source="{specialization}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{generateReportButton}" triggerEvent="click"/>
+	<mx:NumberValidator id="semesterVal" source="{semester}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{generateReportButton}" triggerEvent="click"/>
+	
+</mx:Canvas>

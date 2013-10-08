@@ -38,6 +38,7 @@
 		]]>
 	</mx:Script>
 	<mx:Script source="asFiles/ManageCourseMasterAction.as"/>
+	<!--
 	<mx:HTTPService id="getEntityList" method="POST"
 					url="{urlPrefix}getEntities.htm"
 					resultFormat="e4x"
@@ -65,30 +66,30 @@
 					result="getSpecializationSuccess(event)"
 					fault="onFailure(event)"
 					useProxy="false"/>
-	
+	-->
 	<mx:HTTPService id="getCourseDetails" method="POST"
 					url="{urlPrefix}getCourseDetails.htm"
 					resultFormat="e4x"
 					result="getCourseDetailsSuccess(event)"
 					fault="onFailure(event)"
 					useProxy="false"/>
-	
+	<!--
 	<mx:Validator id="entityValidator" property="selectedItem" source="{ownerEntityComboBox}" trigger="{showButton}" triggerEvent="click"/>
 	<mx:Label x="335" y="22" text="{commonFunction.getConstants('ownerEntity')}" />
 	<mx:ComboBox change="onEntityChange()" x="435" y="21" width="200" id="ownerEntityComboBox" labelField="ownerEntity" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{ownerEntityComboBox.text}"/>
+	-->
 	<mx:TitleWindow x="35" y="60" width="900" layout="absolute" height="120" title="{commonFunction.getConstants('searchBy')}" borderStyle="solid" borderThickness="1">
-		<mx:Label text="{commonFunction.getConstants('ownerProgram')}"  y="10" x="45"/>
+		<!--<mx:Label text="{commonFunction.getConstants('ownerProgram')}"  y="10" x="45"/>
 	    <mx:Label x="530" text="{commonFunction.getConstants('ownerBranch')}"  y="10"/>
-	    <mx:Label y="40" text="{commonFunction.getConstants('ownerSpecialization')}"  x="45"/>
-	    <mx:Label x="530" y="40" text="{commonFunction.getConstants('courseCode')}" />
-	    <mx:ComboBox x="185" width="200" id="ownerProgramComboBox" toolTip="{ownerProgramComboBox.text}" prompt="{commonFunction.getConstants('select')}" y="10" change="ownerBranchComboBox.enabled=true" updateComplete="onProgramChange()" enabled="false"/>
+	    <mx:Label y="40" text="{commonFunction.getConstants('ownerSpecialization')}"  x="45"/>-->
+	    <mx:Label x="10" y="21" text="{commonFunction.getConstants('courseCode')}" />
+	    <!--<mx:ComboBox x="185" width="200" id="ownerProgramComboBox" toolTip="{ownerProgramComboBox.text}" prompt="{commonFunction.getConstants('select')}" y="10" change="ownerBranchComboBox.enabled=true" updateComplete="onProgramChange()" enabled="false"/>
 	    <mx:ComboBox x="625" width="200" id="ownerBranchComboBox" toolTip="{ownerBranchComboBox.text}" enabled="false" prompt="{commonFunction.getConstants('select')}" y="10" change="ownerSpecializationComboBox.enabled=true" updateComplete="onBranchChange()"/>
-	    <mx:ComboBox x="185" y="40" width="200" id="ownerSpecializationComboBox" toolTip="{ownerSpecializationComboBox.text}" enabled="false" prompt="{commonFunction.getConstants('select')}"/>
-	    <mx:TextInput x="625" y="40" width="200" id="courseCodeTextInput" editable="false"/>
+	    <mx:ComboBox x="185" y="40" width="200" id="ownerSpecializationComboBox" toolTip="{ownerSpecializationComboBox.text}" enabled="false" prompt="{commonFunction.getConstants('select')}"/>-->
+	    <mx:TextInput x="105" y="21" width="200" id="courseCodeTextInput"/>
+	    <mx:Button id="showButton" x="587" y="21" click="showCourseDetails('')" label="{commonFunction.getConstants('showButton')}"/>
+	    <mx:Button x="671" y="21" click="this.parentDocument.loaderCanvas.removeAllChildren()" label="{commonFunction.getConstants('cancelButton')}"/>
 	</mx:TitleWindow>
-	
-	<mx:Button id="showButton" x="671" y="189" click="showCourseDetails('')" label="{commonFunction.getConstants('showButton')}"/>
-	<mx:Button x="755" y="189" click="this.parentDocument.loaderCanvas.removeAllChildren()" label="{commonFunction.getConstants('cancelButton')}"/>
 	
 	<mx:Canvas styleName="GridCanvas" id="courseDetailPanel" x="35" y="237" visible="false" height="195" width="900">
 	    <mx:Label text="{commonFunction.getConstants('courseDetails')}" top="6" left="10" fontWeight="bold"  />

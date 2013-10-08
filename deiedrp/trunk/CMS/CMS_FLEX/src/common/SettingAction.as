@@ -35,6 +35,7 @@
  
  import mx.collections.ArrayCollection;
  import mx.controls.Alert;
+ import mx.core.Application;
  import mx.events.CloseEvent;
  import mx.rpc.events.FaultEvent;
  import mx.rpc.events.ResultEvent;
@@ -48,7 +49,14 @@
 [Bindable]public var params:Object={};
 [Bindable]public var urlPrefix:String="";
 [Bindable]public var userType:String="";
-
+[Bindable]public var passwordMinLength:int=0;
+[Bindable]public var passwordDummyFlag:int=0;
+[Bindable]public var formatDummyFlag:int=0;
+[Bindable]public var repeatDummyFlag:int=0;
+[Bindable]public var oldPasswordArrCol:ArrayCollection;
+[Bindable]public var passwordCheck:String="";
+[Bindable]public var currentPassword:String="";
+[Bindable]var bol:Boolean=new Boolean;	
 //on page load
 public function onPageLoad():void
 {
@@ -108,6 +116,9 @@ public function getAddressesResultHandler(event:ResultEvent):void
 	correspondenceAddress.stateField.selectedItem=event.result.addressInfo.addresses.(addressKey=='COR').state.toString();
 	correspondenceAddress.city=event.result.addressInfo.addresses.(addressKey=='COR').city.toString();
 	correspondenceAddress.pinField.text=event.result.addressInfo.addresses.(addressKey=='COR').pinCode;
+	var o:Object={};
+	o["date"]=new Date;	
+	getPasswordPolicyService.send(o);
 }
 
 //validating address field
@@ -207,11 +218,11 @@ public function updateAddressesResultHandler(event:ResultEvent):void
 	   	this.parentDocument.loaderCanvas.removeAllChildren();
 	}
 	if(event.result.info.toString()=="true")
-	{
+	{	
 		Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),commonFunction.getMessages('success'),0,null,null,successIcon);
 		checkBoxField.selected=false;
 		permanentAddress.enabled=true;
-		correspondenceAddress.enabled=true;
+		correspondenceAddress.enabled=true;		
 	}
 	else
 	{
@@ -229,18 +240,20 @@ public function faultHandler(event:FaultEvent):void
 //on click of update password button
 public function changePassword():void
 {
-	if(validatePassword())
-	{
-		params['userName']=this.parentDocument.userName;
-		params['password']=oldPassword.text;
-		params['application']=this.parentDocument.application;//Add by Devendra
-		getLoginInfoService.send(params);
-		Mask.show(commonFunction.getMessages('pleaseWait'));
-	}
-	else
-	{
-		Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
-	}
+//	if(validatePassword())
+//	{
+//		params['userName']=this.parentDocument.userName;
+//		params['password']=oldPassword.text;
+//		params['application']="CMS";
+//		getLoginInfoService.send(params);
+//		Mask.show(commonFunction.getMessages('pleaseWait'));
+//	}
+//	else
+//	{
+//		Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+//	}
+
+	Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,updatePasswordOrNot,questionIcon);
 }
 
 //verify password result handler
@@ -309,6 +322,7 @@ public function updatePasswordOrNot(event:CloseEvent):void
 	if(event.detail==Alert.YES){
 		params['password']=oldPassword.text;
 		params['newPassword']=newPassword.text;
+		params['application']="CMS";
 		updatePassword.send(params);
 		Mask.show(commonFunction.getMessages('pleaseWait'));
 	}
@@ -326,11 +340,250 @@ public function updatePasswordResultHandler(event:ResultEvent):void
 	}
 	if(event.result.info.toString()=="true")
 	{
-		Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),commonFunction.getMessages('success'),0,null,null,successIcon);
+		Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),commonFunction.getMessages('success'),0,null,onOKClick,successIcon);		
 	}
 	else
 	{
 		Alert.show(commonFunction.getMessages('requestFailed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
 	}
 	resetPassword();
+}
+
+public function onOKClick(e:CloseEvent):void{
+	if(e.detail==Alert.OK){			
+		Application.application.setLogoutService.send(new Date());
+	}
+}
+
+
+// get password policy Result Handler 
+public function passwordPolicyResult(event:ResultEvent):void{	
+	if(event.result.sessionConfirm == true){
+		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+		var url:String="";
+		url=commonFunction.getConstants('navigateHome');
+		var urlRequest:URLRequest=new URLRequest(url);
+		urlRequest.method=URLRequestMethod.POST;
+		navigateToURL(urlRequest,"_self");
+	}		
+	var xml:XML=new XML;
+	xml=event.result as XML;
+	var arrCol:ArrayCollection=new ArrayCollection;
+	for each(var obj:Object in xml.loginInfo){
+		if(obj.componentCode=="PWDLEN"){
+			if(obj.value!=null){
+				passwordMinLength=obj.value;
+				passwordDummyFlag=obj.dummyFlagOne;
+			}
+			else{
+				passwordDummyFlag=0;
+			}
+		}	
+		else if(obj.componentCode=="PWDFMT"){
+			if(obj.dummyFlagOne!=null){
+				formatDummyFlag=obj.dummyFlagOne;
+			}
+			else{
+				formatDummyFlag=0;
+			}
+		}
+		else if(obj.componentCode=="PWDREP"){
+			if(xml.loginInfo.dummyFlagOne!=null){
+				repeatDummyFlag=obj.dummyFlagOne;
+			}
+			else{
+				repeatDummyFlag=0;
+			}
+		}	
+	}
+	
+}
+
+public function checkNewPasssword():void{
+	getOldPassword();	
+}
+
+function checkFormat(str:String):String{
+	var bol:Boolean=false;
+	var bol1:Boolean=false;
+	var str1:String="";
+	var specialCh:Array = ['!','@',']','#','$','%','^','&','*','(',')',']','.'];
+	var numericalArr:Array = ['1','2','3','4','5','6','7','8','9','0'];
+	for(var j:int=0;j<str.length;j++){
+		for(var i:int=0;i<specialCh.length;i++){			
+			if(str.charAt(j)==specialCh[i]){
+				bol=true;			
+				j=str.length;
+				break;				
+			}
+		}
+	}
+	if(bol){
+		for(var j:int=0;j<str.length;j++){
+			for(var i:int=0;i<numericalArr.length;i++){
+				if(str.charAt(j)==numericalArr[i]){					
+					bol1=true;					
+					j=str.length;
+					break;				
+				}
+			}
+		}			
+		if(bol1){
+			str1="fine";
+		}
+		else{
+			str1="noNumericChar";
+		}
+	}	
+	else{
+		str1="noSpecialChar";
+	}	
+	return str1;
+}
+
+function checkRepeation(str:String):Boolean{
+	var bol:Boolean=false;
+	if(currentPassword==passwordCheck){
+			bol=true;
+	}
+	else{
+		if(oldPasswordArrCol.length>0){
+			for each(var o:Object in oldPasswordArrCol){
+				if(o.oldPassword!=null){
+					if(o.oldPassword==passwordCheck){
+						bol=true;
+						break;
+					}
+				}							
+			}		
+		}		
+	}	
+	return bol;
+}
+
+function getOldPasswordServiceResult(event:ResultEvent):void{
+	if(event.result.sessionConfirm == true){
+		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+		var url:String="";
+		url=commonFunction.getConstants('navigateHome');
+		var urlRequest:URLRequest=new URLRequest(url);
+		urlRequest.method=URLRequestMethod.POST;
+		navigateToURL(urlRequest,"_self");
+	}		
+	var xml:XML=new XML;
+	xml=event.result as XML;
+	oldPasswordArrCol=new ArrayCollection;
+	for each(var obj:Object in xml.loginInfo){
+		oldPasswordArrCol.addItem({seq:obj.sequence,oldPassword:obj.OldPassword});
+	}	
+	passwordCheck=xml.loginInfo[0].newPassword;
+	currentPassword=xml.loginInfo[0].password;		
+	checkPassword();
+}
+
+public function getOldPassword():void{
+	var o:Object={};
+	o["date"]=new Date;
+	o["application"]="CMS";
+	o["currentPass"]=newPassword.text;
+	getOldPasswordService.send(o);
+}
+
+function checkConfirmPassword():void{
+	if(bol){
+		if(newPassword.text==confirmPassword.text){
+			confirmPasswordImage.source=successIcon;
+			confirmPassword.focusEnabled=true;		
+		}
+		else{
+			confirmPasswordImage.source=errorIcon;
+			confirmPassword.focusEnabled=false;
+			Alert.show(commonFunction.getMessages('passwordMismatch'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+		}
+	}	
+}
+
+function checkPassword():void{	
+	bol=true;
+	if(passwordDummyFlag==1){
+		var len:int=newPassword.text.length;
+		if(len<passwordMinLength){
+			Alert.show(commonFunction.getMessages('passwordLengthMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			newPassword.text="";
+			bol=false;
+		}
+		else{
+			if(formatDummyFlag==1){
+				var str:String=checkFormat(newPassword.text);
+				if(str=="noSpecialChar"){
+					Alert.show(commonFunction.getMessages('passwordSpecialCharMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					newPassword.text="";
+					bol=false;
+				}
+				else if(str=="noNumericChar"){
+					Alert.show(commonFunction.getMessages('passwordNumericMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					newPassword.text="";
+					bol=false;
+				}
+				else{
+					if(repeatDummyFlag==1){
+						if(checkRepeation(newPassword.text)){
+							Alert.show(commonFunction.getMessages('passwordRepeatMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+							newPassword.text="";
+							bol=false;
+						}	
+					}								
+				}
+			}
+			else{
+				if(repeatDummyFlag==1){
+					if(checkRepeation(newPassword.text)){
+						Alert.show(commonFunction.getMessages('passwordRepeatMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+						newPassword.text="";
+						bol=false;
+					}
+				}
+			}	
+		}				
+	}
+	else{
+		if(formatDummyFlag==1){
+				var str:String=checkFormat(newPassword.text);
+				if(str=="noSpecialChar"){
+					Alert.show(commonFunction.getMessages('passwordSpecialCharMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					newPassword.text="";
+					bol=false;
+				}
+				else if(str=="noNumericChar"){
+					Alert.show(commonFunction.getMessages('passwordNumericMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+					newPassword.text="";
+					bol=false;
+				}
+				else{
+					if(repeatDummyFlag==1){
+						if(checkRepeation(newPassword.text)){
+							Alert.show(commonFunction.getMessages('passwordRepeatMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+							newPassword.text="";
+							bol=false;
+						}	
+					}							
+				}
+			}
+			else{
+				if(repeatDummyFlag==1){
+					if(checkRepeation(newPassword.text)){
+						Alert.show(commonFunction.getMessages('passwordRepeatMsg'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+						newPassword.text="";
+						bol=false;
+					}
+				}
+			}	
+	}
+	if(bol){
+		newPasswordImage.source=successIcon;	
+	}
+	else{
+		newPasswordImage.source=errorIcon;
+	}
+
 }

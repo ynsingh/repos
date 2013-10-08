@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel width="1446" height="1007" layout="absolute" title="{commonFunction.getConstants('studentWiseDetails')}" xmlns:mx="http://www.adobe.com/2006/mxml" initialize="init()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+<mx:Panel width="1446" height="1007" layout="absolute" title="{commonFunction.getConstants('studentWiseDetails')}" xmlns:mx="http://www.adobe.com/2006/mxml" initialize="init()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"
+	xmlns:controls="common.Components.com.iwobanas.controls.*">
 
 <mx:Script source="asFiles/StudentCheckListAction.as"/>
 	    
@@ -355,19 +356,19 @@ protected function semesterChange():void{
 			</mx:Canvas>
 			
 			<mx:Canvas styleName="GridCanvas" x="42" y="191" width="1192.25" height="345">
-			<mx:DataGrid allowMultipleSelection="false" x="10" editable="true" y="40" liveScrolling="true" id="studentCheckListGrid" height="260" itemClick="showButton(event);" width="1172.25">
-				<mx:columns>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationRollNo')}" width="120" dataField="registration_roll_number" showDataTips="true" />
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','enrollmentNo')}" width="100" dataField="enrollment_number" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','modeOfAdmission')}" width="120" dataField="admission_mode" labelFunction="getAdmissionMode" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationStatus')}" width="120" dataField="status" labelFunction="getRegistrationStatus" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','name')}" width="160" dataField="student_name" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','fatherName')}" width="150" dataField="father_name" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','dob')}" width="100" dataField="date_of_birth" showDataTips="true"/>				
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','program')}" width="100" dataField="program_name" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','sequenceNo')}" width="120" dataField="sequence_number" showDataTips="true"/>
-					<mx:DataGridColumn sortable="false" editable="false" headerText="{commonFunction.getConstants('action')}" textAlign="center" width="100" dataField="action" showDataTips="true">
-					<mx:itemRenderer>
+			<controls:MDataGrid allowMultipleSelection="false" x="10" editable="true" y="40" liveScrolling="true" id="studentCheckListGrid" height="260" itemClick="showButton(event);" width="1172.25">
+				<controls:columns>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationRollNo')}" width="120" dataField="registration_roll_number" showDataTips="true" />
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','enrollmentNo')}" width="100" dataField="enrollment_number" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','modeOfAdmission')}" width="120" dataField="admission_mode" labelFunction="getAdmissionMode" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationStatus')}" width="120" dataField="status" labelFunction="getRegistrationStatus" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','name')}" width="160" dataField="student_name" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','fatherName')}" width="150" dataField="father_name" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','dob')}" width="100" dataField="date_of_birth" showDataTips="true"/>				
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','program')}" width="100" dataField="program_name" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','sequenceNo')}" width="120" dataField="sequence_number" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn sortable="false" editable="false" headerText="{commonFunction.getConstants('action')}" textAlign="center" width="100" dataField="action" showDataTips="true">
+					<dataGridClasses:itemRenderer>
 					<mx:Component>
 					<mx:Button width="85" enabled="{data.enabled}" label="Reject" click="rejectRecord()" >
 					<mx:Script>
@@ -406,10 +407,10 @@ protected function semesterChange():void{
 					</mx:Script> 
 						</mx:Button>
 					</mx:Component>
-					</mx:itemRenderer>
-					</mx:DataGridColumn> 
-		        </mx:columns>
-			</mx:DataGrid>
+					</dataGridClasses:itemRenderer>
+					</dataGridClasses:MDataGridColumn> 
+		        </controls:columns>
+			</controls:MDataGrid>
 			<mx:Button label="{resourceManager.getString('Constants','showFullDetails')}" id="showDetailsButton" click="showFullDetails(studentCheckListGrid)" x="671.25" y="310" />
 			<mx:Button label="{resourceManager.getString('Constants','showCheckList')}" id="showCheckListButton" click="showStudentCheckList(studentCheckListGrid,componentList)" x="456.25" y="310" />	
 			
@@ -421,8 +422,8 @@ protected function semesterChange():void{
 			
 			<mx:Canvas styleName="GridCanvas" x="42" y="556" width="1200" height="326">
 			
-			<mx:DataGrid allowMultipleSelection="false" x="6" editable="true" y="57" liveScrolling="true" id="rejectionGrid" height="260" width="1180">
-				<mx:columns>
+			<controls:MDataGrid allowMultipleSelection="false" x="6" editable="true" y="57" liveScrolling="true" id="rejectionGrid" height="260" width="1180">
+				<controls:columns>
 				<dataGridClasses:MDataGridColumn width="20" headerText="" sortable="false" dataField="select" editorDataField="selected" rendererIsEditor="true">
 				  <dataGridClasses:headerRenderer>
 				  <mx:Component>
@@ -453,18 +454,18 @@ protected function semesterChange():void{
 				    </dataGridClasses:itemRenderer>
 				   </dataGridClasses:MDataGridColumn>
 					
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationRollNo')}" width="120" dataField="registration_roll_number" showDataTips="true" />
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','enrollmentNo')}" width="100" dataField="enrollment_number" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','modeOfAdmission')}" width="120" dataField="admission_mode" labelFunction="getAdmissionMode" />
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationStatus')}" width="120" dataField="status" labelFunction="getRegistrationStatus" />
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','name')}" width="160" dataField="student_name" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','fatherName')}" width="150" dataField="father_name" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','dob')}" width="100" dataField="date_of_birth" showDataTips="true"/>				
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','program')}" width="100" dataField="program_name" showDataTips="true"/>
-					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','sequenceNo')}" width="120" dataField="sequence_number" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationRollNo')}" width="120" dataField="registration_roll_number" showDataTips="true" />
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','enrollmentNo')}" width="100" dataField="enrollment_number" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','modeOfAdmission')}" width="120" dataField="admission_mode" labelFunction="getAdmissionMode" />
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationStatus')}" width="120" dataField="status" labelFunction="getRegistrationStatus" />
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','name')}" width="160" dataField="student_name" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','fatherName')}" width="150" dataField="father_name" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','dob')}" width="100" dataField="date_of_birth" showDataTips="true"/>				
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','program')}" width="100" dataField="program_name" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','sequenceNo')}" width="120" dataField="sequence_number" showDataTips="true"/>
 				
-				      </mx:columns>
-			</mx:DataGrid>
+				      </controls:columns>
+			</controls:MDataGrid>
 			<mx:Button label="Cancel Rejection" id="canRej" enabled="{ss.enabled}" x="1050" y="25" click="cancelReject()" />
 			<mx:Label x="10" y="27" text="{commonFunction.getConstants('rejectedStudents')}" fontWeight="bold"/>
 		

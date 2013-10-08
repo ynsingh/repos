@@ -211,8 +211,10 @@
 		<mx:Label x="80" y="10" text="" id="marksTypeLable" fontWeight="bold"/> 
 		<mx:LinkButton y="10" label="{commonFunction.getConstants('saveMarksButton')}" id="saveButton" right="5" click="saveConfirm()"/>
 	</mx:Canvas>
-	<mx:Label x="23.5" y="23" text="Exam Type:" width="88"/>
-	<mx:ComboBox x="102" id="examType" y="20" labelField="displayType" selectedIndex="-1" prompt="Select" change="getCourses()"></mx:ComboBox>
+	<mx:Label x="356" y="23" text="Exam Type:" width="88"/>
+	<mx:ComboBox x="452" id="examType" y="20" labelField="displayType" selectedIndex="-1" prompt="Select" change="getCourses()"></mx:ComboBox>
 	<mx:Button x="1090" y="20" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	<mx:Label x="23.5" y="23" text="Course Code:"/>
+	<mx:TextInput id="courseText" x="123.5" y="21" maxChars="7" restrict="0-9A-Z"/>
 </mx:Panel>
 

@@ -223,9 +223,8 @@
 				userId["counter"]="three";	
 	
 				Mask.show(commonFunction.getMessages('pleaseWait'));
-	
-				unirole.send(userId);				
 				
+				getUserRole.send(userId);
 			}
 			
 			public var univRole:XML;
@@ -262,6 +261,22 @@
          		}			
 				
 			}
+			
+			private function onSuccessGetUserRole(event:ResultEvent):void{
+				var userId:Object={};
+				userId["userId"]=new Date();
+				userId["employeeCode"] = employeeId;
+				userId["applicationId"] = applicationCombo.selectedItem; 
+				userId["counter"]="three";	
+				unirole.send(userId);
+				univRole = new XML;
+				var roles:String="";
+				univRole = event.result as XML;
+				for each(var obj:Object in univRole.role){
+					roles=roles.concat(obj.description.toString(),",");
+         		}
+         		assignedRole.text=roles.substr(0,roles.length-1);
+			}
 
 		]]>
 		
@@ -286,16 +301,24 @@
 					result="onSuccessGetRole(event)"
 					fault="onFailure(event)"
 					useProxy="false"/>
+	<mx:HTTPService id="getUserRole" method="post"
+					url="{urlPrefixEmployee+'getUserRole.htm'}"
+					resultFormat="e4x"
+					result="onSuccessGetUserRole(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>				
 
 	
 	<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','name')}" fontWeight="bold"  width="200"/>
 	<mx:Label x="125" y="10" id="empName"/>
-	<mx:Label x="10" y="65" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','role')}" width="91" fontWeight="bold"/>
+	<mx:Label x="10" y="90" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','role')}" width="91" fontWeight="bold"/>
 	<mx:Label x="10" y="38" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','application')}" fontWeight="bold"/>
-	<mx:ComboBox x="156" y="62" width="160" id="roleCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{roleCombo.text}"></mx:ComboBox>
+	<mx:ComboBox x="156" y="87" width="160" id="roleCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{roleCombo.text}"></mx:ComboBox>
 	<mx:ComboBox x="156" y="35" id="applicationCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="160" 
 					dataProvider="{applicationXML.Application}" labelField="@type" change="getRoles()" toolTip="{applicationCombo.text}"></mx:ComboBox>
 	<mx:Button x="10" y="133" label="{resourceManager.getString('Constants','okButton')}" id="assignRoleButton" click="OKFuntion()"/>
 	<mx:Button visible="true" label="{commonFunction.getConstants('cancelButton')}" click="PopUpManager.removePopUp(this)" x="153" y="133"/>
+	<mx:Label x="10" y="62" text="Assigned Role:" width="137" fontWeight="bold"/>
+	<mx:Label x="155" y="62" id="assignedRole" text=" "/>
 	
 </mx:TitleWindow>

@@ -99,6 +99,8 @@ public class MasterTransferBean {
 	private double registeredTheoryExcludingAudit;
 	private double registeredPracticalExcludingAudit;
 	private String courseName;			// Added By Dheeraj For Transferring Course Name IN student_course
+	private String switchType;	// added by Nupur 13/10/2012
+	private String switchRule;//added by nupur 13/10/2012
 	
 	public String getCourseName() {
 		return courseName;
@@ -568,6 +570,22 @@ public class MasterTransferBean {
 
 	public MasterTransferBean() {
 		super();
+	}
+
+	public void setSwitchType(String switchType) {
+		this.switchType = switchType;
+	}
+
+	public String getSwitchType() {
+		return switchType;
+	}
+
+	public void setSwitchRule(String switchRule) {
+		this.switchRule = switchRule;
+	}
+
+	public String getSwitchRule() {
+		return switchRule;
 	}
 
 }

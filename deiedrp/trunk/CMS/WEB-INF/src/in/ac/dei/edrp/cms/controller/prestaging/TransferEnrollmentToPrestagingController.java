@@ -159,6 +159,8 @@ public class TransferEnrollmentToPrestagingController extends
 						dataRow.setCorPinCode(addressData.get(j).getPinCode());
 					}
 				}
+				dataRow.setRollNoGroupCode(inputTemp.getRollNoGroupCode());
+				dataRow.setLongField(inputTemp.getLongField());
 				
 				if( transferEnrollmentToPrestagingService
 						.setPrestagingData(dataRow)){

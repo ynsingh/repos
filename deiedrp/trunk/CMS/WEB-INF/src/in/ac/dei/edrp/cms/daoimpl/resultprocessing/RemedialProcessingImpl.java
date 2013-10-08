@@ -1,5 +1,6 @@
 package in.ac.dei.edrp.cms.daoimpl.resultprocessing;
 
+import in.ac.dei.edrp.cms.common.utility.MyException;
 import in.ac.dei.edrp.cms.constants.CRConstant;
 import in.ac.dei.edrp.cms.domain.activitymaster.CountProcessRecorList;
 import in.ac.dei.edrp.cms.domain.activitymaster.StartActivityBean;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -686,6 +688,13 @@ public class RemedialProcessingImpl {
 												sqlMapClient
 														.update("preprocess.updateSRSHResultStatus",
 																inputBean);
+												
+												// this change is to calculate CGPA for DEI specefic. //
+												//If not reqd in future,simply comment out  updatecgpadei out//  
+												updatecgpadei(inputBean);
+												wrkcgpa.setTheorycgpa(inputBean.getTheorycgpa());
+												wrkcgpa.setPracticalcgpa(inputBean.getPracticalcgpa());
+												//
 											
 												studentTrackingFunction.insertStudentTracking(
 														inputBean.getEntityId(),
@@ -966,10 +975,10 @@ public class RemedialProcessingImpl {
 	}
 	
 	/// calculate cgpa at  each semester level
-	public  PreProcessForResultBean  calculatecgpa(PreProcessForResultBean cgpadetail) throws SQLException{
+	public  PreProcessForResultBean  calculatecgpa(PreProcessForResultBean cgpadetail) throws Exception{
 		
-		  
-		List<PreviousSemesterDetail>  PreviousSemesterdetail  =    getprevioussemestercgpa(cgpadetail); 
+		List<PreviousSemesterDetail>  PreviousSemesterdetail = getProgramCourseKeyForSwitch(cgpadetail);
+//		List<PreviousSemesterDetail>  PreviousSemesterdetail  =    getprevioussemestercgpa(cgpadetail); 
 		
 		PreProcessForResultBean wrkcgpa = new PreProcessForResultBean(); 
 		
@@ -1057,7 +1066,7 @@ public class RemedialProcessingImpl {
 	// Get cgpa points from previous semester 
 	
 	List<PreviousSemesterDetail> getprevioussemestercgpa(PreProcessForResultBean studentinfo) throws SQLException{
-		
+		String programCourseKey=studentinfo.getProgramCourseKey();
 		List<PreviousSemesterDetail> previouspck = sqlMapClient
 		.queryForList("commonresultprocessquery.previousProgramcoursekey",
 				studentinfo);
@@ -1066,11 +1075,15 @@ public class RemedialProcessingImpl {
 		
 		
 		if (previouspck.size()>0){
+			if(previouspck.get(0).getStatus().equalsIgnoreCase("REG")){
+				throw new MyException("Result Not Declared : Previous Program Course Key Exists With REG Status");
+			}else{
 			
 
 						
 			PreviousSemesterDetail previousSemesterDetail=new PreviousSemesterDetail(studentinfo.getRollNumber(),studentinfo.getEntityId(),
-					previouspck.get(0).getProgramCourseKey());
+			previouspck.get(0).getProgramCourseKey(), previouspck.get(0).getPreviousSemesterStartDate(),
+					previouspck.get(0).getPreviousSemesterEndDate());
 			
 		//	PreProcessForResultBean previoussemestercgpa = new PreProcessForResultBean() ;
 						
@@ -1082,16 +1095,136 @@ public class RemedialProcessingImpl {
 			
 				//resultProcessingUtility.getPreviousSemesterDetailForMarksSystem(previousSemesterDetail);
 			return (previousDetails);
-			
+			}
 		}else{
+			PreProcessForResultBean sequence = new PreProcessForResultBean();
+			sequence.setProgramCourseKey(programCourseKey);
+			sequence = (PreProcessForResultBean) sqlMapClient.queryForObject("commonresultprocessquery.getSequence", sequence);
+			System.out.println("Semester Sequence : " + sequence.getSemesterSequence());
+			
+			if(sequence.getSemesterSequence() > 1){
+				throw new MyException("Previous Program Course Key Missing For Current Key " + programCourseKey);
+			
+			}else{
 			return null ;
+			}
 		}
 		
 				
 			}
 		
 
+public void updatecgpadei(PreProcessForResultBean inputBean) throws SQLException{
 		
 		
+		PreProcessForResultBean cgpafordei = new PreProcessForResultBean(); 
+		 cgpafordei = (PreProcessForResultBean)sqlMapClient.queryForObject("preprocess.getcgpafordei", inputBean);
+		 
+		 if (cgpafordei.getCgpa()>=0){
+			 
+		 
+		
+		cgpafordei.setRollNumber(inputBean.getRollNumber());
+		cgpafordei.setProgramCourseKey(inputBean.getProgramCourseKey());
+		cgpafordei.setSemesterStartDate(inputBean.getSemesterStartDate());
+		cgpafordei.setSemesterEndDate(inputBean.getSemesterEndDate());
+		cgpafordei.setEntityId(inputBean.getEntityId());
+			
+		int y=sqlMapClient.update("preprocess.updateStudentAggregateCGPAfordei", cgpafordei);
+		
+		
+		
+		inputBean.setCgpa(cgpafordei.getCgpa());
+		inputBean.setTheorycgpa(cgpafordei.getTheorycgpa());
+		inputBean.setPracticalcgpa(cgpafordei.getPracticalcgpa());
+			
+	}
+}
+//Method Added By Dheeraj For Lateral Switch Student Process
+
+public List<PreviousSemesterDetail> getProgramCourseKeyForSwitch(PreProcessForResultBean studentDetails)throws Exception{
+	List<PreviousSemesterDetail> previousDetails = new ArrayList<PreviousSemesterDetail>();
+	PreProcessForResultBean details = new PreProcessForResultBean();
+	
+	if(studentDetails.getModeOfEntry().equalsIgnoreCase("SW")){
+		
+		if(studentDetails.getSwitchType().equalsIgnoreCase("LAT")){
+			
+			studentDetails.setSwitchRule(studentDetails.getSwitchRule());
+			
+			details = (PreProcessForResultBean) sqlMapClient.queryForObject("preprocess.ruleFlagInfo",studentDetails);
+			
+			if(details.getProgramMarksFlag().equalsIgnoreCase("Y")){
+				String ruleFormula = details.getRuleFormula();
+				
+				//Logic executes only for in-semester processing
+				if(studentDetails.getInSemester().equalsIgnoreCase(studentDetails.getSemesterCode())){
+					details = (PreProcessForResultBean) sqlMapClient.queryForObject("preprocess.getPreviousSemester", studentDetails);
+					String marksConsideringSemester = details.getConsideringSemester();
+					
+					String mappedSemester = getMappedSemesterFromSwitchFormula(marksConsideringSemester, ruleFormula);
+					
+					if(mappedSemester.equalsIgnoreCase("Not Found")){
+						throw new MyException("Mapping Not Found For Semester : " + marksConsideringSemester + " In Switch Formula");
+					}else{
+						details = (PreProcessForResultBean) sqlMapClient.queryForObject("preprocess.previousProgramCombination", studentDetails);
+					
+						details.setPreSemester(mappedSemester);
+						details.setRollNumber(studentDetails.getRollNumber());
+					    String previousEntity = details.getPreEntity();
+						List<PreProcessForResultBean> previouspck = sqlMapClient.queryForList("preprocess.getPreviousProgramCourseKey", details);
+					
+						if(previouspck.size() > 0){
+							PreviousSemesterDetail previousSemesterDetail=new PreviousSemesterDetail(studentDetails.getRollNumber(),previousEntity,
+									previouspck.get(0).getProgramCourseKey(), previouspck.get(0).getPreviousSemesterStartDate(),
+									previouspck.get(0).getPreviosSemesterEndDate());
+						
+							previousDetails=sqlMapClient.queryForList("commonresultprocessquery.PreviouspckDetailsforgrade",previousSemesterDetail);
+						
+						}else{
+							throw new MyException("Previous Semester Status is not valid i.e., PASS");
+						}
+					}
+				}else{
+					throw new MyException("Exception in processing : Current processing semester is not the in-semester of student");
+				}
+			}else{
+				return null;
+			}	
+		}else{
+			previousDetails = getprevioussemestercgpa(studentDetails);
+		}
+	}else{
+		previousDetails = getprevioussemestercgpa(studentDetails);
+	}
+	return previousDetails;	
+}
+public String getMappedSemesterFromSwitchFormula(String targetSemester, String switchFormula){
+	String mappedSemester = "";
+	StringTokenizer rules = new StringTokenizer(switchFormula, ";");
+	while(rules.hasMoreTokens()){			
+		StringTokenizer innerRule = new StringTokenizer(rules.nextToken(), ":");
+		int r = 0;
+		String[] inputSemList = null;
+		String outputSem = "";
+		while (innerRule.hasMoreTokens()) {
+			if (r == 0) {
+				inputSemList = innerRule.nextToken().split(
+						"\\+");
+			} else {
+				outputSem = innerRule.nextToken();
+			}
+			r++;
+		}
+		
+		for(int i=0; i<inputSemList.length;i++){
+			if(inputSemList[i].equalsIgnoreCase(targetSemester)){
+				mappedSemester = outputSem;
+				return mappedSemester;
+			}				
+		}
+	}
+	return ("Not Found");
+}
 	
 }

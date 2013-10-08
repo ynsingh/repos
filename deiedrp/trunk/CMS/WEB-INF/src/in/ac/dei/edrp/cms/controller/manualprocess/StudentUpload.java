@@ -261,9 +261,7 @@ public class StudentUpload extends MultiActionController{
 				yearOfRegistration = line.substring(83, 85).trim();
            	 	int initialregis = (Integer.valueOf(yearOfRegistration)+2000);
            	 	String lastregis = "-"+String.format("%02d",(initialregis+1)-2000);
-           	 	yearOfRegistration = String.valueOf(initialregis).concat(lastregis);
-           	 	System.out.println("program code :"+programCode+" branch id:"+branchId+" specializationId "+specializationId+" semesterCode "+semesterCode);
-           	 	System.out.println("registered in session"+yearOfRegistration +" session thru input "+session);
+           	 	yearOfRegistration = String.valueOf(initialregis).concat(lastregis);           	 	          	 
            	 	rollNumber = line.substring(6, 12);        	 	
         	 	boolean  checkConditionForRollNo ;          	 
         	 	if(rollNo.length()!=0){           	 		
@@ -496,7 +494,7 @@ public class StudentUpload extends MultiActionController{
 					if(Integer.parseInt(semesterSequenceFile)%2==0){
 //						System.out.println("inside even : result code is "+resultCode);
 //						System.out.println("i is "+i + "attempt number is "+attemptNumber);
-						if(resultCode.equalsIgnoreCase("P")){
+						if((resultCode.equalsIgnoreCase("P"))|| (resultCode.equalsIgnoreCase("F"))){
 							int k,l=0;
 							for(k=368;k<398;k+=10){
 								courseCode = line.substring(k, k+6).trim();
@@ -534,7 +532,7 @@ public class StudentUpload extends MultiActionController{
 					studentCourseList.add(new StudentUploadBean(universityId, rollNumber, programCode, branchId,specializationId, semesterSequenceFile, semesterStartDate, semesterEndDate,
 							courseList,remedialCourseList, studentStatus, creatorId, attemptNumber));
 					ErrorLogBean errorLogBean = new ErrorLogBean(programId,branchId,semesterCode,specializationId,session,rollNumber,
-							fileName,creatorId);
+							fileName,creatorId,enrollmentNumber);
 					studentRecords.add(new StudentUploadBean(universityId,entityId,programId,branchId,semesterCode,specializationId,programCode,
 							programCourseKey,rollNumber,enrollmentNumber,gender,studentName,attemptNumber,currentSemSGPA, CGPA,resultCode,noOfRemedials,
 							statusSRSH, statusStudentProgram, finalSemesterCode, yearOfRegistration, division,

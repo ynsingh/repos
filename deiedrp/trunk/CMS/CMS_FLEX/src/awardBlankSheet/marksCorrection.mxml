@@ -109,7 +109,7 @@
 						i++;
 					}
 					arry.addItem({rollNumber:ob.studentLeft,evaluationId:ob.evaluationId,marksObtained:ob.mark,
-					requestedMarks:ob.totalMarks,status:ob.status,remark:ob.displayType});
+					requestedMarks:ob.totalMarks,status:ob.status,remark:ob.displayType,maxNumber:ob.markSavedDate});
 				}
 				grid.dataProvider=arry;
 				
@@ -131,6 +131,7 @@
 					popUp=markCorrectionPopUp(PopUpManager.createPopUp(this,markCorrectionPopUp,true));
 					popUp.roll.text=grid.selectedItem.rollNumber
 					popUp.component.text=grid.selectedItem.evaluationId
+					popUp.maxNum=Number(grid.selectedItem.maxNumber);
 					popUp.obtainedMarks.text=grid.selectedItem.marksObtained
 					popUp.requestedMarks.text=grid.selectedItem.requestedMarks
 					popUp.param=param;

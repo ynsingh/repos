@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="revertResultProcess">
+	
+	<select id="getEntities" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT pob.offered_by AS entityId, em.entity_name AS entityName
+		FROM program_offered_by pob JOIN entity_master em
+		ON pob.offered_by=em.entity_id AND em.university_id=#universityId# GROUP BY pob.offered_by;
+	</select>
+	
+	<select id="getPrograms" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT pob.program_id AS programId, pm.program_name AS programName
+		FROM program_offered_by pob JOIN program_master pm ON pob.program_id=pm.program_id
+		WHERE offered_by=#entityId# GROUP BY pob.program_id;
+	</select>
+	
+	<select id="getBranches" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT pob.branch_id AS branchId, stt.component_description AS branchName
+		FROM program_offered_by pob JOIN system_table_two stt ON pob.branch_id=stt.component_code
+		WHERE pob.offered_by=#entityId# AND pob.program_id=#programId# AND stt.group_code='BRNCOD' AND stt.university_code=#universityId# GROUP BY pob.branch_id;
+	</select>
+	
+	<select id="getSpecializations" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT pob.specialization_id AS specializationId, stt.component_description AS specializationName
+		FROM program_offered_by pob JOIN system_table_two stt ON pob.specialization_id=stt.component_code
+		WHERE pob.offered_by=#entityId# AND pob.program_id=#programId# AND stt.group_code='SPCLCD' AND stt.university_code=#universityId# GROUP BY pob.specialization_id;
+	</select>
+	
+	<select id="getSemesters" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT component_code AS semesterId, component_description AS semesterName FROM system_table_two
+		WHERE group_code='SEMCOD' AND university_code=#universityId#;
+	</select>
+	
+	<select id="getProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT pch.program_course_key AS programCourseKey, pr.semester_start_date AS semesterStartDate, pr.semester_end_date AS semesterEndDate
+		FROM program_course_header pch JOIN program_registration pr
+		ON pr.program_course_key=pch.program_course_key
+		WHERE pch.program_id=#programId# AND pch.branch_id=#branchId# AND pch.specialization_id=#specializationId# AND pch.semester_code=#semesterId#
+		AND pch.semester_status='ACT' AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate#
+		AND pr.university_id=#universityId# AND pr.entity_id=#entityId# AND pr.status='ACT';
+	</select>
+	
+	<select id="getStudentAggegateCount" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT COUNT(*) AS count FROM student_aggregate WHERE program_course_key=#programCourseKey# AND entity_id=#entityId#
+		AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# AND university_code=#universityId#;
+	</select>
+	
+	<delete id="deleteStudentAggregate">
+		DELETE FROM student_aggregate WHERE program_course_key=#programCourseKey# AND entity_id=#entityId#
+		AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# AND university_code=#universityId#;
+	</delete>
+	
+	<select id="getGroupLastSemester" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT MAX(semester_code) AS groupLastSemester FROM program_term_details WHERE program_id=#programId#
+		AND semester_group=(SELECT semester_group FROM program_term_details WHERE program_id=#programId# AND semester_code=#semesterId#);
+	</select>
+	
+	<select id="getNextSession" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT DATE_ADD(#sessionStartDate#, INTERVAL 1 YEAR) AS nextSessionStartDate, DATE_ADD(#sessionEndDate#, INTERVAL 1 YEAR) AS nextSessionEndDate;
+	</select>
+	
+	<select id="getNextSemester" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT semester_code AS nextSemesterId FROM program_term_details WHERE program_id=#programId#
+		AND semester_sequence=(SELECT semester_sequence+1 FROM program_term_details WHERE program_id=#programId# AND semester_code=#semesterId#);
+	</select>
+	
+	<delete id="deleteYTRFromNextSemester">
+		DELETE FROM student_registration_semester_header WHERE program_course_key=#nextProgramCourseKey# AND entity_id=#entityId#
+		AND status='YTR' AND session_start_date=#nextSemesterStartDate# AND session_end_date=#nextSemesterEndDate#;
+	</delete>
+	
+	<delete id="deleteYTRFromSameSemester">
+		DELETE FROM student_registration_semester_header WHERE program_course_key=#programCourseKey# AND entity_id=#entityId#
+		AND status='YTR' AND session_start_date=#semesterStartDate# AND session_end_date=#semesterEndDate#;
+	</delete>
+	
+	<update id="updateSRSH">
+		UPDATE student_registration_semester_header SET status='REG', student_process_status='LRG', number_of_remedials='0' 
+		WHERE program_course_key=#programCourseKey# AND entity_id=#entityId# AND session_start_date=#semesterStartDate# AND session_end_date=#semesterEndDate#;
+	</update>
+	
+	<update id="updateStudentCourse">
+		UPDATE student_course SET student_status='REG' WHERE program_course_key=#programCourseKey# AND semester_start_date=#semesterStartDate#
+		AND semester_end_date=#semesterEndDate# AND entity_id=#entityId#;
+	</update>
+	
+	<update id="updateActivityMaster">
+		UPDATE activity_master SET activity_status='RDY' WHERE program_course_key=#programCourseKey# AND semester_start_date=#semesterStartDate#
+		AND semester_end_date=#semesterEndDate# AND entity_id=#entityId# AND activity='PRE' AND process='SEP';
+	</update>
+	
+	<select id="getFinalSemesterFlag" resultClass="in.ac.dei.edrp.cms.domain.revertResultProcess.RevertResultProcessBean">
+		SELECT COALESCE(final_semester_code,'N') AS finalSemester FROM program_term_details WHERE program_id=#programId# AND semester_code=#semesterId#;
+	</select>
+	
+	<update id="updateStudentProgram">
+		UPDATE student_program SET program_status='ACT' WHERE entity_id=#entityId# AND program_id=#programId# AND branch_id=#branchId#
+		AND specialization_id=#specializationId# AND current_semester=#semesterId#;
+	</update>
+</sqlMap>

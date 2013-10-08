@@ -32,12 +32,14 @@
 
 package in.ac.dei.edrp.cms.daoimpl.employee;
 
+import in.ac.dei.edrp.cms.domain.mailConfiguration.MailConfigurationDomain;
+
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
+import com.ibatis.sqlmap.client.SqlMapClient;
 import javax.activation.*;
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -45,6 +47,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.*;
+import javax.mail.internet.MimeMessage.RecipientType;
 
 
 import org.apache.log4j.Logger;
@@ -54,22 +57,38 @@ public class sendmail {
 	/**
      * @param args
      */
+	
+	static SqlMapClient sqlMapClient = null;
+	
+	public void setSqlMapClient(SqlMapClient sqlMapClient) {
+		sendmail.sqlMapClient = sqlMapClient;
+	}
+	
 	static ResourceBundle resourceBundle = ResourceBundle.getBundle("in"+File.separator+"ac"+File.separator+"dei"+File.separator+"edrp"+File.separator+"cms"+File.separator+"databasesetting"+File.separator+"MessageProperties",
 			new Locale("en", "US"));
-    public static void main(String text, String to, String from, String subject)
+	
+    public static void main(String text, String to, String subject, String universityId)
         throws Exception {
     	
     	// Function Changed By Dheeraj
     	
+    	MailConfigurationDomain mailConfig = new MailConfigurationDomain();
+    	mailConfig.setUniversityId(universityId);
+    	mailConfig = (MailConfigurationDomain) sqlMapClient.queryForObject("mailConfiguration.getExistingConfigurationDetails", mailConfig);
+    	
+    	String mailFromUsername = mailConfig.getUserName();
+    	String passWord = mailConfig.getPassword();
+    	String smtpPort = mailConfig.getSmtpPort();
+    	String smtpServer = mailConfig.getSmtpAddress();
     	String mailTo = to;
         
         Properties properties = System.getProperties();
         
         Logger loggerObject = Logger.getLogger(sendmail.class);
 
-        properties.setProperty("mail.smtp.port", "465");
-        properties.setProperty("mail.smtp.socketFactory.port", "465"); 
-        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", smtpPort);
+        properties.setProperty("mail.smtp.socketFactory.port", smtpPort); 
+        properties.setProperty("mail.smtp.host", smtpServer);
         properties.setProperty("mail.smtp.startssl.enable","true");
         properties.setProperty("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
@@ -77,8 +96,11 @@ public class sendmail {
         properties.put("mail.store.protocol", "pop3");//for incoming mail
         properties.put("mail.transport.protocol", "smtp");//for outgoing mail
 
-        final String username = resourceBundle.getString("emailId");
-        final String password = resourceBundle.getString("password");
+//        final String username = resourceBundle.getString("emailId");
+//        final String password = resourceBundle.getString("password");
+        
+        final String username = mailFromUsername;
+        final String password = passWord;
         
         Session smtpSession = Session.getDefaultInstance(properties, 
                 new Authenticator(){
@@ -108,13 +130,13 @@ public class sendmail {
         loggerObject.info("Message Sent.....");
     }
 
-    static class MyAuthenticator extends Authenticator {
-    	public PasswordAuthentication getPasswordAuthentication() {
-            String emailId = resourceBundle.getString("emailId");
-            String password = resourceBundle.getString("password");
-            return new PasswordAuthentication(emailId, password);
-        }
-    }
+//    static class MyAuthenticator extends Authenticator {
+//    	public PasswordAuthentication getPasswordAuthentication() {
+//            String emailId = resourceBundle.getString("emailId");
+//            String password = resourceBundle.getString("password");
+//            return new PasswordAuthentication(emailId, password);
+//        }
+//    }
     
     
     /** 
@@ -126,39 +148,62 @@ public class sendmail {
      * @date 18 Jan 2012
      * @author Ashish Mohan 
      **/
-    public static void mainWithAttachment(String text, String to, String subject,String myFile)
+    public static void mainWithAttachment(String text, String[] to, String subject,String myFile,String universityId)
     throws Exception {
     	
     // Get system properties
-    String from = resourceBundle.getString("emailId");
+    	
+    	MailConfigurationDomain mailConfig = new MailConfigurationDomain();
+    	mailConfig.setUniversityId(universityId);
+    	mailConfig = (MailConfigurationDomain) sqlMapClient.queryForObject("mailConfiguration.getExistingConfigurationDetails", mailConfig);
+    	
+    	String mailFromUsername = mailConfig.getUserName();
+    	String passWord = mailConfig.getPassword();
+    	String smtpPort = mailConfig.getSmtpPort();
+    	String smtpServer = mailConfig.getSmtpAddress();
+    	
+    	
+    String from = mailFromUsername;
     Properties properties = System.getProperties();
     
     Logger loggerObject = Logger.getLogger(sendmail.class);
 
     // Setup mail server
-    properties.setProperty("mail.smtp.port", "25");
-    properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+    properties.setProperty("mail.smtp.port", smtpPort);
+    properties.setProperty("mail.smtp.socketFactory.port", smtpPort); 
+    properties.setProperty("mail.smtp.host", smtpServer);
+    properties.setProperty("mail.smtp.startssl.enable","true");
     properties.setProperty("mail.smtp.starttls.enable", "true");
-    properties.setProperty("mail.smtp.startssl.enable", "true");
+    properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     properties.setProperty("mail.smtp.auth", "true");
+    properties.put("mail.store.protocol", "pop3");//for incoming mail
+    properties.put("mail.transport.protocol", "smtp");//for outgoing mail
 
-
+    final String username = mailFromUsername;
+    final String password = passWord;
 
     // Get the default Session object.
-    Authenticator auth = new MyAuthenticator();
-    Session session = Session.getDefaultInstance(properties, auth);
+    Session smtpSession = Session.getDefaultInstance(properties, 
+            new Authenticator(){
+        protected PasswordAuthentication getPasswordAuthentication() {
+           return new PasswordAuthentication(username, password);
+        }});
 
     
     // Create a default MimeMessage object.
-    MimeMessage message = new MimeMessage(session);
+    MimeMessage message = new MimeMessage(smtpSession);
 
         // Set the RFC 822 "From" header field using the 
         // value of the InternetAddress.getLocalAddress method.
         message.setFrom(new InternetAddress(from));
 
         // Add the given addresses to the specified recipient type.
-        message.addRecipient(Message.RecipientType.TO,
-            new InternetAddress(to));
+        InternetAddress[] addressTo = new InternetAddress[to.length];
+        for (int i = 0; i < to.length; i++)
+        {
+            addressTo[i] = new InternetAddress(to[i]);
+        }
+        message.setRecipients(RecipientType.TO, addressTo);
 
         message.setSubject(subject);
     

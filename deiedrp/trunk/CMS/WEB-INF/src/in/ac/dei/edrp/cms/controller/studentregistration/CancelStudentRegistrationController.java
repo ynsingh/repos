@@ -123,8 +123,9 @@ public class CancelStudentRegistrationController extends MultiActionController  
 	        	inputObj.setBranchCode(request.getParameter("branchId"));
 	        	inputObj.setNewSpecialization(request.getParameter("specializationId"));
 	        	inputObj.setProcessedFlag(request.getParameter("processedFlag"));
-	        	inputObj.setModifierId(session.getAttribute("userId").toString());
-	           
+	        	inputObj.setAdmissionMode(request.getParameter("admissionMode"));
+	        	inputObj.setSemesterCode(request.getParameter("semesterCode"));
+	        	inputObj.setModifierId(session.getAttribute("userId").toString());	        	
 	            result=cancelRegistrationDao.cancelRegistration(inputObj);
 	            return new ModelAndView("RegistrationForm/RegisterStudent",
 	                "result", result);

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="814" height="548" creationComplete="onCreationComplete()" title="Manage Request" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+<mx:Script>
+		<![CDATA[
+			import common.commonFunction;	
+        ]]>
+</mx:Script>
+<mx:HTTPService id="getRequestSearchService" url="{urlPrefix+'getRequestSearchService.htm'}" 
+	useProxy="false" fault="faultHandler(event)"
+	result="getRequestSearchServiceSuccess(event)" 
+	method="post" resultFormat="e4x" 
+	showBusyCursor="true" />
+	
+<mx:HTTPService id="getRequestDetail" url="{urlPrefix+'getRequestDetail.htm'}" 
+	useProxy="false" fault="faultHandler(event)"
+	result="getRequestDetailSuccess(event)" 
+	method="post" resultFormat="e4x" 
+	showBusyCursor="true" />
+	
+<mx:HTTPService id="deleteRequestRecords" url="{urlPrefix+'deleteRequestRecords.htm'}" 
+	useProxy="false" fault="faultHandler(event)"
+	result="deleteRequestRecordsSuccess(event)" 
+	method="post" resultFormat="e4x" 
+	showBusyCursor="true" />
+	
+<mx:HTTPService id="getRequestType" 
+	url="{urlPrefix+'getRequestType.htm'}" 
+	useProxy="false" 
+	fault="faultHandler(event)"
+	result="getRequestTypeSuccess(event)" 
+	method="post" resultFormat="e4x" showBusyCursor="true" />
+	
+<mx:Script source="asFiles/manageResultVerificationAction.as"/>
+<mx:XML id="d" source="xmlFiles/dummy.xml"/>
+<mx:XML id="e" source="xmlFiles/fd.xml"/>
+<mx:Validator id="requestTypevalidator" source="{requestTypeCombo}" property="selectedLabel" required="true" trigger="{okbutton}" triggerEvent="click"/>
+<!--<mx:DateValidator id="datevalidator" source="{date}" property="text" required="false" trigger="{okbutton}" triggerEvent="click" allowedFormatChars="-" inputFormat="yyyy-mm-dd"/>-->
+	     
+<mx:Canvas styleName="SimpleCanvas" x="77.25" y="16" width="639.5" height="224">
+	<mx:Label x="163" y="33" text="{commonFunction.getConstants('requestType')}:" width="121"/>
+	<mx:ComboBox x="292" y="30" width="160" id="requestTypeCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}"  labelField="requestTypeName"
+		 editable="false" toolTip="{requestTypeCombo.text}"></mx:ComboBox>
+	<mx:Label x="163" y="75" text="{commonFunction.getConstants('searchBy')}"/>
+	<mx:Label x="163" y="109" text="{commonFunction.getConstants('receiveDate')}:" width="121"/>	
+	<mx:DateField id="receiveDate" x="292" y="107" width="175" formatString="YYYY-MM-DD"/>
+	<mx:Label x="163" y="145" text="{commonFunction.getConstants('company')+' '+commonFunction.getConstants('name')}:"/>
+	<mx:TextInput x="292" y="143" id="compNameTxt"/>	
+	<mx:Button x="209" y="173" label="{commonFunction.getConstants('okButton')}" id="okbutton" click="ok()"/>
+	<mx:Button x="324" y="173" label="{commonFunction.getConstants('resetButton')}" click="resetFeild()"/>	
+</mx:Canvas>
+	
+	 
+<mx:Canvas styleName="GridCanvas" id="detail1" width="639.5" height="242" x="77.25" y="250">
+ 	<mx:LinkButton label="{commonFunction.getConstants('editButton')}" enabled="false" id="editButton" click="editSwitch()" x="481" y="5"/>
+	<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" enabled="false" id="deleteButton" click="deleteSwitch()" x="547" y="5"/>    	
+	<mx:Label x="23" y="6" text="{commonFunction.getConstants('manage')+' ' +commonFunction.getConstants('request')}" height="21" fontWeight="bold"/>
+	<controls:MDataGrid id="DetailGrid1" draggableColumns="false" sortableColumns="true" x="10" y="35" editable="true" verticalScrollPolicy="on" width="619"  height="164">
+		<controls:columns>
+		<dataGridClasses:MDataGridColumn sortable="false" resizable="true" width="12" headerText="" dataField="select" rendererIsEditor="true" editorDataField="selected">			
+			<dataGridClasses:headerRenderer>
+		    		<mx:Component>
+		    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected,outerDocument.editButton.enabled=false" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.DetailGrid1,[new LinkButton],[outerDocument.deleteButton])">
+	    					<mx:Script>
+	    						<![CDATA[
+	    							import programMaster.EditBasicProgramDetails;
+	    							import common.commonFunction;
+	    							import mx.controls.*
+	    						]]>
+	    					</mx:Script>
+	    				</mx:CheckBox>
+		    		</mx:Component>
+			    	</dataGridClasses:headerRenderer>			    				    		    		
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.DetailGrid1,[outerDocument.editButton],[outerDocument.deleteButton])">
+			    				<mx:Script>
+			    					<![CDATA[
+			    						import common.commonFunction;
+			    						import mx.controls.LinkButton;
+			    					]]>
+			    				</mx:Script>
+			    			</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:itemRenderer>
+		</dataGridClasses:MDataGridColumn>
+		<dataGridClasses:MDataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('requestNumber')}" dataField="requestNo" showDataTips="true"/>
+    	<dataGridClasses:MDataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('receiveDate')}" dataField="receiveDate" showDataTips="true"/>
+    	<dataGridClasses:MDataGridColumn editable="false" width="90" headerText="{commonFunction.getConstants('status')}" dataField="processStatus" showDataTips="true"/>
+    	<dataGridClasses:MDataGridColumn editable="false" width="110" headerText="{commonFunction.getConstants('requester')}" dataField="compName" showDataTips="true"/>
+		</controls:columns>
+		</controls:MDataGrid>				    				 				  				 	           
+	<mx:Button x="271.25" y="207" label="{commonFunction.getConstants('cancelButton')}" click="cancel()"/>
+</mx:Canvas>		
+</mx:Panel>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

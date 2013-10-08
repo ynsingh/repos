@@ -117,7 +117,7 @@
 	<select id="getEmployeeDetail" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
 		SELECT cma.employee_id AS employeeCode, CONCAT(' ',em.first_name,em.middle_name,em.last_name) AS employeeName
 		FROM course_marks_approval cma JOIN employee_master em ON cma.employee_id=em.employee_code
-		AND cma.program_course_key=#programCourseKey# AND cma.course_code=#courseCode#
+		AND cma.program_course_key=#programCourseKey# AND cma.course_code=#courseCode# AND cma.display_type=#displayType#
 		AND cma.entity_id=#entityId# AND cma.approval_order='1';
 	</select>
 	
@@ -127,6 +127,8 @@
 		sms.total_internal AS totalInternal, sms.total_external AS totalExternal, sms.total_marks AS totalMarks, sms.internal_grade AS internalGrade,
 		sms.external_grade AS externalGrade
 		FROM student_marks sm JOIN student_marks_summary sms ON sm.roll_number=sms.roll_number
+		AND sm.semester_start_date=sms.semester_start_date AND sm.semester_end_date=sms.semester_end_date
+		AND sm.program_course_key=sms.program_course_key
 		AND sm.course_code=#courseCode# AND sm.course_code=sms.course_code AND sm.university_code=#universityId# AND
 		sm.semester_start_date=#startDate# AND sm.semester_end_date=#endDate# AND sm.entity_id=#entityId# AND
 		sm.entity_id=sms.entity_id AND sm.program_course_key=#programCourseKey# AND

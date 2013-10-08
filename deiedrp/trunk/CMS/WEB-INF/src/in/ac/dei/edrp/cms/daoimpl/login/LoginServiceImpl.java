@@ -295,5 +295,15 @@ public class LoginServiceImpl extends SqlMapClientDaoSupport implements LoginSer
 		regisDateList=getSqlMapClientTemplate().queryForList("login.getRegistrationDate",input);
 		return regisDateList;
 	}
+
+	public List<Login> getLoginRoles(Login login) {
+		List<Login> roleList = null;
+		try{
+			roleList = getSqlMapClientTemplate().queryForList("login.getRoleDetails", login);
+		}catch(Exception ex){
+			System.out.println("Exception in getting roles : " + ex);
+		}
+		return roleList;
+	}
 	
 }

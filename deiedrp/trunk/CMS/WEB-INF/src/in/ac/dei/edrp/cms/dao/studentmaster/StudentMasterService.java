@@ -32,6 +32,7 @@
  */
 package in.ac.dei.edrp.cms.dao.studentmaster;
 
+import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import in.ac.dei.edrp.cms.domain.studentmaster.StudentMasterInfoBean;
 import in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter;
 
@@ -59,4 +60,14 @@ public interface StudentMasterService{
 	 * @return List of records of the students
 	 */
 	List<StudentInfoGetter> getStudentTrackingRecords(StudentInfoGetter studentBean);
+	
+	//check that whether entered emailId(userName) exist in student master and return details if exist
+	String checkExistanceOfEmailId(StudentMasterBeanAPI input);
+	List<StudentMasterBeanAPI> getStudentInfo(StudentMasterBeanAPI input) throws Exception;
+	List<StudentMasterBeanAPI> getContactInfo(StudentMasterBeanAPI input) throws Exception;
+	String updateStudentPersonalInfo(StudentMasterBeanAPI input) throws Exception;
+	String updateContactInfo(StudentMasterBeanAPI input) throws Exception;
+	List<StudentMasterBeanAPI> getParentInfo(StudentMasterBeanAPI input) throws Exception;
+    List<StudentMasterBeanAPI> getAcademicInfo(StudentMasterBeanAPI input) throws Exception;
+	List<StudentMasterBeanAPI> getRegistrationInfo(StudentMasterBeanAPI input) throws Exception;
 }

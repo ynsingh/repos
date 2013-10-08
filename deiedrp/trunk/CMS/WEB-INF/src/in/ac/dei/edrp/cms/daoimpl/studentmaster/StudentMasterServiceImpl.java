@@ -32,6 +32,7 @@
  */
 package in.ac.dei.edrp.cms.daoimpl.studentmaster;
 
+import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import in.ac.dei.edrp.cms.dao.studentmaster.StudentMasterService;
 import in.ac.dei.edrp.cms.daoimpl.universityreservation.UniversityReservationServiceImpl;
 import in.ac.dei.edrp.cms.domain.studentmaster.StudentMasterInfoBean;
@@ -293,6 +294,155 @@ public class StudentMasterServiceImpl extends SqlMapClientDaoSupport implements
 			logObj.error(e.getMessage());
 		}
 
+		return studentReords;
+	}
+	
+	/**
+	 * This method check for existence of emailid and if exist
+	 * retrieves all student Details from database and map to a jsp
+	 * 
+	 * @param enrollmentNumber
+	 *            , enrollment Number
+	 * @return studentMasterInfoBean containing student Details
+	 */
+	@SuppressWarnings("unchecked")
+	public String checkExistanceOfEmailId(StudentMasterBeanAPI input) {
+		String b = "false";
+		try {
+			List<StudentMasterBeanAPI> studentCount = getSqlMapClientTemplate().queryForList("addStduentInMaster.chkUserExist",input);
+			for (StudentMasterBeanAPI student : studentCount) {
+				if (student.getCount() == 1) {
+					b = "true";
+				}
+			}
+		} catch (Exception e) {
+			logObj.error(e.getMessage());
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<StudentMasterBeanAPI> getStudentInfo(StudentMasterBeanAPI studentBean) throws Exception{
+		List studentReords = new ArrayList<StudentMasterBeanAPI>();
+		studentReords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getStudentInfo", studentBean);
+		return studentReords;
+	}
+	
+	public String updateStudentPersonalInfo(StudentMasterBeanAPI studentBean) throws Exception{
+		String result ="false";
+		int a =	getSqlMapClientTemplate().update("addStduentInMaster.updateStudentInfo",studentBean);
+			if(a==0){
+				result = "Sorry! No user personal record is available for this emailId :"+studentBean.getAddressKey();
+			}
+			result="true";
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<StudentMasterBeanAPI> getContactInfo(StudentMasterBeanAPI studentBean) throws Exception{
+		List studentReords = new ArrayList<StudentMasterBeanAPI>();
+		studentReords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getContactDetail", studentBean);
+		return studentReords;
+	}
+	
+	public String updateContactInfo(StudentMasterBeanAPI studentBean) throws Exception {
+		String result ="false";
+		int a = getSqlMapClientTemplate().update("addStduentInMaster.updateContactInfo",studentBean);
+		if(a==0){
+			result = "Sorry! No contact record is available for this address key :"+studentBean.getAddressKey();
+		}
+		System.out.println("int after update "+a);
+		result="true";
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<StudentMasterBeanAPI> getParentInfo(StudentMasterBeanAPI studentBean) {
+		List studentReords = new ArrayList<StudentMasterBeanAPI>();
+		studentReords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getParentDetail", studentBean);
+		return studentReords;
+	}
+    
+    @SuppressWarnings("unchecked")
+	public List<StudentMasterBeanAPI> getAcademicInfo(StudentMasterBeanAPI studentBean) {
+		List studentReords = new ArrayList<StudentMasterBeanAPI>();
+		List finalStudentRecords = new ArrayList<StudentMasterBeanAPI>();
+		List<StudentMasterBeanAPI> finalSemesterRecords = new ArrayList<StudentMasterBeanAPI>();
+		StudentMasterBeanAPI finalBean = new StudentMasterBeanAPI();
+		String formerEntity,formerProgram,formerBranch,formerSpecialization;
+		String entity,program,branch,specialization;
+		String switchFlag="false";
+		StudentMasterBeanAPI errorBean = new StudentMasterBeanAPI();
+		studentReords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getAcademicProgramSwitch", studentBean);
+		if(studentReords.size()==0){			
+			errorBean.setErrorMsg("This roll Number student is not yet registered in any program");
+			studentReords.add(errorBean);
+			return studentReords;
+		}
+		for(int i=0;i<studentReords.size();i++){
+			System.out.println("inside iterate : "+studentReords.size());
+			if(i!=0){
+				System.out.println("inside i!=o ");
+				formerEntity = ((StudentMasterBeanAPI)studentReords.get(i-1)).getEntityId();
+				formerProgram = ((StudentMasterBeanAPI)studentReords.get(i-1)).getProgramId();
+				formerBranch = ((StudentMasterBeanAPI)studentReords.get(i-1)).getBranchId();
+				formerSpecialization = ((StudentMasterBeanAPI)studentReords.get(i-1)).getSpecializationId();
+				entity = ((StudentMasterBeanAPI)studentReords.get(i)).getEntityId();
+				program = ((StudentMasterBeanAPI)studentReords.get(i)).getProgramId();
+				branch = ((StudentMasterBeanAPI)studentReords.get(i)).getBranchId();
+				specialization = ((StudentMasterBeanAPI)studentReords.get(i)).getSpecializationId();
+				if(formerEntity.equalsIgnoreCase(entity)&&formerProgram.equalsIgnoreCase(program)&&formerBranch.equalsIgnoreCase(branch)&&
+						formerSpecialization.equalsIgnoreCase(specialization)){
+					switchFlag = "false";
+				}
+				else{
+					switchFlag = "true";
+				}
+				System.out.println("end i!=o: switch flag "+switchFlag);
+			}
+			if(switchFlag.equalsIgnoreCase("true")){
+				finalBean.setSemesterList(finalSemesterRecords);
+				finalStudentRecords.add(finalBean);
+			}
+			if((i==0 && switchFlag.equalsIgnoreCase("false")) || switchFlag.equalsIgnoreCase("true")){
+				finalBean = new StudentMasterBeanAPI();
+				finalBean.setRollNumber(studentBean.getRollNumber());
+				finalBean.setEnrollmentNumber(((StudentMasterBeanAPI)studentReords.get(i)).getEnrollmentNumber());
+				finalBean.setUniversityId(studentBean.getUniversityId());
+				finalBean.setProgramId(((StudentMasterBeanAPI)studentReords.get(i)).getProgramId());
+				finalBean.setBranchId(((StudentMasterBeanAPI)studentReords.get(i)).getBranchId());
+				finalBean.setSpecializationId(((StudentMasterBeanAPI)studentReords.get(i)).getSpecializationId());
+				finalBean.setEntityId(((StudentMasterBeanAPI)studentReords.get(i)).getEntityId());
+				finalBean.setProgramName(((StudentMasterBeanAPI)studentReords.get(i)).getProgramName());
+				finalBean.setBranchName(((StudentMasterBeanAPI)studentReords.get(i)).getBranchName());
+				finalBean.setSpecialization(((StudentMasterBeanAPI)studentReords.get(i)).getSpecialization());
+				finalBean.setEntityName(((StudentMasterBeanAPI)studentReords.get(i)).getEntityName());
+				finalBean.setCgpa(((StudentMasterBeanAPI)studentReords.get(i)).getCgpa());
+				finalBean.setDivision(((StudentMasterBeanAPI)studentReords.get(i)).getDivision());
+			}
+			
+			finalBean.setProgramCourseKey(((StudentMasterBeanAPI)studentReords.get(i)).getProgramCourseKey());
+			List<StudentMasterBeanAPI> semesterRecords = new ArrayList<StudentMasterBeanAPI>();						
+			semesterRecords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getAcademicSemester", finalBean);
+			for(StudentMasterBeanAPI semBean:semesterRecords){
+				semBean.setSemesterCode(((StudentMasterBeanAPI)studentReords.get(i)).getSemesterCode());
+				semBean.setSemesterName(((StudentMasterBeanAPI)studentReords.get(i)).getSemesterName());
+				List<StudentMasterBeanAPI> courseRecords = new ArrayList<StudentMasterBeanAPI>();						
+				courseRecords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getAcademicCourse", finalBean);
+				semBean.setCourseList(courseRecords);
+				finalSemesterRecords.add(semBean);
+			}			
+		}
+		finalBean.setSemesterList(finalSemesterRecords);
+		finalStudentRecords.add(finalBean);
+		return finalStudentRecords;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<StudentMasterBeanAPI> getRegistrationInfo(StudentMasterBeanAPI studentBean) {
+		List studentReords = new ArrayList<StudentMasterBeanAPI>();
+		studentReords = getSqlMapClientTemplate().queryForList("addStduentInMaster.getRegistrationDetail", studentBean);
 		return studentReords;
 	}
 }

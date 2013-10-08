@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="596" height="256" title="University Logo Upload" creationComplete="onCreationComplete()">
+<mx:Script>
+	<![CDATA[
+		import common.Mask;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.controls.Alert;
+		import common.commonFunction;
+	
+		/** declaring public variables **/
+		[Bindable]public var params:Object={};
+		[Bindable]public var urlPrefix:String="";public var fileRef:FileReference;
+		[Bindable]public var uploadUrl:String;
+		[Embed(source="/images/error.png")] private var errorIcon:Class;
+		[Embed(source="/images/success.png")] private var successIcon:Class;
+		[Embed(source="/images/reset.png")] private var resetIcon:Class;
+		[Embed(source="/images/question.png")] private var questionIcon:Class;
+
+		/** on creation of form **/
+		public function onCreationComplete():void
+		{
+			uploadUrl=commonFunction.getConstants('url')+"/fileUpload/upload.jsp?fileName=";
+		}
+		
+		public function browseLogo():void
+		{
+			fileRef=new FileReference();
+			fileRef.addEventListener(Event.SELECT,onFileSelect);
+			fileRef.browse([new FileFilter("Images(.png)","*.png")]);
+		}
+	
+		public function onFileSelect(event:Event):void
+		{
+			fileRef.addEventListener(Event.COMPLETE,onLoadComplete);
+			fileRef.addEventListener(ProgressEvent.PROGRESS,onProgress);
+			fileRef.load();
+		}
+	
+		public function onProgress(event:ProgressEvent):void
+		{
+			fileProgress.setProgress(event.bytesLoaded,event.bytesTotal);
+		}
+	
+		public function onLoadComplete(event:Event):void
+		{
+			fileName.text=fileRef.name;
+			browseButton.enabled=false;
+			resetButton.enabled=true;
+			uploadButton.enabled=true;
+		}
+	
+		public function uploadLogo():void
+		{
+			fileRef.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,onUploadComplete);
+			fileRef.upload(new URLRequest(uploadUrl+fileName.text+"&folder=tempFiles/"));
+		}
+	
+		public function onUploadComplete(event:DataEvent):void
+		{	
+			params['fileName']=fileName.text;
+			params['time']=new Date;
+			uploadUniversityLogo.send(params);
+		}
+	
+		public function reset(event:Event):void
+		{
+			fileRef=new FileReference();
+			fileName.text="";
+			fileProgress.setProgress(0,100);
+			browseButton.enabled=true;
+			resetButton.enabled=false;
+			uploadButton.enabled=false;
+		}
+
+		/** get academic info success handler **/
+		public function uploadLogoSuccess(event:ResultEvent):void
+		{
+			Mask.close();
+			var successXML:XML = new XML;
+			successXML = event.result as XML;
+		 	
+		    if(successXML.exception.exceptionstring == 'YES')
+		    {
+		    	Alert.show("University Logo Uploaded Successfully",commonFunction.getMessages('success'),0,null,reset,successIcon);
+			}
+			else if(successXML.exception.exceptionstring == 'WrongFile')
+			{
+				Alert.show("Image should be of .png extension",commonFunction.getMessages('error'),0,null,reset,errorIcon);
+			}
+			else{
+				Alert.show("Error in Uploading University Logo",commonFunction.getMessages('error'),0,null,reset,errorIcon);
+			}
+		}
+		
+		/** fault handler **/
+		public function faultHandler(event:FaultEvent):void
+		{
+			Mask.close();
+			Alert.show(commonFunction.getMessages('requestFailed'));
+		}
+	]]>
+</mx:Script>
+
+	<mx:HTTPService id="uploadUniversityLogo" method="post"
+        url="{commonFunction.getConstants('url')}/mailConfiguration/uploadUniversityLogo.htm"
+        resultFormat="e4x"
+        result="uploadLogoSuccess(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	
+	<mx:Button id="browseButton" x="360" y="50" click="browseLogo()" label="Browse"/>
+	<mx:ProgressBar x="50" y="80" width="300" mode="manual" id="fileProgress"/>
+	<mx:TextInput x="50" y="50" width="300" editable="false" id="fileName"/>
+	<mx:Button id="resetButton" x="445" y="50" click="reset(event)" label="Reset" enabled="false"/>
+	<mx:Button id="uploadButton" click="uploadLogo()" x="50" y="120" label="Upload Logo" enabled="false"/>
+	<mx:Text x="10" y="180" text="*Note- Image type should be .png"/>
+	
+</mx:Panel>

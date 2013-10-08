@@ -181,9 +181,9 @@ public class ProgramCourseTypeSummaryController extends MultiActionController {
         input.setSpecializationId(request.getParameter("specializationId"));
 
         List<ProgramCourseTypeSummaryInfoGetter> resultprogramCourseDetails = programCourseTypeSummaryConnect.getProgramSemesterDetails(input);
-
-        return new ModelAndView("UniversityRolesSetup/UniversityRoles",
-            "resultObject", resultprogramCourseDetails);
+        return new ModelAndView("ProgramSwitch/ProgramSwitch",
+                "resultObject", resultprogramCourseDetails);
+//        return new ModelAndView("UniversityRolesSetup/UniversityRoles","resultObject", resultprogramCourseDetails);
     }
 
     /**
@@ -244,8 +244,8 @@ public class ProgramCourseTypeSummaryController extends MultiActionController {
         input.setSpecializationId(request.getParameter("specializationId"));
         input.setSemesterCode(request.getParameter("semesterCode"));
         input.setCourseTypeCode(request.getParameter("courseType"));
-        input.setMinCredits(Integer.parseInt(request.getParameter("minCredits")));
-        input.setMaxCredits(Integer.parseInt(request.getParameter("maxCredits")));
+        input.setMinCredits(request.getParameter("minCredits"));
+        input.setMaxCredits(request.getParameter("maxCredits"));
         input.setActivityFlag(request.getParameter("activityFlag"));
 
         String resultprogramCourseDetails = programCourseTypeSummaryConnect.setProgramCoursetypeSummary(input);

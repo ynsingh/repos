@@ -26,6 +26,7 @@ public class StartActivityBean {
 	private String activityEndDate;
 	private int activitySequence;
 	private String activityStatus;
+	private String mailId;
 
 	private String userId;
 
@@ -304,6 +305,16 @@ public class StartActivityBean {
 
 	public void setProcessCounter(int processCounter) {
 		this.processCounter = processCounter;
+	}
+
+	
+	
+	public String getMailId() {
+		return mailId;
+	}
+
+	public void setMailId(String mailId) {
+		this.mailId = mailId;
 	}
 
 	public StartActivityBean(String sessionStartDate, String sessionEndDate,

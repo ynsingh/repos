@@ -231,10 +231,12 @@
 <select id="getduplicateemployee" resultClass="employeemaster">
 
 select count(*) as componentId from employee_master
- where first_name=#employeeFirstName# AND last_name = #employeeLastName# 
-  AND primary_email_id=#primaryEmailId# AND dob =#dateOfBirth#;
+where first_name=#employeeFirstName# AND last_name = #employeeLastName#
+AND primary_email_id=#primaryEmailId# AND dob =#dateOfBirth# AND
+university_code=#universityCode#;
 
 </select>
+
 
 <select id="getduplicateemployeecodes" resultClass="employeemaster">
 

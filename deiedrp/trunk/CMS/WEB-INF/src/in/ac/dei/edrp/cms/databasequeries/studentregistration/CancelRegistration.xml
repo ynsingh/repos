@@ -64,7 +64,9 @@
 		<result property="entityId" column="entity_id" />
 		<result property="programId" column="program_id" />
 		<result property="branchCode" column="branch_id" />
-		<result property="newSpecialization" column="specialization_id" />		
+		<result property="newSpecialization" column="specialization_id" />	
+		<result property="admissionMode" column="admission_mode" />		
+		<result property="semesterCode" column="to_semester" />		
 	</resultMap>
   
   
@@ -77,7 +79,7 @@
 			concat_ws(' ',tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name) mother_name,
 			tsm.date_of_birth,tsm.gender,tsm.category,cat.component_description category_description,
 			gen.component_description gender_description, tsm.student_id,tsp.registration_status,
-			tsp.program_id,tsp.entity_id,tsp.branch_id,tsp.specialization_id
+			tsp.program_id,tsp.entity_id,tsp.branch_id,tsp.specialization_id,tsp.admission_mode,tsp.to_semester
 		from temp_student_program tsp,temp_student_master tsm, entity_master em,
 			program_master pm, system_table_two bm, system_table_two sm, system_table_two sem,
 			system_table_two cat, system_table_two gen, university_master um, program_registration pr
@@ -173,7 +175,7 @@
 	
 	<insert id="insertTmpStdCourseHistory">
 		insert into temp_student_courses_history  			
-		select tsc.program_id, tsc.course_code, tsc.option, tsc.enrollment_number, tsc.roll_number, tsc.student_id, tsc.registration_number, tsc.status,
+		select tsc.program_id, tsc.course_code,tsc.course_name, tsc.option, tsc.enrollment_number, tsc.roll_number, tsc.student_id, tsc.registration_number, tsc.status,
 			now(),null,#modifierId#,null,tsc.branch_id,tsc.specialization_id,tsc.semester_code,tsc.semester_start_date,
 			tsc.semester_end_date,tsc.registration_status,tsc.course_group
 		from temp_student_courses tsc
@@ -198,4 +200,7 @@
 			and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and registration_status='D';
 	</delete>
     
+    <select id="getSemesterSeq" resultClass="java.lang.String">
+    	SELECT semester_sequence FROM program_term_details WHERE  program_id=#programId# AND semester_code=#semesterCode#;
+    </select>
   </sqlMap>

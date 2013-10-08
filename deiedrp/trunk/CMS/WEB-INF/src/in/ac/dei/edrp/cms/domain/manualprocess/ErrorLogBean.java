@@ -12,7 +12,7 @@ public class ErrorLogBean {
 	private String resultFile;
 	private String insertTime;
 	private String creatorId;
-	
+	private String enrollmentNumber;
 	
 	public ErrorLogBean(){
 		
@@ -25,7 +25,7 @@ public class ErrorLogBean {
 	 * @param studentStatus
 	 */
 	public ErrorLogBean(String programId,String branchId,String semesterCode,String specializationId,String session,String rollNumber
-			,String resultFile,String creatorId){
+			,String resultFile,String creatorId,String enrollmentNumber){
 		super();
 		this.programId = programId;
 		this.branchId = branchId;
@@ -36,7 +36,8 @@ public class ErrorLogBean {
 //		this.errorDescription = errorDescription;
 		this.resultFile = resultFile;
 //		this.insertTime = insertTime;
-		this.creatorId = creatorId;		
+		this.creatorId = creatorId;	
+		this.enrollmentNumber = enrollmentNumber;
 	}
 	
 	/**
@@ -129,5 +130,11 @@ public class ErrorLogBean {
 	}
 	public String getRollNumber() {
 		return rollNumber;
+	}
+	public void setEnrollmentNumber(String enrollmentNumber) {
+		this.enrollmentNumber = enrollmentNumber;
+	}
+	public String getEnrollmentNumber() {
+		return enrollmentNumber;
 	}	
 }

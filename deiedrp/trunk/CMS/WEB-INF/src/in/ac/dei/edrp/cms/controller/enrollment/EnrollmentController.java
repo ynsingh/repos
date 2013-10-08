@@ -302,4 +302,67 @@ public class EnrollmentController extends MultiActionController {
 		}
 		return new ModelAndView("enrollment/info", "info", bool);
 	}
+	
+	/**
+	 * This method get Roll Number/Enrollment Number Format
+	 * 
+	 * @param request
+	 * @param response
+	 * @return ModelAndView containing Roll Number/Enrollment Number Format
+	 * @author Devendra Singhal
+	 */
+	public ModelAndView getFormat(HttpServletRequest req,HttpServletResponse res) {
+		HttpSession session = req.getSession(false);
+		if (session == null) {
+			return new ModelAndView("general/SessionInactive","sessionInactive", true);
+		}
+		EnrollmentInfo input=new EnrollmentInfo();
+		input.setUniversityId((String)session.getAttribute("universityId"));
+		input.setType(req.getParameter("type"));
+		List<EnrollmentInfo>list=enrollmentService.getFormat(input);
+		return new ModelAndView("enrollment/format", "details", list);
+	}
+	/**
+	 * This method insert Roll Number/Enrollment Number Format
+	 * 
+	 * @param request
+	 * @param response
+	 * @return ModelAndView containing Roll Number/Enrollment Number Format
+	 * @author Devendra Singhal
+	 */
+	public ModelAndView insertFormat(HttpServletRequest req,HttpServletResponse res) {
+		HttpSession session = req.getSession(false);
+		if (session == null) {
+			return new ModelAndView("general/SessionInactive","sessionInactive", true);
+		}
+		EnrollmentInfo input=new EnrollmentInfo();
+		input.setUniversityId((String)session.getAttribute("universityId"));
+		input.setUserId((String)session.getAttribute("userId"));		
+		input.setType(req.getParameter("type"));
+		input.setRangeFrom(Integer.parseInt(req.getParameter("rangeFrom")));
+		input.setRangeTo(Integer.parseInt(req.getParameter("rangeTo")));
+		input.setFormat(req.getParameter("format"));
+		String msg=enrollmentService.insertFormat(input);
+		return new ModelAndView("enrollment/info", "info", msg);
+	}
+	/**
+	 * This method delete Roll Number/Enrollment Number Format
+	 * 
+	 * @param request
+	 * @param response
+	 * @return ModelAndView containing Roll Number/Enrollment Number Format
+	 * @author Devendra Singhal
+	 */
+	public ModelAndView deleteFormat(HttpServletRequest req,HttpServletResponse res) {
+		HttpSession session = req.getSession(false);
+		if (session == null) {
+			return new ModelAndView("general/SessionInactive","sessionInactive", true);
+		}
+		EnrollmentInfo input=new EnrollmentInfo();
+		input.setUniversityId((String)session.getAttribute("universityId"));		
+		input.setType(req.getParameter("type"));		
+		String format=req.getParameter("format");
+		String msg=enrollmentService.deleteFormat(input,format);
+		return new ModelAndView("enrollment/info", "info", msg);
+	}
 }

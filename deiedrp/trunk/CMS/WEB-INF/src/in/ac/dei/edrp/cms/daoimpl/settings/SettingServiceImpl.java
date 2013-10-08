@@ -111,10 +111,20 @@ public class SettingServiceImpl extends SqlMapClientDaoSupport implements
 	public Boolean changeUserPassword(Login login) {
 		Boolean bool = false;
 		try {
+			Login seq=new Login();
+			seq=(Login)getSqlMapClientTemplate().queryForObject("login.getSequenceForPasswordHistory", login);
+			if(seq.getSequence()==null){
+				login.setSequence("1");			
+			}
+			else{				
+				int sequ=Integer.parseInt(seq.getSequence());
+				login.setSequence(String.valueOf(sequ+1));
+			}
+			getSqlMapClientTemplate().insert("login.insertPasswordHistory", login);
 			getSqlMapClientTemplate().update("login.changePassword", login);
 			bool = true;
 		} catch (Exception e) {
-			logObj.error(e.getMessage());
+			logObj.error("Error during chagnge password : "+e);
 		}
 		return bool;
 	}

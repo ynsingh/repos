@@ -284,7 +284,9 @@ public class PrestagingController extends MultiActionController {
 					enrollmentInfo
 							.setHomePhone(sheet.getCell(22, i).getContents());
 					enrollmentInfo
-							.setUserType("STD");
+							.setUserType("STD");				
+					enrollmentInfo.setRollNoGroupCode(sheet.getCell(23, i).getContents());//Add By Devendra
+					enrollmentInfo.setLongField(sheet.getCell(24, i).getContents());//Add By Devendra
 					// Ends
 					
 					enrollmentInfo
@@ -314,7 +316,6 @@ public class PrestagingController extends MultiActionController {
 			destination = new File(s);
 			source.renameTo(destination);
 		}
-
 		return new ModelAndView("prestaging/insertInfo", "dataList",
 				insertedEnrollmentInfo);
 	}

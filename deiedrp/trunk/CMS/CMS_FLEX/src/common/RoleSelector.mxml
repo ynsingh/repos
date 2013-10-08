@@ -40,7 +40,7 @@
 			import mx.controls.Alert;
 			public var dataXml:XML;
 			public var refFunction:Function;
-			public  var userGroupName:String;
+			public var userGroupName:String;
 			public var userGroupId:String;
 			public var application:String;
 			public var userName:String;
@@ -61,7 +61,7 @@
 			}
 			else if(application=='CMS'){
 		
-				url=commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application+'&university='+universityName
+				url=commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application+'&university='+universityName+'&universityId='+universityId
 			}
 			else if(application=='ADM'){
 				url=commonFunction.getConstants('navigateUrlAdm')+'?userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userId='+userId+'&userName='+userName+'&urlHome='+commonFunction.getConstants('navigateHome')+'&universityId='+universityId+'&application='+application

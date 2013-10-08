@@ -132,7 +132,6 @@ public class ConsolidatedChartController extends MultiActionController {
 		}
 
 		ConsolidatedChartBean input = new ConsolidatedChartBean();
-
 		input.setEntityCode(request.getParameter("entityId"));
 		input.setEntity(request.getParameter("entity"));
 		input.setProgramCode(request.getParameter("programId"));
@@ -155,7 +154,7 @@ public class ConsolidatedChartController extends MultiActionController {
 		semSeqInput.setSemSeqNo("%");
 
 		int currentSemesterNo = Integer.parseInt(consolidatedChartService.getSemesterAndSeqNo(semSeqInput).get(0).getSemSeqNo());
-		System.out.println("current sem no "+currentSemesterNo);
+		String ifFinalSem=consolidatedChartService.getSemesterAndSeqNo(semSeqInput).get(0).getIsFinalSem();//Add by Devendra 14 aug 2012
 		request.setAttribute("currentSemesterNo", currentSemesterNo);
 		for (int i = 0; i < dataList.size(); i++) {
 			int semesterNo = currentSemesterNo;
@@ -192,7 +191,7 @@ public class ConsolidatedChartController extends MultiActionController {
 		if(dataList.size()>0){
 			dataList.add(input);
 			try {
-				message = consolidatedChartGenerator.buildPdf(dataList , request, response);
+				message = consolidatedChartGenerator.buildPdf(dataList , request, response,ifFinalSem);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -242,6 +241,7 @@ public class ConsolidatedChartController extends MultiActionController {
 
 		List<ResultStatisticsInfo> pBSInfo = consolidatedChartService.getPBSDetails(input);
 		List<ResultStatisticsInfo> outputList = new ArrayList<ResultStatisticsInfo>();
+        ResultStatisticsInfo facultyTotal = new ResultStatisticsInfo();
 		for (int i = 0; i < pBSInfo.size(); i++) {
 			ResultStatisticsInfo tempInput = new ResultStatisticsInfo();
 			tempInput.setEntityId(pBSInfo.get(i).getEntityId());
@@ -306,8 +306,10 @@ public class ConsolidatedChartController extends MultiActionController {
 			outputMale.setFailedAt2(count);
 
 			Double passPercentage = 100 * Double.parseDouble(outputMale.getPassed())/ Double.parseDouble(outputMale.getAppeared());
-			
-			outputMale.setPassPercentage(String.valueOf(passPercentage));
+			if(passPercentage.isNaN()){
+				outputMale.setPassPercentage("0");
+			}
+			else outputMale.setPassPercentage(String.valueOf(passPercentage));
 
 			tempInput.setCgpaU("10");
 			tempInput.setCgpaL("8.5");
@@ -374,7 +376,10 @@ public class ConsolidatedChartController extends MultiActionController {
 			outputFemale.setFailedAt2(count);
 
 			passPercentage = 100 * Double.parseDouble(outputFemale.getPassed()) / Double.parseDouble(outputFemale.getAppeared());
-			outputFemale.setPassPercentage(String.valueOf(passPercentage));
+			if(passPercentage.isNaN()){
+				outputFemale.setPassPercentage("0");
+			}
+			else outputFemale.setPassPercentage(String.valueOf(passPercentage));
 
 			tempInput.setCgpaU("10");
 			tempInput.setCgpaL("8.5");
@@ -441,7 +446,10 @@ public class ConsolidatedChartController extends MultiActionController {
 			outputTotal.setFailedAt2(count);
 
 			passPercentage = 100 * Double.parseDouble(outputTotal.getPassed()) / Double.parseDouble(outputTotal.getAppeared());
-			outputTotal.setPassPercentage(String.valueOf(passPercentage));
+			if(passPercentage.isNaN()){
+				outputTotal.setPassPercentage("0");
+			}
+			else outputTotal.setPassPercentage(String.valueOf(passPercentage));
 
 			tempInput.setCgpaU("10");
 			tempInput.setCgpaL("8.5");
@@ -457,11 +465,63 @@ public class ConsolidatedChartController extends MultiActionController {
 			tempInput.setCgpaL("4.5");
 			count = consolidatedChartService.getStudentCountByDivision(tempInput);
 			outputTotal.setScndDiv(count);
+            
+            /*
+			 * Changes done by Nupur dixit - 16 aug to print faculty total
+			 */			
+			
+			facultyTotal.setGender("FACULTY TOTAL");
+			int enrolled =Integer.valueOf( outputTotal.getEnrolled()==null?"0":outputTotal.getEnrolled());
+			int facEnrolled =Integer.valueOf( facultyTotal.getEnrolled()==null?"0":facultyTotal.getEnrolled());
+			facultyTotal.setEnrolled(String.valueOf(facEnrolled+enrolled));
+			int appeared =Integer.valueOf( outputTotal.getAppeared()==null?"0":outputTotal.getAppeared());
+			int facAppeared =Integer.valueOf( facultyTotal.getAppeared()==null?"0":facultyTotal.getAppeared());
+			facultyTotal.setAppeared(String.valueOf(facAppeared+appeared));
+			
+			int ufm =Integer.valueOf( outputTotal.getUfm()==null?"0":outputTotal.getUfm());
+			int facUfm =Integer.valueOf( facultyTotal.getUfm()==null?"0":facultyTotal.getUfm());
+			facultyTotal.setUfm(String.valueOf(facUfm+ufm));
+			int passed =Integer.valueOf( outputTotal.getPassed()==null?"0":outputTotal.getPassed());
+			int facPassed =Integer.valueOf( facultyTotal.getPassed()==null?"0":facultyTotal.getPassed());
+			facultyTotal.setPassed(String.valueOf(facPassed+passed));
+			int rem =Integer.valueOf( outputTotal.getRemedial()==null?"0":outputTotal.getRemedial());
+			int facRem =Integer.valueOf( facultyTotal.getRemedial()==null?"0":facultyTotal.getRemedial());
+			facultyTotal.setRemedial(String.valueOf(facRem+rem));
+			int inc =Integer.valueOf( outputTotal.getIncomplete()==null?"0":outputTotal.getIncomplete());
+			int facInc =Integer.valueOf( facultyTotal.getIncomplete()==null?"0":facultyTotal.getIncomplete());
+			facultyTotal.setIncomplete(String.valueOf(facInc+inc));
+
+			int fail1 =Integer.valueOf( outputTotal.getFailedAt1()==null?"0":outputTotal.getFailedAt1());
+			int facFail1 =Integer.valueOf( facultyTotal.getFailedAt1()==null?"0":facultyTotal.getFailedAt1());
+			facultyTotal.setFailedAt1(String.valueOf(facFail1+fail1));
+			int fail2 =Integer.valueOf( outputTotal.getFailedAt2()==null?"0":outputTotal.getFailedAt2());
+			int facfail2 =Integer.valueOf( facultyTotal.getFailedAt2()==null?"0":facultyTotal.getFailedAt2());
+			facultyTotal.setFailedAt2(String.valueOf(facfail2+fail2));
+			passPercentage = 100 * Double.parseDouble(facultyTotal.getPassed()) / Double.parseDouble(facultyTotal.getAppeared());
+			facultyTotal.setPassPercentage(String.valueOf(passPercentage));
+
+			int fstD =Integer.valueOf( outputTotal.getFstDic()==null?"0":outputTotal.getFstDic());
+			int facFstD =Integer.valueOf( facultyTotal.getFstDic()==null?"0":facultyTotal.getFstDic());
+			facultyTotal.setFstDic(String.valueOf(facFstD+fstD));
+			int fst =Integer.valueOf( outputTotal.getFstDiv()==null?"0":outputTotal.getFstDiv());
+			int facFst =Integer.valueOf( facultyTotal.getFstDiv()==null?"0":facultyTotal.getFstDiv());
+			facultyTotal.setFstDiv(String.valueOf(facFst+fst));
+
+			int scnd =Integer.valueOf( outputTotal.getScndDiv()==null?"0":outputTotal.getScndDiv());
+			int facScnd =Integer.valueOf( facultyTotal.getScndDiv()==null?"0":facultyTotal.getScndDiv());
+			facultyTotal.setScndDiv(String.valueOf(facScnd+scnd));
+
+//******************* changes end ***************************//
+			
+
 
 			outputList.add(outputMale);
 			outputList.add(outputFemale);
 			outputList.add(outputTotal);
 		}
+        //Nupur
+		outputList.add(facultyTotal);
+		//*****nupur end **************
 		outputList.add(input);
 		try{
 			System.out.println("before calling generator");

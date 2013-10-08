@@ -38,8 +38,10 @@ public function init_Url():String{
 	
 	return myUrl;
 }
- 
+ // ProgramDomain added By Mandeep
  public function init():void{
+ 	
+	httpProgramDomain.send(new Date());
  	var branchWithSpec:BranchWithSpecialization=new BranchWithSpecialization();		
 	    bwsIdArray.push(branchWithSpec);
 	    addBranchWithSpecialization.addChild(branchWithSpec);
@@ -51,7 +53,8 @@ public function init_Url():String{
 public function validateBasicProgramDetails():Boolean
 {
 	var i:int=Validator.validateAll([programCodeValidator,programModeValidator,programTypeValidator,programNameValidator,
-	              printAggregateValidator,tenCodesValidator,ugOrPgValidator,creditsRequiredValidator,dgpaValidator,programDescriptionValidator]).length;
+	              printAggregateValidator,tenCodesValidator,ugOrPgValidator,creditsRequiredValidator,dgpaValidator,programDescriptionValidator,
+                  programDomainValidator]).length;
 	    
 	if(i==0)
 	{
@@ -430,6 +433,7 @@ public function submitProgramDetailsForm():void
                progDetails["branch_list"]=branch;
                progDetails["spec_list"]=spec;
                progDetails["active_sem_list"]=activeSem;
+               progDetails["domainCode"]=result.domain.(domainName==domainCombo.selectedLabel).domainCode;
                confirmSubmit();
 
 	    }
@@ -612,10 +616,11 @@ public function httpProgramCodeList():void{
 	httpProgramCode.send(params);
 }
 private function faultHandler_ProgramCode(event:FaultEvent):void{
+
          mx.controls.Alert.show(event.fault.message,resourceManager.getString('Messages','error'));
     }
 private function resultHandler_ProgramCode(event:ResultEvent):void{
-	
+
    codeXML=event.result as XML;  
    if(codeXML.sessionConfirm == true)
              {
@@ -635,7 +640,25 @@ private function resultHandler_ProgramCode(event:ResultEvent):void{
   codeListCb.dataProvider=codeXML.branch.branchName;
 
    }
+ // ProgramDomain added By Mandeep
+public	var result:XML;
+private function resultHandler_ProgramDomain(event:ResultEvent):void{
+	result=event.result as XML;
+	if(result.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          var url:String="";
+ 			url=commonFunction.getConstants('navigateHome');
+ 			var urlRequest:URLRequest=new URLRequest(url);
+ 			urlRequest.method=URLRequestMethod.POST;
+ 			navigateToURL(urlRequest,"_self");
+            } 	
 
-
-
-
+ domainCombo.dataProvider=result.domain;
+           //domainCombo.dataProvider=result.branch.domainName;
+            
+}
+ // ProgramDomain added By Mandeep
+public function faultHandler_ProgramDomain(event:FaultEvent):void{
+	   mx.controls.Alert.show(event.fault.message,resourceManager.getString('Messages','error'));
+}

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ApprovalforInstAdmin.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+ 
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="920" height="524" title="Approval for Institute and Administrator" layout="absolute" creationComplete="initialize_form()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/ApprovalInstituteAdmin.as" />
+	
+	<mx:HTTPService id="xmlAdminInstituteList" method="post"
+        url="{urlGetInstituteAdminDetail}" 
+        resultFormat="e4x"
+        result="resultInstituteAdminDetail(event)"
+        fault="faultInstituteAdminDetail(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="updateStatusInstitute" method="post"
+        url="{urlUpdateInstituteAdminDetail}" 
+        resultFormat="e4x"
+        result="resultInstituteAdminDetail(event)"
+        fault="faultInstituteAdminDetail(event)"
+        showBusyCursor="true"
+        useProxy="false"/>    
+        
+    <mx:HTTPService id="insertIntoUniversityUser" method="post"
+        url="{urlInsertIntoUniversityUser}" 
+        resultFormat="e4x"
+        result="resultIntoUniversityUser(event)"
+        fault="faultInstituteAdminDetail(event)"
+        showBusyCursor="true"
+        useProxy="false"/>    
+            
+	<mx:Canvas styleName="GridCanvas" width="841" height="316" id="gridCanvas"  x="31" y="20">
+			<mx:DataGrid   x="10" id="requestgrid" y="10" width="820"  height="295" >
+				<mx:columns>
+					<mx:DataGridColumn headerText="Institute Name" width="200" dataField="instituteName" />
+					<mx:DataGridColumn headerText="Address" width="180" dataField="address" />
+					<mx:DataGridColumn headerText="City" width="150" dataField="city" />
+					<mx:DataGridColumn headerText="State" width="150" dataField="state" />
+					<mx:DataGridColumn headerText="Country" width="150" dataField="country" />
+					<mx:DataGridColumn headerText="Admin Name" width="200" dataField="name" />
+					<mx:DataGridColumn headerText="Admin Email Id" width="250" dataField="adminEmail"/>
+					<mx:DataGridColumn headerText="Status" width="150" dataField="statusDetails"/>
+					<mx:DataGridColumn headerText="Action" width="300" dataField="act"> 
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:HBox horizontalScrollPolicy="off"  horizontalGap="5" horizontalAlign="left">									
+									<mx:Image source="@Embed(source='/images/Actions-dialog-ok-apply-icon.png')"  id="approved" 
+										 toolTip="Approve" visible="{data.apr}" click="outerDocument.processRequest(event)" buttonMode="true"  />
+									<mx:Image source="@Embed(source='/images/arrow_undo.png')" visible="{data.rej}"   id="reject"
+										toolTip="Reject" click="outerDocument.processRequest(event)" buttonMode="true"/>
+									<mx:Image source="@Embed(source='/images/del.png')"  visible="{data.del}"   id="delete1"
+										toolTip="Delete" click="outerDocument.processRequest(event)" buttonMode="true" />
+								</mx:HBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			
+		</mx:Canvas>
+	<mx:Button x="802" y="344" label="Cancel" click="Cancel()" />
+		
+</mx:Panel>

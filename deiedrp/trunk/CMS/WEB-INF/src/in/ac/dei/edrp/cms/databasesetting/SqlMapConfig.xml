@@ -166,6 +166,8 @@
 		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/ProvisionalCertificate.xml"/>
 		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/cancelcoursegroup/CancelCourseGroup.xml"/>
 		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/withrawstudent/WithdrawStudent.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/remark/Remark.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/userInformationInterface/UserInformation.xml"/>
 	<!-- Devendra Ends -->
 
 	<!-- ashish mohan starts -->
@@ -174,6 +176,7 @@
 	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/coursegradelimit/GradeLimit.xml"/>
 	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/correctionInAwardBlank/AwardBlankRequestResolved.xml"/>
 	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/awardSheetForCollation/awardBlankForCollation.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/insertInPrestaging/insertInPrestaging.xml"/>
 	<!-- ashish mohan ends -->
 	
 	<!-- Mandeep Sodhi starts -->
@@ -190,5 +193,13 @@
 	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/correctionInAwardBlank/AwardBlankCorrection.xml"/>
 	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/admissionIntegration/AdmissionIntegration.xml"/>
 	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/withdrawmarkstransfer/WithdrawMarksTranfer.xml"/>
-	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/revertResultProcess/RevertResultProcess.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/mailConfiguration/MailConfiguration.xml"/>
+	<!--  Nupur  -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/StagingTableReport.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/resultverification/ResultVerification.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/instructorcourse/InstructorCourse.xml"/>
+	<!-- Upasana -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programCourseHeaderCredit/ProgramCourseHeaderCredit.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/registrationForInstAndAdmin/InstAdminRegistration.xml"/>
 </sqlMapConfig>

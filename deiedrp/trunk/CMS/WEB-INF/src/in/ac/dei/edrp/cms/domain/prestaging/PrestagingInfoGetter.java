@@ -92,6 +92,8 @@ public class PrestagingInfoGetter {
 	private String semesterName;
 	private String userId;
 	private String nickName;
+	private String rollNoGroupCode;//Add By Devendra
+	private String longField;//Add By Devendra
 
 	// defining getter and setter method for variables
 	public String getStudentFirstName() {
@@ -508,5 +510,33 @@ public class PrestagingInfoGetter {
 
 	public String getNickName() {
 		return nickName;
+	}
+
+	/**
+	 * @return the rollNoGroupCode
+	 */
+	public String getRollNoGroupCode() {
+		return rollNoGroupCode;
+	}
+
+	/**
+	 * @param rollNoGroupCode the rollNoGroupCode to set
+	 */
+	public void setRollNoGroupCode(String rollNoGroupCode) {
+		this.rollNoGroupCode = rollNoGroupCode;
+	}
+
+	/**
+	 * @return the longField
+	 */
+	public String getLongField() {
+		return longField;
+	}
+
+	/**
+	 * @param longField the longField to set
+	 */
+	public void setLongField(String longField) {
+		this.longField = longField;
 	}
 }

@@ -47,6 +47,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import com.ibatis.common.logging.Log;
+
 /**
  * this is Server side controller class for Course Group
  * 
@@ -115,6 +117,20 @@ public class LoginController extends MultiActionController {
 						.getUserGroupName());
 			}
 		}
+		return new ModelAndView("login/loginInfo", "loginDetails", loginDetails);
+	}
+	
+	
+	public ModelAndView getRoles(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		Login login = new Login();
+		login.setUserId(request.getParameter("userId"));
+		login.setUserName(request.getParameter("userName"));
+		login.setUniversityId(request.getParameter("universityId"));
+		login.setApplication(request.getParameter("application"));
+		
+		List<Login> loginDetails = loginService.getLoginRoles(login);
 		return new ModelAndView("login/loginInfo", "loginDetails", loginDetails);
 	}
 

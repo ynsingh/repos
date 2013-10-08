@@ -41,6 +41,7 @@
       <mx:DateFormatter id="dateFormatter" formatString="DD" />                  
 <mx:Script>
 		<![CDATA[
+			import RegistrationForInsAndAdmin.RegistrationForInsAndAdmin;
 			import loginForm.remoteLogin;
 			import mx.controls.Alert;
 			import common.commonFunction;
@@ -75,6 +76,11 @@
 			vStack.selectedIndex=1;
 			loaderCanvas2.addChild(new LoginForm());			
 		}
+		
+		private function loadInstRegistration():void{
+			vStack.selectedIndex=1;
+			loaderCanvas2.addChild(new RegistrationForInsAndAdmin());
+		}
 
 		]]>
 	</mx:Script>
@@ -89,7 +95,9 @@
 		
 	<mx:StringValidator id="userNameValidator"  source="{userNameText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
 	<mx:StringValidator id="passwordValidator" source="{passwordText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	<!--
 	<mx:StringValidator id="appValidator" source="{applications}" required="true" property="selectedLabel" trigger="{loginButton}" triggerEvent="click"/>
+	-->
 	
 	<mx:VDividedBox horizontalScrollPolicy="off" x="167" y="0" width="1070" height="180" horizontalAlign="center" verticalAlign="top" backgroundColor="#000000">
 		<mx:SWFLoader horizontalAlign="center" source="@Embed(source='common/assets/header1.swf')"/>
@@ -101,14 +109,18 @@
 				<mx:Canvas label="View 1" width="100%" height="100%" horizontalCenter="true">
 						<mx:Canvas width="1070" height="54" backgroundImage="@Embed(source='common/assets/login_bck.jpg')" backgroundColor="#000000" y="0" x="0" verticalScrollPolicy="off">
 								
-								<mx:Image source="@Embed(source='common/assets/glossy-blue-orb-icon-business-key6.png')" width="36" height="50" x="20" y="5"/>
-								<mx:Label x="74" y="20" text="{commonFunction.getConstants('userName')}:" color="#FFFFFF" fontSize="12" height="24"/>
-								<mx:Label x="322" y="20" text="{commonFunction.getConstants('password')}:" color="#FFFFFF" fontSize="12" height="24"/>
+								<mx:Image source="@Embed(source='common/assets/glossy-blue-orb-icon-business-key6.png')" width="36" height="50" x="90" y="5"/>
+								<mx:Label x="200" y="20" text="{commonFunction.getConstants('userName')}:" color="#FFFFFF" fontSize="12" height="24"/>
+								<mx:Label x="510" y="20" text="{commonFunction.getConstants('password')}:" color="#FFFFFF" fontSize="12" height="24"/>
+								<!--
 								<mx:Label x="580" y="20" text="{commonFunction.getConstants('application')}:" color="#FFFFFF" fontSize="12" height="24"/>
-								<mx:TextInput id="userNameText"  x="154" y="20" keyDown="onTabUserName(event)" />
-								<mx:TextInput x="399" y="20" id="passwordText" displayAsPassword="true" keyDown="onTabPassword(event)" />
+								-->
+								<mx:TextInput id="userNameText"  x="300" y="20" keyDown="onTabUserName(event)" />
+								<mx:TextInput x="610" y="20" id="passwordText" displayAsPassword="true" keyDown="onTabPassword(event)" />
+								<!--
 								<mx:ComboBox x="666" y="20" id="applications" fontSize="12" prompt="{commonFunction.getConstants('select')}" toolTip="{applications.text}" dataProvider="{app.Application}" labelField="@type" selectedIndex="-1" width="222" keyDown="onApplicationTab(event)"></mx:ComboBox>
-								<mx:LinkButton x="899" y="20" label="Login" id="loginButton" click="Login()"  keyDown="onLogin(event)" color="#FFFFFF" fontWeight="bold"/>
+								-->
+								<mx:LinkButton x="815" y="20" label="Login" id="loginButton" click="Login()"  keyDown="onLogin(event)" color="#FFFFFF" fontWeight="bold"/>
 						</mx:Canvas>
 								
 						
@@ -122,6 +134,7 @@
 					<mx:LinkButton label="Apply For Admission" id="admissionLink" visible="true" click="LoginAdmission()" y="280"/>
 					<mx:LinkButton label="Remote Login" id="remoteLoginLink" visible="true" click="loadRemoteLogin()" y="300"/>
 					<mx:Label x="10" y="324"  id="enrollmentInfo" width="132"/>
+					<mx:LinkButton x="0" y="346" label="Registration for Institute" width="182" click="loadInstRegistration()"/>
 				</mx:Canvas>
 						
 		</mx:VDividedBox>

@@ -67,11 +67,11 @@ insert into program_master
 		 (program_id,program_code,program_name,program_type,program_mode,branch_exists,specialization_exists,no_of_terms,
 		 number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,tencodes,print_aggregate,
       max_reg_semester,dgpa,credit_required,fixed_or_variable_credit,
-		 insert_time,creator_id,program_description)
+		 insert_time,creator_id,program_description,domain)
 		  values (#programId#,#programCode#,#programName#,#programType#,#programMode#,#branch#,#specilization#,#numberOfTerms#,
 		 #numberOfAttemptAllowed#,#maxNumberOfFailSubjects#,#fixedDuration#,#ugOrPg#,#tencodes#,#printAggregate#,
 		  #maxRegSemester#,#dgpa#,#creditRequired#,#fixedOrVariableCredit#,
-		 now(),#creatorId#,#programDescription#)
+		 now(),#creatorId#,#programDescription#,#domainCode#)
 
 </insert>
 	
@@ -139,8 +139,9 @@ insert into program_master
     <result property="maxRegSemester" column="max_reg_semester"/>
     <result property="creditRequired" column="credit_required"/>
     <result property="fixedOrVariableCredit" column="fixed_or_variable_credit"/>
-        <result property="programDescription" column="program_description"/>
-    
+     <result property="programDescription" column="program_description"/>
+     <result property="domainCode" column="domain"/>
+     <result property="domainName" column="domainName"/>   
     
   	
 	</resultMap>
@@ -149,11 +150,13 @@ insert into program_master
 select distinct pm.program_id,pm.program_code,pm.program_name,stt.component_description program_type,
 sttm.component_description program_mode,pm.no_of_terms, pm.total_credits,pm.number_of_attempt_allowed,
  pm.max_number_of_fail_subjects ,pm.fixed_duration,pm.ug_pg,pm.tencodes,
- pm.print_aggregate,pm.dgpa,pm.max_reg_semester,pm.credit_required,pm.fixed_or_variable_credit,pm.program_description  
- from program_master pm, system_table_two stt,system_table_two sttm
+ pm.print_aggregate,pm.dgpa,pm.max_reg_semester,pm.credit_required,pm.fixed_or_variable_credit,pm.program_description ,
+  stt2.component_description domainName,pm.domain
+ from program_master pm, system_table_two stt,system_table_two sttm,system_table_two stt2
 		 where program_id LIKE concat_ws('',#programId#,'%') and program_id LIKE concat(#universityId#,'%')  
 		 and stt.university_code=#universityId# and stt.active=1 and stt.group_code='PRGTYP' and stt.component_code=pm.program_type
 and sttm.university_code=#universityId# and sttm.active=1 and sttm.group_code='PRGMOD' and sttm.component_code=pm.program_mode
+and stt2.university_code=#universityId# and stt2.active=1 and stt2.group_code='DOMAIN' and stt2.component_code=pm.domain
 	</select>
 	
 	<select id="progBasicDetailFromCode" resultMap="progMasterDetailGetter">
@@ -292,7 +295,7 @@ update program_master set program_name=#programName#, no_of_terms=#numberOfTerms
 number_of_attempt_allowed=#numberOfAttemptAllowed#,max_number_of_fail_subjects=#maxNumberOfFailSubjects#,ug_pg=#ugOrPg#,
 modification_time=now(),modifier_id=#modifierId#,program_type=#programType#,program_mode=#programMode#,tencodes=#tencodes#,
 print_aggregate=#printAggregate#,max_reg_semester=#maxRegSemester#,dgpa=#dgpa#,credit_required=#creditRequired#,
-fixed_or_variable_credit=#fixedOrVariableCredit#,program_description=#programDescription# where program_id=#programId#
+fixed_or_variable_credit=#fixedOrVariableCredit#,program_description=#programDescription# ,domain=#domainCode# where program_id=#programId#
 	</update>
 	
 	<update id="updateProgDurationDetails1">
@@ -366,7 +369,12 @@ university_code=#universityId# and active=1 and group_code='PRGMOD'
 	university_code=#universityId# and active=1 and group_code='PRGTYP'
 	</select>
 
-
+	<select id="domainList" resultClass="programMasterInfo">
+	
+		select component_description domainName,component_code domainCode from system_table_two where 
+		university_code=#universityId# and active=1 and group_code='DOMAIN' order by component_code
+	
+	</select>
 	
 	
 	

@@ -59,7 +59,7 @@ public var params:Object={};
  * */ 
 private function init():void {
      myNumericStepper = new ClassFactory(NumericStepper);
-     myNumericStepper.properties = {minimum:0, maximum:199};
+     myNumericStepper.properties = {minimum:0, maximum:999};
 }
 
 

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) GroupByClause.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="610" height="532" showCloseButton="true" close="exit()" title="{commonFunction.getConstants('groupByTitle')}" fontFamily="Georgia">
+	<mx:Canvas x="12" y="10" width="565" height="263" fontFamily="Georgia" styleName="BorderCanvas">
+		<mx:Label x="13" y="10" text="{commonFunction.getConstants('selectedTables')}" fontFamily="Georgia"/>
+		<mx:ComboBox x="118" y="10" id="selectedTables" fontFamily="Georgia" labelField="selectedColumn" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{selectedTables.selectedItem.selectedColumn}" width="160" change="onSelectedCBChange()"></mx:ComboBox>
+		<mx:TileList x="13" y="61" height="156" width="534" id="columnTile" 
+			columnCount="3"
+            columnWidth="172"
+            rowCount="2" direction="horizontal"
+            rowHeight="50" labelField="column" allowMultipleSelection="true" 
+            verticalScrollPolicy="on" horizontalScrollPolicy="off"
+            alternatingItemColors="[#FCFAFA, #EEEFF2]"  themeColor="#5D78BD" 
+            showScrollTips="true" showDataTips="true" dataTipField="column" change="myChangedHandler(event)" 
+            cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" shadowDirection="right">                 
+       </mx:TileList>
+       <mx:Label x="13" y="39" text="{commonFunction.getConstants('ColumnLabel')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+       <mx:Button x="18" y="227" label="{commonFunction.getConstants('cancelButton')}" fontFamily="Georgia" id="cancelBtn" mouseDown="onMouseDown('Cancel')" mouseUp="onMouseUp('Cancel')" mouseOut="omMouseOut('Cancel')"  cornerRadius="6" width="99" height="25"/>
+		<mx:Button x="129" y="227" label="{commonFunction.getConstants('reset_button')}" fontFamily="Georgia" id="resetBtn" mouseDown="onMouseDown('Reset')" mouseUp="onMouseUp('Reset')" mouseOut="omMouseOut('Reset')"  cornerRadius="6" width="99" height="25"/>
+		<mx:LinkButton x="377" y="31" label="{commonFunction.getConstants('GroupByLink')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="groupByLink"  mouseDown="onMouseDown('GroupByLink')" mouseUp="onMouseUp('GroupByLink')"  mouseOut="omMouseOut('GroupByLink')" themeColor="#CBC9C9" width="162" height="25"/>
+	</mx:Canvas>
+	<mx:Canvas x="12" y="281" width="565" height="193" fontFamily="Georgia" styleName="BorderCanvas">
+		<mx:DataGrid x="13" y="28" width="539" height="150" fontFamily="Verdana" id="grid" showScrollTips="true" dataTipField="true" textAlign="center">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('select')}" dataField="select" width="50" textAlign="center" showDataTips="true" >
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" selected="{data.select}" change="commonFunction.editDeleteEnable(event,outerDocument.grid,[],[outerDocument.deleteLink]);{data.select=!data.select}">
+								<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('table')}" dataField="table" showDataTips="true"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('column')}" dataField="column" showDataTips="true"/>				
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:LinkButton x="474" y="3" label="{commonFunction.getConstants('delete_link')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="deleteLink"  mouseDown="onMouseDown('deleteLink')" mouseUp="onMouseUp('deleteLink')"  mouseOut="omMouseOut('deleteLink')" themeColor="#CBC9C9" width="73" height="25" enabled="false"/>
+		<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.events.ListEvent;
+			import mx.managers.PopUpManager;
+			import common.commonFunction;
+			import mx.collections.ArrayCollection;
+			
+			[Embed(source="/images/success.png")]private var successIcon:Class;			
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			public var fun:Function=new Function();
+			public var selectedTablesArr:ArrayCollection=new ArrayCollection();
+			public var columnArr:ArrayCollection=new ArrayCollection();
+			public var groupByArr:ArrayCollection=new ArrayCollection();
+			var selectedColumnIndex:Array;
+			var selectedColumnData:Array;
+			var selectedTableColumns:ArrayCollection;
+								
+			/**
+			 * Method to Close popup
+			 **/
+			private function exit():void{		
+				for each(var o:Object in groupByArr){
+					o.select=false;
+				}
+				fun.call(this,groupByArr);		
+				closeEffect.play([this]);
+			}
+			/**
+			 *Method to reset fields
+			 **/
+			function reset():void{
+				selectedTables.selectedIndex=-1;								
+				selectedColumnIndex=null;
+				selectedColumnData=null;
+				if(selectedTableColumns!=null){
+					selectedTableColumns.removeAll();
+					columnTile.dataProvider.refresh();
+				}								
+			}
+			/**
+			 * On Change of Selected Table ComboBox
+			 **/
+			function onSelectedCBChange():void{	
+				selectedTableColumns=new ArrayCollection();
+				selectedColumnIndex=null;
+				selectedColumnData=null;
+				for each(var obj:Object in columnArr){
+					if(obj.tableName==selectedTables.selectedItem.selectedColumn){
+						selectedTableColumns.addItem({column:obj.column,table:obj.tableName,key:obj.key,dataType:obj.dataType});
+					}
+				}
+				columnTile.dataProvider=selectedTableColumns;					
+			}
+			/**
+			 * On change of columnTile
+			 **/
+			private function myChangedHandler(event:ListEvent):void { 
+				selectedColumnIndex=new Array();
+				selectedColumnData=new Array();
+				selectedColumnIndex=event.currentTarget.selectedIndices;    
+				selectedColumnData=event.currentTarget.selectedItems;       		
+        	} 
+        	
+        	 /** 
+        	 * On click of Set Order by Link Button
+			 **/
+			private function onClickGroupByLink():void { 
+				if(selectedTables.selectedIndex==-1){
+					Alert.show(commonFunction.getMessages('selectSelectedTable'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				} 
+				else if(selectedColumnIndex==null){
+					Alert.show(commonFunction.getMessages('selectColumn'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
+				else{
+					for(var i:int=0;i<selectedColumnIndex.length;i++){
+						groupByArr.addItem({select:false,table:selectedColumnData[i].table,column:selectedColumnData[i].column,dataType:selectedColumnData[i].dataType});
+					}
+					grid.dataProvider.refresh();
+					selectedColumnIndex=null;
+					selectedColumnData=null;
+					columnTile.selectedIndex=-1;
+					Alert.show(commonFunction.getMessages('conditionAddedSuccess'),commonFunction.getMessages('success'),4, null,null,successIcon);		
+				}      		
+        	} 
+        	/**
+			 * Confirmation method for delete
+			 **/
+			function deleteRecord():void{
+				if(deleteLink.enabled==true){
+					Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,deleteConfirm,questionIcon);
+				}								
+			}	
+			/**
+			 * Method to delete selected records
+			 **/
+			private function deleteConfirm(event:CloseEvent):void{
+				if(event.detail==1){
+					var i:int=0;	
+					var j:int=0;		
+					var temp:ArrayCollection=new ArrayCollection();				
+					for each(var o:Object in groupByArr){
+						if(o.select==false){									
+							temp.addItemAt({select:groupByArr.getItemAt(i)["select"],table:groupByArr.getItemAt(i)["table"],column:groupByArr.getItemAt(i)["column"],dataType:groupByArr.getItemAt(i)["dataType"]},temp.length);				
+						}
+						i++;
+					}				
+					groupByArr.removeAll();
+					grid.dataProvider.refresh();
+					for each(var o:Object in temp){						
+						groupByArr.addItemAt({select:false,table:temp.getItemAt(j)["table"],column:temp.getItemAt(j)["column"],dataType:temp.getItemAt(j)["dataType"]},groupByArr.length);
+						j++;
+					}				
+					grid.dataProvider.refresh();
+					deleteLink.enabled=false;
+					Alert.show(commonFunction.getMessages('deleteSuccess'),commonFunction.getMessages('success'),4, null,null,successIcon);
+				}				
+			}	
+			/**
+			 * On Mouse Down
+			 **/
+			private function onMouseDown(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=22;	
+					cancelBtn.width=96;	
+				}
+				else if(str=="GroupByLink"){
+					groupByLink.height=22;	
+					groupByLink.width=159;		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=22;	
+					resetBtn.width=96;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=22;	
+					deleteLink.width=70;		
+				}
+			}
+			/**
+			 * On Mouse UP
+			 **/
+			private function onMouseUp(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;
+					exit();		
+				}
+				else if(str=="GroupByLink"){
+					groupByLink.height=25;	
+					groupByLink.width=162;	
+					onClickGroupByLink();
+				}
+				else if(str=="Reset"){
+					resetBtn.height=25;	
+					resetBtn.width=99;	
+					reset();		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+					deleteRecord();
+				}
+			}
+			/**
+			 * On Mouse OUT
+			 **/
+			private function omMouseOut(str:String):void{				
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;			
+				}
+				else if(str=="GroupByLink"){
+					groupByLink.height=25;	
+					groupByLink.width=162;		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=25;	
+					resetBtn.width=99;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+				}
+			}
+		]]>
+	</mx:Script>
+	</mx:Canvas>
+    
+	<mx:Sequence id="closeEffect" effectEnd="{PopUpManager.removePopUp(this)}">
+        <mx:Parallel >
+            <mx:Zoom zoomWidthTo="0" zoomHeightTo="0" duration="800"/>
+            <mx:Fade duration="800"/>
+        </mx:Parallel>        
+    </mx:Sequence>
+</mx:TitleWindow>

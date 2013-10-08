@@ -286,7 +286,8 @@ public class StudentRegistrationController extends MultiActionController {
         inputObj.setTheoryCredit(request.getParameter("theoryCredit"));
         inputObj.setPracCredit(request.getParameter("pracCredit"));
         inputObj.setCreditExcludeAudit(request.getParameter("creditExcludeAudit"));
-        
+        inputObj.setRollNumberGroupCode(request.getParameter("rollNumberGroupCode"));//Added By Devendra
+        inputObj.setLongField(request.getParameter("longField"));//Added By Devendra
         inputObj.setSequenceNumber(request.getParameter(
                     "sequence_number"));
         inputObj.setRegistrationNumber(request.getParameter(
@@ -355,7 +356,8 @@ public class StudentRegistrationController extends MultiActionController {
         StudentInfoGetter inputObj = new StudentInfoGetter();
         inputObj.setProgramId(request.getParameter("program_id"));
         inputObj.setSemesterCode(request.getParameter("semester_code"));
-
+        inputObj.setBranchId(request.getParameter("branch_code"));
+        inputObj.setSpecializationId(request.getParameter("new_specialization"));
         StudentInfoGetter returnObj = new StudentInfoGetter();
         List<StudentInfoGetter> creditDetails = studentRegistrationFormRPC.getCreditDetailsFromTermDetails(inputObj);
 

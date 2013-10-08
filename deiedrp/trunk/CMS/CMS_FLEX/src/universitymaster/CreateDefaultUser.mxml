@@ -90,7 +90,7 @@
 					object["universityId"] = universityCombo.selectedItem.id;
 					object["emailId"] = emailInput.text;
 					object["counter"] = counter;
-					object["applicationId"] = applicationCombo.selectedItem;
+//					object["applicationId"] = applicationCombo.selectedItem;
 					
 					if((counter=="update")&&(emailInput.text==loginList.getItemAt(0).description)){
 						
@@ -159,10 +159,10 @@
 			univValidate.source = universityCombo;
 			universityCombo.errorString = "";
 			
-			applicationValidate.source = applicationCombo;
-			applicationCombo.errorString = "";	
+//			applicationValidate.source = applicationCombo;
+//			applicationCombo.errorString = "";	
 			
-			if((Validator.validateAll([univValidate,applicationValidate]).length!=0)){
+			if((Validator.validateAll([univValidate]).length!=0)){
 					
 					Alert.show(resourceManager.getString('Messages','pleasecheckEntriesinRed'),
 	 				commonFunction.getMessages('error'),0,null,null,errorIcon);
@@ -173,7 +173,7 @@
 			
 			object["user"] = new Date();
 			object["universityId"] = universityCombo.selectedItem.id;
-			object["applicationId"] = applicationCombo.selectedItem;
+//			object["applicationId"] = applicationCombo.selectedItem;
 			
 			Mask.show(commonFunction.getMessages('pleaseWait'));
 			getUniversities.send(object);
@@ -277,7 +277,17 @@
            		urlRequest.method=URLRequestMethod.POST;
             	navigateToURL(urlRequest,"_self");
 	    	
-		}else if(event.result.Details.list_values == "true"){
+		}
+        var index:int = event.result.Details.list_values.indexOf("mail");
+if(index != -1){
+Alert.show(resourceManager.getString('Messages','emailFailDetails'),
+commonFunction.getMessages('success'),0,null,onSuccess,successIcon);
+}
+else if(event.result.Details.list_values.indexOf("mail") != -1){
+Alert.show(resourceManager.getString('Messages','emailFailDetails'),
+commonFunction.getMessages('success'),0,null,onSuccess,successIcon);
+}
+        else if(event.result.Details.list_values == "true"){
 			
 			Alert.show(resourceManager.getString('Messages','emailDetails'),
 	 		commonFunction.getMessages('success'),0,null,onSuccess,successIcon);
@@ -302,8 +312,8 @@
 			
 			emailInput.text="";
 			universityCombo.selectedIndex = -1;
-			applicationCombo.errorString = "";
-			applicationCombo.selectedIndex = -1;
+//			applicationCombo.errorString = "";
+//			applicationCombo.selectedIndex = -1;
 			emailLabel.visible=false;
 			emailInput.visible=false;
 			verifyButton.visible=true;
@@ -356,15 +366,15 @@
         
 	<mx:EmailValidator id="emailValidate" property="text" required="true"/>
 	<mx:StringValidator id="univValidate" property="text" required="true"/>
-	<mx:Validator id="applicationValidate" property="selectedItem" required="true"/>
+	<!--<mx:Validator id="applicationValidate" property="selectedItem" required="true"/>-->
 	
 	<mx:XML source="/common/application.xml" id="applicationXML" format="e4x"/>
 
 	<mx:Label x="10" y="10" text="{commonFunction.getConstants('universityName')}"/>
 	<common:AutoCompleteCB x="133" y="8" id="universityCombo" change="onChange()"/>
-	<mx:Label x="10" y="38" text="{commonFunction.getConstants('application')}"/>
+	<!--<mx:Label x="10" y="38" text="{commonFunction.getConstants('application')}"/>
 	<mx:ComboBox x="133" y="35" width="160" id="applicationCombo" change="onChange()" selectedIndex="-1"
-			 prompt="{commonFunction.getConstants('select')}" dataProvider="{applicationXML.Application}" labelField="@type" toolTip="{applicationCombo.text}"/>
+			 prompt="{commonFunction.getConstants('select')}" dataProvider="{applicationXML.Application}" labelField="@type" toolTip="{applicationCombo.text}"/>-->
 	<mx:Button x="10" y="78" label="{commonFunction.getConstants('okButton')}" id="verifyButton" click="onFocusOut()"/>	
 	<mx:Button x="133" y="78" label="{commonFunction.getConstants('cancelButton')}" visible="true"
 		 click="this.parentDocument.loaderCanvas.removeAllChildren()" id="cancelButton"/>

@@ -20,7 +20,7 @@ Step 3: download apache tomcat from http://tomcat.apache.org/
 	apache-tomcat-6.0.20
 	install tomcat
 
-Step 4: Download apache-ant-1.8.2.zip
+Step 4: Download apache-ant-1.8.2.zip from http://ant.apache.org/bindownload.cgi/
 	Unzip in c:
 Note: Kindly notice the version it must be more than 1.7
 
@@ -34,15 +34,39 @@ Step 5: Configuration-
 Step 6: Installing CMS 
 
 i)	Go into the webapps folder of apache-tomcat and make a folder named as CMS and checkout the latest version of CMS from thislocation into newly created folder
-	( https://cms-dei.googlecode.com/svn/trunk/)
+	(https://course-management-system-public.googlecode.com/svn/trunk/)
 
 
 
 
-ii) Go into webapps\CMS\WEB-INF\build folder and modify these lines of build.properties file 
+
+ii) Create a folder named Flex_sdk in CMS/ and extract the Flex-SDK-ZIP/flex_sdk_3.2.0.3958A.zip into 'Flex_sdk'.
+
+iii). go to Flex_sdk\framework\flex_config.xml and make changes in the following lines-->
+
+line no. 17 - change <target-player>9.0.124</target-player> to 
+<target-player>10.2.0</target-player>
+
+after line no 26 add line
+ <locale-element>en_CM</locale-element>
+
+line no 44 - <show-actionscript-warnings>false</show-actionscript-warnings>
+
+line no 111 - <show-binding-warnings>false</show-binding-warnings>
+line no 114 - <show-unused-type-selector-warnings>false</show-unused-type-selector-warnings>
+
+line no 323 - <rsl-url>framework_3.2.0.3958.swz</rsl-url>
+line no 325 - <rsl-url>framework_3.2.0.3958.swf</rsl-url>
+
+
+iv). In the checkout version there is a folder named flex_sdk_content. Open this folder and there are two folders and one jar file --> locale, libs and flexTasks.jar.
+copy locale/en_CM and paster in the  webapps\CMS\Flex_sdk\framework\locale\.
+copy libs folder's all files and copy in webapps\CMS\Flex_sdk\framework\libs\
+copy flexTasks.jar and replace the existing jar in Flex_sdk\ant\lib
+
+If you are installing CMS first time-
+1)Go into webapps\CMS\WEB-INF\build folder and modify these lines of build.properties file 
 according to your database setting-
-
-
 
 databaseUrl = jdbc:mysql://localhost/cms
 database.driver=com.mysql.jdbc.Driver
@@ -51,11 +75,31 @@ database.username=root
 database.password=mysql
 
 
-iv) Now go into webapps\CMS\WEB-INF\build directory and type the command 
+2) Now go into webapps\CMS\WEB-INF\build directory and type the command-
  # ant 
-(if every thing is ok then message comes as Build successful..)
+(If every thing is ok then message comes as Build successful..)
 
+3) After that, type the following command to run the default Script-
+ # ant createadminaccount
+ 
+ If you have installed earlier version of CMS and want to update it-
+ 1) Go into webapps\CMS\WEB-INF\build folder and ensure that these lines of build.properties file are just as
+ according to your database setting-
 
+ databaseUrl = jdbc:mysql://localhost/cms
+ database.driver=com.mysql.jdbc.Driver
+ database.url=jdbc:mysql://localhost:3306/cms
+ database.username=root
+ database.password=mysql
+ 
+ 2) Go to CMS\DatabaseChanges\ . There are files containing the database queries executed in each revision. If you find any file between your earlier revision and
+ the latest revision then execute the queries from those files.
+ 
+ 3) Now go into webapps\CMS\WEB-INF\build directory and type the command-
+ # ant 
+(If every thing is ok then message comes as Build successful..)
+ 
+ Note: You do not need to run 'ant createadminaccount' cammand in this case.
 
 
 v) Go into the bin directory of tomcat and execute this command for start the tomcat
@@ -68,7 +112,9 @@ vi) Now open your browser and type this url into the address bar
 	http://IP address of your server: port number on which your tomcat is   
   running/CMS
 
-Now login as amir or deepak and see the magic ;)
+Default Login Details for First Installtion of CMS :
+User Name: admin
+Password:    admin
    
 Note: mysql-connector.jar and jstl.jar should be inside lib folder of tomcat 
 
@@ -90,7 +136,7 @@ KNOWN PROBLEMS--
              If there is any space left between databaseUser and
 	     databasePasword variables. Remove that space from file. It will
 	     Work fine.
-
+3> when mxml failed related errors come it shows that there is some issue in the flex_sdk.. so kindly check it and recheck the version since it should be 3.2.0 with build 3958. Check the folder name it should be Flex_sdk and its path will be webapps\CMS\Flex_sdk
 	
 
 

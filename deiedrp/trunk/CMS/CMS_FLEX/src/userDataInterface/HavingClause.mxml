@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) HavingClause.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"  width="644" height="584" showCloseButton="true" close="exit()" title="{commonFunction.getConstants('havingConditionTitle')}" fontFamily="Georgia">
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Effect;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.events.ListEvent;
+			import mx.collections.ArrayCollection;
+			import common.commonFunction;
+			import mx.managers.PopUpManager;
+			
+			[Embed(source="/images/success.png")]private var successIcon:Class;			
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			public var fun:Function=new Function();
+			public var selectedTablesArr:ArrayCollection=new ArrayCollection();
+			public var columnArr:ArrayCollection=new ArrayCollection();			
+			var selectedTableColumns:ArrayCollection;//SelectionColumn Tile Dataprovider
+			var selectionDefaultTileData:Array;//Store SelectionColumn Tile data when selected
+			var expressionTileData:Array;//Store expression Tile data when selected
+			var expressionArr:ArrayCollection=new ArrayCollection();//Expression Tile Dataprovider
+			public var havingConditionArr:ArrayCollection=new ArrayCollection();//grid DataProvider			
+
+			/**
+			 * Method to Close popup
+			 **/
+			private function exit():void{
+				for each(var o:Object in havingConditionArr){
+					o.select=false;
+				}
+				fun.call(this,havingConditionArr);	
+				closeEffect.play([this]);							
+			}
+			/**
+			 * On Change of Selected Column Tile List
+			 **/
+			private function selectionDefaultTileChangedHandler(event:ListEvent):void { 
+				selectionDefaultTileData=new Array();
+				selectionDefaultTileData=event.currentTarget.selectedItems;				
+				valueLabel.visible=true;				
+				if((selectionDefaultTileData[0].dataType=="date") ||(selectionDefaultTileData[0].dataType=="datetime") ){
+					dateField.visible=true;
+					textInput.visible=false;
+				}   
+				else{
+					dateField.visible=false;
+					textInput.visible=true;
+				}    		
+        	}
+        	/**
+			 * On Change of Expression Tile list
+			 **/
+			private function onExpressionTileChange(event:ListEvent):void { 
+				expressionTileData=new Array();
+				expressionTileData=event.currentTarget.selectedItems;					
+        	}
+			
+			/**
+			 * On Change of Selected Table ComboBox
+			 **/
+			function onSelectedTableCBChange():void{
+				selectedTableColumns=new ArrayCollection();
+				for each(var obj:Object in columnArr){
+					if(obj.tableName==selectedTables.selectedItem.selectedColumn){
+						selectedTableColumns.addItem({column:obj.column,table:obj.tableName,key:obj.key,dataType:obj.dataType});
+					}
+				}
+				expressionArr.removeAll();
+				selectionDefaultTileData=null;
+				expressionTileData=null;
+				dateField.text="";
+				textInput.text="";
+				radioAnd.selected=false;
+				radioOr.selected=false;
+				expressionArr.addItemAt({expression:"=",expressionName:"Equal"},0);
+				expressionArr.addItemAt({expression:">",expressionName:"Greater"},1);
+				expressionArr.addItemAt({expression:"<",expressionName:"Less"},2);
+				expressionArr.addItemAt({expression:">=",expressionName:"Greater than or Equal"},3);
+				expressionArr.addItemAt({expression:"<=",expressionName:"Less than or Equal"},4);
+				expressionArr.addItemAt({expression:"!=",expressionName:"Not Equal"},5);
+				expressionArr.addItemAt({expression:"LIKE",expressionName:"Like"},6);
+				
+				selectedTableColumnsTile.dataProvider=selectedTableColumns;
+				expressionTile.dataProvider=expressionArr;
+			}
+			/**
+			 * On Click of OK Button
+			 **/
+			function onClickOK():void{
+				if(selectionDefaultTileData==null || selectionDefaultTileData.length==0){
+					Alert.show(commonFunction.getMessages('selectColumn'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
+				else if(expressionTileData==null || expressionTileData.length==0){
+					Alert.show(commonFunction.getMessages('selectExpression'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
+				else if(dateField.text=="" && textInput.text==""){
+					if((selectionDefaultTileData[0].dataType=="date") ||(selectionDefaultTileData[0].dataType=="datetime") ){										
+						Alert.show(commonFunction.getMessages('selectDate'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					}
+					else{
+						Alert.show(commonFunction.getMessages('enterValue'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					}
+				}
+				else{
+					var condition:String="";
+					if(radioAnd.selected || radioOr.selected){
+						if(radioAnd.selected){
+							condition="AND";
+						}
+						else{
+							condition="OR";
+						}							
+					}														
+					add(condition);				
+				}
+			}
+			/**
+			 * Method to add Logical condtion for previous condition in which logical condition is not added
+			 * Method call on alert close event
+			 **/
+			function addCondition(event:CloseEvent):void{
+				Alert.yesLabel="YES";
+				Alert.noLabel="NO";
+				var table:String=havingConditionArr.getItemAt(havingConditionArr.length-2)["table"];
+				var column:String=havingConditionArr.getItemAt(havingConditionArr.length-2)["column"];
+				var expression:String=havingConditionArr.getItemAt(havingConditionArr.length-2)["expression"];
+				var expressionName:String=havingConditionArr.getItemAt(havingConditionArr.length-2)["expressionName"];
+				var value:String=havingConditionArr.getItemAt(havingConditionArr.length-2)["value"];	
+				var dataType:String=havingConditionArr.getItemAt(havingConditionArr.length-2)["dataType"];
+				var select:Boolean=havingConditionArr.getItemAt(havingConditionArr.length-2)["select"];
+				havingConditionArr.removeItemAt(havingConditionArr.length-2);
+				if(event.detail==1){
+					havingConditionArr.addItemAt({select:select,table:table,column:column,expression:expression,expressionName:expressionName,value:value,dataType:dataType,condition:"AND"},havingConditionArr.length-1);					
+				}
+				else{
+					havingConditionArr.addItemAt({select:select,table:table,column:column,expression:expression,expressionName:expressionName,value:value,dataType:dataType,condition:"OR"},havingConditionArr.length-1);
+				}
+				grid.dataProvider.refresh();				
+			}
+			/**
+			 *Method to add data to havingConditionArr i.e. grid data provider
+			 **/
+			function add(condition:String):void{
+				var value:String="";
+				if((selectionDefaultTileData[0].dataType=="date") ||(selectionDefaultTileData[0].dataType=="datetime") ){
+					value=dateField.text;
+				}
+				else{
+					value=textInput.text;
+				}
+				havingConditionArr.addItemAt({select:false,table:selectionDefaultTileData[0].table,column:selectionDefaultTileData[0].column,expression:expressionTileData[0].expression,expressionName:expressionTileData[0].expressionName,value:value,dataType:selectionDefaultTileData[0].dataType,condition:condition},havingConditionArr.length);
+				grid.dataProvider.refresh();
+				selectedTableColumnsTile.selectedIndex=-1;
+				expressionTile.selectedIndex=-1;
+				expressionTile.dataProvider.refresh();				
+				textInput.text="";
+				dateField.text="";
+				radioAnd.selected=false;
+				radioOr.selected=false;
+				if(havingConditionArr.length>1 && havingConditionArr.getItemAt(havingConditionArr.length-2)["condition"]==""){												
+					Alert.yesLabel="AND";
+					Alert.noLabel="OR";
+					Alert.show(commonFunction.getMessages('conditionAlert'),commonFunction.getMessages('info'), (Alert.YES|Alert.NO), null,addCondition,infoIcon);										
+				}
+				else{
+					Alert.show(commonFunction.getMessages('conditionAddedSuccess'),commonFunction.getMessages('success'), 4, null,null,successIcon);
+				}				
+			}	
+			
+			/**
+			 *Method to reset fields
+			 **/
+			function reset():void{
+				selectedTableColumnsTile.selectedIndex=-1;
+				expressionArr.removeAll();
+				expressionTile.dataProvider.refresh();
+				expressionTile.selectedIndex=-1;
+				dateField.text="";
+				textInput.text="";
+				radioAnd.selected=false;
+				radioOr.selected=false;
+				expressionTileData=null;
+				selectedTables.selectedIndex=-1;	
+				if(selectedTableColumns!=null){
+					selectedTableColumns.removeAll();
+					selectedTableColumnsTile.dataProvider.refresh();
+				}		
+			}
+			/**
+			 * Confirmation method for delete
+			 **/
+			function deleteRecord():void{	
+				if(deleteLink.enabled==true){
+					Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,deleteConfirm,questionIcon);
+				}											
+			}	
+			/**
+			 * Method to delete selected records
+			 **/
+			private function deleteConfirm(event:CloseEvent):void{
+				if(event.detail==1){
+					var i:int=0;	
+					var j:int=0;		
+					var temp:ArrayCollection=new ArrayCollection();				
+					for each(var o:Object in havingConditionArr){
+						if(o.select==false){									
+							temp.addItemAt({select:havingConditionArr.getItemAt(i)["select"],table:havingConditionArr.getItemAt(i)["table"],column:havingConditionArr.getItemAt(i)["column"],expression:havingConditionArr.getItemAt(i)["expression"],expressionName:havingConditionArr.getItemAt(i)["expressionName"],value:havingConditionArr.getItemAt(i)["value"],dataType:havingConditionArr.getItemAt(i)["dataType"],condition:havingConditionArr.getItemAt(i)["condition"]},temp.length);				
+						}
+						i++;
+					}				
+					havingConditionArr.removeAll();
+					grid.dataProvider.refresh();
+					for each(var o:Object in temp){
+						havingConditionArr.addItemAt({select:false,table:temp.getItemAt(j)["table"],column:temp.getItemAt(j)["column"],expression:temp.getItemAt(j)["expression"],expressionName:temp.getItemAt(j)["expressionName"],value:temp.getItemAt(j)["value"],dataType:temp.getItemAt(j)["dataType"],condition:temp.getItemAt(j)["condition"]},havingConditionArr.length);
+						j++;
+					}				
+					grid.dataProvider.refresh();
+					deleteLink.enabled=false;
+					Alert.show(commonFunction.getMessages('deleteSuccess'),commonFunction.getMessages('success'),4, null,null,successIcon);
+				}				
+			}	
+			/**
+			 * On Mouse Down
+			 **/
+			private function onMouseDown(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=22;	
+					cancelBtn.width=96;	
+				}
+				else if(str=="OK"){
+					okBtn.height=22;	
+					okBtn.width=96;		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=22;	
+					resetBtn.width=96;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=22;	
+					deleteLink.width=70;		
+				}
+			}
+			/**
+			 * On Mouse UP
+			 **/
+			private function onMouseUp(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;
+					exit();		
+				}
+				else if(str=="OK"){
+					okBtn.height=25;	
+					okBtn.width=99;	
+					onClickOK();		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=25;	
+					resetBtn.width=99;	
+					reset();		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+					deleteRecord();
+				}
+			}
+			/**
+			 * On Mouse OUT
+			 **/
+			private function omMouseOut(str:String):void{				
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;			
+				}
+				else if(str=="OK"){
+					okBtn.height=25;	
+					okBtn.width=99;		
+				}
+				else if(str=="Reset"){
+					resetBtn.height=25;	
+					resetBtn.width=99;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+				}
+			}
+		]]>
+	</mx:Script>
+		<mx:Canvas x="13" y="326" width="597" height="193" styleName="BorderCanvas" fontFamily="Georgia">		
+		<mx:DataGrid x="13" y="28" width="571" height="150" fontFamily="Verdana" id="grid" showScrollTips="true" editable="true">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('select')}" dataField="select" width="50" textAlign="center" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" selected="{data.select}" change="commonFunction.editDeleteEnable(event,outerDocument.grid,[],[outerDocument.deleteLink]);{data.select=!data.select}">
+								<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('table')}" dataField="table" dataTipField="true" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('column')}" dataField="column" dataTipField="true" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('expression')}" dataField="expression" dataTipField="true" editable="true"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('value')}" dataField="value" dataTipField="true" editable="true"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('condition')}" dataField="condition" dataTipField="true" editable="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:LinkButton x="508" y="3" label="{commonFunction.getConstants('delete_link')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="deleteLink"  mouseDown="onMouseDown('deleteLink')" mouseUp="onMouseUp('deleteLink')"  mouseOut="omMouseOut('deleteLink')" themeColor="#CBC9C9" width="73" height="25" enabled="false"/>
+	</mx:Canvas>
+	<mx:Canvas x="13" y="10" width="597" height="308" styleName="BorderCanvas">
+		<mx:Label x="13" y="10" text="{commonFunction.getConstants('selectedTables')}" fontFamily="Georgia"/>
+		<mx:ComboBox x="118" y="10" id="selectedTables" fontFamily="Georgia" labelField="selectedColumn" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{selectedTables.selectedItem.selectedColumn}" width="160" change="onSelectedTableCBChange()"></mx:ComboBox>
+		<mx:Label x="13" y="39" text="{commonFunction.getConstants('column')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:Label x="253" y="39" text="{commonFunction.getConstants('expression')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:Label x="336" y="64" text="{commonFunction.getConstants('value')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic" visible="true" id="valueLabel"/>
+		<mx:TileList x="13" y="61" width="229" height="229"	
+			columnCount="1"
+            columnWidth="225"
+            rowCount="1" direction="horizontal"
+            rowHeight="28" 
+            themeColor="#5D78BD" 
+            showScrollTips="true" showDataTips="true"
+            cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+            shadowDirection="right" id="selectedTableColumnsTile" labelField="column" 
+            dataTipField="column" alternatingItemColors="[#FCFAFA, #EEEFF2]" change="selectionDefaultTileChangedHandler(event)" fontFamily="Georgia">
+		</mx:TileList>
+		<mx:TileList y="61" width="64" height="229"	
+			columnCount="1"
+		       columnWidth="225"
+		       rowCount="1" direction="horizontal"
+		       rowHeight="28" 
+		       themeColor="#5D78BD" 
+		       showScrollTips="true" showDataTips="true"
+		       cornerRadius="6" borderThickness="1" dropShadowEnabled="true" shadowDistance="3" 
+		       shadowDirection="right" id="expressionTile" labelField="expression" 
+		       dataTipField="expressionName" alternatingItemColors="[#FCFAFA, #EEEFF2]" fontFamily="Georgia" textIndent="11"  textAlign="left" change="onExpressionTileChange(event)" fontWeight="bold" x="255" fontSize="16">
+		</mx:TileList>
+		<mx:TextInput x="336" y="93" fontFamily="Georgia" visible="true" id="textInput"/>
+		<mx:DateField x="336" y="93" width="160" fontFamily="Georgia" visible="false" id="dateField" yearNavigationEnabled="true" showToday="true" formatString="YYYY-MM-DD"/>
+		<mx:Button x="337" y="239" label="{commonFunction.getConstants('cancelButton')}" fontFamily="Georgia" id="cancelBtn" mouseDown="onMouseDown('Cancel')" mouseUp="onMouseUp('Cancel')" mouseOut="omMouseOut('Cancel')"  cornerRadius="6" width="99" height="25"/>
+		<mx:Button x="337" y="269" label="{commonFunction.getConstants('reset_button')}" fontFamily="Georgia" id="resetBtn" mouseDown="onMouseDown('Reset')" mouseUp="onMouseUp('Reset')" mouseOut="omMouseOut('Reset')"  cornerRadius="6" width="99" height="25"/>
+		<mx:Button x="337" y="209" label="{commonFunction.getConstants('okButton')}" fontFamily="Georgia" id="okBtn" mouseDown="onMouseDown('OK')" mouseUp="onMouseUp('OK')" mouseOut="omMouseOut('OK')"  cornerRadius="6" width="99" height="25"/>
+		<mx:Label x="335" y="135" text="{commonFunction.getConstants('addLogicalCondition1')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic" width="244"/>
+		<mx:Label x="335" y="153" text="{commonFunction.getConstants('addLogicalCondition2')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic" width="254"/>
+		<mx:RadioButton x="337" y="176" label="{commonFunction.getConstants('and')}" fontFamily="Georgia" groupName="Logical" id="radioAnd"/>
+		<mx:RadioButton x="407" y="176" label="{commonFunction.getConstants('or')}" fontFamily="Georgia" groupName="Logical" id="radioOr"/>
+	</mx:Canvas>	
+	<mx:Sequence id="closeEffect" effectEnd="{PopUpManager.removePopUp(this)}">
+        <mx:Parallel >
+            <mx:Zoom zoomWidthTo="0" zoomHeightTo="0" duration="800"/>
+            <mx:Fade duration="800"/>
+        </mx:Parallel>        
+    </mx:Sequence>
+</mx:TitleWindow>

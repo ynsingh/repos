@@ -506,11 +506,7 @@
 	</update>
 	
 	<update id="resetpasswordforapplicants">
-
 		update applicant_info set password =SHA1(#password#),modified_timestamp=now(),modifier_id=#userId# where
-		user_name=#employeeCode# AND university_code=#universityCode#;
-
-	
-	</update>
-
+		user_name=#employeeCode# AND university_code=#universityCode#;	
+	</update>	
 </sqlMap>

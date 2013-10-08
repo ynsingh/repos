@@ -68,12 +68,15 @@
     <mx:Canvas styleName="GridCanvas" x="99" y="12" width="954" height="210">
         <mx:Label text="{commonFunction.getConstants('entityProgramDetails')}" top="6" left="10" fontWeight="bold"  />
 	    <mx:LinkButton label="{commonFunction.getConstants('addSwitch')}" enabled="false" id="addButton" click="addASwitch()" x="851" y="4"/>
-    	<mx:DataGrid id="programBranchSpecializationGrid" draggableColumns="false" x="14" y="33"  height="164" editable="true" width="929">
-		    <mx:columns>
-		        <dataGridClasses:MDataGridColumn width="20" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
-			    	<dataGridClasses:headerRenderer>
+	    <controls:MDataGrid id="programBranchSpecializationGrid" draggableColumns="false" sortableColumns="true" x="14" y="33" editable="true" verticalScrollPolicy="on" width="929" height="164">
+    	<!--<mx:DataGrid id="programBranchSpecializationGrid" draggableColumns="false" x="14" y="33"  height="164" editable="true" width="929">
+    	<mx:columns>
+    	<dataGridClasses:MDataGridColumn width="20" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">-->
+    	<controls:columns>
+		    	<dataGridClasses:MDataGridColumn sortable="false" width="20" headerText="" dataField="select"  rendererIsEditor="true" editorDataField="selected" >		    			    				    				    		    
+		        	 <dataGridClasses:headerRenderer>
 			    		<mx:Component>
-			    			<mx:CheckBox click="data.selected=!data.selected" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.programBranchSpecializationGrid,[outerDocument.addButton],[new LinkButton])">
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.programBranchSpecializationGrid,[outerDocument.addButton],[new LinkButton])">
 		    					<mx:Script>
 		    						<![CDATA[
 		    							import common.commonFunction;
@@ -82,10 +85,10 @@
 		    					</mx:Script>
 		    				</mx:CheckBox>
 			    		</mx:Component>
-			    	</dataGridClasses:headerRenderer>
+			    	</dataGridClasses:headerRenderer>			    				    		    		
 			    	<dataGridClasses:itemRenderer>
 			    		<mx:Component>
-			    			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.programBranchSpecializationGrid,[outerDocument.addButton],[new LinkButton])">
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.programBranchSpecializationGrid,[outerDocument.addButton],[new LinkButton])">
 			    				<mx:Script>
 			    					<![CDATA[
 			    						import common.commonFunction;
@@ -95,13 +98,21 @@
 			    			</mx:CheckBox>
 			    		</mx:Component>
 			    	</dataGridClasses:itemRenderer>
-			    </dataGridClasses:MDataGridColumn>
+			    </dataGridClasses:MDataGridColumn>			    			   
+			    <dataGridClasses:MDataGridColumn editable="false" width="200" headerText="{commonFunction.getConstants('oldEntity')}" dataField="entityName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn editable="false" width="200" headerText="{commonFunction.getConstants('oldProgram')}" dataField="programName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn  editable="false" width="100" headerText="{commonFunction.getConstants('oldBranch')}" dataField="branchName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn  editable="false" width="100" headerText="{commonFunction.getConstants('oldSpecialization')}" dataField="specializationName" showDataTips="true"/>
+			    <!--
 			    <mx:DataGridColumn width="200" editable="false" headerText="{commonFunction.getConstants('oldEntity')}" dataField="entityName" showDataTips="true"/>
                 <mx:DataGridColumn width="200" editable="false" headerText="{commonFunction.getConstants('oldProgram')}" dataField="programName" showDataTips="true"/>
 			    <mx:DataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('oldBranch')}" dataField="branchName" showDataTips="true"/>
-			    <mx:DataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('oldSpecialization')}" dataField="specializationName" showDataTips="true"/>
+			    <mx:DataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('oldSpecialization')}" dataField="specializationName" showDataTips="true"/>			    
 		    </mx:columns>
 	    </mx:DataGrid>
+	    -->
+	    </controls:columns>
+	    </controls:MDataGrid>
     </mx:Canvas>
 
 	<mx:Canvas styleName="GridCanvas" x="10" y="276" width="1227" height="209">

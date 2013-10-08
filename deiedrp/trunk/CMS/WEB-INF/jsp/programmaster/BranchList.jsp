@@ -46,6 +46,10 @@
 <branchName><c:out value="${branchList.branchname}"/></branchName>
 <branchCode><c:out value="${branchList.branchcode}"/></branchCode>
 </branch>
+<domain>
+<domainCode><c:out value="${branchList.domainCode}"/></domainCode>
+<domainName><c:out value="${branchList.domainName}"/></domainName>
+</domain>
 
 </c:forEach>
 </BranchList>

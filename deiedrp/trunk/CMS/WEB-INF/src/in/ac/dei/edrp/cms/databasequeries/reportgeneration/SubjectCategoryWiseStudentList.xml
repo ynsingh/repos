@@ -36,7 +36,7 @@
    </select>
    
    <select id="getStudentListCategoryGenderWise" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
-        Select ct.gender as gender, IFNULL (ct.cat, 'Total') as category, count(sm.gender) As total from
+        Select ct.gender as gender, IFNULL(ct.cat, 'Total') as category, count(sm.gender) As total from
 		 (select k.component_code as cat, sttf.component_code as gender from (select stt.component_code as component_code from
 		 system_table_two stt where group_code='STDCTG') k cross join
 		 (select stt.component_code as component_code from system_table_two stt where group_code='GENDER') sttf  ) ct left join
@@ -45,11 +45,12 @@
 		 (select distinct sp.enrollment_number from student_program sp, student_course sc
 		  where sp.program_id =#programId# AND sp.branch_id =#branchId# AND sp.entity_id=#entityId# AND (substring(sc.course_code,1,3) LIKE #courseGroup#) AND
 		 semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# AND sp.roll_number=sc.roll_number)
-		  group by ct.gender, ct.cat with rollup having ct.gender in (select distinct component_code from system_table_two where group_code='GENDER');        
+		  group by ct.gender, ct.cat with rollup having ct.gender in (select distinct component_code from system_table_two where group_code='GENDER' 
+		  and component_code in ('M','F'));        
    </select>
    
    <select id="getStudentListCategoryWise" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
-        Select IFNULL (ct.cat, 'Total') as category, count(sm.category_code) As total from
+        Select IFNULL(ct.cat, 'Total') as category, count(sm.category_code) As total from
 		 (select component_code as cat from
 		 system_table_two stt where group_code='STDCTG') ct left join
 		 student_master sm

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="534" height="468" 
+	title="{commonFunction.getConstants('mailConfiguration')}" creationComplete="onCreationComplete()">
+	
+	<mx:HTTPService id="getConfigurationDetailsService" method="post"
+        url="{commonFunction.getConstants('url')}/mailConfiguration/getExistingConfigurationDetails.htm"
+        resultFormat="e4x"
+        result="getConfigurationDetailsServiceResult(event)"
+        fault="getConfigurationDetailsServiceFault(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="updateConfigurationDetailsService" method="post"
+        url="{commonFunction.getConstants('url')}/mailConfiguration/updateExistingConfigurationDetails.htm"
+        resultFormat="e4x"
+        result="updateConfigurationDetailsServiceResult(event)"
+        fault="updateConfigurationDetailsServiceFault(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="submitConfigurationDetailsService" method="post"
+        url="{commonFunction.getConstants('url')}/mailConfiguration/submitConfigurationDetails.htm"
+        resultFormat="e4x"
+        result="submitConfigurationDetailsServiceResult(event)"
+        fault="submitConfigurationDetailsServiceFault(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:Script>
+		<![CDATA[
+			import mx.validators.Validator;
+			import mx.events.ValidationResultEvent;
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/warning.png")]private var warningIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			var configurationXML:XML;
+			var updateXML:XML;
+			var insertXML:XML;
+			var configurationAC:ArrayCollection = new ArrayCollection();
+			
+			
+			protected function onCreationComplete():void{
+				getConfigurationDetailsService.send([new Date]);
+			}
+			
+			protected function getConfigurationDetailsServiceResult(event:ResultEvent):void{
+				configurationXML = event.result as XML;
+				configurationAC.removeAll();
+				for each (var obj:Object in configurationXML.detail){
+					configurationAC.addItem({universiyId:obj.universiyId,smtpAddress:obj.smtpAddress,
+											smtpPort:obj.smtpPort,userName:obj.userName,password:obj.password});
+				}
+				if(configurationAC.length > 0){
+					address.text = configurationXML.detail.smtpAddress;
+					port.text = configurationXML.detail.smtpPort;
+					uName.text = configurationXML.detail.userName;
+					password.text = configurationXML.detail.password;
+					address.enabled = false;
+					port.enabled = false;
+					uName.enabled = false;
+					password.enabled = false;
+					submitButton.enabled = false;
+					editButton.visible = true;
+				}else{
+					submitButton.enabled = true;
+					editButton.visible = false;
+				}
+			}
+			
+			protected function getConfigurationDetailsServiceFault(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('faultErrorMailConfiguration1'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			protected function editConfigurationSettings():void{
+					address.enabled = true;
+					port.enabled = true;
+					uName.enabled = true;
+					password.enabled = true;
+					updateButton.enabled = true;
+					editButton.visible = false;
+			}
+			
+			private function updateConfirm():void{
+				if(!validate()){
+					Alert.show(commonFunction.getMessages('redEntries'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,updateConfigurationSettings,questionIcon);
+				}
+				 	
+			}
+			
+			protected function updateConfigurationSettings(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					var params:Object = new Object;
+					params['smtpAddress'] = address.text;
+					params['smtpPort'] = port.text;
+					params['userName'] = uName.text;
+					params['password'] = password.text;
+					updateConfigurationDetailsService.send(params);
+				}
+			}
+			
+			protected function updateConfigurationDetailsServiceResult(event:ResultEvent):void{
+				updateXML = event.result as XML;
+				if(updateXML.exception.exceptionstring == 'YES'){
+					Alert.show(commonFunction.getMessages('configDetailsUpdateSuccess'),commonFunction.getMessages('success'),4,null,null,successIcon);
+					getConfigurationDetailsService.send([new Date]);
+					updateButton.enabled = false;
+				}else{
+					Alert.show(commonFunction.getMessages('configDetailsUpdateFail'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+			}
+			
+			protected function updateConfigurationDetailsServiceFault(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('faultErrorMailConfiguration2'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			private function submitConfirm():void{
+				if(!validate()){
+					Alert.show(commonFunction.getMessages('redEntries'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,submitConfigurationSettings,questionIcon);
+				} 	
+			}
+			
+			protected function submitConfigurationSettings(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					var params:Object = new Object;
+					params['smtpAddress'] = address.text;
+					params['smtpPort'] = port.text;
+					params['userName'] = uName.text;
+					params['password'] = password.text;
+					submitConfigurationDetailsService.send(params);
+				}
+			}
+			
+			protected function submitConfigurationDetailsServiceResult(event:ResultEvent):void{
+				insertXML = event.result as XML;
+				if(insertXML.exception.exceptionstring == 'YES'){
+					Alert.show(commonFunction.getMessages('configSettingSetSuccess'),commonFunction.getMessages('success'),4,null,null,successIcon);
+					getConfigurationDetailsService.send([new Date]);
+					updateButton.enabled = false;
+				}else{
+					Alert.show(commonFunction.getMessages('configSettingSetFail'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+			}
+			
+			protected function submitConfigurationDetailsServiceFault(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('faultErrorMailConfiguration3'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			protected function emailValidHandler(event:ValidationResultEvent):void{
+				uName.errorString = '';
+			}
+			
+			protected function emailInvalidHandler(event:ValidationResultEvent):void{
+				uName.errorString = event.message;
+			}
+			
+			public function validate():Boolean{
+				var bool:Boolean=true;
+				if(Validator.validateAll([emailValidator, addressValidator, portValidator, passwordValidator]).length>0){
+					bool=false;
+				}
+				return bool;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:EmailValidator id="emailValidator" source="{uName}" property="text" required="true" valid="emailValidHandler(event)" invalid="emailInvalidHandler(event)"/>
+	<mx:StringValidator id="addressValidator" source="{address}" property="text" required="true" maxLength="50"/>
+	<mx:StringValidator id="portValidator" source="{port}" property="text" required="true" maxLength="4"/>
+	<mx:StringValidator id="passwordValidator" source="{password}" property="text" required="true" maxLength="50"/>
+	
+	<mx:Label x="72" y="98" text="{commonFunction.getConstants('serverAddressLabel')}"/>
+	<mx:Label x="72" y="145" text="{commonFunction.getConstants('serverPortLabel')}"/>
+	<mx:Label x="72" y="191" text="{commonFunction.getConstants('mailFromUsernameLabel')}"/>
+	<mx:Label x="72" y="236" text="{commonFunction.getConstants('mailFromPasswordLabel')}"/>
+	<mx:TextInput x="260" y="96" id="address" width="160" toolTip="{address.text}"/>
+	<mx:TextInput x="260" y="143" id="port" width="160" toolTip="{port.text}" restrict="0-9"/>
+	<mx:TextInput x="260" y="189" id="uName" width="160" toolTip="{uName.text}"/>
+	<mx:TextInput x="260" y="234" id="password" displayAsPassword="true" width="160"/>
+	<mx:Button x="105" y="330" label="{commonFunction.getConstants('submitButton')}" id="submitButton" enabled="false" click="submitConfirm()"/>
+	<mx:Button x="220.5" y="330" label="{commonFunction.getConstants('updateButton')}" id="updateButton" enabled="false" click="updateConfirm()"/>
+	<mx:Button x="337" y="330" label="{commonFunction.getConstants('cancelButton')}" click="parentDocument.loaderCanvas.removeAllChildren()"/>
+	<mx:LinkButton x="201" y="283" label="{commonFunction.getConstants('editButtonLabel')}" id="editButton" visible="false" click="editConfigurationSettings()"/>
+	
+</mx:Panel>

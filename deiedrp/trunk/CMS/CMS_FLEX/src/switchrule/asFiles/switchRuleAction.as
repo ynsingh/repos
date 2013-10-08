@@ -250,26 +250,28 @@ public function onFailure(event:FaultEvent):void{
 /**This Function Checks All basic validations required of all form fields
  * and send request for saving values
  * */
-public function validateForm():void
-{
-var i:int=Validator.validateAll([label1ComboValidator,label2ComboValidator,label3ComboValidator]).length;
-    if(i==0)
-	{
-		if(checkFormula(ruleFormulaField.text)){
-			
-			Alert.show(commonFunction.getMessages('areyousure'),
-				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,successValidation,questionIcon);		
-		}
-		else{
-			ruleFormulaField.errorString=commonFunction.getMessages('enterFormulainValidLetters');
-          Alert.show((commonFunction.getMessages('pleasecheckEntriesinRed')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
-
-		}
+public function validateForm():void{
+	var rule2Id : String = label1XmlId.label1Data.(@name==label2Combo.selectedItem).@code;
+	if(rule2Id=='Y'){
+		formulaFieldValidator.enabled=true;
+		var i:int=Validator.validateAll([label1ComboValidator,label2ComboValidator,label3ComboValidator,formulaFieldValidator]).length;
 	}
-	else
-	{
-	Alert.show((commonFunction.getMessages('pleasecheckEntriesinRed')),
-	(commonFunction.getMessages('error')),0,null,null,errorIcon);	
+	else{
+		var i:int=Validator.validateAll([label1ComboValidator,label2ComboValidator,label3ComboValidator]).length;	
+	}	
+    if(i==0){	
+//		if(checkFormula(ruleFormulaField.text)){			
+			Alert.show(commonFunction.getMessages('areyousure'),
+			commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,successValidation,questionIcon);		
+//		}
+//		else{
+//			ruleFormulaField.errorString=commonFunction.getMessages('enterFormulainValidLetters');
+//          	Alert.show((commonFunction.getMessages('pleasecheckEntriesinRed')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
+//		}
+	}
+	else{
+		Alert.show((commonFunction.getMessages('pleasecheckEntriesinRed')),
+		(commonFunction.getMessages('error')),0,null,null,errorIcon);	
 	}	
 }
 
@@ -384,8 +386,7 @@ public function openEditPopUp():void
 	editWindow.deleteButton = deletebutton;
 	editWindow.check=checkFormula;
 	PopUpManager.centerPopUp(editWindow);  
-	editWindow.setFocus();
-		
+	editWindow.setFocus();		
 }
 
 /**

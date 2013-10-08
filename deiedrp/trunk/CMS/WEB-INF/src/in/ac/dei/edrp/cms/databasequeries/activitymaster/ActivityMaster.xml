@@ -39,7 +39,7 @@
         select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate  
         from program_registration
         where university_id=#universityId# and program_course_key=#programCourseKey# and status='ACT' and
-        session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#       
+        session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and entity_id=#entityId#;      
     </select>
     
     <select id="getActivityMasterDetails" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">

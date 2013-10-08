@@ -519,11 +519,24 @@ private function resultHandler_Details(event:ResultEvent):void{
 				semesterEndDate.monthsCombo.selectedIndex = int(endDate.substr(0,2))-1;
 				
 				semesterSequence.text = detailXML.term.semesterSequence;
-				semesterGroupCB.text =pt.semgrpXML.root.(code==detailXML.term.semesterGroup+"").name;
+
+				var semgrpAC:ArrayCollection=new ArrayCollection();
+					var codeText:String = detailXML.term.semesterGroup;
+					var codeArray:String;
+				   	for each (var object:Object in pt.semgrpXML.root){
+				   		semgrpAC.addItem({name:object.name,code:object.code});
+				   	}
+				for(var i:int=0;i<semgrpAC.length;i++){
+					codeArray =semgrpAC.getItemAt(i).code; 
+					if(codeArray==codeText){
+						semesterGroupCB.selectedIndex=i;
+						break;
+					}
+				}		
 				if(detailXML.term.finalSemesterCode=="F"){
-				finalSemesterCodeCB.text = "Yes";
+				finalSemesterCodeCB.selectedItem = "Yes";
 				}else{
-				finalSemesterCodeCB.text = "No";	
+				finalSemesterCodeCB.selectedItem= "No";	
 				}
 				noOfTeachingDay.text = detailXML.term.numberOfTeachingDays;
 				durationInWeeks.text = detailXML.term.durationInWeeks;

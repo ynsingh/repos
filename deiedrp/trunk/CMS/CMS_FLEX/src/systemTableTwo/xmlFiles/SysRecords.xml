@@ -39,7 +39,7 @@
 	<group    group_code="CRSTYP" max="2" min="2"   group_description="Course Type">
 		<verification_required allow=""></verification_required>
 		<dummy_flag1   flag1_description=""></dummy_flag1>
-		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag2   flag2_description="Sequence"></dummy_flag2>
 		<dummy_flag3   flag3_description=""></dummy_flag3>
 	</group>	
 	
@@ -57,12 +57,7 @@
 		<dummy_flag3 flag3_description=""></dummy_flag3>
 	</group>
 	
-	<group    group_code="MNUITM" max="6" min="2"   group_description="Menu Item">
-		<verification_required allow=""></verification_required>
-		<dummy_flag1 flag1_description="Menu Flag"></dummy_flag1>
-		<dummy_flag2 flag2_description=""></dummy_flag2>
-		<dummy_flag3 flag3_description=""></dummy_flag3>
-	</group>
+	
 	
 	<group    group_code="SEMCOD" max="3" min="3"   group_description="Semester Details">
 		<verification_required allow=""></verification_required>
@@ -81,7 +76,7 @@
 	<group    group_code="UNROLE" max="3" min="3"   group_description="University Roles">
 		<verification_required allow=""></verification_required>
 		<dummy_flag1   flag1_description=""></dummy_flag1>
-		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag2   flag2_description="Max. Logins Allowed"></dummy_flag2>
 		<dummy_flag3   flag3_description=""></dummy_flag3>
 	</group>
 	
@@ -422,4 +417,12 @@
 		<dummy_flag3   flag3_description=""></dummy_flag3>
 	</group>
 	
+	
+	
+	<group    group_code="DOMAIN" max="3" min="3" group_description="Program Domain">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
 </records>

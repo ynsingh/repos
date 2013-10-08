@@ -389,7 +389,7 @@ public class GradeLimitController extends MultiActionController {
 		if(grades.get(0).equalsIgnoreCase("A") && input.getDisplayType().equalsIgnoreCase("E")){
 			uppers.add(Integer.toString(externalMarks));
 		}
-		else if(grades.get(0).equalsIgnoreCase("D") && input.getDisplayType().equalsIgnoreCase("R")){
+		else if(grades.get(0).equalsIgnoreCase("D-") && input.getDisplayType().equalsIgnoreCase("R")){
 			uppers.add(Integer.toString(totalMarks));
 		}
 		else if(grades.get(0).equalsIgnoreCase("A") && input.getDisplayType().equalsIgnoreCase("I")){

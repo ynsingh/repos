@@ -60,30 +60,31 @@
 		<result property="extraPhone" column="extra_phone" />
 		<result property="otherPhone" column="other_phone" />
 		<result property="fax" column="fax" />
-				
+		<result property="rollNumberGroupCode" column="roll_number_group_code" />
+        <result property="longField" column="long_field" />				
 	</resultMap>
 	<select id="getReadyStudentFromPST" resultMap="getReadyStudentFromPSTResult">
-		select student_id, enrollment_number, registration_roll_number,old_roll_number,
-		new_branch,new_specialization,
-		old_entity,old_program,
-		old_branch,old_specialization,old_semester,
-		admission_mode,
-		student_first_name,student_middle_name,student_last_name,
-		father_first_name,father_middle_name,father_last_name,
-		mother_first_name,mother_middle_name,mother_last_name,
-		student_category,gender,date_of_birth,primary_email_id,
-		registration_due_date,attempt_number,
-		probable_semester,probable_semester_start_date,probable_semester_end_date,
-		probable_register_due_date,
-		case when probable_attempt_number is null then 0 else probable_attempt_number end as probable_attempt_number,
-		status_in_semester,
-		per_address,per_city,per_state,per_pincode,
-		cor_address,cor_city,cor_state,cor_pincode,
-		office_phone,extra_phone,other_phone,fax 
-		from prestaging_table where new_entity=#entityId# and new_program=#programId# and
-		new_semester=#semesterCode# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
-		process_status=#processStatus#
-	</select>
+    select student_id, enrollment_number, registration_roll_number,old_roll_number,
+    new_branch,new_specialization,
+    old_entity,old_program,
+    old_branch,old_specialization,old_semester,
+    admission_mode,
+    student_first_name,student_middle_name,student_last_name,
+    father_first_name,father_middle_name,father_last_name,
+    mother_first_name,mother_middle_name,mother_last_name,
+    student_category,gender,date_of_birth,primary_email_id,
+    registration_due_date,attempt_number,
+    probable_semester,probable_semester_start_date,probable_semester_end_date,
+    probable_register_due_date,
+    case when probable_attempt_number is null then 0 else probable_attempt_number end as probable_attempt_number,
+    status_in_semester,
+    per_address,per_city,per_state,per_pincode,
+    cor_address,cor_city,cor_state,cor_pincode,
+    office_phone,extra_phone,other_phone,fax ,roll_number_group_code,long_field
+    from prestaging_table where new_entity=#entityId# and new_program=#programId# and
+    new_semester=#semesterCode# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+    process_status=#processStatus#
+    </select>
 
 	<!-- Take password and student id from USER_INFO -->
     <resultMap id="getUserLoginDetailsResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ApplicantUserInfoBean">
@@ -138,7 +139,7 @@
 					insert_time,creator_id,
 					per_address,per_city,per_state,per_pincode,
 					cor_address,cor_city,cor_state,cor_pincode,
-					office_phone,extra_phone,other_phone,fax,processed_flag,sequence_number) 
+					office_phone,extra_phone,other_phone,fax,processed_flag,sequence_number,roll_number_group_code,long_field) 
 					values 
 					(#studentId#,#rollNumber#,
 					#enrollmentNumber#,
@@ -158,7 +159,7 @@
 					#perAddress#,#perCity#,#perState#,#perPincode#,
 					#corAddress#,#corCity#,#corState#,#corPincode#,
 					#officePhone#,#extraPhone#,#otherPhone#,#fax#,'N',
-					#sequenceNumber#);
+					#sequenceNumber#,#rollNumberGroupCode#,#longField#);
 	</insert>
 	
 	<!-- Query Changed By Dheeraj For By-Passing The Logic of Enrollment Form -->

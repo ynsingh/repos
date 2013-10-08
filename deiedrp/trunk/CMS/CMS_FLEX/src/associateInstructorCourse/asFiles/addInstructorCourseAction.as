@@ -418,10 +418,16 @@ public function assignFunction():void{
            }
            else
            {
-            Alert.show((commonFunction.getMessages('selectOnlyThatCoursesForWhichInstructorHasNotAssigned')),(commonFunction.getMessages('error')),0,null,null,errorIcon);	
+                 	Alert.show(resourceManager.getString("Messages","courseAssignedAlert",[compare1]),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO)
+           	,null,assignConfirm,questionIcon);
+           // Alert.show((commonFunction.getMessages('selectOnlyThatCoursesForWhichInstructorHasNotAssigned')),(commonFunction.getMessages('error')),0,null,null,errorIcon);	
            } 
   }
-
+public function assignConfirm(event:CloseEvent):void{	
+	if(event.detail==Alert.YES){
+		openAssignWindow();
+	}
+}
 
 /**
  * @private

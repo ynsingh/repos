@@ -34,7 +34,7 @@
  *
  */
  -->
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" showCloseButton="true" close="closePopUp(event)" layout="absolute" width="320" height="224" title="Send Request to Correct Marks">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" showCloseButton="true" close="closePopUp(event)" creationComplete="makeCombo()" layout="absolute" width="320" height="224" title="Send Request to Correct Marks">
 
 	<mx:HTTPService id="requestToCorrectMarks"
 					url="{commonFunction.getConstants('url')}/studentMarksSummary/setMarksCorrectionRequest.htm"
@@ -47,7 +47,7 @@
 	<mx:Label x="10" y="22" text="Component        :" width="115"/>
 	<mx:Label x="133" y="22" id="component"/>
 	<mx:Label x="10" y="50" text="Correct Mark      :" height="19" width="115"/>
-	<mx:TextInput id="correctMarks" x="133" y="48" width="39" height="23" restrict="0-9" maxChars="3"/>
+	<mx:ComboBox id="correctMarks" x="133" y="48" width="59" height="23"/>
 	<mx:TextArea id="studentRemark" maxChars="200" x="133" y="76" width="140" height="53"/>
 	<mx:Label x="10" y="94" text="Student Remark :"/>
 	<mx:Button x="53" y="148" label="Submit" click="onSubmitClick()"/>
@@ -70,15 +70,30 @@
 		[Embed(source="/images/question.png")]private var questionIcon:Class;
 		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
 		public var param:Object={};
+		public var showMarks2:Function;
+		public var maxNum:Number;
 	
 		
-
+		/** this method make combo
+ 		* */
+		public function makeCombo():void
+		{
+			var maxNumArray:ArrayCollection=new ArrayCollection;
+			maxNumArray.addItem({code:'A',text:'A'});
+			for(var i:int=0;i<=maxNum;i++){
+				maxNumArray.addItem({code:i,text:i});
+			}
+			correctMarks.dataProvider=maxNumArray;
+			correctMarks.labelField="text";
+			correctMarks.selectedIndex=-1;
+		}
 		
 		/** this method fires on click of close button and closes pop up
  		* */
 		public function closePopUp(event:CloseEvent):void
 		{
 			PopUpManager.removePopUp(this);
+			showMarks2();
 		}
 
 		/**
@@ -95,7 +110,7 @@
 		}
 		
 		private function onSubmitClick():void{
-			if(correctMarks.text.length>0 && studentRemark.text.length>0){
+			if(correctMarks.selectedIndex>-1 && studentRemark.text.length>0){
 				Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,requestOrNot,questionIcon);
 			}
 			else{

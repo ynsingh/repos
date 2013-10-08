@@ -95,6 +95,8 @@ public class TempCoursePdfController extends MultiActionController{
 		studentInfoGetter.setSemesterEndDate(semesterEndDate);
 		studentInfoGetter.setSpecializationId(specializationId);
 		studentInfoGetter.setSequenceNumber(sequenceNumber);
+		studentInfoGetter.setSessionStartDate(request.getParameter("fromSession"));
+		studentInfoGetter.setSessionEndDate(request.getParameter("toSession"));
 	
 		List<StudentInfoGetter> checkList = new ArrayList<StudentInfoGetter>();		
 		

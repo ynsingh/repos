@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ResultPopup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="932" height="406" showCloseButton="true" close="exit()" title="{commonFunction.getConstants('resultTitle')}" creationComplete="init()" fontFamily="Georgia" x="{screen.width-(this.width+(this.width/4))}" y="{screen.height-(this.height+(this.height/4))}">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.IViewCursor;
+			import mx.collections.ICollectionView;
+			import org.purepdf.pdf.PdfPCell;
+			import org.purepdf.pdf.PdfPTable;
+			import org.purepdf.elements.RectangleElement;
+			import org.purepdf.elements.Element;
+			import org.purepdf.elements.HeaderFooter;
+			import org.purepdf.elements.Phrase;
+			import org.purepdf.pdf.PageSize;
+			import org.purepdf.resources.BuiltinFonts;
+			import org.purepdf.pdf.fonts.BaseFont;			
+			import org.purepdf.pdf.PdfDocument;
+			import org.purepdf.pdf.PdfWriter;
+			import org.purepdf.factories.FontFactory;
+			import org.purepdf.pdf.fonts.FontsResourceFactory;
+			import org.purepdf.Font;
+			
+			import mx.controls.Text;							
+			import com.as3xls.xls.Sheet;
+			import com.as3xls.xls.ExcelFile;
+			import mx.controls.Alert;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.managers.PopUpManager;
+			import common.commonFunction;
+			import mx.collections.ArrayCollection;
+			 
+			public var fun:Function=new Function();
+			public var resultXml:XML=new XML();
+			public var columnNameArr:ArrayCollection=new ArrayCollection();
+			/**
+			 * On Creation complete			 
+			 **/
+			private function init():void{
+				var columns:Array=new Array();	
+				var dataProviderArr:ArrayCollection=new ArrayCollection();	
+				var i:int=1;
+				for each(var o:Object in columnNameArr){
+					var str:String=o.column;
+					var dgColumn:DataGridColumn=new DataGridColumn();
+					dgColumn.headerText=str.toLocaleUpperCase();
+					dgColumn.dataField="Column"+i.toString();
+					dgColumn.width=str.length;
+					dgColumn.showDataTips=true;
+					columns.push(dgColumn);	
+					i++;				
+				}	
+					
+				for each(var obj:Object in resultXml.database.columnName){
+					var str:String=obj.toString();
+					if(str!=null && str!=""){
+						var arr:Array=new Array();
+						var resultObj:Object=new Object();					
+						arr=str.split("|");
+						for(var i:int=0;i<arr.length;i++){
+							var res:String=arr[i];												
+							var str1:String="Column"+(i+1).toString();
+							resultObj[str1]=res;																								
+						}						
+						dataProviderArr.addItem(resultObj);
+					}
+				}				
+				resultGrid.columns=columns;
+				resultGrid.dataProvider=dataProviderArr;		
+			}
+			/**
+			 * Method to Close popup
+			 **/
+			private function exit():void{									
+				fun.call();
+				resultCloseEffect.play([this]);
+			}
+			
+			/**
+			 * Method to Export Datagrid to Excel
+			 **/
+//			function exportToExcel():void{				
+//				var sheet:Sheet = new Sheet();					
+//            	sheet.resize((resultGrid.dataProvider as ICollectionView).length + 2, resultGrid.columns.length + 1);
+//            	sheet.setCell(0, (resultGrid.columns.length + 1)/2, "RESULT");             	        	       
+//	            for(var i:int = 0; i < resultGrid.columns.length; i++) {
+//	                sheet.setCell(1, i, (resultGrid.columns[i] as DataGridColumn).headerText);
+//	            }
+//	            var cursor:IViewCursor = resultGrid.dataProvider.createCursor();
+//	            var rowCount:int = 2;
+//            	while(!cursor.afterLast){
+//               		for(var j:int = 0; j < resultGrid.columns.length; j++){
+//	                    var col:DataGridColumn = resultGrid.columns[j] as DataGridColumn;	
+//	                    if(isNaN(Number(col.itemToLabel(cursor.current)))){
+//	                    	 sheet.setCell(rowCount, j,String(col.itemToLabel(cursor.current)));
+//	                    	  
+//	                    }	
+//	                    else{	  	                    	             	
+//	                    	 sheet.setCell(rowCount, j,"'"+col.itemToLabel(cursor.current));	                    	
+//	                    }                                               	                                  
+//                	}
+//	                rowCount++;
+//	                cursor.moveNext();
+//            	}
+//	            var xls:ExcelFile = new ExcelFile();       
+//	            xls.sheets.addItem(sheet);	           
+//	            var bytes:ByteArray = xls.saveToByteArray();
+//	            var fileReference:FileReference = new FileReference();	           
+//	            fileReference.save(bytes, "RESULT_EXCEL.xls");
+//			}			
+			/**
+			 * Method to Export Datagrid to Excel
+			 **/
+			function exportToPDF():void{							
+				FontsResourceFactory.getInstance().registerFont(BaseFont.HELVETICA,new BuiltinFonts.HELVETICA());
+ 				FontsResourceFactory.getInstance().registerFont(BaseFont.HELVETICA_BOLD,new BuiltinFonts.HELVETICA_BOLD());
+ 				var headerFont:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA_BOLD,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 11);
+			 	var valueFont:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 10);
+			 	var valueFontBold:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA_BOLD,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 10);
+			 	var footerFont:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA_BOLD,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 8);
+			 	var bytes:ByteArray=new ByteArray();
+			 	var pdfWriter:PdfWriter=PdfWriter.create(bytes,PageSize.A4.rotate());
+			 	var document:PdfDocument=pdfWriter.pdfDocument; 			 	
+			 	var header:HeaderFooter = new HeaderFooter( new Phrase("RESULT", headerFont ),null,false);
+			 	header.alignment = Element.ALIGN_CENTER;
+			    header.border = RectangleElement.NO_BORDER;   
+			 	var footer:HeaderFooter = new HeaderFooter( new Phrase("PAGE: ", footerFont ) );
+			    footer.alignment = Element.ALIGN_RIGHT;
+			    footer.border = RectangleElement.NO_BORDER;
+			    document.setHeader(header);
+			    document.setFooter(footer);   
+			 	document.open();		
+			 	var arr:Array=new Array();
+			 	for(var i:int=0;i<columnNameArr.length;i++){
+			 		var str:String=columnNameArr.getItemAt(i)["column"]
+			 		arr.push(str.length/(columnNameArr.length/2));	 		
+			 		
+			 	}	 			 	
+			 	var table:PdfPTable = new PdfPTable(Vector.<Number>(arr));			 	
+			 	var paraCell: PdfPCell;
+			 	for each(var o:Object in columnNameArr){
+					var str:String=o.column;
+					paraCell=PdfPCell.fromPhrase( new Phrase(str.toUpperCase(),valueFontBold));	
+					paraCell.horizontalAlignment=Element.ALIGN_CENTER;
+				 	table.addCell(paraCell)										
+				}
+				for each(var obj:Object in resultGrid.dataProvider){
+					for(var j:int=0;j<columnNameArr.length;j++){
+						var s:String="Column"+(j+1);
+						var str:String=obj[s].toString();										
+						paraCell=PdfPCell.fromPhrase( new Phrase(str,valueFont));	
+						paraCell.horizontalAlignment=Element.ALIGN_CENTER;			 		
+				 		table.addCell(paraCell)																																																	
+					}																			
+				}		
+				table.horizontalAlignment=Element.ALIGN_LEFT;
+				table.widthPercentage=100;	
+				table.headerRows=1;				
+			 	document.add(table);			 					
+			 	document.close();			 	 							
+    			new FileReference().save(bytes,"RESULT_PDF.pdf"); 				 	
+			}
+			/**
+			 * On Mouse UP
+			 **/
+			private function onMouseUp(str:String):void{			
+				if(str=="Cancel"){
+					cancelLink.height=25;	
+					cancelLink.width=69;
+					exit();		
+				}
+				else if(str=="exportLink"){
+					exportLink.height=25;	
+					exportLink.width=127;
+					exportToPDF();					
+				}	
+				else if(str=="exportExcelLink"){
+//					exportExcelLink.height=25;	
+//					exportExcelLink.width=127;
+//					exportToExcel();					
+				}				
+			}
+			/**
+			 * On Mouse Down
+			 **/
+			private function onMouseDown(str:String):void{			
+				if(str=="Cancel"){
+					cancelLink.height=22;	
+					cancelLink.width=66;	
+				}
+				else if(str=="exportLink"){
+					exportLink.height=22;	
+					exportLink.width=124;		
+				}	
+				else if(str=="exportExcelLink"){
+//					exportExcelLink.height=22;	
+//					exportExcelLink.width=124;		
+				}			
+			}
+			/**
+			 * On Mouse OUT
+			 **/
+			private function omMouseOut(str:String):void{				
+				if(str=="Cancel"){
+					cancelLink.height=25;	
+					cancelLink.width=69;			
+				}
+				else if(str=="exportLink"){
+					exportLink.height=25;	
+					exportLink.width=127;		
+				}	
+				else if(str=="exportExcelLink"){
+//					exportExcelLink.height=25;	
+//					exportExcelLink.width=127;		
+				}				
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="10" y="10" width="892" height="330" styleName="BorderCanvas">
+		<mx:DataGrid x="10" y="11" width="869" height="283" id="resultGrid">			
+		</mx:DataGrid>
+		<mx:LinkButton x="15" y="299" label="{commonFunction.getConstants('exportToPDF')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="exportLink"  mouseDown="onMouseDown('exportLink')" mouseUp="onMouseUp('exportLink')"  mouseOut="omMouseOut('exportLink')" themeColor="#CBC9C9" width="127" height="25"/>
+		<!--<mx:LinkButton x="132" y="299" label="{commonFunction.getConstants('exportToExcel')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="exportExcelLink"  mouseDown="onMouseDown('exportExcelLink')" mouseUp="onMouseUp('exportExcelLink')"  mouseOut="omMouseOut('exportExcelLink')" themeColor="#CBC9C9" width="127" height="25"/>-->
+		<mx:LinkButton x="132" y="299" label="{commonFunction.getConstants('cancelButton')}" color="#383636" fontFamily="Georgia" cornerRadius="9" alpha="1.0" textAlign="left" id="cancelLink"  mouseDown="onMouseDown('Cancel')" mouseUp="onMouseUp('Cancel')"  mouseOut="omMouseOut('Cancel')" themeColor="#CBC9C9" width="69" height="25"/>
+	</mx:Canvas>	
+	<mx:Parallel id="resultCloseEffect" effectEnd="{PopUpManager.removePopUp(this);}">
+        <mx:Fade duration="500" />
+        <mx:Move xTo="{0-this.width}" duration="800" />
+    </mx:Parallel> 
+</mx:TitleWindow>

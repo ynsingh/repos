@@ -51,6 +51,8 @@ public interface LoginService {
 	/** getting Login Details from Database */
 	public List<Login> getLoginDetails(Login login);
 	
+	public List<Login> getLoginRoles(Login login);
+	
 	/** this method will return the menu */
 	public StringWriter getMenu(Login login);
 

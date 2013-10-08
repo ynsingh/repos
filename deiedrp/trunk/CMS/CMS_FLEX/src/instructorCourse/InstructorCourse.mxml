@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) InstructorCourse.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1266" height="712" 
+	title="{commonFunction.getConstants('instructorCourse')}" creationComplete="moduleCreationCompleteHandler()" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+    <mx:Script>
+    	<![CDATA[
+    		import common.commonFunction;
+    	]]>
+    </mx:Script>
+    
+    <mx:Script source="asFiles/InstructorCourseAction.as"/>
+    <mx:DateFormatter id="ddmmm" formatString="DDMMM">
+    	
+    </mx:DateFormatter>
+     <mx:DateFormatter id="ddmmyy" formatString="DD-MM-YYYY" >
+     	
+     </mx:DateFormatter>
+     
+    
+    <mx:HTTPService id="employeeCourseHttpService" method="post"
+        url="{urlPrefix+'getCourseList.htm'}"
+        resultFormat="e4x"
+        result="employeeCourseHttpServiceResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="studentListHttpService" method="post"
+        url="{urlPrefix+'getStudentList.htm'}"
+        resultFormat="e4x"
+        result="studentListHttpServiceResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+    
+   	
+	<mx:Canvas id="courselistCanvas" styleName="GridCanvas"  visible="true" width="1130.5" height="218" backgroundColor="#E2E2E2" x="56" y="2">
+		<mx:Label x="12" y="5" text="{commonFunction.getConstants('instructorCourseDetail')}" fontWeight="bold" fontSize="12" id="courselabel"/>
+		<controls:MDataGrid id="courseListGrid" width="1110.5" height="174" horizontalScrollPolicy="off" textAlign="center" 
+		sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="34">
+		<controls:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" width="55"  sortable="false" textAlign="center" editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+	   			<mx:Component>
+	   				<mx:CheckBox click="data.select=event.currentTarget.selected; checkbox1ClickHandler(event, outerDocument.courseListGrid)">
+	 					<mx:Script>
+	                       <![CDATA[
+	                           import common.commonFunction;
+	                           import mx.controls.LinkButton;
+	                           import common.commonFunction;
+								
+								import mx.collections.ArrayCollection;
+								import mx.containers.Grid;
+								import mx.controls.*;
+								import mx.graphics.IFill;
+								import mx.logging.errors.InvalidFilterError;
+								
+								protected var arrayCollection:ArrayCollection;
+								[Embed(source="/images/warning.png")]private var warningIcon:Class;
+								
+							  	protected function checkbox1ClickHandler(event:Event, grid:DataGrid):void{	
+									var currentIndex:int=grid.selectedIndex;
+									var parseIndex:int=0;
+									var j:int=0;									
+									var gridrecords:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.courseListGrid);									
+									if(gridrecords.length==0){
+										outerDocument.awardSheetCanvas.visible=false;
+										outerDocument.courseStudentListGrid.dataProvider=null;
+									}
+									else if(gridrecords.length>1){
+				            	    	Alert.show(commonFunction.getMessages('selectOneRecord'),commonFunction.getConstants('warning'),0,null,null,warningIcon);
+				            	    	outerDocument.awardSheetCanvas.visible=false;
+										outerDocument.courseStudentListGrid.dataProvider=null;
+				            	    }
+				            	    else{
+										for each(var obj:Object in grid.dataProvider){
+											if(obj.select==true){
+												var gridData:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.courseListGrid);
+												outerDocument.furtherExecution(gridData);//											
+												outerDocument.courselabelOuter.text="Student Registered in : "+gridData.getItemAt(0).courseCode;//										
+											}
+										}									
+										for each(var object:Object in grid.dataProvider){
+											var bool:Boolean=false;
+											bool=object.select;
+											if(parseIndex==currentIndex){
+												bool=event.currentTarget.selected;
+												object.select=false;
+											}
+											if(bool){												
+											}
+											parseIndex++;
+										}
+				            	    }
+								}	
+	                       ]]>
+	                    </mx:Script>
+	                </mx:CheckBox>
+	            </mx:Component>
+	        </mx:itemRenderer>
+	    </mx:DataGridColumn>
+	    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" width="200" sortable="true" color="black"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="courseName" headerText="{commonFunction.getConstants('courseName')}" width="310" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="entityName" headerText="{commonFunction.getConstants('entityName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" width="230" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" width="230" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" width="250" sortable="true"/>		
+		</controls:columns>
+		</controls:MDataGrid>
+     </mx:Canvas>				
+	
+	<mx:Canvas id="awardSheetCanvas" styleName="GridCanvas" visible="false" x="56" y="{courselistCanvas.y+courselistCanvas.height+20}" 
+		 autoLayout="false"  width="{courseStudentListGrid.width+20}" height="301" >
+		 <mx:Label x="12" y="5" text="{commonFunction.getConstants('instructorCourseDetail')}" fontWeight="bold" fontSize="12" id="courselabelOuter"/>
+		<controls:MDataGrid id="courseStudentListGrid" width="1110.5" height="225" horizontalScrollPolicy="off" textAlign="center" 
+		sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="43">
+		<controls:columns>		
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="studentName" headerText="{commonFunction.getConstants('studentName')}" width="60" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="fatherName" headerText="{commonFunction.getConstants('fatherName')}" width="60" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="dateOfBirth" headerText="{commonFunction.getConstants('dateOfBirth')}" width="30" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="rollNumber" headerText="{commonFunction.getConstants('rollNumber')}" width="40" sortable="true" color="black"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="enrollmentNumber" headerText="{commonFunction.getConstants('enrollmentNumber')}" width="50" sortable="true" color="black"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="registrationNo" headerText="{commonFunction.getConstants('regNumber')}" width="50" sortable="true"/>
+		<mx:DataGridColumn  rendererIsEditor="true" width="55"  sortable="false" textAlign="center" editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+	   			<mx:Component>
+	   				<mx:LinkButton label="{commonFunction.getConstants('cancelRegistration')}" click="outerDocument.cancelRegistration()">
+	   				<mx:Script>
+	                       <![CDATA[
+	                           import common.commonFunction;
+	                       ]]>
+                    </mx:Script>
+                    </mx:LinkButton>
+	            </mx:Component>
+	        </mx:itemRenderer>	
+	    </mx:DataGridColumn>		
+		</controls:columns>
+		</controls:MDataGrid>
+		<mx:Button label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();" x="482.25" y="266"/>
+	</mx:Canvas>	
+</mx:Panel>

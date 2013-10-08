@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) manageStudentList.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Author:Ashish Mohan
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:dx="common.*" title="Manage Students List" layout="absolute" width="98%" height="600" x="0" y="0" creationComplete="onInterfaceLoad()">
+
+					
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getStudentList" method="POST"
+		url="{commonFunction.getConstants('url')}/insertInPrestaging/getStudentInfo.htm"
+		resultFormat="e4x"
+		result="getStudentListSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	
+	<mx:Script source="manageStudentListAction.as"/>
+
+	
+	<mx:Canvas x="10" y="10" width="98%" height="58" id="headerCanvas" styleName="BorderCanvas">
+		<mx:ComboBox x="59" y="21" id="entityCombo" width="160" change="onEntityChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="333" y="21" id="programCombo" width="160" change="onProgramChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="611" y="21" id="branchCombo" width="160" change="onBranchChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="933" y="21" id="specilizationCombo" width="160" change="onSpecializationChange(event)"></mx:ComboBox>
+		<mx:Button x="1149" y="22" id="submitButton" click="visibleStudentGrid(event)" label="OK"/>
+		<mx:Label x="10" y="24" text="{commonFunction.getConstants('entity')}"/>
+		<mx:Label x="267" y="24" text="{commonFunction.getConstants('program')}"/>
+		<mx:Label x="555" y="24" text="{commonFunction.getConstants('branch')}"/>
+		<mx:Label x="834" y="24" text="{commonFunction.getConstants('specialization')}"/>
+	</mx:Canvas>
+	
+	<mx:Canvas x="10" y="76" width="98%" height="422" id="studentCanvas" visible="false" styleName="GridCanvas">
+
+		<mx:LinkButton label="Change Program Association" click="openEditWindow()" enabled="false" id="changeButton" x="1000"  y="3"/>
+		<mx:DataGrid id="mainGrid" horizontalScrollPolicy="off" x="19.5" y="34" width="97%" height="328"
+			 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" dataProvider="{tasks}" creationComplete="showHeaderTooltip(mainGrid)">
+		<mx:columns>
+		<mx:DataGridColumn width="20" resizable="false" rendererIsEditor="true" textAlign="center" sortable="false" 
+			editorDataField="selected" dataField="select" headerText="">
+		<mx:itemRenderer>
+   	    <mx:Component>
+   		<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.mainGrid,[],[outerDocument.changeButton])">
+ 		<mx:Script>
+        <![CDATA[
+                    import common.commonFunction;
+                    import mx.controls.*;
+                ]]>
+        </mx:Script>
+        </mx:CheckBox>
+        </mx:Component>
+        </mx:itemRenderer>
+        </mx:DataGridColumn>
+				<mx:DataGridColumn headerText="S.No" labelFunction="myLabelFun" editable="false" dataField="serial" width="40"/>
+				<mx:DataGridColumn headerText="Enrollment Number" dataField="EnrollmentNumber">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Student Name" dataField="StudentName">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Father Name" dataField="FatherName">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="DoB(ddmmyyyy)" dataField="DateofBirth">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Category" dataField="Category">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Email Id" dataField="EmailId"/>
+				<mx:DataGridColumn headerText="Gender" dataField="Gender">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Address" dataField="Address">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Roll No Group Code" dataField="RollNumberGroupCode">
+
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Student Hindi Name" dataField="StudentHindiName"/></mx:columns>
+		</mx:DataGrid>
+		
+		
+
+		<mx:Button x="475" y="382" label="{commonFunction.getConstants('cancelButton')}" click="parent.removeChild(this)"/>
+
+	</mx:Canvas>
+
+	
+
+	
+
+</mx:Panel>

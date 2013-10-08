@@ -15,7 +15,7 @@
 
 
 --
--- Create schema integrated
+-- Create schema cms
 --
 
 CREATE DATABASE IF NOT EXISTS cms;
@@ -66,6 +66,7 @@ CREATE TABLE `addresses_master` (
   `address` varchar(100) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
+  `country` varchar(20) DEFAULT NULL,
   `pincode` varchar(6) DEFAULT NULL,
   `office_phone` varchar(20) DEFAULT NULL,
   `home_phone` varchar(20) DEFAULT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE `addresses_master` (
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) NOT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `user_id` char(18) NOT NULL,
+  `user_id` varchar(100) NOT NULL,
   PRIMARY KEY (`user_id`,`address_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -85,6 +86,51 @@ CREATE TABLE `addresses_master` (
 
 /*!40000 ALTER TABLE `addresses_master` DISABLE KEYS */;
 /*!40000 ALTER TABLE `addresses_master` ENABLE KEYS */;
+
+--
+-- Definition of table `entity_student`
+--
+
+DROP TABLE IF EXISTS `entity_student`;
+CREATE TABLE `entity_student` (
+  `university_id` char(4) DEFAULT NULL,
+  `student_id` char(18) NOT NULL,
+  `enrollment_number` varchar(100) DEFAULT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `middle_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `primary_email_id` varchar(100) DEFAULT NULL,
+  `secondary_email_id` varchar(100) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `category_code` varchar(20) DEFAULT NULL,
+  `gender` varchar(6) DEFAULT NULL,
+  `father_first_name` varchar(100) DEFAULT NULL,
+  `father_middle_name` varchar(100) DEFAULT NULL,
+  `father_last_name` varchar(100) DEFAULT NULL,
+  `mother_first_name` varchar(100) DEFAULT NULL,
+  `mother_middle_name` varchar(100) DEFAULT NULL,
+  `mother_last_name` varchar(100) DEFAULT NULL,
+  `registered_in_session` char(7) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `insert_time` datetime DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(20) DEFAULT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `nationality` varchar(50) DEFAULT NULL,
+  `religion` varchar(50) DEFAULT NULL,
+  `guardian_name` varchar(50) DEFAULT NULL,
+  `minority` char(2) DEFAULT NULL,
+  `marital_status` char(5) DEFAULT NULL,
+  PRIMARY KEY (`student_id`),
+  UNIQUE KEY `u1` (`university_id`,`enrollment_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `entity_student`
+--
+
+/*!40000 ALTER TABLE `entity_student` DISABLE KEYS */;
+/*!40000 ALTER TABLE `entity_student` ENABLE KEYS */;
 
 
 --
@@ -108,7 +154,9 @@ CREATE TABLE `admission_addresses_master` (
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
-  `modifier_id` varchar(20) DEFAULT NULL
+  `modifier_id` varchar(20) DEFAULT NULL,
+  KEY `FK_admission_addresses_master_1` (`user_id`),
+  CONSTRAINT `FK_admission_addresses_master_1` FOREIGN KEY (`user_id`) REFERENCES `entity_student` (`student_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -784,7 +832,7 @@ CREATE TABLE `applicant_program_registration` (
   `user_name` varchar(100) NOT NULL,
   `registration_number` char(12) NOT NULL,
   `program_id` char(7) NOT NULL,
-  PRIMARY KEY (`user_name`,`registration_number`,`program_id`)
+  PRIMARY KEY (`user_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -923,11 +971,6 @@ CREATE TABLE `board_master` (
 --
 
 /*!40000 ALTER TABLE `board_master` DISABLE KEYS */;
-INSERT INTO `board_master` (`board_id`,`board_name`) VALUES 
- ('01','I.C.S.E'),
- ('02','C.B.S.E'),
- ('03','U.P Board'),
- ('04','Others');
 /*!40000 ALTER TABLE `board_master` ENABLE KEYS */;
 
 
@@ -1016,10 +1059,11 @@ CREATE TABLE `city_look_up` (
 
 DROP TABLE IF EXISTS `component_description`;
 CREATE TABLE `component_description` (
-  `university_id` char(4) DEFAULT NULL,
-  `component_id` char(2) DEFAULT NULL,
+  `university_id` char(4) NOT NULL,
+  `component_id` char(2) NOT NULL,
   `description` varchar(35) DEFAULT NULL,
-  `ug_pg` char(2) DEFAULT NULL
+  `ug_pg` char(2) DEFAULT NULL,
+  PRIMARY KEY (`component_id`,`university_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1027,28 +1071,6 @@ CREATE TABLE `component_description` (
 --
 
 /*!40000 ALTER TABLE `component_description` DISABLE KEYS */;
-INSERT INTO `component_description` (`university_id`,`component_id`,`description`,`ug_pg`) VALUES 
- ('0001','HS','High School','XX'),
- ('0001','IN','Intermediate','XX'),
- ('0001','MA','MAT','XX'),
- ('0001','GT','GATE','XX'),
- ('0001','XT','XAT','XX'),
- ('0001','CT','CAT','XX'),
- ('0001','JE','IIT-JEE','XX'),
- ('0001','MT','Mathematics','XX'),
- ('0001','PH','Physics','XX'),
- ('0001','CH','Chemistry','XX'),
- ('0001','BO','Botany','XX'),
- ('0001','ZO','Zoology','XX'),
- ('0001','PM','PCM','XX'),
- ('0001','AM','AIEEE-MATHS','XX'),
- ('0001','AP','AIEEE-PHYSICS + CHEMISTRY','XX'),
- ('0001','UG','Under Graduate','UG'),
- ('0001','PG','Post Graduate','PG'),
- ('0001','P1','Post Graduate-Degree 1','PG'),
- ('0001','U1','Under Graduate-Degree 1','UG'),
- ('0001','P2','Post Graduate-Degree 2','PG'),
- ('0001','U2','Under Graduate-Degree 2','UG');
 /*!40000 ALTER TABLE `component_description` ENABLE KEYS */;
 
 
@@ -1068,8 +1090,6 @@ CREATE TABLE `component_rules` (
 --
 
 /*!40000 ALTER TABLE `component_rules` DISABLE KEYS */;
-INSERT INTO `component_rules` (`rule_number`,`description`,`experssion`) VALUES 
- (0,'None',NULL);
 /*!40000 ALTER TABLE `component_rules` ENABLE KEYS */;
 
 
@@ -1079,14 +1099,15 @@ INSERT INTO `component_rules` (`rule_number`,`description`,`experssion`) VALUES
 
 DROP TABLE IF EXISTS `control_report`;
 CREATE TABLE `control_report` (
-  `entity_id` char(8) DEFAULT NULL,
-  `program_id` char(7) DEFAULT NULL,
+  `entity_id` char(8) NOT NULL,
+  `program_id` char(7) NOT NULL DEFAULT '',
   `branch_code` char(3) DEFAULT NULL,
   `flag_status` char(1) DEFAULT NULL,
   `user_id` char(18) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `specialization_code` char(3) DEFAULT NULL
+  `start_date` date NOT NULL DEFAULT '0000-00-00',
+  `end_date` date NOT NULL DEFAULT '0000-00-00',
+  `specialization_code` char(3) DEFAULT NULL,
+  PRIMARY KEY (`program_id`,`entity_id`,`start_date`,`end_date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1112,7 +1133,7 @@ CREATE TABLE `correctans` (
   `group_code` varchar(3) NOT NULL DEFAULT '00',
   PRIMARY KEY (`TestId`,`Ques_no`,`group_code`,`SectionNumber`),
   CONSTRAINT `FK_CorrectAns` FOREIGN KEY (`TestId`) REFERENCES `testheader` (`TestId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20121006 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20121011 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `correctans`
@@ -1258,8 +1279,7 @@ CREATE TABLE `course_group` (
   `modifier_id` varchar(20) DEFAULT NULL,
   `elective` tinyint(1) NOT NULL COMMENT '\n1: Elective, 0: Not Elective',
   `order_in_marksheet` tinyint(2) unsigned NOT NULL,
-  PRIMARY KEY (`program_course_key`,`course_group_code`),
-  CONSTRAINT `FK_course_group_1` FOREIGN KEY (`program_course_key`) REFERENCES `program_course_header` (`program_course_key`)
+  PRIMARY KEY (`program_course_key`,`course_group_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1289,7 +1309,6 @@ CREATE TABLE `course_marks_approval` (
   `display_type` char(1) NOT NULL,
   PRIMARY KEY (`entity_id`,`program_course_key`,`course_code`,`employee_id`,`approval_order`,`display_type`),
   KEY `FK_course_marks_approval_2` (`program_course_key`,`course_code`),
-  CONSTRAINT `FK_course_marks_approval_11` FOREIGN KEY (`entity_id`) REFERENCES `employee_master` (`parent_entity`),
   CONSTRAINT `FK_course_marks_approval_2` FOREIGN KEY (`program_course_key`, `course_code`) REFERENCES `program_course_detail` (`program_course_key`, `course_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1415,6 +1434,299 @@ CREATE TABLE `course_tracking` (
 
 
 --
+-- Definition of table `database_tables`
+--
+
+DROP TABLE IF EXISTS `database_tables`;
+CREATE TABLE `database_tables` (
+  `table_name` varchar(45) NOT NULL,
+  `university_id` char(4) NOT NULL,
+  PRIMARY KEY (`table_name`,`university_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `database_tables`
+--
+
+/*!40000 ALTER TABLE `database_tables` DISABLE KEYS */;
+/*!40000 ALTER TABLE `database_tables` ENABLE KEYS */;
+
+
+--
+-- Definition of table `default_codes`
+--
+
+DROP TABLE IF EXISTS `default_codes`;
+CREATE TABLE `default_codes` (
+  `code` varchar(6) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `application` varchar(4) NOT NULL,
+  `dummy_flag_one` smallint(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`code`,`description`,`application`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `default_codes`
+--
+
+/*!40000 ALTER TABLE `default_codes` DISABLE KEYS */;
+INSERT INTO `default_codes` (`code`,`description`,`application`,`dummy_flag_one`) VALUES 
+ ('1','Program Components','ADM',1),
+ ('12','Compute Application Marks','ADM',1),
+ ('13','Cut Off','ADM',1),
+ ('14','Enter Admission Test Marks','ADM',1),
+ ('15','Generate Test Numbers','ADM',1),
+ ('16','Call List without Test Number','ADM',1),
+ ('17','Call List with Test Number','ADM',1),
+ ('18','Final Merit List','ADM',1),
+ ('19','Entity Master','ADM',1),
+ ('2','Program Pre Requiste Examinations(First Degree)','ADM',1),
+ ('20','Employee Master','ADM',1),
+ ('21','Program Master','ADM',1),
+ ('22','Entity Programs','ADM',1),
+ ('23','Program Term Details','ADM',1),
+ ('24','upload/download file for adding Test Marks','ADM',1),
+ ('25','Application Form','ADM',1),
+ ('28','Upload File for adding Component\'s Marks','ADM',1),
+ ('29','Final Merit List Process','ADM',1),
+ ('3','Program Paper Codes','ADM',1),
+ ('30','Import Students Marks','ADM',1),
+ ('31','Program Application Details','ADM',1),
+ ('32','Program Examination Center','ADM',1),
+ ('33','Setup Examination Center','ADM',1),
+ ('34','Modify Examination Center','ADM',1),
+ ('38','Program Document Setup','ADM',1),
+ ('39','SummarySheet Internal','ADM',1),
+ ('4','Program COS','ADM',1),
+ ('40','Program Subject','ADM',1),
+ ('45','Manage Summary Sheet','ADM',1),
+ ('46','OMR Setup','ADM',1),
+ ('5','Program Age Eligibility','ADM',1),
+ ('6','Program Component Eligibility','ADM',1),
+ ('7','Program Board','ADM',1),
+ ('8','Final Merit Components','ADM',1),
+ ('9','Special Weightage','ADM',1),
+ ('ADMSSN','2011070120120630201107012011073110','VAL',1),
+ ('APPNUM','0','VAL',1),
+ ('DEFENT','Y00010001','VAL',1),
+ ('DEIENR','000000','VAL',1),
+ ('DEIROL','0000','VAL',1),
+ ('DUPEXT','N','VAL',1),
+ ('EMPCOD','0','VAL',1),
+ ('ENDAYS','275','VAL',1),
+ ('ENEXD','275','VAL',1),
+ ('ENROLL','0','VAL',1),
+ ('ENTYCD','0000','VAL',1),
+ ('ENTYID','0001','VAL',1),
+ ('EXTWTG','25','VAL',1),
+ ('FSTUID','0','VAL',1),
+ ('INTWTG','75','VAL',1),
+ ('ISUEID','0','VAL',1),
+ ('MA','Master Setup','CMS',NULL),
+ ('MA','Master Setup','EDEI',NULL),
+ ('MAA','Module Master','EDEI',NULL),
+ ('MAA','University ','CMS',NULL),
+ ('MAAA','Create Modules','EDEI',1),
+ ('MAAA','University Set up','CMS',NULL),
+ ('MAAAA','Create University','CMS',1),
+ ('MAAAB','Manage University','CMS',1),
+ ('MAAAC','Default User for University','CMS',1),
+ ('MAAB','Manage Modules','EDEI',1),
+ ('MAAB','University  Role Set up','CMS',NULL),
+ ('MAABA','Create University Roles','CMS',1),
+ ('MAABB','Manage University Roles','CMS',1),
+ ('MAAC','University Reservation SetUp','CMS',NULL),
+ ('MAACA','Define University Reservation','CMS',1),
+ ('MAAD','MoU University ','CMS',NULL),
+ ('MAADA','Associate MoU University','CMS',1),
+ ('MAADB','Associate MoU Courses','CMS',1),
+ ('MAAE','Initialize University','CMS',1),
+ ('MAB','Course Pre-requisite','EDEI',1),
+ ('MAB','Entity','CMS',NULL),
+ ('MABA','Create Entity','CMS',1),
+ ('MABB','Manage Entity','CMS',1),
+ ('MAC','Employee','CMS',NULL),
+ ('MAC','Module Evaluation Component','EDEI',1),
+ ('MACA','Employee Profile Set up','CMS',NULL),
+ ('MACAA','Create Employee Profile','CMS',1),
+ ('MACAB','Manage Employee Profile','CMS',1),
+ ('MACB','Employee Course SetUp','CMS',NULL),
+ ('MACBA','Define Employee Courses','CMS',1),
+ ('MACBB','Manage Employee Courses','CMS',1),
+ ('MACBC','Build Instructor Course','CMS',1),
+ ('MACC','Employee Role Setup','CMS',1),
+ ('MACCA','Define Employee Role','CMS',1),
+ ('MACCB','Delete Employee Role','CMS',1),
+ ('MACD','Employee Authority','CMS',0),
+ ('MACDA','Define Employee Authority','CMS',1),
+ ('MACDB','Manage Employee Authority','CMS',1),
+ ('MAD','Module Grade Limit','EDEI',1),
+ ('MAD','Program','CMS',NULL),
+ ('MADA','Program Master SetUp','CMS',NULL),
+ ('MADAA','Create  Program','CMS',1),
+ ('MADAB','Manage program ','CMS',NULL),
+ ('MADABA','Basic Program Details','CMS',1),
+ ('MADABB','Program duration Detail','CMS',1),
+ ('MADABC','Program branch Specialization Association','CMS',1),
+ ('MADB','Program Offered By','CMS',NULL),
+ ('MADBA','Create  Program offered by','CMS',1),
+ ('MADBB','Manage program offered by','CMS',1),
+ ('MADC','Program Term Details','CMS',NULL),
+ ('MADCA','Create program term Details','CMS',1),
+ ('MADCB','Manage program term Details','CMS',1),
+ ('MADD','Program Registration','CMS',NULL),
+ ('MADDA','Create Program registration','CMS',1),
+ ('MADDB','Manage Program Registration','CMS',1),
+ ('MADDC','Build Program Registration','CMS',1),
+ ('MADE','Program Course','CMS',NULL),
+ ('MADEA','Create Program Course','CMS',1),
+ ('MADEB','Manage Program Course','CMS',1),
+ ('MADF','Program  Switch','CMS',NULL),
+ ('MADFA','Create Program Switch','CMS',1),
+ ('MADFB','Manage Program Switch','CMS',1),
+ ('MADG','Program Course type summary','CMS',1),
+ ('MADH','Advance program Courses','CMS',1),
+ ('MADI','Program Group','CMS',1),
+ ('MADJ','Group Rule','CMS',1),
+ ('MADK','Manage Program Course Credit','CMS',NULL),
+ ('MAE','Course','CMS',NULL),
+ ('MAE','EOD Control','EDEI',1),
+ ('MAEA','Course Set Up','CMS',NULL),
+ ('MAEAA','Create Course Set up','CMS',1),
+ ('MAEAB','Manage Course Set up','CMS',1),
+ ('MAEB','Course Group','CMS',1),
+ ('MAEC','Course Marks Approval','CMS',0),
+ ('MAECA','Create Course Marks Approval','CMS',1),
+ ('MAECB','Manage Course Marks Approval','CMS',1),
+ ('MAED','ADD Drop Course','CMS',1),
+ ('MAEE','Course Evaluation Component','CMS',1),
+ ('MAEF','Course Grade Limit','CMS',1),
+ ('MAEG','Withdraw Course','CMS',1),
+ ('MAEH','Cancel Course Group','CMS',1),
+ ('MAEI','Grade Limit For Internal','CMS',1),
+ ('MAEJ','Grade Limit For Remedial','CMS',1),
+ ('MAEK','Grade Limit For External','CMS',1),
+ ('MAEL','Grade Limit For Core Courses','CMS',1),
+ ('MAF','Activity','CMS',NULL),
+ ('MAF','Build EOD','EDEI',1),
+ ('MAFA','Create Activity Master','CMS',1),
+ ('MAFB','Manage Activity Master','CMS',1),
+ ('MAFC','Build Activity Master','CMS',1),
+ ('MAFD','Build Activity Via Program','CMS',1),
+ ('MAG','External Examinar','CMS',NULL),
+ ('MAG','Rebuild EOD','EDEI',1),
+ ('MAGA','Create External Examiner Details','CMS',NULL),
+ ('MAGB','Manage External Examiner Details','CMS',1),
+ ('MAGC','Associate External Examiner Course','CMS',1),
+ ('MAH','EOD','CMS',NULL),
+ ('MAHA','EOD Control','CMS',1),
+ ('MAHB','Build EOD Master','CMS',1),
+ ('MAI','Reset Password','CMS',1),
+ ('MAXCRD','16','VAL',1),
+ ('MB','Grades And Reports','EDEI',NULL),
+ ('MB','Registration','CMS',NULL),
+ ('MBA','Internal Award Blank Sheet','EDEI',1),
+ ('MBA','Validate before Registration','CMS',NULL),
+ ('MBAA','Prestaging Validation','CMS',1),
+ ('MBAB','PreRegistration Correction','CMS',1),
+ ('MBB','Correction After Validation','CMS',NULL),
+ ('MBBA','PostRegistration Name Correction','CMS',1),
+ ('MBBB','PostRegistration Correction','CMS',1),
+ ('MBC','Cancel Student Registration','CMS',1),
+ ('MBD','New Student Enrollment','CMS',NULL),
+ ('MBDA','1.Enrollment Data Sheet Upload','CMS',1),
+ ('MBDB','2.Upload Student For Enrollment','CMS',1),
+ ('MBE','Student Verification CheckList','CMS',1),
+ ('MBF','Cancel Final Registration','CMS',NULL),
+ ('MBFA','Cancel Registration','CMS',1),
+ ('MBFB','Terminate Registration','CMS',1),
+ ('MBFC','Withdraw Semester Registration','CMS',1),
+ ('MBG','Student List','CMS',1),
+ ('MC','Grades & Reports','CMS',NULL),
+ ('MC','Student','EDEI',NULL),
+ ('MCA','Internal Award Sheet','CMS',1),
+ ('MCA','Select Students','EDEI',1),
+ ('MCB','External Award Sheet','CMS',1),
+ ('MCB','Verify Students','EDEI',1),
+ ('MCC','Remedial Award Sheet','CMS',1),
+ ('MCD','Award Sheet Correction','CMS',1),
+ ('MCD','Build Module Registration','EDEI',1),
+ ('MCE','Build Module Availablity','EDEI',1),
+ ('MCE','Report Authority','CMS',1),
+ ('MCF','Build Student Registration','EDEI',1),
+ ('MCF','Print Reports','CMS',1),
+ ('MCG','Award Blank Reports','CMS',1),
+ ('MCG','Build Modules For Result Processing','EDEI',1),
+ ('MCH','Collation Award Blank','CMS',1),
+ ('MCH','Module Result Process','EDEI',NULL),
+ ('MCI','Merit List Based On Group','CMS',1),
+ ('MCI','Run EOD','EDEI',NULL),
+ ('MCJ','Delay in Display Marks','CMS',1),
+ ('MCK','Course Wise Panel of Examiners','CMS',1),
+ ('MCM','Major Group Wise Merit List','CMS',1),
+ ('MCQ','Delay in Component Marks','CMS',1),
+ ('MCR','Transcript','CMS',1),
+ ('MCS','Provisional Certificate','CMS',1),
+ ('MD','Student','CMS',NULL),
+ ('MDA','Student Remedials/Apply for Remedial','CMS',1),
+ ('MDB','Student Set Up','CMS',1),
+ ('MDC','Student Tracking','CMS',1),
+ ('MDD','Student Issue','CMS',1),
+ ('MDE','Student Marks Info','CMS',1),
+ ('MDF','Student Program Switch','CMS',1),
+ ('MDG','Student Registration','CMS',1),
+ ('MDH','Withdraw Student','CMS',1),
+ ('MDI','Student Scrutiny','CMS',1),
+ ('MDJ','Database Information','CMS',1),
+ ('ME','Process Control','CMS',NULL),
+ ('MEA','Send Email','CMS',1),
+ ('MEB','Start Activity/Activity','CMS',1),
+ ('MEC','Result File Upload','CMS',1),
+ ('MED','Result File\n Upload(Ist Sem)','CMS',1),
+ ('MEE','Import Selected Students','CMS',1),
+ ('MF','System Set up','CMS',NULL),
+ ('MFA','Evaluation Component','CMS',1),
+ ('MFB','Switch Rule','CMS',1),
+ ('MFC','System Table Two','CMS',1),
+ ('MFD','CGPA Division','CMS',1),
+ ('MFE','Upload Student Photos','CMS',1),
+ ('MFF','Set Up New Session','CMS',NULL),
+ ('MFFA','Build Next Session','CMS',1),
+ ('MFFB','Build Program Registration','CMS',1),
+ ('MFFC','Build Activity Master','CMS',1),
+ ('MFFD','Build Instructor Course','CMS',1),
+ ('MFFE','Reset System Values','CMS',1),
+ ('MFFF','Clear Staging Tables','CMS',1),
+ ('MFG','Set up Semester','CMS',NULL),
+ ('MFGA','Clear Temporary Tables','CMS',1),
+ ('MFGB','Ready for Registration','CMS',1),
+ ('MFGC','Ready for Semester End','CMS',1),
+ ('MFH','Result File Upload Process','CMS',1),
+ ('MFI','Result File Upload First Semester','CMS',1),
+ ('MFM','Mail Server Configuration','CMS',1),
+ ('MINGRD','3','VAL',1),
+ ('MINMAR','70','VAL',1),
+ ('PRGMID','000','VAL',1),
+ ('PSTNUM','010','VAL',1),
+ ('REDAYS','15','VAL',1),
+ ('REFDAT','2011-07-01','VAL',1),
+ ('REGDAY','400','VAL',1),
+ ('REGEXD','400','VAL',1),
+ ('REGNUM','0','VAL',1),
+ ('RESSYS','GR','VAL',1),
+ ('ROLLBF','10','VAL',1),
+ ('SCNNUM','1105','VAL',1),
+ ('SEPDAY','20','VAL',1),
+ ('SEPEXD','10','VAL',1),
+ ('STUDID','0','VAL',1),
+ ('STUID','0','VAL',1),
+ ('SWTNUM','0','VAL',1),
+ ('TSTNUM','000000150000200000250000','VAL',1),
+ ('WGHTID','31','VAL',1);
+/*!40000 ALTER TABLE `default_codes` ENABLE KEYS */;
+
+
+--
 -- Definition of table `email_table`
 --
 
@@ -1479,6 +1791,7 @@ CREATE TABLE `employee_master` (
   `last_name` varchar(100) DEFAULT NULL,
   `primary_email_id` varchar(100) NOT NULL,
   `secondary_email_id` varchar(100) DEFAULT NULL,
+  `website` varchar(20) DEFAULT NULL,
   `qualification` varchar(45) DEFAULT NULL,
   `designations` char(3) NOT NULL,
   `dob` date NOT NULL,
@@ -1651,7 +1964,9 @@ CREATE TABLE `enrollment_personal_details` (
   `modifier_id` varchar(20) DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(50) NOT NULL,
-  `insert_time` datetime NOT NULL
+  `insert_time` datetime NOT NULL,
+  `roll_number_group_code` char(3) DEFAULT NULL,
+  `long_field` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1660,6 +1975,59 @@ CREATE TABLE `enrollment_personal_details` (
 
 /*!40000 ALTER TABLE `enrollment_personal_details` DISABLE KEYS */;
 /*!40000 ALTER TABLE `enrollment_personal_details` ENABLE KEYS */;
+
+
+--
+-- Definition of table `enrollment_personal_details_backup`
+--
+
+DROP TABLE IF EXISTS `enrollment_personal_details_backup`;
+CREATE TABLE `enrollment_personal_details_backup` (
+  `registration_number` char(12) NOT NULL,
+  `enrollment_number` char(10) DEFAULT NULL,
+  `student_id` char(18) NOT NULL,
+  `student_first_name` varchar(100) NOT NULL,
+  `student_middle_name` varchar(100) DEFAULT NULL,
+  `student_last_name` varchar(100) DEFAULT NULL,
+  `father_first_name` varchar(100) DEFAULT NULL,
+  `father_middle_name` varchar(100) DEFAULT NULL,
+  `father_last_name` varchar(100) DEFAULT NULL,
+  `mother_first_name` varchar(100) DEFAULT NULL,
+  `mother_middle_name` varchar(100) DEFAULT NULL,
+  `mother_last_name` varchar(100) DEFAULT NULL,
+  `primary_email_id` varchar(100) NOT NULL,
+  `secondary_email_id` varchar(100) DEFAULT NULL,
+  `guardian_name` varchar(100) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `nationality` varchar(20) DEFAULT NULL,
+  `religion` varchar(20) DEFAULT NULL,
+  `category_code` char(2) DEFAULT NULL,
+  `entity_id` char(8) NOT NULL,
+  `program_id` char(7) NOT NULL,
+  `branch_id` char(3) NOT NULL,
+  `specialization_id` char(3) NOT NULL,
+  `name_in_hindi` blob,
+  `status` char(3) NOT NULL,
+  `gender` char(1) DEFAULT NULL,
+  `session_start_date` date DEFAULT NULL,
+  `session_end_date` date DEFAULT NULL,
+  `faculty_reg_no` char(15) DEFAULT NULL,
+  `submit_date` date DEFAULT NULL,
+  `photo_path` blob,
+  `father_name_in_hindi` blob,
+  `mother_name_in_hindi` blob,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(50) NOT NULL,
+  `insert_time` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `enrollment_personal_details_backup`
+--
+
+/*!40000 ALTER TABLE `enrollment_personal_details_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `enrollment_personal_details_backup` ENABLE KEYS */;
 
 
 --
@@ -1678,7 +2046,7 @@ CREATE TABLE `entity_master` (
   `entity_phone` varchar(50) DEFAULT NULL,
   `entity_fax` varchar(50) DEFAULT NULL,
   `employee_code` char(6) DEFAULT NULL,
-  `knownby` varchar(20) DEFAULT NULL,
+  `knownby` varchar(50) DEFAULT NULL,
   `parent_entity_id` char(8) DEFAULT NULL,
   `level` int(2) unsigned NOT NULL,
   `insert_time` datetime NOT NULL,
@@ -1701,48 +2069,6 @@ CREATE TABLE `entity_master` (
 /*!40000 ALTER TABLE `entity_master` ENABLE KEYS */;
 
 
---
--- Definition of table `entity_student`
---
-
-DROP TABLE IF EXISTS `entity_student`;
-CREATE TABLE `entity_student` (
-  `university_id` char(4) DEFAULT NULL,
-  `student_id` char(18) DEFAULT NULL,
-  `enrollment_number` varchar(100) DEFAULT NULL,
-  `first_name` varchar(100) DEFAULT NULL,
-  `middle_name` varchar(100) DEFAULT NULL,
-  `last_name` varchar(100) DEFAULT NULL,
-  `primary_email_id` varchar(100) DEFAULT NULL,
-  `secondary_email_id` varchar(100) DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
-  `category_code` varchar(20) DEFAULT NULL,
-  `gender` varchar(6) DEFAULT NULL,
-  `father_first_name` varchar(100) DEFAULT NULL,
-  `father_middle_name` varchar(100) DEFAULT NULL,
-  `father_last_name` varchar(100) DEFAULT NULL,
-  `mother_first_name` varchar(100) DEFAULT NULL,
-  `mother_middle_name` varchar(100) DEFAULT NULL,
-  `mother_last_name` varchar(100) DEFAULT NULL,
-  `registered_in_session` char(7) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `insert_time` datetime DEFAULT NULL,
-  `modification_time` datetime DEFAULT NULL,
-  `creator_id` varchar(20) DEFAULT NULL,
-  `modifier_id` varchar(20) DEFAULT NULL,
-  `nationality` varchar(50) DEFAULT NULL,
-  `religion` varchar(50) DEFAULT NULL,
-  `guardian_name` varchar(50) DEFAULT NULL,
-  `minority` char(2) DEFAULT NULL,
-  `marital_status` char(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `entity_student`
---
-
-/*!40000 ALTER TABLE `entity_student` DISABLE KEYS */;
-/*!40000 ALTER TABLE `entity_student` ENABLE KEYS */;
 
 
 --
@@ -2012,10 +2338,10 @@ CREATE TABLE `external_examinar_detail` (
 
 DROP TABLE IF EXISTS `final_merit_components`;
 CREATE TABLE `final_merit_components` (
-  `program_id` char(7) DEFAULT NULL,
+  `program_id` char(7) NOT NULL,
   `branch_code` char(3) DEFAULT NULL,
-  `offered_by` char(8) DEFAULT NULL,
-  `component_id` char(2) DEFAULT NULL,
+  `offered_by` char(8) NOT NULL,
+  `component_id` char(2) NOT NULL,
   `attendance_flag` char(1) DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL,
   `total_marks` int(3) DEFAULT NULL,
@@ -2025,7 +2351,8 @@ CREATE TABLE `final_merit_components` (
   `modifier_id` varchar(20) DEFAULT NULL,
   `specialization_code` char(3) DEFAULT NULL,
   `weightage_percentage` float DEFAULT NULL,
-  `academic_component` char(1) DEFAULT NULL
+  `academic_component` char(1) DEFAULT NULL,
+  PRIMARY KEY (`program_id`,`offered_by`,`component_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2125,6 +2452,46 @@ CREATE TABLE `group_table` (
 
 
 --
+-- Definition of table `institute_administrator`
+--
+
+DROP TABLE IF EXISTS `institute_administrator`;
+CREATE TABLE `institute_administrator` (
+  `institute_name` varchar(45) NOT NULL,
+  `institute_nick_name` char(3) NOT NULL,
+  `institute_domain` varchar(45) NOT NULL,
+  `institute_type` varchar(45) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `state` varchar(45) NOT NULL,
+  `country_code` varchar(45) NOT NULL,
+  `pincode` char(6) NOT NULL,
+  `session_start_date` date NOT NULL,
+  `session_end_date` date NOT NULL,
+  `office_phone_number` varchar(20) NOT NULL,
+  `other_phone_number` varchar(20) DEFAULT NULL,
+  `admin_first_name` varchar(45) NOT NULL,
+  `admin_last_name` varchar(45) NOT NULL,
+  `admin_designation` varchar(45) NOT NULL,
+  `admin_email_id` varchar(45) NOT NULL,
+  `admin_password` varchar(45) NOT NULL,
+  `insert_time` datetime NOT NULL,
+  `creator_id` varchar(45) NOT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `modifier_id` varchar(45) DEFAULT NULL,
+  `active_status` char(3) DEFAULT NULL,
+  PRIMARY KEY (`institute_name`,`institute_nick_name`,`city`,`state`,`country_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `institute_administrator`
+--
+
+/*!40000 ALTER TABLE `institute_administrator` DISABLE KEYS */;
+/*!40000 ALTER TABLE `institute_administrator` ENABLE KEYS */;
+
+
+--
 -- Definition of table `instructor_course`
 --
 
@@ -2176,6 +2543,54 @@ CREATE TABLE `log` (
 
 
 --
+-- Definition of table `mail_configuration`
+--
+
+DROP TABLE IF EXISTS `mail_configuration`;
+CREATE TABLE `mail_configuration` (
+  `university_id` char(5) NOT NULL,
+  `smtp_address` varchar(45) NOT NULL,
+  `smtp_port` char(5) NOT NULL,
+  `user_name` varchar(100) NOT NULL,
+  `password` char(20) NOT NULL,
+  `creator_id` char(20) NOT NULL,
+  `creation_time` datetime NOT NULL,
+  `modifier_id` char(20) DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`university_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mail_configuration`
+--
+
+/*!40000 ALTER TABLE `mail_configuration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mail_configuration` ENABLE KEYS */;
+
+
+--
+-- Definition of table `mail_users`
+--
+
+DROP TABLE IF EXISTS `mail_users`;
+CREATE TABLE `mail_users` (
+  `user_name` varchar(45) NOT NULL,
+  `email_id` varchar(45) NOT NULL,
+  `phone_number` decimal(10,0) NOT NULL,
+  `user_group` char(10) NOT NULL,
+  `gender` char(1) NOT NULL,
+  PRIMARY KEY (`email_id`,`user_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mail_users`
+--
+
+/*!40000 ALTER TABLE `mail_users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mail_users` ENABLE KEYS */;
+
+
+--
 -- Definition of table `menu_items_list`
 --
 
@@ -2183,7 +2598,8 @@ DROP TABLE IF EXISTS `menu_items_list`;
 CREATE TABLE `menu_items_list` (
   `menu_item_id` int(3) NOT NULL,
   `menu_item_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`menu_item_id`,`menu_item_name`)
+  `university_code` char(4) NOT NULL,
+  PRIMARY KEY (`menu_item_id`,`menu_item_name`,`university_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2191,45 +2607,45 @@ CREATE TABLE `menu_items_list` (
 --
 
 /*!40000 ALTER TABLE `menu_items_list` DISABLE KEYS */;
-INSERT INTO `menu_items_list` (`menu_item_id`,`menu_item_name`) VALUES 
- (1,'Program Components'),
- (2,'Program Pre Requiste Examinations(First Degree)'),
- (3,'Program Paper Codes'),
- (4,'Program COS'),
- (5,'Program Age Eligibility'),
- (6,'Program Component Eligibility'),
- (7,'Program Board'),
- (8,'Final Merit Components'),
- (9,'Special Weightage'),
- (10,'Reset Admission Cycle'),
- (11,'Apply for Admission'),
- (12,'Compute Application Marks'),
- (13,'Cut Off'),
- (14,'Enter Admission Test Marks'),
- (15,'Generate Test Numbers'),
- (16,'Call List without Test Number'),
- (17,'Call List with Test Number'),
- (18,'Final Merit List'),
- (19,'Entity Master'),
- (20,'Employee Master'),
- (21,'Program Master'),
- (22,'Entity Programs'),
- (23,'Program Term Details'),
- (24,'upload/download file for adding Test Marks'),
- (25,'Application Form'),
- (28,'Upload File for adding Component\'s Marks'),
- (29,'Final Merit List Process'),
- (30,'Import Students Marks'),
- (31,'Program Application Details'),
- (32,'Program Examination Center'),
- (33,'Setup Examination Center'),
- (34,'Modify Examination Center'),
- (35,'Tie Rule Setup'),
- (38,'Program Document'),
- (39,'SummarySheet Internal'),
- (40,'Program Subject'),
- (41,'Program Subject'),
- (45,'Manage Summary Sheet');
+INSERT INTO `menu_items_list` (`menu_item_id`,`menu_item_name`,`university_code`) VALUES 
+ (1,'Program Components','0001'),
+ (2,'Program Pre Requiste Examinations(First Degree)','0001'),
+ (3,'Program Paper Codes','0001'),
+ (4,'Program COS','0001'),
+ (5,'Program Age Eligibility','0001'),
+ (6,'Program Component Eligibility','0001'),
+ (7,'Program Board','0001'),
+ (8,'Final Merit Components','0001'),
+ (9,'Special Weightage','0001'),
+ (10,'Reset Admission Cycle','0001'),
+ (11,'Apply for Admission','0001'),
+ (12,'Compute Application Marks','0001'),
+ (13,'Cut Off','0001'),
+ (14,'Enter Admission Test Marks','0001'),
+ (15,'Generate Test Numbers','0001'),
+ (16,'Call List without Test Number','0001'),
+ (17,'Call List with Test Number','0001'),
+ (18,'Final Merit List','0001'),
+ (19,'Entity Master','0001'),
+ (20,'Employee Master','0001'),
+ (21,'Program Master','0001'),
+ (22,'Entity Programs','0001'),
+ (23,'Program Term Details','0001'),
+ (24,'upload/download file for adding Test Marks','0001'),
+ (25,'Application Form','0001'),
+ (28,'Upload File for adding Component\'s Marks','0001'),
+ (29,'Final Merit List Process','0001'),
+ (30,'Import Students Marks','0001'),
+ (31,'Program Application Details','0001'),
+ (32,'Program Examination Center','0001'),
+ (33,'Setup Examination Center','0001'),
+ (34,'Modify Examination Center','0001'),
+ (35,'Tie Rule Setup','0001'),
+ (38,'Program Document','0001'),
+ (39,'SummarySheet Internal','0001'),
+ (40,'Program Subject','0001'),
+ (41,'Program Subject','0001'),
+ (45,'Manage Summary Sheet','0001');
 /*!40000 ALTER TABLE `menu_items_list` ENABLE KEYS */;
 
 
@@ -2302,24 +2718,6 @@ CREATE TABLE `paper_codes` (
 --
 
 /*!40000 ALTER TABLE `paper_codes` DISABLE KEYS */;
-INSERT INTO `paper_codes` (`paper_description`,`paper_code`) VALUES 
- ('Botany','05'),
- ('Chemistry','15'),
- ('Commerce','18'),
- ('Drawing & Painting','17'),
- ('Economics','07'),
- ('English','13'),
- ('General Ability Test','01'),
- ('GEOGRAPHY','20'),
- ('Hindi','08'),
- ('History','09'),
- ('Home Science','12'),
- ('Mathematics','10'),
- ('Music(Sitar/Vocal/Tabla)','19'),
- ('Physics','11'),
- ('Political Science','14'),
- ('Sanskrit','16'),
- ('Zoology','06');
 /*!40000 ALTER TABLE `paper_codes` ENABLE KEYS */;
 
 
@@ -2339,8 +2737,6 @@ CREATE TABLE `password_policy` (
 --
 
 /*!40000 ALTER TABLE `password_policy` DISABLE KEYS */;
-INSERT INTO `password_policy` (`minimum_length`,`maximum_length`,`expiry_period`) VALUES 
- (6,20,30);
 /*!40000 ALTER TABLE `password_policy` ENABLE KEYS */;
 
 
@@ -2584,10 +2980,12 @@ CREATE TABLE `prestaging_table` (
   `fax` varchar(20) DEFAULT NULL,
   `BK_New_Entity` char(8) DEFAULT NULL,
   `BK_new_program` char(7) DEFAULT NULL,
-  `BK_new_branch` char(3) NOT NULL DEFAULT '',
+  `BK_new_branch` char(3) DEFAULT NULL,
   `BK_new_specialization` char(3) DEFAULT NULL,
   `BK_new_semester` char(3) DEFAULT NULL,
-  PRIMARY KEY (`registration_roll_number`,`admission_mode`,`new_entity`,`new_program`,`BK_new_branch`,`new_specialization`,`new_semester`,`attempt_number`,`semester_start_date`)
+  `roll_number_group_code` char(3) DEFAULT NULL,
+  `long_field` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`registration_roll_number`,`admission_mode`,`new_entity`,`new_program`,`new_specialization`,`new_semester`,`attempt_number`,`semester_start_date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2666,7 +3064,9 @@ CREATE TABLE `prestaging_table_history` (
   `BK_new_program` char(7) DEFAULT NULL,
   `BK_new_branch` char(3) NOT NULL DEFAULT '',
   `BK_new_specialization` char(3) DEFAULT NULL,
-  `BK_new_semester` char(3) DEFAULT NULL
+  `BK_new_semester` char(3) DEFAULT NULL,
+  `roll_number_group_code` char(3) DEFAULT NULL,
+  `long_field` varchar(100) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -2732,13 +3132,14 @@ CREATE TABLE `program_age_eligibility` (
 
 DROP TABLE IF EXISTS `program_board`;
 CREATE TABLE `program_board` (
-  `program_id` char(7) DEFAULT NULL,
-  `entity_id` char(8) DEFAULT NULL,
+  `program_id` char(7) NOT NULL,
+  `entity_id` char(8) NOT NULL,
   `branch_code` char(3) DEFAULT NULL,
-  `component_id` char(2) DEFAULT NULL,
+  `component_id` char(2) NOT NULL,
   `board` char(2) DEFAULT NULL,
   `normalization_factor` decimal(5,4) DEFAULT NULL,
-  `specialization_code` char(3) DEFAULT NULL
+  `specialization_code` char(3) DEFAULT NULL,
+  PRIMARY KEY (`program_id`,`entity_id`,`component_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2810,10 +3211,10 @@ CREATE TABLE `program_component_eligibility` (
 
 DROP TABLE IF EXISTS `program_components`;
 CREATE TABLE `program_components` (
-  `program_id` char(7) DEFAULT NULL,
+  `program_id` char(7) NOT NULL,
   `branch_code` char(3) DEFAULT NULL,
-  `offered_by` char(8) DEFAULT NULL,
-  `component_id` char(7) DEFAULT NULL,
+  `offered_by` char(8) NOT NULL,
+  `component_id` char(7) NOT NULL,
   `type` char(1) DEFAULT NULL,
   `component_weightage` decimal(5,2) DEFAULT NULL,
   `weightage_flag` char(1) DEFAULT NULL,
@@ -2827,7 +3228,8 @@ CREATE TABLE `program_components` (
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `specialization_code` char(3) DEFAULT NULL
+  `specialization_code` char(3) DEFAULT NULL,
+  PRIMARY KEY (`program_id`,`offered_by`,`component_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2906,6 +3308,10 @@ CREATE TABLE `program_course_header` (
   `modification_time` datetime DEFAULT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
   `semester_status` char(3) NOT NULL COMMENT 'ACT=Active, INA=Inactive',
+  `min_credit` decimal(5,2) DEFAULT NULL,
+  `max_credit` decimal(5,2) DEFAULT NULL,
+  `min_lecture_credit` decimal(5,2) DEFAULT NULL,
+  `max_lecture_credit` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`program_course_key`),
   UNIQUE KEY `Index_2` (`program_id`,`branch_id`,`specialization_id`,`semester_code`),
   KEY `FK_program_course_header_1` (`program_id`,`branch_id`,`specialization_id`),
@@ -2934,8 +3340,8 @@ CREATE TABLE `program_course_type_summary` (
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) NOT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `minimum_credits` int(3) unsigned NOT NULL,
-  `maximum_credits` int(3) unsigned NOT NULL,
+  `minimum_credits` varchar(5) NOT NULL,
+  `maximum_credits` varchar(5) NOT NULL,
   KEY `FK_program_course_type_summary_1` (`program_course_key`),
   CONSTRAINT `FK_program_course_type_summary_1` FOREIGN KEY (`program_course_key`) REFERENCES `program_course_header` (`program_course_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -2954,12 +3360,13 @@ CREATE TABLE `program_course_type_summary` (
 
 DROP TABLE IF EXISTS `program_degree`;
 CREATE TABLE `program_degree` (
-  `program_id` char(7) DEFAULT NULL,
-  `degree_code` char(7) DEFAULT NULL,
+  `program_id` char(7) NOT NULL DEFAULT '',
+  `degree_code` char(7) NOT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
-  `modifier_id` varchar(20) DEFAULT NULL
+  `modifier_id` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`program_id`,`degree_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3035,10 +3442,10 @@ CREATE TABLE `program_form` (
   `modifier_id` varchar(45) DEFAULT NULL,
   `university_id` char(4) NOT NULL,
   `form_desc` varchar(100) DEFAULT NULL,
-  `offered_by` char(8) DEFAULT NULL,
+  `offered_by` char(8) NOT NULL,
   `location_entity_id` char(8) DEFAULT NULL,
   `city` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`program_id`,`form_number`,`university_id`)
+  PRIMARY KEY (`program_id`,`form_number`,`university_id`,`offered_by`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3110,6 +3517,7 @@ CREATE TABLE `program_master` (
   `max_reg_semester` smallint(5) unsigned NOT NULL,
   `credit_required` int(3) unsigned NOT NULL,
   `fixed_or_variable_credit` char(1) NOT NULL COMMENT 'F=Fixed credit system, V=Variable credit system',
+  `domain` char(3) DEFAULT NULL,
   PRIMARY KEY (`program_id`),
   UNIQUE KEY `Index_2` (`program_code`,`program_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3198,8 +3606,7 @@ CREATE TABLE `program_registration` (
   PRIMARY KEY (`program_course_key`,`university_id`,`semester_start_date`,`semester_end_date`,`entity_id`),
   KEY `FK_program_registration_2` (`program_course_key`),
   KEY `FK_program_registration_1` (`university_id`),
-  CONSTRAINT `FK_program_registration_1` FOREIGN KEY (`university_id`) REFERENCES `university_master` (`university_code`),
-  CONSTRAINT `FK_program_registration_2` FOREIGN KEY (`program_course_key`) REFERENCES `program_course_header` (`program_course_key`)
+  CONSTRAINT `FK_program_registration_1` FOREIGN KEY (`university_id`) REFERENCES `university_master` (`university_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3263,7 +3670,7 @@ CREATE TABLE `program_rule` (
 
 DROP TABLE IF EXISTS `program_switch`;
 CREATE TABLE `program_switch` (
-  `switch_type` char(3) NOT NULL COMMENT 'NOP=No Program Switch,IPR=Integrated program switch,LTE=lateral',
+  `switch_type` enum('LAT','REG') NOT NULL,
   `rule_id` char(3) NOT NULL COMMENT 'Reference switch rule (rule_id)',
   `from_program` char(7) NOT NULL,
   `to_program` char(7) NOT NULL,
@@ -3522,6 +3929,63 @@ CREATE TABLE `result_file_upload_error_log` (
 
 
 --
+-- Definition of table `result_verification_request_detail`
+--
+
+DROP TABLE IF EXISTS `result_verification_request_detail`;
+CREATE TABLE `result_verification_request_detail` (
+  `request_no` varchar(6) NOT NULL,
+  `roll_no` varchar(45) NOT NULL,
+  `creator_id` varchar(45) NOT NULL,
+  `insert_time` datetime NOT NULL,
+  `modifier_id` varchar(45) DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `university_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`request_no`,`roll_no`,`university_id`),
+  CONSTRAINT `FK_result_verification_request_detail_1` FOREIGN KEY (`request_no`) REFERENCES `result_verification_request_header` (`request_no`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `result_verification_request_detail`
+--
+
+/*!40000 ALTER TABLE `result_verification_request_detail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `result_verification_request_detail` ENABLE KEYS */;
+
+
+--
+-- Definition of table `result_verification_request_header`
+--
+
+DROP TABLE IF EXISTS `result_verification_request_header`;
+CREATE TABLE `result_verification_request_header` (
+  `request_no` varchar(6) NOT NULL COMMENT 'first 2 char last 2 digit of year and 4 digits are sequence no',
+  `company_name` varchar(45) NOT NULL,
+  `receive_date` date NOT NULL,
+  `process_date` date DEFAULT NULL,
+  `process_status` char(1) NOT NULL COMMENT 'p=processed, U=unprocessed',
+  `creator_id` varchar(45) NOT NULL,
+  `insert_time` datetime NOT NULL,
+  `modifier_id` varchar(45) DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `university_id` varchar(6) NOT NULL,
+  `request_type` varchar(10) NOT NULL,
+  `requester` varchar(45) DEFAULT NULL,
+  `company_add` varchar(45) NOT NULL,
+  `ref_no` varchar(45) DEFAULT NULL,
+  `ref_date` date DEFAULT NULL,
+  PRIMARY KEY (`request_no`,`university_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `result_verification_request_header`
+--
+
+/*!40000 ALTER TABLE `result_verification_request_header` DISABLE KEYS */;
+/*!40000 ALTER TABLE `result_verification_request_header` ENABLE KEYS */;
+
+
+--
 -- Definition of table `sanction_detail`
 --
 
@@ -3621,8 +4085,7 @@ CREATE TABLE `semester_processing_control` (
   `process_end_date` date DEFAULT NULL,
   `program_course_key` char(14) NOT NULL,
   PRIMARY KEY (`entity_id`,`process`,`program_course_key`,`semester_start_date`,`semester_end_date`),
-  KEY `FK_semester_processing_control_1` (`entity_id`),
-  CONSTRAINT `FK_semester_processing_control_1` FOREIGN KEY (`entity_id`) REFERENCES `program_offered_by` (`offered_by`)
+  KEY `FK_semester_processing_control_1` (`entity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3657,9 +4120,6 @@ CREATE TABLE `semesterend_control` (
 --
 
 /*!40000 ALTER TABLE `semesterend_control` DISABLE KEYS */;
-INSERT INTO `semesterend_control` (`semester_start_date`,`semester_end_date`,`process_code`,`status`,`group_code`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`,`university_code`) VALUES 
- ('2011-07-01','2011-12-31','CTT','P','BSEPCD','2012-02-08 00:00:00','2012-02-08 00:00:00','K','K','0001'),
- ('2012-01-01','2012-06-30','CTT','P','BSEPCD','2012-02-08 00:00:00',NULL,'Dheeraj',NULL,'0001');
 /*!40000 ALTER TABLE `semesterend_control` ENABLE KEYS */;
 
 
@@ -3669,14 +4129,15 @@ INSERT INTO `semesterend_control` (`semester_start_date`,`semester_end_date`,`pr
 
 DROP TABLE IF EXISTS `special_weightage`;
 CREATE TABLE `special_weightage` (
-  `university_id` char(4) DEFAULT NULL,
-  `weightage_id` char(2) DEFAULT NULL,
+  `university_id` char(4) NOT NULL,
+  `weightage_id` char(2) NOT NULL,
   `group_no` char(2) DEFAULT NULL,
   `weightage_percentage` decimal(5,2) DEFAULT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
-  `modifier_id` varchar(20) DEFAULT NULL
+  `modifier_id` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`university_id`,`weightage_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3795,6 +4256,8 @@ CREATE TABLE `staging_table` (
   `extra_phone` varchar(20) DEFAULT NULL,
   `other_phone` varchar(20) DEFAULT NULL,
   `fax` varchar(20) DEFAULT NULL,
+  `roll_number_group_code` char(3) DEFAULT NULL,
+  `long_field` varchar(100) DEFAULT NULL,
   KEY `FK_staging_table_1` (`new_entity_id`),
   KEY `FK_staging_table_2` (`old_entity_id`),
   CONSTRAINT `FK_staging_table_1` FOREIGN KEY (`new_entity_id`) REFERENCES `entity_master` (`entity_id`),
@@ -3854,6 +4317,33 @@ CREATE TABLE `student_aggregate` (
 /*!40000 ALTER TABLE `student_aggregate` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_aggregate` ENABLE KEYS */;
 
+--
+-- Definition of table `student_registration`
+--
+
+DROP TABLE IF EXISTS `student_registration`;
+CREATE TABLE `student_registration` (
+  `student_id` char(18) NOT NULL,
+  `registration_number` char(12) NOT NULL DEFAULT '',
+  `form_number` char(8) DEFAULT NULL,
+  `cos_value` char(4) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `insert_time` datetime DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(20) DEFAULT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `program_id` char(7) DEFAULT NULL,
+  `exam_center_code` char(3) DEFAULT NULL,
+  PRIMARY KEY (`registration_number`,`student_id`) USING BTREE,
+  KEY `FK_student_registration_1` (`student_id`),
+  CONSTRAINT `FK_student_registration_1` FOREIGN KEY (`student_id`) REFERENCES `entity_student` (`student_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_registration`
+--
+
 
 --
 -- Definition of table `student_call_list`
@@ -3862,8 +4352,8 @@ CREATE TABLE `student_aggregate` (
 DROP TABLE IF EXISTS `student_call_list`;
 CREATE TABLE `student_call_list` (
   `program_id` char(7) DEFAULT NULL,
-  `registration_number` char(12) DEFAULT NULL,
-  `component_id` char(2) DEFAULT NULL,
+  `registration_number` char(12) NOT NULL DEFAULT '',
+  `component_id` char(2) NOT NULL DEFAULT '',
   `marks_percentage` float(5,2) DEFAULT NULL,
   `marks_obtained` int(4) DEFAULT NULL,
   `total_marks` int(4) DEFAULT NULL,
@@ -3873,13 +4363,15 @@ CREATE TABLE `student_call_list` (
   `score` float DEFAULT NULL,
   `actual_computed_marks` decimal(5,2) DEFAULT NULL,
   `board_id` char(2) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `specialization_code` char(3) DEFAULT NULL
+  `specialization_code` char(3) DEFAULT NULL,
+  PRIMARY KEY (`registration_number`,`component_id`,`start_date`,`end_date`) USING BTREE,
+  CONSTRAINT `FK_student_call_list_1` FOREIGN KEY (`registration_number`) REFERENCES `student_registration` (`registration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -3925,6 +4417,38 @@ CREATE TABLE `student_course` (
 
 /*!40000 ALTER TABLE `student_course` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_course` ENABLE KEYS */;
+
+
+--
+-- Definition of table `student_course_backup`
+--
+
+DROP TABLE IF EXISTS `student_course_backup`;
+CREATE TABLE `student_course_backup` (
+  `roll_number` char(10) NOT NULL,
+  `program_course_key` char(14) NOT NULL,
+  `semester_start_date` date NOT NULL,
+  `semester_end_date` date NOT NULL,
+  `course_code` char(8) NOT NULL,
+  `course_name` varchar(100) NOT NULL,
+  `orginal_course_code` char(8) DEFAULT NULL,
+  `course_status` char(3) NOT NULL,
+  `student_status` char(3) DEFAULT NULL,
+  `insert_time` datetime NOT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(25) NOT NULL,
+  `modifier_id` varchar(25) DEFAULT NULL,
+  `attempt_number` smallint(5) unsigned NOT NULL,
+  `course_group` char(3) NOT NULL,
+  `entity_id` char(8) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_course_backup`
+--
+
+/*!40000 ALTER TABLE `student_course_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_course_backup` ENABLE KEYS */;
 
 
 --
@@ -4017,18 +4541,20 @@ DROP TABLE IF EXISTS `student_final_marks`;
 CREATE TABLE `student_final_marks` (
   `program_id` char(7) DEFAULT NULL,
   `entity_id` char(8) DEFAULT NULL,
-  `registration_number` char(15) DEFAULT NULL,
-  `evaluation_component` char(8) DEFAULT NULL,
+  `registration_number` char(15) NOT NULL DEFAULT '',
+  `evaluation_component` char(8) NOT NULL DEFAULT '',
   `marks` decimal(5,2) DEFAULT NULL,
   `branch_code` char(3) DEFAULT NULL,
   `attended` char(1) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `specialization_code` char(3) DEFAULT NULL
+  `specialization_code` char(3) DEFAULT NULL,
+  PRIMARY KEY (`registration_number`,`evaluation_component`,`start_date`,`end_date`) USING BTREE,
+  CONSTRAINT `FK_student_final_marks_1` FOREIGN KEY (`registration_number`) REFERENCES `student_registration` (`registration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4048,12 +4574,12 @@ CREATE TABLE `student_final_merit_list` (
   `program_id` char(7) DEFAULT NULL,
   `entity_id` char(8) DEFAULT NULL,
   `branch_code` char(3) DEFAULT NULL,
-  `registration_number` char(12) DEFAULT NULL,
+  `registration_number` char(12) NOT NULL DEFAULT '',
   `test_number` varchar(8) DEFAULT NULL,
   `total_marks` decimal(5,2) DEFAULT NULL,
   `cos_value` char(4) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
@@ -4062,7 +4588,9 @@ CREATE TABLE `student_final_merit_list` (
   `status` varchar(12) DEFAULT NULL,
   `specialization_code` char(3) DEFAULT NULL,
   `sum_actual_computed_marks` decimal(5,2) DEFAULT NULL,
-  `weighted_total_marks` decimal(5,2) DEFAULT NULL
+  `weighted_total_marks` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`registration_number`,`start_date`,`end_date`) USING BTREE,
+  CONSTRAINT `FK_student_final_merit_list_1` FOREIGN KEY (`registration_number`) REFERENCES `student_registration` (`registration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4092,7 +4620,7 @@ CREATE TABLE `student_final_subcomponent_marks` (
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) NOT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`program_id`,`entity_id`,`registration_number`,`test_id`,`evaluation_component`,`sub_component`)
+  PRIMARY KEY (`program_id`,`entity_id`,`registration_number`,`test_id`,`evaluation_component`,`sub_component`,`start_date`,`end_date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4110,15 +4638,17 @@ CREATE TABLE `student_final_subcomponent_marks` (
 DROP TABLE IF EXISTS `student_first_degree`;
 CREATE TABLE `student_first_degree` (
   `program_id` char(7) DEFAULT NULL,
-  `registration_number` char(12) DEFAULT NULL,
+  `registration_number` char(12) NOT NULL DEFAULT '',
   `form_number` char(8) DEFAULT NULL,
   `first_degree_code` char(7) DEFAULT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  PRIMARY KEY (`registration_number`,`start_date`,`end_date`) USING BTREE,
+  CONSTRAINT `FK_student_first_degree_1` FOREIGN KEY (`registration_number`) REFERENCES `student_registration` (`registration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4151,287 +4681,6 @@ CREATE TABLE `student_info` (
 --
 
 /*!40000 ALTER TABLE `student_info` DISABLE KEYS */;
-INSERT INTO `student_info` (`id`,`xstart`,`xend`,`y_ratio1`,`y_ratio2`,`field`,`value`,`status_flag`) VALUES 
- (2277,0.144345864653587,0.16389125585556,245.545454545455,59.2666666666667,'CID1 1',1,'NGC'),
- (2278,0.214164987206459,0.23347881436348,245.545454545455,59.2666666666667,'CID1 2',1,'NGC'),
- (2279,0.290830582380295,0.312682420015335,245.545454545455,59.2666666666667,'CID1 3',1,'NGC'),
- (2280,0.378675192594528,0.40450781583786,245.545454545455,59.2666666666667,'CID1 4',1,'NGC'),
- (2281,0.478376448154449,0.508120715618134,245.545454545455,59.2666666666667,'CID1 5',1,'NGC'),
- (2282,0.594752132892609,0.629418432712555,245.545454545455,59.2666666666667,'CID1 6',1,'NGC'),
- (2283,0.729683637619019,0.770539522171021,245.545454545455,59.2666666666667,'CID1 7',1,'NGC'),
- (2284,0.889558732509613,0.938422977924347,245.545454545455,59.2666666666667,'CID1 8',1,'NGC'),
- (2285,1.72215807437897,1.82474076747894,245.545454545455,59.2666666666667,'TID1 1',1,'NGC'),
- (2286,2.14031600952148,2.2776300907135,245.545454545455,59.2666666666667,'TID1 2',1,'NGC'),
- (2287,2.71639037132263,2.91025972366333,245.545454545455,59.2666666666667,'TID1 3',1,'NGC'),
- (2288,3.5421097278595,3.82472062110901,245.545454545455,59.2666666666667,'TID1 4',1,'NGC'),
- (2289,4.85476636886597,5.33292579650879,245.545454545455,59.2666666666667,'TID1 5',1,'NGC'),
- (2290,7.20447444915771,8.17527198791504,245.545454545455,59.2666666666667,'TID1 6',1,'NGC'),
- (2291,0.145511716604233,0.162687703967094,38.8823529411765,25.3300970873786,'CID2 1',2,'NGC'),
- (2292,0.213509768247604,0.23347881436348,38.8823529411765,25.3300970873786,'CID2 2',2,'NGC'),
- (2293,0.291571974754334,0.313449144363403,38.8823529411765,25.3300970873786,'CID2 3',2,'NGC'),
- (2294,0.378675192594528,0.403631120920181,38.8823529411765,25.3300970873786,'CID2 4',2,'NGC'),
- (2295,0.479349017143249,0.508120715618134,38.8823529411765,25.3300970873786,'CID2 5',2,'NGC'),
- (2296,0.594752132892609,0.629418432712555,38.8823529411765,25.3300970873786,'CID2 6',2,'NGC'),
- (2297,0.729683637619019,0.76914656162262,38.8823529411765,25.3300970873786,'CID2 7',2,'NGC'),
- (2298,0.889558732509613,0.938422977924347,38.8823529411765,25.3300970873786,'CID2 8',2,'NGC'),
- (2299,1.72215807437897,1.82119691371918,38.8823529411765,25.3300970873786,'TID2 1',2,'NGC'),
- (2300,2.14470744132996,2.2776300907135,38.8823529411765,25.3300970873786,'TID2 2',2,'NGC'),
- (2301,2.71639037132263,2.90347194671631,38.8823529411765,25.3300970873786,'TID2 3',2,'NGC'),
- (2302,3.5421097278595,3.82472062110901,38.8823529411765,25.3300970873786,'TID2 4',2,'NGC'),
- (2303,4.83956241607666,5.33292579650879,38.8823529411765,25.3300970873786,'TID2 5',2,'NGC'),
- (2304,7.20447444915771,8.17527198791504,38.8823529411765,25.3300970873786,'TID2 6',2,'NGC'),
- (2305,0.146095544099808,0.164493978023529,20.5238095238095,15.8447204968944,'CID3 1',3,'NGC'),
- (2306,0.21482090651989,0.234833464026451,20.5238095238095,15.8447204968944,'CID3 2',3,'NGC'),
- (2307,0.292314231395721,0.314216732978821,20.5238095238095,15.8447204968944,'CID3 3',3,'NGC'),
- (2308,0.379520952701569,0.40450781583786,20.5238095238095,15.8447204968944,'CID3 4',3,'NGC'),
- (2309,0.480322867631912,0.50913280248642,20.5238095238095,15.8447204968944,'CID3 5',3,'NGC'),
- (2310,0.595883846282958,0.630599975585938,20.5238095238095,15.8447204968944,'CID3 6',3,'NGC'),
- (2311,0.731015086174011,0.770539522171021,20.5238095238095,15.8447204968944,'CID3 7',3,'NGC'),
- (2312,0.89114785194397,0.940095365047455,20.5238095238095,15.8447204968944,'CID3 8',3,'NGC'),
- (2313,1.72545731067657,1.82829344272614,20.5238095238095,15.8447204968944,'TID3 1',3,'NGC'),
- (2314,2.14911127090454,2.28241443634033,20.5238095238095,15.8447204968944,'TID3 2',3,'NGC'),
- (2315,2.72254228591919,2.9170708656311,20.5238095238095,15.8447204968944,'TID3 3',3,'NGC'),
- (2316,3.5513026714325,3.84551286697388,20.5238095238095,15.8447204968944,'TID3 4',3,'NGC'),
- (2317,4.85476636886597,5.35081100463867,20.5238095238095,15.8447204968944,'TID3 5',3,'NGC'),
- (2318,7.23451805114746,8.21286201477051,20.5238095238095,15.8447204968944,'TID3 6',3,'NGC'),
- (2319,0.146095544099808,0.16389125585556,13.7391304347826,11.4403669724771,'CID4 1',4,'NGC'),
- (2320,0.21482090651989,0.234155774116516,13.7391304347826,11.4403669724771,'CID4 2',4,'NGC'),
- (2321,0.291571974754334,0.314216732978821,13.7391304347826,11.4403669724771,'CID4 3',4,'NGC'),
- (2322,0.379520952701569,0.40450781583786,13.7391304347826,11.4403669724771,'CID4 4',4,'NGC'),
- (2323,0.480322867631912,0.50913280248642,13.7391304347826,11.4403669724771,'CID4 5',4,'NGC'),
- (2324,0.595883846282958,0.629418432712555,13.7391304347826,11.4403669724771,'CID4 6',4,'NGC'),
- (2325,0.731015086174011,0.770539522171021,13.7391304347826,11.4403669724771,'CID4 7',4,'NGC'),
- (2326,0.89114785194397,0.938422977924347,13.7391304347826,11.4403669724771,'CID4 8',4,'NGC'),
- (2327,1.72545731067657,1.82474076747894,13.7391304347826,11.4403669724771,'TID4 1',4,'NGC'),
- (2328,2.14031600952148,2.28241443634033,13.7391304347826,11.4403669724771,'TID4 2',4,'NGC'),
- (2329,2.72254228591919,2.91025972366333,13.7391304347826,11.4403669724771,'TID4 3',4,'NGC'),
- (2330,3.5513026714325,3.8350944519043,13.7391304347826,11.4403669724771,'TID4 4',4,'NGC'),
- (2331,4.85476636886597,5.35081100463867,13.7391304347826,11.4403669724771,'TID4 5',4,'NGC'),
- (2332,7.23451805114746,8.17527198791504,13.7391304347826,11.4403669724771,'TID4 6',4,'NGC'),
- (2333,0.146095544099808,0.164493978023529,10.253112033195,8.79061371841155,'CID5 1',5,'NGC'),
- (2334,0.21482090651989,0.234155774116516,10.253112033195,8.79061371841155,'CID5 2',5,'NGC'),
- (2335,0.291571974754334,0.314216732978821,10.253112033195,8.79061371841155,'CID5 3',5,'NGC'),
- (2336,0.379520952701569,0.405385583639145,10.253112033195,8.79061371841155,'CID5 4',5,'NGC'),
- (2337,0.479349017143249,0.510146260261536,10.253112033195,8.79061371841155,'CID5 5',5,'NGC'),
- (2338,0.595883846282958,0.630599975585938,10.253112033195,8.79061371841155,'CID5 6',5,'NGC'),
- (2339,0.731015086174011,0.771934628486633,10.253112033195,8.79061371841155,'CID5 7',5,'NGC'),
- (2340,0.889558732509613,0.940095365047455,10.253112033195,8.79061371841155,'CID5 8',5,'NGC'),
- (2341,1.72545731067657,1.82829344272614,10.253112033195,8.79061371841155,'TID5 1',5,'NGC'),
- (2342,2.14911127090454,2.28241443634033,10.253112033195,8.79061371841155,'TID5 2',5,'NGC'),
- (2343,2.72254228591919,2.9170708656311,10.253112033195,8.79061371841155,'TID5 3',5,'NGC'),
- (2344,3.5513026714325,3.84551286697388,10.253112033195,8.79061371841155,'TID5 4',5,'NGC'),
- (2345,4.85476636886597,5.35081100463867,10.253112033195,8.79061371841155,'TID5 5',5,'NGC'),
- (2346,7.20447444915771,8.25076198577881,10.253112033195,8.79061371841155,'TID5 6',5,'NGC'),
- (2347,0.146095544099808,0.164493978023529,8.04,7.11976047904192,'CID6 1',6,'NGC'),
- (2348,0.214164987206459,0.234833464026451,8.04,7.11976047904192,'CID6 2',6,'NGC'),
- (2349,0.291571974754334,0.314216732978821,8.04,7.11976047904192,'CID6 3',6,'NGC'),
- (2350,0.379520952701569,0.405385583639145,8.04,7.11976047904192,'CID6 4',6,'NGC'),
- (2351,0.479349017143249,0.510146260261536,8.04,7.11976047904192,'CID6 5',6,'NGC'),
- (2352,0.595883846282958,0.630599975585938,8.04,7.11976047904192,'CID6 6',6,'NGC'),
- (2353,0.731015086174011,0.771934628486633,8.04,7.11976047904192,'CID6 7',6,'NGC'),
- (2354,0.89114785194397,0.940095365047455,8.04,7.11976047904192,'CID6 8',6,'NGC'),
- (2355,1.72215807437897,1.82829344272614,8.04,7.11976047904192,'TID6 1',6,'NGC'),
- (2356,2.14470744132996,2.28241443634033,8.04,7.11976047904192,'TID6 2',6,'NGC'),
- (2357,2.72254228591919,2.9170708656311,8.04,7.11976047904192,'TID6 3',6,'NGC'),
- (2358,3.5421097278595,3.84551286697388,8.04,7.11976047904192,'TID6 4',6,'NGC'),
- (2359,4.85476636886597,5.35081100463867,8.04,7.11976047904192,'TID6 5',6,'NGC'),
- (2360,7.20447444915771,8.21286201477051,8.04,7.11976047904192,'TID6 6',6,'NGC'),
- (2361,0.146095544099808,0.164493978023529,6.59663865546218,5.91836734693877,'CID7 1',7,'NGC'),
- (2362,0.21482090651989,0.234833464026451,6.59663865546218,5.91836734693877,'CID7 2',7,'NGC'),
- (2363,0.292314231395721,0.314985245466232,6.59663865546218,5.91836734693877,'CID7 3',7,'NGC'),
- (2364,0.379520952701569,0.405385583639145,6.59663865546218,5.91836734693877,'CID7 4',7,'NGC'),
- (2365,0.480322867631912,0.50913280248642,6.59663865546218,5.91836734693877,'CID7 5',7,'NGC'),
- (2366,0.597017228603363,0.630599975585938,6.59663865546218,5.91836734693877,'CID7 6',7,'NGC'),
- (2367,0.732348620891571,0.770539522171021,6.59663865546218,5.91836734693877,'CID7 7',7,'NGC'),
- (2368,0.892739593982696,0.938422977924347,6.59663865546218,5.91836734693877,'CID7 8',7,'NGC'),
- (2369,1.72876453399658,1.82829344272614,6.59663865546218,5.91836734693877,'TID7 1',7,'NGC'),
- (2370,2.14911127090454,2.28721261024475,6.59663865546218,5.91836734693877,'TID7 2',7,'NGC'),
- (2371,2.72254228591919,2.9170708656311,6.59663865546218,5.91836734693877,'TID7 3',7,'NGC'),
- (2372,3.5513026714325,3.84551286697388,6.59663865546218,5.91836734693877,'TID7 4',7,'NGC'),
- (2373,4.87004947662354,5.36879777908325,6.59663865546218,5.91836734693877,'TID7 5',7,'NGC'),
- (2374,7.23451805114746,8.25076198577881,6.59663865546218,5.91836734693877,'TID7 6',7,'NGC'),
- (2375,0.146095544099808,0.164493978023529,5.53493975903615,5.05357142857143,'CID8 1',8,'NGC'),
- (2376,0.21482090651989,0.234833464026451,5.53493975903615,5.05357142857143,'CID8 2',8,'NGC'),
- (2377,0.291571974754334,0.314985245466232,5.53493975903615,5.05357142857143,'CID8 3',8,'NGC'),
- (2378,0.379520952701569,0.405385583639145,5.53493975903615,5.05357142857143,'CID8 4',8,'NGC'),
- (2379,0.480322867631912,0.510146260261536,5.53493975903615,5.05357142857143,'CID8 5',8,'NGC'),
- (2380,0.595883846282958,0.630599975585938,5.53493975903615,5.05357142857143,'CID8 6',8,'NGC'),
- (2381,0.731015086174011,0.771934628486633,5.53493975903615,5.05357142857143,'CID8 7',8,'NGC'),
- (2382,0.892739593982696,0.940095365047455,5.53493975903615,5.05357142857143,'CID8 8',8,'NGC'),
- (2383,1.72876453399658,1.83185517787933,5.53493975903615,5.05357142857143,'TID8 1',8,'NGC'),
- (2384,2.14911127090454,2.28721261024475,5.53493975903615,5.05357142857143,'TID8 2',8,'NGC'),
- (2385,2.72254228591919,2.9170708656311,5.53493975903615,5.05357142857143,'TID8 3',8,'NGC'),
- (2386,3.5513026714325,3.84551286697388,5.53493975903615,5.05357142857143,'TID8 4',8,'NGC'),
- (2387,4.87004947662354,5.36879777908325,5.53493975903615,5.05357142857143,'TID8 5',8,'NGC'),
- (2388,7.23451805114746,8.25076198577881,5.53493975903615,5.05357142857143,'TID8 6',8,'NGC'),
- (2389,0.146095544099808,0.165097311139107,4.75796178343949,4.3596837944664,'CID9 1',9,'NGC'),
- (2390,0.21482090651989,0.235511913895607,4.75796178343949,4.3596837944664,'CID9 2',9,'NGC'),
- (2391,0.291571974754334,0.314985245466232,4.75796178343949,4.3596837944664,'CID9 3',9,'NGC'),
- (2392,0.379520952701569,0.405385583639145,4.75796178343949,4.3596837944664,'CID9 4',9,'NGC'),
- (2393,0.480322867631912,0.510146260261536,4.75796178343949,4.3596837944664,'CID9 5',9,'NGC'),
- (2394,0.595883846282958,0.630599975585938,4.75796178343949,4.3596837944664,'CID9 6',9,'NGC'),
- (2395,0.731015086174011,0.771934628486633,4.75796178343949,4.3596837944664,'CID9 7',9,'NGC'),
- (2396,0.89114785194397,0.941770613193511,4.75796178343949,4.3596837944664,'CID9 8',9,'NGC'),
- (2397,1.72545731067657,1.82829344272614,4.75796178343949,4.3596837944664,'TID9 1',9,'NGC'),
- (2398,2.14470744132996,2.28721261024475,4.75796178343949,4.3596837944664,'TID9 2',9,'NGC'),
- (2399,2.72254228591919,2.92390584945679,4.75796178343949,4.3596837944664,'TID9 3',9,'NGC'),
- (2400,3.5513026714325,3.84551286697388,4.75796178343949,4.3596837944664,'TID9 4',9,'NGC'),
- (2401,4.85476636886597,5.35081100463867,4.75796178343949,4.3596837944664,'TID9 5',9,'NGC'),
- (2402,7.20447444915771,8.21286201477051,4.75796178343949,4.3596837944664,'TID9 6',9,'NGC'),
- (2403,0.14667996764183,0.165097311139107,4.13636363636364,3.85152057245081,'CID0 1',0,'NGC'),
- (2404,0.21482090651989,0.235511913895607,4.13636363636364,3.85152057245081,'CID0 2',0,'NGC'),
- (2405,0.292314231395721,0.315754652023315,4.13636363636364,3.85152057245081,'CID0 3',0,'NGC'),
- (2406,0.380367785692215,0.4071444272995,4.13636363636364,3.85152057245081,'CID0 4',0,'NGC'),
- (2407,0.480322867631912,0.511161088943481,4.13636363636364,3.85152057245081,'CID0 5',0,'NGC'),
- (2408,0.597017228603363,0.631783187389374,4.13636363636364,3.85152057245081,'CID0 6',0,'NGC'),
- (2409,0.732348620891571,0.773331999778748,4.13636363636364,3.85152057245081,'CID0 7',0,'NGC'),
- (2410,0.892739593982696,0.941770613193511,4.13636363636364,3.85152057245081,'CID0 8',0,'NGC'),
- (2411,1.72876453399658,1.83185517787933,4.13636363636364,3.85152057245081,'TID0 1',0,'NGC'),
- (2412,2.14911127090454,2.28721261024475,4.13636363636364,3.85152057245081,'TID0 2',0,'NGC'),
- (2413,2.72871494293213,2.92390584945679,4.13636363636364,3.85152057245081,'TID0 3',0,'NGC'),
- (2414,3.56053304672241,3.85597634315491,4.13636363636364,3.85152057245081,'TID0 4',0,'NGC'),
- (2415,4.87004947662354,5.36879777908325,4.13636363636364,3.85152057245081,'TID0 5',0,'NGC'),
- (2416,7.23451805114746,8.25076198577881,4.13636363636364,3.85152057245081,'TID0 6',0,'NGC'),
- (2417,0.154204979538918,0.170349329710007,227.583333333333,53.86,'CID1 1',1,'GRC'),
- (2418,0.222933515906334,0.241072908043861,227.583333333333,53.86,'CID1 2',1,'GRC'),
- (2419,0.301114320755005,0.321666568517685,227.583333333333,53.86,'CID1 3',1,'GRC'),
- (2420,0.389973789453506,0.413454473018646,227.583333333333,53.86,'CID1 4',1,'GRC'),
- (2421,0.492846041917801,0.51996487379074,227.583333333333,53.86,'CID1 5',1,'GRC'),
- (2422,0.612162530422211,0.642640352249146,227.583333333333,53.86,'CID1 6',1,'GRC'),
- (2423,1.1905562877655,1.24497711658478,227.583333333333,53.86,'CID1 7',1,'GRC'),
- (2424,1.4494411945343,1.52049458026886,227.583333333333,53.86,'CID1 8',1,'GRC'),
- (2425,1.78113770484924,1.87675750255585,227.583333333333,53.86,'TID1 1',1,'GRC'),
- (2426,2.22132635116577,2.35031223297119,227.583333333333,53.86,'TID1 2',1,'GRC'),
- (2427,2.83355402946472,3.01049637794495,227.583333333333,53.86,'TID1 3',1,'GRC'),
- (2428,3.71335196495056,4.00577926635742,227.583333333333,53.86,'TID1 4',1,'GRC'),
- (2429,5.13386726379395,5.61910676956177,227.583333333333,53.86,'TID1 5',1,'GRC'),
- (2430,7.74599933624268,8.76691341400146,227.583333333333,53.86,'TID1 6',1,'GRC'),
- (2431,0.154204979538918,0.170349329710007,36.5753424657534,25.1238095238095,'CID2 1',2,'GRC'),
- (2432,0.222933515906334,0.241072908043861,36.5753424657534,25.1238095238095,'CID2 2',2,'GRC'),
- (2433,0.300365388393402,0.320893824100494,36.5753424657534,25.1238095238095,'CID2 3',2,'GRC'),
- (2434,0.389973789453506,0.413454473018646,36.5753424657534,25.1238095238095,'CID2 4',2,'GRC'),
- (2435,0.492846041917801,0.518942892551422,36.5753424657534,25.1238095238095,'CID2 5',2,'GRC'),
- (2436,0.611012876033782,0.642640352249146,36.5753424657534,25.1238095238095,'CID2 6',2,'GRC'),
- (2437,1.1884343624115,1.24274849891663,36.5753424657534,25.1238095238095,'CID2 7',2,'GRC'),
- (2438,1.44678831100464,1.52049458026886,36.5753424657534,25.1238095238095,'CID2 8',2,'GRC'),
- (2439,1.77771806716919,1.87309896945953,36.5753424657534,25.1238095238095,'TID2 1',2,'GRC'),
- (2440,2.22132635116577,2.34535121917725,36.5753424657534,25.1238095238095,'TID2 2',2,'GRC'),
- (2441,2.82705998420715,3.01049637794495,36.5753424657534,25.1238095238095,'TID2 3',2,'GRC'),
- (2442,3.71335196495056,3.99471211433411,36.5753424657534,25.1238095238095,'TID2 4',2,'GRC'),
- (2443,5.13386726379395,5.59976959228516,36.5753424657534,25.1238095238095,'TID2 5',2,'GRC'),
- (2444,7.74599933624268,8.76691341400146,36.5753424657534,25.1238095238095,'TID2 6',2,'GRC'),
- (2445,0.154204979538918,0.170349329710007,20.4296875,15.5240963855422,'CID3 1',3,'GRC'),
- (2446,0.222933515906334,0.241072908043861,20.4296875,15.5240963855422,'CID3 2',3,'GRC'),
- (2447,0.301114320755005,0.320893824100494,20.4296875,15.5240963855422,'CID3 3',3,'GRC'),
- (2448,0.389973789453506,0.413454473018646,20.4296875,15.5240963855422,'CID3 4',3,'GRC'),
- (2449,0.492846041917801,0.51996487379074,20.4296875,15.5240963855422,'CID3 5',3,'GRC'),
- (2450,0.611012876033782,0.642640352249146,20.4296875,15.5240963855422,'CID3 6',3,'GRC'),
- (2451,1.1884343624115,1.24497711658478,20.4296875,15.5240963855422,'CID3 7',3,'GRC'),
- (2452,1.44678831100464,1.51768565177917,20.4296875,15.5240963855422,'CID3 8',3,'GRC'),
- (2453,1.78113770484924,1.87675750255585,20.4296875,15.5240963855422,'TID3 1',3,'GRC'),
- (2454,2.22132635116577,2.35031223297119,20.4296875,15.5240963855422,'TID3 2',3,'GRC'),
- (2455,2.82705998420715,3.01049637794495,20.4296875,15.5240963855422,'TID3 3',3,'GRC'),
- (2456,3.71335196495056,3.99471211433411,20.4296875,15.5240963855422,'TID3 4',3,'GRC'),
- (2457,5.13386726379395,5.59976959228516,20.4296875,15.5240963855422,'TID3 5',3,'GRC'),
- (2458,7.74599933624268,8.76691341400146,20.4296875,15.5240963855422,'TID3 6',3,'GRC'),
- (2459,0.154204979538918,0.169743344187737,13.5132275132275,11.4117647058824,'CID4 1',4,'GRC'),
- (2460,0.222271874547005,0.240391477942467,13.5132275132275,11.4117647058824,'CID4 2',4,'GRC'),
- (2461,0.300365388393402,0.320121943950653,13.5132275132275,11.4117647058824,'CID4 3',4,'GRC'),
- (2462,0.38911908864975,0.412570685148239,13.5132275132275,11.4117647058824,'CID4 4',4,'GRC'),
- (2463,0.491860210895538,0.518942892551422,13.5132275132275,11.4117647058824,'CID4 5',4,'GRC'),
- (2464,0.611012876033782,0.641446828842163,13.5132275132275,11.4117647058824,'CID4 6',4,'GRC'),
- (2465,1.18631649017334,1.24274849891663,13.5132275132275,11.4117647058824,'CID4 7',4,'GRC'),
- (2466,1.44414114952087,1.51768565177917,13.5132275132275,11.4117647058824,'CID4 8',4,'GRC'),
- (2467,1.77771806716919,1.86944973468781,13.5132275132275,11.4117647058824,'TID4 1',4,'GRC'),
- (2468,2.21673965454102,2.34040451049805,13.5132275132275,11.4117647058824,'TID4 2',4,'GRC'),
- (2469,2.82058763504028,3.00338959693909,13.5132275132275,11.4117647058824,'TID4 3',4,'GRC'),
- (2470,3.70353865623474,3.98369359970093,13.5132275132275,11.4117647058824,'TID4 4',4,'GRC'),
- (2471,5.15056657791138,5.58054542541504,13.5132275132275,11.4117647058824,'TID4 5',4,'GRC'),
- (2472,7.71227073669434,8.72486972808838,13.5132275132275,11.4117647058824,'TID4 6',4,'GRC'),
- (2473,0.154204979538918,0.170349329710007,10.2418032786885,8.69257950530035,'CID5 1',5,'GRC'),
- (2474,0.222271874547005,0.240391477942467,10.2418032786885,8.69257950530035,'CID5 2',5,'GRC'),
- (2475,0.300365388393402,0.320893824100494,10.2418032786885,8.69257950530035,'CID5 3',5,'GRC'),
- (2476,0.38911908864975,0.412570685148239,10.2418032786885,8.69257950530035,'CID5 4',5,'GRC'),
- (2477,0.491860210895538,0.518942892551422,10.2418032786885,8.69257950530035,'CID5 5',5,'GRC'),
- (2478,0.611012876033782,0.642640352249146,10.2418032786885,8.69257950530035,'CID5 6',5,'GRC'),
- (2479,1.18631649017334,1.24497711658478,10.2418032786885,8.69257950530035,'CID5 7',5,'GRC'),
- (2480,1.44414114952087,1.51768565177917,10.2418032786885,8.69257950530035,'CID5 8',5,'GRC'),
- (2481,1.77771806716919,1.87309896945953,10.2418032786885,8.69257950530035,'TID5 1',5,'GRC'),
- (2482,2.21673965454102,2.34535121917725,10.2418032786885,8.69257950530035,'TID5 2',5,'GRC'),
- (2483,2.82058763504028,3.00338959693909,10.2418032786885,8.69257950530035,'TID5 3',5,'GRC'),
- (2484,3.70353865623474,3.98369359970093,10.2418032786885,8.69257950530035,'TID5 4',5,'GRC'),
- (2485,5.15056657791138,5.58054542541504,10.2418032786885,8.69257950530035,'TID5 5',5,'GRC'),
- (2486,7.71227073669434,8.72486972808838,10.2418032786885,8.69257950530035,'TID5 6',5,'GRC'),
- (2487,0.154204979538918,0.169743344187737,7.9640522875817,7.09144542772861,'CID6 1',6,'GRC'),
- (2488,0.222271874547005,0.240391477942467,7.9640522875817,7.09144542772861,'CID6 2',6,'GRC'),
- (2489,0.300365388393402,0.320893824100494,7.9640522875817,7.09144542772861,'CID6 3',6,'GRC'),
- (2490,0.38911908864975,0.413454473018646,7.9640522875817,7.09144542772861,'CID6 4',6,'GRC'),
- (2491,0.491860210895538,0.518942892551422,7.9640522875817,7.09144542772861,'CID6 5',6,'GRC'),
- (2492,0.611012876033782,0.641446828842163,7.9640522875817,7.09144542772861,'CID6 6',6,'GRC'),
- (2493,1.18631649017334,1.24497711658478,7.9640522875817,7.09144542772861,'CID6 7',6,'GRC'),
- (2494,1.44414114952087,1.51768565177917,7.9640522875817,7.09144542772861,'CID6 8',6,'GRC'),
- (2495,1.77771806716919,1.87309896945953,7.9640522875817,7.09144542772861,'TID6 1',6,'GRC'),
- (2496,2.21673965454102,2.34535121917725,7.9640522875817,7.09144542772861,'TID6 2',6,'GRC'),
- (2497,2.82058763504028,3.01049637794495,7.9640522875817,7.09144542772861,'TID6 3',6,'GRC'),
- (2498,3.70353865623474,3.99471211433411,7.9640522875817,7.09144542772861,'TID6 4',6,'GRC'),
- (2499,5.15056657791138,5.59976959228516,7.9640522875817,7.09144542772861,'TID6 5',6,'GRC'),
- (2500,7.71227073669434,8.72486972808838,7.9640522875817,7.09144542772861,'TID6 6',6,'GRC'),
- (2501,0.153615579009056,0.169743344187737,6.57734806629834,5.8575,'CID7 1',7,'GRC'),
- (2502,0.221610933542252,0.239710807800293,6.57734806629834,5.8575,'CID7 2',7,'GRC'),
- (2503,0.299617320299149,0.320121943950653,6.57734806629834,5.8575,'CID7 3',7,'GRC'),
- (2504,0.38911908864975,0.411687970161438,6.57734806629834,5.8575,'CID7 4',7,'GRC'),
- (2505,0.490875691175461,0.518942892551422,6.57734806629834,5.8575,'CID7 5',7,'GRC'),
- (2506,0.609864890575409,0.641446828842163,6.57734806629834,5.8575,'CID7 6',7,'GRC'),
- (2507,1.18420267105103,1.2405241727829,6.57734806629834,5.8575,'CID7 7',7,'GRC'),
- (2508,1.44414114952087,1.51488292217255,6.57734806629834,5.8575,'CID7 8',7,'GRC'),
- (2509,1.77430701255798,1.86944973468781,6.57734806629834,5.8575,'TID7 1',7,'GRC'),
- (2510,2.21216583251953,2.34040451049805,6.57734806629834,5.8575,'TID7 2',7,'GRC'),
- (2511,2.81413722038269,2.99630761146545,6.57734806629834,5.8575,'TID7 3',7,'GRC'),
- (2512,3.69376611709595,3.97272372245789,6.57734806629834,5.8575,'TID7 4',7,'GRC'),
- (2513,5.13386726379395,5.56143283843994,6.57734806629834,5.8575,'TID7 5',7,'GRC'),
- (2514,7.6788010597229,8.68318653106689,6.57734806629834,5.8575,'TID7 6',7,'GRC'),
- (2515,0.153615579009056,0.169743344187737,5.48463356973995,5.01535087719298,'CID8 1',8,'GRC'),
- (2516,0.221610933542252,0.240391477942467,5.48463356973995,5.01535087719298,'CID8 2',8,'GRC'),
- (2517,0.299617320299149,0.320121943950653,5.48463356973995,5.01535087719298,'CID8 3',8,'GRC'),
- (2518,0.388265460729599,0.412570685148239,5.48463356973995,5.01535087719298,'CID8 4',8,'GRC'),
- (2519,0.490875691175461,0.518942892551422,5.48463356973995,5.01535087719298,'CID8 5',8,'GRC'),
- (2520,0.609864890575409,0.640255033969879,5.48463356973995,5.01535087719298,'CID8 6',8,'GRC'),
- (2521,1.18631649017334,1.24274849891663,5.48463356973995,5.01535087719298,'CID8 7',8,'GRC'),
- (2522,1.44414114952087,1.51488292217255,5.48463356973995,5.01535087719298,'CID8 8',8,'GRC'),
- (2523,1.77430701255798,1.86944973468781,5.48463356973995,5.01535087719298,'TID8 1',8,'GRC'),
- (2524,2.21216583251953,2.34040451049805,5.48463356973995,5.01535087719298,'TID8 2',8,'GRC'),
- (2525,2.82058763504028,3.00338959693909,5.48463356973995,5.01535087719298,'TID8 3',8,'GRC'),
- (2526,3.70353865623474,3.98369359970093,5.48463356973995,5.01535087719298,'TID8 4',8,'GRC'),
- (2527,5.13386726379395,5.58054542541504,5.48463356973995,5.01535087719298,'TID8 5',8,'GRC'),
- (2528,7.6788010597229,8.68318653106689,5.48463356973995,5.01535087719298,'TID8 6',8,'GRC'),
- (2529,0.153615579009056,0.169137984514236,4.72651356993737,4.30560928433269,'CID9 1',9,'GRC'),
- (2530,0.221610933542252,0.239710807800293,4.72651356993737,4.30560928433269,'CID9 2',9,'GRC'),
- (2531,0.299617320299149,0.320121943950653,4.72651356993737,4.30560928433269,'CID9 3',9,'GRC'),
- (2532,0.388265460729599,0.412570685148239,4.72651356993737,4.30560928433269,'CID9 4',9,'GRC'),
- (2533,0.490875691175461,0.517922341823578,4.72651356993737,4.30560928433269,'CID9 5',9,'GRC'),
- (2534,0.609864890575409,0.640255033969879,4.72651356993737,4.30560928433269,'CID9 6',9,'GRC'),
- (2535,1.18631649017334,1.2405241727829,4.72651356993737,4.30560928433269,'CID9 7',9,'GRC'),
- (2536,1.44414114952087,1.51488292217255,4.72651356993737,4.30560928433269,'CID9 8',9,'GRC'),
- (2537,1.77430701255798,1.86944973468781,4.72651356993737,4.30560928433269,'TID9 1',9,'GRC'),
- (2538,2.21216583251953,2.33547282218933,4.72651356993737,4.30560928433269,'TID9 2',9,'GRC'),
- (2539,2.82058763504028,2.99630761146545,4.72651356993737,4.30560928433269,'TID9 3',9,'GRC'),
- (2540,3.70353865623474,3.97272372245789,4.72651356993737,4.30560928433269,'TID9 4',9,'GRC'),
- (2541,5.13386726379395,5.58054542541504,4.72651356993737,4.30560928433269,'TID9 5',9,'GRC'),
- (2542,7.6788010597229,8.68318653106689,4.72651356993737,4.30560928433269,'TID9 6',9,'GRC'),
- (2543,0.153026789426804,0.168533250689507,4.07962962962963,3.80385288966725,'CID0 1',0,'GRC'),
- (2544,0.221610933542252,0.239030882716179,4.07962962962963,3.80385288966725,'CID0 2',0,'GRC'),
- (2545,0.299617320299149,0.319350987672806,4.07962962962963,3.80385288966725,'CID0 3',0,'GRC'),
- (2546,0.388265460729599,0.411687970161438,4.07962962962963,3.80385288966725,'CID0 4',0,'GRC'),
- (2547,0.490875691175461,0.516903102397919,4.07962962962963,3.80385288966725,'CID0 5',0,'GRC'),
- (2548,0.608718514442444,0.640255033969879,4.07962962962963,3.80385288966725,'CID0 6',0,'GRC'),
- (2549,1.18420267105103,1.23830437660217,4.07962962962963,3.80385288966725,'CID0 7',0,'GRC'),
- (2550,1.44149971008301,1.51208639144897,4.07962962962963,3.80385288966725,'CID0 8',0,'GRC'),
- (2551,1.77430701255798,1.86580967903137,4.07962962962963,3.80385288966725,'TID0 1',0,'GRC'),
- (2552,2.21216583251953,2.33547282218933,4.07962962962963,3.80385288966725,'TID0 2',0,'GRC'),
- (2553,2.81413722038269,2.99630761146545,4.07962962962963,3.80385288966725,'TID0 3',0,'GRC'),
- (2554,3.69376611709595,3.97272372245789,4.07962962962963,3.80385288966725,'TID0 4',0,'GRC'),
- (2555,5.13386726379395,5.56143283843994,4.07962962962963,3.80385288966725,'TID0 5',0,'GRC'),
- (2556,7.6788010597229,8.64185905456542,4.07962962962963,3.80385288966725,'TID0 6',0,'GRC');
 /*!40000 ALTER TABLE `student_info` ENABLE KEYS */;
 
 
@@ -4472,6 +4721,41 @@ CREATE TABLE `student_issue` (
 
 /*!40000 ALTER TABLE `student_issue` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_issue` ENABLE KEYS */;
+
+
+--
+-- Definition of table `student_list`
+--
+
+DROP TABLE IF EXISTS `student_list`;
+CREATE TABLE `student_list` (
+  `entity_id` varchar(45) NOT NULL,
+  `program_id` varchar(45) NOT NULL,
+  `branch_id` varchar(45) NOT NULL,
+  `specialization_id` varchar(45) NOT NULL,
+  `session_start_date` date NOT NULL,
+  `session_end_date` date NOT NULL,
+  `student_name` varchar(45) NOT NULL,
+  `father_name` varchar(45) NOT NULL,
+  `enrollment_number` varchar(45) DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `category` char(2) DEFAULT NULL,
+  `gender` char(1) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `roll_number_group_code` varchar(45) DEFAULT NULL,
+  `hindi_name` blob,
+  `status` char(3) DEFAULT NULL,
+  `insert_time` datetime NOT NULL,
+  PRIMARY KEY (`entity_id`,`program_id`,`branch_id`,`specialization_id`,`session_start_date`,`session_end_date`,`student_name`,`father_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_list`
+--
+
+/*!40000 ALTER TABLE `student_list` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_list` ENABLE KEYS */;
 
 
 --
@@ -4519,6 +4803,46 @@ CREATE TABLE `student_marks` (
 
 
 --
+-- Definition of table `student_marks_collation`
+--
+
+DROP TABLE IF EXISTS `student_marks_collation`;
+CREATE TABLE `student_marks_collation` (
+  `university_code` char(4) NOT NULL,
+  `entity_id` char(8) NOT NULL,
+  `roll_number` char(10) NOT NULL,
+  `program_course_key` char(14) NOT NULL,
+  `evaluation_id` char(3) NOT NULL,
+  `marks` int(10) unsigned DEFAULT NULL,
+  `old_marks` varchar(10) DEFAULT NULL,
+  `grades` char(2) DEFAULT NULL,
+  `pass_fail` char(3) DEFAULT NULL,
+  `status` char(3) DEFAULT NULL,
+  `course_code` char(8) NOT NULL,
+  `semester_start_date` date NOT NULL,
+  `semester_end_date` date NOT NULL,
+  `insert_time` date NOT NULL,
+  `modification_time` date DEFAULT NULL,
+  `creator_id` varchar(20) NOT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `attempt_number` int(10) unsigned NOT NULL,
+  `attendence` char(4) DEFAULT NULL,
+  `requested_marks` int(10) unsigned DEFAULT NULL,
+  `requester_remarks` varchar(200) DEFAULT NULL,
+  `issue_status` char(3) DEFAULT NULL,
+  `teacher_remarks` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`roll_number`,`program_course_key`,`evaluation_id`,`course_code`,`semester_start_date`,`semester_end_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_marks_collation`
+--
+
+/*!40000 ALTER TABLE `student_marks_collation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_marks_collation` ENABLE KEYS */;
+
+
+--
 -- Definition of table `student_marks_summary`
 --
 
@@ -4557,6 +4881,74 @@ CREATE TABLE `student_marks_summary` (
 
 
 --
+-- Definition of table `student_marks_summary_backup`
+--
+
+DROP TABLE IF EXISTS `student_marks_summary_backup`;
+CREATE TABLE `student_marks_summary_backup` (
+  `university_code` char(4) NOT NULL,
+  `entity_id` char(8) NOT NULL,
+  `roll_number` char(10) NOT NULL,
+  `program_course_key` char(14) NOT NULL,
+  `semester_start_date` date NOT NULL,
+  `semester_end_date` date NOT NULL,
+  `total_internal` int(10) unsigned DEFAULT NULL,
+  `total_external` int(10) unsigned DEFAULT NULL,
+  `total_marks` int(10) unsigned DEFAULT NULL,
+  `course_code` char(8) NOT NULL,
+  `internal_grade` char(3) DEFAULT NULL COMMENT 'Total Internal grade',
+  `external_grade` char(3) DEFAULT NULL COMMENT 'Total External  grade',
+  `final_grade_point` decimal(5,3) DEFAULT NULL COMMENT 'Avg grade for course',
+  `insert_time` datetime NOT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(20) NOT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `earned_credits` decimal(6,3) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_marks_summary_backup`
+--
+
+/*!40000 ALTER TABLE `student_marks_summary_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_marks_summary_backup` ENABLE KEYS */;
+
+
+--
+-- Definition of table `student_marks_summary_collation`
+--
+
+DROP TABLE IF EXISTS `student_marks_summary_collation`;
+CREATE TABLE `student_marks_summary_collation` (
+  `university_code` char(4) NOT NULL,
+  `entity_id` char(8) NOT NULL,
+  `roll_number` char(10) NOT NULL,
+  `program_course_key` char(14) NOT NULL,
+  `semester_start_date` date NOT NULL,
+  `semester_end_date` date NOT NULL,
+  `total_internal` int(10) unsigned DEFAULT NULL,
+  `total_external` int(10) unsigned DEFAULT NULL,
+  `total_marks` int(10) unsigned DEFAULT NULL,
+  `course_code` char(8) NOT NULL,
+  `internal_grade` char(3) DEFAULT NULL COMMENT 'Total Internal grade',
+  `external_grade` char(3) DEFAULT NULL COMMENT 'Total External  grade',
+  `final_grade_point` decimal(5,3) DEFAULT NULL COMMENT 'Avg grade for course',
+  `insert_time` datetime NOT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(20) NOT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `earned_credits` decimal(6,3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_marks_summary_collation`
+--
+
+/*!40000 ALTER TABLE `student_marks_summary_collation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_marks_summary_collation` ENABLE KEYS */;
+
+
+--
 -- Definition of table `student_master`
 --
 
@@ -4570,15 +4962,27 @@ CREATE TABLE `student_master` (
   `student_last_name` varchar(100) DEFAULT NULL,
   `primary_email_id` varchar(100) NOT NULL,
   `secondary_email_id` varchar(100) DEFAULT NULL,
+  `website` varchar(45) DEFAULT NULL,
   `date_of_birth` date NOT NULL,
+  `place_of_birth` varchar(45) DEFAULT NULL,
   `category_code` char(2) NOT NULL,
   `gender` char(6) NOT NULL,
+  `marital_status` char(1) DEFAULT NULL COMMENT 'M=Married,U=Unmarried, D=Divorced,W=widow/widower',
+  `UID` varchar(20) DEFAULT NULL,
+  `pan_no` varchar(20) DEFAULT NULL,
+  `passport_no` varchar(30) DEFAULT NULL,
   `father_first_name` varchar(100) NOT NULL,
   `father_middle_name` varchar(100) DEFAULT NULL,
   `father_last_name` varchar(100) DEFAULT NULL,
   `mother_first_name` varchar(100) DEFAULT NULL,
   `mother_middle_name` varchar(100) DEFAULT NULL,
   `mother_last_name` varchar(100) DEFAULT NULL,
+  `parent_address_1` varchar(200) DEFAULT NULL,
+  `parent_address_2` varchar(200) DEFAULT NULL,
+  `parent_email_1` varchar(30) DEFAULT NULL,
+  `parent_email_2` varchar(30) DEFAULT NULL,
+  `parent_phone_1` varchar(20) DEFAULT NULL,
+  `parent_phone_2` varchar(20) DEFAULT NULL,
   `registered_in_session` char(7) NOT NULL COMMENT '2006-07',
   `status` char(3) NOT NULL,
   `insert_time` datetime DEFAULT NULL,
@@ -4595,6 +4999,7 @@ CREATE TABLE `student_master` (
   `guardian_name` varchar(150) DEFAULT NULL,
   `session_start_date` date DEFAULT NULL,
   `session_end_date` date DEFAULT NULL,
+  `minority` char(2) DEFAULT NULL,
   PRIMARY KEY (`enrollment_number`,`parent_entity`),
   UNIQUE KEY `Index_1` (`student_id`),
   KEY `FK_student_master_1` (`university_code`),
@@ -4609,6 +5014,68 @@ CREATE TABLE `student_master` (
 
 /*!40000 ALTER TABLE `student_master` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_master` ENABLE KEYS */;
+
+
+--
+-- Definition of table `student_master_backup`
+--
+
+DROP TABLE IF EXISTS `student_master_backup`;
+CREATE TABLE `student_master_backup` (
+  `university_code` char(4) NOT NULL,
+  `student_id` char(18) NOT NULL,
+  `enrollment_number` char(15) NOT NULL,
+  `student_first_name` varchar(100) NOT NULL,
+  `student_middle_name` varchar(100) DEFAULT NULL,
+  `student_last_name` varchar(100) DEFAULT NULL,
+  `primary_email_id` varchar(100) NOT NULL,
+  `secondary_email_id` varchar(100) DEFAULT NULL,
+  `website` varchar(45) DEFAULT NULL,
+  `date_of_birth` date NOT NULL,
+  `place_of_birth` varchar(45) DEFAULT NULL,
+  `category_code` char(2) NOT NULL,
+  `gender` char(6) NOT NULL,
+  `marital_status` char(1) DEFAULT NULL COMMENT 'M=Married,U=Unmarried, D=Divorced,W=widow/widower',
+  `UID` varchar(20) DEFAULT NULL,
+  `pan_no` varchar(20) DEFAULT NULL,
+  `passport_no` varchar(30) DEFAULT NULL,
+  `father_first_name` varchar(100) NOT NULL,
+  `father_middle_name` varchar(100) DEFAULT NULL,
+  `father_last_name` varchar(100) DEFAULT NULL,
+  `mother_first_name` varchar(100) DEFAULT NULL,
+  `mother_middle_name` varchar(100) DEFAULT NULL,
+  `mother_last_name` varchar(100) DEFAULT NULL,
+  `parent_address_1` varchar(200) DEFAULT NULL,
+  `parent_address_2` varchar(200) DEFAULT NULL,
+  `parent_email_1` varchar(30) DEFAULT NULL,
+  `parent_email_2` varchar(30) DEFAULT NULL,
+  `parent_phone_1` varchar(20) DEFAULT NULL,
+  `parent_phone_2` varchar(20) DEFAULT NULL,
+  `registered_in_session` char(7) NOT NULL COMMENT '2006-07',
+  `status` char(3) NOT NULL,
+  `insert_time` datetime DEFAULT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(20) DEFAULT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `parent_entity` char(8) NOT NULL COMMENT 'Entity Id',
+  `name_in_hindi` blob,
+  `father_name_in_hindi` blob,
+  `mother_name_in_hindi` blob,
+  `photo_path` blob,
+  `nationality` varchar(20) DEFAULT NULL,
+  `religion` varchar(10) DEFAULT NULL,
+  `guardian_name` varchar(150) DEFAULT NULL,
+  `session_start_date` date DEFAULT NULL,
+  `session_end_date` date DEFAULT NULL,
+  `minority` char(2) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_master_backup`
+--
+
+/*!40000 ALTER TABLE `student_master_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_master_backup` ENABLE KEYS */;
 
 
 --
@@ -4656,7 +5123,9 @@ CREATE TABLE `student_paper` (
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `grouping` char(2) DEFAULT NULL
+  `grouping` char(2) DEFAULT NULL,
+  KEY `FK_student_paper_1` (`registration_number`),
+  CONSTRAINT `FK_student_paper_1` FOREIGN KEY (`registration_number`) REFERENCES `student_registration` (`registration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4726,28 +5195,56 @@ CREATE TABLE `student_program` (
 
 
 --
--- Definition of table `student_registration`
+-- Definition of table `student_program_backup`
 --
 
-DROP TABLE IF EXISTS `student_registration`;
-CREATE TABLE `student_registration` (
-  `student_id` char(18) DEFAULT NULL,
-  `registration_number` char(12) DEFAULT NULL,
-  `form_number` char(8) DEFAULT NULL,
-  `cos_value` char(4) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `insert_time` datetime DEFAULT NULL,
+DROP TABLE IF EXISTS `student_program_backup`;
+CREATE TABLE `student_program_backup` (
+  `cgpa` decimal(5,2) DEFAULT NULL,
+  `enrollment_number` char(15) NOT NULL,
+  `roll_number` char(10) NOT NULL,
+  `register_date` date NOT NULL,
+  `program_completion_date` date DEFAULT NULL,
+  `current_semester` char(3) NOT NULL,
+  `program_status` char(3) NOT NULL,
+  `insert_time` datetime NOT NULL,
   `modification_time` datetime DEFAULT NULL,
-  `creator_id` varchar(20) DEFAULT NULL,
+  `creator_id` varchar(20) NOT NULL,
   `modifier_id` varchar(20) DEFAULT NULL,
-  `program_id` char(7) DEFAULT NULL,
-  `exam_center_code` char(3) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `entity_id` char(8) NOT NULL,
+  `program_id` char(7) NOT NULL,
+  `branch_id` char(3) NOT NULL,
+  `specialization_id` char(3) NOT NULL,
+  `switch_number` int(10) unsigned DEFAULT NULL,
+  `sequence_number` int(10) unsigned DEFAULT NULL,
+  `in_semester` char(3) DEFAULT NULL,
+  `out_semester` char(3) DEFAULT NULL,
+  `mode_of_entry` char(2) NOT NULL COMMENT 'RG=Regular enrty, SW=Switch entry',
+  `division` varchar(50) DEFAULT NULL COMMENT 'DIVISION Code according to CGPA Values',
+  `switched_date` date DEFAULT NULL,
+  `theory_cgpa` decimal(5,2) DEFAULT NULL,
+  `practical_cgpa` decimal(5,2) DEFAULT NULL,
+  `theory_cwp` decimal(6,3) DEFAULT NULL,
+  `practical_cwp` decimal(6,3) DEFAULT NULL,
+  `cumulative_wp` decimal(6,3) DEFAULT NULL,
+  `registered_from_session` date DEFAULT NULL,
+  `passed_from_session` date DEFAULT NULL,
+  `passed_to_session` date DEFAULT NULL,
+  `registered_to_session` date DEFAULT NULL,
+  `theory_division` varchar(45) DEFAULT NULL,
+  `practical_division` varchar(45) DEFAULT NULL,
+  `reason_description` varchar(100) DEFAULT NULL,
+  `university_code` char(4) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `student_registration`
+-- Dumping data for table `student_program_backup`
 --
+
+/*!40000 ALTER TABLE `student_program_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_program_backup` ENABLE KEYS */;
+
+
 
 /*!40000 ALTER TABLE `student_registration` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_registration` ENABLE KEYS */;
@@ -4782,6 +5279,8 @@ CREATE TABLE `student_registration_semester_header` (
   `registered_practical_credit_excluding_audit` decimal(6,3) DEFAULT NULL,
   `registration_credit_excluding_audit` decimal(6,3) DEFAULT NULL,
   `reason_description` varchar(100) DEFAULT NULL,
+  `switch_type` char(3) DEFAULT NULL,
+  `switch_rule` char(3) DEFAULT NULL,
   PRIMARY KEY (`roll_number`,`session_start_date`,`session_end_date`,`program_course_key`,`entity_id`),
   KEY `FK_student_registration_semester_header_2` (`program_course_key`),
   CONSTRAINT `FK_student_registration_semester_header_1` FOREIGN KEY (`roll_number`) REFERENCES `student_program` (`roll_number`),
@@ -4794,6 +5293,45 @@ CREATE TABLE `student_registration_semester_header` (
 
 /*!40000 ALTER TABLE `student_registration_semester_header` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_registration_semester_header` ENABLE KEYS */;
+
+
+--
+-- Definition of table `student_registration_semester_header_backup`
+--
+
+DROP TABLE IF EXISTS `student_registration_semester_header_backup`;
+CREATE TABLE `student_registration_semester_header_backup` (
+  `register_Date` date DEFAULT NULL,
+  `number_of_remedials` int(2) unsigned DEFAULT NULL,
+  `status` char(3) NOT NULL,
+  `insert_time` datetime NOT NULL,
+  `modification_time` datetime DEFAULT NULL,
+  `creator_id` varchar(20) NOT NULL,
+  `modifier_id` varchar(20) DEFAULT NULL,
+  `roll_number` char(10) NOT NULL,
+  `session_start_date` date NOT NULL,
+  `session_end_date` date NOT NULL,
+  `attempt_number` int(2) unsigned NOT NULL,
+  `total_credit_earned` decimal(5,2) DEFAULT NULL,
+  `sgpa` decimal(5,2) DEFAULT NULL,
+  `weighted_percentage` decimal(5,2) DEFAULT NULL,
+  `student_process_status` char(3) DEFAULT NULL,
+  `register_due_date` date DEFAULT NULL,
+  `entity_id` char(8) NOT NULL,
+  `program_course_key` char(14) NOT NULL,
+  `registered_credit` decimal(6,3) DEFAULT NULL,
+  `registered_theory_credit_excluding_audit` decimal(6,3) DEFAULT NULL,
+  `registered_practical_credit_excluding_audit` decimal(6,3) DEFAULT NULL,
+  `registration_credit_excluding_audit` decimal(6,3) DEFAULT NULL,
+  `reason_description` varchar(100) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_registration_semester_header_backup`
+--
+
+/*!40000 ALTER TABLE `student_registration_semester_header_backup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_registration_semester_header_backup` ENABLE KEYS */;
 
 
 --
@@ -4842,7 +5380,7 @@ CREATE TABLE `student_result_info` (
   `section_marks` float NOT NULL,
   `total_marks` float NOT NULL,
   PRIMARY KEY (`TestId`,`group_code`,`RollNo`,`SectionNumber`,`FileName`)
-) ENGINE=InnoDB AUTO_INCREMENT=20121005 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20121011 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `student_result_info`
@@ -4860,14 +5398,16 @@ DROP TABLE IF EXISTS `student_special_weightage`;
 CREATE TABLE `student_special_weightage` (
   `university_id` char(4) DEFAULT NULL,
   `program_id` char(7) DEFAULT NULL,
-  `registration_number` char(12) DEFAULT NULL,
-  `weightage_id` char(2) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
+  `registration_number` char(12) NOT NULL DEFAULT '',
+  `weightage_id` char(2) NOT NULL DEFAULT '',
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `insert_time` datetime DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
   `creator_id` varchar(20) DEFAULT NULL,
-  `modifier_id` varchar(20) DEFAULT NULL
+  `modifier_id` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`registration_number`,`weightage_id`,`start_date`,`end_date`) USING BTREE,
+  CONSTRAINT `FK_student_special_weightage_1` FOREIGN KEY (`registration_number`) REFERENCES `student_registration` (`registration_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -4992,13 +5532,6 @@ CREATE TABLE `switch_rule` (
 --
 
 /*!40000 ALTER TABLE `switch_rule` DISABLE KEYS */;
-INSERT INTO `switch_rule` (`rule_id`,`rule_code_one`,`rule_code_two`,`rule_code_three`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`,`rule_code_four`,`rule_code_five`,`rule_code_six`,`rule_formula`,`university_code`) VALUES 
- ('001','Y','Y','S3','2011-05-23 09:19:53',NULL,'E00010001201100005',NULL,'S4','S5','S6','1234567',''),
- ('002','N','N','S3','2011-05-23 09:25:37',NULL,'E00010001201100005',NULL,'S4','','','Tyya6+',''),
- ('003','Y','N','S3','2011-05-25 11:55:14',NULL,'E000111001',NULL,'S4','S5','S6','',''),
- ('004','Y','N','01','2011-06-07 11:38:00',NULL,'E00010001201100005',NULL,'','S5','S6','wer',''),
- ('005','Y','N','01','2011-06-07 11:38:32',NULL,'E00010001201100005',NULL,'','','','',''),
- ('006','Y','Y','01','2011-07-13 13:52:18',NULL,'E00010001201100005',NULL,'','','','','');
 /*!40000 ALTER TABLE `switch_rule` ENABLE KEYS */;
 
 
@@ -5026,9 +5559,6 @@ CREATE TABLE `system_table_one` (
 --
 
 /*!40000 ALTER TABLE `system_table_one` DISABLE KEYS */;
-INSERT INTO `system_table_one` (`entity_id`,`program_id`,`code`,`year`,`status_flag`,`value`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
- ('00010001','All','ROL','2011','U','151','2011-11-19 16:00:36','2011-11-19 16:00:38','E00010001201100006','E00010001201100006'),
- ('00010003','All','ROL','2011','U','309','2011-11-04 12:34:45','2011-11-04 12:34:48','E00010001201100006','E00010001201100006');
 /*!40000 ALTER TABLE `system_table_one` ENABLE KEYS */;
 
 
@@ -5074,14 +5604,15 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','01','asdfghhj',1,NULL,'2011-05-23 12:08:06','2011-05-23 12:12:42','E00010001201100005','E00010001201100005','SWTRL3',0,'',''),
  ('0001','02','C.B.S.E',1,NULL,'2012-06-18 11:09:28',NULL,'Ashish Mohan',NULL,'BOARDS',NULL,NULL,NULL),
  ('0001','02','Intermediate Marksheet',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'DOCLST',NULL,NULL,NULL),
- ('0001','02','first',1,NULL,'2011-08-28 16:24:03',NULL,'E00010001201100005',NULL,'DVSCOD',0,'',''),
+ ('0001','02','First',1,NULL,'2011-08-28 16:24:03','2012-08-16 15:43:47','E00010001201100005','E0001001311019','DVSCOD',0,'',''),
  ('0001','02','Computer Science',1,NULL,'2012-06-08 16:06:55',NULL,'E0001001311019',NULL,'SPCLCD',0,'',''),
  ('0001','02','TC Check',1,1,'2011-05-06 12:12:56',NULL,'ashu',NULL,'VRFCMP',0,'1',''),
  ('0001','03','U.P Board',1,NULL,'2012-06-18 11:09:28',NULL,'Ashish Mohan',NULL,'BOARDS',NULL,NULL,NULL),
- ('0001','03','second',1,NULL,'2011-08-28 16:25:01',NULL,'E00010001201100005',NULL,'DVSCOD',0,'',''),
+ ('0001','03','Second',1,NULL,'2011-08-28 16:25:01','2012-08-16 15:43:56','E00010001201100005','E0001001311019','DVSCOD',0,'',''),
  ('0001','03','Computer Applications',1,NULL,'2012-06-08 16:07:12',NULL,'E0001001311019',NULL,'SPCLCD',0,'',''),
  ('0001','03','Character Certificate Check',1,1,'2011-05-06 12:13:17',NULL,'ashu',NULL,'VRFCMP',0,'1',''),
  ('0001','04','Others',1,NULL,'2012-06-18 11:09:28',NULL,'Ashish Mohan',NULL,'BOARDS',NULL,NULL,NULL),
+ ('0001','04','Pass',1,NULL,'2012-08-16 15:44:06',NULL,'E0001001311019',NULL,'DVSCOD',0,'',''),
  ('0001','04','Electronics',1,NULL,'2012-06-08 16:07:29',NULL,'E0001001311019',NULL,'SPCLCD',0,'',''),
  ('0001','04','X cetificate check',1,1,'2011-05-06 12:14:01',NULL,'ashu',NULL,'VRFCMP',0,'1',''),
  ('0001','05','Botany',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
@@ -5101,14 +5632,13 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','10','Mathematics',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
  ('0001','10','Result Statistics',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RES'),
  ('0001','11','Physics',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
- ('0001','11','final semester result statistics',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'REN'),
+ ('0001','11','final semester result statistics',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RES'),
  ('0001','11','Applied Business Economics',1,NULL,'2012-06-08 16:09:24',NULL,'E0001001311019',NULL,'SPCLCD',0,'',''),
  ('0001','12','Home Science',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
  ('0001','12','General Reports',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RGN'),
+ ('0001','12','Industrial Engineering',1,NULL,'2012-09-15 11:40:43',NULL,'E0001001311019',NULL,'SPCLCD',0,'',''),
  ('0001','13','English',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
- ('0001','13','Transcript',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RST'),
  ('0001','14','Political Science',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
- ('0001','14','Course wise panel of examiners',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RCO'),
  ('0001','15','Chemistry',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
  ('0001','15','Final Sem Result Statistics(Category wise)',1,NULL,'2012-02-15 16:48:56',NULL,'nupur',NULL,'RPORTS',NULL,NULL,'RES'),
  ('0001','16','Sanskrit',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
@@ -5117,241 +5647,373 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','17','Semester Wise Marks',1,NULL,'2012-02-16 17:19:09',NULL,'nupur',NULL,'RPORTS',NULL,NULL,'PSS'),
  ('0001','18','Commerce',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
  ('0001','18','Grade Report Consolidated',1,NULL,'2012-02-17 10:48:59',NULL,'nupur',NULL,'RPORTS',NULL,NULL,'PBS'),
+ ('0001','19','Trg. & Pla. Officer',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','19','Music(Sitar/Vocal/Tabla)',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
  ('0001','19','Merit List Based on CP',1,NULL,'2012-02-17 16:57:09',NULL,'nupur',NULL,'RPORTS',NULL,NULL,'PBS'),
  ('0001','2','Enrollment Report',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'PBS'),
+ ('0001','20','System Manager',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','20','GEOGRAPHY',1,NULL,'2012-06-18 11:13:52',NULL,'Ashish Mohan',NULL,'PAPCOD',NULL,NULL,NULL),
  ('0001','20','Number of Student(Sub & Cat Wise)',1,NULL,'2012-02-21 11:46:19',NULL,'nupur',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','21','Professor',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','21','Final Student List',1,NULL,'2012-04-10 20:22:20',NULL,'E00010001201100006',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','22','Reader',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','22','Delay in Display of Marks',1,NULL,'2012-04-23 22:43:48',NULL,'Mandeep',NULL,'RPORTS',NULL,NULL,'RES'),
+ ('0001','23','System Engineer',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','23','List of Marks Correction',1,NULL,'2012-04-23 22:43:41',NULL,'Ashish Mohan',NULL,'RPORTS',NULL,NULL,'RES'),
  ('0001','24','List Of Unapproved Award Blank ',1,NULL,'2012-05-02 16:14:07',NULL,'Ashish',NULL,'RPORTS',NULL,'GN','RGN'),
+ ('0001','25','Lecturer',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','25','List of Award Blank released by Dean',1,NULL,'2012-10-18 17:34:08',NULL,'Ashish Mohan',NULL,'RPORTS',NULL,NULL,'RSS'),
+ ('0001','26','Lecturer (Pol)',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','26','Result Verification Report',1,NULL,'2012-10-18 17:34:08',NULL,'Ashish Mohan',NULL,'RPORTS',NULL,NULL,'RVR'),
+ ('0001','27','Lecturer (Socio)',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','27','Collation Difference Report',1,NULL,'2012-09-06 17:27:43',NULL,'Ashish',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','28','Faculty Librarian Gr I',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','29','Asstt.Univ.Librn. ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','3','Unsatisfactory Performance',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','30','Asstt. Registrar (A/c.) ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','31','Asstt. Registrar (Aca.)',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','32','Asstt. Supdt. of Works',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','33','Workshop Supdt.',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','34','Instructor (D & P) ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','35','Demonstrator',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','36','Professional Assistant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','37','Head Assistant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','38','Instructor (Foreman)',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','39','Assistant Accountant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','4','Temporary Registration Chart',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','40','Technician Grade I',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','41','Sr.Technical Asstt.',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','42','P.A. to Director',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','43','Office Superintendent',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','44','PA to President',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','45','Steno Typist',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','46','Office Supdt. Gr.II ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','47','Sr.Noter & Drafter',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','48','Semi Professional Asstt.',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','49','Coach Phy. Edu. ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
  ('0001','5','Final Registration Chart',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','50','Commercial Artist',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','51','Stenographer',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','52','Computer Operator',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','53','Faculty Librarian Gr.II',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','54','Technician Grade II',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','55','Jr.Technical Asstt.',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','56','Draftsman ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','57','Mechanic Grade A I ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','58','Assistatn Draftsman',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','0'),
+ ('0001','59','Mechanic Grade A II',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
  ('0001','6','Consolidated Chart',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RCL'),
+ ('0001','60','Cashier',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','61','Junior Noter & Drafter',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','62','Store Keeper',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','63','Technician Grade III',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','64','Office Assistant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','65','Jr Lab Assistant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','66','Laboratory Assistant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','67','Driver',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','68','Library Clerk',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','69','Routine Clerk',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
  ('0001','7','Degree List',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'REP'),
+ ('0001','70','Clerk',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','71','Typist ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','72','Library Assistant ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','73','Tabla Accompanist',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','74','Key Punch Operator ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','75','Gen. Cum Pump Optr.',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','76','Plumber',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','77','Carpenter',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','78','Technical Asstt.Gr.III ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','79','Driver Cum Mechanic',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
  ('0001','8','Progress/Result Card',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'PSS'),
+ ('0001','80','Electrician',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','81','Mechanic Grade B',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','82','Book Lifter',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','83','Peon Jamadar',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','84','Art Room Attendant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','85','Office Attdt. ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','86','Mali',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','87','Chowkidar',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','88','Safai Sewak',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','89','Library Attendant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
  ('0001','9','Registration Statistics',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'RPORTS',NULL,NULL,'RSS'),
+ ('0001','90','Lab Bearer',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','91','Farrash',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','92','Gasman',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','93','Peon',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','94','Store Coolie',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','95','Lab Attendant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','96','Laboratory Attendant',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','97','Attendant ',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0','\r'),
+ ('0001','98','Assistant Accountant I',1,0,'2012-04-24 15:55:12','2012-04-25 15:55:12','E00010001201100006','NULL','DESGNS',0,'0',NULL),
  ('0001','A','10',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','A','Allied',1,NULL,'2012-01-05 15:49:40',NULL,'E0001001311019',NULL,'GRPRUL',0,'',''),
  ('0001','A','Group A',1,NULL,'2011-11-04 15:24:00',NULL,'Deepak',NULL,'PSTGRP',NULL,NULL,NULL),
  ('0001','A','Arts',1,NULL,'0000-00-00 00:00:00','2012-06-09 12:29:36','Dheeraj','E0001001311019','SUBCOD',0,'',''),
  ('0001','A+P','A+P',1,NULL,'2012-03-21 17:43:57',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','A-','9',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
- ('0001','ABH','Applied Business Economics',1,NULL,'2011-06-04 14:22:46',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ABE','ABE Applied Buisness',1,NULL,'2012-09-29 17:17:17','2012-10-06 15:59:05','E0001001311019','E0001001312031','CRSGRP',0,'',''),
+ ('0001','ABH','ABH',1,NULL,'2011-06-04 14:22:46',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ABH','ABH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ABM','Applied Business Major',1,NULL,'2012-05-26 13:01:32',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','ABM','ABM',1,NULL,'2012-05-26 13:01:32',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','ABM','ABM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','ABR','Remedial Award Blank Verification',1,NULL,'2012-03-30 16:00:51',NULL,'E0001001311019',NULL,'ACTMST',0,'',''),
+ ('0001','ABS','0',1,NULL,'2012-08-13 11:47:33',NULL,'E0001001311019',NULL,'GRADEP',0,'',''),
  ('0001','ABV','Award Blank Verification Process',1,NULL,'2012-03-30 15:58:26',NULL,'E0001001311019',NULL,'ACTMST',0,'',''),
+ ('0001','ABW','ABW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','ABW','ABW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','ACH','ACH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','ACH','ACH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ACM','Account Control Management',1,NULL,'2012-05-26 13:07:20',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','ACM','ACM',1,NULL,'2012-05-26 13:07:20',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','ACM','ACM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','ACW','ACW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','ACW','ACW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ADM','admin',1,NULL,'2011-05-25 13:43:04',NULL,'E000111001',NULL,'UNROLE',0,'',''),
- ('0001','AE','Automobile Engineering',1,NULL,'2012-06-09 11:44:33',NULL,'E0001001311019',NULL,'BRNCOD',0,'',''),
- ('0001','AED','Agricultural Operations',1,NULL,'2011-06-07 10:07:54',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ADM','admin',1,NULL,'2011-05-25 13:43:04',NULL,'E000111001',NULL,'UNROLE',0,'1',''),
+ ('0001','AE','Automobile',1,NULL,'2012-06-09 11:44:33','2012-09-17 16:23:51','E0001001311019','E0001001312032','BRNCOD',0,'',''),
+ ('0001','AED','AED',1,NULL,'2011-06-07 10:07:54',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','AG','Algae',1,NULL,'2012-03-24 21:24:28',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','AGR','Agra',1,NULL,'2011-05-20 09:51:40',NULL,'E00010001201100005',NULL,'LCNMST',0,'',''),
  ('0001','AL','Activity Learning',1,NULL,'2012-03-21 17:56:50',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','ALG','Algae',1,NULL,'2012-03-22 18:02:49',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','ALH','Accountancy and Law Half Course',1,NULL,'2011-06-04 14:22:24',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ALH','ALH',1,NULL,'2011-06-04 14:22:24',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ALN','Activity Learning',1,NULL,'2012-03-21 17:43:27',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','ALW','Advanced Level Work Based Training ',1,NULL,'2011-06-07 09:43:27',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
+ ('0001','AMM','AMM',1,NULL,'2012-09-11 14:47:34',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','AP','A+P',1,NULL,'2012-03-21 17:58:04',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','AR','Arts',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','ART','ARTS',1,NULL,'2012-08-14 16:04:23',NULL,'E0001001311019',NULL,'DOMAIN',0,'',''),
+ ('0001','ASD','ASD',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','ASD','ASD',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','ASM','ASM',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','ASM','ASM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','ASW','ASW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','ASW','ASW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','AT','Attendance',1,NULL,'2012-03-21 17:56:59',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','ATT','Attendance',1,NULL,'2012-03-21 17:41:17',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','AV','Ayurveda',1,NULL,'2012-01-12 12:28:03',NULL,'E0001001311019',NULL,'BRNCOD',0,'',''),
- ('0001','AVC','Ayurveda Courses',1,NULL,'2012-01-12 12:34:47',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','AVC','Ayurveda courses group',1,NULL,'2012-01-12 12:35:59',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
+ ('0001','AVC','AVC',1,NULL,'2012-01-12 12:34:47',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','B','8',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','B','Group B',1,NULL,'2011-11-04 15:24:07',NULL,'Deepak',NULL,'PSTGRP',NULL,NULL,NULL),
  ('0001','B','Biology',1,NULL,'0000-00-00 00:00:00','2012-06-11 13:23:08','Dheeraj','E0001001611017','SUBCOD',0,'',''),
  ('0001','B-','7',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
- ('0001','BAH','Business Administration Half Course',1,NULL,'2011-06-04 14:23:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','BAH','BAH',1,NULL,'2011-06-04 14:23:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','BAH','BAH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','BAM','Business Account Major',1,NULL,'2012-05-26 13:06:58',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','BAM','BAM',1,NULL,'2012-05-26 13:06:58',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','BAM','BAM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','BAM','Build Activity \n\nMaster',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'YEPCOD',3,NULL,NULL),
+ ('0001','BAW','BAW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','BAW','BAW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','BBC','BBC',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','BBC','BBC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','BBM','BBM',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','BBM','BBM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','BBW','BBW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','BBW','BBW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','BC','OBC',1,NULL,'2011-01-01 00:00:00',NULL,'deepak',NULL,'STDCTG',NULL,NULL,NULL),
- ('0001','BCG','Bsc Conditional Group',1,NULL,'2012-01-05 16:03:57',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','BHM','Botany major',1,NULL,'2012-01-04 11:52:21',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','BHA','BHA',1,NULL,'2012-09-22 13:11:14',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','BHB','BHB',1,NULL,'2012-09-22 13:11:24',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','BHC','BHC',1,NULL,'2012-09-22 13:11:05',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','BHM','BHM',1,NULL,'2012-01-04 11:52:21',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','BIC','Build Instructor\n\nCourse',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'YEPCOD',4,NULL,NULL),
- ('0001','BIM','Biology Major BEd B',1,NULL,'2011-06-09 08:04:45',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','BMS','BSC Computer Science Major',1,NULL,'2011-12-28 12:59:29',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','BMS','BSC Major Group',1,NULL,'2011-12-28 15:02:26',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','BMT','Botany Major Theory',1,NULL,'2012-05-29 12:06:25',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','BIM','Biology',1,NULL,'2011-06-09 08:04:45','2012-09-29 12:40:40','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
+ ('0001','BMS','BMS',1,NULL,'2011-12-28 12:59:29',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','BMT','BMT',1,NULL,'2012-05-29 12:06:25',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','BO','Botany',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','BOH','Botany Half Course',1,NULL,'2011-06-04 14:23:52','2012-03-05 15:46:06','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
+ ('0001','BOE','Botany Elective',1,NULL,'2012-09-29 12:37:43',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','BOH','BOH',1,NULL,'2011-06-04 14:23:52','2012-03-05 15:46:06','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
  ('0001','BOH','BOH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','BOM','Botany Major',1,NULL,'2011-06-09 08:01:29','2012-03-03 12:07:54','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
+ ('0001','BOM','Botany',1,NULL,'2011-06-09 08:01:29','2012-09-29 12:41:23','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','BOM','BOM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','BOW','Botany Work Exp',1,NULL,'2012-03-03 15:27:12',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','BOW','BOW',1,NULL,'2012-03-03 15:27:12',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','BOW','BOW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','BPR','Build Program\n\nRegistration',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'YEPCOD',2,NULL,NULL),
- ('0001','BSC','BSC Core Courses',1,NULL,'2011-12-28 14:53:05',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','BSH','Bsc Honours Courses',1,NULL,'2012-01-04 12:42:38',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
+ ('0001','BSC','BSC',1,NULL,'2011-12-28 14:53:05',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','BT1','Best 1',1,NULL,'2012-03-21 17:39:10',NULL,'E0001001311019',NULL,'CERULE',0,'',''),
  ('0001','BT2','Best 2',1,NULL,'2012-03-21 17:39:25',NULL,'E0001001311019',NULL,'CERULE',0,'',''),
  ('0001','BT3','Best 3',1,NULL,'2012-03-21 17:39:33',NULL,'E0001001311019',NULL,'CERULE',0,'',''),
  ('0001','BT4','Best 4',1,NULL,'2012-03-21 17:39:41',NULL,'E0001001311019',NULL,'CERULE',0,'',''),
  ('0001','BT5','Best 5',1,NULL,'2012-03-21 17:39:53',NULL,'E0001001311019',NULL,'CERULE',0,'',''),
- ('0001','BWE','BSC Work exp',1,NULL,'2011-12-29 15:18:44',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','C','Core',1,NULL,'2011-05-17 00:00:00','2012-05-23 16:38:26','uk','E0001001611017','CRCLSF',0,'',''),
  ('0001','C','6',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','C','Group C',1,NULL,'2011-11-04 15:24:08',NULL,'Deepak',NULL,'PSTGRP',NULL,NULL,NULL),
  ('0001','C','Commerce',1,NULL,'0000-00-00 00:00:00','2012-06-09 12:30:18','Dheeraj','E0001001311019','SUBCOD',0,'',''),
  ('0001','C-','5',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','C1','Class Test 1',1,NULL,'2012-03-24 21:33:50',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','C2','Class Test 2',1,NULL,'2012-03-24 21:34:08',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','C3','Class Test 3',1,NULL,'2012-08-13 13:20:25',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','CA','Class Assignment',1,NULL,'2012-03-21 17:57:36',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','CA1','Class Assignment 1',1,NULL,'2012-03-21 17:40:57',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','CAC','Core Sub Group ',1,NULL,'2011-06-06 08:28:38',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','CAC','CAC',1,NULL,'2011-06-06 08:28:38','2012-09-18 15:38:00','E00010001201100005','E0001001312032','CRSGRP',0,'',''),
  ('0001','CAC','CAC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CCM','Content cum Methodology at graduate level',1,NULL,'2011-06-07 09:35:53',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','CEC','Cultural Education',1,NULL,'2011-06-07 10:06:31',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','CC','Co-Curricular Activities',1,NULL,'2012-09-05 11:31:36',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','CCA','CCA',1,NULL,'2012-09-11 15:21:18',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CCA','Co-Curricular Activities',1,NULL,'2012-09-05 11:29:25',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','CCM','CCM',1,NULL,'2011-06-07 09:35:53',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','CEC','CEC',1,NULL,'2011-06-07 10:06:31',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','CEC','CEC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CG1','Bsc Conditional group1',1,NULL,'2012-01-05 16:04:24',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
  ('0001','CH','Chemistry',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','CHH','Chemistry Half Course',1,NULL,'2011-06-04 14:24:10',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','CH1','CHM Optional',1,NULL,'2012-09-29 11:04:40',NULL,'E0001001312036',NULL,'CRSGRP',0,'',''),
+ ('0001','CHE','Chemistry Elective',1,NULL,'2012-09-29 12:38:45',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CHH','CHH',1,NULL,'2011-06-04 14:24:10',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','CHH','CHH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CHM','Chemistry Major',1,NULL,'2011-06-09 08:01:51','2012-03-03 12:08:09','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
+ ('0001','CHM','Chemistry',1,NULL,'2011-06-09 08:01:51','2012-09-29 12:42:17','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','CHM','CHM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CHW','Chemistry Work Exp',1,NULL,'2012-03-03 15:27:31',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CHW','CHW',1,NULL,'2012-03-03 15:27:31',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','CHW','CHW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CIM','Civics Major BEd B',1,NULL,'2011-06-09 08:05:16',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','CIM','Civics',1,NULL,'2011-06-09 08:05:16','2012-09-29 12:43:26','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','CM','Commerce',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','CMA','Content cum Methodology A',1,NULL,'2011-06-09 07:59:23',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
- ('0001','CMB','Content cum Methodology B',1,NULL,'2011-06-09 07:59:38',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
- ('0001','CMH','Chemistry Major',1,NULL,'2012-01-04 11:52:58',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','CMM','Commerce Major BEd A',1,NULL,'2011-06-09 09:10:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','CMN','Communication and Computer Major',1,NULL,'2012-05-30 11:31:55',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','CO','Computer Science Physics',1,NULL,'2012-02-27 11:21:46','2012-05-29 13:13:47','E0001001311019','E0001001311019','BRNCOD',0,'',''),
+ ('0001','CMA','Content Methodology A',1,NULL,'2012-10-06 13:05:18',NULL,'E0001001312032',NULL,'PROGRP',0,'',''),
+ ('0001','CMB','Content Methodology B',1,NULL,'2012-10-06 13:05:27',NULL,'E0001001312032',NULL,'PROGRP',0,'',''),
+ ('0001','CME','COMMERCE ELECTIVE',1,NULL,'2012-09-29 12:47:08',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CMH','CMH',1,NULL,'2012-01-04 11:52:58',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CMM','CMM Commerce',1,NULL,'2011-06-09 09:10:12','2012-09-29 13:03:17','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
+ ('0001','CMN','CMN',1,NULL,'2012-05-30 11:31:55',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','CO','Core',1,NULL,'2011-06-06 11:08:23',NULL,'E00010001201100005',NULL,'CRSTYP',0,'',''),
- ('0001','CO1','Conditional group 1',1,NULL,'2011-06-10 10:51:39',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
  ('0001','COL','College',1,NULL,'2012-05-25 12:50:07',NULL,'E0001001311019',NULL,'ENTTYP',2,'',''),
- ('0001','COM','Commerce Major BEd B',1,NULL,'2011-06-09 08:05:36',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','COM','COM Commerce',1,NULL,'2011-06-09 08:05:36','2012-09-29 13:03:47','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
+ ('0001','COM','COMMERCE',1,NULL,'2012-08-30 11:22:31','2012-09-17 16:10:56','E0001001311019','E0001001312032','DOMAIN',0,'',''),
  ('0001','CON','Confirmed',1,NULL,'2011-11-04 15:24:20',NULL,'Deepak',NULL,'EMPSTS',NULL,NULL,NULL),
- ('0001','CON','Conditional Group',1,NULL,'2011-06-04 13:18:58',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
- ('0001','COR','Core Courses',1,NULL,'2012-05-24 15:24:44',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
- ('0001','COR','Core',1,NULL,'2011-06-06 08:28:21',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
+ ('0001','CON','Conditional Courses Group',1,NULL,'2011-06-04 13:18:58','2012-10-06 13:08:20','E00010001201100005','E0001001312032','PROGRP',0,'',''),
+ ('0001','COR','Core Courses',1,NULL,'2012-05-24 15:24:44','2012-09-29 12:02:27','E0001001611017','E0001001312031','CRSGRP',0,'',''),
+ ('0001','COR','Core Courses Group',1,NULL,'2011-06-06 08:28:21','2012-10-06 13:07:57','E00010001201100005','E0001001312032','PROGRP',0,'',''),
+ ('0001','CRC','CRC',1,NULL,'2012-09-14 17:29:11','2012-09-15 11:03:19','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','CRC','CRC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CRM','Cryptography Information Management',1,NULL,'2012-05-29 13:23:54',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CRM','CRM',1,NULL,'2012-05-29 13:23:54',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','CS','Computer Science',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','CSD','CSD',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','CSD','CSD',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CSH','Computer Science Major',1,NULL,'2012-01-04 11:54:55',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','CSM','Computer Science Major',1,NULL,'2012-02-29 14:38:01','2012-03-02 12:51:29','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','CSH','CSH',1,NULL,'2012-01-04 11:54:55',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CSM','CSM',1,NULL,'2012-02-29 14:38:01','2012-03-02 12:51:29','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','CSM','CSM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','CSO','Computer Science Optional',1,NULL,'2012-05-29 16:48:49',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','CSO','CSO',1,NULL,'2012-05-29 16:48:49',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','CT','Class Test',1,NULL,'2012-03-21 17:55:30',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','CT1','Class Test 1',1,NULL,'2012-03-21 10:36:49',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','CT2','Class Test 2',1,NULL,'2012-03-21 10:37:04',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','CT3','Class Test 3',1,NULL,'2012-03-21 10:37:22',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','CTP','Clear Staging tables',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'YEPCOD',6,NULL,NULL),
  ('0001','CTT','Clear Temporary tables',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'BSEPCD',1,NULL,NULL),
- ('0001','CUM','Contentcum Methodology at advance level',1,NULL,'2011-06-07 09:36:24',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','CUM','CUM',1,NULL,'2011-06-07 09:36:24',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','CV','Civil',1,NULL,'2012-05-16 15:48:34',NULL,'E0001001611017',NULL,'BRNCOD',0,'',''),
  ('0001','D','4',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','D','Dual Mode',1,NULL,'2011-05-16 00:00:00',NULL,'uk',NULL,'PRGMOD',NULL,NULL,NULL),
  ('0001','D','Group D',1,NULL,'2011-11-04 15:24:14',NULL,'Deepak',NULL,'PSTGRP',NULL,NULL,NULL),
- ('0001','D','distance',1,NULL,'2011-06-16 09:10:52',NULL,'E00010001201100005',NULL,'REGDIS',0,'',''),
  ('0001','D','Subject D',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'SUBCOD',NULL,NULL,NULL),
  ('0001','D-','3',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','D1','Dissection 1',1,NULL,'2012-03-24 21:44:50',NULL,'E00010003201100028',NULL,'EVLGRP',0,'',''),
  ('0001','D2','Dissection 2',1,NULL,'2012-03-24 21:45:01',NULL,'E00010003201100028',NULL,'EVLGRP',0,'',''),
+ ('0001','DAE','DAE',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','DAE','DAE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DAM','Diploma Automobile Major',1,NULL,'2012-06-09 13:02:41',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','DAM','DAM',1,NULL,'2012-06-09 13:02:41',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','DAS','DAS',1,NULL,'2012-09-15 10:54:05','2012-09-15 10:59:17','Ashish','E0001001311019','CRSGRP',0,'',''),
  ('0001','DAS','DAS',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','DAV','DAV',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','DAV','DAV',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','DBE','DBE',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','DBE','DBE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','DCA','COMPUTERS',1,NULL,'2012-09-19 15:49:32','2012-09-19 15:51:02','E0001001312032','E0001001312032','DOMAIN',0,'',''),
+ ('0001','DEE','DEE',1,NULL,'2012-09-15 10:54:05','2012-09-15 11:02:42','Ashish','E0001001311019','CRSGRP',0,'',''),
  ('0001','DEE','DEE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','DEI','Dayalbagh Educational Institute',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'CENCOD',1,NULL,NULL),
  ('0001','DEL','Delhi',1,NULL,'2011-05-20 09:51:55',NULL,'E00010001201100005',NULL,'LCNMST',0,'',''),
- ('0001','DEN','Dean',1,NULL,'2012-05-23 15:52:10',NULL,'E0001001611017',NULL,'DESGNS',0,'',''),
  ('0001','DEO','Data Entry Operator',1,NULL,'2012-06-11 11:39:36',NULL,'E0001001611017',NULL,'DESGNS',0,'',''),
- ('0001','DEO','data entry operator',1,NULL,'2012-06-05 14:56:18',NULL,'E0001001611017',NULL,'UNROLE',0,'',''),
+ ('0001','DEO','data entry operator',1,NULL,'2012-06-05 14:56:18',NULL,'E0001001611017',NULL,'UNROLE',0,'1',''),
  ('0001','DEP','Department',1,NULL,'2011-05-20 09:40:12',NULL,'E00010001201100005',NULL,'ENTTYP',3,'',''),
+ ('0001','DEV','Developer',1,NULL,'2012-09-15 12:46:34',NULL,'E0001001311019',NULL,'UNROLE',0,'1',''),
+ ('0001','DGT','DGT',1,NULL,'2012-08-28 15:59:40',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','DGT','DGT',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','DHU','DHU',1,NULL,'2012-09-11 15:22:44','2012-09-15 11:01:27','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','DHU','DHU',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','DI','DIS',1,NULL,'2012-03-24 21:46:26',NULL,'E00010003201100028',NULL,'EVLGRP',0,'',''),
  ('0001','DI1','Dissection 1',1,NULL,'2012-03-23 20:14:23',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','DI2','Dissection 2',1,NULL,'2012-03-23 20:14:36',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','DID','DID',1,NULL,'2012-08-29 11:22:05',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','DID','DID',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DIS','distance',1,NULL,'2011-06-06 00:00:00',NULL,'uk',NULL,'CRSCTG',NULL,NULL,NULL),
+ ('0001','DJM','DJM',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','DJM','DJM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','DLT','DLT',1,NULL,'2012-08-29 15:03:55',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','DLT','DLT',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','DME','DME',1,NULL,'2012-09-15 10:54:05','2012-09-15 11:00:19','Ashish','E0001001311019','CRSGRP',0,'',''),
  ('0001','DME','DME',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DMO','data managing officer',1,NULL,'2012-06-12 17:20:52',NULL,'E0001001311019',NULL,'UNROLE',0,'',''),
+ ('0001','DMO','data managing officer',1,NULL,'2012-06-12 17:20:52',NULL,'E0001001311019',NULL,'UNROLE',0,'1',''),
+ ('0001','DOM','DOM',1,NULL,'2012-08-28 17:20:43',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','DOM','DOM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','DP','Drawing & Painting',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','DP','Discipline',1,NULL,'2012-09-05 11:32:09',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','DPA','DPA',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','DPA','DPA',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DPH','Drawing and Painting Half Course',1,NULL,'2011-06-04 13:56:38',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','DPC','DPC Drawing Painting Choice',1,NULL,'2012-09-21 13:38:48','2012-10-01 15:55:58','E0001001312032','E0001001312031','CRSGRP',0,'',''),
+ ('0001','DPH','DPH',1,NULL,'2011-06-04 13:56:38',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','DPH','DPH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DPM','Drawing  Painting',1,NULL,'2011-06-04 12:35:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','DPM','DPM Drawing Painting',1,NULL,'2011-06-04 12:35:12','2012-09-29 13:04:28','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','DPM','DPM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DPP','Drawing Painting Practical',1,NULL,'2012-05-24 17:04:44','2012-05-25 12:52:14','E0001001311019','E0001001311019','CRSGRP',0,'',''),
- ('0001','DPW','Drawing and Painting Work Ex',1,NULL,'2011-06-06 10:00:40',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','DPP','DPP',1,NULL,'2012-05-24 17:04:44','2012-05-25 12:52:14','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','DPW','DPW',1,NULL,'2011-06-06 10:00:40',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','DPW','DPW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','DS1','Discussion 1',1,NULL,'2012-03-21 17:54:37',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','DS2','Discussion 2',1,NULL,'2012-03-21 17:54:57',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','DSE','DSE DISSERTION ELECTIVE',1,NULL,'2012-09-29 12:58:36','2012-09-29 13:01:59','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','DSP','Discipline',1,NULL,'2012-09-05 11:30:07',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','DTD','DTD',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','DTD','DTD',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','DWM','Drawing and Painting Major BEd B',1,NULL,'2011-06-09 08:06:44',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','DWM','DWM Drawing Painting',1,NULL,'2011-06-09 08:06:44','2012-09-29 13:05:24','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','E','External',1,NULL,'2012-03-21 17:38:18',NULL,'E0001001311019',NULL,'DISTYP',0,'',''),
  ('0001','E','2',1,NULL,'2011-01-01 00:00:00',NULL,'Deepak',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','E','Group E',1,NULL,'2011-11-04 15:24:15',NULL,'Deepak',NULL,'PSTGRP',NULL,NULL,NULL),
  ('0001','E','Subject E',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'SUBCOD',NULL,NULL,NULL),
  ('0001','E-','1',1,NULL,'2011-01-01 00:00:00',NULL,'Deepak',NULL,'GRADEP',NULL,NULL,NULL),
+ ('0001','EBT','EBT',1,NULL,'2012-10-30 16:28:36',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
  ('0001','EC','Economics',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','ECH','Economics Half Course',1,NULL,'2011-06-04 14:00:45',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ECH','ECH',1,NULL,'2011-06-04 14:00:45',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ECH','ECH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ECM','Economics Major',1,NULL,'2011-06-04 12:36:13',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ECM','ECM Economics',1,NULL,'2011-06-04 12:36:13','2012-09-29 13:08:50','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','ECM','ECM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ECW','Economics Work EX',1,NULL,'2011-06-06 10:00:11',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ECW','ECW',1,NULL,'2011-06-06 10:00:11',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ECW','ECW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','ED','Education',1,NULL,'2012-05-26 15:57:45','2012-05-26 16:02:40','E0001001311019','E0001001311019','BRNCOD',0,'',''),
+ ('0001','EDC','EDC',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','EDC','EDC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','EDH','Education Half Course',1,NULL,'2011-06-04 14:21:55',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','EDH','EDH',1,NULL,'2011-06-04 14:21:55',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','EDH','EDH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','EDM','Education Major Courses',1,NULL,'2012-05-24 15:23:35',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
+ ('0001','EDM','EDM',1,NULL,'2012-05-24 15:23:35',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
  ('0001','EDM','EDM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','EDW','Education Work-Ex. Courses',1,NULL,'2012-05-24 15:24:25',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
+ ('0001','EDU','EDUCATION',1,NULL,'2012-08-14 16:09:48',NULL,'E0001001311019',NULL,'DOMAIN',0,'',''),
+ ('0001','EDW','EDW',1,NULL,'2012-05-24 15:24:25',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
  ('0001','EDW','EDW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','EE','Electrical',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','EE7','EE7',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','EE7','EE7',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','EE8','EE8',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','EE8','EE8',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','EED','EED',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','EED','EED',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','EEH','Environmental Education Half Course',1,NULL,'2011-06-04 14:23:35',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','EEH','EEH',1,NULL,'2011-06-04 14:23:35',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','EEH','EEH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','EEM','Electrical Major',1,NULL,'2012-06-11 10:42:21',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','EEM','EEM',1,NULL,'2012-06-11 10:42:21',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','EEM','EEM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','EEW','EEW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','EEW','EEW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','EGC','EGC',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','EGC','EGC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','EHM','English Major BEd B',1,NULL,'2011-06-09 08:07:08',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','EHM','EHM English',1,NULL,'2011-06-09 08:07:08','2012-09-29 13:02:28','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','EL','Electronics',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','ELM','Electronic Major',1,NULL,'2012-06-11 16:39:26',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','EMM','Major Edu. Courses(Mandatory)',1,NULL,'2012-05-24 15:23:20',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
- ('0001','EMP','Education Major Practical',1,NULL,'2012-05-24 17:05:47',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
- ('0001','EMT','Education Major Theory',1,NULL,'2012-05-24 17:05:32',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
+ ('0001','EL1','Elective Group 1',1,NULL,'2012-10-06 11:18:48','2012-10-06 13:07:33','E0001001312032','E0001001312032','PROGRP',0,'',''),
+ ('0001','EL2','Elective Group 2',1,NULL,'2012-10-06 11:18:59','2012-10-06 13:07:45','E0001001312032','E0001001312032','PROGRP',0,'',''),
+ ('0001','ELM','ELM',1,NULL,'2012-06-11 16:39:26',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','EM1','EEM Optional',1,NULL,'2012-09-27 17:21:54',NULL,'E0001001312036',NULL,'CRSGRP',0,'',''),
+ ('0001','EM2','EEM Optional 2',1,NULL,'2012-09-28 15:23:34',NULL,'E0001001312036',NULL,'CRSGRP',0,'',''),
+ ('0001','EM3','EEM Optional 3',1,NULL,'2012-09-29 13:26:39',NULL,'E0001001312036',NULL,'CRSGRP',0,'',''),
+ ('0001','EMM','EMM',1,NULL,'2012-05-24 15:23:20',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
+ ('0001','EMP','EMP',1,NULL,'2012-05-24 17:05:47',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
+ ('0001','EMT','EMT',1,NULL,'2012-05-24 17:05:32','2012-09-19 12:25:35','E0001001611017','E0001001611017','CRSGRP',0,'',''),
  ('0001','EN','English',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','ENF','BSc Non faculty Courses',1,NULL,'2011-12-29 12:31:53','2012-01-09 12:46:36','E0001001311019','E0001001311019','CRSGRP',0,'',''),
- ('0001','ENH','English Half Course',1,NULL,'2011-06-04 13:58:25',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ENF','ENF',1,NULL,'2011-12-29 12:31:53','2012-01-09 12:46:36','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','ENG','ENGINEERING',1,NULL,'2012-09-15 11:57:44',NULL,'E0001001311019',NULL,'DOMAIN',0,'',''),
+ ('0001','ENH','ENH',1,NULL,'2011-06-04 13:58:25',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ENH','ENH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ENM','English Major',1,NULL,'2011-06-04 12:31:01',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ENM','ENM English',1,NULL,'2011-06-04 12:31:01','2012-09-29 13:06:41','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','ENM','ENM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','ENR','Enrollment Number Generation',1,NULL,'2011-01-05 11:48:26','2012-03-30 15:58:47','Deepak Pandey','E0001001311019','ACTMST',0,'',''),
- ('0001','ENW','English Work Ex',1,NULL,'2011-06-06 10:01:01',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ENW','ENW',1,NULL,'2011-06-06 10:01:01',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ENW','ENW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','EPS','Program Semester Tye wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
+ ('0001','ES','Engineering Systems',1,NULL,'2012-09-15 15:19:31',NULL,'E0001001312032',NULL,'BRNCOD',0,'',''),
  ('0001','ET','External Marks',1,NULL,'2012-03-22 18:10:19',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','ET','Entrance Test',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'MRTCOM',NULL,NULL,NULL),
  ('0001','EW','EW',1,NULL,'2012-03-23 20:17:07',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
@@ -5359,16 +6021,17 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','EX','Experience',1,NULL,'2012-03-21 18:18:01','2012-03-22 18:10:08','E0001001311019','E0001001311019','EVLGRP',0,'',''),
  ('0001','EXP','Experience',1,NULL,'2012-03-21 17:45:14',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','EXT','External Marks',1,NULL,'2012-03-22 18:07:20',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','EXU','Examination User',1,NULL,'2012-05-25 15:48:03',NULL,'E0001001311019',NULL,'UNROLE',0,'',''),
+ ('0001','EXU','Examination User',1,NULL,'2012-05-25 15:48:03',NULL,'E0001001311019',NULL,'UNROLE',0,'1',''),
  ('0001','F','Female',1,NULL,'2011-05-04 14:59:09','2011-05-04 14:59:45','E00010001201100005','E00010001201100005','GENDER',0,'',''),
  ('0001','F','0',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'GRADEP',NULL,NULL,NULL),
  ('0001','F','Full time',1,NULL,'2011-05-16 00:00:00',NULL,'uk',NULL,'PRGTYP',NULL,NULL,NULL),
  ('0001','FAC','Faculty',1,NULL,'2011-05-20 09:39:45',NULL,'E00010001201100005',NULL,'ENTTYP',2,'',''),
- ('0001','FAH','Faculty Half Courses',1,NULL,'2011-12-28 16:18:34',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','FAH','FAH',1,NULL,'2011-12-28 16:18:34',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','FAL','Fail',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'SSMSTS',NULL,NULL,NULL),
- ('0001','FCH','Faculty Half Courses',1,NULL,'2011-12-28 16:42:18',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','FED','Fundamentals of Educational ...',1,NULL,'2011-06-07 09:34:55',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','FHC','Faculty Half Course',1,NULL,'2011-06-04 13:42:50',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
+ ('0001','FED','FED',1,NULL,'2011-06-07 09:34:55',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','FHC','Faculty Half Courses Group',1,NULL,'2012-10-06 13:05:56','2012-10-06 13:08:32','E0001001312032','E0001001312032','PROGRP',0,'',''),
+ ('0001','FIL','File',1,NULL,'2012-09-06 13:05:09',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','FL','File',1,NULL,'2012-09-06 13:05:22',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','FS','First Stage',1,NULL,'2011-11-04 16:11:14',NULL,'dev',NULL,'PSTSTG',1,NULL,NULL),
  ('0001','FTS','Fourth Stage',1,NULL,'2011-11-23 13:06:30',NULL,'dev',NULL,'PSTSTG',4,NULL,NULL),
  ('0001','FU','Fungi',1,NULL,'2012-03-24 21:24:41',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
@@ -5380,99 +6043,131 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','G3','Subject 3',1,NULL,'2012-06-16 10:35:29',NULL,'aSHISH mOhan',NULL,'PAPGRP',NULL,NULL,NULL),
  ('0001','G3','Group 3',1,NULL,'2012-06-09 12:27:05',NULL,'E0001001311019',NULL,'SEMGRP',0,'',''),
  ('0001','G4','Subject 4',1,NULL,'2012-06-16 10:35:41',NULL,'aSHISH mOhan',NULL,'PAPGRP',NULL,NULL,NULL),
+ ('0001','G4','Group 4',1,NULL,'2012-09-15 12:25:17',NULL,'E0001001311019',NULL,'SEMGRP',0,'',''),
  ('0001','GD','Group Discussion',1,NULL,'2012-03-21 17:56:23',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','GD','Group Discussion',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'MRTCOM',NULL,NULL,NULL),
  ('0001','GD1','Group Discussion 1',1,NULL,'2012-03-21 17:51:48',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','GEM','Geography Maor BEd B',1,NULL,'2011-06-09 08:09:28',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','GEM','GEM Geography',1,NULL,'2011-06-09 08:09:28','2012-09-29 13:08:13','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
+ ('0001','GKC','GKC',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','GKC','GKC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','GN','General',1,NULL,'2011-01-01 00:00:00',NULL,'deepak',NULL,'STDCTG',NULL,NULL,NULL),
  ('0001','GR','Grade system',1,NULL,'2012-01-04 11:46:29',NULL,'E0001001311019',NULL,'CRSOPT',0,'',''),
  ('0001','GT','Garment Technology',1,NULL,'2012-06-09 11:45:32',NULL,'E0001001311019',NULL,'BRNCOD',0,'',''),
  ('0001','GT','Greater Than',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'LOGCTR',NULL,NULL,NULL),
- ('0001','GYN','Gayan Practitcal Courses',1,NULL,'2012-05-25 11:33:41','2012-05-25 12:52:55','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','GYN','GYN',1,NULL,'2012-05-25 11:33:41','2012-05-25 12:52:55','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','H','Home Science',1,NULL,'2012-06-09 12:30:36',NULL,'E0001001311019',NULL,'SUBCOD',0,'',''),
  ('0001','HA','Half Course',1,NULL,'2011-06-06 11:08:41',NULL,'E00010001201100005',NULL,'CRSTYP',0,'',''),
  ('0001','HA','Home Assignment',1,NULL,'2012-03-21 17:57:49',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','HA1','Home Assignment 1',1,NULL,'2011-05-20 13:19:49','2012-03-21 10:36:15','E00010001201100005','E0001001311019','EVLCOM',0,'',''),
- ('0001','HAT','High School Arts',1,NULL,'2012-05-28 15:23:00',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','HAT','HAT Arts',1,NULL,'2012-05-28 15:23:00','2012-10-03 11:56:48','E0001001311019','E0001001312031','CRSGRP',0,'',''),
  ('0001','HAT','HAT',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HCC','HCC',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HCC','HCC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HCE','HCE',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HCE','HCE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HCR','HCR',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HCR','HCR',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','HE1','High School Elective 1',1,NULL,'2012-05-28 15:54:32',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','HE2','High School Elective 2',1,NULL,'2012-05-28 15:54:50',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
+ ('0001','HDM','Hindi B',1,NULL,'2012-09-27 12:47:10',NULL,'E0001001312035',NULL,'CRSGRP',0,'',''),
+ ('0001','HED','HED',1,NULL,'2012-09-21 13:00:50',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','HEN','HEN',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HEN','HEN',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HGK','HGK',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HGK','HGK',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HHI','HHI',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HHI','HHI',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','HHS','High School Home Science',1,NULL,'2012-05-28 15:36:16',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','HHS','HHS Home Science',1,NULL,'2012-05-28 15:36:16','2012-10-03 11:53:58','E0001001311019','E0001001312031','CRSGRP',0,'',''),
+ ('0001','HHS','HIGH SCHOOL',1,NULL,'2012-10-03 15:16:54',NULL,'E0001001312032',NULL,'DOMAIN',0,'',''),
  ('0001','HHS','HHS',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','HI','Hindi',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','HIH','HIH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HIH','HIH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HIM','HIM Hindi',1,NULL,'2012-09-15 10:54:05','2012-09-29 13:09:56','Ashish','E0001001312031','CRSGRP',0,'',''),
  ('0001','HIM','HIM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HIW','HIW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HIW','HIW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HLF','Half Courses Group',1,NULL,'2012-09-27 17:27:09','2012-10-06 13:08:47','E0001001312032','E0001001312032','PROGRP',0,'',''),
+ ('0001','HMA','HMA',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HMA','HMA',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','HMU','High School Music',1,NULL,'2012-05-28 15:34:33',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','HMU','HMU Music',1,NULL,'2012-05-28 15:34:33','2012-10-03 11:59:14','E0001001311019','E0001001312031','CRSGRP',0,'',''),
  ('0001','HMU','HMU',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','HO','Home SCIENCE',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','HRM','System AdminUPM',1,NULL,'2011-10-10 12:47:13','2011-11-05 14:11:43','dev','E00010001201100006','UNROLE',0,'',''),
+ ('0001','HO','B.A. Home Science',1,NULL,'2011-01-05 11:48:25','2012-09-19 17:07:45','Deepak Pandey','E0001001312032','BRNCOD',0,'',''),
+ ('0001','HOM','HOM Home Science',1,NULL,'2012-09-27 12:54:48','2012-09-29 13:11:36','E0001001312035','E0001001312031','CRSGRP',0,'',''),
+ ('0001','HRM','System AdminUPM',1,NULL,'2011-10-10 12:47:13','2011-11-05 14:11:43','dev','E00010001201100006','UNROLE',0,'1',''),
  ('0001','HS','Home Science',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
  ('0001','HS','High School',1,NULL,'2012-06-18 11:11:16',NULL,'Ashish Mohan',NULL,'SPWCOD',NULL,NULL,NULL),
- ('0001','HSC','High School Compulsory',1,NULL,'2012-05-28 15:35:56',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','HSC','High School Compulsary',1,NULL,'2012-05-28 15:54:01',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
+ ('0001','HS1','HSM Home Science Optional1',1,NULL,'2012-10-01 15:42:47',NULL,'E0001001312036',NULL,'CRSGRP',0,'',''),
+ ('0001','HS2','HSM Home Science Optional 2',1,NULL,'2012-10-01 15:43:17',NULL,'E0001001312036',NULL,'CRSGRP',0,'',''),
+ ('0001','HSC','HSC Compulsory Courses',1,NULL,'2012-05-28 15:35:56','2012-10-04 16:27:02','E0001001311019','E0001001312031','CRSGRP',0,'',''),
  ('0001','HSC','HSC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HSH','HSH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HSH','HSH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','HSK','High School Sanskrit',1,NULL,'2012-05-28 15:33:06',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','HSM','High School Mathematics',1,NULL,'2012-05-28 15:34:54',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','HSK','HSK Sanskrit',1,NULL,'2012-05-28 15:33:06','2012-10-04 16:17:58','E0001001311019','E0001001312031','CRSGRP',0,'',''),
+ ('0001','HSM','HSM Home Science',1,NULL,'2012-05-28 15:34:54','2012-09-29 13:12:10','E0001001311019','E0001001312031','CRSGRP',0,'',''),
  ('0001','HSM','HSM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HSR','HSR',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HSR','HSR',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HSS','HSS',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HSS','HSS',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HST','HST Sanskrit',1,NULL,'2012-09-15 10:54:05','2012-10-04 16:17:19','Ashish','E0001001312031','CRSGRP',0,'',''),
  ('0001','HST','HST',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HSW','HSW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HSW','HSW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','HTM','HTM History',1,NULL,'2012-09-27 12:51:49','2012-09-29 13:10:48','E0001001312035','E0001001312031','CRSGRP',0,'',''),
+ ('0001','HWE','HWE',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','HWE','HWE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','I','Internal',1,NULL,'2012-03-21 17:38:05',NULL,'E0001001311019',NULL,'DISTYP',0,'',''),
  ('0001','I','Integrated Mode ',1,NULL,'2011-05-16 00:00:00',NULL,'uk',NULL,'PRGMOD',NULL,NULL,NULL),
- ('0001','IAC','ACCOUNTANCY',1,NULL,'2011-08-26 15:39:19',NULL,'E00010001201100005',NULL,'CRSGRP',3,NULL,NULL),
+ ('0001','IAC','IAC',1,NULL,'2011-08-26 15:39:19',NULL,'E00010001201100005',NULL,'CRSGRP',3,NULL,NULL),
  ('0001','IAC','IAC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','IBC','MANAGEMENT',1,NULL,'2011-08-26 15:39:37',NULL,'E00010001201100005',NULL,'CRSGRP',4,NULL,NULL),
+ ('0001','IAT','IAT Arts',1,NULL,'2012-10-03 16:33:33',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','IBC','IBC',1,NULL,'2011-08-26 15:39:37',NULL,'E00010001201100005',NULL,'CRSGRP',4,NULL,NULL),
  ('0001','IBC','IBC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ICC','COCURRICULAR ACT',1,NULL,'2011-08-26 15:41:59',NULL,'E00010001201100005',NULL,'CRSGRP',11,NULL,NULL),
+ ('0001','IBI','IBI Biology',1,NULL,'2012-10-03 12:14:03',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','ICC','ICC',1,NULL,'2011-08-26 15:41:59',NULL,'E00010001201100005',NULL,'CRSGRP',11,NULL,NULL),
  ('0001','ICC','ICC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ICE','CULTURAL EDUCATION 1',1,NULL,'2011-08-26 15:40:26',NULL,'E00010001201100005',NULL,'CRSGRP',7,NULL,NULL),
+ ('0001','ICE','ICE',1,NULL,'2011-08-26 15:40:26',NULL,'E00010001201100005',NULL,'CRSGRP',7,NULL,NULL),
  ('0001','ICE','ICE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ICH','CHEMISTRY',1,NULL,'2011-08-27 10:08:41',NULL,'E00010001201100005',NULL,'CRSGRP',4,NULL,NULL),
+ ('0001','ICH','ICH',1,NULL,'2011-08-27 10:08:41',NULL,'E00010001201100005',NULL,'CRSGRP',4,NULL,NULL),
  ('0001','ICH','ICH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ICR','COMPARATIVE STUDY',1,NULL,'2011-08-26 15:42:30',NULL,'E00010001201100005',NULL,'CRSGRP',8,NULL,NULL),
+ ('0001','ICI','ICI Civics',1,NULL,'2012-10-03 16:33:55',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','ICO','Intermediate Compulory Courses',1,NULL,'2012-10-03 12:04:53',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','ICR','ICR',1,NULL,'2011-08-26 15:42:30',NULL,'E00010001201100005',NULL,'CRSGRP',8,NULL,NULL),
  ('0001','ICR','ICR',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ICT','Intermediate Courses',1,NULL,'2012-06-21 16:27:07',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
+ ('0001','ICT','ICT',1,NULL,'2012-06-21 16:27:07',NULL,'E0001001611017',NULL,'CRSGRP',0,'',''),
  ('0001','ICT','Intermidiate Courses',1,NULL,'2012-06-21 15:04:24',NULL,'E0001001311019',NULL,'SBWGRP',0,'',''),
  ('0001','ID','Interior Designing & Decoration',1,NULL,'2012-06-09 11:48:31',NULL,'E0001001311019',NULL,'BRNCOD',0,'',''),
  ('0001','IDE','Interdisciplinary and ancillary electives ',1,NULL,'2011-06-04 14:04:04',NULL,'E00010001201100005',NULL,'LNKGRP',0,'',''),
- ('0001','IEC','ECONOMICS',1,NULL,'2011-08-26 15:39:52',NULL,'E00010001201100005',NULL,'CRSGRP',5,NULL,NULL),
+ ('0001','IEC','IEC Economics',1,NULL,'2011-08-26 15:39:52','2012-10-03 16:37:46','E00010001201100005','E0001001312031','CRSGRP',5,'',''),
  ('0001','IEC','IEC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','IEN','ENGLISH',1,NULL,'2011-08-26 15:39:04',NULL,'E00010001201100005',NULL,'CRSGRP',2,NULL,NULL),
+ ('0001','IEN','IEN English',1,NULL,'2011-08-26 15:39:04','2012-10-03 16:40:13','E00010001201100005','E0001001312031','CRSGRP',2,'',''),
  ('0001','IEN','IEN',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','IGK','SC METH., G.K. &  CURRENT AFFAIRS',1,NULL,'2011-08-26 15:40:52',NULL,'E00010001201100005',NULL,'CRSGRP',9,NULL,NULL),
+ ('0001','IGK','IGK',1,NULL,'2011-08-26 15:40:52',NULL,'E00010001201100005',NULL,'CRSGRP',9,NULL,NULL),
  ('0001','IGK','IGK',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','IHI','HINDI',1,NULL,'2011-08-26 15:38:53',NULL,'E00010001201100005',NULL,'CRSGRP',1,NULL,NULL),
+ ('0001','IHI','IHI Hindi',1,NULL,'2011-08-26 15:38:53','2012-10-03 16:39:38','E00010001201100005','E0001001312031','CRSGRP',1,'',''),
  ('0001','IHI','IHI',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','IMA','MATHEMATICS',1,NULL,'2011-08-27 10:08:28',NULL,'E00010001201100005',NULL,'CRSGRP',3,NULL,NULL),
+ ('0001','IHT','IHT History',1,NULL,'2012-10-03 16:35:45',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','IMA','IMA Mathematics',1,NULL,'2011-08-27 10:08:28','2012-10-03 12:15:32','E00010001201100005','E0001001312031','CRSGRP',3,'',''),
  ('0001','IMA','IMA',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','IN','Internal',1,NULL,'2012-03-21 18:43:28',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','IN','Intermidiate',1,NULL,'2012-06-18 11:11:16',NULL,'Ashish Mohan',NULL,'SPWCOD',NULL,NULL,NULL),
  ('0001','INC','Incomplete',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'SSMSTS',NULL,NULL,NULL),
  ('0001','INS','Institute',1,NULL,'2011-05-20 09:39:26',NULL,'E00010001201100005',NULL,'ENTTYP',1,'',''),
- ('0001','INS','Instructor',1,NULL,'2012-03-20 14:29:23',NULL,'E0001001311019',NULL,'UNROLE',0,'',''),
+ ('0001','INS','Instructor',1,NULL,'2012-03-20 14:29:23',NULL,'E0001001311019',NULL,'UNROLE',0,'1',''),
  ('0001','INT','Internal Marks',1,NULL,'2012-03-21 17:49:24',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','INT','Integrated ',1,NULL,'2011-05-23 10:44:51',NULL,'E00010001201100005',NULL,'SWTTYP',0,'',''),
- ('0001','IPH','PHYSICS',1,NULL,'2011-08-27 10:08:56',NULL,'E00010001201100005',NULL,'CRSGRP',5,NULL,NULL),
+ ('0001','IPH','IPH',1,NULL,'2011-08-27 10:08:56',NULL,'E00010001201100005',NULL,'CRSGRP',5,NULL,NULL),
  ('0001','IPH','IPH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ISR','SOCIAL SERVICE',1,NULL,'2011-08-26 15:41:39',NULL,'E00010001201100005',NULL,'CRSGRP',10,NULL,NULL),
+ ('0001','IPT','IPT Painting',1,NULL,'2012-10-03 16:38:44',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','IPY','IPY Psycology',1,NULL,'2012-10-03 16:38:17',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','ISC','INTERMEDIATE',1,NULL,'2012-10-03 15:19:03',NULL,'E0001001312032',NULL,'DOMAIN',0,'',''),
+ ('0001','ISR','ISR',1,NULL,'2011-08-26 15:41:39',NULL,'E00010001201100005',NULL,'CRSGRP',10,NULL,NULL),
  ('0001','ISR','ISR',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','IUA','Institute admin',1,NULL,'2011-05-24 00:00:00',NULL,'uk',NULL,'UNROLE',NULL,NULL,NULL),
- ('0001','IWE','WORK EXPERIENCE',1,NULL,'2011-08-26 15:41:20',NULL,'E00010001201100005',NULL,'CRSGRP',6,NULL,NULL),
+ ('0001','IST','IST Sanskrit',1,NULL,'2012-10-03 16:36:06',NULL,'E0001001312031',NULL,'CRSGRP',0,'',''),
+ ('0001','IUA','Institute admin',1,NULL,'2011-05-24 00:00:00',NULL,'uk',NULL,'UNROLE',NULL,'1',NULL),
+ ('0001','IWE','IWE',1,NULL,'2011-08-26 15:41:20',NULL,'E00010001201100005',NULL,'CRSGRP',6,NULL,NULL),
  ('0001','IWE','IWE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','LAT','Lateral',1,NULL,'2011-05-23 10:44:29',NULL,'E00010001201100005',NULL,'SWTTYP',0,'',''),
- ('0001','LCT','Lecturer',1,NULL,'2011-05-17 09:23:22',NULL,'000100012011000005',NULL,'DESGNS',0,'',''),
+ ('0001','LET','LET',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','LET','LET',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','LIN','LINK GROUP BEd ',1,NULL,'2011-06-09 09:19:28',NULL,'E00010001201100005',NULL,'LNKGRP',0,'',''),
  ('0001','LP','L Practical',1,NULL,'2012-03-21 17:56:38',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
@@ -5481,7 +6176,8 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','LT','Less Than',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'LOGCTR',NULL,NULL,NULL),
  ('0001','M','Marks',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'CALBAS',NULL,NULL,NULL),
  ('0001','M','Marks',1,NULL,'2012-06-05 13:52:37',NULL,'DEVENDRA',NULL,'CATTYP',1,NULL,NULL),
- ('0001','M','Male',1,NULL,'2011-05-04 14:59:09','2011-05-04 14:59:45','E00010001201100005','E00010001201100005','GENDER',0,'',''),
+ ('0001','M','Male',1,NULL,'2011-05-04 14:59:09','2011-05-04 14:59:45','E00010001201100005','E00010001201100005','GENDER',0,'','');
+INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_description`,`active`,`verification_required`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`,`group_code`,`dummy_flag_one`,`dummy_flag_two`,`dummy_flag_three`) VALUES 
  ('0001','M','Mandatory',1,NULL,'2011-01-05 11:48:26',NULL,'ankit',NULL,'GRPRUL',NULL,NULL,NULL),
  ('0001','M','Mathematics',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'SUBCOD',NULL,NULL,NULL),
  ('0001','MA','Mathematics',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
@@ -5501,6 +6197,8 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MAADA','Associate MoU University',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:39:59','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MAADB','Associate MoU Courses',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:40:23','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MAAE','Initialize University',1,NULL,'2011-11-04 15:24:20',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MAAF','Register Institute and Administrator',1,NULL,'2012-11-24 12:23:36',NULL,'E00010001201100006',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MAAG','Approval for Institute and Admin',1,NULL,'2012-11-27 10:56:28',NULL,'E00010001201100006',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MAB','Entity',1,NULL,'2011-01-06 09:48:17',NULL,'ashish',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MABA','Create Entity',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:41:29','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MABB','Manage Entity',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:41:41','ashish','E0001001211017','MNUITM',1,'',''),
@@ -5508,8 +6206,6 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MACA','Employee Profile Set up',1,NULL,'2011-01-06 09:48:17',NULL,'ashish',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MACAA','Create Employee Profile',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:42:19','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MACAB','Manage Employee Profile',1,NULL,'2011-01-06 09:48:17','2012-05-23 15:46:06','ashish','E0001001611017','MNUITM',1,'',''),
- ('0001','MACAC','Create Employee',1,NULL,'2011-10-01 13:16:51',NULL,'E00010001201100005',NULL,'MNUITM',1,'',''),
- ('0001','MACAD','Manage Employee',1,NULL,'2011-10-01 13:17:28',NULL,'E00010001201100005',NULL,'MNUITM',1,'',''),
  ('0001','MACB','Employee Course SetUp',1,NULL,'2011-01-06 09:48:17',NULL,'ashish',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MACBA','Define Employee Courses',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:47:29','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MACBB','Manage Employee Courses',1,NULL,'2011-01-05 11:48:26','2011-12-12 15:47:43','Ashish','E0001001211017','MNUITM',1,'',''),
@@ -5517,6 +6213,7 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MACC','Employee Role Setup',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:48:35','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MACCA','Define Employee Role',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:48:48','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MACCB','Delete Employee Role',1,NULL,'2011-08-16 12:30:40',NULL,'E00010001201100005',NULL,'MNUITM',1,'',''),
+ ('0001','MACE','Instructor Course',1,NULL,'2012-12-15 14:38:04',NULL,'Nupur',NULL,'MNUITM',1,'1','1'),
  ('0001','MAD','Program',1,NULL,'2011-01-06 09:48:17',NULL,'ashish',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MADA','Program Master SetUp',1,NULL,'2011-01-06 09:48:17',NULL,'ashish',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MADAA','Create  Program',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:50:17','ashish','E0001001211017','MNUITM',1,'',''),
@@ -5544,6 +6241,8 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MADH','Advance program Courses',1,NULL,'2011-01-06 09:48:17','2011-12-12 15:55:38','ashish','E0001001211017','MNUITM',1,'',''),
  ('0001','MADI','Program Group',1,NULL,'2011-05-19 00:00:00','2011-12-12 15:55:56','uk','E0001001211017','MNUITM',1,'',''),
  ('0001','MADJ','Group Rule',1,NULL,'2011-05-19 00:00:00','2011-12-12 15:56:09','uk','E0001001211017','MNUITM',1,'',''),
+ ('0001','MADK','Manage Program Course Credit',1,NULL,'2012-10-13 12:42:37',NULL,'ups001',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MAE','Math Elective',1,NULL,'2012-09-28 17:26:20',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MAE','Course',1,NULL,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MAEA','Course Set Up',1,NULL,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MAEAA','Create Course Set up',1,NULL,'2011-01-05 11:48:26','2011-12-12 15:56:34','Rohit','E0001001211017','MNUITM',1,'',''),
@@ -5570,19 +6269,22 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MAGA','Create External Examiner Details',1,NULL,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MAGB','Manage External Examiner Details',1,NULL,'2011-01-05 11:48:26','2011-12-12 15:58:43','Rohit','E0001001211017','MNUITM',1,'',''),
  ('0001','MAGC','Associate External Examiner Course',1,NULL,'2011-01-05 11:48:26','2011-12-12 15:59:15','Rohit','E0001001211017','MNUITM',1,'',''),
- ('0001','MAH','Mathematics Half Course',1,NULL,'2012-03-05 15:48:46',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MAH','MAH',1,NULL,'2012-03-05 15:48:46',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MAH','EOD',1,NULL,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MAH','MAH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','MAHA','EOD Control',1,NULL,'2011-12-31 16:21:36',NULL,'Ashish Mohan',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MAHB','Build EOD Master',1,NULL,'2011-12-31 16:21:43',NULL,'Ashish Mohan',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MAI','Reset Password',1,NULL,'2011-10-01 13:07:45',NULL,'E00010001201100005',NULL,'MNUITM',1,'',''),
- ('0001','MAJ','Major',1,NULL,'2011-01-05 11:48:26',NULL,'ankit',NULL,'PROGRP',0,NULL,NULL),
- ('0001','MAM','Mathematics Major',1,NULL,'2011-06-09 08:03:26','2012-03-03 12:08:36','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
+ ('0001','MAJ','Major Courses Group',1,NULL,'2012-10-06 13:06:26','2012-10-06 13:08:58','E0001001312032','E0001001312032','PROGRP',0,'',''),
+ ('0001','MAM','MAM Mathematics',1,NULL,'2011-06-09 08:03:26','2012-09-29 13:13:48','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','MAM','MAM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','MAW','Mathematics Work Exp',1,NULL,'2012-03-03 15:28:14',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MAW','MAW',1,NULL,'2012-03-03 15:28:14',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MAW','MAW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','MAXATM','Maximum Attempt ',1,NULL,'2012-10-30 17:32:02',NULL,'Devendra',NULL,'PWDSEC',1,'5',NULL),
  ('0001','MB','Start Activity',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak',NULL,'',NULL,NULL,NULL),
+ ('0001','MB','Management',1,NULL,'2012-09-20 11:42:04',NULL,'E0001001312032',NULL,'BRNCOD',0,'',''),
  ('0001','MB','Registration',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
+ ('0001','MB1','MBA Elective',1,NULL,'2012-09-28 12:57:06',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MBA','Start Activity Controller',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak',NULL,'',NULL,NULL,NULL),
  ('0001','MBA','Validate before Registration',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MBAA','Prestaging Validation',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
@@ -5590,17 +6292,19 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MBB','Correction After Validation',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MBBA','PostRegistration Name Correction',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBBB','PostRegistration Correction',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MBC','Mphil botany major courses',1,NULL,'2012-01-10 16:51:13',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MBC','MBC',1,NULL,'2012-01-10 16:51:13',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MBC','Cancel Student Registration',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBD','New Student Enrollment',1,NULL,'2012-03-03 15:39:03',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MBDA','1.Enrollment Data Sheet Upload',1,NULL,'2012-03-03 15:41:11',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBDB','2.Upload Student For Enrollment',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MBDC','Send New Student For Registration',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBE','Student Verification CheckList',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBF','Cancel Final Registration',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MBFA','Cancel Registration',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBFB','Terminate Registration',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MBFC','Withdraw Semester Registration',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MBG','Student List',1,NULL,'2012-10-17 10:45:46',NULL,'Ashish Mohan',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MBH','Manage Student List ',1,NULL,'2012-11-10 15:43:58',NULL,'Ashish',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MBM','MBM',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','MBM','MBM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','MC','Grades & Reports',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MCA','Internal Award Sheet',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
@@ -5610,22 +6314,16 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MCE','Report Authority',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MCF','Print',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MCG','Award Blank Reports',1,NULL,'2011-12-31 16:21:36','2012-04-19 18:05:32','Mandeep','E0001001311019','MNUITM',1,'',''),
- ('0001','MCH','Final Semester Result Statistics',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCI','Major Group Wise Merit List',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCJ','Delay in Display Marks',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCK','Degree List',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCL','Transcript',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCH','Award Blank collation -External',1,NULL,'2012-09-03 13:55:20',NULL,'E0001001311019',NULL,'MNUITM',1,'',''),
+ ('0001','MCI','Merit List Based On Group',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCK','Course Wise Panel of Examiner',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MCLB','Manage Program Term Details',1,NULL,'2011-01-05 11:48:26',NULL,'Ankit',NULL,'',NULL,NULL,NULL),
- ('0001','MCM','Merit List Based On C.P',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCN','Merit List Based On Group',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCO','Consolidated Chart',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCP','Result Statistics',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCM','Major Group Wise Merit List',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MCQ','Component Marks Progress Status',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCR','Result Statistics Category Wise',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCS','Result Report',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCT','Medal List Report',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCU','Temporary Registration Chart',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MCV','Final Registration Chart',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCR','Transcript',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCS','Provisional Certificate',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCW','Staging Table Report',1,NULL,'2012-10-05 14:56:06',NULL,'Nupur',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MCX','Result Verification Report',1,NULL,'2012-11-24 12:24:14',NULL,'Nupur',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MD','Student',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MDA','Student Remedials/Apply for Remedial',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MDB','Student Set Up',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
@@ -5635,18 +6333,29 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MDF','Student Program Switch',1,NULL,'2012-03-03 15:38:15',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MDG','Student Registration',1,NULL,'2012-03-03 15:38:26',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MDH','Withdraw Student',1,NULL,'2012-04-28 17:03:55',NULL,'E00010001201100006',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MDI','Student Scrutiny',1,NULL,'2012-10-08 15:25:27',NULL,'DEV',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MDJ','Database Information',1,NULL,'2012-12-01 15:17:18',NULL,'E00010001201100006',NULL,'MNUITM',1,NULL,NULL),
  ('0001','ME','Mechanical',1,NULL,'2011-01-05 11:48:25','2012-05-16 15:48:16','Deepak Pandey','E0001001611017','BRNCOD',0,'',''),
  ('0001','ME','Process Control',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
+ ('0001','ME1','MEM Optional 1',1,NULL,'2012-09-27 16:50:18',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ME2','MEM Optional 2',1,NULL,'2012-09-27 16:50:31',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ME3','MEM Optional 3',1,NULL,'2012-09-28 13:09:12',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ME4','MEM Optional 4',1,NULL,'2012-09-28 13:09:21',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ME5','MEM Optional 5',1,NULL,'2012-09-15 10:54:05','2012-09-28 13:09:59','Ashish','E0001001312032','CRSGRP',0,'',''),
  ('0001','ME5','ME5',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','ME6','MEM Optional 6',1,NULL,'2012-09-28 13:10:16',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ME7','MEM Optional 7',1,NULL,'2012-09-28 13:10:24',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
  ('0001','MEA','Send Email',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MEB','Start Activity/Activity',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MEC','Result File Upload',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL);
-INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_description`,`active`,`verification_required`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`,`group_code`,`dummy_flag_one`,`dummy_flag_two`,`dummy_flag_three`) VALUES 
- ('0001','MED','Result File\n Upload(Ist Sem)',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MEC','MEC',1,NULL,'2012-09-11 14:51:10',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MEC','Result File Upload',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MED','Result File Upload (Ist Sem)',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MEF','Enable Registration For Withdraw Students',1,NULL,'2012-06-26 12:13:58',NULL,'E0001001611017',NULL,'MNUITM',1,'',''),
+ ('0001','MEH','MEH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','MEH','MEH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','MEM','Mechanical Major',1,NULL,'2012-06-12 15:44:15',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MEM','MEM',1,NULL,'2012-06-12 15:44:15',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MEM','MEM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','MEW','MEW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','MEW','MEW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','MF','System Set up',1,NULL,'2011-01-05 11:48:26',NULL,'Mandeep',NULL,'MNUITM',NULL,NULL,NULL),
  ('0001','MFA','Evaluation Component',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
@@ -5667,45 +6376,54 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','MFGC','Ready for Semester End',1,NULL,'2011-12-31 16:21:36',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MFH','Result File Upload Process',1,NULL,'2012-03-03 15:41:01',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
  ('0001','MFI','Result File Upload First Semester',1,NULL,'2012-03-03 15:38:39',NULL,'Mandeep',NULL,'MNUITM',1,NULL,NULL),
- ('0001','MHM','Mathematics Major',1,NULL,'2012-01-04 11:54:15','2012-01-04 12:23:30','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','MFJ','MFJ',1,NULL,'2012-10-10 11:20:00',NULL,'ashish',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MFL','Request for result verification',1,NULL,'2012-11-17 16:02:28',NULL,'Nupur',NULL,'MNUITM',NULL,NULL,NULL),
+ ('0001','MFLA','Generate Request',1,NULL,'2012-11-17 16:02:28',NULL,'Nupur',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MFLB','Manage Request',1,NULL,'2012-11-17 16:02:28',NULL,'Nupur',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MFM','Mail Server Configuration',1,NULL,'2012-12-06 16:00:05',NULL,'DHE001',NULL,'MNUITM',1,NULL,NULL),
+ ('0001','MHM','MHM',1,NULL,'2012-01-04 11:54:15','2012-01-04 12:23:30','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','MI','MID Term Exam',1,NULL,'2012-04-04 16:53:34',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','MID','Mid Term Exam',1,NULL,'2012-04-04 16:47:42',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','MK','Marks',1,NULL,'2011-01-05 11:48:26',NULL,'Anil',NULL,'CRSOPT',NULL,NULL,NULL),
  ('0001','MK','Marks',1,NULL,'2012-03-21 17:37:53',NULL,'E0001001311019',NULL,'IDTYPE',0,'',''),
- ('0001','MMC','Mphil Chemistry major courses',1,NULL,'2012-01-10 16:53:04',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','MMC','MSC Major Courses',1,NULL,'2012-01-05 14:04:08',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','MMG','Mphil Major courses Group',1,NULL,'2012-01-11 12:27:26',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','MMM','MSc Mathematics Major',1,NULL,'2012-01-04 14:05:48',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','MMP','Mphil Physics major courses',1,NULL,'2012-01-10 16:58:15',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','MMZ','Mphil Zoology major courses',1,NULL,'2012-01-10 16:56:05',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','MSH','Mathematics and Statistics Half Course',1,NULL,'2011-06-04 14:24:48',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','MMC','MMC',1,NULL,'2012-01-10 16:53:04',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MMM','MMM Mathematics',1,NULL,'2012-01-04 14:05:48','2012-09-29 13:35:58','E0001001311019','E0001001312031','CRSGRP',0,'',''),
+ ('0001','MMP','MMP',1,NULL,'2012-01-10 16:58:15',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MMZ','MMZ',1,NULL,'2012-01-10 16:56:05',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MNG','MANAGEMENT',1,NULL,'2012-09-18 13:36:07',NULL,'E0001001312032',NULL,'DOMAIN',0,'',''),
+ ('0001','MSH','MSH',1,NULL,'2011-06-04 14:24:48',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','MSH','MSH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','MSM','Music Major BEd B',1,NULL,'2011-06-09 08:10:03',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','MSM','Music Sitar Major',1,NULL,'2011-06-09 08:10:03','2012-09-29 11:00:48','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','MSM','MSM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','MST','Master Transfer',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'ACTMST',NULL,NULL,NULL),
- ('0001','MTC','MTech Major courses',1,NULL,'2012-01-12 13:06:33',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','MTH','Maths Major',1,NULL,'2012-05-29 13:17:53',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MTC','M.Tech Compulsory',1,NULL,'2012-10-06 12:19:49',NULL,'E0001001312035',NULL,'CRSGRP',0,'',''),
+ ('0001','MTE','M.Tech Elective',1,NULL,'2012-10-06 12:20:30',NULL,'E0001001312035',NULL,'CRSGRP',0,'',''),
+ ('0001','MTH','MTH',1,NULL,'2012-05-29 13:17:53',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','MTH','MTH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','MTM','Mathematics Major BEd B',1,NULL,'2011-06-09 08:10:27',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','MTM','Music Tabla Major',1,NULL,'2011-06-09 08:10:27','2012-09-29 11:04:54','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','MTM','MTM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','MU','Music',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','MUH','Music Half Course',1,NULL,'2011-06-04 13:59:42',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','MUM','Music Major',1,NULL,'2011-06-04 12:38:55',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','MUH','MUH',1,NULL,'2011-06-04 13:59:42',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','MUM','Music Major',1,NULL,'2011-06-04 12:38:55','2012-09-29 11:01:37','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','MUM','MUM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','MUS','Muslim',1,NULL,'2011-11-22 10:00:09',NULL,'E00010001201100006',NULL,'MNORTY',0,'',''),
- ('0001','MUW','Music Work Ex',1,NULL,'2011-06-06 10:05:03',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','MUW','MUW',1,NULL,'2011-06-06 10:05:03',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','MUW','MUW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','MVH','MVH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','MVH','MVH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','MVM','Music Vocal Major',1,NULL,'2012-09-15 10:54:05','2012-09-29 11:02:28','Ashish','E0001001312031','CRSGRP',0,'',''),
  ('0001','MVM','MVM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','MWG','Bsc Mathematics Work Exp',1,NULL,'2012-02-24 11:18:45',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','MWG','MWG',1,NULL,'2012-02-24 11:18:45',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','NC','Name Check',1,1,'2011-10-17 12:40:36',NULL,'E00010001201100006',NULL,'VRFCMP',0,'1',''),
- ('0001','NCH','Non Faculty Half Courses',1,NULL,'2011-12-28 16:43:26',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
+ ('0001','NCC','NCC Games',1,NULL,'2012-09-05 11:29:46',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','NEW','NEW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','NEW','NEW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','NFC','Non Faculty  Courses',1,NULL,'2011-12-29 12:12:38',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
- ('0001','NFH','None Faculty Half Course',1,NULL,'2011-06-04 13:43:16',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
+ ('0001','NFC','Non Faculty Half Courses Group',1,NULL,'2012-10-06 13:07:08','2012-10-06 13:09:31','E0001001312032','E0001001312032','PROGRP',0,'',''),
+ ('0001','NG','NCC Games',1,NULL,'2012-09-05 11:31:54',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','NXS','Build Next\n\nSession',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'YEPCOD',1,NULL,NULL),
  ('0001','O','Open Mode',1,NULL,'2011-05-16 00:00:00',NULL,'uk',NULL,'PRGMOD',NULL,NULL,NULL),
  ('0001','OM','Office Management & Secretarial Practice',1,NULL,'2012-06-09 11:55:17',NULL,'E0001001311019',NULL,'BRNCOD',0,'',''),
+ ('0001','OMH','OMH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','OMH','OMH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','P','Percentage',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'CALBAS',NULL,NULL,NULL),
  ('0001','P','Percentage',1,NULL,'2012-06-05 13:53:00',NULL,'DEVENDRA',NULL,'CATTYP',1,NULL,NULL),
@@ -5714,30 +6432,35 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','P','Part Time',1,NULL,'2011-05-16 00:00:00',NULL,'uk',NULL,'PRGTYP',NULL,NULL,NULL),
  ('0001','PAS','Pass',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'SSMSTS',NULL,NULL,NULL),
  ('0001','PBS','ProgramBranchSpecialization Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
+ ('0001','PCD','PCD',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','PCD','PCD',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PDM','Physics Dissertation Major',1,NULL,'2012-05-29 16:42:13',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','PCS','Physics & Computer Science',1,NULL,'2012-09-20 11:45:59',NULL,'E0001001312032',NULL,'BRNCOD',0,'',''),
+ ('0001','PDM','PDM',1,NULL,'2012-05-29 16:42:13',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','PEE','PEE',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','PEE','PEE',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','PER','Performance',1,NULL,'2012-03-21 17:42:47',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','PF','Performance',1,NULL,'2012-03-21 17:58:30',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','PG','Post Graduate',1,NULL,'2012-06-18 11:11:16',NULL,'Ashish Mohan',NULL,'SPWCOD',NULL,NULL,NULL),
- ('0001','PGC','PGDCSA Courses',1,NULL,'2012-01-12 11:36:00',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','PGG','PGDCSA COURSE GROUPS',1,NULL,'2012-01-12 11:39:50',NULL,'E0001001311019',NULL,'PROGRP',0,'',''),
+ ('0001','PGC','PGC',1,NULL,'2012-01-12 11:36:00',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','PGS','PGS',1,NULL,'2012-08-21 16:02:56',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','PH','Physics',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','PHH','Physics Half Course',1,NULL,'2011-06-04 14:25:13',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PHH','PHH',1,NULL,'2011-06-04 14:25:13',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','PHH','PHH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PHM','Physics Major',1,NULL,'2011-06-09 09:10:35','2012-03-03 12:08:53','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
+ ('0001','PHI','PHILOSOPHY',1,NULL,'2012-09-20 11:30:29',NULL,'E0001001312032',NULL,'DOMAIN',0,'',''),
+ ('0001','PHM','PHM Physics',1,NULL,'2011-06-09 09:10:35','2012-09-29 13:14:46','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','PHM','PHM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PHW','Physics Work Exp',1,NULL,'2012-03-03 15:27:47',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','PHW','PHW',1,NULL,'2012-03-03 15:27:47',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','PHW','PHW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','PI','Personal Interview',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'MRTCOM',NULL,NULL,NULL),
  ('0001','PJ','Project',1,NULL,'2012-04-04 16:57:12',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','PMA','PMA',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','PMA','PMA',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','PME','PME',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','PME','PME',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PMH','Physics Major',1,NULL,'2012-01-04 11:53:41',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
- ('0001','PMM','Mphil Mathematics major courses',1,NULL,'2012-01-10 16:54:42',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','PMM','PMM',1,NULL,'2012-01-10 16:54:42',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','PR','Practical',1,NULL,'2012-03-21 17:55:51',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','PR1','Extract Student For Registration',1,NULL,'2011-01-05 00:00:00','2012-03-30 15:59:04','Deepak Pandey','E0001001311019','ACTMST',0,'',''),
- ('0001','PR1','PRACTICE B.ED',1,NULL,'2011-06-07 10:05:10',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PR1','PR1',1,NULL,'2011-06-07 10:05:10',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','PR1','Practical 1',1,NULL,'2012-03-21 17:46:09',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','PR2','Practical 2',1,NULL,'2012-03-21 17:47:43',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','PR2','Validate student to move for registration',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak',NULL,'PACMST',NULL,NULL,NULL),
@@ -5747,27 +6470,30 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','PR7','Pre Process Before Enroll. No. Generation',1,NULL,'2011-11-01 15:34:40','2012-03-30 15:59:46','E00010001201100006','E0001001311019','ACTMST',0,'',''),
  ('0001','PR9','Make Probable To Actual - For Fail Students',1,NULL,'2012-03-30 16:02:36',NULL,'E0001001311019',NULL,'ACTMST',0,'',''),
  ('0001','PRA','Practical',1,NULL,'2012-03-21 17:51:24',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','PRA','Practice teaching',1,NULL,'2011-06-07 09:41:10',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
  ('0001','PRE','Result Processing',1,NULL,'2011-01-05 11:48:26','2012-03-30 16:00:07','Deepak Pandey','E0001001311019','ACTMST',0,'',''),
  ('0001','PRJ','Project',1,NULL,'2012-04-04 16:48:55',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','PRO','Professor',1,NULL,'2012-05-23 15:52:22',NULL,'E0001001611017',NULL,'DESGNS',0,'',''),
  ('0001','PROB','Probation',1,NULL,'2011-11-23 13:06:36',NULL,'dev',NULL,'EMPSTS',NULL,NULL,NULL),
  ('0001','PRW','Prwan',1,NULL,'2012-03-23 20:13:47',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','PS','Political Science',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','PSH','Political Science',1,NULL,'2011-06-04 14:01:04',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PSH','PSH',1,NULL,'2011-06-04 14:01:04',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','PSH','PSH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PSM','Political Science Major',1,NULL,'2011-06-04 12:39:47',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PSM','PSM Political Science',1,NULL,'2011-06-04 12:39:47','2012-09-29 13:15:21','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','PSM','PSM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','PSS','EntityProgramSemesterDates',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
- ('0001','PSW','Political Science Work Ex',1,NULL,'2011-06-06 10:06:40',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PSW','PSW',1,NULL,'2011-06-06 10:06:40','2012-09-19 15:39:47','E00010001201100005','E0001001312032','CRSGRP',0,'',''),
+ ('0001','PSW','PSW',1,NULL,'2012-09-19 15:38:45',NULL,'E0001001312032',NULL,'SBWGRP',0,'',''),
  ('0001','PV','Prem Vidyalya',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'CENCOD',NULL,NULL,NULL),
  ('0001','PW','Prwan',1,NULL,'2012-03-23 20:16:59',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','PWDEXP','Password Expiry Days',1,NULL,'2012-10-30 17:30:51',NULL,'Devendra',NULL,'PWDSEC',1,'30',NULL),
+ ('0001','PWDFMT','Password Format',1,NULL,'2012-10-30 17:31:01',NULL,'Devendra',NULL,'PWDSEC',1,NULL,NULL),
+ ('0001','PWDLEN','Password Minimum Length',1,NULL,'2012-10-30 17:31:17',NULL,'Devendra',NULL,'PWDSEC',1,'8',NULL),
+ ('0001','PWDREP','Password Repetition ',1,NULL,'2012-10-30 17:31:47',NULL,'Devendra',NULL,'PWDSEC',1,NULL,NULL),
  ('0001','PY','Psychology',1,NULL,'2011-01-05 11:48:25',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','PYH','Pychology Half Course',1,NULL,'2011-06-04 14:01:36',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PYH','PYH',1,NULL,'2011-06-04 14:01:36',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','PYH','PYH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PYM','Psychology Major',1,NULL,'2011-06-04 12:37:30',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PYM','PYM',1,NULL,'2011-06-04 12:37:30',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','PYM','PYM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','PYW','Psychology Work Ex',1,NULL,'2011-06-06 10:07:15',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','PYW','PYW',1,NULL,'2011-06-06 10:07:15',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','PYW','PYW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','Q&V','Quiz and Viva',1,NULL,'2012-03-21 17:48:57',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','QT','Quiz Test',1,NULL,'2012-03-21 17:55:42',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
@@ -5775,33 +6501,38 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','QT2','Quiz Test 2',1,NULL,'2012-03-21 10:37:56',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','QT3','Quiz Test 3',1,NULL,'2012-03-21 10:38:05',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','QT4','Quiz Test 4',1,NULL,'2012-03-21 10:38:14',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','QTC','Quantum Theory and Computer Architecture',1,NULL,'2012-05-29 16:12:43',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','QTC','QTC',1,NULL,'2012-05-29 16:12:43',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','QUI','Quiz',1,NULL,'2012-03-21 17:42:58',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','R','Remedial',1,NULL,'2012-03-21 17:38:26',NULL,'E0001001311019',NULL,'DISTYP',0,'',''),
  ('0001','R','Regular',1,NULL,'2011-06-16 09:11:06',NULL,'E00010001201100005',NULL,'REGDIS',0,'',''),
  ('0001','RBS','RBS College',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'CENCOD',1,NULL,NULL),
  ('0001','RCL','Program-Course-Key Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
  ('0001','RCO','Course Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
+ ('0001','RDC','RDC',1,NULL,'2012-09-11 15:07:02',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','RDC','RDC',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','RE','Record',1,NULL,'2012-03-21 17:57:09',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','REC','Record',1,NULL,'2012-03-21 17:42:07',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
- ('0001','RED','Reader',1,NULL,'2012-01-24 16:40:33',NULL,'E0001001311019',NULL,'DESGNS',0,'',''),
  ('0001','REG','Ready for Registration',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'BSEPCD',2,NULL,NULL),
  ('0001','REG','Regular',1,NULL,'2011-01-05 11:48:26',NULL,'Anil',NULL,'CRSCTG',NULL,NULL,NULL),
  ('0001','REG','Registration Process',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'PRCMST',NULL,NULL,NULL),
+ ('0001','REG','REGULER',1,NULL,'2012-10-04 16:51:55',NULL,'E0001001311019',NULL,'SWTTYP',0,'',''),
+ ('0001','REM','Remedial Marks',1,NULL,'2012-09-08 13:05:44',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','REM','Remedial',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'SSMSTS',NULL,NULL,NULL),
  ('0001','REN','Report-Entity Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
  ('0001','REP','Program Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
  ('0001','RES','Entity-Semester type Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
  ('0001','RGN','General Reports',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
+ ('0001','RM','Remedial',1,NULL,'2012-09-08 13:06:05',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','RMK','Remedial award sheet',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'',NULL,NULL,NULL),
  ('0001','ROL','Roll Number Generation',1,NULL,'2011-11-04 11:39:26','2012-03-30 16:01:07','E00010001201100006','E0001001311019','ACTMST',0,'',''),
  ('0001','RSB','Report Generation',1,NULL,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'',NULL,NULL,NULL),
  ('0001','RSS','Session-Semester Wise',1,NULL,'2012-02-15 10:06:44',NULL,'Mandeep',NULL,'REPTYP',NULL,NULL,NULL),
- ('0001','RST','Ragon and Sangit Theory',1,NULL,'2012-05-25 12:11:06','2012-05-25 12:23:03','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','RST','RST',1,NULL,'2012-05-25 12:11:06','2012-05-25 12:23:03','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','RST','Student Roll Number Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
+ ('0001','RSV','Result verification',1,NULL,'2012-11-17 16:02:28',NULL,'Deepak Pandey',NULL,'RQSTYP',NULL,NULL,NULL),
  ('0001','RSV','Reset System\n\nValues',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'YEPCOD',5,NULL,NULL),
  ('0001','RUN','University Wise',1,NULL,'2011-06-09 08:04:22',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
+ ('0001','RVR','Result Verification Report',1,NULL,'2012-10-19 15:21:51',NULL,'E00010001201100005',NULL,'REPTYP',NULL,NULL,NULL),
  ('0001','S','Social Science',1,NULL,'2012-06-09 12:31:28',NULL,'E0001001311019',NULL,'SUBCOD',0,'',''),
  ('0001','S1','Spot 1',1,NULL,'2012-03-24 21:44:15',NULL,'E00010003201100028',NULL,'EVLGRP',0,'',''),
  ('0001','S2','Spot 2',1,NULL,'2012-03-24 21:44:24',NULL,'E00010003201100028',NULL,'EVLGRP',0,'',''),
@@ -5810,21 +6541,23 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','S5','Switch Rule 5',1,NULL,'2011-05-23 09:18:50',NULL,'E00010001201100005',NULL,'SWTRL5',0,'',''),
  ('0001','S6','Switch Rule 6',1,NULL,'2011-05-23 09:19:07',NULL,'E00010001201100005',NULL,'SWTRL6',0,'',''),
  ('0001','SA','Start Activity',1,NULL,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'',NULL,NULL,NULL),
- ('0001','SAM','Sanskrit Major BEd B',1,NULL,'2011-06-09 08:11:47',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','SAM','System Admin',1,NULL,'2011-06-15 00:00:00',NULL,'ankit',NULL,'UNROLE',NULL,NULL,NULL),
+ ('0001','SAM','SAM Sanskrit',1,NULL,'2011-06-09 08:11:47','2012-09-29 13:16:32','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
+ ('0001','SAM','System Admin',1,NULL,'2011-06-15 00:00:00',NULL,'ankit',NULL,'UNROLE',NULL,'1',NULL),
  ('0001','SC','Science',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
  ('0001','SC','Schedule Caste',1,NULL,'2011-01-01 00:00:00',NULL,'deepak',NULL,'STDCTG',NULL,NULL,NULL),
- ('0001','SCG','Scouting  Guiding',1,NULL,'2011-06-07 09:42:14',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
- ('0001','SCH','Sociology Half Course',1,NULL,'2011-06-04 14:02:19',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','SCM','Sociology Major',1,NULL,'2011-06-04 12:40:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','SCO','SCOUTING',1,NULL,'2011-06-07 10:09:31',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
- ('0001','SCW','Sociology Work',1,NULL,'2011-06-21 13:56:00',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','SCH','SCH',1,NULL,'2011-06-04 14:02:19',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','SCI','SCIENCE',1,NULL,'2012-08-30 16:50:54','2012-09-15 15:55:52','E0001001311019','E0001001312032','DOMAIN',0,'',''),
+ ('0001','SCM','SCM',1,NULL,'2011-06-04 12:40:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','SCO','SCO',1,NULL,'2011-06-07 10:09:31',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','SCW','SCW',1,NULL,'2011-06-21 13:56:00',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','SE','Applied Economics',1,NULL,'2012-09-19 12:44:57',NULL,'E0001001312032',NULL,'BRNCOD',0,'',''),
  ('0001','SEP','Ready for Semester End',1,NULL,'2011-12-24 12:19:46',NULL,'E00010001201100006',NULL,'BSEPCD',3,NULL,NULL),
  ('0001','SEP','Semester End Processing',1,NULL,'2011-01-05 00:00:00',NULL,'Deepak Pandey',NULL,'PRCMST',NULL,NULL,NULL),
  ('0001','SG','SGD',1,NULL,'2012-03-21 17:56:04',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','SGD','S Group Discussion',1,NULL,'2012-03-21 17:41:36','2012-03-21 17:52:00','E0001001311019','E0001001311019','EVLCOM',0,'',''),
+ ('0001','SHT','Sheets',1,NULL,'2012-09-05 12:13:34',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','Sik','Sikh',1,NULL,'2011-11-22 10:00:21',NULL,'E00010001201100006',NULL,'MNORTY',0,'',''),
- ('0001','SIT','Sitar Practical courses',1,NULL,'2012-05-25 11:32:42','2012-05-25 12:51:09','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','SIT','SIT',1,NULL,'2012-05-25 11:32:42','2012-05-25 12:51:09','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','SL','Slide',1,NULL,'2012-03-23 20:16:34',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','SLD','Slide',1,NULL,'2012-03-23 20:15:23',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','SM1','Semester 1',1,NULL,'2011-05-25 00:00:00',NULL,'uk',NULL,'SEMCOD',1,NULL,NULL),
@@ -5837,34 +6570,45 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','SM8','Semester 8',1,NULL,'2011-12-31 12:18:19',NULL,'E0001001311019',NULL,'SEMCOD',0,'',''),
  ('0001','SMR','Remedial Result Processing',1,NULL,'2011-01-05 11:48:26','2012-03-30 16:01:37','Deepak Pandey','E0001001311019','ACTMST',0,'',''),
  ('0001','SMT','Switch Marks Transfer',1,NULL,'2011-06-09 08:04:22',NULL,'Amir',NULL,'ACTMST',0,NULL,NULL),
- ('0001','SNM','Science Major BEd B',1,NULL,'2011-06-09 08:11:17',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','SNM','SNM Science',1,NULL,'2011-06-09 08:11:17','2012-09-29 13:19:15','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','SP','Spot',1,NULL,'2012-03-23 20:09:33',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','SP1','Spot 1',1,NULL,'2012-03-21 17:54:00',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','SP2','Spot 2',1,NULL,'2012-03-21 17:54:11',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','SS','Scoial Science',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','SS','Session',1,NULL,'2012-09-05 12:18:41',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','SS','Second Stage',1,NULL,'2011-11-04 16:11:14',NULL,'dev',NULL,'PSTSTG',2,NULL,NULL),
- ('0001','ST','Sanskrit & Culture',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','SSC','SOCIAL SCIENCES',1,NULL,'2012-09-19 12:28:25',NULL,'E0001001312032',NULL,'DOMAIN',0,'',''),
+ ('0001','SSN','Session',1,NULL,'2012-09-05 12:18:28',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','ST','Sanskrit',1,NULL,'2011-01-05 11:48:26','2012-09-19 17:25:42','Deepak Pandey','E0001001312032','BRNCOD',0,'',''),
+ ('0001','ST','Sheets',1,NULL,'2012-09-05 12:13:58',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','ST','Schedule Tribe',1,NULL,'2011-01-01 00:00:00',NULL,'deepak',NULL,'STDCTG',NULL,NULL,NULL),
- ('0001','STD','Student',1,NULL,'2011-06-15 00:00:00',NULL,'Amir',NULL,'UNROLE',NULL,NULL,NULL),
- ('0001','STH','Sanskrit Half Course',1,NULL,'2011-06-04 14:00:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','STD','Student',1,NULL,'2011-06-15 00:00:00',NULL,'Amir',NULL,'UNROLE',NULL,'1',NULL),
+ ('0001','STH','STH',1,NULL,'2011-06-04 14:00:12',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','STH','STH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','STM','Sanskrit Major',1,NULL,'2011-06-04 12:37:01',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','STM','STM Sanskrit',1,NULL,'2011-06-04 12:37:01','2012-09-29 13:16:57','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','STM','STM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','STW','Sanskrit Work Ex',1,NULL,'2011-06-06 10:05:56',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','STW','STW',1,NULL,'2011-06-06 10:05:56',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','STW','STW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','SW','DEI Ward',1,NULL,'2012-06-18 11:11:16',NULL,'Ashish Mohan',NULL,'SPWCOD',NULL,NULL,NULL),
  ('0001','SY','Sociology',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','SYH','SYH',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','SYH','SYH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','SYM','SYM',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','SYM','SYM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','SYW','SYW',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','SYW','SYW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','T','Theory',1,NULL,'2011-06-06 11:13:50',NULL,'E00010001201100005',NULL,'CRCLSF',0,'',''),
- ('0001','TAB','Tabla Practical Courses',1,NULL,'2012-05-25 11:33:06','2012-05-25 12:51:31','E0001001311019','E0001001311019','CRSGRP',0,'',''),
+ ('0001','TAB','TAB',1,NULL,'2012-05-25 11:33:06','2012-05-25 12:51:31','E0001001311019','E0001001311019','CRSGRP',0,'',''),
  ('0001','TD','Textile Designing',1,NULL,'2012-06-09 11:55:47',NULL,'E0001001311019',NULL,'BRNCOD',0,'',''),
+ ('0001','TDD','TDD',1,NULL,'2012-08-22 11:33:09',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','TDD','TDD',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
  ('0001','TEMP','Temporary',1,NULL,'2011-11-04 15:24:27',NULL,'Deepak',NULL,'EMPSTS',NULL,NULL,NULL),
  ('0001','TH','Theology',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
+ ('0001','THD','THD',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','THD','THD',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','THM','THM',1,NULL,'2012-09-15 10:54:05',NULL,'Ashish',NULL,'CRSGRP',NULL,NULL,NULL),
  ('0001','THM','THM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
+ ('0001','TRS','Transcript',1,NULL,'2012-11-17 16:02:29',NULL,'Deepak Pandey',NULL,'RQSTYP',NULL,NULL,NULL),
  ('0001','TS','Test',1,NULL,'2012-03-21 17:57:18',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','TS','Third Stage',1,NULL,'2011-11-23 13:06:29',NULL,'dev',NULL,'PSTSTG',3,NULL,NULL),
  ('0001','TST','Test',1,NULL,'2012-03-21 17:48:38',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
@@ -5875,26 +6619,47 @@ INSERT INTO `system_table_two` (`university_code`,`component_code`,`component_de
  ('0001','UPDOB','UP End of DOB',1,NULL,'2011-10-10 12:47:24',NULL,'dev',NULL,'RTRCOD',NULL,NULL,NULL),
  ('0001','UPSC','UP Session Complete',1,NULL,'2011-10-10 12:47:13',NULL,'dev',NULL,'RTRCOD',NULL,NULL,NULL),
  ('0001','V&R','Viva and Record',1,NULL,'2012-03-21 17:48:11',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','V1','Viva 1',1,NULL,'2012-08-13 13:13:34',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','V2','Viva 2',1,NULL,'2012-08-13 13:19:52',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','V3','Viva 3',1,NULL,'2012-08-13 13:20:07',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','VA1','Viva 1',1,NULL,'2012-08-13 13:12:41',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','VA2','Viva 2',1,NULL,'2012-08-13 13:12:55',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','VA3','Viva 3',1,NULL,'2012-08-13 13:13:07',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','VIV','Viva',1,NULL,'2012-03-21 17:45:26',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
  ('0001','VV','Viva',1,NULL,'2012-03-21 18:19:25',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','W','Work Based Training',1,NULL,'2011-05-17 00:00:00',NULL,'uk',NULL,'',NULL,NULL,NULL),
- ('0001','W','work',1,NULL,'2011-06-06 11:14:12',NULL,'E00010001201100005',NULL,'CRCLSF',0,'',''),
+ ('0001','W1','Work 1',1,NULL,'2012-08-23 16:45:20',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W2','Work 2',1,NULL,'2012-08-23 16:45:27',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W3','Work 3',1,NULL,'2012-08-23 16:45:34',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W4','Work 4',1,NULL,'2012-08-23 16:46:22',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W5','Work 5',1,NULL,'2012-08-23 16:45:44',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W6','Work 6',1,NULL,'2012-08-23 16:45:51',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W7','Work 7',1,NULL,'2012-08-23 16:45:59',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
+ ('0001','W8','Work 8',1,NULL,'2012-08-23 16:46:07',NULL,'E0001001311019',NULL,'EVLGRP',0,'',''),
  ('0001','WO','Work Ex',1,NULL,'2011-06-06 11:09:14',NULL,'E00010001201100005',NULL,'CRSTYP',0,'',''),
- ('0001','WOR','Work Ex',1,NULL,'2011-06-06 09:56:19',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
- ('0001','WWC','Working with community',1,NULL,'2011-06-07 09:41:49',NULL,'E00010001201100005',NULL,'PROGRP',0,'',''),
- ('0001','X','None',1,NULL,'2012-05-17 16:53:01',NULL,'E0001001611017',NULL,'GENDER',0,'',''),
- ('0001','X','not',1,NULL,'2011-06-06 08:08:09',NULL,'E00010001201100005',NULL,'GRPRUL',0,'',''),
+ ('0001','WOR','Work Ex Courses Group',1,NULL,'2011-06-06 09:56:19','2012-10-06 13:09:48','E00010001201100005','E0001001312032','PROGRP',0,'',''),
+ ('0001','WR1','Work 1',1,NULL,'2012-08-23 16:42:31',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR2','Work 2',1,NULL,'2012-08-23 16:42:58',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR3','Work 3',1,NULL,'2012-08-23 16:43:15',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR4','Work 4',1,NULL,'2012-08-23 16:43:25',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR5','Work 5',1,NULL,'2012-08-23 16:43:33',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR6','Work 6',1,NULL,'2012-08-23 16:43:42',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR7','Work 7',1,NULL,'2012-08-23 16:43:52',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','WR8','Work 8',1,NULL,'2012-08-23 16:44:42',NULL,'E0001001311019',NULL,'EVLCOM',0,'',''),
+ ('0001','X','Not',1,NULL,'2011-06-06 08:08:09','2012-09-27 17:29:24','E00010001201100005','E0001001312032','GRPRUL',0,'',''),
  ('0001','X','None',1,NULL,'0000-00-00 00:00:00',NULL,'Dheeraj',NULL,'SUBCOD',NULL,NULL,NULL),
  ('0001','XX','None',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','ZHM','Zoology Major',1,NULL,'2012-01-04 11:53:17',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','ZHM','ZHM',1,NULL,'2012-01-04 11:53:17',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','ZO','Zoology',1,NULL,'2011-01-05 11:48:26',NULL,'Deepak Pandey',NULL,'BRNCOD',NULL,NULL,NULL),
- ('0001','ZOH','Zoology Half Course',1,NULL,'2011-06-04 14:25:33',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
+ ('0001','ZOG','ZOG',1,NULL,'2012-09-19 13:33:58',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ZOH','ZOH',1,NULL,'2011-06-04 14:25:33',NULL,'E00010001201100005',NULL,'CRSGRP',0,'',''),
  ('0001','ZOH','ZOH',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ZOM','Zoology Major',1,NULL,'2011-06-09 08:04:22','2012-03-03 12:09:08','E00010001201100005','E0001001311019','CRSGRP',0,'',''),
+ ('0001','ZOM','ZOM Zoology',1,NULL,'2011-06-09 08:04:22','2012-09-29 13:15:47','E00010001201100005','E0001001312031','CRSGRP',0,'',''),
  ('0001','ZOM','ZOM',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ZOW','Zoology Work Exp',1,NULL,'2012-03-03 15:28:34',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
+ ('0001','ZOP','ZOP',1,NULL,'2012-09-19 13:34:14',NULL,'E0001001312032',NULL,'CRSGRP',0,'',''),
+ ('0001','ZOW','ZOW',1,NULL,'2012-03-03 15:28:34',NULL,'E0001001311019',NULL,'CRSGRP',0,'',''),
  ('0001','ZOW','ZOW',1,NULL,'2012-03-23 17:38:18',NULL,'E0001',NULL,'SBWGRP',NULL,NULL,NULL),
- ('0001','ZTM','Zoology Technology Major',1,NULL,'2012-05-30 10:48:53',NULL,'E0001001311019',NULL,'CRSGRP',0,'','');
+ ('0001','ZTM','ZTM',1,NULL,'2012-05-30 10:48:53',NULL,'E0001001311019',NULL,'CRSGRP',0,'','');
 /*!40000 ALTER TABLE `system_table_two` ENABLE KEYS */;
 
 
@@ -5986,30 +6751,31 @@ CREATE TABLE `system_values` (
 /*!40000 ALTER TABLE `system_values` DISABLE KEYS */;
 INSERT INTO `system_values` (`university_id`,`code`,`value`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
  ('0001','ADMSSN','2011070120120630201107012011073110','2011-01-01 00:00:00','2012-02-20 14:18:29','Dheeraj','E11019'),
- ('0001','APPNUM','2519','0000-00-00 00:00:00',NULL,'Dheeraj',NULL),
+ ('0001','APPNUM','2520','0000-00-00 00:00:00',NULL,'Dheeraj',NULL),
  ('0001','DEFENT','Y00010001','0000-00-00 00:00:00',NULL,'Dheeraj',NULL),
- ('0001','EMPCOD','026','2011-01-01 00:00:00',NULL,'uk',NULL),
- ('0001','ENDAYS','275','2012-01-18 14:10:47',NULL,'mandeep',NULL),
- ('0001','ENEXD','275','2012-01-18 14:10:56',NULL,'mandeep',NULL),
- ('0001','ENROLL','0405','2011-01-01 00:00:00','2011-10-24 14:53:28','DEEP',''),
- ('0001','ENTYCD','0030','2011-05-20 00:00:00',NULL,'uk',NULL),
- ('0001','ENTYID','0001','0000-00-00 00:00:00',NULL,'Dheeraj',NULL),
- ('0001','FSTUID','1644','2011-06-08 00:00:00','2012-04-06 16:22:25','uk','E0001001311019'),
+ ('0001','EMPCOD','187','2011-01-01 00:00:00',NULL,'uk',NULL),
+ ('0001','ENDAYS','10','2012-01-18 14:10:47',NULL,'mandeep',NULL),
+ ('0001','ENEXD','5','2012-01-18 14:10:56',NULL,'mandeep',NULL),
+ ('0001','ENROLL','0000','2011-01-01 00:00:00','2011-10-24 14:53:28','DEEP',''),
+ ('0001','ENTYCD','0032','2011-05-20 00:00:00',NULL,'uk',NULL),
+ ('0001','FSTUID','4822','2011-06-08 00:00:00','2012-10-12 13:21:44','uk','manualProcess'),
  ('0001','MINGRD','3','2011-01-01 00:00:00',NULL,'Deepak',NULL),
  ('0001','MINMAR','70','2011-01-01 00:00:00','2011-01-01 00:00:00','Deepak',NULL),
- ('0001','PRGMID','077','2011-05-16 00:00:00',NULL,'uk',NULL),
+ ('0001','PRGMID','107','2011-05-16 00:00:00',NULL,'uk',NULL),
  ('0001','PSTNUM','010','2011-01-01 00:00:00',NULL,'dev',NULL),
  ('0001','REDAYS','15','2011-08-25 14:56:43',NULL,'ashish',NULL),
- ('0001','REFDAT','2011-07-01','2011-01-01 00:00:00',NULL,'Deepak',NULL),
- ('0001','REGDAY','400','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
- ('0001','REGEXD','400','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
- ('0001','REGNUM','000016','2011-07-13 00:00:00','2012-05-30 16:21:38','Amir','STD'),
+ ('0001','REGDAY','15','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
+ ('0001','REGEXD','1185','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
+ ('0001','REGNUM','000067','2011-07-13 00:00:00','2012-08-22 15:49:03','Amir','STD'),
  ('0001','RESSYS','GR','2011-01-01 00:00:00',NULL,'Deepak',NULL),
+ ('0001','ROLLBF','10','2012-09-24 12:42:36',NULL,'Devendra',NULL),
+ ('0001','RSVNUM','120001','0000-00-00 00:00:00','2012-11-17 11:34:00','Nupur',NULL),
  ('0001','SCNNUM','1105','2011-01-01 00:00:00',NULL,'dev',NULL),
  ('0001','SEPDAY','20','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
- ('0001','SEPEXD','10','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
+ ('0001','SEPEXD','1500','2011-12-24 12:19:46',NULL,'E00010001201100006',NULL),
  ('0001','STUDID','2507','0000-00-00 00:00:00',NULL,'Dheeraj',NULL),
- ('0001','STUID','00016','2011-01-01 00:00:00','2012-05-30 16:21:38','K','STD'),
+ ('0001','STUID','00067','2011-01-01 00:00:00','2012-08-22 15:49:03','K','STD'),
+ ('0001','SWTNUM','0','2012-09-17 11:54:43',NULL,'E11019',NULL),
  ('0001','TSTNUM','000000150000200000250000','2012-06-05 13:01:07',NULL,'Devendra',NULL),
  ('0001','WGHTID','31','0000-00-00 00:00:00',NULL,'Dheeraj',NULL);
 /*!40000 ALTER TABLE `system_values` ENABLE KEYS */;
@@ -6272,6 +7038,8 @@ CREATE TABLE `temp_student_program` (
   `registered_credit_excluding_audit` decimal(6,3) DEFAULT '0.000',
   `registered_theory_credit_excluding_audit` decimal(6,3) DEFAULT '0.000',
   `registered_practical_credit_excluding_audit` decimal(6,3) DEFAULT '0.000',
+  `roll_number_group_code` char(3) DEFAULT NULL,
+  `long_field` varchar(100) DEFAULT NULL,
   KEY `combineFK1` (`entity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -6327,6 +7095,8 @@ CREATE TABLE `temp_student_program_history` (
   `registered_credit_excluding_audit` decimal(6,3) DEFAULT '0.000',
   `registered_theory_credit_excluding_audit` decimal(6,3) DEFAULT '0.000',
   `registered_pratical_credit_excluding_audit` decimal(6,3) DEFAULT '0.000',
+  `roll_number_group_code` char(3) DEFAULT NULL,
+  `long_field` varchar(100) DEFAULT NULL,
   KEY `combineFK1` (`entity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -6470,7 +7240,7 @@ CREATE TABLE `tie_rule` (
   `creator_id` varchar(45) NOT NULL,
   `modifier_id` varchar(45) DEFAULT NULL,
   `modification_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`university_id`,`program_id`,`component_id`,`calculation_basis`,`logic`)
+  PRIMARY KEY (`university_id`,`program_id`,`component_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -6550,7 +7320,7 @@ CREATE TABLE `university_master` (
 
 /*!40000 ALTER TABLE `university_master` DISABLE KEYS */;
 INSERT INTO `university_master` (`university_code`,`start_date`,`end_date`,`current_status`,`university_name`,`university_address`,`university_city`,`university_pincode`,`university_phone_number`,`university_other_phone`,`university_fax`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`,`nick_name`,`university_state`,`country`) VALUES 
- ('0001','2011-07-01','2012-06-30',1,'Dayalbagh Educational Institute(Deemed University)','Dayalbagh','Agra',282110,'02321323455','','','2011-07-01 00:00:00','2011-09-30 13:58:37','Deepak','E00010001201100006','DEI','UP','India');
+ ('0001','2012-07-01','2013-06-30',1,'Default University','Default Address','Default City',0,'0000000000',NULL,NULL,'2010-12-27 10:18:44',NULL,'System Administrator',NULL,'DFU','Default State','Default Country');
 /*!40000 ALTER TABLE `university_master` ENABLE KEYS */;
 
 
@@ -6602,38 +7372,6 @@ CREATE TABLE `user_function_authority` (
 --
 
 /*!40000 ALTER TABLE `user_function_authority` DISABLE KEYS */;
-INSERT INTO `user_function_authority` (`function_user_id`,`menu_item_id`,`authority`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
- ('E0001000311022','41','1111','2012-06-12 12:00:00',NULL,'dev',NULL),
- ('E0001000311022','45','0011','2012-06-12 12:00:29',NULL,'dev',NULL),
- ('E0001000311023','45','0011','2012-06-13 11:20:06',NULL,'ashish',NULL),
- ('E0001000311025','45','0011','2012-06-13 11:20:06',NULL,'ashish',NULL),
- ('E0001000311026','45','0011','2012-06-15 15:42:39',NULL,'Ashish',NULL),
- ('E00010010000000001','1','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','10','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','11','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','12','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','13','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','14','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','15','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','16','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','17','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','18','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','19','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','2','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','20','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','21','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','22','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','23','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','24','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','25','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','3','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','4','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','5','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','6','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','7','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','8','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E00010010000000001','9','1111','2011-03-31 10:58:26',NULL,'ashish',NULL),
- ('E0001001311024','45','0011','2012-06-13 11:20:06',NULL,'ashish',NULL);
 /*!40000 ALTER TABLE `user_function_authority` ENABLE KEYS */;
 
 
@@ -6713,6 +7451,8 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MAADA',1,'2011-01-05 11:48:26',NULL,'a','a','CMS'),
  ('0001','SAM','MAADB',1,'2011-01-05 11:48:26',NULL,'a','a','CMS'),
  ('0001','SAM','MAAE',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MAAF',1,'2012-11-24 12:23:45',NULL,'E00010001201100006',NULL,'CMS'),
+ ('0001','SAM','MAAG',1,'2012-11-27 10:56:32',NULL,'E00010001201100006',NULL,'CMS'),
  ('0001','SAM','MABA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','SAM','MABB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MACAA',1,'2011-12-12 16:17:07',NULL,'E0001001211017',NULL,''),
@@ -6720,13 +7460,13 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MACAB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MACAC',1,'2011-12-12 16:17:07',NULL,'E0001001211017',NULL,''),
  ('0001','HRM','MACAC',1,'2011-11-05 14:27:03',NULL,'E00010001201100006',NULL,'UPM'),
- ('0001','SAM','MACAC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','ADM','MACAD',1,'2011-12-12 16:17:07',NULL,'E0001001211017',NULL,''),
  ('0001','HRM','MACAD',1,'2011-11-05 14:27:03',NULL,'E00010001201100006',NULL,'UPM'),
- ('0001','SAM','MACAD',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','ADM','MACBA',1,'2011-12-12 16:17:07',NULL,'E0001001211017',NULL,''),
+ ('0001','DEV','MACBA',1,'2012-10-29 16:26:59',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MACBA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MACBB',1,'2011-12-12 16:17:07',NULL,'E0001001211017',NULL,''),
+ ('0001','DEV','MACBB',1,'2012-10-29 16:26:59',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MACBB',1,'2011-01-05 11:48:26',NULL,'Ankit',NULL,'CMS'),
  ('0001','SAM','MACBC',1,'2012-02-13 10:38:22',NULL,'Mandeep',NULL,'CMS'),
  ('0001','SAM','MACC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
@@ -6736,6 +7476,7 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','ADM','MACDB',1,'2011-12-12 16:17:07',NULL,'E0001001211017',NULL,''),
  ('0001','ADM','MACDC',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
  ('0001','HRM','MACE',1,'2011-11-05 14:27:04',NULL,'E00010001201100006',NULL,'UPM'),
+ ('0001','SAM','MACE',1,'2012-12-15 14:38:22',NULL,'Nupur',NULL,'CMS'),
  ('0001','HRM','MACF',1,'2011-11-04 16:07:12',NULL,'dev',NULL,'UPM'),
  ('0001','SAM','MADAA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MADABA',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
@@ -6747,28 +7488,41 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MADBA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MADBB',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
  ('0001','SAM','MADBB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
+ ('0001','DEV','MADCA',1,'2012-09-15 15:27:57',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADCA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MADCB',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
+ ('0001','DEV','MADCB',1,'2012-09-15 15:27:57',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADCB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','SAM','MADDA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MADDB',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
  ('0001','SAM','MADDB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','SAM','MADDC',1,'2011-08-11 11:30:10',NULL,'E00010001201100005',NULL,'CMS'),
+ ('0001','DEV','MADEA',1,'2012-09-15 12:50:27',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADEA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MADEB',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
+ ('0001','DEV','MADEB',1,'2012-09-15 12:50:27',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADEB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
+ ('0001','DEV','MADFA',1,'2012-10-04 17:01:23',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADFA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MADFB',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
+ ('0001','DEV','MADFB',1,'2012-10-04 17:01:24',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADFB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
+ ('0001','DEV','MADG',1,'2012-09-22 11:14:27',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADG',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','SAM','MADH',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
+ ('0001','DEV','MADI',1,'2012-09-15 12:50:27',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADI',1,'2011-05-19 00:00:00',NULL,'uk',NULL,'CMS'),
+ ('0001','DEV','MADJ',1,'2012-09-28 13:55:04',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MADJ',1,'2011-05-19 00:00:00',NULL,'uk',NULL,'CMS'),
+ ('0001','SAM','MADK',1,'2012-10-13 12:42:27',NULL,'uk',NULL,'CMS'),
+ ('0001','DEV','MAEAA',1,'2012-09-15 16:18:39',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','INS','MAEAA',1,'2012-03-22 17:10:54',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEAA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MAEAB',1,'2011-12-12 16:17:08',NULL,'E0001001211017',NULL,''),
+ ('0001','DEV','MAEAB',1,'2012-09-15 16:18:39',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','INS','MAEAB',1,'2012-03-22 17:10:54',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEAB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
+ ('0001','DEV','MAEB',1,'2012-09-15 12:50:27',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEB',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','ADM','MAEC',1,'2011-12-12 16:20:55',NULL,'E0001002211045',NULL,''),
  ('0001','SAM','MAEC',1,'2011-05-24 09:43:35',NULL,'Amir',NULL,'CMS'),
@@ -6776,6 +7530,7 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MAECB',1,'2012-02-29 14:41:55',NULL,'E0001001211017',NULL,'CMS'),
  ('0001','EXU','MAED',1,'2012-05-26 10:30:51',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAED',1,'2011-01-05 11:48:26',NULL,'Amir',NULL,'CMS'),
+ ('0001','EXU','MAEE',1,'2012-08-09 15:55:02',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','INS','MAEE',1,'2012-03-24 21:31:56',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEE',1,'2012-02-13 11:09:35',NULL,'Mandeep',NULL,'CMS'),
  ('0001','INS','MAEF',1,'2012-03-22 17:06:42',NULL,'E0001001311019',NULL,'CMS'),
@@ -6785,9 +7540,13 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MAEG',1,'2012-03-23 18:03:06',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','EXU','MAEH',1,'2012-05-26 10:32:11',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEH',1,'2012-04-14 20:28:54',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MAEI',1,'2012-08-11 12:21:33',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEI',1,'2012-04-05 21:40:16',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MAEJ',1,'2012-08-11 12:21:33',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEJ',1,'2012-04-06 21:24:48',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MAEK',1,'2012-08-11 12:21:33',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAEK',1,'2012-04-05 21:40:16',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MAEL',1,'2012-08-11 13:14:31',NULL,'E0001001311021',NULL,'CMS'),
  ('0001','SAM','MAEL',1,'2012-06-13 11:19:54',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MAFA',1,'2011-01-05 11:48:26',NULL,'Rohit',NULL,'CMS'),
  ('0001','SAM','MAFB',1,'2012-02-13 11:36:12',NULL,'Mandeep',NULL,'CMS'),
@@ -6809,55 +7568,65 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','HRM','MALA',1,'2011-11-05 14:27:04',NULL,'E00010001201100006',NULL,'UPM'),
  ('0001','HRM','MALB',1,'2011-11-05 14:27:04',NULL,'E00010001201100006',NULL,'UPM'),
  ('0001','HRM','MAM',1,'2011-11-05 14:27:04',NULL,'E00010001201100006',NULL,'UPM'),
+ ('0001','DEV','MBAA',1,'2012-09-22 11:23:58',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBAA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBAB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBBA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBBB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MBC',1,'2012-08-13 13:50:39',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBD',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','DEV','MBDA',1,'2012-09-22 11:23:58',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBDA',1,'2012-05-22 12:03:15',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','DEV','MBDB',1,'2012-09-22 11:23:58',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBDB',1,'2012-05-22 12:03:16',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBE',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBF',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBFA',1,'2012-06-08 12:59:23',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBFB',1,'2012-06-08 12:59:23',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MBFC',1,'2012-06-13 11:19:54',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MBG',1,'2012-10-19 12:27:30',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MCA',1,'2012-08-09 14:55:05',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','INS','MCA',1,'2012-03-20 14:30:16',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MCB',1,'2012-08-09 14:55:05',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','INS','MCB',1,'2012-03-20 14:30:16',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MCC',1,'2012-08-09 14:55:05',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','INS','MCC',1,'2012-03-20 14:30:16',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCD',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCE',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCF',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCG',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCH',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','EXU','MCH',1,'2012-09-05 15:57:12',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MCH',1,'2012-09-03 13:59:43',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','HRM','MCI',1,'2011-11-05 14:49:30',NULL,'E00010001201100006',NULL,'UPM'),
  ('0001','SAM','MCI',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','HRM','MCJ',1,'2011-11-05 14:49:30',NULL,'E00010001201100006',NULL,'UPM'),
- ('0001','SAM','MCJ',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','HRM','MCK',1,'2011-11-04 16:07:11',NULL,'dev',NULL,'UPM'),
- ('0001','SAM','MCK',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCL',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCM',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCN',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCO',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCP',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MCK',1,'2012-10-19 15:22:29',NULL,'E0001001312032',NULL,'CMS'),
+ ('0001','SAM','MCM',1,'2012-10-18 13:46:14',NULL,'E0001001312032',NULL,'CMS'),
  ('0001','SAM','MCQ',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MCR',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCS',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCT',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCU',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MCV',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MCS',1,'2012-10-19 15:22:29',NULL,'E0001001312032',NULL,'CMS'),
+ ('0001','SAM','MCW',1,'2012-10-05 14:56:17',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MCX',1,'2012-11-24 12:24:22',NULL,'nupur',NULL,'CMS'),
  ('0001','SAM','MDA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','STD','MDA',1,'2012-09-07 13:46:39',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MDB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MDC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MDD',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MDE',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','STD','MDE',1,'2012-09-07 13:28:14',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MDF',1,'2012-10-09 16:10:25',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','DEV','MDG',1,'2012-09-22 11:23:58',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','EXU','MDG',1,'2012-05-25 15:49:45',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MDG',1,'2012-05-25 15:39:32',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MDH',1,'2012-04-28 17:04:06',NULL,'E00010001201100006',NULL,'CMS'),
+ ('0001','SAM','MDI',1,'2012-10-08 15:25:16',NULL,'DEV',NULL,'CMS'),
+ ('0001','SAM','MDJ',1,'2012-12-01 15:17:37',NULL,'E00010001201100006',NULL,'CMS'),
+ ('0001','DEV','MEA',1,'2012-09-22 11:23:58',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MEA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','EXU','MEB',1,'2012-05-25 15:49:45',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MEB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
@@ -6866,6 +7635,7 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MEF',1,'2012-06-26 12:14:15',NULL,'E0001001611017',NULL,'CMS'),
  ('0001','SAM','MFA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MFB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','DEV','MFC',1,'2012-09-27 10:51:20',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MFC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MFD',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MFE',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
@@ -6877,7 +7647,10 @@ INSERT INTO `user_group` (`university_code`,`user_group_id`,`menu_item_id`,`auth
  ('0001','SAM','MFFF',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MFGA',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
  ('0001','SAM','MFGB',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
- ('0001','SAM','MFGC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS');
+ ('0001','SAM','MFGC',1,'2012-02-18 10:29:26',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MFJ',1,'2012-10-10 11:21:47',NULL,'E0001001312032',NULL,'CMS'),
+ ('0001','SAM','MFLA',1,'2012-11-17 16:02:28',NULL,'E0001001311019',NULL,'CMS'),
+ ('0001','SAM','MFLB',1,'2012-11-17 16:02:28',NULL,'E0001001311019',NULL,'CMS');
 /*!40000 ALTER TABLE `user_group` ENABLE KEYS */;
 
 
@@ -6911,9 +7684,30 @@ CREATE TABLE `user_info` (
 
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` (`user_id`,`user_name`,`password`,`last_login`,`status`,`registered_timestamp`,`modified_timestamp`,`university_code`,`user_group_id`,`application`,`creator_id`,`modifier_id`) VALUES 
- ('E0001001311019','E11019','64fbfb6d47cecb02e50d3c9fdb0bbdc352b37d66','2012-07-04 13:17:18','ACT','2012-06-05 14:55:41',NULL,'0001','SAM','ADM','E0001001311019',NULL),
- ('E0001001311019','E11019','64fbfb6d47cecb02e50d3c9fdb0bbdc352b37d66','2012-07-04 13:17:18','ACT','2011-11-23 13:19:35','2011-12-13 10:34:37','0001','SAM','CMS',NULL,NULL);
+ ('E0001001311019','admin','d033e22ae348aeb5660fc2140aec35850c4da997','2012-11-10 12:17:20','ACT','2011-11-23 13:19:35','2012-11-09 11:26:11','0001','SAM','CMS',NULL,NULL);
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
+
+
+--
+-- Definition of table `user_password_history`
+--
+
+DROP TABLE IF EXISTS `user_password_history`;
+CREATE TABLE `user_password_history` (
+  `user_id` varchar(150) NOT NULL,
+  `old_password` varchar(255) NOT NULL,
+  `application` varchar(15) NOT NULL,
+  `sequence_number` int(10) unsigned NOT NULL,
+  `university_code` char(4) NOT NULL,
+  PRIMARY KEY (`user_id`,`application`,`sequence_number`,`university_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_password_history`
+--
+
+/*!40000 ALTER TABLE `user_password_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_password_history` ENABLE KEYS */;
 
 
 --
@@ -6932,13 +7726,27 @@ CREATE TABLE `weightage_description` (
 --
 
 /*!40000 ALTER TABLE `weightage_description` DISABLE KEYS */;
-INSERT INTO `weightage_description` (`university_id`,`weightage_id`,`description`) VALUES 
- ('0001','HS','High School'),
- ('0001','SW','DEI Ward'),
- ('0001','IN','Intermidiate'),
- ('0001','UG','Undergraduate'),
- ('0001','PG','Post Graduate');
 /*!40000 ALTER TABLE `weightage_description` ENABLE KEYS */;
+
+
+--
+-- Definition of table `wrong_attempt_password`
+--
+
+DROP TABLE IF EXISTS `wrong_attempt_password`;
+CREATE TABLE `wrong_attempt_password` (
+  `user_id` varchar(150) NOT NULL,
+  `application` varchar(15) NOT NULL,
+  `wrong_attempt` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`,`application`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `wrong_attempt_password`
+--
+
+/*!40000 ALTER TABLE `wrong_attempt_password` DISABLE KEYS */;
+/*!40000 ALTER TABLE `wrong_attempt_password` ENABLE KEYS */;
 
 
 --

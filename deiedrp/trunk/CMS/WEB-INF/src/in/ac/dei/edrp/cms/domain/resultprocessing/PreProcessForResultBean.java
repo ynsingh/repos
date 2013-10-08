@@ -45,7 +45,7 @@ public class PreProcessForResultBean {
 	private String semesterEndDate;
 	private String sessionStartDate;
 	private String sessionEndDate;
-
+	private int semesterSequence;
 	private String programStatus;
 	private String semesterStatus;
 	private String courseStatus;
@@ -115,6 +115,14 @@ public class PreProcessForResultBean {
 
 	public void setPracticalcgpa(double practicalcgpa) {
 		this.practicalcgpa = practicalcgpa;
+	}
+
+	public int getSemesterSequence() {
+		return semesterSequence;
+	}
+
+	public void setSemesterSequence(int semesterSequence) {
+		this.semesterSequence = semesterSequence;
 	}
 
 	private double minPassGrade;
@@ -552,5 +560,128 @@ public class PreProcessForResultBean {
 	public double getMinPassGrade() {
 		return minPassGrade;
 	}
+	private String switchRule;
+	private String switchType;
+	private String modeOfEntry;
+	private String programMarksFlag;
+	private String consideringSemester;
+	private String inSemester;
+	private String preEntity;
+	private String preProgram;
+	private String preBranch;
+	private String preSpecialization;
+	private String preSemester;
+	private String previousSemesterStartDate;
+	private String previosSemesterEndDate;
+	private String ruleFormula;
 
+public String getSwitchRule() {
+		return switchRule;
+	}
+
+	public void setSwitchRule(String switchRule) {
+		this.switchRule = switchRule;
+	}
+
+	public String getSwitchType() {
+		return switchType;
+	}
+
+	public void setSwitchType(String switchType) {
+		this.switchType = switchType;
+	}
+
+	public String getModeOfEntry() {
+		return modeOfEntry;
+	}
+
+	public void setModeOfEntry(String modeOfEntry) {
+		this.modeOfEntry = modeOfEntry;
+	}
+
+	public String getProgramMarksFlag() {
+		return programMarksFlag;
+	}
+
+	public void setProgramMarksFlag(String programMarksFlag) {
+		this.programMarksFlag = programMarksFlag;
+	}
+
+	public String getConsideringSemester() {
+		return consideringSemester;
+	}
+
+	public void setConsideringSemester(String consideringSemester) {
+		this.consideringSemester = consideringSemester;
+	}
+
+	public String getInSemester() {
+		return inSemester;
+	}
+
+	public void setInSemester(String inSemester) {
+		this.inSemester = inSemester;
+	}
+
+	public String getPreProgram() {
+		return preProgram;
+	}
+
+	public void setPreProgram(String preProgram) {
+		this.preProgram = preProgram;
+	}
+
+	public String getPreBranch() {
+		return preBranch;
+	}
+
+	public void setPreBranch(String preBranch) {
+		this.preBranch = preBranch;
+	}
+
+	public String getPreSpecialization() {
+		return preSpecialization;
+	}
+
+	public void setPreSpecialization(String preSpecialization) {
+		this.preSpecialization = preSpecialization;
+	}
+
+	public String getPreSemester() {
+		return preSemester;
+	}
+
+	public void setPreSemester(String preSemester) {
+		this.preSemester = preSemester;
+	}
+
+	public String getPreviousSemesterStartDate() {
+		return previousSemesterStartDate;
+	}
+
+	public void setPreviousSemesterStartDate(String previousSemesterStartDate) {
+		this.previousSemesterStartDate = previousSemesterStartDate;
+	}
+
+	public String getPreviosSemesterEndDate() {
+		return previosSemesterEndDate;
+	}
+
+	public void setPreviosSemesterEndDate(String previosSemesterEndDate) {
+		this.previosSemesterEndDate = previosSemesterEndDate;
+	}
+	public String getRuleFormula() {
+		return ruleFormula;
+	}
+
+	public void setRuleFormula(String ruleFormula) {
+		this.ruleFormula = ruleFormula;
+	}
+	public String getPreEntity() {
+		return preEntity;
+	}
+
+	public void setPreEntity(String preEntity) {
+		this.preEntity = preEntity;
+	}
 }

@@ -44,6 +44,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 <sqlMap namespace="addStduentInMaster">
 
 	<typeAlias alias="addStudentInMaster" type="in.ac.dei.edrp.cms.domain.studentmaster.StudentMasterInfoBean" />
+	<typeAlias alias="studentMasterAPI" type="in.ac.dei.edrp.api.StudentMasterBeanAPI"/>
 	<typeAlias alias="enrollmentInfo" type="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo" />
 
 <insert id="insertstudentmaster" parameterClass="addStudentInMaster">
@@ -189,4 +190,343 @@ select count(student_id) from student_master where enrollment_number=#enrollment
 	AND date_of_birth like #dob# AND gender like #gender#;
 </select>
 
+<select id="chkUserExist" resultClass="addStudentInMaster">
+select count(enrollment_number) as count from student_master
+where student_id=(select user_id from
+user_info where user_name=#userType#);
+</select>
+
+<select id="getStudentInfo" resultClass="studentMasterAPI">
+<!-- 
+	SELECT sm.student_id as studentId, 
+	 concat_ws(' ', sm.student_first_name, sm.student_middle_name, sm.student_last_name) as studentFirstName,
+	concat_ws(' ',sm.father_first_name, sm.father_middle_name, sm.father_last_name) as fatherFirstName,
+	concat_ws(' ',sm.mother_first_name, sm.mother_middle_name, sm.mother_last_name) as motherFirstName,
+	sm.primary_email_id as primaryEmailId, sm.secondary_email_id as secondaryEmailId, sm.date_of_birth as dateOfBirth,
+	 sm.gender as gender, sm.status as status,
+	sm.nationality as nationality, sm.religion as religion, sm.guardian_name as guardianName
+	FROM student_master sm
+	where student_id=(select user_id from
+	user_info where user_name=#userType#)
+-->
+
+SELECT sm.student_id as studentId, 
+	 sm.student_first_name as studentFirstName, sm.student_middle_name as studentMiddleName, sm.student_last_name as studentLastName,
+	 sm.name_in_hindi as hindiName,
+	sm.father_first_name as fatherFirstName, sm.father_middle_name as fatherMiddleName, sm.father_last_name as fatherLastName,
+	sm.father_name_in_hindi as fatherHindiName,
+	sm.mother_first_name as motherFirstName, sm.mother_middle_name as motherMiddleName, sm.mother_last_name as motherLastName,
+	sm.mother_name_in_hindi as motherHindiName,
+	sm.primary_email_id as primaryEmailId, sm.secondary_email_id as secondaryEmailId, sm.date_of_birth as dateOfBirth,
+	 sm.gender as gender, sm.status as status,
+	sm.nationality as nationality, sm.religion as religion, sm.guardian_name as guardianName,
+	sm.place_of_birth as placeOfBirth, case sm.marital_status when 'M' then 'Married' when 'U' then 'Unmarried' 
+	when 'D' then 'Divorced'
+   when 'W' then (case sm.gender when 'M' then 'Widower' else 'Widow' end) end  as maritalStatus,
+	 sm.UID, sm.pan_no as panNo, sm.passport_no as passportNo,
+	 sm.enrollment_number as enrollmentNumber,sm.category_code ,(select component_description from system_table_two where
+	 component_code=sm.category_code and group_code='STDCTG' and university_code=#universityId#) as categoryName
+	FROM student_master sm
+	where student_id=(select user_id from
+	user_info where user_name=#userEmailId# and university_code=#universityId# and application='CMS')
+</select>
+
+<update id="updateStudentInfo" parameterClass="studentMasterAPI">
+	UPDATE student_master
+	<dynamic prepend="set">
+		<isNotEmpty prepend="," property="studentFirstName">
+		student_first_name=#studentFirstName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="studentMiddleName">
+		student_middle_name=#studentMiddleName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="studentLastName">
+		student_last_name=#studentLastName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="fatherFirstName">
+		father_first_name=#fatherFirstName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="fatherMiddleName">
+		father_middle_name=#fatherMiddleName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="fatherLastName">
+		father_last_name=#fatherLastName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="motherFirstName">
+		mother_first_name=#motherFirstName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="motherMiddleName">
+		mother_middle_name=#motherMiddleName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="motherLastName">
+		mother_last_name=#motherLastName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="primaryEmailId">
+		primary_email_id=#primaryEmailId#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="UID">
+		UID=#UID#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="panNo">
+		pan_no=#panNo#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="passportNo">
+		passport_no=#passportNo#
+		</isNotEmpty>
+		
+		<isNotEmpty prepend="," property="placeOfBirth">
+		place_of_birth=#placeOfBirth#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="religion">
+		religion=#religion#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="nationality">
+		nationality=#nationality#
+		</isNotEmpty>
+		</dynamic>
+	,modification_time=now(),modifier_id=#userId#
+	WHERE student_id=(select user_id from
+	user_info where user_name=#userEmailId# and university_code=#universityId# and application='CMS')
+</update>
+
+<resultMap id="getAddressDetailresult" class="studentMasterAPI">
+<result property="userType" column="user_type"/>
+<result property="addressKey" column="address_key"/>
+<result property="addressLineOne" column="address"/>
+<result property="city" column="city"/>
+<result property="state" column="state"/>
+<result property="country" column="country"/>
+<result property="pinCode" column="pincode"/>
+<result property="officePhone" column="office_phone"/>
+<result property="otherPhone" column="other_phone"/>
+<result property="homePhone" column="home_phone"/>
+<result property="fax" column="fax"/>
+</resultMap>
+<select id="getContactDetail" resultMap="getAddressDetailresult">
+	select user_type, address_key,address,city,state,pincode,office_phone,other_phone,home_phone,
+	fax, country from addresses_master 
+	where user_id=(select user_id from
+	user_info where user_name=#userEmailId# and university_code=#universityId# and application='CMS')
+</select>
+<!-- 
+<select id="getContactDetailMaster" resultClass="studentMasterAPI">
+	select substring(user_id,1,1) as uID,website,primary_email_id 
+	<dynamic prepend="from" >
+	<isEqual compareProperty="uID" compareValue="S">student_master</isEqual>
+	
+	</dynamic>user_type, address_key,address,city,state,pincode,office_phone,other_phone,home_phone,
+	fax, country ,from addresses_master 
+	where user_id=(select user_id from
+	user_info where user_name=#userEmailId# and university_code=#universityId# and application='CMS')
+</select>
+ -->
+<update id="updateContactInfo" parameterClass="studentMasterAPI">
+	UPDATE addresses_master
+	<dynamic prepend="set">
+		<isNotEmpty prepend="," property="country">
+		country=#country#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="addressLineOne">
+		address=#addressLineOne#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="city">
+		city=#city#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="state">
+		state=#state#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="pinCode">
+		pincode=#pinCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="officePhone">
+		office_phone=#officePhone#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="homePhone">
+		home_phone=#homePhone#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="otherPhone">
+		other_phone=#otherPhone#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="fax">
+		fax=#fax#
+		</isNotEmpty>
+		</dynamic>
+	
+	,modification_time=now(),modifier_id=#userId#
+	WHERE user_id=(select user_id from
+	user_info where user_name=#userEmailId# and university_code=#universityId# and application='CMS')
+	and
+	address_key=#addressKey#
+</update>
+
+<select id="getParentDetail" resultClass="studentMasterAPI">
+SELECT  
+	concat_ws(' ',sm.father_first_name, sm.father_middle_name, sm.father_last_name) as fatherFirstName,
+	concat_ws(' ',sm.mother_first_name, sm.mother_middle_name, sm.mother_last_name) as motherFirstName,
+	sm.father_name_in_hindi as fatherHindiName,sm.mother_name_in_hindi as motherHindiName,
+	sm.parent_address_1 as parentAddress1, sm.parent_address_2 as parentAddress2, sm.parent_phone_1 as parentPhone1,
+	 sm.parent_phone_2 as parentPhone2, sm.parent_email_1 as parentEmail1,
+	sm.parent_email_2 as parentEmail2
+	FROM student_master sm
+	where student_id=(select user_id from
+	user_info where user_name=#userEmailId# and university_code=#universityId# and application='CMS')	
+</select>
+
+<select id="getAcademicProgram" resultClass="studentMasterAPI">  
+SELECT sp.roll_number AS rollNumber,sp.entity_id as entityId,em.entity_name as 
+entityName,sp.program_id AS programId,pm.program_name AS programName,
+  sp.branch_id AS branchId, stt.component_description AS branchName,
+  sp.specialization_id AS specializationId,stt1.component_description AS specialization,
+  IF(division,upper((SELECT component_description FROM system_table_two
+                    	WHERE
+                    	group_code='DVSCOD' AND component_code=division AND
+university_code='0001')),division) as division,cgpa
+FROM student_program sp, program_master pm,system_table_two stt,system_table_two stt1, entity_master em
+WHERE sp.roll_number=#rollNumber#
+AND SUBSTRING(sp.entity_id,1,4)=#universityId#
+  AND sp.program_id=pm.program_id
+  AND stt.component_code = sp.branch_id
+AND stt.university_code=#universityId#
+  AND stt1.component_code = sp.specialization_id
+  AND stt1.university_code=#universityId#
+  and em.university_id=#universityId#
+and em.entity_id=sp.entity_id
+  order by sp.register_date asc;
+</select>
+
+<select id="getAcademicProgramSwitch" resultClass="studentMasterAPI">  
+SELECT ifnull(sp.cgpa,0) as cgpa,sp.enrollment_number as enrollmentNumber,sp.roll_number as rollNumber,ptd2.semester_code as
+semesterCode,stt.component_description semesterName,pch.program_course_key as
+programCourseKey,sp.entity_id as entityId,em.entity_name as entityName,sp.program_id as programId,pm.program_name AS programName,
+sp.branch_id as branchId,
+ stt1.component_description AS branchName,sp.specialization_id as specializationId,stt2.component_description AS specialization,ifnull
+(ptd2.final_semester_code,'N') as finalSemesterCode,
+	IF(division,upper((SELECT component_description FROM system_table_two WHERE
+                    	group_code='DVSCOD' AND component_code=division AND
+	university_code='0001')),division) as division,
+	switch_number,sequence_number
+	FROM student_program sp,program_term_details ptd,program_term_details ptd1,program_term_details ptd2,
+	system_table_two stt,program_course_header pch, entity_master em,program_master pm,system_table_two stt1,system_table_two stt2
+WHERE
+	roll_number=#rollNumber#
+	AND sp.entity_id like concat(#universityId#,'%')
+	AND sp.program_id=ptd.program_id
+	AND sp.current_semester=ptd.semester_code
+	AND sp.program_id=ptd1.program_id
+	AND sp.in_semester=ptd1.semester_code
+	AND sp.program_id=ptd2.program_id
+	AND ptd2.semester_sequence<![CDATA[ <= ]]>ptd.semester_sequence
+	AND ptd2.semester_sequence <![CDATA[ >= ]]> ptd1.semester_sequence
+	AND stt.group_code='SEMCOD'
+	AND stt.component_code = ptd2.semester_code
+	AND stt.university_code=#universityId#
+	AND sp.program_id=pch.program_id
+	AND sp.branch_id=pch.branch_id
+	AND sp.specialization_id=pch.specialization_id
+	AND ptd2.semester_code=pch.semester_code
+and em.university_id=#universityId#
+and em.entity_id=sp.entity_id
+AND sp.program_id=pm.program_id
+AND stt1.component_code = sp.branch_id
+AND stt1.university_code=#universityId#
+  AND stt2.component_code = sp.specialization_id
+  AND stt2.university_code=#universityId#
+	ORDER BY registered_from_session;
+</select>
+<select id="getAcademicProgramCourseKey" resultClass="studentMasterAPI">
+select srsh.program_course_key as programCourseKey,pch.semester_code as semesterCode,
+stt2.component_description as semesterName,srsh.session_start_date as semesterStartDate, srsh.session_end_date as
+semesterEndDate,
+(case when(ifnull(ptd.final_semester_code,"N")='N') then (case when (ptd.semester_sequence%2=0) then ('Result Card')
+ else ('Progress Card') end) else ('Final Result Card') end) as name
+from student_registration_semester_header srsh, program_course_header pch,system_table_two stt2,
+program_term_details ptd
+where srsh.roll_number=#rollNumber#
+and pch.program_course_key=srsh.program_course_key
+and stt2.component_code=pch.semester_code
+and stt2.group_code='SEMCOD'
+and stt2.university_code=#universityId#
+and srsh.status not in ('YTR')
+and pch.program_id=#programId#
+and pch.branch_id=#branchId#
+and pch.specialization_id=#specializationId#
+and ptd.program_id=pch.program_id
+and ptd.semester_code=pch.semester_code;
+</select>
+<select id="getAcademicSemester" resultClass="studentMasterAPI">
+SELECT sa.roll_number as rollNumber,sa.semester_start_date as
+semesterStartDate,sa.semester_end_date as semesterEndDate,sa.program_course_key as programCourseKey,
+ifnull(sa.practicalcgpa,0) as practicalCgpa,ifnull(sa.theorycgpa,0)
+as theoryCgpa,ifnull(sa.cgpa,0) as cgpa,
+sa.sgpa as sgpa,srsh.status as status,stt.component_description statusName
+	FROM student_aggregate sa,student_registration_semester_header
+srsh,system_table_two stt
+	WHERE sa.roll_number =#rollNumber#
+		and srsh.roll_number=sa.roll_number
+		and srsh.program_course_key = sa.program_course_key
+		and stt.group_code='SSMSTS'
+		and stt.component_code = srsh.status
+		and stt.university_code=#universityId#
+	GROUP BY sa.program_course_key
+	HAVING sa.program_course_key = #programCourseKey#
+	ORDER BY sa.semester_start_date desc;
+	</select>
+<select id="getAcademicCourse" resultClass="studentMasterAPI">
+SELECT sc.course_code as courseCode,cm.course_name as courseName,sc.course_status as courseStatus,
+	sc.student_status as studentStatus,sc.attempt_number as attemptNumber,
+	ifnull(sms.total_internal,"Not Available") as totalInternal,ifnull(sms.total_external,"Not Available") as totalExternal,
+	ifnull(sms.total_marks,"Not Available") as totalMarks,
+	ifnull(sms.internal_grade,"Not Available") as internalGrade,ifnull(sms.external_grade,"Not Available") as externalGrade,
+  	ifnull(sms.final_grade_point,"Not Available") as finalGradePoint,
+	sms.earned_credits as earnedCredit
+FROM student_course sc, course_master cm,student_marks_summary sms
+WHERE sc.roll_number=#rollNumber#
+	and sc.program_course_key=#programCourseKey#
+	and cm.course_code=sc.course_code
+	and cm.university_code=#universityId#
+	and sms.roll_number=sc.roll_number
+	and sms.course_code=sc.course_code
+	and sms.program_course_key = sc.program_course_key
+	and sms.university_code=cm.university_code;
+
+<!-- 
+SELECT sc.course_code as courseCode,cm.course_name as courseName,sc.semester_start_date as semesterStartDate,
+sc.semester_end_date as semesterEndDate,sc.course_status as courseStatus,sc.student_status as studentStatus,
+sc.attempt_number as attemptNumber
+FROM student_course sc, course_master cm
+WHERE sc.roll_number=#rollNumber#
+and sc.program_course_key=#programCourseKey#
+and cm.course_code=sc.course_code
+and cm.university_code=#universityId#;
+ -->
+</select>
+<select id="getAcademicMarks" resultClass="studentMasterAPI">
+SELECT
+	sms.course_code as courseCode,
+	ifnull(sms.total_internal,"Not Available") as totalInternal,ifnull(sms.total_external,"Not Available") as totalExternal,
+	ifnull(sms.total_marks,"Not Available") as totalMarks,
+	ifnull(sms.internal_grade,"Not Available") as internalGrade,ifnull(sms.external_grade,"Not Available") as externalGrade,
+  	ifnull(sms.final_grade_point,"Not Available") as finalGradePoint,
+	sms.earned_credits as earnedCredit
+FROM student_marks_summary sms
+	where
+	sms.university_code=#universityId#
+	and sms.roll_number=#rollNumber#
+	and sms.program_course_key = '00010741200073'
+ and sms.course_code='EDM301';
+	</select>
+	<select id="getRegistrationDetail" resultClass="studentMasterAPI">
+select sp.university_code as universityId,um.university_name as universityName,
+sp.enrollment_number as enrollmentNumber,sp.roll_number as rollNumber,sp.program_id as programId ,
+pm.program_name as programName,sp.register_date as registeredInSession
+from student_program sp,
+university_master um, program_master pm,student_master sm
+where sp.enrollment_number=(select enrollment_number from student_master
+where student_id=(SELECT user_id FROM user_info where user_name=#userEmailId#
+and university_code=#universityId# and application='cms'))
+and sp.university_code=um.university_code
+and um.current_status=1
+and sp.program_id=pm.program_id
+and sm.enrollment_number=sp.enrollment_number;
+</select>
 </sqlMap>

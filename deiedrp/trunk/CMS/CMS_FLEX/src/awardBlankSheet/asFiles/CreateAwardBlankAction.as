@@ -391,6 +391,7 @@ import mx.utils.ObjectUtil;
 					else{
 						cVal1=cValue;
 					}
+					}
    				
 					//Alert.show("cValue is name is "+obj1.studentName+" :  "+cValue.toString()+" : "+obj2.evaluationId);
 					
@@ -495,7 +496,7 @@ import mx.utils.ObjectUtil;
    					
 
 
-   				}
+ //  				}
    			}
 
    			}

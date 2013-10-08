@@ -30,18 +30,17 @@
  *
  * Contributors: Members of EdRP, Dayalbagh Educational Institute
  */
+import common.ApplicationSelector;
 import common.RoleSelector;
 import common.commonFunction;
 
 import flash.events.KeyboardEvent;
 import flash.net.URLRequestMethod;
 import flash.ui.Keyboard;
-import flash.utils.Timer;
 
 import mx.collections.ArrayCollection;
 import mx.controls.Alert;
 import mx.controls.DateField;
-import mx.managers.PopUpManager;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
 import mx.rpc.http.HTTPService;
@@ -65,7 +64,9 @@ public var params:Object={};
 
 public var getSessionStartDate:HTTPService=new HTTPService();
 public var getLoginInfoService:HTTPService=new HTTPService();
+public var getApplications:HTTPService=new HTTPService();
 public var getRegistrationStartDate:HTTPService=new HTTPService();
+var applicationXML:XML;
 var userInfoXml:XML;
 public var selectRolectPopup:RoleSelector=new RoleSelector();
 
@@ -78,11 +79,6 @@ public function onCreationComplete():void{
           getSessionStartDate.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
           getSessionStartDate.url=commonFunction.getConstants('urlCms')+'/login/getSessionStartDate.htm';   
 		  getSessionStartDate.send(params);	
-		  
-		  	
-
-		  
-
 }
 /**
  *On Tab key Event at Username Text Input
@@ -100,157 +96,205 @@ public function onTabUserName(event:KeyboardEvent):void{
  */
 public function onTabPassword(event:KeyboardEvent):void{
 		if(event.keyCode==Keyboard.TAB){
-	     applications.setFocus();	
+	     loginButton.setFocus();	
 	}
 }
 /**
  *On Tab key Event at Application ComboBox 
  */
-public function onApplicationTab(event:KeyboardEvent):void{
-	if(event.keyCode==Keyboard.TAB){
-	loginButton.setFocus();	
-	}
+//public function onApplicationTab(event:KeyboardEvent):void{
+//	if(event.keyCode==Keyboard.TAB){
+//	loginButton.setFocus();	
+//	}
 	
-}
+
 
 //On click of login button
 public function Login():void
 {
-	if(Validator.validateAll([userNameValidator,passwordValidator,appValidator]).length==0)
+	if(Validator.validateAll([userNameValidator,passwordValidator]).length==0)
 	{
 		params["userName"]=userNameText.text;
 		params["password"]=passwordText.text;
          
-         if(applications.selectedItem=='UPM'){ 
-         params["application"]=applications.selectedItem;
-          getLoginInfoService.useProxy=false;
-          getLoginInfoService.resultFormat="e4x";
-          getLoginInfoService.method="POST";
-          getLoginInfoService.addEventListener(ResultEvent.RESULT,loginInfoResultHandler);
-          getLoginInfoService.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
-         //getLoginInfoService.url='http://localhost:8080/ESTABLISHMENT/login/getLoginDetails.htm';  
-          getLoginInfoService.url=commonFunction.getConstants('urlUpm')+'/login/getLoginDetails.htm'; 
-		  getLoginInfoService.send(params);
-		  
-         }
-         	else if(applications.selectedItem=='CMS'){
-         params["application"]=applications.selectedItem;		
-          getLoginInfoService.useProxy=false;
-          getLoginInfoService.resultFormat="e4x";
-          getLoginInfoService.method="POST";
-          getLoginInfoService.addEventListener(ResultEvent.RESULT,loginInfoResultHandler);
-          getLoginInfoService.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
-          //getLoginInfoService.url='http://localhost:8080/CMS/login/getLoginDetails.htm';
-           getLoginInfoService.url=commonFunction.getConstants('urlCms')+'/login/getLoginDetails.htm';   
-		  getLoginInfoService.send(params);
-		}
-
-	else if(applications.selectedItem=='ADM'){
-        params["application"]=applications.selectedItem;		
-          getLoginInfoService.useProxy=false;
-          getLoginInfoService.resultFormat="e4x";
-          getLoginInfoService.method="POST";
-         getLoginInfoService.addEventListener(ResultEvent.RESULT,loginInfoResultHandler);
-          getLoginInfoService.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
-          //getLoginInfoService.url='http://localhost:8081/AdmissionSystem/login/getLoginDetails.htm';
-          getLoginInfoService.url=commonFunction.getConstants('urlCms')+'/login/getLoginDetails.htm';   
-		  getLoginInfoService.send(params);
-		}
-		else{
-			getLoginInfoService.url='file:///E:/Current%20Flex%20Side%20Workspace/login_page/bin-debug/login_page.html';
-		}
-	}
-	else{
-		Alert.show((commonFunction.getMessages('pleaseEnterAllLoginDetails')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
-	}
+        getApplications.useProxy=false;
+        getApplications.resultFormat="e4x";
+        getApplications.method="POST";
+        getApplications.addEventListener(ResultEvent.RESULT,applicationResultHandler);
+        getApplications.addEventListener(FaultEvent.FAULT,applicationFaultHandler);
+        getApplications.url=commonFunction.getConstants('urlCms')+'/login/getLoginDetails.htm'; 
+        getApplications.send(params);
+        
+//         if(applications.selectedItem=='UPM'){ 
+//         params["application"]=applications.selectedItem;
+//          getLoginInfoService.useProxy=false;
+//          getLoginInfoService.resultFormat="e4x";
+//          getLoginInfoService.method="POST";
+//          getLoginInfoService.addEventListener(ResultEvent.RESULT,loginInfoResultHandler);
+//          getLoginInfoService.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
+//         //getLoginInfoService.url='http://localhost:8080/ESTABLISHMENT/login/getLoginDetails.htm';  
+//          getLoginInfoService.url=commonFunction.getConstants('urlUpm')+'/login/getLoginDetails.htm'; 
+//		  getLoginInfoService.send(params);
+//		  
+//         }
+//         	else if(applications.selectedItem=='CMS'){
+//         params["application"]=applications.selectedItem;		
+//          getLoginInfoService.useProxy=false;
+//          getLoginInfoService.resultFormat="e4x";
+//          getLoginInfoService.method="POST";
+//          getLoginInfoService.addEventListener(ResultEvent.RESULT,loginInfoResultHandler);
+//          getLoginInfoService.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
+//          //getLoginInfoService.url='http://localhost:8080/CMS/login/getLoginDetails.htm';
+//           getLoginInfoService.url=commonFunction.getConstants('urlCms')+'/login/getLoginDetails.htm';   
+//		  getLoginInfoService.send(params);
+//		}
+//
+//	else if(applications.selectedItem=='ADM'){
+//        params["application"]=applications.selectedItem;		
+//          getLoginInfoService.useProxy=false;
+//          getLoginInfoService.resultFormat="e4x";
+//          getLoginInfoService.method="POST";
+//         getLoginInfoService.addEventListener(ResultEvent.RESULT,loginInfoResultHandler);
+//          getLoginInfoService.addEventListener(FaultEvent.FAULT,loginInfoFaultHandler);
+//          //getLoginInfoService.url='http://localhost:8081/AdmissionSystem/login/getLoginDetails.htm';
+//          getLoginInfoService.url=commonFunction.getConstants('urlCms')+'/login/getLoginDetails.htm';   
+//		  getLoginInfoService.send(params);
+//		}
+//		else{
+//			getLoginInfoService.url='file:///E:/Current%20Flex%20Side%20Workspace/login_page/bin-debug/login_page.html';
+//		}
+//	}
+//	else{
+//		Alert.show((commonFunction.getMessages('pleaseEnterAllLoginDetails')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
+//	}
 
 }
+}
 
-
-//login result handler
-public function loginInfoResultHandler(event:ResultEvent):void
-{
-	userInfoXml=event.result as XML;
+public function applicationResultHandler(event:ResultEvent):void{
 	
-	var values:ArrayCollection=new ArrayCollection();
-	for each(var obj:Object in userInfoXml.loginInfo)
-	{
-		values.addItem({userId:obj.userId,universityId:obj.universityId,userGroupId:obj.userGroupId,
-		userGroupName:obj.userGroupName,userName:obj.userName, universityName:obj.universityName});
-	}
-	if(values.length>0)
-	{
-		userId=values[0].userId;
-		userName=values[0].userName;
-		universityId=values[0].universityId;
-		universityName=values[0].universityName;
-		startDate=values[0].startDate;
-		endDate=values[0].endDate;
-		userNameText.text="";
-		passwordText.text="";
-		
-
-
-		if(values.length==1)
-		{
-			var application=applications.selectedItem;
-			userName=values[0].userName;
-			userGroupId=values[0].userGroupId;
-			userGroupName=values[0].userGroupName;
-			userId=values[0].userId;
-			universityId=values[0].universityId;
-			universityName=obj.universityName;
-			
- 
-			var url:String=""
-			if(applications.selectedItem=='UPM'){
-			
-			   url=commonFunction.getConstants('navigateUrlUpm')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application
-			}
-			else if(applications.selectedItem=='CMS'){
-		
-				url=commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application+'&university='+universityName
-			}
-else if(applications.selectedItem=='ADM'){
-				url=commonFunction.getConstants('navigateUrlAdm')+'?userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userId='+userId+'&userName='+userName+'&urlHome='+commonFunction.getConstants('navigateHome')+'&universityId='+universityId+'&application='+application
-			}
-			else{
-				url=commonFunction.getConstants('navigateHome');
-			}
-			applications.selectedIndex=-1;
-			var urlRequest:URLRequest=new URLRequest(url);
-			
-			urlRequest.method=URLRequestMethod.POST;
-			navigateToURL(urlRequest,"_self");
+	applicationXML = event.result as XML;
 	
-		}
-		else
-		{
-			selectRolectPopup=RoleSelector(PopUpManager.createPopUp(this,RoleSelector,true));
-			selectRolectPopup.roleCombo.dataProvider=userInfoXml.loginInfo.userGroupName;
-			selectRolectPopup.roleCombo.selectedIndex=-1;
-			selectRolectPopup.dataXml=userInfoXml;
-			selectRolectPopup.application=applications.selectedItem.toString();
-			selectRolectPopup.universityId=universityId;
-			selectRolectPopup.universityName=universityName;
-			selectRolectPopup.userId=userId;
-			selectRolectPopup.userName=userName;			
-			PopUpManager.centerPopUp(selectRolectPopup);
-		}
+	var applicationsAC:ArrayCollection = new ArrayCollection();
+	for each(var obj:Object in applicationXML.loginInfo){
+		applicationsAC.addItem({universityId:obj.universityId,universityName:obj.universityName,userId:obj.userId,userName:obj.userName,
+								userGroupId:obj.userGroupId,userGroupName:obj.userGroupName,startDate:obj.startDate,endDate:obj.endDate,
+								application:obj.application});
 	}
-	else
-	{
+	
+	if(applicationsAC.length > 0){
+		userId = applicationsAC[0].userId;
+		userName = applicationsAC[0].userName;
+		universityId = applicationsAC[0].universityId;
+		universityName = applicationsAC[0].universityName;
+		startDate=applicationsAC[0].startDate;
+		endDate=applicationsAC[0].endDate;
+		
+		var appSelector:ApplicationSelector = new ApplicationSelector();
+		appSelector.universityId = applicationsAC[0].universityId;
+		appSelector.universityName = applicationsAC[0].universityName;
+		appSelector.userId = applicationsAC[0].userId;
+		appSelector.userName = applicationsAC[0].userName;
+		vStack.selectedIndex = 1;
+		loaderCanvas2.removeAllChildren();
+		loaderCanvas2.addChild(appSelector);
+	}else{
 		Alert.show((commonFunction.getMessages('invalidLoginDetails')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
 	}
 }
 
+public function applicationFaultHandler(event:FaultEvent):void{
+	Alert.show('Error in authentication!',(commonFunction.getMessages('error')),0,null,null,errorIcon);
+}
+
+public function loginInfoFaultHandler(event:FaultEvent):void{
+	Alert.show('Problem in service!',(commonFunction.getMessages('error')),0,null,null,errorIcon);
+}
+
+//login result handler
+//function loginInfoResultHandler(event:ResultEvent):void
+//{
+//	userInfoXml=event.result as XML;
+//	
+//	var values:ArrayCollection=new ArrayCollection();
+//	for each(var obj:Object in userInfoXml.loginInfo)
+//	{
+//		values.addItem({userId:obj.userId,universityId:obj.universityId,userGroupId:obj.userGroupId,
+//		userGroupName:obj.userGroupName,userName:obj.userName, universityName:obj.universityName});
+//	}
+//	if(values.length>0)
+//	{
+//		userId=values[0].userId;
+//		userName=values[0].userName;
+//		universityId=values[0].universityId;
+//		universityName=values[0].universityName;
+//		startDate=values[0].startDate;
+//		endDate=values[0].endDate;
+//		userNameText.text="";
+//		passwordText.text="";
+//		
+//
+//
+//		if(values.length==1)
+//		{
+//			var application=applications.selectedItem;
+//			userName=values[0].userName;
+//			userGroupId=values[0].userGroupId;
+//			userGroupName=values[0].userGroupName;
+//			userId=values[0].userId;
+//			universityId=values[0].universityId;
+//			universityName=obj.universityName;
+//			
+// 
+//			var url:String=""
+//			if(applications.selectedItem=='UPM'){
+//			
+//			   url=commonFunction.getConstants('navigateUrlUpm')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application
+//			}
+//			else if(applications.selectedItem=='CMS'){
+//		
+//				url=commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application+'&university='+universityName
+//			}
+//else if(applications.selectedItem=='ADM'){
+//				url=commonFunction.getConstants('navigateUrlAdm')+'?userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userId='+userId+'&userName='+userName+'&urlHome='+commonFunction.getConstants('navigateHome')+'&universityId='+universityId+'&application='+application
+//			}
+//			else{
+//				url=commonFunction.getConstants('navigateHome');
+//			}
+//			applications.selectedIndex=-1;
+//			var urlRequest:URLRequest=new URLRequest(url);
+//			
+//			urlRequest.method=URLRequestMethod.POST;
+//			navigateToURL(urlRequest,"_self");
+//	
+//		}
+//		else
+//		{
+//			selectRolectPopup=RoleSelector(PopUpManager.createPopUp(this,RoleSelector,true));
+//			selectRolectPopup.roleCombo.dataProvider=userInfoXml.loginInfo.userGroupName;
+//			selectRolectPopup.roleCombo.selectedIndex=-1;
+//			selectRolectPopup.dataXml=userInfoXml;
+//			selectRolectPopup.application=applications.selectedItem.toString();
+//			selectRolectPopup.universityId=universityId;
+//			selectRolectPopup.universityName=universityName;
+//			selectRolectPopup.userId=userId;
+//			selectRolectPopup.userName=userName;			
+//			PopUpManager.centerPopUp(selectRolectPopup);
+//		}
+//	}
+//	else
+//	{
+//		Alert.show((commonFunction.getMessages('invalidLoginDetails')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
+//	}
+//}
+
 
 
 //login fault handler
-public function loginInfoFaultHandler(event:FaultEvent):void
-{
-	Alert.show(event.message+"");
-}
+//function loginInfoFaultHandler(event:FaultEvent):void
+//{
+//	Alert.show(event.message+"");
+//}
 
 //On click of Apply online hyperlink on the main cms page
 public function LoginAdmission():void{	
@@ -262,9 +306,9 @@ public function LoginAdmission():void{
 }
 
 public static const millisecondsPerDay:int = 1000 * 60 * 60 * 24;
-public var regDays:Number=0;
-public var regExtendDays:Number=0;
-public 	var systemFullDate:Date=new Date();
+var regDays:Number=0;
+var regExtendDays:Number=0;
+var systemFullDate:Date=new Date();
 //function for enrollment link button enabled and disabled
 public function onSuccessSessionStartDate(event:ResultEvent):void{
 	      getRegistrationStartDate.useProxy=false;
@@ -331,9 +375,7 @@ public function onSuccessRegStartDate(event:ResultEvent):void{
 	}	
 	else{
 		registrationLink.visible=false;
-	}
-	   	   
-	   
+	}	   
 }
 
 /**
@@ -345,10 +387,3 @@ public function onLogin(event:KeyboardEvent):void{
 	Login();	
 	}
 }
-
-
-
-
-
-
-

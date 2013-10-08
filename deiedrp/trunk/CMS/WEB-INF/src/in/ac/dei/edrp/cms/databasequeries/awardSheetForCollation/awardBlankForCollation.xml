@@ -29,28 +29,24 @@
 
 	
 <select id="getCourseListForRemedialAndExternal" resultClass="awardBlank">	
-		SELECT DISTINCT ic.entity_id AS entityId, cma.approval_order, pch.program_id AS programId, pch.branch_id AS branchId, pch.specialization_id AS specializationId,
+		SELECT ic.entity_id AS entityId, pch.program_id AS programId, pch.branch_id AS branchId, pch.specialization_id AS specializationId,
 		pch.semester_code AS semesterCode, ic.semester_start_date AS semesterStartDate, ic.semester_end_date AS semesterEndDate,
-		cma.course_code AS courseCode, stt.component_description AS branchName, stt1.component_description AS semesterName,
+		ic.course_code AS courseCode, stt.component_description AS branchName, stt1.component_description AS semesterName,
 		stt2.component_description AS specializationName, pm.program_name AS programName, cm.course_name AS courseName,
-		cm.grade_limit_active AS gradelimit, cma.program_course_key AS programCourseKey, cm.result_system AS resultSystem,
+		cm.grade_limit_active AS gradelimit, pch.program_course_key AS programCourseKey, cm.result_system AS resultSystem,
 		em.employee_code AS employeeCode, concat_ws(' ', em.first_name, em.middle_name, em.last_name) AS employeeName,
 		enm.entity_type AS entityType, enm.entity_name AS entityName, um.start_date AS startDate, um.end_date AS endDate
 		FROM entity_master enm, course_master cm, program_master pm, system_table_two stt, system_table_two stt1,
 		system_table_two stt2, program_course_header pch, university_master um
-		JOIN program_registration pr JOIN instructor_course ic JOIN employee_master em JOIN course_marks_approval cma
+		JOIN program_registration pr JOIN instructor_course ic JOIN employee_master em
 		WHERE um.university_code=#universityId# AND um.current_status='1' AND um.start_date=pr.session_start_date
-		AND pr.semester_start_date=ic.semester_start_date AND pr.semester_end_date=ic.semester_end_date
-		AND em.employee_code IN (SELECT cma1.employee_id FROM course_marks_approval cma1 WHERE cma1.course_code=cm.course_code
-		AND cma1.display_type=#displayType# AND cma1.approval_order=(SELECt MIN(cma2.approval_order) from course_marks_approval cma2 WHERE cma2.course_code=cm.course_code
-		AND cma2.display_type=#displayType# AND cma2.program_course_key=pch.program_course_key AND cma2.entity_id=ic.entity_id))
-		AND ic.status='ACT' AND ic.program_course_key=pch.program_course_key
-		AND ic.program_course_key=cma.program_course_key
+		AND um.end_date=pr.session_end_date AND pr.semester_start_date=ic.semester_start_date 
+		AND pr.semester_end_date=ic.semester_end_date AND ic.status='ACT'  AND ic.program_course_key=pch.program_course_key
 		AND stt.group_code='BRNCOD' AND stt.component_code=pch.branch_id AND stt.university_code=#universityId# AND stt1.group_code='SEMCOD'
 		AND stt1.component_code=pch.semester_code AND stt1.university_code=#universityId# AND stt2.group_code='SPCLCD' AND stt2.component_code=pch.specialization_id
 		AND stt2.university_code=#universityId# AND pm.program_id=pch.program_id
-		AND cm.university_code=#universityId# AND cm.course_code=cma.course_code AND cm.course_code=ic.course_code AND ic.entity_id=enm.entity_id
-		AND ic.entity_id=cma.entity_id AND cma.display_type=#displayType# GROUP BY cma.course_code, ic.entity_id, cma.program_course_key, cma.display_type;
+		AND cm.university_code=#universityId#  AND cm.course_code=ic.course_code AND ic.entity_id=enm.entity_id and ic.course_code=#courseCode# and
+    	em.employee_id=#creatorId#  and pr.entity_id=ic.entity_id and pr.program_course_key=pch.program_course_key;
 </select>
 		
 		

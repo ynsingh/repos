@@ -66,4 +66,6 @@ public interface StartActivityDao {
 	// get Semester start date and end date according to session ACT
 	public List<StartActivityBean> getSemesterDate(
 			StartActivityBean startActivityKey);
+	
+	public List<StartActivityBean> getMailUsers();
 }

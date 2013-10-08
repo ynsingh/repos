@@ -48,6 +48,12 @@ public class ProcessStudentGrade {
 		UpdatePassFailForProgram updatePassFail=new UpdatePassFailForProgram(sqlMapClient,transactionTemplate);
 		preProcessForResultBean.setRollNumber(listOfStudent.getRollNumber());
 		preProcessForResultBean.setUserId(startActivityBean.getUserId());
+		//--Switch Rule, Type, and Mode of Entry added by Dheeraj--!
+		preProcessForResultBean.setSwitchRule(listOfStudent.getSwitchRule());
+		preProcessForResultBean.setSwitchType(listOfStudent.getSwitchType());
+		preProcessForResultBean.setModeOfEntry(listOfStudent.getModeOfEntry());
+		preProcessForResultBean.setInSemester(listOfStudent.getInSemester());
+		//----!
 		//Fail subject list
 		List<String> failSubjectsList=new ArrayList<String>();
 
@@ -384,7 +390,16 @@ public class ProcessStudentGrade {
 				preProcessForResultBean.setSemesterStatus("PAS");
 				sqlMapClient.update("preprocess.updateSRSHResultStatus", preProcessForResultBean);
 				System.out.println("rohit pre check for track"+CRConstant.REGISTRATION_STATUS+CRConstant.STATUS_PASS);
-
+				
+				
+				
+				// for dei :cgpa=sgpa1*credit1+sgpa2*credit2+.../credit1+credit2+...
+				// If not reqd,comment out updatecgpafordei.Then CGPA will be calculated course wise.
+				
+				updatecgpafordei(preProcessForResultBean);
+				
+				//
+				
 				studentTrackingFunction.insertStudentTracking(preProcessForResultBean.getEntityId(),
 						preProcessForResultBean.getRollNumber(),
 						preProcessForResultBean.getProgramCourseKey(),
@@ -673,7 +688,30 @@ public class ProcessStudentGrade {
 		}
 	
 	
-	
+public void updatecgpafordei(PreProcessForResultBean preProcessForResultBean) throws SQLException{
+		
+		
+		PreProcessForResultBean cgpafordei = new PreProcessForResultBean(); 
+		 cgpafordei = (PreProcessForResultBean)sqlMapClient.queryForObject("preprocess.getcgpafordei", preProcessForResultBean);
+		 
+		 if ((cgpafordei.getCgpa())>=0){
+			 
+		
+		cgpafordei.setRollNumber(preProcessForResultBean.getRollNumber());
+		cgpafordei.setProgramCourseKey(preProcessForResultBean.getProgramCourseKey());
+		cgpafordei.setSemesterStartDate(preProcessForResultBean.getSemesterStartDate());
+		cgpafordei.setSemesterEndDate(preProcessForResultBean.getSemesterEndDate());
+		cgpafordei.setEntityId(preProcessForResultBean.getEntityId());
+			
+		int y=sqlMapClient.update("preprocess.updateStudentAggregateCGPAfordei", cgpafordei);
+		
+		preProcessForResultBean.setCgpa(cgpafordei.getCgpa());
+		preProcessForResultBean.setTheorycgpa(cgpafordei.getTheorycgpa());
+		preProcessForResultBean.setPracticalcgpa(cgpafordei.getPracticalcgpa());
+		
+		 }
+			
+	}
 		
 	}
 

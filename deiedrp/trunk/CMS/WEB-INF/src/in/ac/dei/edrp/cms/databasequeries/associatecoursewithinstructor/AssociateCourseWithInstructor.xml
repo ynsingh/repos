@@ -93,7 +93,7 @@
     <delete id="deleteCourseInstructor" parameterClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
         delete from instructor_course 
         where program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and
-        semester_end_date=#semesterEndDate# and entity_id=#entityId# and course_code=#courseCode#         
+        semester_end_date=#semesterEndDate# and entity_id=#entityId# and course_code=#courseCode# and employee_id=#employeeCode#;       
     </delete>
     
     <select id="getInstructorCourseDetails" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">

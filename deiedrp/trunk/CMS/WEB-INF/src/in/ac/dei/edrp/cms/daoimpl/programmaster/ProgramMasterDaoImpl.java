@@ -624,4 +624,25 @@ public class ProgramMasterDaoImpl extends SqlMapClientDaoSupport
 
         return null;
     }
+    /**
+     * Method for getting domain
+     *  @param object
+     *  @author Mandeep
+     *  @return String
+     */
+	public List<ProgramMasterInfoGetter> getPrograDomainList(
+			ProgramMasterInfoGetter input) {
+
+        List<ProgramMasterInfoGetter> domainList = null;
+        try {
+
+            domainList = getSqlMapClientTemplate().queryForList("ProgMasterInfo.domainList",input);
+
+            return domainList;
+        } catch (Exception e) {
+            logObj.error(e);
+            
+        }
+        return domainList;
+	}
 }

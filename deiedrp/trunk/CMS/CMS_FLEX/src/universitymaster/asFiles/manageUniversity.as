@@ -92,8 +92,8 @@ public function ongetUniversitySuccess(event:ResultEvent):void{
 	if(infoObject["flag"] == "two"){
 		
 		for each (var obj:Object in universityList.role){
-		
-		universitylist.addItem({universityCode:obj.id,universityName:obj.description});
+		if(String(obj.description)==loginUniversity)
+			{universitylist.addItem({universityCode:obj.id,universityName:obj.description});}
 		
 	}	
 
@@ -161,7 +161,7 @@ public function editButtonClickHandler(event:MouseEvent):void
 		updateButton.visible=false;
 		resetButton.visible=false;
 		activeButton.visible=true;
-		
+		Alert.show("Not Authorised To Delete Your University",commonFunction.getMessages('error'),4,null,null,errorIcon);
 		
 	}else if(event.currentTarget.id=="editButton"){
 		
@@ -184,13 +184,15 @@ public function editButtonClickHandler(event:MouseEvent):void
 		resetButton.visible=true;
 		activeButton.visible=false;		
 		
+		infoObject["userId"] = new Date;	
+	
+		infoObject["universityCode"] = universitySearchCB.selectedItem.universityCode;	
+		
+		getUniversityDetails.send(infoObject);	
+		
 	}
 	
-	infoObject["userId"] = new Date;	
 	
-	infoObject["universityCode"] = universitySearchCB.selectedItem.universityCode;	
-		
-	getUniversityDetails.send(infoObject);		
 }
 
 
@@ -385,8 +387,7 @@ public function onupdateUniversityFailure(event:FaultEvent):void
 public function activeButtonClickHandler(event:MouseEvent):void
 {
 
-	Alert.show(commonFunction.getMessages('areyousure'),
-				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onDelete,questionIcon);
+	//Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onDelete,questionIcon);
 		
 		
 	

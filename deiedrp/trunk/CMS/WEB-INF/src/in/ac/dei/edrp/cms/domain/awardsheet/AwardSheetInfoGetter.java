@@ -76,6 +76,7 @@ public class AwardSheetInfoGetter {
     private String requestGetter;
     private String requestgettername;
     private String requestGetterdesignation;
+     private String extra;
 
     private String employeeCode;
     private String status;
@@ -1051,6 +1052,13 @@ public class AwardSheetInfoGetter {
 
 	public void setDisplaydate(String displaydate) {
 		this.displaydate = displaydate;
+	}
+    public void setExtra(String extra) {
+		this.extra = extra;
+	}
+
+	public String getExtra() {
+		return extra;
 	}
 }
 

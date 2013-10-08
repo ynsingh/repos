@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adpost>
+<posts>
+  <post>administrator</post>
+  <nop>23</nop>
+</posts>  
+<posts>
+  <post>director</post>
+  <nop>1</nop>
+</posts>  
+<posts>
+  <post>manager</post>
+  <nop>3</nop>
+</posts>  
+<posts>
+  <post>professor</post>
+  <nop>2300</nop>
+</posts>  
+<posts>
+  <post>sweeper</post>
+  <nop>2390</nop>
+</posts>    
+</adpost>

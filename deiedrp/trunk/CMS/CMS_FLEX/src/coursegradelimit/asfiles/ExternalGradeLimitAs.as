@@ -56,20 +56,19 @@ public var 	displayType:String;
 * */ 
 private function init():void {
     myNumericStepper = new ClassFactory(NumericStepper);
-    myNumericStepper.properties = {minimum:0, maximum:199};
+    myNumericStepper.properties = {minimum:0, maximum:999};
     
     if(displayType=="R"){
     	for each(var dataColumn:DataGridColumn in courseGrid.columns){
 			if(dataColumn.dataField=="aGrade" || dataColumn.dataField=="amGrade" || dataColumn.dataField=="bGrade" || dataColumn.dataField=="bmGrade"
-			|| dataColumn.dataField=="cGrade" || dataColumn.dataField=="cmGrade" || dataColumn.dataField=="dmGrade" || dataColumn.dataField=="eGrade"
-		 	|| dataColumn.dataField=="emGrade" ){
+			|| dataColumn.dataField=="cGrade" || dataColumn.dataField=="cmGrade" || dataColumn.dataField=="dGrade"){
 				dataColumn.visible=false;
 			}
 		}
 		heading.text="Lower Cut Points For Remedial Courses";
-		courseCanvas.width=310;
-		courseCanvas.x=215.5;
-		courseGrid.width=261.5;
+		courseCanvas.width=340;
+		courseCanvas.x=200;
+		courseGrid.width=300;
 	}
     else{
     	heading.text="Lower Cut Points For External Courses";
@@ -299,27 +298,31 @@ public function onAction(event:MouseEvent):void{
 			if(checkMarksRemedial())
 			{
 				//local variables for each grade
-				
-				var seldGrade:String="";
-				
+				var seldmGrade:String="";
+				var seleGrade:String="";
+				var selemGrade:String="";
 				var selfGrade:String="";
 				
 				//if grades are blank then assigning '-1' to them
-				if(String(courseGrid.selectedItem.dGrade).length==0 ){seldGrade="-1";}else{seldGrade=String(courseGrid.selectedItem.dGrade)}
+				if(String(courseGrid.selectedItem.dmGrade).length==0 || String(courseGrid.selectedItem.dmGrade)=="0"){seldmGrade="-1";}else{seldmGrade=String(courseGrid.selectedItem.dmGrade)}
+				if(String(courseGrid.selectedItem.eGrade).length==0  || String(courseGrid.selectedItem.eGrade)=="0"){seleGrade="-1";}else{seleGrade=String(courseGrid.selectedItem.eGrade)}
+				if(String(courseGrid.selectedItem.emGrade).length==0 || String(courseGrid.selectedItem.emGrade)=="0"){selemGrade="-1";}else{selemGrade=String(courseGrid.selectedItem.emGrade)}
 				if(String(courseGrid.selectedItem.fGrade).length==0 ){selfGrade="-1";}else{selfGrade=String(courseGrid.selectedItem.fGrade)}
 				
 				//putting points in lowers string
-				lowers=seldGrade+"|"+selfGrade+"|";
+				lowers=seldmGrade+"|"+seleGrade+"|"+selemGrade+"|"+selfGrade+"|";
 
 				//putting grades in grades string
 				for each(var dataColumn:DataGridColumn in courseGrid.columns){
-					if(dataColumn.dataField=="dGrade" || dataColumn.dataField=="fGrade" ){
+					if(dataColumn.dataField=="dmGrade" || dataColumn.dataField=="eGrade"
+		 		 		|| dataColumn.dataField=="emGrade" || dataColumn.dataField=="fGrade" ){
 					grades+=dataColumn.headerText+"|";
 					}
 				}
 		
 				params['grades']=grades;
 				params['lowers']=lowers;
+	
 				
 				//checking if all points are filled or not
 				if(lowers.search("-1")>-1){
@@ -462,18 +465,39 @@ private function checkMarks():Boolean{
 private function checkMarksRemedial():Boolean{
 	
 	//local variables for each grade
-	var seldGrade:Number=0;
+	var seldmGrade:Number=0;
+	var seleGrade:Number=0;
+	var selemGrade:Number=0;
 	var selfGrade:Number=0;
 	
 	//if grades are blank then assigning values to them
-	if(courseGrid.selectedItem.dGrade==""){seldGrade=0;}else{seldGrade=Number(courseGrid.selectedItem.dGrade)}
-	if(courseGrid.selectedItem.fGrade==""){selfGrade=-1;}else{selfGrade=Number(courseGrid.selectedItem.fGrade)}
-	
-	if(seldGrade>selfGrade){
-		return true;	
+	if(courseGrid.selectedItem.dmGrade=="" || courseGrid.selectedItem.dmGrade=="0"){seldmGrade=0;}else{seldmGrade=Number(courseGrid.selectedItem.dmGrade)}
+	if(courseGrid.selectedItem.eGrade=="" || courseGrid.selectedItem.eGrade=="0"){seleGrade=-1;}else{seleGrade=Number(courseGrid.selectedItem.eGrade)}
+	if(courseGrid.selectedItem.emGrade=="" || courseGrid.selectedItem.emGrade=="0"){selemGrade=-2;}else{selemGrade=Number(courseGrid.selectedItem.emGrade)}
+	if(courseGrid.selectedItem.fGrade=="" || courseGrid.selectedItem.fGrade=="0"){selfGrade=-3;}else{selfGrade=Number(courseGrid.selectedItem.fGrade)}
+	if(seldmGrade<=Number(courseDetails.Details[courseGrid.selectedIndex].totalMarks)){
+		if(seldmGrade>seleGrade){
+			if(seleGrade>selemGrade){
+				if(selemGrade>selfGrade){
+					return true;
+				}
+				else{
+					Alert.show(commonFunction.getMessages('lowerPoint') +" E- "+commonFunction.getMessages('cannotBeSmall')+" F ",commonFunction.getMessages('error'),4,null,null,errorIcon);
+					return false;
+				}
+			}
+			else{
+				Alert.show(commonFunction.getMessages('lowerPoint') +" E "+commonFunction.getMessages('cannotBeSmall')+" E- ",commonFunction.getMessages('error'),4,null,null,errorIcon);
+				return false;
+			}
+		}
+		else{
+			Alert.show(commonFunction.getMessages('lowerPoint') +" D- "+commonFunction.getMessages('cannotBeSmall')+" E ",commonFunction.getMessages('error'),4,null,null,errorIcon);
+			return false;
+		}
 	}
 	else{
-		Alert.show(commonFunction.getMessages('lowerPoint') +" D "+commonFunction.getMessages('cannotBeSmall')+" F ",commonFunction.getMessages('error'),4,null,null,errorIcon);
+		Alert.show("Cannot Exceed Maximum Number for D- Grade",commonFunction.getMessages('error'),4,null,null,errorIcon);
 		return false;
 	}
 }

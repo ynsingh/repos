@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ *
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ *
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" creationComplete="onload()" layout="absolute" keyDown="initializeForEsc(event)" title="Select New Entity Program Details" showCloseButton="true" close="closePopUp(event)" height="126" width="1299">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+			[Bindable]public var entityXml1:XML;
+			[Bindable]public var programXml1:XML;
+			[Bindable]public var branchXml1:XML;
+			[Bindable]public var specializationXml1:XML;
+			[Bindable]public var urlPrefix:String;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Bindable]public var params:Object={};	
+			public var refresh:Function;
+			public var selStudent:ArrayCollection;
+			public var oldEntity:String;
+			public var oldProgram:String;
+			public var oldBranch:String;
+			public var oldSpecialization:String;
+			
+			
+					
+/** this method fires on click of close button and closes pop up
+ * */
+public function closePopUp(event:CloseEvent):void
+{
+	PopUpManager.removePopUp(this);
+	refresh();
+}
+
+public function onload():void{
+	urlPrefix=commonFunction.getConstants('url')+"/prestagingData/";
+	params['time']=new Date;
+	params['mode']="all";
+	getEntityList.send(params);
+	programCombo.selectedIndex=-1;
+	branchCombo.selectedIndex=-1;
+	specilizationCombo.selectedIndex=-1;
+	programCombo.enabled=false;
+	branchCombo.enabled=false;
+	specilizationCombo.enabled=false;
+    submitButton.enabled=false;
+}
+
+/**
+ * This fire on pressing down ESC key 
+ * and closes popup
+ * */
+private function initializeForEsc(event:KeyboardEvent):void
+{
+    if (event.keyCode == Keyboard.ESCAPE)
+    {
+		var evt:CloseEvent;
+		closePopUp(evt);
+    }
+}
+				
+		//get entity list success handler
+public function getEntitySuccess(event:ResultEvent):void
+{
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	var url:String="";
+			url=commonFunction.getConstants('navigateHome');
+			var urlRequest:URLRequest=new URLRequest(url);
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");
+		}
+	
+	entityXml1=event.result as XML;
+	entityCombo.dataProvider=entityXml1.Details.name;
+	entityCombo.selectedIndex=-1;
+	entityCombo.enabled=true;
+}
+
+
+//on change of entity
+public function onEntityChange(event:Event):void
+{
+	params['time']=new Date;
+	params['entityId']=entityXml1.Details.(name==entityCombo.selectedLabel).id;
+	getProgramList.send(params);
+	branchCombo.selectedIndex=-1;
+	specilizationCombo.selectedIndex=-1;
+	branchCombo.enabled=false;
+	specilizationCombo.enabled=false;
+    submitButton.enabled=false;
+
+}
+
+
+
+//get program list success handler
+public function getProgramSuccess(event:ResultEvent):void
+{
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	var url:String="";
+			url=commonFunction.getConstants('navigateHome');
+			var urlRequest:URLRequest=new URLRequest(url);
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");
+		}
+	programXml1=event.result as XML;
+	
+	programCombo.dataProvider=programXml1.Details.name;
+	programCombo.selectedIndex=-1;
+	programCombo.enabled=true;
+}
+
+
+
+//on change of program
+public function onProgramChange(event:Event):void
+{
+	params['time']=new Date;
+	params['entityId']=entityXml1.Details.(name==entityCombo.selectedLabel).id;
+	params['programId']=programXml1.Details.(name==programCombo.selectedLabel).id;
+	getBranchList.send(params);
+	specilizationCombo.selectedIndex=-1;
+	specilizationCombo.enabled=false;
+    submitButton.enabled=false;
+
+
+}
+
+
+
+//get branch list success handler
+public function getBranchSuccess(event:ResultEvent):void
+{
+	
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	var url:String="";
+			url=commonFunction.getConstants('navigateHome');
+			var urlRequest:URLRequest=new URLRequest(url);
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");
+		}
+	branchXml1=event.result as XML;
+	branchCombo.dataProvider=branchXml1.Details.name;
+	branchCombo.selectedIndex=-1;
+	branchCombo.enabled=true;
+}
+
+
+
+//on change of branch
+public function onBranchChange(event:Event):void
+{
+	params['time']=new Date;
+	params['entityId']=entityXml1.Details.(name==entityCombo.selectedLabel).id;
+	params['programId']=programXml1.Details.(name==programCombo.selectedLabel).id;
+	params['branchId']=branchXml1.Details.(name==branchCombo.selectedLabel).id;
+	getSpecializationList.send(params);
+    submitButton.enabled=false;
+
+}
+
+
+
+//get specialization success handler
+public function getSpecializationSuccess(event:ResultEvent):void
+{
+	
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	var url:String="";
+			url=commonFunction.getConstants('navigateHome');
+			var urlRequest:URLRequest=new URLRequest(url);
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");
+		}
+	specializationXml1=event.result as XML;
+	specilizationCombo.dataProvider=specializationXml1.Details.name;
+	specilizationCombo.selectedIndex=-1;
+	specilizationCombo.enabled=true;
+}
+
+
+
+//On change of specialization
+public function onSpecializationChange(event:Event):void
+{
+	submitButton.enabled=true;
+
+}
+
+//fault handler
+public function onFailure(event:FaultEvent):void
+{
+	Alert.show(event.fault+"",commonFunction.getMessages('error'),0,null,null,errorIcon);  	
+}
+	
+public function updateSuccess(event:ResultEvent):void{
+		PopUpManager.removePopUp(this);
+		refresh();
+		Alert.show(event.result.exception.exceptionstring+" Records Association Changed",commonFunction.getMessages('success'),0,null,null,successIcon); 
+}	
+
+public function onUpdate():void{
+	Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,updateOrNot,questionIcon);
+}			
+	
+	
+public function updateOrNot(event:CloseEvent):void
+{
+	if(event.detail==Alert.YES)
+	{	var students:String="";
+		var fathers:String="";
+		for each(var ob:Object in selStudent){
+			students+=ob.StudentName+'$';
+			fathers+=ob.FatherName+'$';
+		}
+		params['students']=students;
+		params['fathers']=fathers;
+		params['entityId']=oldEntity;
+		params['programId']=oldProgram;
+		params['branchId']=oldBranch;
+		params['specializationId']=oldSpecialization;
+		params['newentityId']=entityXml1.Details.(name==entityCombo.selectedLabel).id;
+		params['newprogramId']=programXml1.Details.(name==programCombo.selectedLabel).id;
+		params['newbranchId']=branchXml1.Details.(name==branchCombo.selectedLabel).id;
+		params['newspecializationId']=specializationXml1.Details.(name==specilizationCombo.selectedLabel).id;
+		params['time']=new Date;
+		updateTempData.send(params);
+	}
+}	
+		]]>
+	</mx:Script>
+
+					
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+			
+	<mx:HTTPService id="updateTempData" method="POST"
+			url="{commonFunction.getConstants('url')}/insertInPrestaging/updateStudentData.htm"
+			resultFormat="e4x"
+			result="updateSuccess(event)"
+			fault="onFailure(event)"
+			useProxy="false"/>
+	
+
+			
+	<mx:Canvas x="10" y="10" width="98%" height="58" id="headerCanvas" styleName="BorderCanvas">
+		<mx:ComboBox x="59" y="21" id="entityCombo" width="160" change="onEntityChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="333" y="21" id="programCombo" width="160" change="onProgramChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="611" y="21" id="branchCombo" width="160" change="onBranchChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="933" y="21" id="specilizationCombo" width="160" change="onSpecializationChange(event)"></mx:ComboBox>
+		<mx:Button x="1149" y="22" id="submitButton" click="onUpdate()" label="Update"/>
+		<mx:Label x="10" y="24" text="{commonFunction.getConstants('entity')}"/>
+		<mx:Label x="267" y="24" text="{commonFunction.getConstants('program')}"/>
+		<mx:Label x="555" y="24" text="{commonFunction.getConstants('branch')}"/>
+		<mx:Label x="834" y="24" text="{commonFunction.getConstants('specialization')}"/>
+	</mx:Canvas>
+
+
+   
+	
+</mx:TitleWindow>

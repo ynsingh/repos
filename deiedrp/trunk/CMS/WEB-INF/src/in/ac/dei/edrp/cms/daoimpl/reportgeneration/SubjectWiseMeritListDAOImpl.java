@@ -57,148 +57,148 @@ public class SubjectWiseMeritListDAOImpl extends SqlMapClientDaoSupport implemen
      * This method will fetch the ProgramCourse Information
      * @return List
      */
-	@SuppressWarnings({ "unchecked" })
-	public List<SubjectWiseMeritList> getProgramCourseKey(SubjectWiseMeritList subjectWiseMeritList, String semesterTokens) {
-		
-		List<SubjectWiseMeritList> studentList=null;
-		StringTokenizer semesters = new StringTokenizer(semesterTokens, ",");
-		
-		List<String> programCourseKeyList=new ArrayList<String>();
-		String programCourseKeyArray[]=new String[10];
-		
-		int i=0;
-		try{			
-	       	 while(semesters.hasMoreTokens()){
-		   		subjectWiseMeritList.setSemesterCode(semesters.nextToken()); 
-		   		SubjectWiseMeritList programCourseList=(SubjectWiseMeritList) getSqlMapClientTemplate().queryForObject("subjectWiseMeritList.getProgramCourseKey", subjectWiseMeritList);
-		   		programCourseKeyList.add(programCourseList.getProgramCourseKey());
-//		   		programCourseKeyArray[i]=programCourseList.getProgramCourseKey();
-		   		i++;
-		   	}
-	       	
-	       	
-	       	subjectWiseMeritList.setProgramCourseKeyList(programCourseKeyList);
-	       	int noOfProgramCourseKey=programCourseKeyList.size();
-	       	
-	       	switch(noOfProgramCourseKey){
-		       	case 1:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		break;
-		       	}
-		       	case 2:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-		       		break;
-		       	}
-		       	case 3:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	break;
-			       	
-		       	}
-		       	case 4:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));
-			       	break;
-		       	}
-		       	case 5:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
-			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
-			       	break;
-		       	}
-		       	case 6:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
-			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
-			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
-			       	break;
-		       	}
-		       	case 7:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
-			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
-			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
-			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
-			       	break;
-		       	}
-		       	case 8:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
-			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
-			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
-			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
-			       	subjectWiseMeritList.setProgramCourseKey8(programCourseKeyList.get(7));
-			       	break;
-		       	}
-		       	case 9:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
-			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
-			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
-			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
-			       	subjectWiseMeritList.setProgramCourseKey8(programCourseKeyList.get(7));
-			       	subjectWiseMeritList.setProgramCourseKey9(programCourseKeyList.get(8));
-			       	break;
-		       	}
-		       	case 10:
-		       	{
-		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
-		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
-			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
-			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
-			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
-			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
-			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
-			       	subjectWiseMeritList.setProgramCourseKey8(programCourseKeyList.get(7));
-			       	subjectWiseMeritList.setProgramCourseKey9(programCourseKeyList.get(8));
-			       	subjectWiseMeritList.setProgramCourseKey10(programCourseKeyList.get(9));
-			       	break;
-		       	}		       	
-	       	}
-	       	       	
-	       	studentList=getSqlMapClientTemplate().queryForList("subjectWiseMeritList.getGroupWiseStudent", subjectWiseMeritList);
-	       	
-	       	
-//	       	subjectWiseMeritList.setProgramCourseKey1(programCourseList.get(0).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey2(programCourseList.get(1).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey3(programCourseList.get(2).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey4(programCourseList.get(3).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey5(programCourseList.get(4).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey6(programCourseList.get(5).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey7(programCourseList.get(6).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey8(programCourseList.get(7).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey9(programCourseList.get(8).getProgramCourseKey());
-//	       	subjectWiseMeritList.setProgramCourseKey10(programCourseList.get(9).getProgramCourseKey());
 
-	    }
-		catch (Exception e) {
-			loggerObject.error("in getDetails" + e);
-		}
-		return studentList;
-	}
+//	public List<SubjectWiseMeritList> getProgramCourseKey(SubjectWiseMeritList subjectWiseMeritList) {
+//		
+//		List<SubjectWiseMeritList> studentList=null;
+//		StringTokenizer semesters = new StringTokenizer(semesterTokens, ",");
+//		
+//		List<String> programCourseKeyList=new ArrayList<String>();
+//		String programCourseKeyArray[]=new String[10];
+//		
+//		int i=0;
+//		try{			
+//	       	 while(semesters.hasMoreTokens()){
+//		   		subjectWiseMeritList.setSemesterCode(semesters.nextToken()); 
+//		   		SubjectWiseMeritList programCourseList=(SubjectWiseMeritList) getSqlMapClientTemplate().queryForObject("subjectWiseMeritList.getProgramCourseKey", subjectWiseMeritList);
+//		   		programCourseKeyList.add(programCourseList.getProgramCourseKey());
+////		   		programCourseKeyArray[i]=programCourseList.getProgramCourseKey();
+//		   		i++;
+//		   	}
+//	       	
+//	       	
+//	       	subjectWiseMeritList.setProgramCourseKeyList(programCourseKeyList);
+//	       	int noOfProgramCourseKey=programCourseKeyList.size();
+//	       	
+//	       	switch(noOfProgramCourseKey){
+//		       	case 1:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		break;
+//		       	}
+//		       	case 2:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//		       		break;
+//		       	}
+//		       	case 3:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	break;
+//			       	
+//		       	}
+//		       	case 4:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));
+//			       	break;
+//		       	}
+//		       	case 5:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
+//			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
+//			       	break;
+//		       	}
+//		       	case 6:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
+//			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
+//			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
+//			       	break;
+//		       	}
+//		       	case 7:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
+//			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
+//			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
+//			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
+//			       	break;
+//		       	}
+//		       	case 8:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
+//			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
+//			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
+//			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
+//			       	subjectWiseMeritList.setProgramCourseKey8(programCourseKeyList.get(7));
+//			       	break;
+//		       	}
+//		       	case 9:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
+//			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
+//			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
+//			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
+//			       	subjectWiseMeritList.setProgramCourseKey8(programCourseKeyList.get(7));
+//			       	subjectWiseMeritList.setProgramCourseKey9(programCourseKeyList.get(8));
+//			       	break;
+//		       	}
+//		       	case 10:
+//		       	{
+//		       		subjectWiseMeritList.setProgramCourseKey1(programCourseKeyList.get(0));
+//		       		subjectWiseMeritList.setProgramCourseKey2(programCourseKeyList.get(1));
+//			       	subjectWiseMeritList.setProgramCourseKey3(programCourseKeyList.get(2));
+//			       	subjectWiseMeritList.setProgramCourseKey4(programCourseKeyList.get(3));	
+//			       	subjectWiseMeritList.setProgramCourseKey5(programCourseKeyList.get(4));
+//			       	subjectWiseMeritList.setProgramCourseKey6(programCourseKeyList.get(5));
+//			       	subjectWiseMeritList.setProgramCourseKey7(programCourseKeyList.get(6));
+//			       	subjectWiseMeritList.setProgramCourseKey8(programCourseKeyList.get(7));
+//			       	subjectWiseMeritList.setProgramCourseKey9(programCourseKeyList.get(8));
+//			       	subjectWiseMeritList.setProgramCourseKey10(programCourseKeyList.get(9));
+//			       	break;
+//		       	}		       	
+//	       	}
+//	       	       	
+//	       	studentList=getSqlMapClientTemplate().queryForList("subjectWiseMeritList.getGroupWiseStudent", subjectWiseMeritList);
+//	       	
+//	       	
+////	       	subjectWiseMeritList.setProgramCourseKey1(programCourseList.get(0).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey2(programCourseList.get(1).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey3(programCourseList.get(2).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey4(programCourseList.get(3).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey5(programCourseList.get(4).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey6(programCourseList.get(5).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey7(programCourseList.get(6).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey8(programCourseList.get(7).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey9(programCourseList.get(8).getProgramCourseKey());
+////	       	subjectWiseMeritList.setProgramCourseKey10(programCourseList.get(9).getProgramCourseKey());
+//
+//	    }
+//		catch (Exception e) {
+//			loggerObject.error("in getDetails" + e);
+//		}
+//		return studentList;
+//	}
 
 	@SuppressWarnings("unchecked")
 	public List<SubjectWiseMeritList> getEntityList(SubjectWiseMeritList subjectWiseMeritList) {
@@ -391,5 +391,11 @@ public class SubjectWiseMeritListDAOImpl extends SqlMapClientDaoSupport implemen
 			loggerObject.error("in getCourseGroupList" + e);
 		}
 		return courseGroupList;		
+	}
+
+	public List<SubjectWiseMeritList> getStudentDataList(SubjectWiseMeritList subjectWiseMeritList) {
+		List<SubjectWiseMeritList> studentDataList = new ArrayList<SubjectWiseMeritList>();
+		studentDataList = getSqlMapClientTemplate().queryForList("subjectWiseMeritList.getGroupWiseStudent", subjectWiseMeritList);
+		return studentDataList;
 	}
 }

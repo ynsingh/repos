@@ -93,6 +93,15 @@ protected function updateInstructorHttpServiceResultHandler(event:ResultEvent):v
 	if(updateResult.result.message=="success"){
 		Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);	
 	}
+	else if(updateResult.result.message=="failure"){
+		Alert.show(commonFunction.getMessages('instructorCourseFailure'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+	}
+	else if(updateResult.result.message=="DataIntegrityViolationException"){
+		Alert.show(commonFunction.getMessages('instructorCourseUpdateIntegrityFail'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+	}
+	else if(updateResult.result.message=="error"){
+		Alert.show(commonFunction.getMessages('instructorCourseFailException'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+	}
 	else{
 		Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
 	}
@@ -122,27 +131,21 @@ protected function employeeListHttpServiceResultHandler(event:ResultEvent):void{
 		this.parentDocument.loaderCanvas.removeAllChildren();
 	}
 	
-	var employeeArrayColl:ArrayCollection = new ArrayCollection();
-	
+	var employeeArrayColl:ArrayCollection = new ArrayCollection();	
 	for each(var obj:Object in employeeList.employee){
-		employeeArrayColl.addItem({employeeCode:obj.employeeCode, employeeName:obj.employeeName,
-		empNameCode:obj.employeeName+' ['+obj.employeeCode+']'});
-	}
-	
-	assignEmployCombo.labelField="empNameCode";
-	assignEmployCombo.dataProvider=employeeArrayColl;
-	
+		employeeArrayColl.addItem({employeeCode:obj.employeeCode, employeeName:obj.employeeName,empNameCode:obj.employeeName+' ['+obj.employeeCode+']'});
+	}	
+	assignEmployCombo.labelField="employeeCode";
+	assignEmployCombo.dataProvider=employeeArrayColl;	
 	var index:int=0;
-	for(var i:int=0;i<employeeArrayColl.length;i++)
-	{
-		if(employeeArrayColl.getItemAt(i).employeeCode.toString()==employeeCode)
-		{
+	for(var i:int=0;i<employeeArrayColl.length;i++){
+		if(employeeArrayColl.getItemAt(i).employeeCode.toString()==employeeCode){
 			index=i;
 			break;
 		}
-	}
-	
+	}	
 	assignEmployCombo.selectedIndex = index;
+	emplyeeNameLabel.text=employeeArrayColl.getItemAt(index).employeeName.toString();
 }
 
 /**

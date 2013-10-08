@@ -49,18 +49,20 @@
 		where sms.course_code=cm.course_code and cm.subject_wise_group=#courseGroup# and sms.program_course_key=#programCourseKey#;
    </select>
    
-      
+<!--     
    <select id="getGroupWiseStudent" parameterClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList" 
    resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
-    select pm.program_code as programCode, sp.branch_id as branchId, cm.subject_wise_group as courseGroup, sms.roll_number as rollNumber, sm.gender as gender,
+    select sp.passed_from_session as sessionStartDate,sp.passed_to_session as sessionEndDate,sp.entity_id as entityId, pm.program_code as programCode, sp.branch_id as branchId, sp.specialization_id as specializationId
+    cm.subject_wise_group as courseGroup, sms.roll_number as rollNumber, sm.gender as gender,
 	concat_ws(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) AS name , sum(sms.total_marks) as marks
 	from  program_master pm, student_program sp  left join  student_marks_summary sms on   sms.roll_number =sp.roll_number
 	left join  course_master cm on sms.course_code=cm.course_code
 	left join student_master sm on sp.enrollment_number=sm.enrollment_number
 	where  cm.subject_wise_group=#courseGroup# and sms.program_course_key in (#programCourseKey1#, #programCourseKey2#, #programCourseKey3#, #programCourseKey4#, #programCourseKey5#, #programCourseKey6#, #programCourseKey7#, #programCourseKey8#,#programCourseKey9#, #programCourseKey10#) and
 	sp.program_id=#programId# and sp.branch_id=#branchId# and sp.specialization_id=#specializationId# and sp.entity_id=#entityId# and sp.program_id=pm.program_id and sms.university_code=#universityId# and cm.university_code=#universityId# and sm.university_code=#universityId#
+	and sp.passed_from_session=#sessionStartDate# and sp.passed_to_session=#sessionEndDate#
 	group by cm.subject_wise_group, sms.roll_number ,name order by marks desc ;    
-
+ -->  
 <!--	select cm.course_group as courseGroup, sms.roll_number as rollNumber,-->
 <!--	concat_ws(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) AS name , sum(sms.total_marks) as marks-->
 <!--	from  student_program sp  left join  student_marks_summary sms on   sms.roll_number =sp.roll_number-->
@@ -81,7 +83,23 @@
 <!--	group by cm.course_group, sms.roll_number ,name and and  -->
 <!--	<dynamic prepend="sms.program_course_key IN ">-->
 <!--	<iterate open="(" close=")" property="programCourseKeyList" conjunction=",">programCourseKeyList=#programCourseKeyList#</iterate>-->
-<!--	</dynamic>-->
+<!--	</dynamic>
    </select>
+ --> 
+      <select id="getGroupWiseStudent" parameterClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList" 
+   			resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+   			SELECT sp.roll_number AS rollNumber, CONCAT_WS(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) AS name,
+			sm.gender AS gender, pm.program_code AS programCode, pm.program_name AS programName, sp.branch_id AS branchId, SUM(total_marks) AS marks,
+			sp.passed_from_session as sessionStartDate,sp.passed_to_session as sessionEndDate
+			FROM student_program sp JOIN student_registration_semester_header srsh JOIN student_marks_summary sms JOIN course_master cm
+			JOIN program_master pm JOIN student_master sm
+			ON sp.entity_id=srsh.entity_id AND sp.roll_number=srsh.roll_number AND srsh.program_course_key=sms.program_course_key
+			AND sms.course_code=cm.course_code AND sp.program_id=pm.program_id AND sp.enrollment_number=sm.enrollment_number
+			AND srsh.session_start_date=sms.semester_start_date AND srsh.session_end_date=sms.semester_end_date
+			AND srsh.roll_number=sms.roll_number
+			WHERE sp.entity_id=#entityId# AND sp.program_id=#programId# AND sp.branch_id=#branchId# AND sp.specialization_id=#specializationId#
+			AND sp.passed_from_session=#sessionStartDate# AND sp.passed_to_session=#sessionEndDate# AND srsh.status='PAS'
+			AND srsh.program_course_key LIKE CONCAT(#programId#,'%') AND cm.subject_wise_group IN (#group1#,#group2#,#group3#,#group4#,#group5#)  GROUP BY sms.roll_number ORDER BY marks DESC;
+ 	  </select>
      
 </sqlMap>

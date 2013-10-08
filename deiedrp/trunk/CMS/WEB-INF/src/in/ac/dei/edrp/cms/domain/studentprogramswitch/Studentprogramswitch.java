@@ -55,7 +55,15 @@ public class Studentprogramswitch {
 	
 	private String prvswitchstatus ;
 	private String processstatus ;
+	private String switchType;
+	private String ruleId;
 	
+	private String soprogram;
+	private String sobranch;
+	private String sospecialization;
+	private String sosemester;
+	private String userId;
+	private String finalSemStatus;
 	
 	public String getPrvswitchstatus() {
 		return prvswitchstatus;
@@ -400,13 +408,68 @@ public class Studentprogramswitch {
 		this.name = name;
 	}
 
-	
+	public void setSwitchType(String switchType) {
+		this.switchType = switchType;
+	}
 
-	
-	
-	
-	
+	public String getSwitchType() {
+		return switchType;
+	}
 
-	
+	public void setRuleId(String ruleId) {
+		this.ruleId = ruleId;
+	}
+
+	public String getRuleId() {
+		return ruleId;
+	}
+
+	public void setSoprogram(String soprogram) {
+		this.soprogram = soprogram;
+	}
+
+	public String getSoprogram() {
+		return soprogram;
+	}
+
+	public void setSobranch(String sobranch) {
+		this.sobranch = sobranch;
+	}
+
+	public String getSobranch() {
+		return sobranch;
+	}
+
+	public void setSospecialization(String sospecialization) {
+		this.sospecialization = sospecialization;
+	}
+
+	public String getSospecialization() {
+		return sospecialization;
+	}
+
+	public void setSosemester(String sosemester) {
+		this.sosemester = sosemester;
+	}
+
+	public String getSosemester() {
+		return sosemester;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setFinalSemStatus(String finalSemStatus) {
+		this.finalSemStatus = finalSemStatus;
+	}
+
+	public String getFinalSemStatus() {
+		return finalSemStatus;
+	}
 
 }

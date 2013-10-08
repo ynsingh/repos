@@ -248,6 +248,7 @@ public class EmployeeMasterController extends MultiActionController {
         }
 		
 		input.setUserId(userId);
+        input.setUniversityCode(session.getAttribute("universityId").toString());
         input.setParentEntity(request.getParameter("parentEntityId"));
         input.setDesignation(request.getParameter("designationId"));
         input.setDateOfJoining(request.getParameter("dateOfJoining"));

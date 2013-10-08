@@ -171,14 +171,19 @@ public function resultGetDisplayType(event:ResultEvent):void{
 
 }
 
+
 public function getCourses():void{
 	awardSheetCanvas.visible=false;
-	if(examType.selectedIndex>-1)
+	if(examType.selectedIndex>-1 && courseText.text.length>=6)
 	{	
 		display_type=examType.text.charAt(0);
 		var param:Object={};
 		param['displayType']=examType.text.charAt(0);
+		param['courseCode']=courseText.text;
 		httpGetCoursesDetails.send(param)
+	}
+	else{
+		Alert.show("Please Enter Correct Course Code",commonFunction.getMessages('error'), 4, null,null,errorIcon);
 	}
 }
 
@@ -262,7 +267,12 @@ private function resultHandlerStudent(event:ResultEvent):void{
     		this.parentDocument.vStack.selectedIndex=0;
 			this.parentDocument.loaderCanvas.removeAllChildren();
 		}
-	  	getMarks();
+		else if(studentXml.student.length()==0){
+			Alert.show(commonFunction.getMessages('noStudentFound'),commonFunction.getMessages('info'),4,null,null,infoIcon);	
+		}
+		else{
+	  		getMarks();
+	 	}
 	}
 
 public function getMarks():void{
@@ -286,11 +296,7 @@ public function resultGetStudentMarks(event:ResultEvent):void{
 	for each(var m:Object in marksXml.marks){
 		studentMarksListAC.addItem({marks:m.marks});
 	}
-	
-	if(studentMarksListAC.length==0){
-		Alert.show(commonFunction.getMessages('noStudentFound'),commonFunction.getMessages('info'),4,null,null,infoIcon);	
-	}
-	else{
+
 	studentMarksListAC.removeAll();
 	var abc:ArrayCollection=new ArrayCollection();
 	   	for each (var obj1:Object in studentXml.student){
@@ -396,7 +402,7 @@ public function resultGetStudentMarks(event:ResultEvent):void{
 	   		}
 	   		courseCodeLabel.text=courseCode+' : ';
 	   		marksTypeLable.text=MarksType;
-	}
+	
 }
 
 public function createMarksGrid(dataArray:ArrayCollection):void{

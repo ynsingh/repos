@@ -32,6 +32,7 @@
  */
 import common.Mask;
 import common.commonFunction;
+import common.validations.CommonValidations;
 
 import mx.collections.*;
 import mx.controls.Alert;
@@ -41,7 +42,7 @@ import mx.managers.PopUpManager;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
 public var buttonFunction:Function;
-
+public var validateAtPopUp:CommonValidations=new CommonValidations;
 public var programId:String;
 public var branchId:String;
 public var specializationId:String;
@@ -59,7 +60,7 @@ public var deleteButton:Button;
  * */
  public function updateRecord():void {
  	
-	 if(changemaxcombo.value>=changemincombo.value){
+	 if(validateAtPopUp.isGreater(changemincombo.text,changemaxcombo.text)){
 	 	
 	 	Alert.show(commonFunction.getMessages('areyousure'),
 				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onValidationUpdate,questionIcon);  	    
@@ -82,8 +83,8 @@ public function onValidationUpdate(event:CloseEvent):void{
 		 infoObject["specializationId"] =  specializationId;
 		 infoObject["semesterCode"] = semesterCode;
 		 infoObject["courseType"] = courseTypeCode;
-		 infoObject["minCredits"] = changemincombo.value;
-		 infoObject["maxCredits"] = changemaxcombo.value;
+		 infoObject["minCredits"] = changemincombo.text;
+		 infoObject["maxCredits"] = changemaxcombo.text;
 		 infoObject["activityFlag"] = "update";
 		 
 		 Mask.show(commonFunction.getMessages('pleaseWait'));

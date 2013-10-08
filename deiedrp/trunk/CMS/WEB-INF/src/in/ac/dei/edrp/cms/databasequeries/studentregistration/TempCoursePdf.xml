@@ -5,6 +5,7 @@
     
     <sqlMap namespace="tempCoursePdf">
     	<typeAlias alias="studentTempInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter"/>
+    	<typeAlias alias="previousSemester" type="in.ac.dei.edrp.cms.utility.PreviousSemesterDetail" />
     	
     	<select id="getPersonalInfo" resultClass= "studentTempInfo">
     	SELECT tsp.registration_number AS registrationNumber,concat_ws(' ',first_name,middle_name,last_name) AS studentName , concat_ws(' ',father_first_name,father_middle_name,father_last_name) AS fatherName,
@@ -70,7 +71,7 @@
     	
     	<select id="getCourseListForSwtOrNor" resultClass="studentTempInfo">
     	
-    		SELECT tsc.course_code AS courseCode,cm.course_name AS courseName FROM temp_student_courses tsc,course_master cm
+    	SELECT tsc.course_code AS courseCode,cm.course_name AS courseName FROM temp_student_courses tsc,course_master cm
 		WHERE tsc.course_code = cm.course_code AND tsc.enrollment_number=#enrollmentNumber# AND semester_start_date = #semesterStartDate# AND
 		semester_end_date = #semesterEndDate#;
     	
@@ -118,72 +119,109 @@
     	
     	<select id = "getPersonalInfoForMainExtendedList" resultClass="studentTempInfo">
     	
-
-		select substr(sp.entity_id,5,8) as entityNumber,pm.program_code AS programCode,
+    	Select (select entity_code from entity_master where entity_id=sp.entity_id) as entityNumber,pm.program_code AS programCode,
 		sp.branch_id AS branchId,sp.roll_number AS rollNumber,sp.mode_of_entry AS modeOfEntry,
  		concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) AS studentName,sm.category_code AS category,sp.enrollment_number AS enrollmentNumber
-	 	,sm.gender,   srsh.attempt_number AS attemptNumber,
-    	sp.roll_number AS registrationNumber,   sp.entity_id AS entityId,
+	 	,sm.gender,   srsh.attempt_number AS attemptNumber,sp.in_semester AS inSemester,
+    	sp.roll_number AS registrationNumber,   sp.entity_id AS entityId,srsh.switch_rule AS switchNumber,srsh.switch_type AS switchedDate,
     	sp.program_id AS programId,sp.branch_id AS branchCode,sp.specialization_id AS newSpecialization, 
-    	current_semester AS semesterCode,   sm.student_id AS studentId,srsh.status AS statusInSemester,
-    	ptd.semester_sequence AS semesterSequence,sm.university_code AS universityCode,pm.print_aggregate AS printAggregate,
-    	tsp.old_entity_id as oldEntityId,tsp.old_program_id as oldProgramId,tsp.old_branch_id as oldBranchCode,tsp.old_specialization_id as oldSpecialization,tsp.from_semester as oldSemester
+    	current_semester AS semesterCode,   sm.student_id AS studentId,srsh.status AS statusInSemester,srsh.session_start_date AS semesterStartDate,
+    	ptd.semester_sequence AS semesterSequence,sm.university_code AS universityCode,pm.print_aggregate AS printAggregate,srsh.program_course_key AS programCourseKey,
+    	(select semester_code from program_term_details where program_id=#programId# and semester_group in (select semester_group from program_term_details 
+    	where program_id=#programId# and semester_code=#semesterCode#) order by semester_sequence desc limit 1) AS semester 
      	FROM student_program sp,student_master sm,
-   		program_term_details ptd,program_master pm,student_registration_semester_header srsh,temp_student_program tsp   WHERE tsp.enrollment_number=sp.enrollment_number and sp.entity_id =#entityId#
+   		program_term_details ptd,program_master pm,student_registration_semester_header srsh   WHERE  sp.entity_id =#entityId#
     	AND sp.program_id = #programId# AND sp.branch_id = #branchId#   AND sp.specialization_id = #specializationId# AND sp.current_semester =  #semesterCode#
    		AND pm.program_id = sp.program_id
-        and srsh.status not in ('YTR') and srsh.roll_number=sp.roll_number AND ptd.program_id =#programId# and sp.program_status='ACT'
+        and srsh.status not in ('YTR') and srsh.roll_number=sp.roll_number AND ptd.program_id =#programId# and sp.program_status in ('ACT','PAS')
      	AND ptd.semester_code = #semesterCode# AND sm.enrollment_number = sp.enrollment_number AND ptd.semester_sequence=#sequenceNumber#  AND srsh.session_start_date = #semesterStartDate#
-		AND srsh.session_end_date = #semesterEndDate# and sm.university_code=#universityId# and tsp.registration_status='M';
+		AND srsh.session_end_date = #semesterEndDate# and sm.university_code=#universityId#;
     	
     	</select>
     	
+     	<sql id="previousPCK">
+     		<![CDATA[
+    			SELECT srsh.program_course_key as programCourseKey,
+		    	srsh.session_start_date AS semesterStartDate,srsh.session_end_date AS semesterEndDate
+		    	FROM student_registration_semester_header srsh
+				where srsh.roll_number = #rollNumber# and
+				srsh.session_start_date = (select max(srsh1.session_start_date)
+				from student_registration_semester_header srsh1
+				where srsh1.program_course_key <> #programCourseKey# and srsh1.status  in ('PAS' ,'REM','UFM','INC','REG') and  srsh1.roll_number = #rollNumber#
+				and session_start_date < #semesterStartDate#  ) and srsh.status not in ('YTR','WTH')
+		  	]]>
+	 	</sql>
+    	
     	<select id="getMainCourseList" resultClass="studentTempInfo">
-    	
     	select course_code AS courseCode FROM student_course WHERE
-		roll_number = (select roll_number FROM student_program WHERE enrollment_number = #enrollmentNumber#
-		AND entity_id = #entityId# AND program_id = #programId# AND branch_id = #branchCode# AND specialization_id = #newSpecialization#
-		AND current_semester = #semesterCode# group by (roll_number))
-		AND program_course_key = (select program_course_key FROM program_course_header WHERE program_id=#programId#
-		AND branch_id = #branchCode# AND specialization_id = #newSpecialization#
-		AND semester_code = #semesterCode# AND semester_status = 'ACT') ;
-    	
+		roll_number = #rollNumber# AND semester_start_date=#semesterStartDate#
+		AND program_course_key = #programCourseKey# ;
     	</select>
     	
     	<select id = "getCourseWithRemedialMain" resultClass="studentTempInfo">    	    
-		
-		select course_code AS courseCode FROM student_course WHERE
-		roll_number = (select roll_number FROM student_program WHERE enrollment_number = #enrollmentNumber#
-		AND entity_id = #entityId# AND program_id = #programId# AND branch_id = #branchCode# AND specialization_id = #newSpecialization#
-		AND current_semester = #semesterCode# group by (roll_number))
-		AND program_course_key = (select program_course_key FROM program_course_header WHERE program_id=#oldProgramId#
-		AND branch_id = #oldBranchCode# AND specialization_id = #oldSpecialization#
-		AND semester_code =#oldSemester# AND semester_status = 'ACT') AND student_status = 'REM';
-    	
+		select set2.course_code AS courseCode from 
+		(select * FROM student_course WHERE
+		roll_number = #rollNumber# AND student_status = 'REM')set2 join
+		(<include refid="previousPCK"/>)set1
+		on set2.program_course_key=set1.programCourseKey and set2.semester_start_date=set1.semesterStartDate; ;
     	</select>
     	
-    	<sql id="pck">
-    	FROM student_program sp,student_aggregate sa
+
+    	<!--  <select id="getPreviousSemesterMarksMain" resultClass="studentTempInfo">
+    	SELECT sa.roll_number AS rollNumber,sa.theory_sgpa AS aggregateTheory,sa.practical_sgpa AS aggregatePractical 
+    	FROM student_program sp,student_aggregate sa,(<include refid="previousPCK"/>)set1
  		WHERE sp.entity_id = #entityId# AND program_id = #programId# AND branch_id = #branchCode# AND specialization_id = #newSpecialization#
 		AND current_semester = #semesterCode# AND enrollment_number = #enrollmentNumber# AND sp.roll_number = sa.roll_number AND 
-		sa.program_course_key = (case when (#programId#=#oldProgramId# AND #branchCode#=#oldBranchCode# AND #newSpecialization#=#oldSpecialization#) then (select program_course_key FROM program_course_header 
+		sa.program_course_key=set1.programCourseKey and sa.semester_start_date=set1.semesterStartDate;
+		 (case when (#programId#=#oldProgramId# AND #branchCode#=#oldBranchCode# AND #newSpecialization#=#oldSpecialization#) then (select program_course_key FROM program_course_header 
 		WHERE program_id=#oldProgramId#
 		AND branch_id = #oldBranchCode# AND specialization_id = #oldSpecialization#
 		AND semester_code =#oldSemester# AND semester_status = 'ACT') else(select program_course_key FROM program_course_header 
 		WHERE program_id=#programId#
 		AND branch_id = #branchCode# AND specialization_id = #newSpecialization#
-		AND semester_code =#oldSemester# AND semester_status = 'ACT')end) ;
-    	</sql>
-    	
-    	<select id="getPreviousSemesterMarksMain" resultClass="studentTempInfo">
-    	SELECT sa.roll_number AS rollNumber,sa.theory_sgpa AS aggregateTheory,sa.practical_sgpa AS aggregatePractical 
-    	<include refid="pck"/>
+		AND semester_code =#oldSemester# AND semester_status = 'ACT')end) ; 
     	</select>
-    	
     	<select id="getPreviousSemesterMarksMain1" resultClass="studentTempInfo">
     	SELECT sa.roll_number AS rollNumber,sa.sgpa AS aggregateTheory 
-    	<include refid="pck"/>
-    	</select>
+    	FROM student_program sp,student_aggregate sa,(<include refid="previousPCK"/>)set1
+ 		WHERE sp.entity_id = #entityId# AND program_id = #programId# AND branch_id = #branchCode# AND specialization_id = #newSpecialization#
+		AND current_semester = #semesterCode# AND enrollment_number = #enrollmentNumber# AND sp.roll_number = sa.roll_number AND 
+		sa.program_course_key=set1.programCourseKey and sa.semester_start_date=set1.semesterStartDate;
+    	</select> -->
+    	
+    	
+    	<resultMap id="PreviouspckDetails" class="previousSemester">
+		<result property="numberOfRemedials" column="srsh.number_of_remedials" />
+		<result property="sgpa" column="srsh.sgpa" />
+		<result property="cumulativeWeighted" column="srsh.weighted_percentage" />
+		<result property="previousSemesterStartDate" column="srsh.session_start_date" />
+		<result property="previousSemesterEndDate" column="srsh.session_end_date" />
+		<result property="programCourseKey" column="srsh.program_course_key" />
+		<result property="theorySGPAPoint" column="sa.theory_sgpa" />
+		<result property="practicalSGPAPoint" column="sa.practical_sgpa" />
+		<result property="theoryEarnedCredit" column="sa.earned_theory_credit" />
+		<result property="practicalEarnedCredit" column="sa.earned_practical_credit" />
+		<result property="theoryCGPAPoint" column="sa.point_secured_theory_cgpa" />
+		<result property="practicalCGPAPoint" column="sa.point_secured_practical_cgpa" />
+		<result property="theoryEarnedCgpaCredit" column="sa.earned_theory_credit_cgpa" />
+		<result property="practicalEarnedCgpaCredit" column="sa.earned_practical_credit_cgpa" />
+		</resultMap>
+	
+		<select id="previousgrade" resultMap="PreviouspckDetails">
+		select
+		srsh.number_of_remedials,srsh.sgpa,srsh.weighted_percentage,srsh.session_start_date,srsh.session_end_date,
+		srsh.program_course_key,sa.theory_sgpa,sa.practical_sgpa,
+		sa.earned_theory_credit,sa.earned_practical_credit,sa.point_secured_theory_cgpa,sa.point_secured_practical_cgpa,
+		sa.earned_theory_credit_cgpa,sa.earned_practical_credit_cgpa
+		from student_registration_semester_header srsh,
+		student_aggregate sa where srsh.roll_number=#rollNumber# and srsh.status in
+		('PAS','REM','FAL') and srsh.entity_id=#entityId# and
+		srsh.program_course_key=sa.program_course_key
+		and srsh.session_start_date=sa.semester_start_date and
+		srsh.session_end_date=sa.semester_end_date and
+		srsh.roll_number=sa.roll_number and  srsh.program_course_key = #programCourseKey# and srsh.session_start_date=#previousSemesterStartDate#
+		and srsh.session_end_date=#previousSemesterEndDate#;
+   		</select>
     	
 
-	</sqlMap>
+</sqlMap>

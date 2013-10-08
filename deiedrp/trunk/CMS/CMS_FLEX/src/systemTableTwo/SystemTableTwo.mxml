@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="770" creationComplete="initForm()" 
-	title="{resourceManager.getString('Constants','systemTable2PanelTitle')}" label="{resourceManager.getString('Constants','mainPanelTitle')}" cornerRadius="6" keyUp="if(event.keyCode==Keyboard.ESCAPE){Mask.close();}" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	title="{resourceManager.getString('Constants','systemTable2PanelTitle')}" label="{resourceManager.getString('Constants','mainPanelTitle')}" cornerRadius="6" keyUp="if(event.keyCode==Keyboard.ESCAPE){Mask.close();}" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"
+	xmlns:controls="common.Components.com.iwobanas.controls.*">
 	<mx:Script>
 		<![CDATA[
 			import common.commonFunction;
@@ -47,8 +48,8 @@
 		<mx:Label x="10" y="9" text="{resourceManager.getString('Constants','systemTableTwoDetails')}:"/>
 		<mx:LinkButton enabled="false" id="editButton" x="537.3" y="5" label="{resourceManager.getString('Constants','editButton')}" click="editButtonClickHandler()" width="72"/>
 		<mx:LinkButton enabled="false" id="deleteButton" x="617.3" y="5" label="{resourceManager.getString('Constants','deleteButton')}" width="72" click="deleteButtonClickHandler()"/>
-		<mx:DataGrid editable="true" id="sysTab2Grid" textAlign="center" x="9.25" y="30.8" width="680.07574" height="169.95" >
-			<mx:columns>
+		<controls:MDataGrid editable="true" id="sysTab2Grid" textAlign="center" x="9.25" y="30.8" width="680.07574" height="169.95" >
+			<controls:columns>
 				<dataGridClasses:MDataGridColumn width="20" sortable="false" headerText="" dataField="select" rendererIsEditor="true" editorDataField="selected">
 					<dataGridClasses:headerRenderer>
 						<mx:Component>
@@ -75,15 +76,15 @@
 						</mx:Component>
 					</dataGridClasses:itemRenderer>
 				</dataGridClasses:MDataGridColumn>
-				<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','componentCode')}" dataField="componentCode" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','componentDescription')}" dataField="componentDescription" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" id="verificationColumn" headerText="{resourceManager.getString('Constants','verificationRequired')}" dataField="verificationRequired" visible="true" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','status')}" dataField="active" labelFunction="showStatus"  visible="true"/>
-				<mx:DataGridColumn editable="false" id="firstFlagDataGridColumn" headerText="" dataField="dummyFlag1" visible="false" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" id="secondFlagDataGridColumn" headerText="" dataField="dummyFlag2" visible="false" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" id="thirdFlagDataGridColumn" headerText="" dataField="dummyFlag3" visible="false" showDataTips="true"/>
-			</mx:columns>
-		</mx:DataGrid>
+				<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','componentCode')}" dataField="componentCode" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','componentDescription')}" dataField="componentDescription" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" id="verificationColumn" headerText="{resourceManager.getString('Constants','verificationRequired')}" dataField="verificationRequired" visible="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" headerText="{resourceManager.getString('Constants','status')}" dataField="active" labelFunction="showStatus"  visible="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" id="firstFlagDataGridColumn" headerText="" dataField="dummyFlag1" visible="false" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" id="secondFlagDataGridColumn" headerText="" dataField="dummyFlag2" visible="false" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" id="thirdFlagDataGridColumn" headerText="" dataField="dummyFlag3" visible="false" showDataTips="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
 	</mx:Canvas>
 	<mx:Label x="187" y="58" text="{resourceManager.getString('Constants','group')}:"/>
 	<mx:ComboBox toolTip="{groupCB.text}"  x="344" y="55" id="groupCB" prompt="{commonFunction.getConstants('select')}" 

@@ -259,7 +259,8 @@ public function progressCard():void{
 public function getPathProgressCardSuccess(event:ResultEvent):void{
 	var pathDetail:XML=event.result as XML;	
 	var path:String=pathDetail.Path;
-//Alert.show(path);
+    var aa:Array = path.split('\\');
+			path = aa.join('\/');
 	if(path.substr(0,5)=="false"){
 		if(path.length>5){
 	 		Alert.show(path.substr(6,path.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
@@ -270,7 +271,7 @@ public function getPathProgressCardSuccess(event:ResultEvent):void{
 	 }		 
 	 else{
 	 	try{	
-			navigateToURL(new URLRequest(path),'Progress_Card');
+			navigateToURL(new URLRequest(commonFunction.getConstants('url')+"/"+path),'Progress_Card');
 		}catch(e:Error){
 			Alert.show("Progress card is not available !");
 		}

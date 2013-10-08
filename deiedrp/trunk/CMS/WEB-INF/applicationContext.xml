@@ -353,8 +353,9 @@ value="in.ac.dei.edrp.cms.dao.awardsheet.AwardSheetDao" />
 
 	
 	<!-- Ashutosh report generation -->
-	<bean id="progressCardDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ProgressCardImpl">
+<bean id="progressCardDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ProgressCardImpl">
 <property name="sqlMapClient" ref="sqlMapClient"/>
+<property name="transactionTemplate" ref="transactionTemplate" />
 </bean>
 <bean id="progressCardInfoDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ProgressCardInfoImpl">
 <property name="sqlMapClient" ref="sqlMapClient"/>
@@ -563,7 +564,9 @@ p:reportDao-ref="reportDao" />
      <bean id="studentMarksSummaryDao" class="in.ac.dei.edrp.cms.daoimpl.studentmarkssummary.StudentMarksSummaryImpl">
         <property name="sqlMapClient" ref="sqlMapClient"/>        
     </bean>
-    	
+    <bean id="instructorCourseDao" class="in.ac.dei.edrp.cms.daoimpl.instructorcourse.InstructorCourseDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>        
+    </bean>	
     <!-- Devendra code starts--> 
     	<bean id="buildSessionDao" class="in.ac.dei.edrp.cms.daoimpl.buildnextsession.BuildNextSessionDaoImpl">
     		<property name="sqlMapClient" ref="sqlMapClient"></property>
@@ -597,6 +600,13 @@ p:reportDao-ref="reportDao" />
 			<property name="sqlMapClient" ref="sqlMapClient"/> 	
 			<property name="transactionTemplate" ref="transactionTemplate"/>  					      
 		</bean>
+		
+		<bean id="remarkService" class="in.ac.dei.edrp.cms.daoimpl.remark.RemarkImpl">
+			<property name="sqlMapClient" ref="sqlMapClient"/> 	 					      
+		</bean>
+		<bean id="userInfoService" class="in.ac.dei.edrp.cms.daoimpl.userInformationInterface.UserInformationServiceImpl">
+			<property name="sqlMapClient" ref="sqlMapClient"/> 	 					      
+		</bean>
    <!-- Devendra code Ends--> 
 
 <!-- ashish mohan starts -->
@@ -614,6 +624,10 @@ p:reportDao-ref="reportDao"/>
 </bean>
 <bean id="gradeLimitDao" class="in.ac.dei.edrp.cms.daoimpl.coursegradelimit.GradeLimitDaoImpl">
 	<property name="sqlMapClient" ref="sqlMapClient"></property>
+</bean>
+<bean id="service" class="in.ac.dei.edrp.cms.daoimpl.insertInPrestagingImpl.insertInPrestagingImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+	<property name="transactionTemplate" ref="transactionTemplate"/>
 </bean>
 <!-- ashish mohan ends -->
 <!-- Mandeep starts -->
@@ -663,8 +677,28 @@ p:reportDao-ref="reportDao"/>
 	<bean id="withdrawMarksTransferDao" class="in.ac.dei.edrp.cms.daoimpl.withdrawmarkstransfer.WithdrawMarksTransferDaoImpl">
    		<property name="sqlMapClient" ref="sqlMapClient"/>
    		<property name="transactionTemplate" ref="transactionTemplate"/>
-   		</bean>
+   	</bean>
+	<bean id="revertResultProcessDao" class="in.ac.dei.edrp.cms.daoimpl.revertResultProcess.RevertResultProcessDaoImpl">
+   		<property name="sqlMapClient" ref="sqlMapClient"/>
+   		<property name="transactionTemplate" ref="transactionTemplate"/>
+   	</bean>
+   	<bean id="mailConfigurationDao" class="in.ac.dei.edrp.cms.daoimpl.mailConfiguration.MailConfigurationDaoImpl">
+   		<property name="sqlMapClient" ref="sqlMapClient"/>
+   	</bean>
+   	<bean id="sendMail" class="in.ac.dei.edrp.cms.daoimpl.employee.sendmail">
+   		<property name="sqlMapClient" ref="sqlMapClient"/>
+   	</bean>
     <!-- Dheeraj Code Ends -->
+    
+    <!-- Upasana Code Starts -->
+    <bean id="programCourseCreditDAO" class="in.ac.dei.edrp.cms.daoimpl.programCourseHeaderCredit.ProgramCourseCreditImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	<bean id="instAdminRegistrationDAO" class="in.ac.dei.edrp.cms.daoimpl.registrationForInstAndAdmin.InstAdminRegistrationImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+	<!-- Upasana Code ends -->
 </beans>
 
 

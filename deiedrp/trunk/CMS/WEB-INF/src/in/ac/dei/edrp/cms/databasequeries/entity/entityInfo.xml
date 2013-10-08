@@ -163,10 +163,9 @@ e.entity_fax fax,b.entity_id parent_entity_id,concat(b.entity_name,'(',b.entity_
 e.location_id location_id, stt.component_description location,e.knownby,e.entity_pincode  
 from 
 entity_master e, entity_master b, system_table_two stt where e.university_id=#universityId#  
-AND e.parent_entity_id = b.entity_id AND e.level=#entityType# AND 
+AND e.parent_entity_id = b.entity_id AND e.entity_type=#entityType# AND 
 stt.group_code='LCNMST' and stt.university_code=e.university_id and stt.active=1 AND 
 stt.component_code=e.location_id
-
 </select>
 
 <update id="updateSystemValues">

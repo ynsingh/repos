@@ -617,6 +617,10 @@ public class ReadyPreStagingDAOImpl implements ReadyPreStagingDAO {
 							student.getCorState(), student.getCorPincode(),
 							student.getOfficePhone(), student.getExtraPhone(),
 							student.getOtherPhone(), student.getFax());
+                            //****New lines added by Nupur*********
+					objectToTransferInST.setRollNumberGroupCode(student.getRollNumberGroupCode());
+					objectToTransferInST.setLongField(student.getLongField());
+					//**************************************
 					
 					//To find out sequence number
 					List<TransferPSTRDYInSTBean> sequenceNumber=sqlMapClient.queryForList("TransferPSTRDYInST.getSequenceNumber", objectToTransferInST);

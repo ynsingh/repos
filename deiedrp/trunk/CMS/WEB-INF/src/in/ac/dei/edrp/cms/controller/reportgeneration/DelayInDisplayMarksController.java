@@ -721,7 +721,7 @@ public class DelayInDisplayMarksController extends MultiActionController{
     	input.setReportCode(request.getParameter("reportCode"));
     	input.setReportType(request.getParameter("reportType"));
     	input.setReportDescription(request.getParameter("reportDescription"));
-    	input.setPercent(request.getParameter("semesterWise"));
+    	input.setPercent(request.getParameter("semesterType"));
 //    	if(request.getParameter("semesterType").equalsIgnoreCase("Even Semesters")){
 //    		input.setPercent("0");
 //    	}
@@ -756,13 +756,13 @@ public class DelayInDisplayMarksController extends MultiActionController{
 		try{
 
 		//**********************Making directory for storing the file**************************
-			String semester=null;
-if(request.getParameter("semesterWise").contains("0")){
-	semester="Even Semesters";
-}
-else{
-	semester="Odd Semesters";
-}
+			String semester="";
+			if(request.getParameter("semesterWise").contains("0")){
+				semester="Even Semesters";
+			}
+			else{
+				semester="Odd Semesters";
+			}
 			ReportPathBean reportPathBean = new ReportPathBean(session.getAttribute("universityId").toString(),request.getParameter("entityId"),
 					request.getParameter("programId"),request.getParameter("branchId"),request.getParameter("specializationId"),
 					request.getParameter("semesterCode"),request.getParameter("semesterStartDate"),request.getParameter("semesterEndDate"),
@@ -825,7 +825,20 @@ else{
 
 			
 			List<FinalSemesterResultStatistics>programList=courseWisePanelOfExaminersDao.getReportProgramList(input);	
-			
+			if(programList.size()==0){
+				PdfPTable headerTable=new PdfPTable(new float[]{1});
+				headerTable.setWidthPercentage(100f);
+				headerTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				headerTable.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+				
+				PdfPCell cell=new PdfPCell();
+				cell = new PdfPCell(new Phrase("No Record Found"));
+				cell.setBorderWidth(0);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				headerTable.addCell(cell);
+				document.add(headerTable);
+			}
+			else{
 			for(int k=0;k<programList.size();k++){
 				
 				input.setProgramName(programList.get(k).getProgramName());
@@ -946,6 +959,7 @@ else{
 
 				}
 				document.add(headerTable);
+			}
 			}
 
 			}

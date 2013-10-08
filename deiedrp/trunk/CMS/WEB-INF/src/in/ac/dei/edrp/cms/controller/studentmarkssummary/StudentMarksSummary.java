@@ -270,6 +270,7 @@ public class StudentMarksSummary extends MultiActionController {
 		input.setSpecializationId(request.getParameter("specializationId"));
 		input.setSemesterCode(request.getParameter("semesterCode"));
 		String path = null;
+        String pathNupur = null;
 		try{
 			StudentMarksSummaryBean parameterBean = (StudentMarksSummaryBean)studentMarksSummaryDao.getPathParameters(input);			
 			input.setEntityId(parameterBean.getEntityId());
@@ -283,12 +284,14 @@ public class StudentMarksSummary extends MultiActionController {
 			path = ReportPath.getPath(reportPathBean);
 			System.out.println("before concatenation path is "+path);
 			path = path + "8-Progress-Result Card-"+input.getRollNumber()+".pdf";
+            pathNupur = path;
 			String initialPath = getServletContext().getRealPath("/");
 			path = initialPath+path;
 			System.out.println("After concatenation path is "+path);
 		    File fileVerify = new File(path);
 		    if(fileVerify.exists()){
 		    	System.out.println("yes file exist now show "+path);
+                return new ModelAndView("general/ReportPath","path", pathNupur);			
 		    }
 		    else{
 		    	System.out.println("The Report is not yet Generated....");
@@ -336,5 +339,36 @@ public class StudentMarksSummary extends MultiActionController {
 		
 		String message=studentMarksSummaryDao.setCorrectionRequest(input);
 		return new ModelAndView("activitymaster/SubmitSuccesful", "message", message);
+	}
+	
+	/**
+	 * Method for getting student request status
+	 * @author Ashish Mohan
+	 * @param request
+	 * @param response
+	 * @return Model View containing status of request	 
+	 */
+	public ModelAndView getStatusOfRequest(HttpServletRequest request,HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("universityId") == null) {
+			return new ModelAndView("general/SessionInactive",
+					"sessionInactive", true);
+		}
+		StudentMarksSummaryBean input = new StudentMarksSummaryBean();
+		input.setRollNumber(request.getParameter("rollNumber"));		
+		input.setProgramCourseKey(request.getParameter("programCourseKey"));
+		input.setUniversityId(session.getAttribute("universityId").toString());
+		input.setSessionStartDate(session.getAttribute("startDate").toString());
+		input.setSessionEndDate(session.getAttribute("endDate").toString());
+		input.setSemesterStartDate(request.getParameter("semStartDate"));
+		input.setSemesterEndDate(request.getParameter("semEndDate"));
+		input.setEntityId(request.getParameter("entityCode"));
+		input.setCourseCode(request.getParameter("courseCode"));
+		input.setEvaluationId(request.getParameter("evaluationId"));
+		List<StudentMarksSummaryBean> result = new ArrayList<StudentMarksSummaryBean>();
+		result=studentMarksSummaryDao.getCorrectionRequestStatus(input);
+		
+		return new ModelAndView("studentMarksSummary/StudentMarksSummary","resultObject", result);
 	}
 }

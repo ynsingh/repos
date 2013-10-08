@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel creationPolicy="all" title="{commonFunction.getConstants('studentRegistration')}" width="1074" layout="absolute" xmlns:mx="http://www.adobe.com/2006/mxml" height="678" xmlns:ns1="common.*" creationComplete="getStudentDetails()" xmlns:studentRegistration="studentRegistration.*">
+<mx:Panel creationPolicy="all"  width="1074" layout="absolute" xmlns:mx="http://www.adobe.com/2006/mxml" height="678" xmlns:ns1="common.*" creationComplete="getStudentDetails()" xmlns:studentRegistration="studentRegistration.*">
 	<mx:Script>
 		<![CDATA[
 			import common.commonFunction;
@@ -119,13 +119,13 @@ public function logout():void
         fault="faultHandler_SubmitForm(event)"
         useProxy="false"/>
         
-        	<mx:HTTPService id="setLogoutService" method="post"
-					url="{commonFunction.getConstants('url')+'setLogout.htm'}"
-					showBusyCursor="true"
-					resultFormat="e4x"
-					result="logoutResultHandler(event)"
-					fault="logoutFaultHandler(event)"
-					useProxy="false"/>
+<mx:HTTPService id="setLogoutService" method="post"
+		url="{commonFunction.getConstants('url')+'setLogout.htm'}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="logoutResultHandler(event)"
+		fault="logoutFaultHandler(event)"
+		useProxy="false"/>		
         
      <!--   <mx:XML id="dep" source="xmlFiles/dep.xml" format="e4x"/>
         <mx:XML id="groupCat" source="xmlFiles/groupCat.xml" format="e4x"/>

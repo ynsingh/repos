@@ -35,7 +35,8 @@
  */
  -->
 
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" initialize="panel1_initializeHandler(event)" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" initialize="panel1_initializeHandler(event)" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"
+	xmlns:controls="common.Components.com.iwobanas.controls.*">
 	<mx:Script>
 		<![CDATA[
 			import common.commonFunction;
@@ -91,8 +92,8 @@
 		<mx:Button x="197" y="75" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
 	</mx:Panel>
 	<mx:Canvas x="10" y="213" width="500" height="282" visible="false" id="gridcanvas" styleName="GridCanvas">
-		<mx:DataGrid x="25" y="34" width="450" height="236" id="menuitemsdislpay" resizableColumns="false" editable="true">
-			<mx:columns>
+		<controls:MDataGrid x="25" y="34" width="450" height="236" id="menuitemsdislpay" resizableColumns="false" editable="true">
+			<controls:columns>
 			
 			<dataGridClasses:MDataGridColumn rendererIsEditor="true" width="20" editorDataField="selected" textAlign="center" dataField="select" headerText="" >
 				<dataGridClasses:itemRenderer>
@@ -120,9 +121,9 @@
 			    		</mx:Component>
 				</dataGridClasses:headerRenderer>
 			</dataGridClasses:MDataGridColumn>			
-			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','itemnames')}" dataField="description" editable="false" showDataTips="true"/>
-			</mx:columns>
-		</mx:DataGrid>
+			<dataGridClasses:MDataGridColumn headerText="{resourceManager.getString('Constants','itemnames')}" dataField="description" editable="false" showDataTips="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
 		<mx:Label x="26" y="8" text="{resourceManager.getString('Constants','listmenuitems')}" width="162" fontWeight="bold"/>
 		<mx:LinkButton x="350" y="8" label="{resourceManager.getString('Constants','deleteButton')} {resourceManager.getString('Constants','authority')}" click="deleteRoleAuthorities()" id="linkbutton" enabled="false"/>
 	</mx:Canvas>

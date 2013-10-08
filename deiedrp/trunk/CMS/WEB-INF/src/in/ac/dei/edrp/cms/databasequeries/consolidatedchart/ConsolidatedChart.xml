@@ -57,7 +57,7 @@
 
 	<select id="getSemSeqNo" resultClass="consolidatedChartInfo">
 		SELECT semester_code
-		semesterCode,semester_sequence semSeqNo
+		semesterCode,semester_sequence semSeqNo,final_semester_code AS isFinalSem
 		FROM
 		program_term_details
 		WHERE
@@ -96,7 +96,7 @@
 		else '' end) AS courseCode, srsh.status result,
 		sm.total_internal internal, sm.total_external external,
 		sm.total_marks totalMarks, sm.internal_grade internalGr,
-		sm.external_grade externalGr, sm.final_grade_point finalGr
+		sm.external_grade externalGr, sm.final_grade_point finalGr,sp.cgpa AS cgpa,sp.division AS division
 		FROM student_program sp JOIN student_master smt JOIN course_group cg JOIN 
 		(student_marks_summary sm JOIN student_registration_semester_header
 		srsh JOIN

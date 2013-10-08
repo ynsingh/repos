@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="instAdminRegistration">
+	<typeAlias alias="instAdminRegistration"
+		type="in.ac.dei.edrp.cms.domain.registrationForInstAndAdmin.InstAdminRegistrationInfo" />
+		
+	<select id="getduplicaterecords" resultClass="instAdminRegistration">
+		select count(*) count
+		from institute_administrator
+		where institute_name=#instituteName#
+		and institute_nick_name=#instituteNickName#
+		and city=#city#
+		and state=#state#
+		and country_code=#country#
+	</select>
+
+	<insert id="setInstituteAdmin">
+	insert into institute_administrator
+	(institute_name,institute_nick_name,institute_domain,institute_type,address,city,state,country_code,
+	pincode,session_start_date,session_end_date,office_phone_number,other_phone_number,admin_first_name,admin_last_name,
+	admin_designation,admin_email_id,admin_password,insert_time,creator_id,active_status)
+	values
+	(#instituteName#,#instituteNickName#,#instituteDomain#,#instituteType#,#address#,#city#,#state#,#country#,
+	#pinCode#,#sessionStartDate#,#sessionEndDate#,#officePhoneNumber#,#otherPhoneNumber#,#employeeFirstName#,#employeeLastName#,
+	#designation#,#primaryEmailId#,#password#,now(),#userId#,'WTG')
+	</insert>
+	
+	<select id="getduplicateuser" resultClass="instAdminRegistration">
+		select count(*) count from institute_administrator 
+		where admin_email_id= #primaryEmailId#
+	</select>
+	
+	<update id="updateUserStatus">
+		<![CDATA[
+			update institute_administrator set active_status='PND'
+			where institute_name=#instituteName#
+			and institute_nick_name=#instituteNickName#
+			and city=#city#
+			and state=#state#
+			and country_code=#country#
+			and admin_email_id=#primaryEmailId#
+			and DATEDIFF(NOW(),insert_time)<=7;
+		]]>	
+	</update>
+	
+	<select id="selectAdminInstituteDetails" resultClass="instAdminRegistration">
+	<![CDATA[
+		select institute_name instituteName,institute_nick_name instituteNickName,address,city,state,country_code country,pincode,concat(admin_first_name,' ',admin_last_name)employeeFirstName,
+		admin_email_id primaryEmailId,if((DATEDIFF(NOW(),insert_time)>7)&&(active_status='WTG'),'EXP',active_status) status from institute_administrator;
+	]]>	
+	</select>
+	
+	<update id="updateInstituteStatus">
+		update institute_administrator set active_status=#status#,modifier_id=#userId#,modification_time=now()
+		where institute_name=#instituteName#
+		and institute_nick_name=#instituteNickName#
+		and city=#city#
+		and state=#state#
+		and country_code=#country#
+		and admin_email_id=#primaryEmailId#
+	</update>
+	
+	<delete id="deleteInstituteAdmin">
+		delete from institute_administrator 
+		where institute_name=#instituteName#
+		and institute_nick_name=#instituteNickName#
+		and city=#city#
+		and state=#state#
+		and country_code=#country#
+		and admin_email_id=#primaryEmailId# 
+	</delete>
+	<select id="getDuplicateUniversityRecords" resultClass="instAdminRegistration">
+		select count(*) count
+		from university_master
+		where university_name=#instituteName#
+		and nick_name=#instituteNickName#
+	</select>
+	<select id="getDuplicateUserInUserInfo" resultClass="instAdminRegistration">
+		select count(*) count
+		from user_info
+		where user_name=#primaryEmailId#
+		and application='CMS'
+	</select>
+	
+	<select id="getuniversityId" resultClass="instAdminRegistration">
+		select max(university_code) count from university_master;
+	</select>
+	
+	<insert id="setUniversityMaster">
+		insert into university_master
+		select #universityCode#,session_start_date,session_end_date,'1',institute_name,address,city,pincode,office_phone_number,
+		other_phone_number,null,now(),null,#userId#,null,institute_nick_name,state,country_code
+		from institute_administrator
+		where institute_name=#instituteName#
+		and institute_nick_name=#instituteNickName#
+		and city=#city#
+		and state=#state#
+		and country_code=#country# 
+		and admin_email_id=#primaryEmailId# 
+	</insert>
+	
+	<insert id="setUserInfo">
+		insert into user_info
+		select admin_email_id,admin_email_id,sha1(admin_password),null,'ACT',now(),null,#universityCode#,'ADM','CMS',#userId#, null
+		from institute_administrator
+		where institute_name=#instituteName#
+		and institute_nick_name=#instituteNickName#
+		and city=#city#
+		and state=#state#
+		and country_code=#country# 
+		and admin_email_id=#primaryEmailId# 
+	</insert>
+	
+	<select id="getPasswordUser" resultClass="instAdminRegistration">
+		select admin_password password from institute_administrator where admin_email_id=#primaryEmailId#;
+	</select> 
+	
+	<insert id="populateMenusInSYS2">
+	insert into 
+		<isEqual prepend=""
+             property="applicationId"
+             compareValue="CMS">
+             system_table_two(university_code,
+		component_code,component_description,active,insert_time,creator_id,group_code,dummy_flag_one)
+		values(#universityCode#,#componentId#,#componentDescription#,1,now(),#userId#,'MNUITM',#groupCode#)
+	</isEqual>
+	<isEqual prepend=""
+             property="applicationId"
+             compareValue="EDEI">
+             system_table_two(university_code,
+		component_code,component_description,active,insert_time,creator_id,group_code,dummy_flag_one)
+		values(#universityCode#,#componentId#,#componentDescription#,1,now(),#userId#,'EMENUS',#groupCode#)
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="ADM">
+             menu_items_list(university_code,menu_item_id,menu_item_name) 
+			values(#universityCode#,#componentId#,#componentDescription#);
+			</isEqual>
+	</insert>
+	
+	<insert id="insertdefaultitems">
+		insert into user_group(menu_item_id,university_code,
+		user_group_id,
+		authority, insert_time, creator_id,application)
+		values(#componentId#,#universityCode#,'ADM',1,now(),#userId#,#applicationId#);
+	</insert>
+	
+	<insert id="insertdefrole">
+		replace into system_table_two (university_code, component_code, component_description, active, insert_time,
+		creator_id, group_code) values(#universityCode#,'ADM','Administrator',1,now(),#userId#,'UNROLE');
+	</insert>
+	
+	<insert id="initializeUniversity">
+		insert into system_values (university_id, code, value, insert_time,
+		creator_id) Select  #universityCode#,code,description,now(),#userId# 
+		from default_codes where application='VAL';
+	</insert>
+</sqlMap>

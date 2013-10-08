@@ -166,6 +166,7 @@
 	<mx:Label x="46" y="391" id="note" color="Red"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
 			import mx.events.CloseEvent;
 			import common.Mask;
 			import mx.collections.ArrayCollection;
@@ -369,6 +370,11 @@
 							'_'+specializationCombo.selectedLabel+'_'+semesterCombo.selectedLabel+'_'+courseCodeCombo.selectedLabel+
 							' '+'('+awardBlankTypeCombo.text.charAt(0)+')'+'.pdf';
 				param['filePath']=reportPath;
+				param['programCourseKey']=programCourseKey;
+				param['entityId']=entityCombo.selectedItem.id;
+				param['courseCode']=courseCodeCombo.selectedLabel;
+				param['displayType']=awardBlankTypeCombo.text.charAt(0);
+				getEmployeeDetail.send(param);
 				checkExistenceForDownload.send(param);		
 			}
 			
@@ -401,14 +407,18 @@
 			}
 			
 			private function generateConfirm():void{
-				Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,generateReport,questionIcon); 	
+				if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
+					branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
+					courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+					Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,generateReport,questionIcon); 	
+				}else{
+					Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon); 	
+				}
 			}
 			
 			public function generateReport(event:CloseEvent):void{
 				if(event.detail==Alert.YES){
-					if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
-					branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
-					courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+					
 						param['entityId']=entityCombo.selectedItem.id;
 						param['programId']=programCombo.selectedItem.id;
 						param['displayType']=awardBlankTypeCombo.text.charAt(0);
@@ -427,73 +437,59 @@
 						param['sessionEnd']=toYearCombo.text;
 						getData.send(param);
 						Mask.show(commonFunction.getConstants('pleaseWait'));
-					}else{
-						Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
-					}
+				
 				}
 			}
 			
 			public function resultGetData(event:ResultEvent):void{
 				Mask.close();
 				Alert.show(commonFunction.getMessages('reportGeneratedSuccessfully'),commonFunction.getMessages('success'),4,null,null,successIcon);
+				downloadButton.enabled=true;
+				printButton.enabled=true;
 			}
 			
 			private function downloadConfirm():void{
-				Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,downloadReport,questionIcon); 	
+				if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
+						branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
+						courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+						Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,downloadReport,questionIcon); 	
+				}else{
+					Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
 			}
 			
 			public function downloadReport(event:CloseEvent):void{
 				if(event.detail==Alert.YES){
-					if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
-						branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
-						courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+
 							var file:FileReference=new FileReference();
 							file.download(new URLRequest(commonFunction.getConstants('url')+reportPath));
 							reset();
-//							Alert.show('File Downloaded');
-					}else{
-						Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
-					}
+
 				}
 			}
 			
 			
 			private function printConfirm():void{
-				Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,printReports,questionIcon); 	
+				if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
+						branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
+						courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+						Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,printReports,questionIcon); 	
+				}else{
+					Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+				}
 			}
 			
 			
 			public function printReports(event:CloseEvent):void{
 				if(event.detail==Alert.YES){
-					if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
-						branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
-						courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
-						var reportPathForPrint:String;
-						reportPathForPrint='AwardSheet\\'+fromYearCombo.selectedLabel+'-'+toYearCombo.text+'\\'+entityCombo.selectedLabel+
-									'\\'+startDate.text+'-'+endDate.text+'\\';
-
-						var fileName:String;
-						fileName=programCombo.selectedLabel+'_'+branchCombo.selectedLabel+'_'+specializationCombo.selectedLabel+'_'+
-						 			semesterCombo.selectedLabel+'_'+courseCodeCombo.selectedLabel+' '+'('+awardBlankTypeCombo.text.charAt(0)+')'+'.pdf';
-							
-						param['programId']=programCombo.selectedItem.id;
-						param['branchId']=branchXML.branch.(branchName==branchCombo.selectedLabel).branchId;
-						param['specializationId']=specializationXML.specialization.(specializationName==specializationCombo.selectedLabel).specializationId;
-						param['entityId']=entityCombo.selectedItem.id;
-						param['semesterCode']=semesterXML.Details.(name==semesterCombo.selectedLabel).id;
-						param['semesterStartDate']=startDate.text;
-						param['semesterEndDate']=endDate.text;
-						param['fromSession']=fromYearCombo.selectedLabel;
-						param['toSession']=toYearCombo.text;
-						param['reportPath']=reportPathForPrint;
-						param['reportCode']='50';
-						param['reportType']='ABR';
-						param['fileName']=fileName;
-						Mask.show(commonFunction.getConstants('pleaseWait'));
-						printReport.send(param);
-						}else{
-							Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
-					}
+				
+					var reportPathForPrint:String;
+						
+					reportPathForPrint = commonFunction.getConstants('url')+reportPath;
+					var displayPDF:DisplayPDF = DisplayPDF(PopUpManager.createPopUp(this,DisplayPDF,false));
+					displayPDF.iFr.source = reportPathForPrint;
+					PopUpManager.centerPopUp(displayPDF);
+					displayPDF.isPopUp=false;				
 				}
 			}
 			
@@ -528,7 +524,7 @@
 			
 			public function resultCheckExistence(event:ResultEvent):void{
 				var fileExistsXML:XML=event.result as XML;
-//				Alert.show(fileExistsXML);
+
 				if(fileExistsXML.count=="Yes"){
 					downloadButton.enabled=true;
 					printButton.enabled=true;

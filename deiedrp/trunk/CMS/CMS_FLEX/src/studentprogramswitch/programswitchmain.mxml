@@ -66,7 +66,12 @@
 		fault="onFailure(event)"
 		useProxy="false"/>
 		
-	
+		<mx:HTTPService id="getSessionDate" method="POST"
+		url="{urlPrefix}getSessionDate.htm"
+		resultFormat="e4x"
+		result="getSessionDateSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
 
  <mx:Script>
         <![CDATA[
@@ -76,7 +81,7 @@
         ]]>
     </mx:Script> 
    
-	<mx:VBox height="100%" width="939">
+	<mx:VBox height="100%" width="1118">
 		<mx:Form width="313" height="104" verticalGap="10" verticalScrollPolicy="off">
 		<mx:FormHeading label="Search By"/>
 		<mx:FormItem label="Entity:"  >
@@ -89,7 +94,7 @@
 		</mx:FormItem>
 		</mx:Form>
 		
-		<mx:Canvas width="925" height="339">
+		<mx:Canvas width="1091" height="339">
 			<mx:DataGrid x="10" y="30"  id="programSwitchGrid" horizontalScrollPolicy="off" editable="true"
 			 sortableColumns="true"  resizableColumns="true" draggableColumns="false" width="100%" height="254" >
 				<mx:columns>
@@ -123,7 +128,7 @@
 					<mx:DataGridColumn editable="false" headerText="To Sem" width="200" dataField="tosem" dataTipField="tosem" showDataTips="true"/>
 				</mx:columns>
 			</mx:DataGrid>
-			<mx:LinkButton x="748" y="0" label="SUBMIT" height="22" click="LoadStudentforSwitch()" enabled="false" id="submit"/>
+			<mx:LinkButton x="880" y="0" label="SUBMIT" height="22" click="openPopUpWinforSwitch()" enabled="false" id="submit"/>
 		
 		
 			

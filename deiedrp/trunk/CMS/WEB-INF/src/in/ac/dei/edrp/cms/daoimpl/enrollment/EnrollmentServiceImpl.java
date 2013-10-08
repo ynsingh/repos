@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -259,5 +260,64 @@ public class EnrollmentServiceImpl extends SqlMapClientDaoSupport implements
 			logObj.error("Exception inEnrollmentSErviceImpl inside getStudentChackedList methid : "+e);
 		}
 		return list;
+	}
+
+
+	/**Method to Delete roll number/enrollment number format
+	 *@param Object of EnrollmentInfo enrollmentInfo
+	 *@param String Format
+	 *@return String containing success/fail
+	 *@author Devendra Singhal
+	*/
+	public String deleteFormat(EnrollmentInfo enrollmentInfo,String format){
+		String msg="";
+		try{ 
+			StringTokenizer stkn=new StringTokenizer(format, ",");
+			while(stkn.hasMoreTokens()){
+				enrollmentInfo.setFormat(stkn.nextToken());
+				getSqlMapClientTemplate().delete("enrollment.deleteFormat", enrollmentInfo);
+			}			
+			 msg="success";
+		}
+		catch(Exception e){
+			msg="error";
+			logObj.error("Exception in EnrollmentSErviceImpl during deleteFormat : "+e);
+		}
+		return msg;
+	}
+
+	/**Method to get list  roll number/enrollment number format
+	 *@param Object of EnrollmentInfo enrollmentInfo
+	 *@return List<EnrollmentInfo>
+	 *@author Devendra Singhal
+	*/
+	@SuppressWarnings("unchecked")
+	public List<EnrollmentInfo> getFormat(EnrollmentInfo enrollmentInfo){
+		List<EnrollmentInfo> list=null;
+		try{
+			list=getSqlMapClientTemplate().queryForList("enrollment.getFormat",enrollmentInfo);
+		}
+		catch(Exception e){
+			logObj.error("Exception in EnrollmentSErviceImpl during getFormat : "+e);
+		}
+		return list;
+	}
+
+	/**Method to Insert roll number/enrollment number format
+	 *@param Object of EnrollmentInfo enrollmentInfo
+	 *@return String containing success/fail
+	 *@author Devendra Singhal
+	*/
+	public String insertFormat(EnrollmentInfo enrollmentInfo){
+		String msg="";
+		try{
+			getSqlMapClientTemplate().insert("enrollment.insertFormat", enrollmentInfo);
+			msg="success";
+		}
+		catch(Exception e){
+			msg="error";
+			logObj.error("Exception in EnrollmentSErviceImpl during insertFormat : "+e);			
+		}
+		return msg;
 	}
 }

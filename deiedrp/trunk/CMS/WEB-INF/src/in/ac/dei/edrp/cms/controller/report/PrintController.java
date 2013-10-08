@@ -9,6 +9,7 @@ import in.ac.dei.edrp.cms.utility.ReportPathBean;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -27,6 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.PDFMergerUtility;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -50,7 +54,7 @@ public class PrintController extends MultiActionController{
 	public ModelAndView printReport(HttpServletRequest request,HttpServletResponse response) {
 		HttpSession session = request.getSession(true);
 		String message = "";
-		String result = "true";
+		String newPDFLocation = "";
 		ModelAndView printPdfModel = null;
 		if (session.getAttribute("universityId") == null) {
 			return new ModelAndView("general/SessionInactive",
@@ -79,21 +83,37 @@ public class PrintController extends MultiActionController{
 	    System.out.println(getServletContext().getRealPath("/"));
 	    System.out.println("in print pdf for getting the folders");
 	    String initialPath = getServletContext().getRealPath("/");
+		String pathToReturn = reportPath;
+	    System.out.println("Return Path : " + pathToReturn);
 	    reportPath = initialPath+reportPath;
-	    System.out.println("Report Path : " + reportPath);
+	    System.out.println("Complete Report Path : " + reportPath);
 	    File fileVerify = new File(reportPath);
 	    if(fileVerify.exists()){
+		File f=new File(reportPath+"Combined.pdf");
+	    	if(f.exists()){
+	    		f.delete();
+	    	}
+	    	createNew();
+	    	boolean flag = combine(reportPath);
+	    	if(flag){
+	    		newPDFLocation = reportPath + "Combined.pdf";
+	    		newPDFLocation = pathToReturn + "Combined.pdf";
+	    		System.out.println("Final Report Path before responding before escaping : " + newPDFLocation);
+	    		
+	    		
+	    		System.out.println("Final Report Path after responding before escaping : " + newPDFLocation);
+	    	}
 //	    	if(Integer.parseInt(request.getParameter("reportCode"))==8){
 //	    		addFilesRecursively(new File(reportPath), all);
 //	    	}
 //	    	else{
-	    		if(reportType.equalsIgnoreCase("ABR")){
-	    			System.out.println("Inside overloaded method");
-	    			addFilesRecursively(new File(reportPath), all, fileName);
-	    		}else{
-	    		System.out.println("inside else of report code 8");
-	    		addFilesRecursively(new File(reportPath), all);
-	    		}
+//	    		if(reportType.equalsIgnoreCase("ABR")){
+//	    			System.out.println("Inside overloaded method");
+//	    			addFilesRecursively(new File(reportPath), all, fileName);
+//	    		}else{
+//	    		System.out.println("inside else of report code 8");
+//	    		addFilesRecursively(new File(reportPath), all);
+//	    		}
 //	    	}	
 	    	
 	    	 /*
@@ -101,18 +121,18 @@ public class PrintController extends MultiActionController{
 		     * passing all the files present in the folder
 		     */	    
 //		    PrintReport printPdf = new PrintReport();
-		    try {
-		    	result = printReport.printPDFDoc(all,reportPrintBean,reportControlBean);
-			} catch (IOException e) {
-				result="false";
-				e.printStackTrace();
-			} catch (PrinterException e) {
-				result="false";
-				e.printStackTrace();
-			} catch(Exception e){
-				result="false";
-				System.out.println(e.getMessage());
-			}	
+//		    try {
+//		    	result = printReport.printPDFDoc(all,reportPrintBean,reportControlBean);
+//			} catch (IOException e) {
+//				result="false";
+//				e.printStackTrace();
+//			} catch (PrinterException e) {
+//				result="false";
+//				e.printStackTrace();
+//			} catch(Exception e){
+//				result="false";
+//				System.out.println(e.getMessage());
+//			}	
 	    }  		
 	    else{
 	    	System.out.println("The Report is not yet Generated....");
@@ -120,13 +140,13 @@ public class PrintController extends MultiActionController{
 	    	return new ModelAndView("activitymaster/SubmitSuccesful", "message", message);	
 	    }
 		//reportLogBean.setIsGenerated(request.getParameter("isGenerated")==null?"no":"yes");	
-		request.setAttribute("reportPath", reportPath);
-		request.setAttribute("reportPrintBean", reportPrintBean);
+//		request.setAttribute("reportPath", reportPath);
+//		request.setAttribute("reportPrintBean", reportPrintBean);
 		
 		//request.getRequestDispatcher(reportPath);
 //		List<ReportPathBean> entityList = consolidatedChartService
 //				.getEntityList(courseMasterBean);
-		return new ModelAndView("activitymaster/SubmitSuccesful", "message", result);
+		return new ModelAndView("activitymaster/SubmitSuccesful", "message", newPDFLocation);
 		/*ModelAndView modelAndView = new ModelAndView("path");
 
 		 modelAndView.addObject("path", reportPath); */
@@ -166,4 +186,47 @@ public class PrintController extends MultiActionController{
 	    }
 	    System.out.println("all "+all);
 	}
+//Methods Added By Dheeraj
+	
+	public void createNew(){
+	    PDDocument document = null;
+	    try{
+	        String filename="test.pdf";
+	        document=new PDDocument();
+	        PDPage blankPage = new PDPage();
+	        document.addPage( blankPage );
+	        document.save( filename );
+	    }catch(Exception e){
+	         System.out.println("Exception in createNew : " + e);
+	    }
+	}
+	
+	public boolean combine(String folderPath){
+		boolean flag = false;
+        try{
+        PDFMergerUtility mergePdf = new PDFMergerUtility();
+        File file = new File(folderPath);
+        File[] filesInFolder;
+        filesInFolder = file.listFiles();
+		Arrays.sort(filesInFolder);
+        int fileCount = filesInFolder.length;
+        
+        System.out.println("File Count : " + fileCount);
+      
+        for (File files : filesInFolder){
+            mergePdf.addSource(files); 
+            System.out.println("string : " + files);
+        }
+        String destinationFile = folderPath + "Combined.pdf";
+        mergePdf.setDestinationFileName(destinationFile);
+        mergePdf.mergeDocuments();
+        
+        flag = true;
+        }catch(Exception e){
+             System.out.println("Exception in combine : " + e);
+             flag = false;
+             return flag;
+        }
+		return flag;   
+    }
 }

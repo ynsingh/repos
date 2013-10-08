@@ -100,10 +100,16 @@ public class CancelStudentRegistrationDaoImpl extends SqlMapClientDaoSupport
 					getSqlMapClientTemplate().delete("cancelRegistration.deleteTmpStdProg", inputObj);
 					getSqlMapClientTemplate().delete("cancelRegistration.deleteTmpStdCourse", inputObj);
 					
-					if (inputObj.getProcessedFlag().equalsIgnoreCase("yes")) {
+					if (inputObj.getProcessedFlag().equalsIgnoreCase("yes")) {						
 						getSqlMapClientTemplate().update("cancelRegistration.updateStagingTable",inputObj);
 						getSqlMapClientTemplate().delete("cancelRegistration.deleteStudVerifiStatus", inputObj);
-						getSqlMapClientTemplate().delete("cancelRegistration.deleteAppInfo", inputObj);
+						String semSeqNo=(String) getSqlMapClientTemplate().queryForObject("cancelRegistration.getSemesterSeq", inputObj);
+						if(inputObj.getAdmissionMode().equalsIgnoreCase("NEW") && semSeqNo.equals("1")){
+							//Record not deleted from Applicant Info table 
+						}
+						else{							
+							getSqlMapClientTemplate().delete("cancelRegistration.deleteAppInfo", inputObj);
+						}
 					}
 					getSqlMapClientTemplate().getDataSource().getConnection().commit();	
 					result="success";

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comps="components.*" layout="absolute" width="1000" height="482" showCloseButton="true" close="closePopUp();" title="Print Utility">
+
+
+<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		private function closePopUp():void{
+			PopUpManager.removePopUp(this);
+			ExternalInterface.call("hideIFrame");
+		}
+	]]>
+</mx:Script>
+	<mx:Canvas width="100%" height="100%">
+         <comps:IFrame id="iFr" visible="true" x="0" y="0" width="100%" height="100%"/>
+      </mx:Canvas>
+   
+</mx:TitleWindow>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) programCourseHeaderCredit.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="952" height="468" title="{getString('manageCourseCredit')}" creationComplete="init_program_header()" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/programCourseCredit.as"/>
+	
+	<mx:HTTPService id="xmlProgramCourseHeaderList" method="post"
+        url="{urlProgramCourseHeaderList}" 
+        resultFormat="e4x"
+        result="resultProgramCourseHeaderHandler(event)"
+        fault="faultPCHCredit(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:Canvas x="26" y="23" width="880" height="335" styleName="GridCanvas">
+		<mx:Label top="6" left="10" fontWeight="bold" width="189" height="29" text="{getString('programCourseHeader')}"/>
+		<mx:LinkButton id="editButton1"  label="{getString('edit_link')}"  x="757" y="4" click="editButton_ClickHandler(event)" width="101"/> 
+		<controls:MDataGrid id="programCourseHeaderGrid" allowMultipleSelection="true" x="21" y="36" width="837" height="241"   
+				visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
+      			   horizontalScrollPolicy="off" draggableColumns="false" editable="true" >
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn sortable="false" rendererIsEditor="true" width="20" textAlign="center" editorDataField="selected" 
+					dataField="Select" headerText="" itemRenderer="mx.controls.CheckBox">
+					<dataGridClasses:headerRenderer>
+			<mx:Component>
+			<mx:Label/>
+			</mx:Component>
+			</dataGridClasses:headerRenderer>
+				</dataGridClasses:MDataGridColumn>
+				
+				<dataGridClasses:MDataGridColumn editable="false" width="250" dataField="programName" headerText="{getString('prog_name')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="branchName" headerText="{getString('branch_name')}" sortable="true" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="150" dataField="specializationName" headerText="{getString('specialization')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="100" dataField="semesterCode" headerText="{getString('semester')}" showDataTips="true" />
+				<dataGridClasses:MDataGridColumn editable="false" width="100" dataField="semesterStatus" headerText="{getString('status')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="100" dataField="maxCredits" headerText="{getString('maxCredits')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="100" dataField="minCredits" headerText="{getString('minCredits')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="100" dataField="maxLecCredits" headerText="{getString('maxLectureCredits')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="100" dataField="minLecCredits" headerText="{getString('minLectureCredits')}" showDataTips="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
+		
+	</mx:Canvas>
+	<mx:Button  label="{getString('cancel_button')}" id="cancelButton"  x="806" y="372" click="cancelButton_clickHandler(event)" width="100"/>
+</mx:Panel>

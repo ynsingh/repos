@@ -259,7 +259,7 @@ public class StudentMasterController extends MultiActionController {
 
 		studentBean.setRollNumber(request.getParameter("employeeCode"));
 		studentBean.setPrimaryEmailId("emailId");
-
+        studentBean.setUniversityId(session.getAttribute("universityId").toString());
 		List<StudentInfoGetter> result = studentMasterService
 				.getStudentTrackingRecords(studentBean);
 

@@ -54,16 +54,18 @@ update student_marks
 		marks=#marks#
 		</isNotEmpty>
 	</dynamic>
-,issue_status='RES',modification_time=now(),teacher_remarks=concat(ifnull(teacher_remarks,''),'  ',#status#,' at ',now())
+,issue_status='RES',modification_time=now(),teacher_remarks=concat(ifnull(teacher_remarks,''),'  ',#status#,'(','Marks=',marks,')',' at ',now())
 where university_code=#universityId# and entity_id=#entityId# and program_course_key=#programCourseKey# and course_code=#courseCode#
 and evaluation_id=#evaluationId# and roll_number=#rollNumber# and 
 semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
 </update>
 
 <select id="getDataOfCorrectionRequest" resultClass="studentMarksSummary">
-Select roll_number as studentLeft,evaluation_id  as evaluationId,marks,requested_marks as totalMarks,if(issue_status='PEN','Pending','Resolved') as status,ifnull(teacher_remarks,' ') as displayType from student_marks 
+Select nn.*,maximum_marks as markSavedDate from(Select roll_number as studentLeft,evaluation_id  as evaluationId,marks,course_code,requested_marks as totalMarks,if(issue_status='PEN','Pending','Resolved') as status,ifnull(teacher_remarks,' ') as displayType from student_marks 
 where university_code=#universityId# and entity_id=#entityId# and program_course_key=#programCourseKey# and course_code=#courseCode#
-and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and requested_marks is not null;
+and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and requested_marks is not null) as nn left join 
+course_evaluation_component cec on nn.course_code=cec.course_code and nn.evaluationId=cec.evaluation_id
+and cec.program_id=substring(#programCourseKey#,1,7);
 </select>
 
 </sqlMap>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) Remark.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+ 
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="928" height="754" title="{commonFunction.getConstants('remarkTitle')}" fontFamily="Georgia" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/RemarkAs.as"/>
+<mx:XML id="remarkXml" source="xmlFiles/RemarkCode.xml"/>
+
+<mx:HTTPService id="getSemesterDeatil" method="post"
+        url="{commonFunction.getConstants('url')+ '/remark/getSemesterDetail.htm'}"
+        resultFormat="e4x"
+        result="resultHandlerSemesterDeatil(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+ <mx:HTTPService id="getManageRemarkData" method="post"
+        url="{commonFunction.getConstants('url')+ '/remark/getRemarkDetail.htm'}"
+        resultFormat="e4x"
+        result="resultHandlerRemarkDetail(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+ <mx:HTTPService id="saveRemarkData" method="post"
+        url="{commonFunction.getConstants('url')+ '/remark/saveRemarkDetail.htm'}"
+        resultFormat="e4x"
+        result="resultHandlerSaveRemarkDetail(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>           
+	<mx:Canvas width="696" height="159" styleName="SimpleCanvas" horizontalCenter="-59" y="10">
+		<mx:Label x="19" y="38" text="{commonFunction.getConstants('enterRollNo')}" fontFamily="Georgia"/>
+		<mx:Label x="19" y="71" text="{commonFunction.getConstants('enterRemark')}" fontFamily="Georgia"/>
+		<mx:TextInput x="157" y="36" fontFamily="Georgia" restrict="A-Z,0-9,a-z" maxChars="8" id="rollnumberInput" width="160"/>
+		<mx:ComboBox x="157" y="66" fontFamily="Georgia" id="remarkCB" labelField="rmName" width="160" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{remarkCB.selectedItem.rmName}" change="OnRemarkCBChange()"></mx:ComboBox>
+		<mx:Label x="339.5" y="39" text="{commonFunction.getConstants('remark')}" fontFamily="Georgia"/>
+		<mx:Button x="12" y="113" label="{commonFunction.getConstants('okButton')}" fontFamily="Georgia" click="onClickOk()"/>
+		<mx:TextArea x="399" y="36" height="89" width="273" fontFamily="Georgia" editable="false" wordWrap="true" id="remarkText" borderStyle="outset"/>
+		<mx:Label x="10" y="7" text="{commonFunction.getConstants('rollNumberAndRemark')}" fontWeight="bold" fontStyle="italic" fontFamily="Georgia"/>
+		<mx:Button x="67" y="113" label="{commonFunction.getConstants('reset_button')}" fontFamily="Georgia" click="onClickReset()"/>
+		<mx:Button x="138" y="113" label="{commonFunction.getConstants('cancelButton')}" fontFamily="Georgia" click="onClickCancel()"/>
+	</mx:Canvas>
+	<mx:Canvas x="44" y="177" width="711" height="278" id="semesteMainCanvas" visible="false">
+		<mx:Canvas x="4" y="34" width="696" height="51" styleName="SimpleCanvas">
+			<mx:Label x="10" y="15" text="{commonFunction.getConstants('remarkEntity')}: " fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="70" y="15" text="" id="entityName" fontFamily="Georgia"/>
+			<mx:Label x="340" y="15" text="{commonFunction.getConstants('remarkProgram')}: " fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="410" y="15" text="" id="programName" fontFamily="Georgia"/>
+		</mx:Canvas>
+		<mx:Canvas x="6" y="96" width="695" height="174" styleName="BorderCanvas">
+			<mx:DataGrid x="10" y="25" width="672" id="semesterGrid" height="133" fontFamily="Georgia" fontSize="11">
+				<mx:columns>
+					<mx:DataGridColumn width="30" rendererIsEditor="true" textAlign="center" resizable="false" sortable="false" editable="true" editorDataField="selected" dataField="select" headerText="">
+						<mx:itemRenderer>
+			   	   			 <mx:Component>
+			   					<mx:CheckBox change="onChangeCheckBox(event)">
+			 						<mx:Script>
+			       						 <![CDATA[
+			       						 	import mx.controls.Alert;
+			       						 	import common.commonFunction;			                    			
+			                   				 [Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			                   				 function onChangeCheckBox(event:Event){			                   				 	
+			                   				 	if(event.currentTarget.selected){
+			                   				 		data.select=true;
+			                   				 	}
+			                   				 	else{
+			                   				 		data.select=false;
+			                   				 	}			                   				 
+										        var i:int=0;										       
+										        for each(var obj:Object in outerDocument.semesterGrid.dataProvider){										        	
+										           if(obj.select){
+										           		i++;
+										           }										           
+										        }										        
+										         if(i>0){
+										            if(i==1){
+										            	outerDocument.saveLink.enabled=true;
+										            	outerDocument.onCheckBoxClick();									        	    
+										            }
+										            else{
+										               outerDocument.resetGrid(outerDocument.semesterGrid);
+										        	   outerDocument.saveLink.enabled=false;
+										        	   outerDocument.resetMangeGrid();											        	   
+										        	   Alert.show(commonFunction.getMessages('pleaseSelectOne'),commonFunction.getMessages('info'),null,null,null,infoIcon);							        	    
+										            }
+										        }
+										        else{
+										           outerDocument.resetGrid(outerDocument.semesterGrid);
+										           outerDocument.saveLink.enabled=false;
+										           outerDocument.resetMangeGrid();										        	
+										        }
+			                   				 }
+			                			]]>
+			        				</mx:Script>
+			        			</mx:CheckBox>
+			        		</mx:Component>
+			        	</mx:itemRenderer>
+			        </mx:DataGridColumn>
+					<mx:DataGridColumn headerText="{commonFunction.getConstants('semester')}" dataField="semesterName" />
+					<mx:DataGridColumn headerText="{commonFunction.getConstants('semStartDate')}" dataField="semesterStartDate"/>
+					<mx:DataGridColumn headerText="{commonFunction.getConstants('semesterEndDate')}" dataField="semesterEndDate"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:LinkButton x="553" y="1" label="{commonFunction.getConstants('saveRemark')}" id="saveLink" enabled="false" fontFamily="Georgia" click="onClickSaveRemark()"/>
+		</mx:Canvas>
+		<mx:Label x="8" y="6" text="{commonFunction.getConstants('remarkProgramSemesterDetail')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+	</mx:Canvas>
+	<mx:Canvas x="50" y="490" width="695" height="161" styleName="BorderCanvas" id="mangeGridCanvas" visible="false" fontFamily="Georgia">
+		<mx:DataGrid x="10" y="12" width="674" id="manageGrid" fontFamily="Georgia" fontWeight="bold" fontSize="11" height="133">
+			<mx:columns>				
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('program')}" dataField="programName" width="100"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('branch')}" dataField="branchName" width="100"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('specialization')}" dataField="spclName" width="100"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('semester')}" dataField="semesterName" width="80"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('remark')}" dataField="remark" width="120"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	<mx:Label x="54" y="462" text="{commonFunction.getConstants('manageRemark')}" fontWeight="bold" fontStyle="italic" fontFamily="Georgia" id="manageRemarkLabel" visible="false"/>
+
+</mx:Panel>

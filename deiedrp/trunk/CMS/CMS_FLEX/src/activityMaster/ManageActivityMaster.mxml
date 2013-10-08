@@ -35,7 +35,8 @@
 -->
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1217" height="587"
 		  title="{commonFunction.getConstants('manageActivityMasterPanelTitle')}" 
-		  initialize="formIntializeHandler()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+		  initialize="formIntializeHandler()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"
+		  xmlns:controls="common.Components.com.iwobanas.controls.*">
 	<mx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -91,12 +92,12 @@
 		<mx:LinkButton id="editButton" x="856" y="10" enabled="false" label="{commonFunction.getConstants('editButton')}" click="editButtonClickHandler(event)"/>
 		<mx:LinkButton id="statusButton" x="915" y="10" enabled="false" label="{commonFunction.getConstants('changeStatusButton')}" click="statusButtonClickHandler(event)"/>
 		<mx:LinkButton id="deleteButton" x="1038" y="10" enabled="false" label="{commonFunction.getConstants('deleteButton')}" click="deleteButtonClickHandler(event)"/>
-		<mx:DataGrid id="activityMasterDetailGrid" allowMultipleSelection="true" x="11" y="36.35" width="1138.5" height="214.4" 
+		<controls:MDataGrid id="activityMasterDetailGrid" allowMultipleSelection="true" x="11" y="36.35" width="1138.5" height="214.4" 
 				visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
 		 			   horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true" >
-			<mx:columns>
-					<mx:DataGridColumn rendererIsEditor="true" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
-					<mx:itemRenderer>
+			<controls:columns>
+					<dataGridClasses:MDataGridColumn rendererIsEditor="true" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+					<dataGridClasses:itemRenderer>
 						<mx:Component>
 							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" 
 								change="commonFunction.editDeleteEnable(event,outerDocument.activityMasterDetailGrid,[outerDocument.editButton],[outerDocument.deleteButton, outerDocument.statusButton])">
@@ -108,20 +109,25 @@
 							    </mx:Script>
 							</mx:CheckBox>
 						</mx:Component>	
-					</mx:itemRenderer>				
-				</mx:DataGridColumn>
-				<mx:DataGridColumn editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="processName" headerText="{commonFunction.getConstants('process')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="activityName" headerText="{commonFunction.getConstants('activity')}" showDataTips="true"/>
-				<mx:DataGridColumn editable="false" dataField="activitySequence" headerText="{commonFunction.getConstants('activitySequence')}" width="50"/>
-				<mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="60"/>
-			</mx:columns>
-		</mx:DataGrid>
+					</dataGridClasses:itemRenderer>	
+					<dataGridClasses:headerRenderer>
+						<mx:Component>
+							<mx:Label/>
+						</mx:Component>
+					</dataGridClasses:headerRenderer>			
+				</dataGridClasses:MDataGridColumn>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="processName" headerText="{commonFunction.getConstants('process')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="activityName" headerText="{commonFunction.getConstants('activity')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="activitySequence" headerText="{commonFunction.getConstants('activitySequence')}" width="50"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="60"/>
+			</controls:columns>
+		</controls:MDataGrid>
 		<mx:HBox width="891"  x="10" y="251">
 		       <mx:LinkButton id="viewAllLinkBtn2" visible="false"
 		       			   label="View All" />

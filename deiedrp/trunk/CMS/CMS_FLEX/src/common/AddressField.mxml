@@ -49,7 +49,7 @@
 		//Setting city in combobox
 			private function setCity():void
 			{
-				cityField.dataProvider=stateCity.state.(@name==stateField.selectedLabel).city;
+				cityField.dataProvider=stateCity.countries.state.(@name==stateField.selectedLabel).city;
 				cityField.selectedItem=city;
 			}
 			
@@ -62,7 +62,7 @@
 				cityValidator.enabled=validationRequired;
 				pinValidator.required=validationRequired;
 				
-				stateField.dataProvider=stateCity.state.@name;
+				stateField.dataProvider=stateCity.countries.state.@name;
 			}
 		]]>
 	</mx:Script>

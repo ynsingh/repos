@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 
@@ -284,20 +286,26 @@ public class AssociateCourseWithInstructorDAOImpl extends SqlMapClientDaoSupport
      */
 	public String updateEmployee(AssociateCourseWithInstructor associateCourseWithInstructor) {
 		List<AssociateCourseWithInstructor> associateCourseWithInstructorObject=null;
+		String msg="";
 		try{
 			int check=getSqlMapClientTemplate().update("associateCourseWithInstructor.updateEmployee", associateCourseWithInstructor);
 			loggerObject.info("in updateEmployee");
 			if(check>0){
-				return "success";
+				msg= "success";
 			}
 			else{
-				return "failure";
+				msg= "failure";
 			}
 		}
-		catch (Exception e) {
-			loggerObject.error("in updateEmployee" + e);			
+		catch(DataIntegrityViolationException ex) {
+			msg= "DataIntegrityViolationException";
+			loggerObject.error("DataIntegrityViolation Exception during updateEmployee : " + ex);
 		}
-		return null;		
+		catch (Exception e) {
+			msg= "error";
+			loggerObject.error("Exception during updateEmployee : " + e);			
+		}
+		return msg;		
 	}
 	
 	

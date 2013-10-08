@@ -67,12 +67,15 @@
 		<result property="registeredCreditExcludingAudit" column="registered_credit_excluding_audit" />
 		<result property="registeredTheoryExcludingAudit" column="registered_theory_credit_excluding_audit" />
 		<result property="registeredPracticalExcludingAudit" column="registered_practical_credit_excluding_audit" />
+		<result property="switchType" column="switch_type" />
+		<result property="switchRule" column="switch_rule" />
 	</resultMap>
     <select id="getListOfStudentWithAdmissionMode" resultMap="getNormalStudentsWithSwitchResult">
       SELECT enrollment_number, roll_number, registration_number,student_id, register_date, 
       old_entity_id, old_program_id, old_branch_id, old_specialization_id, from_semester,
       sequence_number,status_in_semester,registered_credit,registered_credit_excluding_audit,
-      registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit
+      registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit,substring(long_field,1,3) as switch_type,
+substring(long_field,4,3) as switch_rule
        FROM temp_student_program tsp WHERE entity_id=#newEntity# and 
       program_id=#newProgram# and branch_id=#newBranch# and specialization_id=#newSpecialization# and 
       to_semester=#newSemester# and 
@@ -229,11 +232,11 @@
 	 INSERT into student_registration_semester_header  
 	 (register_date,number_of_remedials,status,roll_number,program_course_key,session_start_date,session_end_date,attempt_number,
 	 entity_id,insert_time,creator_id,registered_credit,registered_theory_credit_excluding_audit,
-	 registered_practical_credit_excluding_audit,registration_credit_excluding_audit) 
+	 registered_practical_credit_excluding_audit,registration_credit_excluding_audit,switch_type,switch_rule) 
 	 VALUES 
 	 (now(),0,'REG',#rollNumber#,#programCourseKey#,#semesterStartDate#,#semesterEndDate#,1,
 	 #newEntity#,now(),#userId#,#registeredCredit#,#registeredTheoryExcludingAudit#,#registeredPracticalExcludingAudit#,
-	 #registeredCreditExcludingAudit#); 
+	 #registeredCreditExcludingAudit#,#switchType#,#switchRule#); 
 	</insert>
 	
 	 <!-- insert student into student_course: It Will work for student with NEW/NOR and SWT admission mode -->
@@ -300,7 +303,7 @@
 	</resultMap>
 	<select id="getOldProgramDetail" resultMap="getOldProgramDetailResult">
 		SELECT program_status,mode_of_entry,case when switch_number is null then 0 else switch_number end as switchNumber,
-case when sequence_number is null then 0 else switch_number end as sequenceNumber,roll_number FROM student_program where 
+case when sequence_number is null then 0 else sequence_number end as sequenceNumber,roll_number FROM student_program where 
 		enrollment_number=#enrollmentNumber# and 
 		entity_id=#oldEntity# and program_id=#oldProgram# and branch_id=#oldBranch# and specialization_id=#oldSpecialization# 
 		and current_semester=#oldSemester#

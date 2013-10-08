@@ -177,7 +177,10 @@ public class StudentInfoGetter {
     private String processId;
     private String activityId;
 	private String semesterStatus;
-	
+	private String rollNumberGroupCode;//Added by Devendra
+	private String longField;//Added by Devendra
+	private String startDate;//Add By Devendra
+	private String endDate;//Add By Devendra
 	/**
 	 * @return the semesterStatus
 	 */
@@ -2216,6 +2219,62 @@ public class StudentInfoGetter {
 
 	public String getFalg2() {
 		return falg2;
+	}
+
+	/**
+	 * @return the rollNumberGroupCode
+	 */
+	public String getRollNumberGroupCode() {
+		return rollNumberGroupCode;
+	}
+
+	/**
+	 * @param rollNumberGroupCode the rollNumberGroupCode to set
+	 */
+	public void setRollNumberGroupCode(String rollNumberGroupCode) {
+		this.rollNumberGroupCode = rollNumberGroupCode;
+	}
+
+	/**
+	 * @return the longField
+	 */
+	public String getLongField() {
+		return longField;
+	}
+
+	/**
+	 * @param longField the longField to set
+	 */
+	public void setLongField(String longField) {
+		this.longField = longField;
+	}
+
+	/**
+	 * @return the startDate
+	 */
+	public String getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
+	 * @return the endDate
+	 */
+	public String getEndDate() {
+		return endDate;
+	}
+
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 

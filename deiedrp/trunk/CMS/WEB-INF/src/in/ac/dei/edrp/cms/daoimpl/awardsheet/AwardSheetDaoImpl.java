@@ -518,6 +518,8 @@ public class AwardSheetDaoImpl extends SqlMapClientDaoSupport
     public String submitForApproval(AwardSheetInfoGetter inputObj,
         String function) {
     	 String toDay = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    	 //DS
+    	 String universityId = inputObj.getEntityId().substring(0, 4);
         try {
         	logObj.info("submitForApproval");
             inputObj.setUniversityId(inputObj.getEntityId().substring(0, 4));
@@ -577,7 +579,8 @@ public class AwardSheetDaoImpl extends SqlMapClientDaoSupport
             		empLevel = getSqlMapClientTemplate().queryForList("AwardSheet.getEmployeeLevel",inputObj);
 
             		AwardSheetInfoGetter employeeEmailIDObject = (AwardSheetInfoGetter)getSqlMapClientTemplate().queryForObject("AwardSheet.getEmployeeEmailId",inputObj);
-            		sendMails(employeeEmailIDObject,resourceBundle.getString("requestApproved"),resourceBundle.getString("awardBlankApprovalMessage"));
+            		//DS
+            		sendMails(employeeEmailIDObject,resourceBundle.getString("requestApproved"),resourceBundle.getString("awardBlankApprovalMessage"),universityId);
           	
             		if(empLevel.size()!=0){
             				for(int i=0;i<Integer.parseInt(empLevel.get(0).getName());i++){
@@ -585,7 +588,8 @@ public class AwardSheetDaoImpl extends SqlMapClientDaoSupport
             						if(lastSendedRequest!=null){
             								inputObj.setEmployeeCode(lastSendedRequest.getRequestSender());
             								employeeEmailIDObject = (AwardSheetInfoGetter)getSqlMapClientTemplate().queryForObject("AwardSheet.getEmployeeEmailId",inputObj);
-            								sendMails(employeeEmailIDObject,resourceBundle.getString("requestApproved"), resourceBundle.getString("awardBlankApprovalMessage"));
+            								//DS
+            								sendMails(employeeEmailIDObject,resourceBundle.getString("requestApproved"), resourceBundle.getString("awardBlankApprovalMessage"),universityId);
             						}
             				}
             		}
@@ -647,14 +651,15 @@ public class AwardSheetDaoImpl extends SqlMapClientDaoSupport
     }
     
     @SuppressWarnings("static-access")
-	private void sendMails(AwardSheetInfoGetter employeeEmailIDObject, String subject, String text){
+	private void sendMails(AwardSheetInfoGetter employeeEmailIDObject, String subject, String text, String universityId){
     	try{
     		logObj.info("sendMail");
 //    		String subject=resourceBundle.getString("requestApproved");
         	String to=employeeEmailIDObject.getEmailId();
 //        	String text=resourceBundle.getString("awardBlankMailmessage");
         	sendmail mailObject= new sendmail();
-        	mailObject.main(text, to, resourceBundle.getString("emailId"), subject);
+        	//DS
+        	mailObject.main(text, to, subject, universityId);
     	}
     	catch (Exception e) {
 			logObj.error("sendMail "+e);
@@ -723,6 +728,8 @@ public class AwardSheetDaoImpl extends SqlMapClientDaoSupport
      */
     @SuppressWarnings("unchecked")
     public String rejectRequest(AwardSheetInfoGetter inputObj) {
+    	//DS
+    	String universityId = inputObj.getProgramCourseKey().substring(0, 4);
         try {
         	logObj.info("rejectRequest");
             List<ProgramTermDetailsInfoGetter> levelObject = getSqlMapClientTemplate().queryForList("AwardSheet.getEmployeeLevel", inputObj);
@@ -759,7 +766,8 @@ public class AwardSheetDaoImpl extends SqlMapClientDaoSupport
                 	AwardSheetInfoGetter level = (AwardSheetInfoGetter)getSqlMapClientTemplate().queryForObject("AwardSheet.getLastEmployee", inputObj);
                     inputObj.setEmployeeCode(level.getEmployeeCode());
                     AwardSheetInfoGetter employeeEmailIDObject = (AwardSheetInfoGetter)getSqlMapClientTemplate().queryForObject("AwardSheet.getEmployeeEmailId",inputObj);
-                	sendMails(employeeEmailIDObject,resourceBundle.getString("requestRejected"),resourceBundle.getString("awardBlankRejectionMessage"));
+                    //DS
+                	sendMails(employeeEmailIDObject,resourceBundle.getString("requestRejected"),resourceBundle.getString("awardBlankRejectionMessage"),universityId);
                 }                
                 
                 inputObj.setApprovalOrder(Integer.parseInt(inputObj.getApprovalOrder()) - 1 + "");

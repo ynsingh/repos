@@ -284,7 +284,7 @@ public class UnivRoleController extends MultiActionController {
 		input.setUserId(userId);
 		input.setUniversityCode(request.getParameter("universityId"));
 		input.setCreatorId("E"+input.getUniversityCode()+dummyID);
-		input.setApplicationId(request.getParameter("applicationId"));
+		input.setApplicationId("CMS");
 
 		List<UnivRoleInfoGetter> resultGetUniversityList = roleConnect.getUniversitieswithLogins(input);
 
@@ -315,10 +315,30 @@ public class UnivRoleController extends MultiActionController {
 		input.setUniversityCode(request.getParameter("universityId"));
 		input.setComponentId(request.getParameter("emailId"));
 		input.setCounter(request.getParameter("counter"));
-		input.setApplicationId(request.getParameter("applicationId"));
+		input.setApplicationId("CMS");
 
 		String resultGetUniversityList = roleConnect.addDefaultUser(input);
 		return new ModelAndView("preProcessChecks/preProcessResultlist",
 				"resultObject", resultGetUniversityList);
 	}
+	
+	public ModelAndView getUserRole(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		UnivRoleInfoGetter input = new UnivRoleInfoGetter();
+		HttpSession session = request.getSession(true);
+		String userId = (String) session.getAttribute("userId");
+		if (userId == null) {
+			return new ModelAndView("general/SessionInactive",
+					"sessionInactive", true);
+		}
+		input.setUserId(userId);
+		input.setEmployeeCode(request.getParameter("employeeCode"));
+		input.setCounter(request.getParameter("counter"));
+		input.setApplicationId(request.getParameter("applicationId"));
+		
+		List<UnivRoleInfoGetter> resultGetUniversityRoles = roleConnect
+				.getUniversityUserRoles(input);
+		return new ModelAndView("UniversityRolesSetup/UniversityRoles",
+				"resultObject", resultGetUniversityRoles);
+	} 
 }

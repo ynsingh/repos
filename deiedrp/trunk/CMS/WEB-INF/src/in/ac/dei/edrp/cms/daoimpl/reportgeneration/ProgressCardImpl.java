@@ -1,17 +1,23 @@
 package in.ac.dei.edrp.cms.daoimpl.reportgeneration;
 
 import in.ac.dei.edrp.cms.dao.reportgeneration.ProgressCardDao;
+import in.ac.dei.edrp.cms.daoimpl.resultprocessing.RemedialProcessingImpl;
 import in.ac.dei.edrp.cms.domain.reportgeneration.ProgressCardInfo;
-import in.ac.dei.edrp.cms.domain.university.UniversityMasterInfoGetter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.transaction.support.TransactionTemplate;
 
 public class ProgressCardImpl extends SqlMapClientDaoSupport implements ProgressCardDao{
 	private Logger loggerObject = Logger.getLogger(ProgressCardImpl.class);
 	
+	private TransactionTemplate transactionTemplate;
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 	@SuppressWarnings("unchecked")
 	public List<ProgressCardInfo> progressCardDetails(ProgressCardInfo progressCardInfo) {
 		List<ProgressCardInfo> progressCardName=null;
@@ -264,6 +270,135 @@ public class ProgressCardImpl extends SqlMapClientDaoSupport implements Progress
 		}
 		return preProgramCourseKeyList;
 	}
+	
+	//Add By Devendra to check student is switched student or not
+	@SuppressWarnings("unchecked")
+	public List<ProgressCardInfo> checkSwitch(ProgressCardInfo progressCardInfo) {
+		List<ProgressCardInfo> list=null;
+		try{
+			list = getSqlMapClientTemplate().queryForList("progressCard.checkStudentSwitch",progressCardInfo);
+		}
+		catch (Exception e) {
+			loggerObject.error("Error in ProgressCardImple during Check Student Is Switched or not "+e);
+		}
+		return list;
+	}
 
-	// Ankit section end
+	//Add By Devendra to check switched semester and in semester in student pogram are same or not
+	public ProgressCardInfo checkInSemester(ProgressCardInfo progressCardInfo) {
+		ProgressCardInfo bean=null;
+		try{
+			 bean =(ProgressCardInfo)getSqlMapClientTemplate().queryForObject("progressCard.checkInSemester",progressCardInfo);
+			if(bean!=null){						
+				bean.setInSemester("YES");
+			}
+			else{
+				bean=new ProgressCardInfo();
+				bean.setInSemester("NO");
+			}
+		}
+		catch (Exception e) {
+			loggerObject.error("Error in ProgressCardImple during Check In semester in student program "+e);
+		}
+		return bean;
+	}
+	
+	//Add by devendra to get previous semester marks in case of any Switch
+	public List<ProgressCardInfo> getPreviousProgramCourseKeySwitch(
+			ProgressCardInfo currentSemesterDetail,
+			ProgressCardInfo switchedSemesterDetail) {	
+		List<ProgressCardInfo> preProgramCourseKeyList=null;
+		try{			
+			//Get Rule Formula from switch rule for rule id
+			ProgressCardInfo been=(ProgressCardInfo)getSqlMapClientTemplate().queryForObject("progressCard.getRuleFormula",switchedSemesterDetail);
+			if(been==null){				
+				preProgramCourseKeyList=new ArrayList<ProgressCardInfo>();
+				been=new ProgressCardInfo();
+				been.setErrorCode("NULL");
+				preProgramCourseKeyList.add(been);
+			}
+			else if(been.getRuleCodeTwo().equalsIgnoreCase("Y")){	
+				ProgressCardInfo input=new ProgressCardInfo();
+				input.setProgramCourseKey(switchedSemesterDetail.getProgramCourseKey());
+				RemedialProcessingImpl remedialProcessingImpl=new RemedialProcessingImpl(getSqlMapClient(), transactionTemplate);
+				boolean flag=false;
+				String previousSemester[]=new String[Integer.parseInt(switchedSemesterDetail.getSemesterSequence())-1];
+				for(int i=Integer.parseInt(switchedSemesterDetail.getSemesterSequence())-1;i>=1;i--){
+					input.setSemesterSequence(String.valueOf(i));
+					ProgressCardInfo sequenceBeen=(ProgressCardInfo)getSqlMapClientTemplate().queryForObject("progressCard.getSemesterSequence",input);
+					String str=remedialProcessingImpl.getMappedSemesterFromSwitchFormula(sequenceBeen.getSemesterId(), been.getSwitchRuleFormula());
+					previousSemester[i-1]=str;					
+					if(str.equalsIgnoreCase("Not Found")){
+						flag=true;
+						break;
+					}					
+				}
+				if(!flag){							
+					preProgramCourseKeyList=new ArrayList<ProgressCardInfo>();
+					for(int j=0;j<previousSemester.length;j++){						
+						input.setRollNumber(currentSemesterDetail.getRollNumber());
+						input.setSemesterId(previousSemester[j]);
+						input.setSemesterSequence("1");//Semester sequence for switched program
+						//Get program detail for switched semester from student program
+						ProgressCardInfo switchedProgramCourseKeyBeen=(ProgressCardInfo)getSqlMapClientTemplate().queryForObject("progressCard.getPreviousSwitchedProgramCourseKey",input);
+						if(switchedProgramCourseKeyBeen==null){								
+							been.setErrorCode("E003");
+							preProgramCourseKeyList.add(been);
+							break;
+						}
+						else{							
+							switchedProgramCourseKeyBeen.setRollNoForDetail(currentSemesterDetail.getRollNumber());
+							switchedProgramCourseKeyBeen.setErrorCode("AllISWELL");							
+							preProgramCourseKeyList.add(switchedProgramCourseKeyBeen);							
+						}						
+					}
+					//Case if Switched semester is not equal to current semester for which we are generating progress card it is greater than switched semester
+					if(Integer.parseInt(currentSemesterDetail.getSemesterSequence())>Integer.parseInt(switchedSemesterDetail.getSemesterSequence())){						
+						input.setRollNumber(currentSemesterDetail.getRollNumber());
+						input.setEntityId(currentSemesterDetail.getEntityId());
+						input.setProgramCourseKey(currentSemesterDetail.getProgramCourseKey());						
+						for(int j=Integer.parseInt(switchedSemesterDetail.getSemesterSequence());j<Integer.parseInt(currentSemesterDetail.getSemesterSequence());j++){													
+							input.setSemesterSequence(String.valueOf(j));
+							//Get previous program course key for semesters lie b/w current semester and switched semester
+							ProgressCardInfo prvProgramCourseKey=(ProgressCardInfo)getSqlMapClientTemplate().queryForObject("progressCard.getPreviousProgramCourseKeyAfterSwitch",input);							
+							prvProgramCourseKey.setRollNoForDetail(currentSemesterDetail.getRollNumber());
+							prvProgramCourseKey.setErrorCode("AllISWELL");							
+							preProgramCourseKeyList.add(prvProgramCourseKey);
+						}
+					}					
+				}
+				else{					
+					preProgramCourseKeyList=new ArrayList<ProgressCardInfo>();
+					been.setErrorCode("E002");
+					preProgramCourseKeyList.add(been);
+										
+				}
+			}
+			else if(been.getRuleCodeTwo().equalsIgnoreCase("N")){				
+				preProgramCourseKeyList=new ArrayList<ProgressCardInfo>();
+				been.setErrorCode("E001");
+				preProgramCourseKeyList.add(been);
+				List<ProgressCardInfo>list=new ArrayList<ProgressCardInfo>();
+				if(Integer.parseInt(currentSemesterDetail.getSemesterSequence())>Integer.parseInt(switchedSemesterDetail.getSemesterSequence())){
+					ProgressCardInfo input=new ProgressCardInfo();
+					input.setRollNumber(currentSemesterDetail.getRollNumber());
+					input.setEntityId(currentSemesterDetail.getEntityId());
+					input.setProgramCourseKey(currentSemesterDetail.getProgramCourseKey());						
+					for(int j=Integer.parseInt(switchedSemesterDetail.getSemesterSequence());j<Integer.parseInt(currentSemesterDetail.getSemesterSequence());j++){							
+						input.setSemesterSequence(String.valueOf(j));
+						//Get previous program course key for semesters lie b/w current semester and switched semester including switched semester
+						ProgressCardInfo prvProgramCourseKey=(ProgressCardInfo)getSqlMapClientTemplate().queryForObject("progressCard.getPreviousProgramCourseKeyAfterSwitch",input);							
+						prvProgramCourseKey.setRollNoForDetail(currentSemesterDetail.getRollNumber());												
+						list.add(prvProgramCourseKey);
+					}					
+				}
+				been.setList(list);
+			}
+		}
+		catch (Exception e) {
+			loggerObject.error("Exception in Progress Card Impl During ger previous program Course Key "+e);
+		}
+		return preProgramCourseKeyList;
+	}
+
 }

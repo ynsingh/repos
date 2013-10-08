@@ -42,9 +42,11 @@ import mx.controls.Alert;
 import mx.controls.dataGridClasses.DataGridColumn;
 import mx.events.CloseEvent;
 import mx.events.ListEvent;
-import mx.managers.FocusManager;
+import mx.managers.PopUpManager;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
+import reportgeneration.DisplayPDF;
+import common.Components.com.iwobanas.controls.dataGridClasses.*;
 
 [Embed(source="/images/error.png")]private var errorIcon:Class;
 [Embed(source="/images/success.png")]private var successIcon:Class;
@@ -77,6 +79,7 @@ public var downloadAuthorityGen:String=null;
 [Bindable]public var printToolTip:String=null;
 [Bindable]public var genBoolean:Boolean=false;
 [Bindable]public var dwnBoolean:Boolean=false;
+[Bindable]public var genRepCode:String;
 public var toolTipAction:String;
 public function onCreationComplete():void{				
 	object["date"] = new Date;									
@@ -451,18 +454,18 @@ public function getCombinationsList(event:ResultEvent):void{
 	columns = new Array();
 	
 	//			Alert.show(combinationXML+"combination");
-	var entityNameColumn:DataGridColumn = new DataGridColumn();
-	var programNameColumn:DataGridColumn = new DataGridColumn();
-	var branchNameColumn:DataGridColumn = new DataGridColumn();
-	var specializationColumn:DataGridColumn = new DataGridColumn();
-	var semesterColumn:DataGridColumn = new DataGridColumn();
-	var semesterStartDateColumn:DataGridColumn = new DataGridColumn();
-	var semesterEndDateColumn:DataGridColumn = new DataGridColumn();
-	var reportNameColumn:DataGridColumn=new DataGridColumn();
-	var reportCodeColumn:DataGridColumn=new DataGridColumn();
+	var entityNameColumn:MDataGridColumn = new MDataGridColumn();
+	var programNameColumn:MDataGridColumn = new MDataGridColumn();
+	var branchNameColumn:MDataGridColumn = new MDataGridColumn();
+	var specializationColumn:MDataGridColumn = new MDataGridColumn();
+	var semesterColumn:MDataGridColumn = new MDataGridColumn();
+	var semesterStartDateColumn:MDataGridColumn = new MDataGridColumn();
+	var semesterEndDateColumn:MDataGridColumn = new MDataGridColumn();
+	var reportNameColumn:MDataGridColumn=new MDataGridColumn();
+	var reportCodeColumn:MDataGridColumn=new MDataGridColumn();
 	//Added By Mandeep
-	var companyNameColumn:DataGridColumn=new DataGridColumn();
-	var requestedDateColumn:DataGridColumn=new DataGridColumn();
+	var companyNameColumn:MDataGridColumn=new MDataGridColumn();
+	var requestedDateColumn:MDataGridColumn=new MDataGridColumn();
 	
 	//**************************											
 	entityNameColumn.editable = false;
@@ -759,6 +762,7 @@ public function refreshObject():void{
  **/
  		
 public function onButtonClick(event:Event,genReportCode:String):void{
+    genRepCode = genReportCode;
 	toolTipAction = event.currentTarget.toolTip;
 	if(entityComboBox.selectedIndex!=-1){
 		object["entityName"] = entityComboBox.selectedItem.description;
@@ -844,7 +848,7 @@ public function onButtonClick(event:Event,genReportCode:String):void{
 	if(reportType=="REN"){
 		refreshObject();	
 		object["entityName"] = reportsDetails.selectedItem.description; 
-		object["entityId"] = reportsDetails.selectedItem.id;														
+		object["entityId"] = reportsDetails.selectedItem.id;
 	}
 	
 	/*
@@ -991,7 +995,7 @@ public function onButtonClick(event:Event,genReportCode:String):void{
 		*@author Mandeep Sodhi
 		*/
 		if(reportCode=="22"){			
-			reportRequest.url = commonFunction.getConstants('url')+"/delayInDisplay/coursesMarksReleasedByDean.htm";					
+			reportRequest.url = commonFunction.getConstants('url')+"/delayInDisplay/DelayInDisplayMarksEntityWise.htm";					
 		}
 
 		/*
@@ -1086,6 +1090,11 @@ public function onDownloadRequestSuccess(event:ResultEvent):void{
 			else if(int(reportCode)==21){				
 				downloadUrl.url = commonFunction.getConstants('url')+"/"+path+reportDescription+".doc";				
 			}
+            else if(int(reportCode)==12){
+				if(int(genRepCode)==16){
+					downloadUrl.url = commonFunction.getConstants('url')+"/"+path+"Medal List.pdf";
+				}								
+			}
 			else{
 				downloadUrl.url = commonFunction.getConstants('url')+"/"+path+reportDescription+".pdf";	
 			}			
@@ -1117,34 +1126,63 @@ public function printFile(event:CloseEvent):void{
  **/ 		
 public function onPrintReportSuccess(event:ResultEvent):void{
 	Mask.close();
-	try{
-		if(event.result.sessionConfirm == true){
- 			Alert.show(resourceManager.getString('Messages','sessionInactive'));
-	      	var url:String="";
-	 		url=commonFunction.getConstants('navigateHome');
-	 		var urlRequest:URLRequest=new URLRequest(url);
-	 		urlRequest.method=URLRequestMethod.POST;
-	 		navigateToURL(urlRequest,"_self");
-		}
-	}catch(e:Error){}
+//	try{
+//		if(event.result.sessionConfirm == true){
+ //			Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//	      	var url:String="";
+//	 		url=commonFunction.getConstants('navigateHome');
+//	 		var urlRequest:URLRequest=new URLRequest(url);
+//	 		urlRequest.method=URLRequestMethod.POST;
+//	 		navigateToURL(urlRequest,"_self");
+//		}
+//	}catch(e:Error){}
  
-	 var status:String=(event.result.message+"");
-	 if(status.substr(0,4)=="true"){
-	 	if(status.length>4){
-	 		Alert.show(status.substr(5,status.length-5),commonFunction.getMessages('success'),0,null,null,successIcon);
-	 	}
-	 	else{
-			//Alert.show(commonFunction.getMessages('reportGenerated'),commonFunction.getMessages('success'),0,null,null,successIcon);
-	 	}
-	}
-	else{
-		if(status.length>5){
-	 		Alert.show(status.substr(6,status.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
-	 	}
-	 	else{
-			Alert.show(commonFunction.getMessages('failToPrint'),commonFunction.getMessages('error'),0,null,null,errorIcon);
-	 	}		       
-	 }		
+ 	var resultXML:XML = event.result as XML;
+// 	Alert.show(resultXML);
+ 	var pdfPath:String = new String();
+ 	pdfPath = String(resultXML.message);
+// 	Alert.show(pdfPath);
+
+	var path:String = commonFunction.getConstants('url');
+//	Alert.show(path);
+	var finalpath:String = path+"/"+pdfPath;
+
+	
+//var arr:Array = new Array();
+//arr=pdfPath.split("\\");
+//var i:int;
+//for(i=0; i<arr.length; i++){
+//	trace(arr[i]);
+//}
+
+
+//	Alert.show(finalpath);
+
+//	Alert.show(lt);
+ 	var displayPDF:DisplayPDF = DisplayPDF(PopUpManager.createPopUp(this,DisplayPDF,false));
+
+// 	displayPDF.iFr.source = "http://localhost:8080/CMS/REPORTS/0001/2011-12/00010003/0001074/SM2_2012-01-01_2012-06-30/8/Combined.pdf";
+ 	displayPDF.iFr.source = finalpath;
+ 	
+ 	PopUpManager.centerPopUp(displayPDF);
+	displayPDF.isPopUp=false;
+//	 var status:String=(event.result.message+"");
+//	 if(status.substr(0,4)=="true"){
+//	 	if(status.length>4){
+//	 		Alert.show(status.substr(5,status.length-5),commonFunction.getMessages('success'),0,null,null,successIcon);
+//	 	}
+//	 	else{
+//			//Alert.show(commonFunction.getMessages('reportGenerated'),commonFunction.getMessages('success'),0,null,null,successIcon);
+//	 	}
+//	}
+//	else{
+//		if(status.length>5){
+//	 		Alert.show(status.substr(6,status.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
+//	 	}
+//	 	else{
+//			Alert.show(commonFunction.getMessages('failToPrint'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+//	 	}		       
+//	 }		
 }
 /**
  * The method is executed on the click of the back button 

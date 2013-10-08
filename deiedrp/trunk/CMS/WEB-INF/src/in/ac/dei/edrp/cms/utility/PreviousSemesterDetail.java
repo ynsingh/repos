@@ -237,6 +237,16 @@ public class PreviousSemesterDetail {
 		this.programCourseKey = programCourseKey;
 
 	}
+	//Added by Dheeraj for Switch Logic
+	public PreviousSemesterDetail(String rollNumber, String entityId,
+			String programCourseKey, String previousSemesterStartDate, String previosSemesterEndDate) {
+		super();
+		this.rollNumber = rollNumber;
+		this.entityId = entityId;
+		this.programCourseKey = programCourseKey;
+		this.previousSemesterStartDate = previousSemesterStartDate;
+		this.previousSemesterEndDate = previosSemesterEndDate;
+	}
 
 	public PreviousSemesterDetail() {
 		super();

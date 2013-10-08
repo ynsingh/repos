@@ -1,12 +1,34 @@
+import __AS3__.vec.Vector;
+
 import common.Mask;
 import common.commonFunction;
+
+import flash.utils.ByteArray;
 
 import mx.collections.ArrayCollection;
 import mx.collections.IViewCursor;
 import mx.controls.Alert;
 import mx.events.CloseEvent;
+import mx.formatters.DateFormatter;
+import mx.formatters.NumberFormatter;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
+
+import org.purepdf.Font;
+import org.purepdf.elements.Element;
+import org.purepdf.elements.HeaderFooter;
+import org.purepdf.elements.Paragraph;
+import org.purepdf.elements.Phrase;
+import org.purepdf.elements.RectangleElement;
+import org.purepdf.factories.FontFactory;
+import org.purepdf.pdf.PageSize;
+import org.purepdf.pdf.PdfDocument;
+import org.purepdf.pdf.PdfPCell;
+import org.purepdf.pdf.PdfPTable;
+import org.purepdf.pdf.PdfWriter;
+import org.purepdf.pdf.fonts.BaseFont;
+import org.purepdf.pdf.fonts.FontsResourceFactory;
+import org.purepdf.resources.BuiltinFonts;
 
 import studentRegistration.GroupList;
 
@@ -47,7 +69,9 @@ public var regData:XML=new XML();
  public var inputData:Object=new Object();
 [Bindable]
  public var finalData:Object=new Object();
-		
+ 
+[Bindable] public var startDate:String=new String();
+[Bindable] public var EndDate:String=new String();	
 /**
  * setting common parameters                                         
  */
@@ -91,23 +115,31 @@ public function submitForm():void
 		if(compulsaryFlag && termFlag){
 		
 		var course_codes:String=new String();
-		var course_group:String=new String();
-		
+		var course_group:String=new String();		
 // Variable created by Dheeraj for adding course name in temp_student_courses
-		var course_name:String=new String();		
+		var course_name:String=new String();	
+		var course_type:String=new String();	
+		var course_credits:String=new String();
 	
 finalData["student_id"]=studentDetailsResult.student.student_id;
 finalData["roll_number"]=studentDetailsResult.student.roll_number;
 finalData["enrollment_number"]=studentDetailsResult.student.enrollment_number;
 finalData["date_of_birth"]=studentDetailsResult.student.date_of_birth;
 finalData["category"]=studentDetailsResult.student.category;
+finalData["category_desc"]=studentDetailsResult.student.category_description;
 finalData["gender"]=studentDetailsResult.student.gender;
+finalData["gender_desc"]=studentDetailsResult.student.gender_description;
 finalData["student_name"]=studentDetailsResult.student.student_name;
 finalData["father_name"]=studentDetailsResult.student.father_name;
 finalData["mother_name"]=studentDetailsResult.student.mother_name;
 finalData["entity_id"]=studentDetailsResult.student.entity_id;
 finalData["program_id"]=studentDetailsResult.student.program_id;
 finalData["branch_code"]=studentDetailsResult.student.branch_code;
+finalData["entity_name"]=studentDetailsResult.student.entity_name;
+finalData["program_name"]=studentDetailsResult.student.program_name;
+finalData["branch_name"]=studentDetailsResult.student.branch_name;
+finalData["new_specialization_name"]=studentDetailsResult.student.new_specialization_description;
+finalData["semester_name"]=studentDetailsResult.student.semester;
 finalData["old_entity_id"]=studentDetailsResult.student.old_entity_id;
 finalData["old_program_id"]=studentDetailsResult.student.old_program_id;
 finalData["old_branch_code"]=studentDetailsResult.student.old_branch_code;
@@ -125,6 +157,15 @@ finalData["last_name"]=studentDetailsResult.student.last_name;
 finalData["primary_email_id"]=studentDetailsResult.student.primary_email_id;
 finalData["sequence_number"]=studentDetailsResult.student.sequence_number;
 finalData["probable_semester"]=studentDetailsResult.student.probable_semester;
+finalData["rollNumberGroupCode"]=studentDetailsResult.student.rollNumberGroupCode;//Added By Devendra
+finalData["longField"]=studentDetailsResult.student.longField;//Added By Devendra
+finalData["address"]=studentDetailsResult.student.address;
+finalData["city"]=studentDetailsResult.student.city;
+finalData["state"]=studentDetailsResult.student.state;
+finalData["pincode"]=studentDetailsResult.student.pincode;
+finalData["officePhone"]=studentDetailsResult.student.officePhone;
+finalData["extraPhone"]=studentDetailsResult.student.extraPhone;//Added By Devendra
+finalData["otherPhone"]=studentDetailsResult.student.otherPhone;//Added By Devendra
 if(studentDetailsResult.student.probable_semester_start_date==""){
 finalData["probable_semester_start_date"]=null;	
 }else{
@@ -181,7 +222,9 @@ finalData["registrationNumber"]=user_name;
    
     course_codes+=a[i].courseCode+"|";
     course_group+=a[i].course_group_code+"|";
-    course_name+=a[i].courseName+"|";		// Added By Dheeraj For Getting Course Names From CourseXML
+    course_name+=a[i].courseName+"|";		// Added By Dheeraj For Getting Course Names From CourseXML   
+   	course_type+=a[i].courseType+"|";
+   	course_credits+=a[i].credits+"|";
 	}	
 	//Alert.show("comp"+course_codes);
 	
@@ -191,6 +234,8 @@ finalData["registrationNumber"]=user_name;
     course_codes+=b[i].course_code+"|";
     course_group+=b[i].course_group_code+"|"
     course_name+=b[i].course_name+"|";		// Added By Dheeraj For Getting Course Names From CourseXML
+    course_type+=b[i].courseType+"|";
+    course_credits+=b[i].credits+"|";   
 	}
 //	Alert.show("total"+course_codes);
 	
@@ -199,7 +244,9 @@ finalData["registrationNumber"]=user_name;
  finalData["course_group_list"]=course_group;
  
  finalData["course_name_list"]=course_name;		// Added By Dheeraj For Sending Course Name List
-	
+
+ finalData["course_type_list"]=course_type;
+ finalData["course_credit_list"]=course_credits;
  Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,submitOrNot,questionIcon);
 	}
 //	else{
@@ -226,25 +273,20 @@ Alert.show(commonFunction.getMessages('requestFailed'),commonFunction.getMessage
     
     
 private function resultHandler_SubmitForm(event:ResultEvent):void{
-
    	var resultXml:XML=event.result as XML
-  
-   	if(resultXml.sessionConfirm == true)
-             {
-            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+   	if(resultXml.sessionConfirm == true){
+          Alert.show(resourceManager.getString('Messages','sessionInactive'));
           this.parentDocument.vStack.selectedIndex=0;
           this.parentDocument.loaderCanvas2.removeAllChildren();
-            } 
-            
-            
-   	if(resultXml.children().exceptionstring.length() > 0){
-   		   			Alert.show(resultXml.exception.exceptionstring,"Information",4,this,goToLogin,errorIcon);
-
-   	}else{
-   		   			Alert.show(resourceManager.getString('Messages','submittedSuccessfully'),commonFunction.getMessages('success'),4,this,goToLogin,successIcon);
+    } 
+    if(resultXml.children().exceptionstring.length() > 0){
+   		   Alert.show(resultXml.exception.exceptionstring,"Information",4,this,goToLogin,errorIcon);
 
    	}
-   }
+   	else{
+   		   Alert.show(resourceManager.getString('Messages','submittedSuccessfullyRegistration'),commonFunction.getMessages('success'),4,this,goToLogin1,successIcon);
+    }
+}
 
 /**
  * Getting course type summary
@@ -1119,12 +1161,14 @@ private function resultHandler_StudentDetails(event:ResultEvent):void
             } 
    	
    	
-   	
 	if(studentDetailsResult.children().exceptionstring.length() > 0){
    
    Alert.show(studentDetailsResult.exception.exceptionstring,commonFunction.getMessages('information'),4,this,goToLogin,infoIcon);
 
    	}else{
+   		startDate=studentDetailsResult.student.startDate.toString();   		
+   		EndDate=studentDetailsResult.student.endDate.toString();
+   		this.title=resourceManager.getString("Constants","studentRegistrationTitle",[startDate.substring(0,4)+"-"+EndDate.substring(0,4)]);
    	   		setData(); 
 	populateStudentDetails(studentDetailsResult);
    	}
@@ -1182,18 +1226,23 @@ if((deadlinesResult.deadlines.registration_status)=="Yes"){
       
    }
       
-private function goToLogin(event:CloseEvent):void{
-	
-	if(event.detail==Alert.OK){	
+private function goToLogin(event:CloseEvent):void{	
+	if(event.detail==Alert.OK){			
 		if(forCancel=="outer"){		
-    this.parentDocument.loaderCanvas2.addChild(new LoginForm());
-	this.parentDocument.loaderCanvas2.removeChildAt(0);
+		    this.parentDocument.loaderCanvas2.addChild(new LoginForm());
+			this.parentDocument.loaderCanvas2.removeChildAt(0);
 		}else if(forCancel=="inner"){
 			this.parentDocument.loaderCanvas.addChild(new LoginForm1);
 	        this.parentDocument.loaderCanvas.removeChildAt(0);
-		}
-			}
-	
+		}		
+	}	
+}
+
+//Add By Devendra
+private function goToLogin1(event:CloseEvent):void{	
+	if(event.detail==Alert.OK){	
+		generatePDF(finalData)
+	}	
 }
 
 /*Getting Compulsary Courses*/
@@ -1497,3 +1546,355 @@ private function resultHandler_OldCoreGroup(event:ResultEvent):void
 	oldGroupXml=event.result as XML;
 	doComplete();
 }
+
+
+
+/**
+ * Function to Generate PDF After Submit registration Form
+ * @param Object finalData contains all information
+ **/
+ 
+ public function generatePDF(finalData1:Object):void{ 	 	
+ 	FontsResourceFactory.getInstance().registerFont(BaseFont.HELVETICA,new BuiltinFonts.HELVETICA());
+ 	FontsResourceFactory.getInstance().registerFont(BaseFont.HELVETICA_BOLD,new BuiltinFonts.HELVETICA_BOLD());
+ 	var dataFont:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA_BOLD,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 11);
+ 	var valueFont:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 10);
+ 	var valueFontBold:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA_BOLD,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 10);
+ 	var footerFont:org.purepdf.Font=FontFactory.getFont(BaseFont.HELVETICA_BOLD,BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 8);
+ 	var bytes:ByteArray=new ByteArray();
+ 	var pdfWriter:PdfWriter=PdfWriter.create(bytes,PageSize.A4);
+ 	var document:PdfDocument=pdfWriter.pdfDocument; 	
+ 	var dat:Date=new Date();
+ 	var df:DateFormatter=new DateFormatter();
+ 	df.formatString="MMM-DD-YYYY";
+ 	var header:HeaderFooter = new HeaderFooter( new Phrase("DAYALBAGH EDUCATIONAL INSTITUATE(DEEMED UNIVERSITY)        REGISTERED DATE: "+df.format(dat)+"\nSTUDENT REGISTRATION DETAIL("+startDate.substring(0,4)+" - "+EndDate.substring(0,4)+")", valueFontBold ),null,false);
+ 	header.alignment = Element.ALIGN_CENTER;
+    header.border = RectangleElement.NO_BORDER;   
+ 	var footer:HeaderFooter = new HeaderFooter( new Phrase("NOTE:- This is digitally generated document doesn't require Signature                                                          PAGE:", footerFont ) );
+    footer.alignment = Element.ALIGN_RIGHT;
+    footer.border = RectangleElement.NO_BORDER;
+    document.setHeader(header);
+    document.setFooter(footer);   
+ 	document.open(); 	
+ 	var table:PdfPTable = new PdfPTable(Vector.<Number>([1.1,2.3, 1.1,1.8 ]));  
+ 	var paraCell: PdfPCell=PdfPCell.fromPhrase( new Phrase("Facuilty/College",valueFontBold));
+ 	paraCell.borderWidth=0; 	
+ 	table.addCell(paraCell)
+ 	paraCell = PdfPCell.fromPhrase( new Phrase(finalData1.entity_name,valueFont));
+ 	paraCell.borderWidth=0; 	
+ 	table.addCell(paraCell)  	
+ 	paraCell = PdfPCell.fromPhrase( new Phrase("Program Name",valueFontBold));
+ 	paraCell.borderWidth=0; 	
+ 	table.addCell(paraCell)  	
+ 	paraCell=PdfPCell.fromPhrase( new Phrase(finalData1.program_name,valueFont));
+ 	paraCell.borderWidth=0; 	
+ 	table.addCell(paraCell)
+ 	var branch:String="";
+ 	var spcl:String="";
+ 	if(finalData1.branch_name!=null && finalData1.branch_name!="" && finalData1.branch_name!="None"){
+ 		branch=finalData1.branch_name;
+ 		paraCell= PdfPCell.fromPhrase( new Phrase("Branch",valueFontBold));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell)
+	 	paraCell= PdfPCell.fromPhrase( new Phrase(branch,valueFont));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell)
+ 	}
+ 	else{
+ 		paraCell= PdfPCell.fromPhrase( new Phrase("",valueFontBold));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell)
+	 	paraCell= PdfPCell.fromPhrase( new Phrase("",valueFont));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell)
+ 	} 	
+ 	if(finalData1.new_specialization_name!=null && finalData1.new_specialization_name!="" && finalData1.new_specialization_name!="None"){
+ 		spcl=finalData1.new_specialization_name;
+ 		paraCell= PdfPCell.fromPhrase( new Phrase("Specialization",valueFontBold));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell)
+	 	paraCell= PdfPCell.fromPhrase( new Phrase(spcl,valueFont));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell) 	
+ 	}
+ 	else{
+ 		paraCell= PdfPCell.fromPhrase( new Phrase("",valueFontBold));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell)
+	 	paraCell= PdfPCell.fromPhrase( new Phrase("",valueFont));
+	 	paraCell.borderWidth=0; 	
+	 	table.addCell(paraCell) 	
+ 	} 	 	
+ 	table.widthPercentage=100;
+	table.horizontalAlignment=Element.ALIGN_LEFT;
+ 	document.add(table); 
+ 	var table1:PdfPTable = new PdfPTable(Vector.<Number>([.8,1, .7,1,.7 ])); 
+ 	var paraCell1:PdfPCell= PdfPCell.fromPhrase( new Phrase(finalData1.semester_name,valueFontBold));
+ 	paraCell1.borderWidth=0; 	
+ 	table1.addCell(paraCell1)
+	paraCell1= PdfPCell.fromPhrase( new Phrase("Semester Start Date",valueFontBold));
+ 	paraCell1.borderWidth=0; 	
+ 	table1.addCell(paraCell1) 
+ 	paraCell1= PdfPCell.fromPhrase( new Phrase(finalData1.session_start_date,valueFont));
+ 	paraCell1.borderWidth=0; 	
+ 	table1.addCell(paraCell1)
+ 	paraCell1= PdfPCell.fromPhrase( new Phrase("Semester End Date",valueFontBold));
+ 	paraCell1.borderWidth=0; 	
+ 	table1.addCell(paraCell1)
+ 	paraCell1= PdfPCell.fromPhrase( new Phrase(finalData1.session_end_date,valueFont));
+ 	paraCell1.borderWidth=0; 	
+ 	table1.addCell(paraCell1) 	 	 	
+ 	table1.widthPercentage=80;
+	table1.horizontalAlignment=Element.ALIGN_LEFT;
+ 	document.add(table1);
+ 	document.add(new Paragraph(" ",dataFont));
+ 	document.add(new Phrase("---------------------------------------------------------------------------------------------------------------------------------------------------",valueFont));
+ 	document.add(new Paragraph("PERSONAL DETAIL",dataFont));
+ 	var personalDetailTable:PdfPTable = new PdfPTable(Vector.<Number>([ .9, 1.3,1,1.1 ])); 
+ 	var cell: PdfPCell=PdfPCell.fromPhrase( new Phrase("Student Name",valueFontBold));
+ 	cell.borderWidth=0;
+ 	cell.paddingTop=5;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.student_name,valueFont));
+ 	cell.borderWidth=0;
+ 	cell.paddingTop=5;
+ 	cell.colspan=4;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("Father Name",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.father_name,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("Mother Name",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.mother_name,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell) 	
+ 	cell = PdfPCell.fromPhrase( new Phrase("Roll Number",valueFontBold));
+ 	cell.borderWidth=0; 	 	
+ 	personalDetailTable.addCell(cell) 	
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.roll_number,valueFont));
+ 	cell.borderWidth=0; 	
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("Enrollment Number",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.enrollment_number,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell) 
+ 	cell=PdfPCell.fromPhrase( new Phrase("Attempt Number",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.attempt,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell) 	 	 	
+ 	cell=PdfPCell.fromPhrase( new Phrase("Date Of Birth",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.date_of_birth,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("Category",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.category_desc,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("Sex",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.gender_desc,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("Address",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.address,valueFont));
+ 	cell.borderWidth=0;
+ 	cell.colspan=3;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("State",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.state,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase("City",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.city,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell) 	 	
+ 	cell=PdfPCell.fromPhrase( new Phrase("Pincode",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.pincode,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell) 	
+ 	cell=PdfPCell.fromPhrase( new Phrase("Phone Number",valueFontBold));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell)
+ 	cell=PdfPCell.fromPhrase( new Phrase(finalData1.homePhone,valueFont));
+ 	cell.borderWidth=0;
+ 	personalDetailTable.addCell(cell) 	 	 	
+ 	
+ 	personalDetailTable.horizontalAlignment=Element.ALIGN_CENTER;
+ 	personalDetailTable.widthPercentage=80;
+ 	document.add(personalDetailTable); 	 	
+ 	document.add(new Paragraph(" ",dataFont)); 
+ 	document.add(new Phrase("---------------------------------------------------------------------------------------------------------------------------------------------------",valueFont)); 
+ 	document.add(new Paragraph("COURSE DETAIL",dataFont)); 	
+ 	var courseDetailTable:PdfPTable = new PdfPTable(Vector.<Number>([.3,.6,.6,2,.3 ])); 	
+ 	var courseCell:PdfPCell=PdfPCell.fromPhrase( new Phrase("S.No.",valueFontBold));
+ 	courseCell.borderWidth=0;
+ 	courseCell.paddingTop=5;
+ 	courseDetailTable.addCell(courseCell)
+ 	courseCell=PdfPCell.fromPhrase( new Phrase("Course Type",valueFontBold));
+ 	courseCell.borderWidth=0;
+ 	courseCell.paddingTop=5;
+ 	courseDetailTable.addCell(courseCell)
+ 	courseCell=PdfPCell.fromPhrase( new Phrase("Course Code",valueFontBold));
+ 	courseCell.borderWidth=0;
+ 	courseCell.paddingTop=5;
+ 	courseDetailTable.addCell(courseCell)
+ 	courseCell=PdfPCell.fromPhrase( new Phrase("Course Name",valueFontBold));
+ 	courseCell.borderWidth=0;
+ 	courseCell.paddingTop=5;
+ 	courseDetailTable.addCell(courseCell)
+ 	courseCell=PdfPCell.fromPhrase( new Phrase("Credit",valueFontBold));
+ 	courseCell.borderWidth=0;
+ 	courseCell.paddingTop=5;
+ 	courseDetailTable.addCell(courseCell)
+ 	var courseNameStr:String=finalData1.course_name_list;
+ 	var courseGroupStr:String=finalData1.course_type_list;
+ 	var courseCodeStr:String=finalData1.course_list;
+ 	var courseCreditStr:String=finalData1.course_credit_list;
+ 	
+ 	var courseName:Array=courseNameStr.split("|");
+ 	var courseGroup:Array=courseGroupStr.split("|");
+ 	var courseCode:Array=courseCodeStr.split("|");
+ 	var courseCredit:Array=courseCreditStr.split("|");
+ 	
+ 	var majorCourseArrCol:ArrayCollection=new ArrayCollection;
+ 	var halfCourseArrCol:ArrayCollection=new ArrayCollection;
+ 	var workCourseArrCol:ArrayCollection=new ArrayCollection;
+ 	var coreCourseArrCol:ArrayCollection=new ArrayCollection;
+ 	var totalCredit:Number=0;
+ 	var sn:int=1;
+ 	for (var i:int=0;i<courseName.length;i++){ 	
+ 		if(courseGroup[i]=="Major Course"){
+ 			majorCourseArrCol.addItem({courseType:courseGroup[i],courseCode:courseCode[i],courseName:courseName[i],credit:courseCredit[i]});
+ 		}
+ 		else if(courseGroup[i]=="Half Course"){
+ 			halfCourseArrCol.addItem({courseType:courseGroup[i],courseCode:courseCode[i],courseName:courseName[i],credit:courseCredit[i]});
+ 		}
+ 		else if(courseGroup[i]=="Work Ex"){
+ 			workCourseArrCol.addItem({courseType:courseGroup[i],courseCode:courseCode[i],courseName:courseName[i],credit:courseCredit[i]});
+ 		}
+ 		else{
+ 			coreCourseArrCol.addItem({courseType:courseGroup[i],courseCode:courseCode[i],courseName:courseName[i],credit:courseCredit[i]});
+ 		}	
+ 		totalCredit=totalCredit+Number(courseCredit[i]);
+ 	} 	
+ 	for each(var o:Object in majorCourseArrCol){
+ 		if(sn<courseName.length){
+ 			courseCell=PdfPCell.fromPhrase( new Phrase(sn.toString(),valueFont));
+	 		courseCell.borderWidth=0;
+	 		courseDetailTable.addCell(courseCell)
+ 		} 		
+ 		courseCell=PdfPCell.fromPhrase( new Phrase(o.courseType,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseCode,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseName,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.credit,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	sn++;
+ 	}
+ 	for each(var o:Object in halfCourseArrCol){
+ 		if(sn<courseName.length){
+ 			courseCell=PdfPCell.fromPhrase( new Phrase(sn.toString(),valueFont));
+	 		courseCell.borderWidth=0;
+	 		courseDetailTable.addCell(courseCell)
+ 		} 	
+ 		courseCell=PdfPCell.fromPhrase( new Phrase(o.courseType,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseCode,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseName,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.credit,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	sn++;
+ 	}
+ 	for each(var o:Object in workCourseArrCol){
+ 		if(sn<courseName.length){
+ 			courseCell=PdfPCell.fromPhrase( new Phrase(sn.toString(),valueFont));
+	 		courseCell.borderWidth=0;
+	 		courseDetailTable.addCell(courseCell)
+ 		} 	
+ 		courseCell=PdfPCell.fromPhrase( new Phrase(o.courseType,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseCode,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseName,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.credit,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	sn++;
+ 	}
+ 	for each(var o:Object in coreCourseArrCol){
+ 		if(sn<courseName.length){
+ 			courseCell=PdfPCell.fromPhrase( new Phrase(sn.toString(),valueFont));
+	 		courseCell.borderWidth=0;
+	 		courseDetailTable.addCell(courseCell)
+ 		} 	
+ 		courseCell=PdfPCell.fromPhrase( new Phrase(o.courseType,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseCode,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.courseName,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	courseCell=PdfPCell.fromPhrase( new Phrase(o.credit,valueFont));
+	 	courseCell.borderWidth=0;
+	 	courseDetailTable.addCell(courseCell)
+	 	sn++;
+ 	} 	
+ 	courseDetailTable.horizontalAlignment=Element.ALIGN_CENTER;
+ 	courseDetailTable.widthPercentage=90;
+ 	document.add(courseDetailTable);
+ 	document.add(new Phrase("---------------------------------------------------------------------------------------------------------------------------------------------------",valueFont));
+ 	document.add(new Phrase("\n         TOTAL COURSES: "+(courseName.length-1)+"                                                               TOTAL REGISTERED CREDITS    "+": "+totalCredit.toString(),valueFontBold));
+ 	document.add(new Phrase("\n                                                                                                                TOTAL THEORY CREDITS         "+": "+finalData1.theoryCredit,valueFontBold));
+ 	document.add(new Phrase("\n                                                                                                                TOTAL PRACTICAL CREDITS   "+": "+finalData1.pracCredit,valueFontBold));
+ 	
+ 	
+ 	document.close();
+ 	var pdfName:String=finalData1.roll_number;
+    new FileReference().save(bytes,pdfName+"_StudentRegistrationDetail.pdf");    
+	if(forCancel=="outer"){		
+	    this.parentDocument.loaderCanvas2.addChild(new LoginForm());
+		this.parentDocument.loaderCanvas2.removeChildAt(0);
+	}else if(forCancel=="inner"){
+		this.parentDocument.loaderCanvas.addChild(new LoginForm1);
+        this.parentDocument.loaderCanvas.removeChildAt(0);
+	}
+ }

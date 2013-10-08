@@ -101,10 +101,11 @@ public class ActivityMasterController extends MultiActionController{
 		if(universityId == null){
 			return new ModelAndView("general/SessionInactive","sessionInactive",true);
 		}
-		activityMasterObject.setUniversityId(request.getParameter("selectedEntityId").substring(0, 4));
+		activityMasterObject.setUniversityId(universityId);
 		activityMasterObject.setProgramCourseKey(request.getParameter("programCourseKey"));
 		activityMasterObject.setSessionStartDate(request.getParameter("sessionStartDate"));
 		activityMasterObject.setSessionEndDate(request.getParameter("sessionEndDate"));
+		activityMasterObject.setEntityId(request.getParameter("selectedEntityId"));
 		List<ActivityMaster> semesterStartEndDate = activityMasterDao.getSemesterStartEndDate(activityMasterObject);
 		return new ModelAndView("activitymaster/SemesterStartEndDate","semesterStartEndDate", semesterStartEndDate);
 	}

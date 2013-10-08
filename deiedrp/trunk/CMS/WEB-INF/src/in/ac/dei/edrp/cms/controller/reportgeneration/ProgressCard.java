@@ -1,6 +1,7 @@
 package in.ac.dei.edrp.cms.controller.reportgeneration;
 
 
+import in.ac.dei.edrp.cms.common.utility.AddWaterMark;
 import in.ac.dei.edrp.cms.dao.report.ReportDao;
 import in.ac.dei.edrp.cms.dao.reportgeneration.ProgressCardDao;
 import in.ac.dei.edrp.cms.domain.report.ReportLogBean;
@@ -13,7 +14,8 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,18 +39,13 @@ import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.HeaderFooter;
-import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class ProgressCard extends AbstractController{
@@ -120,7 +117,12 @@ public class ProgressCard extends AbstractController{
 			message = processStatus;
 		}
 		else{
-			message = "false-There is some error in PDF Generation kindly view the error log for more information";
+			if(processStatus.equalsIgnoreCase("false")){
+				message = "false-There is some error in PDF Generation kindly view the error log for more information";
+			}
+			else{
+				message=processStatus;
+			}			
 		}
 		return new ModelAndView("activitymaster/SubmitSuccesful", "message", message);				
 	}
@@ -174,6 +176,8 @@ public class ProgressCard extends AbstractController{
 		String programCourseKey = null;
 		int switchSequence=0;
 		int noOfStudents = 0;
+        boolean flagNoOfStudent=false;
+		String flagPdfGenerated="Not used";
 		int noOfPdfGenerated = 0;
 		String pdfGenerated = "N";
 		String errorCode = null;
@@ -305,6 +309,7 @@ public class ProgressCard extends AbstractController{
 			
 			//iterate for each student on the program.
 			if(noOfStudents!=0){
+                flagNoOfStudent=true;
 			for(ProgressCardInfo student: studentSatisfyingPCK){
 				sessionEndDate= student.getSessionEndDate().substring(0,4);				
 				sessionStartDate = student.getSessionStartDate().substring(0,4);	
@@ -377,8 +382,14 @@ public class ProgressCard extends AbstractController{
 					//Ankit section start
 					pci.setRollNumber(rollNo);
 					pci.setSemesterStartDate(semesterStartDate);
+					pci.setUniversityCode(httpSession.getAttribute("universityId").toString());
+					List<ProgressCardInfo>previousProgramCourseKeyList=new ArrayList<ProgressCardInfo>();
+					previousProgramCourseKeyList=getPreviousPCKMarks(pci);
+					if(previousProgramCourseKeyList==null){
+						return "false";
+					}
 					//get student previous semester marks
-					totalMarksDetailsForPreviousSemesters.addAll(getPreviousPCKMarks(pci));
+					totalMarksDetailsForPreviousSemesters.addAll(previousProgramCourseKeyList);
 					//add current marks details at the last index
 					totalMarksDetailsForPreviousSemesters.addAll(totalMarksDetailsForCurrentSemester);
 					//Ankit section End
@@ -482,7 +493,8 @@ public class ProgressCard extends AbstractController{
 //		System.out.println("b4 inserting");
 //		int insertCompleted = progressCardDao.insertIntoReportControlLog(trackingPdfGenration);			
 //		System.out.println("after inserting "+insertCompleted);
-		if(noOfStudents==0){
+//		if(noOfStudents==0){
+        if(flagNoOfStudent==false){			
 			pdfGenerated="true-No student found";
 			//pdfGenerated="NRF";
 		}
@@ -490,7 +502,9 @@ public class ProgressCard extends AbstractController{
 			pdfGenerated="false";
 			//pdfGenerated=errorCode;			
 		}
-		
+		if(pdfGenerated.equalsIgnoreCase("true")){
+			flagPdfGenerated="true";
+		}
 		noOfPdfGenerated = 0;
 		noOfStudents = 0;
 	}//end of programCourrseKey Loop
@@ -499,10 +513,18 @@ public class ProgressCard extends AbstractController{
 //		directoryNameForSemester = directoryNameForSemester +"\\SemesterWiseMarks";
 		file = new File(directoryNameForSemester);
 		file.mkdir();							
+		if(semesterInfoForStudents==null || semesterInfoForStudents.size()==0){
+			System.out.println("false-No student data available");
+			return "Sorry-No student data available for this program";
+		}
 		pdfGenerated = semesterWiseMarksPdfView.generatePdfForSemesterWiseMarks(request,reportDao,document, writer, semesterInfoForStudents,directoryNameForSemester);		
 	}
-		
-	return pdfGenerated;		
+	if(flagPdfGenerated.equalsIgnoreCase("true")){
+		return "true";		
+	}
+	else{
+		return pdfGenerated;
+	}	
 }
 	
 	public boolean generatePdf(Document document,PdfWriter writer,
@@ -513,8 +535,7 @@ public class ProgressCard extends AbstractController{
 			String progressCardType,String directoryName,ProgressCardInfo cummulativeForFC, String semesterName) throws Exception
 	{	
 		try{
-			HttpSession httpSession=request.getSession(true);
-			System.out.println("inside generatePDF print type " +printType);
+			HttpSession httpSession=request.getSession(true);			
 			Calendar calendar = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 			sdf.format(calendar.getTime());
@@ -528,20 +549,16 @@ public class ProgressCard extends AbstractController{
 			String sgpa = null;
 			String remarks = null;
 			String roman=null;
-			float cumulativeTheory = 0;
-			float cumulativePractical = 0; 
-			float credits = 0;
+			//float cumulativeTheory = 0;
+			//float cumulativePractical = 0; 
+			//float credits = 0;
 			String marks;
 			boolean flagPass = true;		
 
-			document = new Document(PageSize.A4,25, 50, 50, 50);
+			document = new Document(PageSize.A4,23, 23, 20, 40);
 			String reportDesc = request.getParameter("reportDescription").toString();
 			reportDesc = reportDesc.replace("/", "-");
-			reportDesc = reportDesc.replace("\\","-");
-			System.out.println("report description "+reportDesc);
-			System.out.println(directoryName+sep+reportDesc+"-"+rollNo+".pdf");
-//			document.open();
-//			writer = PdfWriter.getInstance(document,new FileOutputStream(directoryName+""+sep+""+"ProgressCard_"+rollNo+".pdf"));
+			reportDesc = reportDesc.replace("\\","-");			
 			writer = PdfWriter.getInstance(document,new FileOutputStream(directoryName+reportDesc+"-"+rollNo+".pdf"));
 				totalTheoryCredits = totalMarksDetailsForCurrentSem.get(0).getTotalTheoryCredits();
 				totalPracticalCredits = totalMarksDetailsForCurrentSem.get(0).getTotalPracticalCredits();
@@ -560,16 +577,15 @@ public class ProgressCard extends AbstractController{
 				
 				String headerText1 = universitytokens[0]+"\n"+universityType+httpSession.getAttribute("address").toString()+", "+httpSession.getAttribute("city").toString()+
 				"-"+httpSession.getAttribute("pin").toString()+", ("+httpSession.getAttribute("country").toString()+")\n\n "+progressCardType;
-				Paragraph header1 = new Paragraph(headerText1,FontFactory.getFont(FontFactory.HELVETICA,10, Font.NORMAL, new Color(0, 0, 255)));		
+				Paragraph header1 = new Paragraph(headerText1.toUpperCase(),FontFactory.getFont(FontFactory.COURIER,11, Font.NORMAL));		
 				
 				header1.setAlignment(Element.ALIGN_CENTER);				
 				document.add(header1);
 				
 				
-				Font cellFont = new Font(Font.HELVETICA, 8);				
-				Table nameHeader = new Table(3,4);
-			//	nameHeader.setBorderColor(new Color(255,255,255));		
-				Cell c1 = new Cell(new Phrase("NAME : "+ name,cellFont));		
+				Font cellFont = new Font(Font.COURIER, 9);				
+				Table nameHeader = new Table(3,4);	
+				Cell c1 = new Cell(new Phrase("NAME : "+ name.toUpperCase(),cellFont));		
 				c1.setHeader(true);
 				c1.setColspan(2);
 				c1.setBorder(Rectangle.NO_BORDER);
@@ -595,11 +611,11 @@ public class ProgressCard extends AbstractController{
 				c1.setBorder(Rectangle.NO_BORDER);
 				nameHeader.addCell(c1);
 				
-				c1 = new Cell(new Phrase("SEMESTER : "+ semesterName,cellFont));
+				c1 = new Cell(new Phrase(semesterName.toUpperCase(),cellFont));
 				c1.setBorder(Rectangle.NO_BORDER);
 				nameHeader.addCell(c1);
 				
-				c1 = new Cell(new Phrase("\t\t\t\t\t\t\t\t\tSESSION : "+ sessionStartDate+"-"+sessionEndDate,cellFont));
+				c1 = new Cell(new Phrase("\t\t\t\tSESSION : "+ sessionStartDate+"-"+sessionEndDate,cellFont));
 				c1.setBorder(Rectangle.NO_BORDER);
 				nameHeader.addCell(c1);
 				c1= new Cell(new Phrase("ENROL. NO. : "+enrolmentNumber,cellFont));		
@@ -611,77 +627,55 @@ public class ProgressCard extends AbstractController{
 				nameHeader.endHeaders();		
 				document.add(nameHeader);
 				
-				// dashed line 
-				
-//				PdfContentByte pcb = writer.getDirectContent();		
-//				pcb.moveTo(70,writer.getVerticalPosition(true)-8);
-//				pcb.lineTo(PageSize.A4.getWidth()-80,writer.getVerticalPosition(true)-8);
-//				pcb.setLineDash(3f,3f);
-//				pcb.stroke();		
-//				
-				Paragraph pp=new Paragraph(new Phrase("                -------------------------------------------------------------------------------------------------------"));
+				// dashed line 	
+				Paragraph pp=new Paragraph(new Phrase("                ---------------------------------------------------------------------------------------------------------------"));
 				document.add(pp);
 				
 				//Titles between lines
 				
-				PdfPTable marksTable = new PdfPTable(new float[] {2.3f,6.3f,1.3f,1.5f,1.5f,1.5f});
-			//	marksTable.setWidthPercentage(100);
-				//marksTable.setBorderColor(new Color(255,255,255));
-				System.out.println("Size: "+ marksDetails.size());
+				PdfPTable marksTable = new PdfPTable(new float[] {2.3f,6.4f,1.3f,1.5f,1.5f,1.5f});				
 				PdfPCell c2 = new PdfPCell(new Phrase("Course Number",cellFont));
-				//c2.setHeader(true);
-				//c2.setBorder(Rectangle.NO_BORDER);
 				c2.setBorderWidth(0);
 				marksTable.addCell(c2);
 				
 				c2 = new PdfPCell(new Phrase("COURSE TITLE",cellFont));
-				//c2.setBorder(Rectangle.NO_BORDER);
-				//c2.setWidth(50f);
-//				c2.setColspan(2);
 				c2.setBorderWidth(0);
 				marksTable.addCell(c2);
 				
-				c2 = new PdfPCell(new Phrase("GRADES OBTAINED",cellFont));
-//				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			//	c2.setBorder(Rectangle.NO_BORDER);	
+				c2 = new PdfPCell(new Phrase("GRADES OBTAINED",cellFont));	
 				c2.setBorderWidth(0);
 				c2.setColspan(4);
 				marksTable.addCell(c2);
 
 				//blank cell to occupy the space.
 				c2 = new PdfPCell();
-				//c2.setBorder(Rectangle.NO_BORDER);
 				c2.setBorderWidth(0);
 				c2.setColspan(2);
 				marksTable.addCell(c2);
 				
-				c2 = new PdfPCell(new Phrase("CONT. EVAL. \n",cellFont));
-				//c2.setBorder(Rectangle.NO_BORDER);
+				c2 = new PdfPCell(new Phrase("CONT. EVAL. \n",cellFont));			
 				c2.setBorderWidth(0);
 				marksTable.addCell(c2);
 				
-				c2 = new PdfPCell(new Phrase("END SEM.",cellFont));
-				//c2.setBorder(Rectangle.NO_BORDER);
+				c2 = new PdfPCell(new Phrase("END SEM.",cellFont));				
 				c2.setBorderWidth(0);
 				marksTable.addCell(c2);
 				
-				c2 = new PdfPCell(new Phrase("GRADE POINT \n ",cellFont));
-				//c2.setBorder(Rectangle.NO_BORDER);
+				c2 = new PdfPCell(new Phrase("GRADE POINT \n ",cellFont));		
 				c2.setBorderWidth(0);
 				marksTable.addCell(c2);
 				
-				c2 = new PdfPCell(new Phrase("CREDITS",cellFont));
-				//c2.setBorder(Rectangle.NO_BORDER);
+				c2 = new PdfPCell(new Phrase("CREDITS",cellFont));				
 				c2.setBorderWidth(0);
 				marksTable.addCell(c2);		
 				
 	
-				PdfPCell cr = new PdfPCell(new Phrase("-------------------------------------------------------------------------------------------------------"));
+				PdfPCell cr = new PdfPCell(new Phrase("------------------------------------------------------------------------------------------------------------"));
 				cr.setBorderWidth(0);
 				cr.setColspan(6);
 				marksTable.addCell(cr);
 				
-				PdfPCell c3 = new PdfPCell(); 
+				PdfPCell c3 = new PdfPCell(); 			
 				for(ProgressCardInfo pci : marksDetails)
 				{
 					c3 = new PdfPCell(new Phrase(pci.getCourseCode(),cellFont));
@@ -690,25 +684,38 @@ public class ProgressCard extends AbstractController{
 					
 					c3 = new PdfPCell(new Phrase(pci.getCourseName(),cellFont));
 					c3.setBorderWidth(0);		
-//					c3.setColspan(2);
 					marksTable.addCell(c3);	
 					
-					c3 = new PdfPCell(new Phrase((pci.getStudentInternal()==null?"-":pci.getStudentInternal()).toString(),cellFont));
-					c3.setBorderWidth(0);
-					marksTable.addCell(c3);	
-					
-					//added by ankit 
 					String externalGrade="";
-					if(pci.getStudentExternal()==null){
-						externalGrade="-";
-					}					
-					else{					
-						externalGrade=pci.getStudentExternal();
+					if(pci.getExternalGradeFlag().equals("0")){//External Grade Off	Add By Devendra					
+						c3 = new PdfPCell(new Phrase(externalGrade,cellFont));
+						c3.setBorderWidth(0);
+						marksTable.addCell(c3);
+						c3 = new PdfPCell(new Phrase((pci.getStudentInternal()==null?"-":"   "+pci.getStudentInternal()).toString(),cellFont));
+						c3.setBorderWidth(0);
+						marksTable.addCell(c3);
 					}
-					
-					c3 = new PdfPCell(new Phrase(externalGrade,cellFont));
-					c3.setBorderWidth(0);
-					marksTable.addCell(c3);
+					else{						
+						if(pci.getStudentExternal()==null){							
+							externalGrade="-";
+							c3 = new PdfPCell(new Phrase((pci.getStudentInternal()==null?"-":pci.getStudentInternal()).toString(),cellFont));
+							c3.setBorderWidth(0);
+							marksTable.addCell(c3);	
+							c3 = new PdfPCell(new Phrase(externalGrade,cellFont));
+							c3.setBorderWidth(0);
+							marksTable.addCell(c3);
+							
+						}					
+						else{							
+							externalGrade=pci.getStudentExternal();
+							c3 = new PdfPCell(new Phrase((pci.getStudentInternal()==null?"-":pci.getStudentInternal()).toString(),cellFont));
+							c3.setBorderWidth(0);
+							marksTable.addCell(c3);	
+							c3 = new PdfPCell(new Phrase(externalGrade,cellFont));
+							c3.setBorderWidth(0);
+							marksTable.addCell(c3);
+						}
+					}					
 					
 					c3 = new PdfPCell(new Phrase((pci.getStudentTotalMarks()==null?"":pci.getStudentTotalMarks()).toString(),cellFont));
 					c3.setBorderWidth(0);
@@ -728,58 +735,65 @@ public class ProgressCard extends AbstractController{
 					marksTable.addCell(c3);						
 				}
 				
-				document.add(marksTable);	
-				document.add(pp);
-
-				Table totalMarksTable = new Table(4,2);			
-				totalMarksTable.setBorderColor(new Color(255,255,255));
-				Cell c4 = new Cell(new Phrase("TOTAL CREDITS : ",cellFont));
-				c4.setHeader(true);
-				c4.setBorder(Rectangle.NO_BORDER);
-				totalMarksTable.addCell(c4);
+				if(marksDetails.size()<=20){					
+					for(int i=0;i<(20-marksDetails.size());i++){
+						c3 = new PdfPCell(new Phrase(" ",cellFont));
+						c3.setBorderWidth(0);
+						c3.setColspan(6);
+						marksTable.addCell(c3);		
+					}
+				}	
 				
+				document.add(marksTable);					
+				document.add(pp);				
+				PdfPTable totalMarksTable = new PdfPTable(new float[] {2.6f,2.6f,6.5f,2.6f});			
+				PdfPCell c4 = new PdfPCell(new Phrase("TOTAL CREDITS:",cellFont));	
+				c4.setBorder(Rectangle.NO_BORDER);
+				totalMarksTable.addCell(c4);	
 				if(printType.equalsIgnoreCase("tap")){
-					c4 = new Cell(new Phrase("THEORY : "+totalTheoryCredits,cellFont));
+					BigDecimal bd = new BigDecimal(Double.parseDouble(totalTheoryCredits)).setScale(1, RoundingMode.HALF_EVEN);
+					Double totalTheoryCred = bd.doubleValue();
+					c4 = new PdfPCell(new Phrase("THEORY:"+totalTheoryCred,cellFont));
 					c4.setBorder(Rectangle.NO_BORDER);
 					totalMarksTable.addCell(c4);
 				}
 				else{
-					c4 = new Cell(new Phrase(""+totalCredit,cellFont));
+					BigDecimal bd = new BigDecimal(Double.parseDouble(totalCredit)).setScale(1, RoundingMode.HALF_EVEN);
+					Double totalCred = bd.doubleValue();					
+					c4 = new PdfPCell(new Phrase(totalCred.toString(),cellFont));
 					c4.setBorder(Rectangle.NO_BORDER);
 					totalMarksTable.addCell(c4);
 				}
 				
 				
-				c4 = new Cell(new Phrase("SEM. GRADE POINT AVG. : ",cellFont));
+				c4 = new PdfPCell(new Phrase("SEMESTER GRADE POINT AVGERAGE(SGPA):",cellFont));
 				c4.setBorder(Rectangle.NO_BORDER);
-				totalMarksTable.addCell(c4);
-				
+				totalMarksTable.addCell(c4);			
 				if(printType.equalsIgnoreCase("tap")){
-					c4 = new Cell(new Phrase("THEORY : "+weightTheory,cellFont));
+					c4 = new PdfPCell(new Phrase("THEORY:"+weightTheory,cellFont));
 					c4.setBorder(Rectangle.NO_BORDER);
 					totalMarksTable.addCell(c4);
 				}
 				else{
-					c4 = new Cell(new Phrase(""+sgpa,cellFont));
+					c4 = new PdfPCell(new Phrase(sgpa,cellFont));
 					c4.setBorder(Rectangle.NO_BORDER);
 					totalMarksTable.addCell(c4);
 				}
 				
-				if(printType.equalsIgnoreCase("tap")){
-					c4 = new Cell(new Phrase("",cellFont));
-					c4.setBorder(Rectangle.NO_BORDER);				
-					totalMarksTable.addCell(c4);
+				if(printType.equalsIgnoreCase("tap")){				
+					BigDecimal bd = new BigDecimal(Double.parseDouble(totalPracticalCredits)).setScale(1, RoundingMode.HALF_EVEN);
+					Double totalPracticalCred = bd.doubleValue();
+					
+					c4 = new PdfPCell(new Phrase("PRACTICAL:"+totalPracticalCred,cellFont));
+					c4.setBorder(Rectangle.NO_BORDER);	
+					c4.setColspan(2);
+					c4.setPaddingLeft(66);
+					totalMarksTable.addCell(c4);									
 				
-					c4 = new Cell(new Phrase("PRACTICAL "+totalPracticalCredits,cellFont));
-					c4.setBorder(Rectangle.NO_BORDER);				
-					totalMarksTable.addCell(c4);
-				
-					c4 = new Cell(new Phrase("",cellFont));
-					c4.setBorder(Rectangle.NO_BORDER);				
-					totalMarksTable.addCell(c4);
-				
-					c4 = new Cell(new Phrase("PRACTICAL "+weightPractical,cellFont));
-					c4.setBorder(Rectangle.NO_BORDER);				
+					c4 = new PdfPCell(new Phrase("PRACTICAL:"+weightPractical,cellFont));
+					c4.setBorder(Rectangle.NO_BORDER);
+					c4.setColspan(2);
+					c4.setPaddingLeft(185);
 					totalMarksTable.addCell(c4);
 				}
 				document.add(totalMarksTable);	
@@ -793,7 +807,7 @@ public class ProgressCard extends AbstractController{
 				c5.setBorder(Rectangle.NO_BORDER);
 				semesterWiseMarks.addCell(c5);
 				
-				c5 = new Cell(new Phrase("GRADE POINT AVERAGE IN SEMESTERS",cellFont));
+				c5 = new Cell(new Phrase("SEMESTER GRADE POINT AVERAGE ",cellFont));
 				c5.setColspan(8);
 				c5.setHorizontalAlignment(Element.ALIGN_CENTER);
 				c5.setBorder(Rectangle.NO_BORDER);
@@ -824,27 +838,22 @@ public class ProgressCard extends AbstractController{
 					semesterWiseMarks.addCell(c5);
 				}
 				
-				System.out.println("goin to print marks");
 				
 				// this loop will add student semester theory marks into GRADE POINT AVERAGE IN SEMESTERS section.
 				
-					for(int i=1;i<=8;i++){		
-						System.out.println("previous sem size "+totalMarksDetailsForPreviousSem.size());
+					for(int i=1;i<=8;i++){								
 						if(i<=totalMarksDetailsForPreviousSem.size()){
 							if(printType.equalsIgnoreCase("tap")){
-								marks = totalMarksDetailsForPreviousSem.get(i-1).getWeightTheory();
-								System.out.println("marks "+marks);
+								marks = totalMarksDetailsForPreviousSem.get(i-1).getWeightTheory();								
 								c5 =  new Cell(new Phrase(marks,cellFont));
-								cumulativeTheory = cumulativeTheory+Float.parseFloat(marks)*Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalTheoryCredits());
-								System.out.println("cumulative theory  "+cumulativeTheory);
-								credits = credits + Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalTheoryCredits());
-								System.out.println("credits "+credits);
+								//cumulativeTheory = cumulativeTheory+Float.parseFloat(marks)*Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalTheoryCredits());						
+								//credits = credits + Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalTheoryCredits());								
 							}
 							else{
 								marks = totalMarksDetailsForPreviousSem.get(i-1).getSgpa();
 								c5 =  new Cell(new Phrase(marks,cellFont));
-								cumulativeTheory = cumulativeTheory+Float.parseFloat(marks)*Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalCredit());
-								credits = credits + Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalCredit());
+								//cumulativeTheory = cumulativeTheory+Float.parseFloat(marks)*Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalCredit());
+								//credits = credits + Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalCredit());
 							}
 							
 						}
@@ -859,15 +868,13 @@ public class ProgressCard extends AbstractController{
 				
 				
 				
-				cumulativeTheory = Math.round((cumulativeTheory / credits) * (float) Math.pow(10,2))/(float) (Math.pow(10,2));				
-				System.out.println("ct"+cumulativeTheory);
-				
+				//cumulativeTheory = Math.round((cumulativeTheory / credits) * (float) Math.pow(10,2))/(float) (Math.pow(10,2));								
 				if(printType.equalsIgnoreCase("tap")){
-					c5 = new Cell(new Phrase("PRACTICAL ",cellFont));
+					c5 = new Cell(new Phrase("PRACTICAL",cellFont));
 					c5.setBorder(Rectangle.NO_BORDER);
 					semesterWiseMarks.addCell(c5);
 					
-					credits = 0;
+					//credits = 0;
 					// this loop will add student semester practical marks into GRADE POINT AVERAGE IN SEMESTERS section.
 					for(int i=1;i<=8;i++)
 					{
@@ -875,8 +882,8 @@ public class ProgressCard extends AbstractController{
 						{
 							marks = totalMarksDetailsForPreviousSem.get(i-1).getWeightPractical();
 							c5 =  new Cell(new Phrase(marks,cellFont));
-							cumulativePractical = cumulativePractical+Float.parseFloat(marks)*Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalPracticalCredits());
-							credits = credits + Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalPracticalCredits());
+							//cumulativePractical = cumulativePractical+Float.parseFloat(marks)*Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalPracticalCredits());
+							//credits = credits + Float.parseFloat(totalMarksDetailsForPreviousSem.get(i-1).getTotalPracticalCredits());
 						}
 						else c5 = new Cell(new Phrase("-",cellFont)); 
 							c5.setBorder(Rectangle.NO_BORDER);
@@ -884,8 +891,7 @@ public class ProgressCard extends AbstractController{
 							semesterWiseMarks.addCell(c5);	
 					}
 					
-					cumulativePractical = Math.round((cumulativePractical / credits) * (float) Math.pow(10,2))/(float) (Math.pow(10,2));
-					System.out.println(cumulativePractical);
+					//cumulativePractical = Math.round((cumulativePractical / credits) * (float) Math.pow(10,2))/(float) (Math.pow(10,2));
 				}
 										
 				document.add(semesterWiseMarks);
@@ -893,119 +899,101 @@ public class ProgressCard extends AbstractController{
 				// this section add Cumulative Grade point Average section if progressCardType is Final Result Card.
 				if(progressCardType.equalsIgnoreCase("FINAL RESULT CARD"))
 				{
-					Table cumulativeTable = new Table(4,6);
-					cumulativeTable.setBorderColor(new Color(255,255,255));
-					cumulativeTable.setBorder(1);
+					PdfPTable cumulativeTable = new PdfPTable(new float[] {5.1f,2.4f,1.6f,3.9f});										
+					PdfPCell c6;
 					
-					Cell c6= new Cell();
-					c6.setHeader(true);
+					c6 = new PdfPCell(new Phrase(" ",cellFont));
+					c6.setColspan(4);
 					c6.setBorder(Rectangle.NO_BORDER);
 					cumulativeTable.addCell(c6);
 					
-					c6 = new Cell(new Phrase("CUMULATIVE GRADE POINT AVERAGE :",cellFont));
-					c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-					c6.setBorder(Rectangle.NO_BORDER);
-					c6.setColspan(2);
-					cumulativeTable.addCell(c6);
-					
-					c6 = new Cell(new Phrase("DIVISION :",cellFont));
-					c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-					c6.setBorder(Rectangle.NO_BORDER);
-					cumulativeTable.addCell(c6);
-					
-					if(printType.equalsIgnoreCase("tap")){
-						c6 = new Cell(new Phrase("THEORY ",cellFont));
-					}
-					else{
-						c6 = new Cell(new Phrase("",cellFont));
-					}
-					
+					c6 = new PdfPCell(new Phrase("CUMULATIVE GRADE POINT AVERAGE:",cellFont));
 					c6.setHorizontalAlignment(Element.ALIGN_LEFT);
 					c6.setBorder(Rectangle.NO_BORDER);
 					cumulativeTable.addCell(c6);
-					System.out.println("\n nupuuuuuuuuuuuuur "+cummulativeForFC);
-					if(printType.equalsIgnoreCase("tap")){
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getCummulativeTheoryCgpa():"--",cellFont));
-					}
-					else{
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getCgpa():"--",cellFont));
-					}					
-					c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-					c6.setBorder(Rectangle.NO_BORDER);
-					c6.setColspan(2);
-					cumulativeTable.addCell(c6);
 					
 					if(printType.equalsIgnoreCase("tap")){
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getTheoryDivision():"--",cellFont));
-					}
-					else{
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getDivision():"--",cellFont));
-					}					
-					c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-					c6.setBorder(Rectangle.NO_BORDER);
-					cumulativeTable.addCell(c6);
-					
-//					c6 = new Cell(new Phrase(calcaulateGrade(cumulativeTheory),cellFont));
-//					c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-//					c6.setBorder(Rectangle.NO_BORDER);
-//					cumulativeTable.addCell(c6);
-					if(printType.equalsIgnoreCase("tap")){
-						c6 = new Cell(new Phrase("PRACTICAL",cellFont));
+						String cgpaTheory=cummulativeForFC!=null?cummulativeForFC.getCummulativeTheoryCgpa():"--";
+						c6 = new PdfPCell(new Phrase("THEORY:"+cgpaTheory,cellFont));
 						c6.setHorizontalAlignment(Element.ALIGN_LEFT);
 						c6.setBorder(Rectangle.NO_BORDER);
 						cumulativeTable.addCell(c6);
+					}
+					else{
+						c6 = new PdfPCell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getCgpa():"--",cellFont));
+						c6.setBorder(Rectangle.NO_BORDER);
+						cumulativeTable.addCell(c6);
+					}					
+					
+					c6 = new PdfPCell(new Phrase("DIVISION:",cellFont));
+					c6.setHorizontalAlignment(Element.ALIGN_LEFT);
+					c6.setBorder(Rectangle.NO_BORDER);
+					cumulativeTable.addCell(c6);
+					
+					if(printType.equalsIgnoreCase("tap")){
+						String divisionTheory=cummulativeForFC!=null?cummulativeForFC.getTheoryDivisionDesc():"--";
+						c6 = new PdfPCell(new Phrase("THEORY:"+divisionTheory.toUpperCase(),cellFont));
+						c6.setHorizontalAlignment(Element.ALIGN_LEFT);
+						c6.setBorder(Rectangle.NO_BORDER);
+						cumulativeTable.addCell(c6);
+					}
+					else{
+						c6 = new PdfPCell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getDivisionDescription().toUpperCase():"--",cellFont));
+						c6.setBorder(Rectangle.NO_BORDER);
+						cumulativeTable.addCell(c6);
+					}										
+					if(printType.equalsIgnoreCase("tap")){
+						String practicalCgpa=cummulativeForFC!=null?cummulativeForFC.getCummulativePracticalCgpa():"--";
+						String practicalDivision=cummulativeForFC!=null?cummulativeForFC.getPracticalDivisionDesc().toUpperCase():"--";
+						c6 = new PdfPCell(new Phrase("PRACTICAL:"+practicalCgpa,cellFont));
+						c6.setPaddingLeft(158);
+						c6.setColspan(2);
+						c6.setBorder(Rectangle.NO_BORDER);
+						cumulativeTable.addCell(c6);												
 						
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getCummulativePracticalCgpa():"--",cellFont));
-						c6.setHorizontalAlignment(Element.ALIGN_CENTER);
+						c6 = new PdfPCell(new Phrase("PRACTICAL:"+practicalDivision,cellFont));
+						c6.setHorizontalAlignment(Element.ALIGN_LEFT);
+						c6.setPaddingLeft(40);
 						c6.setBorder(Rectangle.NO_BORDER);
 						c6.setColspan(2);
 						cumulativeTable.addCell(c6);
-//						c6 = new Cell(new Phrase(cummulativeForFC.getCummulativePracticalCgpa(),cellFont));
-//						c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-//						c6.setBorder(Rectangle.NO_BORDER);
-//						cumulativeTable.addCell(c6);
-
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getPracticalDivision():"--",cellFont));
-						c6.setHorizontalAlignment(Element.ALIGN_CENTER);
-						c6.setBorder(Rectangle.NO_BORDER);
-						cumulativeTable.addCell(c6);
-						
-						c6 = new Cell(new Phrase("COMBINED GRADE POINT AVERAGE (THOERY + PRACTICAL) : ",cellFont));
+												
+						String combinedCgpa=cummulativeForFC!=null?cummulativeForFC.getCgpa():"--";
+						c6 = new PdfPCell(new Phrase("COMBINED GRADE POINT AVERAGE (THOERY + PRACTICAL):"+combinedCgpa,cellFont));
 						c6.setHorizontalAlignment(Element.ALIGN_LEFT);
-						c6.setColspan(3);
+						c6.setColspan(4);
 						c6.setBorder(Rectangle.NO_BORDER);
 						cumulativeTable.addCell(c6);
-						
-						c6 = new Cell(new Phrase(cummulativeForFC!=null?cummulativeForFC.getCgpa():"--",cellFont));
-						c6.setHorizontalAlignment(Element.ALIGN_LEFT);
-						c6.setColspan(1);
-						c6.setBorder(Rectangle.NO_BORDER);
-						cumulativeTable.addCell(c6);
-					}
-									
+					}	
 					
-										
+					c6 = new PdfPCell(new Phrase("",cellFont));					
+					c6.setColspan(4);
+					c6.setBorder(Rectangle.NO_BORDER);
+					cumulativeTable.addCell(c6);
+					c6 = new PdfPCell(new Phrase("",cellFont));					
+					c6.setColspan(4);
+					c6.setBorder(Rectangle.NO_BORDER);
+					cumulativeTable.addCell(c6);
 					
-					c6 = new Cell(new Phrase(message.getString("message.combinedPercentage"),cellFont));
+					Phrase notPhrase=new Phrase();
+					Phrase ntP1=new Phrase("NOTE: ",new Font(Font.COURIER, 9,Font.BOLD));
+					Phrase ntp2=new Phrase(message.getString("message.combinedPercentage"),cellFont);
+					notPhrase.add(ntP1);
+					notPhrase.add(ntp2);
+					c6 = new PdfPCell(notPhrase);
 					c6.setHorizontalAlignment(Element.ALIGN_LEFT);
 					c6.setColspan(4);
 					c6.setBorder(Rectangle.NO_BORDER);
-					cumulativeTable.addCell(c6);					
-					
+					cumulativeTable.addCell(c6);										
 					document.add(cumulativeTable);	
 					
-				}				
-	            document.add(Chunk.NEWLINE);
-	            document.add(Chunk.NEWLINE);	            
+				}		
+				document.add(Chunk.NEWLINE); 
 				String remarksText = " REMARKS - "+remarks+"";
 				Paragraph remarkPara = new Paragraph(remarksText,cellFont);
 				remarkPara.setIndentationLeft(48);				
 				document.add(remarkPara);
-				document.add(Chunk.NEWLINE);				
 				document.add(Chunk.NEWLINE);        
-				
-				Paragraph remarkFooter = new Paragraph("\n\n\n\n",FontFactory.getFont(FontFactory.HELVETICA,8, Font.NORMAL, new Color(0, 0, 255)));				
-				document.add(remarkFooter);
 				
 				//footer
 				Table footer = new Table(3,1);
@@ -1023,16 +1011,14 @@ public class ProgressCard extends AbstractController{
 				footer.addCell(c6);				
 												
 				document.add(footer);		
-//				 String imageUrl = "file:///D://dei_logo.jpg";
-//				 Image image = Image.getInstance(new URL(imageUrl));
-//				 	image.scaleAbsolute(150f, 150f);
-//				 		document.add(image);
 				Phrase phrase = new Phrase();
 				phrase.add(footer);
 				HeaderFooter foot = new HeaderFooter(phrase, false);
 				foot.setAlignment(Element.ALIGN_CENTER);				
-				document.setFooter(foot);
+				document.setFooter(foot);				
 				document.close();	
+				//Add Water Mark to Created PDF
+				AddWaterMark.addWaterMark(directoryName+reportDesc+"-"+rollNo+".pdf", directoryName, this.getServletContext().getRealPath("/")+"images/DEI-WATERMARK.jpg");
 		}catch(IOException e){
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -1060,64 +1046,89 @@ public class ProgressCard extends AbstractController{
 		return true;
 	}
 	
+	//Update by devendra to get previous semester marks in case of any Switch
 	protected List<ProgressCardInfo> getPreviousPCKMarks(ProgressCardInfo pci){
 		List<ProgressCardInfo> preProgramCourseKeyList;
 		List<ProgressCardInfo> totalMarks=new ArrayList<ProgressCardInfo>();
 		try{
-		preProgramCourseKeyList = progressCardDao.getPreviousProgramCourseKey(pci);
-		
-			for(ProgressCardInfo ppck : preProgramCourseKeyList){
-				totalMarks.addAll(progressCardDao.totalMarksDetails(ppck));
+			//Check Student Switched in any previous semester or not
+			List<ProgressCardInfo>checkSwitchList=progressCardDao.checkSwitch(pci);
+			//No Switch Case is available
+			if(checkSwitchList.size()==0){
+				preProgramCourseKeyList = progressCardDao.getPreviousProgramCourseKey(pci);		
+				for(ProgressCardInfo ppck : preProgramCourseKeyList){
+					totalMarks.addAll(progressCardDao.totalMarksDetails(ppck));
+				}
 			}
+			else{//Student Switched from some other program					
+				ProgressCardInfo input =new ProgressCardInfo();
+				input.setProgramCourseKey(checkSwitchList.get(0).getProgramCourseKey());//Switched Semester program Course Key
+				input.setEntityId(pci.getEntityId());
+				input.setRollNumber(pci.getRollNumber());
+				//Check Switched Semester is in semester in student Program or not
+				ProgressCardInfo inSemesterBean=progressCardDao.checkInSemester(input);
+				if(inSemesterBean.getInSemester().equals("YES")){		
+					pci.setSemesterSequence(checkSwitchList.get(0).getSemesterSequence());
+					pci.setSemesterId(checkSwitchList.get(0).getSemesterId());				
+					inSemesterBean.setProgramCourseKey(checkSwitchList.get(0).getProgramCourseKey());//Switched Semester program Course Key		
+					inSemesterBean.setRuleId(checkSwitchList.get(0).getRuleId());				
+					inSemesterBean.setUniversityCode(pci.getUniversityCode());					
+					//get Previous Semester ProgramCourseKey for Switch Case
+					preProgramCourseKeyList=progressCardDao.getPreviousProgramCourseKeySwitch(pci,inSemesterBean);
+					if(preProgramCourseKeyList.size()>0){					
+						if(preProgramCourseKeyList.get(0).getErrorCode().equals("NULL")){//Case for rule formula not found in switch rule table for particular rule id
+							totalMarks=null;
+						}	
+						else if(preProgramCourseKeyList.get(0).getErrorCode().equals("E002")){//Case for semester mapping not found in switch formula
+							totalMarks=null;
+						}
+						else if(preProgramCourseKeyList.get(0).getErrorCode().equals("E001")){//Case for rule_code_two in switch rule table is 'N', No marks are added on progress card for previous semester
+							for(int i=1;i<Integer.parseInt(inSemesterBean.getSemesterSequence());i++){
+								ProgressCardInfo ben=new ProgressCardInfo();
+								ben.setRollNumber(pci.getRollNumber());
+								ben.setSgpa("-");
+								ben.setWeightTheory("-");
+								ben.setWeightPractical("-");
+								ben.setTotalTheoryCredits("-");
+								ben.setTotalPracticalCredits("-");
+								ben.setTotalCredit("-");							
+								totalMarks.add(ben);
+							}
+							if(preProgramCourseKeyList.get(0).getList().size()>0){
+								for(ProgressCardInfo ppck : preProgramCourseKeyList.get(0).getList()){
+									totalMarks.addAll(progressCardDao.totalMarksDetails(ppck));
+								}
+							}
+						}						
+						else{//Case for rule_code_two in switch rule table is 'Y'							
+							for(ProgressCardInfo ppck : preProgramCourseKeyList){
+								if(ppck.getErrorCode().equals("E003")){//Case if program course key not found i.e. another switch case found							
+									totalMarks=null;
+									break;
+								}
+								else{									
+									totalMarks.addAll(progressCardDao.totalMarksDetails(ppck));
+								}							
+							}						
+						}						
+					}
+					else{
+						totalMarks=null;
+					}														
+				}
+				else{
+					totalMarks=null;
+				}	
+								
+			}
+			
 		}
 		catch (Exception e) {
-			System.out.println("getPreviousPCKMarks "+e);
+			totalMarks=null;
+			System.out.println("Error in side method getPreviousPCKMarks in progressCard.java file "+e);
 		}
 		return totalMarks;
-	}
-	
-	public void waterMark(String rollNo)
-	{
-		try 
-	    {
-	      PdfReader reader = new PdfReader("E:"+sep+"ProgressCard_"+rollNo+".pdf");
-	      int n = reader.getNumberOfPages();
-	      System.out.println("in water"+n);
-	      // Create a stamper that will copy the document to a new file
-	      PdfStamper stamp = new PdfStamper(reader, 
-	        new FileOutputStream("D:"+sep+"ProgressCard1_"+rollNo+".pdf"));
-	      int i = 1;
-	      PdfContentByte under;
-	      PdfContentByte over;
-
-	      String imageUrl = "file:///D://dei_logo.jpg";
-			 Image image = Image.getInstance(new URL(imageUrl));
-			
-	      BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, 
-	        BaseFont.WINANSI, BaseFont.EMBEDDED);
-
-	      image.setAbsolutePosition(200, 700);
-
-	      while (i < n) 
-	      {
-	        // Watermark under the existing page
-	        under = stamp.getUnderContent(i);
-	        under.addImage(image);
-	      
-	        // Text over the existing page
-	        over = stamp.getOverContent(i);
-	        over.beginText();
-	        over.setFontAndSize(bf, 18);
-	        over.showText("page " + i);
-	        over.endText();
-	    
-	        i++;
-	      }	    
-	      stamp.close();
-	    }
-	    catch (Exception de) 
-	    {}
-	}
+	}	
 	
 	 // Parallel arrays used in the conversion process.
     private static final String[] RCODE = {"M", "CM", "D", "CD", "C", "XC", "L",

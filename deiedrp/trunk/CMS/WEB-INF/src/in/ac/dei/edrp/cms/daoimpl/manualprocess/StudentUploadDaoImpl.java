@@ -159,8 +159,10 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 			upload.setStudentId(studentId);
 			lastId = String.format("%07d", Integer.parseInt(studentId.substring(studentId.length()-7))+1);
 			getSqlMapClientTemplate().insert("studentUpload.insertstudentmaster",upload);
+			getSqlMapClientTemplate().insert("studentUpload.insertstudentmasterBackup",upload);
 			System.out.println("last id "+lastId);			
 			getSqlMapClientTemplate().insert("studentUpload.insertEnrollmentDetail",upload);
+			getSqlMapClientTemplate().insert("studentUpload.insertEnrollmentDetailBackup",upload);
 			studentId = "S"+upload.getEntityId()+yaerLastDigit+lastId;			
 		}
 		System.out.println("after detail insert last student id "+lastId);
@@ -281,6 +283,18 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 					getSqlMapClientTemplate().update("studentUpload.updateFirstSRSH",upload);
 					System.out.println("updating srsh record for enroll.no. "+upload.getEnrollmentNumber());
 				}
+				
+				List<StudentUploadBean> stuBackupList = (List<StudentUploadBean>)getSqlMapClientTemplate().queryForList("studentUpload.selectSRSHBackup", upload);
+				System.out.println("list size :"+stuBackupList.size());
+				if(stuBackupList.size()==0){												
+					getSqlMapClientTemplate().insert("studentUpload.insertIntoSRSHBackup",upload);
+					System.out.println("insert in srsh "+upload.getEnrollmentNumber());
+				}
+				else{	
+					getSqlMapClientTemplate().update("studentUpload.updateFirstSRSHBackup",upload);
+					System.out.println("updating srsh record for enroll.no. "+upload.getEnrollmentNumber());
+				}				
+				
 				System.out.println("after detail insert");
 				status="true";
 			}catch(Exception ex) {
@@ -446,6 +460,7 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 //						System.out.println("earned credit is "+earnedCredits);
 //						upload.setEarnedCredits(earnedCredits);
 						getSqlMapClientTemplate().insert("studentUpload.insertIntoSMS", upload);
+						getSqlMapClientTemplate().insert("studentUpload.insertIntoSMSBackup", upload);
 					}
 				}	
 			}catch(Exception ex) {
@@ -461,7 +476,10 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 	}
     
     private String computeInternalGrade(StudentUploadBean upload) {
-		StudentUploadBean studentUploadBean = new StudentUploadBean();
+		StudentUploadBean studentUploadBean = new StudentUploadBean();		
+		if(((upload.getCummulativeGrades()))==null){			
+            return "ABS";                  
+		}
         if((new Double(upload.getCummulativeGrades()))==0){
               return "F";                  
         }
@@ -495,10 +513,12 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 			if(stuList.size()==0){
 				upload.setCGPA("0.0");
 				getSqlMapClientTemplate().insert("studentUpload.insertIntoStudentProgram", upload);
+				getSqlMapClientTemplate().insert("studentUpload.insertIntoStudentProgramBackup", upload);
 				System.out.println("insert for "+upload.getEnrollmentNumber());
 			}
 			else{
 				getSqlMapClientTemplate().update("studentUpload.updateStudentProgram", upload);
+				getSqlMapClientTemplate().update("studentUpload.updateStudentProgramBackup", upload);
 				System.out.println("update for "+upload.getEnrollmentNumber());
 			}
 			}catch(Exception ex) {
@@ -548,6 +568,7 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 						upload.setCourseGroup(courseGroup);												
 						System.out.println("inside if "+upload.getCourseCode().length());
 						getSqlMapClientTemplate().insert("studentUpload.insertIntoStudentCourse", upload);
+						getSqlMapClientTemplate().insert("studentUpload.insertIntoStudentCourseBackup", upload);
 					}else{
 						System.out.println("inside else "+upload.getCourseCode());
 					}
@@ -718,57 +739,57 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 	 * @param list of objects of StudentUploadBean containing student records
 	 * @return String containing info whether the records are inserted successfully
 	 */
-	public String firstSemesterEntry(final List<StudentUploadBean> studentCourseList, final List<StudentUploadBean> studentRecords, final String path) {
-		//		## entry in student_master
-		//   	##entry in enrollment_personal_detail
-		//		## entry in student_program
-		//		##SRSH
-		//		##student_courses
-		//		##student_marks_summary
-		//		##student_aggregate
-		String s = (String) transactionTemplate.execute(new TransactionCallback() {
-			public String doInTransaction(TransactionStatus tStatus) {
-				System.out.println("before save point declaration in first semester entry");
-				Object savepoint = null;
-				String status="false";
-				try {
-					savepoint = tStatus.createSavepoint();
-					status = insertIntoStudentMaster(studentRecords);
-
-					if(status.equalsIgnoreCase("true")){
-						status = insertIntoStudentProgram(studentRecords,path);
-
-						if(status.equalsIgnoreCase("true")){
-							status = insertIntoSRSH(studentRecords,path);
-
-							if(status.equalsIgnoreCase("true")){
-								status = insertIntoStudentCourse(studentRecords,path);
-
-								if(status.equalsIgnoreCase("true")){
-									status = insertIntoStudentMarksSummary(studentRecords,path);
-//									if(status.equalsIgnoreCase("true")){
-//										status = insertIntoStudentAggregate(studentRecords,path);
-										//return status;
-//									}
-								}
-							}
-						}
-					}
-					if(!status.equalsIgnoreCase("true")){
-						tStatus.rollbackToSavepoint(savepoint);
-					}
-					return status;
-				} catch (Exception ex) {
-					System.out.println("inside inner exception in first semester entry sql"+ex);
-					logObj.error("Exception in first semester entry", ex.getCause());
-					status = "false";
-					tStatus.rollbackToSavepoint(savepoint);
-					return status;
-				}
-			}
-		});
-		return s;	
-	}
+//	public String firstSemesterEntry(final List<StudentUploadBean> studentCourseList, final List<StudentUploadBean> studentRecords, final String path) {
+//		//		## entry in student_master
+//		//   	##entry in enrollment_personal_detail
+//		//		## entry in student_program
+//		//		##SRSH
+//		//		##student_courses
+//		//		##student_marks_summary
+//		//		##student_aggregate
+//		String s = (String) transactionTemplate.execute(new TransactionCallback() {
+//			public String doInTransaction(TransactionStatus tStatus) {
+//				System.out.println("before save point declaration in first semester entry");
+//				Object savepoint = null;
+//				String status="false";
+//				try {
+//					savepoint = tStatus.createSavepoint();
+//					status = insertIntoStudentMaster(studentRecords);
+//
+//					if(status.equalsIgnoreCase("true")){
+//						status = insertIntoStudentProgram(studentRecords,path);
+//
+//						if(status.equalsIgnoreCase("true")){
+//							status = insertIntoSRSH(studentRecords,path);
+//
+//							if(status.equalsIgnoreCase("true")){
+//								status = insertIntoStudentCourse(studentRecords,path);
+//
+//								if(status.equalsIgnoreCase("true")){
+//									status = insertIntoStudentMarksSummary(studentRecords,path);
+////									if(status.equalsIgnoreCase("true")){
+////										status = insertIntoStudentAggregate(studentRecords,path);
+//										//return status;
+////									}
+//								}
+//							}
+//						}
+//					}
+//					if(!status.equalsIgnoreCase("true")){
+//						tStatus.rollbackToSavepoint(savepoint);
+//					}
+//					return status;
+//				} catch (Exception ex) {
+//					System.out.println("inside inner exception in first semester entry sql"+ex);
+//					logObj.error("Exception in first semester entry", ex.getCause());
+//					status = "false";
+//					tStatus.rollbackToSavepoint(savepoint);
+//					return status;
+//				}
+//			}
+//		});
+//		return s;	
+//	}
 
 	/**
 	 * method to check odd semester remedial index records and if exist then update the previous semesters records accordingly
@@ -777,27 +798,36 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 	 * @return nothing
 	 */
 	public void chkRemCases(StudentUploadBean upload, StudentUploadBean uploadRem) throws Exception{
+		System.out.println("inside rem check "+upload.getResultCode()+" size of list :"+upload.getRemedialCourseList().size());
 		if(upload.getRemedialCourseList().size()!=0){
-			if(upload.getResultCode().equalsIgnoreCase("p")){
+			if((upload.getResultCode().equalsIgnoreCase("p"))||(upload.getResultCode().equalsIgnoreCase("f"))){
 				uploadRem.setProgramId(upload.getProgramId());
 				uploadRem.setBranchId(upload.getBranchId());
 				uploadRem.setSpecializationId(upload.getSpecializationId());
+				uploadRem.setUniversityId(upload.getUniversityId());
 				uploadRem = getPrgCourseKey(uploadRem);
 				uploadRem.setRollNumber(upload.getRollNumber());
-				uploadRem.setStatusSRSH(upload.getStatusSRSH());
+//				uploadRem.setStatusSRSH(upload.getStatusSRSH());
+				System.out.println("university :"+upload.getUniversityId());
 				System.out.println("program course key original"+upload.getProgramCourseKey());
 				System.out.println("program course key previous case"+uploadRem.getProgramCourseKey());
 				System.out.println("roll number"+uploadRem.getRollNumber());
 				List<StudentUploadBean> stuList = upload.getRemedialCourseList();
 				for(StudentUploadBean remUpload:stuList){
 					uploadRem.setCourseCode(remUpload.getCourseCode());
-					System.out.println("reme course code "+remUpload.getCourseCode());
+					System.out.println("reme course code "+remUpload.getCourseCode()+"cumulative grade "+remUpload.getCummulativeGrades());
 					uploadRem.setCummulativeGrades(remUpload.getCummulativeGrades());
-					uploadRem.setInternalGrades(null);
+					String internalGrade=computeInternalGrade(uploadRem);
+					if(internalGrade.length()!=0){
+						uploadRem.setInternalGrades(internalGrade);
+					}
+					else{
+						uploadRem.setInternalGrades(null);	
+					}					
 					uploadRem.setExternalGrades(null);
 					getSqlMapClient().update("studentUpload.updateSMS", uploadRem);
-					getSqlMapClient().update("studentUpload.updateStudentCourse", uploadRem);
-					getSqlMapClient().update("studentUpload.updateSRSH", uploadRem);
+//					getSqlMapClient().update("studentUpload.updateStudentCourse", uploadRem);
+//					getSqlMapClient().update("studentUpload.updateSRSH", uploadRem);
 				}//end for						
 			}
 		}
@@ -864,5 +894,9 @@ public class StudentUploadDaoImpl extends SqlMapClientDaoSupport implements Stud
 			}
 		});
 		return s;
+	}
+
+	public String firstSemesterEntry(List<StudentUploadBean> studentRecords,List<StudentUploadBean> studentRecords2, String path) {
+		return "This menu can not be used to process First Semester Entry";
 	}
 }

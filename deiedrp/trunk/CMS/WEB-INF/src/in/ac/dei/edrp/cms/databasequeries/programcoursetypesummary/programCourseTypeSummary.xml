@@ -147,8 +147,9 @@
 
 	</select>
 
-	<select id="getprogramsemesterdetails" resultMap="inputDetails">
-
+	<select id="getprogramsemesterdetails" resultClass="coursetypesummary">
+<!-- Commented by nupur to add the semester sequnece to put validation in program switch -->
+<!-- 
 		select
 		distinct
 		sys1.component_code as component_id,sys1.component_description
@@ -162,7 +163,22 @@
 		pch.branch_id=#branchId# AND
 		pch.specialization_id=#specializationId# AND
 		pch.semester_status='ACT' AND sys1.university_code=substr(pch.program_id,1,4);
-
+ -->
+	select
+		distinct sys1.component_code as semesterCode,sys1.component_description
+		as semesterName,ptd.semester_sequence as semesterSequence
+	from 
+		program_course_header pch,system_table_two sys1,program_term_details ptd 
+	where
+		pch.semester_code=sys1.component_code AND
+		sys1.group_code='SEMCOD' AND sys1.active=1 AND
+		pch.program_id=#programId# AND
+		pch.branch_id=#branchId# AND
+		pch.specialization_id=#specializationId# AND
+		pch.semester_status='ACT' AND sys1.university_code=substr(pch.program_id,1,4)
+ 		and pch.semester_code=ptd.semester_code and
+ 		pch.program_id=ptd.program_id
+ 		order by ptd.semester_sequence;
 	</select>
 
 	<select id="getprogramcoursetypesdetails" resultMap="inputDetails">

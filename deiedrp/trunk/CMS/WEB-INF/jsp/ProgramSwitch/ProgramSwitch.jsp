@@ -37,48 +37,46 @@
 
 <ProgramSwitchDetails>
 <c:forEach var="resultObject" items="${resultObject}">
-	<Details>
-	
-	<entityId>
-	<c:out value="${resultObject.entityId}" />
-	</entityId>
-	
-	<entityName>
-	<c:out value="${resultObject.entityName}" />
-	</entityName>
-	
-	<programId>
-	<c:out value="${resultObject.programId}" />
-	</programId>
-	
-	<programName>
-	<c:out value="${resultObject.programName}" />
-	</programName>
-
-	<branchId>
-	<c:out value="${resultObject.branchId}" />
-	</branchId>
-	
-	<branchName>
-	<c:out value="${resultObject.branchName}" />
-	</branchName>
-	
-	<specializationId>
-	<c:out value="${resultObject.specializationId}"/>
-	</specializationId>
-	
-	<specializationName>
-	<c:out value="${resultObject.specializationName}" />
-	</specializationName>
-	
-	<semesterCode>
-	<c:out value="${resultObject.semesterCode}" />
-	</semesterCode>
-	
-	<semesterName>
-	<c:out value="${resultObject.semesterName}"/>
-	</semesterName>
-	
+	<Details>	
+		<entityId>
+		<c:out value="${resultObject.entityId}" />
+		</entityId>		
+		<entityName>
+		<c:out value="${resultObject.entityName}" />
+		</entityName>		
+		<programId>
+		<c:out value="${resultObject.programId}" />
+		</programId>		
+		<programName>
+		<c:out value="${resultObject.programName}" />
+		</programName>	
+		<branchId>
+		<c:out value="${resultObject.branchId}" />
+		</branchId>		
+		<branchName>
+		<c:out value="${resultObject.branchName}" />
+		</branchName>		
+		<specializationId>
+		<c:out value="${resultObject.specializationId}"/>
+		</specializationId>		
+		<specializationName>
+		<c:out value="${resultObject.specializationName}" />
+		</specializationName>		
+		<semesterCode>
+		<c:out value="${resultObject.semesterCode}" />
+		</semesterCode>		
+		<semesterName>
+		<c:out value="${resultObject.semesterName}"/>
+		</semesterName>
 	</Details>
+	<semesterDetail>
+		<semesterCode>
+		<c:out value="${resultObject.semesterCode}" />
+		</semesterCode>		
+		<semesterName>
+		<c:out value="${resultObject.semesterName}"/>
+		</semesterName>
+		<semesterSequence><c:out value="${resultObject.semesterSequence}"/></semesterSequence>
+	</semesterDetail>
 </c:forEach>
 </ProgramSwitchDetails>

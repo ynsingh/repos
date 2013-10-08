@@ -82,18 +82,23 @@ public class PdfRevenueReportView extends AbstractPdfView {
         
         PdfPTable table = new PdfPTable(gridcol);
         table.setWidthPercentage(100f);
-        Font f = new Font(10);
+
         System.out.println("inside pdf generation "+sheetData.size());
         for (int i = 1; i < sheetData.size(); i++) {
             for (int j = 0; j < sheetData.get(i).size(); j++) {
-            	 System.out.println("inside pdf generationsssssssssssss "+sheetData.get(i).size());
-            	 System.out.println("data is  "+sheetData.get(i).get(j) +" : "+f);
-            	PdfPCell cell = new PdfPCell(new Phrase(sheetData.get(i).get(j), f));
+    			PdfPCell cell;
+            	if(i==1){
+            		 cell = new PdfPCell(new Phrase(sheetData.get(i).get(j),FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD,
+            				new Color(0, 0, 0))));
+            	}else{        	 
+            	 cell = new PdfPCell(new Phrase(sheetData.get(i).get(j),FontFactory.getFont(FontFactory.HELVETICA, 11, 
+             				new Color(0, 0, 0))));
+				}
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 table.addCell(cell);
             }
         }
-        
+        table.setHeaderRows(1);
         if(request.getAttribute("path").equals("NEW")){
             filePath = getServletContext().getRealPath("/")+"AwardSheet";
             file = new File(filePath);
@@ -162,13 +167,15 @@ public class PdfRevenueReportView extends AbstractPdfView {
 //                "\t\t     Course No. :"+sheetData.get(0).get(5)+"\t\t     Title :"+sheetData.get(0).get(6));
         Phrase header2;
         if(sheetData.get(0).get(2).equalsIgnoreCase("None")){
-        	header2=new Phrase("\n"+"Session: "+sesionDate+"                                                         "+"Course Teacher:   "+sheetData.get(0).get(10)+"\n"+"Class & Branch : " +
-                    sheetData.get(0).get(1)+"                                          "           +sheetData.get(0).get(4)+
-                    "            Course Code :"+sheetData.get(0).get(5)+"       Title :"+sheetData.get(0).get(6));
+        	header2=new Phrase("\n"+"Session: "+sesionDate+"                                                         "+"Course Teacher:   "+sheetData.get(0).get(10)
+                    +"\n"+"Class & Branch : " + sheetData.get(0).get(1)
+					+"\n"+sheetData.get(0).get(4)+"\n"+
+                    "Course Code : "+sheetData.get(0).get(5)+"                                                Course Title : "+sheetData.get(0).get(6));
         }else{
-        	header2=new Phrase("\n"+"Session: "+sesionDate+"                                                         "+"Course Teacher:   "+sheetData.get(0).get(10)+"\n"+"Class & Branch : " +
-                sheetData.get(0).get(1)+"("+sheetData.get(0).get(2)+")                               "+sheetData.get(0).get(4)+
-                "            Course Code :"+sheetData.get(0).get(5)+"          Title :"+sheetData.get(0).get(6));
+        	header2=new Phrase("\n"+"Session: "+sesionDate+"                                                         "+"Course Teacher:   "+sheetData.get(0).get(10)
+                	+"\n"+"Class & Branch : " + sheetData.get(0).get(1)+"("+sheetData.get(0).get(2)+")"
+					+"\n"+sheetData.get(0).get(4)
+                	+"\n"+"Course Code : "+sheetData.get(0).get(5)+"                                                Course Title : "+sheetData.get(0).get(6));
         }
         Phrase headers=new Phrase();
         headers.add(header1);

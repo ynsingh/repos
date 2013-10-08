@@ -33,7 +33,8 @@
  * Contributors: Members of EdRP, Dayalbagh Educational Institute
  */
  -->
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(evaluationIdCombo)" title="{commonFunction.getConstants('evaluationComponent')}" layout="absolute" width="710" height="541">
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(evaluationIdCombo)" title="{commonFunction.getConstants('evaluationComponent')}" layout="absolute" width="710" height="541"
+			xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
 	<mx:Script>
 		<![CDATA[
 			import common.commonFunction;
@@ -87,15 +88,16 @@
 	    </mx:Canvas>
 	
 	    <mx:Canvas styleName="GridCanvas" id="detail"  visible="true" width="639.5" height="187" x="20" y="268">
-		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" width="72" height="25" click="openEditWindow()" enabled="false" id="editbutton" x="485"  y="2"/>
-		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" id="deletebutton" x="558" enabled="false" click="deleteOrNot()" y="2"/>
+		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" width="72" height="25" click="openEditWindow()" id="editbutton" x="485"  y="2"/>
+		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" id="deletebutton" x="558" click="deleteOrNot()" y="2"/>
 		<mx:Label x="5" y="8" text="{commonFunction.getConstants('evaluationComponentDetails')}" height="16" width="229"/>
-		<mx:DataGrid id="evaluationComponentGrid" width="619.5" height="155" horizontalScrollPolicy="off" 
-					 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="29">
-			<mx:columns>
-				<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" resizable="false" 
-									editorDataField="selected" dataField="select" headerText=" ">
-					<mx:itemRenderer>
+		<controls:MDataGrid id="evaluationComponentGrid" width="619.5" height="155" horizontalScrollPolicy="off" 
+					 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="29"
+					 visible="true" verticalScrollPolicy="on" allowMultipleSelection="true">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" resizable="false" 
+									editorDataField="selected" dataField="select" headerText="" >
+					<!--<mx:itemRenderer>
 						<mx:Component>
 							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.evaluationComponentGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
 								<mx:Script>
@@ -106,13 +108,38 @@
 								</mx:Script>
 							</mx:CheckBox>
 						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn showDataTips="true" editable="false" dataField="evaluationId" headerText="{commonFunction.getConstants('evaluationId')}" textAlign="center" width="230" sortable="true"/>
-				<mx:DataGridColumn showDataTips="true" editable="false" dataField="idDescription" headerText="{commonFunction.getConstants('idType')}" textAlign="center" width="290" sortable="true"/>
-				<mx:DataGridColumn showDataTips="true" editable="false" dataField="displayDescription" headerText="{commonFunction.getConstants('displayType')}" textAlign="center" width="290" sortable="true"/>
-			</mx:columns>
-		</mx:DataGrid>
+					</mx:itemRenderer>-->
+					<dataGridClasses:headerRenderer>
+						<mx:Component>
+							<mx:CheckBox click="data.selected=!data.selected" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.evaluationComponentGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:headerRenderer>
+					<dataGridClasses:itemRenderer>
+						<mx:Component>
+						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.evaluationComponentGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.controls.LinkButton;
+									]]>
+								</mx:Script>
+						</mx:CheckBox>
+						</mx:Component>
+					</dataGridClasses:itemRenderer>
+				</dataGridClasses:MDataGridColumn>
+				<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="evaluationId" headerText="{commonFunction.getConstants('evaluationId')}" textAlign="center" width="230" sortable="true"/>
+				<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="idDescription" headerText="{commonFunction.getConstants('idType')}" textAlign="center" width="290" sortable="true"/>
+				<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="displayDescription" headerText="{commonFunction.getConstants('displayType')}" textAlign="center" width="290" sortable="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
+		
 	</mx:Canvas>
 	<mx:Validator source="{evaluationIdCombo}" id="evaluationIdComboValidator" property="selectedItem" trigger="{savebutton}" triggerEvent="click"/>
 	<mx:Validator source="{idTypeCombo}" id="idTypeComboValidator" property="selectedItem" trigger="{savebutton}" triggerEvent="click"/>

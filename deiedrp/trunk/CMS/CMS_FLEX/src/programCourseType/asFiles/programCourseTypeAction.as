@@ -32,6 +32,7 @@
  */
 import common.Mask;
 import common.commonFunction;
+import common.validations.CommonValidations;
 
 import mx.collections.*;
 import mx.controls.*;
@@ -40,7 +41,7 @@ import mx.events.*;
 import mx.managers.PopUpManager;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
-
+public var validate:CommonValidations=new CommonValidations;
 [Embed(source="/images/error.png")]private var errorIcon:Class;
 [Embed(source="/images/success.png")]private var successIcon:Class;
 [Embed(source="/images/reset.png")]private var resetIcon:Class;
@@ -116,8 +117,10 @@ public function onFailure(event:FaultEvent):void{
 public function refresh():void
  {
     courseCombo.selectedIndex=-1;
-    minCreditCombo.value=0;
-    maxCreditCombo.value=0;       	
+//  minCreditCombo.value=0;
+//  maxCreditCombo.value=0;
+	minCreditCombo.text="";
+	maxCreditCombo.text="";       	
  }
 
 /**
@@ -370,9 +373,9 @@ public function courseChange(event:ListEvent):void
 public function checkValidations():void
 {
 	var invalidentry:Boolean=false;
-	if((programCombo.selectedIndex!=-1)&&(branchCombo.selectedIndex!=-1)&&(specilizationCombo.selectedIndex!=-1)&&(semesterCombo.selectedIndex!=-1)&&(courseCombo.selectedIndex!=-1)&&(minCreditCombo.value!=0)&&(maxCreditCombo.value!=0))
+	if((programCombo.selectedIndex!=-1)&&(branchCombo.selectedIndex!=-1)&&(specilizationCombo.selectedIndex!=-1)&&(semesterCombo.selectedIndex!=-1)&&(courseCombo.selectedIndex!=-1)&&(minCreditCombo.text.length!=0)&&(maxCreditCombo.text.length!=0))
      { 
-     	if(maxCreditCombo.value>=minCreditCombo.value)
+     	if(validate.isGreater(minCreditCombo.text,maxCreditCombo.text))
        	 {
        	 	
        	 	Alert.show(commonFunction.getMessages('areyousure'),
@@ -402,8 +405,8 @@ public function onSuccessfulRecordEnter(event:CloseEvent):void{
 			infoObject["specializationId"] =  specialiationDetails.role.(description==specilizationCombo.selectedLabel).id;
 			infoObject["semesterCode"] = semesterDetails.role.(description==semesterCombo.selectedLabel).id;
 			infoObject["courseType"] = courseTypeDetails.role.(description==courseCombo.selectedLabel).id;
-			infoObject["minCredits"] = minCreditCombo.value;
-			infoObject["maxCredits"] = maxCreditCombo.value;
+			infoObject["minCredits"] = minCreditCombo.text;
+			infoObject["maxCredits"] = maxCreditCombo.text;
 			infoObject["activityFlag"] = "insert";
 			
 			Mask.show(commonFunction.getMessages('pleaseWait'));
@@ -558,8 +561,8 @@ private function openEditWindow():void
 	{
 		var editWindow:editPopupWindow =editPopupWindow(PopUpManager.createPopUp(this,editPopupWindow,true))
 		PopUpManager.centerPopUp(editWindow);                  	
-		editWindow.changemaxcombo.value=s6.maxCredits;
-		editWindow.changemincombo.value=s6.minCredits;
+		editWindow.changemaxcombo.text=s6.maxCredits;
+		editWindow.changemincombo.text=s6.minCredits;
 		editWindow.coursetypeLabel.text=s6.courseTypeDescription;
 		
 		editWindow.programLabel.text=programCombo.text;

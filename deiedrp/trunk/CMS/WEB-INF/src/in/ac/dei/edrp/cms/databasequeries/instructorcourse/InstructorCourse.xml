@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="InstructorCourse">
+<typeAlias alias="instructorCourseBean" type="in.ac.dei.edrp.cms.domain.instructorcourse.InstructorCourseBean"/>
+<typeAlias alias="awardBlank" type="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter"/>
+
+<select id="getCourseList" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		select distinct ic.entity_id as entityId, pch.program_id as programId, pch.branch_id as branchId, pch.specialization_id as specializationId, pch.semester_code as semesterCode,
+			ic.semester_start_date as semesterStartDate, ic.semester_end_date as semesterEndDate, ic.course_code as courseCode, stt.component_description as branchName,
+			stt1.component_description as semesterName, stt2.component_description as specializationName, pm.program_name as programName, cm.course_name as courseName,cm.grade_limit_active as gradelimit, 
+			ic.program_course_key as programCourseKey, cm.result_system as resultSystem, em.employee_code as employeeCode, concat_ws(' ', em.first_name, em.middle_name, em.last_name) as employeeName,
+			enm.entity_type as entityType, enm.entity_name as entityName, um.start_date as startDate, um.end_date as endDate			
+		from entity_master enm, course_master cm, program_master pm, system_table_two stt, system_table_two stt1, system_table_two stt2, program_course_header pch,
+			university_master um join program_registration pr join instructor_course ic join employee_master em
+		where um.university_code=#universityId# and um.current_status='1' and um.start_date=pr.session_start_date
+			and pr.semester_start_date=ic.semester_start_date and pr.semester_end_date=ic.semester_end_date and ic.employee_id=em.employee_code and
+			em.employee_id=#creatorId# and ic.status='ACT' and ic.program_course_key=pch.program_course_key and
+			stt.group_code='BRNCOD' and stt.component_code=pch.branch_id and stt.university_code=#universityId# and stt1.group_code='SEMCOD' and stt1.component_code=pch.semester_code and
+			stt1.university_code=#universityId# and stt2.group_code='SPCLCD' and stt2.component_code=pch.specialization_id and stt2.university_code=#universityId# and pm.program_id=pch.program_id and
+			cm.university_code=#universityId# and cm.course_code=ic.course_code and ic.entity_id=enm.entity_id
+			and #extra# between ic.semester_start_date and ic.semester_end_date;
+	</select>
+<select id="getStudentList" resultClass="instructorCourseBean">
+	select tsc.student_id as studentId,tsc.roll_number as rollNumber,tsc.enrollment_number as enrollmentNumber,tsc.registration_number as registrationNo,
+	concat_ws(' ', tsm.first_name, tsm.middle_name, tsm.last_name) as studentName,
+	concat_ws(' ', tsm.father_first_name, tsm.father_middle_name, tsm.father_last_name) as fatherName,
+	tsm.date_of_birth as dateOfBirth
+ 	FROM temp_student_courses tsc,temp_student_master tsm
+ 	where tsc.student_id=tsm.student_id
+ 	and tsm.university_code=#universityId#
+ 	and tsc.program_id=#programId# and tsc.branch_id=#branchId# and tsc.specialization_id=#specializationId# 
+ 	and tsc.semester_code=#semesterCode# and tsc.semester_start_date=#semesterStartDate# and
+ 	tsc.semester_end_date=#semesterEndDate# and tsc.course_code=#courseCode#
+ </select>
+	<!-- Query Added By Dheeraj For Getting Courses For Remedial AND External Award Blanks -->
+	<select id="getCourseListForRemedialAndExternal" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT DISTINCT ic.entity_id AS entityId, cma.approval_order, pch.program_id AS programId, pch.branch_id AS branchId, pch.specialization_id AS specializationId,
+		pch.semester_code AS semesterCode, ic.semester_start_date AS semesterStartDate, ic.semester_end_date AS semesterEndDate,
+		cma.course_code AS courseCode, stt.component_description AS branchName, stt1.component_description AS semesterName,
+		stt2.component_description AS specializationName, pm.program_name AS programName, cm.course_name AS courseName,
+		cm.grade_limit_active AS gradelimit, cma.program_course_key AS programCourseKey, cm.result_system AS resultSystem,
+		em.employee_code AS employeeCode, concat_ws(' ', em.first_name, em.middle_name, em.last_name) AS employeeName,
+		enm.entity_type AS entityType, enm.entity_name AS entityName, um.start_date AS startDate, um.end_date AS endDate
+		FROM entity_master enm, course_master cm, program_master pm, system_table_two stt, system_table_two stt1,
+		system_table_two stt2, program_course_header pch, university_master um
+		JOIN program_registration pr JOIN instructor_course ic JOIN employee_master em JOIN course_marks_approval cma
+		WHERE um.university_code=#universityId# AND um.current_status='1' AND um.start_date=pr.session_start_date
+		AND pr.semester_start_date=ic.semester_start_date AND pr.semester_end_date=ic.semester_end_date
+		AND em.employee_code IN (SELECT cma1.employee_id FROM course_marks_approval cma1 WHERE cma1.course_code=cm.course_code
+		AND cma1.display_type=#displayType# AND cma1.approval_order=(SELECt MIN(cma2.approval_order) from course_marks_approval cma2 WHERE cma2.course_code=cm.course_code
+		AND cma2.display_type=#displayType# AND cma2.program_course_key=pch.program_course_key AND cma2.entity_id=ic.entity_id))
+		AND em.employee_id=#creatorId# AND ic.status='ACT' AND ic.program_course_key=pch.program_course_key
+		AND ic.program_course_key=cma.program_course_key
+		AND stt.group_code='BRNCOD' AND stt.component_code=pch.branch_id AND stt.university_code=#universityId# AND stt1.group_code='SEMCOD'
+		AND stt1.component_code=pch.semester_code AND stt1.university_code=#universityId# AND stt2.group_code='SPCLCD' AND stt2.component_code=pch.specialization_id
+		AND stt2.university_code=#universityId# AND pm.program_id=pch.program_id
+		AND cm.university_code=#universityId# AND cm.course_code=cma.course_code AND cm.course_code=ic.course_code AND ic.entity_id=enm.entity_id
+		AND ic.entity_id=cma.entity_id AND cma.display_type=#displayType# 
+		AND #extra# between ic.semester_start_date and ic.semester_end_date 
+		GROUP BY cma.course_code, ic.entity_id, cma.program_course_key, cma.display_type;
+	</select>
+
+
+
+   <select id="getRequestNo" resultClass="resultVerificationBean">
+	SELECT max(request_no) as requestNo fROM result_verification_request_header
+	where request_no like concat(#extra#,'%') and university_id=#universityId# ;
+	</select>
+	
+	<select id="getRollNo" resultClass="resultVerificationBean">
+	select distinct roll_number as rollNumber from student_program where university_code=#universityId# and program_status='PAS';
+	</select>
+	
+	<select id="getRequestType" resultClass="resultVerificationBean">
+	select component_code as requestTypeCode, component_description as requestTypeName
+ 	from system_table_two where group_code = 'rqstyp' and university_code=#universityId#;
+	</select>
+	
+	<select id="getSystemValueDetail" resultClass="resultVerificationBean">
+		select value as requestNo from system_values
+		where university_id=#universityId#
+		and code=#requestCode#;		
+	</select>
+	
+	<update id="updateSystemValue">
+		update system_values SET
+		value=#requestNo# , modification_time=now(),modifier_id=#modifierId# 
+		where university_id=#universityId#
+		and code=#requestCode#;
+	</update>
+	
+	<insert id="insertResultVerHeader">
+		insert into result_verification_request_header (request_no,requester,request_type,company_name,company_add,
+		ref_no,ref_date, receive_date,creator_id,insert_time,university_id,process_status)
+		values(#requestNo#, #requester#,#requestType#,#compName#,#compAdd#,#refNo#,#refDate#,#receiveDate#,
+		#creatorId#, now(), #universityId#,'U');
+	</insert>
+	
+	<insert id="insertResultVerDetail">
+		insert into result_verification_request_detail (request_no,roll_no,
+		creator_id,insert_time,university_id)
+		values(#requestNo#, #rollNumber#,#creatorId#, now(), #universityId#);
+	</insert>
+	
+	<select id="getRequestHeader" resultClass="resultVerificationBean">
+		select 
+			rh.university_id as universityId,
+			rh.request_no as requestNo,rh.company_name as compName,rh.receive_date as receiveDate,rh.process_date as processDate,
+			rh.process_status as processStatus,
+			rh.request_type as requestType,rh.requester as requester,rh.company_add as compAdd, rh.ref_no as refNo, rh.ref_date as refDate 
+		from
+			result_verification_request_header rh
+			<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="receiveDate">
+			rh.receive_date >= #receiveDate#
+			</isNotNull>
+			<isNotNull prepend="AND" property="compName">
+			rh.company_name like #compName#
+			</isNotNull>
+			<isNotNull prepend="AND" property="requestType">
+			rh.request_type=#requestType#
+			</isNotNull>
+			and rh.university_id=#universityId#
+			</dynamic>
+		order by 
+			rh.process_status desc, rh.receive_date desc;		
+	</select>
+	
+	<select id="getRequestDetail" resultClass="resultVerificationBean">
+		select 
+			rd.roll_no as rollNumber 
+		from
+			result_verification_request_detail rd
+		where
+			rd.request_no=#requestNo#;					
+	</select>
+	
+	<update id="updateResultVerHeader">
+		update 
+			result_verification_request_header 
+		set
+			requester=#requester#,request_type=#requestType#,company_name=#compName#,company_add=#compAdd#,
+			ref_no=#refNo#,ref_date=#refDate#, receive_date=#receiveDate#,modifier_id=#modifierId#,modification_time=now()
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#
+	</update>
+	
+	<update id="updateResultVerDetail">
+		update
+			result_verification_request_detail 
+		set
+		roll_no=#rollNumber#,modifier_id=#modifierId#,modification_time=now()
+		where
+			request_no=#requestNo# and
+			university_id = #universityId# and
+			roll_no=#extra#
+	</update>
+	<delete id="deleteResultVerHeader">
+		delete  from
+			result_verification_request_header 		
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#
+	</delete>
+	
+	<delete id="deleteResultVerDetailAll">
+		delete  from
+			result_verification_request_detail 		
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#;
+	</delete>
+	
+	<delete id="deleteResultVerDetail">
+		delete  from
+			result_verification_request_detail 		
+		where
+			request_no=#requestNo# and
+			university_id = #universityId# and
+			roll_no=#rollNumber#
+	</delete>
+	<update id="updateResultHeaderProcessStatus">
+		update 
+			result_verification_request_header 
+		set
+			process_status='P', process_date=#processDate#,modifier_id=#modifierId#,modification_time=now()
+		where
+			request_no=#requestNo# and
+			university_id = #universityId#
+	</update>
+</sqlMap>

@@ -100,12 +100,15 @@ public class SendPasswordImpl extends SqlMapClientDaoSupport implements
 	 */
 	public Boolean setApplicantUserInfo(
 			final SendPasswordInfoGetter sendPasswordInfoGetter) {
+		
 		String s = (String) transactionTemplate
 				.execute(new TransactionCallback() {
 					Object savePoint = new Object();
 
 					public String doInTransaction(TransactionStatus ts) {
 						savePoint = ts.createSavepoint();
+						//DS
+						String universityId = sendPasswordInfoGetter.getUniversityId();
 						try {
 							if (sendPasswordInfoGetter.getAIorUI()
 									.equalsIgnoreCase("AI")) {
@@ -137,11 +140,11 @@ public class SendPasswordImpl extends SqlMapClientDaoSupport implements
 												.getUniversityId() + "&AIUI="
 										+ sendPasswordInfoGetter.getAIorUI()
 										+ "&asahs=asnasa&dssssss=%ab$$gfff'>Click Here to Activate Account</a>";
-
+								
+								//DS
 								sendmail.main(msg,
 										sendPasswordInfoGetter.getEmailId(),
-										"dei.mhrd.edrp.cms@gmail.com",
-										"User Account Details");
+										"User Account Details", universityId);
 							} catch (Exception e) {
 								logObj.error(e.getMessage());
 							}

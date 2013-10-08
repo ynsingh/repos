@@ -70,4 +70,26 @@ public interface EnrollmentService {
 	 *@return List<EnrollmentInfo>
 	*/
 	public List<EnrollmentInfo> getStudentChackedList(EnrollmentInfo enrollmentInfo) throws Exception;
+	
+	/**Method to get list  roll number/enrollment number format
+	 *@param Object of EnrollmentInfo enrollmentInfo
+	 *@return List<EnrollmentInfo>
+	 *@author Devendra Singhal
+	*/
+	public List<EnrollmentInfo> getFormat(EnrollmentInfo enrollmentInfo);
+	
+	/**Method to Delete roll number/enrollment number format
+	 *@param Object of EnrollmentInfo enrollmentInfo
+	 *@param String Format
+	 *@return String containing success/fail
+	 *@author Devendra Singhal
+	*/
+	public String deleteFormat(EnrollmentInfo enrollmentInfo,String format);
+	
+	/**Method to Insert roll number/enrollment number format
+	 *@param Object of EnrollmentInfo enrollmentInfo
+	 *@return String containing success/fail
+	 *@author Devendra Singhal
+	*/
+	public String insertFormat(EnrollmentInfo enrollmentInfo);
 }

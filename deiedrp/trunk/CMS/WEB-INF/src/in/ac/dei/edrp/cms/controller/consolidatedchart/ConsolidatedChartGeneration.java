@@ -102,7 +102,7 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 		
 	}
 	@SuppressWarnings("unchecked")
-	public String buildPdf(List<ConsolidatedChartBean> chartDataList,HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public String buildPdf(List<ConsolidatedChartBean> chartDataList,HttpServletRequest request,HttpServletResponse response,String isFinalSem) throws Exception {
 		HttpSession session = request.getSession(true);
 		String logResult="";
 		String reportResult="";
@@ -130,6 +130,7 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 			String reportPath = ReportPath.getPath(reportPathBean);				
 			System.out.println("here in controller of consolidated chart after path generation "+reportPath);
 			//***************************************
+			
 			String path = this.getServletContext().getRealPath("/");
 			path=path+reportPath;
 			File file = new File(path);
@@ -185,7 +186,14 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 			headerPhrase.add(headerTable);
 			headerPhrase.add(headerTable1);
 			headerPhrase.add(headerTable2);
-			String headerText1="\nNAME / ROLL NO. \t\t\t\t\t\t\t\t\t\t CT \t\t\t\t SX \t\t\t\t AT  \t\t\t\t RES.\nENROLLMENT# \t\t\t\t\t\t\t\t\t\t\t\t\t\tSGPA";
+			String headerText1="";
+			if(isFinalSem.equalsIgnoreCase("F")){
+				headerText1="\nNAME / ENROL# \t\t\t\t\t\t\t\t\t\t\t\t\t CT \t\t\t\t SX \t\t\t\t AT  \t\t\t\t RES.   \t\t\t\t CGPA\nID  \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSGPA \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t DIV.";
+			}
+			else{
+				headerText1="\nNAME / ENROL# \t\t\t\t\t\t\t\t\t\t\t\t\t CT \t\t\t\t SX \t\t\t\t AT  \t\t\t\t RES.\nID \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSGPA";
+			}
+			
 			
 			Phrase headerPhrase1=new Phrase(headerText1,cellFont);
 			Phrase mainHeaderPhrase=new Phrase();
@@ -220,8 +228,7 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 			PdfPTable mainOuterTable = new PdfPTable(new float[] {1.4f,3});
 			mainOuterTable.setWidthPercentage(100f);	
 			mainOuterTable.setHorizontalAlignment(Element.ALIGN_CENTER);
-			
-			
+						
 			PdfPCell c11 = new PdfPCell(new Phrase("", cellFont));
 			c11.setHorizontalAlignment(Element.ALIGN_CENTER);
 			c11.setVerticalAlignment(Element.ALIGN_TOP);
@@ -233,26 +240,22 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 			Iterator i = sorted.entrySet().iterator();
 
 			List<String> tempRoll = new ArrayList<String>();
-			int cellAdd = 0;
-			int checkIndex=0;		
-			while (i.hasNext()){
-				if(checkIndex/4>=30){
-					checkIndex=0;					
-				}				
+			int cellAdd = 0;		
+			while (i.hasNext()){							
 				Map.Entry<String, List<ConsolidatedChartBean>> pair = (Map.Entry<String, List<ConsolidatedChartBean>>)i.next();
 				if(pair.getKey()!=null){
 					PdfPTable leftTable = new PdfPTable(new float[] {7,2,2,2,3,3});
 					leftTable.setWidthPercentage(100f);	
-					leftTable.setHorizontalAlignment(Element.ALIGN_LEFT);
+					leftTable.setHorizontalAlignment(Element.ALIGN_LEFT);					
 					//**********************CODE UPDATED BY DEVENDRA************************
 					String secRow = request.getParameter("entityCode")+"-"+request.getParameter("programCode")+
-					"-"+request.getParameter("branchId")+"-"+request.getAttribute("currentSemesterNo")+"-"+pair.getValue().get(0).getEnrollmentNo();
+					"-"+request.getParameter("branchId")+"-"+request.getAttribute("currentSemesterNo")+"-"+pair.getValue().get(0).getRollNo();
 					
-					addCell(c11, cellFont, leftTable, pair.getValue().get(0).getName()+" / "+pair.getValue().get(0).getRollNo(), 6);
+					addCell(c11, cellFont, leftTable, pair.getValue().get(0).getName()+" / "+pair.getValue().get(0).getEnrollmentNo(), 6);
 					addCell(c11, cellFont, leftTable, secRow, 1);
 					addCell(c11, cellFont, leftTable, pair.getValue().get(0).getCategory(), 1);
 					addCell(c11, cellFont, leftTable, pair.getValue().get(0).getGender(), 1);
-					addCell(c11, cellFont, leftTable, pair.getValue().get(0).getAttemptNo(), 1);
+					addCell(c11, cellFont, leftTable, pair.getValue().get(0).getAttemptNo(), 1);				
 					String percentage = "";
 					for (int l = 0; l < pair.getValue().get(0).getPercentages().length; l++) {
 						String sp = pair.getValue().get(0).getPercentages()[l];
@@ -274,9 +277,21 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 					else{
 						result=pair.getValue().get(0).getResult().toString();
 					}
-					addCell(c11, cellFont, leftTable, result,2 );
+					addCell(c11, cellFont, leftTable, result,1 );					
+					if(isFinalSem.equalsIgnoreCase("F")){
+						addCell(c11, cellFont, leftTable, pair.getValue().get(0).getCgpa(), 1);
+					}
+					else{
+						addCell(c11, cellFont, leftTable, " ", 1);
+					}
 					addCell(c11, cellFont, leftTable, " ", 1);
-					addCell(c11, cellFont, leftTable, percentage.trim(), 5);										
+					addCell(c11, cellFont, leftTable, percentage.trim(), 4);
+					if(isFinalSem.equalsIgnoreCase("F")){
+						addCell(c11, cellFont, leftTable,getDivision(pair.getValue().get(0).getDivision()), 1);
+					}
+					else{
+						addCell(c11, cellFont, leftTable,"", 1);
+					}
 					PdfPTable rightTable = new PdfPTable(new float[] {4,2,2,2.4f,4,2,2,2.4f,4,2,2,2.4f,4,2,2,2.4f});
 					rightTable.setWidthPercentage(100f);	
 					rightTable.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -291,38 +306,38 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 						if (headerData.getResultSystem().equalsIgnoreCase("MK")) {
 							addCell(c11, cellFont, rightTable, courses.getInternal(), 1);
 							addCell(c11, cellFont, rightTable, courses.getExternal(), 1);
-							addCell(c11, cellFont, rightTable, courses.getTotalMarks(), 1);
+							String marks="";
+							if(courses.getTotalMarks()==null || courses.getTotalMarks().equals(" ")){
+								marks=courses.getTotalMarks();
+							}
+							else{
+								marks=String.format("%.3g%n",Double.parseDouble(courses.getTotalMarks()));
+							}	
+							addCell(c11, cellFont, rightTable, marks, 1);
 						} else {
 							addCell(c11, cellFont, rightTable, courses.getInternalGr(), 1);
 							addCell(c11, cellFont, rightTable, courses.getExternalGr(), 1);
-							addCell(c11, cellFont, rightTable, courses.getFinalGr(), 1);
+							String marks="";
+							if(courses.getFinalGr()==null || courses.getFinalGr().equals(" ")){
+								marks=courses.getFinalGr();
+							}
+							else{
+								marks=String.format("%.3g%n",Double.parseDouble(courses.getFinalGr()));
+							}						
+							addCell(c11, cellFont, rightTable, marks, 1);						
 						}
 						cellAdd++;
-						checkIndex++;
-					}
+					}					
 					if(cellAdd%4>0){
 						for(int a=0;a<4-cellAdd%4;a++){
 							addCell(c11, cellFont, rightTable, "", 4);
-							checkIndex++;
 						}
 					}					
 					addCell(c11, cellFont, mainOuterTable, leftTable, 1);
-					addCell(c11, cellFont, mainOuterTable, rightTable, 1);
-					//To add Records on new page. One page can contain only 32 lines of record						
-					if(checkIndex/4>=30){						
-						for(int ii=0;ii<(32-(checkIndex/4));ii++){
-							PdfPTable leftTable1 = new PdfPTable(new float[] {1});
-							leftTable1.setWidthPercentage(100f);	
-							PdfPTable rightTable1 = new PdfPTable(new float[] {1});
-							rightTable1.setWidthPercentage(100f);	
-							addCell(c11, cellFont, leftTable1," ", 1);
-							addCell(c11, cellFont, rightTable1,String.valueOf(ii), 1);
-							addCell(c11, cellFont, mainOuterTable, leftTable1, 1);
-							addCell(c11, cellFont, mainOuterTable, rightTable1, 1);
-						}						
-					}					
+					addCell(c11, cellFont, mainOuterTable, rightTable, 1);					
+					
 					//*******************DEVENDRA ENDS*************************					
-				}
+				}				
 			}
 			document.add(mainOuterTable);
 			document.close();
@@ -331,6 +346,7 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 			System.out.println("nupur : report created successfully");
 			reportResult="true";					
 	}catch(Exception e){
+		System.out.println(e);
 		reportResult="false";	
 		ReportLogBean reportErrorBean = new ReportLogBean(session.getAttribute("universityId").toString(),request.getParameter("programId"),
 		request.getParameter("branchId"),request.getParameter("specializationId"),request.getParameter("entityId"),
@@ -430,6 +446,20 @@ public class ConsolidatedChartGeneration extends AbstractPdfView {
 		}
 		c1.setColspan(colSpan);
 		chartTable.addCell(c1);
+	}
+	
+	public String getDivision(String div){
+		String str="";
+		if(div.equalsIgnoreCase("01")){
+			str="I.D.";
+		}
+		else if(div.equalsIgnoreCase("02")){
+			str="I";
+		}
+		else if(div.equalsIgnoreCase("03")){
+			str="II";
+		}	
+		return str;
 	}
 	//==============================================
 	

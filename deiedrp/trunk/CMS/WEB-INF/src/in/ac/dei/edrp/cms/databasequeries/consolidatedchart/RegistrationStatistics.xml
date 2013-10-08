@@ -46,7 +46,7 @@
 		FROM program_offered_by pob, program_master pm,
 		program_term_details ptd, student_registration_semester_header srsh,
 		student_master sm, student_program sp
-		WHERE srsh.entity_id=#entityId# AND sp.program_status='ACT'
+		WHERE srsh.entity_id=#entityId# AND sp.program_status in ('ACT','PAS','FAL')
 		AND srsh.session_start_date between #sessionStartDate# and #sessionEndDate#
 		AND srsh.session_end_date between #sessionStartDate# and #sessionEndDate#
 		AND sm.university_code=#universityId# AND sm.status='ACT'

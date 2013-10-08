@@ -171,8 +171,8 @@
 		AND
 		sp.passed_to_session=#passedToSession# AND concat_ws(' ', student_first_name,student_middle_name,student_last_name)
     in(select concat_ws(' ', student_first_name,student_middle_name,student_last_name)
-    as studentName from student_master sm1 where sm1.university_code=#universityCode# AND sp.entity_id=#entityId# AND sp.program_id=#programId# AND sp.program_status='PAS'
-    AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#  group by studentName
+    as studentName from student_master sm1, student_program sp1 where sm1.university_code=#universityCode# AND sp1.entity_id=#entityId# AND sp1.program_id=#programId# AND sp1.program_status='PAS'
+    AND sp1.passed_from_session=#passedFromSession# AND sp1.passed_to_session=#passedToSession#  AND sm1.enrollment_number=sp1.enrollment_number group by studentName
     having count(*)>1);
 	
 	</select>
@@ -192,7 +192,7 @@
 		sys.component_description as divisionInTheory,sys1.component_code as branchId,
     	sys1.component_description as branchName,sys2.component_code
 		as specializationId,sys2.component_description as
-		specializationName
+		specializationName,sm.gender
 		from student_master sm,student_program
 		sp,system_table_two sys,system_table_two sys1,system_table_two sys2
 		where
@@ -339,13 +339,20 @@
 	
 	<select id="getProgramDetails" resultClass="degreeList">
 	
-	select pr.program_course_key as programCourseKey,pr.semester_start_date as semesterStartDate,pr.semester_end_date as semesterEndDate,
+	select pr.program_course_key as programCourseKey,
+	if(sys1.component_code='XX',sys1.component_code,sys1.component_description) as branchName,
+	if(sys2.component_code='00',sys2.component_code,sys2.component_description) as specializationName,
+	pr.semester_start_date as semesterStartDate,pr.semester_end_date as semesterEndDate,
 	sys.component_code as semesterCode,sys.component_description as semesterName,ptd.final_semester_code as finalSemesterCode
-	from program_registration pr,program_course_header pch,system_table_two sys,
+	from program_registration pr,program_course_header pch,system_table_two sys,system_table_two sys1,system_table_two sys2,
 	program_term_details ptd where pr.program_course_key =pch.program_course_key AND pch.program_id =#programId#
 	AND pch.semester_code =ptd.semester_code AND ptd.program_id=#programId#
 	AND session_start_date=#passedFromSession# AND session_end_date=#passedToSession# AND (ptd.semester_sequence+#programResultSystem#)%2=0
-	AND ptd.semester_code=sys.component_code AND sys.group_code='SEMCOD' AND sys.university_code=#universityCode# order by sys.component_code;
+	AND ptd.semester_code=sys.component_code AND sys.group_code='SEMCOD' AND 
+	pch.branch_id=sys1.component_code AND sys1.group_code='BRNCOD'
+	AND pch.specialization_id=sys2.component_code AND sys2.group_code='SPCLCD'
+	AND  sys.university_code=#universityCode# AND sys1.university_code=sys.university_code AND sys2.university_code=sys.university_code
+	order by sys.component_code;
 	
 	</select>
 	
@@ -353,7 +360,7 @@
 	
 	SELECT sp.roll_number as rollNumber,sp.division as division,substring(srsh.status,1,1) as studentStatus FROM student_program sp,student_registration_semester_header srsh
 	where srsh.program_course_key=#programCourseKey# AND srsh.session_start_date=#semesterStartDate# AND srsh.session_end_date=#semesterEndDate# 
-	AND srsh.entity_id=sp.entity_id AND sp.entity_id=#entityId# AND sp.roll_number=srsh.roll_number;
+	AND srsh.entity_id=sp.entity_id AND sp.entity_id=#entityId# AND sp.roll_number=srsh.roll_number and srsh.status not in ('YTR','WTH');
 	
 	</select>
 	

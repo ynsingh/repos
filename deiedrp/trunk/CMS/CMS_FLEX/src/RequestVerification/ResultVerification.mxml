@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) RequestVerification.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" title="{commonFunction.getConstants('resultVerification')}" 
+	creationComplete="onCreationComplete(),initArr()" layout="absolute" width="100%" height="100%">
+<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.binding.utils.BindingUtils;
+			import common.commonFunction;
+			import mx.events.*;
+			import common.Mask;
+	  [Bindable]
+      public var selRollNoArray:ArrayCollection=new ArrayCollection;
+			[Bindable]
+      public var myArray:Array=[1,2,3,4,5];
+      [Bindable]
+      public var inArray:ArrayCollection=new ArrayCollection;	
+      [Bindable]
+      public var arrSize:Number=0;
+      [Bindable]
+      public var hei:int=200;
+      var inn :int;
+      [Bindable]var rowLength:int
+      			public function initArr():void{
+      				if(arrSize==0){
+      					for(inn=1;inn<=5;inn++){
+      						inArray.addItem(inn);
+      					}
+      				}
+      				else{
+      					rowLength = arrSize/5;
+      					var a:int = arrSize%5;      					
+      					if(a>0){
+      						rowLength = rowLength+1;
+      					}
+      					else{
+      						if(rowLength==0){
+      							rowLength = rowLength+1;
+      						}
+      					}
+      					for(inn=1;inn<=rowLength;inn++){
+      						inArray.addItem(inn);
+      					}
+      					populateGrid();
+      				}
+      				
+      			}
+      			public function populateGrid():void{      				
+      				var diff:int = rowLength*5 - selRollNoArray.length;
+      				for(var a:int=1;a<=diff;a++){
+      					selRollNoArray.addItem({rollNumber:''});
+      				}
+      				 var idx:int;
+	                var oIdx:int;
+      				for(oIdx=0; oIdx<rolNo.length; oIdx++){	                	
+	                	 for (idx=0; idx<rolNo[oIdx].length; idx++) {
+	                	 	var position:int = idx+inArray.length*oIdx;
+	                	 	(rolNo[oIdx][idx]).text = selRollNoArray.getItemAt(position).rollNumber;	                	 
+	                	}
+                	}//outer for  
+      			}
+      			public function addMoreRollNumber():void{
+      				arrSize=inArray.length +1;
+      				inArray.addItem(arrSize);
+      			}
+      			 private function button_click(evt:Event):void {
+//      			 	Alert.show("current target "+ evt.currentTarget.id);
+//      			 	Mask.show();
+	                var selArr:Array = [];
+	                var idx:int;
+	                var oIdx:int;
+	                var len:int = inArray.length;
+	                for(oIdx=0; oIdx<rolNo.length; oIdx++){	                	
+	                	 for (idx=0; idx<rolNo[oIdx].length; idx++) {
+	                    	if ((rolNo[oIdx][idx]).text.length!=0) {
+	                        	selArr.push((rolNo[oIdx][idx]).text);
+	                    	}
+	                	}
+                	}//outer for               
+	                var title:String = selArr.length + " of " + len*5 + " roll Number(s) entered.";
+	                var message:String = selArr.join("||");
+	                if(selArr.length==0){
+	                	Mask.close();
+	                	Alert.show("Sorry ! It is mandatory to enter roll Number(s) to generate the request");	
+	                }
+	                else{
+	                	chkRollNoAvailability(selArr,evt.currentTarget.id);
+	                }	                
+//	                Alert.show(message, title);
+            	}
+        ]]>
+</mx:Script>
+
+<mx:HTTPService id="getRollNo" 
+	url="{urlPrefix+'getRollNo.htm'}" 
+	useProxy="false" 
+	fault="faultHandler(event)"
+	result="getRollNoSuccess(event)" 
+	method="post" resultFormat="e4x" showBusyCursor="true" />
+<mx:HTTPService id="setResultVerRequest" method="post"	 
+	url="{urlPrefix+'setResultVerRequest.htm'}"
+	fault="faultHandler(event)" 
+	result="setResultVerRequestSuccess(event)" 
+	resultFormat="e4x" 
+	showBusyCursor="true" />
+<mx:HTTPService id="getRequestType" 
+	url="{urlPrefix+'getRequestType.htm'}" 
+	useProxy="false" 
+	fault="faultHandler(event)"
+	result="getRequestTypeSuccess(event)" 
+	method="post" resultFormat="e4x" showBusyCursor="true" />
+<mx:Script source="asFiles/resultVerificationAction.as"/>
+<mx:DateValidator id="receiveDateValidator"  property="text" required="true" allowedFormatChars="-" inputFormat="yyyy-mm-dd"/>
+<mx:StringValidator id="companyValidator" property="text" required="true" source="{compName}" />
+<mx:StringValidator id="companyAddValidator" property="text" required="true" source="{compAdd}" />
+<mx:Validator id="requestTypeValidator" source="{requestTypeCombo}" property="selectedLabel" required="true" trigger="{okButton}" triggerEvent="click"/>
+<mx:ArrayCollection id="myAC" source="{myArray}"/>
+<!--<mx:ArrayCollection id="inAC" source="{inArray}"/>-->
+
+<mx:Canvas styleName="SimpleCanvas" x="20" y="20" width="100%" height="186">
+	 <mx:Label x="90" y="20" text="Request Type" width="124"/>
+      <mx:ComboBox x="240" y="17" prompt="{commonFunction.getConstants('select')}" id="requestTypeCombo" labelField="requestTypeName" toolTip="{requestTypeCombo.text}"></mx:ComboBox>
+      <mx:Label x="90" y="48" text="Requester" width="106"/>
+      <mx:TextInput x="240" y="48" id="requester"/>
+      <mx:Label x="90" y="80" text="Company Name" width="106" id="companyName"/>
+      <mx:TextInput x="240" y="78" id="compName"/>
+      <mx:Label x="90" y="110" text="Company Address" width="134" id="companyAdd"/>
+      <mx:TextInput x="240" y="108" id="compAdd"/>
+      <mx:Label x="505" y="48" text="Reference No." width="121"/>
+      <mx:TextInput x="687" y="46" id="refNo" editable="true"/>
+      <mx:Label x="505" y="80" text="Reference Date" width="170" />
+      <mx:DateField  x="687" y="78" id="refDate" editable="true" yearNavigationEnabled="true" width="177" formatString="YYYY-MM-DD" showToday="true"/>
+      <mx:Label x="505" y="110" text="{commonFunction.getConstants('receiveDate')}:" width="121"/>
+      <mx:DateField  x="687" y="108" id="receiveDate" editable="true" yearNavigationEnabled="true" width="177" formatString="YYYY-MM-DD" showToday="true"/>	     	     	     	     	     	    
+      <mx:Button  id="okButton" x="333" y="151" label="{commonFunction.getConstants('okButton')}" click="ok()"/>
+      <mx:Button id="resetButton" x="637" y="151" label="{commonFunction.getConstants('resetButton')}" click="reset()"/>	     	     	     	     	        
+</mx:Canvas>
+
+<mx:Canvas styleName="GridCanvas" id="detail" visible="false" width="100%" height="28" x="10" y="214" horizontalScrollPolicy="off">
+	<mx:LinkButton label="{commonFunction.getConstants('addButton')+' More '+commonFunction.getConstants('rollNumber')}" 
+		width="311" height="25" click="addMoreRollNumber()" id="addButton" x="834"  y="3"/>		
+		<mx:Label x="23" y="6" text="{'Enter '+commonFunction.getConstants('rollNumber')+' for '+commonFunction.getConstants('resultVerification')}" height="16"/>
+</mx:Canvas>		 
+  <mx:VBox x="10" y="250" width="100%" id="vbox" visible="false" height="120">
+  	 <mx:HBox x="10" width="100%" height="100%">
+ 	 <mx:Repeater id="myrep" dataProvider="{myAC}" recycleChildren="true"> 
+		<mx:VBox width="20%" height="100%">	
+		<mx:Repeater id="myrep2" dataProvider="{inArray}" recycleChildren="true"> 	
+			<mx:HBox width="100%" height="20%">
+				<mx:Label text="{(myrep2.currentIndex+1)+inArray.length*myrep.currentIndex}" width="38"/>
+				<mx:TextInput id="rolNo" restrict="0-9"/>
+			</mx:HBox>
+		</mx:Repeater>
+  		</mx:VBox>
+  	</mx:Repeater>
+	</mx:HBox>
+	<mx:Canvas styleName="GridCanvas" width="100%" height="32" x="20" >
+		<mx:Button x="380" y="3" label="Generate Request" width="173" id="genButton" click="button_click(event)"/>
+		<mx:Button x="380" y="3" label="Update Request" width="173" id="updateButton" visible="false" click="button_click(event)"/>
+		<mx:Button x="674" y="3" label="Cancel" width="90" id="cancelButton" click="cancel()"/>
+	</mx:Canvas>
+  </mx:VBox>  
+  
+ 
+				<!--			
+				<mx:HBox width="100%" height="20%">
+					<mx:Label text="{myrep.currentItem}"/>
+					<mx:TextInput/>
+				</mx:HBox>
+				<mx:HBox width="100%" height="20%">
+					<mx:Label text="{myrep.currentItem}"/>
+					<mx:TextInput/>
+				</mx:HBox>
+				<mx:HBox width="100%" height="20%">
+					<mx:Label text="{myrep.currentItem}"/>
+					<mx:TextInput/>
+				</mx:HBox>
+				<mx:HBox width="100%" height="20%">
+					<mx:Label text="{myrep.currentItem}"/>
+					<mx:TextInput/>
+				</mx:HBox>
+				-->
+			
+  
+		
+		<!--
+		<mx:DataGrid id="detailGrid" width="619.5" height="164" horizontalScrollPolicy="off" 
+			 sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" x="10" y="35">
+		<mx:columns>
+        <mx:DataGridColumn resizable="true" editorDataField="selectedLabel"  headerText="{commonFunction.getConstants('sNo')}" textAlign="center" width="100" sortable="true" dataField="number">
+		<mx:itemEditor>
+				<mx:Component>
+				<mx:Text ></mx:Text>					 									
+				</mx:Component>
+			 </mx:itemEditor>
+		 </mx:DataGridColumn>
+		 -->
+			<!-- 
+        <mx:DataGridColumn resizable="true" editorDataField="selectedLabel"  headerText="{commonFunction.getConstants('rollNumber')}" textAlign="center" width="230" sortable="true" dataField="postType">
+		<mx:itemEditor>
+				<mx:Component>
+					<mx:ComboBox dataProvider="{['Teaching','Non Teaching']}" change="outerDocument.s=event.currentTarget.selectedLabel">				 
+					</mx:ComboBox>
+				</mx:Component>
+			 </mx:itemEditor>
+			 </mx:DataGridColumn>
+-->
+<!--
+		<mx:DataGridColumn editable="true" resizable="true"  headerText="{commonFunction.getConstants('rollNumber')}" textAlign="center" width="230" sortable="true" dataField="rollNo">
+		<mx:itemEditor>
+				<mx:Component>
+					<mx:ComboBox  dataProvider="{outerDocument.rollNoXml.rollNo.rollNumber}" width="50">							
+					</mx:ComboBox>
+				</mx:Component>
+			 </mx:itemEditor>
+			 </mx:DataGridColumn>
+			 -->
+<!--
+		<mx:DataGridColumn editable="true" resizable="true" editorDataField="value" headerText="{commonFunction.getConstants('noOfpost')}" textAlign="center" width="290" sortable="true" dataField="noOfpost">
+		<mx:itemEditor>
+				<mx:Component>
+					<mx:NumericStepper minimum="1" maximum="{Number(outerDocument.total.text)}">
+					</mx:NumericStepper>
+				</mx:Component>
+			 </mx:itemEditor>
+			 </mx:DataGridColumn>
+-->
+		<!--
+		</mx:columns>
+		</mx:DataGrid>
+		-->
+</mx:Panel>

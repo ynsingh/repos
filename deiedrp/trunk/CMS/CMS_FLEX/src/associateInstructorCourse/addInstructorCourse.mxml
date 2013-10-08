@@ -34,7 +34,8 @@
  */
 -->
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" height="586" xmlns:ns1="common.*"
-	creationComplete="setFirstFocous(entityCombo); applicationCreationHandler()" width="736" x="10" title="{commonFunction.getConstants('associateCoursesWithInstructor')}">
+	creationComplete="setFirstFocous(entityCombo); applicationCreationHandler()" width="736" x="10" title="{commonFunction.getConstants('associateCoursesWithInstructor')}"
+	xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
 	
 	<mx:HTTPService id="entityListHttpService" method="POST"
 					url="{urlPrefix+'entityList.htm '}"
@@ -122,11 +123,11 @@
 
     <mx:Canvas id="addDetailCanvas" styleName="GridCanvas"  visible="true" width="677" height="200" x="20" y="309">
 		<mx:LinkButton enabled="false" label="{commonFunction.getConstants('assign')}" width="104" height="25" click="assignFunction()" id="assignButton" x="544"  y="2"/>
-		<mx:DataGrid id="addInstructorGrid" resizableColumns="true"  width="656" height="143" horizontalScrollPolicy="off" textAlign="center" 
+		<controls:MDataGrid id="addInstructorGrid" resizableColumns="true"  width="656" height="143" horizontalScrollPolicy="off" textAlign="center" 
 		sortableColumns="true" draggableColumns="false" editable="true" x="10" y="33">
-		<mx:columns>
-		<mx:DataGridColumn  rendererIsEditor="true" resizable="false" width="55" textAlign="center" sortable="false" editorDataField="selected" dataField="select" headerText=" ">
-			<mx:itemRenderer>
+		<controls:columns>
+		<dataGridClasses:MDataGridColumn rendererIsEditor="true" resizable="false" width="55" textAlign="center" sortable="false" editorDataField="selected" dataField="select" headerText=" ">
+			<dataGridClasses:itemRenderer>
    		  	   <mx:Component>
    				 <mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.addInstructorGrid,[],[outerDocument.assignButton])">
  					<mx:Script>
@@ -137,15 +138,15 @@
                     </mx:Script>
                   </mx:CheckBox>
                </mx:Component>
-             </mx:itemRenderer>
-        </mx:DataGridColumn>
-		<mx:DataGridColumn editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" width="200" showDataTips="true"/>
-		<mx:DataGridColumn editable="false" dataField="courseName" headerText="{commonFunction.getConstants('courseName')}" width="290" showDataTips="true"/>
-		<mx:DataGridColumn editable="false" dataField="employeeName" headerText="{commonFunction.getConstants('instructorName')}" width="290" showDataTips="true"/>
-		<mx:DataGridColumn editable="false" dataField="employeeCode" headerText="{commonFunction.getConstants('instructorCode')}" width="290" showDataTips="true"/>
-		<mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="210" showDataTips="true"/>
-		</mx:columns>
-	    </mx:DataGrid>
+             </dataGridClasses:itemRenderer>
+        </dataGridClasses:MDataGridColumn>
+		<dataGridClasses:MDataGridColumn editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" width="200" showDataTips="true"/>
+		<dataGridClasses:MDataGridColumn editable="false" dataField="courseName" headerText="{commonFunction.getConstants('courseName')}" width="290" showDataTips="true"/>
+		<dataGridClasses:MDataGridColumn editable="false" dataField="employeeName" headerText="{commonFunction.getConstants('instructorName')}" width="290" showDataTips="true"/>
+		<dataGridClasses:MDataGridColumn editable="false" dataField="employeeCode" headerText="{commonFunction.getConstants('instructorCode')}" width="290" showDataTips="true"/>
+		<dataGridClasses:MDataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="210" showDataTips="true"/>
+		</controls:columns>
+	    </controls:MDataGrid>
 	   <mx:Label x="11" y="5" text="{commonFunction.getConstants('courseDetails')}" fontSize="12" height="16"/>
    </mx:Canvas>
 </mx:Panel>

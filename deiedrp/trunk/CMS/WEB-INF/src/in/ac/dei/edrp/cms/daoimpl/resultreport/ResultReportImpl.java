@@ -67,7 +67,7 @@ public class ResultReportImpl extends SqlMapClientDaoSupport implements ResultRe
 		
 		List<DegreeListInfoGetter> resultList = new ArrayList<DegreeListInfoGetter>();
 		
-		if(infoGetter.getProgramPrintType().equalsIgnoreCase("even")){			
+		if(infoGetter.getProgramPrintType().toUpperCase().contains("EVEN")){			
 			infoGetter.setProgramResultSystem(0);			
 		}else{			
 			infoGetter.setProgramResultSystem(1);		
@@ -309,15 +309,27 @@ public class ResultReportImpl extends SqlMapClientDaoSupport implements ResultRe
 	 */
 	public DegreeListInfoGetter getCourseName(DegreeListInfoGetter infoGetter) {
 		
-		DegreeListInfoGetter getter = new DegreeListInfoGetter();
-		
+//		DegreeListInfoGetter getter = new DegreeListInfoGetter();
+		//********nupur code *********************
+		DegreeListInfoGetter aa = new DegreeListInfoGetter();
+		List<DegreeListInfoGetter> getter = new ArrayList<DegreeListInfoGetter>();
+		//**************************8
 		try {
-			 getter = (DegreeListInfoGetter) getSqlMapClient().queryForObject("degreeList.getcoursename",infoGetter);
+			 getter = (ArrayList<DegreeListInfoGetter>) getSqlMapClient().queryForList("degreeList.getcoursename",infoGetter);
 		} catch (Exception e) {
 			loggerObject.error("Exception in getCourseName"+e);
 		}
+		/*
+		 * Nupur code to remove the exception(too many parameter returns for CEC% course code
+		 */
+		if(getter.size()==0){
+			aa.setCourseName("not available");
+			getter.add(aa);
+		}
+			return getter.get(0);
 		
-		return getter;
+		//************************
+//		return getter;
 	}
 	
 	

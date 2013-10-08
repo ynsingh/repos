@@ -89,6 +89,8 @@ public class ProgramMasterInfoGetter {
     
     String semesterStartDate; // added by ankit
     String semesterEndDate;	// added by ankit 
+    String  domainName; // added by Mandeep
+    String  domainCode; // added by Mandeep
     
     private String approvalOrder;
     private String requestGetter;
@@ -581,5 +583,33 @@ public class ProgramMasterInfoGetter {
 	 */
 	public void setProgramDescription(String programDescription) {
 		this.programDescription = programDescription;
+	}
+
+	/**
+	 * @return the domainName
+	 */
+	public String getDomainName() {
+		return domainName;
+	}
+
+	/**
+	 * @param domainName the domainName to set
+	 */
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
+	}
+
+	/**
+	 * @return the domainCode
+	 */
+	public String getDomainCode() {
+		return domainCode;
+	}
+
+	/**
+	 * @param domainCode the domainCode to set
+	 */
+	public void setDomainCode(String domainCode) {
+		this.domainCode = domainCode;
 	}
 }

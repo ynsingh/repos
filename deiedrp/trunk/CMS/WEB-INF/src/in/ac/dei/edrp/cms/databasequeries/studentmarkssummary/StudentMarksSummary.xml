@@ -103,29 +103,24 @@ Select set9.*,studentLeft from(select (totalStudent-student) as studentLeft,eval
 	(select count(*) as totalStudent from student_program sp,student_course sc,student_master sm
 	where sc.program_course_key=#programCourseKey# AND sc.semester_start_date=#semesterStartDate# AND
 	sc.semester_end_date=#semesterEndDate# AND sp.entity_id=#entityId# and sp.enrollment_number=sm.enrollment_number AND
-	sm.university_code=#universityId#  AND sc.course_code=#courseCode# AND sp.program_status='ACT' and sc.roll_number=sp.roll_number)r1
+	sm.university_code=#universityId#  AND sc.course_code=#courseCode# AND sc.roll_number=sp.roll_number)r1
 	join
 	(SELECT count(*) student,evaluation_id  FROM student_marks where  university_code=#universityId# and  entity_id=#entityId#  and
 	 program_course_key=#programCourseKey# and course_code=#courseCode# group by evaluation_id)r2)set10
 join
 	(Select set1.*,concat(year(set1.semesterStartDate),'-',set2.date_from_display_marks) displayStartDate,
-	concat(year(set1.semesterStartDate),'-',set2.date_to_display_marks) displayEndDate from
+	concat(year(set1.semesterStartDate),'-',set2.date_to_display_marks) displayEndDate,set2.maximum_marks semesterName from
 	(select setn.*,sett.markSavedDate from
 	(select * from(SELECT  evaluation_id,if(modification_time<![CDATA[<=>]]>null,insert_time,
  	if(datediff(insert_time,modification_time)>0 ,  insert_time,modification_time)) markSavedDate  FROM student_marks
  	where entity_id=#entityId# and university_code=#universityId# and  program_course_key=#programCourseKey# and course_code=#courseCode#
  	order by markSavedDate desc)latestSaved group by evaluation_id)sett
 	join
-	(SELECT sm.evaluation_id as evaluationId,ec.display_type as displayType,sm.marks,sm.status,sm.semester_start_date semesterStartDate,
+	(SELECT sm.evaluation_id as evaluationId,ec.display_type as displayType,sm.marks,ifnull(sm.issue_status,'EMPTY') as status,sm.semester_start_date semesterStartDate,
 	sm.semester_end_date as semesterEndDate, sms.total_internal as totalInternal,ifnull(sms.total_external,"Not Available") as totalExternal,
 	sms.total_marks as totalMarks,sms.internal_grade as internalGrade,ifnull(sms.external_grade,"Not Available") as externalGrade,
-	sms.final_grade_point as finalGradePoint,nn.status as approvalStatus
-	FROM student_marks sm,student_marks_summary sms,evaluation_component ec,
-	(select status ,display_type,semester_start_date,semester_end_date from course_marks_approval_status where approval_order=(
-	select max(approval_order) from course_marks_approval
-	where course_code=#courseCode#  and entity_id=#entityId# and  program_course_key=#programCourseKey#)
-	and program_course_key=#programCourseKey#
-	and course_code=#courseCode#) as nn
+	sms.final_grade_point as finalGradePoint
+	FROM student_marks sm,student_marks_summary sms,evaluation_component ec
 	WHERE sm.university_code=#universityId#
 	and sm.roll_number=#rollNumber#
 	and sm.program_course_key=#programCourseKey#
@@ -135,13 +130,10 @@ join
 	and sms.course_code=sm.course_code
 	and sm.program_course_key=sms.program_course_key
 	and ec.evaluation_id=sm.evaluation_id
-	and ec.university_code=#universityId#
-	and nn.display_type=ec.display_type
-	and nn.semester_start_date=sm.semester_start_date
-	and nn.semester_end_date=sm.semester_end_date)setn
+	and ec.university_code=#universityId#)setn
 	on setn.evaluationId=sett.evaluation_id)set1
 	join
-	(select evaluation_id,date_from_display_marks,date_to_display_marks from 
+	(select evaluation_id,date_from_display_marks,date_to_display_marks,maximum_marks from 
 	course_evaluation_component where  program_id=substr(#programCourseKey#,1,7) and course_code=#courseCode#)set2
 	on set1.evaluationId=set2.evaluation_id)set9
 using
@@ -225,5 +217,13 @@ where university_code=#universityId# and entity_id=#entityId# and program_course
 and evaluation_id=#evaluationId# and roll_number=#rollNumber# and 
 semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
 </update>
+
+<select id="getRequestDetails" resultClass="studentMarksSummary">
+select evaluation_id as evaluationId, marks as markSavedDate,requested_marks as totalMarks,issue_status as status,requester_remarks as displayStartDate,
+teacher_remarks displayEndDate from student_marks where
+university_code=#universityId# and entity_id=#entityId# and program_course_key=#programCourseKey# and course_code=#courseCode#
+and evaluation_id=#evaluationId# and roll_number=#rollNumber# and 
+semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+</select>
 
 </sqlMap>

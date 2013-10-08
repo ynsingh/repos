@@ -426,23 +426,18 @@ public class EmployeeRoleController extends MultiActionController {
           HttpServletResponse response) throws Exception {
           EmployeeRoleInfoGetter input = new EmployeeRoleInfoGetter();
           HttpSession session = request.getSession(true);         
-
-          String userId = (String) session.getAttribute("userId");
-  		
-  		if(userId == null)
-          {
-          return new ModelAndView("general/SessionInactive","sessionInactive",true);
-          }		
-  			input.setUniversityCode(userId.substring(1,5));
-  			input.setEmployeeCode(request.getParameter("employeeCode"));
-  			input.setRoleId(request.getParameter("userType"));
-  			input.setPrimaryEmailId(request.getParameter("emailId"));
-  			input.setUserId(userId);
-
+          String userId = (String) session.getAttribute("userId");  		
+  		  if(userId == null){
+  			  return new ModelAndView("general/SessionInactive","sessionInactive",true);
+  		  }		
+			input.setUniversityCode(userId.substring(1,5));
+			input.setEmployeeCode(request.getParameter("employeeCode"));
+			input.setRoleId(request.getParameter("userType"));
+			input.setPrimaryEmailId(request.getParameter("emailId"));
+			input.setStatus(request.getParameter("application"));
+			input.setUserId(userId);
   			String resultUserDetails = employeeRoleConnect.ResetEmployeePassword(input);         
-
-          return new ModelAndView("preProcessChecks/preProcessResultlist",
-              "resultObject", resultUserDetails);
+          return new ModelAndView("preProcessChecks/preProcessResultlist", "resultObject", resultUserDetails);
       }
      
 }

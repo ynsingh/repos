@@ -44,6 +44,8 @@
 			import ProgramRegistration.ManageProgramRegistration;
 			import ProgramRegistration.ProgramRegistration;
 			
+			import RegistrationForInsAndAdmin.RegistrationForInsAndAdmin;
+			
 			import activityMaster.ActivityMaster;
 			import activityMaster.ManageActivityMaster;
 			
@@ -56,6 +58,8 @@
 			import associateInstructorCourse.BuildInstructorCourse;
 			import associateInstructorCourse.addInstructorCourse;
 			import associateInstructorCourse.manageInstructorCourse;
+			
+			import awardBlankForCollation.awardBlankForCollation;
 			
 			import awardBlankSheet.CreateAwardBlank;
 			
@@ -85,8 +89,6 @@
 			import common.InitializeUniversity;
 			import common.ResetPassword;
 			
-			import consolidatedChart.ConsolidatedChart;
-			
 			import correctionInAwardBlank.AwardBlankCorrection;
 			
 			import correctionInRegistration.correctionInRegistration;
@@ -103,8 +105,8 @@
 			
 			import coursegradelimit.*;
 			
-			import degreeListControl.degreeList;
-			import awardBlankForCollation.awardBlankForCollation;
+			import delayInComponentMarks.DelayInComponentMarks;
+			
 			import employeeMaster.DeleteEmployeeRole;
 			import employeeMaster.ManageEmployeeMaster;
 			import employeeMaster.employeeAuthoritySetup;
@@ -121,11 +123,16 @@
 			
 			import evaluationComponent.evaluationComponent;
 			
-			import externalExaminarCourse.externalExaminarCourse;
+			import instructorCourse.InstructorCourse;
+            import externalExaminarCourse.externalExaminarCourse;
 			import externalExaminarCourse.externalExaminarDetail;
 			import externalExaminarCourse.manageExternalExaminarDetail;
 			
-			import gradeReportConsolidated.gradeReportConsolidated;
+			import instituteAdminApproval.ApprovalforInstAdmin;
+			
+			import logoUpload.LogoUpload;
+			
+			import mailConfiguration.MailConfiguration;
 			
 			import manualProcess.ManualProcess;
 			import manualProcess.ResultFileNameUpload;
@@ -162,9 +169,14 @@
 			import programTermDetails.ManageProgramTermDetails;
 			import programTermDetails.ProgramTermDetails;
 			
+			import remark.Remark;
 			import reportgeneration.*;
 			
 			import resetSystemValues.resetSystemValues;
+			
+			import rollEnrollFormat.rollEnrollFormat;
+			
+			import rspBackUtility.RevertResultProcess;
 			
 			import studentEnrollment.EnrollmentPhotoUpload;
 			import studentEnrollment.StudentEnrollment;
@@ -202,9 +214,12 @@
 			
 			import updatePrestagingTable.UpdatePrestagingTable;
 			
+			import userDataInterface.UserDataInterface;
+			
 			import withdrawMarksTransfer.WithdrawMarksTransfer;
+			import insertStudentToPrestaging.insertToPrestaging;
 			import withdrawstudent.WithdrawStudent;
-			import delayInComponentMarks.DelayInComponentMarks;
+			import programCourseHeaderCredits.programCourseHeaderCredit;
 			
 			protected var menuBarCollection:ArrayCollection=new ArrayCollection();
 			
@@ -497,6 +512,7 @@
 					{
 					var manageUniversity:ManageUniversityMaster = new ManageUniversityMaster();
 					loaderCanvas.removeAllChildren();
+					manageUniversity.loginUniversity=universityName;
 					loaderCanvas.addChild(manageUniversity);
 					break;
 					}
@@ -525,7 +541,7 @@
 						break;
 					}
 					
-					case "MACCA":
+					case "MACDA":
 					{					
 					var createEmpAuthority:employeeAuthoritySetup = new employeeAuthoritySetup();
 					loaderCanvas.removeAllChildren();
@@ -533,7 +549,7 @@
 					break;
 					}
 					
-					case "MACCB":
+					case "MACDB":
 					{
 					var manageEmpAuthority:manageEmployeeAuthority = new manageEmployeeAuthority();
 					loaderCanvas.removeAllChildren();
@@ -716,12 +732,12 @@
 					break;
 					}
 					
-					case "MCO":
-					{
-					loaderCanvas.removeAllChildren();
-					loaderCanvas.addChild(new ConsolidatedChart());
-					break;
-					}
+//					case "MCO":
+//					{
+//					loaderCanvas.removeAllChildren();
+//					loaderCanvas.addChild(new ConsolidatedChart());
+//					break;
+//					}
 					
 //					case "MCS":
 //					{
@@ -729,6 +745,13 @@
 //					loaderCanvas.addChild(new ResultStatistics());
 //					break;
 //					}
+					
+					case "MADK":
+					{
+					loaderCanvas.removeAllChildren();
+					loaderCanvas.addChild(new programCourseHeaderCredit());
+					break;
+					}
 					
 //					case "MCQ":
 //					{
@@ -943,7 +966,9 @@
 					case "MCM":
 					{
 						loaderCanvas.removeAllChildren();
-						loaderCanvas.addChild(new MajorGroupWiseMeritList());
+						var majorGroupWiseMeritList:MajorGroupWiseMeritList = new MajorGroupWiseMeritList();
+						majorGroupWiseMeritList.UName=universityName;
+						loaderCanvas.addChild(majorGroupWiseMeritList);
 						break;
 					}
 
@@ -998,12 +1023,12 @@
 					  break;
 					 }
                      
-                     case "MCN":
-					 {
-					  loaderCanvas.removeAllChildren();
-					  loaderCanvas.addChild(new gradeReportConsolidated());
-					  break;
-					 }
+//                     case "MCN":
+//					 {
+//					  loaderCanvas.removeAllChildren();
+//					  loaderCanvas.addChild(new gradeReportConsolidated());
+//					  break;
+//					 }
                      
                      case "MDD":
 					 {
@@ -1072,6 +1097,13 @@
 					break;
 					}
 					
+					case "MBG":
+					{
+					loaderCanvas.removeAllChildren();
+					loaderCanvas.addChild(new insertToPrestaging);
+					break;
+					}
+					
 					case "MAEF":
 					{
 						loaderCanvas.removeAllChildren();
@@ -1131,7 +1163,7 @@
 					case "MCI":
 					{
 					loaderCanvas.removeAllChildren();
-					loaderCanvas.addChild(new MeritListCP());
+					loaderCanvas.addChild(new MeritListGroup);
 					break;
 					}
 					
@@ -1223,12 +1255,12 @@
 						loaderCanvas.addChild(new ReadyForSemesterEnd());
 						break;
 					}
-//					case "MCS":	
-//					{
-//						loaderCanvas.removeAllChildren();
-//						loaderCanvas.addChild(new ProvisionalCertificate());
-//						break;
-//					}
+					case "MCS":	
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new ProvisionalCertificate());
+						break;
+					}
 					case "MAEH":	
 					{
 						loaderCanvas.removeAllChildren();
@@ -1239,6 +1271,24 @@
 					{
 						loaderCanvas.removeAllChildren();
 						loaderCanvas.addChild(new WithdrawStudent());
+						break;
+					}
+					case "MDI":	
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new Remark());
+						break;
+					}
+					case "MDJ":	
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new UserDataInterface());
+						break;
+					}
+					case "MAJ":	
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new rollEnrollFormat());
 						break;
 					}
 //Devendra code ends here	
@@ -1299,6 +1349,53 @@
 						loaderCanvas.addChild(new WithdrawMarksTransfer);
 						break;
 					}
+					case "MFJ":
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new RevertResultProcess);
+						break;
+					}
+					
+					case "MFM":
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new MailConfiguration);
+						break;
+					}
+					
+					case "MFN":
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new LogoUpload);
+						break;
+					}
+                    //*********staging table report interface added by NUPUR
+					case "MCW":
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new StagingTableReport());
+						break;
+					}
+					
+//					case "MAAF":
+//					{
+//					loaderCanvas.removeAllChildren();
+//					loaderCanvas.addChild(new RegistrationForInsAndAdmin());
+//					break;
+//					}
+					case "MAAG":
+					{
+					loaderCanvas.removeAllChildren();
+					loaderCanvas.addChild(new ApprovalforInstAdmin());
+					break;
+					}
+                     case "MACE":
+					{
+						loaderCanvas.removeAllChildren();
+						loaderCanvas.addChild(new InstructorCourse());
+						break;
+					}
+					//*******************************************************
 					default:
 					{
 						Alert.show(commonFunction.getMessages('interfaceNotAdded'),(commonFunction.getMessages('info')),4,null,null,infoIcon);

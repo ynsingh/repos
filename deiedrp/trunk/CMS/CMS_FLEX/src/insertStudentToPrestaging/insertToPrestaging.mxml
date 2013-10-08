@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) insertToPrestaging.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Author:Ashish Mohan
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:dx="common.*" title="Students List" layout="absolute" width="98%" height="600" x="0" y="0" creationComplete="onInterfaceLoad()">
+	
+	
+	<mx:HTTPService id="getCategoryDetails" method="POST"
+		url="{commonFunction.getConstants('url')}/employeeMaster/getCategoryDetails.htm"
+		resultFormat="e4x"
+		result="onCategoryDetailsSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getStudentList" method="POST"
+		url="{commonFunction.getConstants('url')}/insertInPrestaging/getStudentInfo.htm"
+		resultFormat="e4x"
+		result="getStudentListSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="checkEnrollmentInfo" method="post"
+	    url="{commonFunction.getConstants('url')}/insertInPrestaging/checkEnrollmentInfo.htm"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="checkEnrollmentResultHandler(event)"
+	    fault="onFailure(event)"
+	    useProxy="false"/>
+	    
+	<mx:HTTPService id="setTempData" method="POST"
+		url="{commonFunction.getConstants('url')}/insertInPrestaging/setStudentData.htm"
+		resultFormat="e4x"
+		result="saveSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="setEnrollmentData" method="POST"
+		url="{commonFunction.getConstants('url')}/insertInPrestaging/setEnrollmentData.htm"
+		resultFormat="e4x"
+		result="setEnrollDataSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="setPrestagingDataForExisting" method="POST"
+		url="{commonFunction.getConstants('url')}/insertInPrestaging/insertOldToPrestaging.htm"
+		resultFormat="e4x"
+		result="setPrestagingDataForOldSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+
+	<mx:HTTPService id="transferInPrestaging" method="POST"
+		url="{commonFunction.getConstants('url')}/prestagingTransfer/transferEnrollmentToPrestaging.htm"
+		resultFormat="e4x"
+		result="transferInPrestagingResult(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:Script source="insertToPrestagingAction.as"/>
+
+	
+	<mx:Canvas x="10" y="10" width="98%" height="58" id="headerCanvas" styleName="BorderCanvas">
+		<mx:ComboBox x="59" y="21" id="entityCombo" width="160" change="onEntityChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="333" y="21" id="programCombo" width="160" change="onProgramChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="611" y="21" id="branchCombo" width="160" change="onBranchChange(event)"></mx:ComboBox>
+		<mx:ComboBox x="933" y="21" id="specilizationCombo" width="160" change="onSpecializationChange(event)"></mx:ComboBox>
+		<mx:Button x="1149" y="22" id="submitButton" click="visibleStudentGrid(event)" label="OK"/>
+		<mx:Label x="10" y="24" text="{commonFunction.getConstants('entity')}"/>
+		<mx:Label x="267" y="24" text="{commonFunction.getConstants('program')}"/>
+		<mx:Label x="555" y="24" text="{commonFunction.getConstants('branch')}"/>
+		<mx:Label x="834" y="24" text="{commonFunction.getConstants('specialization')}"/>
+	</mx:Canvas>
+	
+	<mx:Canvas x="10" y="76" width="98%" height="422" id="studentCanvas" visible="false" styleName="GridCanvas">
+		<mx:DataGrid x="19.5" y="34" width="97%" itemEditEnd="editEnd(event)" itemEditBeginning="allowForEdit(event)" id="mainGrid" 
+			height="328" rowCount="30" editable="true" dataProvider="{tasks}" creationComplete="showHeaderTooltip(mainGrid)">
+			<mx:columns>
+				<mx:DataGridColumn headerText="S.No" labelFunction="myLabelFun" editable="false" dataField="serial" width="40"/>
+				<mx:DataGridColumn headerText="Enrollment Number" dataField="EnrollmentNumber">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" restrict="0-9" maxChars="8"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Student Name" dataField="StudentName">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" restrict="A-Z a-z"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Father Name" dataField="FatherName">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" restrict="A-Z a-z"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="DoB(ddmmyyyy)" dataField="DateofBirth">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" restrict="0-9" maxChars="8"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Category" dataField="Category">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:ComboBox editable="false" width="100%" dataProvider="{outerDocument.categoryDetails.role.id}"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Email Id" dataField="EmailId"/>
+				<mx:DataGridColumn headerText="Gender" dataField="Gender">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" restrict="MF" maxChars="1"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Address" dataField="Address">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" restrict="^,"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Roll No Group Code" dataField="RollNumberGroupCode">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:TextInput width="100%" maxChars="2"/>
+							</mx:Component>
+						</mx:itemEditor>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Student Hindi Name" dataField="StudentHindiName"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Button x="315" y="382" label="{commonFunction.getConstants('saveButton')}" id="save" click="saveData()"/>
+		<mx:Button x="475" y="382" label="{commonFunction.getConstants('submitButton')}" id="submit" click="submitData()"/>
+		<mx:Button x="635" y="382" label="{commonFunction.getConstants('cancelButton')}" click="parent.removeChild(this)"/>
+		<mx:LinkButton x="725" y="10" label="{ADD_ROW}" click="addRow()"/>
+		<mx:LinkButton x="900" y="10" label="{DEL_LAST_ROW}" click="tasks.removeItemAt(tasks.length-1)"/>
+		<mx:LinkButton x="1075" y="10" label="{DEL_INDEX_ROW}" click="tasks.removeItemAt(mainGrid.selectedIndex)"/>
+	</mx:Canvas>
+
+	
+
+	
+
+</mx:Panel>

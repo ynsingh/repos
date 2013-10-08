@@ -106,6 +106,7 @@
 	
 	public function onComboChange():void{
 		pdfButton.enabled=true;
+		downloadId.enabled=true;
 		object["date"] = new Date;									
 		getUniversitySessions.send(object);
 	}
@@ -118,6 +119,7 @@
    public function onPdfGeneration():void{
 	var param:Object={};
 	param["courseCode"]=courseCodeCombo.selectedItem.id;
+	param["courseName"]=CoursesDetailsList.getItemAt(courseCodeCombo.selectedIndex).description;
 	param["sessionStartDate"] = sessionXML.role.(id.toString().substr(0,4)==fromYear.selectedLabel).id;
 	param["sessionEndDate"] = sessionXML.role.(description.toString().substr(0,4)==toYear.text).description;
 	courseWisePanelOfExaminerPdf.send(param);
@@ -169,15 +171,103 @@ public function onYearChange():void{
 			toYear.text = obj.description;			
 		}		
 	}
-}				
-		]]>
-	</mx:Script>				
+}	
+
+/**
+  * This method calls on the click of any button(generate, download, print)
+ **/
+ 		
+public var downloadUrl:URLRequest = new URLRequest();	
+public var fileRequest:FileReference = new FileReference();
+public function onButtonClick(event:Event):void{
+	var toolTipAction:String = event.currentTarget.toolTip;
+	var courseName:String = CoursesDetailsList.getItemAt(courseCodeCombo.selectedIndex).description;	
+	var path:String=commonFunction.getConstants('url')+"/REPORTS/"+ "Examiners"+" "+"for"+" "+courseName+".pdf";
+	downloadUrl.url = path;
+	configureListeners(fileRequest);
+	if(event.currentTarget.toolTip==commonFunction.getConstants('downloadreport')){		
+		downloadUrl.url = path;
+		Alert.show(commonFunction.getMessages('downloadConfirmation'),
+		commonFunction.getMessages('success'),(Alert.YES|Alert.NO),null,downloadFile,successIcon,1);	
+	}
+	
+	if(toolTipAction==commonFunction.getConstants('printReport')){			
+		Alert.show("Do You want to Print the Report ?",
+		commonFunction.getMessages('success'),(Alert.YES|Alert.NO),null,printFile,successIcon,1);	
+	}
+}
+
+public function downloadFile(event:CloseEvent):void{
+	if(event.detail==Alert.YES){
+		 try{
+			// Prompt and downlod file
+			fileRequest.download(downloadUrl);
+		}
+		catch (error:Error){
+			Alert.show("Unable to download file.");
+		} 		
+	}	
+}
+
+ private function configureListeners(dispatcher:IEventDispatcher):void {
+    dispatcher.addEventListener(Event.CANCEL, cancelHandler);
+    dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+    dispatcher.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+    dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+}
+        
+    private function cancelHandler(event:Event):void {
+        Alert.show("cancelHandler: " + event);
+    }
+
+    private function completeHandler(event:Event):void {
+       // Alert.show("completeHandler: " + event);
+    }
+
+    private function ioErrorHandler(event:IOErrorEvent):void {
+        Alert.show("Please Check...the report is not yet generated...");
+    }
+
+    private function openHandler(event:Event):void {
+        //Alert.show("openHandler: " + event);
+    }
+
+    private function progressHandler(event:ProgressEvent):void {
+        var file:FileReference = FileReference(event.target);
+        //Alert.show("progressHandler name=" + file.name + " bytesLoaded=" + event.bytesLoaded + " bytesTotal=" + event.bytesTotal);
+    }
+
+    private function securityErrorHandler(event:SecurityErrorEvent):void {
+        Alert.show("securityErrorHandler: " + event);
+    }
+
+    private function selectHandler(event:Event):void {
+        var file:FileReference = FileReference(event.target);
+        //Alert.show("selectHandler: name=" + file.name + " URL=" + downloadUrl.url);
+    }
+
+public function printFile(event:CloseEvent):void{
+	if(event.detail==Alert.YES){
+		Mask.show();
+//		printReport.send(object);
+//		navigateToURL(downloadUrl);		
+	}	
+}
+
+public function cancelButton():void{
+	this.parentDocument.loaderCanvas.removeAllChildren();
+} 
+			
+]]>
+</mx:Script>				
 	
 	<mx:ComboBox x="158" y="50" id="courseCodeCombo" selectedIndex="-1" width="160" prompt="{commonFunction.getConstants('select')}"
 			 labelField="id" enabled="true" toolTip="{courseCodeCombo.text}" change="onComboChange()"></mx:ComboBox>
 	<mx:Label x="52" y="53" text="{commonFunction.getConstants('courseCode')}*"/>
-	<mx:Button id="pdfButton" enabled="false" click="onPdfGeneration()" x="158" y="141" label="{commonFunction.getConstants('generateReport')}"/>
-	<mx:Button x="328" y="141" label="{commonFunction.getConstants('cancelButton')}"/>
+	<mx:Button id="pdfButton" enabled="false" click="onPdfGeneration()" x="65" y="141" label="{commonFunction.getConstants('generateReport')}"/>
+	<mx:Button id="downloadId" x="248" y="141" click="onButtonClick(event)"
+		icon="@Embed(source='/images/downloads1.png')" height="23" width="37" enabled="false" toolTip="{commonFunction.getConstants('downloadreport')}" />
+	<mx:Button x="303" y="141" label="{commonFunction.getConstants('cancelButton')}" click="cancelButton()"/>
 	<mx:ComboBox id="fromYear" change="onYearChange()" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" x="158" y="100" width="88"></mx:ComboBox>
 	<mx:Label x="52" y="103" text="Session"/>
 	<mx:Label x="259" y="103" text="To" width="30"/>

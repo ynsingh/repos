@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="594" height="596"  title="{commonFunction.getConstants('rollEnrollNoFormatTitle')}" fontFamily="Georgia" creationComplete="onCreationComplete()">
+<mx:Script source="asFile/rollEnrollFormatAs.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import common.commonFunction;
+					/**
+			 * On Mouse Down
+			 **/
+			private function onMouseDown(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=22;	
+					cancelBtn.width=96;	
+				}
+				else if(str=="Submit"){
+					submitBtn.height=22;	
+					submitBtn.width=96;		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=22;	
+					deleteLink.width=70;		
+				}
+				else if(str=="help"){
+					helpLink.height=22;	
+					helpLink.width=50;		
+				}
+			}
+			/**
+			 * On Mouse UP
+			 **/
+			private function onMouseUp(str:String):void{			
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;
+					this.parentDocument.loaderCanvas.removeAllChildren();		
+				}
+				else if(str=="Submit"){
+					submitBtn.height=25;	
+					submitBtn.width=99;	
+					onClickSubmit();		
+				}
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;	
+					if(deleteLink.enabled==true){
+						deleteRecord();
+					}						
+				}
+				else if(str=="help"){
+					helpLink.height=25;	
+					helpLink.width=53;	
+					onClickHelp();	
+				}
+			}
+			/**
+			 * On Mouse OUT
+			 **/
+			private function omMouseOut(str:String):void{				
+				if(str=="Cancel"){
+					cancelBtn.height=25;	
+					cancelBtn.width=99;			
+				}
+				else if(str=="Submit"){
+					submitBtn.height=25;	
+					submitBtn.width=99;		
+				}				
+				else if(str=="deleteLink"){
+					deleteLink.height=25;	
+					deleteLink.width=73;		
+				}
+				else if(str=="help"){
+					helpLink.height=25;	
+					helpLink.width=53;		
+				}
+			}
+			
+			/**
+			 * On Click of Self Defined Radiion Button
+			 **/
+			private function onClinkSelfDefinedRadion():void{
+				if(selfDefinedRadio.selected==true){
+					formatValue.visible=true;
+					inBuiltCB.visible=false;
+					inBuiltCB.enabled=false;
+					inBuiltCB.selectedIndex=-1;
+					formatValue.enabled=true;
+				}
+			}
+			/**
+			 * On Click of In Built Format Radion Button
+			 **/
+			private function onClickBuiltInFormatRadio():void{
+				if(builtInRadio.selected==true){
+					formatValue.visible=false;
+					inBuiltCB.visible=true;
+					inBuiltCB.enabled=true;
+					formatValue.enabled=false;
+					formatValue.text="";					
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="getFormatService" method="post"
+        url="{commonFunction.getConstants('url')}/enrollmentForm/getFormat.htm"
+        resultFormat="e4x"
+        result="getFormatResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/> 
+    <mx:HTTPService id="insertFormatService" method="post"
+        url="{commonFunction.getConstants('url')}/enrollmentForm/insertFormat.htm"
+        resultFormat="e4x"
+        result="insertFormatResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/> 
+    <mx:HTTPService id="deleteFormatService" method="post"
+        url="{commonFunction.getConstants('url')}/enrollmentForm/deleteFormat.htm"
+        resultFormat="e4x"
+        result="deleteFormatResult(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/> 
+	<mx:Canvas x="10" y="10" width="554" height="95" styleName="SimpleCanvas" fontFamily="Georgia">
+		<mx:Label x="10" y="10" text="{commonFunction.getConstants('rollEnrollTypeLabel')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:Label x="10" y="48" text="{commonFunction.getConstants('rollEnrollType')}" fontFamily="Verdana"/>
+		<mx:ComboBox x="60" y="45" id="typeCB" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" fontFamily="Georgia" labelField="type" change="onChangeTypeCB()"></mx:ComboBox>
+	</mx:Canvas>
+	<mx:Canvas x="10" y="113" width="554" height="218" fontFamily="Georgia" styleName="BorderCanvas">
+		<mx:Label x="10" y="10" text="{commonFunction.getConstants('rollEnrollFormatLabel')}" fontFamily="Georgia" fontWeight="bold" fontStyle="italic"/>
+		<mx:Label x="10" y="39" text="{commonFunction.getConstants('rangeFrom')}" fontWeight="bold" fontFamily="Georgia"/>
+		<mx:Label x="118" y="39" text="{commonFunction.getConstants('rangeTo')}" fontWeight="bold" fontFamily="Georgia"/>
+		<mx:NumericStepper x="22" y="68" id="fromNS" enabled="false" stepSize="1"  minimum="1" maximum="98" change="{UIComponent(fromNS).errorString=''}"/>
+		<mx:NumericStepper x="124" y="68" id="toNS" enabled="false" stepSize="1" minimum="1" maximum="99" change="{UIComponent(toNS).errorString=''}"/>
+		<mx:TextInput x="171" y="105" id="formatValue" enabled="false" change="{UIComponent(formatValue).errorString=''}" width="150" visible="false"/>
+		<mx:LinkButton x="203" y="68" label="{commonFunction.getConstants('help')}"  id="helpLink" width="53"  height="25" cornerRadius="9" alpha="1.0" textAlign="left" fontFamily="Georgia" mouseDown="onMouseDown('help')" mouseUp="onMouseUp('help')" mouseOut="omMouseOut('help')"/>
+		<mx:Button x="10" y="180" label="{commonFunction.getConstants('submit_button')}" fontFamily="Georgia" id="submitBtn" mouseDown="onMouseDown('Submit')" mouseUp="onMouseUp('Submit')" mouseOut="omMouseOut('Submit')" cornerRadius="6" width="99" height="25" enabled="false"/>
+		<mx:Button x="118" y="180" label="{commonFunction.getConstants('cancel_button')}" fontFamily="Georgia" id="cancelBtn" mouseDown="onMouseDown('Cancel')" mouseUp="onMouseUp('Cancel')" mouseOut="omMouseOut('Cancel')" cornerRadius="6" width="99" height="25"/>
+		<mx:ComboBox x="169" y="136" width="150" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" fontFamily="Georgia" id="inBuiltCB" labelField="formatName" toolTip="{inBuiltCB.selectedItem.formatName}" enabled="false" visible="false" change="{UIComponent(inBuiltCB).errorString=''}"></mx:ComboBox>
+		<mx:RadioButton x="22" y="105" label="self Defined Format" groupName="formatType" id="selfDefinedRadio" enabled="false" click="onClinkSelfDefinedRadion()" fontFamily="Georgia"/>
+		<mx:RadioButton x="22" y="136" label="built In Format" groupName="formatType" id="builtInRadio" enabled="false" click="onClickBuiltInFormatRadio()" fontFamily="Georgia"/>
+	</mx:Canvas>
+	<mx:Canvas x="10" y="339" width="554" height="189" styleName="BorderCanvas">
+		<mx:DataGrid x="11" y="33" width="530" showScrollTips="true" id="grid" height="143">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('select')}" dataField="select" width="50" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" selected="{data.select}" change="commonFunction.editDeleteEnable(event,outerDocument.grid,[],[outerDocument.deleteLink]);{data.select=!data.select}">
+								<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('rollEnrollType')}" dataField="typeName"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('rangeFrom')}" dataField="rangeFrom"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('rangeTo')}" dataField="rangeTo"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('format')}" dataField="format"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:LinkButton x="455" y="5" label="{commonFunction.getConstants('delete_link')}" fontFamily="Georgia" id="deleteLink"  color="#383636" cornerRadius="9" alpha="1.0" textAlign="left" mouseDown="onMouseDown('deleteLink')" mouseUp="onMouseUp('deleteLink')"  mouseOut="omMouseOut('deleteLink')" themeColor="#CBC9C9" width="73" height="25" enabled="false"/>
+	</mx:Canvas>
+
+	
+</mx:Panel>

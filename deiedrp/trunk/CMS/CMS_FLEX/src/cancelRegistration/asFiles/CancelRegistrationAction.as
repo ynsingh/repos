@@ -136,7 +136,8 @@
 			param["programId"]=studentDetailsResult.student.program_id;
 			param["branchId"]=studentDetailsResult.student.branch_code;
 			param["specializationId"]=studentDetailsResult.student.new_specialization;
-		
+			param["admissionMode"]=studentDetailsResult.student.admissionMode;
+			param["semesterCode"]=studentDetailsResult.student.semester_code;
 			if(studentDetailsResult.student.status_in_semester.toString().toUpperCase()=="G"){
 				Alert.show(commonFunction.getMessages('studentEnrollmentNoGenerated'),commonFunction.getMessages('confirm'),3,this,cancelRegistration1,questionIcon);
 			}

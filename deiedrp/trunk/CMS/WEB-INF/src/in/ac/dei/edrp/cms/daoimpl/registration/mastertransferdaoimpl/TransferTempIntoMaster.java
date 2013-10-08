@@ -288,7 +288,8 @@ public class TransferTempIntoMaster {
 							masterTransferBean.getRegisteredTheoryExcludingAudit(),
 							masterTransferBean.getRegisteredPracticalExcludingAudit());
 					masterSwitchBeanObject.setProcessId(processId);
-
+                    masterSwitchBeanObject.setSwitchRule(masterTransferBean.getSwitchRule());
+					masterSwitchBeanObject.setSwitchType(masterTransferBean.getSwitchType());
 					errorReason = validateDataForSWTStudent(
 							masterSwitchBeanObject, courseList,
 							oldSemesterDetail);

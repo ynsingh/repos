@@ -48,6 +48,7 @@ import mx.managers.PopUpManager;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
 
+import studentInformation.ViewRequestStatus;
 import studentInformation.studentMarkCorrectionRequest;
 
 [Embed(source="/images/success.png")]private var successIcon:Class;
@@ -58,6 +59,7 @@ import studentInformation.studentMarkCorrectionRequest;
 [Bindable]public var appliedSemesterId:String;
 [Bindable]public var appliedStartDate:String;
 [Bindable]public var appliedEndDate:String;
+public var showMarks1:Function;
 
 
 /** Method fires on load of screen and set url to variable
@@ -90,7 +92,7 @@ public function getMarksDetailSuccess(event:ResultEvent):void{
 	var componentCollection:ArrayCollection=new ArrayCollection();
 	var restCollection:ArrayCollection=new ArrayCollection(); 	
 	for each(var obj:Object in marksDetail.marks){
-		componentCollection.addItem({evaluationId:obj.evaluationId,mark:obj.mark,displayType:obj.displayType,studentLeft:obj.studentLeft,
+		componentCollection.addItem({evaluationId:obj.evaluationId,mark:obj.mark,maxMarks:obj.semesterName,issueStatus:obj.status,displayType:obj.displayType,studentLeft:obj.studentLeft,
 									 markSavedDate:obj.markSavedDate,displayStartDate:obj.displayStartDate,displayEndDate:obj.displayEndDate});
 		restCollection.addItem({totalInternal:obj.totalInternal,totalExternal:obj.totalExternal,totalMarks:obj.totalMarks,
 								internalGrade:obj.internalGrade,externalGrade:obj.externalGrade,finalGradePoint:obj.finalGradePoint,
@@ -112,13 +114,13 @@ public function getMarksDetailSuccess(event:ResultEvent):void{
     	lblEvaluation.text=(objj.evaluationId).toString();
     	horiBox.addChild(lblEvaluation);  	
 		var lblMarks:Label=new Label; 
-		//lblMarks.width=60;
+		lblMarks.width=100;
 		
 		//changes by ashish
    	 	if(String(objj.studentLeft)=="0"){
 			if(checkVisibilityOfMarks(objj.markSavedDate,objj.displayStartDate)){
 				compMarkArr[i]= (objj.mark).toString();
-				lblMarks.text = (objj.mark).toString();  
+				lblMarks.text = (objj.mark).toString()+" out of "+String(objj.maxMarks);  
 			}
 			else{
 				compMarkArr[i]= "Not Available";
@@ -130,8 +132,20 @@ public function getMarksDetailSuccess(event:ResultEvent):void{
 			//for request link visiblility
     		if(checkVisibility(objj.markSavedDate,objj.displayStartDate,objj.displayEndDate)){
     			var link:LinkButton=new LinkButton;
-	    		link.label="Send Mark Correction Request";
-	    		link.addEventListener(MouseEvent.CLICK,recordSelected);
+    			if(String(objj.issueStatus)=="EMPTY"){
+	    			link.label="Request Mark Correction ";
+	    			link.addEventListener(MouseEvent.CLICK,recordSelected);
+	    		}
+	    		else if(String(objj.issueStatus)=="PEN"){
+	    			link.setStyle("color", "Red");
+	    			link.label="Request Pending";
+	    			link.addEventListener(MouseEvent.CLICK,viewStatus);
+	    		}
+	    		else{
+	    			link.setStyle("color", 0x06a620);
+	    			link.label="Request Resolved";
+	    			link.addEventListener(MouseEvent.CLICK,viewStatus);
+	    		}
 	    		horiBox.addChild(link);
     		}
     	}
@@ -273,16 +287,36 @@ public function closePop(e:MouseEvent):void{
 
 //this method added by ashish mohan 
 //to fire request of marks correction
-public function recordSelected(e:MouseEvent):void{
+public function recordSelected(e:MouseEvent):void{	
 	var popUpMarksCorrection:studentMarkCorrectionRequest=studentMarkCorrectionRequest(PopUpManager.createPopUp(this,studentMarkCorrectionRequest,true));
-	popUpMarksCorrection.component.text=e.currentTarget.parent.getChildAt(0).text;
+	var comp:String=String(e.currentTarget.parent.getChildAt(0).text);
+	var mark:String=String(e.currentTarget.parent.getChildAt(1).text);
+	popUpMarksCorrection.component.text=comp;
 	popUpMarksCorrection.param['courseCode']=courseLbl.text;
 	popUpMarksCorrection.param['programCourseKey']=programCourseKey;
 	popUpMarksCorrection.param['rollNumber']=rollNoLbl.text;
 	popUpMarksCorrection.param['semStartDate']=semesterStartDateLbl.text;
 	popUpMarksCorrection.param['semEndDate']=semesterEndDateLbl.text;
 	popUpMarksCorrection.param['entityCode']=rollNoLbl.text.slice(2,-3);
+	popUpMarksCorrection.maxNum=Number(mark.slice(mark.indexOf("of")+3));
+	popUpMarksCorrection.showMarks2=showMarks1;
 	PopUpManager.centerPopUp(popUpMarksCorrection);
+	closePop(e);
+}
+
+//this method added by ashish mohan 
+//to view request status
+public function viewStatus(e:MouseEvent):void{	
+	var popUpStatus:ViewRequestStatus=ViewRequestStatus(PopUpManager.createPopUp(this,ViewRequestStatus,true));
+	var comp:String=String(e.currentTarget.parent.getChildAt(0).text);
+	popUpStatus.componentId.text=comp;
+	popUpStatus.param['courseCode']=courseLbl.text;
+	popUpStatus.param['programCourseKey']=programCourseKey;
+	popUpStatus.param['rollNumber']=rollNoLbl.text;
+	popUpStatus.param['semStartDate']=semesterStartDateLbl.text;
+	popUpStatus.param['semEndDate']=semesterEndDateLbl.text;
+	popUpStatus.param['entityCode']=rollNoLbl.text.slice(2,-3);
+	PopUpManager.centerPopUp(popUpStatus);
 }
 
 

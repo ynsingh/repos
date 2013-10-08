@@ -124,6 +124,7 @@ public function editSwitch():void
 	editWindow.oldBranchLabel.text=selectedValues[0].oldBranchName;
 	editWindow.oldSpecializationLabel.text=selectedValues[0].oldSpecializationName;
 	editWindow.oldSemester=selectedValues[0].oldSemesterName;
+	editWindow.newEntity=selectedValues[0].entityName;	
 	editWindow.newProgram=selectedValues[0].programName;
 	editWindow.newBranch=selectedValues[0].branchName;
 	editWindow.newSpecialization=selectedValues[0].specializationName;
