@@ -273,6 +273,30 @@ Candidate1 candi=null;
                     .add(Restrictions.eq("id.electionId", electionId))
                    .add(Restrictions.eq("id.instituteId", instituteId)));
             candi=(Candidate1) (criteria.list()!=null?criteria.list().get(0):null);
+            session.getTransaction().commit();
+
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+
+        finally {
+            session.close();
+        }
+        return candi;
+    }
+ public static List<Candidate1> getCandidateID(String instituteId,String Enrollment,String electionId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+  List<Candidate1> candi=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Candidate1.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("enrollment", Enrollment))
+                    .add(Restrictions.eq("id.electionId", electionId))
+                   .add(Restrictions.eq("id.instituteId", instituteId)));
+           // candi=(Candidate1) (criteria.list()!=null?criteria.list().get(0):null);
+            candi=(List<Candidate1>) criteria.list();
   session.getTransaction().commit();
 
         }
@@ -285,6 +309,8 @@ Candidate1 candi=null;
         }
         return candi;
     }
+
+
     public static Candidate1 searchcandidateMenifesto(String instituteId,String Enrollment,String election_id,String position_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Candidate1 candi=null;

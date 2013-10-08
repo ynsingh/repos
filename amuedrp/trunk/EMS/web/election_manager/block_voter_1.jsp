@@ -88,11 +88,9 @@ body
 function fun()
 {
    
-  
-    <%if(status!=null){%>
-    document.Form1.status.value = "<%=status%>";
-    <%}%>
-    
+  <%if(status!=null){%>
+     document.DepActionForm.status.value ="<%=status%>";
+       <%}%>
 document.DepActionForm.action="/EMS/votersetup1.do?status=A";
 document.DepActionForm.method="post";
 document.DepActionForm.target="f1";
@@ -243,7 +241,7 @@ for(int i=0;i<election.size();i++){
 </td></tr>
   <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="/EMS/votersetup1.do?status=A" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
        </table>
-<input  name="status" type="hidden" id="status"/>
+<input  name="status" type="hidden" id="status" />
 
 </form>
 
