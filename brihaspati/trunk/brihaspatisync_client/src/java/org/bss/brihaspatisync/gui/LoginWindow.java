@@ -178,7 +178,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		
                	username =new JLabel(Language.getController().getLangValue("LoginWindow.username"));
                 username.setEnabled(false);
-                usernameText=new JTextField("arvindjss17@gmail.com");
+                usernameText=new JTextField("guest");
                 usernameText.setEnabled(false);
 		usernameText.setName("username");
 		usernameText.addMouseListener(this);
@@ -191,7 +191,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 });
                 password=new JLabel(Language.getController().getLangValue("LoginWindow.password"));
                 password.setEnabled(false);
-                passwordField=new JPasswordField("arvind");
+                passwordField=new JPasswordField("guest");
                 passwordField.setEnabled(false);
 		passwordField.setName("passwd");
 		passwordField.addMouseListener(this);

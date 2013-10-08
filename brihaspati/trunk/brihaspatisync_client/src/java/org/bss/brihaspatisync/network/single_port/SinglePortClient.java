@@ -35,7 +35,7 @@ public class SinglePortClient implements Runnable {
 	private UtilObject utilobject=UtilObject.getController();
 	private int port=RuntimeDataObject.getController().client_single_port();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	
+	private HttpClient client = null;//new HttpClient();	
 	private static SinglePortClient post_screen=null;
 	
 	/**
@@ -189,28 +189,31 @@ public class SinglePortClient implements Runnable {
 	 */
 	private byte[] sendDataToReflector(byte[] send_data,String type) {
 		try {
-			HttpClient client = new HttpClient();
                         PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
-                        client.setConnectionTimeout(8000);
 			if(send_data != null)	
 				postMethod.setRequestBody(new java.io.ByteArrayInputStream(send_data));
                         postMethod.setRequestHeader("session",clientObject.getLectureID()+","+clientObject.getUserName()+","+type);
-			// Http Proxy Handler
-			if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-                        	HostConfiguration config = client.getHostConfiguration();
-                                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                client.getState().setProxyCredentials(authScope, credentials);
-                    	}
+			if(client == null ) {
+                                client = new HttpClient();
+                                client.setConnectionTimeout(8000);
+				// Http Proxy Handler
+				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+        	                	HostConfiguration config = client.getHostConfiguration();
+                	                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                        	        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                	AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+	                                client.getState().setProxyCredentials(authScope, credentials);
+        	            	}
+			}
 			int statusCode = client.executeMethod(postMethod);
 			byte[] receive_data_fromserver=postMethod.getResponseBody();
                         postMethod.releaseConnection();
-			
+			//client.notify();
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");	
 			ThreadController.setReflectorStatusThreadFlag(true);
 			return receive_data_fromserver;
 		}catch(Exception e) { 
+			client=null;
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 			ThreadController.setReflectorStatusThreadFlag(false);
 			System.out.println(this.getClass()+" in Send data from client to reflector "+e.getMessage());

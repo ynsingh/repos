@@ -304,36 +304,34 @@ public class PreferenceWindow extends JFrame implements ActionListener{
       				dos.flush();
 		  		//	out.write("Type="+"1"+"\n");
 			}catch(IOException e){}
-		}else {
-			if(rb3.isSelected()==true){
-				if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("")))||(!(proxyusertext.getText().equals("")))||(!(proxypasstext.getText().equals("")))){
-					try {
-						
-						String host=proxyhosttext.getText();
-						String port=proxyporttext.getText();
-						String user=proxyusertext.getText();
-						String pass=proxypasstext.getText();
-						RuntimeDataObject.getController().setProxyHost(host);
-		                	        RuntimeDataObject.getController().setProxyPort(port);
-						RuntimeDataObject.getController().setProxyUser(user);
-		                                RuntimeDataObject.getController().setProxyPass(pass);
-						if(indexurl != null)
-							HttpsUtil.getController().createHTTPConnection(indexurl);		
-						/***
-        						fos = new FileOutputStream(f);
-      							dos=new DataOutputStream(fos);
-		      					dos.writeBytes("Type="+"2"+"\n");       
-	        					log.setLog("this is a test");
-        						dos.writeBytes("ProxyHost="+host+"\n");
-        						dos.writeBytes("ProxyPort="+port+"\n");
-	        					dos.writeBytes("ProxyUser="+user+"\n");
-		        				dos.writeBytes("ProxyPass="+pass);
-			       				dos.flush();        	
-						*********/
-	    				}catch (IOException e) {}
-				}
+		}else if(rb3.isSelected()==true){
+			if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("")))||(!(proxyusertext.getText().equals("")))||(!(proxypasstext.getText().equals("")))){
+				try {
+					String host=proxyhosttext.getText();
+					String port=proxyporttext.getText();
+					String user=proxyusertext.getText();
+					String pass=proxypasstext.getText();
+					RuntimeDataObject.getController().setProxyHost(host);
+		                	RuntimeDataObject.getController().setProxyPort(port);
+					RuntimeDataObject.getController().setProxyUser(user);
+		                        RuntimeDataObject.getController().setProxyPass(pass);
+					if(indexurl != null)
+						HttpsUtil.getController().createHTTPConnection(indexurl);		
+					/***
+        				fos = new FileOutputStream(f);
+      					dos=new DataOutputStream(fos);
+		      			dos.writeBytes("Type="+"2"+"\n");       
+	        			log.setLog("this is a test");
+        				dos.writeBytes("ProxyHost="+host+"\n");
+        				dos.writeBytes("ProxyPort="+port+"\n");
+	        			dos.writeBytes("ProxyUser="+user+"\n");
+		        		dos.writeBytes("ProxyPass="+pass);
+			       		dos.flush();        	
+					*********/
+	    			} catch (IOException e) {}
 			}
 		}
+		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
