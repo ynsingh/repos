@@ -32,10 +32,13 @@ public class VotersetupAction1 extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-           List rst,rst1;
+       
+         List rst,rst1;
+
         HttpSession session = request.getSession();
-session.removeAttribute("resultset");
+
           String id=(String)request.getParameter("id");
+
           int pageno=Integer.parseInt((String)(request.getParameter("page")==null || request.getParameter("page")=="" ?"0":request.getParameter("page")));
        System.out.println("Page No"+pageno);
           if(id!=null)
@@ -55,10 +58,12 @@ session.setAttribute("resultset", v);
         String manager_id=(String)session.getAttribute("user_id");
         String status = "A";
        String searchby = request.getParameter("search_by");
-       String searchkeyword = request.getParameter("search_keyword");
-       String sortby = request.getParameter("sort_by");
-         System.out.println(searchkeyword+"......................hhdfh........."+searchby+"  "+id)   ;
-        VoterRegistrationDAO admindao=new VoterRegistrationDAO();
+    
+      String searchkeyword = request.getParameter("search_keyword");
+ 
+      String sortby = request.getParameter("sort_by");
+   
+       VoterRegistrationDAO admindao=new VoterRegistrationDAO();
        // ElectionDAO electiondao=new ElectionDAO();
        String status1=null;
        if(status==null) status1 = null;
@@ -70,9 +75,11 @@ session.setAttribute("resultset", v);
        if(sortby==null)
            sortby="id.enrollment";
 
+
        if(searchkeyword!=null && searchkeyword.isEmpty()==false)
-       { rst = admindao.getVoterDetailsByStatus(institute_id,status1,searchby,searchkeyword,sortby,pageno);
-        }
+       {
+        rst = admindao.getVoterDetailsByStatus(institute_id,status1,searchby,searchkeyword,sortby,pageno);
+           }
         else
            rst = admindao.getVoterDetailsByStatus(institute_id,status1,null,null,sortby,pageno);
 

@@ -402,7 +402,8 @@ else{             PagingAction o=new PagingAction(query,pageNumber,30);
             String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
 if(status==null){
   if(fieldvalue!=null)
-                query1 = query1 + "  and "+field+"=:infield";
+               // query1 = query1 + "  and "+field+"=:infield";
+      query1 = query1 +" and "+field+" like '"+fieldvalue +"%'";
 
    query1=query1+" order by "+sort;
 System.out.println(query1);
@@ -413,7 +414,8 @@ System.out.println(query1);
 }
 else{
             if(status!=null && !status.equalsIgnoreCase("AB") && fieldvalue!=null)
-                query1 = query1 + " and status = :status and "+field+"=:infield ";
+               // query1 = query1 + " and status = :status and "+field+"=:infield ";
+         query1 = query1 + " and status = :status and "+field+" like '"+fieldvalue +"%'";
             else if(status!=null && !status.equalsIgnoreCase("AB"))
                 query1 = query1 + " and status = :status ";
 
@@ -426,10 +428,10 @@ query1=query1+" order by "+sort;
 
             Query query = session.createQuery(query1);
 
-            if(fieldvalue!=null)
-            {query.setString("infield", fieldvalue);
+           // if(fieldvalue!=null)
+           // {query.setString("infield", fieldvalue);
 
-            }
+          //  }
 
 
             if(status!=null && !status.equalsIgnoreCase("AB"))
