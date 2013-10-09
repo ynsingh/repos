@@ -116,12 +116,12 @@ $(document).ready(function() {
                         }
                 }*/
 
-echo img(array('src' => base_url() . "uploads/logo/IIT_Bombay_logo.png")); $this->db->from('settings');$this->db->select('ins_name')->where('id', 1); $ins_name1 = $this->db->get(); foreach($ins_name1->result() as $row){
-$ins_name2 = $row->ins_name;}echo "$ins_name2";
+//echo img(array('src' => base_url() . "uploads/logo/IIT_Bombay_logo.png")); $this->db->from('settings');$this->db->select('ins_name')->where('id', 1); $ins_name1 = $this->db->get(); foreach($ins_name1->result() as $row){
+//$ins_name2 = $row->ins_name;}echo "$ins_name2";
 ?>  
 		<div id="info">
 			<?php
-		/*		echo $this->config->item('account_name');
+				echo $this->config->item('account_name');
 				echo " (";
 				echo anchor('user/account', 'change', array('title' => 'Change active account', 'class' => 'anchor-link-a'));
 				echo ")<br />";
@@ -135,7 +135,7 @@ $ins_name2 = $row->ins_name;}echo "$ins_name2";
 				echo date_mysql_to_php_display($this->config->item('account_fy_end'));
 				echo "<br/>";
 				echo "Date : ";
-				echo Date("l, d F Y");*/
+				echo Date("l, d F Y");
 			?>
 		</div>
 	</div>
