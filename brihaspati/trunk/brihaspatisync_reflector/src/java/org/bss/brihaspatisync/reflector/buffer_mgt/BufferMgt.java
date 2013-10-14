@@ -4,14 +4,14 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
  * BufferMgt.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2011,2013 ETRG,IIT Kanpur.
  */
-
 import java.util.Vector;
 import java.util.Enumeration;
 import java.io.*;	
 import java.util.Hashtable;
 import javax.sound.sampled.*;
+
 /**
  *@author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  *@author <a href="mailto:meera.knit@gmail.com">Meera Pal </a>
@@ -41,10 +41,10 @@ public class  BufferMgt {
                         	p1=p1-1;
 				if(((maxpointer-p1) >10)|| (buffer.size()>10)) {
                                 	createhashtable.resetPointer(5,type);
-                                      	buffer.removeRange(0,5,type);
+                                      	buffer.removeRange(0,5);
                                 } else {
                                 	createhashtable.resetPointer(p1,type);
-					buffer.removeRange(0,p1,type);
+					buffer.removeRange(0,p1);
                              	}
                      	}
             	}catch(Exception e){System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage()); }
@@ -63,7 +63,7 @@ public class  BufferMgt {
 			if(curpointer < size){
 				byte[] str=null;	
 				while( curpointer < size) {
-					String get_userid=(buffer.get(curpointer)).toString();
+					String get_userid=(buffer.getSourceUser_id(curpointer)).toString();
                                         user_id=user_id.trim();
 					if(get_userid != null) {
 	                                        if(!(get_userid.startsWith(user_id))) {
@@ -94,8 +94,7 @@ public class  BufferMgt {
 	 public  synchronized void putByte(byte[] data,String user_id,String type){
 		try {
 			Buffer buffer=createhashtable.set_getBuffer(type);
-                        buffer.put(user_id);
-                        buffer.putObject(data);
+                        buffer.put(user_id, data);
 		}catch(Exception e){ System.out.println("Exception in putByte method in BufferMgt class "+e.getMessage()); }
 	}
 

@@ -24,17 +24,26 @@ import java.util.Enumeration;
 public class  CreateHashTable {
 	
 	private Vector vector=null;
+
 	private Hashtable pointer_hashtable = new Hashtable();
+        /* For each media type defined by String, a new hashtable is added. This
+         * pointed hashable, has user_name and head location upto which data has been
+         * received by the user from reflector.
+         */ 
+
         private Hashtable storedata_hashtable = new Hashtable();
+        /* This hashtable contains the (string, pointers to buffers).
+         * The pointed hashtable will contain the buffer for the media
+         * type defined by string.
+         */
          
 	public CreateHashTable() { }	
                           
         /**
 	 * Create set_getBuffer method to check incoming packet type
-         *queue is available or not if not then create queue of that type.
+         * queue is available or not if not then create queue of that type.
          *         
          */          
-	
 	public Buffer set_getBuffer(String type) {
 		if(!storedata_hashtable.containsKey(type)){
                 	storedata_hashtable.put(type,new Buffer());
@@ -55,8 +64,8 @@ public class  CreateHashTable {
         }
 
 	/**
-        * resetPointer method is used to reset the values stored in hashtable after packets has deleted from queue.
-        *
+        * resetPointer method is used to reset the values stored in hashtable after packets have
+        * been deleted from queue.
         */ 
         public void resetPointer(int decreasepointer,String type){
                 try{
