@@ -15,7 +15,18 @@ class Ledger_model extends Model {
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
-			$options[$row->id] = $row->name;
+			$cd = $row->code;
+			$nme = $row->name;
+			if(substr($cd, 0, 2) == 10)
+				$name = "Liability : ".$nme;
+			if(substr($cd, 0, 2) == 20)
+				$name = "Asset : ".$nme;
+			if(substr($cd, 0, 2) == 30)
+				$name = "Income : ".$nme;
+			if(substr($cd, 0, 2) == 40)
+				$name = "Expenditure : ".$nme;
+			$options[$row->id] = $name;
+		//	$options[$row->id] = $row->name;
 		}
 		return $options;
 	}
@@ -28,7 +39,19 @@ class Ledger_model extends Model {
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
-			$options[$row->id] = $row->name;
+			$cd = $row->code;
+                        $nme = $row->name;
+                        if(substr($cd, 0, 2) == 10)
+                                $name = "Liability : ".$nme;
+                        if(substr($cd, 0, 2) == 20)
+                                $name = "Asset : ".$nme;
+                        if(substr($cd, 0, 2) == 30)
+                                $name = "Income : ".$nme;
+                        if(substr($cd, 0, 2) == 40)
+                                $name = "Expenditure : ".$nme;
+                        $options[$row->id] = $name;
+
+		//	$options[$row->id] = $row->name;
 		}
 		return $options;
 	}
@@ -41,7 +64,19 @@ class Ledger_model extends Model {
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
-			$options[$row->id] = $row->name;
+			$cd = $row->code;
+                        $nme = $row->name;
+                        if(substr($cd, 0, 2) == 10)
+                                $name = "Liability : ".$nme;
+                        if(substr($cd, 0, 2) == 20)
+                                $name = "Asset : ".$nme;
+                        if(substr($cd, 0, 2) == 30)
+                                $name = "Income : ".$nme;
+                        if(substr($cd, 0, 2) == 40)
+                                $name = "Expenditure : ".$nme;
+                        $options[$row->id] = $name;
+
+		//	$options[$row->id] = $row->name;
 		}
 		return $options;
 	}
@@ -54,7 +89,19 @@ class Ledger_model extends Model {
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
-			$options[$row->id] = $row->name;
+			$cd = $row->code;
+                        $nme = $row->name;
+                        if(substr($cd, 0, 2) == 10)
+                                $name = "Liability : ".$nme;
+                        if(substr($cd, 0, 2) == 20)
+                                $name = "Asset : ".$nme;
+                        if(substr($cd, 0, 2) == 30)
+                                $name = "Income : ".$nme;
+                        if(substr($cd, 0, 2) == 40)
+                                $name = "Expenditure : ".$nme;
+                        $options[$row->id] = $name;
+
+		//	$options[$row->id] = $row->name;
 		}
 		return $options;
 	}
@@ -200,7 +247,7 @@ class Ledger_model extends Model {
 		$this->db->where('ledger_id', $ledger_id)->update('entry_items', $update_data);
 		return;
 	}
- function get_numOfChild($id)
+ 	function get_numOfChild($id)
         {
                 $num = 0;
 		$sql = "SELECT id FROM ledgers WHERE group_id =?";
