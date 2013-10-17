@@ -70,10 +70,15 @@ import org.iitk.brihaspati.om.DepartmentPeer;
 import org.iitk.brihaspati.om.DeptSchoolUnivPeer;
 import org.iitk.brihaspati.om.DeptSchoolUniv;
 import org.iitk.brihaspati.om.SchoolPeer;
+import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
+import org.iitk.brihaspati.om.TelephoneDirectory;
+import org.iitk.brihaspati.om.ParentInfoPeer;
+import org.iitk.brihaspati.om.ParentInfo;
 import java.util.LinkedHashSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * This class contains methods for listing
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
@@ -82,6 +87,8 @@ import java.util.Map;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>  
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a> 
+ * @modify date 14-10-2013
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>  
  * @modified date:02-07-2011, 12-02-2013, 22-04-2013,31-05-2013
  */
@@ -187,7 +194,7 @@ public class ListManagement
 				for(int i=0;i<list.size();i++)
         	                {
 	                                String rollno=((StudentRollno)list.get(i)).getRollNo();
-					ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
+					//ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
 	                                String loginname=((StudentRollno)list.get(i)).getEmailId();
 	                                String Instid=((StudentRollno)list.get(i)).getInstituteId();
 					if(Instid.equals(Instituteid) && !lnamelist.contains(loginname)){
@@ -244,6 +251,9 @@ public class ListManagement
 	public static Vector getDetails(List list,String type)
 	{
 		Vector Details=new Vector();
+		Criteria criteria = new Criteria();
+		List v = null;
+		int uid=0;
 		try
 		{
 			/**
@@ -258,6 +268,7 @@ public class ListManagement
 					String loginName=(element.getUserName()).toString();
 					String firstName=(element.getFirstName()).toString();
 					String lastName=(element.getLastName()).toString();
+					uid = UserUtil.getUID(loginName);
 					String email=null;
 	                                try{
 		                                email=(element.getEmail()).toString();
@@ -278,6 +289,18 @@ public class ListManagement
                                                 }
                                         }catch(Exception e){}
                                         cuDetail.setStudsrid(k);
+					/* Check whether parent details exist*/
+                                        criteria.add(ParentInfoPeer.STUDENT_ID, uid);
+                                        v=ParentInfoPeer.doSelect(criteria);
+                                        if(v.size()>0)
+                                        {
+	                                        cuDetail.setParentFirstName("Exists");
+                                        }
+                                        else
+                                        {
+                                                cuDetail.setParentFirstName("NotExists");
+                                        }
+
 					Details.add(cuDetail);
 				}
 			}
@@ -290,7 +313,7 @@ public class ListManagement
 	                                //ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
         	                        String loginname=((StudentRollno)list.get(i)).getEmailId();
                 	                if(!lnamelist.contains(loginname)){
-	                                        int uid = UserUtil.getUID(loginname);
+	                                        uid = UserUtil.getUID(loginname);
 	                                        String fullname = UserUtil.getFullName(uid);
 						//ErrorDumpUtil.ErrorLog("fullname after search in util=="+fullname);
 	                                        CourseUserDetail cuDetail=new CourseUserDetail();
@@ -307,7 +330,17 @@ public class ListManagement
                                                 	}
                                        		}catch(Exception e){}
                                         	cuDetail.setStudsrid(k);						
-
+						/* Check whether parent details exist*/
+						criteria.add(ParentInfoPeer.STUDENT_ID, uid);
+						v=ParentInfoPeer.doSelect(criteria);
+						if(v.size()>0)
+						{
+							cuDetail.setParentFirstName("Exists");
+						}
+						else
+						{
+							cuDetail.setParentFirstName("NotExists");
+						}
 	                                        Details.add(cuDetail);
         	                        }
                 	                 lnamelist.add(loginname);
@@ -1004,5 +1037,6 @@ public class ListManagement
                 }
 		return mapschlist;
 	}
+	
 }
 

@@ -57,9 +57,9 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
 <tr>
 #if($tdcolor != "1")
-<td width=50%> 
+<td width=30%> 
 #elseif($tdcolor == "1")
-<td width=50% bgcolor="#AFDCEC">
+<td width=30% bgcolor="#AFDCEC">
 #end 
 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
 #if($lang == "hindi")
@@ -69,12 +69,19 @@ $!data.getMessage()
 #end
 </a></td>
 #if($tdcolor != "2")
-<td width=50%> 
+<td width=30%> 
 #elseif($tdcolor == "2")
-<td width=50% bgcolor="#AFDCEC">
+<td width=30% bgcolor="#AFDCEC">
 #end 
 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
         ##</td>  
+#if($tdcolor != "3")
+<td width=30%>
+#elseif($tdcolor == "3")
+<td width=30% bgcolor="#AFDCEC">
+#end  
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("searchFor","inst_admin").addPathInfo("count","3") style=text-decoration:none>$brih_view_parents</a>
+</td>
 	</tr>
 ##  </table>
 

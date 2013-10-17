@@ -8,6 +8,8 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date:3-11-2010,23-12-2010
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date:11-10-2013
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -268,6 +270,40 @@ $!data.getMessage()
 		<a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("status","more").addPathInfo("counter",$counter) style=text-decoration:none>More</a>
 		</td>*#
 		</tr>
+		## CHECK WHETHER PARENT DETAILS EXIST
+		#if($parent_details == "exists")	
+			<tr>
+				<td>$brih_parent $brih_first $brih_name</td>
+				<td><input type="text" name="PFName" value="$parent_fname" readonly></td>
+			</tr>
+			<tr>
+				<td>$brih_parent $brih_last $brih_name</td>
+				<td><input type="text" name="PLName" value="$parent_lname" readonly></td>
+			</tr>
+			<tr>	
+				<td>$brih_parent $brih_email</td>
+				<td><input type="text" name="PEMAIL" value="$parent_email" readonly></td>
+			</tr>
+			<tr>
+				<td>$brih_parent $brih_mobileno</td>
+				<td><input type="text" name="PMOBILE" value="$parent_mobile" readonly></td>
+			</tr>
+			<input type="hidden" name="parent_details" value="not_exists"/>
+		#else
+			<tr>
+		        	#formCell("Parent $brih_first $brih_name" "PFName" "")
+			</tr>
+         		<tr>
+           			#formCell("Parent $brih_last $brih_name" "PLName" "")
+         		</tr>
+         		<tr>
+          			#formCell("Parent $brih_email" "PEMAIL" "")
+         		</tr>
+			<tr>
+				#formCell("Parent Mobile No" "PMOBILE" "")
+			</tr>
+			<input type="hidden" name="parent_details" value="exists"/>
+		#end
 		<tr bgcolor="$ui.menuColor">
                 <td colspan=7>
 		#if($size == 0)

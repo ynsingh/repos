@@ -4,6 +4,8 @@
  * All Rights Reserved.
  *
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date:11-10-2013 (Priyanka Rawat)
  *#
 <!DOCTYPE html>
 <html>
@@ -21,24 +23,39 @@
 </head>
 
 $!data.getMessage()
-$page.setTitle("$brih_login $WikiPage | $brih_parent $brih_reg ")
+#if($mode == "instructor")
+	$page.setTitle("Home | $course | Student Management | Parent Registration")
+#else
+	$page.setTitle("Login Page | Parent Registration ")
+#end
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <body>
 	<table bgcolor="$ui.menuColor" width=100%>
-                <tr><td>
-                        <a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none> $brih_login $WikiPage </a>| $brih_parent $brih_reg   
-                </td></tr>
+		#if($mode == "instructor")
+			<tr><td>
+				<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+        	                <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+                	        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a> | $brih_parent $brih_reg
+			</tr></td>
+		#else
+                	<tr><td>
+                        	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none> $brih_login $WikiPage </a>| $brih_parent $brih_reg   
+                	</td></tr>
+		#end
         </table>
 
 
-##<form name="frm" method="post" action="$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang).setAction("ParentRegistration")">
-<form name="frm" method="post" action="$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang).setAction("ParentRegistration")">
-    <table align="left" width=100%>
+#if($mode == "instructor")
+	<form name="frm" method="post" action="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4").addPathInfo("status","ForallUser").setAction("ParentRegistration")">
+#else
+	<form name="frm" method="post" action="$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang).addPathInfo("mode","general").setAction("ParentRegistration")">
+#end
+    <table align="left" width=100% bgcolor="$ui.tableColor">
       <tr bgcolor="$ui.menuColor">
         <td> $brih_first $brih_name <span style="color:red;">*</span></td>
-        <td> <input type="text" name="fname" value=""> </td
+        <td> <input type="text" name="fname" value=""> </td>
       </tr>
-      <tr>
+      <tr bgcolor="$ui.tableColor">
         <td> $brih_last $brih_name <span style="color:red;">*</span></td>
         <td>  <input type="text" name="lname" value=""> </td>
       </tr>
@@ -46,7 +63,7 @@ $page.setTitle("$brih_login $WikiPage | $brih_parent $brih_reg ")
         <td> $brih_email $brih_Id<span style="color:red;">*</span></td>
         <td>  <input type="email" name="email" value=""> </td>
       </tr>
-      <tr>
+      <tr bgcolor="$ui.tableColor">
         <td> $brih_pwd <span style="color:red;">*</span></td>
         <td>  <input type="password" name="password" value=""> </td>
       </tr>
@@ -55,25 +72,30 @@ $page.setTitle("$brih_login $WikiPage | $brih_parent $brih_reg ")
         <td> $RemoteAddress <span style="color:red;">*</span></td>
         <td>  <textarea name="address"></textarea></td>
       </tr>
-      <tr>
+      <tr bgcolor="$ui.tableColor">
         <td> $brih_mobileno <span style="color:red;">*</span></td>
         <td>  <input type="text" name="mobileno" value=""> </td>
       </tr>
-      <tr><br>
-	<table id='FileBoxesGroup' width="100%">
-        	<tr id="FileBoxDiv1" bgcolor="$ui.menuColor" class="datepair">
-		        <td width="320px">$brih_student $brih_mail $brih_Id<font color="red">*</font></td>
-		        <td colspan=2 ><input type='email' id='text1' name="text1">
-			<input class="button-ftextstyle" type='button' value='Add text box' id='addFile'>
-			<input class="button-ftextstyle" type='button' value='Remove Box' id='removeFile'></td>
-	        </tr>
-	</table>
-      </tr>
-
+	#if($mode == "instructor")
+		<input type="hidden" name="stu_userName" value=$stu_userName>
+                <input type="hidden" name="stu_email" value=$stu_email>
+	#else	
+      		<tr bgcolor="$ui.menuColor"><br>
+			<table id='FileBoxesGroup' width="100%">
+        			<tr id="FileBoxDiv1" bgcolor="$ui.menuColor" class="datepair">
+		        		<td width="320px">$brih_student $brih_mail $brih_Id<font color="red">*</font></td>
+		        		<td colspan=2 ><input type='email' id='text1' name="text1">
+					<input class="button-ftextstyle" type='button' value='Add text box' id='addFile'>
+					<input class="button-ftextstyle" type='button' value='Remove Box' id='removeFile'></td>
+	        		</tr>
+			</table>
+	      </tr>
+	#end
           <tr bgcolor="$ui.menuColor">
           <td align=left colspan=2>
     <input type="hidden" name="myvalue" id="myvalue"  value="1">
     <input type="hidden" name="actionName" value=""/>
+    ##<input type="hidden" name="mode" value=$mode>
     <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="submit" onClick="check(document.frm,this);" id="upload"/>
     <input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
 </table>

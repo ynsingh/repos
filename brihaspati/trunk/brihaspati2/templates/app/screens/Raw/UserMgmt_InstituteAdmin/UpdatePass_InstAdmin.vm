@@ -47,6 +47,15 @@ $!data.getMessage()
 	<td bgcolor="#AFDCEC">
 	#end
 	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
+
+	#if($tdcolor != "3")
+        <td width=30%>
+        #elseif($tdcolor == "3")
+        <td width=30% bgcolor="#AFDCEC">
+        #end  
+                <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("searchFor","inst_admin").addPathInfo("count","3") style=text-decoration:none>$brih_view_all $brih_parent</a>
+        </td>
+
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin")">

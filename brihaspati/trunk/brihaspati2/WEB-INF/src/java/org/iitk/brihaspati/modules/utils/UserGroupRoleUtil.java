@@ -56,6 +56,8 @@ import org.iitk.brihaspati.om.ParentInfoPeer;
   * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
   * @author <a href="mailto:sharad23nov@yahoo.com">sharad singh</a>
   * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a> 
+  * @modify date: 14-10-2013(Priyanka Rawat)
   * @modify date: 27-07-2013
   */
  
@@ -164,6 +166,7 @@ public class UserGroupRoleUtil{
 	{
 		Vector uid=new Vector();
 		List v=null;
+		List v1=null;
 		int [] uId={1,0};
 		try{
 			Criteria crit=new Criteria();
@@ -177,9 +180,13 @@ public class UserGroupRoleUtil{
 			ErrorDumpUtil.ErrorLog("The error in try1 getUDetail()- UserGroupRoleUtil !!"+e);
 		}
 		try{
+			Criteria criteria = new Criteria();
+			CourseUserDetail cDetails;
                         for(int i=0;i<v.size();i++)
 			{
+				cDetails=new CourseUserDetail();
                                 TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(i);
+				//Here 's' is the user_id
                                 String s=Integer.toString(element.getUserId());
 				List st=UserManagement.getUserDetail(s);
 				for(int j=0;j<st.size();j++)
@@ -191,7 +198,7 @@ public class UserGroupRoleUtil{
                                 String eMail=element1.getEmail();
 				// Get the roll no of this student              
                                 String  stRlNo=CourseProgramUtil.getUserRollNo(uName,GroupUtil.getGroupName(gid));
-				CourseUserDetail cDetails=new CourseUserDetail();
+				//cDetails=new CourseUserDetail();
 				String userName=UserUtil.getFullName(Integer.parseInt(s)); // Get User Full Name
 				//String userName=fName+" "+lName;
 				cDetails.setLoginName(uName);
@@ -208,6 +215,22 @@ public class UserGroupRoleUtil{
                                         }catch(Exception e){}
                                         cDetails.setStudsrid(k);
 				uid.add(cDetails);
+				}
+				/*
+				  Check whether parent info of the user exists or not
+				*/
+				//ErrorDumpUtil.ErrorLog("Student's id ====="+s);
+				criteria.add(ParentInfoPeer.STUDENT_ID, s);
+				v1=ParentInfoPeer.doSelect(criteria);
+				if(v1.size()>0)
+				{
+					//ErrorDumpUtil.ErrorLog("inside if for s===");
+					cDetails.setParentFirstName("Exists");			
+				}
+				else
+				{	
+					//ErrorDumpUtil.ErrorLog("inside for of s=======");
+					cDetails.setParentFirstName("NotExists");
 				}
                 	}
        		}

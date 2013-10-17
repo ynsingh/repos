@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#)Profile.java	
  *
- *  Copyright (c) 2006-2007 ,2010ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2007 ,2010, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -48,6 +48,7 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.om.HintQuestion;
 import org.iitk.brihaspati.om.HintQuestionPeer;
 import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
@@ -64,7 +65,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 import org.iitk.brihaspati.om.TelephoneDirectory;
-
+import org.iitk.brihaspati.om.ParentInfoPeer;
+import org.iitk.brihaspati.om.ParentInfo;
 
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
@@ -72,6 +74,8 @@ import org.iitk.brihaspati.om.TelephoneDirectory;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date:3-11-2010,23-12-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kuma Pal</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date:11-10-2013
  */
 
 
@@ -84,7 +88,9 @@ public class Profile extends SecureScreen
     public void doBuildTemplate( RunData data, Context context )
     {
 	User uName=data.getUser();
-	String username=uName.getName();	
+	String parent_id="";
+	int j= 0;
+	String username=uName.getName();
 	int uid=UserUtil.getUID(username);
 	try{
 	
@@ -205,7 +211,7 @@ public class Profile extends SecureScreen
 	/**
  	 * Make record of all details of that username 	
  	 */ 	
-	for(int j=0;j<rlrecord.size();j++)
+	for(j=0;j<rlrecord.size();j++)
 	{
 		StudentRollno element4 = (StudentRollno)rlrecord.get(j);
 		int rlinstid = Integer.parseInt(element4.getInstituteId());
@@ -225,7 +231,50 @@ public class Profile extends SecureScreen
                	context.put("count",rlsize);
 		if(rlsize==0)
 			context.put("sizecount",rlsize);
-	}
+
+		/* Get details of parents, if exists*/
+		Criteria crit = new Criteria();
+		crit.add(ParentInfoPeer.STUDENT_ID,uid);
+		List parent = ParentInfoPeer.doSelect(crit);
+		//if parent details exist
+		if(parent.size()>0)
+		{
+			context.put("parent_details","exists");
+			for(j=0;j<parent.size();j++)
+			{
+				parent_id = ((ParentInfo)parent.get(j)).getParentId();
+			}
+			
+			Criteria crit1 = new Criteria();
+			crit1.add(TurbineUserPeer.USER_ID,parent_id);
+			List parent_details = TurbineUserPeer.doSelect(crit1);
+			for(j=0;j<parent_details.size();j++)
+			{
+				String parent_fname = ((TurbineUser)parent_details.get(j)).getFirstName();
+				String parent_lname = ((TurbineUser)parent_details.get(j)).getLastName();
+				String parent_email = ((TurbineUser)parent_details.get(j)).getEmail();
+				context.put("parent_fname",parent_fname);
+				context.put("parent_lname",parent_lname);
+				context.put("parent_email",parent_email);
+			}
+
+			Criteria crit2 = new Criteria();
+                        crit2.add(TelephoneDirectoryPeer.USER_ID,parent_id);
+                        List parent_details1 = TelephoneDirectoryPeer.doSelect(crit2);
+                        for(j=0;j<parent_details1.size();j++)
+                        {
+                                String parent_mobile = ((TelephoneDirectory)parent_details1.get(j)).getMobileNo();
+				context.put("parent_mobile",parent_mobile);
+			}
+			//context.put();
+			
+		}//if
+		else
+		{
+			//if parent details doesn't exist
+			context.put("parent_details","not_exists");
+		}
+	}//try
 
 	catch(Exception e){data.setMessage("The error in profile "+e);}
     }

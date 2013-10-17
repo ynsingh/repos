@@ -1,0 +1,95 @@
+#*
+ * @(#) InstEditParent.vm
+ * Copyright (c) 2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @creation date: 14-10-2013
+*#
+
+$page.setTitle("Admin Home | List Management | View All Parents | Edit Parent Detail")
+
+$!data.getMessage()
+
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<body bgcolor="$ui.bgcolor" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+        <td><font face="$ui.sansSerifFonts" size=3><a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home</a> |
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_view_parents</a> | $brih_edit $brih_parent $brih_detail
+        </td>
+</tr>
+</table>
+<table width=100% align=left bgcolor="$ui.tableColor">
+<tr>
+        #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>
+        #if($lang == "hindi")
+                $brih_listUsr
+        #else
+                $brih_view_all $brih_usr
+        #end
+        </a></td>
+        #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_view_all $brih_course</a>
+        </td>
+	#if($tdcolor != "3")    
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+##        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>View All Course</a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","3") style=text-decoration:none>$brih_view_all $brih_parent</a>
+        </td>
+
+</tr>
+</table>
+##<form name=frm method="post" action="$link.setPage("call,ParentManagement,InstEditParent.vm").setAction("EditInstituteParent")">
+<form name=frm method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").setAction("EditInstituteParent")">
+        <div align="left">
+        ##<table align=left cellspacing=1 bgcolor="$ui.tableColor" cellpadding="5">
+        <table align=left width=100% bgcolor="$ui.tableColor">
+        #foreach($parent in $ParentDetail)
+        	<tr bgcolor="$ui.menuColor">
+                	#formCell ("First Name" "fname" "$parent.getParentFirstName()")
+        	</tr>
+	        <tr>
+        	        #formCell ("Last Name" "lname" "$parent.getParentLastName()")
+	        </tr>
+        	<tr bgcolor="$ui.menuColor">
+                	#formCell ("Email" "email" "$parent.getParentEmail()")
+	        </tr>
+        	<tr>
+                	#entry1Cell("Username" "$parent.getUserName()")
+	        </tr>
+        	<tr bgcolor="$ui.menuColor">
+	                #formCell ("Mobile Number" "mobile" "$parent.getParentMobileNo()")
+        	</tr>
+	        <tr bgcolor="$ui.menuColor">
+        	        <td colspan=2 align=left>
+                		<input type="submit" class="button-ftextstyle"  name="eventSubmit_doUpdate" value="Update" />
+	                </td>
+        	</tr>
+        	<input type="hidden" name="parentId" value="$parent.getParentId()"/>
+        	<input type="hidden" name="studentId" value="$parent.getUserId()"/>
+	        <input type="hidden" name="mode" value="All">
+        	<input type="hidden" name="count" value="$tdcolor">
+        #end
+        </table>
+        </div>
+</form>
+</body>

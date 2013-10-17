@@ -63,6 +63,14 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5")>$online_online $brih_reg</a></td>
+	#if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor=="6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("count","6").addPathInfo("mode","instructor").addPathInfo("searchFor","instructor") style=text-decoration:none>$brih_parent $brih_info</a>
+        </td>
+
 </tr>
 #if($entry.size() !=0)
 

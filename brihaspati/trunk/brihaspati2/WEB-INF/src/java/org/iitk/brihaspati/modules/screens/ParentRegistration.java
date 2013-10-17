@@ -39,10 +39,12 @@ package org.iitk.brihaspati.modules.screens;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.modules.screens.VelocityScreen;
+import org.apache.turbine.om.security.User;
 
  /**
  * This screens called when user fillup the form and display to Sysadmin for accepting. 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 
 public class ParentRegistration extends VelocityScreen
@@ -53,8 +55,16 @@ public class ParentRegistration extends VelocityScreen
 			/**
 			  * Get Language and set in context for use in template.	
 			  */
+			User user=rundata.getUser();
 			String lang=rundata.getParameters().getString("lang","english");
 			context.put("lang",lang);
+			context.put("course",(String)user.getTemp("course_name"));
+			String mode=rundata.getParameters().getString("mode","");
+			context.put("mode",mode);
+			String student_userName = rundata.getParameters().getString("stu_userName");
+			context.put("stu_userName",student_userName);
+			String student_email = rundata.getParameters().getString("stu_email");
+			context.put("stu_email",student_email);
 		}
 		catch(Exception e) { 	rundata.setMessage("Error in Registration !!" +e);
 		}

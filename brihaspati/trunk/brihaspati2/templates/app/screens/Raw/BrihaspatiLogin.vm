@@ -431,7 +431,7 @@ $!msg
 ##Add Parent Registration link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english") style="text-decoration:none">$brih_parent $brih_reg </a>
+<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english").addPathInfo("mode","general") style="text-decoration:none">$brih_parent $brih_reg </a>
 </b></td></tr>
 ##Add ResendActivation link in login page
 <tr><td colspan=4><b>

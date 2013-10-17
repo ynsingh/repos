@@ -45,7 +45,7 @@ package org.iitk.brihaspati.modules.utils;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @modified date: 20-10-2010,3-11-2010, 23-12-2010, 13-07-2011
- *  @modified date: 09-08-2012 (Priyanka),31-05-2013,22-07-2013
+ *  @modified date: 09-08-2012,14-10-2013 (Priyanka),31-05-2013,22-07-2013
  */
 
 import java.util.Date;
@@ -95,6 +95,12 @@ public class CourseUserDetail
         private int present;
         private int absent;
         private int leave;
+	//parameters for parent details
+	private String parent_first_name;
+	private String parent_last_name;
+	private String parent_email;
+	private String parent_phoneNo;
+	private int parent_id;
         private String ClassType;
 	private String StudAttendKey;
 
@@ -460,6 +466,53 @@ public class CourseUserDetail
         public int getLeave()
         {
                 return leave;
+        }
+
+	//methods for getting/setting parent details
+	public void setParentFirstName(String parent_first_name)
+        {
+                this.parent_first_name=parent_first_name;
+        }
+
+        public String getParentFirstName()
+        {
+                return parent_first_name;
+        }
+
+	public void setParentLastName(String parent_last_name)
+        {
+                this.parent_last_name=parent_last_name;
+        }
+
+        public String getParentLastName()
+        {
+                return parent_last_name;
+        }
+
+	public void setParentEmail(String parent_email)
+        {
+                this.parent_email=parent_email;
+        }
+        public String getParentEmail()
+        {
+                return parent_email;
+        }
+
+	public void setParentMobileNo(String parent_phoneNo)
+        {
+                this.parent_phoneNo=parent_phoneNo;
+        }
+        public String getParentMobileNo()
+        {
+                return parent_phoneNo;
+        }
+	public void setParentId(int parent_id)
+        {
+                this.parent_id=parent_id;
+        }
+        public int getParentId()
+        {
+                return parent_id;
         }
 	// set/get class Type "Regular or Extra/Special class" for Attendance Management
 	public void setClassType(String ClassType)

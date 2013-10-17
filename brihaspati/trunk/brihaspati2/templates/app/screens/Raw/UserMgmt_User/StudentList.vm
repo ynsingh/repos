@@ -91,13 +91,31 @@ $!data.getMessage()
 	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a>
 	</td>
 	#if($tdcolor != "5")
-        <td colspan=4>
+        <td colspan=2>
 	#elseif($tdcolor=="5")
-	<td bgcolor="#AFDCEC" colspan=4>
+	<td bgcolor="#AFDCEC" colspan=2>
 	#end
         <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a>
 	</td>
-	#if($status=="notempty")
+	#if($tdcolor != "6")
+        <td colspan=2>
+        #elseif($tdcolor=="6")
+        <td bgcolor="#AFDCEC" colspan=2>
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("count","6").addPathInfo("course",$course).addPathInfo("mode","instructor").addPathInfo("searchFor","instructor") style=text-decoration:none>$brih_parent $brih_info</a>
+        </td>
+
+	 #if($status=="notempty")
+                #if($tdcolor != "7")
+                <td colspan=2>
+                #elseif($tdcolor=="7")
+                <td bgcolor="#AFDCEC" colspan=2>
+                #end
+                <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","7") style=text-decoration:none>$brih_listOfStudent $brih_download </a>
+                </td>
+        #end
+
+	#*if($status=="notempty")
 		#if($tdcolor != "6")
         	<td colspan=2>
 		#elseif($tdcolor=="6")
@@ -106,6 +124,13 @@ $!data.getMessage()
         	<a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","6") style=text-decoration:none>$brih_listOfStudent $brih_download </a>
 		</td>
 	#end
+	#if($tdcolor != "7")
+        <td colspan=4>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC" colspan=4>
+        #end
+        <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a>
+        </td>*#
 </tr>
 ##</table>
 #if($lang == "hindi")
@@ -145,7 +170,7 @@ $!data.getMessage()
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                 </td>
-<td colspan=10><a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listAllStudent</a></td>
+<td colspan=11><a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listAllStudent</a></td>
         </tr>
 ##</table>
 #if($status=="notempty")
@@ -216,7 +241,17 @@ $!data.getMessage()
                                         	$brih_marks $brih_view 
                                         #else
 	                                        $brih_view $brih_marks
-                                       #end </a> &nbsp;
+                                       #end 
+					#if($urecord.getParentFirstName() == "NotExists")
+						##<a href=$link.setPage("call,UserMgmt_User,AddParentDetails.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count","1") style=text-decoration:none>
+						<a href=$link.setPage("ParentRegistration.vm").addPathInfo("mode", "instructor").addPathInfo("stu_userName",$!urecord.getLoginName()).addPathInfo("stu_email",$!urecord.getEmail()) style=text-decoration:none>
+                                        	#if($lang!="english") 
+                                                	Parent Details
+                                        	#else
+                                                	Parent Details
+                                       		#end
+						</a> &nbsp;
+					#end
 					</td>
 			        </tr>
 	        #end

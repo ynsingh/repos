@@ -76,12 +76,20 @@ $page.setBgColor($ui.bgcolor)
         <td bgcolor="#AFDCEC">
 	#end
         <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a></td>
+	#if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor=="6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("count","6").addPathInfo("mode","instructor").addPathInfo("searchFor","instructor") style=text-decoration:none>$brih_parent $brih_info</a>
+        </td>
+
         </tr>
 ##</table>
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_User,StudentList.vm").setAction("UserAction_Instructor")">
 ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="5">
 <tr bgcolor="$ui.menuColor">
-	<td colspan=5><b>$brih_userDetail</b></td>
+	<td colspan=6><b>$brih_userDetail</b></td>
 </tr>
 <tr><td>
 ##<table width=100% bgcolor="$ui.tableColor">
@@ -91,13 +99,13 @@ $page.setBgColor($ui.bgcolor)
 			## All information should be display if status is update 
 			#if($stat=="update")
 				<tr bgcolor="$ui.menuColor"> #formCell ("$brih_first $brih_name" "firstname" $!user.FirstName)
-				<td colspan=3></td> </tr>
+				<td colspan=4></td> </tr>
 				<tr> #formCell ("$brih_last $brih_name" "lastname" $!user.LastName)
-				<td colspan=3></td>	 </tr>
+				<td colspan=4></td>	 </tr>
 				<tr bgcolor="$ui.menuColor"> #formCell ("$brih_email $brih_ID" "email" $!user.Email)
-				<td colspan=3></td> </tr>
+				<td colspan=4></td> </tr>
                                 <tr>
-                                        <td><b>$brih_program $brih_name</b></td><td colspan=4><b>$brih_rollno</b></td>
+                                        <td><b>$brih_program $brih_name</b></td><td colspan=5><b>$brih_rollno</b></td>
                                 </tr>
 				<tr bgcolor="$ui.menuColor">
                                 #if($UDetail.size()==0)
@@ -107,7 +115,7 @@ $page.setBgColor($ui.bgcolor)
 							<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 						#end
 					</td>
-					<td colspan=4 id="rl1">
+					<td colspan=5 id="rl1">
                                         </td>
                                 </tr>
 				#end
@@ -126,7 +134,7 @@ $page.setBgColor($ui.bgcolor)
 								#end
 							#end
 						</select></td>
-	                                        <td colspan=4 id="rl1">
+	                                        <td colspan=5 id="rl1">
         	                                ## get rollno from record
         	                                	$st.rlno
 	                                        </td></tr>
@@ -134,31 +142,31 @@ $page.setBgColor($ui.bgcolor)
 			#else
 				<tr bgcolor="$ui.menuColor">
 					<td width=30%>$brih_first$brih_name</b></td>
-					<td colspan=5>$!user.FirstName</td>
+					<td colspan=6>$!user.FirstName</td>
 				</tr>
 	        		<tr>
 					<td width=30%>$brih_last$brih_name</b></td>
-					<td colspan=5>$!user.LastName</td>
+					<td colspan=6>$!user.LastName</td>
 				</tr>
 	        		<tr bgcolor="$ui.menuColor">
 					<td width=30%>$brih_email $brih_ID</b></td>
-					<td colspan=5>$!user.Email</td>
+					<td colspan=6>$!user.Email</td>
 				</tr>
 				#if($UDetail.size()!=0)
 				<tr>
 					<td><b>$brih_program $brih_name</b></td>
-					<td colspan=4><b>$brih_rollno</b></td>
+					<td colspan=5><b>$brih_rollno</b></td>
 				</tr>
 				#foreach($st in $UDetail)
 					<tr bgcolor="$ui.menuColor">
 						<td>$st.pgname</td>
-                	                        <td colspan=4>$st.rlno</td>
+                	                        <td colspan=5>$st.rlno</td>
 					</tr>
 				#end
 				#end
 			#end
 			<tr>
-				<td align=left colspan=3>
+				<td align=left colspan=4>
 					<input type="hidden" name="username" value="$!user.UserName"/>  
 			</tr>
 		##</table>
@@ -167,7 +175,7 @@ $page.setBgColor($ui.bgcolor)
 	#if($counter==2)
 	<tr bgcolor="$ui.menuColor">
 	#end
-		<td colspan=5 >
+		<td colspan=6 >
 			#if($stat== "update")
 				<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			#elseif ($stat == "remove")

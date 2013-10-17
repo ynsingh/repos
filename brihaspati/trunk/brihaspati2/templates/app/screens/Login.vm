@@ -73,7 +73,7 @@ Click here  </a>
 
 <tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english") style=text-decoration:none>Parent Registration </a>
+<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english").addPathInfo("mode", "general") style=text-decoration:none>Parent Registration </a>
 </td></tr>
 
 <tr><td colspan=2>

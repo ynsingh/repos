@@ -56,6 +56,8 @@ import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.UserConfigurationPeer; 
+import org.iitk.brihaspati.om.ParentInfoPeer;
+import org.iitk.brihaspati.om.ParentInfo;
 import org.iitk.brihaspati.modules.utils.UserUtil;  
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;  
 import org.iitk.brihaspati.modules.utils.StringUtil;  
@@ -63,6 +65,7 @@ import org.iitk.brihaspati.modules.actions.SecureAction;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.UserManagement;
  
 /**
  *
@@ -76,7 +79,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @modified date:3-11-2010,23-12-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date: 15-10-2012
+ * @modified date: 15-10-2012, 11-10-2013
  */
 
 public class ProfileUser extends SecureAction
@@ -128,6 +131,15 @@ public class ProfileUser extends SecureAction
 		String mobdirectory=pp.getString("Mobdirectory");
 		String homedirectory=pp.getString("Homedirectory");
 		String othdirectory=pp.getString("Othdirectory");
+		String parent_details=pp.getString("parent_details");
+		String p_fname = "", p_lname = "",p_email = "", mobile = "";
+		if(parent_details.equals("exists"))
+		{
+			p_fname = pp.getString("PFName");
+			p_lname = pp.getString("PLName");
+			p_email = pp.getString("PEMAIL");
+			mobile = pp.getString("PMOBILE");
+		}
 	  	int count = Integer.parseInt(pp.getString("count"));
 	  	//ErrorDumpUtil.ErrorLog("count in profile action-------->"+count);
 	  	User user=data.getUser();
@@ -181,7 +193,6 @@ public class ProfileUser extends SecureAction
                 int taskconf=Integer.parseInt(tconf);
           	if(fileItem.getSize() >0)
  		{		
-			ErrorDumpUtil.ErrorLog("i m here");
 	  		long size=fileItem.getSize();	
 	  		Long size1=new Long(size);
 	  		byte Filesize=size1.byteValue();		
@@ -232,7 +243,6 @@ public class ProfileUser extends SecureAction
                                 	crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,uid);
         	        		List list = org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
                 			oldEmail =((org.iitk.brihaspati.om.TurbineUser)list.get(0)).getEmail();
-					ErrorDumpUtil.ErrorLog("Old email = "+oldEmail);
         	        		if(!(eMail.equals("")))
         	        			email_msg = everify.profileDetails(eMail, loginName, LangFile, true);
                 			//TurbineUserPeer.doUpdate(crit);
@@ -274,7 +284,6 @@ public class ProfileUser extends SecureAction
 					filePath=new File(filePath+"/"+PhotoName);
 					fileItem.write(filePath);
 					//For email verification
-					ErrorDumpUtil.ErrorLog("Catch the error "+email_msg);
 					if(email_msg.equals("Successfull"))
 						msg1=MultilingualUtil.ConvertedString("usr_prof3",LangFile);
 					else if(email_msg.equals("Exists"))
@@ -285,7 +294,14 @@ public class ProfileUser extends SecureAction
                                                 msg1=MultilingualUtil.ConvertedString("usr_prof",LangFile);
 					else
 						msg1=MultilingualUtil.ConvertedString("usr_prof",LangFile);
-		  			data.setMessage(msg1);
+
+					//Add parent details
+	                                if(parent_details.equals("exists"))
+        	                        {
+                	                        addParentDetails(p_fname, p_lname, p_email, LangFile, uid, address, mobile);
+                        	        }
+		  		
+					data.setMessage(msg1);
 				}//close4
 				else
 				{
@@ -321,13 +337,10 @@ public class ProfileUser extends SecureAction
                 		// For email verification
                 		crit=new Criteria();
                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,uid);
-				ErrorDumpUtil.ErrorLog("i m here 1");
 				List list = org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
-				ErrorDumpUtil.ErrorLog("size of list "+list.size());
 				if(list.size()>0)
                 	        	oldEmail =((org.iitk.brihaspati.om.TurbineUser)list.get(0)).getEmail();
                 //		String oldEmail =((TurbineUser)list.get(0)).getEmail();
-		            	ErrorDumpUtil.ErrorLog("Old email 1 = "+oldEmail);
                 		if(!(eMail.equals("")))
                 			email_msg = everify.profileDetails(eMail, loginName, LangFile, false);
                 		//TurbineUserPeer.doUpdate(crit);
@@ -338,19 +351,14 @@ public class ProfileUser extends SecureAction
 		* and update value in table "TELEPHONE_DIRECTORY" when corresponding data are present
 		*/
 				Vector instid1=InstituteIdUtil.getAllInstId(uid);
-				ErrorDumpUtil.ErrorLog("Institute vector "+instid1);
 				String str11="";
 				String instid="";
 				String str33="";
 				try{
 					for(int j=0;j<instid1.size();j++){
-						ErrorDumpUtil.ErrorLog("Institute Size "+instid1.size());
-						ErrorDumpUtil.ErrorLog("Value of j "+j);
 						str11=instid1.elementAt(j).toString();
-						ErrorDumpUtil.ErrorLog("Value of str11 "+str11);
 						if(!str11.equals(str33)){
 							instid=instid+"/"+str11;
-							ErrorDumpUtil.ErrorLog("Value of instid "+instid);
 						}
 					str33=str11;
 					}
@@ -362,7 +370,6 @@ public class ProfileUser extends SecureAction
 				
                                 tele.add(TelephoneDirectoryPeer.USER_ID,uid);
 				{
-						ErrorDumpUtil.ErrorLog("i m here");
                                                li = TelephoneDirectoryPeer.doSelect(tele);
                                                 if(li.size()>0) {
                                                         TelephoneDirectory element=(TelephoneDirectory)(li.get(0));
@@ -371,7 +378,6 @@ public class ProfileUser extends SecureAction
 							oldEmail = (element.getMailId());
 						}
                                 }
-				ErrorDumpUtil.ErrorLog("Old email 2 = "+oldEmail);
 				/**
                                  * now email will be updated after verification
                                  * thus value of old email will be maintained.
@@ -387,7 +393,6 @@ public class ProfileUser extends SecureAction
                                 tele.add(TelephoneDirectoryPeer.DEPARTMENT, department);
                                 tele.add(TelephoneDirectoryPeer.DESIGNATION, designation);
 				tele.add(TelephoneDirectoryPeer.INSTITUTE_ID,instid);
-				ErrorDumpUtil.ErrorLog("i m here 1");
                                 if(offdirectory.equals("Public")){
                                         String PubOffNo="1-"+officeno;
                                         tele.add(TelephoneDirectoryPeer.OFFICE_NO, PubOffNo);
@@ -440,21 +445,17 @@ public class ProfileUser extends SecureAction
 					if(li.size()==0)
 					{
 			                       	TelephoneDirectoryPeer.doInsert(tele);
-						 ErrorDumpUtil.ErrorLog("i m here 2");
 					}
 					else
 					{
 						TelephoneDirectoryPeer.doUpdate(tele);
-						 ErrorDumpUtil.ErrorLog("i m here 20");
 					}	
 			//---------------------------Telephone Directory----------------------------
 				/**
 				 * Getting values of template from parameterparser 
 				 */	 
-				ErrorDumpUtil.ErrorLog("i m here 21");
 				for(int k=1;k<=count;k++)
                                 {
-					ErrorDumpUtil.ErrorLog("i m here 3");
 					String InstName = pp.getString("instName"+k,"");
                         	        String PrgName = pp.getString("prg"+k,"");
                                 	String rollno = pp.getString("rollno"+k,"").trim();
@@ -491,13 +492,11 @@ public class ProfileUser extends SecureAction
  				 * then insert value in database
  				 */ 		
 				if(!rollno.equals(RlNo)){
-					ErrorDumpUtil.ErrorLog("i m here 4");	
 					//rollmsg=CourseProgramUtil.InsertRollNo(loginName,rollno,LangFile);
 					//rollmsg=CourseProgramUtil.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
 				}
 				}
 				//following check added by Priyanka
-				ErrorDumpUtil.ErrorLog("Catch the error 1 "+email_msg);
 				if(email_msg.equals("Successfull"))
 					msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg4",LangFile);
 				else if(email_msg.equals("Exists"))
@@ -508,9 +507,17 @@ public class ProfileUser extends SecureAction
                                         msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
 				else
 					msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
-           			data.setMessage(msg1+" "+rollmsg);
+		
+				//Add parent details
+				if(parent_details.equals("exists"))
+		                {
+                		        addParentDetails(p_fname, p_lname, p_email, LangFile, uid, address, mobile);
+		                }
+           	
+			data.setMessage(msg1+" "+rollmsg);
 
                 }
+
 	  }//if1	
           else
 	  {
@@ -519,6 +526,55 @@ public class ProfileUser extends SecureAction
 		setTemplate(data,"call,UserMgmt_User,Profile.vm");
 	  }	 
 }
+
+	/**
+	 * This method inserts parent's details into database
+	 */
+		public void addParentDetails(String p_fname, String p_lname, String p_email, String LangFile, int uid, String address, String mobile){
+			// Add parent details
+			try{
+        	               	String passwd=p_email;
+                	       	String []starr=passwd.split("@");
+                        	passwd =starr[0];
+       	                
+				/**
+				 *	for creating user profile use UserManagement util.
+                	         *	@see UserManagement util in utils 
+       				 */                 
+	                       	String msg=UserManagement.CreateUserProfile(p_email,passwd,p_fname,p_lname,"",p_email,"general","parent",LangFile,"","","act");
+        	                // The Code is Responsible For inserting data into ParentInfo Table
+				int parentId = UserUtil.getUID(p_email);
+                	        if(parentId!=-1){
+					Criteria s = new Criteria();
+                	       	        s.add(ParentInfoPeer.PARENT_ID,parentId);
+                        	       	List lst = ParentInfoPeer.doSelect(s);
+                                	if(lst.size()==0){
+	       	                	        Criteria criteria = new Criteria();
+        	       	                        criteria.add(ParentInfoPeer.PARENT_ID,Integer.toString(parentId));
+                	       	                criteria.add(ParentInfoPeer.STUDENT_ID,uid);
+                        		        ParentInfoPeer.doInsert(criteria);
+                                       		String fullName=UserUtil.getFullName(parentId);
+       		                                criteria = new Criteria();
+               		                        criteria.add(TelephoneDirectoryPeer.USER_ID,parentId);
+                       			        List UserExist = TelephoneDirectoryPeer.doSelect(criteria);
+                                        	if(UserExist.size() == 0)
+	       	                                {
+                	    	                        Criteria tele = new Criteria();
+                        	     	                tele.add(TelephoneDirectoryPeer.USER_ID,parentId);
+                                		        tele.add(TelephoneDirectoryPeer.MAIL_ID,p_email);
+	                                        	tele.add(TelephoneDirectoryPeer.NAME,fullName );
+	        	                                tele.add(TelephoneDirectoryPeer.ADDRESS, address);
+        	      		                        tele.add(TelephoneDirectoryPeer.MOBILE_NO, mobile);
+                		                        TelephoneDirectoryPeer.doInsert(tele);
+                                        	}
+					}//if
+				}// if
+			}//try
+			catch(Exception exe){
+				ErrorDumpUtil.ErrorLog("Error while adding parent's data to database--->"+exe);
+			}
+		}//method
+		
     /**
      * This is used in the event that the doPerform
      * above fails.

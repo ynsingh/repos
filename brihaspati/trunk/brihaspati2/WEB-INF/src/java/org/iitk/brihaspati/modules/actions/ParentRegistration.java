@@ -79,6 +79,8 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon </a>
+ * @author: <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat </a>
+ * @modified date: 11-10-2013 (Priyanka Rawat)
  */
 /**
 * class for registration of a new Parent 
@@ -125,6 +127,7 @@ public class ParentRegistration extends SecureAction_User
                         String serverName=data.getServerName();
                         ParameterParser pp=data.getParameters();
 			String language = pp.getString("lang");
+			String mode = pp.getString("mode");
 			LangFile = MultilingualUtil.LanguageSelectionForScreenMessage(language);
                         String email=pp.getString("EMAIL","");
                         String passwd=pp.getString("PASSWD","");
@@ -134,30 +137,54 @@ public class ParentRegistration extends SecureAction_User
                         String plname=pp.getString("lname","");
                         String address=pp.getString("address","");
                         String mobileno=pp.getString("mobileno","");
-                        int counter=Integer.parseInt(pp.getString("myvalue"));
-                        String semail = "null";
-                        String studentsemail = "";
-			boolean exist;
+			String studentsemail = "";
 			String stdnt_id = "";
 			List mailid = null;
-                        for(int count=0;count<counter;count++){
-                                semail = pp.getString("text"+(count+1));
-				Criteria mail = new Criteria();
-				mail.add(TurbineUserPeer.LOGIN_NAME,semail);
-				mailid = TurbineUserPeer.doSelect(mail);
-				if(mailid.size()>0){
-					stdnt_id = Integer.toString(((TurbineUser)mailid.get(0)).getUserId());
+			String search = "";
+			if(mode.equals("general"))
+			{
+                        	int counter=Integer.parseInt(pp.getString("myvalue"));
+                        	String semail = "null";
+                        	//String studentsemail = "";
+				boolean exist;
+				//String stdnt_id = "";
+				//List mailid = null;
+                        	for(int count=0;count<counter;count++){
+                                	semail = pp.getString("text"+(count+1));
+					Criteria mail = new Criteria();
+					mail.add(TurbineUserPeer.LOGIN_NAME,semail);
+					mailid = TurbineUserPeer.doSelect(mail);
+					if(mailid.size()>0){
+						stdnt_id = Integer.toString(((TurbineUser)mailid.get(0)).getUserId());
+					}
+					else
+						{data.setMessage(semail+" is not Register with our system"); break;}
+					if(StringUtils.isBlank(studentsemail)){
+						studentsemail=stdnt_id;
+					}
+					else{ 
+						studentsemail = studentsemail+"#"+stdnt_id;
+					}
+                        	}
+				if(mailid.size()>0)
+					search = "true";
+			}
+			else
+			{
+				studentsemail = pp.getString("stu_email","");
+				String stu_username = pp.getString("stu_userName", "");
+				Criteria crit = new Criteria();
+				crit.add(TurbineUserPeer.LOGIN_NAME,stu_username);
+				List student = TurbineUserPeer.doSelect(crit);
+				for(int i = 0;i<student.size();i++)
+				{
+					stdnt_id = Integer.toString(((TurbineUser)student.get(i)).getUserId());
 				}
-				else
-					{data.setMessage(semail+" is not Register with our system"); break;}
-				if(StringUtils.isBlank(studentsemail)){
-					 studentsemail=stdnt_id;
-				}
-				else{ 
-					studentsemail = studentsemail+"#"+stdnt_id;
-				}
-                        }
-			if(mailid.size()!=0){
+				if(mode.equals("All"))
+					search = "true";
+			}
+			
+			if(search.equals("true")){
 				/**
 	                        * for creating user profile use UserManagement util.
         	                * @see UserManagement util in utils 
@@ -174,7 +201,8 @@ public class ParentRegistration extends SecureAction_User
                 	        	if(lst.size()==0){
 	                		        Criteria crit = new Criteria();
         	                		crit.add(ParentInfoPeer.PARENT_ID,Integer.toString(parentId));
-		        	                crit.add(ParentInfoPeer.STUDENT_ID,studentsemail);
+		        	                //crit.add(ParentInfoPeer.STUDENT_ID,studentsemail);
+		        	                crit.add(ParentInfoPeer.STUDENT_ID,stdnt_id);
 	        		                ParentInfoPeer.doInsert(crit);
 						
 						String fullName=UserUtil.getFullName(parentId);
