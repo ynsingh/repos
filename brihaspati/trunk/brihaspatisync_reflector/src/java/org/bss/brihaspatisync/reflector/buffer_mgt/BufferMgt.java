@@ -6,11 +6,6 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2011,2013 ETRG,IIT Kanpur.
  */
-import java.util.Vector;
-import java.util.Enumeration;
-import java.io.*;	
-import java.util.Hashtable;
-import javax.sound.sampled.*;
 
 /**
  *@author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
@@ -20,96 +15,134 @@ import javax.sound.sampled.*;
  */
 
 public class  BufferMgt {
-	
-	private CreateHashTable createhashtable=new CreateHashTable();
 
-	public BufferMgt() {}
+	private Buffer buffer=null;
+
+	private CreateHashTable createhashtable=null;
+
+	private java.util.LinkedList<byte[]> data=null;
+	
+	public BufferMgt() {
+		createhashtable=new CreateHashTable();
+		data=new java.util.LinkedList<byte[]>();
+		buffer=new Buffer();
+	}
 
         /**          
  	 * create removeBufferAndSetPointer method to remove the packets from a specific queue.
          */                   
 
-        private void removeBufferAndSetPointer(String type){
+        private synchronized void removeBufferAndSetPointer(){
 		try {
-        		Buffer buffer=createhashtable.set_getBuffer(type);
-                       	int psize=0;                      
-                       	Vector pointer=createhashtable.getPointer();
-                        psize=pointer.size();
-                        int maxpointer=(Integer)pointer.get(0);
-                        int p1=(Integer)pointer.get((psize-1));
-                        if(p1>0) {
-                        	p1=p1-1;
-				if(((maxpointer-p1) >10)|| (buffer.size()>10)) {
-                                	createhashtable.resetPointer(5,type);
-                                      	buffer.removeRange(0,5);
-                                } else {
-                                	createhashtable.resetPointer(p1,type);
-					buffer.removeRange(0,p1);
+                       	java.util.Vector pointer=createhashtable.getPointer();
+                        int p1=(Integer)pointer.get(0);
+                        int maxpointer=(Integer)pointer.get(((pointer.size())-1));
+			if(p1>20) {
+				p1=p1-1;
+				if(((maxpointer-p1) >10) && (buffer.size()==100)) {
+                               		createhashtable.resetPointer(10);
+	                               	buffer.removeRange(10);
+				} else {
+					createhashtable.resetPointer(p1);
+					buffer.removeRange(p1);
                              	}
                      	}
-            	}catch(Exception e){System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage()); }
+            	} catch(Exception e) {System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage()); }
     	}
 	
 	/**
 	 * This method is used to get data from buffer 
 	 * and encrease pointer from ponter buffer .
 	 */  
-	
-	private byte[] sendData_IncreasePointer(String user_id,String type) throws Exception {
+	public synchronized byte[] sendDataAndIncreasePointer(String user_id) {
 		try {	
-             		int curpointer = createhashtable.getValue(user_id,type);
-			Buffer buffer=createhashtable.set_getBuffer(type);
+			user_id=user_id.trim();
+			int curpointer = createhashtable.getValue(user_id);
 			int size=buffer.size();
-			if(curpointer < size){
+			if((curpointer < size) && (curpointer != -1)) {
 				byte[] str=null;	
 				while( curpointer < size) {
 					String get_userid=(buffer.getSourceUser_id(curpointer)).toString();
-                                        user_id=user_id.trim();
 					if(get_userid != null) {
 	                                        if(!(get_userid.startsWith(user_id))) {
 							str=buffer.getObject(curpointer);
 							if(str != null) {
 	                	                                curpointer++;
-        	                	                        setPointer(user_id,curpointer,type);
+        	                	                        createhashtable.setPointer(user_id,curpointer);
 							}
-                                                	break;
-	                                        }
-        	                                curpointer++;
-                	                        setPointer(user_id,curpointer,type);
+	                                        }else {
+        	                                	curpointer++;
+                	                        	createhashtable.setPointer(user_id,curpointer);
+						}
 					}
+					if(str !=null)
+						break;
 				}
-				removeBufferAndSetPointer(type);
+				removeBufferAndSetPointer();	
 				return str;
 			}  
 		} catch(Exception e){ System.out.println("Exception in send Data Increase Pointer in BufferMgt class "+e.getMessage());}
 		return null;
-	 }
+	}
 
-
+	public byte[] sendData_AudioIncreasePointer(String user_id) {	
+		byte[] bigArray=null;
+		try {
+			user_id=user_id.trim();data.clear();int curpointer = createhashtable.getValue(user_id);
+                        int size=buffer.size();
+			try {
+                        if((curpointer < size) && (curpointer != -1)) {
+                                while( curpointer < size) {
+                                        String get_userid=(buffer.getSourceUser_id(curpointer)).toString();
+                                        if(get_userid != null) {
+                                                if(!(get_userid.startsWith(user_id))) {
+                                                        byte[] str=buffer.getObject(curpointer);
+                                                        if(str != null) {
+								data.addLast(str);
+                                                                curpointer++;
+                                                                createhashtable.setPointer(user_id,curpointer);
+                                                        }
+                                                }else {
+                                                	curpointer++;
+                                               		createhashtable.setPointer(user_id,curpointer);
+						}
+                                        }
+                                }
+			}
+			} catch(Exception ex){ System.out.println("send Audio Data Increase Pointer "+ex.getMessage()); }
+			int currentOffset = 0;
+                        for (int i=0;i<data.size();i++) {
+                                byte[] currentArray=data.get(i);
+                                if(currentArray != null) {
+                                        if(bigArray==null)
+                                                bigArray=new byte[(74*(data.size()))];
+                                        System.arraycopy(currentArray, 0,bigArray, currentOffset,currentArray.length);
+                                        currentOffset += currentArray.length;
+                                }
+                        }
+                        removeBufferAndSetPointer();
+                        
+                } catch(Exception e){ System.out.println("Exception in send Audio Data Increase Pointer in BufferMgt class "+e.getMessage());}
+                return bigArray;
+	}
          /**
           * Create putByte method to insert the packets in appropriate queue after matching 
           * packet type and queue type.                
           */                  
 
-	 public  synchronized void putByte(byte[] data,String user_id,String type){
+	 public synchronized void putByte(byte[] data,String user_id){
 		try {
-			Buffer buffer=createhashtable.set_getBuffer(type);
-                        buffer.put(user_id, data);
+                        buffer.putObjectAndUserId(user_id, data);
 		}catch(Exception e){ System.out.println("Exception in putByte method in BufferMgt class "+e.getMessage()); }
 	}
-
- 	public byte[] sendData(String user_id,String type) {
-                try {
-			if(!user_id.equals("")) {
-				return sendData_IncreasePointer(user_id,type);
-			}
-               	}catch(Exception s){ System.out.println("Exception in sendData method in BufferMgt class "+s.getMessage());}
-		return null;
-	}
 	
-	private synchronized void setPointer(String setip , int pointer,String type) {
-		try {	
-			createhashtable.setPointer(setip,pointer,type);
-		}catch(Exception e){}
-      	}  
+	public synchronized void putAudioBytes(byte[] data,String user_id){
+                try {
+			for(int i=0;i<data.length;i=i+74) {
+				int k=i+74;
+				byte[] audiobytes=java.util.Arrays.copyOfRange(data,i,k);
+				buffer.putObjectAndUserId(user_id,audiobytes);
+			}
+                }catch(Exception e){ System.out.println("Exception in putByte method in BufferMgt class "+e.getMessage()); }
+        }
 }

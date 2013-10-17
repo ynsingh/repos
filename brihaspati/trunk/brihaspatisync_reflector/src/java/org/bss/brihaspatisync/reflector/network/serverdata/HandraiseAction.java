@@ -16,8 +16,6 @@ import org.bss.brihaspatisync.reflector.RegisterToIndexServer;
 
 public class HandraiseAction {
 
-        private static HandraiseAction handraiseaction=null;
-
         private void startHandraiseAction(String handraise) {
                 try{
                 	RegisterToIndexServer.requestToChangeStatus(handraise);

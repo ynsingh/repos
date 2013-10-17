@@ -24,8 +24,6 @@ public class TCPUtil {
 
 	private MaintainLog log=MaintainLog.getController();
 		
-	private MyHashTable temp_ht=RuntimeDataObject.getController().getUserListMyHashTable();
-	
 	/**
         * Controller for the class.
         */
@@ -41,12 +39,12 @@ public class TCPUtil {
 	
 	public void getString(String course_id,String value ) {
 		try {
+			/*
 			if(!(temp_ht.getStatusCourseId(course_id))){
 				temp_ht.setCourseIdUserListVector(course_id,new VectorClass());
                         }
 			VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
-			log.setString("Vector Value ---------------- > "+vectorclass.getBackupTreeValue().toString());
-			vectorclass.setBackupTreeValue(value);
+			vectorclass.setBackupTreeValue(value);*/
 		}catch(Exception e){
 			log.setString("Error in method getString in TCPUtil.java class !! "+e.getMessage());
 		}

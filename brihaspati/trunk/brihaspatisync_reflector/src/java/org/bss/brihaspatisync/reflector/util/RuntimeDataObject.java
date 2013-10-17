@@ -21,19 +21,12 @@ public class RuntimeDataObject {
 
         private Properties prop=null;
 
-	private MyHashTable ht=null;
-
-	private MyHashTable videoht=null;
-	
-	private MyHashTable audioht=null;
-
-	private MyHashTable desktopht=null;
-	
-	private MyHashTable pptht=null;
+	private MyHashTable all_tool_buffer=null;
 
         private String indexServerAddr="";
 
         private boolean handraiseflag=false;
+
         private boolean presentationflag=false;
 
         private Vector vector= new  Vector();
@@ -104,55 +97,15 @@ public class RuntimeDataObject {
                         return indexServerAddr;
                 return null;
         }
-
-	public MyHashTable getInstructorVideoMyHashTable(){
-                if(videoht == null)
-                        videoht=new MyHashTable();
-                return videoht;
-        }
-
-	public MyHashTable getStudentVideoMyHashTable(){
-                if(videoht == null)
-                        videoht=new MyHashTable();
-                return videoht;
-        }	
-
-	public MyHashTable getDesktopServerMyHashTable(){
-                if(desktopht == null)
-                        desktopht=new MyHashTable();
-                return desktopht;
-        }
 	
-	public MyHashTable getAudioServerMyHashTable(){
-                if(audioht == null)
-                        audioht=new MyHashTable();
-                return audioht;
+	public MyHashTable getAll_Tool_BufferMng(){
+                if(all_tool_buffer == null)
+                        all_tool_buffer=new MyHashTable();
+                return all_tool_buffer;
         }
-	
-	public MyHashTable getPPTServerMyHashTable(){
-                if(pptht == null)
-                        pptht=new MyHashTable();
-                return pptht;
-        }
-
-	public MyHashTable getMyHashTable(){
-                if(ht == null)
-                        ht=new MyHashTable();
-                return ht;
-        }
-
-        /** 
- 	 * Get UserList Vector object according to course id
-         */
-
-        public MyHashTable getUserListMyHashTable(){
-                if(userListVector == null)
-                        userListVector = new MyHashTable();
-                return userListVector;
-        }
-
+		
         /** set course id */
-        public void setCourseID(String value) {
+        private void setCourseID(String value) {
                 if(!courseid.contains(value))
                         courseid.add(value);
         }
@@ -160,7 +113,7 @@ public class RuntimeDataObject {
 	/**
  	 * Get course id vector
  	 */  	
-        public Vector getCourseID(){
+        private Vector getCourseID(){
                 return courseid;
         }
 

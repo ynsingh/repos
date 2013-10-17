@@ -73,38 +73,35 @@ public class ParentReflectorCommunication implements Runnable {
                                 while((v.size()) !=0) {
                                         String type=v.get(0).toString();
                                         v.remove(0);
+					/*
                                         if(type.equals("Audio_Data")) {
                                                 try {	
-							MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-	                                                if(!temp_ht.getStatus(type+lecture_id)) {
-        	                                                BufferMgt buffer_mgt= new BufferMgt();
-                	                                        temp_ht.setValues(type+lecture_id,buffer_mgt);
+	                                                if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)) {
+								MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
                         	                        }
-	                               	                BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
-        	                                        byte[] sendbytes=buffer_mgt.sendData(username,type+lecture_id);
+	                               	                BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+        	                                        byte[] sendbytes=buffer_mgt.sendData_AudioIncreasePointer(username);
+							buffer_mgt.sendData(username,type+lecture_id);
 							byte[] rechive_bytes=sendDataToReflector(sendbytes,type);
 							if((rechive_bytes.length>0) && (rechive_bytes !=null) ) {
-                                                                buffer_mgt.putByte(rechive_bytes,username,type+lecture_id);
+                                                                buffer_mgt.putAudioBytes(bytes,username);
                                                         }
                                                 } catch(Exception e){ System.out.println("Error in Audio_Data in reflector to reflector "+e.getMessage());}
                                         }else if(type.equals("Desktop_Data")) {
 						try {
-                                                	MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
-                                                        if(!temp_ht.getStatus(type+lecture_id)){
-                                                                BufferMgt buffer_mgt= new BufferMgt();
-                                                                temp_ht.setValues(type+lecture_id,buffer_mgt);
+                                                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
+								MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
                                                         }
-                                                        BufferMgt buffer_mgt=temp_ht.getValues(type+lecture_id);
-                                                        byte[] sendbytes=buffer_mgt.sendData(username,type+lecture_id);
+                                                        BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+                                                        byte[] sendbytes=buffer_mgt.sendData_AudioIncreasePointer(username);
                                                         byte[] rechive_bytes=sendDataToReflector(sendbytes,type);
                                                         if((rechive_bytes.length>0) && (rechive_bytes !=null) ){
-                                                                buffer_mgt.putByte(rechive_bytes,username,type+lecture_id);
+                                                                buffer_mgt.putByte(rechive_bytes,username);
                                                         }
 						}catch(Exception e){ System.out.println("Error in Desktop_Data in reflector to reflector "+e.getMessage());}
 					} else if(type.equals("ch_wb_Data")) {
 						try {
-							MyHashTable temp_ht=runtimeObject.getMyHashTable();
-                                                        if(!temp_ht.getStatus(type+lecture_id)){
+                                                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
                                                                 BufferMgt buffer_mgt= new BufferMgt();
                                                                 temp_ht.setValues(type+lecture_id,buffer_mgt);
                                                         }
@@ -131,8 +128,7 @@ public class ParentReflectorCommunication implements Runnable {
 						} catch(Exception e){ System.out.println("Error in chat and whiteboard in reflector to reflector "+e.getMessage());}
 					}else if(type.equals("ins_video")) {
 						try {
-							MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
-	                                                if(!temp_ht.getStatus(type+lecture_id)){
+	                                                if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
         	                                                BufferMgt buffer_mgt= new BufferMgt();
                 	                                        temp_ht.setValues(type+lecture_id,buffer_mgt);
                         	                        }
@@ -145,8 +141,7 @@ public class ParentReflectorCommunication implements Runnable {
                                                 }catch(Exception e){ System.out.println("Error in Instructor video in reflector to reflector "+e.getMessage());}
 					}else if(type.equals("stud_video")) {
 						try {
-							MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
-                                        	        if(!temp_ht.getStatus(type+lecture_id)){
+                                        	        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
                                 	                        BufferMgt buffer_mgt= new BufferMgt();
                         	                                temp_ht.setValues(type+lecture_id,buffer_mgt);
                 	                                }
@@ -157,7 +152,7 @@ public class ParentReflectorCommunication implements Runnable {
                                                                 buffer_mgt.putByte(rechive_bytes,username,type+lecture_id);
                                                         }
                                                 }catch(Exception e){ System.out.println("Error in student video in reflector to reflector "+e.getMessage());}
-					}
+					}*/
                                         runner.sleep(10);runner.yield();
                                 }
                         }catch(Exception ep){ System.out.println("Error in SinglePortClient class  "+ep.getMessage());}

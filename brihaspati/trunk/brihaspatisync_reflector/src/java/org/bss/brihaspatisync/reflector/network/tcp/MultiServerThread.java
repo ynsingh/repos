@@ -66,6 +66,7 @@ public class MultiServerThread extends Thread {
 	}
 
 	public void run(){
+		/*
 		//Buffered Reader Thread is responsible for handle all inputStream for this socket.	
 		(bufferReaderThread=new Thread(){
                 	public void run(){
@@ -135,7 +136,7 @@ public class MultiServerThread extends Thread {
 						if((countint/7) == 0){
 							/**
 							 * send userlist to client
-							 */
+							 
 							for(int i=0 ; i<course_id.size();i++){
  								String courseid=course_id.get(i).toString();
 								MyHashTable tempht=RuntimeDataObject.getController().getUserListMyHashTable();
@@ -193,6 +194,6 @@ public class MultiServerThread extends Thread {
 					log.setString(" catch in MultiServerThread.java print reader line 72 !!"); 
 				}
                         }
-                }).start();
+                }).start();*/
 	}
 }

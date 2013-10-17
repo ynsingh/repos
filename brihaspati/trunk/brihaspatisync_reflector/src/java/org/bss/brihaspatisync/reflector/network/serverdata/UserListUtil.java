@@ -9,7 +9,6 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
 
 import java.util.Vector;
 import java.util.StringTokenizer;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
@@ -26,7 +25,6 @@ public class UserListUtil {
 	private static UserListUtil util=null;
 	private String senduserlist_to_client="";
 	private Vector status_vector=new Vector();	
-	private MyHashTable temp_ht=RuntimeDataObject.getController().getUserListMyHashTable();
 	
 		
 	protected UserListUtil() { }
@@ -41,13 +39,13 @@ public class UserListUtil {
                 try {
 			if(userlistdata.equals("noUser")){	
 	                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
-				temp_ht.removeCourseIdUserListVector(course_id);
+				UserListHashTable.removeCourseIdUserListVector(course_id);
 				senduserlist_to_client="sessionlist_timeout";
 			} else {
-				if(!(temp_ht.getStatusCourseId(course_id))) {
-                                	temp_ht.setCourseIdUserListVector(course_id,new VectorClass());
+				if(!(UserListHashTable.getStatusCourseId(course_id))) {
+                                	UserListHashTable.setCourseIdUserListVector(course_id,new VectorClass());
                         	}
-				VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
+				VectorClass vectorclass=UserListHashTable.getCourseIdUserListVector(course_id);
 	                        if(!(vectorclass.getValue().equals(userlistdata)))
         	                        vectorclass.addValue(userlistdata);
 			}
@@ -56,7 +54,7 @@ public class UserListUtil {
 	
 	public String getDataForVector(String course_id) {
                 try {
-			VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
+			VectorClass vectorclass=UserListHashTable.getCourseIdUserListVector(course_id);
 			if(vectorclass!=null){
 	                        senduserlist_to_client=vectorclass.getValue();
 			}

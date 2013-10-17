@@ -3,17 +3,15 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
 /**
  * CreateHashTable.java
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * Copyright (c) 2012.2013 ETRG,IIT Kanpur.
  */
  
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
-import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Collections;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> 
@@ -23,69 +21,36 @@ import java.util.Enumeration;
  
 public class  CreateHashTable {
 	
-	private Vector vector=null;
-
-	private Hashtable pointer_hashtable = new Hashtable();
+	private Vector vector=new Vector();
+		
+	private Hashtable<String, Integer> pointer_hashtable = null;
         /* For each media type defined by String, a new hashtable is added. This
          * pointed hashable, has user_name and head location upto which data has been
          * received by the user from reflector.
          */ 
 
-        private Hashtable storedata_hashtable = new Hashtable();
-        /* This hashtable contains the (string, pointers to buffers).
-         * The pointed hashtable will contain the buffer for the media
-         * type defined by string.
-         */
-         
-	public CreateHashTable() { }	
+	public CreateHashTable() { 
+		pointer_hashtable = new Hashtable<String, Integer> ();
+	}	
                           
-        /**
-	 * Create set_getBuffer method to check incoming packet type
-         * queue is available or not if not then create queue of that type.
-         *         
-         */          
-	public Buffer set_getBuffer(String type) {
-		if(!storedata_hashtable.containsKey(type)){
-                	storedata_hashtable.put(type,new Buffer());
-		}
-		return (Buffer)storedata_hashtable.get(type);
-	}
-
-	/**
-         *  Create setPointertoHashtable method to check incoming packet type hashTable
-         *  is available or not if not then create a hashTable of that type.
-         *                          
-         */     
-	public Hashtable setPointertoHashtable(String type) {
-                if(!pointer_hashtable.containsKey(type)){
-                        pointer_hashtable.put(type,new Hashtable());
-                }
-                return (Hashtable)pointer_hashtable.get(type);
-        }
-
 	/**
         * resetPointer method is used to reset the values stored in hashtable after packets have
         * been deleted from queue.
         */ 
-        public void resetPointer(int decreasepointer,String type){
+        public void resetPointer(Integer decreasepointer){
                 try{
-			Hashtable ht=setPointertoHashtable(type);
-                        ArrayList myArrayList=new ArrayList(ht.entrySet());
-                        Collections.sort(myArrayList, new MyComparator());
+			ArrayList myArrayList=new ArrayList(pointer_hashtable.entrySet());
                         Iterator itr=myArrayList.iterator();
                         while(itr.hasNext()){
                                 Map.Entry e=(Map.Entry)itr.next();
                                 String key = (String)e.getKey();
-                                int value = ((Integer)e.getValue()).intValue();
-                                if((value-decreasepointer) >0 ) {
-                                        value=value-decreasepointer;
-                                        ht.put(key,value);
-                                }
-				else {
-                                        ht.put(key,decreasepointer);
-                                }
+                                Integer value=pointer_hashtable.get(key);
+				value=value-decreasepointer;
+                                if(value >-1 ) 
+                                        pointer_hashtable.put(key,value);
+					
                         }
-                }catch(Exception e){ System.out.println("Exception in resetPointer Method in CreateHashTable class ");}
+                }catch(Exception e){ System.out.println("Exception in resetPointer Method in CreateHashTable class "+e.getMessage());}
         } 
   
         /**
@@ -95,39 +60,39 @@ public class  CreateHashTable {
          *
          */ 
 	     	
-        public void setPointer(String login_name,int pointer ,String type){
-		Hashtable ht=setPointertoHashtable(type);
+        public void setPointer(String login_name,Integer pointer){
                 try {
-                        ht.put(login_name,pointer);
-                        if(vector==null )
-                               vector=new Vector();
-                        vector.clear();
-			
-                        ArrayList myArrayList=new ArrayList(ht.entrySet());   
-                        Collections.sort(myArrayList, new MyComparator());
-                        Iterator itr=myArrayList.iterator();
-                        while(itr.hasNext()){
-                                Map.Entry e=(Map.Entry)itr.next();
-                                String key = (String)e.getKey();
-                                int value = ((Integer)e.getValue()).intValue();        
-                                vector.add(value);
-                     	}
+                        pointer_hashtable.put(login_name,pointer);
 		}catch(Exception e){System.out.println("Exception in setPointer Method in CreateHashTable class ");}
         }
-    
-	public Vector getPointer() throws Exception {
-  		return this.vector;
+  
+	/**
+	 * This method are used to set all pointer in increesing order 
+	 */ 
+	protected synchronized Vector getPointer() {
+                try {
+                        vector.clear();	
+			ArrayList myArrayList=new ArrayList(pointer_hashtable.entrySet());
+                        Iterator itr=myArrayList.iterator();
+                        while(itr.hasNext()){
+				Map.Entry e=(Map.Entry)itr.next();
+                                String key = (String)e.getKey();
+                                Integer value=pointer_hashtable.get(key);
+				vector.add(value);
+                        }
+			Collections.sort(vector);
+                }catch(Exception e){ System.out.println("Exception in resetPointer Method in CreateHashTable class ");}
+                return vector;
         }
-
+ 
         /**
          * To get the pointer value of given login name.
          */
 	
-	public int getValue(String login_name,String type) {
-		Hashtable ht=setPointertoHashtable(type);
+	public int getValue(String login_name) {
                 try {
-			if(ht.containsKey(login_name)){
-                        	int ik=((Integer)(ht.get(login_name))).intValue();
+			if(pointer_hashtable.containsKey(login_name)) {
+                        	Integer ik=pointer_hashtable.get(login_name);// ((Integer)(pointer_hashtable.get(login_name))).intValue();
              			return ik;
 			}
 			return 0;

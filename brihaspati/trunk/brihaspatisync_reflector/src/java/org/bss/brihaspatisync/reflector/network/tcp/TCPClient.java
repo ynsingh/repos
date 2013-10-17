@@ -104,6 +104,7 @@ public class TCPClient implements Runnable{
 	 *Check Queue for all new entry availble for broadcast.
          */
 	public void run(){
+		/*
 		try {	
 			client_ip=parentIp;
 			pingskt = new Socket(parentIp,TCP_Port);
@@ -230,7 +231,7 @@ public class TCPClient implements Runnable{
                              		}
 				}
                     	}
-		}).start();
+		}).start();*/
 	}
         
 	public Thread getRunner(){

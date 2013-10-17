@@ -48,7 +48,7 @@ public class HttpGetPost {
 			}
 			
 			/** set All course id */
-                        runtimeObject.setCourseID(lecture_id);
+                        //runtimeObject.setCourseID(lecture_id);
                         if(runtimeObject.getStatusCourseidIP(lecture_id+"#"+username)) {
                                	/** set course id and ip */
                                 runtimeObject.setCourseid_IP(lecture_id+"#"+username);
@@ -56,7 +56,7 @@ public class HttpGetPost {
                         if(data_value[1].startsWith("parent")) {
 				data_value[1]=data_value[1].replace("parent","");
                                 if(!data_value[1].equals("")) {
-                                       	org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(lecture_id,data_value[1]);
+                                       	//org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(lecture_id,data_value[1]);
                                	}
                          } 
                 }catch(Exception ex){System.out.println("Error in in http post and get server "+ex.getMessage());}

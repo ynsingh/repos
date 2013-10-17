@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 public class Buffer { 
 
-	private Vector userid_store; 
+	private Vector userid_store=null; 
         /* The userid_store contains the user_id of the source node which has generated the corresponding packet (byte[])
          * in the LinkedList<byte[]>.
          */
@@ -30,7 +30,7 @@ public class Buffer {
          * Create an empty Buffer
          */
 	public Buffer(){
-		userid_store= new Vector(10, 5);
+		userid_store= new Vector(100);
 		data=new LinkedList<byte[]>();
 	} 
     
@@ -52,7 +52,7 @@ public class Buffer {
                         return null;
         }
         
-	protected synchronized void put(Object x, byte[] y) {
+	protected synchronized void putObjectAndUserId(Object x, byte[] y) {
                 userid_store.add(x);
                 data.addLast(y);
         }
@@ -61,11 +61,11 @@ public class Buffer {
 	 * remove element from buffer 
 	 */
 	
-	protected synchronized void removeRange(int fromIndex, int endIndex) {
+	protected synchronized void removeRange(int endIndex) {
 		if(userid_store.size() > endIndex){
-			for(int j=fromIndex;j<endIndex;j++){
-				userid_store.removeElementAt(fromIndex);
-				data.remove(j);
+			for(int j=0;j<endIndex;j++){
+				userid_store.removeElementAt(0);
+				data.remove(0);
 			}
 		}
    	}
