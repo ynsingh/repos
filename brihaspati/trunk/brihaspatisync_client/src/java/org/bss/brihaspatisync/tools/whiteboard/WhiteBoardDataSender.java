@@ -53,9 +53,9 @@ public class WhiteBoardDataSender {
                     	msg=msg.append(Integer.toString(size1));
                     	msg=msg.append("$");
                     	msg=msg.append(msgdata1);
-                  	message=msg.toString();
-			System.out.println("message "+message);	
-			utilObject.setSendQueue(message);
+                  	message=java.net.URLEncoder.encode(msg.toString());
+			java.util.LinkedList sendqueue=utilObject.getSendQueue("Chat_Wb_Data");
+                        sendqueue.addLast(message.getBytes());
               	} catch(Exception e) { System.out.println("Error On WhiteBoardDataSender"+e.getMessage()); }
      	}
 }

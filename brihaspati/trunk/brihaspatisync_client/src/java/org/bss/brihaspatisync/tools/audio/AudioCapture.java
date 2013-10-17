@@ -98,17 +98,7 @@ public class AudioCapture implements Runnable {
                 } catch(Exception e){ System.out.println("Eception in capture Audio class "+e.getCause()); }
         }
 		
-	protected synchronized byte [] getAudioData() {
-		if(audioVector.size()>1) {
-			if(audioVector.size()>10) {
-				for (int i=1; i< 7; i++) {
-					audioVector.remove(1);	
-				}
-                        }
-			byte[] data=audioVector.get(0);
-			audioVector.remove(0);
-			return data;
-		}
-		return null;
+	protected synchronized java.util.LinkedList  getAudioData() {
+		return audioVector;
 	}
 }

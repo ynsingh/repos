@@ -82,7 +82,6 @@ public class HttpsUtil{
                         	        proxy = (Proxy) iter.next();
                                 	proxy_addr = (InetSocketAddress)proxy.address();
 				}
-				System.out.println("org.bss.brihaspatisync.gui=================>>>>>>>>>>>>>  "+proxy+" "+list.get(0).toString());
 				if(!(list.get(0).toString()).equals("DIRECT")) {
 					new org.bss.brihaspatisync.gui.PreferenceWindow().createWindow(url);
 				}

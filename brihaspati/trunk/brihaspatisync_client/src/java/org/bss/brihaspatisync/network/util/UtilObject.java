@@ -21,10 +21,6 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 
 public class UtilObject {
 
-	private Queue recQueue=null;	
-	private Queue sendQueue=null;
-        private Queue frameQueue=null;
-	
 	private java.util.Hashtable ht_for_queue = null;
 	private java.util.Hashtable ht_for_send_queue = null;
 	
@@ -68,52 +64,13 @@ public class UtilObject {
         }	
 	
 	public UtilObject(){
-		this.recQueue  =new Queue();
-		this.sendQueue =new Queue();
-                this.frameQueue=new Queue();  
 		this.ht_for_queue = new java.util.Hashtable();	
 		this.ht_for_send_queue = new java.util.Hashtable();	
 		
 	}
-        public void setframeQueue(String value){
-               frameQueue.putString(value);
-        }
-	public void setRecQueue(String value){
-                recQueue.putString(value);
-        }
-	public int getRecQueueSize(){
-                return recQueue.size();
-        }
-	public String getRecQueue(){
-		String value="";
-		try {
-                 	value =recQueue.getString().toString();
-			recQueue.remove();
-		}catch (Exception e){}
-		return value;
-        }
-	
-	public void setSendQueue(String value){
-                sendQueue.putString(value);
-        }
-	
-        public String getSendQueue() {
-		String value="";
-                try {
-			value= sendQueue.getString().toString();
-			sendQueue.remove();
-		}catch (Exception e){}
-		return value;
-        }
-	
-	public int getSendQueueSize(){
-                return sendQueue.size();
-        }
-	
 	public void addType(String type) {
                 if(!(type_vector.contains(type)))
                         type_vector.add(type);
-
         }
 
         public void removeType(String type) {

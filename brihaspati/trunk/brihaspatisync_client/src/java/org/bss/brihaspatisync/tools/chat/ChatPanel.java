@@ -58,7 +58,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 	private static ChatPanel chatPanel=null;
 	private JScrollPane scrollpane=null;
 	private UtilObject utilObject=UtilObject.getController();
-
+	
 	/**
 	 * Controller for class
  	 */
@@ -73,7 +73,6 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 	 * Create GUI for Chat Panel
 	 */
 	public JPanel createGUI(){
-
 		mainPanel=new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 
@@ -163,8 +162,9 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 			                sb=sb.append("ch");
                 			sb=sb.append("$");
 		                	sb=sb.append(msg);
-                		        send_msg=sb.toString();
-		              		utilObject.setSendQueue(send_msg);
+                		        send_msg=java.net.URLEncoder.encode(sb.toString());
+					java.util.LinkedList sendqueue=utilObject.getSendQueue("Chat_Wb_Data");
+					sendqueue.addLast(send_msg.getBytes());
 	               		}
                         }catch(Exception ex){}
              		input_text.setText("");

@@ -85,25 +85,48 @@ public class SinglePortClient implements Runnable {
 				v.clear(); v.addAll(utilobject.getTypeVector());	
 				while((v.size()) !=0){
 					String type=v.get(0).toString(); v.remove(0);
-					if(type.equals("Audio_Data")) {	
+					if(type.equals("Chat_Wb_Data")) {
+                                                try {
+                                                        LinkedList sendqueue=utilobject.getSendQueue("Chat_Wb_Data");
+                                                        byte[] send_data=null;
+                                                        if(sendqueue.size()>0) 
+                                                                send_data=(byte[])sendqueue.remove();
+                                                        byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
+                                                        if(receive_data_fromserver !=null) {
+                                                                if(receive_data_fromserver.length>0) {
+                                                                        LinkedList chat_wb=utilobject.getQueue("Chat_Wb_Data");
+                                                                        chat_wb.addLast(receive_data_fromserver);
+                                                                }
+                                                        }
+                                                } catch(Exception e) { System.out.println("Exception in http Client in Audio_Data "+e);}
+                                        } else if(type.equals("UserList_Data")) {
+						try {
+                                                        LinkedList sendqueue=utilobject.getSendQueue("UserList_Data");
+                                                        byte[] send_data=null;
+                                                        if(sendqueue.size()>0)  
+                                                                send_data=(byte[])sendqueue.remove();
+                                                        byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
+                                                        if(receive_data_fromserver !=null) {
+                                                                if(receive_data_fromserver.length>0) {
+                                                                        LinkedList chat_wb=utilobject.getQueue("UserList_Data");
+                                                                        chat_wb.addLast(receive_data_fromserver);
+                                                                }
+                                                        }
+                                                } catch(Exception e) { System.out.println("Exception in http Client in Audio_Data "+e);}
+					} else if(type.equals("Audio_Data")) {	
 					    	try {	
 							long l=System.currentTimeMillis();
 					        	LinkedList sendqueue=utilobject.getSendQueue("Audio_Data");
-						 	int i=10;
-						 	while(i !=0 ) {
-						   		byte[] send_data=null;
-						   		if(sendqueue.size()>0)
-						      			send_data=(byte[])sendqueue.remove();
-						   		byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
-								if(receive_data_fromserver !=null) {
-							   		if(receive_data_fromserver.length>0) {
-										LinkedList audio_queue=utilobject.getQueue("Audio_Data");
-        	                               	       				audio_queue.addLast(receive_data_fromserver);
-									}
-						   		} else
-						        		break;
-						   		i--;
-						 	}
+						   	byte[] send_data=null;
+						   	if(sendqueue.size()>0)
+						   		send_data=(byte[])sendqueue.remove();
+						   	byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
+							if(receive_data_fromserver !=null) {
+								if(receive_data_fromserver.length>0) {
+									LinkedList audio_queue=utilobject.getQueue("Audio_Data");
+        	                               	       			audio_queue.addLast(receive_data_fromserver);
+								}
+						   	} 
 							long cur_time=System.currentTimeMillis()-l;
 							NetworkController.Hashtable(type,cur_time);		
 					    	} catch(Exception e) { System.out.println("Exception in http Client in Audio_Data "+e);}
@@ -178,7 +201,7 @@ public class SinglePortClient implements Runnable {
 					}
 				}
 				runner.yield();
-				runner.sleep(5);
+				runner.sleep(100);
 			}catch(Exception ep) { System.out.println(this.getClass()+" Exception  "+ep.getMessage()); }
 			System.gc();
 		}
@@ -195,7 +218,7 @@ public class SinglePortClient implements Runnable {
                         postMethod.setRequestHeader("session",clientObject.getLectureID()+","+clientObject.getUserName()+","+type);
 			if(client == null ) {
                                 client = new HttpClient();
-                                client.setConnectionTimeout(8000);
+                                client.setConnectionTimeout(800000);
 				// Http Proxy Handler
 				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
         	                	HostConfiguration config = client.getHostConfiguration();
@@ -208,7 +231,6 @@ public class SinglePortClient implements Runnable {
 			int statusCode = client.executeMethod(postMethod);
 			byte[] receive_data_fromserver=postMethod.getResponseBody();
                         postMethod.releaseConnection();
-			//client.notify();
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");	
 			ThreadController.setReflectorStatusThreadFlag(true);
 			return receive_data_fromserver;

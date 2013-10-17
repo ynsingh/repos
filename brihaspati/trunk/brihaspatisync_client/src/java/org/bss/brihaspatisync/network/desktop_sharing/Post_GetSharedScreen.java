@@ -54,7 +54,7 @@ public class Post_GetSharedScreen implements Runnable {
 	private boolean getflag=false;
 	private boolean screen_mode=false;		
 	private static Post_GetSharedScreen post_screen=null;
-	private UtilObject clientobject=UtilObject.getController();		
+	private UtilObject utilObject=UtilObject.getController();		
 	private ByteArrayOutputStream os = new ByteArrayOutputStream();
 	
 	/**
@@ -77,7 +77,7 @@ public class Post_GetSharedScreen implements Runnable {
 			getflag=getscreen;
                         runner = new Thread(this);
                         runner.start();
-			clientobject.addType("Desktop_Data");
+			utilObject.addType("Desktop_Data");
 			System.out.println("PostSharedScreen start successfully !!");
 		}
         }
@@ -88,7 +88,7 @@ public class Post_GetSharedScreen implements Runnable {
         
 	public void stop() {
                 if (runner != null) {
-			clientobject.removeType("Desktop_Data");	
+			utilObject.removeType("Desktop_Data");	
 			flag=false;
 			getflag=false;
                         runner = null;		
@@ -133,7 +133,7 @@ public class Post_GetSharedScreen implements Runnable {
 					if(!getflag) {
 						BufferedImage image=captureScreen();
 						encode(image);
-						LinkedList send_queue=clientobject.getSendQueue("Desktop_Data");
+						LinkedList send_queue=utilObject.getSendQueue("Desktop_Data");
 						if(send_queue.size() ==0 ) {
 							send_queue.addLast(os.toByteArray());
 						}else {
@@ -145,7 +145,7 @@ public class Post_GetSharedScreen implements Runnable {
 						os.reset();	
 					}else {
 						/****   receive the image from reflector **********/
-						LinkedList desktop_queue=clientobject.getQueue("Desktop_Data");
+						LinkedList desktop_queue=utilObject.getQueue("Desktop_Data");
                                                 if(desktop_queue.size()>0) {
 							byte[] bytes1=(byte[])desktop_queue.get(0);
 							desktop_queue.remove(0);

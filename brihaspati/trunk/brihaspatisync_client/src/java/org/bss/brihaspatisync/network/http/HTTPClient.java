@@ -41,6 +41,7 @@ public class HTTPClient extends Thread {
 		while(ThreadController.getThreadFlag()){
                      	try {
 				if(ThreadController.getReflectorStatusThreadFlag()) {
+					/*
 					String chat_wb_handraise_data="nodata";
 					if(utilObject.getSendQueueSize() != 0) {
         	                		chat_wb_handraise_data=utilObject.getSendQueue();
@@ -54,7 +55,6 @@ public class HTTPClient extends Thread {
                        			}else {
                                 		parentip="null";
 	                                }
-					/****   send the chat and whiteboard data to reflector ****/
 					LinkedList send_queue=utilObject.getSendQueue("ch_wb_Data");
 					String message=chat_wb_handraise_data+"req"+parentip;
 					
@@ -85,7 +85,7 @@ public class HTTPClient extends Thread {
 							if(!str1.equals("nodata"))
 								utilObject.setRecQueue(str2);	
 						}
-					}
+					}*/
 				}
 				this.yield();
 				this.sleep(2000);

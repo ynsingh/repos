@@ -148,11 +148,11 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 	public void run(){
 		while(wb_Flag && ThreadController.getThreadFlag()){
 			while(draw_vector.size() !=0 ) {
+				try {
 				wbSize_Flag=true;
 				for(int i=0;i<draw_vector.size();i++){
 					StringTokenizer st = new StringTokenizer((String)draw_vector.get(i),"$");
                 			while(st.hasMoreTokens()) {
-                        			String type=st.nextToken();
 	                        		bcolr = Integer.parseInt(st.nextToken());
 		        	                figr=Integer.parseInt(st.nextToken());
         		        	        x1r = Integer.parseInt(st.nextToken());
@@ -169,6 +169,9 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 				}
 				if(draw_vector.size() == 0)
 					wbSize_Flag=false;
+				runner.yield();
+				runner.sleep(100);
+				} catch(Exception e){}
 			}
 		}
 	}

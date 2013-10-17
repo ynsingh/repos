@@ -23,6 +23,8 @@ public class AudioPlayer implements Runnable {
 	private static AudioPlayer ap=null;
 	private Thread runner=null;
         private boolean flag=false;
+	private byte[] bigArray=new byte[1280*10];
+	private int currentOffset = 0;
 	private SourceDataLine sourceDataLine=null;
 	private LinkedList<byte[]> audioVector=new LinkedList<byte[]>();
         private AudioFormat audioFormat=org.bss.brihaspatisync.util.AudioUtilObject.getAudioFormat();;
@@ -81,19 +83,23 @@ public class AudioPlayer implements Runnable {
 		
 		while(flag && org.bss.brihaspatisync.util.ThreadController.getThreadFlag()){
 			try {
-				if(audioVector.size() > 7) {
-					byte[] bigArray=new byte[((getDecoder(audioVector.get(0)).length)*7)];
-					int currentOffset = 0;
-					for (int i=0;i<7;i++) {
-						byte[] currentArray=getDecoder(audioVector.get(0)); audioVector.remove(0);
-						System.arraycopy(currentArray, 0,bigArray, currentOffset,currentArray.length);
-						currentOffset += currentArray.length;
+				if(audioVector.size() > 10) { 
+					byte[] original=audioVector.get(0);audioVector.remove(0);
+					for(int i=0;i<original.length;i=i+74) {	
+						int k=i+74;
+						byte[] tempbyte=java.util.Arrays.copyOfRange(original,i,k);
+						byte[] decodebytearray=getDecoder(tempbyte); 
+						System.arraycopy(decodebytearray, 0,bigArray, currentOffset,decodebytearray.length);
+                                                currentOffset += decodebytearray.length;
+						if(currentOffset == 12800) {
+							if(sourceDataLine != null ) {
+                                				sourceDataLine.write(bigArray,0,bigArray.length);
+				                        } else
+                                				sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();
+							currentOffset = 0;
+						}
 					}
-					if(sourceDataLine != null ) {
-                                                sourceDataLine.write(bigArray,0,bigArray.length);
-						System.gc();
-					} else
-                                        	sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();	
+				        System.gc();
 				} 
 				runner.yield();	
 			} catch(Exception ex) { System.out.println("Exception in AudioPlayer in run() method "+ex.getMessage());}
@@ -106,8 +112,7 @@ public class AudioPlayer implements Runnable {
 			decoder.processData(audio_data, 0, audio_data.length);
         	        decoded_data= new byte[decoder.getProcessedDataByteSize()];
        	                decoder.getProcessedData(decoded_data, 0);
-		}catch(Exception e){  System.out.println("Exception in AudioPlayer class in getDecoder method  "+e.getMessage());}
+		} catch(Exception e){  System.out.println("Exception in AudioPlayer class in getDecoder method  "+e.getMessage());}
 		return decoded_data;
 	}
-
 }

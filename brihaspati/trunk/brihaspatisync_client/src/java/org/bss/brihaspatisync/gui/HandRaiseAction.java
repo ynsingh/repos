@@ -91,10 +91,9 @@ public class HandRaiseAction implements MouseListener {
 			String indexServer1=client_obj.getIndexServerName();
 			if(!(indexServer1.equals(""))){
 				sb="HandRaiseAction";
-                                sb=sb+id+","+user+","+Request;
-                                utilObject.setSendQueue(sb);
-				System.out.println(" sb "+sb+"\n\n\n\n");
-                                
+                                sb=sb+id+","+user+","+Request+"reqnull";
+				java.util.LinkedList sendqueue=utilObject.getSendQueue("UserList_Data");
+                                sendqueue.addLast(sb.getBytes());
 			}else{
 				System.out.println("Insufficient indexServer name in HandRaiseAction :");
 			}
