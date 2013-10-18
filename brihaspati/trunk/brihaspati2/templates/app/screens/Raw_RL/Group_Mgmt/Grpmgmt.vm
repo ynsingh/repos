@@ -8,6 +8,7 @@
  *  @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ *  @modify <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal </a>
  *  @modified date: 31-12-2009, 07-09-2010, 11-08-2011
  *  @modified date:jan 17- 2011
  *  @modified date:Feb 15- 2011, Feb 07 2013, 22-04-2013
@@ -34,8 +35,10 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr align="right"><td>
-	<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none"><b>$brih_home</a> | 
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a>| $brih_mgmt $brih_grp </td></tr>
+         $brih_mgmt $brih_grp 
+ 	|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none"> $coursename </a>
+	|<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none"><b>$brih_home</a> 
+         </td></tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 <tr align="right">

@@ -1,121 +1,204 @@
 <html>
 #*
  * @(#) Grp_View_Delete.vm
- *  Copyright (c) 2006-07,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006-07,2009,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
- *  @modify <a href="mailto:shaistashekh@hotmail.com"> Shaista</a> 
- *  @modify 07-05-09
+ *  @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ *  @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ *  @modified date:Feb 15- 2011,Feb 07-2013, April 22-2013
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
-$!data.getMessage()
+
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-<table bgcolor="$ui.tableColor" width=100% > ##table 1 start
+
+$!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
+
+<table bgcolor="$ui.menuColor" width=100% > ##table 1 start
 <tr align="right">
-	<td align=right>
-        	#if( $total_size!=0 )
-                	#if( $endIndex < $total_size )
-                        	#if( $endIndex < $userConf )
-					  [$total_size - $k] $brih_all $total_size  $brih_inFrom
-                        	#elseif($k == $j)
-					  [$total_size - $k] $brih_all $total_size  $brih_inFrom
-                        	#else
-        	        		 [$endIndex -$k] $brih_all $total_size $brih_inFrom
-                        	#end
-                	#else
-				  [$total_size - $k] $brih_all $total_size  $brih_inFrom
-                	#end
-        	#end
+        <td align=right>
+                #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                                #if( $endIndex < $userConf )
+                                          [$total_size - $k] $brih_all $total_size  $brih_inFrom
+                                #elseif($k == $j)
+                                          [$total_size - $k] $brih_all $total_size  $brih_inFrom
+                                #else
+                                         [$endIndex -$k] $brih_all $total_size $brih_inFrom
+                                #end
+                        #else
+                                  [$total_size - $k] $brih_all $total_size  $brih_inFrom
+                        #end
+                #end
         </td>
-	<td><b>
-       	<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_mgmt $brih_grp </a> |
- 	$brih_view/$brih_delete $brih_grp
-       	| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>| 
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
-	</b> </td>
+        <td><b>
+        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_mgmt $brih_grp </a> |
+        $brih_view/$brih_delete $brih_grp
+        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>|
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+        </b> </td>
 </tr>
 </table> ##table 1 end
-<table width=100% > ##table 2 start
-	<tr>
-		<td align ="right">
-		<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/view-deletegroup.html","newWin");>$brih_help</a>
-		</td>
-	</tr>
+
+<table width=100% bgcolor="$ui.tableColor"> ##table 2 start
+
+<tr align="right">
+<td>
+        #if($Status!="Edit")
+        <a href=javascript:popupWin("/brihaspati2/docs/add-viewmembers.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+        #else
+        <a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin"); style="text-decoration:none">$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+        #end
+        </td>
+
+       #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5") style="text-decoration:none">$brih_grp #if($lang == "hindi") $brih_Of #end $brih_activity</a></id>
+
+       #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+        ##<a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>Edit/Remove Member</a></td>
+        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4") style="text-decoration:none"> #if($lang == "hindi") $brih_member $brih_Of1 $brih_edit/$brih_remove #else $brih_edit/$brih_remove $brih_member #end </a></td>
+
+     #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+        #end
+        ##<a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3")>View/Delete Group</a></td>
+        <a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_grp $brih_Of1 $brih_view/$brih_delete #else $brih_view/$brih_delete $brih_grp #end </a></td>
+
+#if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        ##<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")>Add/View Member</a></td>
+        <a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi") $brih_member $brih_add/$brih_view #else $brih_add/$brih_view $brih_member #end  </a></td>
+
+       ##if($user_role == "instructor")
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>Create Group</a></td>
+        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_grp $brih_Of1 $WikiCreate #else $WikiCreate $brih_grp #end</a></td>
+</td>
+        </tr>
 </table> ## table 2 end
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").setAction("Groupmanagement")>
-	<table align="center" border=1 bgcolor="$ui.tableColor" width=85% > ## table 3 start
-	<tr bgcolor="$ui.menuColor"><td align ="center"colspan=5 vlaign="top"> ## td tr 1 satart
-        <b><font size=4<I> $brih_course </I>$brih_Of2 $brih_grp <font color="blue"> " $courseid " </font> </font></b>
+<table bgcolor="$ui.tableColor" width=100%> ## table 3 start
+	<tr bgcolor="$ui.menuColor" align="right"><td colspan=5 vlaign="top"> ## td tr 1 satart
+	#if($lang=="english")
+        <b><I>$brih_grp $brih_Of1 $brih_course </I><font color="blue"> " $courseid " </font></b>
+	#else
+        <b><I> $brih_course </I><font color="blue"> " $courseid " </font>$brih_Of2 $brih_grp</b>
+	#end
 	</td></tr>
-	<tr><td align="center" colspan="5"> ##  td tr 2 start
-	<b><font size=4><I>: $brih_grp $brih_Of $brih_infos </I></font></font></b>
+	<tr align="right"><td colspan="5"> ##  td tr 2 start
+	<b><I>:$brih_infos #if($lang =="hindi") $brih_Of #end $brih_Groups</I></b>
 	#if($Mode=="NoBlank") ## if satar (mode)
-	<table  border="0" bgcolor="$ui.tableColor" width="100%" colspan="5"> ## table 5 start
-	#set($headings=["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_creation $brih_Da","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_grp $brih_Of1 $brih_type","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_grp $brih_Of1 $brih_name"])
-	<tr bgcolor="$ui.tableColor" align="right"> ## tr 3 start
+	<table bgcolor="$ui.tableColor" width="100%" colspan="5"> ## table 5 start
+	#set($headings=["$brih_grp $brih_Of1 $brih_grpleader","$brih_creation $brih_Da","$brih_grp $brih_Of1 $brih_type", "$brih_grp $brih_Of1 $brih_name"])
+	<tr bgcolor="$ui.menuColor" align="right"> ## tr 3 start
                         #foreach($heading in $headings)
                         <td>
                                 <b>$heading</b>
                         </td>
                         #end
-                       	<td align="right">
-                        <font face="$ui.sansSerifFonts"><b>$brih_selAll</b>
-			<input type="CHECKBOX" name="checkAll" onClick="selectAll(this);">
-                        </td>
-			#set ( $count="" )
+			    <td>
+                                <b>$brih_selAll</b>
+				<input type="CHECKBOX" name="checkAll" onClick="selectAll(this);">
+                                </td>
+
+			#set ( $counts="" )
 			#foreach($Read in $grplist)
-			#if($groupname == $Read.Name)
-				<tr bgcolor="$ui.fontColorPink" align="right"> ## tr 4 start
+			#if(($groupname == $Read.Name)||($velocityCount%2==0))
+				##<tr bgcolor="$ui.fontColorPink"> ## tr 4 start
+				<tr bgcolor="$ui.menuColor" align="right"> ## tr 4 start
+				#set($boolFlag=false)
 			#else
-			<tr bgcolor="$ui.menuColor"> ## tr 4 start
+				<tr bgcolor="$ui.tableColor" align="right"> ## tr 4 start
+				#set($boolFlag=true)
 			#end
-				<td align ="center">
-					$Read.PDate
+				<td align="right">
+				#if($Read.UserName != "")
+					$Read.UserName
+				#else
+					$brih_grp22	
+				#end 
 				</td>
-				<td >
-				&nbsp;&nbsp;&nbsp;&nbsp; $Read.type
-				</td>
-				<td align ="center">
-					$Read.Name
-				</td>
-				<td align ="right" >
-					<input type=checkbox name="$!Read.Name" onClick="addDeleteList(this,document.frm);">
-				</td>
+				<td>
+                                        $Read.PDate
+                                </td>
+
+				<td>
+                                ##&nbsp;&nbsp;&nbsp;&nbsp; $Read.type
+                                 $Read.type
+                                </td>
+				<td>
+                                        $Read.Name
+                                </td>
+				<td>
+                                        <input type=checkbox name="$!Read.Name" onClick="addDeleteList(this,document.frm);">
+                                </td>
+
 			</tr> ## tr 4 end
-			#set ( $count= "$count$!Read.Name^")
+			#set ( $counts= "$counts$!Read.Name^")
 			#end
 	</tr> ## tr 3 end
 	</table> ## table 5 end
-	<tr bgcolor="$ui.menuColor" align="right"><td align="right">&nbsp;&nbsp; ## td 5 start
-	<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm")> $brih_member $brih_view/$brih_add </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	#if($boolFlag)
+		<tr bgcolor="$ui.menuColor" align="right"><td> ## td 5 start
+	#else
+		<tr align="right"><td> ## td 5 start
+	#end
         	#if($total_size <= $userConf)
-        	<u><font color="white">$brih_first</font></u> &nbsp;
-        	<u><font color="white">$brih_pre</font></u> &nbsp;
-        	<u><font color="white">$brih_nxt</font></u> &nbsp;
-        	<u><font color="white">$brih_last</font></u> &nbsp;
+        	<img src="$content.getURI("images/First_blank.png")">
+        	<img src="$content.getURI("images/Previous_blank.png")">
+        	<img src="$content.getURI("images/Next_blank.png")">
+        	<img src="$content.getURI("images/Last_blank.png")">
         	#elseif($startIndex == $userConf_string)
-        	<u><font color="white">$brih_first</font></u> &nbsp;
-        	<u><font color="white">$brih_pre</font></u> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex)">$brih_nxt</a> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+        	<img src="$content.getURI("images/First_blank.png")">
+        	<img src="$content.getURI("images/Previous_blank.png")">
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
         	#elseif($endIndex == $total_size || $endIndex > $total_size)
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first)">$brih_first</a>&nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-        	<u><font color="white">$brih_nxt</font></u> &nbsp;
-        	<u><font color="white">$brih_last</font></u> &nbsp;
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+        	<img src="$content.getURI("images/Next_blank.png")">
+        	<img src="$content.getURI("images/Last_blank.png")">
         	#else
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first)">$brih_first</a>&nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
         	#end
-	&nbsp;&nbsp;&nbsp;&nbsp; <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
+        </td>
+	</tr>
+        <tr align="right">
+        <td>
+         #if($lang=="english")
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
+        #else
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
+        #end
         </td>
 </tr>
 #else
@@ -171,7 +254,7 @@ $!data.getMessage()
                 if(field.checked)
                 {
                         var rmFile,index,actualString,pre=0,next=0;
-                        actualString=document.frm.deleteFileNames.value="$count";
+                        actualString=document.frm.deleteFileNames.value="$counts";
                         while( ( pre=actualString.indexOf("^",next) ) >=0 )
                         {
                                 var temp=actualString.substring(next,pre);
@@ -182,7 +265,7 @@ $!data.getMessage()
                 else
                 {
                         var rmFile,index,actualString,pre=0,next=0;
-                        actualString=document.frm.deleteFileNames.value="$count";
+                        actualString=document.frm.deleteFileNames.value="$counts";
                         while( ( pre=actualString.indexOf("^",next) ) >=0 )
                         {
                                 var temp=actualString.substring(next,pre);
