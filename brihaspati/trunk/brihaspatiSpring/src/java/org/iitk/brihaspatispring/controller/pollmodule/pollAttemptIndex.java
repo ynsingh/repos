@@ -36,6 +36,7 @@ package org.iitk.brihaspatispring.controller.pollmodule;
  *  Attempt Poll .
  *  User - Institute Admin,Instructor,student
  *  @author: <a href="piyushm45@gmail.com">Piyush Mishra</a>
+ * @author<a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
  */
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,6 +49,8 @@ import java.io.IOException;
 import java.io.File;
 import java.util.Map;
 import java.util.List;
+import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.torque.Torque;
@@ -92,6 +95,14 @@ public class pollAttemptIndex  extends  SimpleFormController{
                         * Initialise list
                         */
 			List ls=new java.util.ArrayList();
+			/**
+			* For poll validation and expiry
+                        */
+			Date dateNow = new Date();
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dateNow);
+			dateNow = cal.getTime();
+			myModel.put("dateNow",dateNow);
 			/**
                         * set path for Xmlfile(restriction poll) & txtfile(outdated poll).
                         */
