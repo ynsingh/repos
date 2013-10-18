@@ -11,7 +11,7 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->order_by('name', 'asc');
+		$this->db->from('ledgers')->order_by('code', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
@@ -35,7 +35,7 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->where('type', 1)->order_by('name', 'asc');
+		$this->db->from('ledgers')->where('type', 1)->order_by('code', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
@@ -60,7 +60,7 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->where('type !=', 1)->order_by('name', 'asc');
+		$this->db->from('ledgers')->where('type !=', 1)->order_by('code', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
@@ -85,7 +85,7 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->where('reconciliation', 1)->order_by('name', 'asc');
+		$this->db->from('ledgers')->where('reconciliation', 1)->order_by('code', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{

@@ -1,4 +1,4 @@
-﻿INSERT INTO `groups` VALUES (1,'20',0,'Assets',0,0);
+INSERT INTO `groups` VALUES (1,'20',0,'Assets',0,0);
 INSERT INTO `groups` VALUES (2,'10',0,'Liabilities and Owners Equity',0,0);
 INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0);
 INSERT INTO `groups` VALUES(4,'40',0,'Expenses',0,0);
@@ -688,7 +688,7 @@ INSERT INTO `ledgers` VALUES(565,'400624',99,'Others - TA to Condidates - Recrui
 INSERT INTO `ledgers` VALUES(566,'400523',87,'Others - Ta to Mambers of Selection Committee','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(567,'400625',99,'Others - TA to Participants in Seminars and Con - ferences NP','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(568,'400626',99,'Others - Advertisement & Publicity NP','0.00','D',0,0,0);
-INSERT INTO `ledgers` VALUES(569,'400627',99,'Others - Legal &Professional; Charges NP','0.00','D',0,0,0);
+INSERT INTO `ledgers` VALUES(569,'400627',99,'Others - Legal &Professional Charges NP','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(570,'400628',99,'Others - Auditor\'s  Remuneration  NP','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(571,'400629',99,'Others - Hospitality Expenses NP','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(572,'400630',99,'Others - Bank Charges NP','0.00','D',0,0,0);

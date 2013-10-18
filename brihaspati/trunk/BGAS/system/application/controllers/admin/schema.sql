@@ -190,8 +190,8 @@ CREATE TABLE IF NOT EXISTS employeemaster (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS party (
-  PAR_Id varchar(50) NOT NULL AUTO_INCREMENT,
-  PAR_Name int(10) unsigned NOT NULL 
+  PAR_Id int(11) NOT NULL AUTO_INCREMENT,
+  PAR_Name int(10) unsigned NOT NULL, 
   PAR_IM_Id int(5) unsigned NOT NULL,
   PAR_Supplier_Type int(10) unsigned DEFAULT NULL,
   PAR_Ownership_Type int(10) unsigned DEFAULT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS party (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1  AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS erpm_item_master (
-  ERPMIM_ID int(11) unsigned NOT NULL auto_increment,
+  ERPMIM_ID int(11) NOT NULL auto_increment,
   ERPMIM_IM_ID int(11) unsigned default NULL COMMENT 'This filed stores Institution for which Item has been created',
   ERPMIM_Item_Brief_Desc varchar(500) NOT NULL,
   ERPMIM_Item_Cat1 int(11) unsigned NOT NULL,
@@ -228,8 +228,3 @@ CREATE TABLE IF NOT EXISTS erpm_item_master (
   ERPMIM_Remarks varchar(100) default NULL,
   PRIMARY KEY  (ERPMIM_ID)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ;
-);
-			
-
-
-
