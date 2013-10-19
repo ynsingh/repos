@@ -46,16 +46,15 @@ public class  CreateHashTable {
                                 String key = (String)e.getKey();
                                 Integer value=pointer_hashtable.get(key);
 				value=value-decreasepointer;
+				if(value <0) value=0;
                                 setPointer(key,value);
                         }
                 }catch(Exception e){ System.out.println("Exception in resetPointer Method in CreateHashTable class "+e.getMessage());}
         } 
   
         /**
-         * setPointer method is used to set the login_name of incomming packet as key  and how
-         * many times packets from this login_name is come is stored as value in hashtable,after
-         * this, store the value of hashtable in a vector. 
-         *
+         * setPointer method is used to set the login_name and the new pointer
+         * value upto which packets have been received by the user. 
          */ 
 	     	
         public void setPointer(String login_name,Integer pointer){
@@ -65,7 +64,9 @@ public class  CreateHashTable {
         }
   
 	/**
-	 * This method are used to set all pointer in increesing order 
+	 * This method is used to get all the pointer values stored in
+         * pointer_hashtable, and then sorting and finally storing them in vector.
+         * This vector is returned by this function. 
 	 */ 
 	protected synchronized Vector getAllPointer() {
                 try {

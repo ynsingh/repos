@@ -62,7 +62,7 @@ public class Buffer {
 	 */
 	
 	protected synchronized void removeRange(int endIndex) {
-		for(int i=-1;i<endIndex;i++) {
+		for(int i=0;i<endIndex;i++) {
 			userid_store.remove(0);
 			data.remove(0);
 			//System.out.println("remove data ");

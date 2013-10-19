@@ -36,12 +36,13 @@ public class  BufferMgt {
                        	java.util.Vector pointer=createhashtable.getAllPointer();
 			if(pointer.size()>0) {
 	                        int p1=(Integer)pointer.get(0); int maxpointer=buffer.size();
-				if(buffer.size()==1000) {
-        	                	createhashtable.resetPointer(40);
-	        	               	buffer.removeRange(39);
+			        	
+				if(maxpointer>1000) {
+        	                	createhashtable.resetPointer(40+maxpointer-1000);
+	        	               	buffer.removeRange(40+maxpointer-1000);
 				} else if(p1>0) {
 					createhashtable.resetPointer(p1);
-					buffer.removeRange(--p1);
+					buffer.removeRange(p1);
                              	}
 			}
             	} catch(Exception e) {System.out.println("Exception remove method to Increase Pointer in BufferMgt class "+e.getMessage()); }
@@ -49,7 +50,7 @@ public class  BufferMgt {
 	
 	/**
 	 * This method is used to get data from buffer 
-	 * and encrease pointer from ponter buffer .
+	 * and increase pointer from pointer buffer .
 	 */  
 	public synchronized byte[] sendDataAndIncreasePointer(String user_id) {
 		byte[] str=null;
