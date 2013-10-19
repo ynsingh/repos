@@ -16,7 +16,6 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
-import org.bss.brihaspatisync.network.http.HTTPClient;
 import org.bss.brihaspatisync.network.Log;
 
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
@@ -102,7 +101,6 @@ public class JoinSession {
 		// Timer to print user list in gui.
 		// start thread controller which can handle send and receive thread of network.
 		try {	
-			new HTTPClient(lecture_id).start();
 			ThreadController.setReflectorStatusThreadFlag(true);
                         org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
 			WhiteBoardDraw.getController().start();
@@ -112,9 +110,8 @@ public class JoinSession {
 			String a_status=org.bss.brihaspatisync.util.AudioUtilObject.getAudioStatus();
                         if(a_status.equals("1")){
 				org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
-                                if((client_obj.getUserRole()).equals("instructor")){
+                                if((client_obj.getUserRole()).equals("instructor"))
                                         org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
-                                }
 			}
 
 			//start video thread
@@ -124,8 +121,9 @@ public class JoinSession {
                         		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 					org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(false);
 				}
-			} else 
+			} else{ 
 				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(true);
+			}
                 }catch(Exception e){}
 	}
 }

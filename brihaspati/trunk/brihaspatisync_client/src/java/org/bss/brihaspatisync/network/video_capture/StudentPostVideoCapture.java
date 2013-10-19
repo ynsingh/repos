@@ -103,10 +103,9 @@ public class StudentPostVideoCapture implements Runnable {
 						}	
 					}else {
 						/****   receive student video image from reflector ****/
-                        	                LinkedList desktop_queue=utilobject.getQueue("stud_video");
+                        	                LinkedList desktop_queue=utilobject.getReceiveQueue("stud_video");
                                 	        if(desktop_queue.size()>0) {
-                                        	        byte[] bytes1=(byte[])desktop_queue.get(0);
-	                                                desktop_queue.remove(0);
+                                        	        byte[] bytes1=(byte[])desktop_queue.remove();
 		                                        BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
                 	                        	if(image!=null)
                         	                        	org.bss.brihaspatisync.gui.VideoPanel.getController().runStudentVidio(image);

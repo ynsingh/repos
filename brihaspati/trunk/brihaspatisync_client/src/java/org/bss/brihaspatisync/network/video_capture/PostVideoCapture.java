@@ -99,7 +99,7 @@ public class PostVideoCapture implements Runnable {
 						}
 					}else {
 						/****   receive the video image from reflector **********/
-						LinkedList desktop_queue=utilobject.getQueue("ins_video");
+						LinkedList desktop_queue=utilobject.getReceiveQueue("ins_video");
                                        		if(desktop_queue.size()>0) {
                                         		byte[] bytes1=(byte[])desktop_queue.get(0);
 	                                                desktop_queue.remove(0);

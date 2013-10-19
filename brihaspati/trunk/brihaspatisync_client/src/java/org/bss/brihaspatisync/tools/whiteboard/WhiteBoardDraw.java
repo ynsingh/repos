@@ -153,6 +153,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 				for(int i=0;i<draw_vector.size();i++){
 					StringTokenizer st = new StringTokenizer((String)draw_vector.get(i),"$");
                 			while(st.hasMoreTokens()) {
+						String type=st.nextToken();
 	                        		bcolr = Integer.parseInt(st.nextToken());
 		        	                figr=Integer.parseInt(st.nextToken());
         		        	        x1r = Integer.parseInt(st.nextToken());

@@ -88,35 +88,32 @@ public class AudioClient implements Runnable {
 						java.util.LinkedList audio_buffer=au_cap.getAudioData();
 						int size=audio_buffer.size();
 						byte[] audiodata=null;
-						if(size >0 )
-							audiodata=new byte[(74*size)];
-						int currentOffset = 0;
-						for(int i=0;i<size;i++) {
-							byte[] currentArray=getEncoder((byte[])audio_buffer.remove());
-							if(currentArray != null) {
-                                        			System.arraycopy(currentArray, 0,audiodata, currentOffset,currentArray.length);
-                                        			currentOffset += currentArray.length;
-                                			}		
+						if(size>10) {
+							int currentOffset = 0;
+							for(int i=0;i<size;i++) {
+								byte[] audioBytes=(byte[])audio_buffer.remove();
+								byte[] currentArray=getEncoder(audioBytes);
+								if(currentArray != null) {
+									if( audiodata == null )
+										audiodata=new byte[((currentArray.length)*size)];
+                                	        			System.arraycopy(currentArray, 0,audiodata, currentOffset,currentArray.length);
+                                        				currentOffset += currentArray.length;
+                                				}		
+							}
 						}
 						if(audiodata != null) {
                         		        	LinkedList send_queue=utilobject.getSendQueue("Audio_Data");
 	                			        send_queue.addLast(audiodata);
 						} 
-						
 					}
-					/****   receive the audio data from reflector **********/
-                        	        LinkedList audio_rechive_data=utilobject.getQueue("Audio_Data");
-                                	if(audio_rechive_data.size()>0) {
-                				byte[] audioBytes=(byte[])audio_rechive_data.remove();
-        	        	              	if((audioBytes.length) > 10) {
-                	        	              	AudioPlayer.getController().putAudioStream(audioBytes);
-						}
-					}
+					LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
+                                        if(audio_rechive_data.size()>0) 
+						AudioPlayer.getController().startThread();
 					StatusPanel.getController().setaudioClient("yes");
 				} else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
-				runner.sleep(100);
+				runner.sleep(1000);
 			} catch(Exception epe) { 
 				StatusPanel.getController().setaudioClient("no"); 	
 				System.out.println("Exception in AudioClient class  "+epe.getMessage()); 

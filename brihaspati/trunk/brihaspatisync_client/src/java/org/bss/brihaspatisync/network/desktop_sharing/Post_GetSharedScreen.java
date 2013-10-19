@@ -145,7 +145,7 @@ public class Post_GetSharedScreen implements Runnable {
 						os.reset();	
 					}else {
 						/****   receive the image from reflector **********/
-						LinkedList desktop_queue=utilObject.getQueue("Desktop_Data");
+						LinkedList desktop_queue=utilObject.getReceiveQueue("Desktop_Data");
                                                 if(desktop_queue.size()>0) {
 							byte[] bytes1=(byte[])desktop_queue.get(0);
 							desktop_queue.remove(0);

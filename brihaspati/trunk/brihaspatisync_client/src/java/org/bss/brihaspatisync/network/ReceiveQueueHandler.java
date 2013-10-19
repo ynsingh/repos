@@ -55,7 +55,6 @@ public class ReceiveQueueHandler implements Runnable{
                         runner = new Thread(this);
 			utilobject.addType("Chat_Wb_Data");
 			utilobject.addType("UserList_Data");
-			
 			runner.start();
 			System.out.println("ReceiveQueueHandler has started.");
                 }
@@ -79,16 +78,15 @@ public class ReceiveQueueHandler implements Runnable{
 		while(flag && ThreadController.getThreadFlag()){
 			try{
 				synchronized(utilobject){
-					LinkedList cha_wb_queue=utilobject.getQueue("Chat_Wb_Data");
+					LinkedList cha_wb_queue=utilobject.getReceiveQueue("Chat_Wb_Data");
 					if(cha_wb_queue.size()>0) {
-	                        	        String str=new String((byte[])(byte[])cha_wb_queue.remove()); 	
+	                        	        String str=new String((byte[])cha_wb_queue.remove()); 	
 						str=java.net.URLDecoder.decode(str);
 						StringTokenizer st=new StringTokenizer(str,"$");
 						while(st.hasMoreTokens()){
                                                 	String type=st.nextToken();
 							if(type.equals("wb")){
-								String data=st.nextToken();
-                	                			WhiteBoardDraw.getController().getDraw_vector().addElement(data); 
+                	                			WhiteBoardDraw.getController().getDraw_vector().addElement(str); 
 							}else if(type.equals("ch")){
 								String data=st.nextToken();
 								ChatPanel.getController().showMsg(data);
@@ -96,7 +94,7 @@ public class ReceiveQueueHandler implements Runnable{
 						}
 					}
 						
-					LinkedList user_list_data=utilobject.getQueue("UserList_Data");
+					LinkedList user_list_data=utilobject.getReceiveQueue("UserList_Data");
 					if(user_list_data.size()>0) {
 						String str=new String((byte[])user_list_data.remove());
 						if(!str.equals("nodata")) {
@@ -120,7 +118,7 @@ public class ReceiveQueueHandler implements Runnable{
 					/**
 					 * This method is used to netwrok very slow . 
 					 * then remove data from sending queue 
-					 */ 	
+					 *//* 	
 					try {
 						java.util.Hashtable hashtable=utilobject.get_send_queue_hashTable();
 						java.util.Enumeration en=hashtable.keys();
@@ -130,7 +128,7 @@ public class ReceiveQueueHandler implements Runnable{
                         				        sendqueue.clear();
 	                        			}
 						}
-					} catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to remove queue for network slow"+ex.getMessage());}
+					} catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to remove queue for network slow"+ex.getMessage());}*/
 				}
 				runner.yield();
 				runner.sleep(10);

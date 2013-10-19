@@ -11,7 +11,6 @@ import  java.util.Vector;
 import  java.util.Hashtable;
 import  java.util.LinkedList;
 
-import org.bss.brihaspatisync.network.util.Queue;
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 
 /**
@@ -37,17 +36,16 @@ public class UtilObject {
 	/**
 	 * This method are used to return send queue hash table .
 	 */  
-	public java.util.Hashtable get_send_queue_hashTable() {
+	private synchronized java.util.Hashtable get_send_queue_hashTable() {
 		return ht_for_send_queue;
 	}
 	
 	/**
  	 * This method are used to create rechive queue according to type .
  	 */
-	public LinkedList getQueue(String type) {
+	public synchronized LinkedList getReceiveQueue(String type) {
                 if(!(ht_for_queue.containsKey(type))){
-			LinkedList<byte[]> data=new LinkedList<byte[]>();
-			ht_for_queue.put(type,data);
+			ht_for_queue.put(type,new LinkedList<byte[]>());
 		}
 		return (LinkedList)ht_for_queue.get(type);
         }
@@ -55,10 +53,9 @@ public class UtilObject {
 	/**
  	 * This method are used to create send queue according to type .
  	 */
-        public LinkedList getSendQueue(String type) {
+        public synchronized LinkedList getSendQueue(String type) {
                 if(!(ht_for_send_queue.containsKey(type))){
-                        LinkedList<byte[]> data=new LinkedList<byte[]>();
-                        ht_for_send_queue.put(type,data);
+                        ht_for_send_queue.put(type,new LinkedList<byte[]>());
                 }
                 return (LinkedList)ht_for_send_queue.get(type);
         }	
@@ -68,17 +65,17 @@ public class UtilObject {
 		this.ht_for_send_queue = new java.util.Hashtable();	
 		
 	}
-	public void addType(String type) {
+	public synchronized void addType(String type) {
                 if(!(type_vector.contains(type)))
                         type_vector.add(type);
         }
 
-        public void removeType(String type) {
+        public synchronized void removeType(String type) {
                 type_vector.remove(type);
                 org.bss.brihaspatisync.network.singleport.NetworkController.remove_Ht_Key(type);
         }
 	
-	public Vector getTypeVector(){
+	public synchronized Vector getTypeVector(){
 		return type_vector;
 	}	
 }
