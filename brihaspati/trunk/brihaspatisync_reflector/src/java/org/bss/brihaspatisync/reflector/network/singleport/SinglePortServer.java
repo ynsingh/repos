@@ -78,35 +78,29 @@ class MyHandler implements HttpHandler {
                                 String lecture_id=lecture_id_usernamearray[0];
 				lecture_id=lecture_id.replace("[","");
 				lecture_id=lecture_id.trim();
-				String username=lecture_id_usernamearray[1];
+				String username=(lecture_id_usernamearray[1]).trim();
                                 String type=lecture_id_usernamearray[2];
 				type=type.replaceAll("]","");
 				OutputStream responseBody = exchange.getResponseBody();
 			        byte[] bytes =org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody()); 
 		              	try {
-					//System.out.println(type);	
 					if(type.equals("Desktop_Data")) {		
 				                if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id))
 			                	        MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
-	                        							
 						BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
 						if( (bytes.length>0) && (bytes !=null)) 
 						        buffer_mgt.putByte(bytes,username);		
-												
 						byte[] image_new=buffer_mgt.sendDataAndIncreasePointer(username);
                         	                if((image_new.length>0) && (image_new !=null) )
 							responseBody.write(image_new);	
 					}else if(type.equals("Audio_Data")) {
 	                                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id))
                 	                                MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
-                        	                
                                 	        BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
-                                        	if( ((bytes.length) > 0) && (bytes !=null) ) 
+                                        	if( ((bytes.length)>0 ) && (bytes !=null) ) 
                                                 	buffer_mgt.putAudioBytes(bytes,username);
-	                                        
-	
         	                                byte[] sendbytes=buffer_mgt.sendData_AudioIncreasePointer(username);
-                	                        if(sendbytes != null){
+                	                        if((sendbytes.length>0) && (sendbytes !=null)){
                         	                        responseBody.write(sendbytes);
                                 	        }
 					} else if(type.equals("UserList_Data")) {
@@ -129,7 +123,7 @@ class MyHandler implements HttpHandler {
                                                 if((sendbytes.length>0) && (sendbytes !=null)){
                                                         responseBody.write(sendbytes);
                                                 }
-					}else if(type.equals("ins_video")){
+					} else if(type.equals("ins_video")){
                 	                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
                                 	                MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
                                         	}

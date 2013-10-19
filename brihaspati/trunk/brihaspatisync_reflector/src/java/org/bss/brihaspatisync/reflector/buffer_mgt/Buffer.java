@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 public class Buffer { 
 
-	private Vector userid_store=null; 
+	private Vector<String> userid_store=null; 
         /* The userid_store contains the user_id of the source node which has generated the corresponding packet (byte[])
          * in the LinkedList<byte[]>.
          */
@@ -29,8 +29,8 @@ public class Buffer {
 	/**
          * Create an empty Buffer
          */
-	public Buffer(){
-		userid_store= new Vector(100);
+	protected Buffer(){
+		userid_store= new Vector<String> ();
 		data=new LinkedList<byte[]>();
 	} 
     
@@ -38,21 +38,21 @@ public class Buffer {
          * Return the Buffer head 
          */ 
 	
-	protected synchronized Object getSourceUser_id(int temp) throws QueueEmptyException { 
+	protected synchronized String getSourceUser_id(int temp) throws Exception { 
 		if((size() > temp) && (!isEmpty())) 
-	              	return userid_store.elementAt(temp); 
+	              	return userid_store.get(temp); 
 		else	
 			return null;
        	} 
 		
-	protected synchronized byte[] getObject(int temp) throws QueueEmptyException {
+	protected synchronized byte[] getObject(int temp) throws Exception {
 		if((size() > temp) && (!isEmpty())) 
                         return data.get(temp); 
                 else    
                         return null;
         }
         
-	protected synchronized void putObjectAndUserId(Object x, byte[] y) {
+	protected synchronized void putObjectAndUserId(String x, byte[] y) {
                 userid_store.add(x);
                 data.addLast(y);
         }
@@ -62,12 +62,12 @@ public class Buffer {
 	 */
 	
 	protected synchronized void removeRange(int endIndex) {
-		if(userid_store.size() > endIndex){
-			for(int j=0;j<endIndex;j++){
-				userid_store.removeElementAt(0);
-				data.remove(0);
-			}
+		for(int i=-1;i<endIndex;i++) {
+			userid_store.remove(0);
+			data.remove(0);
+			//System.out.println("remove data ");
 		}
+		
    	}
 	
 	/**
@@ -89,4 +89,3 @@ public class Buffer {
         }
 }
 
-class QueueEmptyException extends Exception { }

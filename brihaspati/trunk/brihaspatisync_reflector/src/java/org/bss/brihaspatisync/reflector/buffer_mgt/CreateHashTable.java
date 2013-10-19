@@ -29,7 +29,7 @@ public class  CreateHashTable {
          * received by the user from reflector.
          */ 
 
-	public CreateHashTable() { 
+	protected CreateHashTable() { 
 		pointer_hashtable = new Hashtable<String, Integer> ();
 	}	
                           
@@ -41,14 +41,12 @@ public class  CreateHashTable {
                 try{
 			ArrayList myArrayList=new ArrayList(pointer_hashtable.entrySet());
                         Iterator itr=myArrayList.iterator();
-                        while(itr.hasNext()){
+                        while(itr.hasNext()) {
                                 Map.Entry e=(Map.Entry)itr.next();
                                 String key = (String)e.getKey();
                                 Integer value=pointer_hashtable.get(key);
 				value=value-decreasepointer;
-                                if(value >-1 ) 
-                                        pointer_hashtable.put(key,value);
-					
+                                setPointer(key,value);
                         }
                 }catch(Exception e){ System.out.println("Exception in resetPointer Method in CreateHashTable class "+e.getMessage());}
         } 
@@ -69,7 +67,7 @@ public class  CreateHashTable {
 	/**
 	 * This method are used to set all pointer in increesing order 
 	 */ 
-	protected synchronized Vector getPointer() {
+	protected synchronized Vector getAllPointer() {
                 try {
                         vector.clear();	
 			ArrayList myArrayList=new ArrayList(pointer_hashtable.entrySet());
@@ -89,14 +87,15 @@ public class  CreateHashTable {
          * To get the pointer value of given login name.
          */
 	
-	public int getValue(String login_name) {
+	public int getPointerBy_UserId(String login_name) {
                 try {
 			if(pointer_hashtable.containsKey(login_name)) {
-                        	Integer ik=pointer_hashtable.get(login_name);// ((Integer)(pointer_hashtable.get(login_name))).intValue();
+                        	Integer ik=pointer_hashtable.get(login_name);
              			return ik;
+			}else {
+				setPointer(login_name,0);
+				return 0;	
 			}
-			return 0;
                	} catch(Exception e){System.out.println("Exception in getValue Method in CreateHashTable class "+e.getMessage()); return 0;}
-		
         } 
 }
