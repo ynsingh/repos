@@ -98,8 +98,7 @@ public class AudioClient implements Runnable {
 										audiodata=new byte[((currentArray.length)*size)];
                                 	        			System.arraycopy(currentArray, 0,audiodata, currentOffset,currentArray.length);
                                         				currentOffset += currentArray.length;
-                                				}else
-									System.out.println("encode problem ========>>>>>>>>>>>>>");			
+                                				}
 							}
 						}
 						if(audiodata != null) {
@@ -114,7 +113,7 @@ public class AudioClient implements Runnable {
 				} else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
-				runner.sleep(1000);
+				runner.sleep(100);
 			} catch(Exception epe) { 
 				StatusPanel.getController().setaudioClient("no"); 	
 				System.out.println("Exception in AudioClient class  "+epe.getMessage()); 
