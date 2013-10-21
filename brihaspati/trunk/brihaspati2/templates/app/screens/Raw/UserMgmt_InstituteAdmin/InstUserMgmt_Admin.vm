@@ -69,7 +69,14 @@ $!data.getMessage()
 			$brih_delete $brih_student
 		#end
 	#end
-</td></tr>
+	</td>
+	#if($mode!="USzip" && $mode!="UPhoto")
+ 	<td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_InstAdmin.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+        </td>
+ #end
+ </tr>
+ <table>
 <tr bgcolor="$ui.tableColor">
 	#if($tdcolor != "1")
         <td>
@@ -420,9 +427,6 @@ face="$ui.sansSerifFonts">$type</font>
 <td bgcolor="#AFDCEC" width="25%"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")">$brih_upload $brih_txt $brih_file</a></td>
 <td> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")">$brih_upload $brih_zip $brih_file</a></td>
 </tr>
-<tr><td align="right" colspan=8><img src="$content.getURI("/images/hand.gif")"><b>
-<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font>
-</td></tr>
 <tr bgcolor="$ui.menuColor"><td colspan=8>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">
 <font size=4 color=red><b>$brih_upload_msg5 $brih_upload_msg6</b></font>

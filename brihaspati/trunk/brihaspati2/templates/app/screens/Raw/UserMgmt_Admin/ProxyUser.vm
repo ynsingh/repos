@@ -28,7 +28,7 @@ $!data.getMessage()
 		#if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
 			$Proxy_User $brih_Of1 $brih_detail $brih_upload
 		#else
-			Enter $Proxy_User $brih_detail
+	       		$brih_enter $Proxy_User $brih_detail
 		#end
 	</b></td>
 </tr>

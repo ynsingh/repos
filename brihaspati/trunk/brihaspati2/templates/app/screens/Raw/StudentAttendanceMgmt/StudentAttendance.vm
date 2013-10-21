@@ -14,6 +14,7 @@ $!data.getMessage()
 <head>
 	##### Video Help CSS ########
         <link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet">
+        <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
 
         ##### Video Help Java Script ########
         <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
@@ -64,9 +65,12 @@ $!data.getMessage()
 	#if($mode=="attend") | $brih_student $brih_attend #end
 	#if($mode=="list") | $brih_attendence #end
 	</td>
+	 <td align="right">
 	#if($data.getUser().getTemp("role") != "student")
-	<td align="center"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
-	#end
+         <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/AttendanceManagement.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+	<a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a></td>
+ 	#end
+       </td>
 </tr>
 <tr bgcolor="$ui.menuColor" align="left">
 #if(($data.getUser().getTemp("role") == "institute_admin") || ($data.getUser().getTemp("role") =="instructor") || ($data.getUser().getTemp("role") =="teacher_assistant"))

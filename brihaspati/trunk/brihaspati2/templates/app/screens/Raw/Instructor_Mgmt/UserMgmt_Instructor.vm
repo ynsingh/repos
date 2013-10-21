@@ -25,8 +25,11 @@ $!data.getMessage()
 #else
          <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("count","1") style=text-decoration:none>$course1</a> | <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_ins $brih_mgmt</a> | $brih_addSecInstructor 
 #end
-</td></tr>
-<tr>
+</td>
+	<td align="right">
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Instructor.html","newWin"); style=text-decoration:none>$brih_help</a>
+        </td>
+        </tr>
 #if(($permission != "0")&&($institudeName != "ListAll"))
 	#if($tdcolor != "2")
         <td>
@@ -67,10 +70,6 @@ $!data.getMessage()
         <td>
         <b>*<font color="LightGreen">$brih_lightgreencolor </font></b> ->>> $brih_mainInstructor &nbsp;&nbsp;&nbsp;
         <b>*<font color="Pink">$brih_lightpinkcolor</font></b> ->>> $brih_assignedrole <br>
-        </td>
-## Representation of HELP link
-	<td align=right>
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Instructor.html","newWin");>$brih_help</a>
         </td>
         </tr>
 </table>

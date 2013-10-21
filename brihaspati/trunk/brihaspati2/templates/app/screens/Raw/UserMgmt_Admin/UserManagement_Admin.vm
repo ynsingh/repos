@@ -50,7 +50,11 @@ $!data.getMessage()
 			#if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end
 		#end
 	#end
-</td></tr>
+	</td>
+	<td align="right">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+       </td>
+	</tr>
 <tr bgcolor="$ui.tableColor">
 	#if($tdcolor != "1")
         <td>
@@ -320,9 +324,6 @@ face="$ui.sansSerifFonts">$type</font>
 #end
 #if($mode == "AddMUser")
 <table width="100%" bgcolor="$ui.tableColor" align="left">
-<tr><td align="right" colspan=7><img src="$content.getURI("/images/hand.gif")"><b>
-<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font>
-</td></tr>
 <tr bgcolor="$ui.menuColor"><td colspan=7>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">
 <font size=4 color=red><b>$brih_upload_msg5</b></font>
