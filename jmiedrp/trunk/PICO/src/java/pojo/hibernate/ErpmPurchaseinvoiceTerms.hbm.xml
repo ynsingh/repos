@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPurchaseinvoiceTerms" table="erpm_purchaseinvoice_terms">
+        <id name="pitPitId" type="java.lang.Integer">
+            <column name="PIT_PIT_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmPurchaseinvoiceMaster" class="pojo.hibernate.ErpmPurchaseinvoiceMaster" fetch="select">
+            <column name="PIT_PIM_ID" not-null="true" />
+        </many-to-one>
+        <property name="pitEgmId" type="int">
+            <column name="PIT_EGM_ID" not-null="true" />
+        </property>
+        <property name="pitTermsDescription" type="string">
+            <column name="PIT_TERMS_DESCRIPTION" length="500" />
+        </property>
+    </class>
+</hibernate-mapping>

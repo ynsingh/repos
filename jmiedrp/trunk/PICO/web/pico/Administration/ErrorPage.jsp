@@ -23,49 +23,47 @@
     <body class="twoColElsLtHdr">
         <div id="container">
             <div id="headerbar1">
-              <jsp:include page="header.jsp" flush="true"></jsp:include> 
+                <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
-        <div id="sidebar1">
-             <jsp:include page="menu.jsp" flush="true"></jsp:include>
-        </div>
+            <div id="sidebar1">
+                <jsp:include page="menu.jsp" flush="true"></jsp:include>
+            </div>
 
-<%--        <div id ="mainContent">
-    --%>    <table border="0" width="90%" >
+            <table border="0" width="90%" >
                 <tbody   >
-               <tr>
-                    <td> <br><br> </td>
-                </tr>
-                 <tr>
-                    <td> <br><br> </td>
-                </tr>
-                <tr>
-                    <td> <br><br> </td>
-                </tr>
-                 <tr>
-                    <td> <br><br> </td>
-                </tr>
-                <tr>
-                    <td> <br><br> </td>
-                </tr> <tr>
-                    <td align="center">The system has encountered error(s):<br><br>
-                        <s:property value="message"/></td>
+                    <tr>
+                        <td> <br><br> </td>
                     </tr>
-                 <tr>
-                    <td> <br><br> </td>
-                </tr>
-                <tr>
-                    <td> <br><br> </td>
-                </tr>
-                 <tr>
-                    <td> <br><br> </td>
-                </tr>
-                <tr>
-                    <td> <br><br> </td>
-                </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr> <tr>
+                        <td align="center">The system has encountered error(s):<br><br>
+                            <s:property value="message"/></td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
+                    <tr>
+                        <td> <br><br> </td>
+                    </tr>
                 </tbody>
             </table>
-        <%--    </div>
-         --%>   <div id="footer">
+            <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>
         </div>

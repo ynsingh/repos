@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="UncheckedAndUnverifiedItems" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="54f4cd4d-fc41-4fe5-9e45-615bc124ce9e">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_po_master.`POM_PO_No` AS PO_No,
+     erpm_purchasechallan_master.`PCM_IM_ID` AS IM_ID,
+     erpm_purchasechallan_master.`PCM_SIM_ID` AS SIM_ID,
+     erpm_purchasechallan_master.`PCM_DM_ID` AS DM_ID,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     departmentmaster.`DM_Short_Name` AS departmentmaster_DM_Short_Name,
+     erpm_purchasechallan_master.`PCM_Challan_No` AS Challan_Invoice_No,
+     erpm_purchasechallan_master.`PCM_Challan_Date` AS Challan_Invoice_Date,
+     erpm_po_master.`POM_PO_Date` AS PO_Date,
+     suppliermaster.`SM_Name` AS Supplier_Name,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Brief_Desc,
+     erpm_purchasechallan_detail.`PCD_Recv_Quantity` AS Quantity,
+     erpm_purchasechallan_detail.`PCD_Q_n_Q_Checked` AS Q_n_Q_Checked,
+     erpm_purchasechallan_detail.`PCD_Q_n_Q_Verified` AS Q_n_Q_Verified,
+     erpm_purchasechallan_detail.`PCD_Verified_By` AS Verified_By
+FROM
+     `erpm_purchasechallan_master` erpm_purchasechallan_master INNER JOIN `erpm_purchasechallan_detail` erpm_purchasechallan_detail ON erpm_purchasechallan_master.`PCM_PCM_ID` = erpm_purchasechallan_detail.`PCD_PCMaster_ID`
+     INNER JOIN `erpm_po_master` erpm_po_master ON erpm_purchasechallan_master.`PCM_PO_Master_ID` = erpm_po_master.`POM_PO_Master_ID`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_purchasechallan_master.`PCM_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_purchasechallan_master.`PCM_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_purchasechallan_master.`PCM_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_po_master.`POM_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_purchasechallan_detail.`PCD_ItemMaster_ID` = erpm_item_master.`ERPMIM_ID`
+WHERE
+ (erpm_purchasechallan_detail.`PCD_Q_n_Q_Verified`='N' OR erpm_purchasechallan_detail.`PCD_Q_n_Q_Checked`='N') AND $P!{condition}
+UNION
+SELECT
+     if(isnull(erpm_po_master.`POM_PO_No`),erpm_po_master_A.`POM_PO_No`,erpm_po_master.`POM_PO_No`) AS PO_No,
+     erpm_purchaseinvoice_master.`PIM_IM_ID` AS IM_ID,
+     erpm_purchaseinvoice_master.`PIM_SIM_ID` AS SIM_ID,
+     erpm_purchaseinvoice_master.`PIM_DM_ID` AS DM_ID,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     departmentmaster.`DM_Short_Name` AS departmentmaster_DM_Short_Name,
+     erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_No` AS Challan_Invoice_No,
+     erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_Date` AS Challan_Invoice_Date,
+     erpm_po_master.`POM_PO_Date` AS PO_Date,
+     suppliermaster.`SM_Name` AS Supplier_Name,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Brief_Desc,
+     erpm_purchaseinvoice_detail.`PID_Quantity` AS Quantity,
+     erpm_purchaseinvoice_detail.`PCD_Q_n_Q_Checked` AS Q_n_Q_Checked,
+     erpm_purchaseinvoice_detail.`PCD_Q_n_Q_Verified` AS Q_n_Q_Verified,
+     erpm_purchaseinvoice_detail.`PCD_Verified_By` AS Verified_By
+FROM
+     `erpm_purchaseinvoice_master` erpm_purchaseinvoice_master INNER JOIN `erpm_purchaseinvoice_detail` erpm_purchaseinvoice_detail ON erpm_purchaseinvoice_master.`PIM_PIM_ID` = erpm_purchaseinvoice_detail.`PID_PIM_ID`
+     LEFT OUTER JOIN `erpm_purchasechallan_master` erpm_purchasechallan_master ON erpm_purchaseinvoice_master.`PIM_PChallan_Master_ID` = erpm_purchasechallan_master.`PCM_PCM_ID`
+     LEFT OUTER JOIN `erpm_po_master` erpm_po_master ON erpm_purchaseinvoice_master.`PIM_PO_Master_ID` = erpm_po_master.`POM_PO_Master_ID`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_purchaseinvoice_master.`PIM_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_purchaseinvoice_master.`PIM_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_purchaseinvoice_master.`PIM_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_purchaseinvoice_master.`PIM_SIM_ID` = subinstitutionmaster.`sim_id`
+     AND erpm_po_master.`POM_PO_Master_ID` = erpm_purchasechallan_master.`PCM_PO_Master_ID`
+     INNER JOIN `erpm_po_master` erpm_po_master_A ON erpm_purchasechallan_master.`PCM_PO_Master_ID` = erpm_po_master_A.`POM_PO_Master_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_purchaseinvoice_detail.`PID_Item_ID` = erpm_item_master.`ERPMIM_ID`
+WHERE
+     (erpm_purchaseinvoice_detail.`PCD_Q_n_Q_Checked` = 'N' OR erpm_purchaseinvoice_detail.`PCD_Q_n_Q_Verified` = 'N') AND $P!{condition}]]>
+	</queryString>
+	<field name="PO_No" class="java.math.BigInteger"/>
+	<field name="IM_ID" class="java.lang.Integer"/>
+	<field name="SIM_ID" class="java.lang.Integer"/>
+	<field name="DM_ID" class="java.lang.Integer"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Short_Name" class="java.lang.String"/>
+	<field name="Challan_Invoice_No" class="java.lang.String"/>
+	<field name="Challan_Invoice_Date" class="java.sql.Date"/>
+	<field name="PO_Date" class="java.sql.Date"/>
+	<field name="Supplier_Name" class="java.lang.String"/>
+	<field name="Item_Brief_Desc" class="java.lang.String"/>
+	<field name="Quantity" class="java.math.BigDecimal"/>
+	<field name="Q_n_Q_Checked" class="java.lang.String"/>
+	<field name="Q_n_Q_Verified" class="java.lang.String"/>
+	<field name="Verified_By" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="58ba88c8-dcdc-4061-9686-82b94b8cac58" x="58" y="10" width="73" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institution]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="482fb6b1-d3bf-47ab-88cb-50af4014b15a" x="58" y="50" width="73" height="19"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d837a56a-5cad-4657-b2c7-0d1498eadb36" x="58" y="30" width="73" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitution]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="1b94c7f1-5ea8-4f92-ab01-a34e9d4b8cec" x="448" y="59" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="47b257f3-d534-4587-955e-132143188b67" x="131" y="10" width="217" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ae0be26d-f3d5-4dc4-9bb8-c8c532af83af" x="131" y="30" width="217" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a35ee11f-d221-44fa-bd06-3c2891042705" x="131" y="50" width="217" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a49cc6bf-6056-4acc-9338-c4b06edbacc8" x="170" y="0" width="200" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Unchecked and Unverified Items]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="152dd490-6951-42ec-90ee-2c23b9859834" x="207" y="5" width="79" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d0db2006-96f3-46a9-a0fd-6643919556f6" x="133" y="5" width="71" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Challan Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ebedc83a-f783-4bac-ae89-3baa91ef00b3" x="3" y="5" width="128" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice No/Challan No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6a7ba62e-924c-4908-98f3-39ef77088c61" x="289" y="5" width="110" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="17d36b9b-e544-4129-b939-2463c1d68aa4" x="417" y="5" width="43" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="005b3aa2-74b1-439b-9c3c-1d552f8af3f0" x="461" y="5" width="49" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Checked]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="25b4a80e-4b88-490d-9e04-af073d140a27" x="511" y="5" width="42" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Verified]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9292b588-cda9-416e-ad01-7f3f15b3a7fa" x="290" y="1" width="110" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d262af31-41b8-44ab-bc60-ac7b8ac9369b" x="399" y="2" width="60" height="19"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d682d73b-0772-4814-b2cc-7eab624fe022" x="462" y="1" width="49" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Q_n_Q_Checked}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="736bcf2f-8f81-4462-9837-f4f4dadcd001" x="511" y="1" width="42" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Q_n_Q_Verified}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="37527fb9-f98f-40ad-95da-edc5f4e311df" x="3" y="1" width="128" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Challan_Invoice_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="bdbf1eeb-b443-411a-b43c-02057ca44612" x="133" y="1" width="71" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Challan_Invoice_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="48ef5e79-d8eb-40e8-9d12-f021162e067d" x="207" y="0" width="79" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{PO_No}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement uuid="ac0c51d2-19c9-468d-8f3d-df21c537662c" x="512" y="34" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2224600a-de76-4d3c-aa8a-fa75f6bad686" x="448" y="34" width="62" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

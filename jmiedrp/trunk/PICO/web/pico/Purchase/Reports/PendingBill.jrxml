@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PendingBill" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="770" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" uuid="9a7bc004-846f-45d4-ba87-685aafa506f1">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     concat(departmentmaster.`DM_Short_Name`, '/', cast(year(erpm_po_master.`POM_PO_Date`) as char), '/', cast(erpm_po_master.`POM_PO_No` as char)) as Full_PO_No,
+     erpm_purchasechallan_master.`PCM_IM_ID` AS PCM_IM_ID,
+     erpm_purchasechallan_master.`PCM_SIM_ID` AS PCM_SIM_ID,
+     erpm_purchasechallan_master.`PCM_DM_ID` AS PCM_DM_ID,
+     erpm_po_master.`POM_Supplier_ID` AS POM_Supplier_ID,
+     suppliermaster.`SM_Name` AS SM_Name,
+     erpm_purchasechallan_master.`PCM_PCM_ID` AS PCM_PCM_ID,
+     erpm_purchasechallan_master.`PCM_Recv_Date` AS PCM_Recv_Date,
+     erpm_purchasechallan_master.`PCM_Challan_No` AS PCM_Challan_No,
+     erpm_purchasechallan_master.`PCM_Challan_Date` AS PCM_Challan_Date,
+     erpm_purchasechallan_master.`PCM_PO_Master_ID` AS PCM_PO_Master_ID,
+     erpm_po_master.`POM_PO_No` AS POM_PO_No,
+     erpm_item_category_master.`ERPMICM_Cat_Desc` AS Item_Type,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc` AS Item_Category,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc` AS Item_SubCategory,
+     erpm_purchasechallan_detail.`PCD_ItemMaster_ID` AS PCD_ItemMaster_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS ERPMIM_Item_Brief_Desc,
+     erpm_purchasechallan_detail.`PCD_Recv_Quantity` AS PCD_Recv_Quantity,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS UOP,
+     institutionmaster.`IM_Name` AS IM_Name,
+     subinstitutionmaster.`SIM_Short_Name` AS SIM_Short_Name,
+     departmentmaster.`DM_Short_Name` AS DM_Short_Name
+FROM
+     `erpm_item_master` erpm_item_master LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master ON erpm_item_master.`ERPMIM_Item_Cat1` = erpm_item_category_master.`ERPMICM_Item_ID`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_A ON erpm_item_master.`ERPMIM_Item_Cat2` = erpm_item_category_master_A.`ERPMICM_Item_ID`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_B ON erpm_item_master.`ERPMIM_Item_Cat3` = erpm_item_category_master_B.`ERPMICM_Item_ID`
+     INNER JOIN `erpm_purchasechallan_detail` erpm_purchasechallan_detail ON erpm_item_master.`ERPMIM_ID` = erpm_purchasechallan_detail.`PCD_ItemMaster_ID`
+     INNER JOIN `erpm_purchasechallan_master` erpm_purchasechallan_master ON erpm_purchasechallan_detail.`PCD_PCMaster_ID` = erpm_purchasechallan_master.`PCM_PCM_ID`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_purchasechallan_master.`PCM_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_purchasechallan_master.`PCM_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `erpm_po_master` erpm_po_master ON erpm_purchasechallan_master.`PCM_PO_Master_ID` = erpm_po_master.`POM_PO_Master_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_purchasechallan_master.`PCM_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_po_master.`POM_Supplier_ID` = suppliermaster.`SM_Id`
+WHERE $P!{condition}]]>
+	</queryString>
+	<field name="Full_PO_No" class="java.lang.String"/>
+	<field name="PCM_IM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_SIM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_DM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POM_Supplier_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_PCM_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_Recv_Date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_Challan_No" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_Challan_Date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCM_PO_Master_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="POM_PO_No" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_Type" class="java.lang.String"/>
+	<field name="Item_Category" class="java.lang.String"/>
+	<field name="Item_SubCategory" class="java.lang.String"/>
+	<field name="PCD_ItemMaster_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ERPMIM_Item_Brief_Desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PCD_Recv_Quantity" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UOP" class="java.lang.String"/>
+	<field name="IM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SIM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="368b1886-e541-46f4-ad34-0c8866d510a1" x="664" y="49" width="100" height="12"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ce3e57e6-ce3f-45ef-99f8-8759f5cad81f" x="270" y="29" width="219" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENDING BILL REPORT]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c38a2788-c0f1-4cfd-a119-0349000c69c7" x="43" y="2" width="678" height="22"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="06b15d40-3886-4265-916d-8a10190cc6eb" x="256" y="49" width="244" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATERIAL RECEIVED BUT BILL / INVOICE NOT RECEIVED]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5ebaefc6-d955-477f-a060-751e1de5d499" x="32" y="15" width="55" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitute]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bf44b697-52e5-4167-abad-c2a8221c05da" x="85" y="15" width="55" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="37844b4b-9748-403b-8095-de5c9cae19c9" x="259" y="15" width="58" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receive Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="df7268a4-b552-4e0b-8d19-7082e9268870" x="317" y="15" width="97" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e2a6000a-f89d-421b-aeac-4f32bc00c644" x="414" y="15" width="73" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Chalan No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="99c9b902-59ab-4eb1-a621-1dc8b4755cdf" x="546" y="15" width="142" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c72deafd-395f-424f-ad7d-477b4a6c4a07" x="691" y="15" width="42" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec2c2856-c671-43a1-8fdb-497ab4326b3f" x="4" y="15" width="26" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="88f178ab-028f-48d5-8fb2-7e7955f6824a" x="738" y="15" width="26" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UOP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a8b44865-989b-4e88-89ad-99144799d3d4" x="489" y="15" width="58" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Challan Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cc873209-b655-4626-9dd3-f1fba462ae58" x="139" y="15" width="117" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supplier Name]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="dad80c81-5a63-4caf-b588-72e2cf98fda1" x="0" y="27" width="764" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="11b46700-c80c-4e9b-8f1a-3c625a3135ce" x="86" y="0" width="51" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="b9bad87a-0021-4eb6-b95b-0de410a2ba0f" x="259" y="0" width="55" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PCM_Recv_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f0ea2557-9902-473d-a053-743d72f37553" x="414" y="0" width="73" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PCM_Challan_No}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="f0bd3b15-8d99-460a-878b-3bc089a1584c" x="489" y="0" width="55" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PCM_Challan_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="892da18a-e077-42b6-aaae-d08decba82bb" x="546" y="0" width="142" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7527defc-cf53-4055-951e-6ec1c75fea01" x="691" y="0" width="42" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PCD_Recv_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2058e8bb-5545-4d79-80fd-c936b8dbcc39" x="738" y="0" width="26" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UOP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c4339c59-0da1-41ae-b28e-5b13ce2e6824" positionType="FixRelativeToBottom" x="4" y="0" width="26" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="756dddbe-0382-49ab-aa06-a74cd0e75dcc" positionType="Float" x="32" y="0" width="52" height="12" isPrintWhenDetailOverflows="true"/>
+				<textElement rotation="None">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="19d7567b-8172-42f1-b02b-dd1bac339efc" x="139" y="0" width="117" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="39a2d5d2-9d50-455b-b556-3b925a511154" x="317" y="0" width="97" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Full_PO_No}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="12" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement uuid="bba528e5-e381-476a-bdfb-027be4783247" x="329" y="0" width="186" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER} + " of " + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="29" splitType="Stretch"/>
+	</summary>
+</jasperReport>

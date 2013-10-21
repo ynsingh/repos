@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -22,10 +22,16 @@ public class Erpmusers  implements java.io.Serializable {
      private String erpmuSecretAnswer;
      private String erpmuFullName;
      private Set erpmIndentMasters = new HashSet(0);
+     private Set userMessagesForUmFromErpmuId = new HashSet(0);
+     private Set fileMasters = new HashSet(0);
+     private Set fileDetails = new HashSet(0);
+     private Set erpmNewses = new HashSet(0);
      private Set erpmPurchasechallanMasters = new HashSet(0);
+     private Set erpmPurchaseinvoiceMasters = new HashSet(0);
      private Set erpmuserroles = new HashSet(0);
      private Set erpmPoMastersForPomUserId = new HashSet(0);
      private Set erpmPoMastersForPomApprovedById = new HashSet(0);
+     private Set userMessagesForUmToErpmuId = new HashSet(0);
 
     public Erpmusers() {
     }
@@ -38,7 +44,7 @@ public class Erpmusers  implements java.io.Serializable {
         this.erpmuActive = erpmuActive;
         this.erpmuFullName = erpmuFullName;
     }
-    public Erpmusers(String erpmuName, String erpmuPassword, Date erpmuDob, String erpmuActive, String erpmuVerifiedBy, String erpmuSecretQuestion, String erpmuSecretAnswer, String erpmuFullName, Set erpmIndentMasters, Set erpmPurchasechallanMasters, Set erpmuserroles, Set erpmPoMastersForPomUserId, Set erpmPoMastersForPomApprovedById) {
+    public Erpmusers(String erpmuName, String erpmuPassword, Date erpmuDob, String erpmuActive, String erpmuVerifiedBy, String erpmuSecretQuestion, String erpmuSecretAnswer, String erpmuFullName, Set erpmIndentMasters, Set userMessagesForUmFromErpmuId, Set fileMasters, Set fileDetails, Set erpmNewses, Set erpmPurchasechallanMasters, Set erpmPurchaseinvoiceMasters, Set erpmuserroles, Set erpmPoMastersForPomUserId, Set erpmPoMastersForPomApprovedById, Set userMessagesForUmToErpmuId) {
        this.erpmuName = erpmuName;
        this.erpmuPassword = erpmuPassword;
        this.erpmuDob = erpmuDob;
@@ -48,10 +54,16 @@ public class Erpmusers  implements java.io.Serializable {
        this.erpmuSecretAnswer = erpmuSecretAnswer;
        this.erpmuFullName = erpmuFullName;
        this.erpmIndentMasters = erpmIndentMasters;
+       this.userMessagesForUmFromErpmuId = userMessagesForUmFromErpmuId;
+       this.fileMasters = fileMasters;
+       this.fileDetails = fileDetails;
+       this.erpmNewses = erpmNewses;
        this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
+       this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
        this.erpmuserroles = erpmuserroles;
        this.erpmPoMastersForPomUserId = erpmPoMastersForPomUserId;
        this.erpmPoMastersForPomApprovedById = erpmPoMastersForPomApprovedById;
+       this.userMessagesForUmToErpmuId = userMessagesForUmToErpmuId;
     }
    
     public Integer getErpmuId() {
@@ -124,12 +136,47 @@ public class Erpmusers  implements java.io.Serializable {
     public void setErpmIndentMasters(Set erpmIndentMasters) {
         this.erpmIndentMasters = erpmIndentMasters;
     }
+    public Set getUserMessagesForUmFromErpmuId() {
+        return this.userMessagesForUmFromErpmuId;
+    }
+    
+    public void setUserMessagesForUmFromErpmuId(Set userMessagesForUmFromErpmuId) {
+        this.userMessagesForUmFromErpmuId = userMessagesForUmFromErpmuId;
+    }
+    public Set getFileMasters() {
+        return this.fileMasters;
+    }
+    
+    public void setFileMasters(Set fileMasters) {
+        this.fileMasters = fileMasters;
+    }
+    public Set getFileDetails() {
+        return this.fileDetails;
+    }
+    
+    public void setFileDetails(Set fileDetails) {
+        this.fileDetails = fileDetails;
+    }
+    public Set getErpmNewses() {
+        return this.erpmNewses;
+    }
+    
+    public void setErpmNewses(Set erpmNewses) {
+        this.erpmNewses = erpmNewses;
+    }
     public Set getErpmPurchasechallanMasters() {
         return this.erpmPurchasechallanMasters;
     }
     
     public void setErpmPurchasechallanMasters(Set erpmPurchasechallanMasters) {
         this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
+    }
+    public Set getErpmPurchaseinvoiceMasters() {
+        return this.erpmPurchaseinvoiceMasters;
+    }
+    
+    public void setErpmPurchaseinvoiceMasters(Set erpmPurchaseinvoiceMasters) {
+        this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
     }
     public Set getErpmuserroles() {
         return this.erpmuserroles;
@@ -151,6 +198,13 @@ public class Erpmusers  implements java.io.Serializable {
     
     public void setErpmPoMastersForPomApprovedById(Set erpmPoMastersForPomApprovedById) {
         this.erpmPoMastersForPomApprovedById = erpmPoMastersForPomApprovedById;
+    }
+    public Set getUserMessagesForUmToErpmuId() {
+        return this.userMessagesForUmToErpmuId;
+    }
+    
+    public void setUserMessagesForUmToErpmuId(Set userMessagesForUmToErpmuId) {
+        this.userMessagesForUmToErpmuId = userMessagesForUmToErpmuId;
     }
 
 

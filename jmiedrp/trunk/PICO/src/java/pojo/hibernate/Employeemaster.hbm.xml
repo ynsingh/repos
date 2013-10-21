@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.Employeemaster" table="employeemaster">
         <id name="empId" type="java.lang.Integer">
@@ -47,6 +47,34 @@
         <property name="empGender" type="string">
             <column name="EMP_Gender" length="10" />
         </property>
+        <set name="erpmIssueReturnMasters" inverse="true">
+            <key>
+                <column name="IRM_ReturnTo_Employee_ID" not-null="true">
+                    <comment>To be used as a signing authority while printing return slip</comment>
+                </column>
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnMaster" />
+        </set>
+        <set name="erpmIssueMastersForIsmFromEmployeeId" inverse="true">
+            <key>
+                <column name="ISM_From_Employee_ID">
+                    <comment>issueing authority, to be used while printing the issue slip for signing.</comment>
+                </column>
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
+        <set name="erpmIssueMastersForIsmToEmployeeId" inverse="true">
+            <key>
+                <column name="ISM_To_Employee_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
+        <set name="erpmIssueReceives" inverse="true">
+            <key>
+                <column name="ISR_To_Employee_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReceive" />
+        </set>
         <set name="institutionmasters" inverse="true">
             <key>
                 <column name="IM_EMP_ID" />
@@ -64,6 +92,18 @@
                 <column name="SIM_EMP_ID" />
             </key>
             <one-to-many class="pojo.hibernate.Subinstitutionmaster" />
+        </set>
+        <set name="fileDetails" inverse="true">
+            <key>
+                <column name="FD_Official_Addressed" />
+            </key>
+            <one-to-many class="pojo.hibernate.FileDetail" />
+        </set>
+        <set name="fileMasters" inverse="true">
+            <key>
+                <column name="File_Signed_By" />
+            </key>
+            <one-to-many class="pojo.hibernate.FileMaster" />
         </set>
     </class>
 </hibernate-mapping>

@@ -9,13 +9,12 @@
         <interceptors>
             <interceptor name="loginInterceptor" class="Administration.AuthenticationInterceptor" />
             <interceptor-stack name="PurchaseStack">
-               <!-- <interceptor-ref name="loginInterceptor" /> -->
+                <!-- <interceptor-ref name="loginInterceptor" /> -->
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">execute, browse</param>
-            </interceptor-ref>
+                </interceptor-ref>
             </interceptor-stack>
         </interceptors>
-
 
         <action name="LogoutAction">
             <result type="redirect">/Administration/LogoutAction</result>
@@ -25,12 +24,20 @@
             <result type="redirect">/Administration/ChangeProfileAction</result>
         </action>
 
-
-
         <!-- ACTIONS RELATED TO PURCHASE CHALLAN RECEIVING -->
         <action name="ManagePurchaseChallanAction" class="Purchase.ManagePurchaseChallanAction">
             <interceptor-ref name="PurchaseStack" />
             <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+        </action>
+
+        <action name="ShowPOReport" method="ShowPOReport" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
         </action>
@@ -41,83 +48,423 @@
             <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
         </action>
      
-      <action name="SavePurchaseChallanDetail" method="SavePurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+        <action name="SavePurchaseChallanDetail" method="SavePurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
+
+        <action name="Verify" method="CheckAndVerify" class="Purchase.ManagePurchaseChallanAction">
             <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
         </action>
 
-
-  <action name="DeletePurchaseChallanDetail" method="DeletePurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+        <action name="Check" method="CheckAndVerify" class="Purchase.ManagePurchaseChallanAction">
             <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
         </action>
 
-   <action name="EditPurchaseChallanDetail" method="EditPurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+        <action name="SaveCheckAndVerify" method="SaveCheckAndVerify" class="Purchase.ManagePurchaseChallanAction">
             <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
-    </action>
+        </action>
+        
 
-<action name="BrowsePurchaseChallanMaster" method="BrowsePurchaseChallanMaster" class="Purchase.ManagePurchaseChallanAction">
+        
+        <action name="SavePurchaseChallanStockInfo" method="SavePurchaseChallanStockInfo" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+        </action>
+
+
+        <action name="PendingPO" method="PendingPO" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PendingPO.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+        </action>
+        <action name="EditPurchaseChallan" method="EditPurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
             <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
-          </action>
+        </action>
+        
+        <action name="DeletePurchaseChallanDetail" method="DeletePurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
 
 
+        <action name="ClearPurchaseChallanDetail" method="ClearPurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
 
-<action name="PurchaseChallanSerial" method="PurchaseChallanSerial" class="Purchase.ManagePurchaseChallanAction">
+        <action name="EditPurchaseChallanDetail" method="EditPurchaseChallanDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
+
+        <action name="DeletePurchaseChallanItem" method="DeletePurchaseChallanItem" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
+
+
+        <action name = "EditViewSerialDetail" method="EditViewSerialDetail" class="Purchase.ManagePurchaseChallanAction">
+            <result name = "success">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name = "error">/pico/Administration/ErrorPage.jsp</result>
+            <result name = "input">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+            <result name = "SUCCESS1">/pico/Purchase/ManagePurchaseChallanDetail.jsp</result>
+        </action>
+
+        <action name="EditPurchaseChallanStockInfo" method="EditPurchaseChallanStockInfo" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+        </action>
+
+        <action name="AddSerialNo" method="AddSerialNo" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseChallanStockInfo.jsp</result>
+        </action>
+
+        <action name="BrowsePurchaseChallanMaster" method="BrowsePurchaseChallanMaster" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseChallanBrowse.jsp</result>
+        </action>
+
+        <action name="PurchaseChallanSerial" method="PurchaseChallanSerial" class="Purchase.ManagePurchaseChallanAction">
             <result name="success">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
-          </action>
-
-
-<action name="SavePurchaseChallanSerial" method="SavePurchaseChallanSerial" class="Purchase.ManagePurchaseChallanAction">
+        </action>
+        <action name="SavePurchaseChallanSerial" method="SavePurchaseChallanSerial" class="Purchase.ManagePurchaseChallanAction">
             <result name="success">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallanSerial.jsp</result>
-          </action>
+        </action>
 
-<!--
-  <action name="DeletePurchaseChallan" method="DeletePurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
-            <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+
+        <action name="DeletePurchaseChallan" method="DeletePurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/PurchaseChallanBrowse.jsp </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp </result>
+            <result name="input">/pico/Purchase/PurchaseChallanBrowse.jsp </result>
+        </action>
+
+        <action name="Done" method="Done" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp </result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanSerial.jsp </result>
+        </action>
+        <action name="ShowDetailPurchaseChallan" method="ShowDetailPurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success">/pico/Purchase/ManagePurchaseChallanDetail.jsp </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp </result>
+            <result name="input">/pico/Purchase/ManagePurchaseChallanSerial.jsp </result>
+             </action>
+  		<action name="PrintReceiptPurchaseChallan" method="PrintReceiptPurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
         </action>
 
-   <action name="EditDeletePurchaseChallan" method="EditPurchaseChallan" class="Purchase.ManagePurchaseChallanAction">
-            <result name="success">/pico/Purchase/ManagePurchaseChallan.jsp</result>
+        <action name="showGFRreportChallan" method="showGFRreport" class="Purchase.ManagePurchaseChallanAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-            <result name="input">/pico/Purchase/ManagePurchaseChallan.jsp</result>
-    </action>
+        </action>
 
-
-    
-
-
-    <action name="BrowsePOMasterDetail" method="BrowsePOMasterDetail" class="Purchase.ManagePOMaster">
-            <result name="success">/pico/Purchase/AddPODetails.jsp</result>
+        <!-- ACTIONS RELATED TO PURCHASE INVOICE  -->
+        <action name="PurchaseInvoiceAction" class="Purchase.PurchaseInvoiceAction">
+            <interceptor-ref name="PurchaseStack" />
+            <result name="success">/pico/Purchase/PurchaseInvoice.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
-          </action>
+            <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
 
-          <action name="DeletePOMaster" method="DeletePOMaster" class="Purchase.ManagePOMaster">
-            <result name="success">/pico/Purchase/BrowsePOMaster.jsp</result>
+        <action name="SavePurchaseInvoice" method="Save" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="SUCCESS2">/pico/Purchase/PurchaseInvoice.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
-          </action>
+            <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
 
-          <action name="EditPOMaster" method="EditPOMaster" class="Purchase.ManagePOMaster">
-            <result name="success">/pico/Purchase/POMaster.jsp</result>
+        <action name="BrowsePurchaseInvoice" method="Browse" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceBrowse.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-            <result name="input">/pico/Administration/showWelcomePage.jsp</result>
-          </action>
+            <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
 
--->
+        <action name="ClearPurchaseInvoice" method="Clear" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
 
+        <action name="Edit" method="Edit" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceBrowse.jsp</result>
+        </action>
+
+        <action name="GotoDetail" method="GotoDetail" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceBrowse.jsp</result>
+        </action>
+
+        <action name="Delete" method="Delete" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceBrowse.jsp</result>
+        </action>
+
+        <action name="SavePurchaseInvoiceDetail" method="SaveInvoiceDetailforPO" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+        </action>
+
+        <action name="BackToPurchaseInvoiceMaster" method="BackToPurchaseInvoiceMaster" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
+
+        <action name="BackToPurchaseInvoiceMasterChaln" method="BackToPurchaseInvoiceMasterChaln" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
+
+        <action name="SavePurchaseInvoiceDetailForChallan" method="SaveInvoiceDetailForChallan" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+        </action>
+
+        <action name="EditPurchaseInvoiceDetailforChallan" method="EditPurchaseInvoiceDetailforChallan" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+        </action>
+
+        <action name="EditPurchaseInvoiceDetailforPO" method="EditPurchaseInvoiceDetailforPO" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+        </action>
+
+
+        <action name="BackToPurchaseInvoiceDetail" method="BackToPurchaseInvoiceDetail" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+        </action>
+
+
+        <action name="ViewSerialInfo" method="ViewSerialInfo" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ViewSerialInfo.jsp</result>
+        </action>
+
+        <action name="ViewTaxInfoPO" method="ViewTaxInfoPO" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+        </action>
+
+
+        <action name="ViewTaxInfoChallan" method="ViewTaxInfoChallan" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceTaxDetail.jsp</result>
+        </action>
+
+        <action name="EditPOStockInfo" method="EditPOStockInfo" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ViewSerialInfo.jsp</result>
+        </action>
+
+        <action name="DeletePOStockInfo" method="DeletePOStockInfo" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ViewSerialInfo.jsp</result>
+        </action>
+
+        <action name="SavePOStokInfo" method="SavePOStokInfo" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ViewSerialInfo.jsp</result>
+        </action>
+
+        <action name="AddPOStokInfo" method="AddPOStokInfo" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/ViewSerialInfo.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ViewSerialInfo.jsp</result>
+        </action>
+
+        <action name="BackPOStokInfo" method="BackPOStokInfo" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="SUCCESS1">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/ViewSerialInfo.jsp</result>
+        </action>
+
+        <action name="PurchaseInvoiceTaxDetail" method="SavePurchaseInvoiceTaxDetail" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceTexDetail.jsp</result>
+        </action>
+
+         <action name="showPOreportInInvoice" method="showPOreportInInvoice" class="Purchase.PurchaseInvoiceAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+           <result name="input">/pico/Purchase/PurchaseInvoice.jsp</result>
+        </action>
+
+        <action name="PrintReceiving" method="PrintReceiving" class="Purchase.PurchaseInvoiceAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+           <result name="input">/pico/Purchase/PurchaseInvoiceBrowse.jsp</result>
+        </action>
+
+        <action name="checkedforChallan" method="CheckedandVerifiedforChallan" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+        </action>
+
+        <action name="verifiedforChallan" method="CheckedandVerifiedforChallan" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+        </action>
+
+        <action name="checkedforPO" method="CheckedandVerifiedforPO" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+        </action>
+
+        <action name="verifiedforPO" method="CheckedandVerifiedforPO" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+        </action>
+
+        <action name="SaveCheckAndVerifyforChallan" method="SaveCheckAndVerifyforChallan" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForChallan.jsp</result>
+        </action>
+
+        <action name="SaveCheckAndVerifyforPO" method="SaveCheckAndVerifyforPO" class="Purchase.PurchaseInvoiceAction">
+            <result name="success">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseInvoiceDetailsForPO.jsp</result>
+        </action>
+
+        <action name="showGFRreportInvoice" method="showGFRreport" class="Purchase.PurchaseInvoiceAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+     <!-- Purchase Report Action -->
+        <action name="PurchaseReportAction" class="Purchase.PurchaseReportAction">
+            <interceptor-ref name="PurchaseStack" />
+            <result name="success">/pico/Purchase/PurchaseReport.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseReport.jsp</result>
+        </action>
+
+        <action name="PrintPendingBills" method="PrintPendingBills" class="Purchase.PurchaseReportAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseReport.jsp</result>
+        </action>
+
+        <action name="ExportPendingPO" method="ExportPendingPO" class="Purchase.PurchaseReportAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseReport.jsp</result>
+        </action>
+
+        <action name="ExportItemRates" method="ExportItemRates" class="PrePurchase.ManageItemRates">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/PrePurchase/ManageItemRates.jsp</result>
+        </action>
+
+        <action name="UncheckedAndUnverifiedItems" method="UncheckedAndUnverifiedItems" class="Purchase.PurchaseReportAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseReport.jsp</result>
+        </action>
+<action name="ListOfInvoicesReceived" method="ListOfInvoicesReceived" class="Purchase.PurchaseReportAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Purchase/PurchaseReport.jsp</result>
+        </action>
 
     </package>
 </struts>

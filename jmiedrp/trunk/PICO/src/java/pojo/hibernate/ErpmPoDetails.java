@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.math.BigDecimal;
@@ -15,6 +15,7 @@ public class ErpmPoDetails  implements java.io.Serializable {
      private Integer podPodetailsId;
      private ErpmItemMaster erpmItemMaster;
      private ErpmIndentDetail erpmIndentDetail;
+     private ErpmItemRate erpmItemRate;
      private ErpmPoMaster erpmPoMaster;
      private BigDecimal podQuantity;
      private BigDecimal podDiscount;
@@ -31,9 +32,10 @@ public class ErpmPoDetails  implements java.io.Serializable {
         this.erpmItemMaster = erpmItemMaster;
         this.erpmPoMaster = erpmPoMaster;
     }
-    public ErpmPoDetails(ErpmItemMaster erpmItemMaster, ErpmIndentDetail erpmIndentDetail, ErpmPoMaster erpmPoMaster, BigDecimal podQuantity, BigDecimal podDiscount, String podWarrantyTerms, String podSchedule, BigDecimal podRate, Set erpmPoTaxeses) {
+    public ErpmPoDetails(ErpmItemMaster erpmItemMaster, ErpmIndentDetail erpmIndentDetail, ErpmItemRate erpmItemRate, ErpmPoMaster erpmPoMaster, BigDecimal podQuantity, BigDecimal podDiscount, String podWarrantyTerms, String podSchedule, BigDecimal podRate, Set erpmPoTaxeses) {
        this.erpmItemMaster = erpmItemMaster;
        this.erpmIndentDetail = erpmIndentDetail;
+       this.erpmItemRate = erpmItemRate;
        this.erpmPoMaster = erpmPoMaster;
        this.podQuantity = podQuantity;
        this.podDiscount = podDiscount;
@@ -63,6 +65,13 @@ public class ErpmPoDetails  implements java.io.Serializable {
     
     public void setErpmIndentDetail(ErpmIndentDetail erpmIndentDetail) {
         this.erpmIndentDetail = erpmIndentDetail;
+    }
+    public ErpmItemRate getErpmItemRate() {
+        return this.erpmItemRate;
+    }
+    
+    public void setErpmItemRate(ErpmItemRate erpmItemRate) {
+        this.erpmItemRate = erpmItemRate;
     }
     public ErpmPoMaster getErpmPoMaster() {
         return this.erpmPoMaster;

@@ -52,7 +52,4 @@ public class ManageInstitutionUserRoleDecorator  extends TableDecorator {
        else
            return "Yes";
     }
-
-
-
 }

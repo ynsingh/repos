@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : Inventory.xml
+    Created on : 25 May, 2012, 5:13 PM
+    Author     : Tanvir Ahmed
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="Inventory" namespace="/Inventory" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="loginInterceptor" class="Administration.AuthenticationInterceptor" />
+            <interceptor-stack name="InventoryStack">
+                <!-- <interceptor-ref name="loginInterceptor" /> -->
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">execute, browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <action name="LogoutAction">
+            <result type="redirect">/Administration/LogoutAction</result>
+        </action>
+
+        <action name="ChangeProfileAction">
+            <result type="redirect">/Administration/ChangeProfileAction</result>
+        </action>
+
+        <!-- OPENING STOCK ACTIONS are MAPPED Here -->
+
+        <action name="ManageOpeningStockAction"  class="Inventory.ManageOpeningStockAction">
+            <!--           <interceptor-ref name="InventoryStack" />  -->
+            <result name="success">/pico/Inventory/ManageOpeningStock.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
+        </action>
+
+        <action name="SaveTOSAction" method="Save" class="Inventory.ManageOpeningStockAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="success">/pico/Inventory/ManageOpeningStock.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
+        </action>
+
+        <action name="ClearTOSAction" method="Clear" class="Inventory.ManageOpeningStockAction">
+            <result name="success">/pico/Inventory/ManageOpeningStock.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
+        </action>
+
+        <action name="BrowseTOS" method="export" class="Inventory.ManageOpeningStockAction">
+            <result name="success">/pico/Inventory/BrowseStockDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
+        </action>
+        <action name="PrintOpeningStock" method="PrintOpeningStock" class="Inventory.ManageOpeningStockAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <!--For Browse Stock details-->
+        <action name="StockDetailsAction" class="Inventory.ManageOpeningStockAction">
+            <interceptor-ref name="InventoryStack" />
+            <result name="success">/pico/Inventory/BrowseStockDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/BrowseStockDetails.jsp</result>
+        </action>
+
+        <action name="SaveStockDetailsAction" method="Save" class="Inventory.ManageOpeningStockAction">
+
+            <result name="success">/pico/Inventory/BrowseStockDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/BrowseStockDetails.jsp</result>
+        </action>
+
+        <action name="FetchStockDetails" method="Browse" class="Inventory.ManageOpeningStockAction">
+
+            <result name="success">/pico/Inventory/BrowseStockDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/BrowseStockDetails.jsp</result>
+        </action>
+
+        <action name="DeleteStockDetails" method="Delete" class="Inventory.ManageOpeningStockAction">
+
+            <result name="success">/pico/Inventory/BrowseStockDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/BrowseStockDetails.jsp</result>
+        </action>
+
+        <action name="EditStockDetails" method="Edit" class="Inventory.ManageOpeningStockAction">
+
+            <result name="success">/pico/Inventory/ManageOpeningStock.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
+        </action>
+
+        <action name="TransferStockDetailsAction" method="Transfer" class="Inventory.ManageOpeningStockAction">
+            <!--<interceptor-ref name="InventoryStack" />-->
+            <result name="success">/pico/Inventory/BrowseStockDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/BrowseStockDetails.jsp</result>
+        </action>
+
+        <action name="ClearTransferStockDetails" method="Clear" class="Inventory.ManageOpeningStockAction">
+            <result name="success">/pico/Inventory/ManageOpeningStock.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ManageOpeningStock.jsp</result>
+        </action>
+
+        <action name="showGFRreportStock" method="showGFRreport" class="Inventory.ManageOpeningStockAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <!-- xml related to issue items management -->
+
+        <action name="IssueItemsAction" class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="EmailIssueItems" method="EmailIssueItems" class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueItemsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="SaveIssueItems" method="Save" class="Inventory.IssueItemsAction">
+
+            <result name="SUCCESS1">/pico/Inventory/IssueDetailsWithoutIndent.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/IssueDetailsWithIndent.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/IssueItems.jsp</result>
+        </action>
+
+
+        <action name="ClearIssueItems" method="Clear" class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/IssueItems.jsp</result>
+        </action>
+
+        <action name="BrowseIssueItems" method="Browse" class= "Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueItemsBrowse.jsp</result>
+        </action>
+
+        <action name="IssueAndRemoveItemsUserChoice" method="IssueAndRemoveItemsUserChoice" class= "Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+		<action name="IssueReport" method="IssueReport" class="Inventory.IssueItemsAction">
+            <result name="success" type="stream">
+                <param name = "contentType">application/pdf</param>
+                <param name = "inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+
+        <action name="IssueSerialNumber" method="IssueSerialNumber"  class="Inventory.IssueItemsAction">
+            <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+            <result name="success">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="RemoveSerialNumber" method="RemoveSerialNumber"  class="Inventory.IssueItemsAction">
+            <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+            <result name="success">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+
+        <action name="EditIssueItems" method="EditIssueItems"  class="Inventory.IssueItemsAction">
+            <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+            <result name="success">/pico/Inventory/IssueItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="DeleteIssueItems" method="Delete" class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueItemsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+<action name="DeleteSerialNo" method="DeleteSerialNo" class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueSerialDetail.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+
+        <action name="EditIssueDetailsWithIndent" method="EditIssueDetailsWithIndent"  class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueDetailsWithIndent.jsp</result>
+            <result name="SUCCESS1">/pico/Inventory/IssueSerialDetail.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+    </action>
+    <action name="EditIssueDetailsWithoutIndent" method="EditIssueDetailsWithoutIndent"  class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueDetailsWithoutIndent.jsp</result>
+            <result name="SUCCESS1">/pico/Inventory/IssueSerialDetail.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+    </action>
+
+    <action name="SaveIssueDetailsWithIndent" method="SaveIssueDetailsWithIndent"  class="Inventory.IssueItemsAction">
+            <result name="SUCCESS1">/pico/Inventory/IssueSerialDetail.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="success">/pico/Inventory/IssueDetailsWithIndent.jsp</result>
+            <result name="input">/pico/Inventory/IssueDetailsWithIndent.jsp</result>
+    </action>
+
+    <action name="SaveIssueDetailsWithoutIndent" method="SaveIssueDetailsWithoutIndent"  class="Inventory.IssueItemsAction">
+            <result name="SUCCESS1">/pico/Inventory/IssueSerialDetail.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="success">/pico/Inventory/IssueDetailsWithoutIndent.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+    </action>
+
+<action name="AddSerialNo" method="AddSerialNo" class="Inventory.IssueItemsAction">
+    <result name="success">/pico/Inventory/IssueSerialDetail.jsp</result>
+    <result name="error">/pico/Administration/ErrorPage.jsp</result>
+</action>
+
+        <action name="SaveIssueSerialDetails"   class="Inventory.IssueItemsAction">
+            <result name="success">/pico/Inventory/IssueSerialNumberUserChoice.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/IssueSerialDetail.jsp</result>
+        </action>
+
+        <action name="IssueDone" method="IssueDone"  class="Inventory.IssueItemsAction">
+            <result name="SUCCESS1">/pico/Inventory/IssueDetailsWithoutIndent.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/IssueDetailsWithIndent.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/IssueDetails.jsp</result>
+        </action>
+
+        <action name="showGFRreport" method="showGFRreport" class="Inventory.IssueItemsAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <!-- Action related to Receive Issued Items in Inventory Section-->
+        <action name="ReceiveItemsAction" class="Inventory.ReceiveItemsAction">
+            <interceptor-ref name="InventoryStack" />
+            <result name="success">/pico/Inventory/ReceiveItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItems.jsp</result>
+        </action>
+
+
+        <action name="SaveAction" method="Save" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveIssuedItemsDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItems.jsp</result>
+        </action>
+
+
+        <action name="BrowseAction" method="Browse" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveItemsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItemsBrowse.jsp</result>
+        </action>
+
+        <action name="DeleteItems" method="Delete" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveItemsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItemsBrowse.jsp</result>
+        </action>
+
+        <action name="EditItems" method="Edit" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItemsBrowse.jsp</result>
+        </action>
+
+        <action name="Clear" method="Clear" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItems.jsp</result>
+        </action>
+
+        <action name="ViewDetailsAction" method="ViewDetails" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveItems.jsp</result>
+        </action>
+
+        <action name="PrintReceiptAction" method="PrintReceipt" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveItems.jsp</result>
+            <result name="error">/pico/Inventory/ReceiveItems.jsp</result>
+        </action>
+
+        <action name="showGFRreportReceive" method="showGFRreport" class="Inventory.ReceiveItemsAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <!--ReceiveIssuedItemsSerialNos.jsp-->
+        <action name="Accept" method="Accept" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+        </action>
+
+        <action name="ResetReceiveDetails" method="ResetReceiveDetails" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+        </action>
+
+
+        <action name="SaveReceiveDetails" method="SaveReceiveDetails" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveIssuedItemsDetails.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+        </action>
+
+        <action name="ExcludeItems" method="Exclude" class="Inventory.ReceiveItemsAction">
+            <result name="success">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReceiveIssuedItemsSerialNos.jsp</result>
+        </action>
+
+        <!-- RETURN ITEMS ACTIONS are MAPPED Here -->
+
+        <action name="ReturnIssuedItemsAction"  class="Inventory.ReturnIssuedItemsAction">
+            <interceptor-ref name="InventoryStack"></interceptor-ref>
+            <result name="success">/pico/Inventory/ReturnIssuedItems.jsp</result>
+            <result name="error">/pico/Inventory/ReturnIssuedItems.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="SaveReturnIssuedItemsAction" method="Save" class="Inventory.ReturnIssuedItemsAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="SUCCESS1">/pico/Inventory/ReturnIssuedItemsDetailbyissueNo.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="ReturnIssuedItemsReceivedBackOk" method="ReceivedBackOK" class="Inventory.ReturnIssuedItemsAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="SUCCESS1">/pico/Inventory/ReturnIssuedItemsDetailbyissueNo.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+            <result name="GOTOMAINPAGE">/pico/Inventory/ReturnIssuedItems.jsp</result>
+
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="SaveReturnIssuedItemsbydone" method="Done" class="Inventory.ReturnIssuedItemsAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="SUCCESS1">/pico/Inventory/ReturnIssuedItemsDetailbyissueNo.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+            <result name="SUCCESS">/pico/Inventory/ReturnIssuedItems.jsp</result>
+
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="DoneReturnIssuedItemsAction" method="Donemethod" class="Inventory.ReturnIssuedItemsAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="SUCCESS1">/pico/Inventory/ReturnIssuedItemsDetailbyissueNo.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+            <result name="SUCCESS">/pico/Inventory/ReturnIssuedItems.jsp</result>
+
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="BacktoErpmReturnIssuedItemPage" method="Back" class="Inventory.ReturnIssuedItemsAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="SUCCESS1">/pico/Inventory/ReturnIssuedItemsDetailbyissueNo.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+            <result name="SUCCESS">/pico/Inventory/ReturnIssuedItems.jsp</result>
+
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="SaveReturnIssuedItemsbyShowDetail" method="ShowDetail" class="Inventory.ReturnIssuedItemsAction">
+            <!--  <interceptor-ref name="InventoryStack" /> -->
+            <result name="SUCCESS1">/pico/Inventory/ReturnIssuedItemsDetailbyissueNo.jsp</result>
+            <result name="SUCCESS2">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+            <!--<result name="SUCCESS">/pico/Inventory/ReturnIssuedItems.jsp</result>-->
+            <result name="input">/pico/Inventory/ReturnIssuedItemsDetailbyissueSerialNo.jsp</result>
+
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="BrowseReturnIssuedItems" method="Browse" class="Inventory.ReturnIssuedItemsAction">
+
+            <result name="success">/pico/Inventory/BrowseReturnIssuedItems.jsp</result>
+            <result name="error">/pico/Inventory/ReturnIssuedItems.jsp</result>
+            <result name="input">/pico/Inventory//ReturnIssuedItems.jsp</result>
+        </action>
+        <action name="DeleteReturnIssuedItem" method="Delete" class="Inventory.ReturnIssuedItemsAction">
+
+            <result name="success">/pico/Inventory/BrowseReturnIssuedItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/BrowseReturnIssuedItems.jsp</result>
+        </action>
+
+        <action name="EditReturnIssuedItem" method="Edit" class="Inventory.ReturnIssuedItemsAction">
+
+            <result name="success">/pico/Inventory/ReturnIssuedItems.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/ReturnIssuedItems.jsp</result>
+        </action>
+        <!--  this genrate ReturnIssuedItemReceiving report from brouse page -->
+        <action name="PrintReturnIssuedItem" method="PrintReturnIssuedItemReceiving" class="Inventory.ReturnIssuedItemsAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="showGFRreportReturn" method="showGFRreport" class="Inventory.ReturnIssuedItemsAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <!-- Action related to STOCK REPORTS are mapped here-->
+        <action name="StockReportsAction"  class="Inventory.ManageStockReports">
+            <result name="success">/pico/Inventory/StockReports.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/StockReports.jsp</result>
+        </action>
+
+        <action name="Printstockdetail" method="Printstockdetail" class="Inventory.ManageStockReports">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="PrintStockSummary" method="PrintStockSummary" class="Inventory.ManageStockReports">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Inventory/StockReports.jsp</result>
+        </action>
+
+        <action name="IssuesPendingReport" method="IssuesPendingReport" class="Inventory.ManageStockReports">
+            <!-- <result name="success">/pico/Inventory/StockReports.jsp</result>-->
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="PrintStockInHand" method="PrintStockInHand" class="Inventory.ManageStockReports">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="ManageGFRReport40" method="PrintGFRReport40" class="Inventory.ManageStockReports">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="ManageGFRReport41" method="PrintGFRReport41" class="Inventory.ManageStockReports">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="StockRegister" method="PrintStockRegister" class="Inventory.ManageStockReports">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+
+    </package>
+</struts>

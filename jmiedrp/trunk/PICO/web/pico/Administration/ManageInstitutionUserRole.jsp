@@ -31,13 +31,25 @@
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
-            <s:property value="message" />
+            
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
+            
+            <jsp:include page="jobBar.jsp" flush="true"></jsp:include>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent">                
-                <p align="center"><s:label value="INSTITUTION USER ROLE MANAGEMENT"/></p>
+            <div id ="mainContent"> <br><br>
+                <s:bean name="java.util.HashMap" id="qTableLayout">
+                    <s:param name="tablecolspan" value="%{8}" />
+                </s:bean>
+
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION USER ROLE MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>                    
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro" >
+                
                 <s:form name="frmInstitutionUserRoleAddEdit" action="SaveIUR"  validate="true">
                     <s:hidden name="iur.iurId" />
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
@@ -48,7 +60,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <s:select label="Institution Name" name="iur.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"/>
+                                    <s:select label="Institution Name" required="true" requiredposition="" name="iur.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"/>
                                     <s:textfield label="Role Name" name="iur.iurName" title="Enter Role Name"
                                                  required="true" requiredposition="left" maxLength="50" size="50" />
                                     <s:textfield label="Remarks" name="iur.iurRemarks" title="Remarks about Role"
@@ -69,54 +81,64 @@
                         </tbody>
                     </table>
                 </s:form>
-            </div>
 
-
-             <div id ="mainContent" align="center">
-             <s:form name="frmIURBrowse">
-                 <table border="0" cellspacing="0" cellpadding="0" align="center">
-                     <display:table name="iurList" pagesize="15"
+           <s:if test="iurList.size() > 0">
+               <hr>
+                <s:form name="frmIURBrowse">
+                    <table border="0" cellspacing="0" cellpadding="0" align="center">
+                        <display:table name="iurList" pagesize="15"
                                excludedParams="*" export="false" cellpadding="0"
                                cellspacing="0" id="doc"
                                requestURI="/Administration/FetchIUR.action">
-                         <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
-                        </display:column>
-                        <display:column property="iurName" title="Role" 
-                                    maxLength="100" headerClass="gridheader"
+                        
+                            <display:column  class="griddata" title="Record" sortable="true" style="width:5%"  headerClass="gridheader">
+                                <c:out> ${doc_rowNum}
+                            </display:column>
+                        
+                            <display:column property="iurName" title="Role" 
+                                    style="width:25%"  headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                    style="width:10%" sortable="false"/>
-                        <display:column property="iurRemarks" title="Description"
+                                    sortable="false"/>
+                        
+                            <display:column property="iurRemarks" title="Description"
                                     maxLength="100" headerClass="gridheader"
                                     class="griddata" sortable="false"/>
-                        <display:column paramId="IurId" paramProperty="iurId"
+                        
+                            <display:column paramId="IurId" paramProperty="iurId"
                                     href="/pico/Administration/InitializeIURP.action"
                                     headerClass="gridheader" class="griddata" media="html">
-                                    Initialize Privileges
-                        </display:column>
-                        <display:column paramId="IurId" paramProperty="iurId"
+                                    Initialize Privileges                        
+                            </display:column>
+                                    
+                            <display:column paramId="IurId" paramProperty="iurId"
                                     href="/pico/Administration/AddEditIURP.action"
                                     headerClass="gridheader" class="griddata" media="html">
                                     View/Edit Role Privileges
-                        </display:column>
-                        <display:column paramId="IurId" paramProperty="iurId"
+                            </display:column>
+                                    
+                            <display:column paramId="IurId" paramProperty="iurId"
                                     href="/pico/Administration/EditIUR.action"
                                     headerClass="gridheader" class="griddata" media="html" >
                                     Edit
-                        </display:column>
-                        <display:column paramId="IurId" paramProperty="iurId"
+                            </display:column>
+                                    
+                            <display:column paramId="IurId" paramProperty="iurId"
                                     href="/pico/Administration/DeleteIUR.action"
                                     headerClass="gridheader" class="griddata" media="html">
                                     Delete
-                        </display:column>
-                </display:table>
+                            </display:column>
+                                    
+                    </display:table>
                 </table>
              </s:form>
-                 <br>
-            </div> 
-            <div id="footer">
-                <jsp:include page="footer.jsp" flush="true"></jsp:include>
+             </s:if>
+             <br>   
+             </div>
             </div>
+            <br>
+             <div id="footer">
+                <jsp:include page="footer.jsp" flush="true"></jsp:include>
+             </div>
         </div>
     </body>
 </html>

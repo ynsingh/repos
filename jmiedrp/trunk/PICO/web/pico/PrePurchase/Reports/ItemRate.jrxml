@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ItemRate" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ItemRate" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="670ba6e8-f55f-4c63-ba9e-dd6d3a130456">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="41"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -29,13 +29,13 @@
      	if(item_mast.`ERPMIM_Model` is null, 'Not Given', item_mast.`ERPMIM_Model`) AS item_mast_ERPMIM_Model,
 	if(cc.`ermcc_desc` is null,'Not Set',cc.`ermcc_desc`) As Capital_Category
 FROM
-	`pico_basic`.`erpm_item_rate` erpm_item_rate INNER JOIN `pico_basic`.`institutionmaster` im ON erpm_item_rate.`IR_IM_ID` = im.`IM_ID`
-     	INNER JOIN `pico_basic`.`suppliermaster` sm ON erpm_item_rate.`IR_Supplier_ID` = sm.`SM_Id`
-     	INNER JOIN `pico_basic`.`erpm_item_master` item_mast ON erpm_item_rate.`IR_Item_ID` = item_mast.`ERPMIM_ID`
-     	INNER JOIN `pico_basic`.`erpm_gen_master` currency ON erpm_item_rate.`IR_Currency_ID` = currency.`ERPMGM_EGM_ID`
-     	INNER JOIN `pico_basic`.`erpm_gen_master` wsf ON erpm_item_rate.`IR_Warranty_Starts_From_ID` = wsf.`ERPMGM_EGM_ID`
-     	INNER JOIN `pico_basic`.`erpm_gen_master` UOP ON item_mast.`ERPMIM_UOP` = UOP.`ERPMGM_EGM_ID`
-	INNER JOIN `pico_basic`.`erpm_CAPITAL_CATEGORY` cc ON item_mast.`ERPMIM_Capital_Cat` = CC.`ERPMCC_ID`
+	`erpm_item_rate` erpm_item_rate INNER JOIN `institutionmaster` im ON erpm_item_rate.`IR_IM_ID` = im.`IM_ID`
+     	INNER JOIN `suppliermaster` sm ON erpm_item_rate.`IR_Supplier_ID` = sm.`SM_Id`
+     	INNER JOIN `erpm_item_master` item_mast ON erpm_item_rate.`IR_Item_ID` = item_mast.`ERPMIM_ID`
+     	INNER JOIN `erpm_gen_master` currency ON erpm_item_rate.`IR_Currency_ID` = currency.`ERPMGM_EGM_ID`
+     	INNER JOIN `erpm_gen_master` wsf ON erpm_item_rate.`IR_Warranty_Starts_From_ID` = wsf.`ERPMGM_EGM_ID`
+     	INNER JOIN `erpm_gen_master` UOP ON item_mast.`ERPMIM_UOP` = UOP.`ERPMGM_EGM_ID`
+	INNER JOIN `erpm_CAPITAL_CATEGORY` cc ON item_mast.`ERPMIM_Capital_Cat` = CC.`ERPMCC_ID`
 	$P!{condition}
 ORDER BY
      	IR_ID ASC]]>
@@ -61,28 +61,24 @@ ORDER BY
 	</background>
 	<pageHeader>
 		<band height="71" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="185" height="65"/>
-				<imageExpression><![CDATA["./../../../images/MHRD.JPG"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement x="11" y="32" width="790" height="33"/>
+				<reportElement uuid="bf2a0ffd-938f-4ac0-bb78-b2d59424917f" x="11" y="32" width="790" height="33"/>
 				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="22" isBold="true"/>
+					<font fontName="SansSerif" size="22" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Item Rate Details]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="0" width="801" height="32"/>
+				<reportElement uuid="241d6846-7f39-4a26-8332-b55802ecdaa6" x="0" y="0" width="801" height="32"/>
 				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="24" isBold="true"/>
+					<font fontName="SansSerif" size="24" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{InstitutionName}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="702" y="44" width="100" height="20"/>
+				<reportElement uuid="f6d5f936-3e41-442f-aa78-598902b02837" x="702" y="44" width="100" height="20"/>
 				<textElement textAlignment="Right">
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -91,59 +87,59 @@ ORDER BY
 	<columnHeader>
 		<band height="34">
 			<rectangle>
-				<reportElement x="0" y="0" width="802" height="32" backcolor="#FFFFE1"/>
+				<reportElement uuid="77fb1892-8ecc-4a65-9441-b57ec5d8e1fc" x="0" y="0" width="802" height="32" backcolor="#FFFFE1"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="55" y="3" width="130" height="26"/>
+				<reportElement uuid="59742e40-64db-4386-9eab-e2e6e42a5a42" x="55" y="3" width="130" height="26"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Brief Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="188" y="3" width="105" height="26"/>
+				<reportElement uuid="0052001c-0c16-4c2c-b914-0706d187ebae" x="188" y="3" width="105" height="26"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Supplier Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="293" y="3" width="47" height="26"/>
+				<reportElement uuid="cb20d5a3-55a1-4c85-a46c-7d15b5440232" x="293" y="3" width="47" height="26"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Warranty (Months)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="3" width="64" height="26"/>
+				<reportElement uuid="e5ba22d1-48ed-4c03-99c3-84d2e9ed6ffa" x="340" y="3" width="64" height="26"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Starts From]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="404" y="3" width="118" height="26"/>
+				<reportElement uuid="8b4bd448-b3f5-43f0-97e1-4ae738c35d8e" x="404" y="3" width="118" height="26"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rate Validity Period]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="524" y="3" width="97" height="26"/>
+				<reportElement uuid="8f014b3c-9d74-402b-8536-7e9f4e693807" x="524" y="3" width="97" height="26"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Unit Rate ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="621" y="3" width="181" height="26"/>
+				<reportElement uuid="95cc8a02-17be-48b7-893c-d17df416ef13" x="621" y="3" width="181" height="26"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tax Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="3" width="54" height="26"/>
+				<reportElement uuid="eb068fa7-eb67-4783-a7f7-77f9045c4184" x="1" y="3" width="54" height="26"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
@@ -154,56 +150,56 @@ ORDER BY
 	<detail>
 		<band height="82" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="0" y="1" width="41" height="20"/>
+				<reportElement uuid="3a8517ee-44b0-48db-9d45-990fd3b1e20c" isPrintRepeatedValues="false" x="0" y="1" width="41" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{IR_ID}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="45" y="1" width="140" height="20"/>
+				<reportElement uuid="66fc3f33-5a52-4585-81ed-d49d67230329" x="45" y="1" width="140" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ItemBriefDesc}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="523" y="1" width="97" height="20"/>
+				<reportElement uuid="2e0b1bb5-a0d5-4ed1-95c3-fd7b6e4eca04" isPrintRepeatedValues="false" x="523" y="1" width="97" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ItemRate}+" "+ $F{Currency} + "/" + $F{UnitOfPurchase}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="188" y="1" width="105" height="20"/>
+				<reportElement uuid="3bdd0df7-2888-4df2-869a-501c7147ab53" x="188" y="1" width="105" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SupplierName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="293" y="1" width="46" height="20"/>
+				<reportElement uuid="a40e65a4-eb0c-44cf-b0b8-4997ea9b2222" isPrintRepeatedValues="false" x="293" y="1" width="46" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{WarrantyMonths}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="340" y="1" width="63" height="20"/>
+				<reportElement uuid="48f71616-4fe4-45a8-90c6-3982129e00d0" isPrintRepeatedValues="false" x="340" y="1" width="63" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{WarrantyStarts}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="405" y="1" width="117" height="20"/>
+				<reportElement uuid="534766dd-a398-4f9d-91b0-eec1d0636cf5" isPrintRepeatedValues="false" x="405" y="1" width="117" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{WEF} + " - "+$F{WET}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="621" y="1" width="181" height="20"/>
+				<reportElement uuid="c76be9c9-f032-43a8-a19c-d1525696d466" x="621" y="1" width="181" height="20"/>
 				<subreportParameter name="IRT_Item_Rate_Id">
 					<subreportParameterExpression><![CDATA[$F{IR_ID}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -211,45 +207,45 @@ ORDER BY
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Item_Tax_Rate.jasper"]]></subreportExpression>
 			</subreport>
 			<line>
-				<reportElement positionType="Float" x="0" y="72" width="800" height="1"/>
+				<reportElement uuid="5fdc63a7-992f-4ee5-8180-736071207579" positionType="Float" x="0" y="72" width="800" height="1"/>
 			</line>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="1" y="50" width="620" height="22"/>
+				<reportElement uuid="3e0d3ae9-499a-4723-aaa4-26632d5d41c5" x="1" y="50" width="620" height="22"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item_mast_ERPMIM_Detailed_Desc}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="101" y="29" width="73" height="20"/>
+				<reportElement uuid="df9db390-c2d7-4712-8a4c-dad5eb75fbce" x="101" y="29" width="73" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Make & Model:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="174" y="29" width="259" height="20"/>
+				<reportElement uuid="ebdf2278-94a6-46a0-bb38-d74c52dcb938" x="174" y="29" width="259" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item_mast_ERPMIM_Make} + " Model: " + $F{item_mast_ERPMIM_Model}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="24" width="73" height="28"/>
+				<reportElement uuid="91916e06-17c3-472b-8f44-c32065b251fe" x="1" y="24" width="73" height="28"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Detailed Specifications:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="432" y="29" width="87" height="20"/>
+				<reportElement uuid="d7ea8e65-5922-49aa-8330-05b81b5c66d7" x="432" y="29" width="87" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Capital Category:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="524" y="30" width="97" height="20"/>
+				<reportElement uuid="bd80eadd-62a9-46ae-8abb-760ecfdd930a" isPrintRepeatedValues="false" x="524" y="30" width="97" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>
@@ -260,12 +256,12 @@ ORDER BY
 	<pageFooter>
 		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="327" y="11" width="80" height="20"/>
+				<reportElement uuid="6d805943-0275-43ac-ac35-af28c3c7609a" x="327" y="11" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="407" y="11" width="40" height="20"/>
+				<reportElement uuid="6c8a914b-79c7-426f-b5cb-eb055b7a3e99" x="407" y="11" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

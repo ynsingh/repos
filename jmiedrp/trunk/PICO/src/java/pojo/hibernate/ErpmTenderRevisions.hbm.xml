@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmTenderRevisions" table="erpm_tender_revisions">
+        <id name="trTrId" type="java.lang.Integer">
+            <column name="TR_TR_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="TR_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmTenderMaster" class="pojo.hibernate.ErpmTenderMaster" fetch="select">
+            <column name="TR_TM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="TR_Revision_Type_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="TR_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="TR_IM_ID" not-null="true" />
+        </many-to-one>
+        <property name="trRevisionNo" type="int">
+            <column name="TR_Revision_No" not-null="true" />
+        </property>
+        <property name="trRevisionDate" type="date">
+            <column name="TR_Revision_Date" length="10" not-null="true" />
+        </property>
+        <property name="trRevisionDescription" type="string">
+            <column name="TR_Revision_Description" length="200" />
+        </property>
+        <property name="trRevisionLink" type="string">
+            <column name="TR_Revision_Link" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -9,7 +9,7 @@
  *
  * @author afreen
  */
-
+/*
 
 package Administration;
 import org.displaytag.decorator.TableDecorator;
@@ -25,7 +25,7 @@ public class IndentDecorator extends TableDecorator {
    private ErpmGenMasterDao erpmGmDao = new ErpmGenMasterDao();
    private List<UserMessage> statusList = new ArrayList<UserMessage>();
    private UserMessageDAO umDao = new UserMessageDAO();
-  
+
    private String userid;
  private String x;
 int umid;
@@ -80,7 +80,7 @@ return actorData.getUmId();
  statusList=umDao.findByUserId(actorData.getErpmusersByUmToErpmuId().getErpmuId());
   //String lists="<select name=D1 onchange="+"'getCurrentStatus()'"+" ><option selected>Please Select...";
    //  String lists="<select name=D1 onchange="+"getCurrentStatus(this.options[this.selectedIndex].value))"+" ><option >Please Select...";
- 
+
 int id=actorData.getUmId();
 String umid=id+"";
 String lists="<select name=D1 onchange="+"getCurrentStatus(this.options[this.selectedIndex].text,"+umid+")><option selected="+"selected"+">"+actorData.getErpmGenMaster().getErpmgmEgmDesc()+"</option>";
@@ -94,6 +94,7 @@ lists = lists + "</select>";
             return lists;
     }
 
-   
+
 }
 
+*/

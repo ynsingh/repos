@@ -4,87 +4,102 @@
  */
  package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import java.util.List;
-import java.util.*;
+import org.hibernate.Hibernate;
+import utils.BaseDAO;
+
 
 /**
  *
  * @author dell
  */
 public class ErpmPoTermsDAO extends BaseDAO {
+
     public void save(ErpmPoTerms epoterms) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(epoterms);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.save(epoterms);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
-            throw re;    }
-    }
-public void delete(ErpmPoTerms epoterms) {
-        try {
-            beginTransaction();
-            getSession().delete(epoterms);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            if(epoterms != null)
+                tx.rollback();
             throw re;
         }
+        finally {
+            session.close();
+        }
     }
- public void update(ErpmPoTerms epoterms) {
+
+     public void delete(ErpmPoTerms epoterms) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(epoterms);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(epoterms);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(epoterms != null)
+                tx.rollback();
             throw re;
         }
-    }
- public ErpmPoTerms findByPotpoId(Integer potPotId) {
-        beginTransaction();
-        List<ErpmPoTerms> terms  = getSession().createQuery("Select u from ErpmPoTerms u where u.potPotId = :potPotId").setParameter("potPotId",potPotId).list();
-        commitTransaction();
-        return terms.get(0);
+        finally {
+            session.close();
+        }
     }
 
- public ErpmPoTerms findBypotPotIds(Integer potPotId) {
-        beginTransaction();
-        ErpmPoTerms terms  = (ErpmPoTerms) getSession().load(ErpmPoTerms.class , potPotId);
-        commitTransaction();
-        return terms;
+      public void update(ErpmPoTerms epoterms) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(epoterms);
+            tx.commit();
+        }
+        catch (RuntimeException re) {
+            if(epoterms != null)
+                tx.rollback();
+            throw re;
+        }
+        finally {
+            session.close();
+        }
     }
 
-  public List<ErpmPoTerms>  findByindtIndentId(Integer potPotId) {
-        beginTransaction();
-        List<ErpmPoTerms> epoterms  = getSession().createQuery("Select u from ErpmPoTerms u where u.potPotId.potPotId = :potPotId").setParameter("potPotId", potPotId ).list();
-        commitTransaction();
-        return epoterms;
-   }
+      public ErpmPoTerms findBypotPotIds(Integer potPotId){
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmPoTerms terms  = (ErpmPoTerms) session.load(ErpmPoTerms.class , potPotId);
+            Hibernate.initialize(terms.getErpmGenMaster());
+            return terms;
+        }
+        finally {
+            session.close();
+            }
+  }
 
- public List<ErpmPoTerms> findAll() {
-        beginTransaction();
-        List<ErpmPoTerms> list = getSession().createQuery("from ErpmPoTerms").list();
-        commitTransaction();
-        return list;
+       public List<ErpmPoTerms>  findByPOMasterId(Integer pomPoMasterId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            
+            session.beginTransaction();
+           List<ErpmPoTerms> epoterms  = getSession().createQuery("Select u from ErpmPoTerms u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId ).list();
+            for(int index = 0; index < epoterms.size(); ++index) {
+                Hibernate.initialize(epoterms.get(index).getErpmGenMaster());
+                Hibernate.initialize(epoterms.get(index).getPotTermsDescription());
+
+            }
+            return epoterms;
+        }
+        finally {
+            session.close();
+            }
     }
-
-
-  public List<ErpmPoTerms>  findBypotid(Integer potPotId) {
-        beginTransaction();
-        List<ErpmPoTerms> termslist  = getSession().createQuery("Select u from ErpmPoTerms u where u.potPotId = :potPotId").setParameter("potPotId",potPotId).list();
-        commitTransaction();
-        return termslist;
-   }
-public List<ErpmPoTerms>  findBytest(Integer pomPoMasterId) {
-        beginTransaction();
-        List<ErpmPoTerms> epoterms  = getSession().createQuery("Select u from ErpmPoTerms u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId ).list();
-        commitTransaction();
-        return epoterms;
-   }
-
 }

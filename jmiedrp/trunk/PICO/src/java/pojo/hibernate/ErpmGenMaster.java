@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -16,58 +16,78 @@ public class ErpmGenMaster  implements java.io.Serializable {
      private String erpmgmEgmDesc;
      private String erpgmEgmRemarks;
      private String erpgmEgmChecks;
-     private Set erpmGeneralTermses = new HashSet(0);
      private Set erpmItemRatesForIrCurrencyId = new HashSet(0);
-     private Set erpmItemRatesForIrWarrantyStartsFromId = new HashSet(0);
-     private Set erpmPoMastersForPomPaymentModeId = new HashSet(0);
+     private Set userMessages = new HashSet(0);
+     private Set erpmTenderRevisionses = new HashSet(0);
      private Set workflowmasters = new HashSet(0);
-     private Set committeemasters = new HashSet(0);
-     private Set erpmIndentMastersForIndtCurrencyId = new HashSet(0);
      private Set erpmPoMastersForPomCurrencyId = new HashSet(0);
-     private Set suppliermastersForSmOwnershipType = new HashSet(0);
      private Set employeemasters = new HashSet(0);
-     private Set erpmPoMastersForPomFormId = new HashSet(0);
-     private Set workflowactionses = new HashSet(0);
+     private Set erpmTenderMastersForTmTypeId = new HashSet(0);
+     private Set erpmTempOpeningStocks = new HashSet(0);
+     private Set erpmTenderScheduleDetails = new HashSet(0);
+     private Set erpmTenderMastersForTmStatusId = new HashSet(0);
      private Set suppliermastersForSmSupplierType = new HashSet(0);
      private Set erpmItemMasters = new HashSet(0);
-     private Set erpmPoTermses = new HashSet(0);
      private Set erpmItemRateTaxeses = new HashSet(0);
-     private Set institutionmasters = new HashSet(0);
+     private Set fileMasters = new HashSet(0);
      private Set erpmIndentMastersForIndtStatus = new HashSet(0);
+     private Set workflowtransactions = new HashSet(0);
+     private Set erpmGeneralTermses = new HashSet(0);
+     private Set erpmItemRatesForIrWarrantyStartsFromId = new HashSet(0);
+     private Set erpmPoMastersForPomPaymentModeId = new HashSet(0);
+     private Set erpmIndentMastersForIndtCurrencyId = new HashSet(0);
+     private Set committeemasters = new HashSet(0);
+     private Set subinstitutionmasters = new HashSet(0);
+     private Set suppliermastersForSmOwnershipType = new HashSet(0);
+     private Set erpmTenderSubmissions = new HashSet(0);
+     private Set erpmPoMastersForPomFormId = new HashSet(0);
+     private Set workflowactionses = new HashSet(0);
+     private Set erpmPoTermses = new HashSet(0);
+     private Set erpmStockReceiveds = new HashSet(0);
+     private Set institutionmasters = new HashSet(0);
 
     public ErpmGenMaster() {
     }
 
 	
-    public ErpmGenMaster(ErpmGenCtrl erpmGenCtrl, String erpmgmEgmDesc, String erpgmEgmRemarks, String erpgmEgmChecks) {
+    public ErpmGenMaster(ErpmGenCtrl erpmGenCtrl, String erpmgmEgmDesc) {
         this.erpmGenCtrl = erpmGenCtrl;
         this.erpmgmEgmDesc = erpmgmEgmDesc;
-        this.erpgmEgmRemarks = erpgmEgmRemarks;
-        this.erpgmEgmChecks = erpgmEgmChecks;
     }
-    public ErpmGenMaster(ErpmGenCtrl erpmGenCtrl, String erpmgmEgmDesc, String erpgmEgmRemarks, String erpgmEgmChecks, Set erpmGeneralTermses, Set erpmItemRatesForIrCurrencyId, Set erpmItemRatesForIrWarrantyStartsFromId, Set erpmPoMastersForPomPaymentModeId, Set workflowmasters, Set committeemasters, Set erpmIndentMastersForIndtCurrencyId, Set erpmPoMastersForPomCurrencyId, Set suppliermastersForSmOwnershipType, Set employeemasters, Set erpmPoMastersForPomFormId, Set workflowactionses, Set suppliermastersForSmSupplierType, Set erpmItemMasters, Set erpmPoTermses, Set erpmItemRateTaxeses, Set institutionmasters, Set erpmIndentMastersForIndtStatus) {
+    public ErpmGenMaster(ErpmGenCtrl erpmGenCtrl, String erpmgmEgmDesc, String erpgmEgmRemarks, String erpgmEgmChecks, Set erpmItemRatesForIrCurrencyId, Set userMessages, Set erpmTenderRevisionses, Set workflowmasters, Set erpmPoMastersForPomCurrencyId, Set employeemasters, Set erpmTenderMastersForTmTypeId, Set erpmTempOpeningStocks, Set erpmTenderScheduleDetails, Set erpmTenderMastersForTmStatusId, Set suppliermastersForSmSupplierType, Set erpmItemMasters, Set erpmItemRateTaxeses, Set fileMasters, Set erpmIndentMastersForIndtStatus, Set workflowtransactions, Set erpmGeneralTermses, Set erpmItemRatesForIrWarrantyStartsFromId, Set erpmPoMastersForPomPaymentModeId, Set erpmIndentMastersForIndtCurrencyId, Set committeemasters, Set subinstitutionmasters, Set suppliermastersForSmOwnershipType, Set erpmTenderSubmissions, Set erpmPoMastersForPomFormId, Set workflowactionses, Set erpmPoTermses, Set erpmStockReceiveds, Set institutionmasters) {
        this.erpmGenCtrl = erpmGenCtrl;
        this.erpmgmEgmDesc = erpmgmEgmDesc;
        this.erpgmEgmRemarks = erpgmEgmRemarks;
        this.erpgmEgmChecks = erpgmEgmChecks;
-       this.erpmGeneralTermses = erpmGeneralTermses;
        this.erpmItemRatesForIrCurrencyId = erpmItemRatesForIrCurrencyId;
-       this.erpmItemRatesForIrWarrantyStartsFromId = erpmItemRatesForIrWarrantyStartsFromId;
-       this.erpmPoMastersForPomPaymentModeId = erpmPoMastersForPomPaymentModeId;
+       this.userMessages = userMessages;
+       this.erpmTenderRevisionses = erpmTenderRevisionses;
        this.workflowmasters = workflowmasters;
-       this.committeemasters = committeemasters;
-       this.erpmIndentMastersForIndtCurrencyId = erpmIndentMastersForIndtCurrencyId;
        this.erpmPoMastersForPomCurrencyId = erpmPoMastersForPomCurrencyId;
-       this.suppliermastersForSmOwnershipType = suppliermastersForSmOwnershipType;
        this.employeemasters = employeemasters;
-       this.erpmPoMastersForPomFormId = erpmPoMastersForPomFormId;
-       this.workflowactionses = workflowactionses;
+       this.erpmTenderMastersForTmTypeId = erpmTenderMastersForTmTypeId;
+       this.erpmTempOpeningStocks = erpmTempOpeningStocks;
+       this.erpmTenderScheduleDetails = erpmTenderScheduleDetails;
+       this.erpmTenderMastersForTmStatusId = erpmTenderMastersForTmStatusId;
        this.suppliermastersForSmSupplierType = suppliermastersForSmSupplierType;
        this.erpmItemMasters = erpmItemMasters;
-       this.erpmPoTermses = erpmPoTermses;
        this.erpmItemRateTaxeses = erpmItemRateTaxeses;
-       this.institutionmasters = institutionmasters;
+       this.fileMasters = fileMasters;
        this.erpmIndentMastersForIndtStatus = erpmIndentMastersForIndtStatus;
+       this.workflowtransactions = workflowtransactions;
+       this.erpmGeneralTermses = erpmGeneralTermses;
+       this.erpmItemRatesForIrWarrantyStartsFromId = erpmItemRatesForIrWarrantyStartsFromId;
+       this.erpmPoMastersForPomPaymentModeId = erpmPoMastersForPomPaymentModeId;
+       this.erpmIndentMastersForIndtCurrencyId = erpmIndentMastersForIndtCurrencyId;
+       this.committeemasters = committeemasters;
+       this.subinstitutionmasters = subinstitutionmasters;
+       this.suppliermastersForSmOwnershipType = suppliermastersForSmOwnershipType;
+       this.erpmTenderSubmissions = erpmTenderSubmissions;
+       this.erpmPoMastersForPomFormId = erpmPoMastersForPomFormId;
+       this.workflowactionses = workflowactionses;
+       this.erpmPoTermses = erpmPoTermses;
+       this.erpmStockReceiveds = erpmStockReceiveds;
+       this.institutionmasters = institutionmasters;
     }
    
     public Integer getErpmgmEgmId() {
@@ -105,13 +125,6 @@ public class ErpmGenMaster  implements java.io.Serializable {
     public void setErpgmEgmChecks(String erpgmEgmChecks) {
         this.erpgmEgmChecks = erpgmEgmChecks;
     }
-    public Set getErpmGeneralTermses() {
-        return this.erpmGeneralTermses;
-    }
-    
-    public void setErpmGeneralTermses(Set erpmGeneralTermses) {
-        this.erpmGeneralTermses = erpmGeneralTermses;
-    }
     public Set getErpmItemRatesForIrCurrencyId() {
         return this.erpmItemRatesForIrCurrencyId;
     }
@@ -119,19 +132,19 @@ public class ErpmGenMaster  implements java.io.Serializable {
     public void setErpmItemRatesForIrCurrencyId(Set erpmItemRatesForIrCurrencyId) {
         this.erpmItemRatesForIrCurrencyId = erpmItemRatesForIrCurrencyId;
     }
-    public Set getErpmItemRatesForIrWarrantyStartsFromId() {
-        return this.erpmItemRatesForIrWarrantyStartsFromId;
+    public Set getUserMessages() {
+        return this.userMessages;
     }
     
-    public void setErpmItemRatesForIrWarrantyStartsFromId(Set erpmItemRatesForIrWarrantyStartsFromId) {
-        this.erpmItemRatesForIrWarrantyStartsFromId = erpmItemRatesForIrWarrantyStartsFromId;
+    public void setUserMessages(Set userMessages) {
+        this.userMessages = userMessages;
     }
-    public Set getErpmPoMastersForPomPaymentModeId() {
-        return this.erpmPoMastersForPomPaymentModeId;
+    public Set getErpmTenderRevisionses() {
+        return this.erpmTenderRevisionses;
     }
     
-    public void setErpmPoMastersForPomPaymentModeId(Set erpmPoMastersForPomPaymentModeId) {
-        this.erpmPoMastersForPomPaymentModeId = erpmPoMastersForPomPaymentModeId;
+    public void setErpmTenderRevisionses(Set erpmTenderRevisionses) {
+        this.erpmTenderRevisionses = erpmTenderRevisionses;
     }
     public Set getWorkflowmasters() {
         return this.workflowmasters;
@@ -140,33 +153,12 @@ public class ErpmGenMaster  implements java.io.Serializable {
     public void setWorkflowmasters(Set workflowmasters) {
         this.workflowmasters = workflowmasters;
     }
-    public Set getCommitteemasters() {
-        return this.committeemasters;
-    }
-    
-    public void setCommitteemasters(Set committeemasters) {
-        this.committeemasters = committeemasters;
-    }
-    public Set getErpmIndentMastersForIndtCurrencyId() {
-        return this.erpmIndentMastersForIndtCurrencyId;
-    }
-    
-    public void setErpmIndentMastersForIndtCurrencyId(Set erpmIndentMastersForIndtCurrencyId) {
-        this.erpmIndentMastersForIndtCurrencyId = erpmIndentMastersForIndtCurrencyId;
-    }
     public Set getErpmPoMastersForPomCurrencyId() {
         return this.erpmPoMastersForPomCurrencyId;
     }
     
     public void setErpmPoMastersForPomCurrencyId(Set erpmPoMastersForPomCurrencyId) {
         this.erpmPoMastersForPomCurrencyId = erpmPoMastersForPomCurrencyId;
-    }
-    public Set getSuppliermastersForSmOwnershipType() {
-        return this.suppliermastersForSmOwnershipType;
-    }
-    
-    public void setSuppliermastersForSmOwnershipType(Set suppliermastersForSmOwnershipType) {
-        this.suppliermastersForSmOwnershipType = suppliermastersForSmOwnershipType;
     }
     public Set getEmployeemasters() {
         return this.employeemasters;
@@ -175,19 +167,33 @@ public class ErpmGenMaster  implements java.io.Serializable {
     public void setEmployeemasters(Set employeemasters) {
         this.employeemasters = employeemasters;
     }
-    public Set getErpmPoMastersForPomFormId() {
-        return this.erpmPoMastersForPomFormId;
+    public Set getErpmTenderMastersForTmTypeId() {
+        return this.erpmTenderMastersForTmTypeId;
     }
     
-    public void setErpmPoMastersForPomFormId(Set erpmPoMastersForPomFormId) {
-        this.erpmPoMastersForPomFormId = erpmPoMastersForPomFormId;
+    public void setErpmTenderMastersForTmTypeId(Set erpmTenderMastersForTmTypeId) {
+        this.erpmTenderMastersForTmTypeId = erpmTenderMastersForTmTypeId;
     }
-    public Set getWorkflowactionses() {
-        return this.workflowactionses;
+    public Set getErpmTempOpeningStocks() {
+        return this.erpmTempOpeningStocks;
     }
     
-    public void setWorkflowactionses(Set workflowactionses) {
-        this.workflowactionses = workflowactionses;
+    public void setErpmTempOpeningStocks(Set erpmTempOpeningStocks) {
+        this.erpmTempOpeningStocks = erpmTempOpeningStocks;
+    }
+    public Set getErpmTenderScheduleDetails() {
+        return this.erpmTenderScheduleDetails;
+    }
+    
+    public void setErpmTenderScheduleDetails(Set erpmTenderScheduleDetails) {
+        this.erpmTenderScheduleDetails = erpmTenderScheduleDetails;
+    }
+    public Set getErpmTenderMastersForTmStatusId() {
+        return this.erpmTenderMastersForTmStatusId;
+    }
+    
+    public void setErpmTenderMastersForTmStatusId(Set erpmTenderMastersForTmStatusId) {
+        this.erpmTenderMastersForTmStatusId = erpmTenderMastersForTmStatusId;
     }
     public Set getSuppliermastersForSmSupplierType() {
         return this.suppliermastersForSmSupplierType;
@@ -203,13 +209,6 @@ public class ErpmGenMaster  implements java.io.Serializable {
     public void setErpmItemMasters(Set erpmItemMasters) {
         this.erpmItemMasters = erpmItemMasters;
     }
-    public Set getErpmPoTermses() {
-        return this.erpmPoTermses;
-    }
-    
-    public void setErpmPoTermses(Set erpmPoTermses) {
-        this.erpmPoTermses = erpmPoTermses;
-    }
     public Set getErpmItemRateTaxeses() {
         return this.erpmItemRateTaxeses;
     }
@@ -217,12 +216,12 @@ public class ErpmGenMaster  implements java.io.Serializable {
     public void setErpmItemRateTaxeses(Set erpmItemRateTaxeses) {
         this.erpmItemRateTaxeses = erpmItemRateTaxeses;
     }
-    public Set getInstitutionmasters() {
-        return this.institutionmasters;
+    public Set getFileMasters() {
+        return this.fileMasters;
     }
     
-    public void setInstitutionmasters(Set institutionmasters) {
-        this.institutionmasters = institutionmasters;
+    public void setFileMasters(Set fileMasters) {
+        this.fileMasters = fileMasters;
     }
     public Set getErpmIndentMastersForIndtStatus() {
         return this.erpmIndentMastersForIndtStatus;
@@ -230,6 +229,104 @@ public class ErpmGenMaster  implements java.io.Serializable {
     
     public void setErpmIndentMastersForIndtStatus(Set erpmIndentMastersForIndtStatus) {
         this.erpmIndentMastersForIndtStatus = erpmIndentMastersForIndtStatus;
+    }
+    public Set getWorkflowtransactions() {
+        return this.workflowtransactions;
+    }
+    
+    public void setWorkflowtransactions(Set workflowtransactions) {
+        this.workflowtransactions = workflowtransactions;
+    }
+    public Set getErpmGeneralTermses() {
+        return this.erpmGeneralTermses;
+    }
+    
+    public void setErpmGeneralTermses(Set erpmGeneralTermses) {
+        this.erpmGeneralTermses = erpmGeneralTermses;
+    }
+    public Set getErpmItemRatesForIrWarrantyStartsFromId() {
+        return this.erpmItemRatesForIrWarrantyStartsFromId;
+    }
+    
+    public void setErpmItemRatesForIrWarrantyStartsFromId(Set erpmItemRatesForIrWarrantyStartsFromId) {
+        this.erpmItemRatesForIrWarrantyStartsFromId = erpmItemRatesForIrWarrantyStartsFromId;
+    }
+    public Set getErpmPoMastersForPomPaymentModeId() {
+        return this.erpmPoMastersForPomPaymentModeId;
+    }
+    
+    public void setErpmPoMastersForPomPaymentModeId(Set erpmPoMastersForPomPaymentModeId) {
+        this.erpmPoMastersForPomPaymentModeId = erpmPoMastersForPomPaymentModeId;
+    }
+    public Set getErpmIndentMastersForIndtCurrencyId() {
+        return this.erpmIndentMastersForIndtCurrencyId;
+    }
+    
+    public void setErpmIndentMastersForIndtCurrencyId(Set erpmIndentMastersForIndtCurrencyId) {
+        this.erpmIndentMastersForIndtCurrencyId = erpmIndentMastersForIndtCurrencyId;
+    }
+    public Set getCommitteemasters() {
+        return this.committeemasters;
+    }
+    
+    public void setCommitteemasters(Set committeemasters) {
+        this.committeemasters = committeemasters;
+    }
+    public Set getSubinstitutionmasters() {
+        return this.subinstitutionmasters;
+    }
+    
+    public void setSubinstitutionmasters(Set subinstitutionmasters) {
+        this.subinstitutionmasters = subinstitutionmasters;
+    }
+    public Set getSuppliermastersForSmOwnershipType() {
+        return this.suppliermastersForSmOwnershipType;
+    }
+    
+    public void setSuppliermastersForSmOwnershipType(Set suppliermastersForSmOwnershipType) {
+        this.suppliermastersForSmOwnershipType = suppliermastersForSmOwnershipType;
+    }
+    public Set getErpmTenderSubmissions() {
+        return this.erpmTenderSubmissions;
+    }
+    
+    public void setErpmTenderSubmissions(Set erpmTenderSubmissions) {
+        this.erpmTenderSubmissions = erpmTenderSubmissions;
+    }
+    public Set getErpmPoMastersForPomFormId() {
+        return this.erpmPoMastersForPomFormId;
+    }
+    
+    public void setErpmPoMastersForPomFormId(Set erpmPoMastersForPomFormId) {
+        this.erpmPoMastersForPomFormId = erpmPoMastersForPomFormId;
+    }
+    public Set getWorkflowactionses() {
+        return this.workflowactionses;
+    }
+    
+    public void setWorkflowactionses(Set workflowactionses) {
+        this.workflowactionses = workflowactionses;
+    }
+    public Set getErpmPoTermses() {
+        return this.erpmPoTermses;
+    }
+    
+    public void setErpmPoTermses(Set erpmPoTermses) {
+        this.erpmPoTermses = erpmPoTermses;
+    }
+    public Set getErpmStockReceiveds() {
+        return this.erpmStockReceiveds;
+    }
+    
+    public void setErpmStockReceiveds(Set erpmStockReceiveds) {
+        this.erpmStockReceiveds = erpmStockReceiveds;
+    }
+    public Set getInstitutionmasters() {
+        return this.institutionmasters;
+    }
+    
+    public void setInstitutionmasters(Set institutionmasters) {
+        this.institutionmasters = institutionmasters;
     }
 
 

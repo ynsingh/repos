@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Issue_Report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cb1bc3f-482a-4390-8d8f-48770e17311a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.callouts" value="##Tue May 14 12:45:43 IST 2013"/>
+	<subDataset name="dataset1" uuid="3d913610-9bc1-45ec-b312-019e676e92b1"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["F:\\PICOsvn\\web\\pico\\Inventory\\Reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     concat(employeemaster.`EMP_FName`,' ',employeemaster.`EMP_MName`,' ',employeemaster.`EMP_LName`) AS From_Employee_Name,
+
+if(not isnull(employeemaster_A.`EMP_FName`),concat(employeemaster_A.`EMP_FName`,' ',employeemaster_A.`EMP_MName`,' ',employeemaster_A.`EMP_LName`) ,if(not isnull(suppliermaster.`SM_Name`),suppliermaster.`SM_Name`,if(not isnull(committeemaster.`Committee_Name`),committeemaster.`Committee_Name`,''))) AS To_Authority_Name,
+     erpm_issue_master.`ISM_ID` AS ISM_ID,
+     erpm_issue_master.`ISM_From_Institute_ID` AS From_Institute_ID,
+     erpm_issue_master.`ISM_From_Subinstitute_ID` AS From_Subinstitute_ID,
+     erpm_issue_master.`ISM_From_Department_ID` AS From_Department_ID,
+     erpm_issue_master.`ISM_From_Employee_ID` AS From_Employee_ID,
+     erpm_issue_master.`ISM_Issue_No` AS Issue_No,
+     erpm_issue_master.`ISM_Issue_Date` AS Issue_Date,
+     erpm_issue_master.`ISM_Issue_Desc` AS Issue_Desc,
+     erpm_issue_master.`ISM_To_Institute_ID` AS To_Institute_ID,
+     erpm_issue_master.`ISM_To_Subinstitute_ID` AS To_Subinstitute_ID,
+     erpm_issue_master.`ISM_To_Department_ID` AS To_Department_ID,
+     erpm_issue_master.`ISM_To_Employee_ID` AS To_Employee_ID,
+     erpm_issue_master.`ISM_To_Committee_ID` AS To_Committee_ID,
+     erpm_issue_master.`ISM_To_Supplier_ID` AS To_Supplier_ID,
+     erpm_issue_master.`ISM_To_Email` AS To_Email,
+     erpm_issue_master.`ISM_Against_Indent_ID` AS Against_Indent_ID,
+if(erpm_issue_master.`ISM_Issue_Type`='U','Issue for Use', if(erpm_issue_master.`ISM_Issue_Type`='W','Issue for Write-off', if(erpm_issue_master.`ISM_Issue_Type`='R','Issue for Repair/Maintenance', if(erpm_issue_master.`ISM_Issue_Type`='S','Issue for Stock Transfer', ' ')))) as Issue_Type,
+     erpm_issue_master.`ISM_Return_Due_Date` AS Return_Due_Date,
+     erpm_issue_master.`ISM_Remarks` AS Remarks,
+     institutionmaster.`IM_Name` AS From_Institute_Name,
+     subinstitutionmaster.`SIM_Name` AS From_SubInstitute_Name,
+     departmentmaster.`DM_Name` AS From_Department_Name,
+     institutionmaster_A.`IM_Name` AS To_Institute_Name,
+     subinstitutionmaster_A.`SIM_Name` AS To_SubInstitute_Name,
+     departmentmaster_A.`DM_Name` AS To_Department_Name,
+
+     erpm_indent_master.`Indt_Title` AS Indent_Title,
+     erpm_issue_detail.`ISD_ID` AS Issue_Detail_ID,
+     erpm_issue_detail.`ISD_Item_ID` AS Item_ID,
+     erpm_issue_detail.`ISD_Issued_Quantity` AS Issued_Quantity,
+     erpm_issue_detail.`ISD_Received_Quantity` AS Received_Quantity,
+     erpm_issue_detail.`ISD_Returned_Quantity` AS Returned_Quantity,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS UOM,
+     erpm_item_master.`ERPMIM_Serial_No_Applicable` AS Serial_No_Applicable
+FROM
+     `erpm_issue_master` erpm_issue_master INNER JOIN `erpm_issue_detail` erpm_issue_detail ON erpm_issue_master.`ISM_ID` = erpm_issue_detail.`ISD_ISM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_issue_master.`ISM_From_Institute_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `institutionmaster` institutionmaster_A ON erpm_issue_master.`ISM_To_Institute_ID` = institutionmaster_A.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_issue_master.`ISM_From_Subinstitute_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster_A ON erpm_issue_master.`ISM_To_Subinstitute_ID` = subinstitutionmaster_A.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_issue_master.`ISM_From_Department_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `departmentmaster` departmentmaster_A ON erpm_issue_master.`ISM_To_Department_ID` = departmentmaster_A.`DM_ID`
+     INNER JOIN `employeemaster` employeemaster ON erpm_issue_master.`ISM_From_Employee_ID` = employeemaster.`EMP_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster_A ON erpm_issue_master.`ISM_To_Employee_ID` = employeemaster_A.`EMP_ID`
+     LEFT OUTER JOIN `committeemaster` committeemaster ON erpm_issue_master.`ISM_To_Committee_ID` = committeemaster.`Committee_ID`
+     LEFT OUTER JOIN `suppliermaster` suppliermaster ON erpm_issue_master.`ISM_To_Supplier_ID` = suppliermaster.`SM_Id`
+     LEFT OUTER JOIN `erpm_indent_master` erpm_indent_master ON erpm_issue_master.`ISM_Against_Indent_ID` = erpm_indent_master.`Indt_Indent_Id`
+     AND institutionmaster_A.`IM_ID` = subinstitutionmaster.`SIM_IM_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_issue_detail.`ISD_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE
+$P!{condition}]]>
+	</queryString>
+	<field name="From_Employee_Name" class="java.lang.String"/>
+	<field name="To_Authority_Name" class="java.lang.String"/>
+	<field name="ISM_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="From_Institute_ID" class="java.lang.Integer"/>
+	<field name="From_Subinstitute_ID" class="java.lang.Integer"/>
+	<field name="From_Department_ID" class="java.lang.Integer"/>
+	<field name="From_Employee_ID" class="java.lang.Long"/>
+	<field name="Issue_No" class="java.lang.String"/>
+	<field name="Issue_Date" class="java.sql.Date"/>
+	<field name="Issue_Desc" class="java.lang.String"/>
+	<field name="To_Institute_ID" class="java.lang.Integer"/>
+	<field name="To_Subinstitute_ID" class="java.lang.Integer"/>
+	<field name="To_Department_ID" class="java.lang.Integer"/>
+	<field name="To_Employee_ID" class="java.lang.Long"/>
+	<field name="To_Committee_ID" class="java.lang.Long"/>
+	<field name="To_Supplier_ID" class="java.lang.Long"/>
+	<field name="To_Email" class="java.lang.String"/>
+	<field name="Against_Indent_ID" class="java.lang.Integer"/>
+	<field name="Issue_Type" class="java.lang.String"/>
+	<field name="Return_Due_Date" class="java.sql.Date"/>
+	<field name="Remarks" class="java.lang.String"/>
+	<field name="From_Institute_Name" class="java.lang.String"/>
+	<field name="From_SubInstitute_Name" class="java.lang.String"/>
+	<field name="From_Department_Name" class="java.lang.String"/>
+	<field name="To_Institute_Name" class="java.lang.String"/>
+	<field name="To_SubInstitute_Name" class="java.lang.String"/>
+	<field name="To_Department_Name" class="java.lang.String"/>
+	<field name="Indent_Title" class="java.lang.String"/>
+	<field name="Issue_Detail_ID" class="java.lang.Long"/>
+	<field name="Item_ID" class="java.lang.Long"/>
+	<field name="Issued_Quantity" class="java.math.BigDecimal"/>
+	<field name="Received_Quantity" class="java.math.BigDecimal"/>
+	<field name="Returned_Quantity" class="java.math.BigDecimal"/>
+	<field name="Item_Name" class="java.lang.String"/>
+	<field name="UOM" class="java.lang.String"/>
+	<field name="Serial_No_Applicable" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="285" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="42b9f5ba-313a-43ec-b0da-c8ea0c844ef0" x="60" y="54" width="204" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{From_Institute_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fc723e93-58a9-4d12-a6d2-8c6adb3b3ad1" x="0" y="28" width="60" height="23"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Issue From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="630d11ff-d1d3-4b49-88b4-81cf9510f4c9" x="6" y="54" width="38" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institute :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="01b80787-a22e-478f-bd5a-6d820c4631f4" x="275" y="54" width="60" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitute :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="36dab0b4-4270-4f10-9212-45bcb177c2b2" x="354" y="54" width="188" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{From_SubInstitute_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="40c3201d-a241-4610-9243-01ba6fc7daa2" x="6" y="73" width="54" height="19"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="652dc804-d09c-4f1f-bc67-ea8c560d457b" x="275" y="73" width="90" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issuing Authority :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="d91b242d-ffb2-4895-aff3-c9b8d441aee4" x="60" y="74" width="204" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{From_Department_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fc723e93-58a9-4d12-a6d2-8c6adb3b3ad1" x="1" y="108" width="59" height="23"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Issue To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="01b80787-a22e-478f-bd5a-6d820c4631f4" x="275" y="131" width="60" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitute :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="40c3201d-a241-4610-9243-01ba6fc7daa2" x="6" y="151" width="54" height="19"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="630d11ff-d1d3-4b49-88b4-81cf9510f4c9" x="6" y="131" width="38" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institute :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="652dc804-d09c-4f1f-bc67-ea8c560d457b" x="275" y="151" width="90" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issued To :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="175b057f-ae96-460d-9ae1-8ba4ac05b35d" x="60" y="131" width="204" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{To_Institute_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="53dafb5d-9e3b-4b89-831f-ae719716ae43" x="60" y="151" width="204" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{To_Department_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="18103dd7-ccfe-4227-bd1b-1d6cd4038411" x="0" y="188" width="74" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue No :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3f049c0b-2f83-48bf-bea3-9f56bae6ad59" x="0" y="228" width="74" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Return Due Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fe1f7319-96c6-464d-bf64-1cdf71bc56e2" x="0" y="208" width="74" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue Type :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e62ce74-520c-4794-bbdb-2d0a1760cf44" x="0" y="248" width="74" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="aa9d24c7-502e-4632-abff-ad9331828a40" x="275" y="208" width="81" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Against Indent Title :]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="c5ed81ce-e3a5-4944-94e9-ff6894e3a928" mode="Transparent" x="0" y="44" width="543" height="50"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4757f714-cd93-4a38-ae88-e65f49b09316" mode="Transparent" x="0" y="126" width="543" height="50"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="67665feb-9b66-4de6-8958-15e0b7b9fe51" x="275" y="188" width="60" height="20"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue Date :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="42873dee-1a41-41c1-b057-218871c0203d" x="74" y="188" width="159" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Issue_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="d9561cd4-f1af-4842-bc74-1613903e72ff" x="74" y="208" width="159" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Issue_Type}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
+				<reportElement uuid="d3757b08-54ad-4278-815f-347a1eaa49df" x="356" y="188" width="173" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Issue_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1a3786d7-184b-4260-a7f3-0b9124d1c362" x="356" y="207" width="173" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Indent_Title}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="fb514eb7-8edf-4077-ae48-95f2e90d0825" x="74" y="228" width="159" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Return_Due_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="d58895e6-af75-4641-bf65-3abb93b629b0" x="354" y="74" width="170" height="18"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{From_Employee_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e90e2b0b-805d-4fd5-a92c-219066741d40" x="335" y="131" width="194" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{To_SubInstitute_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8e328b2a-fdaa-4921-94a1-d5e6a5e36be8" x="74" y="248" width="455" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Remarks}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5fa457db-1c1d-4373-96ba-3cf8b64a2c8f" x="335" y="150" width="194" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{To_Authority_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b654247b-d434-4087-93f9-5a88e5e25107" x="193" y="0" width="172" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ITEMS ISSUE REPORT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d0fcc7c8-99d2-4a4a-8245-df1bd56c86ff" x="341" y="7" width="75" height="16"/>
+				<textElement>
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Received Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2837f8f6-223f-40e9-bbc3-e5101c155bc8" x="438" y="7" width="94" height="16"/>
+				<textElement>
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Returned Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1096132d-65e0-4f42-ba38-1403517a1da2" x="238" y="7" width="79" height="16"/>
+				<textElement>
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Issued Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4d25b79d-d491-4c8f-80c7-442cde507d4e" x="57" y="7" width="47" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b8345438-0b86-45e7-b91b-57092219942a" x="238" y="13" width="79" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Issued_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="6b644e51-0cbd-4f4e-8fac-e10a11d90e00" x="342" y="13" width="87" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Received_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3b308a13-cd07-431b-aff0-d98924c91327" x="439" y="13" width="93" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Returned_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="69c729ad-76e7-4101-9f65-4dbbfa4a9cc3" x="57" y="13" width="147" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Item_Name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="6e99a539-7031-44f2-b587-bbde863ff661" x="4" y="2" width="528" height="1"/>
+			</line>
+		</band>
+		<band height="8">
+			<subreport>
+				<reportElement uuid="cba076da-b1bf-4426-8586-29959c15b5dc" x="83" y="0" width="462" height="5" isRemoveLineWhenBlank="true"/>
+				<subreportParameter name="Issue_Detail_ID">
+					<subreportParameterExpression><![CDATA[$F{Issue_Detail_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Issue_Serial_Details.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="43" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

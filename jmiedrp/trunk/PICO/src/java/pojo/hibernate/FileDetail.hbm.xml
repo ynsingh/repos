@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.FileDetail" table="file_detail">
+        <id name="fdId" type="java.lang.Integer">
+            <column name="FD_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="employeemaster" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="FD_Official_Addressed" />
+        </many-to-one>
+        <many-to-one name="erpmusers" class="pojo.hibernate.Erpmusers" fetch="select">
+            <column name="FD_Received_By" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="FD_IM_Id" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="FD_SIM_Id" />
+        </many-to-one>
+        <many-to-one name="fileMaster" class="pojo.hibernate.FileMaster" fetch="select">
+            <column name="FM_Id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="FD_DM_Id" />
+        </many-to-one>
+        <property name="fdReceivedDate" type="timestamp">
+            <column name="FD_Received_Date" length="19" />
+        </property>
+        <property name="fdReceivedPages" type="java.lang.Integer">
+            <column name="FD_received_Pages" />
+        </property>
+        <property name="fdPublicRemarks" type="string">
+            <column name="FD_Public_Remarks" length="250" />
+        </property>
+        <property name="fdPrivateRemarks" type="string">
+            <column name="FD_Private_Remarks" length="250" />
+        </property>
+        <property name="fdAction" type="java.lang.Character">
+            <column name="FD_Action" length="1" />
+        </property>
+        <property name="fdActionDate" type="timestamp">
+            <column name="FD_Action_Date" length="19" />
+        </property>
+        <property name="fdDesignationAddressed" type="string">
+            <column name="FD_Designation_Addressed" length="50" />
+        </property>
+        <property name="fdDespatchDate" type="timestamp">
+            <column name="FD_Despatch_Date" length="19" />
+        </property>
+        <property name="fdDespatchNo" type="java.lang.Integer">
+            <column name="FD_Despatch_No" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.FileMaster" table="file_master">
+        <id name="fileId" type="java.lang.Integer">
+            <column name="File_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmusers" class="pojo.hibernate.Erpmusers" fetch="select">
+            <column name="File_User_Id" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="File_IM_Id" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="File_DM_Id" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="File_SIM_Id" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="File_Type" />
+        </many-to-one>
+        <many-to-one name="employeemaster" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="File_Signed_By" />
+        </many-to-one>
+        <property name="fileNumber" type="string">
+            <column name="File_Number" length="20" />
+        </property>
+        <property name="fileSubject" type="string">
+            <column name="File_Subject" length="200" />
+        </property>
+        <property name="filePages" type="java.lang.Integer">
+            <column name="File_Pages" />
+        </property>
+        <property name="fileDispatchDate" type="timestamp">
+            <column name="File_Dispatch_Date" length="19" />
+        </property>
+        <property name="fileConfidential" type="java.lang.Boolean">
+            <column name="File_Confidential" />
+        </property>
+        <set name="fileDetails" inverse="true">
+            <key>
+                <column name="FM_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.FileDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

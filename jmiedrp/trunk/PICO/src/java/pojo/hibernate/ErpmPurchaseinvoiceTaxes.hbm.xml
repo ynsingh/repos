@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPurchaseinvoiceTaxes" table="erpm_purchaseinvoice_taxes">
+        <id name="pitPiTaxesId" type="java.lang.Integer">
+            <column name="PIT_PI_Taxes_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmPurchaseinvoiceDetail" class="pojo.hibernate.ErpmPurchaseinvoiceDetail" fetch="select">
+            <column name="PIT_PID_ID" not-null="true" />
+        </many-to-one>
+        <property name="pitTaxName" type="string">
+            <column name="PIT_Tax_Name" length="30" />
+        </property>
+        <property name="pitTaxPercent" type="big_decimal">
+            <column name="PIT_Tax_Percent" precision="5" />
+        </property>
+        <property name="pitTaxOnValuePercent" type="big_decimal">
+            <column name="PIT_Tax_on_Value_Percent" precision="5" />
+        </property>
+        <property name="pitSurchargePercent" type="big_decimal">
+            <column name="PIT_Surcharge_Percent" precision="4" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -36,9 +36,16 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
-                <p align="center" class="pageHeading" ><s:label value="INSTITUTION USER ROLE PRIVILEGES MANAGEMENT"/></p>
-                <p align="center" class="pageMessage" ><s:property value="message" /></p>
-                <s:form name="frmIURPEdit" action="SaveIURP">
+
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION USER ROLE PRIVILEGES MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                    <s:form name="frmIURPEdit" action="SaveIURP">
                     <s:hidden name="iur.iurId"/>
                     <s:hidden name="irp.iupId"/>
                 <%--    <s:hidden name ="irp.institutionuserroles.iurId" /> --%>
@@ -49,6 +56,7 @@
                             <td>
                                 <s:select label="Module Name" name="irp.erpmmodule.erpmmId" headerKey="" headerValue="-- Please Select --" list="erpmmList" listKey="erpmmId" listValue="erpmmName" 
                                          onchange="getProgramList('SaveIURP_irp_erpmmodule_erpmmId', 'SaveIURP_irp_erpmprogram_erpmpId', 'SaveIURP_iur_iurId');"/>
+                                
                                 <s:select label="Program Name" name="irp.erpmprogram.erpmpId" headerKey="" headerValue="-- Please Select --" list="erpmpList" listKey="erpmpId" listValue="erpmpDisplayName"/>
                                
                                 <s:textfield cssClass="textInputRO" label="Role Name" name="iur.iurName" maxLength="100" size="100"  readonly="true"/>
@@ -67,6 +75,9 @@
 
                 </table>
                 </s:form>
+                <br>
+                </div>
+                &nbsp;
             </div>
 
             </div>

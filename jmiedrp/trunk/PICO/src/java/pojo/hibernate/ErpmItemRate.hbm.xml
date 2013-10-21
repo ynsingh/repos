@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmItemRate" table="erpm_item_rate">
         <id name="irItemRateId" type="java.lang.Integer">
@@ -38,6 +38,12 @@
         <property name="irdRate" type="big_decimal">
             <column name="IRD_Rate" precision="10" not-null="true" />
         </property>
+        <property name="irMinQty" type="java.lang.Integer">
+            <column name="IR_Min_Qty" />
+        </property>
+        <property name="irMaxQty" type="java.lang.Integer">
+            <column name="IR_Max_Qty" />
+        </property>
         <set name="erpmIndentDetails" inverse="true">
             <key>
                 <column name="Indt_IR_Item_Rate_Id" />
@@ -49,6 +55,12 @@
                 <column name="IRT_Item_Rate_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmItemRateTaxes" />
+        </set>
+        <set name="erpmPoDetailses" inverse="true">
+            <key>
+                <column name="POD_Item_Rate_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoDetails" />
         </set>
     </class>
 </hibernate-mapping>

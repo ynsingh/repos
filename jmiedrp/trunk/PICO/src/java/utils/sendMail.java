@@ -6,7 +6,7 @@ import java.util.*;
 import javax.mail.internet.InternetAddress;
 public class sendMail {
 	
-    public static String sendMail(String emailFrom, String emailUser, String emailFromPasswd, String emailID, String subj, String message) throws Exception {
+    public static String sendMail(String emailFrom, String emailUser, String emailFromPasswd, String emailID, String cc, String subj, String message) throws Exception {
 		String host = "smtp.gmail.com", user = emailUser, pass = emailFromPasswd;
 		
                 String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
@@ -26,14 +26,15 @@ public class sendMail {
 		props.put("mail.smtp.socketFactory.fallback", "false");
 		props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
 
-Session mailSession = Session.getDefaultInstance(props, null);
+                Session mailSession = Session.getDefaultInstance(props, null);
 		mailSession.setDebug(sessionDebug);
-Address address1 = new InternetAddress(user, from);
+                Address address1 = new InternetAddress(user, from);
 		Message msg = new MimeMessage(mailSession);
 		//msg.setFrom(new InternetAddress(from));
 		msg.setFrom(address1);
                 InternetAddress[] address = {new InternetAddress(to)};
 		msg.setRecipients(Message.RecipientType.TO, address);
+                msg.setRecipients(Message.RecipientType.CC,InternetAddress.parse(cc));
 		msg.setSubject(subject);
 		msg.setContent(messageText, "text/html");
 

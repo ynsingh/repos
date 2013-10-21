@@ -32,7 +32,7 @@
             <div id ="mainContent">
                 <p align="center"><s:label value="SUPPLIER ADDRESS ADDITION"  cssClass="pageHeading"/></p>
                 <p align="center"><s:property value="message" /></p>
-
+               <div style="border: solid 1px #000000; background:  gainsboro">
                 <s:form name="frmAddress" action="SaveAddress"  validate="true">
                     <s:hidden name="erpmsmad.supAdId" />
                     <s:hidden name="erpmsmad.suppliermaster.smId" />
@@ -77,9 +77,11 @@
                         </tbody>
                     </table>
                 </s:form>
+       </div>
             </div>
 
             <div id ="mainContent" align="center">
+                 <div style="border: solid 1px #000000; background:  gainsboro">
                 <s:form name="frmSupplierAddressBrowse">
                     <s:hidden name="erpmsmad.supAdId" />
                     <s:hidden name="erpmsmad.suppliermaster.smId" />
@@ -91,43 +93,43 @@
                                        excludedParams="*" export="true" cellpadding="0"
                                        cellspacing="0" id="doc"
                                        requestURI="/PrePurchase/BrowseAddressOnSamePage.action">
-                            <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
+                            <display:column  class="griddata" title="S.No." style="width:3%" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                         </display:column>
                             <display:column property="suppliermaster.smName" title="SupplierName"
                                             maxLength="35" headerClass="gridheader"
                                             class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                            style="width:30%" sortable="true"/>
+                                            style="width:15%" sortable="true"/>
                             <display:column property="suppliermaster.smDealsWith" title="Deals With"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:15%" sortable="true"/>
                             <display:column property="adLine1" title="Line1"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:12%" sortable="true"/>
                             <display:column property="adLine2" title="Line2"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:12%" sortable="true"/>
                             <display:column property="adCity" title="City"
                                             maxLength="10" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:8%" sortable="true"/>
                             <display:column property="statemaster.stateName" title="State"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
-                            <display:column property="countrymaster.countryName" title="Country"
+                                            class="griddata" style="width:8%" sortable="true"/>
+<%--                            <display:column property="countrymaster.countryName" title="Country"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:10%" sortable="true"/>   --%>
                             <display:column property="adPhn" title="Phone"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
-                            <display:column property="adMob" title="Mob"
+                                            class="griddata" style="width:8%" sortable="true"/>
+<%--                            <display:column property="adMob" title="Mob"
                                             maxLength="35" headerClass="gridheader"
                                             class="griddata" style="width:30%" sortable="true"/>
                             <display:column property="adFaxn" title="Fax"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:30%" sortable="true"/>   --%>
                             <display:column property="adEmail" title="Email"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:30%" sortable="true"/>
+                                            class="griddata" style="width:10%" sortable="true"/>
                             <display:column paramId="ADID" paramProperty="supAdId"
                                             href="/pico/PrePurchase/EditAddress"
                                             headerClass="gridheader" class="griddata" media="html" >
@@ -141,6 +143,8 @@
                         </display:table>
                     </table>
                 </s:form>
+           
+            </div>
             </div>
             <!--****************************End of Address.Jsp*************************************-->
             <div id="footer">

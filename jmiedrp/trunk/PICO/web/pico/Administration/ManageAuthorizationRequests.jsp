@@ -27,9 +27,9 @@
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
-                <s:hidden name="erpmuName" />
+            <s:hidden name="erpmuName" />
             <!-- *********************************End Menu****************************** -->
-              <s:property value="message" />
+            <s:property value="message" />
             <div id ="mainContent" align="center">
 
                 <br>
@@ -37,46 +37,46 @@
                     <br><br>
 
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <display:table name="erpmurList" pagesize="15" summary="false"
-                                   excludedParams="*" export="false" cellpadding="0" id="doc"
-                                   cellspacing="0" requestURI="/Administration/ManageAuthorizationRequests.action">
-                         <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
-                        </display:column>
-                        <display:column property="erpmusers.erpmuName" title="User Name"
-                                        maxLength="20" headerClass="gridheader"
-                                        class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false"/>
-                        <display:column property="erpmurId" title="Profile ID"
-                                        maxLength="5" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column property="institutionmaster.imName" title="Institution Name"
-                                        maxLength="35" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column property="subinstitutionmaster.simName" title="College/Faculty/School"
-                                        maxLength="35" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column property="departmentmaster.dmName" title="Department Name"
-                                        maxLength="35" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column property="institutionuserroles.iurName" title="Role"
-                                        maxLength="20" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column property="erpmurDefault" title="Default Role"
-                                        maxLength="5" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column property="erpmurActive" title="Activation Status"
-                                        maxLength="5" headerClass="gridheader"
-                                        class="griddata" sortable="false"/>
-                        <display:column paramId="erpmurId" paramProperty="erpmurId" href="ApproveUserProfile.action"
-                                        headerClass="gridheader" class="griddata" media="html" title="Approve">
-                            Approve
-                        </display:column>
-                    </display:table>
-                </table>
-             </s:form>
+                        <display:table name="erpmurList" pagesize="15" summary="false"
+                                       excludedParams="*" export="false" cellpadding="0" id="doc"
+                                       cellspacing="0" requestURI="/Administration/ManageAuthorizationRequests.action">
+                            <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
+                                <c:out> ${doc_rowNum}
+                                </display:column>
+                                <display:column property="erpmusers.erpmuName" title="User Name"
+                                                maxLength="20" headerClass="gridheader"
+                                                class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false"/>
+                                <display:column property="erpmurId" title="Profile ID"
+                                                maxLength="5" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column property="institutionmaster.imName" title="Institution Name"
+                                                maxLength="35" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column property="subinstitutionmaster.simName" title="College/Faculty/School"
+                                                maxLength="35" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column property="departmentmaster.dmName" title="Department Name"
+                                                maxLength="35" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column property="institutionuserroles.iurName" title="Role"
+                                                maxLength="20" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column property="erpmurDefault" title="Default Role"
+                                                maxLength="5" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column property="erpmurActive" title="Activation Status"
+                                                maxLength="5" headerClass="gridheader"
+                                                class="griddata" sortable="false"/>
+                                <display:column paramId="erpmurId" paramProperty="erpmurId" href="ApproveUserProfile.action"
+                                                headerClass="gridheader" class="griddata" media="html" title="Approve">
+                                    Approve
+                                </display:column>
+                            </display:table>
+                    </table>
+                </s:form>
                 <br>
             </div>
-             <div id="footer">
+            <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>
         </div>

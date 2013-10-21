@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPurchaseinvoiceDetail" table="erpm_purchaseinvoice_detail">
+        <id name="pidPidId" type="java.lang.Integer">
+            <column name="PID_PID_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="PID_Item_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmPurchaseinvoiceMaster" class="pojo.hibernate.ErpmPurchaseinvoiceMaster" fetch="select">
+            <column name="PID_PIM_ID" not-null="true" />
+        </many-to-one>
+        <property name="pidQuantity" type="big_decimal">
+            <column name="PID_Quantity" precision="8" />
+        </property>
+        <property name="pidDiscount" type="big_decimal">
+            <column name="PID_Discount" precision="4" />
+        </property>
+        <property name="pidRate" type="big_decimal">
+            <column name="PID_Rate" precision="10" />
+        </property>
+        <property name="pcdQNQChecked" type="char">
+            <column name="PCD_Q_n_Q_Checked" length="1" not-null="true" />
+        </property>
+        <property name="pcdQNQVerified" type="char">
+            <column name="PCD_Q_n_Q_Verified" length="1" not-null="true" />
+        </property>
+        <property name="pcdVerifiedBy" type="string">
+            <column name="PCD_Verified_By" length="100" />
+        </property>
+        <set name="erpmPurchaseinvoiceTaxeses" inverse="true">
+            <key>
+                <column name="PIT_PID_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceTaxes" />
+        </set>
+    </class>
+</hibernate-mapping>

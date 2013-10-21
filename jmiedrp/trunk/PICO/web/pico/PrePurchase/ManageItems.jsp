@@ -21,66 +21,169 @@
         <s:head />
     </head>
     <body class="twoColElsLtHdr">
-       
+
         <div id="container">
             <div id="headerbar1">
                 <jsp:include page="../Administration/header.jsp"  flush="true"></jsp:include>
-            </div>
-            
-            <div id="sidebar1">
+                </div>
+
+                <div id="sidebar1">
                 <jsp:include page="../Administration//menu.jsp" flush="true"></jsp:include>
-            </div>
-            
-            <!-- *********************************End Menu****************************** -->
-            <br><br>
-            
-            <div id ="mainContent">
-                <p align="center"><s:label value="ITEM MASTER" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
+                </div>
 
-                <s:form name="frmItemMaster" action="SaveItemMaster" theme="xhtml">
-                    <s:hidden name="erpmim.erpmimId" />
-                    <table border="0" cellpadding="4" cellspacing="0" align="center">
-                        <tbody>
-                            <tr>
-                                <td><br>
-                                    <s:select label="Institution" name="erpmim.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
-                                              onchange="getCapitalCategoryList('SaveItemMaster_erpmim_institutionmaster_imId', 'SaveItemMaster_erpmim_erpmCapitalCategory_erpmccId')"/>
-                                    <s:textarea required="true" requiredposition="left" rows="5" cols="100" maxLength="500"
-                                                 label="Item Brief Description" name="erpmim.erpmimItemBriefDesc" title="Enter Item Brief Description"  />
-                                    <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
-                                                 label="Item Make" name="erpmim.erpmimMake" title="Enter Item Make" />
-                                    <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
-                                                 label="Item Model" name="erpmim.erpmimModel" title="Enter Item Model" />
-                                    <s:select label="Item Type" name="erpmim.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
-                                              onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId')" ondblclick="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId');"/>
-                                    <s:select label="Item Category" name="erpmim.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList2" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
-                                              onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId')" ondblclick="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId');"/>
-                                    <s:select label="Item Sub Category" name="erpmim.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3" listKey="erpmicmItemId" listValue="erpmicmCatDesc"  />
-                                    <s:select label="Unit of Purchase" name="erpmim.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="erpmGmIdList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc"/>
-                                    <s:select label="Capital Category" name="erpmim.erpmCapitalCategory.erpmccId" headerKey="" headerValue="-- None --" list="erpmCapitalCategoryList" listKey="erpmccId" listValue="ermccDesc"/>
-                                    <s:textarea required="true" requiredposition="left" rows="20" cols="100" maxLength="2000"
-                                                 label="Detailed Description" name="erpmim.erpmimDetailedDesc" title="Enter Detailed Description" />
-                                    <s:textfield required="false" requiredposition="left" maxLength="100" size="50"
-                                                 label="Remarks" name="erpmim.erpmimRemarks" title="Enter Remarks, if any" />                                    
-                                </td>
-                            </tr> <tr>
-                                <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save Item"  />
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear" action="ManageItems"/>
-                                    <s:submit theme="simple" name="bthReset" value="Browse Items"  action="BrowseItems"/>
-                                </td>
-                            </tr>
-                            <tr>
-                    <td> <br><br> </td>
-                </tr>
+                <jsp:include page="../Administration//jobBar.jsp" flush="true"></jsp:include>
+                
+                <!-- *********************************End Menu****************************** -->
 
-                        </tbody>
-                    </table>
-                </s:form>
+                <div id ="mainContent">
+
+                <s:bean name="java.util.HashMap" id="qTableLayout">
+                    <s:param name="tablecolspan" value="%{8}" />
+                </s:bean>
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">ITEM RECORDS MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+
+                <div style="border: solid 1px #000000; background:  gainsboro">
+                    <s:form name="frmItemMaster" action="SaveItemMaster" theme="qxhtml">
+                        <br>
+                        <s:hidden name="erpmim.erpmimId" />
+
+                        <s:label value="..." cssClass="tdSpace"/>
+                        <s:select label="Institution" required="true" requiredposition="" name="erpmim.institutionmaster.imId"
+                                  headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName"
+                                  onchange="getCapitalCategoryList('SaveItemMaster_erpmim_institutionmaster_imId', 'SaveItemMaster_erpmim_erpmCapitalCategory_erpmccId')">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:select>
+
+                        <s:label/>
+                        <s:textarea required="true" requiredposition="left" rows="3" cols="115" maxLength="500"
+                                    label="Item Brief Description" name="erpmim.erpmimItemBriefDesc" title="Enter Item Brief Description">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textarea>
+
+                        <s:label/>
+                        <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
+                                     label="Item Make" name="erpmim.erpmimMake" title="Enter Item Make">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:textfield>
+
+                        <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
+                                     label="Item Model" name="erpmim.erpmimModel" title="Enter Item Model">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:textfield>
+
+                        <s:label/>
+                        <s:select  requiredposition="left"  label="Item Issue Policy" name="erpmim.erpmimIssuePolicy" headerKey=""  headerValue="-- Please Select --" list="#{'1':'FIFO','2':'LIFO','3':'User Choice'}" >
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:select label="Are Serial Nos Applicable?"   requiredposition="right"  name="erpmim.erpmimSerialNoApplicable" list="#{'Y':'Yes','N':'No'}" >
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:label/>
+                        <s:select label="Item Type" required="true" requiredposition="" name="erpmim.erpmItemCategoryMasterByErpmimItemCat1.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList1" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
+                                  onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId')" ondblclick="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat1_erpmicmItemId');">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:select label="Item Category" required="true" requiredposition="" name="erpmim.erpmItemCategoryMasterByErpmimItemCat2.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList2" listKey="erpmicmItemId" listValue="erpmicmCatDesc"
+                                  onchange="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId', 'SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId')" ondblclick="getSubCategoryList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat2_erpmicmItemId');">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:label/>
+                        <s:select label="Item Sub Category" required="true" requiredposition="" name="erpmim.erpmItemCategoryMasterByErpmimItemCat3.erpmicmItemId" headerKey="" headerValue="-- Please Select --" list="erpmIcmList3" listKey="erpmicmItemId" listValue="erpmicmCatDesc" 
+                                  onchange="getDepreciationMethodandPercentageList('SaveItemMaster_erpmim_erpmItemCategoryMasterByErpmimItemCat3_erpmicmItemId','SaveItemMaster_erpmim_erpmimDepreciationMethod','SaveItemMaster_erpmim_erpmimDepreciationPercentage')">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:select label="Unit of Purchase" required="true" requiredposition="" name="erpmim.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="erpmGmIdList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+                        <s:label/>
+                        <s:select label="Capital Category" name="erpmim.erpmCapitalCategory.erpmccId" headerKey="" headerValue="-- None --" list="erpmCapitalCategoryList" listKey="erpmccId" listValue="ermccDesc">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+                          <s:label/>
+                        <s:select label="Depreciation Method" name="erpmim.erpmimDepreciationMethod" requiredposition="right"  headerKey=""  headerValue="" list="#{'S':'Straight Line','W':'Written Down Value'}">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+
+
+                        <s:label/>
+                          <s:textfield required="false" requiredposition="left" maxLength="20" size="20"
+                                     label="Depreciation Percentage(%)" name="erpmim.erpmimDepreciationPercentage" title="Enter Item Make">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:textfield>
+                          <s:textfield required="false" requiredposition="right" maxLength="20" size="20"
+                                     label="Residual Value" name="erpmim.erpmimResidualValue" title="Enter Item Make">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:textfield>
+                           <s:label/>
+                          
+                        <s:textarea required="true" requiredposition="left" rows="5" cols="115" maxLength="2000"
+                                    label="Detailed Description" name="erpmim.erpmimDetailedDesc" title="Enter Detailed Description">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textarea>
+
+                        <s:label/>
+                        <s:textfield required="false" requiredposition="left" maxLength="100" size="100"
+                                     label="Remarks" name="erpmim.erpmimRemarks" title="Enter Remarks, if any">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+
+                        <s:label/>
+                        
+                        <s:submit name="btnSubmit" value="Save Item">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+                        <s:submit name="btnClear" value="Clear" action="ManageItems">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+                        <s:submit name="btnBrowse" value="Browse Items"  action="BrowseItems">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+                         
+                        <s:submit name="btnPrint" value="Print Item List"  action="PrintItems">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+                        <tr><td> 
+                        <s:submit theme="simple" name="showGFRreport"  value="Show GFR" action="showGFRreportManageItems" disabled="varShowGFR" >
+                            <s:param name="colspan" value="%{3}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+                        </td></tr>
+                    </s:form>
+                    <br>
+                </div>
             </div>
+            <br>
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>

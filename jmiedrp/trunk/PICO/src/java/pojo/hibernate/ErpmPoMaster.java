@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ public class ErpmPoMaster  implements java.io.Serializable {
      private Suppliermaster suppliermaster;
      private ErpmGenMaster erpmGenMasterByPomFormId;
      private SupplierAddress supplierAddress;
-     private int pomPoNo;
+     private Integer pomPoNo;
      private Date pomPoDate;
      private String pomPurchaseMode;
      private String pomFormNo;
@@ -38,6 +38,8 @@ public class ErpmPoMaster  implements java.io.Serializable {
      private String pomCancelled;
      private String pomPurchasePurpose;
      private Set erpmPoTermses = new HashSet(0);
+     private Set erpmPurchaseinvoiceMasters = new HashSet(0);
+     private Set erpmPoLocationses = new HashSet(0);
      private Set erpmPoDetailses = new HashSet(0);
      private Set erpmPurchasechallanMasters = new HashSet(0);
 
@@ -45,18 +47,16 @@ public class ErpmPoMaster  implements java.io.Serializable {
     }
 
 	
-    public ErpmPoMaster(Subinstitutionmaster subinstitutionmaster, ErpmGenMaster erpmGenMasterByPomPaymentModeId, Institutionmaster institutionmaster, ErpmGenMaster erpmGenMasterByPomCurrencyId, Departmentmaster departmentmaster, Suppliermaster suppliermaster, SupplierAddress supplierAddress, int pomPoNo, Date pomPoDate) {
+    public ErpmPoMaster(Subinstitutionmaster subinstitutionmaster, ErpmGenMaster erpmGenMasterByPomPaymentModeId, Institutionmaster institutionmaster, ErpmGenMaster erpmGenMasterByPomCurrencyId, Departmentmaster departmentmaster, Suppliermaster suppliermaster, Date pomPoDate) {
         this.subinstitutionmaster = subinstitutionmaster;
         this.erpmGenMasterByPomPaymentModeId = erpmGenMasterByPomPaymentModeId;
         this.institutionmaster = institutionmaster;
         this.erpmGenMasterByPomCurrencyId = erpmGenMasterByPomCurrencyId;
         this.departmentmaster = departmentmaster;
         this.suppliermaster = suppliermaster;
-        this.supplierAddress = supplierAddress;
-        this.pomPoNo = pomPoNo;
         this.pomPoDate = pomPoDate;
     }
-    public ErpmPoMaster(Subinstitutionmaster subinstitutionmaster, ErpmGenMaster erpmGenMasterByPomPaymentModeId, Institutionmaster institutionmaster, ErpmGenMaster erpmGenMasterByPomCurrencyId, Erpmusers erpmusersByPomUserId, Erpmusers erpmusersByPomApprovedById, Departmentmaster departmentmaster, Suppliermaster suppliermaster, ErpmGenMaster erpmGenMasterByPomFormId, SupplierAddress supplierAddress, int pomPoNo, Date pomPoDate, String pomPurchaseMode, String pomFormNo, Integer pomTermsDays, Date pomDeliveryDate, String pomRemarks, BigDecimal pomDiscount, String pomApprovedByDesignation, Integer pomAgainstReferenceId, String pomAccomplished, String pomCancelled, String pomPurchasePurpose, Set erpmPoTermses, Set erpmPoDetailses, Set erpmPurchasechallanMasters) {
+    public ErpmPoMaster(Subinstitutionmaster subinstitutionmaster, ErpmGenMaster erpmGenMasterByPomPaymentModeId, Institutionmaster institutionmaster, ErpmGenMaster erpmGenMasterByPomCurrencyId, Erpmusers erpmusersByPomUserId, Erpmusers erpmusersByPomApprovedById, Departmentmaster departmentmaster, Suppliermaster suppliermaster, ErpmGenMaster erpmGenMasterByPomFormId, SupplierAddress supplierAddress, Integer pomPoNo, Date pomPoDate, String pomPurchaseMode, String pomFormNo, Integer pomTermsDays, Date pomDeliveryDate, String pomRemarks, BigDecimal pomDiscount, String pomApprovedByDesignation, Integer pomAgainstReferenceId, String pomAccomplished, String pomCancelled, String pomPurchasePurpose, Set erpmPoTermses, Set erpmPurchaseinvoiceMasters, Set erpmPoLocationses, Set erpmPoDetailses, Set erpmPurchasechallanMasters) {
        this.subinstitutionmaster = subinstitutionmaster;
        this.erpmGenMasterByPomPaymentModeId = erpmGenMasterByPomPaymentModeId;
        this.institutionmaster = institutionmaster;
@@ -81,6 +81,8 @@ public class ErpmPoMaster  implements java.io.Serializable {
        this.pomCancelled = pomCancelled;
        this.pomPurchasePurpose = pomPurchasePurpose;
        this.erpmPoTermses = erpmPoTermses;
+       this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
+       this.erpmPoLocationses = erpmPoLocationses;
        this.erpmPoDetailses = erpmPoDetailses;
        this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
     }
@@ -162,11 +164,11 @@ public class ErpmPoMaster  implements java.io.Serializable {
     public void setSupplierAddress(SupplierAddress supplierAddress) {
         this.supplierAddress = supplierAddress;
     }
-    public int getPomPoNo() {
+    public Integer getPomPoNo() {
         return this.pomPoNo;
     }
     
-    public void setPomPoNo(int pomPoNo) {
+    public void setPomPoNo(Integer pomPoNo) {
         this.pomPoNo = pomPoNo;
     }
     public Date getPomPoDate() {
@@ -259,6 +261,20 @@ public class ErpmPoMaster  implements java.io.Serializable {
     
     public void setErpmPoTermses(Set erpmPoTermses) {
         this.erpmPoTermses = erpmPoTermses;
+    }
+    public Set getErpmPurchaseinvoiceMasters() {
+        return this.erpmPurchaseinvoiceMasters;
+    }
+    
+    public void setErpmPurchaseinvoiceMasters(Set erpmPurchaseinvoiceMasters) {
+        this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
+    }
+    public Set getErpmPoLocationses() {
+        return this.erpmPoLocationses;
+    }
+    
+    public void setErpmPoLocationses(Set erpmPoLocationses) {
+        this.erpmPoLocationses = erpmPoLocationses;
     }
     public Set getErpmPoDetailses() {
         return this.erpmPoDetailses;

@@ -82,19 +82,6 @@
      <s:textfield  cssClass="textInputRO"  maxLength="10" size="10"
                    label="You are now Adding Serial number for the PC ID NO:" name="defaultPCD" title="" readonly="true"  />
 
-<%--    <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
-                     label="Challan No" name="PChallanMast.pcmChallanNo" title="" readonly="true" maxLength="30" size="30" />
-     <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
-                     label="Insitute Name" name="PChallanMast.institutionmaster.imName" title="" readonly="true" maxLength="30" size="30" />
-     <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
-                     label="College/Faculty" name="PChallanMast.subinstitutionmaster.simName" title="" readonly="true" maxLength="30" size="30" />
-     <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
-                     label="Department" name="PChallanMast.departmentmaster.dmName" title="" readonly="true" maxLength="30" size="30" />
-
-     <br><s:label value="Please Add  Item Serial and stock Serial  For Your Purchase Challan for Item " cssClass= "pageSubHeading"/>
-
-     <s:textfield  cssClass="textInputRO"  maxLength="50" size="50"
-                     label="ItemName" name="PChallanMast.erpmItemMaster.erpmimId" title="" readonly="true" maxLength="30" size="30" />--%>
       <s:textfield  cssClass="textInput"  maxLength="50" size="50"
                      label="Equipment Serial Number" name="PCSerial.pcsEquipmentSerialNo" title=""  maxLength="30" size="30" />
      <s:textfield  cssClass="textInput"  maxLength="50" size="50"
@@ -104,57 +91,6 @@
      <s:submit cssClass="savebutton"  name="btnSubmit" value="Save"  action="SavePurchaseChallanSerial"/>
                        </s:form>
             </div>
-
-     <%--      <div id ="mainContent" align="center">
-             <s:form name="FrmPurchaseChallanDetails">
-                 <table width="60%" border="1" cellspacing="0" cellpadding="0" align="center" >
-                    <tr><td>
-                    <display:table name="PCDetailslist" pagesize="15"
-                               excludedParams="*" export="true" cellpadding="0"
-                               cellspacing="0" summary="true" id="doc"
-                               requestURI="/Purchase/ManagePurchaseChallanAction.action">
-                        <display:column  class="griddata" title="Record"  sortable="true" maxLength="100" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
-                        </display:column>
-
-
-
-                        <display:column property="erpmItemMaster.erpmimItemBriefDesc" title="Item Name"
-                                    maxLength="80" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                   style="width:25%" sortable="true"  href=""/>
-
-
-                         <display:column property="pcdRecvQuantity" title="Quantity"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
-                                   style="width:25%" sortable="true"  href=""/>
-
-
-                        <display:column paramId="PCDetailsId" paramProperty="pcdPcdId"
-                                    href="/pico/Purchase/DeletePurchaseChallanDetail.action?PChallanMast.pcmPcmId=${param['PChallanMast.pcmPcmId']}"
-                                    headerClass="gridheader" class="griddata" media="html">
-                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete"  style="cursor:pointer;"/>
-                        </display:column>
-
-
-                       <display:column paramId="PCDetailsId" paramProperty="pcdPcdId"
-                                    href="/pico/Purchase/EditPurchaseChallanDetail.action?PChallanMast.pcmPcmId=${param['PChallanMast.pcmPcmId']}"
-                                    headerClass="gridheader" class="griddata" media="html">
-                           <img align="left" src="../images/edit.jpg" border="0" alt="Edit"  style="cursor:pointer;"/>
-                        </display:column>
-
-                  </display:table>
-                <br></td></tr>
-                </table>
-
-
-
-             </s:form>
-     <br>
-
-            </div>--%>
-
 
             <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>

@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -18,7 +18,6 @@ public class SupplierAddress  implements java.io.Serializable {
      private String adLine1;
      private String adLine2;
      private String adCity;
-//     private String adFullAddress;
      private Integer adPhn;
      private Integer adMob;
      private Integer adFaxn;
@@ -33,7 +32,6 @@ public class SupplierAddress  implements java.io.Serializable {
     public SupplierAddress(String adLine1) {
         this.adLine1 = adLine1;
     }
-//    public SupplierAddress(Statemaster statemaster, Countrymaster countrymaster, Suppliermaster suppliermaster, String adLine1, String adLine2, String adCity, String adFullAddress, Integer adPhn, Integer adMob, Integer adFaxn, String adEmail, String adDesc, Set erpmPoMasters) {
     public SupplierAddress(Statemaster statemaster, Countrymaster countrymaster, Suppliermaster suppliermaster, String adLine1, String adLine2, String adCity, Integer adPhn, Integer adMob, Integer adFaxn, String adEmail, String adDesc, Set erpmPoMasters) {
        this.statemaster = statemaster;
        this.countrymaster = countrymaster;
@@ -41,9 +39,6 @@ public class SupplierAddress  implements java.io.Serializable {
        this.adLine1 = adLine1;
        this.adLine2 = adLine2;
        this.adCity = adCity;
-       
-//       adFullAddress = this.adLine1 + ", " + this.adLine2 + ", " + this.adCity ;
-
        this.adPhn = adPhn;
        this.adMob = adMob;
        this.adFaxn = adFaxn;

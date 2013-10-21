@@ -1,108 +1,274 @@
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
 
-public class DepartmentmasterDAO extends BaseDAO {
+public class DepartmentmasterDAO {
+
     public void save(Departmentmaster dm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(dm);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(dm);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (dm != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-     public void update(Departmentmaster dm) {
+    public void update(Departmentmaster dm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(dm);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.update(dm);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (dm != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public void delete(Departmentmaster dm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(dm);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(dm);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (dm != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
+
     public List<Departmentmaster> findAll() {
-        beginTransaction();
-        List<Departmentmaster> list = getSession().createQuery("from Departmentmaster").list();
-        commitTransaction();
-        return list;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> list = session.createQuery("from Departmentmaster").list();
+            for (int index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getCountrymaster());
+                Hibernate.initialize(list.get(index).getStatemaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
     }
 
     public Departmentmaster findByDmId(Integer dmId) {
-        beginTransaction();
-        Departmentmaster dm  = (Departmentmaster) getSession().load(Departmentmaster.class , dmId);
-        commitTransaction();
-        return dm;
-}
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Departmentmaster dm = (Departmentmaster) session.load(Departmentmaster.class, dmId);
+
+            Hibernate.initialize(dm.getInstitutionmaster());
+            Hibernate.initialize(dm.getSubinstitutionmaster());
+            Hibernate.initialize(dm.getCountrymaster());
+            Hibernate.initialize(dm.getStatemaster());
+
+            return dm;
+        } finally {
+            session.close();
+        }
+    }
 
     public List<Departmentmaster> findBydmSimId(Integer simId) {
-        beginTransaction();
-        List<Departmentmaster> list = getSession().createQuery("select u from Departmentmaster u where u.subinstitutionmaster.simId = :simId").setParameter("simId", simId).list();
-        commitTransaction();
-        return list;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> list = session.createQuery("select u from Departmentmaster u where u.subinstitutionmaster.simId = :simId order by u.dmName").setParameter("simId", simId).list();            
+            for (int index=0; index < list.size(); ++index) {
+                    Hibernate.initialize(list.get(index).getInstitutionmaster());
+                    Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                    Hibernate.initialize(list.get(index).getCountrymaster());
+                    Hibernate.initialize(list.get(index).getStatemaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
     }
 
-public Departmentmaster findDeptByDMShortName(String dmShortName) {
-        beginTransaction();
- List<Departmentmaster> dmList = getSession().createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName").setParameter("dmShortName", dmShortName).list();
-        commitTransaction();
-        return dmList.get(0);
+    public List<Departmentmaster> findByImId(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> list = session.createQuery("select u from Departmentmaster u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (int index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(list.get(index).getCountrymaster());
+                Hibernate.initialize(list.get(index).getStatemaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
     }
 
-public List<Departmentmaster> findDeptByName(String dmName) {
-        beginTransaction();
- List<Departmentmaster> dmList = getSession().createQuery("select distinct(u) from Departmentmaster u where u.dmName = :dmName").setParameter("dmName", dmName).list();
-        commitTransaction();
-        return dmList;
+    public Departmentmaster findDeptByDMShortName(String dmShortName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName")
+                    .setParameter("dmShortName", dmShortName)
+                    .list();
+            Hibernate.initialize(dmList.get(0).getInstitutionmaster());
+            Hibernate.initialize(dmList.get(0).getSubinstitutionmaster());
+            Hibernate.initialize(dmList.get(0).getCountrymaster());
+            Hibernate.initialize(dmList.get(0).getStatemaster());
+
+            return dmList.get(0);
+        } finally {
+            session.close();
+        }
     }
 
-public List<Departmentmaster> findDeptByShortName(String dmShortName) {
-        beginTransaction();
- List<Departmentmaster> dmList = getSession().createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName").setParameter("dmShortName", dmShortName).list();
-        commitTransaction();
-        return dmList;
+    public List<Departmentmaster> findDeptByName(String dmName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u where u.dmName = :dmName")
+                    .setParameter("dmName", dmName)
+                    .list();
+            for (int index = 0; index < dmList.size(); ++index) {
+                Hibernate.initialize(dmList.get(index).getInstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getCountrymaster());
+                Hibernate.initialize(dmList.get(index).getStatemaster());
+            }
+            return dmList;
+        } finally {
+            session.close();
+        }
     }
 
-public List<Departmentmaster> findDepartmentForUser(Integer erpmuId,Integer simId) {
-        beginTransaction();
-        List<Departmentmaster> dimList = getSession().createQuery("select distinct(u) from Departmentmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.departmentmaster.dmId = u.dmId and u.subinstitutionmaster.simId =:simId").setParameter("erpmuId", erpmuId).setParameter("simId",simId).list();
-        commitTransaction();
-        return dimList;
+    public List<Departmentmaster> findDeptByShortName(String dmShortName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName")
+                    .setParameter("dmShortName", dmShortName)
+                    .list();
+            for (int index = 0; index < dmList.size(); ++index) {
+                Hibernate.initialize(dmList.get(index).getInstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getCountrymaster());
+                Hibernate.initialize(dmList.get(index).getStatemaster());
+            }
+            return dmList;
+        } finally {
+            session.close();
+        }
     }
 
-public String findDefaultDepartment(Integer dmId) {
-        beginTransaction();
-        List<Departmentmaster> dm = getSession().createQuery("select u from Departmentmaster u where u.dmId = :dmId").setParameter("dmId",dmId).list();
-        commitTransaction();
-        return dm.get(0).getDmName();
+    public List<Departmentmaster> findDepartmentForUser(Integer erpmuId, Integer simId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dmList = session.createQuery("select distinct(u) from Departmentmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.departmentmaster.dmId = u.dmId and u.subinstitutionmaster.simId =:simId order by u.dmName")
+                    .setParameter("erpmuId", erpmuId)
+                    .setParameter("simId", simId).list();
+
+            for (int index = 0; index < dmList.size(); ++index) {
+                Hibernate.initialize(dmList.get(index).getInstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getCountrymaster());
+                Hibernate.initialize(dmList.get(index).getStatemaster());
+            }
+
+            return dmList;
+        } finally {
+            session.close();
+        }
     }
 
-public List<Departmentmaster> findAllDepartmentsForUser(Integer erpmuId) {
+    public List<Departmentmaster> findDepartmentForAdmin(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dmList = session.createQuery("select u from Departmentmaster u where u.institutionmaster.imId =:imId")
+                    .setParameter("imId", imId)
+                    .list();
+            for (int index = 0; index < dmList.size(); ++index) {
+                Hibernate.initialize(dmList.get(index).getInstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getCountrymaster());
+                Hibernate.initialize(dmList.get(index).getStatemaster());
+            }
+
+            return dmList;
+        } finally {
+            session.close();
+        }
+    }
+
+    public String findDefaultDepartment(Integer dmId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dm = session.createQuery("select u from Departmentmaster u where u.dmId = :dmId")
+                    .setParameter("dmId", dmId).list();
+
+            return dm.get(0).getDmName();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<Departmentmaster> findAllDepartmentsForUser(Integer erpmuId) {
         String SQL = "select distinct(u) from Departmentmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.departmentmaster.dmId = u.dmId";
-        beginTransaction();
-        List<Departmentmaster> simList = getSession().createQuery(SQL).
-                                                          setParameter("erpmuId", erpmuId).list();
-        commitTransaction();
-        return simList;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Departmentmaster> dmList = session.createQuery(SQL).
+                    setParameter("erpmuId", erpmuId).list();
+            for (int index = 0; index < dmList.size(); ++index) {
+                Hibernate.initialize(dmList.get(index).getInstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(dmList.get(index).getCountrymaster());
+                Hibernate.initialize(dmList.get(index).getStatemaster());
+            }
+
+            return dmList;
+        } finally {
+            session.close();
+        }
     }
 
+    public String findDepartmentShortName(Integer dmId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            String dmShortName = session.createQuery("select u.dmShortName from Departmentmaster u where u.dmId = :dmId")
+                    .setParameter("dmId", dmId)
+                    .uniqueResult()
+                    .toString();
+            return dmShortName;
 
+        } finally {
+            session.close();
+        }
+    }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmTempOpeningStock" table="erpm_temp_opening_stock">
+        <id name="tosId" type="java.lang.Integer">
+            <column name="TOS_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="TOS_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="TOS_Warranty_Type_ID" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="TOS_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="TOS_Item_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="TOS_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="suppliermaster" class="pojo.hibernate.Suppliermaster" fetch="select">
+            <column name="TOS_SM_ID" />
+        </many-to-one>
+        <property name="tosInStockSince" type="date">
+            <column name="TOS_In_Stock_Since" length="10" />
+        </property>
+        <property name="tosPoNo" type="string">
+            <column name="TOS_PO_No" length="20" />
+        </property>
+        <property name="tosPoDate" type="date">
+            <column name="TOS_PO_Date" length="10" />
+        </property>
+        <property name="tosChallanNo" type="string">
+            <column name="TOS_Challan_No" length="20" />
+        </property>
+        <property name="tosChallanDate" type="date">
+            <column name="TOS_Challan_Date" length="10" />
+        </property>
+        <property name="tosInvoiceNo" type="string">
+            <column name="TOS_Invoice_No" length="20" />
+        </property>
+        <property name="tosInvoiceDate" type="date">
+            <column name="TOS_Invoice_Date" length="10" />
+        </property>
+        <property name="tosQuantity" type="big_decimal">
+            <column name="TOS_Quantity" precision="10" />
+        </property>
+        <property name="tosUnitRate" type="big_decimal">
+            <column name="TOS_Unit_Rate" precision="8" />
+        </property>
+        <property name="tosTaxValue" type="big_decimal">
+            <column name="TOS_Tax_Value" precision="8" />
+        </property>
+        <property name="tosCsrNo" type="string">
+            <column name="TOS_CSR_No" length="20" not-null="true" />
+        </property>
+        <property name="tosCsrPgNo" type="int">
+            <column name="TOS_CSR_PgNo" not-null="true" />
+        </property>
+        <property name="tosDeptSrNo" type="string">
+            <column name="TOS_DeptSR_No" length="20" not-null="true" />
+        </property>
+        <property name="tosDeptSrPgNo" type="int">
+            <column name="TOS_DeptSR_PgNo" not-null="true" />
+        </property>
+        <property name="tosProductNo" type="string">
+            <column name="TOS_Product_No" length="30" />
+        </property>
+        <property name="tosStockSerialNo" type="string">
+            <column name="TOS_Stock_Serial_No" length="30" />
+        </property>
+        <property name="tosWarrantyExpiryDate" type="date">
+            <column name="TOS_Warranty_Expiry_Date" length="10" />
+        </property>
+        <property name="tosBatchId" type="string">
+            <column name="TOS_Batch_ID" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

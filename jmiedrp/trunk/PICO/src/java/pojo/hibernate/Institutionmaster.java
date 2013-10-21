@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -23,28 +23,41 @@ public class Institutionmaster  implements java.io.Serializable {
      private String imDistrict;
      private String imPinNo;
      private String imEmailId;
+     private Set committeemasters = new HashSet(0);
+     private Set erpmPurchasechallanMasters = new HashSet(0);
+     private Set erpmItemRates = new HashSet(0);
+     private Set erpmItemMasters = new HashSet(0);
+     private Set erpmTenderMasters = new HashSet(0);
+     private Set erpmTenderRevisionses = new HashSet(0);
+     private Set fileMasters = new HashSet(0);
+     private Set erpmGeneralTermses = new HashSet(0);
+     private Set suppliermasters = new HashSet(0);
+     private Set erpmTenderSchedules = new HashSet(0);
+     private Set subinstitutionmasters = new HashSet(0);
+     private Set erpmIssueReceives = new HashSet(0);
+     private Set institutionuserroleses = new HashSet(0);
+     private Set erpmItemCategoryMasters = new HashSet(0);
+     private Set budgetheadmasters = new HashSet(0);
      private Set departmentmasters = new HashSet(0);
+     private Set erpmTempOpeningStocks = new HashSet(0);
      private Set erpmPoMasters = new HashSet(0);
      private Set workflowmasters = new HashSet(0);
      private Set employeemasters = new HashSet(0);
-     private Set erpmPurchasechallanMasters = new HashSet(0);
-     private Set committeemasters = new HashSet(0);
      private Set departmentalBudgetAllocations = new HashSet(0);
-     private Set erpmItemRates = new HashSet(0);
+     private Set erpmStockReceiveds = new HashSet(0);
+     private Set fileDetails = new HashSet(0);
      private Set budgetmasters = new HashSet(0);
+     private Set erpmPurchaseinvoiceMasters = new HashSet(0);
+     private Set erpmIssueReturnMasters = new HashSet(0);
      private Set erpmCapitalCategories = new HashSet(0);
-     private Set erpmItemMasters = new HashSet(0);
      private Set supplierregistrationauthorities = new HashSet(0);
      private Set institutionroleprivilegeses = new HashSet(0);
-     private Set erpmGeneralTermses = new HashSet(0);
-     private Set suppliermasters = new HashSet(0);
-     private Set subinstitutionmasters = new HashSet(0);
-     private Set institutionuserroleses = new HashSet(0);
-     private Set erpmItemCategoryMasters = new HashSet(0);
+     private Set erpmIssueMastersForIsmFromInstituteId = new HashSet(0);
+     private Set erpmIssueMastersForIsmToInstituteId = new HashSet(0);
      private Set erpmuserroles = new HashSet(0);
      private Set itemcategories = new HashSet(0);
-     private Set budgetheadmasters = new HashSet(0);
      private Set erpmIndentMasters = new HashSet(0);
+     private Set erpmTenderSubmissions = new HashSet(0);
 
     public Institutionmaster() {
     }
@@ -54,7 +67,7 @@ public class Institutionmaster  implements java.io.Serializable {
         this.imName = imName;
         this.imAddressLine1 = imAddressLine1;
     }
-    public Institutionmaster(ErpmGenMaster erpmGenMaster, Countrymaster countrymaster, Employeemaster employeemaster, Statemaster statemaster, String imName, String imShortName, String imAddressLine1, String imAddressLine2, String imDistrict, String imPinNo, String imEmailId, Set departmentmasters, Set erpmPoMasters, Set workflowmasters, Set employeemasters, Set erpmPurchasechallanMasters, Set committeemasters, Set departmentalBudgetAllocations, Set erpmItemRates, Set budgetmasters, Set erpmCapitalCategories, Set erpmItemMasters, Set supplierregistrationauthorities, Set institutionroleprivilegeses, Set erpmGeneralTermses, Set suppliermasters, Set subinstitutionmasters, Set institutionuserroleses, Set erpmItemCategoryMasters, Set erpmuserroles, Set itemcategories, Set budgetheadmasters, Set erpmIndentMasters) {
+    public Institutionmaster(ErpmGenMaster erpmGenMaster, Countrymaster countrymaster, Employeemaster employeemaster, Statemaster statemaster, String imName, String imShortName, String imAddressLine1, String imAddressLine2, String imDistrict, String imPinNo, String imEmailId, Set committeemasters, Set erpmPurchasechallanMasters, Set erpmItemRates, Set erpmItemMasters, Set erpmTenderMasters, Set erpmTenderRevisionses, Set fileMasters, Set erpmGeneralTermses, Set suppliermasters, Set erpmTenderSchedules, Set subinstitutionmasters, Set erpmIssueReceives, Set institutionuserroleses, Set erpmItemCategoryMasters, Set budgetheadmasters, Set departmentmasters, Set erpmTempOpeningStocks, Set erpmPoMasters, Set workflowmasters, Set employeemasters, Set departmentalBudgetAllocations, Set erpmStockReceiveds, Set fileDetails, Set budgetmasters, Set erpmPurchaseinvoiceMasters, Set erpmIssueReturnMasters, Set erpmCapitalCategories, Set supplierregistrationauthorities, Set institutionroleprivilegeses, Set erpmIssueMastersForIsmFromInstituteId, Set erpmIssueMastersForIsmToInstituteId, Set erpmuserroles, Set itemcategories, Set erpmIndentMasters, Set erpmTenderSubmissions) {
        this.erpmGenMaster = erpmGenMaster;
        this.countrymaster = countrymaster;
        this.employeemaster = employeemaster;
@@ -66,28 +79,41 @@ public class Institutionmaster  implements java.io.Serializable {
        this.imDistrict = imDistrict;
        this.imPinNo = imPinNo;
        this.imEmailId = imEmailId;
+       this.committeemasters = committeemasters;
+       this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
+       this.erpmItemRates = erpmItemRates;
+       this.erpmItemMasters = erpmItemMasters;
+       this.erpmTenderMasters = erpmTenderMasters;
+       this.erpmTenderRevisionses = erpmTenderRevisionses;
+       this.fileMasters = fileMasters;
+       this.erpmGeneralTermses = erpmGeneralTermses;
+       this.suppliermasters = suppliermasters;
+       this.erpmTenderSchedules = erpmTenderSchedules;
+       this.subinstitutionmasters = subinstitutionmasters;
+       this.erpmIssueReceives = erpmIssueReceives;
+       this.institutionuserroleses = institutionuserroleses;
+       this.erpmItemCategoryMasters = erpmItemCategoryMasters;
+       this.budgetheadmasters = budgetheadmasters;
        this.departmentmasters = departmentmasters;
+       this.erpmTempOpeningStocks = erpmTempOpeningStocks;
        this.erpmPoMasters = erpmPoMasters;
        this.workflowmasters = workflowmasters;
        this.employeemasters = employeemasters;
-       this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
-       this.committeemasters = committeemasters;
        this.departmentalBudgetAllocations = departmentalBudgetAllocations;
-       this.erpmItemRates = erpmItemRates;
+       this.erpmStockReceiveds = erpmStockReceiveds;
+       this.fileDetails = fileDetails;
        this.budgetmasters = budgetmasters;
+       this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
+       this.erpmIssueReturnMasters = erpmIssueReturnMasters;
        this.erpmCapitalCategories = erpmCapitalCategories;
-       this.erpmItemMasters = erpmItemMasters;
        this.supplierregistrationauthorities = supplierregistrationauthorities;
        this.institutionroleprivilegeses = institutionroleprivilegeses;
-       this.erpmGeneralTermses = erpmGeneralTermses;
-       this.suppliermasters = suppliermasters;
-       this.subinstitutionmasters = subinstitutionmasters;
-       this.institutionuserroleses = institutionuserroleses;
-       this.erpmItemCategoryMasters = erpmItemCategoryMasters;
+       this.erpmIssueMastersForIsmFromInstituteId = erpmIssueMastersForIsmFromInstituteId;
+       this.erpmIssueMastersForIsmToInstituteId = erpmIssueMastersForIsmToInstituteId;
        this.erpmuserroles = erpmuserroles;
        this.itemcategories = itemcategories;
-       this.budgetheadmasters = budgetheadmasters;
        this.erpmIndentMasters = erpmIndentMasters;
+       this.erpmTenderSubmissions = erpmTenderSubmissions;
     }
    
     public Short getImId() {
@@ -174,12 +200,124 @@ public class Institutionmaster  implements java.io.Serializable {
     public void setImEmailId(String imEmailId) {
         this.imEmailId = imEmailId;
     }
+    public Set getCommitteemasters() {
+        return this.committeemasters;
+    }
+    
+    public void setCommitteemasters(Set committeemasters) {
+        this.committeemasters = committeemasters;
+    }
+    public Set getErpmPurchasechallanMasters() {
+        return this.erpmPurchasechallanMasters;
+    }
+    
+    public void setErpmPurchasechallanMasters(Set erpmPurchasechallanMasters) {
+        this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
+    }
+    public Set getErpmItemRates() {
+        return this.erpmItemRates;
+    }
+    
+    public void setErpmItemRates(Set erpmItemRates) {
+        this.erpmItemRates = erpmItemRates;
+    }
+    public Set getErpmItemMasters() {
+        return this.erpmItemMasters;
+    }
+    
+    public void setErpmItemMasters(Set erpmItemMasters) {
+        this.erpmItemMasters = erpmItemMasters;
+    }
+    public Set getErpmTenderMasters() {
+        return this.erpmTenderMasters;
+    }
+    
+    public void setErpmTenderMasters(Set erpmTenderMasters) {
+        this.erpmTenderMasters = erpmTenderMasters;
+    }
+    public Set getErpmTenderRevisionses() {
+        return this.erpmTenderRevisionses;
+    }
+    
+    public void setErpmTenderRevisionses(Set erpmTenderRevisionses) {
+        this.erpmTenderRevisionses = erpmTenderRevisionses;
+    }
+    public Set getFileMasters() {
+        return this.fileMasters;
+    }
+    
+    public void setFileMasters(Set fileMasters) {
+        this.fileMasters = fileMasters;
+    }
+    public Set getErpmGeneralTermses() {
+        return this.erpmGeneralTermses;
+    }
+    
+    public void setErpmGeneralTermses(Set erpmGeneralTermses) {
+        this.erpmGeneralTermses = erpmGeneralTermses;
+    }
+    public Set getSuppliermasters() {
+        return this.suppliermasters;
+    }
+    
+    public void setSuppliermasters(Set suppliermasters) {
+        this.suppliermasters = suppliermasters;
+    }
+    public Set getErpmTenderSchedules() {
+        return this.erpmTenderSchedules;
+    }
+    
+    public void setErpmTenderSchedules(Set erpmTenderSchedules) {
+        this.erpmTenderSchedules = erpmTenderSchedules;
+    }
+    public Set getSubinstitutionmasters() {
+        return this.subinstitutionmasters;
+    }
+    
+    public void setSubinstitutionmasters(Set subinstitutionmasters) {
+        this.subinstitutionmasters = subinstitutionmasters;
+    }
+    public Set getErpmIssueReceives() {
+        return this.erpmIssueReceives;
+    }
+    
+    public void setErpmIssueReceives(Set erpmIssueReceives) {
+        this.erpmIssueReceives = erpmIssueReceives;
+    }
+    public Set getInstitutionuserroleses() {
+        return this.institutionuserroleses;
+    }
+    
+    public void setInstitutionuserroleses(Set institutionuserroleses) {
+        this.institutionuserroleses = institutionuserroleses;
+    }
+    public Set getErpmItemCategoryMasters() {
+        return this.erpmItemCategoryMasters;
+    }
+    
+    public void setErpmItemCategoryMasters(Set erpmItemCategoryMasters) {
+        this.erpmItemCategoryMasters = erpmItemCategoryMasters;
+    }
+    public Set getBudgetheadmasters() {
+        return this.budgetheadmasters;
+    }
+    
+    public void setBudgetheadmasters(Set budgetheadmasters) {
+        this.budgetheadmasters = budgetheadmasters;
+    }
     public Set getDepartmentmasters() {
         return this.departmentmasters;
     }
     
     public void setDepartmentmasters(Set departmentmasters) {
         this.departmentmasters = departmentmasters;
+    }
+    public Set getErpmTempOpeningStocks() {
+        return this.erpmTempOpeningStocks;
+    }
+    
+    public void setErpmTempOpeningStocks(Set erpmTempOpeningStocks) {
+        this.erpmTempOpeningStocks = erpmTempOpeningStocks;
     }
     public Set getErpmPoMasters() {
         return this.erpmPoMasters;
@@ -202,20 +340,6 @@ public class Institutionmaster  implements java.io.Serializable {
     public void setEmployeemasters(Set employeemasters) {
         this.employeemasters = employeemasters;
     }
-    public Set getErpmPurchasechallanMasters() {
-        return this.erpmPurchasechallanMasters;
-    }
-    
-    public void setErpmPurchasechallanMasters(Set erpmPurchasechallanMasters) {
-        this.erpmPurchasechallanMasters = erpmPurchasechallanMasters;
-    }
-    public Set getCommitteemasters() {
-        return this.committeemasters;
-    }
-    
-    public void setCommitteemasters(Set committeemasters) {
-        this.committeemasters = committeemasters;
-    }
     public Set getDepartmentalBudgetAllocations() {
         return this.departmentalBudgetAllocations;
     }
@@ -223,12 +347,19 @@ public class Institutionmaster  implements java.io.Serializable {
     public void setDepartmentalBudgetAllocations(Set departmentalBudgetAllocations) {
         this.departmentalBudgetAllocations = departmentalBudgetAllocations;
     }
-    public Set getErpmItemRates() {
-        return this.erpmItemRates;
+    public Set getErpmStockReceiveds() {
+        return this.erpmStockReceiveds;
     }
     
-    public void setErpmItemRates(Set erpmItemRates) {
-        this.erpmItemRates = erpmItemRates;
+    public void setErpmStockReceiveds(Set erpmStockReceiveds) {
+        this.erpmStockReceiveds = erpmStockReceiveds;
+    }
+    public Set getFileDetails() {
+        return this.fileDetails;
+    }
+    
+    public void setFileDetails(Set fileDetails) {
+        this.fileDetails = fileDetails;
     }
     public Set getBudgetmasters() {
         return this.budgetmasters;
@@ -237,19 +368,26 @@ public class Institutionmaster  implements java.io.Serializable {
     public void setBudgetmasters(Set budgetmasters) {
         this.budgetmasters = budgetmasters;
     }
+    public Set getErpmPurchaseinvoiceMasters() {
+        return this.erpmPurchaseinvoiceMasters;
+    }
+    
+    public void setErpmPurchaseinvoiceMasters(Set erpmPurchaseinvoiceMasters) {
+        this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
+    }
+    public Set getErpmIssueReturnMasters() {
+        return this.erpmIssueReturnMasters;
+    }
+    
+    public void setErpmIssueReturnMasters(Set erpmIssueReturnMasters) {
+        this.erpmIssueReturnMasters = erpmIssueReturnMasters;
+    }
     public Set getErpmCapitalCategories() {
         return this.erpmCapitalCategories;
     }
     
     public void setErpmCapitalCategories(Set erpmCapitalCategories) {
         this.erpmCapitalCategories = erpmCapitalCategories;
-    }
-    public Set getErpmItemMasters() {
-        return this.erpmItemMasters;
-    }
-    
-    public void setErpmItemMasters(Set erpmItemMasters) {
-        this.erpmItemMasters = erpmItemMasters;
     }
     public Set getSupplierregistrationauthorities() {
         return this.supplierregistrationauthorities;
@@ -265,40 +403,19 @@ public class Institutionmaster  implements java.io.Serializable {
     public void setInstitutionroleprivilegeses(Set institutionroleprivilegeses) {
         this.institutionroleprivilegeses = institutionroleprivilegeses;
     }
-    public Set getErpmGeneralTermses() {
-        return this.erpmGeneralTermses;
+    public Set getErpmIssueMastersForIsmFromInstituteId() {
+        return this.erpmIssueMastersForIsmFromInstituteId;
     }
     
-    public void setErpmGeneralTermses(Set erpmGeneralTermses) {
-        this.erpmGeneralTermses = erpmGeneralTermses;
+    public void setErpmIssueMastersForIsmFromInstituteId(Set erpmIssueMastersForIsmFromInstituteId) {
+        this.erpmIssueMastersForIsmFromInstituteId = erpmIssueMastersForIsmFromInstituteId;
     }
-    public Set getSuppliermasters() {
-        return this.suppliermasters;
-    }
-    
-    public void setSuppliermasters(Set suppliermasters) {
-        this.suppliermasters = suppliermasters;
-    }
-    public Set getSubinstitutionmasters() {
-        return this.subinstitutionmasters;
+    public Set getErpmIssueMastersForIsmToInstituteId() {
+        return this.erpmIssueMastersForIsmToInstituteId;
     }
     
-    public void setSubinstitutionmasters(Set subinstitutionmasters) {
-        this.subinstitutionmasters = subinstitutionmasters;
-    }
-    public Set getInstitutionuserroleses() {
-        return this.institutionuserroleses;
-    }
-    
-    public void setInstitutionuserroleses(Set institutionuserroleses) {
-        this.institutionuserroleses = institutionuserroleses;
-    }
-    public Set getErpmItemCategoryMasters() {
-        return this.erpmItemCategoryMasters;
-    }
-    
-    public void setErpmItemCategoryMasters(Set erpmItemCategoryMasters) {
-        this.erpmItemCategoryMasters = erpmItemCategoryMasters;
+    public void setErpmIssueMastersForIsmToInstituteId(Set erpmIssueMastersForIsmToInstituteId) {
+        this.erpmIssueMastersForIsmToInstituteId = erpmIssueMastersForIsmToInstituteId;
     }
     public Set getErpmuserroles() {
         return this.erpmuserroles;
@@ -314,19 +431,19 @@ public class Institutionmaster  implements java.io.Serializable {
     public void setItemcategories(Set itemcategories) {
         this.itemcategories = itemcategories;
     }
-    public Set getBudgetheadmasters() {
-        return this.budgetheadmasters;
-    }
-    
-    public void setBudgetheadmasters(Set budgetheadmasters) {
-        this.budgetheadmasters = budgetheadmasters;
-    }
     public Set getErpmIndentMasters() {
         return this.erpmIndentMasters;
     }
     
     public void setErpmIndentMasters(Set erpmIndentMasters) {
         this.erpmIndentMasters = erpmIndentMasters;
+    }
+    public Set getErpmTenderSubmissions() {
+        return this.erpmTenderSubmissions;
+    }
+    
+    public void setErpmTenderSubmissions(Set erpmTenderSubmissions) {
+        this.erpmTenderSubmissions = erpmTenderSubmissions;
     }
 
 

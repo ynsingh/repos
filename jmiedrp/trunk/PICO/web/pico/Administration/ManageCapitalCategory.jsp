@@ -33,18 +33,26 @@
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
+            
+            <jsp:include page="jobBar.jsp" flush="true"></jsp:include>
+            
             <!-- *********************************End Menu****************************** -->
             <br><br>
-            <p align="center"><s:label value="CAPITAL ITEMS CATEGORIES MANAGEMENT" cssClass="pageHeading"/></p>
-            <p align="center"><s:property value="message" /></p>
-            <div id ="mainContent">
+                <div id ="mainContent">
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">CAPITAL ITEM CATEGORIES MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+
                 <s:form name="frmCapitalItemCategoryAddEdit" action="SaveCapitalCategoryAction"  validate="true">
                     <s:hidden name="erpmcc.erpmccId" />                    
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>                        
                             <tr>
                                 <td><br>
-                                    <s:select label="Institution" name="erpmcc.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                                    <s:select label="Institution" required="true" requiredposition=""  name="erpmcc.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
                                                  label="Capital Item Category Name" name="erpmcc.ermccDesc" title="Enter Capital Item Category Name"  cssClass="textInput"/>
                                 </td>
@@ -62,46 +70,53 @@
                             <tr><td><br></td><td><br></td></tr>
                         </tbody>
                     </table>
-                </s:form>
-            </div>
-
-
-             <div id ="mainContent" align="center">
-             <s:form name="frmCapitalItemsCategoryBrowse">                 
-                <table width="60%" border="1" cellspacing="0" cellpadding="0" align="center" >
-                    <tr><td>
+                </s:form>            
+                <hr>
+                <s:if test="erpmccList.size() > 0">
+                <s:form name="frmCapitalItemsCategoryBrowse">
                     <display:table name="erpmccList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" summary="true" id="doc"
                                requestURI="/Administration/ManageCapitalExportAction.action">
-                         <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
+
+                        <display:column  class="griddata" title="S.No." style="width:10%" headerClass="gridheader">
+                            <c:out> ${doc_rowNum}
                         </display:column>
+
                         <display:column property="institutionmaster.imName" title="Institution"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:30%" sortable="true"/>
-                        <display:column property="ermccDesc" title="Description"
-                                    maxLength="100" headerClass="gridheader"
+                                    headerClass="gridheader"
+                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:40%" sortable="true"/>
+
+                        <display:column property="ermccDesc" title="Capital Item Category Name"
+                                    headerClass="gridheader"
                                     class="griddata" style="width:40%" sortable="true"/>
+
                         <display:column paramId="ErpmccId" paramProperty="erpmccId"
-                                    href="/pico/Administration/EditCapitalCategoryAction.action" 
+                                    href="/pico/Administration/EditCapitalCategoryAction.action" style="width:10%"
                                     headerClass="gridheader" class="griddata" media="html" title="Edit" >
                                     Edit
                         </display:column>
+
                         <display:column paramId="ErpmccId" paramProperty="erpmccId"
                                     href="/pico/Administration/DeleteCapitalCategoryAction.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:30%">
+                                    headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:10%">
                                     Delete
                         </display:column>
+
                     </display:table>
-                <br></td></tr>
-                </table>
-             </s:form>
-                 <br>
-            </div> 
-            <div id="footer">
+                <br>                
+             </s:form>            
+             </s:if>
+             <s:else>
+                 <br><br><br>
+                 <br><br><br>
+             </s:else>
+             </div>
+             </div>
+             <br>
+             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
-            </div>
+             </div>
         </div>
     </body>
 </html> 

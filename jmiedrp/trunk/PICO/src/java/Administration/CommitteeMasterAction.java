@@ -182,7 +182,7 @@ public class CommitteeMasterAction extends DevelopmentSupport {
  @SkipValidation
 public String FetchCommitteeMaster() throws Exception {
     try{
-        if(cm.getSubinstitutionmaster().getSimId() == 0 )
+        if(cm.getSubinstitutionmaster().getSimId() == null )
             cmList = cmDAO.findCommittees(cm.getInstitutionmaster().getImId());
         else if (cm.getDepartmentmaster().getDmId()==0)
             cmList = cmDAO.findCommittees(cm.getInstitutionmaster().getImId(),cm.getSubinstitutionmaster().getSimId());
@@ -250,10 +250,18 @@ public void InitializeitemsLOVs() {
             imIdList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
 
             //Prepare LOV containing the SubInstitutions forthe selected Institution
-            simImIdList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
+            //If Logged in user role is Administrator                            
+                    if(getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0)
+                        simImIdList = simDao.findSubInstForAdmin(Short.valueOf(getSession().getAttribute("imId").toString()));                
+                    else
+                        simImIdList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
 
             //Prepare LOV containing the Department for the selected Selected Institution
-            dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
+                //If Logged in user role is Administrator                            
+                    if(getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0)
+                        dmList = dmDao.findBydmSimId(Integer.valueOf(Integer.valueOf(getSession().getAttribute("simId").toString())));
+                    else
+                        dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(Integer.valueOf(getSession().getAttribute("simId").toString())));
 
             //Prepare List of Committee Types
             committeeTypesList = erpmGenMasterDao.findByErpmGmType(Short.parseShort("14"));

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Indent_Workflow" language="groovy" pageWidth="643" pageHeight="641" columnWidth="603" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c8c4da60-b42c-444a-abf8-d573733b8d80">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="erpm_indent_master_Indt_WFM_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="erpm_indent_master_Indt_Indent_Id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     workflowtransaction.`WFT_Id` AS workflowtransaction_WFT_Id,
+     workflowtransaction.`WFT_Date` AS workflowtransaction_WFT_Date,
+     workflowtransaction.`WFT_WFM_Id` AS workflowtransaction_WFT_WFM_Id,
+     workflowtransaction.`WFT_Source_Id` AS workflowtransaction_WFT_Source_Id,
+     workflowtransaction.`WFT_Destination_Id` AS workflowtransaction_WFT_Destination_Id,
+     workflowtransaction.`WFT_Work_Id` AS workflowtransaction_WFT_Work_Id,
+     workflowtransaction.`WFT_Stage` AS workflowtransaction_WFT_Stage,
+     workflowtransaction.`WFT_Destination_Email` AS workflowtransaction_WFT_Destination_Email,
+     workflowtransaction.`WFT_Action_Taken` AS workflowtransaction_WFT_Action_Taken,
+     workflowtransaction.`WFT_Action_Remarks` AS workflowtransaction_WFT_Action_Remarks,
+     workflowmaster.`WFM_Name` AS workflowmaster_WFM_Name,
+     committeemaster.`Committee_Name` AS Source_Committee_Name,
+     committeemaster_A.`Committee_Name` AS Destination_Committee_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS Action_Taken
+FROM
+     `workflowmaster` workflowmaster INNER JOIN `workflowtransaction` workflowtransaction ON workflowmaster.`WFM_Id` = workflowtransaction.`WFT_WFM_Id`
+     LEFT OUTER JOIN `committeemaster` committeemaster ON workflowtransaction.`WFT_Source_Id` = committeemaster.`Committee_ID`
+     LEFT OUTER JOIN `committeemaster` committeemaster_A ON workflowtransaction.`WFT_Destination_Id` = committeemaster_A.`Committee_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON workflowtransaction.`WFT_Action_Taken` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE
+     workflowtransaction.`WFT_Work_Id` = $P{erpm_indent_master_Indt_Indent_Id}]]>
+	</queryString>
+	<field name="workflowtransaction_WFT_Id" class="java.lang.Long"/>
+	<field name="workflowtransaction_WFT_Date" class="java.sql.Timestamp"/>
+	<field name="workflowtransaction_WFT_WFM_Id" class="java.lang.Long"/>
+	<field name="workflowtransaction_WFT_Source_Id" class="java.lang.Long"/>
+	<field name="workflowtransaction_WFT_Destination_Id" class="java.lang.Long"/>
+	<field name="workflowtransaction_WFT_Work_Id" class="java.lang.Integer"/>
+	<field name="workflowtransaction_WFT_Stage" class="java.lang.Long"/>
+	<field name="workflowtransaction_WFT_Destination_Email" class="java.lang.String"/>
+	<field name="workflowtransaction_WFT_Action_Taken" class="java.lang.Long"/>
+	<field name="workflowtransaction_WFT_Action_Remarks" class="java.lang.String"/>
+	<field name="workflowmaster_WFM_Name" class="java.lang.String"/>
+	<field name="Source_Committee_Name" class="java.lang.String"/>
+	<field name="Destination_Committee_Name" class="java.lang.String"/>
+	<field name="Action_Taken" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="6" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6e8a75c8-1a63-4e4f-836c-09e6ec4f50d6" x="204" y="3" width="199" height="22"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Workflow Status]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6e8a75c8-1a63-4e4f-836c-09e6ec4f50d6" x="0" y="0" width="100" height="22"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3faff3d7-f0d1-4846-bf39-d8c46eef7148" x="100" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stage]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f6dcc24a-f622-436e-9838-8756fbf6d593" x="140" y="0" width="123" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Source Committee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9c5f3de8-8c06-4d2a-a254-8c758bb510cf" x="263" y="0" width="140" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Destination Committee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="927f04ed-3eb3-4305-ac3a-747630074d0b" x="403" y="0" width="84" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Action_Taken]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="76bfadf4-c8ad-4dab-99a2-eabbcbcfaf91" x="487" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField pattern="dd MMM yyyy">
+				<reportElement uuid="05eb9549-170e-4aca-81f4-7718ba943758" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{workflowtransaction_WFT_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4a72f07e-a0ff-4313-996d-b9a7e966b54a" x="100" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{workflowtransaction_WFT_Stage}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f1c6afa5-b9f6-4383-bffc-691f9f18896e" x="140" y="0" width="123" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Source_Committee_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8a3797ff-bd2e-47c4-958e-ab1eb3e8969d" x="487" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{workflowtransaction_WFT_Action_Remarks}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="db93d7d4-2a34-40b6-893d-44cec5408579" x="403" y="0" width="84" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Action_Taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a6da269b-9134-48c7-89b9-36afc1c6f407" x="263" y="0" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Destination_Committee_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="5" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="4" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="5" splitType="Stretch"/>
+	</summary>
+</jasperReport>

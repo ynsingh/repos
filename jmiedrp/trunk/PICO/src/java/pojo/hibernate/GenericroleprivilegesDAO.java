@@ -10,53 +10,102 @@
 
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import java.util.List;
 
-public class GenericroleprivilegesDAO extends BaseDAO {
+public class GenericroleprivilegesDAO  {
 
     public void save(Genericroleprivileges grp) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(grp);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.save(grp);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(grp != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
      public void update(Genericroleprivileges grp) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(grp);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.update(grp);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(grp != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
     public void delete(Genericroleprivileges grp) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(grp);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(grp);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(grp != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
     public List<Genericroleprivileges> RetrievePrivilegesForGenericRole(Byte gurId) {
-        beginTransaction();
-        List<Genericroleprivileges> plist = getSession().createQuery("from Genericroleprivileges u where u.genericuserroles.gurId = :gurId")
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Genericroleprivileges> plist = session.createQuery("from Genericroleprivileges u where u.genericuserroles.gurId = :gurId")
                                                   .setParameter("gurId", gurId).list();
-        commitTransaction();
-        return plist;
+            return plist;
+        }
+        finally {
+            session.close();
+        }
+    }
+    
+    //The following method checks, if a Program identified by erpmId 
+    //has been assigned Generic privileges identified by gurId
+    public boolean CheckGenericPrivileges(Short erpmpId, Byte gurId) {
+        String query = "Select u from Genericroleprivileges u where " +
+                        "u.erpmprogram.erpmpId = :erpmpId and " +
+                        "u.genericuserroles.gurId = :gurId";
+        
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Genericroleprivileges> plist = session.createQuery(query)
+                                                  .setParameter("erpmpId", erpmpId)
+                                                  .setParameter("gurId", gurId).list();
+            if(plist.size() > 0 )
+                return true;
+            else
+                return false;
+        }
+        finally {
+            session.close();
+        }
+        
     }
 
 }

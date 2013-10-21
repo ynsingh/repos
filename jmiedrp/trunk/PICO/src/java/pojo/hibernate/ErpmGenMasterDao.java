@@ -1,96 +1,172 @@
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
+
+
 import java.util.List;
 
-public class ErpmGenMasterDao extends BaseDAO {
-
-
+public class ErpmGenMasterDao {
 
     public void save(ErpmGenMaster erpmgm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(erpmgm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.save(erpmgm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(erpmgm != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
      public void update(ErpmGenMaster erpmgm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(erpmgm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.update(erpmgm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(erpmgm != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
     public void delete(ErpmGenMaster erpmgm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(erpmgm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(erpmgm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(erpmgm != null)
+                tx.rollback();
             throw re;
         }
+        finally {
+            session.close();
+        }
     }
+
     public List<ErpmGenMaster> findAll() {
-        beginTransaction();
-        List<ErpmGenMaster> list = getSession().createQuery("from ErpmGenMaster").list();
-        commitTransaction();
-        return list;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<ErpmGenMaster> list = session.createQuery("from ErpmGenMaster").list();
+            return list;
+
+        }
+        finally {
+            session.close();
+            }
     }
 
-    public ErpmGenMaster findByErpmGmId(int erpmgmEgmId) {
-        beginTransaction();
-        ErpmGenMaster erpmgm  = (ErpmGenMaster) getSession().load(ErpmGenMaster.class , erpmgmEgmId);
-        commitTransaction();
-        return erpmgm;
-}
+    public ErpmGenMaster findByErpmGmId(int erpmgmEgmId) {                
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmGenMaster erpmgm  = (ErpmGenMaster) session.load(ErpmGenMaster.class , erpmgmEgmId);
+            Hibernate.initialize(erpmgm.getErpmGenCtrl());
+            return erpmgm;
 
-    
-    public List<ErpmGenMaster> findByErpmGmType(short erpmgmEgmType) {
-        beginTransaction();
-        List<ErpmGenMaster> erpmgmlist  = getSession().createQuery("Select u from ErpmGenMaster u where u.erpmGenCtrl.erpmgcGenType = :erpmgmEgmType").setParameter("erpmgmEgmType",erpmgmEgmType).list();
-        commitTransaction();
-        return erpmgmlist;
+        }
+        finally {
+            session.close();
+            }
+        }
+
+    public List<ErpmGenMaster> findByErpmGmType(short erpmgmEgmType) {       
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<ErpmGenMaster> erpmgmlist  = session.createQuery("Select u from ErpmGenMaster u where u.erpmGenCtrl.erpmgcGenType = :erpmgmEgmType order by u.erpmgmEgmDesc")
+                                                     .setParameter("erpmgmEgmType",erpmgmEgmType)
+                                                     .list();
+            for (int index=0; index < erpmgmlist.size(); ++index)
+                Hibernate.initialize(erpmgmlist.get(index).getErpmGenCtrl());
+            return erpmgmlist;
+
+        }
+        finally {
+            session.close();
+            }
     }
-    
+
 
     public Integer findDuplicateGeneralMasterEntry(short erpmgcGenType, String erpmgmEgmDesc) {
-        beginTransaction();
-        Integer matchingRecords  = Integer.parseInt(getSession().createQuery("Select count(u) from ErpmGenMaster u.erpmGenCtrl.erpmgcGenType = :erpmgcGenType and upper(u.erpmgmEgmDesc) = upper(:erpmgmEgmDesc)").setParameter("erpmgcGenType",erpmgcGenType).setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list().get(0).toString());
-        commitTransaction();
-        return matchingRecords;
-    }
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Integer matchingRecords  = Integer.parseInt(session.createQuery("Select count(u) from ErpmGenMaster u.erpmGenCtrl.erpmgcGenType = :erpmgcGenType and upper(u.erpmgmEgmDesc) = upper(:erpmgmEgmDesc)").setParameter("erpmgcGenType",erpmgcGenType).setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list().get(0).toString());    return matchingRecords;
+        }
+        finally {
+            session.close();
+            }
+        }
+
     public ErpmGenMaster findByErpmGmDesc(String erpmgmEgmDesc) {
-        beginTransaction();
-        List<ErpmGenMaster> erpmgmlist  = getSession().createQuery("Select u from ErpmGenMaster u where u.erpmgmEgmDesc = :erpmgmEgmDesc").setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list();
-        commitTransaction();
-        return erpmgmlist.get(0);
-    }
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<ErpmGenMaster> erpmgmlist  = session.createQuery("Select u from ErpmGenMaster u where u.erpmgmEgmDesc = :erpmgmEgmDesc").setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list();
+            return erpmgmlist.get(0);
+        }
+        finally {
+            session.close();
+            }
+        }
+
 
     public int findDefaultCurrency(String erpmgmEgmDesc) {
-        beginTransaction();
-        List<ErpmGenMaster> erpmgmlist  = getSession().createQuery("Select u from ErpmGenMaster u where u.erpmgmEgmDesc = :erpmgmEgmDesc").setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list();
-        commitTransaction();
-        return erpmgmlist.get(0).getErpmgmEgmId();
-    }
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<ErpmGenMaster> erpmgmlist  = session.createQuery("Select u from ErpmGenMaster u where u.erpmgmEgmDesc = :erpmgmEgmDesc").setParameter("erpmgmEgmDesc",erpmgmEgmDesc).list();
+            return erpmgmlist.get(0).getErpmgmEgmId();
+        }
+        finally {
+            session.close();
+            }
+        }
     
-    public List<ErpmGenMaster> findErpmGmDescByWFActions(int wfawfdId) {
-        beginTransaction();
-        // SELECT b.*, a.ERPMGM_EGM_DESC FROM `pico_basic`.`erpm_gen_master` a, `pico_basic`.`workflowactions` b where a.ERPMGM_EGM_ID = b.WFA_EGM_Action_Id and b.WFA_WFD_Id = 70;
-        //"SELECT u FROM ErpmGenMaster u, workflowactions b where a.erpmgmEgmId = b.ErpmGenMaster.erpmgmEgmId and b.workflowdetail.wfdId = 70;"
-        List<ErpmGenMaster> erpmgmlist  = getSession().createQuery("SELECT u FROM ErpmGenMaster u, Workflowactions b where u.erpmgmEgmId = b.erpmGenMaster and b.workflowdetail.wfdId = :wfawfdId").setParameter("wfawfdId",wfawfdId).list();
-        commitTransaction();
+    
+    public List<ErpmGenMaster> findErpmGmDescByWFActions(int wfawfdId) {        
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<ErpmGenMaster> erpmgmlist  = session.createQuery("SELECT u FROM ErpmGenMaster u, Workflowactions b where u.erpmgmEgmId = b.erpmGenMaster and b.workflowdetail.wfdId = :wfawfdId").setParameter("wfawfdId",wfawfdId).list();
+            return erpmgmlist;
+        }
+        finally {
+            session.close();
+            }
+        }
+
+      public List<ErpmGenMaster> findByExpiryType(Short EgmType) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+        List<ErpmGenMaster> erpmgmlist  = session.createQuery("SELECT distinct(u) FROM ErpmGenMaster u where u.erpmGenCtrl.erpmgcGenType =:EgmType").setParameter("EgmType",EgmType).list();
         return erpmgmlist;
+          }
+        finally {
+            session.close();
+            }
     }
 }

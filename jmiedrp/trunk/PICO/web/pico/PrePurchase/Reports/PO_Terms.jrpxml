@@ -28,19 +28,5 @@
 			<paragraph tabStopWidth="40"/>
 			<textContent><![CDATA[1]]></textContent>
 		</text>
-		<text textHeight="12.578125">
-			<reportElement x="50" y="93" width="506" height="16" origin="4" srcId="2"/>
-			<textContent><![CDATA[PO Warranty Clause]]></textContent>
-		</text>
-		<text textHeight="37.734375">
-			<reportElement x="50" y="109" width="506" height="37" origin="4" srcId="3"/>
-			<textContent><![CDATA[Warranty: Comprehensive for all parts. Replacements to made on spot without incurring any financial liability on Jamia Millia Islamia. Warranty shall not be applicable in case of damage to the equipment/machine due to accidents such as fire, earthquake etc.]]></textContent>
-		</text>
-		<text textHeight="12.578125" valueClass="java.lang.Integer">
-			<reportElement x="25" y="94" width="24" height="14" origin="4" srcId="4"/>
-			<font size="10"/>
-			<paragraph tabStopWidth="40"/>
-			<textContent><![CDATA[2]]></textContent>
-		</text>
 	</page>
 </jasperPrint>

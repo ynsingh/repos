@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmIssueReturnMaster" table="erpm_issue_return_master">
+        <id name="irmId" type="java.lang.Integer">
+            <column name="IRM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="IRM_Institute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="IRM_Subinstitute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="employeemaster" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="IRM_ReturnTo_Employee_ID" not-null="true">
+                <comment>To be used as a signing authority while printing return slip</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="IRM_Department_ID" not-null="true" />
+        </many-to-one>
+        <property name="irmReturnNo" type="string">
+            <column name="IRM_Return_No" length="20" not-null="true" />
+        </property>
+        <property name="irmReturnDate" type="date">
+            <column name="IRM_Return_Date" length="10" not-null="true" />
+        </property>
+        <property name="irmReturnType" type="char">
+            <column name="IRM_Return_Type" length="1" not-null="true">
+                <comment>U - Return after Use R - Return after repair</comment>
+            </column>
+        </property>
+        <property name="irmRemarks" type="string">
+            <column name="IRM_Remarks" length="200" />
+        </property>
+        <property name="irmReturnMode" type="boolean">
+            <column name="IRM_Return_Mode" not-null="true" />
+        </property>
+        <set name="erpmIssueReturnDetails" inverse="true">
+            <key>
+                <column name="IRMD_IRM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -2,126 +2,188 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package pojo.hibernate;
 
- package pojo.hibernate;
-
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
-import java.util.*;
-
 
 /**
  *
- * @author Sajid Aziz
+ * @author Tanvir Ahmed
  */
-public class ErpmGeneralTermsDAO extends BaseDAO  {
+public class ErpmGeneralTermsDAO {
 
-public void save(ErpmGeneralTerms Gterms) {
+    public void save(ErpmGeneralTerms Gterms) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(Gterms);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
-            throw re;    }
-    }
-public void delete(ErpmGeneralTerms Gterms) {
-        try {
-            beginTransaction();
-            getSession().delete(Gterms);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(Gterms);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (Gterms != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
- public void update(ErpmGeneralTerms Gterms) {
+
+    public void delete(ErpmGeneralTerms Gterms) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(Gterms);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(Gterms);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (Gterms != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
- public ErpmGeneralTerms findPOtermsforInsituteByGenmasterID(Integer erpmgmEgmId, Short imId) {
-        beginTransaction();
-        List<ErpmGeneralTerms> gterms  = getSession().createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgmEgmId = :erpmgmEgmId and u.institutionmaster.imId = :imId")
-                                            .setParameter("erpmgmEgmId", erpmgmEgmId)
-                                            .setParameter("ImId", imId).list();
-        commitTransaction();
-        return gterms.get(0);
+    public void update(ErpmGeneralTerms Gterms) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(Gterms);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (Gterms != null) {
+                tx.rollback();
+            }
+            throw re;
+        } finally {
+            session.close();
+
         }
-
-public ErpmGeneralTerms findTestPOtermsforInsituteByGenmasterID(Integer gtGtid) {
-        beginTransaction();
-        List<ErpmGeneralTerms> gterms  = getSession().createQuery("Select u from ErpmGeneralTerms u where u.gtGtid = :gtGtid").setParameter("gtGtid", gtGtid).list();
-
-        commitTransaction();
-        return gterms.get(0);
-        }
-
-public ErpmGeneralTerms findTermsforInsituteByGenmasterID(Integer erpmgmEgmId) {
-        beginTransaction();
-        List<ErpmGeneralTerms> gterms  = getSession().createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgmEgmId = :erpmgmEgmId").setParameter("erpmgmEgmId", erpmgmEgmId).list();
-
-        commitTransaction();
-        return gterms.get(0);
-        }
-
-
-public List<ErpmGeneralTerms> findAll() {
-        beginTransaction();
-        List<ErpmGeneralTerms> list = getSession().createQuery("from ErpmGeneralTerms").list();
-        commitTransaction();
-        return list;
     }
 
+    public ErpmGeneralTerms findPOtermsforInsituteByGenmasterID(Integer erpmgmEgmId, Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmGeneralTerms gterms = (ErpmGeneralTerms) session.createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgmEgmId = :erpmgmEgmId and u.institutionmaster.imId = :imId").setParameter("erpmgmEgmId", erpmgmEgmId).setParameter("imId", imId).uniqueResult();
+            Hibernate.initialize(gterms);
 
-public List<ErpmGeneralTerms> findByErpmGmType(short erpmgmEgmType) {
-        beginTransaction();
-        List<ErpmGeneralTerms> erpmgmlist  = getSession().createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgcGenType = :erpmgmEgmType").setParameter("erpmgmEgmType",erpmgmEgmType).list();
-        commitTransaction();
-        return erpmgmlist;
-    }
-
- public List <ErpmGeneralTerms> findPOtermsforInsitute(Short imId) {
-        beginTransaction();
-        List<ErpmGeneralTerms> gterms  = getSession().createQuery("Select u from ErpmGeneralTerms u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
-        commitTransaction();
-        return gterms;
+            return gterms;
+        } finally {
+            session.close();
         }
-
-  public List<ErpmGeneralTerms> findByErpmGmTypebyInsitute(Short imId) {
-        beginTransaction();
-        List<ErpmGeneralTerms> erpmgmlist  = getSession().createQuery("Select u from ErpmGeneralTerms u where u.institutionmaster.imId=:imId").setParameter("imId", imId).list();
-        commitTransaction();
-        return erpmgmlist;
     }
 
-  public List<Subinstitutionmaster> findSubInstForUser(Integer erpmuId,short ImId) {
-        beginTransaction();
-        List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId and u.institutionmaster.imId = :ImId").setParameter("erpmuId", erpmuId).setParameter("ImId",ImId).list();
-        commitTransaction();
-        return simList;
+//    public ErpmGeneralTerms findTestPOtermsforInsituteByGenmasterID(Integer gtGtid) {
+//        Session session = HibernateUtil.getSession();
+//        try {
+//            session.beginTransaction();
+//            List<ErpmGeneralTerms> gterms = session.createQuery("Select u from ErpmGeneralTerms u where u.gtGtid = :gtGtid").setParameter("gtGtid", gtGtid).list();
+//            Hibernate.initialize(gterms); //.getImName());
+//
+//            return gterms.get(0);
+//        } finally {
+//            session.close();
+//        }
+//    }
+    public ErpmGeneralTerms findTermsforInsituteByGenmasterID(Integer erpmgmEgmId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmGeneralTerms> gterms = session.createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgmEgmId = :erpmgmEgmId").setParameter("erpmgmEgmId", erpmgmEgmId).list();
+            for (index = 0; index < gterms.size(); ++index) {
+                Hibernate.initialize(gterms.get(index).getErpmGenMaster());
+
+
+            }
+            return gterms.get(0);
+        } finally {
+            session.close();
+        }
     }
 
+    public List<ErpmGeneralTerms> findAll() {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmGeneralTerms> list = session.createQuery("select u from ErpmGeneralTerms u").list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getErpmGenMaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<ErpmGeneralTerms> findByErpmGmType(short erpmgmEgmType) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmGeneralTerms> erpmgmlist = session.createQuery("Select u from ErpmGeneralTerms u where u.erpmGenMaster.erpmgcGenType = :erpmgmEgmType").setParameter("erpmgmEgmType", erpmgmEgmType).list();
+            for (index = 0; index < erpmgmlist.size(); ++index) {
+                Hibernate.initialize(erpmgmlist.get(index).getInstitutionmaster());
+                Hibernate.initialize(erpmgmlist.get(index).getErpmGenMaster());
+            }
+            return erpmgmlist;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<ErpmGeneralTerms> findPOtermsforInsitute(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmGeneralTerms> gterms = session.createQuery("Select u from ErpmGeneralTerms u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (index = 0; index < gterms.size(); ++index) {
+
+                Hibernate.initialize(gterms.get(index).getInstitutionmaster());
+            }
+            return gterms;
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<ErpmGeneralTerms> findByErpmGmTypebyInsitute(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmGeneralTerms> erpmgmlist = session.createQuery("Select u from ErpmGeneralTerms u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (index = 0; index < erpmgmlist.size(); ++index) {
+                Hibernate.initialize(erpmgmlist.get(index).getInstitutionmaster());
+                Hibernate.initialize(erpmgmlist.get(index).getErpmGenMaster());
+            }
+            return erpmgmlist;
+        } finally {
+            session.close();
+        }
+    }
 
     public ErpmGeneralTerms findBygtGtid(Integer gtGtid) {
-        beginTransaction();
-        ErpmGeneralTerms GTerms = new ErpmGeneralTerms();
-        GTerms = (ErpmGeneralTerms) getSession().load(ErpmGeneralTerms.class, gtGtid);
-        commitTransaction();
-        return GTerms;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmGeneralTerms GTerms = (ErpmGeneralTerms) session.load(ErpmGeneralTerms.class, gtGtid);
+            Hibernate.initialize(GTerms); //.getImName());
+
+            return GTerms;
+        } finally {
+            session.close();
+        }
     }
-
 }
-
-
-
-

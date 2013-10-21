@@ -24,6 +24,7 @@ import utils.DevelopmentSupport;
 import pojo.hibernate.DepartmentalBudgetAllocation;
 import pojo.hibernate.DepartmentalBudgetAllocationDAO;
 import java.util.*;
+import utils.DateUtilities;
 
 public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
 
@@ -40,6 +41,8 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
     private DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
     private String message;
     private  Integer DBAID;
+    private String fromdate;
+    private String todate;
 
 
 
@@ -49,7 +52,20 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
     public Integer getDBAID() {
         return this.DBAID;
     }
+    public String getFromdate() {
+        return fromdate;
+    }
 
+    public void setFromdate(String fromdate) {
+        this.fromdate = fromdate;
+    }public String getTodate() {
+        return todate;
+    }
+
+    public void setTodate(String todate) {
+        this.todate = todate;
+    }
+ 
     public void setimList(List<Institutionmaster> imList) {
          this.imList = imList;
     }
@@ -97,10 +113,6 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
          imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
          //Prepare LOV containing Budget Head
          bhmList=bhmDao.findAll();
-        //Prepare LOV containing Sub Institutions
-         simImList = simDao.findAll();
-         //Prepare LOV containing Department
-         dmList=  dmDao.findAll();
       }
       @Override
     public String execute() throws Exception {
@@ -108,7 +120,7 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
            InitializeLOVs();
            return SUCCESS;
         } catch (Exception e) {
-           message = "Exception in -> DepartmentalBudgetAllocationAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
+//           message = "Exception in -> DepartmentalBudgetAllocationAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
            return ERROR;
         }
     }
@@ -128,12 +140,17 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
                 message = "Please select Budget Head ";
                 else if(dba.getDbaAmount().toString()==null)
                 message = "Please enter Amount ";
-                else if(dba.getDbaFromDate()==null)
-                message = "Please enter From Date ";
-                else if(dba.getDbaToDate()==null)
+                else if(fromdate==null)
+                message  = "Please enter From Date ";
+                else if(todate==null)
                 message = "Please enter To Date ";
 
-             else{        
+             else{     
+                      DateUtilities dt = new DateUtilities();
+                       dba.setDbaFromDate(dt.convertStringToDate(getFromdate()));
+                    dba.setDbaToDate(dt.convertStringToDate(getTodate()));
+            //setInvoicerecvDate(d1.convertDateToString(dbafromdate, "dd-MM-yyyy"));
+            //setSuplierinvoiceDate(d1.convertDateToString(dbatodate, "dd-MM-yyyy"));
                dbaDao.save(dba);
                message = "Department record saved successfully. Departmenyt Id is " + dba.getDbaId();
                dbaList = dbaDao.findAll();
@@ -144,6 +161,10 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
 
               } else {
                 DepartmentalBudgetAllocation dba1 = dbaDao.findByDbaId(dba.getDbaId());
+                DateUtilities dt = new DateUtilities();
+                dba.setDbaFromDate(dt.convertStringToDate(getFromdate()));
+                dba.setDbaToDate(dt.convertStringToDate(getTodate()));
+                
                 dba1 = dba;
                 dbaDao.update(dba1);
                 message = "Departmental Budget Allocation  record updated successfully.";
@@ -180,6 +201,14 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
             InitializeLOVs();
              //Retrieve the record to be updated into dba object
             dba = dbaDao.findByDbaId(getDBAID());
+            simImList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), dba.getInstitutionmaster().getImId());
+            dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), dba.getSubinstitutionmaster().getSimId());
+            
+            DateUtilities dt = new DateUtilities();
+
+            fromdate=dt.convertDateToString(dba.getDbaFromDate(),"dd-MM-yyyy");
+            todate=dt.convertDateToString(dba.getDbaToDate(),"dd-MM-yyyy");
+
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in Edit method -> DepartmentalBudgetAllocationAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -192,7 +221,8 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
              //Retrieve the record to be deleted into dba object
             dba = dbaDao.findByDbaId(getDBAID());
             dbaDao.delete(dba);
-            dbaList = dbaDao.findAll();
+            dbaList = dbaDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+            InitializeLOVs();
             return SUCCESS;
         } catch (Exception e) {     
             message = "Exception in Delete method -> DepartmentalBudgetAllocationAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -204,7 +234,8 @@ public class ManageDepartmentalBudgetAllocation extends DevelopmentSupport   {
         try {
             //Clear form field
             dba = null;
-            imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+            InitializeLOVs();
+//            imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
             return SUCCESS;
         } catch (Exception e) {
             message = "Exception in -> DepartmentalBudgetAllocationAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();

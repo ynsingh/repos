@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Item_Tax_Rate" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Item_Tax_Rate" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6619c863-b4d7-4170-9604-b51dbfef1446">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -13,8 +13,8 @@ taxes.IRT_Tax_Percent As TaxPercent,
 taxes.IRT_Tax_on_Value_Percent As TaxOnPercent,
 taxes.IRT_Surcharge_Percent As TaxSurcharge
 FROM
-`pico_basic`.`erpm_item_rate_taxes` taxes,
-`pico_basic`.`erpm_gen_master` tax_Name
+`erpm_item_rate_taxes` taxes,
+`erpm_gen_master` tax_Name
 where
     	taxes.IRT_Tax_Name_ID = tax_Name.erpmgm_egm_id and
 	taxes.IRT_Item_Rate_ID = $P!{IRT_Item_Rate_Id}]]>
@@ -27,9 +27,9 @@ where
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="21" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="178" height="20"/>
+				<reportElement uuid="6fcfcf64-62fd-4fdd-a4f3-116e11ebd6a4" x="0" y="0" width="178" height="20"/>
 				<textElement>
 					<font fontName="Calibri"/>
 				</textElement>

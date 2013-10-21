@@ -58,7 +58,11 @@
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
- <action name="getStatus" method="setStatus" class="ajax.AjaxAction">
+       <action name="getProgramBySubmoduleList" method="getProgramBySubmoduleList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+ 	 <action name="getStatus" method="setStatus" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
@@ -67,6 +71,10 @@
         </action>
 
         <action name="getItemRateListItem" method="getItemRateListItem" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getItemName" method="getItemName" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
         </action>
 
@@ -81,6 +89,10 @@
 
 
     <action name="getUOP" method="getUOP" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getSuppliersName" method="getSuppliersName" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
@@ -150,9 +162,111 @@
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
 
+      <action name="findCurrentWFTStage" method="findCurrentWFTStage" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>            
+      </action>
+
+      <action name="findStageWorkFlowActions" method="findStageWorkFlowActions" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+       <action name="getProgramBySubmoduleList" method="getProgramBySubmoduleList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
        <action name="getaddressforSupplier" method="getaddressforSupplier" class="ajax.AjaxAction">
             <result name="success">/pico/ajax/Ajax.jsp</result>
        </action>
+
+       <action name="getItemListTOS" method="getItemListTOS" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+        <action name="getEmployeeListByDmID" method="getEmployeeListByDmID" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getIssueNoByEmpId" method="getIssueNoByEmpId" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+
+       <action name="getIssueNoByComId" method="getIssueNoByComId" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+      <action name="getAddressForSupplier" method="getAddressForSupplier" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+      <action name="getApprovedIndentList" method="getApprovedIndentList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+      <action name="getIndentItems" method="getIndentItems" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+      <action name="getClause" method="getClause" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+      <action name="getTaxNarration" method="getTaxNarration" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+      <action name="getTaxValue" method="getTaxValue" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+      <action name="findMaxDistributableQty" method="findMaxDistributableQty" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+      </action>
+
+         <action name="getEmailAddressForCommittee" method="getEmailAddressForCommittee" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getEmailAddressForEmployee" method="getEmailAddressForEmployee" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+	   <action name="getEmailAddressForSupplier" method="getEmailAddressForSupplier" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+       <action name="getSupplierList" method="getSupplierList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+         <action name="getSubCategoryList" method="getSubCategoryList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+       </action>
+
+       <action name="getPOList" method="getPOList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getChallanList" method="getChallanList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getProgramListForSubModule" method="getProgramListForSubModule" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+         <action name="getDepreciationMethodandPercentageList" method="getDepreciationMethodandPercentageList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+		<action name="getPercentageList" method="getPercentageList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+        
+        <action name="getParentCategoryList" method="getParentCategoryList" class="ajax.AjaxAction">
+            <result name="success">/pico/ajax/Ajax.jsp</result>
+        </action>
+
+        <action name="getTenderName" method="getTenderName" class="ajax.AjaxAction">
+            <result name = "success">/pico/ajax/Ajax.jsp </result>
+        </action>
 
    </package>
 </struts>

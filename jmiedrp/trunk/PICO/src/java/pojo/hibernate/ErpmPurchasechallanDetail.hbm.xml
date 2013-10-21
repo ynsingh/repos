@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmPurchasechallanDetail" table="erpm_purchasechallan_detail">
         <id name="pcdPcdId" type="java.lang.Integer">
@@ -16,6 +16,15 @@
         </many-to-one>
         <property name="pcdRecvQuantity" type="big_decimal">
             <column name="PCD_Recv_Quantity" precision="8" />
+        </property>
+        <property name="pcdQNQChecked" type="char">
+            <column name="PCD_Q_n_Q_Checked" length="1" not-null="true" />
+        </property>
+        <property name="pcdQNQVerified" type="char">
+            <column name="PCD_Q_n_Q_Verified" length="1" not-null="true" />
+        </property>
+        <property name="pcdVerifiedBy" type="string">
+            <column name="PCD_Verified_By" length="100" />
         </property>
         <set name="erpmPurchasechallanSerials" inverse="true">
             <key>

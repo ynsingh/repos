@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmItemCategoryMaster" table="erpm_item_category_master">
         <id name="erpmicmItemId" type="java.lang.Integer">
@@ -19,6 +19,12 @@
         </property>
         <property name="erpmicmCatDesc" type="string">
             <column name="ERPMICM_Cat_Desc" length="50" not-null="true" />
+        </property>
+        <property name="erpmicmDepreciationMethod" type="java.lang.Character">
+            <column name="ERPMICM_Depreciation_Method" length="1" />
+        </property>
+        <property name="erpmicmDepreciationPercentage" type="java.lang.Integer">
+            <column name="ERPMICM_Depreciation_Percentage" />
         </property>
         <set name="erpmItemCategoryMasters" inverse="true">
             <key>

@@ -2,57 +2,84 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pojo.hibernate;
 
 /**
  *
  * @author sknaqvi
  */
-import utils.BaseDAO;
-import java.util.List;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-public class ErpmGenCtrlDao extends BaseDAO {
+import java.util.List;
+import org.hibernate.Hibernate;
+
+public class ErpmGenCtrlDao {
+
     public void save(ErpmGenCtrl erpmgctrl) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(erpmgctrl);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(erpmgctrl);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmgctrl != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-     public void update(ErpmGenCtrl erpmgctrl) {
+    public void update(ErpmGenCtrl erpmgctrl) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(erpmgctrl);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.update(erpmgctrl);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmgctrl != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public void delete(ErpmGenCtrl erpmgctrl) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(erpmgctrl);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(erpmgctrl);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmgctrl != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
-    }
-    public List<ErpmGenCtrl> findAll() {
-        beginTransaction();
-        List<ErpmGenCtrl> list = getSession().createQuery("from ErpmGenCtrl").list();
-        commitTransaction();
-        return list;
     }
 
+    public List<ErpmGenCtrl> findAll() {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmGenCtrl> list = session.createQuery("select u from ErpmGenCtrl u").list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getErpmGenMasters());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
     }
+}

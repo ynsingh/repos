@@ -28,41 +28,47 @@
             </div>                
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
-              <p align="center"><s:label value="RECOVER PASSWORD" /></p>
-              <p align="center"> <s:property value="message" /></p>
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">RECOVER PASSWORD</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
 
-               <s:form name="frmForgotPassword" action="RecoverPassword">
-                   <s:hidden name="erpmuId" />
-                    <table border="0" cellpadding="4" cellspacing="0" align="center">
-                        <tbody>
-                            <tr>
-                            <s:textfield requiredposition="left" maxLength="50" size="50"
-                                         label="User Name (E-Mail Address)" name="erpmusers.erpmuName" title="Enter User Name (E-Mail Address)" onchange="RetrieveSQ('RecoverPassword_erpmusers_erpmuName','RecoverPassword_erpmusersdob', 'RecoverPassword_erpmusers_erpmuSecretQuestion');" />
-                            <s:textfield requiredposition="left" maxLength="11" size="11" name="erpmusersdob" label="Your Date of Birth [Format:yyyy-mm-dd]"
-                                         onchange="RetrieveSQ('RecoverPassword_erpmusers_erpmuName','RecoverPassword_erpmusersdob', 'RecoverPassword_erpmusers_erpmuSecretQuestion');" />
-                            <s:textfield name="erpmusers.erpmuSecretQuestion" requiredposition="left" maxLength="100" size="100"
-                                         label="Your 'Secret' Question is "  readonly="true"/>
-                            <s:textfield requiredposition="left" maxLength="100" size="100"
-                                         label="Answer to Secret Question" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p align="right"> <s:submit theme="simple" align="right" name="btnSubmit" value="Recover password" /></p>
-                                </td>
-                                <td>
-                                    <s:reset theme="simple" name="bthReset" id="btnReset" value="Clear" action = "ClearForgotPassword"/>
-                                    <s:submit theme="simple" action="Index"  name="login" value="Go to Login Page"/>
-                                 </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div style="border: solid 1px #000000; background: gainsboro">
 
-                </s:form>
-                <s:actionerror />
+
+                    <s:form name="frmForgotPassword" action="RecoverPassword">
+                        <s:hidden name="erpmuId" />
+                        <table border="0" cellpadding="4" cellspacing="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <s:textfield requiredposition="left" maxLength="50" size="50"
+                                                 label="User Name (E-Mail Address)" name="erpmusers.erpmuName" title="Enter User Name (E-Mail Address)" onchange="RetrieveSQ('RecoverPassword_erpmusers_erpmuName','RecoverPassword_erpmusersdob', 'RecoverPassword_erpmusers_erpmuSecretQuestion');" />
+                                    <s:textfield requiredposition="left" maxLength="11" size="11" name="erpmusersdob" label="Your Date of Birth [Format:yyyy-mm-dd]"
+                                                 onchange="RetrieveSQ('RecoverPassword_erpmusers_erpmuName','RecoverPassword_erpmusersdob', 'RecoverPassword_erpmusers_erpmuSecretQuestion');" />
+                                    <s:textfield name="erpmusers.erpmuSecretQuestion" requiredposition="left" maxLength="100" size="100"
+                                                 label="Your 'Secret' Question is "  readonly="true"/>
+                                    <s:textfield requiredposition="left" maxLength="100" size="100"
+                                                 label="Answer to Secret Question" name="erpmusers.erpmuSecretAnswer" title="Enter your answer to secret question" />
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p align="right"> <s:submit theme="simple" align="right" name="btnSubmit" value="Recover password" /></p>
+                                    </td>
+                                    <td>
+                                        <s:reset theme="simple" name="bthReset" id="btnReset" value="Clear" action = "ClearForgotPassword"/>
+                                        <s:submit theme="simple" action="Index"  name="login" value="Go to Login Page"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </s:form>
+                    <s:actionerror />
+                </div>
+                <div id="footer">
+                    <jsp:include page="footer.jsp" flush="true"></jsp:include>
+                </div>
             </div>
-            <div id="footer">
-                <jsp:include page="footer.jsp" flush="true"></jsp:include>
-            </div>
-        </div>
     </body>
 </html>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPoLocations" table="erpm_po_locations">
+        <id name="poLocationsId" type="java.lang.Integer">
+            <column name="po_locations_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="Item_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmPoMaster" class="pojo.hibernate.ErpmPoMaster" fetch="select">
+            <column name="POM_PO_Master_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="DEPT" />
+        </many-to-one>
+        <property name="qty" type="int">
+            <column name="QTY" not-null="true" />
+        </property>
+        <property name="location" type="string">
+            <column name="Location" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperPrint xmlns="http://jasperreports.sourceforge.net/jasperreports/print" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/print http://jasperreports.sourceforge.net/xsd/jasperprint.xsd" name="PendingBill" pageWidth="842" pageHeight="595" topMargin="36" leftMargin="36" bottomMargin="36" rightMargin="36" orientation="Landscape" locale="en_IN" timezone="Asia/Calcutta">
+	<property name="net.sf.jasperreports.export.xml.start.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.end.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.page.count" value="1"/>
+	<origin band="background"/>
+	<origin band="title"/>
+	<origin band="pageHeader"/>
+	<origin band="columnHeader"/>
+	<origin band="detail"/>
+	<origin band="columnFooter"/>
+	<origin band="pageFooter"/>
+	<origin band="summary"/>
+	<page>
+		<text textAlignment="Right" textHeight="9.765625" valueClass="java.util.Date" pattern="MMMMM dd, yyyy">
+			<reportElement x="700" y="85" width="100" height="12" origin="1" srcId="1"/>
+			<font fontName="SansSerif" size="8"/>
+			<textContent><![CDATA[November 22, 2012]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="17.609375">
+			<reportElement x="365" y="75" width="219" height="23" origin="1" srcId="2"/>
+			<font size="14" isBold="true"/>
+			<textContent><![CDATA[PENDING BILL REPORT]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="20.125">
+			<reportElement x="109" y="44" width="745" height="27" origin="1" srcId="3"/>
+			<font size="16" isBold="true"/>
+			<textContent><![CDATA[Jamia Millia Islamia]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="68" y="124" width="52" height="12" origin="3" srcId="4"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[SubInstitute]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="121" y="124" width="52" height="12" origin="3" srcId="5"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Department]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="295" y="124" width="55" height="12" origin="3" srcId="6"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Receive Date]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="353" y="124" width="81" height="12" origin="3" srcId="7"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[PO NO]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="124" width="86" height="12" origin="3" srcId="8"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Chalan No]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="124" width="142" height="12" origin="3" srcId="9"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Item Name]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625">
+			<reportElement x="727" y="124" width="42" height="12" origin="3" srcId="10"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Quantity]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="40" y="124" width="26" height="12" origin="3" srcId="11"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[S.No.]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="124" width="26" height="12" origin="3" srcId="12"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[UOP]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="525" y="124" width="55" height="12" origin="3" srcId="13"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Challan Date]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="124" width="117" height="12" origin="3" srcId="14"/>
+			<font size="8" isBold="true"/>
+			<textContent><![CDATA[Supplier Name]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="139" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[AECOE]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="139" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[14/09/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="139" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="139" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="139" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[14/09/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="139" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="139" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="139" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="139" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[1]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="139" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FET]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="139" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="152" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[AECOE]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="152" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[14/09/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="152" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="152" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[11]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="152" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[14/09/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="152" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="152" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="152" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="152" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[2]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="152" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FET]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="152" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="165" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[AECOE]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="165" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[14/09/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="165" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="165" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[111]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="165" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[14/09/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="165" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="165" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="165" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="165" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[3]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="165" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FET]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="165" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="178" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[ACMAT]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="178" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[06/11/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="178" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="178" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[223]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="178" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[06/11/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="178" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="178" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="178" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="178" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[4]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="178" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FNS]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="178" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="191" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[ACMAT]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="191" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[06/11/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="191" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="191" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[223]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="191" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[06/11/2011]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="191" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="191" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="191" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="191" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[5]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="191" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FNS]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="191" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="204" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTKCIT]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="204" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[05/01/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="204" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="204" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[21231]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="204" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[05/01/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="204" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="204" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="204" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="204" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[6]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="204" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTK-CIT]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="204" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="217" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTKCIT]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="217" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[03/05/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="217" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="217" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[123]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="217" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[03/05/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="217" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="217" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="217" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="217" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[7]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="217" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTK-CIT]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="217" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="230" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTKCIT]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="230" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[18/07/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="230" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="230" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[12/JMI]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="230" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[18/07/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="230" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP Deskjet 3015]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="230" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[2.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="230" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="230" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[8]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="230" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTK-CIT]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="230" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="122" y="243" width="51" height="12" origin="4" srcId="15"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTKCIT]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="295" y="243" width="55" height="12" origin="4" srcId="16"/>
+			<font size="8"/>
+			<textContent><![CDATA[18/07/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Long">
+			<reportElement x="353" y="243" width="81" height="12" origin="4" srcId="17"/>
+			<font size="8"/>
+			<textContent><![CDATA[12]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="437" y="243" width="86" height="12" origin="4" srcId="18"/>
+			<font size="8"/>
+			<textContent><![CDATA[12/JMI]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="525" y="243" width="55" height="12" origin="4" srcId="19"/>
+			<font size="8"/>
+			<textContent><![CDATA[18/07/2012]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="582" y="243" width="142" height="12" origin="4" srcId="20"/>
+			<font size="8"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="10.0625" valueClass="java.math.BigDecimal">
+			<reportElement x="727" y="243" width="42" height="12" origin="4" srcId="21"/>
+			<font size="8"/>
+			<textContent><![CDATA[3.00]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="774" y="243" width="26" height="12" origin="4" srcId="22"/>
+			<font size="8"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="10.0625" valueClass="java.lang.Integer">
+			<reportElement x="40" y="243" width="26" height="12" origin="4" srcId="23"/>
+			<font size="8"/>
+			<textContent><![CDATA[9]]></textContent>
+		</text>
+		<text textHeight="10.0625" rotation="None">
+			<reportElement x="68" y="243" width="52" height="12" origin="4" srcId="24"/>
+			<font size="8"/>
+			<textContent><![CDATA[FTK-CIT]]></textContent>
+		</text>
+		<text textHeight="10.0625">
+			<reportElement x="175" y="243" width="117" height="12" origin="4" srcId="25"/>
+			<font size="8"/>
+			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
+		</text>
+		<text textAlignment="Center" textHeight="10.0625">
+			<reportElement x="365" y="532" width="186" height="12" origin="6" srcId="26"/>
+			<font size="8"/>
+			<textContent><![CDATA[Page 1 of 9]]></textContent>
+		</text>
+	</page>
+</jasperPrint>

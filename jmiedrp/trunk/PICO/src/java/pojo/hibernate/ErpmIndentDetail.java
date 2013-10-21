@@ -1,7 +1,8 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,27 +17,31 @@ public class ErpmIndentDetail  implements java.io.Serializable {
      private ErpmIndentMaster erpmIndentMaster;
      private ErpmItemMaster erpmItemMaster;
      private short indtQuantity;
-     private int indtApproxcost;
+     private BigDecimal indtApproxcost;
      private String indtPurpose;
+     private Short indtApprovedQuantity;
+     private BigDecimal indtAcceptedUnitRate;
      private Set erpmPoDetailses = new HashSet(0);
 
     public ErpmIndentDetail() {
     }
 
 	
-    public ErpmIndentDetail(ErpmIndentMaster erpmIndentMaster, ErpmItemMaster erpmItemMaster, short indtQuantity, int indtApproxcost) {
+    public ErpmIndentDetail(ErpmIndentMaster erpmIndentMaster, ErpmItemMaster erpmItemMaster, short indtQuantity, BigDecimal indtApproxcost) {
         this.erpmIndentMaster = erpmIndentMaster;
         this.erpmItemMaster = erpmItemMaster;
         this.indtQuantity = indtQuantity;
         this.indtApproxcost = indtApproxcost;
     }
-    public ErpmIndentDetail(ErpmItemRate erpmItemRate, ErpmIndentMaster erpmIndentMaster, ErpmItemMaster erpmItemMaster, short indtQuantity, int indtApproxcost, String indtPurpose, Set erpmPoDetailses) {
+    public ErpmIndentDetail(ErpmItemRate erpmItemRate, ErpmIndentMaster erpmIndentMaster, ErpmItemMaster erpmItemMaster, short indtQuantity, BigDecimal indtApproxcost, String indtPurpose, Short indtApprovedQuantity, BigDecimal indtAcceptedUnitRate, Set erpmPoDetailses) {
        this.erpmItemRate = erpmItemRate;
        this.erpmIndentMaster = erpmIndentMaster;
        this.erpmItemMaster = erpmItemMaster;
        this.indtQuantity = indtQuantity;
        this.indtApproxcost = indtApproxcost;
        this.indtPurpose = indtPurpose;
+       this.indtApprovedQuantity = indtApprovedQuantity;
+       this.indtAcceptedUnitRate = indtAcceptedUnitRate;
        this.erpmPoDetailses = erpmPoDetailses;
     }
    
@@ -75,11 +80,11 @@ public class ErpmIndentDetail  implements java.io.Serializable {
     public void setIndtQuantity(short indtQuantity) {
         this.indtQuantity = indtQuantity;
     }
-    public int getIndtApproxcost() {
+    public BigDecimal getIndtApproxcost() {
         return this.indtApproxcost;
     }
     
-    public void setIndtApproxcost(int indtApproxcost) {
+    public void setIndtApproxcost(BigDecimal indtApproxcost) {
         this.indtApproxcost = indtApproxcost;
     }
     public String getIndtPurpose() {
@@ -88,6 +93,20 @@ public class ErpmIndentDetail  implements java.io.Serializable {
     
     public void setIndtPurpose(String indtPurpose) {
         this.indtPurpose = indtPurpose;
+    }
+    public Short getIndtApprovedQuantity() {
+        return this.indtApprovedQuantity;
+    }
+    
+    public void setIndtApprovedQuantity(Short indtApprovedQuantity) {
+        this.indtApprovedQuantity = indtApprovedQuantity;
+    }
+    public BigDecimal getIndtAcceptedUnitRate() {
+        return this.indtAcceptedUnitRate;
+    }
+    
+    public void setIndtAcceptedUnitRate(BigDecimal indtAcceptedUnitRate) {
+        this.indtAcceptedUnitRate = indtAcceptedUnitRate;
     }
     public Set getErpmPoDetailses() {
         return this.erpmPoDetailses;

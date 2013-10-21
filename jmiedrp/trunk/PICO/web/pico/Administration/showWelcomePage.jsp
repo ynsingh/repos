@@ -9,7 +9,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ERP Mission - A Project sponsored by NMEICT, MHRD, Govt. of India</title>
-        <link href="../css/pico.css" rel="stylesheet" type="text/css" />
+        <link href="../css/pico.css" rel="stylesheet" type="text/css" />        
         <meta HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
         <meta name="description" content="ERP for Universities">
         <meta name="keywords" content="ERP">
@@ -23,11 +23,12 @@
                    <jsp:include page="header.jsp" flush="true"></jsp:include>
                </div>
             
-        <div id="sidebar1">
-            
-            <jsp:include page="menu.jsp" flush="true"></jsp:include>
-        </div>
-            
+                <div id="sidebar1">
+                    <jsp:include page="menu.jsp" flush="true"></jsp:include>
+                </div>
+                
+                <jsp:include page="jobBar.jsp" flush="true"></jsp:include>
+                
         <!-- *********************************End Menu****************************** -->
     <div id ="mainContent">
             <table border="0" width="90%" >

@@ -29,36 +29,46 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
-                <p align="center" class="pageHeading" ><s:label value="INSTITUTION USER ROLE PRIVILEGES MANAGEMENT"/></p>
-                <p align="center" class="pageMessage" ><s:property value="message" /></p>
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION USER ROLE PRIVILEGES MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
                 <p align="left" class="pageText">You are now setting up privileges for '<s:property value="iur.iurName" />'
                     role in '<s:property value="iur.institutionmaster.imName" />' institution.</p>
                 <p align="left" class="pageText">Please Choose generic role to initialize '<s:property value="iur.iurName" />' </p>
-                <s:form name="frmIURPCreate" action="CreateIURP">
-                    <s:hidden name="iur.iurId"/>
-                    <s:hidden name="ImId" />
-                <%--    <s:hidden name="InstitutionRole"/> --%>
-                <table border="0" cellpadding="4" cellspacing="0" align="center" >
-                        <tr>
-                            <td>
-                                <s:select cssClass="textInput" label="Generic Role" name="gurId" headerKey="" headerValue="-- Please Select --" list="gurList" listKey="gurId" listValue="gurRoleName"
-                                    onchange="showRoleRemarks('CreateIURP_gurId','CreateIURP_gurDescription');"/>
-                                <s:textfield cssClass="textInputRO" label="Role Description"  name="gurDescription" maxLength="100" size="100"  readonly="true"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <s:submit theme="simple" name="btnSubmit" value="Initialize Role" action="CreateIURP"/>
-                            </td>
-                        </tr>
 
-                </table>
-                </s:form>
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                    <s:form name="frmIURPCreate" action="CreateIURP">
+                        <s:hidden name="iur.iurId"/>
+                        <s:hidden name="ImId" />
+                        <%--    <s:hidden name="InstitutionRole"/> --%>
+                        <table border="0" cellpadding="4" cellspacing="0" align="center" >
+                            <tr>
+                                <td>
+                                    <s:select cssClass="textInput" label="Generic Role" name="gurId" headerKey="" headerValue="-- Please Select --" list="gurList" listKey="gurId" listValue="gurRoleName"
+                                              onchange="showRoleRemarks('CreateIURP_gurId','CreateIURP_gurDescription');"/>
+                                    <s:textfield cssClass="textInputRO" label="Role Description"  name="gurDescription" maxLength="100" size="100"  readonly="true"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <s:submit theme="simple" name="btnSubmit" value="Initialize Role" action="CreateIURP"/>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </s:form>
+                    <br>
+                </div>
+                &nbsp;
             </div>
 
-            </div>
-            <div id="footer">
-                <jsp:include page="footer.jsp" flush="true"></jsp:include>
-            </div>
+        </div>
+        <div id="footer">
+            <jsp:include page="footer.jsp" flush="true"></jsp:include>
+        </div>
     </body>
 </html>

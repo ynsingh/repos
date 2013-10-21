@@ -34,6 +34,12 @@
         </field-validator>
     </field>
 
+    <field name="sim.countrymaster.countryId">
+        <field-validator type="required">
+            <message>Please select Country</message>
+        </field-validator>
+    </field>
+
     <field name="sim.statemaster.stateId">
         <field-validator type="required">
             <message>Please select State</message>

@@ -2,80 +2,97 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  *
- * @author SajidAziz
+ * @author Tanvir Ahmed, Saeed
  */
  
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
-import java.util.*;
 
-public class ErpmItemRateTaxesDAO  extends BaseDAO{
+public class ErpmItemRateTaxesDAO {
 
-public void save(ErpmItemRateTaxes itemratetax) {
+    public void save(ErpmItemRateTaxes itemratetax) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(itemratetax);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
-            throw re;    }
-    }
-public void delete(ErpmItemRateTaxes itemratetax) {
-        try {
-            beginTransaction();
-            getSession().delete(itemratetax);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(itemratetax);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (itemratetax != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
- public void update(ErpmItemRateTaxes itemratetax) {
+
+    public void delete(ErpmItemRateTaxes itemratetax) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(itemratetax);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(itemratetax);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (itemratetax != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-public List<ErpmItemRateTaxes> findAll() {
-        beginTransaction();
-        List<ErpmItemRateTaxes> list = getSession().createQuery("from ErpmItemRateTaxes").list();
-        commitTransaction();
-        return list;
+    public void update(ErpmItemRateTaxes itemratetax) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(itemratetax);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (itemratetax != null) {
+                tx.rollback();
+            }
+            throw re;
+        } finally {
+            session.close();
+        }
     }
 
-  public List<ErpmItemRateTaxes>  findByirItemRateId(Integer irItemRateId) {
-        beginTransaction();
-        List<ErpmItemRateTaxes> itemratetaxList  = getSession().createQuery("Select u from ErpmItemRateTaxes u where u.erpmItemRate.irItemRateId = :irItemRateId").setParameter("irItemRateId", irItemRateId).list();
-        commitTransaction();
-       return itemratetaxList;
-   }
-
-  
-
-   /*public List<ErpmItemRateTaxes>  findByindtDetailsId(Integer irdItemRateDetailsId) {
-        beginTransaction();
-        List<ErpmItemRateTaxes> indentList  = getSession().createQuery("Select u from erpmItemRate u where u.erpmItemRateDetails.irdItemRateDetailsId = :irdItemRateDetailsId").setParameter("irdItemRateDetailsId", irdItemRateDetailsId).list();
-        commitTransaction();
-       return indentList;
-   }*/
-
-   public ErpmItemRateTaxes findByirtItemRateTaxesId(Integer irtItemRateTaxesId) {
-        beginTransaction();
-        ErpmItemRateTaxes itemratetax  = (ErpmItemRateTaxes) getSession().load(ErpmItemRateTaxes.class , irtItemRateTaxesId);
-        commitTransaction();
-        return itemratetax;
+    public List<ErpmItemRateTaxes>  findByirItemRateId(Integer irItemRateId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmItemRateTaxes> itemratetaxList  = session.createQuery("Select u from ErpmItemRateTaxes u where u.erpmItemRate.irItemRateId = :irItemRateId").setParameter("irItemRateId", irItemRateId).list();
+            for (index = 0; index < itemratetaxList.size(); ++index) {
+                Hibernate.initialize(itemratetaxList.get(index).getErpmGenMaster());
+                Hibernate.initialize(itemratetaxList.get(index).getErpmItemRate());
+            }
+            return itemratetaxList;
+        } finally {
+            session.close();
+        }
     }
 
-
+    public ErpmItemRateTaxes findByirtItemRateTaxesId(Integer irtItemRateTaxesId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmItemRateTaxes itemratetax  = (ErpmItemRateTaxes) session.load(ErpmItemRateTaxes.class , irtItemRateTaxesId);
+            Hibernate.initialize(itemratetax.getErpmItemRate());
+            Hibernate.initialize(itemratetax.getErpmGenMaster());
+            return itemratetax;
+        } finally {
+            session.close();
+        }
+    }
 }
 

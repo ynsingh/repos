@@ -2,12 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
- /**
+/**
  *
  * @author Sajid Aziz
  */
 package PrePurchase;
-
 
 import pojo.hibernate.ErpmGenMasterDao;
 import pojo.hibernate.Suppliermaster;
@@ -32,11 +31,13 @@ import java.sql.DriverManager;
 import org.apache.struts2.ServletActionContext;
 import net.sf.jasperreports.engine.*;
 
-
-
-
 import java.util.*;
 import java.util.Date;
+import pojo.hibernate.GfrProgramMappingDAO;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+import com.opensymphony.xwork2.ActionContext;
 
 public class ManageSupplier extends DevelopmentSupport {
 
@@ -57,6 +58,7 @@ public class ManageSupplier extends DevelopmentSupport {
     private List<Statemaster> stList = new ArrayList<Statemaster>();
     private List<Countrymaster> ctList = new ArrayList<Countrymaster>();
     private List<SupplierAddress> adList = new ArrayList<SupplierAddress>();
+    private GfrProgramMappingDAO GfrProgramMappingDao = new GfrProgramMappingDAO();
     private Integer SMID;
     private String message;
     private String estDate, regDate, SMNAME;
@@ -64,6 +66,15 @@ public class ManageSupplier extends DevelopmentSupport {
     short i1 = 1;
     short i2 = 2;
     private InputStream inputStream;
+    private static Boolean varShowGFR;
+
+    public Boolean getVarShowGFR() {
+        return varShowGFR;
+    }
+
+    public void setVarShowGFR(Boolean varShowGFR) {
+        this.varShowGFR = varShowGFR;
+    }
 
     public InputStream getInputStream() {
         return inputStream;
@@ -185,14 +196,13 @@ public class ManageSupplier extends DevelopmentSupport {
         return this.gmIdList1;
     }
 
-        public void setadList(List<SupplierAddress> adList) {
+    public void setadList(List<SupplierAddress> adList) {
         this.adList = adList;
     }
 
     public List<SupplierAddress> getadList() {
         return this.adList;
     }
-
 
     public void setMessage(String message) {
         this.message = message;
@@ -209,6 +219,16 @@ public class ManageSupplier extends DevelopmentSupport {
             //Prepare LOVs
             InitializeLOVs();
 
+            Short i=17;
+            Integer count = GfrProgramMappingDao.findCountByProgramId(i);
+
+
+            if(count > 0){
+             setVarShowGFR(false);
+            }
+            else{
+             setVarShowGFR(true);
+            }
             // Clear Objects and Form data
             erpmsm = null;
             supad = null;
@@ -216,7 +236,7 @@ public class ManageSupplier extends DevelopmentSupport {
             //erpmsm.setSmRegDate(null);
             Date d = new Date();
             DateUtilities d1 = new DateUtilities();
-            setregDate(d1.convertDateToString(d,"dd-MM-yyyy"));
+            setregDate(d1.convertDateToString(d, "dd-MM-yyyy"));
 
 
             return SUCCESS;
@@ -270,10 +290,9 @@ public class ManageSupplier extends DevelopmentSupport {
         }
     }
 
-
     public String Browse() throws Exception {
         try {
-        erpmsmList = erpmsmDao.findAll();
+            erpmsmList = erpmsmDao.findForUserInstitutes(Integer.valueOf(getSession().getAttribute("userid").toString()));
 
             return SUCCESS;
         } catch (Exception e) {
@@ -288,11 +307,12 @@ public class ManageSupplier extends DevelopmentSupport {
             //Retrieve Supplier's record
             erpmsm = erpmsmDao.findByErpmSMId(getSMID());
 
-           // adDao.deleteSupplierAddresses(getSMID());
+            // adDao.deleteSupplierAddresses(getSMID());
             saIdList = adDao.findBySupplierId(getSMID());
 
-            for (int i = 0; i < saIdList.size() ; i++)
-               adDao.delete(saIdList.get(i));
+            for (int i = 0; i < saIdList.size(); i++) {
+                adDao.delete(saIdList.get(i));
+            }
 
             erpmsmDao.delete(erpmsm);
 
@@ -310,12 +330,12 @@ public class ManageSupplier extends DevelopmentSupport {
         try {
             InitializeLOVs();
 
-            erpmsm=erpmsmDao.findByErpmSMId(getSMID());
+            erpmsm = erpmsmDao.findByErpmSMId(getSMID());
             supad = adDao.findErpmSMId(erpmsm.getSmId());
 
             DateUtilities dt = new DateUtilities();
-            estDate = dt.convertDateToString(erpmsm.getSmYearEstablishment(),"dd-MM-yyyy");
-            regDate = dt.convertDateToString(erpmsm.getSmRegDate(),"dd-MM-yyyy");
+            estDate = dt.convertDateToString(erpmsm.getSmYearEstablishment(), "dd-MM-yyyy");
+            regDate = dt.convertDateToString(erpmsm.getSmRegDate(), "dd-MM-yyyy");
 
             return SUCCESS;
         } catch (Exception e) {
@@ -326,7 +346,7 @@ public class ManageSupplier extends DevelopmentSupport {
 
     public void InitializeLOVs() {
         //Prepare LOV containing User Institutions
-        imIdList = imDao.findForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+        imIdList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
 
         //Prepare List containing Supplier Type Types
         gmIdList = gmDao.findByErpmGmType(i2);
@@ -374,22 +394,22 @@ public class ManageSupplier extends DevelopmentSupport {
             if (erpmsm.getSmPanNo().length() != 0 && erpmsm.getSmTanNo().length() == 0) {
                 erpmsm.setSmTanNo(null);
             }
-            if(getestDate().length() == 0)
+            if (getestDate().length() == 0) {
                 addFieldError("estDate", "Enter date of Establishment");
-            else
-            {
+            } else {
                 DateUtilities dt = new DateUtilities();
-                if (dt.isValidDate(getestDate()) == false)
-                   addFieldError("estDate", "Enter date of Establishment[dd-mm-yyyy]");
+                if (dt.isValidDate(getestDate()) == false) {
+                    addFieldError("estDate", "Enter date of Establishment[dd-mm-yyyy]");
+                }
 
             }
-            if(getregDate().length() == 0)
+            if (getregDate().length() == 0) {
                 addFieldError("regDate", "Enter Date of Registration");
-            else
-            {
+            } else {
                 DateUtilities dt = new DateUtilities();
-                if (dt.isValidDate(getregDate()) == false)
-                   addFieldError("regDate", "Enter Registration Date [dd-mm-yyyy]");
+                if (dt.isValidDate(getregDate()) == false) {
+                    addFieldError("regDate", "Enter Registration Date [dd-mm-yyyy]");
+                }
 
             }
             if (supad.getAdLine1().length() == 0) {
@@ -418,81 +438,147 @@ public class ManageSupplier extends DevelopmentSupport {
     public String NotifyDatabaseConstraintViolation(Exception e) {
         if (e.getCause().toString().contains("Unique_SM_IM_ID_SM_PAN_No")) {
             message = "The PAN No '" + erpmsm.getSmPanNo() + "' is already registered with supplier :" + erpmsmDao.findByPANNo(erpmsm.getSmPanNo(), erpmsm.getInstitutionmaster().getImId());
-        }
-        else if (e.getCause().toString().contains("Unique_SM_IM_ID_SM_TAN_No")) {
+        } else if (e.getCause().toString().contains("Unique_SM_IM_ID_SM_TAN_No")) {
             message = "The TAN No '" + erpmsm.getSmTanNo() + "' is already registered with supplier :" + erpmsmDao.findByTANNo(erpmsm.getSmTanNo(), erpmsm.getInstitutionmaster().getImId());
         } else if (e.getCause().toString().contains("SM_IM_ID_SM_Name_Unique")) {
             message = "The supplier '" + erpmsm.getSmName() + "' is already registered with " + imDao.findByImId(erpmsm.getInstitutionmaster().getImId()).getImName();
         } else {
             message = "Exception in Save method -> MangesupplierAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
         }
-       return ERROR;
-
-    }
-
-
-@SkipValidation
-public String Export() throws Exception {
-    HashMap hm = new HashMap();
-
-    String fileName = getSession().getServletContext().getRealPath("pico\\PrePurchase\\Reports\\RegisteredSupplier.jasper");
-
-
-   String whereCondition = "";
-
-    try{
-         Connection conn =     DriverManager.getConnection("jdbc:mysql://localhost:3306/pico_basic", "root","root");
-
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Content-Disposition","attachment; filename=RegisteredSupplier.pdf");
-        response.setHeader("Expires" , "0");
-        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-       //Setup Where Condition Clause
-        if(erpmsm.getInstitutionmaster().getImId()== null)
-            whereCondition = " and sm.sm_im_id = " + getSession().getAttribute("imId");
-        else
-            whereCondition = " and sm.sm_im_id = " + erpmsm.getInstitutionmaster().getImId();
-
-        if (erpmsm.getSmName().length() == 0)
-            whereCondition = whereCondition + " and sm.sm_name like '%' ";
-        else
-            whereCondition = whereCondition + " and upper(sm.sm_name) like '%" + erpmsm.getSmName().toString() + "%'";
-
-        if(erpmsm.getErpmGenMasterBySmSupplierType().getErpmgmEgmId() == null)
-            whereCondition = whereCondition + " and sm.SM_Supplier_Type <> 0 ";
-        else
-            whereCondition = whereCondition + " and sm.SM_Supplier_Type = " + erpmsm.getErpmGenMasterBySmSupplierType().getErpmgmEgmId();
-
-        if(erpmsm.getErpmGenMasterBySmOwnershipType().getErpmgmEgmId() == null)
-            whereCondition = whereCondition + " and sm.SM_Ownership_Type <> 0 ";
-        else
-            whereCondition = whereCondition + " and sm.SM_Ownership_Type = " + erpmsm.getErpmGenMasterBySmOwnershipType().getErpmgmEgmId();
-
-        if (erpmsm.getSmDealsWith().length() == 0)
-            whereCondition = whereCondition + " and sm.SM_Deals_With like '%' ";
-        else
-            whereCondition = whereCondition + " and upper(sm.SM_Deals_With) like '%" + erpmsm.getSmDealsWith().toString() + "%'";
-
-
-        hm.put("condition", whereCondition);
-
-        JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
-        JasperExportManager.exportReportToPdfStream(jp,baos);
-        response.setContentLength(baos.size());
-        ByteArrayInputStream bis=new ByteArrayInputStream(baos.toByteArray());
-        inputStream = bis;
-
-        return SUCCESS;
-    }
-    catch (JRException  e)
-    {
-        message = "Error is : " + e.getMessage() + e.getCause();
         return ERROR;
+
     }
+
+    @SkipValidation
+    public String Export() throws Exception {
+        HashMap hm = new HashMap();
+
+        // Get System properties
+        Properties properties = System.getProperties();
+
+        // Get the path separator symbol, which is unfortunatly different, in different OS platform.
+        String pathSeparator = properties.getProperty("file.separator");
+
+        pathSeparator =pathSeparator + pathSeparator;
+        String repPath = "pico" + pathSeparator + "PrePurchase"  + pathSeparator + "Reports" + pathSeparator + "RegisteredSupplier.jasper" ;
+
+        String fileName = getSession().getServletContext().getRealPath(repPath);
+//        String fileName = getSession().getServletContext().getRealPath("pico\\PrePurchase\\Reports\\RegisteredSupplier.jasper");
+
+
+        String whereCondition = "";
+
+        try {
+            Locale locale = ActionContext.getContext().getLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Content-Disposition", "attachment; filename=RegisteredSupplier.pdf");
+            response.setHeader("Expires", "0");
+            response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+            response.setHeader("Pragma", "public");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            //Setup Where Condition Clause
+            if (erpmsm.getInstitutionmaster().getImId() == null) {
+                whereCondition = " and sm.sm_im_id = " + getSession().getAttribute("imId");
+            } else {
+                whereCondition = " and sm.sm_im_id = " + erpmsm.getInstitutionmaster().getImId();
+            }
+
+            if (erpmsm.getSmName().length() == 0) {
+                whereCondition = whereCondition + " and sm.sm_name like '%' ";
+            } else {
+                whereCondition = whereCondition + " and upper(sm.sm_name) like '%" + erpmsm.getSmName().toString() + "%'";
+            }
+
+            if (erpmsm.getErpmGenMasterBySmSupplierType().getErpmgmEgmId() == null) {
+                whereCondition = whereCondition + " and sm.SM_Supplier_Type <> 0 ";
+            } else {
+                whereCondition = whereCondition + " and sm.SM_Supplier_Type = " + erpmsm.getErpmGenMasterBySmSupplierType().getErpmgmEgmId();
+            }
+
+            if (erpmsm.getErpmGenMasterBySmOwnershipType().getErpmgmEgmId() == null) {
+                whereCondition = whereCondition + " and sm.SM_Ownership_Type <> 0 ";
+            } else {
+                whereCondition = whereCondition + " and sm.SM_Ownership_Type = " + erpmsm.getErpmGenMasterBySmOwnershipType().getErpmgmEgmId();
+            }
+
+            if (erpmsm.getSmDealsWith().length() == 0) {
+                whereCondition = whereCondition + " and sm.SM_Deals_With like '%' ";
+            } else {
+                whereCondition = whereCondition + " and upper(sm.SM_Deals_With) like '%" + erpmsm.getSmDealsWith().toString() + "%'";
+            }
+
+
+            hm.put("condition", whereCondition);
+
+            JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+            JasperExportManager.exportReportToPdfStream(jp, baos);
+            response.setContentLength(baos.size());
+            ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+            inputStream = bis;
+
+            return SUCCESS;
+        } catch (JRException e) {
+            message = "Error is : " + e.getMessage() + e.getCause();
+            return ERROR;
+        }
+    }
+
+    @SkipValidation
+    public String showGFRreport() throws Exception {
+        HashMap hm = new HashMap();
+
+       
+        // Get System properties
+        Properties properties = System.getProperties();
+
+        // Get the path separator symbol, which is unfortunatly different, in different OS platform.
+        String pathSeparator = properties.getProperty("file.separator");
+       
+        pathSeparator =pathSeparator + pathSeparator;
+        String repPath = "pico" + pathSeparator + "Administration"  + pathSeparator + "Reports" + pathSeparator + "ShowGFRMappedinProgram.jasper" ;
+        
+        String fileName = getSession().getServletContext().getRealPath(repPath);
+
+//        String fileName = getSession().getServletContext().getRealPath("pico\\Administration\\Reports\\ShowGFRMappedinProgram.jasper");
+        
+
+        String whereCondition = "";
+
+        try {
+            Locale locale = ActionContext.getContext().getLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Content-Disposition", "attachment; filename=ShowGfr.pdf");
+            response.setHeader("Expires", "0");
+            response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+            response.setHeader("Pragma", "public");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+
+            whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 17";
+
+            hm.put("condition", whereCondition);
+
+            JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+            JasperExportManager.exportReportToPdfStream(jp, baos);
+            response.setContentLength(baos.size());
+            ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+            inputStream = bis;
+
+            return SUCCESS;
+        } catch (JRException e) {
+            message = "Error is : " + e.getMessage() + e.getCause();
+            return ERROR;
+        }
     }
 }

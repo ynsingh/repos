@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -26,20 +26,23 @@ public class ErpmIndentMaster  implements java.io.Serializable {
      private String indtGeneratedBy;
      private String indtRemarks;
      private String indtForwardedToEmail;
+     private String indtTitle;
+     private Set erpmIssueMasters = new HashSet(0);
      private Set erpmIndentDetails = new HashSet(0);
 
     public ErpmIndentMaster() {
     }
 
 	
-    public ErpmIndentMaster(Subinstitutionmaster subinstitutionmaster, Erpmusers erpmusers, Departmentmaster departmentmaster, Institutionmaster institutionmaster, Date indtIndentDate) {
+    public ErpmIndentMaster(Subinstitutionmaster subinstitutionmaster, Erpmusers erpmusers, Departmentmaster departmentmaster, Institutionmaster institutionmaster, Date indtIndentDate, String indtTitle) {
         this.subinstitutionmaster = subinstitutionmaster;
         this.erpmusers = erpmusers;
         this.departmentmaster = departmentmaster;
         this.institutionmaster = institutionmaster;
         this.indtIndentDate = indtIndentDate;
+        this.indtTitle = indtTitle;
     }
-    public ErpmIndentMaster(ErpmGenMaster erpmGenMasterByIndtCurrencyId, Subinstitutionmaster subinstitutionmaster, Erpmusers erpmusers, Budgetheadmaster budgetheadmaster, ErpmGenMaster erpmGenMasterByIndtStatus, Departmentmaster departmentmaster, Institutionmaster institutionmaster, DepartmentalBudgetAllocation departmentalBudgetAllocation, Workflowmaster workflowmaster, Date indtIndentDate, String indtGeneratedBy, String indtRemarks, String indtForwardedToEmail, Set erpmIndentDetails) {
+    public ErpmIndentMaster(ErpmGenMaster erpmGenMasterByIndtCurrencyId, Subinstitutionmaster subinstitutionmaster, Erpmusers erpmusers, Budgetheadmaster budgetheadmaster, ErpmGenMaster erpmGenMasterByIndtStatus, Departmentmaster departmentmaster, Institutionmaster institutionmaster, DepartmentalBudgetAllocation departmentalBudgetAllocation, Workflowmaster workflowmaster, Date indtIndentDate, String indtGeneratedBy, String indtRemarks, String indtForwardedToEmail, String indtTitle, Set erpmIssueMasters, Set erpmIndentDetails) {
        this.erpmGenMasterByIndtCurrencyId = erpmGenMasterByIndtCurrencyId;
        this.subinstitutionmaster = subinstitutionmaster;
        this.erpmusers = erpmusers;
@@ -53,6 +56,8 @@ public class ErpmIndentMaster  implements java.io.Serializable {
        this.indtGeneratedBy = indtGeneratedBy;
        this.indtRemarks = indtRemarks;
        this.indtForwardedToEmail = indtForwardedToEmail;
+       this.indtTitle = indtTitle;
+       this.erpmIssueMasters = erpmIssueMasters;
        this.erpmIndentDetails = erpmIndentDetails;
     }
    
@@ -153,6 +158,20 @@ public class ErpmIndentMaster  implements java.io.Serializable {
     
     public void setIndtForwardedToEmail(String indtForwardedToEmail) {
         this.indtForwardedToEmail = indtForwardedToEmail;
+    }
+    public String getIndtTitle() {
+        return this.indtTitle;
+    }
+    
+    public void setIndtTitle(String indtTitle) {
+        this.indtTitle = indtTitle;
+    }
+    public Set getErpmIssueMasters() {
+        return this.erpmIssueMasters;
+    }
+    
+    public void setErpmIssueMasters(Set erpmIssueMasters) {
+        this.erpmIssueMasters = erpmIssueMasters;
     }
     public Set getErpmIndentDetails() {
         return this.erpmIndentDetails;

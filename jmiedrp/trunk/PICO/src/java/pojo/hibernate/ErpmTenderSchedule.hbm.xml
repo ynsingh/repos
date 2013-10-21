@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmTenderSchedule" table="erpm_tender_schedule">
+        <id name="tscTscId" type="java.lang.Integer">
+            <column name="TSC_TSC_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="TSC_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="TSC_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmTenderMaster" class="pojo.hibernate.ErpmTenderMaster" fetch="select">
+            <column name="TSC_TM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="TSC_DM_ID" not-null="true" />
+        </many-to-one>
+        <property name="tscRemarks" type="string">
+            <column name="TSC_Remarks" length="200" />
+        </property>
+        <set name="erpmTenderScheduleDetails" inverse="true">
+            <key>
+                <column name="TSCD_TSC_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderScheduleDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

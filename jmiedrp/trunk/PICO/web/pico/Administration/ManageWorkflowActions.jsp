@@ -36,28 +36,34 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent"> <br><br>
-                <p align="center"><s:label value="WORKFLOW DETAIL ACTIONS" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
-                <s:form name="frmWorkFlowMaster" action="SaveWorkFlowActions">
-                    <s:hidden name="wfdtl.wfdId" />
-                    <s:hidden name="wfactn.wfaId" />
+            <div id ="mainContent">
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">WORKFLOW DETAIL ACTIONS</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
 
-                    <table border="0" cellpadding="4" cellspacing="0" align="center" >
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <br>
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                    <s:form name="frmWorkFlowMaster" action="SaveWorkFlowActions">
+                        <s:hidden name="wfdtl.wfdId" />
+                        <s:hidden name="wfactn.wfaId" />
+
+                        <table border="0" cellpadding="4" cellspacing="0" align="center" >
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <br>
 
                                         <%--use where only number is required for input other than number it does not accept value--%>
                                         <script type='text/javascript'>
-                                        function isNumberKey(evt)
-                                        {
-                                        var charCode = (evt.which) ? evt.which : event.keyCode
-                                        if (charCode > 31 && (charCode < 48 || charCode > 57) )
-                                        return false;
-                                        return true;
-                                        }
+                                            function isNumberKey(evt)
+                                            {
+                                                var charCode = (evt.which) ? evt.which : event.keyCode
+                                                if (charCode > 31 && (charCode < 48 || charCode > 57) )
+                                                    return false;
+                                                return true;
+                                            }
                                         </script>
 
                                         <s:textfield label="Workflow Step" name="wfdtl.wfdStage" size="100"  cssClass="textInputRO" readonly="true"/>
@@ -69,61 +75,67 @@
 
                                         <s:select label="Work Flow Action"  name="wfactn.erpmGenMaster.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="WfaActionsList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
 
-                            </tr> <tr>
-                                <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save Workflow Actions" action="SaveWorkFlowActions"/>
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Fetch Workflow Actions" action="FetchWorkFlowActions"/>
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearWorkFlowAction" />
-                                </td>
-                            </tr>
-                            <tr><td><br></td><td><br></td></tr>
-                        </tbody>
-                    </table>
-                </s:form>
+                                </tr> <tr>
+                                    <td>
+                                        <s:submit theme="simple" name="btnSubmit" value="Save Workflow Actions" action="SaveWorkFlowActions"/>
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" value="Fetch Workflow Actions" action="FetchWorkFlowActions"/>
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearWorkFlowAction" />
+                                    </td>
+                                </tr>
+                                <tr><td><br></td><td><br></td></tr>
+                            </tbody>
+                        </table>
+                    </s:form>
+                </div>
             </div>
+            &nbsp;
 
 
-             <div id ="mainContent" align="center">
-             <s:form name="frmWorkFlowActionBrowse">
-                 <table width="50%" border="1" cellspacing="0" cellpadding="0" align="center" >
-                    <tr><td>
+            <div id ="mainContent" align="center">
+                <div style="border: solid 1px #000000; background: gainsboro">
+                     <br>
+                    <s:form name="frmWorkFlowActionBrowse">
+                        <table width="50%" border="1" cellspacing="0" cellpadding="0" align="center" >
+                            <tr><td>
 
-                     <display:table name="wfactnList" pagesize="15"
-                               excludedParams="" export="true" cellpadding="0"
-                               cellspacing="0" id="doc"
-                               requestURI="/Administration/FetchWorkFlowActions">
+                                    <display:table name="wfactnList" pagesize="15"
+                                                   excludedParams="" export="true" cellpadding="0"
+                                                   cellspacing="0" id="doc"
+                                                   requestURI="/Administration/FetchWorkFlowActions">
 
-                         <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                            <c:out> ${doc_rowNum}
-                         </display:column>
+                                        <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
+                                    <c:out> ${doc_rowNum}
+                                    </display:column>
 
-                        <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Committee/Authority Action"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
+                                    <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Committee/Authority Action"
+                                                    maxLength="100" headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                        <display:column paramId="wfaId" paramProperty="wfaId"
-                                        href="/pico/Administration/DeleteWorkFlowAction.action"
-                                        headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                    <display:column paramId="wfaId" paramProperty="wfaId"
+                                                    href="/pico/Administration/DeleteWorkFlowAction.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
                                         Delete WF Action
-                        </display:column>
+                                    </display:column>
 
-                        <display:column paramId="wfaId" paramProperty="wfaId"
-                                        href="/pico/Administration/EditWorkFlowAction.action"
-                                        headerClass="gridheader" class="griddata" media="html" title="Edit">
+                                    <display:column paramId="wfaId" paramProperty="wfaId"
+                                                    href="/pico/Administration/EditWorkFlowAction.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Edit">
                                         Edit WF Action
-                        </display:column>
+                                    </display:column>
 
 
-                         </display:table>
-                </td></tr>
-                </table>
-                 <br>
-             </s:form>
-             </div>
+                                </display:table>
+                                </td></tr>
+                        </table>
+                        <br>
+                    </s:form>
+                </div>
+                &nbsp;
+            </div>
 
             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>

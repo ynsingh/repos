@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -29,7 +29,11 @@ public class Suppliermaster  implements java.io.Serializable {
      private Date smRegDate;
      private String smRemarks;
      private String smCeoOrProprietorName;
+     private Set erpmTempOpeningStocks = new HashSet(0);
+     private Set erpmPurchaseinvoiceMasters = new HashSet(0);
+     private Set erpmIssueMasters = new HashSet(0);
      private Set erpmItemRates = new HashSet(0);
+     private Set erpmStockReceiveds = new HashSet(0);
      private Set erpmPoMasters = new HashSet(0);
      private Set supplierAddresses = new HashSet(0);
 
@@ -42,7 +46,7 @@ public class Suppliermaster  implements java.io.Serializable {
         this.smName = smName;
         this.smRegDate = smRegDate;
     }
-    public Suppliermaster(ErpmGenMaster erpmGenMasterBySmOwnershipType, ErpmGenMaster erpmGenMasterBySmSupplierType, Institutionmaster institutionmaster, String smName, String smDealsWith, Date smYearEstablishment, String smPanNo, String smTanNo, String smStateStVatRgnNo, String smCenStVatRgnNo, String smEdRgnNo, String smEccCode, String smEntreprenureMemNo, Date smRegDate, String smRemarks, String smCeoOrProprietorName, Set erpmItemRates, Set erpmPoMasters, Set supplierAddresses) {
+    public Suppliermaster(ErpmGenMaster erpmGenMasterBySmOwnershipType, ErpmGenMaster erpmGenMasterBySmSupplierType, Institutionmaster institutionmaster, String smName, String smDealsWith, Date smYearEstablishment, String smPanNo, String smTanNo, String smStateStVatRgnNo, String smCenStVatRgnNo, String smEdRgnNo, String smEccCode, String smEntreprenureMemNo, Date smRegDate, String smRemarks, String smCeoOrProprietorName, Set erpmTempOpeningStocks, Set erpmPurchaseinvoiceMasters, Set erpmIssueMasters, Set erpmItemRates, Set erpmStockReceiveds, Set erpmPoMasters, Set supplierAddresses) {
        this.erpmGenMasterBySmOwnershipType = erpmGenMasterBySmOwnershipType;
        this.erpmGenMasterBySmSupplierType = erpmGenMasterBySmSupplierType;
        this.institutionmaster = institutionmaster;
@@ -59,7 +63,11 @@ public class Suppliermaster  implements java.io.Serializable {
        this.smRegDate = smRegDate;
        this.smRemarks = smRemarks;
        this.smCeoOrProprietorName = smCeoOrProprietorName;
+       this.erpmTempOpeningStocks = erpmTempOpeningStocks;
+       this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
+       this.erpmIssueMasters = erpmIssueMasters;
        this.erpmItemRates = erpmItemRates;
+       this.erpmStockReceiveds = erpmStockReceiveds;
        this.erpmPoMasters = erpmPoMasters;
        this.supplierAddresses = supplierAddresses;
     }
@@ -183,12 +191,40 @@ public class Suppliermaster  implements java.io.Serializable {
     public void setSmCeoOrProprietorName(String smCeoOrProprietorName) {
         this.smCeoOrProprietorName = smCeoOrProprietorName;
     }
+    public Set getErpmTempOpeningStocks() {
+        return this.erpmTempOpeningStocks;
+    }
+    
+    public void setErpmTempOpeningStocks(Set erpmTempOpeningStocks) {
+        this.erpmTempOpeningStocks = erpmTempOpeningStocks;
+    }
+    public Set getErpmPurchaseinvoiceMasters() {
+        return this.erpmPurchaseinvoiceMasters;
+    }
+    
+    public void setErpmPurchaseinvoiceMasters(Set erpmPurchaseinvoiceMasters) {
+        this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
+    }
+    public Set getErpmIssueMasters() {
+        return this.erpmIssueMasters;
+    }
+    
+    public void setErpmIssueMasters(Set erpmIssueMasters) {
+        this.erpmIssueMasters = erpmIssueMasters;
+    }
     public Set getErpmItemRates() {
         return this.erpmItemRates;
     }
     
     public void setErpmItemRates(Set erpmItemRates) {
         this.erpmItemRates = erpmItemRates;
+    }
+    public Set getErpmStockReceiveds() {
+        return this.erpmStockReceiveds;
+    }
+    
+    public void setErpmStockReceiveds(Set erpmStockReceiveds) {
+        this.erpmStockReceiveds = erpmStockReceiveds;
     }
     public Set getErpmPoMasters() {
         return this.erpmPoMasters;

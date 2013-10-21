@@ -26,10 +26,18 @@
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
-            <s:property value="message" />
             <!-- *********************************End Menu****************************** -->
 
             <div id ="mainContent">
+
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">USER REGISTRATION</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+                    <br>
                 <s:form name="frmAddUser" action="AddUserAction">
                    <s:hidden name="erpmuId" />
                     <table border="0" cellpadding="4" cellspacing="0" align="center">
@@ -37,13 +45,13 @@
                             <tr>
                                 <td colspan="2" align="left">
                             </tr>
-                            <tr>
+<%--                            <tr>
                                 <td valign="middle" class="FormContent">
                                     <s:label value="USER REGISTRATION" />
                                     <s:property  value="message" />
                                 </td>
                             </tr>
-                            <tr>
+--%>                            <tr>
                                 <td>
                                     <br>
                                     <s:select label="Institution" name="erpmur.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"
@@ -79,7 +87,9 @@
                         </tbody>
                     </table>
                 </s:form>
-
+                <br>
+                </div>
+                &nbsp;
             </div>
             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>

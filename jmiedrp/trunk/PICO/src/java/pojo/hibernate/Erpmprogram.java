@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -20,6 +20,7 @@ public class Erpmprogram  implements java.io.Serializable {
      private Byte erpmpOrder;
      private String epmpEnvVariable;
      private Set genericroleprivilegeses = new HashSet(0);
+     private Set gfrProgramMappings = new HashSet(0);
      private Set erpmprograms = new HashSet(0);
      private Set userprivilegeses = new HashSet(0);
      private Set institutionroleprivilegeses = new HashSet(0);
@@ -32,7 +33,7 @@ public class Erpmprogram  implements java.io.Serializable {
         this.erpmsubmodule = erpmsubmodule;
         this.erpmpDisplayName = erpmpDisplayName;
     }
-    public Erpmprogram(Erpmsubmodule erpmsubmodule, Erpmprogram erpmprogram, String erpmpDisplayName, String erpmpPurpose, String erpmpHref, Byte erpmpOrder, String epmpEnvVariable, Set genericroleprivilegeses, Set erpmprograms, Set userprivilegeses, Set institutionroleprivilegeses) {
+    public Erpmprogram(Erpmsubmodule erpmsubmodule, Erpmprogram erpmprogram, String erpmpDisplayName, String erpmpPurpose, String erpmpHref, Byte erpmpOrder, String epmpEnvVariable, Set genericroleprivilegeses, Set gfrProgramMappings, Set erpmprograms, Set userprivilegeses, Set institutionroleprivilegeses) {
        this.erpmsubmodule = erpmsubmodule;
        this.erpmprogram = erpmprogram;
        this.erpmpDisplayName = erpmpDisplayName;
@@ -41,6 +42,7 @@ public class Erpmprogram  implements java.io.Serializable {
        this.erpmpOrder = erpmpOrder;
        this.epmpEnvVariable = epmpEnvVariable;
        this.genericroleprivilegeses = genericroleprivilegeses;
+       this.gfrProgramMappings = gfrProgramMappings;
        this.erpmprograms = erpmprograms;
        this.userprivilegeses = userprivilegeses;
        this.institutionroleprivilegeses = institutionroleprivilegeses;
@@ -108,6 +110,13 @@ public class Erpmprogram  implements java.io.Serializable {
     
     public void setGenericroleprivilegeses(Set genericroleprivilegeses) {
         this.genericroleprivilegeses = genericroleprivilegeses;
+    }
+    public Set getGfrProgramMappings() {
+        return this.gfrProgramMappings;
+    }
+    
+    public void setGfrProgramMappings(Set gfrProgramMappings) {
+        this.gfrProgramMappings = gfrProgramMappings;
     }
     public Set getErpmprograms() {
         return this.erpmprograms;

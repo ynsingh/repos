@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.Subinstitutionmaster" table="subinstitutionmaster">
         <id name="simId" type="java.lang.Integer">
@@ -20,14 +20,14 @@
         <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
             <column name="SIM_IM_ID" not-null="true" />
         </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="sim_type" />
+        </many-to-one>
         <property name="simName" type="string">
             <column name="SIM_Name" length="100" not-null="true" />
         </property>
         <property name="simShortName" type="string">
             <column name="SIM_Short_Name" length="10" />
-        </property>
-        <property name="simType" type="java.lang.Integer">
-            <column name="sim_type" />
         </property>
         <property name="simAddressLine1" type="string">
             <column name="SIM_Address_Line1" length="50" />
@@ -47,6 +47,48 @@
         <property name="simHeadDesignation" type="string">
             <column name="SIM_Head_Designation" length="30" />
         </property>
+        <set name="committeemasters" inverse="true">
+            <key>
+                <column name="Committee_SIM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Committeemaster" />
+        </set>
+        <set name="erpmIssueReturnMasters" inverse="true">
+            <key>
+                <column name="IRM_Subinstitute_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnMaster" />
+        </set>
+        <set name="fileMasters" inverse="true">
+            <key>
+                <column name="File_SIM_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.FileMaster" />
+        </set>
+        <set name="erpmIssueReceives" inverse="true">
+            <key>
+                <column name="ISR_Subinstitute_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReceive" />
+        </set>
+        <set name="erpmIndentMasters" inverse="true">
+            <key>
+                <column name="Indt_Subinstitution_Id" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+        <set name="erpmPurchaseinvoiceMasters" inverse="true">
+            <key>
+                <column name="PIM_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceMaster" />
+        </set>
+        <set name="fileDetails" inverse="true">
+            <key>
+                <column name="FD_SIM_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.FileDetail" />
+        </set>
         <set name="workflowmasters" inverse="true">
             <key>
                 <column name="WFM_Sub_Institution" />
@@ -65,24 +107,6 @@
             </key>
             <one-to-many class="pojo.hibernate.DepartmentalBudgetAllocation" />
         </set>
-        <set name="erpmPoMasters" inverse="true">
-            <key>
-                <column name="POM_SIM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
-        </set>
-        <set name="committeemasters" inverse="true">
-            <key>
-                <column name="Committee_SIM_ID" />
-            </key>
-            <one-to-many class="pojo.hibernate.Committeemaster" />
-        </set>
-        <set name="itemcategories" inverse="true">
-            <key>
-                <column name="IC_SIM_ID" />
-            </key>
-            <one-to-many class="pojo.hibernate.Itemcategory" />
-        </set>
         <set name="erpmPurchasechallanMasters" inverse="true">
             <key>
                 <column name="PCM_SIM_ID" not-null="true" />
@@ -95,17 +119,53 @@
             </key>
             <one-to-many class="pojo.hibernate.Employeemaster" />
         </set>
+        <set name="supplierregistrationauthorities" inverse="true">
+            <key>
+                <column name="SRA_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Supplierregistrationauthority" />
+        </set>
+        <set name="erpmIssueMastersForIsmToSubinstituteId" inverse="true">
+            <key>
+                <column name="ISM_To_Subinstitute_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
+        <set name="erpmTenderSchedules" inverse="true">
+            <key>
+                <column name="TSC_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSchedule" />
+        </set>
+        <set name="erpmTenderMasters" inverse="true">
+            <key>
+                <column name="TM_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderMaster" />
+        </set>
+        <set name="erpmPoMasters" inverse="true">
+            <key>
+                <column name="POM_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+        </set>
+        <set name="itemcategories" inverse="true">
+            <key>
+                <column name="IC_SIM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.Itemcategory" />
+        </set>
+        <set name="erpmIssueMastersForIsmFromSubinstituteId" inverse="true">
+            <key>
+                <column name="ISM_From_Subinstitute_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
         <set name="erpmuserroles" inverse="true">
             <key>
                 <column name="ERPMUR_SIM_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.Erpmuserrole" />
-        </set>
-        <set name="erpmIndentMasters" inverse="true">
-            <key>
-                <column name="Indt_Subinstitution_Id" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
         </set>
         <set name="departmentmasters" inverse="true">
             <key>
@@ -113,11 +173,29 @@
             </key>
             <one-to-many class="pojo.hibernate.Departmentmaster" />
         </set>
-        <set name="supplierregistrationauthorities" inverse="true">
+        <set name="erpmStockReceiveds" inverse="true">
             <key>
-                <column name="SRA_SIM_ID" not-null="true" />
+                <column name="ST_SIM_ID" not-null="true" />
             </key>
-            <one-to-many class="pojo.hibernate.Supplierregistrationauthority" />
+            <one-to-many class="pojo.hibernate.ErpmStockReceived" />
+        </set>
+        <set name="erpmTempOpeningStocks" inverse="true">
+            <key>
+                <column name="TOS_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTempOpeningStock" />
+        </set>
+        <set name="erpmTenderSubmissions" inverse="true">
+            <key>
+                <column name="TSB_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSubmission" />
+        </set>
+        <set name="erpmTenderRevisionses" inverse="true">
+            <key>
+                <column name="TR_SIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderRevisions" />
         </set>
     </class>
 </hibernate-mapping>

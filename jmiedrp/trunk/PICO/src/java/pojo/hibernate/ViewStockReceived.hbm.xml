@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16 Nov, 2012 3:01:00 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="pojo.hibernate.ViewStockReceived" table="view_stock_received">
+    <id name="stId" type="int">
+      <column name="ST_ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="stImId" type="short">
+      <column name="ST_IM_ID" not-null="true"/>
+    </property>
+    <property name="stSimId" type="int">
+      <column name="ST_SIM_ID" not-null="true"/>
+    </property>
+    <property name="stDmId" type="int">
+      <column name="ST_DM_ID" not-null="true"/>
+    </property>
+    <property name="stSmId" type="java.lang.Integer">
+      <column name="ST_SM_ID"/>
+    </property>
+    <property name="stItemId" type="int">
+      <column name="ST_Item_ID" not-null="true"/>
+    </property>
+    <property name="stInStockSince" type="date">
+      <column length="10" name="ST_In_Stock_Since"/>
+    </property>
+    <property name="stChallanDetId" type="java.lang.Integer">
+      <column name="ST_Challan_Det_ID"/>
+    </property>
+    <property name="stPoNo" type="string">
+      <column length="20" name="ST_PO_No"/>
+    </property>
+    <property name="stPoDate" type="date">
+      <column length="10" name="ST_PO_Date"/>
+    </property>
+    <property name="stChallanNo" type="string">
+      <column length="20" name="ST_Challan_No"/>
+    </property>
+    <property name="stChallanDate" type="date">
+      <column length="10" name="ST_Challan_Date"/>
+    </property>
+    <property name="stInvoiceNo" type="string">
+      <column length="20" name="ST_Invoice_No"/>
+    </property>
+    <property name="stInvoiceDate" type="date">
+      <column length="10" name="ST_Invoice_Date"/>
+    </property>
+    <property name="stQuantity" type="big_decimal">
+      <column name="ST_Quantity" precision="10"/>
+    </property>
+    <property name="stUnitRate" type="big_decimal">
+      <column name="ST_Unit_Rate" precision="8"/>
+    </property>
+    <property name="stTaxValue" type="big_decimal">
+      <column name="ST_Tax_Value" precision="8"/>
+    </property>
+    <property name="stCsrNo" type="string">
+      <column length="20" name="ST_CSR_No"/>
+    </property>
+    <property name="stCsrPgNo" type="java.lang.Integer">
+      <column name="ST_CSR_PgNo"/>
+    </property>
+    <property name="stDeptSrNo" type="string">
+      <column length="20" name="ST_DeptSR_No"/>
+    </property>
+    <property name="stDeptSrPgNo" type="java.lang.Integer">
+      <column name="ST_DeptSR_PgNo"/>
+    </property>
+    <property name="stProductNo" type="string">
+      <column length="30" name="ST_Product_No"/>
+    </property>
+    <property name="stStockSerialNo" type="string">
+      <column length="30" name="ST_Stock_Serial_No"/>
+    </property>
+    <property name="stWarrantyExpiryDate" type="date">
+      <column length="10" name="ST_Warranty_Expiry_Date"/>
+    </property>
+    <property name="stWarrantyTypeId" type="java.lang.Integer">
+      <column name="ST_Warranty_Type_ID"/>
+    </property>
+    <property name="serialCode" type="string">
+      <column length="46" name="Serial_Code"/>
+    </property>
+  </class>
+</hibernate-mapping>

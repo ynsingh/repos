@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmIssueReceive" table="erpm_issue_receive">
+        <id name="isrId" type="java.lang.Integer">
+            <column name="ISR_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmIssueMaster" class="pojo.hibernate.ErpmIssueMaster" fetch="select">
+            <column name="ISR_ISM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="employeemaster" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="ISR_To_Employee_ID" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="ISR_Subinstitute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="committeemaster" class="pojo.hibernate.Committeemaster" fetch="select">
+            <column name="ISR_To_Committee_ID" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="ISR_Institute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="ISR_Department_ID" not-null="true" />
+        </many-to-one>
+        <property name="isrReceiptNo" type="string">
+            <column name="ISR_Receipt_No" length="20" not-null="true" />
+        </property>
+        <property name="isrReceiptDate" type="date">
+            <column name="ISR_Receipt_Date" length="10" not-null="true" />
+        </property>
+        <property name="isrRemarks" type="string">
+            <column name="ISR_Remarks" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

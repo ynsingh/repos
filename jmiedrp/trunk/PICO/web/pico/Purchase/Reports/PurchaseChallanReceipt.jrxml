@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Purchasechalanreport" language="groovy" pageWidth="542" pageHeight="595" orientation="Landscape" columnWidth="502" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee68a02b-825c-4a42-b0b6-ef0049bc3dc6">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     concat(supplier_address.`ad_Line1`," ",supplier_address.`ad_Line2`," ",supplier_address.`ad_city`," ",statemaster.`State_Name`," ",countrymaster.`Country_Name`) AS Address,
+     concat(departmentmaster.`DM_Short_Name`,'/', convert(erpm_po_master.`POM_PO_No`, char),'/', year(erpm_po_master.`POM_PO_Date`)) AS PO_No1,
+     erpm_purchasechallan_master.`PCM_PCM_ID` AS PCM_ID,
+     erpm_purchasechallan_master.`PCM_IM_ID` AS IM_ID,
+     erpm_purchasechallan_master.`PCM_SIM_ID` AS SIM_ID,
+     erpm_purchasechallan_master.`PCM_DM_ID` AS DM_ID,
+     erpm_purchasechallan_master.`PCM_Recv_Date` AS Recv_Date,
+     erpm_purchasechallan_master.`PCM_Challan_No` AS Challan_No,
+     erpm_purchasechallan_master.`PCM_Challan_Date` AS Challan_Date,
+     erpm_purchasechallan_master.`PCM_Remarks` AS Remarks,
+     institutionmaster.`IM_Name` AS IM_Name,
+     institutionmaster.`IM_Short_Name` AS IM_Short_Name,
+     subinstitutionmaster.`SIM_Name` AS SIM_Name,
+     subinstitutionmaster.`SIM_Short_Name` AS SIM_Short_Name,
+     departmentmaster.`DM_Name` AS DM_Name,
+     departmentmaster.`DM_Short_Name` AS DM_Short_Name,
+     erpm_po_master.`POM_PO_No` AS PO_No,
+     erpm_po_master.`POM_PO_Date` AS PO_Date,
+     suppliermaster.`SM_Name` AS SM_Name,
+     supplier_address.`ad_Line1` AS supplier_add_Line1,
+     supplier_address.`ad_Line2` AS supplier_add_Line2,
+     supplier_address.`ad_city` AS supplier_add_city,
+     statemaster.`State_Name` AS supplier_add_State_Name,
+     countrymaster.`Country_Name` AS supplier_add_Country_Name,
+     supplier_address.`ad_Phn` AS supplier_add_Phn,
+     supplier_address.`ad_email` AS supplier_add_email,
+     supplier_address.`ad_Mob` AS supplier_add_Mob,
+     erpmusers.`ERPMU_Name` AS erpmusers_ERPMU_Name,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS erpm_item_master_ERPMIM_Item_Brief_Desc,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS EGM_UNIT,
+     erpm_purchasechallan_detail.`PCD_Recv_Quantity` AS Recv_Quantity,
+     erpm_purchasechallan_detail.`PCD_Q_n_Q_Checked` AS Q_n_Q_Checked,
+     erpm_purchasechallan_detail.`PCD_Q_n_Q_Verified` AS PCD_Q_n_Q_Verified,
+     erpm_purchasechallan_detail.`PCD_Verified_By` AS Verified_By
+FROM
+     `erpm_purchasechallan_master` erpm_purchasechallan_master INNER JOIN `erpm_purchasechallan_detail` erpm_purchasechallan_detail ON erpm_purchasechallan_master.`PCM_PCM_ID` = erpm_purchasechallan_detail.`PCD_PCMaster_ID`
+     INNER JOIN `erpm_po_master` erpm_po_master ON erpm_purchasechallan_master.`PCM_PO_Master_ID` = erpm_po_master.`POM_PO_Master_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_purchasechallan_master.`PCM_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_purchasechallan_master.`PCM_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_purchasechallan_master.`PCM_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `erpmusers` erpmusers ON erpm_purchasechallan_master.`PCM_PreparedBy_ID` = erpmusers.`ERPMU_ID`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_po_master.`POM_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `supplier_address` supplier_address ON erpm_po_master.`POM_Supplier_Address_ID` = supplier_address.`sup_ad_id`
+     INNER JOIN `countrymaster` countrymaster ON supplier_address.`ad_country_id` = countrymaster.`Country_ID`
+     INNER JOIN `statemaster` statemaster ON supplier_address.`ad_state_id` = statemaster.`State_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_purchasechallan_detail.`PCD_ItemMaster_ID` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE $P!{condition}]]>
+	</queryString>
+	<field name="Address" class="java.lang.String"/>
+	<field name="PO_No1" class="java.lang.String"/>
+	<field name="PCM_ID" class="java.lang.Long"/>
+	<field name="IM_ID" class="java.lang.Integer"/>
+	<field name="SIM_ID" class="java.lang.Integer"/>
+	<field name="DM_ID" class="java.lang.Integer"/>
+	<field name="Recv_Date" class="java.sql.Date"/>
+	<field name="Challan_No" class="java.lang.String"/>
+	<field name="Challan_Date" class="java.sql.Date"/>
+	<field name="Remarks" class="java.lang.String"/>
+	<field name="IM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="IM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SIM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SIM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PO_No" class="java.lang.Long"/>
+	<field name="PO_Date" class="java.sql.Date"/>
+	<field name="SM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supplier_add_Line1" class="java.lang.String"/>
+	<field name="supplier_add_Line2" class="java.lang.String"/>
+	<field name="supplier_add_city" class="java.lang.String"/>
+	<field name="supplier_add_State_Name" class="java.lang.String"/>
+	<field name="supplier_add_Country_Name" class="java.lang.String"/>
+	<field name="supplier_add_Phn" class="java.lang.Integer"/>
+	<field name="supplier_add_email" class="java.lang.String"/>
+	<field name="supplier_add_Mob" class="java.lang.Integer"/>
+	<field name="erpmusers_ERPMU_Name" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="EGM_UNIT" class="java.lang.String"/>
+	<field name="Recv_Quantity" class="java.math.BigDecimal"/>
+	<field name="Q_n_Q_Checked" class="java.lang.String"/>
+	<field name="PCD_Q_n_Q_Verified" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Verified_By" class="java.lang.String"/>
+	<group name="Collumn Header">
+		<groupExpression><![CDATA[$F{PCM_ID}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="181" y="0" width="125" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Purchase Receipt]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="ded1b99d-ed4b-4fe0-a1f1-cfac1db8b6f5" x="395" y="20" width="86" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="163" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="7ab98e5f-9801-424f-889b-d963363cdf46" x="62" y="33" width="98" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="05630619-d083-4e46-a2a6-395655d1ccaf" x="246" y="33" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a5c3e881-04eb-4df4-b071-1f0f00788daf" x="62" y="52" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DM_Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="f970f114-0ec7-4ea8-a64d-3628f21d7c34" x="226" y="72" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PO_Date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f30d7460-d5c7-47b1-b74b-d2688d84b0a4" x="62" y="89" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SM_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4ec6f17e-ba14-463b-bbf9-d814efa34796" x="62" y="109" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Verified_By}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="15" width="54" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receive Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="180" y="14" width="56" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Challan No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="326" y="15" width="67" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Challan Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="32" width="52" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institute:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="180" y="32" width="57" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitute:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="51" width="53" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="69" width="44" height="22"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="90" width="51" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supplier:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="181" y="72" width="44" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PO Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="181" y="91" width="45" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Address:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="110" width="52" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prepared By:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="0" y="141" width="68" height="22"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="77" y="141" width="34" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="117" y="141" width="45" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="180" y="141" width="39" height="22"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Checked]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="231" y="143" width="38" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Verified]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="286" y="143" width="51" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Verified By]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="de5732d2-b86e-4953-a62a-dde1bc56d440" positionType="FixRelativeToBottom" x="62" y="16" width="69" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Recv_Date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4eab415b-005c-478b-9b5a-61dcecd7bcf0" x="246" y="15" width="72" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Challan_No}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="28f2a0e3-d727-4710-a1eb-6c7f16fe570d" x="393" y="15" width="88" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Challan_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="26978f43-ccd4-4078-a075-57370848372b" x="226" y="91" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Address}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8a37db6b-0f0f-4d4a-8c0c-8acf7ce6adfe" x="62" y="71" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$F{PO_No1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="7eab5bab-7bd8-4c6b-9fd0-9cd21c49ead8" x="230" y="0" width="39" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PCD_Q_n_Q_Verified}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4383808b-de63-4bd6-96a9-c86d00d95204" x="286" y="0" width="51" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Verified_By}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="2d200520-6ca2-48db-a7cc-6328992df68a" positionType="FixRelativeToBottom" x="0" y="0" width="68" height="16"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="10b2fc35-ac02-4537-a90b-2206215b2790" x="77" y="0" width="34" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Recv_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="71837f87-3390-4a2c-aea6-b60de70e0275" x="117" y="0" width="46" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EGM_UNIT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="72e800d6-35bf-45e0-a3bd-c1189e9de260" x="180" y="0" width="39" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Q_n_Q_Checked}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a70c26f6-0820-4621-a749-b1f459785637" x="194" y="8" width="54" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f02a6a0a-e835-4f8f-abc1-1c7ccbc1ebf4" x="248" y="8" width="40" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="13" splitType="Stretch"/>
+	</summary>
+</jasperReport>

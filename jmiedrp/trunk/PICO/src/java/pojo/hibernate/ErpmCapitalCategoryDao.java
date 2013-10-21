@@ -1,79 +1,136 @@
 package pojo.hibernate;
 
-import utils.BaseDAO;
-import java.util.List;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-public class ErpmCapitalCategoryDao extends BaseDAO {
+
+import java.util.List;
+import org.hibernate.Hibernate;
+
+public class ErpmCapitalCategoryDao {
+
     public void save(ErpmCapitalCategory erpmcc) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(erpmcc);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(erpmcc);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmcc != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-     public void update(ErpmCapitalCategory erpmcc) {
+    public void update(ErpmCapitalCategory erpmcc) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(erpmcc);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.update(erpmcc);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmcc != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public void delete(ErpmCapitalCategory erpmcc) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(erpmcc);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(erpmcc);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmcc != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
+
     public List<ErpmCapitalCategory> findAll() {
-        beginTransaction();
-        List<ErpmCapitalCategory> list = getSession().createQuery("from ErpmCapitalCategory").list();
-        commitTransaction();
-        return list;
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmCapitalCategory> list = session.createQuery("select u from ErpmCapitalCategory u").list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+
+
+            }
+            return list;
+        } finally {
+            session.close();
+        }
     }
 
     public ErpmCapitalCategory findByErpmccId(Integer erpmccId) {
-        beginTransaction();
-        ErpmCapitalCategory erpmcc  = (ErpmCapitalCategory) getSession().load(ErpmCapitalCategory.class , erpmccId);
-        commitTransaction();
-        return erpmcc;
-}
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmCapitalCategory erpmcc = (ErpmCapitalCategory) session.load(ErpmCapitalCategory.class, erpmccId);
+            Hibernate.initialize(erpmcc);
 
+            return erpmcc;
+        } finally {
+            session.close();
+        }
+    }
 
- public List<ErpmCapitalCategory> findByImId(Short imId) {
-        beginTransaction();
-        List<ErpmCapitalCategory> erpmccList  =  getSession().createQuery("Select u from ErpmCapitalCategory u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
-        commitTransaction();
-        return erpmccList;
-}
+    public List<ErpmCapitalCategory> findByImId(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmCapitalCategory> list = session.createQuery("Select u from ErpmCapitalCategory u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
 
- public List<ErpmCapitalCategory> findForUser(Integer erpmuId) {
-        beginTransaction();
-        List<ErpmCapitalCategory> erpmccList  = getSession().createQuery("Select u from ErpmCapitalCategory u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();
-        commitTransaction();
-        return erpmccList;
-}
-
+    public List<ErpmCapitalCategory> findForUser(Integer erpmuId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmCapitalCategory> list = session.createQuery("Select u from ErpmCapitalCategory u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId", erpmuId).list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+    }
 
     public Integer findDuplicateCC(Short imId, String erpmccDesc) {
-        beginTransaction();
-        Integer matchingRecords =  Integer.parseInt(getSession().createQuery("Select count(u)  from ErpmCapitalCategory u where u.institutionmaster.imId = :imId and upper(u.ermccDesc) = upper(:erpmccDesc)").setParameter("imId", imId).setParameter("erpmccDesc",erpmccDesc).list().get(0).toString());
-        commitTransaction();
-        return matchingRecords;
-}
+        Session session = HibernateUtil.getSession();
+        try {
 
+            session.beginTransaction();
+            Integer matchingRecords = Integer.parseInt(session.createQuery("Select count(u)  from ErpmCapitalCategory u where u.institutionmaster.imId = :imId and upper(u.ermccDesc) = upper(:erpmccDesc)").setParameter("imId", imId).setParameter("erpmccDesc", erpmccDesc).list().get(0).toString());
+
+            return matchingRecords;
+        } finally {
+            session.close();
+        }
+    }
 }

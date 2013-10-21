@@ -23,65 +23,77 @@
             <div id="headerbar1">
                 <jsp:include page="../Administration/header.jsp" flush="true"></jsp:include>
             </div>
+
             <div id="sidebar1">
                 <jsp:include page="../Administration/menu.jsp" flush="true"></jsp:include>
+                <jsp:include page="../Administration//jobBar.jsp" flush="true"></jsp:include>                               
             </div>
-
+            
+           
             <!-- *********************************End Menu****************************** -->
+                <br>
+                <br>  
+                
             <div id ="mainContent" align="center">
-                <p align="center"><s:label value="SUPPLIER MASTER" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
-
-                <s:form name="frmSupplierBrowse">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">SUPPLIERS' LIST</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>                                
+                <table style="height:19em;" width="80%"><tr><td valign="top">
+                <s:form name="frmSupplierBrowse">                    
                         <display:table name="erpmsmList" pagesize="15"
                                        excludedParams="*" export="true" cellpadding="0"
                                        cellspacing="0" id="doc"
                                        requestURI="/PrePurchase/BrowseSupplier.action">
-                             <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                         <c:out> ${doc_rowNum}
-                         </display:column>
+                             <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader" style="width:5%" >
+                                <c:out> ${doc_rowNum}
+                            </display:column>
+                                    
                             <display:column property="institutionmaster.imShortName" title="Institution"
                                             maxLength="35" headerClass="gridheader"
-                                            class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:10%" sortable="true"/>
+                                            class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:5%" sortable="true"/>
+                            
                             <display:column property="smName" title="Name"
                                             maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:25%" sortable="true"/>
+                                            class="griddata" style="width:15%" sortable="true"/>
+                            
                             <display:column property="erpmGenMasterBySmOwnershipType.erpmgmEgmDesc" title="Supplier Type"
-                                            maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:25%" sortable="true"/>
+                                            maxLength="20" headerClass="gridheader"
+                                            class="griddata" style="width:15%" sortable="true"/>
+                            
                             <display:column property="erpmGenMasterBySmSupplierType.erpmgmEgmDesc" title="Supplier Type"
-                                            maxLength="40" headerClass="gridheader"
-                                            class="griddata" style="width:25%" sortable="true"/>
+                                            maxLength="20" headerClass="gridheader"
+                                            class="griddata" style="width:15%" sortable="true"/>
+                            
                             <display:column property="smDealsWith" title="Deals With"
-                                            maxLength="35" headerClass="gridheader"
-                                            class="griddata" style="width:25%" sortable="true"/>
-
-
+                                            maxLength="20" headerClass="gridheader"
+                                            class="griddata" style="width:15%" sortable="true"/>
+                            
                             <display:column paramId="SMID" paramProperty="smId"
-                                            href="/pico/PrePurchase/EditSupplier.action"
+                                            href="/pico/PrePurchase/EditSupplier.action" style="width:5%" 
                                             headerClass="gridheader" class="griddata" media="html"  title="Edit" >
                                             Edit
                             </display:column>
-                            <display:column paramId="SMID" paramProperty="smId"
+                            
+                            <display:column paramId="SMID" paramProperty="smId" style="width:5%" 
                                             href="/pico/PrePurchase/DeleteSupplier.action"
                                             headerClass="gridheader" class="griddata" media="html" title="Delete" >
                                             Delete
                             </display:column>
 
-                            <display:column paramId="SMID" paramProperty="smId"
+                            <display:column paramId="SMID" paramProperty="smId" style="width:10%" 
                                             href="/pico/PrePurchase/ManageSupplierAddress.action"
-                                            headerClass="gridheader" class="griddata" media="html" title="Address"  style="width:40%">
-                                <img align="right" src="../images/Home.jpg" border="0" alt="Address"  style="cursor:pointer;" title="Address"/>
+                                            headerClass="gridheader" class="griddata" media="html" title="Address">
+                                            Edit Address
                             </display:column>
-                        </display:table>
-                    </table>
+                        </display:table>                    
                 </s:form>
-                <p/>
-            </div>
-            <div id="footer">
+               </td></tr></table>
+                <br>
+        </div>
+                <div id="footer">
                 <jsp:include page="../Administration/footer.jsp" flush="true"></jsp:include>
             </div>
-        </div>
+        
     </body>
 </html>

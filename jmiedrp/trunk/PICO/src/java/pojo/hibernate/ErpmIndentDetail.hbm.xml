@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmIndentDetail" table="erpm_indent_detail">
         <id name="indtDetailId" type="java.lang.Short">
@@ -20,11 +20,17 @@
         <property name="indtQuantity" type="short">
             <column name="Indt_quantity" not-null="true" />
         </property>
-        <property name="indtApproxcost" type="int">
-            <column name="indt_Approxcost" not-null="true" />
+        <property name="indtApproxcost" type="big_decimal">
+            <column name="indt_Approxcost" precision="10" not-null="true" />
         </property>
         <property name="indtPurpose" type="string">
             <column name="Indt_Purpose" length="100" />
+        </property>
+        <property name="indtApprovedQuantity" type="java.lang.Short">
+            <column name="Indt_Approved_Quantity" />
+        </property>
+        <property name="indtAcceptedUnitRate" type="big_decimal">
+            <column name="Indt_Accepted_Unit_Rate" precision="10" />
         </property>
         <set name="erpmPoDetailses" inverse="true">
             <key>

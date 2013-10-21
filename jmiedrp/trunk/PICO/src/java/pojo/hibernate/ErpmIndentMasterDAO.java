@@ -1,102 +1,193 @@
 
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
 /**
  *
- * @author Sajid Aziz
+ * @author Tanvir Ahmed, Saeed 
  */
-public class ErpmIndentMasterDAO extends BaseDAO {
-  public void save(ErpmIndentMaster erpmindtmast) {
+public class ErpmIndentMasterDAO  {
+
+    
+    public void save(ErpmIndentMaster erpmindtmast) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(erpmindtmast);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(erpmindtmast);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmindtmast != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-      public void update(ErpmIndentMaster erpmindtmast) {
+    public void update(ErpmIndentMaster erpmindtmast) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(erpmindtmast);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.update(erpmindtmast);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmindtmast != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public void delete(ErpmIndentMaster erpmindtmast) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(erpmindtmast);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(erpmindtmast);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (erpmindtmast != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
-public List<ErpmIndentMaster> findIndentsForUserDepartments(Integer erpmuId) {
-        beginTransaction();
-        String SQL = "Select u from ErpmIndentMaster u "
+
+    public List<ErpmIndentMaster> findIndentsForUserDepartments(Integer erpmuId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            String SQL = "Select u from ErpmIndentMaster u "
                     +"where u.departmentmaster.dmId in "
                     + "(Select d.departmentmaster.dmId "
                     + "from Erpmuserrole d "
                     + "where d.erpmusers.erpmuId = :erpmuId)";
-                    //+ "AND u.erpmusers.erpmuId =:erpmuId";
-        List<ErpmIndentMaster> erpmindtmastList  = getSession().createQuery(SQL).setParameter("erpmuId",erpmuId).list();
-        commitTransaction();
-        return erpmindtmastList;
-
-    }
-public ErpmIndentMaster findIndentMasterId(Short indtIndentId) {
-        beginTransaction();
-        List<ErpmIndentMaster> erpmindtmast  = getSession().createQuery("Select u from ErpmIndentMaster u where u.indtIndentId = :indtIndentId").setParameter("indtIndentId",indtIndentId).list();
-        commitTransaction();
-        return erpmindtmast.get(0);
-    }
-
- public ErpmIndentMaster  findIndentMasterIds(short indtIndentId)
-    {
-        beginTransaction();
-        ErpmIndentMaster  erpmindtmast  = (ErpmIndentMaster ) getSession().load(ErpmIndentMaster .class , indtIndentId);
-        commitTransaction();
-        return erpmindtmast;
+            session.beginTransaction();
+            List<ErpmIndentMaster> erpmindtmastList  = session.createQuery(SQL).setParameter("erpmuId",erpmuId).list();
+            for (index = 0; index < erpmindtmastList.size(); ++index) {
+                Hibernate.initialize(erpmindtmastList.get(index).getDepartmentmaster());
+                Hibernate.initialize(erpmindtmastList.get(index).getErpmusers());
+                Hibernate.initialize(erpmindtmastList.get(index).getBudgetheadmaster());
+            }
+            return erpmindtmastList;
+        } finally {
+            session.close();
+        }
     }
 
-
-//changes on 17 feb
-  public List<ErpmIndentMaster > findAll() {
-        beginTransaction();
-        List<ErpmIndentMaster > list = getSession().createQuery("from ErpmIndentMaster ").list();
-        commitTransaction();
-        return list;
+    public List<ErpmIndentMaster> findIndentsForUser(Integer erpmuId, String erpmuName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            String SQL = "Select u from ErpmIndentMaster u "
+                    +"where u.erpmusers.erpmuId = :erpmuId"
+                    + " or u.indtIndentId in "
+                    + " (Select v.wftWorkId from Workflowtransaction v "
+                    + " where v.wftDestinationEmail = :erpmuName)";
+            session.beginTransaction();
+            List<ErpmIndentMaster> erpmindtmastList  = session.createQuery(SQL)
+                                                                .setParameter("erpmuId",erpmuId)
+                                                                .setParameter("erpmuName",erpmuName).list();
+            for (index = 0; index < erpmindtmastList.size(); ++index) {
+                Hibernate.initialize(erpmindtmastList.get(index).getDepartmentmaster());
+                Hibernate.initialize(erpmindtmastList.get(index).getErpmusers());
+                Hibernate.initialize(erpmindtmastList.get(index).getBudgetheadmaster());
+            }
+            return erpmindtmastList;
+        } finally {
+            session.close();
+        }
     }
 
-  public ErpmIndentMaster findbyforwardedtouserId(Integer erpmuId) {
-        beginTransaction();
-        List<ErpmIndentMaster> erpmindtmast  = getSession().createQuery("Select u from ErpmIndentMaster u where u.erpmusersByIndtForwardedToUserId = :erpmuId").setParameter("erpmuId",erpmuId).list();
-        commitTransaction();
-        return erpmindtmast.get(0);
+    public ErpmIndentMaster findIndentMasterId(Short indtIndentId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+            session.beginTransaction();
+            List<ErpmIndentMaster> erpmindtmast  = session.createQuery("Select u from ErpmIndentMaster u where u.indtIndentId = :indtIndentId").setParameter("indtIndentId",indtIndentId).list();
+            Hibernate.initialize(erpmindtmast.get(0).getErpmGenMasterByIndtCurrencyId());
+            return erpmindtmast.get(0);
+        } finally {
+            session.close();
+        }
     }
 
-public ErpmIndentMaster findSimIdbyIndentId(Short indtIndentId) {
-        beginTransaction();
-        List<ErpmIndentMaster> erpmindtmast  = getSession().createQuery("Select u from ErpmIndentMaster u where u.indtIndentId = :indtIndentId").setParameter("indtIndentId",indtIndentId).list();
-        commitTransaction();
-        return erpmindtmast.get(0);
+//     public ErpmIndentMaster  findIndentMasterIds(short indtIndentId) {
+//        Session session = HibernateUtil.getSession();
+//        try {
+//            session.beginTransaction();
+//            ErpmIndentMaster  erpmindtmast  = (ErpmIndentMaster ) session.load(ErpmIndentMaster .class , indtIndentId);
+//            Hibernate.initialize(erpmindtmast); //.getImName());
+//
+//            return erpmindtmast;
+//        } finally {
+//            session.close();
+//        }
+//    }
+
+
+     public ErpmIndentMaster findSimIdbyIndentId(Short indtIndentId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+            session.beginTransaction();
+            List<ErpmIndentMaster> erpmindtmast  = session.createQuery("Select u from ErpmIndentMaster u where u.indtIndentId = :indtIndentId").setParameter("indtIndentId",indtIndentId).list();
+            Hibernate.initialize(erpmindtmast.get(0).getInstitutionmaster());
+            Hibernate.initialize(erpmindtmast.get(0).getSubinstitutionmaster());
+            Hibernate.initialize(erpmindtmast.get(0).getDepartmentmaster());
+            Hibernate.initialize(erpmindtmast.get(0).getErpmusers());
+            Hibernate.initialize(erpmindtmast.get(0).getDepartmentalBudgetAllocation());
+            return erpmindtmast.get(0);
+        } finally {
+            session.close();
+        }
+    }
+
+      public List<ErpmIndentMaster> findApprovedIndents(String FromDate, String ToDate, Integer userId, String currency) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            String SQL = "Select u from ErpmIndentMaster u where "
+                + " u.indtIndentDate >= str_to_date(:FromDate,'%d-%m-%Y') and "
+                + " u.indtIndentDate <= str_to_date(:ToDate,'%d-%m-%Y') and "
+                + " u.erpmGenMasterByIndtCurrencyId.erpmgmEgmDesc = :currency and"
+                + " u.institutionmaster.imId in (Select w.institutionmaster.imId from Erpmuserrole w where w.erpmusers.erpmuId = :userId) and "
+                + " u.indtIndentId in (Select distinct(v.wftWorkId) "
+                + " from Workflowtransaction v "
+                + " where v.erpmGenMaster.erpmgmEgmId = 82) ";
+            session.beginTransaction();
+            List<ErpmIndentMaster> indentList  = session.createQuery(SQL)
+                                                     .setParameter("FromDate", FromDate)
+                                                     .setParameter("ToDate", ToDate)
+                                                     .setParameter("currency",currency)
+                                                     .setParameter("userId", userId).list();
+            for (index = 0; index < indentList.size(); ++index) {
+                Hibernate.initialize(indentList.get(index).getInstitutionmaster());
+                Hibernate.initialize(indentList.get(index).getSubinstitutionmaster());
+                Hibernate.initialize(indentList.get(index).getDepartmentmaster());
+                Hibernate.initialize(indentList.get(index).getDepartmentalBudgetAllocation());
+                Hibernate.initialize(indentList.get(index).getErpmGenMasterByIndtCurrencyId());
+                Hibernate.initialize(indentList.get(index).getErpmGenMasterByIndtStatus());
+                Hibernate.initialize(indentList.get(index).getErpmusers());
+                Hibernate.initialize(indentList.get(index).getBudgetheadmaster());
+                Hibernate.initialize(indentList.get(index).getWorkflowmaster());
+
+            }
+            return indentList;
+        } finally {
+            session.close();
+        }
     }
 
 }
-
-
-
-
-

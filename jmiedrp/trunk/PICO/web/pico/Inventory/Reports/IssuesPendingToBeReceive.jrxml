@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IssuesPendingToBeReceive" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6cb5fb0d-7807-40cb-bcf5-b7326ccaa95b">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     institutionmaster.`IM_Name` AS From_IM_Name,
+     subinstitutionmaster.`SIM_Name` AS From_SIM_Name,
+     departmentmaster.`DM_Name` AS From_DM_Name,
+     Concat(employeemaster.`EMP_FName`,' ',employeemaster.`EMP_MName`,' ',employeemaster.`EMP_LName`) AS
+From_Employee,
+     institutionmaster_A.`IM_Short_Name` AS To_IM_Name,
+     subinstitutionmaster_A.`SIM_Short_Name` AS To_SIM_Name,
+     departmentmaster_A.`DM_Short_Name` AS To_DM_Name,
+     if(erpm_issue_master.`ISM_To_Employee_ID`>0,Concat(employeemaster_A.`EMP_FName`,' ',employeemaster_A.`EMP_MName`,' ',employeemaster_A.`EMP_LName`),if
+(erpm_issue_master.`ISM_To_Committee_ID`>0,committeemaster.`Committee_Name`,if
+(erpm_issue_master.`ISM_To_Supplier_ID`>0,suppliermaster.`SM_Name`,' '))) AS Issued_To,
+     erpm_issue_master.`ISM_From_Institute_ID` AS ISM_From_Institute_ID,
+     erpm_issue_master.`ISM_From_Subinstitute_ID` AS ISM_From_Subinstitute_ID,
+     erpm_issue_master.`ISM_From_Department_ID` AS ISM_From_Department_ID,
+     erpm_issue_master.`ISM_From_Employee_ID` AS ISM_From_Employee_ID,
+     erpm_issue_master.`ISM_Issue_No` AS ISM_Issue_No,
+     erpm_issue_master.`ISM_Issue_Date` AS ISM_Issue_Date,
+     erpm_issue_master.`ISM_Issue_Desc` AS ISM_Issue_Desc,
+     erpm_issue_master.`ISM_To_Institute_ID` AS ISM_To_Institute_ID,
+     erpm_issue_master.`ISM_To_Subinstitute_ID` AS ISM_To_Subinstitute_ID,
+     erpm_issue_master.`ISM_To_Department_ID` AS ISM_To_Department_ID,
+     erpm_issue_master.`ISM_To_Employee_ID` AS ISM_To_Employee_ID,
+     erpm_issue_master.`ISM_To_Committee_ID` AS ISM_To_Committee_ID,
+     erpm_issue_master.`ISM_To_Supplier_ID` AS ISM_To_Supplier_ID,
+     erpm_issue_master.`ISM_Issue_Type` AS ISM_Issue_Type,
+if(erpm_issue_master.`ISM_Issue_Type` ='U', 'For Use', if(erpm_issue_master.`ISM_Issue_Type` ='S', 'Stock Transfer', if(erpm_issue_master.`ISM_Issue_Type` ='R', 'Repair/Maintenance', if(erpm_issue_master.`ISM_Issue_Type` ='W', 'Write-Off', 'Un-Known')))) As Issue_Purpose,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS ERPMIM_Item_Brief_Desc,
+     erpm_item_master.`ERPMIM_Serial_No_Applicable` AS ERPMIM_Serial_No_Applicable,
+     erpm_issue_detail.`ISD_Issued_Quantity` AS ISD_Issued_Quantity,
+     erpm_issue_detail.`ISD_Received_Quantity` AS ISD_Received_Quantity,
+if(erpm_item_master.`ERPMIM_Serial_No_Applicable`='N', erpm_issue_detail.`ISD_Issued_Quantity`-erpm_issue_detail.`ISD_Received_Quantity`, 1) As Unreceived_Qty,
+     erpm_stock_received.`ST_Stock_Serial_No` AS erpm_stock_received_ST_Stock_Serial_No,
+     erpm_stock_received.`ST_Product_No` AS erpm_stock_received_ST_Product_No,
+     erpm_issue_serial_detail.`ISSD_Received` AS ISSD_Received,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS erpm_item_master_ERPMIM_Item_Cat1,
+     erpm_item_master.`ERPMIM_Item_Cat2` AS erpm_item_master_ERPMIM_Item_Cat2,
+     erpm_item_master.`ERPMIM_Item_Cat3` AS erpm_item_master_ERPMIM_Item_Cat3,
+     erpm_issue_detail.`ISD_Item_ID` AS erpm_issue_detail_ISD_Item_ID
+FROM
+     `erpm_issue_serial_detail` erpm_issue_serial_detail RIGHT OUTER JOIN `erpm_issue_detail`
+erpm_issue_detail ON erpm_issue_serial_detail.`ISSD_ISD_ID` = erpm_issue_detail.`ISD_ID`
+     LEFT OUTER JOIN `erpm_stock_received` erpm_stock_received ON erpm_issue_serial_detail.`ISSD_Stock_Serial_ID`
+= erpm_stock_received.`ST_ID`
+     INNER JOIN `erpm_issue_master` erpm_issue_master ON erpm_issue_detail.`ISD_ISM_ID` =
+erpm_issue_master.`ISM_ID`
+     LEFT OUTER JOIN `erpm_item_master` erpm_item_master ON erpm_issue_detail.`ISD_Item_ID` =
+erpm_item_master.`ERPMIM_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster ON erpm_issue_master.`ISM_From_Employee_ID` =
+employeemaster.`EMP_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster_A ON erpm_issue_master.`ISM_To_Employee_ID` =
+employeemaster_A.`EMP_ID`
+     LEFT OUTER JOIN `committeemaster` committeemaster ON erpm_issue_master.`ISM_To_Committee_ID` =
+committeemaster.`Committee_ID`
+     LEFT OUTER JOIN `suppliermaster` suppliermaster ON erpm_issue_master.`ISM_To_Supplier_ID` =
+suppliermaster.`SM_Id`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_issue_master.`ISM_From_Institute_ID` =
+institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_issue_master.`ISM_From_Subinstitute_ID` =
+subinstitutionmaster.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_issue_master.`ISM_From_Department_ID` =
+departmentmaster.`DM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster_A ON erpm_issue_master.`ISM_To_Subinstitute_ID` =
+subinstitutionmaster_A.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster_A ON erpm_issue_master.`ISM_To_Department_ID` =
+departmentmaster_A.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster_A ON erpm_issue_master.`ISM_To_Institute_ID` =
+institutionmaster_A.`IM_ID`
+WHERE
+     ISD_Issued_Quantity > ISD_Received_Quantity
+     and (ISSD_Received IS null
+     or ISSD_Received = False)
+     $P!{condition}]]>
+	</queryString>
+	<field name="From_IM_Name" class="java.lang.String"/>
+	<field name="From_SIM_Name" class="java.lang.String"/>
+	<field name="From_DM_Name" class="java.lang.String"/>
+	<field name="From_Employee" class="java.lang.String"/>
+	<field name="To_IM_Name" class="java.lang.String"/>
+	<field name="To_SIM_Name" class="java.lang.String"/>
+	<field name="To_DM_Name" class="java.lang.String"/>
+	<field name="Issued_To" class="java.lang.String"/>
+	<field name="ISM_From_Institute_ID" class="java.lang.Integer"/>
+	<field name="ISM_From_Subinstitute_ID" class="java.lang.Integer"/>
+	<field name="ISM_From_Department_ID" class="java.lang.Integer"/>
+	<field name="ISM_From_Employee_ID" class="java.lang.Long"/>
+	<field name="ISM_Issue_No" class="java.lang.String"/>
+	<field name="ISM_Issue_Date" class="java.sql.Date"/>
+	<field name="ISM_Issue_Desc" class="java.lang.String"/>
+	<field name="ISM_To_Institute_ID" class="java.lang.Integer"/>
+	<field name="ISM_To_Subinstitute_ID" class="java.lang.Integer"/>
+	<field name="ISM_To_Department_ID" class="java.lang.Integer"/>
+	<field name="ISM_To_Employee_ID" class="java.lang.Long"/>
+	<field name="ISM_To_Committee_ID" class="java.lang.Long"/>
+	<field name="ISM_To_Supplier_ID" class="java.lang.Long"/>
+	<field name="ISM_Issue_Type" class="java.lang.String"/>
+	<field name="Issue_Purpose" class="java.lang.String"/>
+	<field name="ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="ERPMIM_Serial_No_Applicable" class="java.lang.String"/>
+	<field name="ISD_Issued_Quantity" class="java.math.BigDecimal"/>
+	<field name="ISD_Received_Quantity" class="java.math.BigDecimal"/>
+	<field name="Unreceived_Qty" class="java.math.BigDecimal"/>
+	<field name="erpm_stock_received_ST_Stock_Serial_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_Product_No" class="java.lang.String"/>
+	<field name="ISSD_Received" class="java.lang.Boolean"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat1" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat2" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat3" class="java.lang.Long"/>
+	<field name="erpm_issue_detail_ISD_Item_ID" class="java.lang.Long"/>
+	<group name="From SIM Name">
+		<groupExpression><![CDATA[$F{From_SIM_Name}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField>
+					<reportElement uuid="2e754204-c0f0-4b3a-adff-3942ab1d642d" x="86" y="0" width="200" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{From_SIM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="043ee363-22cb-46a0-a2fe-201ca24e6c6a" x="5" y="0" width="80" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[From Sub Institute :]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="From DM Name">
+		<groupExpression><![CDATA[$F{From_DM_Name}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<textField>
+					<reportElement uuid="2bd9821c-a2fc-4e7d-8f69-f42d990676e1" x="109" y="3" width="200" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{From_DM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="2f81f4f3-0f0d-4a91-b8b5-6edfb9a6399e" x="28" y="3" width="80" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[From Department :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="87578f8c-b35f-4726-b2c7-daf2b3d4fe77" x="5" y="27" width="37" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="2f05a033-60c7-47a4-a75d-83d2af463997" x="45" y="27" width="42" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d876a615-7f06-42d9-88a9-184b6d65e317" x="93" y="27" width="110" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[IssuedTo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ea312d1d-f2f7-456f-852c-638feec375c6" x="206" y="27" width="128" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue Desc]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="36d0c43a-dff7-420a-837a-d143ee7e3374" x="338" y="27" width="42" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Purpose]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="64016067-e903-49e3-b2ae-3e127ea87cc1" x="380" y="27" width="111" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Item Desc]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="cf936b4c-2022-4a4e-999a-74a3a2fa0555" x="542" y="27" width="72" height="12"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Un-Received Qty.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="47ba3f0d-9657-4c08-a7ed-c68220eb5459" x="617" y="27" width="90" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Serial No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b9f7a6e9-fd2a-423e-8166-ebabce09720f" stretchType="RelativeToBandHeight" x="709" y="27" width="90" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f76c1d83-b331-4857-9814-50801d2c7cac" x="493" y="27" width="45" height="12"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue Qty.]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<textField>
+				<reportElement uuid="0406c76b-1770-4ab5-af9e-d6502d8c4683" x="69" y="6" width="543" height="24"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{From_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="9c2de969-96e7-4f3e-82cb-103c3cde5696" x="673" y="35" width="120" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e293d2f9-d260-497d-939c-1bfc652e8b44" x="226" y="29" width="220" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Issues Pending To Be Received]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="94287741-6743-4573-bffc-e8aa2f026326" x="1" y="64" width="801" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="22580ea2-fd16-4bee-8070-a03c2ddd5559" x="226" y="45" width="220" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[(Items Issued but not yet Received)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="6" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="5" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9c0c88fa-54b7-4361-ae5a-7ed4fedcfd32" x="617" y="0" width="90" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_Stock_Serial_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9400589c-6dd8-4b72-b414-a92ad6d8ab98" x="380" y="0" width="111" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="e90934ff-aca6-4341-9caf-5f2569e6d2b7" x="45" y="0" width="42" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISM_Issue_Date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1866b71a-4df7-46d9-a607-396529c8081d" x="92" y="0" width="111" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Issued_To}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c6808762-07c7-40a3-a2a7-01105176d92d" x="5" y="0" width="37" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISM_Issue_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f534dba3-7495-49de-bbb8-f8fca6efcc9a" x="709" y="0" width="90" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_Product_No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7080e01a-90df-4f20-b053-ea24c4a9a2b5" x="338" y="0" width="42" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Issue_Purpose}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6dad44b5-631f-4796-96b4-e0264859a82f" x="206" y="0" width="128" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISM_Issue_Desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aaed73da-e404-4748-9cff-5942ede7fa7f" x="493" y="2" width="45" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ISD_Issued_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="de421470-98cf-4f9a-bcf1-d460f075fb45" x="542" y="2" width="72" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Unreceived_Qty}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="15" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="bec0fe8d-2e91-4f6b-b222-89a340f39443" x="682" y="2" width="80" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f346d28a-be4e-470e-85e6-dfdaaebf15d9" x="762" y="2" width="40" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="10" splitType="Stretch"/>
+	</summary>
+</jasperReport>

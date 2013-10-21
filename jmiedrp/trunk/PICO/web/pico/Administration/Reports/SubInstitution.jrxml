@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubInstitution" language="groovy" pageWidth="1017" pageHeight="595" orientation="Landscape" columnWidth="977" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c8163d91-3b31-489c-8b3a-4404fd368030">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     subinstitutionmaster.`SIM_IM_ID` AS subinstitutionmaster_SIM_IM_ID,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     subinstitutionmaster.`SIM_Address_Line1` AS subinstitutionmaster_SIM_Address_Line1,
+     subinstitutionmaster.`SIM_Address_Line2` AS subinstitutionmaster_SIM_Address_Line2,
+     subinstitutionmaster.`SIM_Pin_No` AS subinstitutionmaster_SIM_Pin_No,
+     subinstitutionmaster.`sim_type` AS sim_type,
+     subinstitutionmaster.`sim_state_id` AS sim_state_id,
+concat(subinstitutionmaster.`SIM_Address_Line1`," ",
+		if(subinstitutionmaster.`SIM_Address_Line2` is null, " ", concat(subinstitutionmaster.`SIM_Address_Line2`,", ")),
+		if(subinstitutionmaster.`SIM_District` is null," ",concat(subinstitutionmaster.`SIM_District`,", ")),
+		if(subinstitutionmaster.`SIM_Pin_No` is null, " ", concat(" Pin - ",subinstitutionmaster.`SIM_Pin_No`))) As Address,
+
+     subinstitutionmaster.`SIM_EMail_ID` AS subinstitutionmaster_SIM_EMail_ID,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     countrymaster.`Country_Name` AS countrymaster_Country_Name,
+     statemaster.`State_Name` AS statemaster_State_Name,
+     subinstitutionmaster.`SIM_Head_Designation` AS subinstitutionmaster_SIM_Head_Designation,
+     subinstitutionmaster.`SIM_Short_Name` AS subinstitutionmaster_SIM_Short_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS simtype_name,
+     employeemaster.`EMP_FName` AS employeemaster_EMP_FName,
+     employeemaster.`EMP_MName` AS employeemaster_EMP_MName,
+     employeemaster.`EMP_LName` AS employeemaster_EMP_LName,
+     	concat(statemaster.`State_Name`, ", ",
+     		if(countrymaster.`Country_Name` is null, "Not Available", countrymaster.`Country_Name`)) As StateCountry,
+     	if(concat(employeemaster.`EMP_FName`,employeemaster.`EMP_MName`,employeemaster.`EMP_LName`) is null," - - ", concat(employeemaster.`EMP_FName`, " ",employeemaster.`EMP_MName`, " ",employeemaster.`EMP_LName`)) As EmpName
+FROM
+     `institutionmaster` institutionmaster LEFT OUTER JOIN `subinstitutionmaster` subinstitutionmaster ON institutionmaster.`IM_ID` = subinstitutionmaster.`SIM_IM_ID`
+     LEFT OUTER JOIN `countrymaster` countrymaster ON subinstitutionmaster.`SIM_Country_ID` = countrymaster.`Country_ID`
+     LEFT OUTER JOIN `statemaster` statemaster ON subinstitutionmaster.`SIM_State_ID` = statemaster.`State_ID`
+     LEFT OUTER JOIN `employeemaster` employeemaster ON subinstitutionmaster.`SIM_EMP_ID` = employeemaster.`EMP_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON subinstitutionmaster.`sim_type` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE $P!{condition}]]>
+	</queryString>
+	<field name="subinstitutionmaster_SIM_IM_ID" class="java.lang.Integer"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Address_Line1" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Address_Line2" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Pin_No" class="java.lang.String"/>
+	<field name="sim_type" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sim_state_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Address" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_EMail_ID" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="countrymaster_Country_Name" class="java.lang.String"/>
+	<field name="statemaster_State_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Head_Designation" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Short_Name" class="java.lang.String"/>
+	<field name="simtype_name" class="java.lang.String"/>
+	<field name="employeemaster_EMP_FName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_MName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_LName" class="java.lang.String"/>
+	<field name="StateCountry" class="java.lang.String"/>
+	<field name="EmpName" class="java.lang.String"/>
+	<variable name="institutionmaster_IM_Name_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{institutionmaster_IM_Name}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="9471643b-1e10-4331-813e-d8a77b380f1c" x="866" y="48" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fef5dbce-6a63-4992-ba56-0e06b226e1e7" x="226" y="36" width="435" height="31"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d6c339e5-5fce-44ec-bdc7-5d49f22e4a78" x="60" y="0" width="182" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitute Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="00efb9a1-6435-42b6-a993-fe902caa730a" x="242" y="0" width="56" height="31"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Short Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1f3b30fc-a7e8-43fd-b6d2-6f2418fc63ae" x="298" y="0" width="159" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="90cf0854-9fe1-4832-a9fb-d91c5f5faa7d" x="10" y="0" width="39" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sl. No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a7c5a2a5-6772-4e53-9f7c-e975e4f9807e" x="851" y="0" width="126" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMail ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="97b1b6c8-404a-42a4-bc0e-f0f8b0f139e1" x="713" y="0" width="138" height="24"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Head Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13f4afb3-87e5-42ab-8baa-f14fac842fbe" x="588" y="0" width="115" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[State, Country]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fbbbce09-f914-4f59-bac9-897323090c1f" x="851" y="0" width="126" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_EMail_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dc764b0b-e769-4cab-9dce-736e38beff8e" x="10" y="1" width="39" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="70c0c59e-1789-4536-aa31-435f47a38ab9" x="298" y="0" width="271" height="21"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="46deb1f0-d57d-4470-918f-8fa8796bf996" x="242" y="1" width="56" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9c761307-661a-4d9e-9e52-828eba36c56f" x="713" y="1" width="138" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{EmpName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eafe620e-da6a-4aef-818c-0a066e5acae8" x="60" y="1" width="182" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1efe00b1-e524-4916-b54b-c7671d20a25d" x="588" y="1" width="115" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{StateCountry}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="10" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4201f13c-9797-43c3-8392-b65ecc3e5009" x="437" y="6" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="b25a1d51-a9ec-4d4e-a16a-ceb8b1b8548d" x="517" y="6" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="46" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -16,6 +16,8 @@ public class ErpmItemCategoryMaster  implements java.io.Serializable {
      private ErpmItemCategoryMaster erpmItemCategoryMaster;
      private short erpmicmItemLevel;
      private String erpmicmCatDesc;
+     private Character erpmicmDepreciationMethod;
+     private Integer erpmicmDepreciationPercentage;
      private Set erpmItemCategoryMasters = new HashSet(0);
      private Set erpmItemMastersForErpmimItemCat3 = new HashSet(0);
      private Set erpmItemMastersForErpmimItemCat1 = new HashSet(0);
@@ -29,11 +31,13 @@ public class ErpmItemCategoryMaster  implements java.io.Serializable {
         this.erpmicmItemLevel = erpmicmItemLevel;
         this.erpmicmCatDesc = erpmicmCatDesc;
     }
-    public ErpmItemCategoryMaster(Institutionmaster institutionmaster, ErpmItemCategoryMaster erpmItemCategoryMaster, short erpmicmItemLevel, String erpmicmCatDesc, Set erpmItemCategoryMasters, Set erpmItemMastersForErpmimItemCat3, Set erpmItemMastersForErpmimItemCat1, Set erpmItemMastersForErpmimItemCat2) {
+    public ErpmItemCategoryMaster(Institutionmaster institutionmaster, ErpmItemCategoryMaster erpmItemCategoryMaster, short erpmicmItemLevel, String erpmicmCatDesc, Character erpmicmDepreciationMethod, Integer erpmicmDepreciationPercentage, Set erpmItemCategoryMasters, Set erpmItemMastersForErpmimItemCat3, Set erpmItemMastersForErpmimItemCat1, Set erpmItemMastersForErpmimItemCat2) {
        this.institutionmaster = institutionmaster;
        this.erpmItemCategoryMaster = erpmItemCategoryMaster;
        this.erpmicmItemLevel = erpmicmItemLevel;
        this.erpmicmCatDesc = erpmicmCatDesc;
+       this.erpmicmDepreciationMethod = erpmicmDepreciationMethod;
+       this.erpmicmDepreciationPercentage = erpmicmDepreciationPercentage;
        this.erpmItemCategoryMasters = erpmItemCategoryMasters;
        this.erpmItemMastersForErpmimItemCat3 = erpmItemMastersForErpmimItemCat3;
        this.erpmItemMastersForErpmimItemCat1 = erpmItemMastersForErpmimItemCat1;
@@ -74,6 +78,20 @@ public class ErpmItemCategoryMaster  implements java.io.Serializable {
     
     public void setErpmicmCatDesc(String erpmicmCatDesc) {
         this.erpmicmCatDesc = erpmicmCatDesc;
+    }
+    public Character getErpmicmDepreciationMethod() {
+        return this.erpmicmDepreciationMethod;
+    }
+    
+    public void setErpmicmDepreciationMethod(Character erpmicmDepreciationMethod) {
+        this.erpmicmDepreciationMethod = erpmicmDepreciationMethod;
+    }
+    public Integer getErpmicmDepreciationPercentage() {
+        return this.erpmicmDepreciationPercentage;
+    }
+    
+    public void setErpmicmDepreciationPercentage(Integer erpmicmDepreciationPercentage) {
+        this.erpmicmDepreciationPercentage = erpmicmDepreciationPercentage;
     }
     public Set getErpmItemCategoryMasters() {
         return this.erpmItemCategoryMasters;

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmPoMaster" table="erpm_po_master">
         <id name="pomPoMasterId" type="java.lang.Integer">
@@ -36,10 +36,10 @@
             <column name="POM_Form_ID" />
         </many-to-one>
         <many-to-one name="supplierAddress" class="pojo.hibernate.SupplierAddress" fetch="select">
-            <column name="POM_Supplier_Address_ID" not-null="true" />
+            <column name="POM_Supplier_Address_ID" />
         </many-to-one>
-        <property name="pomPoNo" type="int">
-            <column name="POM_PO_No" not-null="true" />
+        <property name="pomPoNo" type="java.lang.Integer">
+            <column name="POM_PO_No" />
         </property>
         <property name="pomPoDate" type="date">
             <column name="POM_PO_Date" length="10" not-null="true" />
@@ -82,6 +82,18 @@
                 <column name="POT_POM_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmPoTerms" />
+        </set>
+        <set name="erpmPurchaseinvoiceMasters" inverse="true">
+            <key>
+                <column name="PIM_PO_Master_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceMaster" />
+        </set>
+        <set name="erpmPoLocationses" inverse="true">
+            <key>
+                <column name="POM_PO_Master_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoLocations" />
         </set>
         <set name="erpmPoDetailses" inverse="true">
             <key>

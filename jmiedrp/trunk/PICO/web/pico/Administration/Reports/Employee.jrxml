@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Employee" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="20" bottomMargin="20" uuid="78723239-2aa3-4a31-bcfa-733d73974687">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="516"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     concat(employeemaster.`EMP_FName`," ",employeemaster.`EMP_MName`," ",employeemaster.`EMP_LName`) AS EmpName,
+     employeemaster.`EMP_ID` AS employeemaster_EMP_ID,
+     employeemaster.`EMP_IM_ID` AS employeemaster_EMP_IM_ID,
+     employeemaster.`EMP_SIM_ID` AS employeemaster_EMP_SIM_ID,
+     employeemaster.`EMP_DM_ID` AS employeemaster_EMP_DM_ID,
+     employeemaster.`EMP_FName` AS employeemaster_EMP_FName,
+     employeemaster.`EMP_MName` AS employeemaster_EMP_MName,
+     employeemaster.`EMP_LName` AS employeemaster_EMP_LName,
+     employeemaster.`EMP_DESIGNATION_ID` AS employeemaster_EMP_DESIGNATION_ID,
+     employeemaster.`EMP_EMail` AS employeemaster_EMP_EMail,
+     employeemaster.`EMP_Mobile` AS employeemaster_EMP_Mobile,
+     employeemaster.`EMP_LandLine` AS employeemaster_EMP_LandLine,
+     employeemaster.`EMP_DOB` AS employeemaster_EMP_DOB,
+     employeemaster.`EMP_DOJ` AS employeemaster_EMP_DOJ,
+     employeemaster.`EMP_Gender` AS employeemaster_EMP_Gender,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_Designation
+FROM
+     `departmentmaster` departmentmaster RIGHT OUTER JOIN `employeemaster` employeemaster ON departmentmaster.`DM_ID` = employeemaster.`EMP_DM_ID`
+     LEFT OUTER JOIN `subinstitutionmaster` subinstitutionmaster ON employeemaster.`EMP_SIM_ID` = subinstitutionmaster.`sim_id`
+     LEFT OUTER JOIN `institutionmaster` institutionmaster ON employeemaster.`EMP_IM_ID` = institutionmaster.`IM_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON employeemaster.`EMP_DESIGNATION_ID` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE $P!{condition}]]>
+	</queryString>
+	<field name="EmpName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_ID" class="java.lang.Long"/>
+	<field name="employeemaster_EMP_IM_ID" class="java.lang.Integer"/>
+	<field name="employeemaster_EMP_SIM_ID" class="java.lang.Integer"/>
+	<field name="employeemaster_EMP_DM_ID" class="java.lang.Integer"/>
+	<field name="employeemaster_EMP_FName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_MName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_LName" class="java.lang.String"/>
+	<field name="employeemaster_EMP_DESIGNATION_ID" class="java.lang.Long"/>
+	<field name="employeemaster_EMP_EMail" class="java.lang.String"/>
+	<field name="employeemaster_EMP_Mobile" class="java.lang.String"/>
+	<field name="employeemaster_EMP_LandLine" class="java.lang.String"/>
+	<field name="employeemaster_EMP_DOB" class="java.sql.Date"/>
+	<field name="employeemaster_EMP_DOJ" class="java.sql.Date"/>
+	<field name="employeemaster_EMP_Gender" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="erpm_gen_master_Designation" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement uuid="624224e3-8bfd-4cb3-875a-7391569de9e3" x="216" y="0" width="435" height="26"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="85ae94e7-e607-4220-b5fc-18ef38bd8618" x="674" y="4" width="140" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="4" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="1d59bc1d-1573-46b5-af85-c9ad23f50b7b" x="4" y="15" width="28" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3e322bf8-3dc1-472a-b54c-de5ba53d4d83" x="43" y="15" width="150" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="de8d0154-87ee-4488-8f67-616a827257bf" x="589" y="15" width="75" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mobile]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9ef2268f-ed3e-4323-92ce-4474f2e236bd" x="668" y="15" width="141" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d9ab36df-494f-4e94-a2e1-566a71ec6205" x="313" y="15" width="130" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6e8a15bf-673a-4e54-b895-819b2c41f269" x="446" y="15" width="139" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitution Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6e8a15bf-673a-4e54-b895-819b2c41f269" x="199" y="15" width="110" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="60b1d8b0-9c44-4a50-8503-0d45e650dbb7" x="0" y="30" width="809" height="2"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ef2e8a03-382c-4fb7-9015-8cd2da28d75b" x="4" y="0" width="28" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="31386d32-4dfc-44c8-a8c4-3b6eb778d4b8" x="589" y="0" width="75" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeemaster_EMP_Mobile}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d8cdfb78-4a98-4b2a-8edd-ff348f7a9a43" x="668" y="0" width="141" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employeemaster_EMP_EMail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="25e34218-b911-4ca4-b992-40da3da90fa2" x="313" y="0" width="130" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7b74c1aa-a670-42bc-addc-23a9d88f339a" x="446" y="0" width="139" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f722814f-bc8d-40f9-adfb-d8c6e728d028" x="43" y="0" width="150" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EmpName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bf58e7a7-3d21-4816-a14a-c7651f77c4b4" x="199" y="0" width="110" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_gen_master_Designation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d4ff38ac-776e-4957-95a8-f36ff725867f" x="687" y="2" width="80" height="16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="941d544a-1dd2-4b8e-9616-2a6d17a76f16" x="769" y="2" width="40" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="10" splitType="Stretch"/>
+	</summary>
+</jasperReport>

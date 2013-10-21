@@ -21,7 +21,6 @@ import pojo.hibernate.InstitutionroleprivilegesDAO;
 import pojo.hibernate.Erpmuserrole;
 import pojo.hibernate.ErpmuserroleDAO;
 import pojo.hibernate.Statemaster;
-import pojo.hibernate.StatemasterDAO;
 import pojo.hibernate.Countrymaster;
 import pojo.hibernate.CountrymasterDAO;
 import pojo.hibernate.Genericuserroles;
@@ -62,7 +61,7 @@ public class ManageUserAction extends DevelopmentSupport  {
     private List<Subinstitutionmaster> simImIdList = new ArrayList<Subinstitutionmaster>();
     private List<Departmentmaster> dmIdList = new ArrayList<Departmentmaster>();
     private List<Institutionuserroles> iurIdList = new ArrayList<Institutionuserroles>();
-     private  InstitutionuserroleDAO irDao= new InstitutionuserroleDAO();
+    private InstitutionuserroleDAO irDao= new InstitutionuserroleDAO();
     private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
     private SubinstitutionmasterDAO simDao = new SubinstitutionmasterDAO();
     private DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
@@ -83,6 +82,53 @@ public class ManageUserAction extends DevelopmentSupport  {
     private String RetypedPassword;
     private Integer erpmurId;
     private String erpmusersdob;
+    private Short imId;
+    private String emailTo;
+    private String subject;
+    private String senderEmailId;
+    private String senderContactNo;
+
+    public void setemailTo(String emailTo) {
+        this.emailTo = emailTo;
+    }
+
+    public String getemailTo() {
+        return this.emailTo;
+    }
+
+
+
+    public void setimId(Short imId) {
+        this.imId = imId;
+    }
+
+    public Short getimId() {
+        return this.imId;
+    }
+
+    public void setsubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getsubject() {
+        return this.subject;
+    }
+
+    public void setsenderEmailId(String senderEmailId) {
+        this.senderEmailId = senderEmailId;
+    }
+
+    public String getsenderEmailId() {
+        return this.senderEmailId;
+    }
+
+    public void setsenderContactNo(String senderContactNo) {
+        this.senderContactNo = senderContactNo;
+    }
+
+    public String getsenderContactNo() {
+        return this.senderContactNo;
+    }
 
     public void setim(Institutionmaster im) {
         this.im = im;
@@ -267,8 +313,8 @@ public class ManageUserAction extends DevelopmentSupport  {
     @Override
     public String execute() throws Exception {
         try {
-
-           return SUCCESS;
+                
+            return SUCCESS;
         } catch (Exception e) {
             message = "Exception in -> RegisterUserAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
@@ -457,6 +503,7 @@ public void validate() {
             GenericuserrolesDAO gurDao = new GenericuserrolesDAO();
             List <Genericuserroles> gurList = gurDao.findAll();
             int index = 0;
+            
             while (!gurList.isEmpty()){
                 iur.setInstitutionmaster(im);
                 iur.setIurName(gurList.get(index).getGurRoleName());
@@ -464,7 +511,7 @@ public void validate() {
                 iurDao.save(iur);
                 gurList.remove(index);
             }
-
+          
             //Save Erpmuserrole record
             iur = iurDao.findInstitutionAdministrator(im.getImId());
             erpmur.setInstitutionuserroles(iur);
@@ -548,16 +595,18 @@ public String SaveUserProfile() throws Exception {
        public String ShowUserProfile() throws Exception {
         try {
             ErpmuserroleDAO erpmurDao = new ErpmuserroleDAO();
-            //message=getSession().getAttribute("userid").toString();
             erpmurList = erpmurDao.findActiveRolesByErpmUserId(Integer.parseInt(getSession().getAttribute("userid").toString()));
-            erpmuName = erpmurList.get(0).getErpmusers().getErpmuFullName() + "(" +erpmurList.get(0).getErpmusers().getErpmuName() + ")";
+            erpmuName = erpmurList.get(0).getErpmusers().getErpmuFullName() + " (" +erpmurList.get(0).getErpmusers().getErpmuName() + ")";
+            message = erpmuName;
             return SUCCESS;
-        } catch (Exception e) {
-            if (e.getCause().toString().contains("UNIQUE_ERPMU_ID_ERPMUR_DM_ID_ERMUR_IUR_ID"))
-                message = "This profile is already assigned to you";
-            else
-                message = "Exception in ShowUserProfile method -> ManageUserAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
-            return ERROR;
+        } catch (Exception e1) {
+            if(e1.getCause()!=null){
+          if (e1.getCause().toString().contains("UNIQUE_ERPMU_ID_ERPMUR_DM_ID_ERMUR_IUR_ID"))
+                message = "This profile is already assigned to you"+e1.getCause();
+            }
+          else
+              message = "Exception in ShowUserProfile method -> ManageUserAxn " + e1.getMessage() + " Reported Cause is: " + e1.getCause();
+           return ERROR;
         }
     }
 
@@ -614,6 +663,7 @@ public String SaveUserProfile() throws Exception {
     public String ApproveUserProfile() throws Exception {
         try {
 
+            
             ErpmuserroleDAO erpmurDao = new ErpmuserroleDAO();
             erpmur = erpmurDao.findByErpmUserRole(geterpmurId());
             erpmur.setErpmurActive('Y');
@@ -642,7 +692,7 @@ public String SaveUserProfile() throws Exception {
             String toEmailAddress = username;
             String emailSubject = "Profile activation for PICO Module";
             String emailMessage = "<html><head><title>Your request has been approved</title></head><body><table width='500' border='0' align='left' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'><p>Dear " +  fullname+ ",</p></td></tr><tr><td align='left'><p >Your profile activation request with the following details has been approved by the PICO Adminstrator:</p><br/><p>Username: " + username+ "<br /><br/>Password: " + password + "<br /><br/>Role: " + role + "<br /><br/>Institution: " + institution + "<br /><br/>Sub Institution: " + subinstitution+ "<br /><br/>Department: " + department + "<br /></p><br/><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
-            sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, emailSubject, emailMessage);
+            sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
 
 
             return SUCCESS;
@@ -683,7 +733,7 @@ public String RecoverPassword() throws Exception {
                     String toEmailAddress = erpmu.getErpmuName();
                     String emailSubject = "Password for PICO Module";
                     String emailMessage = "<html><head><title>Your Password Details</title></head><body><table width='500' border='0' align='center' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; color:#5a5a5a;'><tr><td align='left'><p>Dear " + erpmu.getErpmuFullName() + ",</p></td></tr><tr><td align='left'><p>Your password is:</p><br/><br/><p>Password: " + erpmu.getErpmuPassword() + "<br /></p><br/><p>Thank you for using this site.<br /></p><br/><br/><p>Regards,<br />Administrator, PICO Module<br /></p><p><br /><br />THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY. </p></td></tr></table></body></html>";
-                    sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, emailSubject, emailMessage);
+                    sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"), toEmailAddress, "", emailSubject, emailMessage);
                    // message = "An email containing your password has been sent to you";
                  message = "An email containing your password has been sent to you";
                 }
@@ -773,4 +823,56 @@ public String RecoverPassword() throws Exception {
             return ERROR;
         }
     }
+
+public String ViewRegisteredInstitutions() throws Exception {
+    try{
+        //Prepare list of Institutions
+        imIdList = imDao.findAll();        
+        
+        return SUCCESS;
+    }
+    catch (Exception e) {
+         message = "Exception in ManageUserAxn method -> ViewRegisteredInstitutions " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+public String PrepareMessageForInstitutionAdmin() throws Exception {
+    try{
+        //Prepare list of Institutions
+                
+        im = imDao.findByImId(getimId());
+        emailTo = im.getImEmailId();
+
+        return SUCCESS;
+    }
+    catch (Exception e) {
+         message = "Exception in ManageUserAxn method -> SendMessageToInstitutionAdmin " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+public String SendMessageToInstitutionAdmin() throws Exception {
+    try{
+        //Prepare list of Institutions
+
+            Locale locale = ActionContext.getContext().getLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+
+            String emailSubject = getsubject();
+            String emailMessage = "<html><head><title>The message and other details are as follows:</title></head><body><table width='500' border='0' align='left' cellpadding='15' cellspacing='0' style='font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10pt; color:#5a5a5a;'><tr><td align='left'><p>" +  message + "</p></td></tr><tr><td align='left'>User's Emails Id: " + getsenderEmailId() + "<br/>User's Contact No: " + getsenderContactNo() + "<br/><br/>THIS IS AN AUTOMATED MESSAGE; PLEASE DO NOT REPLY.</td></tr></table></body></html>";
+            sendMail.sendMail(bundle.getString("emailFrom"), bundle.getString("emailUser"), bundle.getString("emailFromPasswd"),getemailTo(),"", emailSubject, emailMessage);
+
+            message = "Message sent to the Institution Admin";
+            
+            return SUCCESS;
+    }
+    catch (Exception e) {
+         message = "Exception in ManageUserAxn method -> SendMessageToInstitutionAdmin " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+
+
 }

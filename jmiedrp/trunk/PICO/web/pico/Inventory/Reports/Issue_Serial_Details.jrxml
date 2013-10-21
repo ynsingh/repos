@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Issue_Serial_Details" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="185e55a4-82ad-49b4-800d-cdeb4643e703">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Issue_Detail_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_issue_serial_detail.`ISSD_ISD_ID` AS Issue_Detail_ID,
+     erpm_issue_serial_detail.`ISSD_Stock_Serial_ID` AS Stock_Serial_ID,
+     erpm_stock_received.`ST_Product_No` AS Product_No,
+     erpm_stock_received.`ST_Stock_Serial_No` AS Stock_Serial_No,
+     erpm_stock_received.`ST_Warranty_Expiry_Date` AS Warranty_Expiry_Date,
+concat(erpm_stock_received.`ST_DeptSR_No`, ' / ', convert(erpm_stock_received.`ST_DeptSR_PgNo`,char)) As Dept_Stock_Register,
+concat(erpm_stock_received.`ST_CSR_No`, ' / ', convert(erpm_stock_received.`ST_CSR_PgNo`,char)) As Central_Stock_Register,
+concat(institutionmaster.`IM_Short_Name`, '/', subinstitutionmaster.`SIM_Short_Name`, '/', departmentmaster.`DM_Short_Name`, '/', LPAD(convert(erpm_stock_received.`ST_Item_ID`, char),6,'0'), '/', erpm_stock_received.`ST_Stock_Serial_No`) As Full_Serial_No
+FROM
+     `erpm_stock_received` erpm_stock_received INNER JOIN `erpm_issue_serial_detail` erpm_issue_serial_detail ON erpm_stock_received.`ST_ID` = erpm_issue_serial_detail.`ISSD_Stock_Serial_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_stock_received.`ST_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_stock_received.`ST_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_stock_received.`ST_DM_ID` = departmentmaster.`DM_ID`
+WHERE erpm_issue_serial_detail.`ISSD_ISD_ID` = $P!{Issue_Detail_ID}
+ORDER BY Full_Serial_No]]>
+	</queryString>
+	<field name="Issue_Detail_ID" class="java.lang.Long"/>
+	<field name="Stock_Serial_ID" class="java.lang.Long"/>
+	<field name="Product_No" class="java.lang.String"/>
+	<field name="Stock_Serial_No" class="java.lang.String"/>
+	<field name="Warranty_Expiry_Date" class="java.sql.Date"/>
+	<field name="Dept_Stock_Register" class="java.lang.String"/>
+	<field name="Central_Stock_Register" class="java.lang.String"/>
+	<field name="Full_Serial_No" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="14c658c2-562f-48f9-8f2d-8970533624ef" x="2" y="0" width="146" height="25"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Stock Serial No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2f4a2623-7236-4527-8fb3-580ef10b0017" x="236" y="0" width="86" height="25"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Departmental Stock Register No. / Page No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="452a208d-94f6-44a4-88e2-311a4be2b0dd" x="326" y="0" width="84" height="25"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Central Stock      Register No. / Page No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2991d7a3-100b-4fca-821b-d6a08843d076" x="413" y="0" width="47" height="25"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Warranty Expiry Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a63d5473-5e45-49e1-8a80-56f58dd7c2ac" x="149" y="0" width="84" height="25"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Product No]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="420c5470-324f-4222-9565-9eb39d7834a2" x="1" y="26" width="459" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="129e9a3d-9387-4934-8930-c7045f1fe3b6" x="0" y="0" width="146" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Full_Serial_No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a1a69c1a-2773-443b-99a4-50fbcdf322c0" x="236" y="0" width="86" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Dept_Stock_Register}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="72718de9-b2f0-4c6f-a488-c116234eed0f" x="326" y="0" width="84" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Central_Stock_Register}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="932f08f4-ca10-4ce7-9c84-cb41fa9bbaa1" x="413" y="0" width="47" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Warranty_Expiry_Date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="38e15ab4-763d-47f7-bc49-05097add1b1d" x="149" y="0" width="84" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Product_No}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

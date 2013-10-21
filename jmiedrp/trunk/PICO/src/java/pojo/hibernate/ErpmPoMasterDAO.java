@@ -2,18 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-    /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
- /**
- *
- * @author SajidAziz*/
+
+ /*
+  * @author SajidAziz
+  */
 
 package pojo.hibernate;
-import utils.BaseDAO;
+import java.util.Date;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
-import java.util.*;
+import utils.BaseDAO;
 
 public class ErpmPoMasterDAO extends BaseDAO {
 
@@ -28,67 +29,164 @@ public void save(ErpmPoMaster pomaster) {
             re.printStackTrace();
             throw re;    }
     }
-public void delete(ErpmPoMaster pomaster) {
+
+    public void delete(ErpmPoMaster pomaster) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(pomaster);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(pomaster);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (pomaster != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
- public void update(ErpmPoMaster pomaster) {
+
+    public void update(ErpmPoMaster pomaster) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(pomaster);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.update(pomaster);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (pomaster != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-public List<ErpmPoMaster> findAll() {
-        beginTransaction();
-        List<ErpmPoMaster> list = getSession().createQuery("from ErpmPoMaster").list();
-        commitTransaction();
-        return list;
+    public ErpmPoMaster findBypomPoMasterId(Integer pomPoMasterId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmPoMaster pomaster  = (ErpmPoMaster) getSession().load(ErpmPoMaster.class , pomPoMasterId);
+            Hibernate.initialize(pomaster.getInstitutionmaster());
+            Hibernate.initialize(pomaster.getSubinstitutionmaster());
+            Hibernate.initialize(pomaster.getDepartmentmaster());
+            Hibernate.initialize(pomaster.getErpmGenMasterByPomCurrencyId());
+            Hibernate.initialize(pomaster.getSuppliermaster());
+            Hibernate.initialize(pomaster.getErpmGenMasterByPomPaymentModeId());
+            Hibernate.initialize(pomaster.getErpmusersByPomApprovedById());
+            return pomaster;
+        } finally {
+            session.close();
+        }
     }
 
+    public ErpmPoMaster findByPoMasterId(Integer pomPoMasterId) {
+        Session session = HibernateUtil.getSession();
+        try {
 
+            session.beginTransaction();
+            List<ErpmPoMaster> pomaster  = session.createQuery("Select u from ErpmPoMaster u where u.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId",pomPoMasterId).list();
+            Hibernate.initialize(pomaster.get(0).getDepartmentmaster());
+            Hibernate.initialize(pomaster.get(0).getSuppliermaster());
+            Hibernate.initialize(pomaster.get(0).getErpmGenMasterByPomCurrencyId());
 
-
- public ErpmPoMaster findBypomPoMasterId(Integer pomPoMasterId) {
-        beginTransaction();
-        ErpmPoMaster pomaster  = (ErpmPoMaster) getSession().load(ErpmPoMaster.class , pomPoMasterId);
-        commitTransaction();
-        return pomaster;
+            return pomaster.get(0);
+        } finally {
+            session.close();
+        }
     }
 
-
-
- public ErpmPoMaster findByPoMasterId(Integer pomPoMasterId) {
-        beginTransaction();
-        List<ErpmPoMaster> pomaster  = getSession().createQuery("Select u from ErpmPoMaster u where u.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId",pomPoMasterId).list();
-        commitTransaction();
-        return pomaster.get(0);
-    }
-
- 
- 
- public List<ErpmPoMaster> findPOForUserDepartments(Integer erpmuId) {
-        beginTransaction();
-        String SQL = "Select u from ErpmPoMaster u "
+    public List<ErpmPoMaster> findPOForUserDepartments(Integer erpmuId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            String SQL = "Select u from ErpmPoMaster u "
                     +"where u.departmentmaster.dmId in "
                     + "(Select d.departmentmaster.dmId from Erpmuserrole d where d.erpmusers.erpmuId = :erpmuId)";
-
-        List<ErpmPoMaster> POlist  = getSession().createQuery(SQL).setParameter("erpmuId",erpmuId).list();
-        commitTransaction();
-        return POlist;
-
+            session.beginTransaction();
+           List<ErpmPoMaster> POlist  = session.createQuery(SQL).setParameter("erpmuId",erpmuId).list();
+//           Hibernate.initialize(POlist);
+            for (index = 0; index < POlist.size(); ++index) {
+                Hibernate.initialize(POlist.get(index).getDepartmentmaster());
+                Hibernate.initialize(POlist.get(index).getSuppliermaster());
+                Hibernate.initialize(POlist.get(index).getErpmGenMasterByPomCurrencyId());
+            }
+            return POlist;
+        } finally {
+            session.close();
+        }
     }
 
- }
+    public Integer findlastPOForDeptInCurrentYear(Integer dmId, Date poDate) {
+        Session session = HibernateUtil.getSession();
+        try {
+            String SQL  =   " Select if(max(u.pomPoNo),max(u.pomPoNo),0) + 1 from ErpmPoMaster u "
+                    +   " where u.departmentmaster.dmId = :dmId and year(u.pomPoDate) = year(:poDate) ";
+            session.beginTransaction();
+            Integer lastPONumber = Integer.parseInt(session.createQuery(SQL).setParameter("dmId",dmId).setParameter("poDate",poDate).uniqueResult().toString());
+            Hibernate.initialize(lastPONumber);
+            return lastPONumber;
+
+        } finally {
+            session.close();
+        }
+    }
+
+     public ErpmPoMaster findByPONumber(String dmShortName, Integer poYear, Integer PON){
+        Session session = HibernateUtil.getSession();
+        try {
+
+            String SQL  =   " Select u from ErpmPoMaster u  "
+                    +   " where u.departmentmaster.dmShortName = :dmShortName and "
+                    +   " year(u.pomPoDate) = :poYear and "
+                    +   " u.pomPoNo = :PON";
+            session.beginTransaction();
+            ErpmPoMaster pom = (ErpmPoMaster) session.createQuery(SQL).setParameter("dmShortName",dmShortName)
+                                                            .setParameter("poYear",poYear)
+                                                            .setParameter("PON",PON)
+                                                            .uniqueResult();
+            Hibernate.initialize(pom.getErpmGenMasterByPomCurrencyId());
+
+            return pom;
+        } finally {
+            session.close();
+        }
+    }
+
+     // This method is to get List of Full PO No., used in Purchase Challan and Invoice
+    public List<String> poList(Short imId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+           List<String> list =  session.createQuery("Select new map(u.pomPoMasterId as poid, concat(u.departmentmaster.dmShortName,'/', year(u.pomPoDate),'/', pomPoNo) as pono) from ErpmPoMaster u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+           for (index = 0; index < list.size(); ++index) {
+               Hibernate.initialize(list.get(index));
+           }
+
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
+public List<ErpmPoMaster> findBySupplierId(Integer smId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<ErpmPoMaster> list  =  session.createQuery("Select u from ErpmPoMaster u where u.suppliermaster.smId = :smId").setParameter("smId", smId).list();
+            for (index = 0; index < list.size(); ++index) {
+               Hibernate.initialize(list.get(index));
+               Hibernate.initialize(list.get(index).getDepartmentmaster());
+           }
+
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+ 
+}

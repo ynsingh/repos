@@ -21,56 +21,63 @@
         <div id="container">
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
-               <s:form name="frmInstitution" action="SaveInstitutionAction"  validate="true">
-                   <s:hidden name="ImId" />
-                    <table border="0" cellpadding="4" cellspacing="0" align="center">
-                        <tbody>
-                            <tr>
-                                <td colspan="2" align="left">                                    
-                            </tr>
-                            <tr>
-                                <td valign="middle" class="FormContent">
-                                    <s:label value="INSTITUTION MANAGEMENT" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> <br><br>
-                                    <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
-                                                 label="Institution Name" name="im.ImName" title="Enter InstitutionName" />
-                                    <s:select label="Institution Type" name="InstitutionType" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="itTypeId" listValue="itName"/>
-                                    <s:textfield required="true" requiredposition="left" maxLength="10" size="10"
-                                                 label="Institution Short Name" name="im.ImShortName" title="Enter Short Name for InstitutionName" />
-                                    <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Institution Address" name="im.ImAddressLine1" title="Enter Institution Address" />
-                                    <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
-                                                 name="im.ImAddressLine2" title="Enter Institution Address" />
-                                    <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
-                                                 label="District" name="im.ImDistrict" title="Enter Institution Address" />                                    
-                                    <s:select label="State" name="StateCode" headerKey="" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName"/> 
-                                    <s:textfield required="true" requiredposition="left" maxLength="6" size="6"
-                                                 label="Pin Code" name="im.ImPinNo" title="Enter Institution Address" />
-                                     <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
-                                                 label="Institution E-Mail" name="im.ImEmailId" title="Enter Institution E-Mail Address" />
-                                     <s:hidden name="EntryOn" value="true" /> 
-                                </td>
-                            </tr> <tr>
-                                <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save Institution"  />
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear" onclick="javascript:clearBudgettypemasterFields();"  />
-                                <td>
-                            </tr>
-                            <tr>
-                    <td> <br><br> </td>
-                </tr>
-                 <tr>
-                    <td> <br><br> </td>
-                </tr>
 
-                        </tbody>
-                    </table>
-                </s:form>
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                    <s:form name="frmInstitution" action="SaveInstitutionAction"  validate="true">
+                        <s:hidden name="ImId" />
+                        <table border="0" cellpadding="4" cellspacing="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2" align="left">
+                                </tr>
+                                <tr>
+                                    <td> <br><br>
+                                        <s:textfield required="true" requiredposition="left" maxLength="100" size="100"
+                                                     label="Institution Name" name="im.ImName" title="Enter InstitutionName" />
+                                        <s:select label="Institution Type" name="InstitutionType" headerKey="" headerValue="-- Please Select --" list="institutiontypeList" listKey="itTypeId" listValue="itName"/>
+                                        <s:textfield required="true" requiredposition="left" maxLength="10" size="10"
+                                                     label="Institution Short Name" name="im.ImShortName" title="Enter Short Name for InstitutionName" />
+                                        <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
+                                                     label="Institution Address" name="im.ImAddressLine1" title="Enter Institution Address" />
+                                        <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
+                                                     name="im.ImAddressLine2" title="Enter Institution Address" />
+                                        <s:textfield required="false" requiredposition="left" maxLength="50" size="50"
+                                                     label="District" name="im.ImDistrict" title="Enter Institution Address" />
+                                        <s:select label="State" name="StateCode" headerKey="" headerValue="-- Please Select --" list="statemasterList" listKey="stateId" listValue="stateName"/>
+                                        <s:textfield required="true" requiredposition="left" maxLength="6" size="6"
+                                                     label="Pin Code" name="im.ImPinNo" title="Enter Institution Address" />
+                                        <s:textfield required="true" requiredposition="left" maxLength="50" size="50"
+                                                     label="Institution E-Mail" name="im.ImEmailId" title="Enter Institution E-Mail Address" />
+                                        <s:hidden name="EntryOn" value="true" />
+                                    </td>
+                                </tr> <tr>
+                                    <td>
+                                        <s:submit theme="simple" name="btnSubmit" value="Save Institution"  />
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" value="Clear" onclick="javascript:clearBudgettypemasterFields();"  />
+                                    <td>
+                                </tr>
+                                <tr>
+                                    <td> <br><br> </td>
+                                </tr>
+                                <tr>
+                                    <td> <br><br> </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </s:form>
+                    <br>
+                </div>
+                &nbsp;
             </div>
             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>

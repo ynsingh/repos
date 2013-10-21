@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.Departmentmaster" table="departmentmaster">
         <id name="dmId" type="java.lang.Integer">
@@ -47,59 +47,53 @@
         <property name="dmHeadDesignation" type="string">
             <column name="DM_Head_Designation" length="30" />
         </property>
-        <set name="erpmuserroles" inverse="true">
+        <set name="erpmPoLocationses" inverse="true">
             <key>
-                <column name="ERPMUR_DM_ID" not-null="true" />
+                <column name="DEPT" />
             </key>
-            <one-to-many class="pojo.hibernate.Erpmuserrole" />
+            <one-to-many class="pojo.hibernate.ErpmPoLocations" />
         </set>
-        <set name="departmentalBudgetAllocations" inverse="true">
+        <set name="erpmTenderMasters" inverse="true">
             <key>
-                <column name="DBA_DM_ID" />
+                <column name="TM_DM_ID" not-null="true" />
             </key>
-            <one-to-many class="pojo.hibernate.DepartmentalBudgetAllocation" />
+            <one-to-many class="pojo.hibernate.ErpmTenderMaster" />
         </set>
-        <set name="workflowmasters" inverse="true">
+        <set name="fileMasters" inverse="true">
             <key>
-                <column name="WFM_Depaartment" />
+                <column name="File_DM_Id" />
             </key>
-            <one-to-many class="pojo.hibernate.Workflowmaster" />
-        </set>
-        <set name="supplierregistrationauthorities" inverse="true">
-            <key>
-                <column name="SRA_DM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.Supplierregistrationauthority" />
-        </set>
-        <set name="erpmuserdepartmentses" inverse="true">
-            <key>
-                <column name="ERPMUD_DM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.Erpmuserdepartments" />
-        </set>
-        <set name="erpmPurchasechallanMasters" inverse="true">
-            <key>
-                <column name="PCM_DM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.ErpmPurchasechallanMaster" />
-        </set>
-        <set name="budgetmasters" inverse="true">
-            <key>
-                <column name="BM_DM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.Budgetmaster" />
-        </set>
-        <set name="storemasters" inverse="true">
-            <key>
-                <column name="SM_Dep_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.Storemaster" />
+            <one-to-many class="pojo.hibernate.FileMaster" />
         </set>
         <set name="employeemasters" inverse="true">
             <key>
                 <column name="EMP_DM_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.Employeemaster" />
+        </set>
+        <set name="erpmTenderSubmissions" inverse="true">
+            <key>
+                <column name="TSB_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSubmission" />
+        </set>
+        <set name="erpmPoMasters" inverse="true">
+            <key>
+                <column name="POM_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+        </set>
+        <set name="erpmPurchaseinvoiceMasters" inverse="true">
+            <key>
+                <column name="PIM_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceMaster" />
+        </set>
+        <set name="workflowmasters" inverse="true">
+            <key>
+                <column name="WFM_Depaartment" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowmaster" />
         </set>
         <set name="erpmIndentMasters" inverse="true">
             <key>
@@ -113,11 +107,101 @@
             </key>
             <one-to-many class="pojo.hibernate.Committeemaster" />
         </set>
-        <set name="erpmPoMasters" inverse="true">
+        <set name="departmentalBudgetAllocations" inverse="true">
             <key>
-                <column name="POM_DM_ID" not-null="true" />
+                <column name="DBA_DM_ID" />
             </key>
-            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+            <one-to-many class="pojo.hibernate.DepartmentalBudgetAllocation" />
+        </set>
+        <set name="erpmPurchasechallanMasters" inverse="true">
+            <key>
+                <column name="PCM_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchasechallanMaster" />
+        </set>
+        <set name="erpmIssueReturnMasters" inverse="true">
+            <key>
+                <column name="IRM_Department_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnMaster" />
+        </set>
+        <set name="fileDetails" inverse="true">
+            <key>
+                <column name="FD_DM_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.FileDetail" />
+        </set>
+        <set name="budgetmasters" inverse="true">
+            <key>
+                <column name="BM_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Budgetmaster" />
+        </set>
+        <set name="erpmStockReceiveds" inverse="true">
+            <key>
+                <column name="ST_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmStockReceived" />
+        </set>
+        <set name="storemasters" inverse="true">
+            <key>
+                <column name="SM_Dep_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Storemaster" />
+        </set>
+        <set name="erpmTenderRevisionses" inverse="true">
+            <key>
+                <column name="TR_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderRevisions" />
+        </set>
+        <set name="erpmIssueMastersForIsmFromDepartmentId" inverse="true">
+            <key>
+                <column name="ISM_From_Department_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
+        <set name="erpmuserroles" inverse="true">
+            <key>
+                <column name="ERPMUR_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmuserrole" />
+        </set>
+        <set name="supplierregistrationauthorities" inverse="true">
+            <key>
+                <column name="SRA_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Supplierregistrationauthority" />
+        </set>
+        <set name="erpmIssueReceives" inverse="true">
+            <key>
+                <column name="ISR_Department_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReceive" />
+        </set>
+        <set name="erpmuserdepartmentses" inverse="true">
+            <key>
+                <column name="ERPMUD_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.Erpmuserdepartments" />
+        </set>
+        <set name="erpmTempOpeningStocks" inverse="true">
+            <key>
+                <column name="TOS_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTempOpeningStock" />
+        </set>
+        <set name="erpmIssueMastersForIsmToDepartmentId" inverse="true">
+            <key>
+                <column name="ISM_To_Department_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
+        <set name="erpmTenderSchedules" inverse="true">
+            <key>
+                <column name="TSC_DM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSchedule" />
         </set>
     </class>
 </hibernate-mapping>

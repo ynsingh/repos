@@ -21,31 +21,6 @@
     </head>
     <body class="twoColElsLtHdr">
         <div id="container">
-             <script type='text/javascript'> 
-            function getValue()    {
-       //if (cc != "") {
-       // var UName = document.getElementById(UserName).value;
-   //var DateofBirth = document.getElementById(DOB).value;
-
-   // if (cc == "" || um == "")
-        //document.getElementById(SecretQuestion).setAttribute("value","Please provide values for the above fields");
-    //else
-    //{searchValue=" + UName +"&searchValue2="+DateofBirth,
-    cc=document.getElementById(Photograph).value();
-     /*   var msg = $.ajax({
-            url:"/pico/ajax/getFile.action?searchValue=" + cc ,
-            async:false
-        }).responseText;*/
-     //   document.getElementById(SecretQuestion).setAttribute("value",msg);
-    alert("hello"+cc);
-}
-         //alert("hello");
-      //}
-
-     // }
-    </script>
-
-
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
@@ -55,27 +30,27 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <br><br>
+            <div id ="mainContent"> 
+            <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">BUDGET HEAD RECORDS MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+            </div>
 
-            <p align="center"><s:label value="BUDGET HEAD MANAGEMENT" cssClass="pageHeading"/></p>
-            <p align="center"><s:property value="message" /></p>
-            <div id ="mainContent">
+            <div style="border: solid 1px #000000; background: gainsboro">
                 <s:form name="frmBudgetHeads" action="SavebudgeheadAction"  validate="true" enctype="multipart/form-data">
                     <s:hidden name="bhm.bhmId" />
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>
                             <tr>
                                 <td><br>
-<%--                                                            <s:file  name="Record" label="record"
-                                                      title="Enter the path of the File" ></s:file>
---%>
-                                    <s:select label="Institution" name="bhm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                                    <s:select label="Institution" required="true" requiredposition="" name="bhm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imList" listKey="imId" listValue="imName" cssClass="textInput"/>
                                     <s:textfield required="true" requiredposition="left" maxLength="100" size="50"
                                                  label="Budget Head Name" name="bhm.bhmName" title="Enter Capital Item Category Name"  cssClass="textInput"/>
 
                                 </td>
                             </tr> <tr>
                                 <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="SaveBudgetHead "  cssClass="textInput"/>
+                                    <s:submit theme="simple" name="btnSubmit" value="Save Budget Head "  cssClass="textInput"/>
                                 </td>
                                 <td>
                                     <s:submit theme="simple" name="bthReset" value="Fetch Budget Head Entries" action="FetchEntries" cssClass="textInput"/>
@@ -89,22 +64,21 @@
                     </table>
 
                    </s:form>
-            </div>
 
-
-             <div id ="mainContent" align="center">
-             <s:form name="frmBudgetHeadBrowse">
+            <hr>
+            <s:if test="bhmList.size() > 0">
+            <s:form name="frmBudgetHeadBrowse">
                  <table width="60%" border="1" cellspacing="0" cellpadding="0" align="center" >
                     <tr><td>
                     <display:table name="bhmList" pagesize="15"
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" summary="true" id="doc"
                                requestURI="/Administration/ManageExportAction.action" >
-                        <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
+                        <display:column  class="griddata" title="S.No." style="width:10%" sortable="true" maxLength="100" headerClass="gridheader">
                         <c:out> ${doc_rowNum}
                         </display:column>
 
-                                   <display:column property="institutionmaster.imName" title="Institution"
+                        <display:column property="institutionmaster.imName" title="Institution"
                                     maxLength="100" headerClass="gridheader"
                                     class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"
                                    style="width:30%" sortable="true"  href=""/>
@@ -124,11 +98,12 @@
                     </display:table>
                 <br></td></tr>
                 </table>
-
-            
-             </s:form>
                  <br>
-            </div>
+            </s:form>
+            </s:if>
+        </div>
+        </div>
+            <br>
             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>

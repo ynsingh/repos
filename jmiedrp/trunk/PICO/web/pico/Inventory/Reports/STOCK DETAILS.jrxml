@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="STOCK DETAILS" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8681e75c-6b9f-48b8-a20e-550222275db1">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="e8bb58d9-49d9-4866-94c5-6d82fefb051d"/>
+	<subDataset name="dataset2" uuid="deec3a0b-59a1-4a57-97eb-ba09e7aa12ad"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_stock_received.`ST_ID` AS erpm_stock_received_ST_ID,
+     erpm_stock_received.`ST_IM_ID` AS erpm_stock_received_ST_IM_ID,
+     erpm_stock_received.`ST_SIM_ID` AS erpm_stock_received_ST_SIM_ID,
+     erpm_stock_received.`ST_DM_ID` AS erpm_stock_received_ST_DM_ID,
+     erpm_stock_received.`ST_SM_ID` AS erpm_stock_received_ST_SM_ID,
+     erpm_stock_received.`ST_Item_ID` AS erpm_stock_received_ST_Item_ID,
+     erpm_stock_received.`ST_In_Stock_Since` AS erpm_stock_received_ST_In_Stock_Since,
+     erpm_stock_received.`ST_Challan_Det_ID` AS erpm_stock_received_ST_Challan_Det_ID,
+     erpm_stock_received.`ST_PO_No` AS erpm_stock_received_ST_PO_No,
+     erpm_stock_received.`ST_PO_Date` AS erpm_stock_received_ST_PO_Date,
+     erpm_stock_received.`ST_Challan_No` AS erpm_stock_received_ST_Challan_No,
+     erpm_stock_received.`ST_Challan_Date` AS erpm_stock_received_ST_Challan_Date,
+     erpm_stock_received.`ST_Invoice_No` AS erpm_stock_received_ST_Invoice_No,
+     erpm_stock_received.`ST_Invoice_Date` AS erpm_stock_received_ST_Invoice_Date,
+     erpm_stock_received.`ST_Unit_Rate` AS erpm_stock_received_ST_Unit_Rate,
+     erpm_stock_received.`ST_Tax_Value` AS erpm_stock_received_ST_Tax_Value,
+     erpm_stock_received.`ST_CSR_No` AS erpm_stock_received_ST_CSR_No,
+     erpm_stock_received.`ST_CSR_PgNo` AS erpm_stock_received_ST_CSR_PgNo,
+     erpm_stock_received.`ST_DeptSR_No` AS erpm_stock_received_ST_DeptSR_No,
+     erpm_stock_received.`ST_DeptSR_PgNo` AS erpm_stock_received_ST_DeptSR_PgNo,
+     erpm_stock_received.`ST_Product_No` AS erpm_stock_received_ST_Product_No,
+     erpm_stock_received.`ST_Stock_Serial_No` AS erpm_stock_received_ST_Stock_Serial_No,
+     erpm_stock_received.`ST_Warranty_Expiry_Date` AS erpm_stock_received_ST_Warranty_Expiry_Date,
+     erpm_stock_received.`ST_Warranty_Type_ID` AS erpm_stock_received_ST_Warranty_Type_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS erpm_item_master_ERPMIM_Item_Brief_Desc,
+     erpm_item_master.`ERPMIM_UOP` AS erpm_item_master_ERPMIM_UOP,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_ERPMGM_EGM_DESC,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name
+FROM
+     `erpm_item_master` erpm_item_master INNER JOIN `erpm_stock_received` erpm_stock_received ON erpm_item_master.`ERPMIM_ID` = erpm_stock_received.`ST_Item_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_stock_received.`ST_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_stock_received.`ST_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_stock_received.`ST_SIM_ID` = subinstitutionmaster.`sim_id`
+WHERE $P!{condition}
+order by
+ST_IM_ID,ST_SIM_ID,ST_DM_ID, ST_Item_ID, ST_Stock_Serial_No]]>
+	</queryString>
+	<field name="erpm_stock_received_ST_ID" class="java.lang.Long"/>
+	<field name="erpm_stock_received_ST_IM_ID" class="java.lang.Integer"/>
+	<field name="erpm_stock_received_ST_SIM_ID" class="java.lang.Integer"/>
+	<field name="erpm_stock_received_ST_DM_ID" class="java.lang.Integer"/>
+	<field name="erpm_stock_received_ST_SM_ID" class="java.lang.Long"/>
+	<field name="erpm_stock_received_ST_Item_ID" class="java.lang.Long"/>
+	<field name="erpm_stock_received_ST_In_Stock_Since" class="java.sql.Date"/>
+	<field name="erpm_stock_received_ST_Challan_Det_ID" class="java.lang.Long"/>
+	<field name="erpm_stock_received_ST_PO_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_PO_Date" class="java.sql.Date"/>
+	<field name="erpm_stock_received_ST_Challan_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_Challan_Date" class="java.sql.Date"/>
+	<field name="erpm_stock_received_ST_Invoice_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_Invoice_Date" class="java.sql.Date"/>
+	<field name="erpm_stock_received_ST_Unit_Rate" class="java.math.BigDecimal"/>
+	<field name="erpm_stock_received_ST_Tax_Value" class="java.math.BigDecimal"/>
+	<field name="erpm_stock_received_ST_CSR_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_CSR_PgNo" class="java.lang.Long"/>
+	<field name="erpm_stock_received_ST_DeptSR_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_DeptSR_PgNo" class="java.lang.Long"/>
+	<field name="erpm_stock_received_ST_Product_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_Stock_Serial_No" class="java.lang.String"/>
+	<field name="erpm_stock_received_ST_Warranty_Expiry_Date" class="java.sql.Date"/>
+	<field name="erpm_stock_received_ST_Warranty_Type_ID" class="java.lang.Long"/>
+	<field name="erpm_item_master_ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_UOP" class="java.lang.Long"/>
+	<field name="erpm_gen_master_ERPMGM_EGM_DESC" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<group name="erpm_stock_received_ST_SIM_ID">
+		<groupExpression><![CDATA[$F{erpm_stock_received_ST_SIM_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField>
+					<reportElement uuid="a8a49abb-8954-4380-8753-dabeac58084e" x="65" y="0" width="263" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="4" y="0" width="60" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Subinstitution]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="7"/>
+		</groupFooter>
+	</group>
+	<group name="erpm_stock_received_ST_DM_ID">
+		<groupExpression><![CDATA[$F{erpm_stock_received_ST_DM_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField>
+					<reportElement uuid="a4427de9-4d64-406f-b4b2-059faf532531" x="79" y="0" width="263" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="2e41fe58-b8c1-420a-8f34-2a91ec8fee36" x="21" y="0" width="58" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Department]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="erpm_stock_received_ST_Item_ID" footerPosition="StackAtBottom">
+		<groupExpression><![CDATA[$F{erpm_stock_received_ST_Item_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<staticText>
+					<reportElement uuid="75ab9982-e9d0-4ac5-86c2-b1c0ced64561" x="51" y="0" width="45" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Item Name]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="2f66324b-e24d-4168-b828-842ee96518fe" x="101" y="0" width="263" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="47a3f2ce-b939-40df-ad3d-3fca7c7ce8cc" x="4" y="17" width="30" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[S.No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="4b45fac2-8e07-451c-83f3-9ec6fc69b80f" x="38" y="17" width="100" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Stock Serial No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ef0005c4-fe82-4663-919b-f9887e60267a" x="144" y="17" width="100" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Product No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e2a12885-fa36-46de-aa59-00244cea5f33" x="269" y="17" width="100" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CSR Reg. No./PgNo.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="69254248-5014-4f62-ae5c-4516003ef2b6" x="421" y="17" width="100" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Dept Reg. No./Pg No.]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="2e033f41-12c8-4c72-9b9f-637648b1ebdf" x="0" y="29" width="521" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c2492b49-cd7c-4767-b38f-c751f19f642f" x="121" y="31" width="300" height="22"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STOCK RECEIVED ITEM DETAILS]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c7b66f60-2aa9-4f7c-8a9a-5e11a8d467df" x="39" y="0" width="455" height="25"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="8921deed-dd26-4489-baa2-19f8c95eff84" x="422" y="38" width="100" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="6" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="9" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1a1c09a6-aed6-4a55-a97b-43e97026637d" x="38" y="1" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_Stock_Serial_No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="de3df1dd-0a97-4ea0-998b-9e74045fe27f" x="5" y="1" width="30" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4976755e-0764-4c0e-b2ec-83bd7245155b" x="270" y="1" width="41" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_CSR_No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="dbf8caaf-b481-482b-abaa-a0274379a41b" x="471" y="1" width="51" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_DeptSR_PgNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d097127b-aeb8-4464-b511-c9c55923906e" x="422" y="1" width="49" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_DeptSR_No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="85212b10-0060-4483-98ac-5cdc07cf2f75" x="144" y="1" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_Product_No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e4eb12f8-8f81-4b7d-a6ae-b43b74ac0d81" x="325" y="1" width="45" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_CSR_PgNo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="8" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="103f66f5-65c3-4fe1-a9ca-73a6ecc6951a" x="200" y="0" width="128" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " +$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="12" splitType="Stretch"/>
+	</summary>
+</jasperReport>

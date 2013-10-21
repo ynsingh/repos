@@ -24,7 +24,8 @@ public class PaginationHibDao {
  * @return The page object.
  */
     public Page getPage(int page, String tableName) {
-        Session session = HibernateUtil.getSession().openSession();   //getSession();
+       // Session session = HibernateUtil.getSession().openSession();   
+        Session session = HibernateUtil.getSession();
 
         try {
             String query = "FROM " + tableName;
@@ -47,8 +48,9 @@ public class PaginationHibDao {
  * @return The number of pages.
  */
     public int getTotalPages(String tableName) {
-        Session session = HibernateUtil.getSession().openSession();  //.getSession();
-
+       // Session session = HibernateUtil.getSession().openSession();  //.getSession();
+        Session session = HibernateUtil.getSession();
+        
         try {
             session.beginTransaction();
             String total = session.createSQLQuery("SELECT COUNT(*) AS Total FROM " + tableName).addScalar("Total").uniqueResult().toString();

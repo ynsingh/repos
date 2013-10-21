@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -26,9 +26,15 @@ public class Employeemaster  implements java.io.Serializable {
      private Date empDob;
      private Date empDoj;
      private String empGender;
+     private Set erpmIssueReturnMasters = new HashSet(0);
+     private Set erpmIssueMastersForIsmFromEmployeeId = new HashSet(0);
+     private Set erpmIssueMastersForIsmToEmployeeId = new HashSet(0);
+     private Set erpmIssueReceives = new HashSet(0);
      private Set institutionmasters = new HashSet(0);
      private Set departmentmasters = new HashSet(0);
      private Set subinstitutionmasters = new HashSet(0);
+     private Set fileDetails = new HashSet(0);
+     private Set fileMasters = new HashSet(0);
 
     public Employeemaster() {
     }
@@ -42,7 +48,7 @@ public class Employeemaster  implements java.io.Serializable {
         this.empMname = empMname;
         this.empLname = empLname;
     }
-    public Employeemaster(ErpmGenMaster erpmGenMaster, Institutionmaster institutionmaster, Departmentmaster departmentmaster, Subinstitutionmaster subinstitutionmaster, String empFname, String empMname, String empLname, String empEmail, String empMobile, String empLandLine, Date empDob, Date empDoj, String empGender, Set institutionmasters, Set departmentmasters, Set subinstitutionmasters) {
+    public Employeemaster(ErpmGenMaster erpmGenMaster, Institutionmaster institutionmaster, Departmentmaster departmentmaster, Subinstitutionmaster subinstitutionmaster, String empFname, String empMname, String empLname, String empEmail, String empMobile, String empLandLine, Date empDob, Date empDoj, String empGender, Set erpmIssueReturnMasters, Set erpmIssueMastersForIsmFromEmployeeId, Set erpmIssueMastersForIsmToEmployeeId, Set erpmIssueReceives, Set institutionmasters, Set departmentmasters, Set subinstitutionmasters, Set fileDetails, Set fileMasters) {
        this.erpmGenMaster = erpmGenMaster;
        this.institutionmaster = institutionmaster;
        this.departmentmaster = departmentmaster;
@@ -56,9 +62,15 @@ public class Employeemaster  implements java.io.Serializable {
        this.empDob = empDob;
        this.empDoj = empDoj;
        this.empGender = empGender;
+       this.erpmIssueReturnMasters = erpmIssueReturnMasters;
+       this.erpmIssueMastersForIsmFromEmployeeId = erpmIssueMastersForIsmFromEmployeeId;
+       this.erpmIssueMastersForIsmToEmployeeId = erpmIssueMastersForIsmToEmployeeId;
+       this.erpmIssueReceives = erpmIssueReceives;
        this.institutionmasters = institutionmasters;
        this.departmentmasters = departmentmasters;
        this.subinstitutionmasters = subinstitutionmasters;
+       this.fileDetails = fileDetails;
+       this.fileMasters = fileMasters;
     }
    
     public Integer getEmpId() {
@@ -159,6 +171,34 @@ public class Employeemaster  implements java.io.Serializable {
     public void setEmpGender(String empGender) {
         this.empGender = empGender;
     }
+    public Set getErpmIssueReturnMasters() {
+        return this.erpmIssueReturnMasters;
+    }
+    
+    public void setErpmIssueReturnMasters(Set erpmIssueReturnMasters) {
+        this.erpmIssueReturnMasters = erpmIssueReturnMasters;
+    }
+    public Set getErpmIssueMastersForIsmFromEmployeeId() {
+        return this.erpmIssueMastersForIsmFromEmployeeId;
+    }
+    
+    public void setErpmIssueMastersForIsmFromEmployeeId(Set erpmIssueMastersForIsmFromEmployeeId) {
+        this.erpmIssueMastersForIsmFromEmployeeId = erpmIssueMastersForIsmFromEmployeeId;
+    }
+    public Set getErpmIssueMastersForIsmToEmployeeId() {
+        return this.erpmIssueMastersForIsmToEmployeeId;
+    }
+    
+    public void setErpmIssueMastersForIsmToEmployeeId(Set erpmIssueMastersForIsmToEmployeeId) {
+        this.erpmIssueMastersForIsmToEmployeeId = erpmIssueMastersForIsmToEmployeeId;
+    }
+    public Set getErpmIssueReceives() {
+        return this.erpmIssueReceives;
+    }
+    
+    public void setErpmIssueReceives(Set erpmIssueReceives) {
+        this.erpmIssueReceives = erpmIssueReceives;
+    }
     public Set getInstitutionmasters() {
         return this.institutionmasters;
     }
@@ -179,6 +219,20 @@ public class Employeemaster  implements java.io.Serializable {
     
     public void setSubinstitutionmasters(Set subinstitutionmasters) {
         this.subinstitutionmasters = subinstitutionmasters;
+    }
+    public Set getFileDetails() {
+        return this.fileDetails;
+    }
+    
+    public void setFileDetails(Set fileDetails) {
+        this.fileDetails = fileDetails;
+    }
+    public Set getFileMasters() {
+        return this.fileMasters;
+    }
+    
+    public void setFileMasters(Set fileMasters) {
+        this.fileMasters = fileMasters;
     }
 
 

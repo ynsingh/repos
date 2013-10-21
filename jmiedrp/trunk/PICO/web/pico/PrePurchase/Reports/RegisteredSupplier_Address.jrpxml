@@ -13,62 +13,62 @@
 		</rectangle>
 		<text textHeight="13.427734">
 			<reportElement x="34" y="49" width="220" height="15" origin="2" srcId="3"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Plot No 371-175, Udyog Vihar, Gurgaon]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="34" y="64" width="220" height="15" origin="2" srcId="4"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Gurgaon]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="34" y="79" width="220" height="15" origin="2" srcId="5"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Haryana, Pin No: ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="34" y="94" width="220" height="15" origin="2" srcId="6"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[India]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="35" y="121" width="72" height="15" origin="2" srcId="7"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Phone Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="110" y="121" width="146" height="15" origin="2" srcId="8"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="110" y="133" width="146" height="15" origin="2" srcId="9"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="35" y="133" width="72" height="15" origin="2" srcId="10"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Mobile ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="35" y="145" width="72" height="15" origin="2" srcId="11"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Fax Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="110" y="145" width="146" height="15" origin="2" srcId="12"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="110" y="157" width="146" height="15" origin="2" srcId="13"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[akhilesh.sahi@wipro.com]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="35" y="157" width="72" height="15" origin="2" srcId="14"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[E-Mail]]></textContent>
 		</text>
 		<rectangle radius="10">
@@ -76,62 +76,62 @@
 		</rectangle>
 		<text textHeight="13.427734">
 			<reportElement x="331" y="49" width="220" height="15" origin="2" srcId="3"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Wipro House, Street Wipro House]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="331" y="64" width="220" height="15" origin="2" srcId="4"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Delhi]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="331" y="79" width="220" height="15" origin="2" srcId="5"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Delhi, Pin No: ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="331" y="94" width="220" height="15" origin="2" srcId="6"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[India]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="332" y="121" width="72" height="15" origin="2" srcId="7"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Phone Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="407" y="121" width="146" height="15" origin="2" srcId="8"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[1234]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="407" y="133" width="146" height="15" origin="2" srcId="9"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[981200419]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="332" y="133" width="72" height="15" origin="2" srcId="10"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Mobile ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="332" y="145" width="72" height="15" origin="2" srcId="11"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Fax Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="407" y="145" width="146" height="15" origin="2" srcId="12"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[26987707]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="407" y="157" width="146" height="15" origin="2" srcId="13"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[sunil.chopra@wipro.com]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="332" y="157" width="72" height="15" origin="2" srcId="14"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[E-Mail]]></textContent>
 		</text>
 	</page>

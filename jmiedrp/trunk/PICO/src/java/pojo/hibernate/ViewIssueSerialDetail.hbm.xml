@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 13, 2012 5:14:20 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="pojo.hibernate.ViewIssueSerialDetail" table="view_issue_serial_detail">
+    <id name="issdId" type="java.lang.Long">
+      <column name="ISSD_ID"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="isdId" type="int">
+      <column name="ISD_ID" not-null="true"/>
+    </property>
+    <property name="isdIsmId" type="int">
+      <column name="ISD_ISM_ID" not-null="true"/>
+    </property>
+    <property name="isdItemId" type="int">
+      <column name="ISD_Item_ID" not-null="true"/>
+    </property>
+    <property name="isdIssuedQuantity" type="big_decimal">
+      <column name="ISD_Issued_Quantity" not-null="true" precision="8"/>
+    </property>
+    <property name="isdReceivedQuantity" type="big_decimal">
+      <column name="ISD_Received_Quantity" not-null="true" precision="8"/>
+    </property>
+    <property name="isdReturnedQuantity" type="big_decimal">
+      <column name="ISD_Returned_Quantity" not-null="true" precision="8"/>
+    </property>
+    <property name="issdIsdId" type="java.lang.Long">
+      <column name="ISSD_ISD_ID" precision="11" scale="0"/>
+    </property>
+    <property name="issdStockSerialId" type="java.lang.Long">
+      <column name="ISSD_Stock_Serial_ID" precision="11" scale="0"/>
+    </property>
+    <property name="issdReceived" type="java.lang.Integer">
+      <column name="ISSD_Received"/>
+    </property>
+    <property name="issdReturned" type="java.lang.Integer">
+      <column name="ISSD_Returned"/>
+    </property>
+    <property name="stStockSerialNo" type="string">
+      <column length="30" name="ST_Stock_Serial_No"/>
+    </property>
+    <property name="displayQuantity" type="big_decimal">
+      <column name="Display_Quantity" precision="8"/>
+    </property>
+    <property name="erpmimItemBriefDesc" type="string">
+      <column length="500" name="ERPMIM_Item_Brief_Desc" not-null="true"/>
+    </property>
+    <property name="erpmimSerialNoApplicable" type="char">
+      <column length="1" name="ERPMIM_Serial_No_Applicable" not-null="true"/>
+    </property>
+    <property name="ismIssueNo" type="string">
+      <column length="20" name="ISM_Issue_No"/>
+    </property>
+  </class>
+</hibernate-mapping>

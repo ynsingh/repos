@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmGenMaster" table="erpm_gen_master">
         <id name="erpmgmEgmId" type="java.lang.Integer">
@@ -15,34 +15,28 @@
             <column name="ERPMGM_EGM_DESC" length="50" not-null="true" />
         </property>
         <property name="erpgmEgmRemarks" type="string">
-            <column name="ERPGM_EGM_REMARKS" length="45" not-null="true" />
+            <column name="ERPGM_EGM_REMARKS" length="45" />
         </property>
         <property name="erpgmEgmChecks" type="string">
-            <column name="ERPGM_EGM_CHECKS" length="45" not-null="true" />
+            <column name="ERPGM_EGM_CHECKS" length="45" />
         </property>
-        <set name="erpmGeneralTermses" inverse="true">
-            <key>
-                <column name="GT_EGM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.ErpmGeneralTerms" />
-        </set>
         <set name="erpmItemRatesForIrCurrencyId" inverse="true">
             <key>
                 <column name="IR_Currency_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmItemRate" />
         </set>
-        <set name="erpmItemRatesForIrWarrantyStartsFromId" inverse="true">
+        <set name="userMessages" inverse="true">
             <key>
-                <column name="IR_Warranty_Starts_From_ID" />
+                <column name="um_status" />
             </key>
-            <one-to-many class="pojo.hibernate.ErpmItemRate" />
+            <one-to-many class="pojo.hibernate.UserMessage" />
         </set>
-        <set name="erpmPoMastersForPomPaymentModeId" inverse="true">
+        <set name="erpmTenderRevisionses" inverse="true">
             <key>
-                <column name="POM_Payment_Mode_ID" not-null="true" />
+                <column name="TR_Revision_Type_ID" not-null="true" />
             </key>
-            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+            <one-to-many class="pojo.hibernate.ErpmTenderRevisions" />
         </set>
         <set name="workflowmasters" inverse="true">
             <key>
@@ -50,29 +44,11 @@
             </key>
             <one-to-many class="pojo.hibernate.Workflowmaster" />
         </set>
-        <set name="committeemasters" inverse="true">
-            <key>
-                <column name="Committee_Type" />
-            </key>
-            <one-to-many class="pojo.hibernate.Committeemaster" />
-        </set>
-        <set name="erpmIndentMastersForIndtCurrencyId" inverse="true">
-            <key>
-                <column name="Indt_Currency_Id" />
-            </key>
-            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
-        </set>
         <set name="erpmPoMastersForPomCurrencyId" inverse="true">
             <key>
                 <column name="POM_Currency_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmPoMaster" />
-        </set>
-        <set name="suppliermastersForSmOwnershipType" inverse="true">
-            <key>
-                <column name="SM_Ownership_Type" />
-            </key>
-            <one-to-many class="pojo.hibernate.Suppliermaster" />
         </set>
         <set name="employeemasters" inverse="true">
             <key>
@@ -80,17 +56,29 @@
             </key>
             <one-to-many class="pojo.hibernate.Employeemaster" />
         </set>
-        <set name="erpmPoMastersForPomFormId" inverse="true">
+        <set name="erpmTenderMastersForTmTypeId" inverse="true">
             <key>
-                <column name="POM_Form_ID" />
+                <column name="TM_Type_ID" not-null="true" />
             </key>
-            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+            <one-to-many class="pojo.hibernate.ErpmTenderMaster" />
         </set>
-        <set name="workflowactionses" inverse="true">
+        <set name="erpmTempOpeningStocks" inverse="true">
             <key>
-                <column name="WFA_EGM_Action_Id" />
+                <column name="TOS_Warranty_Type_ID" />
             </key>
-            <one-to-many class="pojo.hibernate.Workflowactions" />
+            <one-to-many class="pojo.hibernate.ErpmTempOpeningStock" />
+        </set>
+        <set name="erpmTenderScheduleDetails" inverse="true">
+            <key>
+                <column name="TSCD_Schedule_Type_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderScheduleDetail" />
+        </set>
+        <set name="erpmTenderMastersForTmStatusId" inverse="true">
+            <key>
+                <column name="TM_Status_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderMaster" />
         </set>
         <set name="suppliermastersForSmSupplierType" inverse="true">
             <key>
@@ -104,29 +92,107 @@
             </key>
             <one-to-many class="pojo.hibernate.ErpmItemMaster" />
         </set>
-        <set name="erpmPoTermses" inverse="true">
-            <key>
-                <column name="POT_EGM_ID" not-null="true" />
-            </key>
-            <one-to-many class="pojo.hibernate.ErpmPoTerms" />
-        </set>
         <set name="erpmItemRateTaxeses" inverse="true">
             <key>
                 <column name="IRT_Tax_Name_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmItemRateTaxes" />
         </set>
-        <set name="institutionmasters" inverse="true">
+        <set name="fileMasters" inverse="true">
             <key>
-                <column name="im_type" />
+                <column name="File_Type" />
             </key>
-            <one-to-many class="pojo.hibernate.Institutionmaster" />
+            <one-to-many class="pojo.hibernate.FileMaster" />
         </set>
         <set name="erpmIndentMastersForIndtStatus" inverse="true">
             <key>
                 <column name="Indt_status" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+        <set name="workflowtransactions" inverse="true">
+            <key>
+                <column name="WFT_Action_Taken" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowtransaction" />
+        </set>
+        <set name="erpmGeneralTermses" inverse="true">
+            <key>
+                <column name="GT_EGM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmGeneralTerms" />
+        </set>
+        <set name="erpmItemRatesForIrWarrantyStartsFromId" inverse="true">
+            <key>
+                <column name="IR_Warranty_Starts_From_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmItemRate" />
+        </set>
+        <set name="erpmPoMastersForPomPaymentModeId" inverse="true">
+            <key>
+                <column name="POM_Payment_Mode_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+        </set>
+        <set name="erpmIndentMastersForIndtCurrencyId" inverse="true">
+            <key>
+                <column name="Indt_Currency_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIndentMaster" />
+        </set>
+        <set name="committeemasters" inverse="true">
+            <key>
+                <column name="Committee_Type" />
+            </key>
+            <one-to-many class="pojo.hibernate.Committeemaster" />
+        </set>
+        <set name="subinstitutionmasters" inverse="true">
+            <key>
+                <column name="sim_type" />
+            </key>
+            <one-to-many class="pojo.hibernate.Subinstitutionmaster" />
+        </set>
+        <set name="suppliermastersForSmOwnershipType" inverse="true">
+            <key>
+                <column name="SM_Ownership_Type" />
+            </key>
+            <one-to-many class="pojo.hibernate.Suppliermaster" />
+        </set>
+        <set name="erpmTenderSubmissions" inverse="true">
+            <key>
+                <column name="TSB_EMD_Type_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSubmission" />
+        </set>
+        <set name="erpmPoMastersForPomFormId" inverse="true">
+            <key>
+                <column name="POM_Form_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoMaster" />
+        </set>
+        <set name="workflowactionses" inverse="true">
+            <key>
+                <column name="WFA_EGM_Action_Id" />
+            </key>
+            <one-to-many class="pojo.hibernate.Workflowactions" />
+        </set>
+        <set name="erpmPoTermses" inverse="true">
+            <key>
+                <column name="POT_EGM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoTerms" />
+        </set>
+        <set name="erpmStockReceiveds" inverse="true">
+            <key>
+                <column name="ST_Warranty_Type_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmStockReceived" />
+        </set>
+        <set name="institutionmasters" inverse="true">
+            <key>
+                <column name="im_type" />
+            </key>
+            <one-to-many class="pojo.hibernate.Institutionmaster" />
         </set>
     </class>
 </hibernate-mapping>

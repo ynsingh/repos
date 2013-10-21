@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="List_of_Tenders_Floated" language="groovy" pageWidth="670" pageHeight="594" orientation="Landscape" columnWidth="630" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a0f72b0-b3c2-45fc-a673-009251452358">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="d1" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="d2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_tender_master.`TM_TM_ID` AS TM_ID,
+     institutionmaster.`IM_Name` AS IM_Name,
+     subinstitutionmaster.`SIM_Short_Name` AS SIM_Short_Name,
+     departmentmaster.`DM_Short_Name` AS DM_Short_Name,
+     erpm_tender_master.`TM_Tender_No` AS Tender_No,
+     erpm_tender_master.`TM_Name` AS Tender_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS Tender_Type,
+     erpm_tender_master.`TM_Date` AS Tender_Date,
+     erpm_tender_master.`TM_Document_Link` AS Document_Link,
+     erpm_tender_master.`TM_Notice_Link` AS Notice_Link,
+     erpm_gen_master_A.`ERPMGM_EGM_DESC` AS Tender_Status,
+     erpm_tender_submission.`TSB_Company_Name` AS Awarded_To_Company,
+     erpm_tender_submission.`TSB_Company_Email` AS Company_Email
+FROM
+     `subinstitutionmaster` subinstitutionmaster INNER JOIN `erpm_tender_master` erpm_tender_master ON subinstitutionmaster.`sim_id` = erpm_tender_master.`TM_SIM_ID`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_tender_master.`TM_DM_ID` = departmentmaster.`DM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_tender_master.`TM_Type_ID` = erpm_gen_master.`ERPMGM_EGM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master_A ON erpm_tender_master.`TM_Status_ID` = erpm_gen_master_A.`ERPMGM_EGM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_tender_master.`TM_IM_ID` = institutionmaster.`IM_ID`
+     LEFT OUTER JOIN `erpm_tender_submission` erpm_tender_submission ON erpm_tender_master.`TM_Awarded_Submission_ID` = erpm_tender_submission.`TSB_TSB_ID`
+WHERE $P!{condition}]]>
+	</queryString>
+	<field name="TM_ID" class="java.lang.Long"/>
+	<field name="IM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SIM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Tender_No" class="java.lang.String"/>
+	<field name="Tender_Name" class="java.lang.String"/>
+	<field name="Tender_Type" class="java.lang.String"/>
+	<field name="Tender_Date" class="java.sql.Date"/>
+	<field name="Document_Link" class="java.lang.String"/>
+	<field name="Notice_Link" class="java.lang.String"/>
+	<field name="Tender_Status" class="java.lang.String"/>
+	<field name="Awarded_To_Company" class="java.lang.String"/>
+	<field name="Company_Email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="29" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3f5233c7-dce2-429c-9ecf-ea89145347e1" x="0" y="0" width="630" height="29"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IM_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c2492b49-cd7c-4767-b38f-c751f19f642f" x="138" y="8" width="347" height="21"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[List of Tenders Floated]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="8921deed-dd26-4489-baa2-19f8c95eff84" x="543" y="12" width="88" height="17"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="0" y="29" width="52" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubInstitute]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="103" y="29" width="90" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tender No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="202" y="29" width="74" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tender Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="53" y="29" width="48" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="348" y="29" width="49" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tender Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="404" y="29" width="55" height="21"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Document Link]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="275" y="29" width="67" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tender Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="459" y="29" width="55" height="21"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Notice Link]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="514" y="29" width="62" height="21"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tender Statuts]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="576" y="29" width="56" height="21"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Company Name & Email]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="148" y="2" width="53" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[From Date : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6253fc5-43ec-4100-9998-1cf6a26581d8" x="433" y="2" width="48" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[To Date : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="c8d63f21-a8a3-4230-b54f-ce4ca44e4997" x="203" y="2" width="69" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FDate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="166fa0f2-4e87-4e22-b9a0-35d4961815b7" x="479" y="2" width="74" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TDate}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="07064fdf-b27d-4fbc-b6fe-a2d7cffcfbe7" x="0" y="53" width="630" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b24647a0-86f5-4528-80ab-e695ee4b84ed" x="0" y="0" width="42" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="dd25972e-1582-4a43-b907-50765beb17cd" x="55" y="1" width="46" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0536a096-4c8c-411c-82de-7c2f67ed563e" x="102" y="1" width="98" height="31"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Tender_No}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a0ddc421-5c34-4738-b104-c02b2670c8d6" x="200" y="1" width="74" height="31"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Tender_Name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bc403d7a-e887-46df-90a6-401aad35adfc" x="279" y="1" width="63" height="31"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Tender_Type}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="8103f149-163f-497c-a519-347457b42d26" x="348" y="0" width="49" height="13" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Tender_Date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0016cd0c-1396-435a-8d93-1e3a34bb7aaa" x="404" y="0" width="55" height="32"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Document_Link}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bafc1fca-5aa8-4b38-b427-f1aea6e8180f" x="459" y="1" width="55" height="32"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Notice_Link}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ad6f67e6-e912-4d2c-bc70-38a1d82139df" x="514" y="0" width="62" height="32"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Tender_Status}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="795c4cc3-2e69-478f-9b35-f6ece10cf9ad" x="576" y="0" width="55" height="32"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Company_Email}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement uuid="103f66f5-65c3-4fe1-a9ca-73a6ecc6951a" x="334" y="0" width="128" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " +$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="9" splitType="Stretch"/>
+	</summary>
+</jasperReport>

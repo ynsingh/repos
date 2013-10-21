@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Institution" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Institution" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="4408f12c-407f-48c9-86ad-a3fa61a2a384">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="41"/>
+	<property name="ireport.x" value="407"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="condition" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -13,16 +13,16 @@
      	im.`IM_Short_Name` AS institutionmaster_IM_Short_Name,
      	im.`im_type` AS institutionmaster_im_type,
      	concat(im.`IM_Address_Line1`," ",
-		if(im.`IM_Address_Line2` is null, " ", im.`IM_Address_Line2`),
-		if(im.`IM_District` is null," ",im.`IM_District`),
+		if(im.`IM_Address_Line2` is null, " ", concat(im.`IM_Address_Line2`,", ")),
+		if(im.`IM_District` is null," ",concat(im.`IM_District`,", ")),
 		if(im.`IM_Pin_No` is null, " ", concat(" Pin - ",im.`IM_Pin_No`))) As Address,
      	concat(sm.`State_Name`, ", ",
      		if(cm.country_name is null, "Not Set", cm.country_name)) As StateCountry,
      	im.`IM_EMail_ID` AS institutionmaster_IM_EMail_ID,
      	imType.`ERPMGM_EGM_DESC` AS erpm_gen_master_ERPMGM_EGM_DESC,
-     	if(concat(emp.`EMP_FName`,emp.`EMP_MName`,emp.`EMP_LName`) is null,
+     	if(concat(emp.`EMP_FName`, emp.`EMP_MName`, emp.`EMP_LName`) is null,
 		"Not Available",
-	   concat(emp.`EMP_FName`,emp.`EMP_MName`,emp.`EMP_LName`)) As EmpName
+	   concat(emp.`EMP_FName`, " ",emp.`EMP_MName`, " ",emp.`EMP_LName`)) As EmpName
 FROM
      `employeemaster` emp right JOIN `institutionmaster` im ON emp.`EMP_ID` = im.`IM_EMP_ID`,
      `countrymaster` cm right JOIN `institutionmaster` imB ON cm.`country_id` = imB.`IM_Country_ID`,
@@ -49,22 +49,18 @@ WHERE
 	<title>
 		<band height="58" splitType="Stretch">
 			<staticText>
-				<reportElement x="134" y="26" width="458" height="32"/>
+				<reportElement uuid="de150f5a-7a82-4a4e-99d7-f1581422a84f" x="134" y="26" width="458" height="32"/>
 				<textElement>
 					<font size="24" isBold="true"/>
 				</textElement>
 				<text><![CDATA[List of Institutons]]></text>
 			</staticText>
-			<image>
-				<reportElement x="0" y="0" width="216" height="58"/>
-				<imageExpression><![CDATA["C:\\PICO\\PICO\\web\\images\\MHRD.JPG"]]></imageExpression>
-			</image>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="22" splitType="Stretch">
 			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="702" y="1" width="100" height="20"/>
+				<reportElement uuid="ccf61f21-c93e-47ab-994f-28045ea6bc01" x="702" y="1" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -73,113 +69,113 @@ WHERE
 	<columnHeader>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="28" height="20"/>
+				<reportElement uuid="ee48f55f-5695-433c-a70b-3a79ba71e532" x="0" y="0" width="28" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[S.No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="38" y="0" width="100" height="20"/>
+				<reportElement uuid="a44374f8-110f-48de-bb89-b3fe1fee5008" x="38" y="0" width="100" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Institution Name]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="0" width="802" height="1"/>
+				<reportElement uuid="98dae9a4-b0d9-454b-b88f-cb6c7aa94767" x="0" y="0" width="802" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="148" y="1" width="60" height="20"/>
+				<reportElement uuid="ca0f8bf1-878e-4eca-a521-9c6267e43ac9" x="148" y="1" width="60" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Short Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="215" y="0" width="94" height="19"/>
+				<reportElement uuid="6107efee-17b3-47de-bbd4-2ec452bf7c20" x="215" y="0" width="94" height="19"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Institution Type]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="314" y="0" width="194" height="19"/>
+				<reportElement uuid="47b99d0a-0ee7-4439-8d27-c823f4011603" x="314" y="0" width="194" height="19"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Address]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="515" y="0" width="94" height="19"/>
+				<reportElement uuid="3d1198d8-67d0-44ba-92e7-2c51d4a5c6d0" x="515" y="0" width="94" height="19"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[State, Country]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="616" y="0" width="94" height="19"/>
+				<reportElement uuid="b5ec2d18-70a2-4b4c-80ae-97e482269ade" x="616" y="0" width="94" height="19"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Contact Person]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="715" y="1" width="87" height="19"/>
+				<reportElement uuid="2bcf6ac0-f84d-4ac9-9cd5-3a8a3adba820" x="715" y="1" width="87" height="19"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Contact EMail]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="18" width="802" height="1"/>
+				<reportElement uuid="3d541003-c4c2-4cb0-8eda-7394fe8d1b2f" x="0" y="18" width="802" height="1"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="28" height="20"/>
+				<reportElement uuid="4c138653-a5f0-47c4-b2e0-cf1ae0758cc3" x="0" y="0" width="28" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="38" y="0" width="100" height="20"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8f972bfd-25b0-4c4c-8c3a-b9822d28fd39" isPrintRepeatedValues="false" x="38" y="0" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="148" y="0" width="60" height="20"/>
+				<reportElement uuid="9cf0c170-627c-4b4c-bc17-28c1a919bc76" x="148" y="0" width="60" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Short_Name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="1" width="93" height="20"/>
+				<reportElement uuid="bfd07ada-5a5e-4662-8422-ea02a58c704d" x="216" y="1" width="93" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{erpm_gen_master_ERPMGM_EGM_DESC}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="316" y="0" width="192" height="20"/>
+				<reportElement uuid="862e25c4-3d57-49f3-99d9-44d1515484ee" x="316" y="0" width="192" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{Address}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="515" y="1" width="94" height="20"/>
+				<reportElement uuid="f1874684-57ef-4d05-9835-d8a20956b4b5" x="515" y="1" width="94" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{StateCountry}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="615" y="0" width="95" height="20" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="d2e3b59d-607c-4518-aad6-96fe510bbc8b" x="615" y="0" width="95" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{EmpName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="716" y="1" width="86" height="20"/>
+				<reportElement uuid="51b5b932-d156-4e0f-ae76-9dca5fc66f9e" x="716" y="1" width="86" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{institutionmaster_IM_EMail_ID}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="-1" y="21" width="802" height="1"/>
+				<reportElement uuid="96e082dc-9003-4127-9aef-431b6b4dc498" positionType="Float" x="-1" y="21" width="802" height="1"/>
 			</line>
 		</band>
 	</detail>
@@ -189,12 +185,12 @@ WHERE
 	<pageFooter>
 		<band height="54" splitType="Stretch">
 			<textField>
-				<reportElement x="319" y="14" width="80" height="20"/>
+				<reportElement uuid="1dcc30ef-c7d9-4936-8aa7-b3e0a0f88945" x="319" y="14" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="400" y="14" width="40" height="20"/>
+				<reportElement uuid="0d2cfcba-9ed6-44ff-9208-df025ba83862" x="400" y="14" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>

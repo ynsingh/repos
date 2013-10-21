@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmTenderSubmission" table="erpm_tender_submission">
+        <id name="tsbTsbId" type="java.lang.Integer">
+            <column name="TSB_TSB_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="TSB_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="TSB_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="TSB_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmTenderMaster" class="pojo.hibernate.ErpmTenderMaster" fetch="select">
+            <column name="TSB_TM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="TSB_EMD_Type_ID" />
+        </many-to-one>
+        <property name="tsbSubmissionDate" type="date">
+            <column name="TSB_Submission_Date" length="10" not-null="true" />
+        </property>
+        <property name="tsbCompanyName" type="string">
+            <column name="TSB_Company_Name" length="100" not-null="true" />
+        </property>
+        <property name="tsbCompanyEmail" type="string">
+            <column name="TSB_Company_Email" length="100" not-null="true" />
+        </property>
+        <property name="tsbCompanyAddress" type="string">
+            <column name="TSB_Company_Address" length="100" />
+        </property>
+        <property name="tsbCompanyPhone" type="string">
+            <column name="TSB_Company_Phone" length="45" />
+        </property>
+        <property name="tsbEmdAmount" type="java.lang.Integer">
+            <column name="TSB_EMD_Amount" />
+        </property>
+        <property name="tsbEmdBankName" type="string">
+            <column name="TSB_EMD_Bank_Name" length="50" />
+        </property>
+        <property name="tsbBgDdNo" type="string">
+            <column name="TSB_BG_DD_No" length="30" />
+        </property>
+        <property name="tsbBgDdValidityDate" type="date">
+            <column name="TSB_BG_DD_Validity_Date" length="10" />
+        </property>
+        <property name="tsbTenderFee" type="java.lang.Integer">
+            <column name="TSB_Tender_Fee" />
+        </property>
+        <property name="tsbDdCash" type="string">
+            <column name="TSB_DD_Cash" length="5" />
+        </property>
+        <property name="tsbDdCashReceiptNo" type="string">
+            <column name="TSB_DD_CashReceipt_No" length="10" />
+        </property>
+        <property name="tsbEmdReturned" type="java.lang.Character">
+            <column name="TSB_EMD_Returned" length="1" />
+        </property>
+        <property name="tsbEmdReturnDate" type="date">
+            <column name="TSB_EMD_Return_Date" length="10" />
+        </property>
+        <property name="tsbEmdReturnFileReference" type="string">
+            <column name="TSB_EMD_Return_File_Reference" length="100" />
+        </property>
+        <set name="erpmTenderMasters" inverse="true">
+            <key>
+                <column name="TM_Awarded_Submission_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderMaster" />
+        </set>
+        <set name="erpmTenderSubmissionFileses" inverse="true">
+            <key>
+                <column name="TSF_TSB_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSubmissionFiles" />
+        </set>
+    </class>
+</hibernate-mapping>

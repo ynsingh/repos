@@ -5,7 +5,12 @@
 
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import java.util.List;
+import org.hibernate.Hibernate;
+
 import java.util.List;
 
 
@@ -13,82 +18,151 @@ import java.util.List;
  *
  * @author afreen
  */
-public class SuppliermasterDAO extends BaseDAO {
-public void save(Suppliermaster  erpmsm) {
+public class SuppliermasterDAO {
+    public void save(Suppliermaster  erpmsm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(erpmsm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.save(erpmsm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(erpmsm != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
      public void update(Suppliermaster  erpmsm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(erpmsm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.update(erpmsm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(erpmsm != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
     public void delete(Suppliermaster  erpmsm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(erpmsm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(erpmsm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(erpmsm != null)
+                tx.rollback();
             throw re;
         }
-    }
-    public List<Suppliermaster > findAll() {
-        beginTransaction();
-        List<Suppliermaster > list = getSession().createQuery("from Suppliermaster ").list();
-        commitTransaction();
-        return list;
+        finally {
+            session.close();
+        }
     }
 
-    public Suppliermaster  findByErpmSMId(Integer erpmsmId) {
-        beginTransaction();
-       Suppliermaster  erpmsm  = (Suppliermaster ) getSession().load(Suppliermaster .class , erpmsmId);
-        commitTransaction();
-        return erpmsm;
-      }
+    public List<Suppliermaster > findAll() {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Suppliermaster > list = session.createQuery("from Suppliermaster ").list();            
+            return list;
+        }
+        finally {
+            session.close();
+            }        
+    }
+
+    public List<Suppliermaster> findForUserInstitutes(Integer erpmuId) {
+        String SQL = "Select u from Suppliermaster u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)";
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Suppliermaster > list = session.createQuery(SQL).setParameter("erpmuId",erpmuId).list();
+            for(int index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getErpmGenMasterBySmOwnershipType());
+                Hibernate.initialize(list.get(index).getErpmGenMasterBySmSupplierType());
+            }
+            return list;
+        }
+        finally {
+            session.close();
+            }        
+        
+    }
+    
+    public Suppliermaster  findByErpmSMId(Integer erpmsmId) {        
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            Suppliermaster  erpmsm  = (Suppliermaster ) session.load(Suppliermaster .class , erpmsmId);
+            Hibernate.initialize(erpmsm);
+            return erpmsm;            
+        }
+        finally {
+            session.close();
+            }        
+    }
 
 
  public List<Suppliermaster > findByImId(Short imId) {
-        beginTransaction();
-        List<Suppliermaster>  erpmsmList  =  getSession().createQuery("Select u from Suppliermaster  u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
-        commitTransaction();
-        return erpmsmList;
-}
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Suppliermaster>  erpmsmList  =  session.createQuery("Select u from Suppliermaster  u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            return erpmsmList;
+        }
+        finally {
+            session.close();
+            }        
+ }
 
  public Suppliermaster  findByImnSup(Short imId,String smName) {
-        beginTransaction();
-        List<Suppliermaster>  erpmsm  =  getSession().createQuery("Select u from Suppliermaster  u where u.institutionmaster.imId = :imId and u.smName= :smName").setParameter("imId", imId).setParameter("smName", smName).list();
-        commitTransaction();
-        return erpmsm.get(0);
-}
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            List<Suppliermaster>  erpmsm  =  session.createQuery("Select u from Suppliermaster  u where u.institutionmaster.imId = :imId and u.smName= :smName").setParameter("imId", imId).setParameter("smName", smName).list();
+            return erpmsm.get(0);
+        }
+        finally {
+            session.close();
+            }        
+ }
 
  public String findByPANNo(String  panNo, Short imId) {
-        beginTransaction();
-        String  supplierName  =  getSession().createQuery("Select u.smName from Suppliermaster u where u.smPanNo = :panNo and u.institutionmaster.imId = :imId").setParameter("panNo", panNo).setParameter("imId", imId).list().get(0).toString();
-        commitTransaction();
-        return supplierName;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            String  supplierName  =  session.createQuery("Select u.smName from Suppliermaster u where u.smPanNo = :panNo and u.institutionmaster.imId = :imId").setParameter("panNo", panNo).setParameter("imId", imId).list().get(0).toString();
+            return supplierName;
+        }
+        finally {
+            session.close();
+            }       
 }
 
  public String findByTANNo(String  tanNo, Short imId) {
-        beginTransaction();
-        String  supplierName  =  getSession().createQuery("Select u.smName from Suppliermaster u where u.smTanNo = :tanNo  and u.institutionmaster.imId = :imId").setParameter("tanNo", tanNo).setParameter("imId", imId).list().get(0).toString();
-        commitTransaction();
-        return supplierName;
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            String  supplierName  =  session.createQuery("Select u.smName from Suppliermaster u where u.smTanNo = :tanNo  and u.institutionmaster.imId = :imId").setParameter("tanNo", tanNo).setParameter("imId", imId).list().get(0).toString();
+            return supplierName;
+        }
+        finally {
+            session.close();
+            }        
 }
 }

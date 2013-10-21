@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -11,6 +11,7 @@ public class Workflowtransaction  implements java.io.Serializable {
 
 
      private Integer wftId;
+     private ErpmGenMaster erpmGenMaster;
      private Committeemaster committeemasterByWftDestinationId;
      private Committeemaster committeemasterByWftSourceId;
      private Workflowmaster workflowmaster;
@@ -18,7 +19,6 @@ public class Workflowtransaction  implements java.io.Serializable {
      private int wftWorkId;
      private Integer wftStage;
      private String wftDestinationEmail;
-     private String wftActionTaken;
      private String wftActionRemarks;
 
     public Workflowtransaction() {
@@ -30,7 +30,8 @@ public class Workflowtransaction  implements java.io.Serializable {
         this.wftDate = wftDate;
         this.wftWorkId = wftWorkId;
     }
-    public Workflowtransaction(Committeemaster committeemasterByWftDestinationId, Committeemaster committeemasterByWftSourceId, Workflowmaster workflowmaster, Date wftDate, int wftWorkId, Integer wftStage, String wftDestinationEmail, String wftActionTaken, String wftActionRemarks) {
+    public Workflowtransaction(ErpmGenMaster erpmGenMaster, Committeemaster committeemasterByWftDestinationId, Committeemaster committeemasterByWftSourceId, Workflowmaster workflowmaster, Date wftDate, int wftWorkId, Integer wftStage, String wftDestinationEmail, String wftActionRemarks) {
+       this.erpmGenMaster = erpmGenMaster;
        this.committeemasterByWftDestinationId = committeemasterByWftDestinationId;
        this.committeemasterByWftSourceId = committeemasterByWftSourceId;
        this.workflowmaster = workflowmaster;
@@ -38,7 +39,6 @@ public class Workflowtransaction  implements java.io.Serializable {
        this.wftWorkId = wftWorkId;
        this.wftStage = wftStage;
        this.wftDestinationEmail = wftDestinationEmail;
-       this.wftActionTaken = wftActionTaken;
        this.wftActionRemarks = wftActionRemarks;
     }
    
@@ -48,6 +48,13 @@ public class Workflowtransaction  implements java.io.Serializable {
     
     public void setWftId(Integer wftId) {
         this.wftId = wftId;
+    }
+    public ErpmGenMaster getErpmGenMaster() {
+        return this.erpmGenMaster;
+    }
+    
+    public void setErpmGenMaster(ErpmGenMaster erpmGenMaster) {
+        this.erpmGenMaster = erpmGenMaster;
     }
     public Committeemaster getCommitteemasterByWftDestinationId() {
         return this.committeemasterByWftDestinationId;
@@ -97,13 +104,6 @@ public class Workflowtransaction  implements java.io.Serializable {
     
     public void setWftDestinationEmail(String wftDestinationEmail) {
         this.wftDestinationEmail = wftDestinationEmail;
-    }
-    public String getWftActionTaken() {
-        return this.wftActionTaken;
-    }
-    
-    public void setWftActionTaken(String wftActionTaken) {
-        this.wftActionTaken = wftActionTaken;
     }
     public String getWftActionRemarks() {
         return this.wftActionRemarks;

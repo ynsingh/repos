@@ -5,15 +5,15 @@
 
 <struts>
 
-   <package name="Administration" namespace="/Administration" extends="struts-default">
+    <package name="Administration" namespace="/Administration" extends="struts-default">
 
         <interceptors>
             <interceptor name="loginInterceptor" class="Administration.AuthenticationInterceptor" />
             <interceptor-stack name="AdministrationStack">
-<!--                <interceptor-ref name="loginInterceptor" /> -->
-                    <interceptor-ref name="validation">
-                            <param name="excludeMethods">execute, browse</param>
-                    </interceptor-ref>
+                <!--                <interceptor-ref name="loginInterceptor" /> -->
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">execute, browse</param>
+                </interceptor-ref>
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
         </interceptors>
@@ -36,12 +36,24 @@
             <result name="input">/pico/Administration/login.jsp</result>
         </action>
 
+        <action name="brihaspatiLogin" method="brihaspatiLogin" class="Administration.ErpmusersAction">
+            <result name="success">/pico/Administration/login.jsp</result>
+            <result name="error">/pico/Administration/login.jsp</result>
+            <result name="input">/pico/Administration/login.jsp</result>
+        </action>
+
+        <action name="verifyBrihaspatiLogin" method="verifyBrihaspatiLogin" class="Administration.ErpmusersAction">
+            <result name="success">/pico/Administration/showWelcomePage.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
         <action name="LogoutAction" class="Administration.LogoutAction">
             <result name="success">/pico/Administration/login.jsp</result>
             <result name="error">/pico/Administration/login.jsp</result>
         </action>
 
-<!-- ACTIONS RELATED TO USERS REGISTRATION MANAGEMENT -->
+        <!-- ACTIONS RELATED TO USERS REGISTRATION MANAGEMENT -->
 
         <action name="AddUser" method="AddUser" class="Administration.ManageUserAction">
             <result name="success">/pico/Administration/AddUser.jsp</result>
@@ -54,7 +66,7 @@
             <result name="input">/pico/Administration/AddUser.jsp</result>
         </action>
 
-<!-- ACTIONS RELATED TO INSTITUTION ADMINISTRATOR'S REGISTRATION MANAGEMENT -->
+        <!-- ACTIONS RELATED TO INSTITUTION ADMINISTRATOR'S REGISTRATION MANAGEMENT -->
 
         <action name="AdminRegistration" method="AdminRegistration" class="Administration.ManageUserAction">
             <result name="success">/pico/Administration/AdminRegistration.jsp</result>
@@ -63,12 +75,39 @@
         </action>
 
         <action name="AddAdministratorAction" method="SaveAdminRegistration" class="Administration.ManageUserAction">
-             <interceptor-ref name="AdministrationStack" />
+            <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/login.jsp</result>
             <result name="error">/pico/Administration/AdminRegistration.jsp</result>
             <result name="input">/pico/Administration/AdminRegistration.jsp</result>
         </action>
-<!-- ACTIONS RELATED TO FORGOT PASSWORD -->
+
+        <action name="ViewRegisteredInstitutions" method="ViewRegisteredInstitutions" class="Administration.ManageUserAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="success">/pico/Administration/ViewRegisteredInstitutions.jsp</result>
+            <result name="error">/pico/Administration/Error.jsp</result>
+            <result name="input">/pico/Administration/ViewRegisteredInstitutions.jsp</result>
+        </action>
+
+
+        <action name="PrepareMessageForInstitutionAdmin" method="PrepareMessageForInstitutionAdmin" class="Administration.ManageUserAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="success">/pico/Administration/PrepareMessageForInstitutionAdmin.jsp</result>
+            <result name="error">/pico/Administration/Error.jsp</result>
+            <result name="input">/pico/Administration/PrepareMessageForInstitutionAdmin.jsp</result>
+        </action>
+
+        <action name="SendMessageToInstitutionAdmin" method="SendMessageToInstitutionAdmin" class="Administration.ManageUserAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="success">/pico/Administration/login.jsp</result>
+            <result name="error">/pico/Administration/Error.jsp</result>
+            <result name="input">/pico/Administration/PrepareMessageForInstitutionAdmin.jsp</result>
+        </action>
+
+
+
+        <!-- ACTIONS RELATED TO FORGOT PASSWORD -->
+
+
 
         <action name="ForgotPassword" class="Administration.ManageUserAction">
             <result name="success">/pico/Administration/ForgotPassword.jsp</result>
@@ -134,18 +173,12 @@
             <result name="error">/pico/Administration/login.jsp</result>
         </action>
 
-      <!-- <action name="AddProfile" method="AddProfile" class="Administration.ManageUserAction">
-            <result name="success">/pico/Administration/UserProfile.jsp</result>
-            <result name="error">/pico/Administration/ErrorPage.jsp</result>
-            <result name="input">/pico/Administration/UserProfile.jsp</result>
-        </action>-->
-
- <action name="AddProfile" method="AddProfile" class="Administration.ManageUserAction">
+        <action name="AddProfile" method="AddProfile" class="Administration.ManageUserAction">
             <result name="success">/pico/Administration/AddUserProfile.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/AddUserProfile.jsp</result>
         </action>
-<!-- ACTIONS RELATED TO INSTITUTIONS USER PROFILE MANAGEMENT -->
+        <!-- ACTIONS RELATED TO INSTITUTIONS USER PROFILE MANAGEMENT -->
 
         <action name="SaveUserProfile" method="SaveUserProfile" class="Administration.ManageUserAction">
             <result name="success">/pico/Administration/UserProfile.jsp</result>
@@ -166,8 +199,8 @@
             <result name="input">/pico/Administration/UserProfile.jsp</result>
         </action>
 
-<!-- ACTIONS RELATED TO PROFILE PRIVILEGES MANAGEMENT -->
- <action name="InitializeIURP" method="InitializeIURP" class="Administration.ManageInstitutionUserRole">
+        <!-- ACTIONS RELATED TO PROFILE PRIVILEGES MANAGEMENT -->
+        <action name="InitializeIURP" method="InitializeIURP" class="Administration.ManageInstitutionUserRole">
             <result name="success">/pico/Administration/IURProfile.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/IURProfile.jsp</result>
@@ -176,7 +209,7 @@
             <result name="success">/pico/Administration/ShowIURProfile.jsp</result>
             <result name="error">/pico/Administration/ShowIURProfile.jsp</result>
         </action>
-       <action name="CreateIURP" method="CreateIURP" class="Administration.ManageInstitutionUserRole">
+        <action name="CreateIURP" method="CreateIURP" class="Administration.ManageInstitutionUserRole">
             <result name="success">/pico/Administration/ShowIURProfile.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/IURProfile.jsp</result>
@@ -197,11 +230,11 @@
             <result>/pico/Administration/showWelcomePage.jsp</result>
         </action>
 
-    <action name="ManageAuthorizationRequests" method="AuthorizeUsers" class="Administration.ManageUserAction">
-        <result name="success">/pico/Administration/ManageAuthorizationRequests.jsp</result>
+        <action name="ManageAuthorizationRequests" method="AuthorizeUsers" class="Administration.ManageUserAction">
+            <result name="success">/pico/Administration/ManageAuthorizationRequests.jsp</result>
             <result name="error">/pico/Administration/ManageAuthorizationRequests.jsp</result>
             <result name="input">/pico/Administration/ManageAuthorizationRequests.jsp</result>
-    </action>
+        </action>
 
 
         <!-- The following action deals with Deletion of User Role Privilgese -->
@@ -212,7 +245,7 @@
             <result name="success">/pico/Administration/ShowIURProfile.jsp</result>
         </action>
 
-       <!-- The following action deals with Editing of User Role Privilgese -->
+        <!-- The following action deals with Editing of User Role Privilgese -->
         <action name="EditIURP" method="EditIURP" class="Administration.ManageInstitutionUserRole">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/EditIURProfile.jsp</result>
@@ -231,14 +264,14 @@
             <result>/pico/Administration/showWelcomePage.jsp</result>
         </action>
 
-    <action name="ManageAuthorizationRequests" method="AuthorizeUsers" class="Administration.ManageUserAction">
-        <result name="success">/pico/Administration/ManageAuthorizationRequests.jsp</result>
+        <action name="ManageAuthorizationRequests" method="AuthorizeUsers" class="Administration.ManageUserAction">
+            <result name="success">/pico/Administration/ManageAuthorizationRequests.jsp</result>
             <result name="error">/pico/Administration/ManageAuthorizationRequests.jsp</result>
             <result name="input">/pico/Administration/ManageAuthorizationRequests.jsp</result>
-    </action>
+        </action>
 
 
-  <!-- ACTIONS RELATED TO Employee Master  MANAGEMENT -->
+        <!-- ACTIONS RELATED TO Employee Master  MANAGEMENT -->
         <action name="ManageEmployeeAction" class="Administration.ManageEmployeeAction">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/employeemaster.jsp</result>
@@ -251,111 +284,128 @@
             <result name="success">/pico/Administration/employeemaster.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/employeemaster.jsp</result>
-    </action>
+        </action>
 
-    <action name="ClearEmployee" method="Clear" class="Administration.ManageEmployeeAction">
+        <action name="ClearEmployee" method="Clear" class="Administration.ManageEmployeeAction">
             <result name="success">/pico/Administration/employeemaster.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
-    <action name="BrowseEmployee" method="Browse" class="Administration.ManageEmployeeAction">
+        <action name="BrowseEmployee" method="Browse" class="Administration.ManageEmployeeAction">
             <result name="success">/pico/Administration/employeeBrowse.jsp</result>
-    </action>
+        </action>
 
-    <action name="EditEmployee" method="Edit"  class="Administration.ManageEmployeeAction">
-          <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+        <action name="EditEmployee" method="Edit"  class="Administration.ManageEmployeeAction">
             <result name="success">/pico/Administration/employeemaster.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
-    <action name="DeleteEmployee" method="Delete" class="Administration.ManageEmployeeAction">
+        <action name="DeleteEmployee" method="Delete" class="Administration.ManageEmployeeAction">
             <result name="success">/pico/Administration/employeeBrowse.jsp</result>
-    </action>
+        </action>
 
 
+        <action name="PrintEmployees" method="Print" class="Administration.ManageEmployeeAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <!-- <result name="success">/pico/Administration/Institution.jsp</result>-->
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
 
 
-       <!-- ACTIONS RELATED TO INSTITUTION MASTER MANAGEMENT -->
-    <action name="ManageInstitutionAction" class="Administration.InstitutionAction">
+        <!-- ACTIONS RELATED TO INSTITUTION MASTER MANAGEMENT -->
+        <action name="ManageInstitutionAction" class="Administration.InstitutionAction">
             <result name="success">/pico/Administration/Institution.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
-    <action name="SaveInstitutionAction" method="Save" class="Administration.InstitutionAction">
+        <action name="SaveInstitutionAction" method="Save" class="Administration.InstitutionAction">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/showWelcomePage.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/Institution.jsp</result>
-    </action>
+        </action>
 
-    <action name="ClearInstitution" method="Clear" class="Administration.InstitutionAction">
+        <action name="ClearInstitution" method="Clear" class="Administration.InstitutionAction">
             <result name="success">/pico/Administration/Institution.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
-    <action name="BrowseInstitutions" method="Browse" class="Administration.InstitutionAction">
+        <action name="BrowseInstitutions" method="Browse" class="Administration.InstitutionAction">
             <result name="success">/pico/Administration/InstitutionsBrowse.jsp</result>
-    </action>
+        </action>
 
-    <action name="PrintInstitutions" method="Print" class="Administration.InstitutionAction">
+        <action name="PrintInstitutions" method="Print" class="Administration.InstitutionAction">
             <result name="success" type="stream">
-                    <param name="contentType">application/pdf</param>
-                    <param name="inputName">inputStream</param>
-                    <param name="bufferSize">1024</param>
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
             </result>
-            <!-- <result name="success">/pico/Administration/Institution.jsp</result>-->
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
-    <action name="EditInstitution" method="Edit"  class="Administration.InstitutionAction">
-          <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+        <action name="EditInstitution" method="Edit"  class="Administration.InstitutionAction">
             <result name="success">/pico/Administration/Institution.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+            <result name="input">/pico/Administration/InstitutionsBrowse.jsp</result>
+        </action>
 
-    <action name="DeleteInstitution" method="Delete" class="Administration.InstitutionAction">
+        <action name="DeleteInstitution" method="Delete" class="Administration.InstitutionAction">
             <result name="success">/pico/Administration/InstitutionsBrowse.jsp</result>
-    </action>
+            <result name="input">/pico/Administration/InstitutionsBrowse.jsp</result>
+        </action>
 
-    <!-- ACTIONS RELATED TO SUB INSTITUTION MASTER MANAGEMENT -->
-<action name="autocompleter" class="Administration.SubInstitutionAction">
-          <result>/pico/Administration/SubInstitution.jsp</result>
-</action>
-    <action name="ManageSubInstitutionAction" class="Administration.SubInstitutionAction">
-        <result name="success">/pico/Administration/SubInstitution.jsp</result>
-        <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        <!-- ACTIONS RELATED TO SUB INSTITUTION MASTER MANAGEMENT -->
+        <action name="autocompleter" class="Administration.SubInstitutionAction">
+            <result>/pico/Administration/SubInstitution.jsp</result>
+        </action>
+        <action name="ManageSubInstitutionAction" class="Administration.SubInstitutionAction">
+            <result name="success">/pico/Administration/SubInstitution.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
 
-    <action name="SaveSubInstitutionAction"  method="Save" class="Administration.SubInstitutionAction">
+        <action name="SaveSubInstitutionAction"  method="Save" class="Administration.SubInstitutionAction">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/showWelcomePage.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/SubInstitution.jsp</result>
-    </action>
+        </action>
 
-    <action name="ClearSubInstitution" method="Clear" class="Administration.SubInstitutionAction">
+        <action name="ClearSubInstitution" method="Clear" class="Administration.SubInstitutionAction">
             <result name="success">/pico/Administration/SubInstitution.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
-    <action name="BrowseSubInstitutions" method="Browse" class="Administration.SubInstitutionAction">
+        <action name="BrowseSubInstitutions" method="Browse" class="Administration.SubInstitutionAction">
             <result name="success">/pico/Administration/SubInstitutionsBrowse.jsp</result>
-    </action>
+        </action>
 
-    <action name="EditSubInstitution" method="Edit"  class="Administration.SubInstitutionAction">
-          <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+        <action name="PrintSubInstitutions" method="Print" class="Administration.SubInstitutionAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="EditSubInstitution" method="Edit"  class="Administration.SubInstitutionAction">
+            <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
             <result name="success">/pico/Administration/SubInstitution.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
-    </action>
+        </action>
 
         <action name="DeleteSubInstitution" method="Delete" class="Administration.SubInstitutionAction">
             <result name="success">/pico/Administration/SubInstitutionsBrowse.jsp</result>
         </action>
 
-         <!-- ACTIONS RELATED TO DEPARTMENT MASTER MANAGEMENT -->
+        <!-- ACTIONS RELATED TO DEPARTMENT MASTER MANAGEMENT -->
         <action name="ManageDepartmentAction" class="Administration.DepartmentAction">
             <result name="success">/pico/Administration/Department.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/Department.jsp</result>
         </action>
 
         <action name="SaveDepartmentAction" method="Save"  class="Administration.DepartmentAction">
@@ -372,16 +422,26 @@
 
         <action name="BrowseDepartments" method="Browse" class="Administration.DepartmentAction">
             <result name="success">/pico/Administration/DepartmentsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/Department.jsp</result>
         </action>
 
         <action name="EditDepartment" method="Edit"  class="Administration.DepartmentAction">
-          <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
+            <!--  <result name="success" type="redirectAction">ManageInstitutionAction</result> -->
             <result name="success">/pico/Administration/Department.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
         <action name="DeleteDepartment" method="Delete" class="Administration.DepartmentAction">
             <result name="success">/pico/Administration/DepartmentsBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="PrintDepartments" method="Print" class="Administration.DepartmentAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
         </action>
 
@@ -401,19 +461,19 @@
             <result name="input">/pico/Administration/showWelcomePage.jsp</result>
         </action>
 
-       <action name="FetchEntries"   method="insertupdate" class="Administration.ManageBudgetHeadAction">
+        <action name="FetchEntries"   method="insertupdate" class="Administration.ManageBudgetHeadAction">
             <interceptor-ref name="AdministrationStack" />
-           <interceptor-ref name="fileUploadStack" >
-           <param name="maximumSize">2097152</param>
-        <param name="allowedTypes">
-            text/csv,image/png,image/gif,image/jpeg,image/pjpeg
-        </param>
-</interceptor-ref>
-                <result name="success">/pico/Administration/ManageBudgetHead.jsp</result>
+            <interceptor-ref name="fileUploadStack" >
+                <param name="maximumSize">2097152</param>
+                <param name="allowedTypes">
+                    text/csv,image/png,image/gif,image/jpeg,image/pjpeg
+                </param>
+            </interceptor-ref>
+            <result name="success">/pico/Administration/ManageBudgetHead.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/ManageBudgetHead.jsp</result>
         </action>
-<action name="ManageExportAction"   method="Export" class="Administration.ManageBudgetHeadAction">
+        <action name="ManageExportAction"   method="Export" class="Administration.ManageBudgetHeadAction">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/ManageBudgetHead.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
@@ -543,7 +603,7 @@
             <result name="input">/pico/Administration/ManageGeneralMaster.jsp</result>
         </action>
 
-     <!-- ACTIONS RELATED TO DEPARTMENTAL BUDGET ALLOCATION MANAGEMENT -->
+        <!-- ACTIONS RELATED TO DEPARTMENTAL BUDGET ALLOCATION MANAGEMENT -->
         <action name="ManageDepartmentalBudgetAllocationAction" class="Administration.ManageDepartmentalBudgetAllocation">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
@@ -558,14 +618,14 @@
             <result name="input">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
         </action>
 
-         <action name="DeleteDepartmentalBudgetAllocation"  method="Delete" class="Administration.ManageDepartmentalBudgetAllocation">
+        <action name="DeleteDepartmentalBudgetAllocation"  method="Delete" class="Administration.ManageDepartmentalBudgetAllocation">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
         </action>
 
-         <action name="EditDepartmentalBudgetAllocation"  method="Edit" class="Administration.ManageDepartmentalBudgetAllocation">
+        <action name="EditDepartmentalBudgetAllocation"  method="Edit" class="Administration.ManageDepartmentalBudgetAllocation">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
@@ -573,29 +633,29 @@
         </action>
 
 
-         <action name="ClearDepartmentalBudgetAllocation"  method="Clear" class="Administration.ManageDepartmentalBudgetAllocation">
+        <action name="ClearDepartmentalBudgetAllocation"  method="Clear" class="Administration.ManageDepartmentalBudgetAllocation">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
         </action>
 
-<action name="FetchDepartmentalBudgetAllocation"  method="Fetch" class="Administration.ManageDepartmentalBudgetAllocation">
+        <action name="FetchDepartmentalBudgetAllocation"  method="Fetch" class="Administration.ManageDepartmentalBudgetAllocation">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
         </action>
 
-<action name="ManageExportDepartmentalBudgetAllocation"  method="Export" class="Administration.ManageDepartmentalBudgetAllocation">
+        <action name="ManageExportDepartmentalBudgetAllocation"  method="Export" class="Administration.ManageDepartmentalBudgetAllocation">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/DepartmentalBudgetAllocation.jsp</result>
         </action>
 
-<!-- MANAGE MESSAGES -->
-         <action name="ManageMessageAction"   class="Administration.ManageMessagesAction">
+        <!-- MANAGE MESSAGES -->
+        <action name="ManageMessageAction"   class="Administration.ManageMessagesAction">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/Messages.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
@@ -661,7 +721,7 @@
         </action>
 
 
-<!-- This part handles CommitteeMaster Actions -->
+        <!-- This part handles CommitteeMaster Actions -->
         <!-- ACTIONS RELATED TO COMMITEE  MASTER MANAGEMENT -->
         <action name="CommitteeMasterAction" class="Administration.CommitteeMasterAction">
             <interceptor-ref name="AdministrationStack" />
@@ -705,7 +765,7 @@
             <result name="input">/pico/Administration/ManageCommitteeMaster.jsp</result>
         </action>
 
-    <!-- This part handles WorkFlowMaster Actions -->
+        <!-- This part handles WorkFlowMaster Actions -->
         <action name="WorkFlowMasterAction" class="Administration.WorkFlowMasterAction">
             <interceptor-ref name="AdministrationStack" />
             <result name="success">/pico/Administration/ManageWorkFlowMaster.jsp</result>
@@ -742,7 +802,6 @@
         </action>
 
         <action name="ClearWorkFlowMasterAction" method="Clear" class="Administration.WorkFlowMasterAction">
-
             <result name="success">/pico/Administration/ManageWorkFlowMaster.jsp</result>
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/ManageWorkFlowMaster.jsp</result>
@@ -815,5 +874,237 @@
             <result name="error">/pico/Administration/ErrorPage.jsp</result>
             <result name="input">/pico/Administration/ManageWorkflowActions.jsp</result>
         </action>
-        </package>
+
+        <action name="ErpmprogramAction"  class="Administration.ErpmprogramAction">
+            <result name="success">/pico/Administration/Erpmprogram.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/Erpmprogram.jsp</result>
+        </action>
+
+        <action name="SaveErpmprogramAction" method="Save" class="Administration.ErpmprogramAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="success">/pico/Administration/Erpmprogram.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/Erpmprogram.jsp</result>
+        </action>
+
+        <action name="BrowsePrograms" method="Browse" class="Administration.ErpmprogramAction">
+            <result name="success">/pico/Administration/ErpmprogramBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ErpmprogramBrowse.jsp</result>
+        </action>
+
+        <action name="ClearProgram" method="Clear" class="Administration.ErpmprogramAction">
+            <result name="success">/pico/Administration/Erpmprogram.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/Erpmprogram.jsp</result>
+        </action>
+
+        <action name="DeleteProgram" method="Delete" class="Administration.ErpmprogramAction">
+            <result name="success">/pico/Administration/ErpmprogramBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="Editprogram" method="Edit" class="Administration.ErpmprogramAction">
+            <result name="success">/pico/Administration/Erpmprogram.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="ManageSubmoduleAction"  class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmodule.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <action name="BrowseModules" method="Browse" class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmodule.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageSubmodule.jsp</result>
+        </action>
+
+        <action name="SaveManageSubmoduleAction" method="Save" class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmodule.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageSubmodule.jsp</result>
+        </action>
+
+        <action name="ClearModule" method="Clear" class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmodule.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageSubmodule.jsp</result>
+        </action>
+
+        <action name="Editmodule" method="Edit" class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmodule.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageSubmodule.jsp</result>
+        </action>
+
+        <action name="Browsemodule" method="Browse" class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmoduleBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageSubmoduleBrowse.jsp</result>
+        </action>
+
+        <action name="Deletemodule" method="Delete" class="Administration.ManageSubmoduleAction">
+            <result name="success">/pico/Administration/ManageSubmoduleBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageSubmoduleBrowse.jsp</result>
+        </action>
+
+        <action name="showJobs" method="showJobs" class="Administration.UserMessages">
+            <result name="success">/pico/Administration/showJobs.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/showJobs.jsp</result>
+        </action>
+
+        <!-- This part handles ManageNewsAction Actions -->
+        <action name="ManageNewsAction" class="Administration.ManageNewsAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="SUCCESS">/pico/Administration/ManageNews.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageNews.jsp</result>
+        </action>
+
+        <action name="SaveManageNewsAction" method="Save" class="Administration.ManageNewsAction">
+
+            <result name="SUCCESS">/pico/Administration/ManageNews.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageNews.jsp</result>
+        </action>
+        <action name="BrowseManageNewsAction" method="BrowseManageNews" class="Administration.ManageNewsAction">
+
+            <result name="SUCCESS">/pico/Administration/BrowseManageNews.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/BrowseManageNews.jsp</result>
+        </action>
+        <action name="EditManageNewsAction" method="Edit" class="Administration.ManageNewsAction">
+
+            <result name="SUCCESS">/pico/Administration/ManageNews.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageNews.jsp</result>
+        </action>
+
+        <action name="DeleteManageNewsAction" method="Delete" class="Administration.ManageNewsAction">
+
+            <result name="SUCCESS">/pico/Administration/BrowseManageNews.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/BrowseManageNews.jsp</result>
+        </action>
+        <action name="ClearManageNewsAction" method="Clear" class="Administration.ManageNewsAction">
+
+            <result name="SUCCESS">/pico/Administration/ManageNews.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageNews.jsp</result>
+        </action>
+
+
+        <!-- This part handles ItemCategory Actions -->
+            
+             
+        <action name="ItemCategoryAction" class="Administration.ItemCategoryAction">
+            <result name="success">/pico/Administration/ItemCategory.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+           
+        </action>
+    
+        <action name="SaveItemCategoryAction" method="SaveItemCategory" class="Administration.ItemCategoryAction">
+            <result name="success">/pico/Administration/ItemCategory.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ItemCategory.jsp</result>
+        </action>
+    
+        <action name="BrowseItemCategory" method="BrowseItemCategory" class="Administration.ItemCategoryAction">
+            <result name="success">/pico/Administration/ItemCategoryBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ItemCategoryBrowse.jsp</result>
+        </action>
+        <action name="ClearItemCategory" method="Clear" class="Administration.ItemCategoryAction">
+            <result name="success">/pico/Administration/ItemCategory.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="DeleteItemCategory" method="Delete" class="Administration.ItemCategoryAction">
+            <result name="success">/pico/Administration/ItemCategoryBrowse.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+        <action name="EditItemCategory" method="Edit" class="Administration.ItemCategoryAction">
+            <result name="success">/pico/Administration/ItemCategory.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+        </action>
+
+        <!-- This part handles ManageGFRAction Actions -->
+        <action name="ManageGFRAction" class="Administration.ManageGFRAction">
+            <interceptor-ref name="AdministrationStack" /> 
+            <result name="SUCCESS">/pico/Administration/ManageGFR.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFR.jsp</result>
+        </action>
+        <action name="SaveManageGFRAction" method="Save" class="Administration.ManageGFRAction">
+            <result name="success">/pico/Administration/ManageGFR.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFR.jsp</result>
+        </action>
+        <action name="ClearManageGFRAction" method="Clear" class="Administration.ManageGFRAction">
+            <result name="success">/pico/Administration/ManageGFR.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFR.jsp</result>
+        </action>
+        <action name="BrowseManageGFRAction" method="BrowseManageGFR" class="Administration.ManageGFRAction">
+
+            <result name="SUCCESS">/pico/Administration/BrowseManageGFR.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/BrowseManageGFR.jsp</result>
+        </action>
+        <action name="EditManageGFRAction" method="Edit" class="Administration.ManageGFRAction">
+
+            <result name="SUCCESS">/pico/Administration/ManageGFR.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFR.jsp</result>
+        </action>
+
+        <action name="DeleteManageGFRAction" method="Delete" class="Administration.ManageGFRAction">
+
+            <result name="SUCCESS">/pico/Administration/BrowseManageGFR.jsp</result>
+            <result name="ERROR">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/BrowseManageGFR.jsp</result>
+        </action>
+        <action name="ManageGFRReport40" method="PrintGFRReport" class="Administration.ManageGFRAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/pdf</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>           
+        </action>
+
+        <!-- This part handles ManageGFRProgramMappingAction Actions -->
+
+        <action name="ManageGFRProgramMappingAction" class="Administration.ManageGFRProgramMappingAction">
+            <interceptor-ref name="AdministrationStack" />
+            <result name="success">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+        </action>
+
+        <action name="Done" method="Done" class="Administration.ManageGFRProgramMappingAction">
+            <result name="success">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+        </action>
+
+        <action name="Exclude" method="Exclude" class="Administration.ManageGFRProgramMappingAction">
+            <result name="success">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+        </action>
+
+        <action name="Include" method="Include" class="Administration.ManageGFRProgramMappingAction">
+            <result name="success">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/Administration/ManageGFRProgramMapping.jsp</result>
+        </action>
+        
+
+
+                
+    </package>
 </struts>

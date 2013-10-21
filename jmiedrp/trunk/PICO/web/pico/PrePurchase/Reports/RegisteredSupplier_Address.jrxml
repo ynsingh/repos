@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RegisteredSupplier_Address" language="java" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RegisteredSupplier_Address" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" columnWidth="297" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7a1f5231-2036-4f5f-8ee9-d574acad2039">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -23,24 +23,42 @@ where
 	sa.`ad_state_id` = sm.`state_id` and
 	sa.`ad_sm_id` = $P{Supplier_Id}]]>
 	</queryString>
-	<field name="ad_Line1" class="java.lang.String"/>
-	<field name="ad_Line2" class="java.lang.String"/>
-	<field name="ad_city" class="java.lang.String"/>
-	<field name="state_name" class="java.lang.String"/>
-	<field name="country_name" class="java.lang.String"/>
-	<field name="ad_Phn" class="java.lang.Integer"/>
-	<field name="ad_Mob" class="java.lang.Integer"/>
-	<field name="ad_Faxn" class="java.lang.Integer"/>
-	<field name="ad_Email" class="java.lang.String"/>
+	<field name="ad_Line1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ad_Line2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ad_city" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="state_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="country_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ad_Phn" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ad_Mob" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ad_Faxn" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ad_Email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement isPrintRepeatedValues="false" x="21" y="8" width="129" height="20"/>
+				<reportElement uuid="d6a58950-d517-4cb0-b1e5-a978b4df25c2" isPrintRepeatedValues="false" x="21" y="8" width="129" height="20"/>
 				<textElement>
-					<font fontName="Calibri" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Supplier Address(es)]]></text>
 			</staticText>
@@ -49,89 +67,89 @@ where
 	<detail>
 		<band height="154" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement x="15" y="1" width="257" height="150"/>
+				<reportElement uuid="7ffdfce0-33d3-4bc4-8e76-0c9c5edfc43d" x="15" y="0" width="257" height="150"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement x="34" y="14" width="220" height="15"/>
+				<reportElement uuid="c4dbe082-f3f8-469d-bb6e-0b78dfb5fcb2" x="34" y="14" width="220" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ad_Line1} + ", " + $F{ad_Line2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="34" y="29" width="220" height="15"/>
+				<reportElement uuid="117cdbb7-204c-4e15-9caa-b933cef91852" x="34" y="29" width="220" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ad_city}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="34" y="44" width="220" height="15"/>
+				<reportElement uuid="e9490677-4212-47de-9a71-d96d2358bf83" x="34" y="44" width="220" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{state_name} +", " + "Pin No: "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="34" y="59" width="220" height="15"/>
+				<reportElement uuid="70e65b1c-926c-491f-a5f8-a347682c3dbe" x="34" y="59" width="220" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{country_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="35" y="86" width="72" height="15"/>
+				<reportElement uuid="b4fc8279-84c2-465d-8890-0782414e926a" x="35" y="86" width="78" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[Phone Number:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="110" y="86" width="146" height="15"/>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0bedccef-34ce-4924-8b5f-38cbbb0b040d" x="114" y="86" width="140" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ad_Phn}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="110" y="98" width="146" height="15"/>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="729194d9-4906-4bb8-bfc5-40bc6c2a400d" x="114" y="98" width="140" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ad_Mob}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="35" y="98" width="72" height="15"/>
+				<reportElement uuid="6390dd10-ad46-4cf9-af73-cbdd7dddf020" x="35" y="98" width="78" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[Mobile Number:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="35" y="110" width="72" height="15"/>
+				<reportElement uuid="c7b065bc-7697-492a-a9d1-42bee673ad9d" x="35" y="110" width="78" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[Fax Number:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="110" y="110" width="146" height="15"/>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="408cd1e1-c5c8-4e5f-b416-1e1e0a69270b" x="114" y="110" width="140" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ad_Faxn}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="110" y="122" width="146" height="15"/>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="2845fcf3-91bf-40da-a8f3-56ce949c740d" x="114" y="122" width="140" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ad_Email}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="35" y="122" width="72" height="15"/>
+				<reportElement uuid="7cbcace7-d11b-4666-8743-91442df99985" x="35" y="122" width="78" height="15"/>
 				<textElement>
-					<font fontName="Calibri" size="11"/>
+					<font fontName="SansSerif" size="11"/>
 				</textElement>
 				<text><![CDATA[E-Mail]]></text>
 			</staticText>

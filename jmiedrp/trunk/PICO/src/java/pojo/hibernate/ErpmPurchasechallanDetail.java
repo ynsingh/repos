@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.math.BigDecimal;
@@ -16,19 +16,27 @@ public class ErpmPurchasechallanDetail  implements java.io.Serializable {
      private ErpmPurchasechallanMaster erpmPurchasechallanMaster;
      private ErpmItemMaster erpmItemMaster;
      private BigDecimal pcdRecvQuantity;
+     private char pcdQNQChecked;
+     private char pcdQNQVerified;
+     private String pcdVerifiedBy;
      private Set erpmPurchasechallanSerials = new HashSet(0);
 
     public ErpmPurchasechallanDetail() {
     }
 
 	
-    public ErpmPurchasechallanDetail(ErpmPurchasechallanMaster erpmPurchasechallanMaster) {
+    public ErpmPurchasechallanDetail(ErpmPurchasechallanMaster erpmPurchasechallanMaster, char pcdQNQChecked, char pcdQNQVerified) {
         this.erpmPurchasechallanMaster = erpmPurchasechallanMaster;
+        this.pcdQNQChecked = pcdQNQChecked;
+        this.pcdQNQVerified = pcdQNQVerified;
     }
-    public ErpmPurchasechallanDetail(ErpmPurchasechallanMaster erpmPurchasechallanMaster, ErpmItemMaster erpmItemMaster, BigDecimal pcdRecvQuantity, Set erpmPurchasechallanSerials) {
+    public ErpmPurchasechallanDetail(ErpmPurchasechallanMaster erpmPurchasechallanMaster, ErpmItemMaster erpmItemMaster, BigDecimal pcdRecvQuantity, char pcdQNQChecked, char pcdQNQVerified, String pcdVerifiedBy, Set erpmPurchasechallanSerials) {
        this.erpmPurchasechallanMaster = erpmPurchasechallanMaster;
        this.erpmItemMaster = erpmItemMaster;
        this.pcdRecvQuantity = pcdRecvQuantity;
+       this.pcdQNQChecked = pcdQNQChecked;
+       this.pcdQNQVerified = pcdQNQVerified;
+       this.pcdVerifiedBy = pcdVerifiedBy;
        this.erpmPurchasechallanSerials = erpmPurchasechallanSerials;
     }
    
@@ -59,6 +67,27 @@ public class ErpmPurchasechallanDetail  implements java.io.Serializable {
     
     public void setPcdRecvQuantity(BigDecimal pcdRecvQuantity) {
         this.pcdRecvQuantity = pcdRecvQuantity;
+    }
+    public char getPcdQNQChecked() {
+        return this.pcdQNQChecked;
+    }
+    
+    public void setPcdQNQChecked(char pcdQNQChecked) {
+        this.pcdQNQChecked = pcdQNQChecked;
+    }
+    public char getPcdQNQVerified() {
+        return this.pcdQNQVerified;
+    }
+    
+    public void setPcdQNQVerified(char pcdQNQVerified) {
+        this.pcdQNQVerified = pcdQNQVerified;
+    }
+    public String getPcdVerifiedBy() {
+        return this.pcdVerifiedBy;
+    }
+    
+    public void setPcdVerifiedBy(String pcdVerifiedBy) {
+        this.pcdVerifiedBy = pcdVerifiedBy;
     }
     public Set getErpmPurchasechallanSerials() {
         return this.erpmPurchasechallanSerials;

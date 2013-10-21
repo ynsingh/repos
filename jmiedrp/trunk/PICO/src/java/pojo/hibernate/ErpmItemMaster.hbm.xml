@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmItemMaster" table="erpm_item_master">
         <id name="erpmimId" type="java.lang.Integer">
@@ -25,7 +25,7 @@
         </many-to-one>
         <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
             <column name="ERPMIM_IM_ID">
-                <comment>This filed stores Institution fotr which Item has been created</comment>
+                <comment>This field stores Institution for which Item has been created</comment>
             </column>
         </many-to-one>
         <property name="erpmimItemBriefDesc" type="string">
@@ -43,11 +43,44 @@
         <property name="erpmimRemarks" type="string">
             <column name="ERPMIM_Remarks" length="100" />
         </property>
+        <property name="erpmimIssuePolicy" type="string">
+            <column name="ERPMIM_Issue_Policy" length="15" not-null="true" />
+        </property>
+        <property name="erpmimSerialNoApplicable" type="char">
+            <column name="ERPMIM_Serial_No_Applicable" length="1" not-null="true" />
+        </property>
+        <property name="erpmimDepreciationMethod" type="java.lang.Character">
+            <column name="ERPMIM_Depreciation_Method" length="1" />
+        </property>
+        <property name="erpmimDepreciationPercentage" type="java.lang.Integer">
+            <column name="ERPMIM_Depreciation_Percentage" />
+        </property>
+        <property name="erpmimResidualValue" type="java.lang.Integer">
+            <column name="ERPMIM_Residual_Value" />
+        </property>
+        <set name="erpmPurchaseinvoiceDetails" inverse="true">
+            <key>
+                <column name="PID_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceDetail" />
+        </set>
+        <set name="erpmStockReceiveds" inverse="true">
+            <key>
+                <column name="ST_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmStockReceived" />
+        </set>
         <set name="erpmPurchasechallanDetails" inverse="true">
             <key>
                 <column name="PCD_ItemMaster_ID" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmPurchasechallanDetail" />
+        </set>
+        <set name="erpmPoLocationses" inverse="true">
+            <key>
+                <column name="Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPoLocations" />
         </set>
         <set name="erpmPoDetailses" inverse="true">
             <key>
@@ -66,6 +99,24 @@
                 <column name="Indt_Item_Id" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmIndentDetail" />
+        </set>
+        <set name="erpmTempOpeningStocks" inverse="true">
+            <key>
+                <column name="TOS_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTempOpeningStock" />
+        </set>
+        <set name="erpmIssueReturnDetails" inverse="true">
+            <key>
+                <column name="IRMD_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnDetail" />
+        </set>
+        <set name="erpmIssueDetails" inverse="true">
+            <key>
+                <column name="ISD_Item_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueDetail" />
         </set>
     </class>
 </hibernate-mapping>

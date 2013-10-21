@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmTenderMaster" table="erpm_tender_master">
+        <id name="tmTmId" type="java.lang.Integer">
+            <column name="TM_TM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="TM_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="TM_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="TM_SIM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMasterByTmTypeId" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="TM_Type_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMasterByTmStatusId" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="TM_Status_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmTenderSubmission" class="pojo.hibernate.ErpmTenderSubmission" fetch="select">
+            <column name="TM_Awarded_Submission_ID" />
+        </many-to-one>
+        <property name="tmTenderNo" type="string">
+            <column name="TM_Tender_No" length="30" not-null="true" />
+        </property>
+        <property name="tmName" type="string">
+            <column name="TM_Name" length="100" not-null="true" />
+        </property>
+        <property name="tmDate" type="date">
+            <column name="TM_Date" length="10" not-null="true" />
+        </property>
+        <property name="tmFee" type="java.lang.Integer">
+            <column name="TM_Fee" />
+        </property>
+        <property name="tmEstimatedAmount" type="java.lang.Integer">
+            <column name="TM_Estimated_Amount" />
+        </property>
+        <property name="tmEmdAmount" type="java.lang.Integer">
+            <column name="TM_EMD_Amount" />
+        </property>
+        <property name="tmDocumentLink" type="string">
+            <column name="TM_Document_Link" length="100" />
+        </property>
+        <property name="tmNoticeLink" type="string">
+            <column name="TM_Notice_Link" length="100" />
+        </property>
+        <property name="tmRemarks" type="string">
+            <column name="TM_Remarks" length="200" />
+        </property>
+        <set name="erpmTenderSubmissions" inverse="true">
+            <key>
+                <column name="TSB_TM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSubmission" />
+        </set>
+        <set name="erpmTenderSchedules" inverse="true">
+            <key>
+                <column name="TSC_TM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderSchedule" />
+        </set>
+        <set name="erpmTenderRevisionses" inverse="true">
+            <key>
+                <column name="TR_TM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTenderRevisions" />
+        </set>
+    </class>
+</hibernate-mapping>

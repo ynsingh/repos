@@ -4,92 +4,153 @@
  */
 
 package pojo.hibernate;
-import utils.BaseDAO;
 import java.util.List;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 
 /**
  *
  * @author afreen
  */
 
-public class UserMessageDAO  extends BaseDAO {
+public class UserMessageDAO  {
 
     public void save(UserMessage um) {
-        try {
-            beginTransaction();
-            getSession().save(um);
-            commitTransaction();
-            }
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+         try {
+             tx = session.beginTransaction();
+            session.save(um);
+            tx.commit();
+        }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(um != null)
+                tx.rollback();
             throw re;
-
+        }
+         finally {
+            session.close();
         }
     }
 
     public void update(UserMessage um) {
-        try {
-            beginTransaction();
-            getSession().update(um);
-            commitTransaction();
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+         try {
+             tx = session.beginTransaction();
+             session.update(um);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(um != null)
+                tx.rollback();
             throw re;
+        }
+         finally {
+            session.close();
         }
     }
 
     public void delete(UserMessage  um) {
-        try {
-            beginTransaction();
-            getSession().delete(um);
-            commitTransaction();
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+         try {
+             tx = session.beginTransaction();
+             session.delete(um);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(um != null)
+                tx.rollback();
             throw re;
+        }
+         finally {
+            session.close();
         }
     }
 
     public List<UserMessage> findAll() {
-        beginTransaction();
-        List<UserMessage> list = getSession().createQuery("select u from UserMessage  u").list();
-        commitTransaction();
+       Session session = HibernateUtil.getSession();
+         try {
+       session.beginTransaction();
+        List<UserMessage> list = session.createQuery("select u from UserMessage  u").list();
+        
         return list;
+         }
+        finally {
+            session.close();
+            }
     }
 
     public UserMessage  findByumId(int umId)
     {
-        beginTransaction();
-        UserMessage  um  = (UserMessage ) getSession().load(UserMessage.class , umId);
-        commitTransaction();
+        Session session = HibernateUtil.getSession();
+         try {
+       session.beginTransaction();
+        UserMessage  um  = (UserMessage ) session.load(UserMessage.class , umId);
+        
         return um;
+         }
+        finally {
+            session.close();
+            }
     }
  public List<UserMessage> findByUserId(Integer erpmuId) {
-        beginTransaction();
-        List<UserMessage> umList  =  getSession().createQuery("Select u from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :erpmuId").setParameter("erpmuId", erpmuId).list();
-        commitTransaction();
+        Session session = HibernateUtil.getSession();
+         try {
+       session.beginTransaction();
+        List<UserMessage> umList  =  session.createQuery("Select u from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :erpmuId and u.erpmGenMaster.erpmgmEgmId is null").setParameter("erpmuId", erpmuId).list();
+        
         return umList;
+         }
+        finally {
+            session.close();
+            }
    }
 public List<UserMessage> findByUserIdAndReqType(Integer erpmuId,String umReqType) {
-        beginTransaction();
-        List<UserMessage> umList  =  getSession().createQuery("Select u from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :erpmuId AND u.umReqType=:umReqType").setParameter("erpmuId", erpmuId).setParameter("umReqType", umReqType).list();
-        commitTransaction();
+       Session session = HibernateUtil.getSession();
+         try {
+       session.beginTransaction();
+        List<UserMessage> umList  =  session.createQuery("Select u from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :erpmuId AND u.umReqType=:umReqType").setParameter("erpmuId", erpmuId).setParameter("umReqType", umReqType).list();
+        
         return umList;
+         }
+        finally {
+            session.close();
+            }
    }
 
 public List<UserMessage> findByUserMessage(Integer umId) {
-        beginTransaction();
-        List<UserMessage> umList  =  getSession().createQuery("Select u from UserMessage u where u.umId = :umId").setParameter("umId", umId).list();
-        commitTransaction();
+       Session session = HibernateUtil.getSession();
+         try {
+       session.beginTransaction();
+        List<UserMessage> umList  =  session.createQuery("Select u from UserMessage u where u.umId = :umId").setParameter("umId", umId).list();
+        
         return umList;
+         }
+        finally {
+            session.close();
+            }
    }
 
 public Integer countUserMessages(Integer umId) {
-        beginTransaction();
-        Integer messageCount  =  Integer.parseInt(getSession().createQuery("Select count(u) from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :umId and u.erpmGenMaster.erpmgmEgmId is null")
-                                                  .setParameter("umId", umId).uniqueResult().toString());
-        commitTransaction();
+        Session session = HibernateUtil.getSession();
+         try {
+       session.beginTransaction();
+        Integer messageCount  =  Integer.parseInt(session.createQuery("Select count(u) from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :umId and u.erpmGenMaster.erpmgmEgmId is null")
+                                                 .setParameter("umId", umId).uniqueResult().toString());
+        
         return messageCount;
+         }
+        finally {
+            session.close();
+            }
    }
+
+
 }
+
+
+

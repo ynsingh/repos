@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.math.BigDecimal;
@@ -24,8 +24,11 @@ public class ErpmItemRate  implements java.io.Serializable {
      private Date irdWefDate;
      private Date irdWetDate;
      private BigDecimal irdRate;
+     private Integer irMinQty;
+     private Integer irMaxQty;
      private Set erpmIndentDetails = new HashSet(0);
      private Set erpmItemRateTaxeses = new HashSet(0);
+     private Set erpmPoDetailses = new HashSet(0);
 
     public ErpmItemRate() {
     }
@@ -40,7 +43,7 @@ public class ErpmItemRate  implements java.io.Serializable {
         this.irdWetDate = irdWetDate;
         this.irdRate = irdRate;
     }
-    public ErpmItemRate(Institutionmaster institutionmaster, ErpmGenMaster erpmGenMasterByIrWarrantyStartsFromId, ErpmGenMaster erpmGenMasterByIrCurrencyId, Suppliermaster suppliermaster, ErpmItemMaster erpmItemMaster, Integer irWarrantyMonths, String irWarrantyClause, Date irdWefDate, Date irdWetDate, BigDecimal irdRate, Set erpmIndentDetails, Set erpmItemRateTaxeses) {
+    public ErpmItemRate(Institutionmaster institutionmaster, ErpmGenMaster erpmGenMasterByIrWarrantyStartsFromId, ErpmGenMaster erpmGenMasterByIrCurrencyId, Suppliermaster suppliermaster, ErpmItemMaster erpmItemMaster, Integer irWarrantyMonths, String irWarrantyClause, Date irdWefDate, Date irdWetDate, BigDecimal irdRate, Integer irMinQty, Integer irMaxQty, Set erpmIndentDetails, Set erpmItemRateTaxeses, Set erpmPoDetailses) {
        this.institutionmaster = institutionmaster;
        this.erpmGenMasterByIrWarrantyStartsFromId = erpmGenMasterByIrWarrantyStartsFromId;
        this.erpmGenMasterByIrCurrencyId = erpmGenMasterByIrCurrencyId;
@@ -51,8 +54,11 @@ public class ErpmItemRate  implements java.io.Serializable {
        this.irdWefDate = irdWefDate;
        this.irdWetDate = irdWetDate;
        this.irdRate = irdRate;
+       this.irMinQty = irMinQty;
+       this.irMaxQty = irMaxQty;
        this.erpmIndentDetails = erpmIndentDetails;
        this.erpmItemRateTaxeses = erpmItemRateTaxeses;
+       this.erpmPoDetailses = erpmPoDetailses;
     }
    
     public Integer getIrItemRateId() {
@@ -132,6 +138,20 @@ public class ErpmItemRate  implements java.io.Serializable {
     public void setIrdRate(BigDecimal irdRate) {
         this.irdRate = irdRate;
     }
+    public Integer getIrMinQty() {
+        return this.irMinQty;
+    }
+    
+    public void setIrMinQty(Integer irMinQty) {
+        this.irMinQty = irMinQty;
+    }
+    public Integer getIrMaxQty() {
+        return this.irMaxQty;
+    }
+    
+    public void setIrMaxQty(Integer irMaxQty) {
+        this.irMaxQty = irMaxQty;
+    }
     public Set getErpmIndentDetails() {
         return this.erpmIndentDetails;
     }
@@ -145,6 +165,13 @@ public class ErpmItemRate  implements java.io.Serializable {
     
     public void setErpmItemRateTaxeses(Set erpmItemRateTaxeses) {
         this.erpmItemRateTaxeses = erpmItemRateTaxeses;
+    }
+    public Set getErpmPoDetailses() {
+        return this.erpmPoDetailses;
+    }
+    
+    public void setErpmPoDetailses(Set erpmPoDetailses) {
+        this.erpmPoDetailses = erpmPoDetailses;
     }
 
 

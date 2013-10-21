@@ -30,29 +30,41 @@
 
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
-             <s:form name="frmBudgetTypeBrowse">
-                 <s:property value="message" />
-                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <display:table name="btmList" pagesize="15"
-                               excludedParams="*" export="true" cellpadding="0"
-                               cellspacing="0"
-                               requestURI="/Administration/BrowseBudgetTypes.action">
-                    <display:column property="btmName" title="Budget Type Name" 
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:30%" sortable="true"/>
-                    <display:column paramId="btmId" paramProperty="btmId" 
-                                    href="/pico/Administration/EditBudgetType.action?editFlag=Y"
-                                    headerClass="gridheader" class="griddata" media="html">
-                        <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/>
-                    </display:column>
-                    <display:column paramId="btmId" paramProperty="btmId" href="/pico/Administration/DeleteBudgetType.action" headerClass="gridheader" class="griddata" media="html">
-                        <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete" style="cursor:pointer;"/> 
-                    </display:column>
-                </display:table>
-                </table>
-             </s:form>
+                <s:form name="frmBudgetTypeBrowse">
+
+                    <br><br>
+                    <div style ="background-color: #215dc6;">
+                        <p align="center" class="pageHeading" style="color: #ffffff">BROWSE BUDGET TYPES</p>
+                        <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                    </div>
+
+                    <div style="border: solid 1px #000000; background: gainsboro">
+
+                        <s:property value="message" />
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <display:table name="btmList" pagesize="15"
+                                           excludedParams="*" export="true" cellpadding="0"
+                                           cellspacing="0"
+                                           requestURI="/Administration/BrowseBudgetTypes.action">
+                                <display:column property="btmName" title="Budget Type Name"
+                                                maxLength="35" headerClass="gridheader"
+                                                class="griddata" style="width:30%" sortable="true"/>
+                                <display:column paramId="btmId" paramProperty="btmId"
+                                                href="/pico/Administration/EditBudgetType.action?editFlag=Y"
+                                                headerClass="gridheader" class="griddata" media="html">
+                                    <img align="right" src="../images/edit.jpg" border="0" alt="Edit" style="cursor:pointer;"/>
+                                </display:column>
+                                <display:column paramId="btmId" paramProperty="btmId" href="/pico/Administration/DeleteBudgetType.action" headerClass="gridheader" class="griddata" media="html">
+                                    <img align="left" src="../images/TrashIcon.png" border="0" alt="Delete" style="cursor:pointer;"/>
+                                </display:column>
+                            </display:table>
+                        </table>
+                    </s:form>
+                    <br>
+                </div>
+                &nbsp;
             </div> 
-             <div id="footer">
+            <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>
         </div>

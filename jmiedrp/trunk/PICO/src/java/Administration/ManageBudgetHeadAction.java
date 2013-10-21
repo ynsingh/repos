@@ -2,6 +2,8 @@
 /**
  *
  * @author Afreen
+ * Converted to New Format by SKN
+ * Also Fixed the Sessions Issue
  */
 
 package Administration;
@@ -10,13 +12,11 @@ import pojo.hibernate.Budgetheadmaster;
 import pojo.hibernate.BudgetheadmasterDAO;
 import pojo.hibernate.InstitutionmasterDAO;
 import pojo.hibernate.Institutionmaster;
-import pojo.hibernate.PaginationHibDao;
 import utils.DevelopmentSupport;
 import java.util.ArrayList;
 import pojo.hibernate.CheckDuplicateDAO;
 import java.util.List;
 import java.io.*;
-import javax.servlet.http.HttpServletRequest;
 
 public class ManageBudgetHeadAction extends DevelopmentSupport  {
 
@@ -100,70 +100,6 @@ public class ManageBudgetHeadAction extends DevelopmentSupport  {
     public String getbhmName() {
         return this.bhmName;
     }
-
-  /*public String insertupdate() throws Exception{
-      int k=0;
-      try{
-      FileReader fr=null;
-      BufferedReader br=null;
-      String s = "Start here ";
-      message="hii"  ;
-      if(Record != null)
-      {
-      fr= new FileReader(Record.toString());
-      br=new BufferedReader(fr);
-      while ( s!=null)
-       {
-       s=br.readLine();
-       if(s!=null)
-       {
-         int length  =s.length();
-         int i=0;
-          while(i<s.length())
-             {
-               String rec="";
-               while (length > 0&& s.charAt(i) != ','   )
-                    {
-                    rec=rec+ s.charAt(i) ;
-                    i++;
-                    length--;
-                    }
-               message=rec;
-              Institutionmaster im=imDao.findByImId(Short.parseShort(rec));
-              k++;
-              bhm.setInstitutionmaster(im);
-              i++;
-              length--;
-              rec="";
-              while (length > 0)
-                    {
-                    rec=rec+ s.charAt(i) ;
-                    i++;
-                    length--;
-                    }
-                 message=rec;
-                 bhm.setBhmName(rec);
-                 bhmDao.save(bhm);
-                 }
-                 }
-                }
-          }
-      
-        return SUCCESS;
-     }
-       catch (Exception e)
-          {
-              if (e.getCause().toString().contains("ConstraintViolationException"))
-              {
-             
-                 // k++;
-                  message = " institution does not exist at line no."+""+k;
-              }
-                  else
-              message = "Exception in Save method -> ManageBudgetHeadAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-              return ERROR;
-       }
-}*/
 
 
 public String insertupdate() throws Exception{
@@ -276,7 +212,7 @@ catch (Exception e)
             InitializeLOVs();
           return SUCCESS;
             } catch (Exception e) {
-            message = "Exception in -> ManageBudgetHeadAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in -> ManageBudgetHeadAxn "  + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -297,7 +233,7 @@ catch (Exception e)
                 message = "Budget Head created successfully for the institution.";
                 }
                 InitializeLOVs();
-                bhm=null;
+                bhm = null;
             }
             else
             {
@@ -306,7 +242,7 @@ catch (Exception e)
               bhmDao.update(bhm1);
               InitializeLOVs();
               message = "Budget Head updated successfully.";
-                       //bhmList=bhmDao.findAll();
+              bhm = null;
             }
               return SUCCESS;
             }
@@ -325,17 +261,20 @@ catch (Exception e)
  public String Fetch(){
         try {      
            InitializeLOVs();
-            //Prepare LOV containing Budget Head for the selected institution
+
+           //Prepare LOV containing Budget Head for the selected institution
             if(bhm.getInstitutionmaster().getImId()==null)
-            message = "Please select institution";
+                message = "Please select institution";
             bhmList=bhmDao.findByImId(bhm.getInstitutionmaster().getImId());
+
             //Prepare LOV containing User Institutions
             imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+
             return SUCCESS;
             }
         catch (Exception e)
             {
-            message = "Exception in Delete method -> ManageBudgetHeadAxn" + e.getMessage()+ " Reported Cause is: " + e.getCause();
+            message = "Exception in Fetch method -> ManageBudgetHeadAxn" + e.getMessage()+ " Reported Cause is: " + e.getCause();
             return ERROR;
             }
 
@@ -381,18 +320,17 @@ catch (Exception e)
   public String Edit() throws Exception {
               try {
                   //Retrieve the record to be updated into bhm object
+
                    bhm=bhmDao.findBybhmId(getBhmId());
                    //Prepare LOV containing User Institutions
                    imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-                   bhmList=bhmDao.findAll();
+                   bhmList=bhmDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
                    return SUCCESS;
                    } catch (Exception e) {
-                   message = "Exception in EdiT method -> ManageBudgetHeadAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+                   message = "Exception in Edit method -> ManageBudgetHeadAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
                    return ERROR;
                   }
                   }
-
-
 
 
 public String Clear() throws Exception {

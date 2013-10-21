@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmPurchaseinvoiceMaster" table="erpm_purchaseinvoice_master">
+        <id name="pimPimId" type="java.lang.Integer">
+            <column name="PIM_PIM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="PIM_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmPoMaster" class="pojo.hibernate.ErpmPoMaster" fetch="select">
+            <column name="PIM_PO_Master_ID" />
+        </many-to-one>
+        <many-to-one name="suppliermaster" class="pojo.hibernate.Suppliermaster" fetch="select">
+            <column name="PIM_Supplier_ID" />
+        </many-to-one>
+        <many-to-one name="erpmusers" class="pojo.hibernate.Erpmusers" fetch="select">
+            <column name="PIM_PreparedBy_ID" />
+        </many-to-one>
+        <many-to-one name="erpmPurchasechallanMaster" class="pojo.hibernate.ErpmPurchasechallanMaster" fetch="select">
+            <column name="PIM_PChallan_Master_ID" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="PIM_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="PIM_SIM_ID" not-null="true" />
+        </many-to-one>
+        <property name="pimInvoiceType" type="string">
+            <column name="PIM_Invoice_Type" length="20" />
+        </property>
+        <property name="pimInvoiceRecvdDate" type="date">
+            <column name="PIM_InvoiceRecvd_Date" length="10" not-null="true" />
+        </property>
+        <property name="pimSupplierInvoiceNo" type="string">
+            <column name="PIM_Supplier_Invoice_No" length="20" not-null="true" />
+        </property>
+        <property name="pimSupplierInvoiceDate" type="date">
+            <column name="PIM_Supplier_Invoice_Date" length="10" not-null="true" />
+        </property>
+        <property name="pimImportExchangeRate" type="big_decimal">
+            <column name="PIM_ImportExchange_Rate" precision="5" />
+        </property>
+        <property name="pimRemarks" type="string">
+            <column name="PIM_Remarks" length="500" />
+        </property>
+        <property name="pimCheckedBy" type="string">
+            <column name="PIM_Checked_By" length="50" />
+        </property>
+        <set name="erpmPurchaseinvoiceTermses" inverse="true">
+            <key>
+                <column name="PIT_PIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceTerms" />
+        </set>
+        <set name="erpmPurchaseinvoiceDetails" inverse="true">
+            <key>
+                <column name="PID_PIM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

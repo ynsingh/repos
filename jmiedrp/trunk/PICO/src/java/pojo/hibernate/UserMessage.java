@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 4 Sep, 2011 10:53:32 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -20,11 +20,12 @@ public class UserMessage  implements java.io.Serializable {
      private String umReqType;
      private Short umReqTypeId;
      private Integer umMsgId;
+     private Date umActionDate;
 
     public UserMessage() {
     }
 
-    public UserMessage(Erpmusers erpmusersByUmFromErpmuId, ErpmGenMaster erpmGenMaster, Erpmusers erpmusersByUmToErpmuId, String umMessage, String umActionName, Date umRequestSubmissionDate, String umReqType, Short umReqTypeId, Integer umMsgId) {
+    public UserMessage(Erpmusers erpmusersByUmFromErpmuId, ErpmGenMaster erpmGenMaster, Erpmusers erpmusersByUmToErpmuId, String umMessage, String umActionName, Date umRequestSubmissionDate, String umReqType, Short umReqTypeId, Integer umMsgId, Date umActionDate) {
        this.erpmusersByUmFromErpmuId = erpmusersByUmFromErpmuId;
        this.erpmGenMaster = erpmGenMaster;
        this.erpmusersByUmToErpmuId = erpmusersByUmToErpmuId;
@@ -34,6 +35,7 @@ public class UserMessage  implements java.io.Serializable {
        this.umReqType = umReqType;
        this.umReqTypeId = umReqTypeId;
        this.umMsgId = umMsgId;
+       this.umActionDate = umActionDate;
     }
    
     public Integer getUmId() {
@@ -105,6 +107,13 @@ public class UserMessage  implements java.io.Serializable {
     
     public void setUmMsgId(Integer umMsgId) {
         this.umMsgId = umMsgId;
+    }
+    public Date getUmActionDate() {
+        return this.umActionDate;
+    }
+    
+    public void setUmActionDate(Date umActionDate) {
+        this.umActionDate = umActionDate;
     }
 
 

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReturnIssuedItemsReceiving" language="groovy" pageWidth="712" pageHeight="933" columnWidth="672" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8a4b1ab1-2b00-43be-ac2b-03e30612c624">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.layers" value="##Thu Aug 09 16:58:16 IST 2012\nlayer.1.name=Layer 1\nlayer.1.visible=true\nlayer.1.id=1\nlayer.0.name=Background\nlayer.0.visible=true\nlayer.0.id=0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     if(erpm_stock_received.`ST_Stock_Serial_No` is null,"NOT APPLICABLE",erpm_stock_received.`ST_Stock_Serial_No`) AS erpm_stock_received_ST_Stock_Serial_No,
+     erpm_issue_return_master.`IRM_ID` AS erpm_issue_return_master_IRM_ID,
+     erpm_issue_return_master.`IRM_Institute_ID` AS erpm_issue_return_master_IRM_Institute_ID,
+     erpm_issue_return_master.`IRM_Subinstitute_ID` AS erpm_issue_return_master_IRM_Subinstitute_ID,
+     erpm_issue_return_master.`IRM_Department_ID` AS erpm_issue_return_master_IRM_Department_ID,
+     erpm_issue_return_master.`IRM_Return_No` AS erpm_issue_return_master_IRM_Return_No,
+     erpm_issue_return_master.`IRM_Return_Date` AS erpm_issue_return_master_IRM_Return_Date,
+     erpm_issue_return_master.`IRM_ReturnTo_Employee_ID` AS erpm_issue_return_master_IRM_ReturnTo_Employee_ID,
+     erpm_issue_return_master.`IRM_Return_Type` AS erpm_issue_return_master_IRM_Return_Type,
+     erpm_issue_return_master.`IRM_Remarks` AS erpm_issue_return_master_IRM_Remarks,
+     erpm_issue_return_master.`IRM_Return_Mode` AS erpm_issue_return_master_IRM_Return_Mode,
+     erpm_issue_return_detail.`IRMD_ID` AS erpm_issue_return_detail_IRMD_ID,
+     erpm_issue_return_detail.`IRMD_IRM_ID` AS erpm_issue_return_detail_IRMD_IRM_ID,
+     erpm_issue_return_detail.`IRMD_Stock_ID` AS erpm_issue_return_detail_IRMD_Stock_ID,
+     erpm_issue_return_detail.`IRMD_ISM_ID` AS erpm_issue_return_detail_IRMD_ISM_ID,
+     erpm_issue_return_detail.`IRMD_Item_ID` AS erpm_issue_return_detail_IRMD_Item_ID,
+     erpm_issue_return_detail.`IRMD_Return_Quantity` AS erpm_issue_return_detail_IRMD_Return_Quantity,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS erpm_item_master_ERPMIM_Item_Brief_Desc,
+     erpm_item_master.`ERPMIM_UOP` AS erpm_item_master_ERPMIM_UOP,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS erpm_gen_master_ERPMGM_EGM_DESC
+FROM
+     `erpm_issue_return_master` erpm_issue_return_master INNER JOIN `erpm_issue_return_detail` erpm_issue_return_detail ON erpm_issue_return_master.`IRM_ID` = erpm_issue_return_detail.`IRMD_IRM_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_issue_return_detail.`IRMD_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     LEFT OUTER JOIN `erpm_stock_received` erpm_stock_received ON erpm_issue_return_detail.`IRMD_Stock_ID` = erpm_stock_received.`ST_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_issue_return_master.`IRM_Institute_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_issue_return_master.`IRM_Subinstitute_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_issue_return_master.`IRM_Department_ID` = departmentmaster.`DM_ID`
+WHERE $P!{condition}
+ ORDER BY
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` ASC,
+     erpm_stock_received.`ST_Stock_Serial_No` ASC]]>
+	</queryString>
+	<field name="erpm_stock_received_ST_Stock_Serial_No" class="java.lang.String"/>
+	<field name="erpm_issue_return_master_IRM_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_master_IRM_Institute_ID" class="java.lang.Integer"/>
+	<field name="erpm_issue_return_master_IRM_Subinstitute_ID" class="java.lang.Integer"/>
+	<field name="erpm_issue_return_master_IRM_Department_ID" class="java.lang.Integer"/>
+	<field name="erpm_issue_return_master_IRM_Return_No" class="java.lang.String"/>
+	<field name="erpm_issue_return_master_IRM_Return_Date" class="java.sql.Date"/>
+	<field name="erpm_issue_return_master_IRM_ReturnTo_Employee_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_master_IRM_Return_Type" class="java.lang.String"/>
+	<field name="erpm_issue_return_master_IRM_Remarks" class="java.lang.String"/>
+	<field name="erpm_issue_return_master_IRM_Return_Mode" class="java.lang.Boolean"/>
+	<field name="erpm_issue_return_detail_IRMD_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_detail_IRMD_IRM_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_detail_IRMD_Stock_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_detail_IRMD_ISM_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_detail_IRMD_Item_ID" class="java.lang.Long"/>
+	<field name="erpm_issue_return_detail_IRMD_Return_Quantity" class="java.math.BigDecimal"/>
+	<field name="erpm_item_master_ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_UOP" class="java.lang.Long"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="erpm_gen_master_ERPMGM_EGM_DESC" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7e69b1e8-a213-4e3f-b1d3-cfdf442618d3" x="204" y="30" width="269" height="36"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ISSUED ITEMS RECEIVED BACK]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="184" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="9bda55ae-0169-4a1a-9c23-99c351a2729a" x="20" y="11" width="163" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[From,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed8bc57f-4116-488a-9572-89c6b110cd3c" x="17" y="112" width="132" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dear Sir/Madam,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e9bb83fe-6055-448a-a79b-a12a4eca1542" x="116" y="138" width="547" height="23"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[We have received back the item(s) as per the following details in good condition,]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a685fc75-4b8d-4273-bd25-daaf3a706846" x="59" y="76" width="310" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9cb376bd-1409-4192-a9ed-73a21d45cd66" x="59" y="56" width="310" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="821bfaa5-2c3b-483a-b71c-46e9c349e467" x="59" y="36" width="310" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="cc7dba64-fc37-4317-aaf8-2667847d7647" x="137" y="158" width="88" height="20"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_issue_return_master_IRM_Return_Date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5fe58599-d607-49fc-89ae-9bec049f38ff" x="116" y="158" width="253" height="20"/>
+				<textElement>
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[on                     by Return No. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9c495371-33b3-4e94-9aa9-815fa12345f4" x="307" y="158" width="166" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_issue_return_master_IRM_Return_No}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a9324cb9-b229-4de1-9e3d-fe7903801279" x="360" y="1" width="140" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Serial Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="550afa1e-259d-46f9-901e-23dba08fed7b" x="514" y="0" width="68" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b9d91b0-c714-4cba-9e11-fdf656d60c99" x="83" y="0" width="272" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="25e45bf1-679f-4496-820e-46254ac0313b" x="20" y="0" width="51" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sl. No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2102a84e-101e-4adf-b0cf-0e9624db8515" x="590" y="0" width="73" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UOM]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="c2198eab-090d-4591-b321-7aac62045505" x="17" y="18" width="646" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c0b17902-1e82-483f-8da1-6a057ac62968" x="20" y="1" width="51" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="37f8bd69-feeb-4ec2-9904-69dc18f998a5" x="82" y="1" width="273" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="90c0d7da-7957-461d-8d8f-c68323f11800" x="360" y="1" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_stock_received_ST_Stock_Serial_No}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7156af1e-90d1-465b-9aa5-efa3b1eba7d2" x="514" y="1" width="68" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_issue_return_detail_IRMD_Return_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="37fa6761-e1a9-4657-9346-d9f4e006454d" x="591" y="1" width="72" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_gen_master_ERPMGM_EGM_DESC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="84" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="acb74542-75d7-45d0-8b98-1477984875df" x="501" y="61" width="162" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(Authorised Signatory)]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement uuid="b0619101-d33a-41f4-b885-517febde1f15" x="543" y="17" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="7cb6c2c2-8964-4504-a84e-4cbb5a06182b" x="623" y="17" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

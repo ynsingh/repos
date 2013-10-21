@@ -36,43 +36,49 @@
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent"> <br><br>
-                <p align="center"><s:label value="WORKFLOW DETAIL" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
-                <s:form name="frmWorkFlowMaster" action="SaveWorkFlowDetail">
-                    <s:hidden name="wfm.wfmId" />
-                    <s:hidden name="wfdtl.wfdId" />
+            <div id ="mainContent">
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">WORKFLOW DETAIL</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
 
-                    <table border="0" cellpadding="4" cellspacing="0" align="center" >
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <br>
+                <div style="border: solid 1px #000000; background: gainsboro">
 
-                                       <%--use where only number is required for input other than number it does not accept value--%>
-             <script type='text/javascript'>
-     function isNumberKey(evt)
-     {
-     var charCode = (evt.which) ? evt.which : event.keyCode
-     if (charCode > 31 && (charCode < 48 || charCode > 57) )
-        return false;
-     return true;
-     }
-     </script>
+                    <s:form name="frmWorkFlowMaster" action="SaveWorkFlowDetail">
+                        <s:hidden name="wfm.wfmId" />
+                        <s:hidden name="wfdtl.wfdId" />
+
+                        <table border="0" cellpadding="4" cellspacing="0" align="center" >
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <br>
+
+                                        <%--use where only number is required for input other than number it does not accept value--%>
+                                        <script type='text/javascript'>
+                                            function isNumberKey(evt)
+                                            {
+                                                var charCode = (evt.which) ? evt.which : event.keyCode
+                                                if (charCode > 31 && (charCode < 48 || charCode > 57) )
+                                                    return false;
+                                                return true;
+                                            }
+                                        </script>
 
 
-                                    <%--  <s:textfield name="wfm.wfmId" />
-                                    <s:select label="Institution" name="wfm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" cssClass="textInput"
-                                        onchange="getSubinstitutionListForWorkFlowMaster('SaveWorkFlowMasterAction_wfm_institutionmaster_imId', 'SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId');"/>
-                                    <s:select label="College/Faculty/School" name="wfm.subinstitutionmaster.simId" headerKey="0" headerValue="All Colleges/Faculties/Schools" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput"
-                                        onchange="getDepartmentListForWorkFlowMaster('SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId', 'SaveWorkFlowMasterAction_wfm_departmentmaster_dmId');"/>
-                                    <s:select label="Department" name="wfm.departmentmaster.dmId" headerKey="0" headerValue="All Departments" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput"/>
-                                   --%> <s:textfield label="Name of the Workflow" name="wfm.wfmName" disabled="true" size="100" cssClass="textInputRO" readonly="true"/>
+                                        <%--  <s:textfield name="wfm.wfmId" />
+                                        <s:select label="Institution" name="wfm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" cssClass="textInput"
+                                            onchange="getSubinstitutionListForWorkFlowMaster('SaveWorkFlowMasterAction_wfm_institutionmaster_imId', 'SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId');"/>
+                                        <s:select label="College/Faculty/School" name="wfm.subinstitutionmaster.simId" headerKey="0" headerValue="All Colleges/Faculties/Schools" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput"
+                                            onchange="getDepartmentListForWorkFlowMaster('SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId', 'SaveWorkFlowMasterAction_wfm_departmentmaster_dmId');"/>
+                                        <s:select label="Department" name="wfm.departmentmaster.dmId" headerKey="0" headerValue="All Departments" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput"/>
+                                        --%> <s:textfield label="Name of the Workflow" name="wfm.wfmName" disabled="true" size="100" cssClass="textInputRO" readonly="true"/>
                                         <s:textfield label="Workflow Step" name="wfdtl.wfdStage" cssClass="ROtextInput" onkeypress="return isNumberKey(event)"/>
                                         <s:select label="Source Committee/Authority" name="wfdtl.committeemasterByWfdSourceCommittee.committeeId" headerKey="0" headerValue="-- Please Select --" list="scommitteeList" listKey="committeeId" listValue="committeeName" cssClass="textInput"/>
                                         <s:select label="Destination Committee/Authority" name="wfdtl.committeemasterByWfdDestinationCommittee.committeeId" headerKey="0" headerValue="-- Please Select --" list="dcommitteeList" listKey="committeeId" listValue="committeeName" cssClass="textInput"/>
 
-<%--                                        <s:label value="Select Actions Committee/Authority can take"  />
+                                        <%--                                        <s:label value="Select Actions Committee/Authority can take"  />
 
                                         <s:checkbox label="Can Forward" name="wfdtl.wfdForward" cssClass="textInput"/>
                                         <s:checkbox label="Can Send Back" name="wfdtl.wfdSendBack"  cssClass="textInput"/>
@@ -93,76 +99,81 @@
                                                     }" value="'F'"  cssClass="textInput" />
 
                                 </td>#{'Y':'Yes','N':'No'}
---%>
-                            </tr> <tr>
-                                <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save Workflow Step"  
-                                              onclick="compareCommittees('SaveWorkFlowDetail_wfdtl_committeemasterByWfdSourceCommittee_committeeId',
-                                                                         'SaveWorkFlowDetail_wfdtl_committeemasterByWfdDestinationCommittee_committeeId');"/>
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Fetch Workflow Entries" action="FetchWorkFlowDetail"/>
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearWorkFlowDetail" />
-                                </td>
-                            </tr>
-                            <tr><td><br></td><td><br></td></tr>
-                        </tbody>
-                    </table>
-                </s:form>
+                                        --%>
+                                </tr> <tr>
+                                    <td>
+                                        <s:submit theme="simple" name="btnSubmit" value="Save Workflow Step"
+                                                  onclick="compareCommittees('SaveWorkFlowDetail_wfdtl_committeemasterByWfdSourceCommittee_committeeId',
+                                                  'SaveWorkFlowDetail_wfdtl_committeemasterByWfdDestinationCommittee_committeeId');"/>
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" value="Fetch Workflow Entries" action="FetchWorkFlowDetail"/>
+                                    </td>
+                                    <td>
+                                        <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearWorkFlowDetail" />
+                                    </td>
+                                </tr>
+                                <tr><td><br></td><td><br></td></tr>
+                            </tbody>
+                        </table>
+                    </s:form>
+                </div>
             </div>
+            &nbsp;
 
+            <div id ="mainContent" align="center">
+                <div style="border: solid 1px #000000; background: gainsboro">
+                    <br>
+                    <s:form name="frmWorkFlowBrowse">
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0" align="center" >
+                            <tr><td>
+                                    <display:table name="wfdtlList" pagesize="15"
+                                                   excludedParams="" export="true" cellpadding="0"
+                                                   cellspacing="0" id="doc"
+                                                   requestURI="/Administration/FetchWorkFlowMaster">
+                                        <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
+                                    <c:out> ${doc_rowNum}
+                                    </display:column>
 
-             <div id ="mainContent" align="center">
-             <s:form name="frmWorkFlowBrowse">
-                 <table width="100%" border="1" cellspacing="0" cellpadding="0" align="center" >
-                    <tr><td>
-                     <display:table name="wfdtlList" pagesize="15"
-                               excludedParams="" export="true" cellpadding="0"
-                               cellspacing="0" id="doc"
-                               requestURI="/Administration/FetchWorkFlowMaster">
-                         <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                            <c:out> ${doc_rowNum}
-                         </display:column>
+                                    <display:column property="wfdStage" title="Step"
+                                                    maxLength="100" headerClass="gridheader"
+                                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false" />
 
-                         <display:column property="wfdStage" title="Step"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false" />
+                                    <display:column property="committeemasterByWfdSourceCommittee.committeeName" title="Source Committee/Authority"
+                                                    maxLength="100" headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                        <display:column property="committeemasterByWfdSourceCommittee.committeeName" title="Source Committee/Authority"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
+                                    <display:column property="committeemasterByWfdDestinationCommittee.committeeName" title="Destination Committee/Authority"
+                                                    maxLength="100" headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                        <display:column property="committeemasterByWfdDestinationCommittee.committeeName" title="Destination Committee/Authority"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
-                        
-                    <display:column paramId="wfdId" paramProperty="wfdId"
-                                    href="/pico/Administration/DeleteWorkFlowDetail.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
-                                    Delete WF Detail
-                    </display:column>
+                                    <display:column paramId="wfdId" paramProperty="wfdId"
+                                                    href="/pico/Administration/DeleteWorkFlowDetail.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                        Delete WF Detail
+                                    </display:column>
 
-                    <display:column paramId="wfdId" paramProperty="wfdId"
-                                    href="/pico/Administration/EditWorkFlowDetail.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Edit">
-                                    Edit WF Detail
-                    </display:column>
+                                    <display:column paramId="wfdId" paramProperty="wfdId"
+                                                    href="/pico/Administration/EditWorkFlowDetail.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Edit">
+                                        Edit WF Detail
+                                    </display:column>
 
-                    <display:column paramId="wfdId" paramProperty="wfdId"
-                                    href="/pico/Administration/AddWorkFlowActions.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Add">
-                                    Add WF Actions
-                    </display:column>
+                                    <display:column paramId="wfdId" paramProperty="wfdId"
+                                                    href="/pico/Administration/AddWorkFlowActions.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Add">
+                                        Add WF Actions
+                                    </display:column>
 
-                </display:table>
-                </td></tr>
-                </table>
-                 <br>
-             </s:form>
-             </div>
-                                        
+                                </display:table>
+                                </td></tr>
+                        </table>
+                        <br>
+                    </s:form>
+                </div>
+            </div>
+            &nbsp;
+
             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>

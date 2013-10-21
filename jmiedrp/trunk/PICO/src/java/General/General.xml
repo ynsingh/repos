@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="General" namespace="/General" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="loginInterceptor" class="Administration.AuthenticationInterceptor" />
+            <interceptor-stack name="General">
+               <!-- <interceptor-ref name="loginInterceptor" /> 
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">execute, browse</param>
+            </interceptor-ref>-->
+            </interceptor-stack>
+        </interceptors>
+
+        <action name="FileMasterAction" class="General.FileMasterAction">
+            <interceptor-ref name="General" />
+            <result name="success">/pico/General/FileMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/General/FileMaster.jsp</result>
+        </action>
+
+        <action name="SaveFileMaster" method="SaveFileMaster" class="General.FileMasterAction">
+            <interceptor-ref name="General" />
+            <result name="success" type="chain">DespatchFile</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/General/FileMaster.jsp</result>
+        </action>
+
+        <action name="DespatchFile" class="General.DespatchFile">
+            <result name="success">/pico/General/DespatchFile.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/General/DespatchFile.jsp</result>
+        </action>
+
+        <action name="SaveDespatchFile" method="SaveDespatchFile" class="General.DespatchFile">
+            <result name="success">/pico/General/FileMaster.jsp</result>
+            <result name="error">/pico/Administration/ErrorPage.jsp</result>
+            <result name="input">/pico/General/DespatchFile.jsp</result>
+        </action>
+
+</package>
+</struts>

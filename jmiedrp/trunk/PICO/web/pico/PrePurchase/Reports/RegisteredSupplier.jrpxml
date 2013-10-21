@@ -17,17 +17,17 @@
 	<page>
 		<text textHeight="21.972656">
 			<reportElement x="190" y="33" width="226" height="28" forecolor="#009900" origin="3" srcId="1"/>
-			<font fontName="Calibri" size="18" isBold="true"/>
+			<font fontName="SansSerif" size="18" isBold="true"/>
 			<textContent><![CDATA[Supplier Registration Details]]></textContent>
 		</text>
 		<text textAlignment="Center" textHeight="21.972656">
 			<reportElement x="21" y="16" width="553" height="31" origin="3" srcId="2"/>
-			<font fontName="Calibri" size="18" isBold="true"/>
+			<font fontName="SansSerif" size="18" isBold="true"/>
 			<textContent><![CDATA[Jamia Millia Islamia]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.util.Date" pattern="MMMMM dd, yyyy">
 			<reportElement x="475" y="21" width="100" height="20" origin="3" srcId="3"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[February 29, 2012]]></textContent>
 		</text>
 		<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
@@ -420,87 +420,87 @@ CYTK8LQp15yrUqTqzqOMnUqQh7OVXnlDlhKMI//Z]]>
 		</image>
 		<text textHeight="12.207031">
 			<reportElement x="140" y="98" width="150" height="15" origin="5" srcId="9"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[Wipro Infotech Ltd]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="140" y="140" width="150" height="15" origin="5" srcId="10"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[03-09-2011]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="424" y="98" width="150" height="15" origin="5" srcId="11"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[Azim Premji]]></textContent>
 		</text>
 		<text textHeight="12.207031" valueClass="java.lang.Long">
 			<reportElement x="140" y="84" width="150" height="15" origin="5" srcId="12"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[66]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="22" y="84" width="114" height="15" origin="5" srcId="13"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Supplier ID]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="98" width="114" height="15" origin="5" srcId="14"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Supplier Name]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="308" y="98" width="107" height="15" origin="5" srcId="15"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[CEO/Propietor's Name]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="141" y="126" width="150" height="15" origin="5" srcId="16"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="308" y="143" width="107" height="15" origin="5" srcId="17"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Establishment Date]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="424" y="157" width="150" height="15" origin="5" srcId="18"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="140" y="154" width="150" height="15" origin="5" srcId="19"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="307" y="157" width="107" height="15" origin="5" srcId="20"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[State VAT Rgn No]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="154" width="114" height="15" origin="5" srcId="21"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Central VAT Rgn No]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="424" y="171" width="150" height="15" origin="5" srcId="22"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="140" y="168" width="150" height="15" origin="5" srcId="23"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="168" width="114" height="15" origin="5" srcId="24"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[PAN No]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="307" y="171" width="107" height="15" origin="5" srcId="25"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[TAN No]]></textContent>
 		</text>
 		<line>
@@ -508,37 +508,37 @@ CYTK8LQp15yrUqTqzqOMnUqQh7OVXnlDlhKMI//Z]]>
 		</line>
 		<text textHeight="12.207031">
 			<reportElement x="424" y="185" width="150" height="15" origin="5" srcId="28"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="140" y="182" width="150" height="15" origin="5" srcId="29"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[123]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="307" y="185" width="107" height="15" origin="5" srcId="30"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[ECC Code]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="182" width="114" height="15" origin="5" srcId="31"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Enterprenuership No]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="126" width="114" height="15" origin="5" srcId="32"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Excise Duty Registration ]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="140" width="114" height="15" origin="5" srcId="33"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Registration Date]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="424" y="143" width="150" height="15" origin="5" srcId="34"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[01-01-1970]]></textContent>
 		</text>
 		<rectangle>
@@ -552,62 +552,62 @@ CYTK8LQp15yrUqTqzqOMnUqQh7OVXnlDlhKMI//Z]]>
 		</rectangle>
 		<text textHeight="13.427734">
 			<reportElement x="55" y="252" width="220" height="15" origin="9" srcId="42"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Plot No 371-175, Udyog Vihar, Gurgaon]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="55" y="267" width="220" height="15" origin="9" srcId="43"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Gurgaon]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="55" y="282" width="220" height="15" origin="9" srcId="44"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Haryana, Pin No: ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="55" y="297" width="220" height="15" origin="9" srcId="45"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[India]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="56" y="324" width="72" height="15" origin="9" srcId="46"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Phone Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="131" y="324" width="146" height="15" origin="9" srcId="47"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="131" y="336" width="146" height="15" origin="9" srcId="48"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="56" y="336" width="72" height="15" origin="9" srcId="49"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Mobile ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="56" y="348" width="72" height="15" origin="9" srcId="50"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Fax Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="131" y="348" width="146" height="15" origin="9" srcId="51"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[123456789]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="131" y="360" width="146" height="15" origin="9" srcId="52"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[akhilesh.sahi@wipro.com]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="56" y="360" width="72" height="15" origin="9" srcId="53"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[E-Mail]]></textContent>
 		</text>
 		<rectangle radius="10">
@@ -615,82 +615,82 @@ CYTK8LQp15yrUqTqzqOMnUqQh7OVXnlDlhKMI//Z]]>
 		</rectangle>
 		<text textHeight="13.427734">
 			<reportElement x="352" y="252" width="220" height="15" origin="9" srcId="42"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Wipro House, Street Wipro House]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="352" y="267" width="220" height="15" origin="9" srcId="43"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Delhi]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="352" y="282" width="220" height="15" origin="9" srcId="44"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Delhi, Pin No: ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="352" y="297" width="220" height="15" origin="9" srcId="45"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[India]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="353" y="324" width="72" height="15" origin="9" srcId="46"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Phone Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="428" y="324" width="146" height="15" origin="9" srcId="47"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[1234]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="428" y="336" width="146" height="15" origin="9" srcId="48"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[981200419]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="353" y="336" width="72" height="15" origin="9" srcId="49"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Mobile ]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="353" y="348" width="72" height="15" origin="9" srcId="50"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[Fax Number:]]></textContent>
 		</text>
 		<text textHeight="13.427734" valueClass="java.lang.Integer">
 			<reportElement x="428" y="348" width="146" height="15" origin="9" srcId="51"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[26987707]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="428" y="360" width="146" height="15" origin="9" srcId="52"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[sunil.chopra@wipro.com]]></textContent>
 		</text>
 		<text textHeight="13.427734">
 			<reportElement x="353" y="360" width="72" height="15" origin="9" srcId="53"/>
-			<font fontName="Calibri" size="11"/>
+			<font fontName="SansSerif" size="11"/>
 			<textContent><![CDATA[E-Mail]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="140" y="112" width="150" height="15" origin="5" srcId="36"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[Manufacturers]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="21" y="112" width="114" height="15" origin="5" srcId="37"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Supplier's Type]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="308" y="112" width="114" height="15" origin="5" srcId="38"/>
-			<font fontName="Calibri" size="10" isBold="true"/>
+			<font fontName="SansSerif" size="10" isBold="true"/>
 			<textContent><![CDATA[Supplier's Type]]></textContent>
 		</text>
 		<text textHeight="12.207031">
 			<reportElement x="424" y="112" width="150" height="15" origin="5" srcId="39"/>
-			<font fontName="Calibri" size="10"/>
+			<font fontName="SansSerif" size="10"/>
 			<textContent><![CDATA[Ltd Company:Memorandum & ]]></textContent>
 		</text>
 	</page>

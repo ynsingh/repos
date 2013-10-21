@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Indent_Report" language="groovy" pageWidth="643" pageHeight="816" columnWidth="603" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="17efd2d1-18e1-4a17-ad6c-f8dcaeb9d366">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Indent_Workflow.jasper"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_indent_master.`Indt_Indent_Id` AS erpm_indent_master_Indt_Indent_Id,
+     erpm_indent_master.`Indt_Indent_Date` AS erpm_indent_master_Indt_Indent_Date,
+     erpm_indent_master.`Indt_Institution_Id` AS erpm_indent_master_Indt_Institution_Id,
+     erpm_indent_master.`Indt_Subinstitution_Id` AS erpm_indent_master_Indt_Subinstitution_Id,
+     erpm_indent_master.`Indt_Department_Id` AS erpm_indent_master_Indt_Department_Id,
+     erpm_indent_master.`Indt_BudgetHead_Id` AS erpm_indent_master_Indt_BudgetHead_Id,
+     erpm_indent_master.`Indt_User_Id` AS erpm_indent_master_Indt_User_Id,
+     erpm_indent_master.`Indt_status` AS erpm_indent_master_Indt_status,
+     erpm_indent_master.`Indt_Currency_Id` AS erpm_indent_master_Indt_Currency_Id,
+     erpm_indent_master.`Indt_Remarks` AS erpm_indent_master_Indt_Remarks,
+     erpm_indent_master.`Indt_Title` AS erpm_indent_master_Indt_Title,
+     erpm_indent_detail.`Indt_Item_Id` AS erpm_indent_detail_Indt_Item_Id,
+     erpm_indent_detail.`Indt_quantity` AS erpm_indent_detail_Indt_quantity,
+     erpm_indent_detail.`indt_Approxcost` AS erpm_indent_detail_indt_Approxcost,
+     erpm_indent_detail.`Indt_Purpose` AS erpm_indent_detail_Indt_Purpose,
+     erpm_indent_detail.`Indt_IR_Item_Rate_Id` AS erpm_indent_detail_Indt_IR_Item_Rate_Id,
+     erpm_indent_detail.`Indt_Approved_Quantity` AS erpm_indent_detail_Indt_Approved_Quantity,
+     erpm_indent_detail.`Indt_Accepted_Unit_Rate` AS erpm_indent_detail_Indt_Accepted_Unit_Rate,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS Indent_Status,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     erpm_gen_master_A.`ERPMGM_EGM_DESC` AS Currency,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS erpm_item_master_ERPMIM_Item_Brief_Desc,
+     erpm_gen_master_B.`ERPMGM_EGM_DESC` AS UOM,
+     erpm_indent_detail.`indt_Detail_Id` AS erpm_indent_detail_indt_Detail_Id,
+     erpm_indent_master.`Indt_WFM_ID` AS erpm_indent_master_Indt_WFM_ID
+FROM
+     `erpm_indent_master` erpm_indent_master INNER JOIN `erpm_indent_detail` erpm_indent_detail ON erpm_indent_master.`Indt_Indent_Id` = erpm_indent_detail.`Indt_indt_mst_Indent_Id`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_indent_master.`Indt_status` = erpm_gen_master.`ERPMGM_EGM_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master_A ON erpm_indent_master.`Indt_Currency_Id` = erpm_gen_master_A.`ERPMGM_EGM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_indent_master.`Indt_Institution_Id` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_indent_master.`Indt_Subinstitution_Id` = subinstitutionmaster.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster ON erpm_indent_master.`Indt_Department_Id` = departmentmaster.`DM_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_indent_detail.`Indt_Item_Id` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master_B ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master_B.`ERPMGM_EGM_ID`
+WHERE $P{condition}]]>
+	</queryString>
+	<field name="erpm_indent_master_Indt_Indent_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_Indent_Date" class="java.sql.Date"/>
+	<field name="erpm_indent_master_Indt_Institution_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_Subinstitution_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_Department_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_BudgetHead_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_User_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_status" class="java.lang.Long"/>
+	<field name="erpm_indent_master_Indt_Currency_Id" class="java.lang.Long"/>
+	<field name="erpm_indent_master_Indt_Remarks" class="java.lang.String"/>
+	<field name="erpm_indent_master_Indt_Title" class="java.lang.String"/>
+	<field name="erpm_indent_detail_Indt_Item_Id" class="java.lang.Long"/>
+	<field name="erpm_indent_detail_Indt_quantity" class="java.lang.Integer"/>
+	<field name="erpm_indent_detail_indt_Approxcost" class="java.math.BigDecimal"/>
+	<field name="erpm_indent_detail_Indt_Purpose" class="java.lang.String"/>
+	<field name="erpm_indent_detail_Indt_IR_Item_Rate_Id" class="java.lang.Long"/>
+	<field name="erpm_indent_detail_Indt_Approved_Quantity" class="java.lang.Integer"/>
+	<field name="erpm_indent_detail_Indt_Accepted_Unit_Rate" class="java.math.BigDecimal"/>
+	<field name="Indent_Status" class="java.lang.String"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="Currency" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="UOM" class="java.lang.String"/>
+	<field name="erpm_indent_detail_indt_Detail_Id" class="java.lang.Integer"/>
+	<field name="erpm_indent_master_Indt_WFM_ID" class="java.lang.Long"/>
+	<group name="erpm_indent_master_Indt_Indent_Id">
+		<groupExpression><![CDATA[$F{erpm_indent_master_Indt_Indent_Id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="166" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a17bc372-a733-4dca-ad14-dd1a6882a96f" x="80" y="79" width="91" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_master_Indt_Indent_Id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="bc516cee-ca22-48e4-a013-d97ef06c1f7d" x="3" y="79" width="70" height="16"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indent ID :]]></text>
+			</staticText>
+			<textField pattern="dd MMM yyyy">
+				<reportElement uuid="9aa3d2a5-7f6c-46e4-8462-37aa7f013951" x="377" y="79" width="87" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_master_Indt_Indent_Date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="11daff56-45c5-4189-8aff-3e91d95559de" x="287" y="79" width="85" height="16"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indent Date :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cba06b68-e4a2-45a8-abd0-ff0639289406" x="3" y="145" width="70" height="16"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indent Title :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="fcae229b-6b3a-44fa-a4fb-49db8e4f295c" x="80" y="145" width="194" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_master_Indt_Title}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="05068c9e-2af7-42b8-b80e-0269baa519fe" x="287" y="145" width="85" height="16"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Currency  ID :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7fb88bc0-af75-4b67-88ca-7428d5ced600" x="377" y="145" width="87" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Currency}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b519b784-6a71-43f2-a804-960009e5ae8f" x="3" y="99" width="72" height="17"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institute:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="222c0b73-8394-4469-a0cb-fb1d7a66a9a6" x="287" y="99" width="85" height="17"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[College/Faculty:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9c08fc01-541e-4ad5-af20-8972cf33668d" x="3" y="120" width="70" height="17"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="62d3002b-613b-4fc0-971b-248d91d32b06" x="80" y="99" width="194" height="17"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d187a205-a00c-4cce-a747-9accce8179d2" x="377" y="99" width="224" height="17"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4d585f3b-ce1c-4e2f-9ddd-64fb2708f709" x="80" y="120" width="194" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6a3215db-7744-4835-9db0-65514374090a" x="241" y="38" width="136" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[INDENT REPORT]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="839740ee-a155-475b-9869-a0722a08853f" x="464" y="38" width="137" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="fb1f5194-265a-4927-86f0-3b9b968c0e47" x="2" y="7" width="39" height="18"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[S.No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="351d8b35-8e63-492a-a06b-ed54496c95f6" x="57" y="7" width="71" height="20"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9a0a944d-ee6f-4b0f-9ff7-d4d2aba511cd" x="241" y="7" width="90" height="20"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[App Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ce92ff0-f82e-43d4-8ce9-2b0992903682" x="351" y="7" width="100" height="20"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[App Unit Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fecbc600-4c6a-4b65-b487-2d0d37a853f6" x="153" y="7" width="64" height="20"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[UOM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c42fc990-fd04-41cf-814f-26f779553b66" x="468" y="7" width="100" height="20"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Aproximate]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e030748a-1a9f-4b1e-a399-c99e11255943" x="0" y="0" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a273b79d-6da6-4a37-87b8-3bc8df3e1cda" x="57" y="0" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_item_master_ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b031d856-2a5d-4a93-a881-88ef2004c436" x="241" y="0" width="90" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_detail_Indt_Approved_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5849474b-d913-442f-939d-d42019c01f40" x="351" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_detail_Indt_Accepted_Unit_Rate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fef24dc8-48f3-4eed-b210-4649d8f5abf0" x="153" y="0" width="64" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{UOM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6c998a72-98ef-480a-a543-b354972ebdaf" x="468" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_detail_indt_Approxcost}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="55a3b2e1-c4db-401e-9cee-9ba7af678bf4" x="448" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="09a4b5c8-ad94-49cb-963a-92b0edad7462" x="528" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="81" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e78ba38e-fc02-4407-adea-34973a6c1e8a" x="0" y="20" width="603" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{erpm_indent_master_Indt_Remarks}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d2c80f8f-0c94-4b75-9ead-839bb55cf645" x="2" y="0" width="601" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="1d5dabe5-ce14-4828-98d9-31bce8f8af52" mode="Transparent" x="2" y="57" width="599" height="16" backcolor="#99CCFF"/>
+				<subreportParameter name="erpm_indent_master_Indt_Indent_Id">
+					<subreportParameterExpression><![CDATA[$F{erpm_indent_master_Indt_Indent_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="erpm_indent_master_Indt_WFM_ID">
+					<subreportParameterExpression><![CDATA[$F{erpm_indent_master_Indt_WFM_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

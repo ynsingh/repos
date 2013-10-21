@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.GfrMaster" table="gfr_master">
+        <id name="gfrGfrId" type="java.lang.Integer">
+            <column name="GFR_GFR_Id" />
+            <generator class="identity" />
+        </id>
+        <property name="gfrSection" type="string">
+            <column name="GFR_Section" length="5" not-null="true" />
+        </property>
+        <property name="gfrChapterNo" type="int">
+            <column name="GFR_Chapter_No" not-null="true" />
+        </property>
+        <property name="gfrChapterName" type="string">
+            <column name="GFR_Chapter_Name" length="100" not-null="true" />
+        </property>
+        <property name="gfrRuleNo" type="string">
+            <column name="GFR_Rule_No" length="15" not-null="true" />
+        </property>
+        <property name="gfrDescription" type="string">
+            <column name="GFR_Description" length="2000" not-null="true" />
+        </property>
+        <set name="gfrProgramMappings" inverse="true">
+            <key>
+                <column name="GPM_GFR_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.GfrProgramMapping" />
+        </set>
+    </class>
+</hibernate-mapping>

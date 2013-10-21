@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ItemRateDetailReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6614ab23-59f1-4b80-8cba-58f03aca972e">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="53"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_item_rate.`IR_Item_Rate_Id` AS Item_Rate_Id,
+     erpm_item_rate.`IR_IM_ID` AS IR_IM_ID,
+     institutionmaster.`IM_Name` AS IM_Name,
+     erpm_item_rate.`IR_Supplier_ID` AS IR_Supplier_ID,
+     suppliermaster.`SM_Name` AS SM_Name,
+     erpm_item_rate.`IR_Item_ID` AS IR_Item_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS ERPMIM_Item_Brief_Desc,
+     erpm_item_rate.`IR_Currency_ID` AS IR_Currency_ID,
+     erpm_gen_master_A.`ERPMGM_EGM_DESC` AS ERPMGM_Currency,
+     erpm_item_rate.`IR_Warranty_Months` AS IR_Warranty_Months,
+     erpm_item_rate.`IR_Warranty_Starts_From_ID` AS IR_Warranty_Starts_From_ID,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS ERPMGM_Warranty_Starts_From,
+     erpm_item_rate.`IR_Warranty_Clause` AS IR_Warranty_Clause,
+     erpm_item_rate.`IRD_WEF_Date` AS IRD_WEF_Date,
+     erpm_item_rate.`IRD_WET_Date` AS IRD_WET_Date,
+     erpm_item_rate.`IRD_Rate` AS IRD_Rate,
+     erpm_item_master.`ERPMIM_UOP` AS ERPMIM_UOP,
+     erpm_gen_master_C.`ERPMGM_EGM_DESC` AS ERPMGM_UOP,
+     erpm_item_rate_taxes.`IRT_Tax_Name_ID` AS IRT_Tax_Name_ID,
+     erpm_gen_master_B.`ERPMGM_EGM_DESC` AS ERPMGM_Tax_Name,
+     erpm_item_rate_taxes.`IRT_Tax_Percent` AS IRT_Tax_Percent,
+     erpm_item_rate_taxes.`IRT_Tax_on_Value_Percent` AS IRT_Tax_on_Value_Percent,
+     erpm_item_rate_taxes.`IRT_Surcharge_Percent` AS IRT_Surcharge_Percent,
+     erpm_item_category_master.`ERPMICM_Cat_Desc` AS ERPMICM_Cat_Desc_Type,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc` AS ERPMICM_Cat_Desc_Category,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc` AS ERPMICM_Cat_Desc_Subcategory,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS ERPMIM_Item_Cat1,
+     erpm_item_master.`ERPMIM_Item_Cat2` AS ERPMIM_Item_Cat2,
+     erpm_item_master.`ERPMIM_Item_Cat3` AS ERPMIM_Item_Cat3
+FROM
+     `erpm_item_rate` erpm_item_rate LEFT OUTER JOIN `erpm_item_rate_taxes` erpm_item_rate_taxes ON erpm_item_rate.`IR_Item_Rate_Id` = erpm_item_rate_taxes.`IRT_Item_Rate_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_item_rate.`IR_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_item_rate.`IR_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_item_rate.`IR_Item_ID` = erpm_item_master.`ERPMIM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_rate.`IR_Warranty_Starts_From_ID` = erpm_gen_master.`ERPMGM_EGM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master_A ON erpm_item_rate.`IR_Currency_ID` = erpm_gen_master_A.`ERPMGM_EGM_ID`
+     INNER JOIN `erpm_gen_master` erpm_gen_master_C ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master_C.`ERPMGM_EGM_ID`
+     INNER JOIN `erpm_item_category_master` erpm_item_category_master ON erpm_item_master.`ERPMIM_Item_Cat1` = erpm_item_category_master.`ERPMICM_Item_ID`
+     INNER JOIN `erpm_item_category_master` erpm_item_category_master_A ON erpm_item_master.`ERPMIM_Item_Cat2` = erpm_item_category_master_A.`ERPMICM_Item_ID`
+     INNER JOIN `erpm_item_category_master` erpm_item_category_master_B ON erpm_item_master.`ERPMIM_Item_Cat3` = erpm_item_category_master_B.`ERPMICM_Item_ID`
+     AND institutionmaster.`IM_ID` = erpm_item_category_master_B.`ERPMICM_IM_ID`
+     AND institutionmaster.`IM_ID` = erpm_item_category_master_A.`ERPMICM_IM_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master_B ON erpm_item_rate_taxes.`IRT_Tax_Name_ID` = erpm_gen_master_B.`ERPMGM_EGM_ID`
+WHERE $P!{condition}]]>
+	</queryString>
+	<field name="Item_Rate_Id" class="java.lang.Long"/>
+	<field name="IR_IM_ID" class="java.lang.Integer"/>
+	<field name="IM_Name" class="java.lang.String"/>
+	<field name="IR_Supplier_ID" class="java.lang.Long"/>
+	<field name="SM_Name" class="java.lang.String"/>
+	<field name="IR_Item_ID" class="java.lang.Long"/>
+	<field name="ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="IR_Currency_ID" class="java.lang.Long"/>
+	<field name="ERPMGM_Currency" class="java.lang.String"/>
+	<field name="IR_Warranty_Months" class="java.lang.Long"/>
+	<field name="IR_Warranty_Starts_From_ID" class="java.lang.Long"/>
+	<field name="ERPMGM_Warranty_Starts_From" class="java.lang.String"/>
+	<field name="IR_Warranty_Clause" class="java.lang.String"/>
+	<field name="IRD_WEF_Date" class="java.sql.Date"/>
+	<field name="IRD_WET_Date" class="java.sql.Date"/>
+	<field name="IRD_Rate" class="java.math.BigDecimal"/>
+	<field name="ERPMIM_UOP" class="java.lang.Long"/>
+	<field name="ERPMGM_UOP" class="java.lang.String"/>
+	<field name="IRT_Tax_Name_ID" class="java.lang.Long"/>
+	<field name="ERPMGM_Tax_Name" class="java.lang.String"/>
+	<field name="IRT_Tax_Percent" class="java.math.BigDecimal"/>
+	<field name="IRT_Tax_on_Value_Percent" class="java.math.BigDecimal"/>
+	<field name="IRT_Surcharge_Percent" class="java.math.BigDecimal"/>
+	<field name="ERPMICM_Cat_Desc_Type" class="java.lang.String"/>
+	<field name="ERPMICM_Cat_Desc_Category" class="java.lang.String"/>
+	<field name="ERPMICM_Cat_Desc_Subcategory" class="java.lang.String"/>
+	<field name="ERPMIM_Item_Cat1" class="java.lang.Long"/>
+	<field name="ERPMIM_Item_Cat2" class="java.lang.Long"/>
+	<field name="ERPMIM_Item_Cat3" class="java.lang.Long"/>
+	<group name="Item_Name" keepTogether="true">
+		<groupExpression><![CDATA[$F{ERPMIM_Item_Brief_Desc}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="e64e60fc-bfcf-47e3-a623-39655d552e5e" x="88" y="0" width="230" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="3e4145b5-1c5f-4554-b01c-3d94deb43926" x="9" y="0" width="79" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<text><![CDATA[Item Name :]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<line>
+					<reportElement uuid="bd7d78b1-38ef-442f-b47e-7f64b731b494" x="0" y="3" width="555" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Supplier_Name" keepTogether="true">
+		<groupExpression><![CDATA[$F{SM_Name}]]></groupExpression>
+		<groupHeader>
+			<band height="55">
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="754a63c0-c9df-49d2-8210-064c89305fff" x="111" y="0" width="207" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{SM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="74f4f6cc-6339-429d-a137-5c8bbf565a4c" x="42" y="0" width="61" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12"/>
+					</textElement>
+					<text><![CDATA[Supplier :]]></text>
+				</staticText>
+				<rectangle radius="1">
+					<reportElement uuid="e52caa01-377d-4158-b9af-b7b00f8c227e" x="1" y="23" width="554" height="31" backcolor="#FFFFCC"/>
+					<graphicElement>
+						<pen lineWidth="0.75" lineColor="#000000"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="6b33bc59-8f68-4b59-87f3-36196b00dd6c" x="7" y="27" width="36" height="25"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[From Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e374cfd1-2356-4442-8040-586592c0fdaf" x="49" y="37" width="41" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[To Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="7adbce71-a9eb-4383-a48a-7c54ea5625c7" x="96" y="37" width="24" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Rate]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="47f8c260-5778-4075-a231-00c0611cb31e" x="144" y="37" width="40" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Currency]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="fb7db37e-b1ae-4fd7-a836-c653745621d0" x="186" y="37" width="22" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UOP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e609b950-ec09-457f-a828-e358e48a5615" x="223" y="27" width="47" height="25"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Warrranty months]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8dd3327a-b16b-4f8c-b7aa-599199ccc489" x="272" y="27" width="45" height="25"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Warranty starts from]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="74f8720b-b6d1-4903-bffe-8a65320498a9" x="319" y="25" width="48" height="29"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Warranty clause]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="af7238ab-67eb-4358-9a23-a54520487c3f" x="369" y="27" width="37" height="25"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tax name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d7ea754e-6642-42c5-957c-28d4a17190b8" x="414" y="37" width="35" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tax percent]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="7b65c513-9a16-41b7-ac54-f0f4cfa687d8" x="452" y="27" width="52" height="25"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tax on %age of value]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="81812d18-4715-4ba4-874e-66a7b7999357" x="506" y="37" width="47" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Surcharge]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="7"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement uuid="3879b19b-687d-4088-92dc-04b3c5e8a445" x="42" y="0" width="475" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6644658c-5330-4667-9475-070af4019097" x="221" y="30" width="129" height="20"/>
+				<textElement>
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Item Rate Detail Report]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="1b94c7f1-5ea8-4f92-ab01-a34e9d4b8cec" x="449" y="28" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="4" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="7" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="c55c9917-4f91-4933-8c97-64bb40b56dc7" x="3" y="1" width="45" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IRD_WEF_Date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="3bf5fc86-ac3e-4641-bbc2-f13ac964c53e" x="49" y="1" width="45" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IRD_WET_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="4f9b681f-0a2a-45c5-9286-93a796df4148" x="185" y="1" width="36" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMGM_UOP}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5fc0d8f9-9d4d-4484-8047-2e80c2f23a4b" x="223" y="1" width="47" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IR_Warranty_Months}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="473302f9-0018-4403-90b3-9d3375b6c77b" x="319" y="1" width="48" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IR_Warranty_Clause}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="157640cd-017a-4c4d-ae7f-4283ddc5dfad" x="369" y="0" width="43" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMGM_Tax_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="53b8b03d-ce74-406b-8f54-d159693cd428" x="452" y="1" width="52" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IRT_Tax_on_Value_Percent}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5619beee-a02e-4e64-99de-6c5b96c6f891" x="143" y="1" width="40" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMGM_Currency}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a8a66ba2-ddd5-4f8c-a158-d75b23cb91a1" x="96" y="1" width="45" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IRD_Rate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1d481c62-e172-4a79-902d-db6fae96412a" x="272" y="1" width="45" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMGM_Warranty_Starts_From}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0d1a9788-155f-4cbe-bcf2-78e2751b207e" x="414" y="1" width="35" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IRT_Tax_Percent}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="72ffc961-fcf5-44d0-a5c2-909b3dba705d" x="506" y="2" width="47" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IRT_Surcharge_Percent}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement uuid="2224600a-de76-4d3c-aa8a-fa75f6bad686" x="384" y="2" width="80" height="21"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="ac0c51d2-19c9-468d-8f3d-df21c537662c" x="466" y="2" width="40" height="21"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="4" splitType="Stretch"/>
+	</summary>
+</jasperReport>

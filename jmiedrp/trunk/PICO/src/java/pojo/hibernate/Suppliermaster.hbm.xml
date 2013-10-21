@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.Suppliermaster" table="suppliermaster">
         <id name="smId" type="java.lang.Integer">
@@ -27,25 +27,25 @@
             <column name="SM_Year_Establishment" length="10" />
         </property>
         <property name="smPanNo" type="string">
-            <column name="SM_PAN_No" length="10" />
+            <column name="SM_PAN_No" length="15" />
         </property>
         <property name="smTanNo" type="string">
-            <column name="SM_TAN_No" length="10" />
+            <column name="SM_TAN_No" length="15" />
         </property>
         <property name="smStateStVatRgnNo" type="string">
-            <column name="SM_STATE_ST_VAT_RGN_NO" length="10" />
+            <column name="SM_STATE_ST_VAT_RGN_NO" length="15" />
         </property>
         <property name="smCenStVatRgnNo" type="string">
-            <column name="SM_CEN_ST_VAT_RGN_NO" length="10" />
+            <column name="SM_CEN_ST_VAT_RGN_NO" length="15" />
         </property>
         <property name="smEdRgnNo" type="string">
-            <column name="SM_ED_RGN_NO" length="10" />
+            <column name="SM_ED_RGN_NO" length="15" />
         </property>
         <property name="smEccCode" type="string">
-            <column name="SM_ECC_CODE" length="10" />
+            <column name="SM_ECC_CODE" length="15" />
         </property>
         <property name="smEntreprenureMemNo" type="string">
-            <column name="SM_ENTREPRENURE_MEM_NO" length="10" />
+            <column name="SM_ENTREPRENURE_MEM_NO" length="15" />
         </property>
         <property name="smRegDate" type="date">
             <column name="SM_REG_DATE" length="10" not-null="true" />
@@ -56,11 +56,35 @@
         <property name="smCeoOrProprietorName" type="string">
             <column name="SM_CEO_OR_PROPRIETOR_NAME" length="100" />
         </property>
+        <set name="erpmTempOpeningStocks" inverse="true">
+            <key>
+                <column name="TOS_SM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmTempOpeningStock" />
+        </set>
+        <set name="erpmPurchaseinvoiceMasters" inverse="true">
+            <key>
+                <column name="PIM_Supplier_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmPurchaseinvoiceMaster" />
+        </set>
+        <set name="erpmIssueMasters" inverse="true">
+            <key>
+                <column name="ISM_To_Supplier_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueMaster" />
+        </set>
         <set name="erpmItemRates" inverse="true">
             <key>
                 <column name="IR_Supplier_ID" not-null="true" />
             </key>
             <one-to-many class="pojo.hibernate.ErpmItemRate" />
+        </set>
+        <set name="erpmStockReceiveds" inverse="true">
+            <key>
+                <column name="ST_SM_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmStockReceived" />
         </set>
         <set name="erpmPoMasters" inverse="true">
             <key>

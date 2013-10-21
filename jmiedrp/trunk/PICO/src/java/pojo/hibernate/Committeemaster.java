@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -23,7 +23,9 @@ public class Committeemaster  implements java.io.Serializable {
      private Character committeeLevel;
      private Set workflowdetailsForWfdDestinationCommittee = new HashSet(0);
      private Set workflowtransactionsForWftDestinationId = new HashSet(0);
+     private Set erpmIssueMasters = new HashSet(0);
      private Set workflowtransactionsForWftSourceId = new HashSet(0);
+     private Set erpmIssueReceives = new HashSet(0);
      private Set workflowdetailsForWfdSourceCommittee = new HashSet(0);
 
     public Committeemaster() {
@@ -34,7 +36,7 @@ public class Committeemaster  implements java.io.Serializable {
         this.committeeName = committeeName;
         this.committeeConvener = committeeConvener;
     }
-    public Committeemaster(Subinstitutionmaster subinstitutionmaster, Departmentmaster departmentmaster, ErpmGenMaster erpmGenMaster, Institutionmaster institutionmaster, String committeeName, String commmitteePurpose, Character committeeActive, String committeeConvener, Character committeeLevel, Set workflowdetailsForWfdDestinationCommittee, Set workflowtransactionsForWftDestinationId, Set workflowtransactionsForWftSourceId, Set workflowdetailsForWfdSourceCommittee) {
+    public Committeemaster(Subinstitutionmaster subinstitutionmaster, Departmentmaster departmentmaster, ErpmGenMaster erpmGenMaster, Institutionmaster institutionmaster, String committeeName, String commmitteePurpose, Character committeeActive, String committeeConvener, Character committeeLevel, Set workflowdetailsForWfdDestinationCommittee, Set workflowtransactionsForWftDestinationId, Set erpmIssueMasters, Set workflowtransactionsForWftSourceId, Set erpmIssueReceives, Set workflowdetailsForWfdSourceCommittee) {
        this.subinstitutionmaster = subinstitutionmaster;
        this.departmentmaster = departmentmaster;
        this.erpmGenMaster = erpmGenMaster;
@@ -46,7 +48,9 @@ public class Committeemaster  implements java.io.Serializable {
        this.committeeLevel = committeeLevel;
        this.workflowdetailsForWfdDestinationCommittee = workflowdetailsForWfdDestinationCommittee;
        this.workflowtransactionsForWftDestinationId = workflowtransactionsForWftDestinationId;
+       this.erpmIssueMasters = erpmIssueMasters;
        this.workflowtransactionsForWftSourceId = workflowtransactionsForWftSourceId;
+       this.erpmIssueReceives = erpmIssueReceives;
        this.workflowdetailsForWfdSourceCommittee = workflowdetailsForWfdSourceCommittee;
     }
    
@@ -134,12 +138,26 @@ public class Committeemaster  implements java.io.Serializable {
     public void setWorkflowtransactionsForWftDestinationId(Set workflowtransactionsForWftDestinationId) {
         this.workflowtransactionsForWftDestinationId = workflowtransactionsForWftDestinationId;
     }
+    public Set getErpmIssueMasters() {
+        return this.erpmIssueMasters;
+    }
+    
+    public void setErpmIssueMasters(Set erpmIssueMasters) {
+        this.erpmIssueMasters = erpmIssueMasters;
+    }
     public Set getWorkflowtransactionsForWftSourceId() {
         return this.workflowtransactionsForWftSourceId;
     }
     
     public void setWorkflowtransactionsForWftSourceId(Set workflowtransactionsForWftSourceId) {
         this.workflowtransactionsForWftSourceId = workflowtransactionsForWftSourceId;
+    }
+    public Set getErpmIssueReceives() {
+        return this.erpmIssueReceives;
+    }
+    
+    public void setErpmIssueReceives(Set erpmIssueReceives) {
+        this.erpmIssueReceives = erpmIssueReceives;
     }
     public Set getWorkflowdetailsForWfdSourceCommittee() {
         return this.workflowdetailsForWfdSourceCommittee;

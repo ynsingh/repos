@@ -37,41 +37,50 @@
             </div>
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent">
-                <p align="center" class="pageHeading" ><s:label value="INSTITUTION USER ROLE PRIVILEGES MANAGEMENT"/></p>
-                <p align="center" class="pageMessage" ><s:property value="message" /></p>
-                <s:form name="frmIURPEdit" action="SaveIURP">
-                    <s:hidden name="iur.iurId"/>
-                    <s:hidden name="irp.iupId"/>
-                    <s:hidden name ="irp.institutionuserroles.iurId" />
-                    <s:hidden name="irp.erpmprogram.erpmpId" />
-                    <s:hidden name="irp.erpmmodule.erpmmId" />
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION USER ROLE PRIVILEGES MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
 
-                <table border="0" cellpadding="4" cellspacing="0" align="center" >
-                        <tr>
-                            <td>
-                                <s:textfield cssClass="textInputRO" label="Module Name" name="irp.erpmmodule.erpmmName" maxLength="100" size="100" />
-                                <s:textfield cssClass="textInputRO" label="Program Name" name="irp.erpmprogram.erpmpDisplayName" maxLength="100" size="100"  readonly="true"/>
-                                <s:textfield cssClass="textInputRO" label="Role Name" name="irp.institutionuserroles.iurName" maxLength="100" size="100"  readonly="true"/>
-                                <s:label  cssClass="tdLabel" value="Privileges"/>
-                                <s:checkbox cssClass="checkboxLabel"  label="Can Add" name="irp.iupCanAdd" labelposition="right"/>
-                                <s:checkbox cssClass="checkboxLabel"  label="Can Edit" name="irp.iupCanEdit" labelposition="right"/>
-                                <s:checkbox cssClass="checkboxLabel"  label="Can Delete" name="irp.iupCanDelete"  labelposition="right"/>
-                                <s:checkbox cssClass="checkboxLabel"  label="Can View" name="irp.iupCanView" labelposition="right"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <s:submit theme="simple" name="btnSubmit" value="Save Role Privileges" action="SaveIURP"/>
-                            </td>
-                        </tr>
+                <div style="border: solid 1px #000000; background: gainsboro">
 
-                </table>
-                </s:form>
+                    <s:form name="frmIURPEdit" action="SaveIURP">
+                        <s:hidden name="iur.iurId"/>
+                        <s:hidden name="irp.iupId"/>
+                        <s:hidden name ="irp.institutionuserroles.iurId" />
+                        <s:hidden name="irp.erpmprogram.erpmpId" />
+                        <s:hidden name="irp.erpmmodule.erpmmId" />
+
+                        <table border="0" cellpadding="4" cellspacing="0" align="center" >
+                            <tr>
+                                <td>
+                                    <s:textfield cssClass="textInputRO" label="Module Name" name="irp.erpmmodule.erpmmName" maxLength="100" size="100" />
+                                    <s:textfield cssClass="textInputRO" label="Program Name" name="irp.erpmprogram.erpmpDisplayName" maxLength="100" size="100"  readonly="true"/>
+                                    <s:textfield cssClass="textInputRO" label="Role Name" name="irp.institutionuserroles.iurName" maxLength="100" size="100"  readonly="true"/>
+                                    <s:label  cssClass="tdLabel" value="Privileges"/>
+                                    <s:checkbox cssClass="checkboxLabel"  label="Can Add" name="irp.iupCanAdd" labelposition="right"/>
+                                    <s:checkbox cssClass="checkboxLabel"  label="Can Edit" name="irp.iupCanEdit" labelposition="right"/>
+                                    <s:checkbox cssClass="checkboxLabel"  label="Can Delete" name="irp.iupCanDelete"  labelposition="right"/>
+                                    <s:checkbox cssClass="checkboxLabel"  label="Can View" name="irp.iupCanView" labelposition="right"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <s:submit theme="simple" name="btnSubmit" value="Save Role Privileges" action="SaveIURP"/>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </s:form>
+                    <br>
+                </div>
+                &nbsp;
             </div>
 
-            </div>
-            <div id="footer">
-                <jsp:include page="footer.jsp" flush="true"></jsp:include>
-            </div>
+        </div>
+        <div id="footer">
+            <jsp:include page="footer.jsp" flush="true"></jsp:include>
+        </div>
     </body>
 </html>

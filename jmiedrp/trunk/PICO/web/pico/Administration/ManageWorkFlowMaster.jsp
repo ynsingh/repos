@@ -25,9 +25,11 @@
         <meta name="author" content="S.Kazim Naqvi, Jamia Millia Islamia">
         <meta name="email" content="sknaqvi@jmi.ac.in">
         <meta name="copyright" content="NMEICT, MHRD, Govt. of India">
+
     </head>
+    
     <body class="twoColElsLtHdr">
-        <div id="container" >
+        <div id="container">
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
@@ -35,102 +37,152 @@
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
+            
+            <jsp:include page="jobBar.jsp" flush="true"></jsp:include>
+            
             <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent"> <br><br>
-                <p align="center"><s:label value="WORKFLOW MASTER" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
-                <s:form name="frmWorkFlowMaster" action="SaveWorkFlowMasterAction">
-                    <s:hidden name="wfm.wfmId" />
+            <div id ="mainContent"> 
+                <s:bean name="java.util.HashMap" id="qTableLayout">
+                    <s:param name="tablecolspan" value="%{8}" />                    
+                </s:bean>
 
-                    <table border="0" cellpadding="4" cellspacing="0" align="center" >
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <br>
-                                    <s:select label="Institution" name="wfm.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName" cssClass="textInput"
-                                        onchange="getAllSubinstitutionList('SaveWorkFlowMasterAction_wfm_institutionmaster_imId', 'SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId');"/>
-                                    <s:select label="College/Faculty/School" name="wfm.subinstitutionmaster.simId" headerKey="0" headerValue="All Colleges/Faculties/Schools" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput"
-                                        onchange="getAllDepartmentList('SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId', 'SaveWorkFlowMasterAction_wfm_departmentmaster_dmId');"/>
-                                    <s:select label="Department" name="wfm.departmentmaster.dmId" headerKey="0" headerValue="All Departments" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput"/>
-                                    <s:textfield label="Name of the Workflow" name="wfm.wfmName" title="Enter Name of the Committee/Authority"
-                                                 required="true" requiredposition="left" maxLength="100" size="100"  cssClass="textInput"/>
-                                    <s:select label="Workflow Type" name="wfm.erpmGenMaster.erpmgmEgmId" headerKey="0" headerValue="-- Please Select --" list="egmList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
-                                </td>
-                            </tr> <tr>
-                                <td>
-                                    <s:submit theme="simple" name="btnSubmit" value="Save Workflow"  cssClass="textInput"/>
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">WORKFLOW MASTER</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
 
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Fetch Workflow Entries" action="FetchWorkFlowMaster"  cssClass="textInput"/>
-                                </td>
-                                <td>
-                                    <s:submit theme="simple" name="bthReset" value="Clear"  action="ClearWorkFlowMasterAction" cssClass="textInput"/>
-                                </td>
-                            </tr>
-                            <tr><td><br></td><td><br></td></tr>
-                        </tbody>
-                    </table>
-                </s:form>
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                <s:form name="frmWorkFlowMaster" action="SaveWorkFlowMasterAction" theme="qxhtml">
+                        <s:hidden name="wfm.wfmId" />
+                        <br>
+                        <s:select label="Institution" name="wfm.institutionmaster.imId" headerKey="0" headerValue="-- Please Select --" list="imIdList" listKey="imId" listValue="imName"
+                                  required = "true" requiredposition="right" 
+                                  onchange="getSubinstitutionList('SaveWorkFlowMasterAction_wfm_institutionmaster_imId', 'SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId');" cssClass="textInput" >
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{2}" />
+                        </s:select>
+                        
+                        <s:label/>
+                        <s:label value="................." cssClass="tdSpace" />
+                        
+                        <s:select label="College/Faculty/School" name="wfm.subinstitutionmaster.simId" headerKey="0" headerValue="-- Please Select --" list="simImIdList" listKey="simId" listValue="simName" cssClass="textInput" required = "true" requiredposition="right"
+                                  onchange="getAllDepartmentList('SaveWorkFlowMasterAction_wfm_subinstitutionmaster_simId', 'SaveWorkFlowMasterAction_wfm_departmentmaster_dmId');">
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{1}" />
+                        </s:select>
+                                                
+                        <s:select label="Department" name="wfm.departmentmaster.dmId" headerKey="0" headerValue="All Departments" list="dmList" listKey="dmId" listValue="dmName" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{4}" />
+                        </s:select>
+                            
+                        <s:select label="Workflow Type" name="wfm.erpmGenMaster.erpmgmEgmId" headerKey="0" 
+                                  headerValue="-- Please Select --" list="egmList" listKey="erpmgmEgmId" 
+                                  listValue="erpmgmEgmDesc" cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{1}" />
+                            <s:param name="inputcolspan" value="%{1}" />
+                        </s:select>
+
+                        <s:textfield label="Name of the Workflow" name="wfm.wfmName" title="Enter Name of the Committee/Authority"
+                                     required="true" requiredposition="left" maxLength="100" size="100"  cssClass="textInput">
+                            <s:param name="labelcolspan" value="%{2}" />
+                            <s:param name="inputcolspan" value="%{6}" />
+                        </s:textfield>
+                            
+                        <s:iterator value="{1,1,1,1,1,1,1,1}">
+                            <s:label value="..." cssClass="tdSpace"/>
+                        </s:iterator>
+
+                        <s:submit value="Save Workflow" >
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit value="Fetch Workflow Entries" action="FetchWorkFlowMaster">
+                            <s:param name="colspan" value="%{2}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+
+                        <s:submit value="Clear Form" action="ClearWorkFlowMasterAction">
+                            <s:param name="colspan" value="%{1}" />
+                            <s:param name="align" value="%{'center'}" />
+                        </s:submit>
+                        
+                        <s:iterator value="{1,1,1,1,1,1,1,1}">
+                            <s:label value="..." cssClass="tdSpace"/>
+                        </s:iterator>
+
+                </s:form>                             
+            </div>
+                <br>
             </div>
 
+           <s:if test="wfmList.size()>0">                 
+                <div id ="mainContent" align="center" style="border: solid 1px #666; background: gainsboro">
+                    <s:form name="frmWorkflowMasterBrowse">
+                        
+                        <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center" >
+                            <tr><td>
+                                    <display:table name="wfmList" pagesize="15"
+                                                   excludedParams="" export="true" cellpadding="0"
+                                                   cellspacing="0" id="doc"
+                                                   requestURI="/Administration/FetchWorkFlowMaster">
+                                        <display:column  class="griddata" title="Record" sortable="true" headerClass="gridheader">
+                                    <c:out> ${doc_rowNum}
+                                    </display:column>
 
-             <div id ="mainContent" align="center">
-             <s:form name="frmWorkflowMasterBrowse">
-                 <table width="100%" border="1" cellspacing="0" cellpadding="0" align="center" >
-                    <tr><td>
-                     <display:table name="wfmList" pagesize="15"
-                               excludedParams="" export="true" cellpadding="0"
-                               cellspacing="0" id="doc"
-                               requestURI="/Administration/FetchWorkFlowMaster">
-                         <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                            <c:out> ${doc_rowNum}
-                         </display:column>
-                         
-                         <display:column property="institutionmaster.imName" title="Institution Name"
-                                    maxLength="100" headerClass="gridheader" 
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false" />
+                                    <display:column property="institutionmaster.imName" title="Institution"
+                                                    headerClass="gridheader"
+                                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" sortable="false" />
 
-                        <display:column property="subinstitutionmaster.simName" title="SubInstitution"
-                                    maxLength="120" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
+                                    <display:column property="subinstitutionmaster.simName" title="SubInstitution"
+                                                    headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                        <display:column property="departmentmaster.dmName" title="Department"
-                                    maxLength="120" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
+                                    <display:column property="departmentmaster.dmName" title="Department"
+                                                    headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                        <display:column property="wfmName" title="Work Flow Name" style="width:30%"
-                                    maxLength="120" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
+                                    <display:column property="wfmName" title="Work Flow Name" headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                        <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Work Flow Type" style="width:30%"
-                                    maxLength="100" headerClass="gridheader"
-                                    class="griddata" sortable="false"/>
-                       
-                         <display:column paramId="wfmId" paramProperty="wfmId"
-                                    href="/pico/Administration/EditWorkFlowMasterAction.action"
-                                    headerClass="gridheader" class="griddata" media="html"  title="Edit">
-                                    Edit
-                    </display:column>
-                    <display:column paramId="wfmId" paramProperty="wfmId"
-                                    href="/pico/Administration/DeleteWorkFlowMasterAction.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
-                                    Delete
-                    </display:column>
+                                    <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Work Flow Type"
+                                                    headerClass="gridheader"
+                                                    class="griddata" sortable="false"/>
 
-                    <display:column paramId="wfmId" paramProperty="wfmId"
-                                    href="/pico/Administration/AddWorkFlowDetail.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Add Workflow Details">
-                                    Add Workflow Details
-                    </display:column>
+                                    <display:column paramId="wfmId" paramProperty="wfmId"
+                                                    href="/pico/Administration/EditWorkFlowMasterAction.action"
+                                                    headerClass="gridheader" class="griddata" media="html"  title="Edit">
+                                        Edit
+                                    </display:column>
+                                    <display:column paramId="wfmId" paramProperty="wfmId"
+                                                    href="/pico/Administration/DeleteWorkFlowMasterAction.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                        Delete
+                                    </display:column>
 
-                </display:table>
-                </td></tr>
-                </table>
-                 <br>
-             </s:form>
-             </div> 
-            <div id="footer">
+                                    <display:column paramId="wfmId" paramProperty="wfmId"
+                                                    href="/pico/Administration/AddWorkFlowDetail.action"
+                                                    headerClass="gridheader" class="griddata" media="html" title="Add Workflow Details">
+                                        Add Workflow Details
+                                    </display:column>
+
+                                </display:table>
+                                </td></tr>
+                        </table>
+                    </s:form>
+                    <br>
+                &nbsp;
+            </div>           
+            </s:if>
+                    <s:else>
+                        <br><br><br><br><br><br><br><br><br>
+                    </s:else>    
+                        
+            
+            <div id="footer" >
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>
         </div>

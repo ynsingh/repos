@@ -22,62 +22,70 @@
         <div id="container">
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
-            </div>
-            <div id="sidebar1">
+                </div>
+                <div id="sidebar1">
                 <jsp:include page="menu.jsp"   flush="true" ></jsp:include >
-            </div>
+                </div>
 
-            <!-- *********************************End Menu****************************** -->
-            <div id ="mainContent" align="center">
-                <br>
-            <s:form name="frmInstitutionsBrowse">
-                <br>
-                   <p align="center"><s:label value="INSTITUTION LIST" /></p>
-                 <s:property value="message" />
-                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <display:table name="imList" pagesize="15"
-                               excludedParams="*"  cellpadding="0"
-                               cellspacing="0"  id="doc"
-                               requestURI="/Administration/BrowseInstitutions.action">
-                   <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
-                   </display:column>
-                   <display:column property="imName" title="Institution Name"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" sortable="true"/>
-                   <display:column property="imShortName" title="Short Name"
-                                    maxLength="10" headerClass="gridheader"
-                                    class="griddata" sortable="true"  />
-                   <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Insitute Type"
-                                    maxLength="30" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
-                   <display:column property="imEmailId" title="Email Id"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
-                   <display:column property="countrymaster.countryName" title="Country"
-                                    maxLength="30" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
-                   <display:column property="statemaster.stateName" title="State"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" sortable="true"/>
-                    <display:column paramId="ImId" paramProperty="imId"
-                                    href="/pico/Administration/EditInstitution"
-                                    headerClass="gridheader" class="griddata" media="html"   title="Edit">
-                                    Edit
-                                    
-                    </display:column>
+                <!-- *********************************End Menu****************************** -->
+                <div id ="mainContent" align="center">
+
+                    <br><br>
+                    <div style ="background-color: #215dc6;">
+                        <p align="center" class="pageHeading" style="color: #ffffff">INSTITUTION LIST</p>
+                        <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                    <s:form name="frmInstitutionsBrowse">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <display:table name="imList" pagesize="15"
+                                           excludedParams="*"  cellpadding="0"
+                                           cellspacing="0"  id="doc"
+                                           requestURI="/Administration/BrowseInstitutions.action">
+                                <display:column  class="griddata" title="S.No" sortable="true" headerClass="gridheader" style="width:6%" >
+                                    <c:out> ${doc_rowNum}
+                                    </display:column>
+                                    <display:column property="imName" title="Institution Name"
+                                                    maxLength="35" headerClass="gridheader"
+                                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>"  style="width:20%" sortable="true"/>
+                                    <display:column property="imShortName" title="Short Name"
+                                                    maxLength="10" headerClass="gridheader" style="width:10%" 
+                                                    class="griddata" sortable="true"  />
+                                    <display:column property="erpmGenMaster.erpmgmEgmDesc" title="Insitute Type"
+                                                    maxLength="30" headerClass="gridheader" style="width:15%" 
+                                                    class="griddata" sortable="true"/>
+                                    <display:column property="imEmailId" title="Email Id"
+                                                    maxLength="35" headerClass="gridheader" style="width:20%" 
+                                                    class="griddata" sortable="true"/>
+                                    <display:column property="countrymaster.countryName" title="Country"
+                                                    maxLength="30" headerClass="gridheader" style="width:10%" 
+                                                    class="griddata" sortable="true"/> 
+                                    <display:column property="statemaster.stateName" title="State"
+                                                    maxLength="35" headerClass="gridheader" style="width:10%" 
+                                                    class="griddata" sortable="true"/>
+                                    <display:column paramId="ImId" paramProperty="imId"
+                                                    href="/pico/Administration/EditInstitution"
+                                                    headerClass="gridheader" class="griddata" media="html" style="width:6%" title="Edit">
+                                        Edit
+
+                                    </display:column>
                                     <tr><td></td></tr>
-                    <display:column paramId="imId" paramProperty="imId" href="/pico/Administration/DeleteInstitution.action"
-                                    headerClass="gridheader"  class="griddata" media="html"  style="width:20%" title="Delete">
-                                    Delete
-                                       
-                    </display:column>
-                </display:table>
-                </table>
-             </s:form>
-             <br>
+                                    <display:column paramId="imId" paramProperty="imId" href="/pico/Administration/DeleteInstitution.action"
+                                                    headerClass="gridheader"  class="griddata" media="html"  style="width:10%" title="Delete">
+                                        Delete
+
+                                    </display:column>
+                                </display:table>
+                        </table>
+                    </s:form>
+                    <br>
+                </div>
+                &nbsp;
+
             </div>
-             <div id="footer">
+            <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>
         </div>

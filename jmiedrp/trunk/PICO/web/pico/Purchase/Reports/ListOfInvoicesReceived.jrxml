@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListOfInvoicesReceived" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c87c871a-b144-4919-bbb8-f0b4eb619c73">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="d1" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="d2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+concat(departmentmaster.`DM_Short_Name`, '/', cast(year(if(isnull(erpm_po_master.`POM_PO_No`), convert(erpm_po_master_A.`POM_PO_Date`, char), convert(erpm_po_master.`POM_PO_Date`,char))) as char), '/', if(isnull(erpm_po_master.`POM_PO_No`), cast(erpm_po_master_A.`POM_PO_No` as char), cast(erpm_po_master.`POM_PO_No` as char))) as Full_PO_No,
+     erpm_purchaseinvoice_master.`PIM_PIM_ID` AS PIM_ID,
+     institutionmaster.`IM_Name` AS IM_Name,
+     subinstitutionmaster.`SIM_Short_Name` AS SIM_Short_Name,
+     departmentmaster.`DM_Short_Name` AS DM_Short_Name,
+     erpm_purchaseinvoice_master.`PIM_Invoice_Type` AS Invoice_Type,
+     erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_No` AS Supplier_Invoice_No,
+     erpm_purchaseinvoice_master.`PIM_Supplier_Invoice_Date` AS Invoice_Date,
+     suppliermaster.`SM_Name` AS Supplier_Name,
+     if(isnull(erpm_po_master.`POM_PO_No`), convert(erpm_po_master_A.`POM_PO_No`, char), convert(erpm_po_master.`POM_PO_No`,char)) AS PO_No,
+     if(isnull(erpm_po_master.`POM_PO_No`), convert(erpm_po_master_A.`POM_PO_Date`, date), convert(erpm_po_master.`POM_PO_Date`, date)) AS PO_Date,
+     erpm_purchasechallan_master.`PCM_Challan_No` AS Challan_No,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS Item_Name,
+     erpm_purchaseinvoice_detail.`PID_Quantity` AS Quantity,
+     erpm_purchaseinvoice_detail.`PID_Rate` AS Rate,
+     erpm_purchaseinvoice_master.`PIM_IM_ID` AS IM_ID,
+     erpm_purchaseinvoice_master.`PIM_SIM_ID` AS SIM_ID,
+     erpm_purchaseinvoice_master.`PIM_DM_ID` AS DM_ID,
+     erpm_purchaseinvoice_master.`PIM_Supplier_ID` AS Supplier_ID,
+     erpm_purchaseinvoice_detail.`PID_Item_ID` AS Item_ID
+FROM
+     `departmentmaster` departmentmaster INNER JOIN `erpm_purchaseinvoice_master` erpm_purchaseinvoice_master ON departmentmaster.`DM_ID` = erpm_purchaseinvoice_master.`PIM_DM_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_purchaseinvoice_master.`PIM_IM_ID` = institutionmaster.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON erpm_purchaseinvoice_master.`PIM_SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `suppliermaster` suppliermaster ON erpm_purchaseinvoice_master.`PIM_Supplier_ID` = suppliermaster.`SM_Id`
+     INNER JOIN `erpm_purchaseinvoice_detail` erpm_purchaseinvoice_detail ON erpm_purchaseinvoice_master.`PIM_PIM_ID` = erpm_purchaseinvoice_detail.`PID_PIM_ID`
+     LEFT OUTER JOIN `erpm_po_master` erpm_po_master ON erpm_purchaseinvoice_master.`PIM_PO_Master_ID` = erpm_po_master.`POM_PO_Master_ID`
+     LEFT OUTER JOIN `erpm_purchasechallan_master` erpm_purchasechallan_master ON erpm_purchaseinvoice_master.`PIM_PChallan_Master_ID` = erpm_purchasechallan_master.`PCM_PCM_ID`
+     LEFT OUTER JOIN `erpm_po_master` erpm_po_master_A ON erpm_purchasechallan_master.`PCM_PO_Master_ID` = erpm_po_master_A.`POM_PO_Master_ID`
+     INNER JOIN `erpm_item_master` erpm_item_master ON erpm_purchaseinvoice_detail.`PID_Item_ID` = erpm_item_master.`ERPMIM_ID`
+where $P!{condition}]]>
+	</queryString>
+	<field name="Full_PO_No" class="java.lang.String"/>
+	<field name="PIM_ID" class="java.lang.Long"/>
+	<field name="IM_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SIM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DM_Short_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Invoice_Type" class="java.lang.String"/>
+	<field name="Supplier_Invoice_No" class="java.lang.String"/>
+	<field name="Invoice_Date" class="java.sql.Date"/>
+	<field name="Supplier_Name" class="java.lang.String"/>
+	<field name="PO_No" class="java.lang.String"/>
+	<field name="PO_Date" class="java.sql.Date"/>
+	<field name="Challan_No" class="java.lang.String"/>
+	<field name="Item_Name" class="java.lang.String"/>
+	<field name="Quantity" class="java.math.BigDecimal"/>
+	<field name="Rate" class="java.math.BigDecimal"/>
+	<field name="IM_ID" class="java.lang.Integer"/>
+	<field name="SIM_ID" class="java.lang.Integer"/>
+	<field name="DM_ID" class="java.lang.Integer"/>
+	<field name="Supplier_ID" class="java.lang.Long"/>
+	<field name="Item_ID" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="76" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="08a248b9-cb92-4ebe-842c-7e61b836984e" x="285" y="44" width="196" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[LIST OF INVOICES RECEIVED]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="61754c4f-4072-4fe7-94a1-2ba059d61054" x="253" y="17" width="261" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IM_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="9dee5ac7-1ff8-4a8f-8086-2e7d9e33706e" x="23" y="0" width="43" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[From :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13861f35-394b-4dbf-a816-9eacbddf8168" x="279" y="0" width="33" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[To :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="9f8acb25-9d0f-4d89-97fb-b46499c06135" x="66" y="0" width="166" height="20"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{d1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="9bd12dd5-52ef-41ae-b219-2ec4c6e2fcf5" x="312" y="0" width="225" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{d2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8c57e1dc-c32a-4ee5-a1e6-e5bd19acb31d" x="21" y="12" width="57" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Sub Institute]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ce06072-002d-47e7-8464-a7c8f5151231" x="83" y="12" width="60" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Deptartment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d8f724a-7303-4eee-a357-2945c566dfb0" x="149" y="12" width="87" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Invoice Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="adc8f66d-bb12-45b1-a9f9-a98379aba9a5" x="243" y="12" width="47" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Invoice No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="333d4958-9689-4437-afcd-39121259232b" x="297" y="12" width="89" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[PO No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bb709672-8b69-49c6-a120-f9df4d5fde0f" x="454" y="12" width="51" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Challan No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2efdf09a-86f3-41b6-8496-32af0d6e6a96" x="392" y="12" width="54" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[PO Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f30b4447-8a5f-424f-9c17-cde9550e3fc2" x="510" y="12" width="131" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Item Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="40f68c7b-0d88-4a90-b26e-4278fdf6c716" x="643" y="12" width="65" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2967b028-4283-448d-bbd7-107c39daef36" x="711" y="12" width="67" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Rate]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="959402ce-0e0a-4a7a-9f43-b632a85491fb" x="21" y="33" width="757" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="8e09df28-a2f4-41c4-83d0-184892e8c751" x="21" y="0" width="57" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b7e3dce9-b49d-4bab-8837-2899b3981de4" x="83" y="0" width="60" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DM_Short_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f645c188-236f-4d7e-8ae9-8d3d918f886d" x="243" y="0" width="47" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Supplier_Invoice_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="17c50d98-9c0e-401c-b2c3-f68ff50e0811" x="454" y="0" width="51" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Challan_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="9b7fca12-6f8a-4fd9-8087-69a67b30db24" x="392" y="0" width="54" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PO_Date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="218197e1-e4ce-41e3-a822-789ad23d1866" x="510" y="0" width="131" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Item_Name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0a4a60ac-3895-4fcc-b75c-bece0748cb7e" x="643" y="0" width="65" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="8fc0b5b3-35d3-44fc-951d-e6fe4a5bbba3" x="711" y="0" width="67" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Rate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="de6b1f2b-71a9-4e0a-a33f-6ec53d587014" x="297" y="0" width="89" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Full_PO_No}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="e561cefb-a91d-4642-8f3b-c2b6cb792229" x="149" y="0" width="87" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Invoice_Type}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="33" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

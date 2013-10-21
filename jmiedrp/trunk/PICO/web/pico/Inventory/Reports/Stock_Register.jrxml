@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Stock_Register" language="groovy" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f47b251e-578b-4afd-98c2-1f91ba0af7d0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="toDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="frmDate" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="condition2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[(SELECT
+     if(isnull(sum(((`view_item_ledger`.`Recd_Quantity`-`view_item_ledger`.`Issue_Quantity`)-(`view_item_ledger`.`WriteOff_Quantity`)))),0,sum(((`view_item_ledger`.`Recd_Quantity`-`view_item_ledger`.`Issue_Quantity`)-(`view_item_ledger`.`WriteOff_Quantity`)))) AS `Opening_Qty`,
+ if(isnull(sum(((`view_item_ledger`.`Recd_Quantity`-`view_item_ledger`.`Issue_Quantity`)-(`view_item_ledger`.`WriteOff_Quantity`)))*`view_item_ledger`.`ST_Unit_Rate`),0,sum(((`view_item_ledger`.`Recd_Quantity`-`view_item_ledger`.`Issue_Quantity`)-(`view_item_ledger`.`WriteOff_Quantity`)))*`view_item_ledger`.`ST_Unit_Rate`) AS `Opening_Value`,
+     0 AS `Stock_Added_Qty`,
+     0 AS `Stock_Added_Value`,
+     0 AS `Write_Off_Qty`,
+     0 AS `Write_Off_Value`,
+     0 AS `Stock_Transfered_Qty`,
+     0 AS `Stock_Transfered_Value`,
+     view_item_ledger.`IM_ID` AS IM_ID,
+     view_item_ledger.`SIM_ID` AS SIM_ID,
+     view_item_ledger.`DM_ID` AS DM_ID,
+     view_item_ledger.`Item_ID` AS Item_ID,
+     view_item_ledger.`Item_Brief_Desc` AS Item_Brief_Desc,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS Item_Type_ID,
+     erpm_item_category_master.`ERPMICM_Cat_Desc` AS Item_Type,
+     erpm_item_master.`ERPMIM_Item_Cat2` AS Item_Category_ID,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc` AS Item_Category,
+     erpm_item_master.`ERPMIM_Item_Cat3` AS Item_SubCategory_ID,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc` AS Item_SubCategory
+FROM
+     `erpm_item_category_master` erpm_item_category_master RIGHT OUTER JOIN `erpm_item_master` erpm_item_master ON erpm_item_category_master.`ERPMICM_Item_ID` = erpm_item_master.`ERPMIM_Item_Cat1`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_B ON erpm_item_master.`ERPMIM_Item_Cat3` = erpm_item_category_master_B.`ERPMICM_Item_ID`
+     INNER JOIN `view_item_ledger` view_item_ledger ON erpm_item_master.`ERPMIM_ID` = view_item_ledger.`Item_ID`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_A ON erpm_item_master.`ERPMIM_Item_Cat2` = erpm_item_category_master_A.`ERPMICM_Item_ID`
+WHERE $P!{condition1}
+GROUP BY
+     `view_item_ledger`.`IM_ID`,
+     `view_item_ledger`.`SIM_ID`,
+     `view_item_ledger`.`DM_ID`,
+      erpm_item_category_master.`ERPMICM_Cat_Desc`,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc`,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc`,
+     `view_item_ledger`.`Item_ID`)
+
+UNION
+
+(SELECT
+     0 AS `Opening_Qty`,
+     0 AS `Opening_Value`,
+     if(isnull(sum(`view_item_ledger`.`Recd_Quantity`)),0,sum(`view_item_ledger`.`Recd_Quantity`)) AS `Stock_Added_Qty`,
+     if(isnull(sum(`view_item_ledger`.`Recd_Quantity`*`view_item_ledger`.`ST_Unit_Rate`)),0, sum((`view_item_ledger`.`Recd_Quantity`*`view_item_ledger`.`ST_Unit_Rate`))) AS `Stock_Added_Value`,
+     if(isnull(sum(`view_item_ledger`.`WriteOff_Quantity`)),0,sum(`view_item_ledger`.`WriteOff_Quantity`)) AS `Write_Off_Qty`,
+     if(isnull(sum(`view_item_ledger`.`WriteOff_Quantity`*`view_item_ledger`.`ST_Unit_Rate`)),0,sum(`view_item_ledger`.`WriteOff_Quantity`*`view_item_ledger`.`ST_Unit_Rate`)) AS `Write_Off_Value`,
+     if(isnull(sum(`view_item_ledger`.`Issue_Quantity`)),0,sum(`view_item_ledger`.`Issue_Quantity`)) AS `Stock_Transfered_Qty`,
+     if(isnull(sum(`view_item_ledger`.`Issue_Quantity`*`view_item_ledger`.`ST_Unit_Rate`)),0,sum(`view_item_ledger`.`Issue_Quantity`*`view_item_ledger`.`ST_Unit_Rate`)) AS `Stock_Transfered_Value`,
+     `view_item_ledger`.`IM_ID` AS `IM_ID`,
+     `view_item_ledger`.`SIM_ID` AS `SIM_ID`,
+     `view_item_ledger`.`DM_ID` AS `DM_ID`,
+     `view_item_ledger`.`Item_ID` AS `Item_ID`,
+     `view_item_ledger`.`Item_Brief_Desc` AS `Item_Brief_Desc`,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS Item_Type_ID,
+     erpm_item_category_master.`ERPMICM_Cat_Desc` AS Item_Type,
+     erpm_item_master.`ERPMIM_Item_Cat2` AS Item_Category_ID,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc` AS Item_Category,
+     erpm_item_master.`ERPMIM_Item_Cat3` AS Item_SubCategory_ID,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc` AS Item_SubCategory
+FROM
+     `erpm_item_category_master` erpm_item_category_master RIGHT OUTER JOIN `erpm_item_master` erpm_item_master ON erpm_item_category_master.`ERPMICM_Item_ID` = erpm_item_master.`ERPMIM_Item_Cat1`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_B ON erpm_item_master.`ERPMIM_Item_Cat3` = erpm_item_category_master_B.`ERPMICM_Item_ID`
+     INNER JOIN `view_item_ledger` view_item_ledger ON erpm_item_master.`ERPMIM_ID` = view_item_ledger.`Item_ID`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_A ON erpm_item_master.`ERPMIM_Item_Cat2` = erpm_item_category_master_A.`ERPMICM_Item_ID`
+WHERE $P!{condition2}
+GROUP BY
+     `view_item_ledger`.`IM_ID`,
+     `view_item_ledger`.`SIM_ID`,
+     `view_item_ledger`.`DM_ID`,
+      erpm_item_category_master.`ERPMICM_Cat_Desc`,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc`,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc`,
+     `view_item_ledger`.`Item_ID`)
+ORDER BY
+     IM_ID, SIM_ID, DM_ID, Item_Type, Item_Category, Item_SubCategory, Item_Brief_Desc]]>
+	</queryString>
+	<field name="Opening_Qty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Opening_Value" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Stock_Added_Qty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Stock_Added_Value" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Write_Off_Qty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Write_Off_Value" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Stock_Transfered_Qty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Stock_Transfered_Value" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="IM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SIM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_Brief_Desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_Type_ID" class="java.lang.Long"/>
+	<field name="Item_Type" class="java.lang.String"/>
+	<field name="Item_Category_ID" class="java.lang.Long"/>
+	<field name="Item_Category" class="java.lang.String"/>
+	<field name="Item_SubCategory_ID" class="java.lang.Long"/>
+	<field name="Item_SubCategory" class="java.lang.String"/>
+	<variable name="Item_Type_Category" class="java.lang.String">
+		<variableExpression><![CDATA[$F{Item_Category} + " - " + $F{Item_SubCategory}]]></variableExpression>
+	</variable>
+	<variable name="SumofOpeningQuantity" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Opening_Qty}]]></variableExpression>
+	</variable>
+	<variable name="SumofOpeningValue" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Opening_Value}]]></variableExpression>
+	</variable>
+	<variable name="SumofStockAddedQty" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Stock_Added_Qty}]]></variableExpression>
+	</variable>
+	<variable name="SumofStockAddedValue" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Stock_Added_Value}]]></variableExpression>
+	</variable>
+	<variable name="SumofWriteOffQty" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Write_Off_Qty}]]></variableExpression>
+	</variable>
+	<variable name="SumofWriteOffValue" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Write_Off_Value}]]></variableExpression>
+	</variable>
+	<variable name="SumofStockTransferQty" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Stock_Transfered_Qty}]]></variableExpression>
+	</variable>
+	<variable name="SumofStockTransferValue" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc" calculation="Sum">
+		<variableExpression><![CDATA[$F{Stock_Transfered_Value}]]></variableExpression>
+	</variable>
+	<variable name="TotalStockQty" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc">
+		<variableExpression><![CDATA[$V{SumofOpeningQuantity}.add($V{SumofStockAddedQty})]]></variableExpression>
+	</variable>
+	<variable name="TotalStockValue" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc">
+		<variableExpression><![CDATA[$V{SumofOpeningValue}.add($V{SumofStockAddedValue})]]></variableExpression>
+	</variable>
+	<variable name="ClosingStockQty" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc">
+		<variableExpression><![CDATA[$V{TotalStockQty}.subtract($V{SumofWriteOffQty}.add($V{SumofStockTransferQty}))]]></variableExpression>
+	</variable>
+	<variable name="ClosingStockValue" class="java.math.BigDecimal" resetType="Group" resetGroup="GRP_Item_Brief_Desc">
+		<variableExpression><![CDATA[$V{TotalStockValue}.subtract($V{SumofWriteOffValue}.add($V{SumofStockTransferValue}))]]></variableExpression>
+	</variable>
+	<variable name="SlNo" class="java.lang.Integer" incrementType="Group" incrementGroup="GRP_Item_Brief_Desc">
+		<variableExpression><![CDATA[1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<group name="Item_Type">
+		<groupExpression><![CDATA[$F{Item_Type}]]></groupExpression>
+		<groupHeader>
+			<band height="90">
+				<line>
+					<reportElement uuid="f318c8ab-9698-420e-80e0-8b3bfec6114b" x="0" y="89" width="894" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="d0f39f6c-70f6-4f69-8214-a03970988caa" x="759" y="30" width="1" height="59"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="761" y="31" width="130" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Remark]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="ccf9fef3-7af6-4d93-bacf-ba31b3dd537a" x="503" y="64" width="1" height="25"/>
+				</line>
+				<line>
+					<reportElement uuid="7de29e67-4954-4653-8077-62360c2717a8" x="361" y="30" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="788fe028-5a08-4561-bf98-ecae098dd5e7" x="170" y="30" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="556492fa-2baf-4362-b751-351f2a65503b" x="599" y="64" width="1" height="25"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="268" y="31" width="90" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Stock added during]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="bfb2bf72-17b7-4ae8-a384-6e912335d876" x="207" y="64" width="1" height="25"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="365" y="31" width="97" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Stock]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="4fcbb960-971b-478b-ad8f-13a3226f2222" x="170" y="63" width="589" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="f56f1f89-9b1c-4905-b138-cf2da89143c9" x="893" y="6" width="1" height="83"/>
+				</line>
+				<line>
+					<reportElement uuid="14b11553-930f-4c88-b5ef-7c1f4fb32bd8" x="695" y="64" width="1" height="25"/>
+				</line>
+				<line>
+					<reportElement uuid="cc3f483b-a1a2-4dbd-bc16-de4b03052928" x="0" y="6" width="1" height="83"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="305" y="63" width="54" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[     Value      (Rs.)]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="6cd84d77-4bbb-43e4-9c1b-5615295f8b65" x="32" y="30" width="1" height="59"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="661" y="31" width="96" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Closing Stock as on ]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="5c1ec8de-c2a8-4815-98b4-0fd35d34410e" x="302" y="64" width="1" height="25"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="365" y="63" width="33" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantity (Nos)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="1" y="31" width="31" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sr. No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="469" y="63" width="33" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantity (Nos)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="565" y="63" width="33" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantity (Nos)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="209" y="63" width="54" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[     Value      (Rs.)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="174" y="63" width="33" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantity (Nos)]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="edf4bc42-6029-48e8-a0e7-a6357bfb8126" x="265" y="30" width="1" height="59"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="661" y="63" width="33" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantity (Nos)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="469" y="31" width="90" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Write off]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="173" y="31" width="90" height="30"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Openning Stock as on]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="d0644347-7cd9-423d-ae69-263df3f5cd1b" x="562" y="30" width="1" height="59"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="269" y="63" width="33" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantity (Nos)]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="de8eb828-532e-4776-8c1d-cbc349bacd26" x="0" y="6" width="894" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="403" y="63" width="60" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[        Value         (Rs.)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="698" y="63" width="60" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[        Value        (Rs.)]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="3d80d35d-a8a1-498b-bc5f-453cd8f39df1" x="401" y="64" width="1" height="25"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="6" y="7" width="64" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ITEM TYPE :]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="ba1df6a3-7e99-4380-a39d-1a0afbc787ec" x="465" y="30" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="85b208a4-c8c2-4c2a-885a-d9f18d74b8a3" x="658" y="30" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="b80e2ef0-990e-4128-8e98-e93363a20eb1" x="0" y="29" width="894" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="565" y="31" width="90" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Transfer to other Department / Collage]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="506" y="63" width="54" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[     Value      (Rs.)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="36" y="31" width="130" height="35"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Name of Article]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="601" y="63" width="54" height="25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[     Value      (Rs.)]]></text>
+				</staticText>
+				<textField pattern="">
+					<reportElement uuid="3c3a6afd-8561-4725-8576-606f2066ec8a" x="69" y="7" width="212" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Item_Type}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Item_Category_Full">
+		<groupExpression><![CDATA[$V{Item_Type_Category}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<line>
+					<reportElement uuid="d55fa891-7876-4fb5-80c6-3131403ea3cb" x="893" y="0" width="1" height="17"/>
+				</line>
+				<textField evaluationTime="Group" evaluationGroup="Item_Category_Full">
+					<reportElement uuid="efe41c96-0e47-47c7-9ce9-e91e96d89a10" x="78" y="1" width="200" height="16"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Item_Type_Category}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="d55fa891-7876-4fb5-80c6-3131403ea3cb" x="0" y="0" width="1" height="17"/>
+				</line>
+				<staticText>
+					<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="34" y="1" width="41" height="16"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Category :]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="2">
+				<line>
+					<reportElement uuid="7e1fad54-797a-4166-bd20-c5c170098f2f" x="0" y="0" width="894" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="GRP_Item_Brief_Desc">
+		<groupExpression><![CDATA[$F{Item_Brief_Desc}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<line>
+					<reportElement uuid="1818f3a2-2cd0-4216-b54d-e265cdb78880" x="658" y="0" width="1" height="20"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="544621b4-b347-4ff9-ae0f-ca6988339a24" x="36" y="0" width="130" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Item_Brief_Desc}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="d55fa891-7876-4fb5-80c6-3131403ea3cb" x="0" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="17c9d4ef-8e30-4552-a4b3-1cffe837e9d3" x="599" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="c871422c-ef35-43be-b7b5-f9ae33e265da" x="562" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="239e4d14-10d8-4b29-839d-1a298b69f943" x="32" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="fbae4b2f-d2fa-4162-8946-b648752a10f5" x="401" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="0790c81a-4fbb-4625-8b24-b15b9bf1721b" x="695" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="591fa410-c15b-4813-b178-e8ab579d1246" x="361" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="776dd8c6-c67e-4e07-b4bd-8dee90b9d39c" x="893" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="fc0b0890-8d7d-4508-b610-5d6a108f40cc" x="0" y="0" width="894" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="623cb580-760f-43ef-9d3c-ad024936bcf4" x="760" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="7c1b6e73-f118-4ec4-8b3f-92991f1f9dc2" x="465" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="b9935325-bdab-4a34-a33f-759c9c440bdc" x="302" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="23b95bff-7dd6-439f-99a5-35cca1f70e40" x="503" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="ca1f6c3f-d4e9-4688-ac56-a6945ebb4201" x="265" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="2ca311be-1153-4129-b29b-ffe9b9daaa1a" x="170" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="a7d45cea-7700-44f4-87ef-3418cf7cf705" x="207" y="0" width="1" height="20"/>
+				</line>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
+					<reportElement uuid="b211bdc9-1bd7-4b2f-812d-9c13aff6c5c3" x="171" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofOpeningQuantity}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
+					<reportElement uuid="6a360277-6b45-44ac-9e52-dfa92ac8b56e" x="208" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofOpeningValue}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
+					<reportElement uuid="a313c6b8-30bf-4913-9bc7-5a0b294b5c6e" x="266" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofStockAddedQty}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
+					<reportElement uuid="bbd68c3a-eb4e-49e1-8b3b-78dfa0e9005a" x="303" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofStockAddedValue}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
+					<reportElement uuid="ee90d656-8400-4688-8ca6-d6dbecde0ec2" x="467" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofWriteOffQty}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
+					<reportElement uuid="542e9c30-15a6-4858-aaac-6ac97359c33e" x="505" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofWriteOffValue}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
+					<reportElement uuid="89b69bde-6f00-4631-8a55-6e07ed339249" x="563" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofStockTransferQty}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
+					<reportElement uuid="c7b19fd9-ff01-46d4-ac0c-600b86df2c1c" x="601" y="6" width="54" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SumofStockTransferValue}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
+					<reportElement uuid="022940e4-af15-4203-acc7-54f82c0f1f45" x="362" y="6" width="37" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TotalStockQty}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
+					<reportElement uuid="b9a2e444-8165-4398-9f4f-ba19b533e14d" x="402" y="6" width="60" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TotalStockValue}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0">
+					<reportElement uuid="06efdce3-97a9-46f8-bf5a-bad96fbc164a" x="659" y="6" width="33" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ClosingStockQty}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GRP_Item_Brief_Desc" pattern="###0.00">
+					<reportElement uuid="b2193496-5e4f-40f3-861a-bc816c3b1caa" x="697" y="6" width="60" height="12" printWhenGroupChanges="GRP_Item_Brief_Desc"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ClosingStockValue}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="134dc904-5efc-49be-bd86-bd17434a9eec" x="5" y="6" width="20" height="12"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SlNo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="ded1b99d-ed4b-4fe0-a1f1-cfac1db8b6f5" x="736" y="16" width="125" height="16"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="370" y="2" width="150" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock Register]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="311" y="29" width="50" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[From : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="410d5574-0871-49de-8b1a-b49edcf8a643" x="501" y="32" width="79" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="de8ac5f5-a8db-451f-8656-412c952e1614" x="367" y="32" width="84" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{frmDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="461" y="29" width="33" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[To : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="8" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="7"/>
+	</columnHeader>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="32ef85d1-e273-4728-80f7-34b355adee7c" x="413" y="0" width="124" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of "+$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="8" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -81,9 +81,6 @@
                     <td>
                         <s:submit theme="simple" cssClass="savebutton"  name="btnSubmit" value="Save" />
                         <s:submit theme="simple" cssClass="savebutton"  name="btnSubmit" value="Go To Item Rate " action="FetchItemRatesDetailsFromTaxex"/>
-          
-
-                                 
                     </td>
                     </tr>
                     </tbody>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Stock_in_Hand_Report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65c9c855-c959-4664-82d2-586a4d1ff000">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(view_item_ledger.`Issue_Quantity`) AS view_item_ledger_Issue_Quantity,
+     Sum(view_item_ledger.`Recd_Quantity`) AS view_item_ledger_Recd_Quantity,
+     Sum(view_item_ledger.`WriteOff_Quantity`) AS view_item_ledger_WriteOff_Quantity,
+     view_item_ledger.`IM_ID` AS view_item_ledger_IM_ID,
+     view_item_ledger.`SIM_ID` AS view_item_ledger_SIM_ID,
+     view_item_ledger.`DM_ID` AS view_item_ledger_DM_ID,
+     view_item_ledger.`Item_ID` AS view_item_ledger_Item_ID,
+     institutionmaster.`IM_Name` AS institutionmaster_IM_Name,
+     subinstitutionmaster.`SIM_Name` AS subinstitutionmaster_SIM_Name,
+     departmentmaster.`DM_Name` AS departmentmaster_DM_Name,
+     view_item_ledger.`Item_Brief_Desc` AS view_item_ledger_Item_Brief_Desc
+FROM
+     `institutionmaster` institutionmaster INNER JOIN `view_item_ledger` view_item_ledger ON institutionmaster.`IM_ID` = view_item_ledger.`IM_ID`
+     INNER JOIN `subinstitutionmaster` subinstitutionmaster ON view_item_ledger.`SIM_ID` = subinstitutionmaster.`sim_id`
+     INNER JOIN `departmentmaster` departmentmaster ON view_item_ledger.`DM_ID` = departmentmaster.`DM_ID`
+WHERE $P!{condition}
+GROUP BY
+     view_item_ledger.`IM_ID`,
+     view_item_ledger.`SIM_ID`,
+     view_item_ledger.`DM_ID`,
+     view_item_ledger.`Item_ID`
+ORDER BY
+     institutionmaster.`IM_Name` ASC,
+     subinstitutionmaster.`SIM_Name` ASC,
+     departmentmaster.`DM_Name` ASC,
+     view_item_ledger.`Item_Brief_Desc` ASC]]>
+	</queryString>
+	<field name="view_item_ledger_Issue_Quantity" class="java.math.BigDecimal"/>
+	<field name="view_item_ledger_Recd_Quantity" class="java.math.BigDecimal"/>
+	<field name="view_item_ledger_WriteOff_Quantity" class="java.math.BigDecimal"/>
+	<field name="view_item_ledger_IM_ID" class="java.lang.Integer"/>
+	<field name="view_item_ledger_SIM_ID" class="java.lang.Integer"/>
+	<field name="view_item_ledger_DM_ID" class="java.lang.Integer"/>
+	<field name="view_item_ledger_Item_ID" class="java.lang.Long"/>
+	<field name="institutionmaster_IM_Name" class="java.lang.String"/>
+	<field name="subinstitutionmaster_SIM_Name" class="java.lang.String"/>
+	<field name="departmentmaster_DM_Name" class="java.lang.String"/>
+	<field name="view_item_ledger_Item_Brief_Desc" class="java.lang.String"/>
+	<variable name="StockInHand" class="java.lang.Double" resetType="Column">
+		<variableExpression><![CDATA[$F{view_item_ledger_Recd_Quantity}-$F{view_item_ledger_Issue_Quantity}-$F{view_item_ledger_WriteOff_Quantity}]]></variableExpression>
+	</variable>
+	<group name="view_item_ledger_IM_ID">
+		<groupExpression><![CDATA[$F{view_item_ledger_IM_ID}]]></groupExpression>
+	</group>
+	<group name="view_item_ledger_SIM_ID">
+		<groupExpression><![CDATA[$F{view_item_ledger_SIM_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<textField>
+					<reportElement uuid="725c7c67-7d86-4f40-a7d2-63fef54a0c9b" x="86" y="18" width="191" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{subinstitutionmaster_SIM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="684fff64-ac8a-4b04-9d58-15c75b6d471a" x="15" y="18" width="60" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Subinstitution]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="view_item_ledger_DM_ID">
+		<groupExpression><![CDATA[$F{view_item_ledger_DM_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<staticText>
+					<reportElement uuid="984ecb1a-03e3-41dc-b290-23056094ac67" x="351" y="15" width="53" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issued Qty.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5001cf95-3ca2-44b2-ad33-bf9e86a15457" x="15" y="15" width="25" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[S. No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="501c2dbb-e76f-472e-b0c8-e37be7ce5aca" x="410" y="15" width="61" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Write-Off Qty.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="88600c76-153d-4b87-8ed6-b783ca3ed674" x="278" y="15" width="65" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Received Qty.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="bb12bebe-e71f-4c8d-8ff7-5fe69a8068e7" x="50" y="15" width="217" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Item Name]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="2da69ce4-457f-47c2-9325-ad2dec5b823f" x="93" y="2" width="209" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{departmentmaster_DM_Name}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="6caa9ce8-2fda-41d0-ac44-2a9472c7e0c2" x="34" y="1" width="58" height="12"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Department]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="0cdd8e95-d8c7-49b7-a710-0f282be2a06f" x="14" y="27" width="532" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="c3a876d0-2589-467b-8a31-43f1e01e6e17" x="480" y="15" width="61" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Stock in Hand]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="64" splitType="Stretch">
+			<textField>
+				<reportElement uuid="2102d712-1e9b-45a9-9a94-e8b8ba86dfd7" x="34" y="6" width="488" height="25"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institutionmaster_IM_Name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8be1a3cc-580d-4bf3-90ec-e6ff749c68d1" x="218" y="41" width="128" height="18"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STOCK IN HAND]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="c991c464-6fdd-4900-a81e-8234f4ac2656" x="415" y="49" width="123" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="8" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="9" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="8d8238e5-7bbb-48e0-a09a-e15d659a9183" x="274" y="2" width="65" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Recd_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9885f374-92b0-44b2-a40d-e7adad68a7b3" x="407" y="2" width="61" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_WriteOff_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4dcc3a36-54ab-46e4-b8e5-d461298e1447" x="17" y="2" width="25" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4929ce39-485e-4213-9678-51febfb2316e" x="348" y="2" width="52" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Issue_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8fcb30c2-0b43-45f3-a8de-f6935edf026a" x="50" y="2" width="217" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b61e2aa2-ec3f-4745-ad67-95d620c6e98a" x="480" y="2" width="58" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{StockInHand}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement uuid="58ebbc46-9be5-40ad-bfa8-533fda59f3a7" x="282" y="12" width="40" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="27ae8296-ab00-4223-95fa-598218d56f74" x="241" y="12" width="49" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="16" splitType="Stretch"/>
+	</summary>
+</jasperReport>

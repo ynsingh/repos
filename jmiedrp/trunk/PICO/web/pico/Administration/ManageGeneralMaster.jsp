@@ -34,25 +34,28 @@
             <div id="sidebar1">
                 <jsp:include page="menu.jsp" flush="true"></jsp:include>
             </div>
+            
+            <jsp:include page="jobBar.jsp" flush="true"></jsp:include>
+
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent"> <br><br>
-                <p align="center"><s:label value="GENERAL MASTER MANAGEMENT" cssClass="pageHeading"/></p>
-                <p align="center"><s:property value="message" /></p>
-                <s:form name="frmGeneralMasterAddEdit" action="SaveGeneralMasterAction"  validate="true">
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">GENERAL MASTER MANAGEMENT</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+                    <s:form name="frmGeneralMasterAddEdit" action="SaveGeneralMasterAction"  validate="true">
                     <s:hidden name="erpmgm.erpmgmEgmId" />
                     
                     <table border="0" cellpadding="4" cellspacing="0" align="center" >
                         <tbody>
                             <tr>
                                 <td><br>
-                                    <s:select label="Control Parameter" name="erpmgm.erpmGenCtrl.erpmgcGenType" headerKey="" headerValue="-- Please Select --" list="erpmgctrlList" listKey="erpmgcGenType" listValue="erpmgcGenDesc" cssClass="textInput"/>
-                                    <s:textfield label="General Master Entry" name="erpmgm.erpmgmEgmDesc" title="Enter General Master Entry" 
-                                                 required="true" requiredposition="left" maxLength="50" size="50"  cssClass="textInput"/>
-                                    <s:textfield label="Remarks" name="erpmgm.erpmgmerpmgmRemarks" title="Remarks about General Master Entry"
-                                                 required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
-                                    <s:textfield label="testingRemarks" name="erpmgm.erpgmEgmRemarks" title="Remarks about General Master Entry"
-                                                 required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
-                                    <s:textfield label="checksRemarks" name="erpmgm.erpgmEgmChecks" title="Remarks about General Master Entry"
+                                    <s:select label="Control Parameter" required="true" requiredposition=""  name="erpmgm.erpmGenCtrl.erpmgcGenType" headerKey="" headerValue="-- Please Select --" list="erpmgctrlList" listKey="erpmgcGenType" listValue="erpmgcGenDesc" cssClass="textInput"/>
+                                    <s:textfield label="Parameter Value" name="erpmgm.erpmgmEgmDesc" title="Enter General Master Entry" 
+                                                 required="true" requiredposition="" maxLength="50" size="50"  cssClass="textInput"/>
+                                    <s:textfield label="Remarks" name="erpmgm.erpgmEgmRemarks" title="Remarks about General Master Entry"
                                                  required="true" requiredposition="left" maxLength="50" size="50" cssClass="textInput" />
                                 </td>
                             </tr> <tr>
@@ -72,42 +75,52 @@
                 </s:form>
             </div>
 
-
-             <div id ="mainContent" align="center">
-             <s:form name="frmGeneralMasterBrowse"> 
-                 <table width="60%" border="1" cellspacing="0" cellpadding="0" align="center" >
-                    <tr><td>
-                     <display:table name="erpmgmList" pagesize="15"
+             <s:if test="erpmgmList.size() > 0">
+             
+             <s:form name="frmGeneralMasterBrowse" >
+                     <display:table name="erpmgmList" pagesize="15" 
                                excludedParams="*" export="true" cellpadding="0"
                                cellspacing="0" id="doc"
                                requestURI="/Administration/ManageExportEntries.action">
-                         <display:column  class="griddata" title="Record" style="width:40%" sortable="true" maxLength="100" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
-                        </display:column>
-                         <display:column property="erpmGenCtrl.erpmgcGenDesc" title="Control Parameter"
+
+                         <display:column  class="griddata" title="Record" style="width:10%"  sortable="false" maxLength="100" headerClass="gridheader">
+                            <c:out> ${doc_rowNum}
+                         </display:column>
+
+                                <display:column property="erpmGenCtrl.erpmgcGenDesc" title="Control Parameter"
                                     maxLength="100" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:40%" sortable="false" />
+                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:35%" sortable="false" />
 
                          <display:column property="erpmgmEgmDesc" title="Description"
                                     maxLength="100" headerClass="gridheader"
-                                    class="griddata" style="width:40%" sortable="false"/>
+                                    class="griddata" style="width:45%" sortable="false"/>
 
                          <display:column paramId="ErpmgmEgmId" paramProperty="erpmgmEgmId"
                                     href="/pico/Administration/EditGeneralMasterAction.action"
-                                    headerClass="gridheader" class="griddata" media="html"  title="Edit">
+                                    headerClass="gridheader" class="griddata" media="html"  title="Edit"  style="width:5%">
                                     Edit
                     </display:column>
                     <display:column paramId="ErpmgmEgmId" paramProperty="erpmgmEgmId"
                                     href="/pico/Administration/DeleteGeneralMasterAction.action"
-                                    headerClass="gridheader" class="griddata" media="html" title="Delete">
+                                    headerClass="gridheader" class="griddata" media="html" title="Delete" style="width:5%">
                                     Delete
                     </display:column>
                 </display:table>
-                </td></tr>
-                </table>
+                
                  <br>
-             </s:form>
+             </s:form>            
+            </s:if>
+            <s:else>
+                     <br>
+                     <br>
+                     <br>
+                     <br>
+                     <br>
+                     <br>
+            </s:else>
+                 
             </div>
+            <br>
             <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>

@@ -20,6 +20,7 @@ import utils.DevelopmentSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 public class ManageGeneralTermsAction extends DevelopmentSupport{
 
@@ -124,11 +125,10 @@ private Integer GTGTID;
         }
     }
 
+@SkipValidation
 public String Browse() throws Exception {
     try {
-//        if(GTerms.getErpmGenMaster().getErpmgmEgmDesc()==null)
-//            message="Please select ";
-        GTermsList = GTermsDao.findAll();
+        GTermsList = GTermsDao.findByErpmGmTypebyInsitute(Short.valueOf(getSession().getAttribute("imId").toString()));
         return SUCCESS;
         } catch (Exception e) {
              message = "Exception in Browse method -> GeneralTermsAxn" + e.getMessage();
@@ -139,7 +139,7 @@ public String Browse() throws Exception {
 public String Edit() throws Exception {
         try {
             GTerms = GTermsDao.findBygtGtid(GTGTID); //findBygtGtid(GTerms.getGtGtid());
-              termsImIdList=imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
+            termsImIdList=imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
             termsTypeList =termsTypeDao.findByErpmGmType(Short.parseShort("12"));
             return SUCCESS;
         } catch (Exception e) {
@@ -152,15 +152,15 @@ public String Edit() throws Exception {
 public String Delete() {
         GTerms = GTermsDao.findBygtGtid(GTGTID);
         GTermsDao.delete(GTerms);
-        GTermsList = GTermsDao.findAll();
+        GTermsList = GTermsDao.findByErpmGmTypebyInsitute(Short.valueOf(getSession().getAttribute("imId").toString()));
         return SUCCESS;
         }
 
+@SkipValidation
 public String Clear() throws Exception {
     try {
             GTerms = null;
             termsImIdList=imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-//            termsImIdList=imDao.findAll();
             termsTypeList =termsTypeDao.findByErpmGmType(Short.parseShort("12"));
             return SUCCESS;
             } catch (Exception e) {

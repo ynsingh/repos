@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperPrint xmlns="http://jasperreports.sourceforge.net/jasperreports/print" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/print http://jasperreports.sourceforge.net/xsd/jasperprint.xsd" name="ReturnIssuedItemsReceiving" pageWidth="712" pageHeight="933" topMargin="20" leftMargin="20" bottomMargin="20" rightMargin="20" locale="en_IN" timezone="Asia/Calcutta">
+	<property name="net.sf.jasperreports.export.xml.start.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.end.page.index" value="0"/>
+	<property name="net.sf.jasperreports.export.xml.page.count" value="1"/>
+	<origin band="background"/>
+	<origin band="title"/>
+	<origin band="pageHeader"/>
+	<origin band="columnHeader"/>
+	<origin band="detail"/>
+	<origin band="columnFooter"/>
+	<origin band="pageFooter"/>
+	<page>
+		<text textAlignment="Center" textHeight="20.125">
+			<reportElement x="238" y="50" width="238" height="36" origin="1" srcId="1"/>
+			<font size="16" isBold="true"/>
+			<textContent><![CDATA[RECEIPT OF ISSUED ITEMS]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="40" y="110" width="163" height="20" origin="2" srcId="2"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[From,]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="37" y="211" width="132" height="20" origin="2" srcId="3"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[Dear Sir/Madam,]]></textContent>
+		</text>
+		<text textHeight="17.609375">
+			<reportElement x="136" y="237" width="547" height="23" origin="2" srcId="4"/>
+			<font size="14" isBold="false"/>
+			<textContent><![CDATA[We have received back the item(s) as per the following details in good condition,]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="79" y="175" width="310" height="20" origin="2" srcId="5"/>
+			<textContent><![CDATA[Jamia Millia Islamia]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="79" y="155" width="310" height="20" origin="2" srcId="6"/>
+			<textContent><![CDATA[FTK-Centre For Information Technology]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="79" y="135" width="310" height="20" origin="2" srcId="7"/>
+			<textContent><![CDATA[FTK-Centre for Information Technology]]></textContent>
+		</text>
+		<text textHeight="17.609375" valueClass="java.sql.Date" pattern="dd/MM/yyyy">
+			<reportElement x="157" y="257" width="88" height="20" origin="2" srcId="8"/>
+			<font size="14" isBold="false"/>
+			<textContent><![CDATA[20/09/2012]]></textContent>
+		</text>
+		<text textHeight="17.609375">
+			<reportElement x="136" y="257" width="253" height="20" origin="2" srcId="9"/>
+			<font size="14" isBold="false"/>
+			<textContent><![CDATA[on                     by Return No. ]]></textContent>
+		</text>
+		<text textHeight="17.609375">
+			<reportElement x="327" y="257" width="166" height="20" origin="2" srcId="10"/>
+			<font size="14"/>
+			<textContent><![CDATA[0001]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="380" y="284" width="140" height="20" origin="3" srcId="11"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[Item Serial Number]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="534" y="283" width="68" height="20" origin="3" srcId="12"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[Quantity]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="103" y="283" width="272" height="20" origin="3" srcId="13"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[Item Name]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="40" y="283" width="51" height="20" origin="3" srcId="14"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[Sl. No.]]></textContent>
+		</text>
+		<text textHeight="15.09375">
+			<reportElement x="610" y="283" width="73" height="20" origin="3" srcId="15"/>
+			<font size="12" isBold="true"/>
+			<textContent><![CDATA[UOM]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.lang.Integer">
+			<reportElement x="40" y="305" width="51" height="20" origin="4" srcId="16"/>
+			<textContent><![CDATA[1]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="102" y="305" width="273" height="20" origin="4" srcId="17"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="380" y="305" width="140" height="20" origin="4" srcId="18"/>
+			<textContent><![CDATA[HP021]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.math.BigDecimal">
+			<reportElement x="534" y="305" width="68" height="20" origin="4" srcId="19"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="611" y="305" width="72" height="20" origin="4" srcId="20"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.lang.Integer">
+			<reportElement x="40" y="326" width="51" height="20" origin="4" srcId="16"/>
+			<textContent><![CDATA[2]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="102" y="326" width="273" height="20" origin="4" srcId="17"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="380" y="326" width="140" height="20" origin="4" srcId="18"/>
+			<textContent><![CDATA[HP022]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.math.BigDecimal">
+			<reportElement x="534" y="326" width="68" height="20" origin="4" srcId="19"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="611" y="326" width="72" height="20" origin="4" srcId="20"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.lang.Integer">
+			<reportElement x="40" y="347" width="51" height="20" origin="4" srcId="16"/>
+			<textContent><![CDATA[3]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="102" y="347" width="273" height="20" origin="4" srcId="17"/>
+			<textContent><![CDATA[HP LaserJet 3315]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="380" y="347" width="140" height="20" origin="4" srcId="18"/>
+			<textContent><![CDATA[HP035]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.math.BigDecimal">
+			<reportElement x="534" y="347" width="68" height="20" origin="4" srcId="19"/>
+			<textContent><![CDATA[1.00]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="611" y="347" width="72" height="20" origin="4" srcId="20"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.lang.Integer">
+			<reportElement x="40" y="368" width="51" height="20" origin="4" srcId="16"/>
+			<textContent><![CDATA[4]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="102" y="368" width="273" height="20" origin="4" srcId="17"/>
+			<textContent><![CDATA[JK Copier 75GSM/500 Sheets]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="380" y="368" width="140" height="20" origin="4" srcId="18"/>
+			<textContent><![CDATA[NOT APPLICABLE]]></textContent>
+		</text>
+		<text textHeight="12.578125" valueClass="java.math.BigDecimal">
+			<reportElement x="534" y="368" width="68" height="20" origin="4" srcId="19"/>
+			<textContent><![CDATA[3.00]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="611" y="368" width="72" height="20" origin="4" srcId="20"/>
+			<textContent><![CDATA[Pieces]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="17.609375">
+			<reportElement x="521" y="852" width="162" height="20" origin="5" srcId="21"/>
+			<font size="14" isBold="false"/>
+			<textContent><![CDATA[(Authorised Signatory)]]></textContent>
+		</text>
+		<text textAlignment="Right" textHeight="12.578125">
+			<reportElement x="563" y="892" width="80" height="20" origin="6" srcId="22"/>
+			<textContent><![CDATA[Page 1 of]]></textContent>
+		</text>
+		<text textHeight="12.578125">
+			<reportElement x="643" y="892" width="40" height="20" origin="6" srcId="23"/>
+			<textContent><![CDATA[ 1]]></textContent>
+		</text>
+	</page>
+</jasperPrint>

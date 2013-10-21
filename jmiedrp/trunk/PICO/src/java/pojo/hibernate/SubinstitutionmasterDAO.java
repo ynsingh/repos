@@ -8,109 +8,202 @@ package pojo.hibernate;
  *
  * @author kazim
  */
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
 
-public class SubinstitutionmasterDAO extends BaseDAO {
+public class SubinstitutionmasterDAO {
 
     public void save(Subinstitutionmaster sim) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(sim);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.save(sim);
+            tx.commit();
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            if (sim != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public void update(Subinstitutionmaster sim) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(sim);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.update(sim);
+            tx.commit();
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            if (sim != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public void delete(Subinstitutionmaster sim) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(sim);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(sim);
+            tx.commit();
         } catch (RuntimeException re) {
-            re.printStackTrace();
+            if (sim != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
     public List<Subinstitutionmaster> findAll() {
-        beginTransaction();
-        List<Subinstitutionmaster> list = getSession().createQuery("select u from Subinstitutionmaster u").list();
-        commitTransaction();
-        return list;
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            session.beginTransaction();
+            List<Subinstitutionmaster> list = session.createQuery("select u from Subinstitutionmaster u").list();
+            for (index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getCountrymaster());
+                Hibernate.initialize(list.get(index).getStatemaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
     }
 
     public Subinstitutionmaster findBySimId(Integer simId) {
-        beginTransaction();
-        Subinstitutionmaster sim = new Subinstitutionmaster();
-        sim = (Subinstitutionmaster) getSession().load(Subinstitutionmaster.class, simId);
-        commitTransaction();
-        return sim;
+        Session session = HibernateUtil.getSession();
+        try {
+            Subinstitutionmaster sim = new Subinstitutionmaster();
+            session.beginTransaction();
+            sim = (Subinstitutionmaster) session.load(Subinstitutionmaster.class, simId);
+            Hibernate.initialize(sim.getInstitutionmaster());
+
+            return sim;
+        } finally {
+            session.close();
+        }
     }
 
     public List<Subinstitutionmaster> findBysimImId(short simImId) {
-        beginTransaction();
-        List<Subinstitutionmaster> list = getSession().createQuery("select u from Subinstitutionmaster u where u.institutionmaster.imId = :simImId").setParameter("simImId", simImId).list();
-        commitTransaction();
-        return list;
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> list = session.createQuery("select u from Subinstitutionmaster u where u.institutionmaster.imId = :simImId").setParameter("simImId", simImId).list();
+            for (int index = 0; index < list.size(); ++index) {
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+                Hibernate.initialize(list.get(index).getCountrymaster());
+                Hibernate.initialize(list.get(index).getStatemaster());
+            }
+            return list;
+        } finally {
+            session.close();
+        }
+
     }
 
-public Subinstitutionmaster findInstBySIMShortName(String simShortName) {
-        beginTransaction();
- List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
-        commitTransaction();
-        return simList.get(0);
+    public Subinstitutionmaster findInstBySIMShortName(String simShortName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
+            return simList.get(0);
+        } finally {
+            session.close();
+        }
     }
 
-public List<Subinstitutionmaster> findSubInstByName(String simName) {
-        beginTransaction();
- List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u where u.simName = :simName").setParameter("simName", simName).list();
-        commitTransaction();
-        return simList;
+    public List<Subinstitutionmaster> findSubInstByName(String simName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u where u.simName = :simName").setParameter("simName", simName).list();
+            for (int index = 0; index < simList.size(); ++index) {
+                Hibernate.initialize(simList.get(index).getInstitutionmaster());
+                Hibernate.initialize(simList.get(index).getCountrymaster());
+                Hibernate.initialize(simList.get(index).getStatemaster());
+            }
+            return simList;
+        } finally {
+            session.close();
+        }
     }
 
-public List<Subinstitutionmaster> findSubInstByShortName(String simShortName) {
-        beginTransaction();
- List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
-        commitTransaction();
-        return simList;
+    public List<Subinstitutionmaster> findSubInstByShortName(String simShortName) {
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
+            for (int index = 0; index < simList.size(); ++index) {
+                Hibernate.initialize(simList.get(index).getInstitutionmaster());
+                Hibernate.initialize(simList.get(index).getCountrymaster());
+                Hibernate.initialize(simList.get(index).getStatemaster());
+            }
+            return simList;
+        } finally {
+            session.close();
+        }
     }
 
-public List<Subinstitutionmaster> findSubInstForUser(Integer erpmuId,short ImId) {
-        beginTransaction();
-        List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId and u.institutionmaster.imId = :ImId").setParameter("erpmuId", erpmuId).setParameter("ImId",ImId).list();
-        commitTransaction();
-        return simList;
+    public List<Subinstitutionmaster> findSubInstForUser(Integer erpmuId, short ImId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> simList = session.createQuery("select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId and u.institutionmaster.imId = :ImId").setParameter("erpmuId", erpmuId).setParameter("ImId", ImId).list();
+            for (int index = 0; index < simList.size(); ++index) {
+                Hibernate.initialize(simList.get(index).getInstitutionmaster());
+                Hibernate.initialize(simList.get(index).getCountrymaster());
+                Hibernate.initialize(simList.get(index).getStatemaster());
+            }
+            return simList;
+        } finally {
+            session.close();
+        }
     }
 
-public String findDefaultSubInsitute(Integer simId) {
-        beginTransaction();
-        List<Subinstitutionmaster> imList = getSession().createQuery("select u from Subinstitutionmaster u where u.simId = :simId").setParameter("simId",simId).list();
-        commitTransaction();
-        return imList.get(0).getSimName();
+    public List<Subinstitutionmaster> findSubInstForAdmin(short ImId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> simList = session.createQuery("select u from Subinstitutionmaster u where u.institutionmaster.imId = :ImId").setParameter("ImId", ImId).list();
+            for (int index = 0; index < simList.size(); ++index) {
+                Hibernate.initialize(simList.get(index).getInstitutionmaster());
+                Hibernate.initialize(simList.get(index).getCountrymaster());
+                Hibernate.initialize(simList.get(index).getStatemaster());
+            }
+            return simList;
+
+        } finally {
+            session.close();
+        }
     }
 
-public List<Subinstitutionmaster> findAllSubInstForUser(Integer erpmuId) {
-        String SQL = "select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId";
-        beginTransaction();
-        List<Subinstitutionmaster> simList = getSession().createQuery(SQL).
-                                                          setParameter("erpmuId", erpmuId).list();
-        commitTransaction();
-        return simList;
+    public String findDefaultSubInsitute(Integer simId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            List<Subinstitutionmaster> imList = session.createQuery("select u from Subinstitutionmaster u where u.simId = :simId").setParameter("simId", simId).list();
+            return imList.get(0).getSimName();
+        } finally {
+            session.close();
+        }
     }
 
-
+    public List<Subinstitutionmaster> findAllSubInstForUser(Integer erpmuId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            String SQL = "select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId";
+            List<Subinstitutionmaster> simList = session.createQuery(SQL).
+                    setParameter("erpmuId", erpmuId).list();
+            return simList;
+        } finally {
+            session.close();
+        }
+    }
 }

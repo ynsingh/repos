@@ -29,47 +29,57 @@
 
             <!-- *********************************End Menu****************************** -->
             <div id ="mainContent" align="center">
-             <s:form name="frmDepartmentsBrowse">                 
-                  <p align="center"><s:label value="DEPARTMENT LIST" /></p>
-                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                     <tr><td> <s:property value="message" /> </td></tr>
-                     <display:table name="dmList" pagesize="15"
-                               excludedParams="*" export="true" cellpadding="0"
-                               cellspacing="0" id="doc"
-                               requestURI="/Administration/BrowseDepartments.action">
-                    <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
-                        <c:out> ${doc_rowNum}
-                    </display:column>
-                    <display:column property="institutionmaster.imName" title="Institution Name"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:30%" sortable="true"/>
-                    <display:column property="subinstitutionmaster.simName" title="College/Faculty/School"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:30%" sortable="true"/>
-                    <display:column property="dmName" title="Department Name"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:30%" sortable="true"/>
-                    <display:column property="dmShortName" title="Short Name"
-                                    maxLength="10" headerClass="gridheader"
-                                    class="griddata" style="width:30%" sortable="true"/>
-                    <display:column property="dmEmailId" title="E-Mail"
-                                    maxLength="35" headerClass="gridheader"
-                                    class="griddata" style="width:30%" sortable="true"/>
-                    <display:column paramId="dmId" paramProperty="dmId"
-                                    href="/pico/Administration/EditDepartment" title="Edit"
-                                    headerClass="gridheader" class="griddata" media="html" >
-                                    Edit
-                    </display:column>
-                    <display:column paramId="dmId" paramProperty="dmId" title="Delete"
-                                    href="/pico/Administration/DeleteDepartment.action"
-                                    headerClass="gridheader" class="griddata" media="html" style="width:30%">
-                                    Delete
-                    </display:column>
-                </display:table>
-                </table>
-             </s:form>
+
+                <br><br>
+                <div style ="background-color: #215dc6;">
+                    <p align="center" class="pageHeading" style="color: #ffffff">DEPARTMENT LIST</p>
+                    <p align="center" class="mymessage" style="color: #ffff99"><s:property value="message" /></p>
+                </div>
+
+                <div style="border: solid 1px #000000; background: gainsboro">
+
+                    <s:form name="frmDepartmentsBrowse">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <display:table name="dmList" pagesize="15"
+                                           excludedParams="*" export="true" cellpadding="0"
+                                           cellspacing="0" id="doc"
+                                           requestURI="/Administration/BrowseDepartments.action">
+                                <display:column  class="griddata" title="Record" sortable="true" maxLength="100" headerClass="gridheader">
+                                    <c:out> ${doc_rowNum}
+                                    </display:column>
+                                    <display:column property="institutionmaster.imName" title="Institution Name"
+                                                    maxLength="35" headerClass="gridheader"
+                                                    class="<s:if test= ${doc_rowNum}%2== 0>even</s:if><s:else>odd</s:else>" style="width:30%" sortable="true"/>
+                                    <display:column property="subinstitutionmaster.simName" title="College/Faculty/School"
+                                                    maxLength="35" headerClass="gridheader"
+                                                    class="griddata" style="width:30%" sortable="true"/>
+                                    <display:column property="dmName" title="Department Name"
+                                                    maxLength="35" headerClass="gridheader"
+                                                    class="griddata" style="width:30%" sortable="true"/>
+                                    <display:column property="dmShortName" title="Short Name"
+                                                    maxLength="10" headerClass="gridheader"
+                                                    class="griddata" style="width:30%" sortable="true"/>
+                                    <display:column property="dmEmailId" title="E-Mail"
+                                                    maxLength="35" headerClass="gridheader"
+                                                    class="griddata" style="width:30%" sortable="true"/>
+                                    <display:column paramId="dmId" paramProperty="dmId"
+                                                    href="/pico/Administration/EditDepartment" title="Edit"
+                                                    headerClass="gridheader" class="griddata" media="html" >
+                                        Edit
+                                    </display:column>
+                                    <display:column paramId="dmId" paramProperty="dmId" title="Delete"
+                                                    href="/pico/Administration/DeleteDepartment.action"
+                                                    headerClass="gridheader" class="griddata" media="html" style="width:30%">
+                                        Delete
+                                    </display:column>
+                                </display:table>
+                        </table>
+                    </s:form>
+                    <br>
+                </div>
+                &nbsp;
             </div>
-             <div id="footer">
+            <div id="footer">
                 <jsp:include page="footer.jsp" flush="true"></jsp:include>
             </div>
         </div>

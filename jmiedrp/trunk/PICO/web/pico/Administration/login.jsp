@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -23,25 +22,9 @@
             <div id="headerbar1">
                 <jsp:include page="header.jsp" flush="true"></jsp:include>
             </div>
-            <table border="0" width="100%">
-                <tbody>
-                    <tr>
-                        <td width="5%"></td>
-                        <td width="30%" valign="top" height="80%" class="textInput">
-                            <br><br>
-                            <a href="http://saksat.as.in">About ERP Mission Project</a><br>
-                            <a href="http://saksat.as.in">Partner Institutions</a><br>
-                            Other Modules of Project<br>
-                            <a href="http://saksat.as.in">Online Admissions System</a><br>
-                            <a href="http://saksat.as.in">Project Management System</a><br>
-                            <a href="http://saksat.as.in">Library Management System</a><br>
-                            <a href="http://saksat.as.in">Timetable Management System</a>
-                            <br><br>
-                        </td>
-                        <td>
-                            <p align="center"><img align="center" src="../images/MHRD.JPG" border="0" style="cursor:pointer;"/></p>
-                        </td>
-                <script type='text/javascript'>
+            <hr>
+            <br><br><br>
+            <script type='text/javascript'>
 
                     function getCurrentLanguage(lang)    {
 
@@ -52,9 +35,62 @@
                         alert(msg);
                     }
 
-                </script>
+            </script>
 
-                <td width="30%">
+
+            <table border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="5%"></td>
+                        <td width="30%" valign="top" height="80%" class="textInput">
+                            <b>Important Links</b>
+                        </td>
+
+                        <td width="30%" valign="top" height="80%" class="textInput">
+                            <b>Portal News</b>
+                        </td>
+
+                        <td>
+                        </td>
+                        <td width="30%" bgcolor="gainsboro">
+                        </td>
+                </tr>
+                    <tr>
+                        <td width="1%"></td>
+                        <td width="35%" valign="top" height="80%" class="textInput">
+                            <br><br>
+                            <a href="http://saksat.as.in">About ERP Mission Project</a><br>                                                      
+                            <a href="http://202.141.40.218/">EdRP Services (IIT Kanpur)</a><br>
+                            <a href="http://cserp1.amu.ac.in:8080/LibMS/">Library Management System (LibMS) (AMU)</a><br>
+                            <a href="http://cserp1.amu.ac.in:8080/EMS/">Election Management System (AMU)</a><br>
+                            <a href="http://erp.amrita.ac.in:8080/gms">Grants Management System (AVV)</a><br>
+                            <a href="http://erp.amrita.ac.in:8080/StudentActivityVisualization">Display Information and Visualtization System (AVV)</a><br>
+                            <a href="http://erp.amrita.ac.in:8080/nfes/">National Faculty Expert System (AVV)</a><br>
+                            <a href="http://erp.amrita.ac.in:9090/aell/">English Language Lab (AVV)</a><br>
+                            <a href="http://180.149.53.46:8084/CMS">Online Admissions System (DEI)</a><br>
+                            <a href="http://14.139.40.226:8084/ePortfolio">E-Portfolio Management System (IGNOU)</a>
+                            <br><br>
+                        </td>
+
+
+                        <td width="30%" valign="top">
+                            <br><br>
+                            <marquee  behavior="scroll" direction="up" style="color:#C11111;" scrollamount="2" onmouseover="this.stop();" onmouseout="this.start();">
+                                <s:iterator value="showingNewsinPageList" status="record">
+                                    <s:if test="%{#record.index%2 == 0}">
+                                        <p style="font-size:8pt; font-weight:bolder; color: #0000FF;" > <s:property value="newsText"/>
+                                    </s:if>
+                                    <s:else>
+                                        <p style="font-size:8pt; font-weight:bolder; color:#C11111;" > <s:property value="newsText"/></p>
+                                    </s:else>
+                                </s:iterator>
+                            </marquee>
+                        <br><br>
+                     </td>
+                     <td>
+                            <p align="center"><img align="center" src="../images/mhrd.jpg" border="0" style="cursor:pointer;"/></p>
+                     </td>
+                <td width="20%">
                     <s:form id="frmLogin" name="frmLogin" method="post" action="Login"  >
                         <table border="0" cellpadding="4" cellspacing="0" align="center">
                             <tbody>
@@ -64,14 +100,14 @@
                                         <s:property value="message"/>
                                 </tr>
                                 <tr>
-                                    <td valign="middle" class="FormContent">
-                                        <%--<s:select label="Language" name="language" headerKey="" headerValue="-- Please Select --" list="LangList" listKey="langId" listValue="langName" cssClass="textInput"  onchange="getCurrentLanguage(this.options[this.selectedIndex].text)"/>--%>
-                                        <s:textfield required="true" requiredposition="left" maxLength="50"
-                                                     name="erpmuser.erpmuName" title="Enter Username"   key="global.username"/>
+                                    <td valign="middle" class="FormContent">                                        
+                                        <s:textfield required="true" requiredposition="left" maxLength="50" label="Username"
+                                                     name="erpmuser.erpmuName" title="Username" key="global.username"/>
 
-                                        <s:password  required="true" requiredposition="left" maxLength="25"
+                                        <s:password  required="true" requiredposition="left" maxLength="25" label="Password"
                                                     name="erpmuser.erpmuPassword" title="Enter Password" key="global.password" />
-                                        <s:submit name="login" key="global.submit" />
+                                        <s:submit name="login" value="Login" key="global.login" />
+                                        <s:submit name="rmtLoin" value="Brihaspati Open ID" action="brihaspatiLogin"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -85,13 +121,14 @@
                                     <s:url action="AdminRegistration.action" id="NavigateToURL"></s:url>
                                         <a href='<s:property value="NavigateToURL"/>'>Institution Administrator Registration</a></td>
                                 </tr>
+                                <tr>
+                                    <td colspan="2" class="textInput">
+                                    <s:url action="ViewRegisteredInstitutions.action" id="NavigateToURL"></s:url>
+                                        <a href='<s:property value="NavigateToURL"/>'>Registered Institutions </a></td>
+                                </tr>                                
                             </tbody>
                         </table>
                     </s:form>
-
-                    <%-- <s:url action="BrowseInstitutions" id="NavigatetoURL" ></s:url>
-                            <a href='<s:property value="NavigatetoURL"/>'>Browse Institutions</a>--%>
-
                     <s:url id="localeEN" namespace="/Administration" action="locale" >
                         <s:param name="request_locale" >en</s:param>
                     </s:url>
@@ -104,16 +141,18 @@
                     <s:url id="localeFR" namespace="/Administration" action="locale"  >
                         <s:param name="request_locale" >fr</s:param>
                     </s:url>
-
                     <s:a href="%{localeEN}" >English</s:a>
                     <s:a href="%{localezhCN}" >Chinese</s:a>
                     <s:a href="%{localeDE}" >German</s:a>
                     <s:a href="%{localeFR}" >France</s:a>
-
                 </td>
-                </tbody>
-                <br><br><br>
+               </tr>               
+           </tbody>                
             </table>
+            <br><br>
+            <s:label label="Application Last Updated On 27-06-2013" labelSeparator=""></s:label>
+            <br>
+            <hr>
         <div id="footer">
             <jsp:include page="footer.jsp" flush="true"></jsp:include>
         </div>

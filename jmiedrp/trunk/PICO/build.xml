@@ -10,15 +10,6 @@
 <project name="pico" default="default" basedir=".">
     <description>Builds, tests, and runs the project pico.</description>
     <import file="nbproject/build-impl.xml"/>
-    <import file="nbproject/profiler-build-impl.xml"/>
-
-
-<property name="libs.CopyLibs.classpath" value="copylibstask.jar"/>
-
-
-
-
-
     <!--
 
     There exist several targets which are by default empty and which can be 

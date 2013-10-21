@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.ErpmPoDetails" table="erpm_po_details">
         <id name="podPodetailsId" type="java.lang.Integer">
@@ -13,6 +13,9 @@
         </many-to-one>
         <many-to-one name="erpmIndentDetail" class="pojo.hibernate.ErpmIndentDetail" fetch="select">
             <column name="POD_INDTL_ID" />
+        </many-to-one>
+        <many-to-one name="erpmItemRate" class="pojo.hibernate.ErpmItemRate" fetch="select">
+            <column name="POD_Item_Rate_ID" />
         </many-to-one>
         <many-to-one name="erpmPoMaster" class="pojo.hibernate.ErpmPoMaster" fetch="select">
             <column name="POD_POMaster_ID" not-null="true" />

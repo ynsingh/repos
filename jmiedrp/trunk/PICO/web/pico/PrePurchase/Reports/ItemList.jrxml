@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report10" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="770" leftMargin="36" rightMargin="36" topMargin="36" bottomMargin="36" uuid="0813924e-77cb-4acb-97a1-3059b6a0edaa">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="39"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     erpm_item_master.`ERPMIM_ID` AS ERPMIM_ID,
+     institutionmaster.`IM_Name` AS IM_Name,
+     erpm_item_master.`ERPMIM_IM_ID` AS ERPMIM_IM_ID,
+     erpm_item_master.`ERPMIM_Item_Brief_Desc` AS ERPMIM_Item_Brief_Desc,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS ERPMIM_Item_Cat1,
+     erpm_item_category_master.`ERPMICM_Cat_Desc` AS ERPMICM_Cat_Desc_Type,
+     erpm_item_master.`ERPMIM_Item_Cat2` AS ERPMIM_Item_Cat2,
+     erpm_item_category_master_A.`ERPMICM_Cat_Desc` AS ERPMICM_Cat_Desc_Category,
+     erpm_item_master.`ERPMIM_Item_Cat3` AS ERPMIM_Item_Cat3,
+     erpm_item_category_master_B.`ERPMICM_Cat_Desc` AS ERPMICM_Cat_Desc_SubCategory,
+     erpm_item_master.`ERPMIM_UOP` AS ERPMIM_UOP,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS ERPMGM_EGM_DESC_UOP,
+     erpm_item_master.`ERPMIM_Make` AS ERPMIM_Make,
+     erpm_item_master.`ERPMIM_Model` AS ERPMIM_Model,
+     erpm_item_master.`ERPMIM_Capital_Cat` AS ERPMIM_Capital_Cat,
+     erpm_capital_category.`ERMCC_Desc` AS Capital_Category_Desc,
+     erpm_item_master.`ERPMIM_Detailed_Desc` AS ERPMIM_Detailed_Desc,
+     erpm_item_master.`ERPMIM_Remarks` AS ERPMIM_Remarks,
+     if(erpm_item_master.`ERPMIM_Issue_Policy`=1, 'FIFO',if(erpm_item_master.`ERPMIM_Issue_Policy`=2, 'LIFO',if(erpm_item_master.`ERPMIM_Issue_Policy`=3, 'User Choice',''))) AS ERPMIM_Issue_Policy,
+     erpm_item_master.`ERPMIM_Serial_No_Applicable` AS ERPMIM_Serial_No_Applicable
+FROM
+     `erpm_item_category_master` erpm_item_category_master RIGHT OUTER JOIN `erpm_item_master` erpm_item_master ON erpm_item_category_master.`ERPMICM_Item_ID` = erpm_item_master.`ERPMIM_Item_Cat1`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_A ON erpm_item_master.`ERPMIM_Item_Cat2` = erpm_item_category_master_A.`ERPMICM_Item_ID`
+     LEFT OUTER JOIN `erpm_item_category_master` erpm_item_category_master_B ON erpm_item_master.`ERPMIM_Item_Cat3` = erpm_item_category_master_B.`ERPMICM_Item_ID`
+     LEFT OUTER JOIN `erpm_capital_category` erpm_capital_category ON erpm_item_master.`ERPMIM_Capital_Cat` = erpm_capital_category.`ERPMCC_ID`
+     INNER JOIN `institutionmaster` institutionmaster ON erpm_item_master.`ERPMIM_IM_ID` = institutionmaster.`IM_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE  $P!{condition}]]>
+	</queryString>
+	<field name="ERPMIM_ID" class="java.lang.Long"/>
+	<field name="IM_Name" class="java.lang.String"/>
+	<field name="ERPMIM_IM_ID" class="java.lang.Integer"/>
+	<field name="ERPMIM_Item_Brief_Desc" class="java.lang.String"/>
+	<field name="ERPMIM_Item_Cat1" class="java.lang.Long"/>
+	<field name="ERPMICM_Cat_Desc_Type" class="java.lang.String"/>
+	<field name="ERPMIM_Item_Cat2" class="java.lang.Long"/>
+	<field name="ERPMICM_Cat_Desc_Category" class="java.lang.String"/>
+	<field name="ERPMIM_Item_Cat3" class="java.lang.Long"/>
+	<field name="ERPMICM_Cat_Desc_SubCategory" class="java.lang.String"/>
+	<field name="ERPMIM_UOP" class="java.lang.Long"/>
+	<field name="ERPMGM_EGM_DESC_UOP" class="java.lang.String"/>
+	<field name="ERPMIM_Make" class="java.lang.String"/>
+	<field name="ERPMIM_Model" class="java.lang.String"/>
+	<field name="ERPMIM_Capital_Cat" class="java.lang.Long"/>
+	<field name="Capital_Category_Desc" class="java.lang.String"/>
+	<field name="ERPMIM_Detailed_Desc" class="java.lang.String"/>
+	<field name="ERPMIM_Remarks" class="java.lang.String"/>
+	<field name="ERPMIM_Issue_Policy" class="java.lang.String"/>
+	<field name="ERPMIM_Serial_No_Applicable" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="42eea683-84c2-46bc-99bb-7998fc4f0b22" x="661" y="29" width="100" height="12"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7dba4759-7839-4542-9cda-fd1166db7786" x="294" y="30" width="169" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ITEM LIST]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="375d846d-7eaf-4f3a-b58a-de6f058a039e" positionType="FixRelativeToBottom" x="-319" y="-6" width="39" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bafe8b99-6661-47ab-b398-3d21732acf19" x="61" y="2" width="631" height="25"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IM_Name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="1e51146b-fc75-481d-91eb-d2c63d46daeb" x="4" y="13" width="27" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S.No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="321e6f5b-1773-4a41-9ca3-1ec8d0f912db" x="34" y="13" width="127" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Brief Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c5bd749c-528a-4fd7-924f-15cecf0e0344" x="164" y="13" width="79" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Make]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1afc3ea8-3090-4b11-bfd7-a4dfe5fe5131" x="245" y="13" width="85" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Model]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3fc951a8-f94a-445a-9edf-6223a7e37a3f" x="332" y="13" width="100" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9e26d1e4-50e9-447e-9090-89f68be9cf05" x="642" y="13" width="38" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UOP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cc75e2be-13cd-4f03-ae3c-45ec258638f5" x="685" y="1" width="30" height="24"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issue Policy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9048f0d7-5a77-4c39-ac3f-17d1a8f5c262" x="724" y="1" width="44" height="24"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial No Applicable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="97b262ed-263d-401f-89ad-277a92ddb905" x="435" y="13" width="100" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Category]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="789b08d9-3b06-4335-863d-8209c48b6c69" x="538" y="13" width="100" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubCategory]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="0b1a0f47-15b3-482b-9d9d-f1292b10bdbb" x="1" y="25" width="764" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement uuid="2f2085b6-5059-477b-b0fd-fec5febc33c0" positionType="FixRelativeToBottom" x="4" y="0" width="27" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="987bb924-c8db-4425-ae0e-2a4d145cd8a3" x="34" y="0" width="127" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Item_Brief_Desc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5999421d-a2e5-4516-bad9-b7af80d11314" x="164" y="0" width="79" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Make}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c669eb1e-f8b5-4c22-a125-c3c4ca385c83" x="245" y="0" width="85" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Model}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4e7138a2-aacf-48c4-bdd8-62decc821232" x="642" y="0" width="38" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMGM_EGM_DESC_UOP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="27275574-7612-4ea7-ab21-19ebd0d7ad02" x="685" y="0" width="53" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Issue_Policy}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b71c0703-d4e1-4256-b233-52038657e0ff" x="332" y="1" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMICM_Cat_Desc_Type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5d02c375-36b4-4615-9960-770efc9e0dbf" x="435" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMICM_Cat_Desc_Category}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bbd520c4-9ab8-44d1-b704-143ee1e5455f" x="740" y="1" width="21" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMIM_Serial_No_Applicable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7fdec658-a7f3-4e99-b59b-8761e85d6aba" x="538" y="1" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ERPMICM_Cat_Desc_SubCategory}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="8f9fb38e-bc66-4bd5-a9e3-1e77dd2816c5" x="332" y="10" width="80" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of "+$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="7" splitType="Stretch"/>
+	</summary>
+</jasperReport>

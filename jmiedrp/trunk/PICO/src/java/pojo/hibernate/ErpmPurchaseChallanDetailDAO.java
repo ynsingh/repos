@@ -5,98 +5,152 @@
 
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import java.math.BigDecimal;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import java.util.List;
-import java.util.*;
+import org.hibernate.Hibernate;
+import utils.BaseDAO;
 
 /**
  *
  * @author Tanvir Ahmed and Sajid
  */
 
-public class ErpmPurchaseChallanDetailDAO extends BaseDAO {
+public class ErpmPurchaseChallanDetailDAO {
 
-public void save(ErpmPurchasechallanDetail PCDetail) {
+    public void save(ErpmPurchasechallanDetail PCDetail) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(PCDetail);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.save(PCDetail);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
-            throw re;    }
-    }
-public void delete(ErpmPurchasechallanDetail PCDetail) {
-        try {
-            beginTransaction();
-            getSession().delete(PCDetail);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            if(PCDetail != null)
+                tx.rollback();
             throw re;
         }
+        finally {
+            session.close();
+        }
     }
- public void update(ErpmPurchasechallanDetail PCDetail) {
+
+    public void delete(ErpmPurchasechallanDetail PCDetail) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(PCDetail);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(PCDetail);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(PCDetail != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
-public List<ErpmPurchasechallanDetail> findAll() {
-        beginTransaction();
-        List<ErpmPurchasechallanDetail> list = getSession().createQuery("from ErpmPurchasechallanDetail").list();
-        commitTransaction();
-        return list;
+    public void update(ErpmPurchasechallanDetail PCDetail) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(PCDetail);
+            tx.commit();
+        }
+        catch (RuntimeException re) {
+            if(PCDetail != null)
+                tx.rollback();
+            throw re;
+        }
+        finally {
+            session.close();
+        }
     }
 
+    public List<ErpmPurchasechallanDetail> findBypcmPcmId(Integer pcmPcmId) {
+        Session session = HibernateUtil.getSession();
+        try {
 
-  public List<ErpmPurchasechallanDetail>  findBypcmPcmId(Integer pcmPcmId) {
-        beginTransaction();
-        List<ErpmPurchasechallanDetail> podetailslist  = getSession().createQuery("Select u from ErpmPurchasechallanDetail u where u.erpmPurchasechallanMaster.pcmPcmId = :pcmPcmId").setParameter("pcmPcmId", pcmPcmId).list();
-        commitTransaction();
-       return podetailslist;
-   }
-
-   public ErpmPurchasechallanDetail findBypcdPcdId(Integer pcdPcdId) {
-        beginTransaction();
-        List<ErpmPurchasechallanDetail> PCDetail  = getSession().createQuery("Select u from ErpmPurchasechallanDetail u where u.pcdPcdId = :pcdPcdId").setParameter("pcdPcdId",pcdPcdId).list();
-        commitTransaction();
-        return PCDetail.get(0);
+            session.beginTransaction();
+           List<ErpmPurchasechallanDetail> podetailslist  = session.createQuery("Select u from ErpmPurchasechallanDetail u where u.erpmPurchasechallanMaster.pcmPcmId = :pcmPcmId").setParameter("pcmPcmId", pcmPcmId).list();
+           for(int index = 0; index < podetailslist.size(); ++index) {
+                Hibernate.initialize(podetailslist.get(index).getErpmItemMaster());
+            }
+            return podetailslist;
+        }
+        finally {
+            session.close();
+            }
     }
 
- 
+     public ErpmPurchasechallanDetail findBypcdPcdId(Integer pcdPcdId) {
+        Session session = HibernateUtil.getSession();
+        try {
 
-
-  public ErpmPurchasechallanDetail findByPCDetailsID(Integer pcdPcdId) {
-        beginTransaction();
-        ErpmPurchasechallanDetail PCDetail  = (ErpmPurchasechallanDetail) getSession().load(ErpmPurchasechallanDetail.class , pcdPcdId);
-        commitTransaction();
-        return PCDetail;
+            session.beginTransaction();
+            List<ErpmPurchasechallanDetail> PCDetail  = session.createQuery("Select u from ErpmPurchasechallanDetail u where u.pcdPcdId = :pcdPcdId").setParameter("pcdPcdId",pcdPcdId).list();
+             for(int index = 0; index < PCDetail.size(); ++index) {
+                Hibernate.initialize(PCDetail.get(index).getErpmItemMaster());
+                Hibernate.initialize(PCDetail.get(index).getErpmPurchasechallanMaster());
+            }
+           return PCDetail.get(0);
+        }
+        finally {
+            session.close();
+            }
     }
 
+      public ErpmPurchasechallanDetail findByPCDetailsID(Integer pcdPcdId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmPurchasechallanDetail PCDetail  = (ErpmPurchasechallanDetail) session.load(ErpmPurchasechallanDetail.class , pcdPcdId);
+            Hibernate.initialize(PCDetail.getErpmItemMaster());
+            Hibernate.initialize(PCDetail.getErpmPurchasechallanMaster());
+
+            return PCDetail;
+        }
+        finally {
+            session.close();
+            }
+    }
+
+      public List<ErpmPurchasechallanDetail>  findBy_pomPoMasterId_ItemId_chalanId(Integer pomPoMasterId, Integer itemId, Integer pcdPcdId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+            session.beginTransaction();
+           List<ErpmPurchasechallanDetail> Browselist  = session.createQuery("Select u from ErpmPurchasechallanDetail u where u.pcdPcdId != :pcdPcdId and u.erpmItemMaster.erpmimId = :itemId and u.erpmPurchasechallanMaster.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("itemId", itemId).setParameter("pomPoMasterId", pomPoMasterId).setParameter("pcdPcdId", pcdPcdId).list();
+           for(int index = 0; index < Browselist.size(); ++index) {
+                Hibernate.initialize(Browselist.get(index));
+            }
+            return Browselist;
+        }
+        finally {
+            session.close();
+            }
+    }
+
+      public ErpmPurchasechallanDetail findBypcmPcmId_n_ItemId(Integer pcmPcmId, Integer ItemId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+           List<ErpmPurchasechallanDetail> chadetails  = session.createQuery("Select u from ErpmPurchasechallanDetail u where u.erpmPurchasechallanMaster.pcmPcmId = :pcmPcmId and u.erpmItemMaster.erpmimId = :ItemId").setParameter("pcmPcmId", pcmPcmId).setParameter("ItemId", ItemId).list();
+            Hibernate.initialize(chadetails);
 
 
-
-  
-   public List<ErpmPurchasechallanDetail>  findByPCD_PCMaster_ID(Integer PCD_PCMaster_ID) {
-        beginTransaction();
-        List<ErpmPurchasechallanDetail> Browselist  = getSession().createQuery("Select u from ErpmPurchasechallanDetail u where u.erpmPurchasechallanMaster.pcmPcmId = :PCD_PCMaster_ID").setParameter("PCD_PCMaster_ID", PCD_PCMaster_ID).list();
-        commitTransaction();
-        return Browselist;
-   }
-
-     public int  findByPCD_PCMaster_IDtest(Integer PCD_PCMaster_ID) {
-        beginTransaction();
-        List<ErpmPurchasechallanDetail> Browselist  = getSession().createQuery("Select u from ErpmPurchasechallanDetail u where u.erpmPurchasechallanMaster.pcmPcmId = :PCD_PCMaster_ID").setParameter("PCD_PCMaster_ID", PCD_PCMaster_ID).list();
-        commitTransaction();
-        return Browselist.get(0).getErpmPurchasechallanMaster().getPcmPcmId();
-   }
+            return chadetails.get(0);
+        }
+        finally {
+            session.close();
+            }
+    }
 
 }

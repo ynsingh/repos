@@ -214,7 +214,7 @@ public String getMessage() {
             simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
             dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
             erpmuserlist=erpmusersDao.findAll();
-            POMasterList = pomasterDAO.findAll();
+            //POMasterList = pomasterDAO.findAll();
             //These 3 lines fetch default Insitute,Subinstitute,Department(from user's profile)
             DefaultInsitute=Short.valueOf(getSession().getAttribute("imId").toString());
             DefaultSubInsitute=Integer.valueOf(getSession().getAttribute("simId").toString());

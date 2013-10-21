@@ -2,7 +2,8 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <filter>
         <filter-name>struts2</filter-name>
-        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <!--<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class> -->
+        <filter-class>utils.Struts2Dispatcher</filter-class>
     </filter>
     <filter>
         <filter-name>ResponseOverrideFilter</filter-name>
@@ -46,9 +47,9 @@
           <taglib-uri>/WEB-INF/struts-nested.tld</taglib-uri>
           <taglib-location>/WEB-INF/struts-nested.tld</taglib-location>
         </taglib>
-        <taglib>
+   <!-- <taglib>
           <taglib-uri>/WEB-INF/struts-tiles.tld</taglib-uri>
           <taglib-location>/WEB-INF/struts-tiles.tld</taglib-location>
-        </taglib>
+        </taglib>-->
     </jsp-config>
 </web-app>

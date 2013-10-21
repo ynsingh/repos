@@ -5,8 +5,8 @@
 /**
  *
  * @author Sajid Aziz
+ * @Revised by: SK Naqvi
  */
-
 package PrePurchase;
 
 import pojo.hibernate.Institutionmaster;
@@ -45,108 +45,417 @@ import pojo.hibernate.ErpmItemMasterDAO;
 
 import pojo.hibernate.ErpmGeneralTerms;
 import pojo.hibernate.ErpmGeneralTermsDAO;
+
 import pojo.hibernate.ErpmPoTerms;
 import pojo.hibernate.ErpmPoTermsDAO;
-//import pojo.hibernate.IndentDetailWithCheckFlag;
-//import pojo.hibernate.IndentdetailWithCheckFlagDAO;
+
+import pojo.hibernate.ErpmItemRate;
+import pojo.hibernate.ErpmItemRateDAO;
+
+import pojo.hibernate.ErpmPoLocations;
+import pojo.hibernate.ErpmPoLocationsDAO;
+
 import utils.DevelopmentSupport;
-import java.util.ArrayList;
-import java.util.List;
-//import javax.jms.Session;
-
-
 
 import java.io.*;
+
+import utils.DateUtilities;
+import java.util.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+
+
 import java.sql.Connection;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.DriverManager;
 import org.apache.struts2.ServletActionContext;
 import net.sf.jasperreports.engine.*;
+import pojo.hibernate.GfrProgramMappingDAO;
 
-
-import java.util.*;
-import java.lang.*;
-import java.math.BigDecimal;
-import org.apache.struts2.interceptor.validation.SkipValidation;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import com.opensymphony.xwork2.ActionContext;
 
 public class ManagePOMaster extends DevelopmentSupport {
 
-  private short indtindentid;
-  private Integer irItemRateId;
-  private short indtdetailId;
-  private ErpmPoMaster  pomaster;
-  private ErpmPoMaster  pomaster1;
-  private ErpmPoDetails podetail;
-  private ErpmGeneralTerms Gterms;
-  private ErpmPoTerms epoterms;
-  private ErpmGenMaster egm;
-  private String message;
-  private Integer defaultPOM;
-  private Short defaultPOD;
-  private Integer PodetailsId;
-  private Integer PodPodetailsId;
-  private Short DefaultInsitute;
-  private Integer PoMasterId;
-  private Integer pomPoMasterId;
-  private Integer POD_POMaster_ID;
-  private Integer PotpoId;
-  private Integer potPotId;
-  Erpmusers ermu;
-  Institutionmaster im;
-  private String username;
-  private Short DefaultInsitute1;
-  private Integer DefaultSubInsitute;
-  private Integer DefaultDepartment;
-  private Integer defaultCurrency;
-  private Integer DefaultPO;
-  private ErpmIndentMaster erpmindtmast;
-  private ErpmIndentDetail erpmindtdet;
-  Short defaultIndent;
-  private Integer DefaultCheckvalue;
+    private short indtindentid;
+    private Integer irItemRateId;
+    private short indtdetailId;
+    private ErpmPoDetails podetail = new ErpmPoDetails();
+    private ErpmPoDetails podetail1 = new ErpmPoDetails();
+    private ErpmPoLocations poLocation = new ErpmPoLocations();
+    private ErpmPoLocationsDAO poLocationDao = new ErpmPoLocationsDAO();
+    private List<ErpmPoLocations> poLocationList = new ArrayList<ErpmPoLocations>();
+    private ErpmGeneralTerms Gterms;
+    private ErpmPoTerms poTerm = new ErpmPoTerms();
+    private ErpmPoTerms poTerm1 = new ErpmPoTerms();
+    private List<Departmentmaster> departmentList = new ArrayList<Departmentmaster>();
+    private DepartmentmasterDAO departmentDao = new DepartmentmasterDAO();
+    private ErpmGenMaster generalMaster = new ErpmGenMaster();
+    private String message;
+    private Integer defaultPOM;
+    private Short defaultPOD;
+    private Integer podPodetailsId;
+    private Integer PoMasterId;
+    private Integer pomPoMasterId;
+    private Integer POD_POMaster_ID;
+    private Erpmusers ermu;
+    private Institutionmaster im;
+    private String username;
+    private Integer DefaultPO;
+    private ErpmIndentMaster erpmindtmast;
+    private ErpmIndentDetail erpmindtdet;
+    private Short defaultIndent;
+    private Integer DefaultCheckvalue;
     private ErpmItemMaster erpmim;
-     private Integer ErpmimId;
-
-
-  private ErpmPoMasterDAO               pomasterDAO     =     new ErpmPoMasterDAO();
-  private ErpmPoDetailsDAO              podetailDAO     =     new ErpmPoDetailsDAO();
-  private ErpmIndentMasterDAO           erpminDao       =       new ErpmIndentMasterDAO();
-  private List<ErpmIndentMaster>        IndentIDList    =     new ArrayList<ErpmIndentMaster>();
-  private ErpmIndentDetailDAO           erpmindetDao    =       new ErpmIndentDetailDAO();
-  private List<Institutionmaster>       imList          =     new ArrayList<Institutionmaster>();
-  private InstitutionmasterDAO          imDao           =     new InstitutionmasterDAO();
-  private List<Departmentmaster>        dmList          =     new ArrayList<Departmentmaster>();
-  private DepartmentmasterDAO           dmDao           =     new DepartmentmasterDAO();
-  private List<Subinstitutionmaster>    simList         =     new ArrayList<Subinstitutionmaster>();
-  private SubinstitutionmasterDAO       simDao          =     new SubinstitutionmasterDAO ();
-  private List<Suppliermaster>          suppList        =     new ArrayList<Suppliermaster>();
-  private SuppliermasterDAO             suppDao         =     new SuppliermasterDAO();
-  private List<SupplierAddress>         saList          =     new ArrayList<SupplierAddress>();
-  private SupplierAddressDAO            supplieraddressDao         =     new SupplierAddressDAO();
-  private List<ErpmGenMaster>           currencyList    =     new ArrayList<ErpmGenMaster>();
-  private ErpmGenMasterDao              GMDao           =           new ErpmGenMasterDao();
-  private List<ErpmGenMaster>           paymodelist     =     new ArrayList<ErpmGenMaster>();
-  private List<Erpmusers>               erpmuserlist    =     new ArrayList<Erpmusers>();
-  private ErpmusersDAO                  erpmusersDao    =     new ErpmusersDAO();
-  private List<ErpmItemMaster>          itemlist        =     new ArrayList<ErpmItemMaster>();
-  private ErpmItemMasterDAO             itemlistDAO     =     new ErpmItemMasterDAO();
-  private List<ErpmPoDetails>           PODetailList    =     new ArrayList<ErpmPoDetails>();
-  private List<ErpmPoMaster>            POMList         =          new ArrayList<ErpmPoMaster>();
-  private List<ErpmGenMaster>           potermslist     =     new ArrayList<ErpmGenMaster>();
-  private ErpmPoTermsDAO                epotermsDAO     =     new ErpmPoTermsDAO();
-  private List<ErpmPoTerms>             epotermslist    =     new ArrayList<ErpmPoTerms>();
-  private List<ErpmGeneralTerms>        Gtermslist      =     new ArrayList<ErpmGeneralTerms>();
-  private List<ErpmGeneralTerms>        GTypestermslist =     new ArrayList<ErpmGeneralTerms>();
-  private ErpmGeneralTermsDAO           GtermsDAO       =     new ErpmGeneralTermsDAO();
-  private List<ErpmPoTerms>             erpotermlist    =     new ArrayList<ErpmPoTerms>();
-  private ErpmPoTermsDAO                erpotermsDAO    =     new ErpmPoTermsDAO();
-  private List<ErpmIndentDetail>        indtitemlist    =       new ArrayList<ErpmIndentDetail>();
-  //private List<IndentDetailWithCheckFlag>  indtitemlistwithCheckFlag = new ArrayList<IndentDetailWithCheckFlag>();
-    private ErpmItemMasterDAO erpmimDao = new ErpmItemMasterDAO();
+    private Integer ErpmimId;
+    private List<String> transferToPOItems = new ArrayList<String>();
+    private GfrProgramMappingDAO GfrProgramMappingDao = new GfrProgramMappingDAO();
+    private ErpmPoMaster pomaster;
+    private ErpmPoMasterDAO pomasterDao = new ErpmPoMasterDAO();
+    private List<ErpmPoMaster> poMasterList = new ArrayList<ErpmPoMaster>();
+    private ErpmPoDetailsDAO podetailDAO = new ErpmPoDetailsDAO();
+    private List<ErpmIndentMaster> IndentIDList = new ArrayList<ErpmIndentMaster>();
+    private ErpmIndentDetailDAO erpmindetDao = new ErpmIndentDetailDAO();
+    private List<Institutionmaster> imList = new ArrayList<Institutionmaster>();
+    private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
+    private List<Departmentmaster> dmList = new ArrayList<Departmentmaster>();
+    private DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
+    private List<Subinstitutionmaster> simList = new ArrayList<Subinstitutionmaster>();
+    private SubinstitutionmasterDAO simDao = new SubinstitutionmasterDAO();
+    private List<Suppliermaster> suppList = new ArrayList<Suppliermaster>();
+    private SuppliermasterDAO suppDao = new SuppliermasterDAO();
+    private List<SupplierAddress> saList = new ArrayList<SupplierAddress>();
+    private SupplierAddressDAO supplieraddressDao = new SupplierAddressDAO();
+    private List<ErpmGenMaster> currencyList = new ArrayList<ErpmGenMaster>();
+    private ErpmGenMasterDao generalMasterDao = new ErpmGenMasterDao();
+    private List<ErpmGenMaster> paymodelist = new ArrayList<ErpmGenMaster>();
+    private List<Erpmusers> erpmuserlist = new ArrayList<Erpmusers>();
+    private ErpmusersDAO erpmusersDao = new ErpmusersDAO();
+    // private List<ErpmItemMaster>          itemlist        =     new ArrayList<ErpmItemMaster>();
+    private List<ErpmPoDetails> PODetailList = new ArrayList<ErpmPoDetails>();
+    private List<ErpmGenMaster> poGenericTermsList = new ArrayList<ErpmGenMaster>();
+    private ErpmPoTermsDAO poTermDAO = new ErpmPoTermsDAO();
+    private List<ErpmPoTerms> epotermslist = new ArrayList<ErpmPoTerms>();
+    private List<ErpmGeneralTerms> Gtermslist = new ArrayList<ErpmGeneralTerms>();
+    private List<ErpmGeneralTerms> GTypestermslist = new ArrayList<ErpmGeneralTerms>();
+    private List<ErpmPoTerms> poTermList = new ArrayList<ErpmPoTerms>();
+    private List<ErpmIndentDetail> indtitemlist = new ArrayList<ErpmIndentDetail>();
+    private List<ErpmIndentMaster> indentList = new ArrayList<ErpmIndentMaster>();
+    private ErpmIndentMasterDAO indentListDao = new ErpmIndentMasterDAO();
+    private List<ErpmIndentDetail> indentItemList = new ArrayList<ErpmIndentDetail>();
+    private ErpmIndentDetail indentDetail = new ErpmIndentDetail();
+    private List<ErpmItemMaster> itemList = new ArrayList<ErpmItemMaster>();
+    private ErpmItemMasterDAO itemMasterDao = new ErpmItemMasterDAO();
+    private List<ErpmItemRate> itemRateList = new ArrayList<ErpmItemRate>();
+    private ErpmItemRateDAO itemRateDao = new ErpmItemRateDAO();
+    private PrePurchaseDecorator ppDecorator = new PrePurchaseDecorator();
+    private Integer poN;
     private Integer SMID;
-
-
+    private String deliveryDate;
+    private String poDate;
+    private String poNumber;
+    private String indentToDate;
+    private String indentFromDate;
     private InputStream inputStream;
+    private String indentDetailId;
+    private Short indentSelected;
+    private BigDecimal selectedItemRate;
+    private String clause;
+    private Integer poGenericTerm;
+    private Short defaultInsitute;
+    private Integer defaultSubInsitute;
+    private Integer defaultDepartment;
+    private Integer defaultCurrency;
+    private Integer defaultItem;
+    private String UOP;
+    private String selectedItemRateCurrency;
+    private String selectedItemRateValidFrom;
+    private String selectedItemRateValidTo;
+    private Integer minOrderQuantity;
+    private Integer maxOrderQuantity;
+    private String approxcost;
+    private String taxNarration;
+    private String taxValue;
+    private String totalCost;
+    private String editPODetail;
+    private Integer potPotId;
+    private Integer selectedTerm;
+    private Integer poLocationsId;
+    private static Boolean varShowGFR;
+
+    public Boolean getVarShowGFR() {
+        return varShowGFR;
+    }
+
+    public void setVarShowGFR(Boolean varShowGFR) {
+        this.varShowGFR = varShowGFR;
+    }
+
+    public void setpoLocationsId(Integer poLocationsId) {
+        this.poLocationsId = poLocationsId;
+    }
+
+    public Integer getpoLocationsId() {
+        return this.poLocationsId;
+    }
+
+    public void setpoLocation(ErpmPoLocations poLocation) {
+        this.poLocation = poLocation;
+    }
+
+    public ErpmPoLocations getpoLocation() {
+        return this.poLocation;
+    }
+
+    public void setpoLocationList(List<ErpmPoLocations> poLocationList) {
+        this.poLocationList = poLocationList;
+    }
+
+    public List<ErpmPoLocations> getpoLocationList() {
+        return this.poLocationList;
+    }
+
+    public void setdepartmentList(List<Departmentmaster> departmentList) {
+        this.departmentList = departmentList;
+    }
+
+    public List<Departmentmaster> getdepartmentList() {
+        return this.departmentList;
+    }
+
+    public void setselectedTerm(Integer selectedTerm) {
+        this.selectedTerm = selectedTerm;
+    }
+
+    public Integer getselectedTerm() {
+        return this.selectedTerm;
+    }
+
+    public void seteditPODetail(String editPODetail) {
+        this.editPODetail = editPODetail;
+    }
+
+    public String geteditPODetail() {
+        return this.editPODetail;
+    }
+
+    public void settotalCost(String totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public String gettotalCost() {
+        return this.totalCost;
+    }
+
+    public void settaxNarration(String taxNarration) {
+        this.taxNarration = taxNarration;
+    }
+
+    public String gettaxNarration() {
+        return this.taxNarration;
+    }
+
+    public void settaxValue(String taxValue) {
+        this.taxValue = taxValue;
+    }
+
+    public String gettaxValue() {
+        return this.taxValue;
+    }
+
+    public void setapproxcost(String approxcost) {
+        this.approxcost = approxcost;
+    }
+
+    public String getapproxcost() {
+        return this.approxcost;
+    }
+
+    public void setminOrderQuantity(Integer minOrderQuantity) {
+        this.minOrderQuantity = minOrderQuantity;
+    }
+
+    public Integer getminOrderQuantity() {
+        return this.minOrderQuantity;
+    }
+
+    public void setmaxOrderQuantity(Integer maxOrderQuantity) {
+        this.maxOrderQuantity = maxOrderQuantity;
+    }
+
+    public Integer getmaxOrderQuantity() {
+        return this.maxOrderQuantity;
+    }
+
+    public void setselectedItemRateValidFrom(String selectedItemRateValidFrom) {
+        this.selectedItemRateValidFrom = selectedItemRateValidFrom;
+    }
+
+    public String getselectedItemRateValidFrom() {
+        return this.selectedItemRateValidFrom;
+    }
+
+    public void setselectedItemRateValidTo(String selectedItemRateValidTo) {
+        this.selectedItemRateValidTo = selectedItemRateValidTo;
+    }
+
+    public String getselectedItemRateValidTo() {
+        return this.selectedItemRateValidTo;
+    }
+
+    public void setselectedItemRateCurrency(String selectedItemRateCurrency) {
+        this.selectedItemRateCurrency = selectedItemRateCurrency;
+    }
+
+    public String getselectedItemRateCurrency() {
+        return this.selectedItemRateCurrency;
+    }
+
+    public void setUOP(String UOP) {
+        this.UOP = UOP;
+    }
+
+    public String getUOP() {
+        return this.UOP;
+    }
+
+    public void setdefaultItem(Integer defaultItem) {
+        this.defaultItem = defaultItem;
+    }
+
+    public Integer getdefaultItem() {
+        return this.defaultItem;
+    }
+
+    public void setpoGenericTerm(Integer poGenericTerm) {
+        this.poGenericTerm = poGenericTerm;
+    }
+
+    public Integer getpoGenericTerm() {
+        return this.poGenericTerm;
+    }
+
+    public void setclause(String clause) {
+        this.clause = clause;
+    }
+
+    public String getclause() {
+        return this.clause;
+    }
+
+    public void setselectedItemRate(BigDecimal selectedItemRate) {
+        this.selectedItemRate = selectedItemRate;
+    }
+
+    public BigDecimal getselectedItemRate() {
+        return this.selectedItemRate;
+    }
+
+    public void setitemRateList(List<ErpmItemRate> itemRateList) {
+        this.itemRateList = itemRateList;
+    }
+
+    public List<ErpmItemRate> getitemRateList() {
+        return this.itemRateList;
+    }
+
+    public void setitemList(List<ErpmItemMaster> itemList) {
+        this.itemList = itemList;
+    }
+
+    public List<ErpmItemMaster> getitemList() {
+        return this.itemList;
+    }
+
+    public Short getindentSelected() {
+        return this.indentSelected;
+    }
+
+    public void setindentSelected(Short indentSelected) {
+        this.indentSelected = indentSelected;
+    }
+
+    public Integer getpoN() {
+        return this.poN;
+    }
+
+    public void setpoN(Integer poN) {
+        this.poN = poN;
+    }
+
+    public List<String> gettransferToPOItems() {
+        return this.transferToPOItems;
+    }
+
+    public void settransferToPOItems(List<String> transferToPOItems) {
+        this.transferToPOItems = transferToPOItems;
+    }
+
+    public String getindentDetailId() {
+        return this.indentDetailId;
+    }
+
+    public void setindentDetailId(String indentDetailId) {
+        this.indentDetailId = indentDetailId;
+    }
+
+    public List<ErpmIndentDetail> getindentItemList() {
+        return this.indentItemList;
+    }
+
+    public void setindentItemList(List<ErpmIndentDetail> indentItemList) {
+        this.indentItemList = indentItemList;
+    }
+
+    public String getindentToDate() {
+        return this.indentToDate;
+    }
+
+    public void setindentToDate(String indentToDate) {
+        this.indentToDate = indentToDate;
+    }
+
+    public String getindentFromDate() {
+        return this.indentFromDate;
+    }
+
+    public void setindentFromDate(String indentFromDate) {
+        this.indentFromDate = indentFromDate;
+    }
+
+    public List<ErpmIndentMaster> getindentList() {
+        return this.indentList;
+    }
+
+    public void setindentList(List<ErpmIndentMaster> indentList) {
+        this.indentList = indentList;
+    }
+
+    public String getpoNumber() {
+        return this.poNumber;
+    }
+
+    public void setpoNumber(String poNumber) {
+        this.poNumber = poNumber;
+    }
+
+    public String getpoDate() {
+        return this.poDate;
+    }
+
+    public void setpoDate(String poDate) {
+        this.poDate = poDate;
+    }
+
+    public String getdeliveryDate() {
+        return this.deliveryDate;
+    }
+
+    public void setdeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
 
     public InputStream getInputStream() {
         return inputStream;
@@ -156,8 +465,7 @@ public class ManagePOMaster extends DevelopmentSupport {
         this.inputStream = inputStream;
     }
 
-
-      public Integer getErpmimId() {
+    public Integer getErpmimId() {
         return this.ErpmimId;
     }
 
@@ -165,7 +473,7 @@ public class ManagePOMaster extends DevelopmentSupport {
         this.ErpmimId = ErpmimId;
     }
 
-   public void seterpmim(ErpmItemMaster erpmim) {
+    public void seterpmim(ErpmItemMaster erpmim) {
         this.erpmim = erpmim;
     }
 
@@ -173,26 +481,28 @@ public class ManagePOMaster extends DevelopmentSupport {
         return this.erpmim;
     }
 
-  public void seterpmindtdet(ErpmIndentDetail erpmindtdet) {
-                this.erpmindtdet = erpmindtdet;
+    public void seterpmindtdet(ErpmIndentDetail erpmindtdet) {
+        this.erpmindtdet = erpmindtdet;
     }
 
     public ErpmIndentDetail geterpmindtdet() {
-                        return this.erpmindtdet;
+        return this.erpmindtdet;
     }
+
     public void setirItemRateId(Integer irItemRateId) {
-                   this.irItemRateId = irItemRateId;
-  }
+        this.irItemRateId = irItemRateId;
+    }
 
     public Integer getirItemRateId() {
-                   return irItemRateId;
+        return irItemRateId;
     }
 
-   public void setDefaultCheckvalue(Integer DefaultCheckvalue) {
-                   this.DefaultCheckvalue = DefaultCheckvalue;    }
+    public void setDefaultCheckvalue(Integer DefaultCheckvalue) {
+        this.DefaultCheckvalue = DefaultCheckvalue;
+    }
 
-   public Integer getDefaultCheckvalue() {
-                   return DefaultCheckvalue;
+    public Integer getDefaultCheckvalue() {
+        return DefaultCheckvalue;
     }
 
     public void setSMID(Integer SMID) {
@@ -204,994 +514,1222 @@ public class ManagePOMaster extends DevelopmentSupport {
     }
 
     public void setindtindentid(short indtindentid) {
-                   this.indtindentid = indtindentid;    }
-
-    public short getindtindentid() {
-                   return indtindentid;
+        this.indtindentid = indtindentid;
     }
 
-  public void setindtitemlist(List<ErpmIndentDetail> indtitemlist) {
-                      this.indtitemlist= indtitemlist;
+    public short getindtindentid() {
+        return indtindentid;
+    }
+
+    public void setindtitemlist(List<ErpmIndentDetail> indtitemlist) {
+        this.indtitemlist = indtitemlist;
     }
 
     public List<ErpmIndentDetail> getindtitemlist() {
-                         return this.indtitemlist;
+        return this.indtitemlist;
     }
 
-   public void setindtdetailId(short indtdetailId) {
-                  this.indtdetailId = indtdetailId;
+    public void setindtdetailId(short indtdetailId) {
+        this.indtdetailId = indtdetailId;
     }
 
     public short getindtdetailId() {
-                    return indtdetailId;
+        return indtdetailId;
     }
 
-
-
-  public void seterpmindtmast(ErpmIndentMaster erpmindtmast) {
-                 this.erpmindtmast = erpmindtmast;
+    public void seterpmindtmast(ErpmIndentMaster erpmindtmast) {
+        this.erpmindtmast = erpmindtmast;
     }
 
     public ErpmIndentMaster geterpmindtmast() {
-                          return this.erpmindtmast;
+        return this.erpmindtmast;
     }
-  public void setdefaultIndent(Short defaultIndent) {
-           this.defaultIndent = defaultIndent;
+
+    public void setdefaultIndent(Short defaultIndent) {
+        this.defaultIndent = defaultIndent;
     }
 
     public Short getdefaultIndent() {
-           return this. defaultIndent;
+        return this.defaultIndent;
     }
 
-  public void setusername(String username) {
-                   this.username= username;
-    }
-  public String getusername() {
-                   return username;
-    }
-  public void setPOD_POMaster_ID(Integer POD_POMaster_ID) {
-                   this.POD_POMaster_ID= POD_POMaster_ID;
-    }
-  public Integer getPOD_POMaster_ID() {
-                   return POD_POMaster_ID;
-    }
-  public void setPodPodetailsId(Integer PodPodetailsId) {
-                  this.PodPodetailsId = PodPodetailsId;
-    }
-  public Integer getPodPodetailsId() {
-                    return PodPodetailsId;
-    }
-  public void setPodetailsId(Integer PodetailsId) {
-                  this.PodetailsId = PodetailsId;
-    }
-  public Integer getPodetailsId() {
-                    return PodetailsId;
-    }
-  public void setpomPoMasterId(Integer pomPoMasterId) {
-                  this.pomPoMasterId = pomPoMasterId;
-    }
-  public Integer getpomPoMasterId() {
-                    return pomPoMasterId;
-    }
-  public void setDefaultPO(Integer DefaultPO) {
-                  this.DefaultPO = DefaultPO;
-    }
-  public Integer getDefaultPO() {
-                    return DefaultPO;
-    }
-  public void setPoMasterId(Integer PoMasterId) {
-                  this.PoMasterId = PoMasterId;
-    }
-  public Integer getPoMasterId() {
-                    return PoMasterId;
+    public void setusername(String username) {
+        this.username = username;
     }
 
-  public void setPotpoId(Integer PotpoId) {
-                  this.PotpoId = PotpoId;
-    }
-  public Integer getPotpoId() {
-                    return PotpoId;
+    public String getusername() {
+        return username;
     }
 
-  public void setpotPotId(Integer potPotId) {
-                  this.potPotId = potPotId;
-    }
-  public Integer getpotPotId() {
-                    return potPotId;
-    }
-  public void setDefaultInsitute(short DefaultInsitute) {
-           this.DefaultInsitute = DefaultInsitute;
-    }
-  public short getDefaultInsitute() {
-           return this. DefaultInsitute;
-    }
-  public void setDefaultInsitute1(Short DefaultInsitute1) {
-           this.DefaultInsitute1 = DefaultInsitute1;
-    }
-  public Short getDefaultInsitute1() {
-           return this. DefaultInsitute1;
-    }
-  public void setDefaultSubInsitute(Integer DefaultSubInsitute) {
-           this.DefaultSubInsitute = DefaultSubInsitute;
-    }
-  public Integer getDefaultSubInsitute() {
-           return this. DefaultSubInsitute;
-    }
-  public void setDefaultDepartment(Integer DefaultDepartment) {
-           this.DefaultDepartment = DefaultDepartment;
-    }
-  public Integer getDefaultDepartment() {
-           return this. DefaultDepartment;
-    }
-  public void setdefaultCurrency(Integer defaultCurrency) {
-           this.defaultCurrency = defaultCurrency;
-    }
-  public Integer getdefaultCurrency() {
-           return this. defaultCurrency;
-    }
-  public void setPODetailList(List<ErpmPoDetails> PODetailList) {
-                      this.PODetailList= PODetailList;
-                                }
-  public List<ErpmPoDetails> getPODetailList() {
-                         return this.PODetailList;
-                                }
-  public void seterpotermlist(List<ErpmPoTerms> erpotermlist) {
-                      this.erpotermlist= erpotermlist;
-                                }
-  public List<ErpmPoTerms> geterpotermlist() {
-                         return this.erpotermlist;
-                                }
-
-  public void setepotermslist(List< ErpmPoTerms> epotermslist) {
-                      this.epotermslist= epotermslist;
-                                }
-  public List<ErpmPoTerms> getepotermslist() {
-                         return this.epotermslist;
-                                }
-
-  public void setIndentIDList(List<ErpmIndentMaster> IndentIDList) {
-                      this.IndentIDList= IndentIDList;
-                                }
-  public List< ErpmIndentMaster> getIndentIDList() {
-                         return this.IndentIDList;
-                                }
-  public void setGtermslist(List<ErpmGeneralTerms> Gtermslist) {
-                      this.Gtermslist= Gtermslist;
-                                }
-  public List<ErpmGeneralTerms> getGtermslist() {
-                         return this.Gtermslist;
-                                }
-  public void setGTypestermslist(List<ErpmGeneralTerms> GTypestermslist) {
-                      this.GTypestermslist= GTypestermslist;
-                                }
-  public List<ErpmGeneralTerms> getGTypestermslist() {
-                         return this.GTypestermslist;
-                                }
-  public void setdefaultPOM(Integer defaultPOM) {
-           this.defaultPOM = defaultPOM;
-    }
-  public Integer getdefaultPOM() {
-           return this. defaultPOM;
-    }
-   public void setdefaultPOD(Short defaultPOD) {
-           this.defaultPOD = defaultPOD;
-    }
-  public Short getdefaultPOD() {
-           return this. defaultPOD;
-    }
-  public void setitemlist(List<ErpmItemMaster> itemlist) {
-                      this.itemlist= itemlist;
-                                }
-  public List<ErpmItemMaster> getitemlist() {
-                         return this.itemlist;
-                                }
-  public void setsimList(List<Subinstitutionmaster> simList) {
-                       this.simList = simList;
-    }
-  public List<Subinstitutionmaster> getsimList() {
-                   return this.simList;
-    }
-  public void setpaymodelist(List<ErpmGenMaster> paymodelist) {
-                  this.paymodelist = paymodelist;
-    }
-  public List<ErpmGenMaster> getpaymodelist() {
-           return this.paymodelist;
-                  }
-  public void setcurrencyList(List<ErpmGenMaster> currencyList) {
-                  this.currencyList = currencyList;
-    }
-  public List<ErpmGenMaster> getcurrencyList() {
-           return this.currencyList;
-                  }
-  public void setpotermslist(List<ErpmGenMaster> potermslist) {
-                  this.potermslist = potermslist;
-    }
-  public List<ErpmGenMaster> getpotermslist() {
-           return this.potermslist;
-                  }
-  public void seterpmuserlist(List<Erpmusers> erpmuserlist) {
-                 this.erpmuserlist= erpmuserlist;
-    }
-  public List<Erpmusers> geterpmuserlist() {
-             return this.erpmuserlist;
-    }
-  public void setimList(List<Institutionmaster> imList) {
-                this.imList = imList;
-    }
-  public List<Institutionmaster> getimList() {
-                    return this.imList;
-    }
-  public void setdmList(List<Departmentmaster> dmList) {
-                 this.dmList = dmList;
-    }
-  public List<Departmentmaster> getdmList() {
-             return this.dmList;
-    }
-  public void setpomaster(ErpmPoMaster pomaster) {
-                 this.pomaster = pomaster;
-    }
-  public ErpmPoMaster getpomaster() {
-                          return this.pomaster;
-    }
-  public void setGterms(ErpmGeneralTerms Gterms) {
-                 this.Gterms = Gterms;
-    }
-  public ErpmGeneralTerms getGterms() {
-                          return this.Gterms;
+    public void setPOD_POMaster_ID(Integer POD_POMaster_ID) {
+        this.POD_POMaster_ID = POD_POMaster_ID;
     }
 
-  public void setegm(ErpmGenMaster egm) {
-                 this.egm = egm;
-    }
-  public ErpmGenMaster getegm() {
-                          return this.egm;
-    }
-  public void setepoterms(ErpmPoTerms epoterms) {
-                 this.epoterms = epoterms;
-    }
-  public ErpmPoTerms getepoterms() {
-                          return this.epoterms;
-    }
-  public void setpodetail(ErpmPoDetails podetail) {
-                 this.podetail = podetail;
-    }
-  public ErpmPoDetails getpodetail() {
-                          return this.podetail;
+    public Integer getPOD_POMaster_ID() {
+        return POD_POMaster_ID;
     }
 
-  public void setsuppList(List<Suppliermaster> suppList) {
-                  this.suppList = suppList;
+    public void setpodPodetailsId(Integer podPodetailsId) {
+        this.podPodetailsId = podPodetailsId;
     }
-  public List<Suppliermaster> getsuppList() {
-           return this.suppList;
-                  }
 
-  public void setsaList(List<SupplierAddress> saList) {
-                  this.saList = saList;
+    public Integer getpodPodetailsId() {
+        return podPodetailsId;
     }
-  public List<SupplierAddress> getsaList() {
-           return this.saList;
-                  }
-  
-  public void setPOMList(List<ErpmPoMaster> POMList) {
-                  this.POMList = POMList;
-    }
-  public List<ErpmPoMaster> getPOMList() {
-           return this.POMList;
-                  }
-  public void setMessage(String message) {
-                     this.message = message;
-    }
-  public String getMessage() {
-                  return this.message;
-    }
-  @Override
- public String execute() throws Exception {
-    try {
-       imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-       //simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.parseShort("1"));
-        simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-        dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-        suppList=suppDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
-        saList=supplieraddressDao.findAll();
-        currencyList=GMDao.findByErpmGmType(Short.parseShort("6"));
-        paymodelist=GMDao.findByErpmGmType(Short.parseShort("10"));
-        erpmuserlist=erpmusersDao.findAll();
-        itemlist=itemlistDAO.findByImId(DefaultInsitute);
-        //these four line gives Default Insitute,Subinsitute,Department(For which Users have current Profile) and Currency(Rupees)
-        DefaultInsitute1=Short.valueOf(getSession().getAttribute("imId").toString());
-        DefaultSubInsitute=Integer.valueOf(getSession().getAttribute("simId").toString());
-        DefaultDepartment=Integer.valueOf(getSession().getAttribute("dmId").toString());
-        defaultCurrency=GMDao.findDefaultCurrency("Rupees");
-       // potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-        return SUCCESS;
-        }
-        catch (Exception e) {
-        message = "Exception in -> POMASTERAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-        return ERROR;
-        }
-        }
-  
- public String SavePOMaster()   throws Exception {
-    try {
-           username   =getSession().getAttribute("userfullname").toString();
-       /*---------------for getting Login user name.---------------*/
-        ermu=erpmusersDao.findByUserFullNames(username);
-        pomaster.setErpmusersByPomUserId(ermu);
-       // imname=getSession().getAttribute("imname").toString();
-        //im=imDao.findInstByIMFullName(imname);
-        //pomaster.setInstitutionmaster(im);
-        if(pomaster.getPomPoMasterId()==null) {
-            // if(pomaster.getInstitutionmaster()==null)
-            // message="Please select Insitute";
-            // else if(pomaster.getPomPoMasterId()==null)
 
-       //Save the data into po master table
-        pomasterDAO.save(pomaster);
-       // pomaster=null;
-       //for getting the default POM on detail id
-       defaultPOM=pomaster.getPomPoMasterId();
-       getSession().setAttribute("POMID", defaultPOM);
-       //for set the all field of PO Master Screen in add details screen
-       pomaster=pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-       //for getting all items for their insitute
-      // DefaultInsitute=pomaster.getInstitutionmaster().getImId();
-       itemlist=itemlistDAO.findByImId(pomaster.getInstitutionmaster().getImId());
-      // pomaster=null;
-        }
-        else
-        {
-            //Else Part when we click on edit button
-            ErpmPoMaster pomaster1=pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-            pomaster1=pomaster;
-            pomasterDAO.update(pomaster1);
-            defaultPOM=pomaster.getPomPoMasterId();
-            //itemlist=itemlistDAO.findAll();
-            pomaster=pomasterDAO.findBypomPoMasterId(defaultPOM);
-
-        }
-       return SUCCESS;
-       }
-       catch (Exception e)
-       {
-           InitializeLOVs();
-       message = "Exception in PO MASTER save method-> pomasterAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-       return ERROR;
-       }
-  }
- public String SavePODetails() throws Exception {
-    try {
-       if (podetail.getPodPodetailsId()== null) {
-        // {
-        // if(podetail.getPodDiscount()==null)
-        // message="Please give Discount";
-        // else if(podetail.getPodPodetailsId()== null)
-         pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-         podetail.setErpmPoMaster(pomaster);
-         podetailDAO.save(podetail);
-         itemlist=itemlistDAO.findByImId(pomaster.getInstitutionmaster().getImId());
-         pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-         PODetailList=podetailDAO.findBypomPoMasterId(podetail.getErpmPoMaster().getPomPoMasterId());
-         podetail=null;
-         }
-         else
-          {
-          ErpmPoDetails podetail1 =podetailDAO.findByPODetailsID(podetail.getPodPodetailsId());
-          podetail1=podetail;
-          ErpmPoMaster pomaster1=pomasterDAO.findByPoMasterId(defaultPOM);
-          podetail1.setErpmPoMaster(pomaster1);
-          podetailDAO.update(podetail1);
-          //It will give the lovs of Item List all below three lines
-          pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-          DefaultInsitute=pomaster.getInstitutionmaster().getImId();
-          itemlist=itemlistDAO.findByImId(DefaultInsitute);
-           PODetailList=podetailDAO.findBypomPoMasterId(podetail.getErpmPoMaster().getPomPoMasterId());
-           podetail=null;
-          }
-          return SUCCESS;
-          }
-          catch (Exception e)
-          {
-        if (e.getCause().toString().contains("Duplicate entry"))
-        message = "The Item Would not be Added Because it is already Exits in your ";
-        else
-        message = "Exception in save method-> MANAGE PODetailsAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-        return ERROR;
-        }
-  }
- public String DeletePoDetails () throws Exception {
-    try {
-
-      podetail=podetailDAO.findByPODetailsID(getPodetailsId());
-      itemlist=itemlistDAO.findByImId(DefaultInsitute);
-      defaultPOM=podetail.getErpmPoMaster().getPomPoMasterId();
-      //for set the default POM on  Add Detail after record would be deleted
-      pomaster=pomasterDAO.findBypomPoMasterId(defaultPOM);
-      podetailDAO.delete(podetail);
-      message = "Record successfully deleted";
-      podetail.setPodPodetailsId(PodPodetailsId);
-      //It will give the lovs of Item List all below three lines
-      pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-      DefaultInsitute=pomaster.getInstitutionmaster().getImId();
-      itemlist=itemlistDAO.findByImId(DefaultInsitute);
-      PODetailList=podetailDAO.findBypomPoMasterId(podetail.getErpmPoMaster().getPomPoMasterId());
-
-     podetail=null;
-     return SUCCESS;
-        }
-      catch (Exception e) {
-      message = "Exception in Delete method -> Delete PO Detail " + e.getMessage() + " Reported Cause is: " + e.getCause();
-      return ERROR;
-      }
+    public void setpomPoMasterId(Integer pomPoMasterId) {
+        this.pomPoMasterId = pomPoMasterId;
     }
- public String EditPODetails() throws Exception {
-    try {
-        //Retrieve the record to be updated into podetail bu PoDetail Id here Id will Retrive.
-      podetail=podetailDAO.findByPODetailsID(getPodetailsId());
-       //for set the Default POM on Add PO Detail Screen
-      defaultPOM=podetail.getErpmPoMaster().getPomPoMasterId();
-      //for getting Insitute on Add Po Detail Screen its set the field of PO master Screen
-      pomaster=pomasterDAO.findBypomPoMasterId(defaultPOM);
-      //for getting the Item List By Insitute
-      itemlist=itemlistDAO.findByImId(pomaster.getInstitutionmaster().getImId());
-      return SUCCESS;
-      }catch (Exception e) {
-      message = "Exception in Edit method -> EditPo Rate TaxesAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-      return ERROR;
-      }
-      }
-      //This function  Browse the given PO Master data
- public String Browse() throws Exception {
+
+    public Integer getpomPoMasterId() {
+        return pomPoMasterId;
+    }
+
+    public void setDefaultPO(Integer DefaultPO) {
+        this.DefaultPO = DefaultPO;
+    }
+
+    public Integer getDefaultPO() {
+        return DefaultPO;
+    }
+
+    public void setPoMasterId(Integer PoMasterId) {
+        this.PoMasterId = PoMasterId;
+    }
+
+    public Integer getPoMasterId() {
+        return PoMasterId;
+    }
+
+    public void setpotPotId(Integer potPotId) {
+        this.potPotId = potPotId;
+    }
+
+    public Integer getpotPotId() {
+        return potPotId;
+    }
+
+    public void setdefaultInsitute(short defaultInsitute) {
+        this.defaultInsitute = defaultInsitute;
+    }
+
+    public short getdefaultInsitute() {
+        return this.defaultInsitute;
+    }
+
+    public void setdefaultSubInsitute(Integer defaultSubInsitute) {
+        this.defaultSubInsitute = defaultSubInsitute;
+    }
+
+    public Integer getdefaultSubInsitute() {
+        return this.defaultSubInsitute;
+    }
+
+    public void setdefaultDepartment(Integer defaultDepartment) {
+        this.defaultDepartment = defaultDepartment;
+    }
+
+    public Integer getdefaultDepartment() {
+        return this.defaultDepartment;
+    }
+
+    public void setdefaultCurrency(Integer defaultCurrency) {
+        this.defaultCurrency = defaultCurrency;
+    }
+
+    public Integer getdefaultCurrency() {
+        return this.defaultCurrency;
+    }
+
+    public void setPODetailList(List<ErpmPoDetails> PODetailList) {
+        this.PODetailList = PODetailList;
+    }
+
+    public List<ErpmPoDetails> getPODetailList() {
+        return this.PODetailList;
+    }
+
+    public void setpoTermList(List<ErpmPoTerms> poTermList) {
+        this.poTermList = poTermList;
+    }
+
+    public List<ErpmPoTerms> getpoTermList() {
+        return this.poTermList;
+    }
+
+    public void setepotermslist(List< ErpmPoTerms> epotermslist) {
+        this.epotermslist = epotermslist;
+    }
+
+    public List<ErpmPoTerms> getepotermslist() {
+        return this.epotermslist;
+    }
+
+    public void setIndentIDList(List<ErpmIndentMaster> IndentIDList) {
+        this.IndentIDList = IndentIDList;
+    }
+
+    public List< ErpmIndentMaster> getIndentIDList() {
+        return this.IndentIDList;
+    }
+
+    public void setGtermslist(List<ErpmGeneralTerms> Gtermslist) {
+        this.Gtermslist = Gtermslist;
+    }
+
+    public List<ErpmGeneralTerms> getGtermslist() {
+        return this.Gtermslist;
+    }
+
+    public void setGTypestermslist(List<ErpmGeneralTerms> GTypestermslist) {
+        this.GTypestermslist = GTypestermslist;
+    }
+
+    public List<ErpmGeneralTerms> getGTypestermslist() {
+        return this.GTypestermslist;
+    }
+
+    public void setdefaultPOM(Integer defaultPOM) {
+        this.defaultPOM = defaultPOM;
+    }
+
+    public Integer getdefaultPOM() {
+        return this.defaultPOM;
+    }
+
+    public void setdefaultPOD(Short defaultPOD) {
+        this.defaultPOD = defaultPOD;
+    }
+
+    public Short getdefaultPOD() {
+        return this.defaultPOD;
+    }
+
+    public void setsimList(List<Subinstitutionmaster> simList) {
+        this.simList = simList;
+    }
+
+    public List<Subinstitutionmaster> getsimList() {
+        return this.simList;
+    }
+
+    public void setpaymodelist(List<ErpmGenMaster> paymodelist) {
+        this.paymodelist = paymodelist;
+    }
+
+    public List<ErpmGenMaster> getpaymodelist() {
+        return this.paymodelist;
+    }
+
+    public void setcurrencyList(List<ErpmGenMaster> currencyList) {
+        this.currencyList = currencyList;
+    }
+
+    public List<ErpmGenMaster> getcurrencyList() {
+        return this.currencyList;
+    }
+
+    public void setpoGenericTermsList(List<ErpmGenMaster> poGenericTermsList) {
+        this.poGenericTermsList = poGenericTermsList;
+    }
+
+    public List<ErpmGenMaster> getpoGenericTermsList() {
+        return this.poGenericTermsList;
+    }
+
+    public void seterpmuserlist(List<Erpmusers> erpmuserlist) {
+        this.erpmuserlist = erpmuserlist;
+    }
+
+    public List<Erpmusers> geterpmuserlist() {
+        return this.erpmuserlist;
+    }
+
+    public void setimList(List<Institutionmaster> imList) {
+        this.imList = imList;
+    }
+
+    public List<Institutionmaster> getimList() {
+        return this.imList;
+    }
+
+    public void setdmList(List<Departmentmaster> dmList) {
+        this.dmList = dmList;
+    }
+
+    public List<Departmentmaster> getdmList() {
+        return this.dmList;
+    }
+
+    public void setpomaster(ErpmPoMaster pomaster) {
+        this.pomaster = pomaster;
+    }
+
+    public ErpmPoMaster getpomaster() {
+        return this.pomaster;
+    }
+
+    public void setGterms(ErpmGeneralTerms Gterms) {
+        this.Gterms = Gterms;
+    }
+
+    public ErpmGeneralTerms getGterms() {
+        return this.Gterms;
+    }
+
+    public void setpoTerm(ErpmPoTerms poTerm) {
+        this.poTerm = poTerm;
+    }
+
+    public ErpmPoTerms getpoTerm() {
+        return this.poTerm;
+    }
+
+    public void setpodetail(ErpmPoDetails podetail) {
+        this.podetail = podetail;
+    }
+
+    public ErpmPoDetails getpodetail() {
+        return this.podetail;
+    }
+
+    public void setsuppList(List<Suppliermaster> suppList) {
+        this.suppList = suppList;
+    }
+
+    public List<Suppliermaster> getsuppList() {
+        return this.suppList;
+    }
+
+    public void setsaList(List<SupplierAddress> saList) {
+        this.saList = saList;
+    }
+
+    public List<SupplierAddress> getsaList() {
+        return this.saList;
+    }
+
+    public void setpoMasterList(List<ErpmPoMaster> poMasterList) {
+        this.poMasterList = poMasterList;
+    }
+
+    public List<ErpmPoMaster> getpoMasterList() {
+        return this.poMasterList;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    @Override
+    public String execute() throws Exception {
         try {
-        POMList=pomasterDAO.findPOForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
 
-            return SUCCESS;
-        } catch (Exception e) {
-            message = "Exception in Browse method -> MangesupplierAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-            return ERROR;
-        }
-    }
-
-  //This function  Browse the given Indent Detail Item data
- public String BrowsePOMasterDetail () throws Exception {
-   try {
-        pomaster=pomasterDAO.findByPoMasterId(getPoMasterId());
-        PODetailList=podetailDAO.findByPOD_POMaster_ID(getPoMasterId());
-        defaultPOM=pomaster.getPomPoMasterId();
-         //It will give the lovs of Item List all below three lines
-      pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-      DefaultInsitute=pomaster.getInstitutionmaster().getImId();
-      itemlist=itemlistDAO.findByImId(DefaultInsitute);
-       return SUCCESS;
-       }
-       catch (Exception e) {
-       message = "Exception in BrowsePODetail -> BrowsePODetailAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-       return ERROR;
-       } }
-  //it will Delete Po Master Screen Data.
- public String DeletePOMaster () throws Exception {
-    try {
-            //TO DELETE THE INDENT DETAIL BY ID
-        pomaster=pomasterDAO.findByPoMasterId(getPoMasterId());
-           //DELETE ABOVE ID IN ERPMINDTDET
-        pomasterDAO.delete(pomaster);
-        POMList=pomasterDAO.findPOForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
-        message = "Record successfully deleted";
-        pomaster= null;
-        return SUCCESS;
-        }
-       catch (Exception e) {
-        if (e.getCause().toString().contains("CONSTRAINT `FK_POT_PO"))
-        message = "The PO Master cannot be  deleted because of this PO is associated with other details";
-        else
-        message = "Exception in Delete method -> ManagePOAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-        return ERROR;
-        }
-        }
- public String EditPOMaster () throws Exception {
-      try {
-           //Retrieve the record to be updated into pomaster object
-       pomaster=pomasterDAO.findByPoMasterId(getPoMasterId());
-       execute();
-       return SUCCESS;
-       }catch (Exception e) {
-       message = "Exception in Edit method -> ManageIndentMasterAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-       return ERROR;
-       }
-       }
- public void InitializeLOVs() {
-        imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-       //simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.parseShort("1"));
-        simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-        dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-        suppList=suppDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
-        currencyList=GMDao.findByErpmGmType(Short.parseShort("6"));
-        paymodelist=GMDao.findByErpmGmType(Short.parseShort("10"));
-        erpmuserlist=erpmusersDao.findAll();
-        itemlist=itemlistDAO.findByImId(DefaultInsitute);
-        //these four line gives Default Insitute,Subinsitute,Department and Currency(Rupees)
-        DefaultInsitute1=Short.valueOf(getSession().getAttribute("imId").toString());
-        //imDao.findDefaultInstByID(Short.valueOf(getSession().getAttribute("imId").toString()));
-        DefaultSubInsitute=Integer.valueOf(getSession().getAttribute("simId").toString());//simDao.findDefaultSubInsitute(Integer.valueOf(getSession().getAttribute
-//("simId").toString()));
-        DefaultDepartment=Integer.valueOf(getSession().getAttribute("dmId").toString());//dmDao.findDefaultDepartment(Integer.valueOf(getSession().getAttribute
-//("dmId").toString()));
-        defaultCurrency=GMDao.findDefaultCurrency("Rupees");//Need to be setup as same as that of Country Currency
-      }
-  //this will Perform Validation of Manage Po Master Data
- public void validate() {
-        try {
-            //validation of POMASTER Screen NO-1
-  if(pomaster.getPomPoMasterId() == null) {
-            if (pomaster.getInstitutionmaster().getImId() == null) {
-                addFieldError("pomaster.institutionmaster.imId", "Please select institution from the list");
-            }
-            if(pomaster.getSubinstitutionmaster().getSimId()==null) {
-            addFieldError("pomaster.subinstitutionmaster.simId","Please select Subinsitute from the list");
-            }
-            if(pomaster.getDepartmentmaster().getDmId()==null){
-                addFieldError("pomaster.departmentmaster.dmId" ,"Please select Department from the list");
-             }
-            if(pomaster.getSuppliermaster().getSmId()==null) {
-                addFieldError("pomaster.suppliermaster.smId","Please select Supplier From The List");
-            }
-            if(pomaster.getPomPoNo() ==0){
-                addFieldError("pomaster.pomPoNo","Please enter valid PO No");
-            }
-            else {
-            if(pomaster.getPomPoNo()<0){
-            addFieldError("pomaster.pomPoNo","Please enter valid PO No");
-            }
-            }
-           /* if(pomaster.getPomPoDate()==null){
-            addFieldError("pomaster.pomPoDate","Please enter Date");
-            }  */
-            if(pomaster.getErpmGenMasterByPomCurrencyId()==null){
-            addFieldError("pomaster.erpmGenMasterByPomCurrencyId","Please select Currency From The List");
-            }
-            if(pomaster.getErpmGenMasterByPomPaymentModeId().getErpmgmEgmId()==null) {
-            addFieldError("pomaster.erpmGenMasterByPomPaymentModeId.erpmgmEgmId","Please Select Payment Mode from The List");
-            }
-            if(pomaster.getErpmusersByPomApprovedById().getErpmuId()==null) {
-            addFieldError("pomaster.erpmusersByPomApprovedById.erpmuId","Please select Approved from the list");
-            }
-            if(pomaster.getPomDeliveryDate()==null){
-            addFieldError("pomaster.pomDeliveryDate","Please enter Po Delivery Date");
-            }
-           /* if(Integer.parseInt(pomaster.getErpmGenMasterByPomFormId().toString())<=0){
-            addFieldError("pomaster.erpmGenMasterByPomFormId","Please enter valid PO Form ID");
-            }
-             if(Integer.parseInt(pomaster.getPomTermsDays().toString())<=0){
-            addFieldError("pomaster.pomTermsDays","Please enter valid PO Terms Days");
-            }*/
 
             InitializeLOVs();
-    } //end of if
-           ///validation of ADDPODETAIL ScreenN0-2
-  else  if(podetail.getErpmItemMaster().getErpmimId()==null){
-                addFieldError("podetail.erpmItemMaster.erpmimId","Please Double Click here to select an  Item");
-              }
-   InitializeLOVs();
-             if(podetail.getPodQuantity()==null ) {//|| Integer.valueOf(podetail.getPodQuantity().toString())<0 ){
-                addFieldError("podetail.podQuantity","Please enter Quantity");
+
+            //Set PO Date
+            Date d = new Date();
+            DateUtilities d1 = new DateUtilities();
+            poDate = d1.convertDateToString(d, "dd-MM-yyyy");
+
+            Short i = 20;
+            Integer count = GfrProgramMappingDao.findCountByProgramId(i);
+
+
+            if (count > 0) {
+                setVarShowGFR(false);
+            } else {
+                setVarShowGFR(true);
             }
-            else if(Double.valueOf(podetail.getPodQuantity().toString())<0 ){
-                addFieldError("podetail.podQuantity","Please enter valid Quantity");
-            }
-            if(podetail.getPodRate()==null) {
-                addFieldError("podetail.podRate","Please enter Rate");
-            }
-            else if(Double.valueOf(podetail.getPodRate().toString())<0 ){
-                addFieldError("podetail.podRate","Please enter valid Rate");
-            }
-            if(podetail.getPodDiscount()==null) {
-              addFieldError("podetail.podDiscount","Please enter Discount");
-            }
-            else if(Double.valueOf(podetail.getPodDiscount().toString()) < 0)
-            {
-            addFieldError("podetail.podDiscount","Please enter Valid Discount");
-             InitializeLOVs();
-        }
-             //end of else*/
- else //if(epoterms.getPotPotId()==null) {
-            if (epoterms.getErpmGenMaster().getErpmgmEgmId().toString().isEmpty()){
-             addFieldError("epoterms.erpmGenMaster.erpmgmEgmId","Please  select PO Types");
-            }
-     }
-     //}
-         catch (NullPointerException npe) {
-          // message="hi" +npe.getCause();
-        }
-    }
- public String POTerms() throws Exception {
-        try{
-             //for getting the POMID into Session which come from erpmuseraction class
-           defaultPOM=Integer.parseInt(getSession().getAttribute("POMID").toString());
-           pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-           //Removing the POMID from Session
-          // getSession().removeAttribute("POMID");
-           //potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-          // Gtermslist=GtermsDAO.findPOtermsforInsitute(Short.valueOf(getSession().getAttribute("imId").toString()));
-         potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-         //potermslist=GMDao.findByErpmGmTypebyInsitute(Short.parseShort("12"),Short.valueOf(getSession().getAttribute("imId").toString()));
-        return SUCCESS;
-        }
-        catch (Exception e) {
-            message = "Exception in ManagePOTERMS method ->  " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in -> POMASTERAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
- public String SavePOTerms() throws Exception {
-        try{
-       if (epoterms.getPotPotId()== null)
-         {
-         if(epoterms.getPotTermsDescription()==null)
-         message="Please give Terms Description";
-         else if(epoterms.getPotPotId()== null)
-             if(epoterms.getPotPotId()==null)
 
-             defaultPOM=Integer.parseInt(getSession().getAttribute("POMID").toString());
+    public String SavePOMaster() throws Exception {
+        try {
 
-             pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-             epoterms.setErpmPoMaster(pomaster);
+            DateUtilities dt = new DateUtilities();
+            Date dt1 = new Date();
 
-             egm=GMDao.findByErpmGmId(epoterms.getErpmGenMaster().getErpmgmEgmId());
-             epoterms.setErpmGenMaster(egm);
+            //Set PO Date, PO Delivery Date and PO User in the pomaster Object
+            pomaster.setPomDeliveryDate(dt.convertStringToDate(getdeliveryDate()));
+            pomaster.setPomPoDate(dt.convertStringToDate(getpoDate()));
+            deliveryDate=dt.convertDateToString(dt.convertStringToDate(getdeliveryDate()),"dd-MM-yyyy");
+                        poDate=dt.convertDateToString(dt.convertStringToDate(getpoDate()),"dd-MM-yyyy");
 
-            epotermsDAO.save(epoterms);
-            epoterms=epotermsDAO.findByPotpoId(epoterms.getPotPotId());
-            erpotermlist=erpotermsDAO.findBytest(epoterms.getErpmPoMaster().getPomPoMasterId());
-            potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-            epoterms=null;
+            ermu = erpmusersDao.findByUserId(Integer.valueOf(getSession().getAttribute("userid").toString()));
+            pomaster.setErpmusersByPomUserId(ermu);
+
+            if (pomaster.getPomPoMasterId() == null) {
+
+                //Set the PO Number after fetching the last PO Number alloted to the department in the current year
+                pomaster.setPomPoNo(pomasterDao.findlastPOForDeptInCurrentYear(pomaster.getDepartmentmaster().getDmId(), pomaster.getPomPoDate()));
+
+                //Save the data into po master table
+                pomasterDao.save(pomaster);
+            } else {
+                //Else Part when we click on edit button
+                ErpmPoMaster pomaster1 = pomasterDao.findByPoMasterId(pomaster.getPomPoMasterId());
+                poN = pomaster1.getPomPoNo();
+                pomaster1 = pomaster;
+                pomaster1.setPomPoNo(poN);
+                pomasterDao.update(pomaster1);
+
+                message = "Record Updated Successfully";
             }
-           else
-          {
-          ErpmPoTerms poterms1 =epotermsDAO.findBypotPotIds(epoterms.getPotPotId());
-          poterms1=epoterms;
-          ErpmPoMaster pomaster1=pomasterDAO.findByPoMasterId(defaultPOM);
-          poterms1.setErpmPoMaster(pomaster1);
-          epotermsDAO.update(epoterms);
-          potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-          erpotermlist = erpotermsDAO.findBytest(epoterms.getErpmPoMaster().getPomPoMasterId());
-          epoterms=null;
-          }
-         return SUCCESS;
-         }
-         catch (NullPointerException e) {
-        message = " Please select any Po Terms Types  from the list";
-        return ERROR;
+
+            pomaster = pomasterDao.findBypomPoMasterId(pomaster.getPomPoMasterId());
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + poDate.substring(6) + "/" + pomaster.getPomPoNo();
+
+            indentToDate = dt.convertDateToString(dt1, "dd-MM-yyyy");
+            indentFromDate = dt.convertDateToString(dt1, "01-01-2012");
+            indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate,
+                    Integer.parseInt(getSession().getAttribute("userid").toString()),
+                    pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc());
+
+            poN = pomaster.getPomPoMasterId();
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            return SUCCESS;
+        } catch (Exception e) {
+            InitializeLOVs();
+            message = message + "Exception in PO MASTER save method-> pomasterAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
         }
-        catch (Exception e) {
-        if (e.getCause().toString().contains("Duplicate entry"))
-        message = "The Po terms type ' " + epoterms.getErpmGenMaster().getErpmgmEgmDesc() + "' already exists for Your Purchase Order.";
-       else
-        message = "Exception in Save method -> ManagePo TermsAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-        return ERROR;
+    }
+
+    @SkipValidation
+    public String getIndentItems() throws Exception {
+        try {
+            indentItemList = erpmindetDao.findRemainingIndentItems(getindentSelected(), getpoN());
+
+            indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate,
+                    Integer.parseInt(getSession().getAttribute("userid").toString()),
+                    pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc());
+
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManagePOMaster->getIndentItems " + e.getMessage() + " Reported Cause is : " + e.getCause();
+            return ERROR;
         }
+    }
 
-       }
+    @SkipValidation
+    public String transferToPo() throws Exception {
+        try {
 
+            //Transfer the Indent Detail Record (containing item) to the PO Detail record
 
- public String GetDefaultGeneralTerms() throws Exception {
-        try{
-            //For getting The Terms List by its institute type
-            Gtermslist=GtermsDAO.findPOtermsforInsitute(Short.valueOf(getSession().getAttribute("imId").toString()));
+            DateUtilities dt = new DateUtilities();
 
-                     for (int i = 0; i < Gtermslist.size() ; i++) {
+            //Setup Purchase Master Record
+            ErpmPoMaster poMasterTemp = pomasterDao.findBypomPoMasterId(getpoN());
 
-                        epoterms.setErpmPoMaster(pomaster);
-                        epoterms.setErpmGenMaster(Gtermslist.get(i).getErpmGenMaster());
-                        epoterms.setPotTermsDescription(Gtermslist.get(i).getGtTermsDescription());
-                        epotermsDAO.save(epoterms);
-                        message="Record Successfully Saved";
-                         epoterms=epotermsDAO.findByPotpoId(epoterms.getPotPotId());
-                        //epoterms=epotermsDAO.findByPotpoId(getPotpoId());
-                       // potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-                          potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-                        erpotermlist=erpotermsDAO.findBytest(epoterms.getErpmPoMaster().getPomPoMasterId());
-                        //epoterms=null;
-                     }
-                   return SUCCESS;
-        }
-            catch (Exception e) {
-         if (e.getCause().toString().contains("Duplicate entry"))
-                    message = "The Po terms type ' " + epoterms.getErpmGenMaster().getErpmgmEgmDesc() + "' already exists for Your Purchase Order";
+            indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate,
+                    Integer.parseInt(getSession().getAttribute("userid").toString()),
+                    poMasterTemp.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc());
+
+            //Set top Level entries
+            poDate = dt.convertDateToString(poMasterTemp.getPomPoDate(), "dd-MM-yyyy");
+            poNumber = dmDao.findDepartmentShortName(poMasterTemp.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(poMasterTemp.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + poMasterTemp.getPomPoNo();
+            poN = poMasterTemp.getPomPoMasterId();
+
+            //Setup  Indent Detail Record to be transferred to PO
+            indentDetail = erpmindetDao.findByindtDetailByID(Short.parseShort(getindentDetailId()));
+
+            //Check, if 1) There are approved rates for the item
+            //          2) The approved rates are <= Accepted Unit Rates
+
+            if (ppDecorator.getApprovedIndentItemRate(indentDetail).toString().contains("-1")) {
+                message = "No rates stand approved for the Item today; Item cannot be moved to the Purchase Order";
+            }  else if (ppDecorator.getApprovedIndentItemRate(indentDetail).compareTo(indentDetail.getIndtAcceptedUnitRate()) == 1) {
+                message = "Approved rates for the item exceeds the accepted Indent rate; Item cannot be moved to the Purchase Order";
+            } else {
+                //Check, if the approved rate of the same supplier in whose name the PO is being prepared;
+                //If Yes, Allow item to be added in the PO; otherwise restrict
+
+                if (!ppDecorator.getapprovedIndentItemSupplier(indentDetail).contentEquals(poMasterTemp.getSuppliermaster().getSmName())) {
+                    message = "The approved supplier and PO's Supplier do not match. Item cannot be moved to the Purchase Order";
+                } else {
+                    podetail.setErpmIndentDetail(indentDetail);
+                    podetail.setErpmItemMaster(indentDetail.getErpmItemMaster());
+                    podetail.setErpmPoMaster(pomasterDao.findByPoMasterId(getpoN()));
+                    podetail.setPodQuantity(new BigDecimal(indentDetail.getIndtApprovedQuantity()));
+                    podetail.setPodRate(indentDetail.getIndtAcceptedUnitRate());
+                    podetailDAO.save(podetail);
+
+                    message = message + "Item transferred to PO";
+                }
+
+                //Prepare List of PO Items
+                PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+                pomaster = pomasterDao.findBypomPoMasterId(getpoN());
+            }
+            
+            return SUCCESS;
+
+        } catch (Exception e) {
+            if (e.getCause().toString().contains("Duplicate entry"))
+                message = "The cannot enter same Item twice in the same PO.";
             else
-                message = "Exception in Save method -> ManagePo TermsAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+                message = "Exception in ManagePOMaster -> transferToPo" + e.getMessage() + " Reported Cause is: " + e.getCause() + e.getStackTrace().toString() + poN;
             return ERROR;
-       }
-    }
 
-        //THIS WILL DELETE THE DATA
- public String DeletePoTerms () throws Exception {
-    try {
-        epoterms=epotermsDAO.findBypotPotIds(getPotpoId());
-       defaultPOM=Integer.parseInt(getSession().getAttribute("POMID").toString());
-       pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-       epotermsDAO.delete(epoterms);
-       message = "Record successfully deleted";
-      //lOV'S OF TERMS TYPES AND THE BROWSE LIST AFTER A ROW WOULD BE DELETED
-       potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-       erpotermlist=erpotermsDAO.findBytest(epoterms.getErpmPoMaster().getPomPoMasterId());
-       epoterms=null;
-     return SUCCESS;
         }
-      catch (Exception e) {
-      message = "Exception in Delete method -> Delete PO Terms " + e.getMessage() + " Reported Cause is: " + e.getCause();
-      return ERROR;
-      }
-
     }
- public String EditPoTerms() throws Exception {
-    try {
-         epoterms=epotermsDAO.findBypotPotIds(getPotpoId());
-         defaultPOM=Integer.parseInt(getSession().getAttribute("POMID").toString());
-         pomaster = pomasterDAO.findByPoMasterId(defaultPOM);
-         potermslist=GMDao.findByErpmGmType(Short.parseShort("12"));
-         return SUCCESS;
-      }catch (Exception e) {
-      message = "Exception in Edit method -> EditPo Terms TaxesAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
-      return ERROR;
-      }
-      }
-@SkipValidation
-  public String ClearPOMaster() throws Exception {
+
+    public String DeletePoDetails() throws Exception {
         try {
-            //Clear form field
-            pomaster = null;
+
+            DateUtilities dt = new DateUtilities();
+            Date dt1 = new Date();
+
+            podetail = podetailDAO.findByPODetailsID(getpodPodetailsId());
+            poN = podetail.getErpmPoMaster().getPomPoMasterId();
+
+            //Prepare fresh list of Indent Items
+            if (podetail.getErpmIndentDetail() == null) {
+                indentToDate = dt.convertDateToString(dt1, "dd-MM-yyyy");
+                indentFromDate = dt.convertDateToString(dt1, "01-01-2012");
+                //indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate, Integer.parseInt(getSession().getAttribute("userid").toString()));
+            } else {
+                indentItemList = erpmindetDao.findRemainingIndentItems(podetail.getErpmIndentDetail().getErpmIndentMaster().getIndtIndentId(),
+                        poN);
+            }
+            //Set top Level entries
+            pomaster = pomasterDao.findBypomPoMasterId(poN);
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+            indentToDate = dt.convertDateToString(dt1, "dd-MM-yyyy");
+            indentFromDate = dt.convertDateToString(dt1, "01-01-2012");
+
+            //Delete record
+            podetailDAO.delete(podetail);
+
             podetail = null;
-            execute();
+
+            //Prepare List of Indents to be shown to the user
+            indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate, Integer.parseInt(getSession().getAttribute("userid").toString()), pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc());
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            message = "Item restored to Indent successfully.";
+
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in -> ManagePOMaster"  + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in Delete method -> Delete PO Detail "+getpodPodetailsId() + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
 
-@SkipValidation
- public String ClearPODetail() throws Exception {
+    @SkipValidation
+    public String editPODetails() throws Exception {
+//        try {
+
+            DateUtilities dt = new DateUtilities();
+
+            editPODetail = "ON";
+
+            if (getpoN() == null) {
+                podetail = podetailDAO.findByPODetailsID(getpodPodetailsId());
+                poN = podetail.getErpmPoMaster().getPomPoMasterId();
+            }
+
+            //Prepare Item List
+            itemList = itemMasterDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+
+            pomaster = pomasterDao.findBypomPoMasterId(getpoN());
+            podetail = podetailDAO.findByPODetailsID(getpodPodetailsId());
+
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+            poN = pomaster.getPomPoMasterId();
+            defaultItem = podetail.getErpmItemMaster().getErpmimId();
+            UOP = podetail.getErpmItemMaster().getErpmGenMaster().getErpmgmEgmDesc();
+            selectedItemRate = podetail.getPodRate();
+            taxNarration = ppDecorator.findTaxesNarration(podetail);
+            taxValue = ppDecorator.calulateTaxes(podetail).toString();
+            approxcost = podetail.getPodQuantity().multiply(podetail.getPodRate()).setScale(2, RoundingMode.HALF_UP).toString();
+            totalCost = podetail.getPodQuantity().multiply(podetail.getPodRate()).add(ppDecorator.calulateTaxes(podetail)).setScale(2, RoundingMode.HALF_UP).toString();
+
+            //If Rates of Item have been enetered directly. i.e. they are not through Indent Execute If part Otherwise execute Else Part
+            if (podetail.getErpmItemRate() != null) {
+                selectedItemRateCurrency = podetail.getErpmItemRate().getErpmGenMasterByIrCurrencyId().getErpmgmEgmDesc();
+                selectedItemRateValidFrom = dt.convertDateToString(podetail.getErpmItemRate().getIrdWefDate(), "dd-MM-yyyy");
+                selectedItemRateValidTo = dt.convertDateToString(podetail.getErpmItemRate().getIrdWetDate(), "dd-MM-yyyy");
+                minOrderQuantity = podetail.getErpmItemRate().getIrMinQty();
+                maxOrderQuantity = podetail.getErpmItemRate().getIrMaxQty();
+
+            } else {
+                if (podetail.getErpmIndentDetail() != null) {
+                    selectedItemRateCurrency = podetail.getErpmIndentDetail().getErpmItemRate().getErpmGenMasterByIrCurrencyId().getErpmgmEgmDesc();
+                    selectedItemRateValidFrom = dt.convertDateToString(podetail.getErpmIndentDetail().getErpmItemRate().getIrdWefDate(), "dd-MM-yyyy");
+                    selectedItemRateValidTo = dt.convertDateToString(podetail.getErpmIndentDetail().getErpmItemRate().getIrdWetDate(), "dd-MM-yyyy");
+                    minOrderQuantity = podetail.getErpmIndentDetail().getErpmItemRate().getIrMinQty();
+                    maxOrderQuantity = podetail.getErpmIndentDetail().getErpmItemRate().getIrMaxQty();
+                }
+            }
+            //Set up Values on the Screen
+            //Prepare List of Indents to be shown to the user
+            indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate,
+                    Integer.parseInt(getSession().getAttribute("userid").toString()),
+                    pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc());
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            return SUCCESS;
+//        } catch (Exception e) {
+//            message = message + "Exception in ManagePOMaster -> editPODetails method " + e.getMessage() + " Reported Cause is: " + e.getCause();
+//            return ERROR;
+//        }
+    }
+
+    @SkipValidation
+    public String prepareNonIndentedItemsForPO() throws Exception {
         try {
-            //Clear form field
-            podetail = null;
-            itemlist=itemlistDAO.findByImId(DefaultInsitute);
+
+            String[] splittedPON;
+            splittedPON = getpoNumber().toString().split("/");
+
+            pomaster = pomasterDao.findByPONumber(splittedPON[0], Integer.parseInt(splittedPON[1]), Integer.parseInt(splittedPON[2]));
+            poN = pomaster.getPomPoMasterId();
+
+            //Prepare List of PO Items            
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in -> ManagePODetail"  + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in ManagePOMasterAxn -> addNonIndentedItemsToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
 
-@SkipValidation
-public String BrowseIndentItemsfromPO() throws Exception {
+    @SkipValidation
+    public String prepareIndentedItemsForPO() throws Exception {
         try {
-        pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
+
+            DateUtilities dt = new DateUtilities();
+            Date dt1 = new Date();
+
+            String[] splittedPON;
+            splittedPON = getpoNumber().toString().split("/");
+
+            pomaster = pomasterDao.findByPONumber(splittedPON[0], Integer.parseInt(splittedPON[1]), Integer.parseInt(splittedPON[2]));
+            poN = pomaster.getPomPoMasterId();
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            indentToDate = dt.convertDateToString(dt1, "dd-MM-yyyy");
+            indentFromDate = dt.convertDateToString(dt1, "01-01-2012");
+            indentList = indentListDao.findApprovedIndents(indentFromDate, indentToDate,
+                    Integer.parseInt(getSession().getAttribute("userid").toString()),
+                    pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmDesc());
+
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManagePOMasterAxn -> addNonIndentedItemsToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    @SkipValidation
+    public String prepareItemDeliveryLocationsForPO() throws Exception {
+        try {
+
+            String[] splittedPON;
+            splittedPON = getpoNumber().toString().split("/");
+
+            pomaster = pomasterDao.findByPONumber(splittedPON[0], Integer.parseInt(splittedPON[1]), Integer.parseInt(splittedPON[2]));
+            poN = pomaster.getPomPoMasterId();
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            //Prepare List of departments
+            if (PODetailList.size() > 0) {
+                departmentList = departmentDao.findByImId(PODetailList.get(0).getErpmPoMaster().getInstitutionmaster().getImId());
+            } else {
+                message = "No Items in PO. Please add Items";
+            }
+
+            //Prepare List of Locations
+            poLocationList = poLocationDao.findByPO(getpoN());
+
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManagePOMasterAxn -> addNonIndentedItemsToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public String saveLocationToPO() throws Exception {
+        try {
+
+
+            if (poLocation.getPoLocationsId() == null) {
+
+                ErpmPoMaster pom = pomasterDao.findByPoMasterId(poN);
+                poLocation.setErpmPoMaster(pom);
+
+                poLocationDao.save(poLocation);
+
+                message = "Location successfully added";
+            } else {
+                ErpmPoLocations poLocationTemp = poLocationDao.findBypoLocationsId(poLocation.getPoLocationsId());
+                ErpmPoMaster pom = pomasterDao.findByPoMasterId(poN);
+                poLocation.setErpmPoMaster(pom);
+                poLocationTemp = poLocation;
+
+                poLocationDao.update(poLocationTemp);
+
+                message = "Location successfullu updated";
+            }
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            //Prepare List of POLOcations
+            poLocationList = poLocationDao.findByPO(getpoN());
+
+            if (PODetailList.size() > 0) {
+                departmentList = departmentDao.findByImId(PODetailList.get(0).getErpmPoMaster().getInstitutionmaster().getImId());
+            } else {
+                message = "No Items in PO. Please add Items";
+            }
+
+            poLocation = null;
+
+            return SUCCESS;
+        } catch (Exception e) {
+            if (e.getMessage().toString().contains("unsaved transient instance - save the transient instance before flushing: pojo.hibernate.Departmentmaster"))
+                message = "Please select a Department before adding Location";
+            else
+                message = "Exception in ManagePOMasterAxn -> saveLocationToPO " + e.getMessage() + " Reported Cause is: " + e.getCause() + "Item Id is :" + poLocation.getErpmItemMaster().getErpmimId();
+            return ERROR;
+        }
+    }
+
+    public String deletePoLocation() throws Exception {
+        try {
+
+            DateUtilities dt = new DateUtilities();
+
+            //Retrieve the term to be deleted
+            poLocation = poLocationDao.findBypoLocationsId(poLocationsId);
+
+            //Delete Record
+            poLocationDao.delete(poLocation);
+            poLocation = null;
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            //Prepare List of POLOcations
+            poLocationList = poLocationDao.findByPO(getpoN());
+
+            if (PODetailList.size() > 0) {
+                departmentList = departmentDao.findByImId(PODetailList.get(0).getErpmPoMaster().getInstitutionmaster().getImId());
+            } else {
+                message = "No Items in PO. Please add Items";
+            }
+
+            //Retrieve the record to be updated into pomaster object
+            pomaster = pomasterDao.findByPoMasterId(getpoN());
+
+            //Set PO Number
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+
+            message = "Record successfully deleted";
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in Delete method -> Delete PO Terms " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public String editPoLocation() throws Exception {
+        try {
+
+            DateUtilities dt = new DateUtilities();
+
+            //Retrieve the Location to be edited
+            poLocation = poLocationDao.findBypoLocationsId(poLocationsId);
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            if (PODetailList.size() > 0) {
+                departmentList = departmentDao.findByImId(PODetailList.get(0).getErpmPoMaster().getInstitutionmaster().getImId());
+            } else {
+                message = "No Items in PO. Please add Items";
+            }
+
+            //Retrieve the record to be updated into pomaster object
+            pomaster = pomasterDao.findByPoMasterId(getpoN());
+
+            //Set PO Number
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in Edit method -> EditPoLocationAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public String addNonIndentedItemsToPO() throws Exception {
+        try {
+
+            DateUtilities dt = new DateUtilities();
+            String[] splittedPON;
+            splittedPON = getpoNumber().toString().split("/");
+
+            if (podetail.getPodPodetailsId() != null) {
+
+                podetail1 = podetailDAO.findByPODetailsID(podetail.getPodPodetailsId());
+                podetail.setErpmItemMaster(podetail1.getErpmItemMaster());
+                podetail.setErpmPoMaster(podetail1.getErpmPoMaster());
+                podetail.setPodRate(selectedItemRate);
+                podetail1 = podetail;
+
+                podetailDAO.update(podetail1);
+
+                //Prepare List of PO Items
+                PODetailList = podetailDAO.findBypomPoMasterId(podetail1.getErpmPoMaster().getPomPoMasterId());
+
+                message = "Record successfully updated";
+            } else {
+                pomaster = pomasterDao.findByPONumber(splittedPON[0], Integer.parseInt(splittedPON[1]), Integer.parseInt(splittedPON[2]));
+                podetail.setErpmPoMaster(pomaster);
+                podetail.setPodRate(getselectedItemRate());
+                //podetail.setErpmItemRate(itemRateDao.findByirItemRateId(getirItemRateId()));
+                podetailDAO.save(podetail);
+
+                //Prepare List of PO Items
+                PODetailList = podetailDAO.findBypomPoMasterId(pomaster.getPomPoMasterId());
+
+                message = "Record Saved Successfully";
+            }
+
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManagePOMasterAxn -> addNonIndentedItemsToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    @SkipValidation
+    public String prepareTermsForPO() throws Exception {
+        try {
+            String[] splittedPON;
+            splittedPON = getpoNumber().toString().split("/");
+
+            pomaster = pomasterDao.findByPONumber(splittedPON[0], Integer.parseInt(splittedPON[1]), Integer.parseInt(splittedPON[2]));
+            poN = pomaster.getPomPoMasterId();
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            //Prepare List of Generic Terms
+            poGenericTermsList = generalMasterDao.findByErpmGmType(Short.parseShort("12"));
+
+            //Prepare List of Terms for the PO
+            poTermList = poTermDAO.findByPOMasterId(getpoN());
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManagePOMasterAxn -> addNonIndentedItemsToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    @SkipValidation
+    public String saveTermToPO() throws Exception {
+        try {
+
+            String[] splittedPON;
+            splittedPON = getpoNumber().toString().split("/");
+
+            pomaster = pomasterDao.findByPONumber(splittedPON[0], Integer.parseInt(splittedPON[1]), Integer.parseInt(splittedPON[2]));
+
+            if (poTerm.getPotPotId() == null) {
+                //Set the Generic Term no in the Field of the Term Table
+                if (getpoGenericTerm() != 0 && getpoGenericTerm().toString().length() != 0) {
+                    generalMaster = generalMasterDao.findByErpmGmId(getpoGenericTerm());
+                    poTerm.setErpmGenMaster(generalMaster);
+                }
+
+                //Save Entries in terms Table if the Clause text is present
+                if (getclause().length() > 0) {
+                    poTerm.setErpmPoMaster(pomaster);
+                    poTerm.setPotTermsDescription(getclause());
+                    poTermDAO.save(poTerm);
+
+                }
+                message = "Record Saved Successfully";
+            } else {
+
+                poTerm1 = poTermDAO.findBypotPotIds(poTerm.getPotPotId());
+                poTerm1.setPotTermsDescription(getclause());
+                poTermDAO.update(poTerm1);
+
+                clause = "";
+                poTerm = null;
+
+                message = "Record Updated Successfully";
+            }
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(pomaster.getPomPoMasterId());
+
+            //Prepare List of generic terms
+            poGenericTermsList = generalMasterDao.findByErpmGmType(Short.parseShort("12"));
+
+            //Prepare List of Terms for the PO
+            poTermList = poTermDAO.findByPOMasterId(pomaster.getPomPoMasterId());
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManagePOMasterAxn -> saveTermToPO" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public String editPoTerm() throws Exception {
+        try {
+
+            DateUtilities dt = new DateUtilities();
+
+            //Retrieve the term to be edited
+            poTerm = poTermDAO.findBypotPotIds(getpotPotId());
+            clause = poTerm.getPotTermsDescription();
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            //Prepare List of Generic Terms
+            poGenericTermsList = generalMasterDao.findByErpmGmType(Short.parseShort("12"));
+            selectedTerm = poTerm.getErpmGenMaster().getErpmgmEgmId();
+
+            //Retrieve the record to be updated into pomaster object
+//            pomaster = pomasterDao.findByPoMasterId(getpoN());
+            pomaster = pomasterDao.findByPoMasterId(poTerm.getErpmPoMaster().getPomPoMasterId());
+            
+            //Set PO Number
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+
+            //Set PO Delivery Date
+            deliveryDate = dt.convertDateToString(pomaster.getPomDeliveryDate(), "dd-MM-yyyy");
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+
+            InitializeLOVs();
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in Edit method -> EditPo Terms TaxesAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public String deletePoTerm() throws Exception {
+        try {
+
+            DateUtilities dt = new DateUtilities();
+
+            //Retrieve the term to be edited
+            poTerm = poTermDAO.findBypotPotIds(getpotPotId());
+
+            //Delete Record
+            poTermDAO.delete(poTerm);
+            poTerm = null;
+
+            //Prepare List of PO Items
+            PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+
+            //Prepare List of Terms for the PO
+            poTermList = poTermDAO.findByPOMasterId(getpoN());
+
+            //Prepare List of Generic Terms
+            poGenericTermsList = generalMasterDao.findByErpmGmType(Short.parseShort("12"));
+
+            //Retrieve the record to be updated into pomaster object
+            pomaster = pomasterDao.findByPoMasterId(getpoN());
+
+            //Set PO Number
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+
+            //Set PO Delivery Date
+            deliveryDate = dt.convertDateToString(pomaster.getPomDeliveryDate(), "dd-MM-yyyy");
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+
+            InitializeLOVs();
+
+            message = "Record successfully deleted";
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in Delete method -> Delete PO Terms " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    @SkipValidation
+    public String browsePOs() throws Exception {
+        try {
+
+            //Prepare List of Purchase Orders for the User Departments
+            poMasterList = pomasterDao.findPOForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
+
+            return SUCCESS;
+
+        } catch (Exception e) {
+            message = "Exception in MangesupplierAxn -> browsePO method -> " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public String preparePOEdit() throws Exception {
+        try {
+            DateUtilities dt = new DateUtilities();
+
+            //Retrieve the record to be updated into pomaster object
+            pomaster = pomasterDao.findByPoMasterId(getPoMasterId());
+
+            //Set PO Number
+            poNumber = dmDao.findDepartmentShortName(pomaster.getDepartmentmaster().getDmId()) + "/" + dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy").substring(6) + "/" + pomaster.getPomPoNo();
+
+            //Set PO Delivery Date
+            deliveryDate = dt.convertDateToString(pomaster.getPomDeliveryDate(), "dd-MM-yyyy");
+            poDate = dt.convertDateToString(pomaster.getPomPoDate(), "dd-MM-yyyy");
+
+            InitializeLOVs();
+
+            return SUCCESS;
+        } catch (Exception e) {
+            message = "Exception in ManageIndentMasterAxn -> preparePOEdit " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
+
+    public void InitializeLOVs() {
         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-        simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-        dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-        IndentIDList=erpminDao.findIndentsForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
-        return SUCCESS;
+        simList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
+        dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
+        suppList = suppDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+        saList = supplieraddressDao.findAll();
+        currencyList = generalMasterDao.findByErpmGmType(Short.parseShort("6"));
+        paymodelist = generalMasterDao.findByErpmGmType(Short.parseShort("10"));
+        erpmuserlist = erpmusersDao.findUserCollegues(Integer.valueOf(getSession().getAttribute("userid").toString()));
+        //itemlist=itemlistDAO.findByImId(defaultInsitute);
+
+        //these four line gives Default Insitute,Subinsitute,Department(For which Users have current Profile) and Currency(Rupees)
+        if (pomaster != null) {
+            defaultInsitute = pomaster.getInstitutionmaster().getImId();
+            defaultSubInsitute = pomaster.getSubinstitutionmaster().getSimId();
+            defaultDepartment = pomaster.getDepartmentmaster().getDmId();
+            defaultCurrency = pomaster.getErpmGenMasterByPomCurrencyId().getErpmgmEgmId();
+        } else {
+            defaultInsitute = Short.valueOf(getSession().getAttribute("imId").toString());
+            defaultSubInsitute = Integer.valueOf(getSession().getAttribute("simId").toString());
+            defaultDepartment = Integer.valueOf(getSession().getAttribute("dmId").toString());
+            defaultCurrency = generalMasterDao.findDefaultCurrency("Rupees");
         }
-        catch (Exception e) {
-        message = "Exception in -> ManagePOMaster"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-        return ERROR;
-        }
-
-}
-  @SkipValidation
-  //this method fetch Records From Indent Details Items by IndentMaster
-   public String FetchSelectedIndentItems() throws Exception {
-        try {
-         pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-         simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-         dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-         IndentIDList=erpminDao.findIndentsForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
-         indtitemlist=erpmindetDao.findByindtIndentId(erpmindtmast.getIndtIndentId());
-         return SUCCESS;
-        }
-        catch (Exception e) {
-        message = "Exception in -> ManagePOMaster"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-        return ERROR;
-        }
-
-}
-
-   @SkipValidation
-  //this method fetch Records From Indent Details Items
-   public String FetchAllIndentItems() throws Exception {
-        try {
-         pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-         imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-         simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-         dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-         IndentIDList=erpminDao.findIndentsForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
-         indtitemlist=erpmindetDao.findAll();//(pomaster.getPomPoMasterId());//findDepartmentForUser(defaultIndent, PotpoId)findByindtIndentId(erpmindtmast.getIndtIndentId());
-         return SUCCESS;
-         }
-         catch (Exception e) {
-         message = "Exception in -> ManagePOMaster"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-         return ERROR;
-        }
-
-}
-
-  @SkipValidation
-  //this method save the record into PO details after fetching Indent Items(Add to PO)
-   public String SaveIndentItemsToPO() throws Exception {
-        try {
-            //Get the POMAster ID in pomaster1
-            pomaster1 = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-
-            pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-
-            //Fetch the Indent Details record
-            erpmindtdet=erpmindetDao.findByindtDetailByID(getindtdetailId());
-
-           //Creating a object of type ErpmPoDetails
-           ErpmPoDetails podetail1 = new ErpmPoDetails();
-          // if(1==1) {
-
-       //Set the fields in the PODetail using Indentdetail
-        podetail1.setErpmItemMaster(erpmindtdet.getErpmItemMaster());
-        podetail1.setErpmIndentDetail(erpmindtdet);
-        podetail1.setErpmPoMaster(pomaster1);
-        podetail1.setPodQuantity(BigDecimal.valueOf(erpmindtdet.getIndtQuantity()));
-        podetail1.setPodRate(erpmindtdet.getErpmItemRate().getIrdRate());
-        podetail1.setPodDiscount(BigDecimal.valueOf(0));
-        podetail1.setPodWarrantyTerms("null");
-        podetail1.setPodSchedule(Integer.toString(0));
-       //it will save the record
-        podetailDAO.save(podetail1);
-        defaultPOM=pomaster.getPomPoMasterId();
-        pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-        //Initalize LOvs
-        indtitemlist=erpmindetDao.findAll(pomaster.getPomPoMasterId());
-        IndentIDList=erpminDao.findIndentsForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
-        imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-        simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-        dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-       //Initialize LOvs
-       //InitializeLOVOnPo();
-         return SUCCESS;
-       }
-       catch (Exception e) {
-         if (e.getCause().toString().contains("Duplicate entry"))
-        message = "The Item Would not be Added Because it is already Exits in your ";
-        else
-       message = "Exception in -> ManagePOMaster"  + e.getMessage() + " Reported Cause is: " + e.getCause() ;
-       return ERROR;
-       }
-
-}
-
-   @SkipValidation
-     //This method copies the selected indent item to the PO Detail
-  public String SaveAllIndentItemsToPO() throws Exception {
-        try {
-
-            //Get the POMAster ID in pomaster1
-            pomaster1 = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-
-           //List Containing Indent Detail
-            indtitemlist=erpmindetDao.findAll();
-
-           //Creating a object of type ErpmPoDetails
-            ErpmPoDetails podetail1 = new ErpmPoDetails();
-
-           //use a for loop to Set  Fields in the  Po Details using IndentDetail
-           for (int i = 0; i < indtitemlist.size() ; i++) {
-
-         //Set the fields in the PODetail using Indentdetail
-        podetail1.setErpmPoMaster(pomaster1);
-        podetail1.setErpmItemMaster(indtitemlist.get(i).getErpmItemMaster());
-        podetail1.setPodQuantity(BigDecimal.valueOf(indtitemlist.get(i).getIndtQuantity()));
-        podetail1.setPodRate(indtitemlist.get(i).getErpmItemRate().getIrdRate());
-
-       //it will save the record
-         podetailDAO.save(podetail1);
-         }
-        defaultPOM=pomaster.getPomPoMasterId();
-        pomaster = pomasterDAO.findByPoMasterId(pomaster.getPomPoMasterId());
-       //Initialize LOvs
-       InitializeLOVOnPo();
-
-       return SUCCESS;
-       }
-       catch (Exception e) {
-         if (e.getCause().toString().contains("Duplicate entry"))
-        message = "The Item Would not be Added Because it is already Exits in your ";
-        else
-       message = "Exception in -> ManagePOMaster"  + e.getMessage() + " Reported Cause is: " + e.getCause() ;
-       return ERROR;
-       }
-}
-
-   public void InitializeLOVOnPo() {
-             IndentIDList=erpminDao.findIndentsForUserDepartments(Integer.parseInt(getSession().getAttribute("userid").toString()));
-             imList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-             simList=simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
-             dmList=dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
-             indtitemlist=erpmindetDao.findAll(pomaster.getPomPoMasterId());
-      //Need to be setup as same as that of Country Currency
-      }
-
-
-   @SkipValidation
-public String PrintPO() throws Exception {
-    HashMap hm = new HashMap();
-
-    String fileName = getSession().getServletContext().getRealPath("pico\\PrePurchase\\Reports\\Purchase_Order.jasper");
-
-
-   String whereCondition = "";
-
-    try{
-         Connection conn =     DriverManager.getConnection("jdbc:mysql://localhost:3306/pico_basic", "root","root");
-
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Content-Disposition","attachment; filename=Purchase_Order.pdf");
-        response.setHeader("Expires" , "0");
-        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-/*
-       //Setup Where Condition Clause
-        if(erpmsm.getInstitutionmaster().getImId()== null)
-            whereCondition = " and sm.sm_im_id = " + getSession().getAttribute("imId");
-        else
-            whereCondition = " and sm.sm_im_id = " + erpmsm.getInstitutionmaster().getImId();
-
-        if (erpmsm.getSmName().length() == 0)
-            whereCondition = whereCondition + " and sm.sm_name like '%' ";
-        else
-            whereCondition = whereCondition + " and upper(sm.sm_name) like '%" + erpmsm.getSmName().toString() + "%'";
-
-        if(erpmsm.getErpmGenMasterBySmSupplierType().getErpmgmEgmId() == null)
-            whereCondition = whereCondition + " and sm.SM_Supplier_Type <> 0 ";
-        else
-            whereCondition = whereCondition + " and sm.SM_Supplier_Type = " + erpmsm.getErpmGenMasterBySmSupplierType().getErpmgmEgmId();
-
-        if(erpmsm.getErpmGenMasterBySmOwnershipType().getErpmgmEgmId() == null)
-            whereCondition = whereCondition + " and sm.SM_Ownership_Type <> 0 ";
-        else
-            whereCondition = whereCondition + " and sm.SM_Ownership_Type = " + erpmsm.getErpmGenMasterBySmOwnershipType().getErpmgmEgmId();
-
-        if (erpmsm.getSmDealsWith().length() == 0)
-            whereCondition = whereCondition + " and sm.SM_Deals_With like '%' ";
-        else
-            whereCondition = whereCondition + " and upper(sm.SM_Deals_With) like '%" + erpmsm.getSmDealsWith().toString() + "%'";
-*/
-
-        //Setup Where Condition Clause
-        if(pomaster.getPomPoMasterId()== null)
-        {
-
-        }
-        else
-            whereCondition = "erpm_po_master.`POM_PO_Master_ID` = " + pomaster.getPomPoMasterId();
-
-
-
-        hm.put("condition", whereCondition);
-
-        JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
-        JasperExportManager.exportReportToPdfStream(jp,baos);
-        response.setContentLength(baos.size());
-        ByteArrayInputStream bis=new ByteArrayInputStream(baos.toByteArray());
-        inputStream = bis;
-
-        return SUCCESS;
-    }
-    catch (JRException  e)
-    {
-        message = "Error is : " + e.getMessage() + e.getCause();
-        return ERROR;
-    }
     }
 
+    public void validate() {
 
-   }
+        try {
 
+            //If part Validates First Stage of Purchase Order Generation
+            if (pomaster.getPomPoMasterId() == null && podetail == null) {
+
+                if (pomaster.getInstitutionmaster().getImId() == null) {
+                    addFieldError("pomaster.institutionmaster.imId", "Please select institution from the list");
+                }
+
+                if (pomaster.getSubinstitutionmaster().getSimId() == null) {
+                    addFieldError("pomaster.subinstitutionmaster.simId", "Please select Subinsitute from the list");
+                }
+
+                if (pomaster.getDepartmentmaster().getDmId() == null) {
+                    addFieldError("pomaster.departmentmaster.dmId", "Please select Department from the list");
+                }
+
+                if (pomaster.getSuppliermaster().getSmId() == null) {
+                    addFieldError("pomaster.suppliermaster.smId", "Please select Supplier From The List");
+                }
+
+                if (pomaster.getErpmGenMasterByPomCurrencyId() == null) {
+                    addFieldError("pomaster.erpmGenMasterByPomCurrencyId", "Please select Currency From The List");
+                }
+
+                if (pomaster.getErpmGenMasterByPomPaymentModeId().getErpmgmEgmId() == null) {
+                    addFieldError("pomaster.erpmGenMasterByPomPaymentModeId.erpmgmEgmId", "Please Select Payment Mode from The List");
+                }
+
+                if (pomaster.getErpmusersByPomApprovedById().getErpmuId() == null) {
+                    addFieldError("pomaster.erpmusersByPomApprovedById.erpmuId", "Please select Approved from the list");
+                }
+
+                if (getdeliveryDate().length() == 0) {
+                    addFieldError("deliveryDate", "Please enter Delivery Date");
+                } else {
+                    DateUtilities dt = new DateUtilities();
+                    if (dt.isValidDate(getdeliveryDate()) == false) {
+                        addFieldError("deliveryDate", "Please enter valid Delivery Date [dd-mm-yyyy]");
+                    }
+                }
+
+                if (getpoDate().length() == 0) {
+                    addFieldError("poDate", "Please enter PO Date");
+                } else {
+                    DateUtilities dt = new DateUtilities();
+                    if (dt.isValidDate(getpoDate()) == false) {
+                        addFieldError("poDate", "Please enter valid PO Date [dd-mm-yyyy]");
+                    }
+                }
+
+
+                InitializeLOVs();
+            } else if (podetail.getPodPodetailsId() != null) {
+
+                if (podetail.getErpmItemRate().getIrItemRateId() == null) {
+                    addFieldError("podetail.erpmItemRate.irItemRateId", "Please provide value for Item Rate");
+                    itemList = itemMasterDao.findByImId(Short.valueOf(getSession().getAttribute("imId").toString()));
+                    podetail1 = podetailDAO.findByPODetailsID(podetail.getPodPodetailsId());
+                    defaultItem = podetail1.getErpmItemMaster().getErpmimId();
+                    editPODetail = "ON";
+                    PODetailList = podetailDAO.findBypomPoMasterId(getpoN());
+                }
+
+            }
+        } catch (NullPointerException e) {
+            //message = e.getMessage() + e.getStackTrace();
+        }
+    }
+
+    @SkipValidation
+    public String PrintPO() throws Exception {
+        HashMap hm = new HashMap();
+
+        // Get System properties
+        Properties properties = System.getProperties();
+
+        // Get the path separator symbol, which is unfortunatly different, in different OS platform.
+        String pathSeparator = properties.getProperty("file.separator");
+
+        pathSeparator =pathSeparator + pathSeparator;
+        String repPath = "pico" + pathSeparator + "PrePurchase"  + pathSeparator + "Reports" + pathSeparator + "Purchase_Order.jasper" ;
+
+        String fileName = getSession().getServletContext().getRealPath(repPath);
+//        String fileName = getSession().getServletContext().getRealPath("pico\\PrePurchase\\Reports\\Purchase_Order.jasper");
+
+
+        String whereCondition = "";
+
+        try {
+            Locale locale = ActionContext.getContext().getLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword"));
+
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Content-Disposition", "attachment; filename=Purchase_Order.pdf");
+            response.setHeader("Expires", "0");
+            response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+            response.setHeader("Pragma", "public");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            //Setup Where Condition Clause
+            if (pomaster.getPomPoMasterId() == null) {
+                whereCondition = "erpm_po_master.`POM_PO_Master_ID` = " + getpoN();
+            } else {
+                whereCondition = "erpm_po_master.`POM_PO_Master_ID` = " + pomaster.getPomPoMasterId();
+            }
+
+            hm.put("condition", whereCondition);
+
+            JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+            JasperExportManager.exportReportToPdfStream(jp, baos);
+            response.setContentLength(baos.size());
+            ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+            inputStream = bis;
+
+            return SUCCESS;
+        } catch (JRException e) {
+            message = "Error is : " + e.getMessage() + e.getCause();
+            return ERROR;
+        }
+    }
+
+    @SkipValidation
+    public String showGFRreport() throws Exception {
+        HashMap hm = new HashMap();
+
+        // Get System properties
+        Properties properties = System.getProperties();
+
+        // Get the path separator symbol, which is unfortunatly different, in different OS platform.
+        String pathSeparator = properties.getProperty("file.separator");
+
+        pathSeparator =pathSeparator + pathSeparator;
+        String repPath = "pico" + pathSeparator + "Administration"  + pathSeparator + "Reports" + pathSeparator + "ShowGFRMappedinProgram.jasper" ;
+
+        String fileName = getSession().getServletContext().getRealPath(repPath);
+//        String fileName = getSession().getServletContext().getRealPath("pico\\Administration\\Reports\\ShowGFRMappedinProgram.jasper");
+
+        String whereCondition = "";
+
+        try {
+            Locale locale = ActionContext.getContext().getLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Content-Disposition", "attachment; filename=ShowGfr.pdf");
+            response.setHeader("Expires", "0");
+            response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+            response.setHeader("Pragma", "public");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+
+            whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 20";
+
+            hm.put("condition", whereCondition);
+
+            JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+            JasperExportManager.exportReportToPdfStream(jp, baos);
+            response.setContentLength(baos.size());
+            ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+            inputStream = bis;
+
+            return SUCCESS;
+        } catch (JRException e) {
+            message = "Error is : " + e.getMessage() + e.getCause();
+            return ERROR;
+        }
+    }
+}

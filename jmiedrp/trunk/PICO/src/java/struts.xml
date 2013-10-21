@@ -2,11 +2,12 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-
     <constant name="struts.custom.i18n.resources" value="global" />
     <constant name="struts.ui.templateDir" value="template"></constant>
     <include file="/Administration/Administration.xml"/>
     <include file="/PrePurchase/PrePurchase.xml"/>
+    <include file="/Inventory/Inventory.xml"/>
     <include file="/Purchase/Purchase.xml"/>
+    <include file="/General/General.xml"/>
     <include file="/ajax/ajax.xml"/>
 </struts>

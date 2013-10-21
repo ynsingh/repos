@@ -304,8 +304,8 @@ public String Delete() throws Exception {
 
 public String Clear() throws Exception {
      try {
-          wfm = null;
-
+         
+         wfm = null;         
         //Initialize LOV,s
         InitializeitemsLOVs();
         return SUCCESS;
@@ -317,17 +317,25 @@ public String Clear() throws Exception {
 }
 
 public void InitializeitemsLOVs() {
-     //Prepare List of Institution under User's perview
+            //Prepare List of Institution under User's perview
             imIdList = imDao.findInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()));
-
+        
             //Prepare LOV containing the SubInstitutions forthe selected Institution
-            simImIdList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));
+            //If Logged in user role is Administrator                            
+                    if(getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0)
+                        simImIdList = simDao.findSubInstForAdmin(Short.valueOf(getSession().getAttribute("imId").toString()));                
+                    else
+                        simImIdList = simDao.findSubInstForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Short.valueOf(getSession().getAttribute("imId").toString()));                        
 
             //Prepare LOV containing the Department for the selected Selected Institution
-            dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
+            //If Logged in user role is Administrator                            
+                    if(getSession().getAttribute("isAdministrator").toString().compareTo("Administrator") == 0)
+                        dmList = dmDao.findBydmSimId(Integer.valueOf(Integer.valueOf(getSession().getAttribute("simId").toString())));
+                    else
+                        dmList = dmDao.findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(Integer.valueOf(getSession().getAttribute("simId").toString())));                        
 
-            //Prepare LOV containing the Department for the selected Selected Institution
-            egmList = egmDAO.findByErpmGmType(Short.parseShort("16"));//findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
+           //Prepare LOV containing the Department for the selected Selected Institution
+           egmList = egmDAO.findByErpmGmType(Short.parseShort("16"));//findDepartmentForUser(Integer.valueOf(getSession().getAttribute("userid").toString()), Integer.valueOf(getSession().getAttribute("simId").toString()));
 
 }
 
@@ -338,6 +346,8 @@ public void  validate () {
         //if(wfdtl.getWfdId()==null) {
           if(wfm.getInstitutionmaster().getImId()==null)
             addFieldError("wfm.institutionmaster.imId","Please select Institution");
+            if(wfm.getErpmGenMaster().getErpmgmEgmId()==0)
+            addFieldError("wfm.erpmGenMaster.erpmgmEgmId","Please select Workflow Type");
           InitializeitemsLOVs();
         }
         // if(wfdtl.getCommitteemasterByWfdSourceCommittee().toString()==null)
@@ -353,13 +363,12 @@ public void  validate () {
 
     public String FetchWorkFlowMaster() throws Exception {
 
-            if(wfm.getSubinstitutionmaster().getSimId() == 0 )
+            if(wfm.getSubinstitutionmaster().getSimId() == null )
                 wfmList=wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId());
             else if (wfm.getDepartmentmaster().getDmId()==0)
                 wfmList=wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId(),wfm.getSubinstitutionmaster().getSimId());
             else
-                wfmList = wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId(), wfm.getSubinstitutionmaster().getSimId(), wfm.getDepartmentmaster().getDmId());
-
+                wfmList = wfmDAO.findWorkFlowRecords(wfm.getInstitutionmaster().getImId(), wfm.getSubinstitutionmaster().getSimId(), wfm.getDepartmentmaster().getDmId());      
         //Initialize LOV,s
         InitializeitemsLOVs();
 
@@ -410,6 +419,8 @@ public String SaveWorkFlowDetail() throws Exception {
             if(wfdtl.getWfdId() == null) {
                 if(wfdtl.getCommitteemasterByWfdSourceCommittee().getCommitteeId() == 0)
                     wfdtl.setCommitteemasterByWfdSourceCommittee(null);
+                else if(wfdtl.getCommitteemasterByWfdDestinationCommittee().getCommitteeId() == 0)
+                    wfdtl.setCommitteemasterByWfdDestinationCommittee(null);
                 wfdtl.setWorkflowmaster(wfm);
                 wfdtlDAO.save(wfdtl);
                 wfdtl=new Workflowdetail();;
@@ -425,6 +436,9 @@ public String SaveWorkFlowDetail() throws Exception {
                 wfdtl2 = wfdtl;
                 if(wfdtl.getCommitteemasterByWfdSourceCommittee().getCommitteeId() == 0)
                     wfdtl2.setCommitteemasterByWfdSourceCommittee(null);
+                else if(wfdtl.getCommitteemasterByWfdDestinationCommittee().getCommitteeId() == 0)
+                    wfdtl.setCommitteemasterByWfdDestinationCommittee(null);
+
                 wfdtlDAO.update(wfdtl2);
                 wfdtl=new Workflowdetail();
                 wfm = wfmDAO.findWorkFlowById(wfm.getWfmId());
@@ -612,7 +626,6 @@ public String ClearWorkFlowAction() throws Exception {
 
 public String EditWorkFlowAction() throws Exception {
      try {
-
             wfactn = wfactnDAO.findWorkflowactionsById(getwfaId());   //.findWorkFlowDetailById(getwfdId());
 
             wfdtl = wfdtlDAO.findWorkFlowDetailById(wfactn.getWorkflowdetail().getWfdId()); //findWorkFlowById(wfdtl.getWorkflowmaster().getWfmId());

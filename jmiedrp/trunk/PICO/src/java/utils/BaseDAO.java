@@ -8,7 +8,10 @@ public class BaseDAO implements IBaseHibernateDAO {
     private Transaction trans;
 
     public BaseDAO() {
-        session = HibernateUtil.getSession().openSession();   //getSessionFactory().openSession();
+        //The ndxt line was in use till 06-sep-2012
+        //session = HibernateUtil.getSessionFactory().openSession();
+        //g  getSessionFactory().openSession(); //HibernateUtil.getSession(); //.openSession();   //getSessionFactory().openSession();
+        session = HibernateUtil.getSession();
         trans = session.beginTransaction();
     }
 

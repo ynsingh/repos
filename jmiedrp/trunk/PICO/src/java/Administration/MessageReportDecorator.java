@@ -17,7 +17,7 @@ import pojo.hibernate.ErpmGenMasterDao;
 import java.util.*;
 
 public class MessageReportDecorator extends TableDecorator {
- /*private List<ErpmGenMaster> erpmGmIdList = new ArrayList<ErpmGenMaster>();
+ private List<ErpmGenMaster> erpmGmIdList = new ArrayList<ErpmGenMaster>();
    private ErpmGenMasterDao erpmGmDao = new ErpmGenMasterDao();
    private List<UserMessage> statusList = new ArrayList<UserMessage>();
    private UserMessageDAO umDao = new UserMessageDAO();
@@ -46,7 +46,7 @@ int umid;
 
     public void setx(String x) {
         this.x= x;
-    }*/
+    }
  public String getErpmusersByUmFromErpmuId()
 {
 
@@ -58,7 +58,7 @@ a=a+actorData.getErpmusersByUmFromErpmuId().getErpmuFullName()+"</a>";
 return a;
  }
 
-    public int getUmId()
+public int getUmId()
 {
 
 UserMessage  actorData = (UserMessage )getCurrentRowObject();
@@ -67,7 +67,7 @@ return actorData.getUmId();
 
 }
 
-  /* public String getUmActionName()
+   public String getUmActionName()
     {
  UserMessage  actorData = (UserMessage )getCurrentRowObject();
        //onchange="getSubinstitutionList('SaveDepartmentAction_dm_institutionmaster_imId', 'SaveDepartmentAction_dm_subinstitutionmaster_simId');"
@@ -89,7 +89,7 @@ for (int i = 0; i < erpmGmIdList.size() ; i++) {
 lists = lists + "</select>";
             return lists;
     }
-*/
+
 
 }
 

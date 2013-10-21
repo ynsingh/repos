@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmTenderScheduleDetail" table="erpm_tender_schedule_detail">
+        <id name="tscdTscdId" type="java.lang.Integer">
+            <column name="TSCD_TSCD_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmTenderSchedule" class="pojo.hibernate.ErpmTenderSchedule" fetch="select">
+            <column name="TSCD_TSC_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="TSCD_Schedule_Type_ID" not-null="true" />
+        </many-to-one>
+        <property name="tscdScheduleNo" type="int">
+            <column name="TSCD_Schedule_No" not-null="true" />
+        </property>
+        <property name="tscdScheduleDate" type="date">
+            <column name="TSCD_Schedule_Date" length="10" not-null="true" />
+        </property>
+        <property name="tscdScheduleTime" type="string">
+            <column name="TSCD_Schedule_Time" length="10" not-null="true" />
+        </property>
+        <property name="tscdVenue" type="string">
+            <column name="TSCD_Venue" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

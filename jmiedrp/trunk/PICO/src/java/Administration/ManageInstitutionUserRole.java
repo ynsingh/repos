@@ -26,6 +26,7 @@ import utils.DevelopmentSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 
 //This class provides features to manages the following activities:
@@ -42,7 +43,7 @@ import java.util.List;
  * @author erp05
  */
 public class ManageInstitutionUserRole extends DevelopmentSupport {
-      private List<Institutionmaster> imList = new ArrayList<Institutionmaster>();
+    private List<Institutionmaster> imList = new ArrayList<Institutionmaster>();
     private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
     private Institutionuserroles iur, iur2;
     private InstitutionuserroleDAO iurDao = new InstitutionuserroleDAO();
@@ -194,8 +195,8 @@ public class ManageInstitutionUserRole extends DevelopmentSupport {
 
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in -> ManageInstitutionRoleAxn"  + e.getMessage() + " Reported Cause is: " + e.getCause();
-            return ERROR;
+            message = "Exception in -> ManageInstitutionRoleAxn "  + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR; 
         }
     }
 
@@ -395,15 +396,22 @@ public class ManageInstitutionUserRole extends DevelopmentSupport {
         }
     }
 
+    @SkipValidation
     //This method shows Institutional Role Privileges for a Role
     public String BrowseIURP() throws Exception {
         try {
+            if(iur != null) {
+                irpList = irpDao.findByiurId(iur.getIurId());
+            }
+            else {
+                  irpList = irpDao.findByiurId(getIurId());
+                  iur = iurDao.findByIURId(getIurId());
+            }
 
-            irpList = irpDao.findByiurId(iur.getIurId());
-
-           message2 = "You are now viewing privileges for the role '" + iurDao.findByIURId(iur.getIurId()).getIurName() +
-                        "' in '" + iurDao.findByIURId(iur.getIurId()).getInstitutionmaster().getImName() + "'" ;
-           return SUCCESS;
+            message2 = "You are now viewing privileges for the role '" +
+                        iur.getIurName() +
+                        "' in '" + iur.getInstitutionmaster().getImName() + "'" ;
+            return SUCCESS;
 
         } catch (Exception e) {
             message = "Exception in BrowseIURP method -> ManageInstitutionRoleAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
@@ -437,7 +445,7 @@ public class ManageInstitutionUserRole extends DevelopmentSupport {
         }
     }
 
-    //This method setup editing of a particular privilege given to a role in an institution
+    //This method setups editing of a particular privilege given to a role in an institution
     //For Example: Purchase Manager may have privilege - add, delete, and view on a given progrom.
     //The method would enable the Administrator to revoke permission to delete or add permission to update
     public String EditIURP() throws Exception {

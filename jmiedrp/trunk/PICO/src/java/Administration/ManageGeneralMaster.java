@@ -21,14 +21,11 @@ public class ManageGeneralMaster extends DevelopmentSupport {
 
     private ErpmGenCtrlDao erpmgctrlDao = new ErpmGenCtrlDao();
     private ErpmGenMasterDao erpmgmDao     = new ErpmGenMasterDao();
-
     private List<ErpmGenCtrl> erpmgctrlList = new ArrayList<ErpmGenCtrl>();
-
     private ErpmGenMaster erpmgm;
-  
     private List<ErpmGenMaster> erpmgmList = new ArrayList<ErpmGenMaster>();
-
     private String message;
+
     int ErpmgmEgmId;
     
 
@@ -87,6 +84,8 @@ public class ManageGeneralMaster extends DevelopmentSupport {
  public String Save() throws Exception {
         try {
             //If part saves record for the first time; else parts is for record update
+            if (erpmgm.getErpgmEgmChecks() == null)
+                    erpmgm.setErpgmEgmChecks(" ");
             if(erpmgm.getErpmgmEgmId() == null) {
                  if (erpmgm.getErpmGenCtrl().getErpmgcGenType() == null) {
                         message = "Please select Control Parameter";
@@ -99,7 +98,6 @@ public class ManageGeneralMaster extends DevelopmentSupport {
                         message = "General Master Entry created successfully.";
                  }
 
-                
             } else {
                 ErpmGenMaster erpmgm2 = erpmgmDao.findByErpmGmId(erpmgm.getErpmgmEgmId());
                 erpmgm2 = erpmgm;

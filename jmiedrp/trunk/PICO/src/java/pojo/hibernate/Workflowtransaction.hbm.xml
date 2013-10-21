@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 Mar, 2012 3:25:17 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="pojo.hibernate.Workflowtransaction" table="workflowtransaction">
         <id name="wftId" type="java.lang.Integer">
             <column name="WFT_Id" />
             <generator class="identity" />
         </id>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="WFT_Action_Taken" />
+        </many-to-one>
         <many-to-one name="committeemasterByWftDestinationId" class="pojo.hibernate.Committeemaster" fetch="select">
             <column name="WFT_Destination_Id" />
         </many-to-one>
@@ -28,9 +31,6 @@
         </property>
         <property name="wftDestinationEmail" type="string">
             <column name="WFT_Destination_Email" length="45" />
-        </property>
-        <property name="wftActionTaken" type="string">
-            <column name="WFT_Action_Taken" length="45" />
         </property>
         <property name="wftActionRemarks" type="string">
             <column name="WFT_Action_Remarks" length="200" />

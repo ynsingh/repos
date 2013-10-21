@@ -1,77 +1,122 @@
 
 package pojo.hibernate;
 
-
-
-
-import utils.BaseDAO;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
 
-public class BudgetheadmasterDAO  extends BaseDAO {
+public class BudgetheadmasterDAO  {
 
     public void save(Budgetheadmaster  bhm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(bhm);
-            commitTransaction();
-            }
+            tx = session.beginTransaction();
+            session.save(bhm);
+            tx.commit();
+        }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(bhm != null)
+                tx.rollback();
             throw re;
-           
+        }
+        finally {
+            session.close();
         }
     }
 
     public void update(Budgetheadmaster bhm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(bhm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.update(bhm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(bhm != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
     public void delete(Budgetheadmaster  bhm) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().delete(bhm);
-            commitTransaction();
+            tx = session.beginTransaction();
+            session.delete(bhm);
+            tx.commit();
         }
         catch (RuntimeException re) {
-            re.printStackTrace();
+            if(bhm != null)
+                tx.rollback();
             throw re;
+        }
+        finally {
+            session.close();
         }
     }
 
-    public List<Budgetheadmaster > findAll() {
-        beginTransaction();
-        List<Budgetheadmaster> list = getSession().createQuery("select u from Budgetheadmaster  u").list();
-        commitTransaction();
-        return list;
+    public List<Budgetheadmaster > findAll() {        
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            List<Budgetheadmaster> list = session.createQuery("select u from Budgetheadmaster  u").list();
+            for (index=0; index < list.size(); ++index)
+                Hibernate.initialize(list.get(index).getInstitutionmaster());
+            return list;
+        }
+        finally {
+            session.close();
+            }
+
     }
 
     public Budgetheadmaster  findBybhmId(short bhmId)
     {
-        beginTransaction();
-        Budgetheadmaster  bhm  = (Budgetheadmaster ) getSession().load(Budgetheadmaster .class , bhmId);
-        commitTransaction();
-        return bhm;
+        Session session = HibernateUtil.getSession();
+        try {
+            Budgetheadmaster  bhm  = (Budgetheadmaster ) session.load(Budgetheadmaster .class , bhmId);
+            Hibernate.initialize(bhm);
+            return bhm;
+        }
+        finally {
+            session.close();
+            }
     }
+
  public List<Budgetheadmaster> findByImId(Short imId) {
-        beginTransaction();
-        List<Budgetheadmaster> bhmList  =  getSession().createQuery("Select u from Budgetheadmaster u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
-        commitTransaction();
-        return bhmList;
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
+            List<Budgetheadmaster> bhmList  =  session.createQuery("Select u from Budgetheadmaster u where u.institutionmaster.imId = :imId").setParameter("imId", imId).list();
+            for (index=0; index < bhmList.size(); ++index)
+                Hibernate.initialize(bhmList.get(index).getInstitutionmaster());
+            return bhmList;
+        }
+        finally {
+            session.close();
+            }
    }
 
  public List<Budgetheadmaster> findforInsitutetBudgetHeadId(Integer erpmuId) {
-        beginTransaction();
-        List<Budgetheadmaster> bhmList  =  getSession().createQuery("Select u from Budgetheadmaster  u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();
-        commitTransaction();
+        Session session = HibernateUtil.getSession();
+        try {
+            //int index = 0;
+        List<Budgetheadmaster> bhmList  =  session.createQuery("Select u from Budgetheadmaster  u where u.institutionmaster.imId  in (select r.institutionmaster.imId from Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId)").setParameter("erpmuId",erpmuId).list();
+            /*for (index=0; index < list.size(); ++index)
+                Hibernate.initialize(list.get(index).getInstitutionmaster());*/
         return bhmList;
+        }
+        finally {
+            session.close();
+            }
    }
 
 

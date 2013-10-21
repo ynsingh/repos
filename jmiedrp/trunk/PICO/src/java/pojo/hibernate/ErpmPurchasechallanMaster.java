@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.math.BigDecimal;
@@ -26,6 +26,7 @@ public class ErpmPurchasechallanMaster  implements java.io.Serializable {
      private String pcmRemarks;
      private int pcmBillMasterId;
      private String pcmCheckedBy;
+     private Set erpmPurchaseinvoiceMasters = new HashSet(0);
      private Set erpmPurchasechallanDetails = new HashSet(0);
 
     public ErpmPurchasechallanMaster() {
@@ -39,7 +40,7 @@ public class ErpmPurchasechallanMaster  implements java.io.Serializable {
         this.erpmPoMaster = erpmPoMaster;
         this.pcmBillMasterId = pcmBillMasterId;
     }
-    public ErpmPurchasechallanMaster(Subinstitutionmaster subinstitutionmaster, Erpmusers erpmusers, Institutionmaster institutionmaster, Departmentmaster departmentmaster, ErpmPoMaster erpmPoMaster, Date pcmRecvDate, String pcmChallanNo, Date pcmChallanDate, BigDecimal pcmImportExchangeRate, String pcmRemarks, int pcmBillMasterId, String pcmCheckedBy, Set erpmPurchasechallanDetails) {
+    public ErpmPurchasechallanMaster(Subinstitutionmaster subinstitutionmaster, Erpmusers erpmusers, Institutionmaster institutionmaster, Departmentmaster departmentmaster, ErpmPoMaster erpmPoMaster, Date pcmRecvDate, String pcmChallanNo, Date pcmChallanDate, BigDecimal pcmImportExchangeRate, String pcmRemarks, int pcmBillMasterId, String pcmCheckedBy, Set erpmPurchaseinvoiceMasters, Set erpmPurchasechallanDetails) {
        this.subinstitutionmaster = subinstitutionmaster;
        this.erpmusers = erpmusers;
        this.institutionmaster = institutionmaster;
@@ -52,6 +53,7 @@ public class ErpmPurchasechallanMaster  implements java.io.Serializable {
        this.pcmRemarks = pcmRemarks;
        this.pcmBillMasterId = pcmBillMasterId;
        this.pcmCheckedBy = pcmCheckedBy;
+       this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
        this.erpmPurchasechallanDetails = erpmPurchasechallanDetails;
     }
    
@@ -145,6 +147,13 @@ public class ErpmPurchasechallanMaster  implements java.io.Serializable {
     
     public void setPcmCheckedBy(String pcmCheckedBy) {
         this.pcmCheckedBy = pcmCheckedBy;
+    }
+    public Set getErpmPurchaseinvoiceMasters() {
+        return this.erpmPurchaseinvoiceMasters;
+    }
+    
+    public void setErpmPurchaseinvoiceMasters(Set erpmPurchaseinvoiceMasters) {
+        this.erpmPurchaseinvoiceMasters = erpmPurchaseinvoiceMasters;
     }
     public Set getErpmPurchasechallanDetails() {
         return this.erpmPurchasechallanDetails;

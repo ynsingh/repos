@@ -17,13 +17,13 @@ ul#css3menu1>li,ul#css3menu1 li{
 ul#css3menu1 a:active, ul#css3menu1 a:focus{
 	outline-style:none;}
 ul#css3menu1 a,ul#css3menu1 a.pressed{
-	display:block;vertical-align:middle;text-align:left;text-decoration:none;font:bold 14px Trebuchet MS;color:#000000;text-shadow:#FFF 0 0 1px;cursor:pointer;}
+	display:block;vertical-align:middle;text-align:left;text-decoration:none;font:'bold 14px Trebuchet MS';color:#000000;text-shadow:#FFF 0 0 1px;cursor:pointer;}
 ul#css3menu1 ul li{
 	float:none;margin:10px 0 0;}
 ul#css3menu1 ul a{
 	text-align:left;padding:4px;background-color:#ffffff;background-image:none;border-width:0;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;font:14px Tahoma;color:#000000;text-decoration:none;}
 ul#css3menu1 li:hover>a{
-	background-color:#0c97e2;border-color:#C0C0C0;border-style:solid;font:bold 14px Trebuchet MS;color:#000000;text-decoration:none;text-shadow:#FFF 0 0 1px;background-image:url("mainbk.png");background-position:0 100px;}
+	background-color:#0c97e2;border-color:#C0C0C0;border-style:solid;font:'bold 14px Trebuchet MS';color:#000000;text-decoration:none;text-shadow:#FFF 0 0 1px;background-image:url("mainbk.png");background-position:0 100px;}
 ul#css3menu1 img{
 	border:none;vertical-align:middle;margin-right:10px;}
 ul#css3menu1 img.over{

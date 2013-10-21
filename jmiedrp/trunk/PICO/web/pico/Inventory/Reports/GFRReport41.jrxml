@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GFRReport41" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="74fb9a07-8de1-44bb-bb8b-44aef0d3be16">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="condition" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     if(view_item_ledger.`Issue_Quantity`+view_item_ledger.`WriteOff_Quantity`=0,0,view_item_ledger.`Issue_Quantity`+view_item_ledger.`WriteOff_Quantity`) AS view_item_ledger_Issue_Quantity,
+     if(view_item_ledger.`Recd_Quantity`=0,0,view_item_ledger.`Recd_Quantity`) AS view_item_ledger_Recd_Quantity,
+     if(view_item_ledger.`ST_Unit_Rate`=0,0,view_item_ledger.`ST_Unit_Rate`) AS view_item_ledger_ST_Unit_Rate,
+     view_item_ledger.`IM_ID` AS view_item_ledger_IM_ID,
+     view_item_ledger.`SIM_ID` AS view_item_ledger_SIM_ID,
+     view_item_ledger.`DM_ID` AS view_item_ledger_DM_ID,
+     view_item_ledger.`Supplier_Name` AS Supplier_Name,
+     view_item_ledger.`Issue_Id` AS view_item_ledger_Issue_Id,
+     view_item_ledger.`Issue_No` AS view_item_ledger_Issue_No,
+     view_item_ledger.`Dated` AS view_item_ledger_Dated,
+     view_item_ledger.`Invoice_No` AS view_item_ledger_Invoice_No,
+     view_item_ledger.`Invoice_Date` AS view_item_ledger_Invoice_Date,
+     view_item_ledger.`Item_ID` AS view_item_ledger_Item_ID,
+     view_item_ledger.`Item_Brief_Desc` AS view_item_ledger_Item_Brief_Desc,
+     erpm_indent_master.`Indt_Title` AS erpm_indent_master_Indt_Title,
+     erpm_gen_master.`ERPMGM_EGM_DESC` AS Unit_of_Account,
+     erpm_item_master.`ERPMIM_Item_Cat1` AS erpm_item_master_ERPMIM_Item_Cat1
+FROM
+     `erpm_indent_master` erpm_indent_master RIGHT OUTER JOIN `erpm_issue_master` erpm_issue_master ON erpm_indent_master.`Indt_Indent_Id` = erpm_issue_master.`ISM_Against_Indent_ID`
+     RIGHT OUTER JOIN `view_item_ledger` view_item_ledger ON erpm_issue_master.`ISM_ID` = view_item_ledger.`Issue_Id`
+     INNER JOIN `erpm_item_master` erpm_item_master ON view_item_ledger.`Item_ID` = erpm_item_master.`ERPMIM_ID`
+     LEFT OUTER JOIN `erpm_gen_master` erpm_gen_master ON erpm_item_master.`ERPMIM_UOP` = erpm_gen_master.`ERPMGM_EGM_ID`
+WHERE
+     erpm_item_master.`ERPMIM_Item_Cat1` = 2 AND $P!{condition}
+ORDER BY
+     view_item_ledger.`Item_Brief_Desc`, view_item_ledger.`Dated`,view_item_ledger.`Issue_No`]]>
+	</queryString>
+	<field name="view_item_ledger_Issue_Quantity" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Recd_Quantity" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_ST_Unit_Rate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_IM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_SIM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_DM_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Supplier_Name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Issue_Id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Issue_No" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Dated" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Invoice_No" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Invoice_Date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Item_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="view_item_ledger_Item_Brief_Desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="erpm_indent_master_Indt_Title" class="java.lang.String"/>
+	<field name="Unit_of_Account" class="java.lang.String"/>
+	<field name="erpm_item_master_ERPMIM_Item_Cat1" class="java.lang.Long"/>
+	<variable name="Balance" class="java.math.BigDecimal" resetType="Group" resetGroup="Item_Brief_Description" calculation="Sum">
+		<variableExpression><![CDATA[$F{view_item_ledger_Recd_Quantity}-$F{view_item_ledger_Issue_Quantity}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<group name="Item_Brief_Description">
+		<groupExpression><![CDATA[$F{view_item_ledger_Item_Brief_Desc}]]></groupExpression>
+		<groupHeader>
+			<band height="93">
+				<staticText>
+					<reportElement uuid="66081c74-2be4-4e7f-b9fe-cdc4a620e9d0" x="0" y="12" width="86" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Name of Article :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="eec7f791-4f21-44c8-8103-c6a4665369cc" x="92" y="12" width="262" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{view_item_ledger_Item_Brief_Desc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="314003f8-4c08-439f-bbf7-1df3d531816f" x="362" y="12" width="92" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unit of Accounts :]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="0c53ca2c-3716-4fcb-a659-80230d2819f2" x="458" y="12" width="95" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{Unit_of_Account}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="31bb4f7e-e740-4f58-b66f-ea36e35a80a7" x="0" y="34" width="47" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="7c2acc57-7bc5-41af-8904-da0ee1977b27" x="51" y="34" width="99" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Particulars]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5ca0a231-2919-433b-87ab-c78de66cc05e" x="152" y="34" width="90" height="36"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Suppliers Invoice No. and Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b4f12653-a99e-407d-9d10-92ba11cfb677" x="248" y="34" width="45" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Receipt]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8a7cf30a-8894-41a7-8040-f0a58a4ef065" x="299" y="34" width="86" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue Voucher No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d34e24b8-e01e-46ee-895f-2bebd51cf583" x="389" y="34" width="45" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d4ad218d-1553-49a2-b6cf-07a7d280b786" x="440" y="34" width="50" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Balance]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="48d83d1f-b31c-49c9-87c8-df0a55b9a260" x="494" y="34" width="57" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unit Price]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="d70380bd-21e7-48a7-b471-92d171b7e784" x="0" y="32" width="1" height="61"/>
+				</line>
+				<line>
+					<reportElement uuid="70e9f3ff-1ef6-44c3-a41f-2cabf9fb7ee6" x="0" y="34" width="555" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="a37d30ff-4520-4df3-a536-f57227dc20cb" x="0" y="70" width="555" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="7e966e39-1c45-442f-86b1-f64aca087ddb" x="51" y="35" width="1" height="58"/>
+				</line>
+				<line>
+					<reportElement uuid="50d90f12-435e-4999-9654-0c34e3605df5" x="150" y="34" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="4593ea3e-e879-44a2-9df8-c549d5966219" x="244" y="35" width="1" height="56"/>
+				</line>
+				<line>
+					<reportElement uuid="b8273bb2-cadd-448a-b1fa-152b4f861642" x="295" y="34" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="0003f930-c5ee-4ed0-b76a-f199a8ed47bd" x="436" y="34" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="bfd3b5a4-31e5-4ce8-8b39-387d43e9cb18" x="387" y="34" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="53073887-2fe3-4ff8-9c82-9c515744d09a" x="492" y="34" width="1" height="59"/>
+				</line>
+				<line>
+					<reportElement uuid="edaedfe9-9f33-415a-81cf-6f0842435acd" x="554" y="34" width="1" height="59"/>
+				</line>
+				<staticText>
+					<reportElement uuid="55503411-4032-4cca-b91e-2bf2e6cdaac3" x="0" y="70" width="47" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[1]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="32ecc049-0361-4796-8ada-d88297aa41b3" x="51" y="70" width="99" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[2]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="09a496ff-1959-48e1-b51e-1843a0702097" x="152" y="71" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[3]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5dfb64d1-aa38-4cc8-9915-629f63f96be8" x="248" y="71" width="45" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="51700730-df93-4d3f-9f1e-74fe913a4cfc" x="299" y="70" width="86" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[5]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="64642d37-b59c-4d6e-b5a4-8c7842c0b013" x="389" y="71" width="45" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[6]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="23fb17e6-e025-49ec-99e2-bbfc5608db29" x="438" y="71" width="50" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[7]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b7e97f1b-19cb-4d93-9375-b407aff7428c" x="495" y="71" width="57" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[8]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5d49e706-3d4c-4541-b893-c092a06e671c" x="203" y="0" width="125" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FORM GFR 41]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ce4eb5af-d289-486f-8c04-bf1450bc2573" x="203" y="23" width="125" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[[ See Rule 190. (2) (ii) ]]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d3ee8ac-36da-4cd1-8b0f-433484a50e20" x="0" y="46" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STOCK REGISTER OF CONSUMABLES SUCH AS STATIONARY CHEMICALS SPARE PARTS ETC.]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="ded1b99d-ed4b-4fe0-a1f1-cfac1db8b6f5" x="426" y="28" width="125" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="12" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<line>
+				<reportElement uuid="80c2468e-b252-4b93-8e81-6a1853b5efde" x="0" y="-1" width="555" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="402bbc24-4e1d-4fb8-b69c-d078b755458f" x="3" y="0" width="47" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Dated}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c184967a-24a6-4f60-92cf-23b87eafd796" x="152" y="0" width="37" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Invoice_No}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement uuid="b0055f36-1cc0-4522-b808-0417cf3942e7" x="248" y="0" width="45" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Recd_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="45c935e1-3b66-458b-a247-4b250920355c" x="389" y="0" width="45" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Issue_Quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="458d3c41-bfe3-4efd-a147-b12dbba55719" x="494" y="0" width="57" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_ST_Unit_Rate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="9b7ba2d7-d93b-4854-b642-819c0cd40ba4" x="299" y="0" width="86" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{erpm_indent_master_Indt_Title}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="2595f538-a613-434a-9a34-b217a93fff78" x="51" y="-3" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement uuid="441aed2c-aa08-4d7f-9c4c-c57b1168dfa5" x="554" y="0" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="4f06de81-738a-4958-a959-0f0e54f1a22a" x="492" y="-3" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement uuid="524cb71e-4aa1-4a70-9f0e-f2cfee3c01de" x="244" y="-3" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement uuid="79b664c5-dea8-42ee-a188-f38031d2b31a" x="295" y="-3" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement uuid="e5d5dfd5-29fa-4876-9379-f19bf115d128" x="387" y="-3" width="1" height="28"/>
+			</line>
+			<line>
+				<reportElement uuid="b9b6d401-cdd9-409f-8a3a-73725704cd08" x="436" y="-3" width="1" height="29"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="927e7e38-d670-40de-b8ea-5ab889376ec0" x="192" y="0" width="50" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{view_item_ledger_Invoice_Date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5e1b5aae-23de-4a5e-984f-76cc1c6ee843" x="54" y="0" width="96" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Supplier_Name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="094c41bc-9f22-40da-8b82-dc16680075c8" x="0" y="25" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="a302688a-71c9-4255-afb0-39ae863700ea" x="0" y="-2" width="1" height="27"/>
+			</line>
+			<line>
+				<reportElement uuid="7cdaefc3-828b-481e-9bfd-7e55845914ed" x="150" y="-2" width="1" height="27"/>
+			</line>
+			<textField>
+				<reportElement uuid="ef0acd50-7082-4f51-84c2-38083851f20a" x="439" y="0" width="50" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Balance}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a70c26f6-0820-4621-a749-b1f459785637" x="427" y="1" width="80" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f02a6a0a-e835-4f8f-abc1-1c7ccbc1ebf4" x="513" y="1" width="40" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

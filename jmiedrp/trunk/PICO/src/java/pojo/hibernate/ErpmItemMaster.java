@@ -1,5 +1,5 @@
 package pojo.hibernate;
-// Generated 26 Mar, 2012 3:25:11 PM by Hibernate Tools 3.2.1.GA
+// Generated May 30, 2013 2:31:14 PM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.HashSet;
@@ -23,24 +23,37 @@ public class ErpmItemMaster  implements java.io.Serializable {
      private String erpmimModel;
      private String erpmimDetailedDesc;
      private String erpmimRemarks;
+     private String erpmimIssuePolicy;
+     private char erpmimSerialNoApplicable;
+     private Character erpmimDepreciationMethod;
+     private Integer erpmimDepreciationPercentage;
+     private Integer erpmimResidualValue;
+     private Set erpmPurchaseinvoiceDetails = new HashSet(0);
+     private Set erpmStockReceiveds = new HashSet(0);
      private Set erpmPurchasechallanDetails = new HashSet(0);
+     private Set erpmPoLocationses = new HashSet(0);
      private Set erpmPoDetailses = new HashSet(0);
      private Set erpmItemRates = new HashSet(0);
      private Set erpmIndentDetails = new HashSet(0);
+     private Set erpmTempOpeningStocks = new HashSet(0);
+     private Set erpmIssueReturnDetails = new HashSet(0);
+     private Set erpmIssueDetails = new HashSet(0);
 
     public ErpmItemMaster() {
     }
 
 	
-    public ErpmItemMaster(ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat1, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat3, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat2, ErpmGenMaster erpmGenMaster, String erpmimItemBriefDesc, String erpmimDetailedDesc) {
+    public ErpmItemMaster(ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat1, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat3, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat2, ErpmGenMaster erpmGenMaster, String erpmimItemBriefDesc, String erpmimDetailedDesc, String erpmimIssuePolicy, char erpmimSerialNoApplicable) {
         this.erpmItemCategoryMasterByErpmimItemCat1 = erpmItemCategoryMasterByErpmimItemCat1;
         this.erpmItemCategoryMasterByErpmimItemCat3 = erpmItemCategoryMasterByErpmimItemCat3;
         this.erpmItemCategoryMasterByErpmimItemCat2 = erpmItemCategoryMasterByErpmimItemCat2;
         this.erpmGenMaster = erpmGenMaster;
         this.erpmimItemBriefDesc = erpmimItemBriefDesc;
         this.erpmimDetailedDesc = erpmimDetailedDesc;
+        this.erpmimIssuePolicy = erpmimIssuePolicy;
+        this.erpmimSerialNoApplicable = erpmimSerialNoApplicable;
     }
-    public ErpmItemMaster(ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat1, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat3, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat2, ErpmGenMaster erpmGenMaster, ErpmCapitalCategory erpmCapitalCategory, Institutionmaster institutionmaster, String erpmimItemBriefDesc, String erpmimMake, String erpmimModel, String erpmimDetailedDesc, String erpmimRemarks, Set erpmPurchasechallanDetails, Set erpmPoDetailses, Set erpmItemRates, Set erpmIndentDetails) {
+    public ErpmItemMaster(ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat1, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat3, ErpmItemCategoryMaster erpmItemCategoryMasterByErpmimItemCat2, ErpmGenMaster erpmGenMaster, ErpmCapitalCategory erpmCapitalCategory, Institutionmaster institutionmaster, String erpmimItemBriefDesc, String erpmimMake, String erpmimModel, String erpmimDetailedDesc, String erpmimRemarks, String erpmimIssuePolicy, char erpmimSerialNoApplicable, Character erpmimDepreciationMethod, Integer erpmimDepreciationPercentage, Integer erpmimResidualValue, Set erpmPurchaseinvoiceDetails, Set erpmStockReceiveds, Set erpmPurchasechallanDetails, Set erpmPoLocationses, Set erpmPoDetailses, Set erpmItemRates, Set erpmIndentDetails, Set erpmTempOpeningStocks, Set erpmIssueReturnDetails, Set erpmIssueDetails) {
        this.erpmItemCategoryMasterByErpmimItemCat1 = erpmItemCategoryMasterByErpmimItemCat1;
        this.erpmItemCategoryMasterByErpmimItemCat3 = erpmItemCategoryMasterByErpmimItemCat3;
        this.erpmItemCategoryMasterByErpmimItemCat2 = erpmItemCategoryMasterByErpmimItemCat2;
@@ -52,10 +65,21 @@ public class ErpmItemMaster  implements java.io.Serializable {
        this.erpmimModel = erpmimModel;
        this.erpmimDetailedDesc = erpmimDetailedDesc;
        this.erpmimRemarks = erpmimRemarks;
+       this.erpmimIssuePolicy = erpmimIssuePolicy;
+       this.erpmimSerialNoApplicable = erpmimSerialNoApplicable;
+       this.erpmimDepreciationMethod = erpmimDepreciationMethod;
+       this.erpmimDepreciationPercentage = erpmimDepreciationPercentage;
+       this.erpmimResidualValue = erpmimResidualValue;
+       this.erpmPurchaseinvoiceDetails = erpmPurchaseinvoiceDetails;
+       this.erpmStockReceiveds = erpmStockReceiveds;
        this.erpmPurchasechallanDetails = erpmPurchasechallanDetails;
+       this.erpmPoLocationses = erpmPoLocationses;
        this.erpmPoDetailses = erpmPoDetailses;
        this.erpmItemRates = erpmItemRates;
        this.erpmIndentDetails = erpmIndentDetails;
+       this.erpmTempOpeningStocks = erpmTempOpeningStocks;
+       this.erpmIssueReturnDetails = erpmIssueReturnDetails;
+       this.erpmIssueDetails = erpmIssueDetails;
     }
    
     public Integer getErpmimId() {
@@ -142,12 +166,68 @@ public class ErpmItemMaster  implements java.io.Serializable {
     public void setErpmimRemarks(String erpmimRemarks) {
         this.erpmimRemarks = erpmimRemarks;
     }
+    public String getErpmimIssuePolicy() {
+        return this.erpmimIssuePolicy;
+    }
+    
+    public void setErpmimIssuePolicy(String erpmimIssuePolicy) {
+        this.erpmimIssuePolicy = erpmimIssuePolicy;
+    }
+    public char getErpmimSerialNoApplicable() {
+        return this.erpmimSerialNoApplicable;
+    }
+    
+    public void setErpmimSerialNoApplicable(char erpmimSerialNoApplicable) {
+        this.erpmimSerialNoApplicable = erpmimSerialNoApplicable;
+    }
+    public Character getErpmimDepreciationMethod() {
+        return this.erpmimDepreciationMethod;
+    }
+    
+    public void setErpmimDepreciationMethod(Character erpmimDepreciationMethod) {
+        this.erpmimDepreciationMethod = erpmimDepreciationMethod;
+    }
+    public Integer getErpmimDepreciationPercentage() {
+        return this.erpmimDepreciationPercentage;
+    }
+    
+    public void setErpmimDepreciationPercentage(Integer erpmimDepreciationPercentage) {
+        this.erpmimDepreciationPercentage = erpmimDepreciationPercentage;
+    }
+    public Integer getErpmimResidualValue() {
+        return this.erpmimResidualValue;
+    }
+    
+    public void setErpmimResidualValue(Integer erpmimResidualValue) {
+        this.erpmimResidualValue = erpmimResidualValue;
+    }
+    public Set getErpmPurchaseinvoiceDetails() {
+        return this.erpmPurchaseinvoiceDetails;
+    }
+    
+    public void setErpmPurchaseinvoiceDetails(Set erpmPurchaseinvoiceDetails) {
+        this.erpmPurchaseinvoiceDetails = erpmPurchaseinvoiceDetails;
+    }
+    public Set getErpmStockReceiveds() {
+        return this.erpmStockReceiveds;
+    }
+    
+    public void setErpmStockReceiveds(Set erpmStockReceiveds) {
+        this.erpmStockReceiveds = erpmStockReceiveds;
+    }
     public Set getErpmPurchasechallanDetails() {
         return this.erpmPurchasechallanDetails;
     }
     
     public void setErpmPurchasechallanDetails(Set erpmPurchasechallanDetails) {
         this.erpmPurchasechallanDetails = erpmPurchasechallanDetails;
+    }
+    public Set getErpmPoLocationses() {
+        return this.erpmPoLocationses;
+    }
+    
+    public void setErpmPoLocationses(Set erpmPoLocationses) {
+        this.erpmPoLocationses = erpmPoLocationses;
     }
     public Set getErpmPoDetailses() {
         return this.erpmPoDetailses;
@@ -169,6 +249,27 @@ public class ErpmItemMaster  implements java.io.Serializable {
     
     public void setErpmIndentDetails(Set erpmIndentDetails) {
         this.erpmIndentDetails = erpmIndentDetails;
+    }
+    public Set getErpmTempOpeningStocks() {
+        return this.erpmTempOpeningStocks;
+    }
+    
+    public void setErpmTempOpeningStocks(Set erpmTempOpeningStocks) {
+        this.erpmTempOpeningStocks = erpmTempOpeningStocks;
+    }
+    public Set getErpmIssueReturnDetails() {
+        return this.erpmIssueReturnDetails;
+    }
+    
+    public void setErpmIssueReturnDetails(Set erpmIssueReturnDetails) {
+        this.erpmIssueReturnDetails = erpmIssueReturnDetails;
+    }
+    public Set getErpmIssueDetails() {
+        return this.erpmIssueDetails;
+    }
+    
+    public void setErpmIssueDetails(Set erpmIssueDetails) {
+        this.erpmIssueDetails = erpmIssueDetails;
     }
 
 

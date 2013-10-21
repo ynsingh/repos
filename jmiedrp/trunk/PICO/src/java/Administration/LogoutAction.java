@@ -6,6 +6,16 @@
 package Administration;
 
 import utils.DevelopmentSupport;
+import java.util.ArrayList;
+import java.util.List;
+import pojo.hibernate.ErpmNews;
+import pojo.hibernate.ErpmNewsDAO;
+import utils.DateUtilities;
+
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 
 /**
  *
@@ -13,6 +23,8 @@ import utils.DevelopmentSupport;
  */
 public class LogoutAction extends DevelopmentSupport {
     private String message;
+    private List<ErpmNews> showingNewsinPageList = new ArrayList<ErpmNews>();//this list contain news which we have to show main page
+    private ErpmNewsDAO erpmNewsDAO = new ErpmNewsDAO();
 
      public String getMessage() {
         return message;
@@ -21,6 +33,19 @@ public class LogoutAction extends DevelopmentSupport {
     void setMessage(String message) {
         this.message = message ;
     }
+
+
+    public List<ErpmNews> getshowingNewsinPageList() {
+        return showingNewsinPageList;
+    }
+
+    public void setshowingNewsinPageList(List<ErpmNews> showingNewsinPageList) {
+        this.showingNewsinPageList = showingNewsinPageList;
+    }
+
+    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                       Date date = new Date();
+                            DateUtilities dt = new DateUtilities();
 
 @Override
     public String execute() throws Exception {
@@ -31,7 +56,8 @@ public class LogoutAction extends DevelopmentSupport {
             getSession().removeAttribute("simshortname");
             getSession().removeAttribute("dmshortname");
             getSession().invalidate();
-            message="Thanks for using the PICO System";           
+            showingNewsinPageList=erpmNewsDAO.findbyDate(dt.convertStringToDate(dateFormat.format(date)));
+            message="Thanks for using the PICO System";
             return SUCCESS;
             }
         catch (Exception e) {

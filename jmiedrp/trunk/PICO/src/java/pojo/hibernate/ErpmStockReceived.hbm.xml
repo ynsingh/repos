@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmStockReceived" table="erpm_stock_received">
+        <id name="stId" type="java.lang.Integer">
+            <column name="ST_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="erpmItemMaster" class="pojo.hibernate.ErpmItemMaster" fetch="select">
+            <column name="ST_Item_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmGenMaster" class="pojo.hibernate.ErpmGenMaster" fetch="select">
+            <column name="ST_Warranty_Type_ID" />
+        </many-to-one>
+        <many-to-one name="suppliermaster" class="pojo.hibernate.Suppliermaster" fetch="select">
+            <column name="ST_SM_ID" />
+        </many-to-one>
+        <many-to-one name="institutionmaster" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="ST_IM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmaster" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="ST_DM_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmaster" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="ST_SIM_ID" not-null="true" />
+        </many-to-one>
+        <property name="stInStockSince" type="date">
+            <column name="ST_In_Stock_Since" length="10" />
+        </property>
+        <property name="stChallanDetId" type="java.lang.Integer">
+            <column name="ST_Challan_Det_ID" />
+        </property>
+        <property name="stPoNo" type="string">
+            <column name="ST_PO_No" length="20" />
+        </property>
+        <property name="stPoDate" type="date">
+            <column name="ST_PO_Date" length="10" />
+        </property>
+        <property name="stChallanNo" type="string">
+            <column name="ST_Challan_No" length="20" />
+        </property>
+        <property name="stChallanDate" type="date">
+            <column name="ST_Challan_Date" length="10" />
+        </property>
+        <property name="stInvoiceNo" type="string">
+            <column name="ST_Invoice_No" length="20" />
+        </property>
+        <property name="stInvoiceDate" type="date">
+            <column name="ST_Invoice_Date" length="10" />
+        </property>
+        <property name="stQuantity" type="big_decimal">
+            <column name="ST_Quantity" precision="10" />
+        </property>
+        <property name="stUnitRate" type="big_decimal">
+            <column name="ST_Unit_Rate" precision="8" />
+        </property>
+        <property name="stTaxValue" type="big_decimal">
+            <column name="ST_Tax_Value" precision="8" />
+        </property>
+        <property name="stCsrNo" type="string">
+            <column name="ST_CSR_No" length="20" />
+        </property>
+        <property name="stCsrPgNo" type="java.lang.Integer">
+            <column name="ST_CSR_PgNo" />
+        </property>
+        <property name="stDeptSrNo" type="string">
+            <column name="ST_DeptSR_No" length="20" />
+        </property>
+        <property name="stDeptSrPgNo" type="java.lang.Integer">
+            <column name="ST_DeptSR_PgNo" />
+        </property>
+        <property name="stProductNo" type="string">
+            <column name="ST_Product_No" length="30" />
+        </property>
+        <property name="stStockSerialNo" type="string">
+            <column name="ST_Stock_Serial_No" length="30" />
+        </property>
+        <property name="stWarrantyExpiryDate" type="date">
+            <column name="ST_Warranty_Expiry_Date" length="10" />
+        </property>
+        <set name="erpmIssueSerialDetails" inverse="true">
+            <key>
+                <column name="ISSD_Stock_Serial_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueSerialDetail" />
+        </set>
+        <set name="erpmIssueReturnDetails" inverse="true">
+            <key>
+                <column name="IRMD_Stock_ID" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2013 2:31:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="pojo.hibernate.ErpmIssueMaster" table="erpm_issue_master">
+        <id name="ismId" type="java.lang.Integer">
+            <column name="ISM_ID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="departmentmasterByIsmToDepartmentId" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="ISM_To_Department_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="departmentmasterByIsmFromDepartmentId" class="pojo.hibernate.Departmentmaster" fetch="select">
+            <column name="ISM_From_Department_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="institutionmasterByIsmToInstituteId" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="ISM_To_Institute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="employeemasterByIsmFromEmployeeId" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="ISM_From_Employee_ID">
+                <comment>issueing authority, to be used while printing the issue slip for signing.</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="institutionmasterByIsmFromInstituteId" class="pojo.hibernate.Institutionmaster" fetch="select">
+            <column name="ISM_From_Institute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmasterByIsmFromSubinstituteId" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="ISM_From_Subinstitute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="employeemasterByIsmToEmployeeId" class="pojo.hibernate.Employeemaster" fetch="select">
+            <column name="ISM_To_Employee_ID" />
+        </many-to-one>
+        <many-to-one name="suppliermaster" class="pojo.hibernate.Suppliermaster" fetch="select">
+            <column name="ISM_To_Supplier_ID" />
+        </many-to-one>
+        <many-to-one name="subinstitutionmasterByIsmToSubinstituteId" class="pojo.hibernate.Subinstitutionmaster" fetch="select">
+            <column name="ISM_To_Subinstitute_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="erpmIndentMaster" class="pojo.hibernate.ErpmIndentMaster" fetch="select">
+            <column name="ISM_Against_Indent_ID" />
+        </many-to-one>
+        <many-to-one name="committeemaster" class="pojo.hibernate.Committeemaster" fetch="select">
+            <column name="ISM_To_Committee_ID" />
+        </many-to-one>
+        <property name="ismIssueNo" type="string">
+            <column name="ISM_Issue_No" length="20" not-null="true" />
+        </property>
+        <property name="ismIssueDate" type="date">
+            <column name="ISM_Issue_Date" length="10" not-null="true" />
+        </property>
+        <property name="ismIssueDesc" type="string">
+            <column name="ISM_Issue_Desc" length="100" />
+        </property>
+        <property name="ismToEmail" type="string">
+            <column name="ISM_To_Email" length="50" />
+        </property>
+        <property name="ismIssueType" type="char">
+            <column name="ISM_Issue_Type" length="1" not-null="true">
+                <comment>U - Issue for Use S - Issue for stock transfer R - Issue for repair/maintenance W - Issue for write-off</comment>
+            </column>
+        </property>
+        <property name="ismReturnDueDate" type="date">
+            <column name="ISM_Return_Due_Date" length="10" />
+        </property>
+        <property name="ismRemarks" type="string">
+            <column name="ISM_Remarks" length="200" />
+        </property>
+        <set name="erpmIssueDetails" inverse="true">
+            <key>
+                <column name="ISD_ISM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueDetail" />
+        </set>
+        <set name="erpmIssueReturnDetails" inverse="true">
+            <key>
+                <column name="IRMD_ISM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReturnDetail" />
+        </set>
+        <set name="erpmIssueReceives" inverse="true">
+            <key>
+                <column name="ISR_ISM_ID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.hibernate.ErpmIssueReceive" />
+        </set>
+    </class>
+</hibernate-mapping>

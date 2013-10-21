@@ -52,11 +52,11 @@
                             </tr>
                             <tr>
                                 <td> <br><br>
-                                     <s:select label="Institution" required="true" name="GTerms.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="termsImIdList" listKey="imId" listValue="imName" cssClass="textInput"/>
+                                     <s:select label="Institution" required="true" requiredposition="" name="GTerms.institutionmaster.imId" headerKey="" headerValue="-- Please Select --" list="termsImIdList" listKey="imId" listValue="imName" cssClass="textInput"/>
 
-                                        <s:select label="Terms & Conditions Type" required="true" name="GTerms.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="termsTypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
+                                        <s:select label="Terms & Conditions Type" required="true" requiredposition="" name="GTerms.erpmGenMaster.erpmgmEgmId" headerKey="" headerValue="-- Please Select --" list="termsTypeList" listKey="erpmgmEgmId" listValue="erpmgmEgmDesc" cssClass="textInput"/>
 
-                                        <s:textarea required="true" requiredposition="topleft" rows="5" cols="50" label="Terms Description" name="GTerms.gtTermsDescription" title=""  />
+                                        <s:textarea  requiredposition="topleft" rows="5" cols="50" label="Terms Description" name="GTerms.gtTermsDescription" title=""  />
                                
                                 </td>
                             </tr> <tr>

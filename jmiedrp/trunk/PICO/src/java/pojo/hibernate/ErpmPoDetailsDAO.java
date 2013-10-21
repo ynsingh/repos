@@ -5,94 +5,172 @@
 
 package pojo.hibernate;
 
-import utils.BaseDAO;
+import java.math.BigDecimal;
+import java.util.Date;
+import utils.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
 import java.util.List;
-import java.util.*;
+//import utils.BaseDAO;
 
 /**
  *
- * @author Sajid Aziz
+ * @author kazim
  */
 
-public class ErpmPoDetailsDAO extends BaseDAO {
+public class ErpmPoDetailsDAO {
 
-public void save(ErpmPoDetails podetail) {
+    public void save(ErpmPoDetails podetail) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().save(podetail);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
-            throw re;    }
-    }
-public void delete(ErpmPoDetails podetail) {
-        try {
-            beginTransaction();
-            getSession().delete(podetail);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.save(podetail);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (podetail != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
- public void update(ErpmPoDetails podetail) {
+
+    public void delete(ErpmPoDetails podetail) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
         try {
-            beginTransaction();
-            getSession().update(podetail);
-            commitTransaction();
-        }
-        catch (RuntimeException re) {
-            re.printStackTrace();
+            tx = session.beginTransaction();
+            session.delete(podetail);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (podetail != null) {
+                tx.rollback();
+            }
             throw re;
+        } finally {
+            session.close();
         }
     }
 
-public List<ErpmPoDetails> findAll() {
-        beginTransaction();
-        List<ErpmPoDetails> list = getSession().createQuery("from ErpmPoDetails").list();
-        commitTransaction();
-        return list;
+    public void update(ErpmPoDetails podetail) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(podetail);
+            tx.commit();
+        } catch (RuntimeException re) {
+            if (podetail != null) {
+                tx.rollback();
+            }
+            throw re;
+        } finally {
+            session.close();
+        }
     }
 
+   
+    public List<ErpmPoDetails>  findBypomPoMasterId(Integer pomPoMasterId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
 
-  public List<ErpmPoDetails>  findBypomPoMasterId(Integer pomPoMasterId) {
-        beginTransaction();
-        List<ErpmPoDetails> podetailslist  = getSession().createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId).list();
-        commitTransaction();
-       return podetailslist;
-   }
+            session.beginTransaction();
+           List<ErpmPoDetails> podetailslist  = session.createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId).list();
+            for (index = 0; index < podetailslist.size(); ++index) {
+                Hibernate.initialize(podetailslist.get(index).getErpmItemMaster());
+                if (podetailslist.get(index).getErpmIndentDetail()!=null)
+                    Hibernate.initialize(podetailslist.get(index).getErpmIndentDetail().getErpmIndentMaster());    //  Here is the problem
+                Hibernate.initialize(podetailslist.get(index).getErpmPoMaster().getInstitutionmaster());
+            }
+            return podetailslist;
+        } finally {
+            session.close();
+        }
+    }
+//  public List<ErpmPoDetails>  findBypomPoMasterId(Integer pomPoMasterId) {
+//        beginTransaction();
+//        List<ErpmPoDetails> podetailslist  = getSession().createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId).list();
+//        commitTransaction();
+//       return podetailslist;
+//   }
 
+    public List<ErpmPoDetails>  findItemListByPoMasterId(Integer pomPoMasterId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            int index = 0;
 
-
-  public ErpmPoDetails findByPODetailsID(Integer podPodetailsId) {
-        beginTransaction();
-        ErpmPoDetails podetail  = (ErpmPoDetails) getSession().load(ErpmPoDetails.class , podPodetailsId);
-        commitTransaction();
-        return podetail;
+            session.beginTransaction();
+           List<ErpmPoDetails> podetailslist  = session.createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId").setParameter("pomPoMasterId", pomPoMasterId).list();
+            for (index = 0; index < podetailslist.size(); ++index) {
+                Hibernate.initialize(podetailslist.get(index).getErpmItemMaster());
+                Hibernate.initialize(podetailslist.get(index).getErpmIndentDetail());
+                Hibernate.initialize(podetailslist.get(index).getErpmPoMaster().getInstitutionmaster());
+            }
+            return podetailslist;
+        } finally {
+            session.close();
+        }
     }
 
+    public ErpmPoDetails findByPODetailsID(Integer podPodetailsId) {
+        Session session = HibernateUtil.getSession();
+        try {
+            session.beginTransaction();
+            ErpmPoDetails podetail  = (ErpmPoDetails) session.load(ErpmPoDetails.class , podPodetailsId);
+            Hibernate.initialize(podetail.getErpmPoMaster());
+            Hibernate.initialize(podetail.getErpmIndentDetail());
+            if (podetail.getErpmIndentDetail()!=null) {
+                Hibernate.initialize(podetail.getErpmIndentDetail().getErpmIndentMaster());
+                Hibernate.initialize(podetail.getErpmIndentDetail().getErpmItemRate());
+                Hibernate.initialize(podetail.getErpmIndentDetail().getErpmItemRate().getErpmGenMasterByIrCurrencyId());
+            }
+            Hibernate.initialize(podetail.getErpmItemMaster());
+            Hibernate.initialize(podetail.getErpmItemMaster().getErpmGenMaster());
+            Hibernate.initialize(podetail.getErpmItemRate());
+            if (podetail.getErpmItemRate()!=null) {
+                Hibernate.initialize(podetail.getErpmItemRate().getErpmGenMasterByIrCurrencyId());
+            }
+            return podetail;
+        } finally {
+            session.close();
+        }
+    }
 
-  
-   public List<ErpmPoDetails>  findByPOD_POMaster_ID(Integer POD_POMaster_ID) {
-        beginTransaction();
-        List<ErpmPoDetails> Browselist  = getSession().createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :POD_POMaster_ID").setParameter("POD_POMaster_ID", POD_POMaster_ID).list();
-        commitTransaction();
-        return Browselist;
+    public BigDecimal  findQtyOfItemInPO(Integer pomPoMasterId, Integer erpmimId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+             String SQL =  "Select sum(u.podQuantity)+0 from ErpmPoDetails u where "
+                     + "u.erpmPoMaster.pomPoMasterId = :pomPoMasterId and "
+                     + "u.erpmItemMaster.erpmimId = :erpmimId";
+            session.beginTransaction();
+            BigDecimal qty   = new BigDecimal(session.createQuery(SQL)
+                                                         .setParameter("pomPoMasterId", pomPoMasterId)
+                                                         .setParameter("erpmimId", erpmimId).uniqueResult().toString());
+             Hibernate.initialize(qty);
+
+            return qty;
+        } finally {
+            session.close();
+        }
+    }
+
+     public ErpmPoDetails findBy_pomPoMasterId_ItemId(Integer pomPoMasterId, Integer itemId) {
+        Session session = HibernateUtil.getSession();
+        try {
+
+            session.beginTransaction();
+            List<ErpmPoDetails> list  = session.createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :pomPoMasterId and u.erpmItemMaster.erpmimId = :itemId").setParameter("itemId", itemId).setParameter("pomPoMasterId", pomPoMasterId).list();
+             Hibernate.initialize(list);
+
+            return list.get(0);
+        } finally {
+            session.close();
+        }
+    }
+
    }
-
-     public int  findByPOD_POMaster_IDtest(Integer POD_POMaster_ID) {
-        beginTransaction();
-        List<ErpmPoDetails> Browselist  = getSession().createQuery("Select u from ErpmPoDetails u where u.erpmPoMaster.pomPoMasterId = :POD_POMaster_ID").setParameter("POD_POMaster_ID", POD_POMaster_ID).list();
-        commitTransaction();
-        return Browselist.get(0).getErpmPoMaster().getPomPoMasterId();
-   }
-
-
-
-
-
-
-
-}
