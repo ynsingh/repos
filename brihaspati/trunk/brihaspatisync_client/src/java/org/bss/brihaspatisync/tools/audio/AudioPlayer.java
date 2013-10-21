@@ -79,31 +79,40 @@ public class AudioPlayer implements Runnable {
                         public void run(){
                                 while(org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
                                         try {
-						LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
-	                                        if(audio_rechive_data.size()>0) {
-							byte[] audioBytes=(byte[])audio_rechive_data.remove();
-							for(int i=0;i<audioBytes.length;i=i+74) {
-                                                		byte[] tempbyte=java.util.Arrays.copyOfRange(audioBytes,i,(i+74));	
-								byte[] decodebytearray=getDecoder(tempbyte);
-								System.arraycopy(decodebytearray, 0,bigArray, currentOffset,decodebytearray.length);
-								currentOffset += decodebytearray.length;
-								if(currentOffset == 12800) {
-									currentOffset=0;
-									audioplayerVector.addLast(bigArray);	
-								}
-							}	
-                                                }
-                                                mixed_byteThread.yield();
+					LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
+					int size=audio_rechive_data.size();
+	                                while(size>0) {
+						byte[] audioBytes=(byte[])audio_rechive_data.remove();
+						for(int i=0;i<audioBytes.length;i=i+74) {
+                                                	byte[] tempbyte=java.util.Arrays.copyOfRange(audioBytes,i,(i+74));
+							byte[] decodebytearray=getDecoder(tempbyte);
+							if(decodebytearray != null) {
+							System.arraycopy(decodebytearray, 0,bigArray, currentOffset,decodebytearray.length);
+							currentOffset += decodebytearray.length;
+							if(currentOffset == 12800) {
+								currentOffset=0;
+								//audioplayerVector.addLast(bigArray);	
+								if(sourceDataLine != null )
+	                                                                sourceDataLine.write(bigArray,0,bigArray.length);
+        	                                                else
+                	                                        sourceDataLine=org.bss.brihaspatisync.util.AudioUtilObject.getSourceLine();
+							}else
+								System.out.println("decode problem ========>>>>>>>>>>>>>");	
+											
+							}
+						}	
+                                     	}
+                                        mixed_byteThread.yield();
                                         } catch(Exception ex) { System.out.println("Exception in AudioPlayer in run() method "+ex.getMessage());}
                                 }
                         }
                 }).start();
-
+		/*
                 (playerThread=new Thread(){
                         public void run(){
                                 while(org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
                                         try {
-                                                if(audioplayerVector.size() > 0) {
+                                                while(audioplayerVector.size() > 0) {
                                                         byte[] original=audioplayerVector.remove();
                                                         if(sourceDataLine != null )
                                                                 sourceDataLine.write(original,0,original.length);
@@ -114,7 +123,7 @@ public class AudioPlayer implements Runnable {
                                         }catch(Exception e){ System.out.println("Exception in AudioPlayer in run() method "+e.getMessage());}
                                 }
                         }
-                }).start();
+                }).start();*/
 	}
 	
 	public byte[] getDecoder(byte[] audio_data) {
