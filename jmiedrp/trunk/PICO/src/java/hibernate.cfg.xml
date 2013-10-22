@@ -5,8 +5,8 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/pico</property>
-    <property name="hibernate.connection.username">etrg</property>
-    <property name="hibernate.connection.password">brihaspatigroup</property>
+    <property name="hibernate.connection.username">dbname</property>
+    <property name="hibernate.connection.password">dbpwd</property>
     <property name="hibernate.default_catalog">pico</property>
     <property name="hibernate.connection.release_mode">auto</property>
     <mapping resource="pojo/hibernate/Budgetmaster.hbm.xml"/>
