@@ -469,6 +469,14 @@ class CI_Calendar {
 		} 	
  	}
 
+
+	/* converting date format(dd/mm/yy)to data format(y-m-d) */
+
+		$date=explode("/",$_POST['entry_date1']);
+		$date1=$date[2]."-".$date[1]."-".$date[0];
+		$date=explode("/",$_POST['entry_date2']);
+		$date2=$date[2]."-".$date[1]."-".$date[0];
+
 }
 
 // END CI_Calendar class

@@ -12,6 +12,7 @@ class Ledger_model extends Model {
 		$options = array();
 		$options[0] = "(Please Select)";
 		$this->db->from('ledgers')->order_by('code', 'asc');
+
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
@@ -30,6 +31,8 @@ class Ledger_model extends Model {
 		}
 		return $options;
 	}
+
+	
 
 	function get_all_ledgers_bankcash()
 	{
@@ -136,10 +139,56 @@ class Ledger_model extends Model {
 			$html = '';
 			if ($ledger_multiple)
 				$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, "(" . $ledger->name . ")", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
-			else
+			else{
 				$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name, array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+			    }
 			return $html;
-		}
+			}
+		return;
+	}
+
+	function get_entry_name1($entry_id, $entry_type_id)
+	{
+		/* Selecting both to show debit side Ledger and credit side Ledger */
+		$current_entry_type = entry_type_info($entry_type_id);
+		$ledger_type = 'C';
+
+		if ($current_entry_type['bank_cash_ledger_restriction'] == 3)
+			$ledger_type = 'D';
+
+		$this->db->select('ledgers.name as name');
+		$this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type);
+		$ledger_q = $this->db->get();
+		if ( ! $ledger = $ledger_q->row())
+		{
+			return "(Invalid)";
+		} else {
+			$ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+			$html = '';
+			if ($ledger_multiple)
+				$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, "(" . $ledger->name . ")", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+			else{
+				$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name . ' - ' . $ledger_type . "<br>", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+
+				$ledger_type = 'C';
+				$this->db->select('ledgers.name as name');
+		                $this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type);
+		                $ledger_q = $this->db->get();
+		                if ( ! $ledger = $ledger_q->row())
+		                {
+		                        return "(Invalid)";
+		                }
+				else {
+					 $ledger_multiple = ($ledger_q->num_rows() > 1) ? TRUE : FALSE;
+
+		                        if ($ledger_multiple)
+                		                $html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, "(" . $ledger->name . ")", array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+		                        else
+		                                $html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name . ' - ' . $ledger_type, array('title' => 'View ' .  $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+				     }
+			      }
+			return $html;
+			}
 		return;
 	}
 
@@ -203,6 +252,7 @@ class Ledger_model extends Model {
 		$total_op = 0;
 		$this->db->from('ledgers')->order_by('id', 'asc');
 		$ledgers_q = $this->db->get();
+
 		foreach ($ledgers_q->result() as $row)
 		{
 			list ($opbalance, $optype) = $this->get_op_balance($row->id);
