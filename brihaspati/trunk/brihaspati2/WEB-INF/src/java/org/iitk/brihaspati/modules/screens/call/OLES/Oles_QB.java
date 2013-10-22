@@ -63,11 +63,14 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+
+import org.iitk.brihaspati.modules.utils.CommonUtility;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
 * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
 * @modify date:14aug2013 
+* Date: 01 October 2013 video help file added by (OmPrakash) 
 */
 
 public class Oles_QB extends SecureScreen{
@@ -88,6 +91,11 @@ public class Oles_QB extends SecureScreen{
 			String topic=pp.getString("topic","");
 			context.put("topic",topic);
 			String Role = (String)user.getTemp("role");
+			 //Help Video Configuration
+                         String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+                         String v_Id = CommonUtility.GetBrihVideoId(h_Video,"OLES_Quiz");
+                         context.put("vid",v_Id);
+
 			/**
                          *Time calculaion for how long user use this page.
                          */
