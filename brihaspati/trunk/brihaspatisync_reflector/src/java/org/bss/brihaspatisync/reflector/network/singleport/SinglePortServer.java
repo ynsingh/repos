@@ -65,6 +65,8 @@ public class SinglePortServer {
 
 class MyHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+	private UserConnectionController user_connection_cotroller=new UserConnectionController();
+
   	public synchronized void handle(HttpExchange exchange) throws IOException {
 		try {
 			String requestMethod = exchange.getRequestMethod();
@@ -84,6 +86,7 @@ class MyHandler implements HttpHandler {
 				OutputStream responseBody = exchange.getResponseBody();
 			        byte[] bytes =org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody()); 
 		              	try {
+					user_connection_cotroller.setLoginidAndTime(lecture_id,username);
 					if(type.equals("Desktop_Data")) {		
 				                if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id))
 			                	        MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());

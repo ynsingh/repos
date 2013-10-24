@@ -36,7 +36,6 @@ public class  BufferMgt {
                        	java.util.Vector pointer=createhashtable.getAllPointer();
 			if(pointer.size()>0) {
 	                        int p1=(Integer)pointer.get(0); int maxpointer=buffer.size();
-			        	
 				if(maxpointer>1000) {
         	                	createhashtable.resetPointer(40+maxpointer-1000);
 	        	               	buffer.removeRange(40+maxpointer-1000);
@@ -44,7 +43,8 @@ public class  BufferMgt {
 					createhashtable.resetPointer(p1);
 					buffer.removeRange(p1);
                              	}
-			}
+			} else 
+				buffer.removeRange(buffer.size());
             	} catch(Exception e) {System.out.println("Exception remove method to Increase Pointer in BufferMgt class "+e.getMessage()); }
     	}
 	
@@ -126,4 +126,12 @@ public class  BufferMgt {
 			}
                 }catch(Exception e){ System.out.println("Exception in putByte method in BufferMgt class "+e.getMessage()); }
         }
+
+	/**
+	 * if user is loged out or disconnected then remove (login id / user id ) in pointer hash table 
+	 */ 
+	public void removeUseridKey(String login_name) {
+		createhashtable.removeUseridKey(login_name);		
+		removeBufferAndSetPointer();
+	}	
 }

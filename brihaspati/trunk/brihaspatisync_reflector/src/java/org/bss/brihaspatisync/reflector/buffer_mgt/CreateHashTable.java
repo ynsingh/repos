@@ -37,7 +37,7 @@ public class  CreateHashTable {
         * resetPointer method is used to reset the values stored in hashtable after packets have
         * been deleted from queue.
         */ 
-        public void resetPointer(Integer decreasepointer){
+        protected void resetPointer(Integer decreasepointer){
                 try{
 			ArrayList myArrayList=new ArrayList(pointer_hashtable.entrySet());
                         Iterator itr=myArrayList.iterator();
@@ -57,12 +57,20 @@ public class  CreateHashTable {
          * value upto which packets have been received by the user. 
          */ 
 	     	
-        public void setPointer(String login_name,Integer pointer){
+        protected void setPointer(String login_name,Integer pointer){
                 try {
                         pointer_hashtable.put(login_name,pointer);
 		}catch(Exception e){System.out.println("Exception in setPointer Method in CreateHashTable class ");}
         }
-  
+ 
+	/**
+	 * removePointer method is used to remove the login_name key in hashtable .
+	 */ 	
+	protected void removeUseridKey(String login_name){
+                try {
+                        pointer_hashtable.remove(login_name);
+                }catch(Exception e){System.out.println("Exception in setPointer Method in CreateHashTable class ");}
+        } 
 	/**
 	 * This method is used to get all the pointer values stored in
          * pointer_hashtable, and then sorting and finally storing them in vector.
@@ -88,7 +96,7 @@ public class  CreateHashTable {
          * To get the pointer value of given login name.
          */
 	
-	public int getPointerBy_UserId(String login_name) {
+	protected int getPointerBy_UserId(String login_name) {
                 try {
 			if(pointer_hashtable.containsKey(login_name)) {
                         	Integer ik=pointer_hashtable.get(login_name);

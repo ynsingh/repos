@@ -8,8 +8,8 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
  */
 
 import java.util.Vector;
-import java.util.StringTokenizer;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -18,13 +18,8 @@ import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 public class UserListUtil {
 
-	private int count_value=0;
-	private boolean hrflag=false;
-	private boolean presflag=false;
- 	private Vector vector=new Vector();
 	private static UserListUtil util=null;
 	private String senduserlist_to_client="";
-	private Vector status_vector=new Vector();	
 	
 		
 	protected UserListUtil() { }
@@ -41,6 +36,7 @@ public class UserListUtil {
 	                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
 				UserListHashTable.removeCourseIdUserListVector(course_id);
 				senduserlist_to_client="sessionlist_timeout";
+				MyHashTable.removeBufferMgtObject(course_id);
 			} else {
 				if(!(UserListHashTable.getStatusCourseId(course_id))) {
                                 	UserListHashTable.setCourseIdUserListVector(course_id,new VectorClass());
@@ -59,7 +55,6 @@ public class UserListUtil {
 	                        senduserlist_to_client=vectorclass.getValue();
 			}
 		}catch(Exception e){ System.out.println("Error in UserListUtil.java line no 62 "+e.getMessage());}
-		
 		String temp_string=senduserlist_to_client;
 		senduserlist_to_client="";
 		return temp_string;	

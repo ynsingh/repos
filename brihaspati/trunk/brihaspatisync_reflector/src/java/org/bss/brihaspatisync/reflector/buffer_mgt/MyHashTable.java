@@ -22,16 +22,46 @@ public class  MyHashTable {
 	
 	public MyHashTable() { }	
 	
+	/**
+	 *  This method is used to check bufferMgt Object in hash table according to media streeming
+	 *  if media streem object is availabe or not 
+	 */  	
 	public static boolean getStatusBufferMgtObject(String type_lecture_id) {
 		return (ht.containsKey(type_lecture_id)) ?  true : false ;
-	}	
+	}
 	
-	public static void setBufferMgtObject(String type_lecture_id,BufferMgt bm){
+	/**
+	 * This method is used to add bufferMgt Object in hash table according to media streeming  
+	 */
+	public static void setBufferMgtObject(String type_lecture_id,BufferMgt bm) {
 		ht.put(type_lecture_id,bm);
 	}	
-	
-	public static BufferMgt getBufferMgtObject(String type_lecture_id){
+
+	/**
+	 * This method is used to get bufferMgt Object in hash table according to media streeming 	
+	 */
+	public static BufferMgt getBufferMgtObject(String type_lecture_id) {
                 return (BufferMgt)ht.get(type_lecture_id);
+        }
+
+	/**
+	 * This method is used to remove bufferMgt Object in hash table according to media streeming
+	 * if session time out .
+	 */  		
+	public static void removeBufferMgtObject(String lecture_id) {
+		try {
+			if(ht.size()>0) {
+				java.util.ArrayList myArrayList=new java.util.ArrayList(ht.entrySet());
+				java.util.Iterator itr=myArrayList.iterator();
+                	        while(itr.hasNext()) {
+                        		java.util.Map.Entry e=(java.util.Map.Entry)itr.next();
+		                        String streemAndlecture_id = (String)e.getKey();
+					if(streemAndlecture_id.endsWith(lecture_id)){
+						ht.remove(streemAndlecture_id);
+					}
+				}
+			}
+		}catch(Exception e){ System.out.println("Exception in MyHashTable class !! ");}
         }
 }
 
