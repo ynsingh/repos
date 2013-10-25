@@ -206,15 +206,15 @@ $page.setTitle("Home | $course | Course management")
       </tr>
       #end
         <tr width=100% bgcolor="$ui.menuColor" align="right">
-		<td colspan="5" > <font color="red">$brih_UploadMsg</font> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
+		<td colspan="6" > <font color="red">$brih_UploadMsg</font> <img src="$content.getURI("/images/Lefthand.gif")"> </td>
         </tr>
 	
 	#if($user_role == "instructor")
 	      <tr width=100% bgcolor="$ui.tableColor">
-		<td align="right"  colspan="2"> <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"> <b> $brih_mail $Notice_Send </b> </td>
-	        <td align="right" width=10%> <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b> </td>
-		<td align="right"> <input type="RADIO" name=topicExisting value="NEWTOPIC" > $brih_new $brih_topic </td>
-		<td align="right">
+		<td align="right"> <b> $brih_mail $Notice_Send </b> <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail" onchange="javascript:showTextBox()" id="check"></td>
+	        <td align="right" width=10%> <b>$brih_publish</b> <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> </td>
+		<td align="right"> <b>$brih_new $brih_topic</b><input type="RADIO" name=topicExisting value="NEWTOPIC" onClick=contentChange(document.uploadform)></td>
+		<td align="right" colspan="3">
 		        <SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
         		  <option></option>
 		        #foreach($topic in $allTopics)
@@ -222,14 +222,13 @@ $page.setTitle("Home | $course | Course management")
 	        	  #end
 	        	</SELECT>
 		         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-			<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
 			<b> $brih_Exist $brih_topic </b>
+			<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
 		</td>
 	        </tr>
 	#else
 		<tr width=100% bgcolor="$ui.tableColor" align="right">
-		<td> <input type="RADIO" name=topicExisting value="NEWTOPIC" ><b> $brih_new $brih_topic </b></td>
-		<td colspan=5>
+		<td colspan="5">
         	<SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform) class="drop">
 	          <option></option>
         	#foreach($topic in $allTopics)
@@ -237,58 +236,74 @@ $page.setTitle("Home | $course | Course management")
 	          #end
         	</SELECT>
 		<INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-	        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)> <b> $brih_Exist $brih_topic </b>
+	        <b>$brih_Exist $brih_topic</b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
 	        </td>
+		<td> <b> $brih_new $brih_topic </b> <input type="RADIO" name=topicExisting value="NEWTOPIC" onClick=contentChange(document.uploadform)></td>
 		</tr>	
 	#end
       <tr bgcolor="$ui.menuColor" width=100% align="right">
+	<td>
+                <div style="display:none;" id="textboxDiv1">
+                         <textarea name="text1" rows=2 cols=35></textarea>
+                </div>
+        </td>
+        <td colspan="2">
+                <div style="display:none;" id="textboxDiv">
+                        <b>  $brih_mail $mailmsg </b>
+                </div>
+        </td>
         ##formCell ("Topic Name" "contentTopic" "")
-        <td colspan=4> <input type="text" name=contentTopic onFocus=checkRadio() size=20> </td>
-        <td> <b><font face="$ui.sansSerifFonts">$brih_topic $brih_Of1 $brih_name</font> </b> </td>
+        <td> <input type="text" name=contentTopic onFocus=checkRadio() size=30> </td>
+        <td colspan="3"> <b><font face="$ui.sansSerifFonts">$brih_topic $brih_Of1 $brih_name</font> </b> </td>
       <tr bgcolor="$ui.tableColor">
               ##fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td></td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
 		<td> <input type="file" name="file6"> </td>
-                <td align="right"> 6.&nbsp; $brih_at_file &nbsp; </td>
-                <td></td>
+                <td align="right"> $brih_at_file </td>
+                <td style="margin-right: 80px;">.6</td>
                 <td> <input type="file" name="file1"> </td>
-                <td align="right"> 1. &nbsp; $brih_at_file </td>
+                <td align="right"> $brih_at_file </td>
+                <td>.1</td>
 
       </tr>
       <tr bgcolor="$ui.menuColor">
 ##              #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td></td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
 		<td> <input type="file" name="file7"> </td>
-                <td align="right"> 7.&nbsp; $brih_at_file &nbsp; </td>
-                <td></td>
+                <td align="right"> $brih_at_file </td>
+                <td style="margin-right: 80px;">.7</td>
                 <td> <input type="file" name="file2"> </td>
-                <td align="right"> 2. &nbsp; $brih_at_file </td>
+                <td align="right"> $brih_at_file </td>
+		<td>.2</td>
       </tr>
       <tr bgcolor="$ui.tableColor">
               ###fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td></td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
 		<td> <input type="file" name="file8"> </td>
-                <td align="right"> 8.&nbsp; $brih_at_file &nbsp; </td>
-                <td></td>
+                <td align="right"> $brih_at_file </td>
+                <td style="margin-right: 80px;">.8</td>
                 <td> <input type="file" name="file3"> </td>
-                <td align="right"> 3. &nbsp; $brih_at_file </td>
+                <td align="right">$brih_at_file </td>
+		<td>.3</td>
       </tr>
       <tr bgcolor="$ui.menuColor">
 		##fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td></td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
 		 <td> <input type="file" name="file9"> </td>
-                <td align="right"> 9.&nbsp; $brih_at_file &nbsp; </td>
-                <td></td>
+                <td align="right"> $brih_at_file </td>
+                <td style="margin-right: 80px;">.9</td>
                 <td> <input type="file" name="file4"> </td>
-                <td align="right"> 4. &nbsp; $brih_at_file </td>
+                <td align="right"> $brih_at_file </td>
+		<td>.4</td>
         </tr>
 	<tr bgcolor="$ui.tableColor">
               ##fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td></td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
-		<td> <input type="file" name="file9"> </td>
-                <td align="right"> 9.&nbsp; $brih_at_file &nbsp; </td>
-                <td></td>
+		<td> <input type="file" name="file10"> </td>
+                <td align="right"> $brih_at_file </td>
+                <td style="margin-right: 80px;">.10</td>
                 <td> <input type="file" name="file5"> </td>
-                <td align="right"> 5. &nbsp; $brih_at_file </td>
+                <td align="right">$brih_at_file </td>
+		<td>.5</td>
       </tr>
 
       <tr align="right">
-        <td colspan=5 bgcolor="$ui.buttonBoxColor">
+        <td colspan=6 bgcolor="$ui.buttonBoxColor">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
@@ -318,7 +333,7 @@ $page.setTitle("Home | $course | Course management")
 
         function changeTopic(frm)
         {
-                if(frm.topicExisting[0].checked)
+                if(frm.topicExisting[1].checked)
                 {
                         frm.contentTopic.value=frm.topicList.options[frm.topicList.selectedIndex].text;
                 }
@@ -329,11 +344,15 @@ $page.setTitle("Home | $course | Course management")
         }
          function checkRadio()
         {
-                if(document.uploadform.topicExisting[0].checked)
+                if(document.uploadform.topicExisting[1].checked)
                 {
                         document.uploadform.contentTopic.blur();
                 }
 
+        }
+	function contentChange(frm)
+        {
+                document.uploadform.contentTopic.value="";
         }
         function validate(uploadform,field)
         {
@@ -369,5 +388,14 @@ $page.setTitle("Home | $course | Course management")
                         alert("Topic Name Can not Empty !!");
                 }
         }
-
+	function showTextBox() {
+        if ($('#check').is(':checked')) {
+            $("#textboxDiv").show();
+            $("#textboxDiv1").show();
+        }
+        else {
+            $("#textboxDiv").hide();
+            $("#textboxDiv1").hide();
+        }
+	}
 </SCRIPT>

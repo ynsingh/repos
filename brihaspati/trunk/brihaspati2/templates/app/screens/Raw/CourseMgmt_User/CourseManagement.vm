@@ -229,7 +229,7 @@ $page.setTitle("Home | $course | Course management")
                 <option>$topic</option>
           #end
         </SELECT>
-	<input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
+	<input type="RADIO" name=topicExisting value="NEWTOPIC" onClick=contentChange(document.uploadform)>$brih_new $brih_topic
         </td>
         ##</tr>
         ##<tr>
@@ -237,13 +237,6 @@ $page.setTitle("Home | $course | Course management")
         <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail" onchange="javascript:showTextBox()" id="check"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp;
         <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
         </td>
-        </tr>
-	<tr bgcolor="$ui.tableColor">
-        	<td colspan=6>
-                        <div style="display:none;" id="textboxDiv">
-	                        <b> $brih_desc </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="text1" size=35/>
-        		</div>
-        	</td>
         </tr>
 	#else
 	<tr width=100% bgcolor="$ui.tableColor">
@@ -256,7 +249,7 @@ $page.setTitle("Home | $course | Course management")
                 <option>$topic</option>
           #end
         </SELECT>
-        <input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
+        <input type="RADIO" name=topicExisting value="NEWTOPIC" onClick=contentChange(document.uploadform)>$brih_new $brih_topic
         </td>
 	</tr>	
 	#end
@@ -265,9 +258,21 @@ $page.setTitle("Home | $course | Course management")
         <td>
         <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
         </td>
-        <td colspan=4>
-        <input type="text" name=contentTopic onFocus=checkRadio() size=35>
+        <td>
+	##<textarea name="contentTopic" rows=2 cols=35 onFocus=checkRadio()></textarea>
+        <input type="text" name=contentTopic onFocus=checkRadio() size=30>
         </td>
+	<td colspan=2>
+                <div style="display:none;" id="textboxDiv">
+                        <b> $brih_mail $mailmsg </b>
+                </div>
+        </td>
+        <td>
+                <div style="display:none;" id="textboxDiv1">
+                         <textarea name="text1" rows=2 cols=35></textarea>
+                </div>
+        </td>
+	</tr>
       <tr bgcolor="$ui.tableColor">
               #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td></td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
       </tr>
@@ -350,6 +355,10 @@ $page.setTitle("Home | $course | Course management")
                 }
 
         }
+	function contentChange(frm)
+        {
+                document.uploadform.contentTopic.value="";
+	}
         function validate(uploadform,field)
         {
                 var tList=uploadform.topicList;
@@ -387,9 +396,11 @@ $page.setTitle("Home | $course | Course management")
 	function showTextBox() {
         if ($('#check').is(':checked')) {
             $("#textboxDiv").show();
+            $("#textboxDiv1").show();
         }
         else {
             $("#textboxDiv").hide();
+            $("#textboxDiv1").hide();
         }
     }
 

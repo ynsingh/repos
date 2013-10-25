@@ -406,7 +406,6 @@ public class UploadAction extends SecureAction
 				if(sendMail.equals("sendMail")){
 					try{
 					String newText=pp.getString("text1","");
-					//ErrorDumpUtil.ErrorLog("newText from screens------"+newText);
 					int roleId[]={2,3};
 					int userId[]={uid,0};
 					crit = new Criteria();
@@ -438,6 +437,9 @@ public class UploadAction extends SecureAction
 					catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in Upload Action class on 411 line "+e.getMessage());}
 				}
 			}//ifpublish
+			}//ifflag1
+			else
+				data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
 			if(successfulUploadFilesCount>0) 
 			{	
 				String userRole = (String) user.getTemp("role");
@@ -465,9 +467,9 @@ public class UploadAction extends SecureAction
 			context.put("totalFilesEntries",(new TotalFileCount(totalFilesEntries) ) );
 			context.put("failedFiles",failedFiles);
 			}
-			}//ifflag1
+			/*}//ifflag1
 			else
-			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
+			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));*/
 			if(StringUtils.isNotBlank(upldmsg)){
 				context.put("tmpupload","uploadXmlMsg");		
 				context.put("XmlMsg",upldmsg);

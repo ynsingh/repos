@@ -730,7 +730,8 @@ public class PublishAction extends SecureAction_Instructor
 			 */
 			if(mailStatus.equals("sendMail")){
 				 try{
-					int uid = UserUtil.getUID(username);
+					String loginUser = user.getName();
+					int uid = UserUtil.getUID(loginUser);
 					String fullName = UserUtil.getFullName(uid);
 					String grpName = (String)user.getTemp("course_id","");
                                         String courseName = CourseUtil.getCourseName(grpName);
