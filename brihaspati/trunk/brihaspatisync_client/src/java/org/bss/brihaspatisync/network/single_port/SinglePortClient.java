@@ -168,8 +168,9 @@ public class SinglePortClient implements Runnable {
 					}
 				}
 				runner.yield();
-				runner.sleep(100);
+				runner.sleep(10);
 			}catch(Exception ep) { System.out.println(this.getClass()+" Exception  "+ep.getMessage()); }
+			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 			System.gc();
 		}
 	}
