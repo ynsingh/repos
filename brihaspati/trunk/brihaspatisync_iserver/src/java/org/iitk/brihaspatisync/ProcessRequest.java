@@ -398,7 +398,9 @@ public class ProcessRequest extends HttpServlet {
 	                                out.close();
         	                } 
 				else {
-                	                message="noUser";
+					java.io.File filepath=new java.io.File(context.getRealPath(lect_id+".xml"));
+                                        if(!filepath.exists())
+                	                	message="noUser";
                         	        response.setContentLength(message.length());
                                 	out.println(message);
 	                                out.flush();
