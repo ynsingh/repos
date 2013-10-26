@@ -38,14 +38,14 @@ public class HandRaiseAction implements MouseListener {
 			if(cmd.equals("Permission")) {
                                 ins_Username=client_obj.getUserName();
                                 actionONRequest("Allow-Permission",ins_Username);
-                                StatusPanel.getController().setStatus(ins_Username +" "+" is Allowed to use all tools ");
+                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(ins_Username, "UTF-8")+" "+" is Allowed to use all tools ");
                         }else if(cmd.equals("Allow-Permission")) {
                                 if(selectedUsername.equals("")) {
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));
                                         javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));
                                 } else {
                                         actionONRequest("Allow-Permission",selectedUsername);
-                                        StatusPanel.getController().setStatus(selectedUsername +" "+" is Allowed to use all tools ");
+                                        StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8")+" "+" is Allowed to use all tools ");
                                         selectedUsername="";
                                 }
                         } else if(cmd.equals("Denie-Permission")) {
@@ -56,17 +56,17 @@ public class HandRaiseAction implements MouseListener {
 					javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));
 				} else if (!ins_Username.equals("")) {
                                         actionONRequest("available",ins_Username);
-                                        StatusPanel.getController().setStatus(ins_Username +" "+" is Denied to use all tools ");
+                                        StatusPanel.getController().setStatus(java.net.URLDecoder.decode(ins_Username, "UTF-8") +" "+" is Denied to use all tools ");
                                         ins_Username="";
 				} else {
                                         actionONRequest("available",selectedUsername);
-                                        StatusPanel.getController().setStatus(selectedUsername +" "+" is Denied to use all tools ");
+                                        StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8") +" "+" is Denied to use all tools ");
                                 }
                                 selectedUsername="";
                         } else if(cmd.equals("Get-Permission")) {
                         	selectedUsername=client_obj.getUserName();
                                 actionONRequest("Get-Permission",selectedUsername);
-                                StatusPanel.getController().setStatus(selectedUsername +" "+" is get permission to use all tools ");
+                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8") +" "+" is get permission to use all tools ");
                         }
 			
 		}catch(Exception ex){}

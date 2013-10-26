@@ -80,6 +80,7 @@ public class SinglePortClient implements Runnable {
 		Vector v=new Vector();
 		while(ThreadController.getThreadFlag()) {
 			try {
+				if(ThreadController.getReflectorStatusThreadFlag()) {
 				v.clear(); v.addAll(utilobject.getTypeVector());	
 				while((v.size()) !=0){
 					String type=v.get(0).toString(); v.remove(0);
@@ -166,12 +167,13 @@ public class SinglePortClient implements Runnable {
                                                         NetworkController.Hashtable(type,cur_time);
 						} catch(Exception e){ System.out.println("Exception in SinglePortClient in Student video "+e.getMessage());}
 					}
-				}
+				}}else
+					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 				runner.yield();
 				runner.sleep(10);
+				System.gc();
 			}catch(Exception ep) { System.out.println(this.getClass()+" Exception  "+ep.getMessage()); }
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
-			System.gc();
 		}
 	}
 	
