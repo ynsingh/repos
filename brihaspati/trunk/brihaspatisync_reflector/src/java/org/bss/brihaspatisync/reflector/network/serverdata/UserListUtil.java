@@ -20,7 +20,7 @@ public class UserListUtil {
 
 	private static UserListUtil util=null;
 	private String senduserlist_to_client="";
-	
+	private long timeout=0;
 		
 	protected UserListUtil() { }
 
@@ -32,11 +32,16 @@ public class UserListUtil {
 	
 	public void addDataForVector(String course_id,String userlistdata) {
                 try {
-			if(userlistdata.equals("noUser")){	
-	                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
-				UserListHashTable.removeCourseIdUserListVector(course_id);
+			if(userlistdata.equals("noUser")) {	
 				senduserlist_to_client="sessionlist_timeout";
-				MyHashTable.removeBufferMgtObject(course_id);
+				if(timeout==0)
+					timeout=System.currentTimeMillis();
+				else if((System.currentTimeMillis()-timeout)> 50000) {	
+		                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
+					UserListHashTable.removeCourseIdUserListVector(course_id);
+					MyHashTable.removeBufferMgtObject(course_id);
+					timeout=0;
+				}
 			} else {
 				if(!(UserListHashTable.getStatusCourseId(course_id))) {
                                 	UserListHashTable.setCourseIdUserListVector(course_id,new VectorClass());
