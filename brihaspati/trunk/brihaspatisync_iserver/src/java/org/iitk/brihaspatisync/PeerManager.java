@@ -100,7 +100,6 @@ public class PeerManager
 	protected static String updateStatus(String action,String userName,String LectureID) {
 		String message="unSuccessfull";
 		try {	
-			userName=java.net.URLDecoder.decode(userName, "UTF-8");
                 	DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
 	                factory.setValidating(false);
         	        factory.setIgnoringElementContentWhitespace(false);

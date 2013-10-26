@@ -381,26 +381,26 @@ public class ProcessRequest extends HttpServlet {
 			 **/
 			try {
 				String lect_id=request.getParameter("lect_id");
-				/** Get Userlist in Vector for given Lecture Id */
-				Vector result=PeerManager.getPeerList(lect_id);
-				int resultSize=result.size();
+				File filepath=new File(context.getRealPath(lect_id+".xml"));
 				String message="";
-                        	if(resultSize !=0) {
-					for(int i=0;i<resultSize;i++) {
-						if(message.equals(""))
-        	                                        message=result.elementAt(i).toString();
-	                                        else
-                	                                message=message+","+result.elementAt(i).toString();
-					}
-                              		response.setContentLength(message.length());
-					out.println(message);
-		                        out.flush();
-	                                out.close();
-        	                } 
-				else {
-					java.io.File filepath=new java.io.File(context.getRealPath(lect_id+".xml"));
-                                        if(!filepath.exists())
-                	                	message="noUser";
+				if(filepath.exists()) {
+					/** Get Userlist in Vector for given Lecture Id */
+					Vector result=PeerManager.getPeerList(lect_id);
+					int resultSize=result.size();
+                        		if(resultSize >0) {
+						for(int i=0;i<resultSize;i++) {
+							if(message.equals(""))
+        	                                        	message=result.elementAt(i).toString();
+		                                        else
+        	        	                                message=message+","+result.elementAt(i).toString();
+						}
+                        	      		response.setContentLength(message.length());
+						out.println(message);
+		                        	out.flush();
+		                                out.close();
+        		                } 
+				} else {
+                	               	message="noUser";
                         	        response.setContentLength(message.length());
                                 	out.println(message);
 	                                out.flush();
@@ -433,11 +433,15 @@ public class ProcessRequest extends HttpServlet {
 			**/
                        try {
 				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
-				String lectID=request.getParameter("lectID");
-				String userAction=request.getParameter("userAction");
-				String login=request.getParameter("loginName");
-				login=login.replaceAll("loginName=","");
-				String message=	PeerManager.updateStatus(userAction,login,lectID);
+				String lect_id=request.getParameter("lectID");
+				String message="";
+				File filepath=new File(context.getRealPath(lect_id+".xml"));
+                                if(filepath.exists()) {
+					String userAction=request.getParameter("userAction");
+					String login=request.getParameter("loginName");
+					login=login.replaceAll("loginName=","");
+					message=PeerManager.updateStatus(userAction,login,lect_id);
+				} 
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();
