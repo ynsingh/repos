@@ -159,24 +159,22 @@ public class RegisterToIndexServer {
 	
 	
 	private static boolean bufferReader(InputStream ins ) {
+		boolean flag=false;
 		try {
-			String str="";
 			BufferedReader in=null;
 			try {		
 				in = new BufferedReader(new InputStreamReader(ins));
-                       		str=in.readLine();
+                       		String str=in.readLine();
+				if((str.equals("Successfull")) || (str.equals("successfull")) ) {
+					flag=true;		
+				}
 			} finally {
         	        	if(in != null){
 					in.close();
-					if( (str.equals("Successfull")) || (str.equals("successfull")) ) {
-        	                      		return true;
-                	               	} else {
-						return false;
-                                	}
 				}
               		}
 		} catch(Exception e) { System.out.println("Exception in RegisterToIndexServer Class in bufferReadeR() "+e.getMessage());}
-		return false;
+		return flag;
 	} 	
 
 	protected static String startThreads(){
