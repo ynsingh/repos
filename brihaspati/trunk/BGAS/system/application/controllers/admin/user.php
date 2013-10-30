@@ -259,7 +259,7 @@ class User extends Controller {
 				$user_password = $row->password;
 				$user_email = $row->email;
                                 }
-
+		
 
 		/* Form fields */
 		$data['user_name'] = array(
@@ -434,22 +434,21 @@ class User extends Controller {
                                             'email' => $data_user_email,
                                             'role' =>$data_user_role,
                                             'status' => $data_user_status,
-					    'accounts' => $data_accounts,	
+					    'accounts' => $data_accounts_string,	
                                              );
 
                          if ( ! $db1->where('id', $user_id)->update('bgasuser', $update_data))
                            {
 
                                       $db1->trans_rollback();
-                                      $this->messages->add('Error addding User Account - ' . $budget_data->username . '.', 'error');
+                                      $this->messages->add('Error in updating User Account - ' .  $user_name . '.', 'error');
 
-                                                        $this->logger->write_message("error", "Error adding User Account " . $budget_data->username);
-                                                        $this->template->load('admin_template', 'admin/user/add', $data);
+                                                       
                                                         return;
                                                 }
                                                 else{
                                                 $db1->trans_complete();
-						         $this->messages->add('Update User Account - ' . $budget_data->username . ' success');
+						         $this->messages->add('Update User Account - ' . $user_name . ' success');
                                                      
                                                 redirect('admin/user/');
 

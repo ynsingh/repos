@@ -168,8 +168,6 @@ class User extends Controller {
 			redirect('user/profile');
 			return;
 		}
-		$path=$this->config->item('config_path');
-		$account=$this->session->userdata('active_account');
                 
 		/* Filter user access to accounts*/ 
 		foreach($active_user->result() as $row)
