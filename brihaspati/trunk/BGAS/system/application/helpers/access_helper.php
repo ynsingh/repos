@@ -76,6 +76,8 @@ if ( ! function_exists('check_access'))
 			'edit party',
 			'delete party',
 			'change password',
+			'create projection',
+			'reappropriate projection',
 		);
 		$permissions['manager'] = array(
 			'view entry',

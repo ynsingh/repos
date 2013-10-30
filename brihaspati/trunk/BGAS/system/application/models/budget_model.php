@@ -152,11 +152,14 @@ class Budget_model extends Model {
 		return $options;
 	}
 
-	function get_allocation_amount($data_parent_id)
+	function get_allocation_amount($data_parent_id, $account)
 	{
 		$parent_amount = '';
 		$parent_date = '';
-		$this->db->from('budget_allocate');
+		if($account == 'budgets')
+			$this->db->from('budget_allocate');
+		else
+			$this->db->from('projection_allocate');
 		$this->db->select_max('creation_date')->where('code =', $data_parent_id);
 		$date_result = $this->db->get();
 		foreach($date_result->result() as $date)
@@ -165,7 +168,10 @@ class Budget_model extends Model {
                 }
 		if($parent_date != NULL)
 		{
-			$this->db->from('budget_allocate');
+			if($account == 'budgets')
+				$this->db->from('budget_allocate');
+			else
+				$this->db->from('projection_allocate');
 			$this->db->select('allocation_amount')->where('code =', $data_parent_id);
 			$this->db->where('creation_date =', $parent_date);
 			$parent_result = $this->db->get();
@@ -177,12 +183,15 @@ class Budget_model extends Model {
 		return $parent_amount;
 	}
 
-	function get_child_budgets($parentId)
+	function get_child_budgets($parentId, $account)
 	{
 		$child = array();
 		$budget_id = 0;
 		$counter = 0;
-		$this->db->from('budgets');
+		if($account == 'budgets')
+			$this->db->from('budgets');
+		else
+			$this->db->from('projection');
 		$this->db->select('code')->where('group_id =', $parentId);
 		$child_budget = $this->db->get();
 		foreach($child_budget->result() as $row)
@@ -194,38 +203,43 @@ class Budget_model extends Model {
 	}
 
 
-	function get_selected_groups()
+	//function get_selected_groups()
+	function get_selected_groups($account_name)
         {
                 $options = array();
 
-		//Added 'Main Budget' as first value
-		//to be displayed in the list
-		$new_id = "50"."#"."Main Budget";
-                $options[$new_id] = 'Main Budget';
+		//Get account code
+		$account_code = $this->get_account_code($account_name);
+
+		if($account_name == 'Expenses'){
+			//Added 'Main Budget' as first value
+			//to be displayed in the list
+			$new_id = "50"."#"."Main Budget";
+        	        $options[$new_id] = 'Main Budget';
+		}
 
                 $this->db->from('groups');
-		$this->db->where('code LIKE', '40%');
-		$this->db->where('code NOT LIKE', '40');
+		//$this->db->where('code LIKE', '40%');
+		$this->db->where('code LIKE', $account_code.'%');
+		//$this->db->where('code NOT LIKE', '40');
+		if($account_name == 'Expenses')
+			$this->db->where('code NOT LIKE', $account_code);
 		$this->db->where('status', '0')->order_by('name', 'asc');
-                //$this->db->select('(SELECT name FROM groups WHERE code LIKE '40%' order by name ASC;)'); 
                 $group_code = $this->db->get();
                 foreach ($group_code->result() as $row)
                 {
                         $new_id = "$row->code"."#"."$row->name";
                         $options[$new_id] = $row->name;
-                        //$options[$row->id] = $row->name;
                 }
 
-		$this->db->from('ledgers')->where('code LIKE', '40%')->order_by('name', 'asc');
-                //$this->db->select('(SELECT name FROM groups WHERE code LIKE '40%' order by name ASC;)'); 
+		//$this->db->from('ledgers')->where('code LIKE', '40%')->order_by('name', 'asc');
+		$this->db->from('ledgers')->where('code LIKE', $account_code.'%')->order_by('name', 'asc');
                 $group_code = $this->db->get();
                 foreach ($group_code->result() as $row)
                 {
                         $new_id = "$row->code"."#"."$row->name";
                         $options[$new_id] = $row->name;
-                        //$options[$row->id] = $row->name;
                 }
-		//sort($options);
                 return $options;
         }
 
@@ -276,18 +290,17 @@ class Budget_model extends Model {
 		return $budget;
 	}
 
-	function get_groupid_budgetname($parent_name)
+	function get_groupid_budgetname($parent_name,$account)
 	{
 		$parent_id = '';
-		//$options[0] = "(Please Select)";
-                //$this->db->from('budgets')->order_by('budgetname', 'asc');
-                $this->db->from('budgets');
+		if($account == 'budgets')
+                	$this->db->from('budgets');
+		else
+			$this->db->from('projection');
 		$this->db->select('id')->where('code =', $parent_name);
                 $group_budget = $this->db->get();
                 foreach ($group_budget->result() as $row)
                 {
-                        //$options[$row->id] = $row->budgetname;
-		//	$this->logger->write_message("error", "Error Priyanka " . $row->id);
 			$parent_id = $row->id;
                 }
                 return $parent_id;
@@ -472,5 +485,37 @@ class Budget_model extends Model {
 		);
 		$this->db->where('ledger_id', $ledger_id)->update('entry_items', $update_data);
 		return;
+	}
+
+	/** 
+	 * Returns code of the requested account, 
+	 * as specified in the 'groups' table
+	 */
+	function get_account_code($account_name)
+	{
+		$this->db->from('groups');
+                $this->db->select('code')->where('name =', $account_name);
+                $group = $this->db->get();
+                foreach($group->result() as $row)
+			return $row->code;                			
+	}
+
+	function get_projection()
+        {
+                $projection = array();
+                $counter = 0;
+                $this->db->from('projection');
+                $this->db->select('id, code, projection_name, bd_balance, group_id');
+                $projection_q = $this->db->get();
+                foreach($projection_q->result() as $row)
+                {
+                        $projection[$counter]['id'] = $row->id;
+                        $projection[$counter]['code'] = $row->code;
+                        $projection[$counter]['name'] = $row->projection_name;
+                        $projection[$counter]['bd_balance'] = $row->bd_balance;
+                        $projection[$counter]['group_id'] = $row->group_id;
+                        $counter++;
+                }
+		return $projection;
 	}
 }

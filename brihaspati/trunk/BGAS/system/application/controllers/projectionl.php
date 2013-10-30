@@ -1,6 +1,6 @@
 <?php
 
-class Budgetl extends Controller {
+class Projectionl extends Controller {
 	function index()
 	{
 		$this->load->model('Budget_model');
@@ -17,10 +17,10 @@ class Budgetl extends Controller {
 			$this->messages->add('Difference in Opening Balance is Cr ' . convert_cur(-$total_op) . '.', 'error');
 		}
 */
-		$this->template->load('template', 'budget/index');
+		$this->template->load('template', 'projection/index');
 		return;
 	}
 }
 
-/* End of file budgetl.php */
-/* Location: ./system/application/controllers/budgetl.php */
+/* End of file projectionl.php */
+/* Location: ./system/application/controllers/projectionl.php */

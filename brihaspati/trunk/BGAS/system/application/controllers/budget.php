@@ -5,6 +5,8 @@ class Budget extends Controller {
 	var $reappropriation = array();
 	var $child_controller = array();
 	var $parent_controller = array();
+	var $unallocated_child_controller = array();
+	var $unallocated_parent_controller = array();
 	var $a = 2;
 	var $counter = 0;
 
@@ -13,8 +15,8 @@ class Budget extends Controller {
 	{
 		parent::Controller();
 		$this->load->model('Budget_model');
-		$this->load->model('Group_model');
-		$this->load->model('Ledger_model');
+		//$this->load->model('Group_model');
+		//$this->load->model('Ledger_model');
 		return;
 	}	
 
@@ -27,6 +29,8 @@ class Budget extends Controller {
 	function add()
         {
 		$this->load->library('validation');
+		$this->template->set('nav_links', array('budgetl' => 'Budget', 'budget/add' => 'Add Budget', 'budget/reappro' => 'Reappropriate Budget', 'projectionl' => 'Projection', 'projection/add' => 'Add Projection', 'projection/reappro' => 'Reappropriate Projection'));
+
                 $this->template->set('page_title', 'New Budget');
 	
 		//check whether 'Main Budget' value is set
@@ -59,8 +63,11 @@ class Budget extends Controller {
                         redirect('budgetl');
                         return;
                 }
-			
-		$data['group_expenses'] = $this->Budget_model->get_selected_groups();
+
+		/* Get code for account 'Expenses' */
+                $account_code = $this->Budget_model->get_account_code('Expenses');   
+                //$data['group_expenses'] = $this->Budget_model->get_selected_groups();
+                $data['group_expenses'] = $this->Budget_model->get_selected_groups('Expenses');			
                 $data['group_expenses_active'] = 0;
 
 
@@ -138,20 +145,24 @@ class Budget extends Controller {
 			$data_amount = $this->input->post('budget_amount', TRUE);
 			$sum = $data_amount;
 			$data_parent_code = $this->Budget_model->get_parent($my_values[1]);
-			if($data_parent_code == '40')
+			//if($data_parent_code == '40')
+			if($data_parent_code == $account_code)
 				$data_parent_code = '50';
-                        $data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
+                        //$data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code);
+                        $data_parent_id = $this->Budget_model->get_groupid_budgetname($data_parent_code, 'budgets');
                         //Get amount allocated to parent budget
-                        $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
+                        //$parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code);
+                        $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code, 'budgets');
 
 			if($my_values[1] != 'Main Budget')
 			{
-				$child_budget = $this->Budget_model->get_child_budgets($data_parent_id);
+				//$child_budget = $this->Budget_model->get_child_budgets($data_parent_id);
+				$child_budget = $this->Budget_model->get_child_budgets($data_parent_id, 'budgets');
 				$count = 0;
 				foreach ($child_budget as $code => $chld)
 		                {
 					if($chld['code'] != $my_values[0]){
-						$allocation_amount = $this->Budget_model->get_allocation_amount($chld['code']);
+						$allocation_amount = $this->Budget_model->get_allocation_amount($chld['code'], 'budgets');
 						$sum = $sum + $allocation_amount;
 					}
 					$count++;
@@ -159,7 +170,10 @@ class Budget extends Controller {
 				if($sum > $parent_amount)
 				{
 					//Error message
-					$this->messages->add('Budget amount cannot exceed from parent budget. So, please check parent budget amount.', 'error');
+					//$this->messages->add('Budget amount cannot exceed from parent budget. So, please check parent budget amount.', 'error');
+					$temp = $sum - $data_amount;
+					$temp = $parent_amount - $temp;
+					$this->messages->add('Budget amount cannot exceed from parent budget. Amount remaining with parent budget is  ' . $temp , 'error');
 				//	$this->template->load('template', 'budget/add', $data);
 					redirect('budget/add');
 					return;
@@ -331,6 +345,8 @@ class Budget extends Controller {
 
 	function edit($id)
 	{
+		$this->template->set('nav_links', array('budgetl' => 'Budget', 'budget/add' => 'Add Budget', 'budget/reappro' => 'Reappropriate Budget', 'projectionl' => 'Projection', 'projection/add' => 'Add Projection', 'projection/reappro' => 'Reappropriate Projection'));
+
 		$this->template->set('page_title', 'Edit Budget');
 		$username = $this->config->item('account_name');
 
@@ -465,6 +481,8 @@ class Budget extends Controller {
 	function delete($id)
 	{
 		$username = $this->config->item('account_name');
+		$this->template->set('nav_links', array('budgetl' => 'Budget', 'budget/add' => 'Add Budget', 'budget/reappro' => 'Reappropriate Budget', 'projectionl' => 'Projection', 'projection/add' => 'Add Projection', 'projection/reappro' => 'Reappropriate Projection'));
+
 		/* Check access */
 		if ( ! check_access('delete budget'))
 		{
@@ -534,6 +552,8 @@ class Budget extends Controller {
 
 	function reappro(){
                 $username = $this->config->item('account_name');
+		//$parent_controller = array();
+		//$child_controller = array();
 
 		/* Check access */
                 if ( ! check_access('reappropriate budget'))
@@ -546,6 +566,7 @@ class Budget extends Controller {
                 $this->load->model('Budget_model');
 		$this->load->helper('array');
                 $this->template->set('page_title', 'Budget Reappropriation');
+		$this->template->set('nav_links', array('budgetl' => 'Budget', 'budget/add' => 'Add Budget', 'budget/reappro' => 'Reappropriate Budget', 'projectionl' => 'Projection', 'projection/add' => 'Add Projection', 'projection/reappro' => 'Reappropriate Projection'));
 
                 $budget_arr = array();
 		$counter = 0;
@@ -569,11 +590,45 @@ class Budget extends Controller {
 		
 		$counter = 0;
 		$count = 0;
+			
+		//code for generating unallocated budget
+		//$this->reappropriation['budget'] = $budget_arr;
+		$sum = 0;
+		foreach ($this->reappropriation['budget'] as $id => $bud)
+                {	
+			if($bud['code'] == '50')
+			{
+				$main_budget_amount = $bud['bd_balance'];
+			}
+			else
+			//if($bud['code'] != '50')
+                        {
+	                        $temp = $this->countDigits($bud['code']);
+				if($temp == 4){
+					$sum = $sum + $bud['bd_balance'];
+					$this->unallocated_parent_controller[$counter]['id'] = $bud['id'];
+					$this->unallocated_parent_controller[$counter]['code'] = $bud['code'];
+                                        $this->unallocated_parent_controller[$counter]['amount'] = $bud['bd_balance'];
+					$counter++;
+				}
+				else{
+                                        $this->unallocated_child_controller[$count]['id'] = $bud['id'];
+                                        $this->unallocated_child_controller[$count]['code'] = $bud['code'];
+                                        $this->unallocated_child_controller[$count]['amount'] = $bud['bd_balance'];
+                                        $count++;
+                                }
+			}
+		}
+		$temp_amount = $main_budget_amount - $sum;
+		$this->reappropriation['unallocated_value_50'] = $temp_amount;
 
-		$this->reappropriation['budget'] = $budget_arr;
+		foreach($this->unallocated_parent_controller as $id => $pb)
+                {
+	                $this->calculate_unallocated_budget(4, $pb['code'], $pb['amount']);
+                }
 
 		// Form Validation 
-             foreach ($this->reappropriation['budget'] as $id => $bud)
+             	foreach ($this->reappropriation['budget'] as $id => $bud)
                 {
 			$name = 'budget_value'. "_" .$bud['id'];
                         $this->form_validation->set_rules($name, 'Budget Value', 'trim|min_length[2]|max_length[15]');
@@ -643,7 +698,7 @@ class Budget extends Controller {
 
 			if($expense_amount == '0')
 			{
-				$expense_amount = $this->Budget_model->get_allocation_amount('50');
+				$expense_amount = $this->Budget_model->get_allocation_amount('50', 'budgets');
 			}
 
                         if($Sum > $expense_amount)
@@ -733,7 +788,7 @@ class Budget extends Controller {
 	{
 		$username = $this->config->item('account_name');
 		$sum = 0;
-
+		
 		foreach($this->child_controller as $id => $cb)
 		{
 			if($cb['code'] != $code)
@@ -753,15 +808,44 @@ class Budget extends Controller {
 		{
 			//Error Msg
 			$this->messages->add('An error has occured.', 'error');
-                        $this->messages->add('Sum of child budgets does not match with value of budget ' . $code, 'error');
+                        $this->messages->add('Sum of child budgets does not match with unallocated value of budget ' . $code, 'error');
 			$this->messages->add('Please try updating values again', 'error');
-                        $this->logger->write_message("error", "Sum of child budgets does not match with value of budget " . $code . ' by user ' . $username);
-                       // $this->template->load('template', 'budget/reappropriation', $this->reappropriation);
+               	        $this->logger->write_message("error", "Sum of child budgets does not match with value of budget " . $code . ' by user ' . $username);
+                      		// $this->template->load('template', 'budget/reappropriation', $this->reappropriation);
 			redirect('budget/reappro');
-                        return;
+       	                return;
 		}
 	}
 
+	function calculate_unallocated_budget($i, $code, $amount)
+	{
+		$sum = 0;
+		$count = 0;
+		$unallocated_budget_amount = '';
+	
+		foreach($this->unallocated_child_controller as $id => $cb)
+		{
+			if($cb['code'] != $code)
+			{
+				$temp = $this->startsWith($cb['code'], $code);
+				$len = $this->countDigits($cb['code']);
+
+				if($temp && ($len == $i + $this->a))
+				{
+					$count++;
+					$sum = $sum + $cb['amount'];
+					//$dump = $this->calculate_unallocated_budget($i + $this->a, $cb['code'], $cb['amount']);
+					$this->calculate_unallocated_budget($i + $this->a, $cb['code'], $cb['amount']);
+				}
+			}		
+		}
+		
+		if($count>0 || $this->countDigits($code)==4)
+			$unallocated_budget_amount = $amount - $sum;
+                $name = 'unallocated_value_' . $code;
+                $this->reappropriation[$name] = $unallocated_budget_amount;
+		return;
+	}
 
 }//class
 

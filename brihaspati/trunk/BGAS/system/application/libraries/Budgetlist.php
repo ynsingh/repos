@@ -16,7 +16,12 @@ class Budgetlist
 	var $children_groups = array();
 	var $children_ledgers = array();
 	var $counter = 0;
+	var $sum = 0;
+	var $main_budget_amount = 0;
 	var $budget = array();
+	var $projection = array();
+	var $consumed_amount = 0;
+	var $earned_amount = 0;
 	public static $temp_max = 0;
 	public static $max_depth = 0;
 	public static $csv_data = array();
@@ -27,6 +32,11 @@ class Budgetlist
 		return;
 	}
 
+	/**
+	 * reads data from database,
+	 * if id = 0, then data from 'budgets' is read
+	 * else, data from 'projections' is read
+	 */
 	function init($id)
 	{
 		$CI =& get_instance();
@@ -46,12 +56,10 @@ class Budgetlist
 				$this->budget[$counter]['type'] = $row->type;
 	                        $this->budget[$counter]['over'] = $row->allowedover;
 	                        $this->budget[$counter]['consume'] = $row->consume_amount;
-                       		// list ($this->budget[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
-                 //       	$this->total = float_ops($this->total, $this->budget[$counter]->total, '+');
                         	$counter++;
 			}//for
 		}//if
-		else {
+		/*else {
                 	$CI->db->from('budgets')->where('id', $id)->limit(1);
                         $budget_q = $CI->db->get();
                        	$budget_n = $budget_q->row();	
@@ -62,9 +70,24 @@ class Budgetlist
 			$this->type = $budget_n->type;
 			$this->over = $budget_n->allowedover;
 			$this->consume = $budget_n->consume_amount;
-			//$this->status = $group->status ;
-			//	$this->total = 0;
-		}//else
+		}//else*/
+		else{
+			$CI->db->from('projection');
+
+                        $projection_q = $CI->db->get();
+
+                        $counter = 0;
+                        foreach ($projection_q->result() as $row)
+                        {
+                                $this->projection[$counter]['id'] = $row->id;
+                                $this->projection[$counter]['code'] = $row->code;
+                                $this->projection[$counter]['name'] = $row->projection_name;
+                                $this->projection[$counter]['bd_balance'] = $row->bd_balance;
+                                $this->projection[$counter]['type'] = $row->type;
+	                        $this->projection[$counter]['earned'] = $row->earned_amount;
+                                $counter++;
+                        }//for
+		}
 	}//function
 
 	/* Display Account list in Balance sheet and Profit and Loss st */
@@ -104,15 +127,16 @@ class Budgetlist
 		}
 	}
 
-	/* Display chart of accounts view */
-	function budget_st_main($c = 0)
+	/* Display chart of budgets/projection view */
+	//function budget_st_main($c = 0)
+	function budget_st_main($c = 0, $account)
 	{
 		$this->counter = $c;
 
 		/*
 		 * Displays value for a particular row
 		 * in the budgets table.
-		 */
+		 /
 		if ($this->id != 0)
 		{
 			echo "<tr class=\"tr-group\">";
@@ -154,63 +178,224 @@ class Budgetlist
 				echo " &nbsp;" . anchor('budget/delete/' . $this->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
 			}
 			echo "</tr>";
-		}
+		}*/
 
-		/*
-		 * Displays value for all the rows
-		 * in the budgets table.
-		 */
-		if (count($this->budget) > 0)
-		{
-			$this->counter++;
-			foreach ($this->budget as $id => $data)
-                	{
-				
-                        	//"$this->counter++ ";
-				echo "<tr class=\"tr-ledger\">";
-                                echo "<td class=\"td-ledger\">";
+		if($account == 'budget'){
+			/*
+			 * Displays value for all the rows
+			 * in the budgets table.
+			 */
+			$account_code = 0;
+			if (count($this->budget) > 0)
+			{
+				$this->counter++;
+				foreach ($this->budget as $id => $data)
+                		{
+					$CI =& get_instance();
+					$CI->db->from('groups');
+					$CI->db->select('code')->where('name =', 'Expenses');
+		                        $groups_q = $CI->db->get();
+		                        foreach ($groups_q->result() as $row)
+						$account_code = $row->code;
+
+					if($data['code'] < 10000 && $data['code'] != '50' &&  $data['code'] != $account_code){
+						$this->sum = $this->sum + $data['bd_balance'];
+						$this->consumed_amount = $this->consumed_amount + $data['consume'];
+					}
+                        
+					if($data['code'] == '50')
+					{
+						$this->main_budget_amount = $data['bd_balance'];
+					}
+	
+					//"$this->counter++ ";
+					echo "<tr class=\"tr-ledger\">";
+                        	        echo "<td class=\"td-ledger\">";
 					echo "&nbsp;" .  $data['code'];
-                                //echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['code'], array('title' => $data['code'] . ' Ledger Statement', 'style' => 'color:#000000'));
-                        	echo "</td>";
-                        	echo "<td class=\"td-group\">";
-                        	echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $data['name'];
-                        	echo "</td>";
-                        	//echo "<td>Group Account</td>";
-				echo "<td>";
-                                echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $data['type'];
-                                echo "</td>";
-                        	echo "<td>";
-                                echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $data['bd_balance'];
-                        	echo "</td>";
-                        	echo "<td>";
-                                echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $data['over'];
-                        	echo " </td>";
-				$available_amount=$data['bd_balance'] - $data['consume'];
+	                                //echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['code'], array('title' => $data['code'] . ' Ledger Statement', 'style' => 'color:#000000'));
+        	                	echo "</td>";
+                	        	echo "<td class=\"td-group\">";
+                        		echo $this->print_space($this->counter);
+                                	echo "&nbsp;" .  $data['name'];
+	                        	echo "</td>";
+        	                	//echo "<td>Group Account</td>";
+					echo "<td>";
+                        		echo $this->print_space($this->counter);
+	                                echo "&nbsp;" .  $data['type'];
+        	                        echo "</td>";
+                	        	echo "<td>";
+                        		echo $this->print_space($this->counter);
+	                                echo "&nbsp;" .  $data['bd_balance'];
+        	                	echo "</td>";
+                		       	echo "<td>";
+                                	echo $this->print_space($this->counter);
+	                                echo "&nbsp;" .  $data['over'];
+        	                	echo " </td>";
+					$available_amount=$data['bd_balance'] - $data['consume'];
+	
+					echo "<td>";
+					echo $this->print_space($this->counter);
+                        	        echo "&nbsp;" .  $available_amount;
+                                	echo " </td>";
 
-				echo "<td>";
-				echo $this->print_space($this->counter);
-                                echo "&nbsp;" .  $available_amount;
-                                echo " </td>";
+					if(!($data['code'] == '50'))
+					{
+                		                	echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
+					}
+					//echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
+        	                echo "</tr>";
+				
+                		}
+				$this->counter--;
 
-                        //	if ($data['id'] <= 4)
-                        //	{
-                          //     	echo "<td class=\"td-actions\"></tr>";
-                        //	} else {
-                                //echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
-				if(!($data['code'] == '50'))
-				{
-                                	echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
-				}
-				//echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
-                        echo "</tr>";
+				echo "<tr>";
+					/*
+						Its the sum of amount allocated to child budgets
+					 */ 
+					echo "<td>";
+        	        		        echo "&nbsp;<strong>" . "Allocated Amount" .  "</strong>";
+                	        	        echo $this->print_space($this->counter);
+                                        	echo "&nbsp;" .  $this->sum;
+					echo " </td>";
+	
+					echo "<td>";
+					echo "</td>";
 
-                	}
-			$this->counter--;
-		}
+					/*
+						Its the difference between the bd_balance of Main Budget
+						and the sum of amount allocated to its child budgets
+					 */
+			              	echo "<td align=\"right\">";
+                	                        echo "&nbsp;<strong>" . "Unallocated Amount" .  "</strong>";
+                        	                echo $this->print_space($this->counter);
+						$temp = $this->main_budget_amount - $this->sum;
+                                        	echo "&nbsp;" .  $temp;
+	                                echo " </td>";
+        	                       
+					echo "<td>";
+					echo "</td>";
+	
+					/*
+						Its the sum of consumed_amount of child budgets
+					 */
+					echo "<td align=\"right\">";
+                        	                echo "&nbsp;<strong>" . "Consumed Amount" .  "</strong>";
+                                	        echo $this->print_space($this->counter);
+                                        	echo "&nbsp;" .  $this->consumed_amount;
+	                                echo " </td>";
+	
+					echo "<td>";
+                	                echo "</td>";
+					
+					echo "<td>";
+	                                echo "</td>";
+				echo "</tr>";	
+			}
+		}//if account == 'budget'
+		else{
+			if (count($this->projection) > 0)
+			{
+				$this->counter++;
+				foreach ($this->projection as $id => $data)
+                		{
+					$CI =& get_instance();
+					$CI->db->from('groups');
+                                        $CI->db->select('code')->where('name =', 'Incomes');
+                                        $groups_q = $CI->db->get();
+                                        foreach ($groups_q->result() as $row)
+                                                $account_code = $row->code;
+
+					if($data['code'] < 10000 && $data['code'] != $account_code){
+						$this->sum = $this->sum + $data['bd_balance'];
+						$this->earned_amount = $this->earned_amount + $data['earned'];
+					}
+                        
+					if($data['code'] == $account_code)
+					{
+						$this->main_projection_amount = $data['bd_balance'];
+					}
+	
+					//"$this->counter++ ";
+					echo "<tr class=\"tr-ledger\">";
+                        	        echo "<td class=\"td-ledger\">";
+					echo "&nbsp;" .  $data['code'];
+	                                //echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['code'], array('title' => $data['code'] . ' Ledger Statement', 'style' => 'color:#000000'));
+        	                	echo "</td>";
+                	        	echo "<td class=\"td-group\">";
+                        		echo $this->print_space($this->counter);
+                                	echo "&nbsp;" .  $data['name'];
+	                        	echo "</td>";
+        	                	//echo "<td>Group Account</td>";
+					echo "<td>";
+                        		echo $this->print_space($this->counter);
+	                                echo "&nbsp;" .  $data['type'];
+        	                        echo "</td>";
+                	        	echo "<td>";
+                        		echo $this->print_space($this->counter);
+	                                echo "&nbsp;" .  $data['bd_balance'];
+        	                	echo "</td>";
+					$unearned_amount=$data['bd_balance'] - $data['earned'];
+	
+					echo "<td>";
+					echo $this->print_space($this->counter);
+                        	        echo "&nbsp;" .  $unearned_amount;
+                                	echo " </td>";
+
+                		        //echo "<td class=\"td-actions\">" . anchor('projection/edit/' . $data['id'] , "Edit", array('title' => 'Edit Projection', 'class' => 'red-link'));
+					//echo " &nbsp;" . anchor('budget/delete/' . $data['id'], img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Budget')), array('class' => "confirmClick", 'title' => "Delete Budget")) . "</td>";
+        	                echo "</tr>";
+				
+                		}
+				$this->counter--;
+
+				echo "<tr>";
+ 		                        /*
+						Its the sum of bd_balance of child projections
+						i.e., projections with code length '4'
+					 */
+					echo "<td>";
+        	        		        echo "&nbsp;<strong>" . "Targeted Projection" .  "</strong>";
+                	        	        echo $this->print_space($this->counter);
+                                        	echo "&nbsp;" .  $this->sum;
+					echo " </td>";
+	
+					echo "<td>";
+					echo "</td>";
+
+					/*
+						Its the sum of earned_amount of child projections
+						i.e., projections with code length '4'
+					 */
+				        echo "<td align=\"right\">";
+					        echo "&nbsp;<strong>" . "Achieved Projection" .  "</strong>";
+                        	                echo $this->print_space($this->counter);
+                                        	echo "&nbsp;" .  $this->earned_amount;
+	                                echo " </td>";
+        	                       
+					echo "<td>";
+					echo "</td>";
+	
+					/*
+                                                Its the difference between the
+						sum of bd_balance of child projections
+						sum of earned_amount of child projections
+                                                i.e., projections with code length '4'
+                                         */
+					echo "<td align=\"right\">";
+                        	                echo "&nbsp;<strong>" . "Unachieved Projection" .  "</strong>";
+                                	        echo $this->print_space($this->counter);
+						$temp = $this->sum - $this->earned_amount;
+                                        	echo "&nbsp;" .  $temp;
+	                                echo " </td>";
+	
+					echo "<td>";
+                	                echo "</td>";
+					
+					echo "<td>";
+	                                echo "</td>";
+				echo "</tr>";	
+			}
+		}//else $account == 'projection'
 	}
 
 	function print_space($count)

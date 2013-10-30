@@ -9,9 +9,9 @@
 	//echo "<thead><tr><th>Budget Code </th><th>Budget Name</th><th>Budget Type</th><th>O/P Balance</th><th>C/L Balance</th><th>Over Expence Allowed</th> <th></th></tr></thead>";
 	//echo "<thead><tr><th>Budget Code </th><th>Budget Name</th><th>Budget Type</th><th>B/D Balance</th><th>O/P Balance</th><th>Over Expence Allowed</th> <th></th></tr></thead>";
 	echo "<thead><tr><th>Budget Code </th><th>Budget Name</th><th>Budget Type</th><th>B/D Balance</th><th>Over Expence Allowed</th> <th>Available Budget</th><th></th></tr></thead>";
-	$asset->budget_st_main(-1);
+	$asset->budget_st_main(-1,'budget');
 	echo "</table>";
 	echo "</td>";
 	echo "</tr>";
 	echo "</table>";
-
+?>
