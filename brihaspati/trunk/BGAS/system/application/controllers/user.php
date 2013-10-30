@@ -31,7 +31,7 @@ class User extends Controller {
 			'size' => '40',
 			'value' => '',
 		);
-
+	
 		/* Form validations */
 		$this->form_validation->set_rules('user_name', 'User name', 'trim|required|min_length[1]|max_length[100]');
 		$this->form_validation->set_rules('user_password', 'Password', 'trim|required|min_length[1]|max_length[100]');
@@ -88,7 +88,7 @@ class User extends Controller {
 				$this->template->load('user_template', 'user/login', $data);
 				return;
 			}
-
+	
 			/* Password verify */
 			$data_user_password = md5($data_user_password);
                         if ($user_password == $data_user_password)
@@ -141,7 +141,7 @@ class User extends Controller {
 			redirect('');
 			return;
 		}
-
+		
 		/* Currently active account */
 		$data['active_account'] = $this->session->userdata('active_account');
 		//$data['user_account'] = $this->session->userdata('user_account');
@@ -168,7 +168,9 @@ class User extends Controller {
 			redirect('user/profile');
 			return;
 		}
-        
+		$path=$this->config->item('config_path');
+		$account=$this->session->userdata('active_account');
+                
 		/* Filter user access to accounts*/ 
 		foreach($active_user->result() as $row)
                 {

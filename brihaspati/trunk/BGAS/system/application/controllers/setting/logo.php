@@ -9,6 +9,7 @@ class Logo extends Controller {
 		$this->load->model('Setting_model');
 		$this->load->helper(array('form', 'url'));
 		$this->load->database();
+		$this->load->library('image_lib');
 		//set path
 		$this->upload_path= realpath(BASEPATH.'../uploads/logo');
 		 $this->logo_path_url=base_url().'uploads/logo';
@@ -27,7 +28,7 @@ class Logo extends Controller {
 	{
 		$this->template->set('page_title', 'Upload Logo');
 		$account_data = $this->Setting_model->get_current();
-
+		$this->load->helper('file');
 		/* Form fields */
 		$data['ins_name'] = array(
 			'name' => 'ins_name',
@@ -59,10 +60,12 @@ class Logo extends Controller {
 		if ($account_data)
 		{
 			$data['ins_name']['value'] = ($account_data->ins_name) ? print_value($account_data->ins_name) : '';
+			
 			$data['dept_name']['value'] = ($account_data->dept_name) ? print_value($account_data->dept_name) : '';
 			$data['uni_name']['value'] = ($account_data->uni_name) ? print_value($account_data->uni_name) : '';
 		}
-
+		
+                
 		/* Form validations */
 		$this->form_validation->set_rules('ins_name', 'Institute name', 'trim|max_length[255]');
 		$this->form_validation->set_rules('dept_name', 'Dept name', 'trim|max_length[255]');
@@ -75,7 +78,7 @@ class Logo extends Controller {
 			$data['dept_name']['value'] = $this->input->post('dept_name', TRUE);
 			$data['uni_name']['value'] = $this->input->post('uni_name', TRUE);
 		}
-
+		
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -88,6 +91,8 @@ class Logo extends Controller {
 			$data_ins_name = $this->input->post('ins_name', TRUE);
 			$data_dept_name = $this->input->post('dept_name', TRUE);
 			$data_uni_name = $this->input->post('uni_name', TRUE);
+			delete_files($this->upload_path, TRUE);
+		
 
 			/* Update settings */
 			$this->db->trans_start();
@@ -107,31 +112,78 @@ class Logo extends Controller {
 				$this->db->trans_complete();
 				$this->messages->add('Institute name  updated.', 'success');
 				$this->logger->write_message("success", "Updated Institute name ");
-//				start upload
+				//start upload
 				$config = array(
                  		       'allowed_types' => 'jpg|jpeg|gif|png|txt|doc|pdf|odt',
-		                        'upload_path' => $this->upload_path,
+		                        'upload_path' => $this->upload_path,	 
 					'overwrite' => true,
-                		        'max_size' => 2000
+                		       	'max_size' => 100,
+				
                 		);
-		                $this-> load->library('upload', $config);
-                		if ( ! $this->upload->do_upload()) {
-					$error = array('error' => $this->upload->display_errors());
-		                        $this->messages->add('Error uploading  Institute logo  settings and path is .'.$this->upload_path.' The error is '.$this->upload->display_errors(), 'error');
-                		        $this->logger->write_message("error", "Error uploading Institute logo settings");
-		                        $this->template->load('template', 'setting/logo', $data);
-                		        return;
-		                } else {
-                		        $data = $this->upload->data();
-					$this->messages->add('Institute logo  updated.', 'success');
-					$this->load->view('setting/logo',$data);
+				$this->db->select('id')->from('settings')->where('ins_name',$data_ins_name);
+                                $ins_id = $this->db->get();
+                                foreach( $ins_id->result() as $row)
+                                 {
+                                        $ins_id1 = $row->id;
+                                 }
+                                 $size = $_FILES["userfile"]["size"] / 1024;
+				if( $size > 100 )
+                                {
+                                   $this->messages->add('logo file should be less then 100 KB.', 'error');
+
+                                }
+				
+				if($size > 0 && $size < 100)
+				{ 
+					$file =$_FILES['userfile']['name'];
+				        $ext = substr(strrchr($file, '.'), 1);
+                	           	$full_name =  $ins_id1 . '.' .  $ext;
+				        $config['file_name'] = $full_name ;
+		                	$this-> load->library('upload', $config);
+                		 
+					if ( ! $this->upload->do_upload())
+					{
+						$error = array('error' => $this->upload->display_errors());
+		        	                $this->messages->add('Error uploading  Institute logo  settings and path is .'.$this->upload_path.' The error is '.$this->upload->display_errors(), 'error');
+                			        $this->logger->write_message("error", "Error uploading Institute logo settings");
+		                        	$this->template->load('template', 'setting/logo', $data);
 					
-				}
-				//end upload
-				redirect('setting/logo');
-				return;
+						return;
+			                } else {
+						$data = $this->upload->data();
+								
+						/* Resize the uploaded image */
+						$filename = $data['file_name'];
+        	        	                $config['image_library'] = 'gd2';
+                                		$config['source_image'] = $data['file_path'] . $filename;
+	                	               //$config['new_image'] =  $data['file_path'] . $filename;
+					        $config['maintain_ratio'] = TRUE;
+                	              		$config['x_axis'] = '100';
+						$config['y_axis'] = '60';
+						$config['new_image'] =  $data['file_path'] . $filename;
+						$config['height'] =75;
+		                                $config['width'] = 100;
+                		                $config['master_dim'] = 'auto';
+       						$this->image_lib->initialize($config);
+		                                $this->image_lib->resize();
+						$this->image_lib->crop();
+				
+						if (! $this->image_lib->resize())
+                                		{
+		        	                          echo $this->image_lib->display_errors();
+                	        	        }
+				
+						$this->messages->add('Institute logo  updated.', 'success');
+						redirect('setting/logo');
+						return ;
+												
+					}
+				}//new if		
+	//			return;
 			}
 		}
+		 redirect('setting/logo');
+		$this->template->load('template', 'setting/logo', $data);
 		return;
 	}
 /*

@@ -56,7 +56,7 @@ $(document).ready(function() {
 		minWidth:12,
 		maxWidth:27,
 		extraWidth: 1
-	}).superfish(); // call supersubs first, then superfish, so that subs are 
+	}).superfish(); // call supersubs first, then superfish, so that subs are 	
 	$('.datepicker').datepick({
 		dateFormat: '<?php echo $this->config->item('account_date_format'); ?>',
 	});
@@ -75,7 +75,7 @@ $(document).ready(function() {
 
 
 		<div id="logo">
-		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b')); $iname = $this->config->item('account_ins_name'); echo $iname;?>
+		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
  
 	</div>
 
@@ -93,32 +93,34 @@ $(document).ready(function() {
 				echo " | ";
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
 				echo " | ";
-				//echo anchor('admin/masterdata', 'Master Data', array('title' => "Master Data", 'class' => 'anchor-link-b'));
 				echo "</div>";
 			}
 		?>
 
-		 <?php 
-/*file_list = get_filenames($this->upload_path);
-                //echo "$file_list";
-                //print_r($file_list);
+		 <?php
+		$this->upload_path= realpath(BASEPATH.'../uploads/logo');
+		$file_list = get_filenames($this->upload_path);
                 if ($file_list)
                 {
                         foreach ($file_list as $row)
                         {
-                                //Only include file ending with .ini 
-                                if (substr($row, -4) == ".png")
-                                {
-                                        //echo $row;
-                                        $ini_label = substr($row, 0, -4);
-                                //        $data['accounts'][$ini_label] = $ini_label;
-                                }
-                        }
-                }*/
-
-//echo img(array('src' => base_url() . "uploads/logo/IIT_Bombay_logo.png")); $this->db->from('settings');$this->db->select('ins_name')->where('id', 1); $ins_name1 = $this->db->get(); foreach($ins_name1->result() as $row){
-//$ins_name2 = $row->ins_name;}echo "$ins_name2";
-?>  
+				echo img(array('src' => base_url() . "uploads/logo/" . $row)); 
+			
+				echo "<br/>";
+				echo"&nbsp;&nbsp;&nbsp;&nbsp;";
+				echo $this->config->item('account_ins_name');
+		
+				  }
+}
+		else{
+		echo "<br/>";
+		echo "<br/>";
+		echo "<br/>";
+		echo "<br/>";
+		echo "<p align=\"justify\">" . "&nbsp;" . $this->config->item('account_ins_name') . "</p>";
+		}
+		?> 
+ 
 		<div id="info">
 			<?php
 				echo $this->config->item('account_name');
@@ -180,20 +182,8 @@ $(document).ready(function() {
 			<li>
 				<?php echo anchor('report', 'Reports', array('title' => 'Reports')); ?>
 				<ul>
-					<li>
-				<?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?>
-				      	<ul>
-	<li><?php echo anchor('report/balancesheet', 'Balance Sheet Corporate', array('title' => 'Balance Sheet Corporate')); ?></li>
-        <li><?php echo anchor('report/academic', 'Balance Sheet Academic', array('title' => 'Balance Sheet Academic')); ?></li>
-					</ul>
-					</li>	
-					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?>
-				      	<ul>
-	<li><?php echo anchor('report/balancesheet', 'Balance Sheet Corporate', array('title' => 'Balance Sheet Corporate')); ?></li>
-        <li><?php echo anchor('report/academic', 'Balance Sheet Academic', array('title' => 'Balance Sheet Academic')); ?></li>
-					</ul>
-
-					</li>
+					<li><?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?></li>	
+					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?></li>
 					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
 					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>
 					<li><?php echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation')); ?></li>
@@ -204,6 +194,7 @@ $(document).ready(function() {
 			</li>
 			<li>
 				<?php echo anchor('help', 'Help', array('title' => 'Help',)); ?>
+				 
 			</li>
 			<li>
                                 <?php echo anchor('changepassword', 'Changepassword', array('title' => 'changepassword', 'class' => 'last')); ?>

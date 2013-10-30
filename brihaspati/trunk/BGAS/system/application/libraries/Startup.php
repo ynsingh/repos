@@ -111,7 +111,7 @@ class Startup
 		$CI->config->set_item('account_timezone', $account_d->timezone);
 		$CI->config->set_item('account_locked', $account_d->account_locked);
 		$CI->config->set_item('account_database_version', $account_d->database_version);
-
+		$CI->config->set_item('account_ins_name', $account_d->ins_name);
 		/* Load general application settings */
 		$CI->general->check_setting();
 
