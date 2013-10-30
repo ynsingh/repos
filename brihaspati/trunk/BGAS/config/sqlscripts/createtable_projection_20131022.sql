@@ -5,7 +5,7 @@ CREATE TABLE projection
 			group_id INTEGER (11) NOT NULL,
 			projection_name VARCHAR (100) NOT NULL,
                         bd_balance DECIMAL (15, 2) DEFAULT 0.00,
-			earned_amount decimal(15,2) DEFAULT '0.00';
+			earned_amount decimal(15,2) DEFAULT '0.00',
 			type VARCHAR (50) NOT NULL,
                         PRIMARY KEY(id)
 );
