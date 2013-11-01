@@ -11,6 +11,32 @@ class User extends Controller {
 	{
 		$this->template->set('page_title', 'Login');
 		$this->load->library('general');
+		
+		/* Create bgasuser table in login database*/
+		$db1=$this->load->database('login', TRUE);
+		/* check if table exist */
+		$table="bgasuser";
+		if($db1->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
+			$this->messages->add('login database with user table exists.', 'success');
+		}
+		else{
+
+			$setup_login = read_file('config/sqlscripts/createtable_bgasuser-20130920.sql');
+	                $setup_login_array = explode(";", $setup_login);
+        	        foreach($setup_login_array as $row)
+                	{
+                		if (strlen($row) < 5)
+                        		continue;
+	                        $db1->query($row);
+        	                if ($db1->_error_message() != "")
+                	        {
+                        		$this->messages->add('Error initializing login database.'._error_message(), 'error');
+                                	$this->template->load('user_template', 'user/login', $data);
+	                                return;
+        	                }
+                	}
+                	$this->messages->add('Initialized login database.', 'success');
+		}
 
 		/* If user already logged in then redirect to profile page */
 		if ($this->session->userdata('user_name'))
@@ -59,7 +85,6 @@ class User extends Controller {
                         $user_role='';
 			$user_status='';
 			//connect with login database for authentication. The alias is login
-				$db1=$this->load->database('login', TRUE);
                                 $db1->from('bgasuser');
                                 $db1->select('username,password,role,status,accounts')->where('username =', $data_user_name);
 
