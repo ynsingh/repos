@@ -313,7 +313,7 @@ public class UploadAction extends SecureAction
 							long uquota=QuotaUtil.getCrsQuota(courseHome);
 							uquota= uquota - dirS;
 							long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
-					//		ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
+							//ErrorDumpUtil.ErrorLog("The different value of quota parameter in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace +"I ID "+instituteId);
 							if((uquota>fsize)&&(disSpace>fsize))
 							{
                                 	        		f.mkdirs();

@@ -234,8 +234,9 @@ public class QuotaUtil {
 			 }
 	        	 fdisks = FileSystemUtils.freeSpaceKb(dirName);
 			 fdisks = fdisks/1024;
-	//		ErrorDumpUtil.ErrorLog("The space is on the disk"+fdisks);
+			//ErrorDumpUtil.ErrorLog("The space is on the disk "+fdisks +" dir name "+dirName);
         	 } catch (Exception ex) {
+				ErrorDumpUtil.ErrorLog("The error in calculating free disk space is on the disk "+ex);
 	             ex.printStackTrace();
         	 }
 	return fdisks;

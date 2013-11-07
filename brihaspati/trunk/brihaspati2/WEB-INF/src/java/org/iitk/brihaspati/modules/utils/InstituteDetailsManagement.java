@@ -154,7 +154,7 @@ public class InstituteDetailsManagement
 			Criteria crit=new Criteria();
                         crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
 			List v=CoursesPeer.doSelect(crit);
-//ErrorDumpUtil.ErrorLog("The error in get()"+v.toString());
+ErrorDumpUtil.ErrorLog("The value in vector are (Institute Detail management )"+v.size());
 			/**
  			*Get GroupName,CourseName,GroupAlias,etc 
  			*/ 
@@ -179,7 +179,9 @@ public class InstituteDetailsManagement
 					String loginName=org.apache.commons.lang.StringUtils.substringBetween(GName, gAlias,"_"+insId);
                                 	int UId=UserUtil.getUID(loginName);
 					String uID=Integer.toString(UId);
+//ErrorDumpUtil.ErrorLog("The  loop running times (Institute Detail management two)"+i +" login name is "+loginName +" The UID is "+uID);
                                 	List userDetails=UserManagement.getUserDetail(uID);
+					if(userDetails.size() > 0){
                                 	TurbineUser element=(TurbineUser)userDetails.get(0);
                                 	String firstName=element.getFirstName().toString();
                                 	String lastName=element.getLastName().toString();
@@ -194,6 +196,7 @@ public class InstituteDetailsManagement
                                 	cuDetail.setLoginName(loginName);
                                 	cuDetail.setUserName(userName);
                                 	cuDetail.setEmail(email);
+					}
 					cuDetail.setGroupName(GName);
                                 	cuDetail.setCourseName(courseName);
                                 	cuDetail.setCAlias(gAlias);
