@@ -4,6 +4,7 @@
  * All Rights Reserved.
  *
  *  @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ *  @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -35,9 +36,9 @@ $!data.getMessage()
 			<td align="right"><a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">$brih_VideoHelp</font></a></td>
 			<td><b>
 			<font face="$ui.sansSerifFonts">
-			 <a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a> |
-       			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
-			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+			<a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a> 
+       			|<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> 
+			|<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
 			</td>
 	      </tr>
 	</table>
@@ -48,7 +49,7 @@ $!data.getMessage()
 
 	#if($userList2.size()!=0)	
 		#if(($type=="sgraph") && ($mname!="") && ($usrname!=""))
-			<td>
+			<td align="right">
                         <select name="uname3" id="u3" size="1" class="drop" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                         	<option>$value </option>
@@ -70,7 +71,7 @@ $!data.getMessage()
 		#end
 	#else
 		#if(($type=="sgraph") && ($usrname!=""))
-			<td>
+			<td align="right">
                         <select name="uname3" id="u3" class="drop" size="1" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                        		<option>$value </option>
@@ -93,7 +94,7 @@ $!data.getMessage()
 	#end
 	#if($userList2.size()!=0)
 		#if(($type=="sgraph") && ($usrname!=""))
-			<td>
+			<td align="right">
 			<select name="uname2" class="drop" id="u2" size="1" onChange="Changename(document.frm,this);"/>
 			#if($mname!="")
                         	<option>$mname </option>
@@ -113,7 +114,7 @@ $!data.getMessage()
 		#end
 			
 	#end
-	<td colspan="1">
+	<td colspan="1" align="right">
 		<select name="uname1" class="drop" id="u1" size="1" onChange="Changename(document.frm,this);"/>
 		#if($usrname!="")
                        	<option>$usrname </option>
@@ -133,11 +134,12 @@ $!data.getMessage()
 	         	$brih_select $brih_usrName
 			</td>
               </tr>
+
        		#if($valuestr!="")
-			<tr bgcolor="$ui.menuColor"><td colspan="1"><div id="graphdiv1"></td></div></tr>
+			<tr bgcolor="$ui.menuColor"><td colspan="2"><div id="graphdiv1"></td></div></tr>
 		#end
 		#if($Modulevaluestr!="")
-			<tr bgcolor="$ui.menuColor"><td colspan="1"><div id="graphdiv2"></td></div></tr>
+			<tr bgcolor="$ui.menuColor"><td colspan="2"><div id="graphdiv2"></td></div></tr>
 		#end
 	</table>
 #end
@@ -176,14 +178,14 @@ function Changename(frm,field)
                   title:'CourseUsageTime',
                   ylabel: 'Time in Minutes',
                   xlabel:'Date',
-                  labelsDivStyles: { 'textAlign': 'right' }
+                  labelsDivStyles: { 'textAlign': 'left' }
                  });
 	g2 = new Dygraph(document.getElementById("graphdiv2"),
                       e1,{
                   title:'ModuleUsageTime',
                   ylabel: 'Time in Minutes',
                   xlabel:'Date',
-                  labelsDivStyles: { 'textAlign': 'right' }
+                  labelsDivStyles: { 'textAlign': 'left' }
                  });
 	}
 
