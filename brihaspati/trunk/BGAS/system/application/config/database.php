@@ -65,5 +65,47 @@ $db['login']['char_set'] = "utf8";
 $db['login']['dbcollat'] = "utf8_general_ci";
 
 
+$db['pl']['hostname'] = "127.0.0.1";
+$db['pl']['username'] = "bgas";
+$db['pl']['password'] = "bgas";
+$db['pl']['database'] = "pl";
+$db['pl']['dbdriver'] = "mysql";
+$db['pl']['dbprefix'] = "";
+$db['pl']['pconnect'] = FALSE;
+$db['pl']['db_debug'] = FALSE;
+$db['pl']['cache_on'] = FALSE;
+$db['pl']['cachedir'] = "";
+$db['pl']['char_set'] = "utf8";
+$db['pl']['dbcollat'] = "utf8_general_ci";
+
+
+$db['pico']['hostname'] = "127.0.0.1";
+$db['pico']['username'] = "bgas";
+$db['pico']['password'] = "bgas";
+$db['pico']['database'] = "pico";
+$db['pico']['dbdriver'] = "mysql";
+$db['pico']['dbprefix'] = "";
+$db['pico']['pconnect'] = FALSE;
+$db['pico']['db_debug'] = FALSE;
+$db['pico']['cache_on'] = FALSE;
+$db['pico']['cachedir'] = "";
+$db['pico']['char_set'] = "utf8";
+$db['pico']['dbcollat'] = "utf8_general_ci";
+
+
+$db['fees']['hostname'] = "127.0.0.1";
+$db['fees']['username'] = "bgas";
+$db['fees']['password'] = "bgas";
+$db['fees']['database'] = "fees";
+$db['fees']['dbdriver'] = "mysql";
+$db['fees']['dbprefix'] = "";
+$db['fees']['pconnect'] = FALSE;
+$db['fees']['db_debug'] = FALSE;
+$db['fees']['cache_on'] = FALSE;
+$db['fees']['cachedir'] = "";
+$db['fees']['char_set'] = "utf8";
+$db['fees']['dbcollat'] = "utf8_general_ci";
+
+
 /* End of file database.php */
 /* Location: ./system/application/config/database.php */
