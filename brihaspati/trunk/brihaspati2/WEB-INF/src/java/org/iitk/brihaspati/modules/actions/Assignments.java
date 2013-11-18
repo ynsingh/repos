@@ -440,7 +440,13 @@ public class Assignments extends SecureAction
 								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
 							}
 						}
-							TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,"",username,Grade,Duedate);
+						if(mode.equals("Update"))
+						{
+							if(StringUtils.isBlank(fileName1))
+							fileName1=pp.getString("filename","");
+						}
+					
+						TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName1,username,Grade,Duedate);
 						xmlwriter.writeXmlFile();
 
 //						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);

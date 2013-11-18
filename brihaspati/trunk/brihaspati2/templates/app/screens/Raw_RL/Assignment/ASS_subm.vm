@@ -199,6 +199,7 @@ $!data.getMessage()
 		<input type="hidden" name="actionName">
                 <input type="hidden" name="mode" value=$mode>
                 <input type="hidden" name="cid" value=$cid>
+		<input type="hidden" name="filename" value=$Assignmentfilename>
 </form>
 #end
 </form>

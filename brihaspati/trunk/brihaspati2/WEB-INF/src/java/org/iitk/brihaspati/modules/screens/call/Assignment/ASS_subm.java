@@ -240,6 +240,8 @@ public class  ASS_subm  extends  SecureScreen
    			if(mode.equals("Update")) {
                         	lst.clear();
                         	String tcid=pp.getString("cid","");
+                        	String flName=pp.getString("filename","");
+                                context.put("Assignmentfilename",flName);
 				crit1=new Criteria();
         	                crit1.add(AssignmentPeer.GROUP_NAME,courseid);
         	                crit1.add(AssignmentPeer.ASSIGN_ID,tcid);
@@ -258,7 +260,6 @@ public class  ASS_subm  extends  SecureScreen
 						context.put("topic",topic);
 						context.put("maxmarks",mmarks);
 		                                context.put("cid",assid);
-						
 					}
 				}
 
