@@ -305,7 +305,7 @@ class Budgetlist
                                         foreach ($groups_q->result() as $row)
                                                 $account_code = $row->code;
 
-					if($data['code'] < 10000 && $data['code'] != $account_code){
+					/*if($data['code'] < 10000 && $data['code'] != $account_code){
 						$this->sum = $this->sum + $data['bd_balance'];
 						$this->earned_amount = $this->earned_amount + $data['earned'];
 					}
@@ -313,8 +313,14 @@ class Budgetlist
 					if($data['code'] == $account_code)
 					{
 						$this->main_projection_amount = $data['bd_balance'];
-					}
-	
+					}*/
+
+					if($data['code'] == '60')
+                                        {
+                                                $this->earned_amount = $data['earned'];
+						$this->main_projection_amount = $data['bd_balance'];
+                                        }
+
 					//"$this->counter++ ";
 					echo "<tr class=\"tr-ledger\">";
                         	        echo "<td class=\"td-ledger\">";
@@ -354,9 +360,10 @@ class Budgetlist
 						i.e., projections with code length '4'
 					 */
 					echo "<td>";
-        	        		        echo "&nbsp;<strong>" . "Targeted Projection" .  "</strong>";
+        	        		        echo "&nbsp;<strong>" . "Target Projection" .  "</strong>";
                 	        	        echo $this->print_space($this->counter);
-                                        	echo "&nbsp;" .  $this->sum;
+                                        	//echo "&nbsp;" .  $this->sum;
+                                        	echo "&nbsp;" .  $this->main_projection_amount;
 					echo " </td>";
 	
 					echo "<td>";
@@ -384,7 +391,8 @@ class Budgetlist
 					echo "<td align=\"right\">";
                         	                echo "&nbsp;<strong>" . "Unachieved Projection" .  "</strong>";
                                 	        echo $this->print_space($this->counter);
-						$temp = $this->sum - $this->earned_amount;
+						//$temp = $this->sum - $this->earned_amount;
+						$temp = $this->main_projection_amount - $this->earned_amount;
                                         	echo "&nbsp;" .  $temp;
 	                                echo " </td>";
 	

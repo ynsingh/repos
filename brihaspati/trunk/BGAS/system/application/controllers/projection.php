@@ -5,16 +5,17 @@ class Projection extends Controller {
 	var $reappropriation = array();
 	var $child_controller = array();
 	var $parent_controller = array();
-	var $unallocated_child_controller = array();
-	var $unallocated_parent_controller = array();
+	var $username;
+	//var $unallocated_child_controller = array();
+	//var $unallocated_parent_controller = array();
 	var $a = 2;
 	var $counter = 0;
 
 	function Projection()
-
 	{
 		parent::Controller();
 		$this->load->model('Budget_model');
+		$this->username = $this->config->item('account_name');
 		return;
 	}	
 
@@ -31,7 +32,7 @@ class Projection extends Controller {
 
 		$this->template->set('nav_links', array('budgetl' => 'Budget', 'budget/add' => 'Add Budget', 'budget/reappro' => 'Reappropriate Budget', 'projectionl' => 'Projection', 'projection/add' => 'Add Projection', 'projection/reappro' => 'Reappropriate Projection'));
 		
-		$username = $this->config->item('account_name');
+		//$username = $this->config->item('account_name');
                 /* Check access */
                 if ( ! check_access('create projection'))
                 {
@@ -106,40 +107,15 @@ class Projection extends Controller {
 	                        $parent_amount = $this->Budget_model->get_allocation_amount($data_parent_code, 'projection');
 			}
 
-			if($my_values[1] != 'Incomes')
-			{
-				$child_budget = $this->Budget_model->get_child_budgets($data_parent_id, 'projection');
-				$count = 0;
-				foreach ($child_budget as $code => $chld)
-		                {
-					if($chld['code'] != $my_values[0]){
-						$allocation_amount = $this->Budget_model->get_allocation_amount($chld['code'], 'projection');
-						$sum = $sum + $allocation_amount;
-					}
-					$count++;
-                		}
-				if($sum > $parent_amount)
-				{
-					//Error message
-					$temp = $sum - $data_amount;
-					$temp = $parent_amount - $temp;
-					$this->messages->add('Projection amount cannot exceed from parent projection. Unallocated amount remaining with parent projection is  ' . $temp, 'error');
-					redirect('projection/add');
-					return;
-					
-				}
-			}//new if
-
                		$data_type = $this->input->post('projection_type', TRUE);
 			$data_earned_amount = 0.00;
 
 			/* Check if group incomes present */
 			$this->db->select('id')->from('groups')->where('code', $my_values[0]);
-			//projection does not exists in groups
 			if ($this->db->get()->num_rows() < 1)
       			{
-				$this->db->select('id')->from('ledgers')->where('code', $my_values[0]);
-				//$this->db->select('id,op_balance')->from('ledgers')->where('code', $my_values[0]);
+				//$this->db->select('id')->from('ledgers')->where('code', $my_values[0]);
+				$this->db->select('id,op_balance')->from('ledgers')->where('code', $my_values[0]);
 				//projection does not exist in ledgers
 				if ($this->db->get()->num_rows() < 1)
 				{
@@ -147,84 +123,210 @@ class Projection extends Controller {
 					$this->template->load('template', 'projection/add', $data);
               				return;
 				}
-				/*else{
+				else{
 					//projection exists in ledgers
+					$this->db->select('id,op_balance')->from('ledgers')->where('code', $my_values[0]);
 					$ledger_parent_q = $this->db->get();
 			                foreach ($ledger_parent_q->result() as $row)
 			                {
 			                        $data_earned_amount = $row->op_balance;
 			                }
 					
-					//update earned_amount for parent projection
-					$this->updateParentProjection($my_values[0], $row->op_balance);
-				}*/
+					//update bd_balance and earned_amount for parent projection
+					$this->updateParentProjection($my_values[0], $data_earned_amount, $data_amount);
+				}
        			}
-			/*else{
-				//projection exists in groups
-				$data_earned_amount = 0;
-			}*/
-					
-				//Adding data to projection table
-				$this->db->trans_start();
-				$insert_data = array(
-					'code' => $my_values[0],
-					'group_id' => $data_parent_id,
-					'projection_name' => $my_values[1],
-                       			'bd_balance' => $data_amount,
-                       			'type' => $data_type,
-					//'earned_amount' => $data_earned_amount,
-           	 			);
+			else
+			{
+				//update bd_balance for parent projection
+                                $this->updateParentProjection($my_values[0], 0, $data_amount);	
+			}
 
-               			if ( ! $this->db->insert('projection', $insert_data))
-               			{
-                      			$this->db->trans_rollback();
-                       			$this->messages->add('Error addding Projection - ' . $my_values[1] . ' by user ' . $username . '.', 'error');
-			
-              		        	$this->logger->write_message("error", "Error adding Projection called " . $data_name  . ' by user ' . $username);
-					$this->template->load('template', 'projection/add', $data);
-                       			return;
-               			} else {
-                      			$this->db->trans_complete();
-                       			$this->messages->add('Added Projection - ' . $my_values[1] . ' by user ' . $username . '.', 'success');
-                      			$this->logger->write_message("success", "Added Projection called " . $data_name  . ' by user ' . $username);
-              			}
+			//update value for target projection
+			$this->db->select('bd_balance, earned_amount')->from('projection')->where('code', '60');
+                        $projection_q = $this->db->get();
+                        foreach ($projection_q->result() as $row)
+                        {
+                                $earned_amount = $row->earned_amount;
+                                $bd_balance = $row->bd_balance;
+                        }
+                        $earned_amount = $earned_amount +  $data_earned_amount;
+                        $bd_balance = $bd_balance + $data_amount;
 
-				//Adding data to projection_allocate table
-				$today = date("Y-m-d H:i:s");
-				$this->db->trans_start();
-				$insert_data1 = array(
-                       			'code' => $my_values[0],
-                       			'allocation_amount' => $data_amount,
-                      			'creation_date' => $today,
-              			);
+                        //Adding data to projection table for target projection
+                        $this->db->trans_start();
+                        $update_data = array(
+                                'code' => '60',
+                                'bd_balance' => $bd_balance,
+                                'earned_amount' => $earned_amount,
+                        );
 
-              			if ( ! $this->db->insert('projection_allocate', $insert_data1))
-               			{
-                      			$this->db->trans_rollback();
-                       			$this->messages->add('Error addding projection amount - ' . $data_amount  . ' by user ' . $username . '.', 'error');
-		                       	$this->logger->write_message("error", "Error adding Projection amount " . $data_amount  . ' by user ' . $username);
-        	                 	$this->template->load('template', 'projection/add', $data);
-                	         	return;
-                        	} else {
-                                	$this->db->trans_complete();
-                                	$this->messages->add('Added Projection amount- ' . $data_amount . ' by user ' . $username . '.', 'success');
-                                	$this->logger->write_message("success", "Added Projection amount " . $data_amount  . ' by user ' . $username);
-                                	redirect('projectionl');
-                                	return;
-                        	}
+                        if ( ! $this->db->where('code', '60')->update('projection', $update_data))
+                        {
+                             $this->db->trans_rollback();
+                             $this->messages->add('Error updating earned_amount for Target Projection' . ' by user ' . $this->username . '.', 'error');
+                             $this->logger->write_message("error", "Error updating earned_amount for Target Projection" . ' by user ' . $this->username);
+                             redirect('projectionl');
+                             return;
+                        } else {
+                             $this->db->trans_complete();
+                             //$this->messages->add('Updated Projection - ' . $parent_code . ' by user ' . $username . '.', 'success');
+                             $this->logger->write_message("success", "Updated Target Projection" . ' by user ' . $this->username);
+                        }
+
+			//Adding data to projection_allocate table for target projection
+                        $today = date("Y-m-d H:i:s");
+                        $this->db->trans_start();
+                        $insert_data1 = array(
+                                'code' => '60',
+                                'allocation_amount' => $bd_balance,
+                                'creation_date' => $today,
+                        );
+
+                        if ( ! $this->db->insert('projection_allocate', $insert_data1))
+                        {
+                                $this->db->trans_rollback();
+                                $this->messages->add('Error addding projection amount for Target Projection' . ' by user ' . $this->username . '.', 'error');
+                                $this->logger->write_message("error", "Error adding Projection amount for Target Projection" . ' by user ' . $this->username);
+                                $this->template->load('template', 'projection/add', $data);
+                                return;
+                        } else {
+                                $this->db->trans_complete();
+                                //$this->messages->add('Added Projection amount- ' . $data_amount . ' by user ' . $username . '.', 'success');
+                                $this->logger->write_message("success", "Added Projection amount for Target Projection" . ' by user ' . $this->username);
+                                //redirect('projectionl');
+                                //return;
+                        }
+
+			//Adding data to projection table
+			$this->db->trans_start();
+			$insert_data = array(
+				'code' => $my_values[0],
+				'group_id' => $data_parent_id,
+				'projection_name' => $my_values[1],
+               			'bd_balance' => $data_amount,
+               			'type' => $data_type,
+				'earned_amount' => $data_earned_amount,
+ 			);
+
+       			if ( ! $this->db->insert('projection', $insert_data))
+       			{
+               			$this->db->trans_rollback();
+            			$this->messages->add('Error addding Projection - ' . $my_values[1] . ' by user ' . $this->username . '.', 'error');
+       		        	$this->logger->write_message("error", "Error adding Projection called " . $data_name  . ' by user ' . $this->username);
+				$this->template->load('template', 'projection/add', $data);
+               			return;
+       			} else {
+               			$this->db->trans_complete();
+               			$this->messages->add('Added Projection - ' . $my_values[1] . ' by user ' . $this->username . '.', 'success');
+             			$this->logger->write_message("success", "Added Projection called " . $data_name  . ' by user ' . $this->username);
+       			}
+
+			//Adding data to projection_allocate table
+			$today = date("Y-m-d H:i:s");
+			$this->db->trans_start();
+			$insert_data1 = array(
+               			'code' => $my_values[0],
+               			'allocation_amount' => $data_amount,
+               			'creation_date' => $today,
+       			);
+
+      			if ( ! $this->db->insert('projection_allocate', $insert_data1))
+       			{
+               			$this->db->trans_rollback();
+              			$this->messages->add('Error addding projection amount - ' . $data_amount  . ' by user ' . $this->username . '.', 'error');
+	                       	$this->logger->write_message("error", "Error adding Projection amount " . $data_amount  . ' by user ' . $this->username);
+                         	$this->template->load('template', 'projection/add', $data);
+               	         	return;
+                       	} else {
+                               	$this->db->trans_complete();
+                               	$this->messages->add('Added Projection amount- ' . $data_amount . ' by user ' . $this->username . '.', 'success');
+                               	$this->logger->write_message("success", "Added Projection amount " . $data_amount  . ' by user ' . $this->username);
+                               	redirect('projectionl');
+                               	return;
+                       	}
 			//}
 		}
 		return;
 	}
 
 
-	/*function updateParentProjection($code, $op_balance)
+	function updateParentProjection($child_code, $op_balance, $projection_amount)
 	{
-		//calculate length of parent code
-		$len = $this->countDigits($cb['code']);
-	}
+		//$username = $this->config->item('account_name');
 
-	function edit($id)
+		//calculate length of parent code
+		$parent_code = substr($child_code, 0, -2);
+		$earned_amount = 0.00;
+		$bd_balance = 0.00;
+		$len = $this->countDigits($parent_code);
+		if($len > 0)
+		{
+			//update earned_amount and bd_balance of parent projection
+			$this->db->select('bd_balance, earned_amount')->from('projection')->where('code', $parent_code);
+			$projection_q = $this->db->get();
+                        foreach ($projection_q->result() as $row)
+                        {
+                                 $earned_amount = $row->earned_amount;
+				$bd_balance = $row->bd_balance;
+                        }
+			$earned_amount = $earned_amount + $op_balance;
+			$bd_balance = $bd_balance + $projection_amount;
+
+			//Adding data to projection table
+			$this->db->trans_start();
+			$update_data = array(
+	                        'code' => $parent_code,
+				'bd_balance' => $bd_balance,
+                                'earned_amount' => $earned_amount,
+                        );
+
+                        if ( ! $this->db->where('code', $parent_code)->update('projection', $update_data))
+                        {
+           	             $this->db->trans_rollback();
+                             $this->messages->add('Error updating earned_amount for Projection - ' . $parent_code . ' by user ' . $this->username . '.', 'error');
+                             $this->logger->write_message("error", "Error updating earned_amount for Projection - " . $parent_code  . ' by user ' . $this->username);
+                             redirect('projectionl');
+                             return;
+                        } else {
+                             $this->db->trans_complete();
+                             //$this->messages->add('Updated Projection - ' . $parent_code . ' by user ' . $username . '.', 'success');
+                             $this->logger->write_message("success", "Updated Projection called " . $parent_code  . ' by user ' . $this->username);
+                        }
+		
+			//Adding data to projection_allocate table
+                        $today = date("Y-m-d H:i:s");
+                        $this->db->trans_start();
+                        $insert_data1 = array(
+                                'code' => $parent_code,
+                                'allocation_amount' => $bd_balance,
+                                'creation_date' => $today,
+                        );
+
+                        if ( ! $this->db->insert('projection_allocate', $insert_data1))
+                        {
+                                $this->db->trans_rollback();
+                                $this->messages->add('Error addding projection - ' . $parent_code  . ' by user ' . $this->username . '.', 'error');
+                                $this->logger->write_message("error", "Error adding Projection " . $parent_code  . ' by user ' . $this->username);
+                                //$this->template->load('template', 'projection/add', $data);
+				redirect('projectionl');
+                                return;
+                        } else {
+                                $this->db->trans_complete();
+                                //$this->messages->add('Added Projection - ' . $ . ' by user ' . $username . '.', 'success');
+                                $this->logger->write_message("success", "Added Projection " . $parent_code  . ' by user ' . $this->username);
+                                //redirect('projectionl');
+                                //return;
+                        }
+
+			//Update parent projection for given parent code
+			$this->updateParentProjection($parent_code, $op_balance, $projection_amount);
+		}
+		return;
+		
+	}//method updateParentProjection
+
+	/*function edit($id)
 	{
 		$this->template->set('page_title', 'Edit Budget');
 		$username = $this->config->item('account_name');
@@ -426,8 +528,6 @@ class Projection extends Controller {
 
 	function reappro(){
                 $username = $this->config->item('account_name');
-		//$parent_controller = array();
-		//$child_controller = array();
 
 		/* Check access */
                 if ( ! check_access('reappropriate projection'))
@@ -437,8 +537,6 @@ class Projection extends Controller {
                         return;
                 }
 
-                //$this->load->model('Budget_model');
-		//$this->load->helper('array');
 		$main_projection_amount = 0;
                 $this->template->set('page_title', 'Projection Reappropriation');
 		$this->template->set('nav_links', array('budgetl' => 'Budget', 'budget/add' => 'Add Budget', 'budget/reappro' => 'Reappropriate Budget', 'projectionl' => 'Projection', 'projection/add' => 'Add Projection', 'projection/reappro' => 'Reappropriate Projection'));
@@ -462,43 +560,6 @@ class Projection extends Controller {
                                 'value' => $proj['bd_balance'],
                         );
                         $counter++;
-                }
-		
-		$counter = 0;
-		$count = 0;
-			
-		//code for generating unallocated projection
-		$sum = 0;
-		foreach ($this->reappropriation['projection'] as $id => $proj)
-                {	
-			
-			if($proj['code'] == $account_code)
-                        {
-                                $main_projection_amount = $proj['bd_balance'];
-                        }
-
-	        	$temp = $this->countDigits($proj['code']);
-			if($temp == 4){
-				$sum = $sum + $proj['bd_balance'];
-				$this->unallocated_parent_controller[$counter]['id'] = $proj['id'];
-				$this->unallocated_parent_controller[$counter]['code'] = $proj['code'];
-                                $this->unallocated_parent_controller[$counter]['amount'] = $proj['bd_balance'];
-				$counter++;
-			}
-			else{
-                                $this->unallocated_child_controller[$count]['id'] = $proj['id'];
-                                $this->unallocated_child_controller[$count]['code'] = $proj['code'];
-                                $this->unallocated_child_controller[$count]['amount'] = $proj['bd_balance'];
-                                $count++;
-                        }
-		}
-		$temp_amount = $main_projection_amount - $sum;
-		$temp_name = 'unallocated_value_' . $account_code;
-		$this->reappropriation[$temp_name] = $temp_amount;
-
-		foreach($this->unallocated_parent_controller as $id => $pb)
-                {
-	                $this->calculate_unallocated_projection(4, $pb['code'], $pb['amount']);
                 }
 
 		// Form Validation 
@@ -533,63 +594,25 @@ class Projection extends Controller {
 			$count1 = 0;
 			$income_amount = 0;
 
+			// Making an array (final_projection) of updated values
 			foreach($this->reappropriation['projection'] as $id => $proj)
 			{
 				$name = 'projection_value_' .$proj['id'];
 				$new_amount =  $this->input->post($name, TRUE);
+				//add value to final array only if its value has been changed
 				if($new_amount != $proj['bd_balance'])
 				{
 					$final_projection[$count1]['id'] = $proj['id'];
 					$final_projection[$count1]['code'] = $proj['code'];
 					$final_projection[$count1]['amount'] = $new_amount;
 					$count1++;			
-					if($proj['code'] == $account_code)
+					/*if($proj['code'] == $account_code)
 					{
 						$income_amount = $new_amount;	
-					}
+					}*/
 				}
-
-				if($bud['code'] != $account_code)
-				{
-                                	$temp = $this->countDigits($proj['code']);
-                                	if($temp == 4)
-                                	{
-						$this->parent_controller[$counter]['id'] = $proj['id'];
-                                        	$this->parent_controller[$counter]['code'] = $proj['code'];
-						$this->parent_controller[$counter]['amount'] = $new_amount;
-                                        	$Sum = $Sum + $this->parent_controller[$counter]['amount'];
-                                        	$counter++;
-                                	}//if
-                                	else
-                                	{
-						$this->child_controller[$count]['id'] = $proj['id'];
-                                        	$this->child_controller[$count]['code'] = $proj['code'];
-						$this->child_controller[$count]['amount'] = $new_amount;
-                                        	$count++;
-                                	}
-				}//if
                         }//for
 
-			if($income_amount == '0')
-			{
-				$income_amount = $this->Budget_model->get_allocation_amount($account_code, 'projection');
-			}
-
-                        if($Sum > $income_amount)
-                        {
-                                //Error Msg
-                                $this->messages->add('Sum of parent projection does not match with value of "Incomes"', 'error');
-                                $this->logger->write_message("error", "Sum of projection " . $Sum  . " does not match with value of projection 'Incomes'" . ' by user ' . $username);
-                                $this->template->load('template', 'projection/reappropriation', $this->reappropriation);
-                                return;
-                        } else{
-
-				foreach($this->parent_controller as $id => $pb)
-				{
-					$this->calculate(4, $pb['code'], $pb['amount']);
-				}
-				
-			
 				$today = date("Y-m-d H:i:s");
 				foreach($final_projection as $id => $cbud)
 				{
@@ -603,15 +626,15 @@ class Projection extends Controller {
                                         if ( ! $this->db->insert('projection_allocate', $insert_data))
                                         {
                                         	$this->db->trans_rollback();
-                                                $this->messages->add('Error inserting value to Projection Allocate for projection- ' . $cbud['code'] . ' by user ' . $username .  '.', 'error');
-                                                $this->logger->write_message("error", "Error inserting value for Projection code " . $cbud['code']  . ' by user ' . $username);
+                                                $this->messages->add('Error inserting value to Projection Allocate for projection- ' . $cbud['code'] . ' by user ' . $this->username .  '.', 'error');
+                                                $this->logger->write_message("error", "Error inserting value for Projection code " . $cbud['code']  . ' by user ' . $this->username);
                                                 //$this->template->load('template', 'budget/reappropriation', $this->reappropriation);
 						redirect('projectionl');
                                                	return;
                                         } else {
                                                 $this->db->trans_complete();
-                                                $this->messages->add('Successfully inserted value to Projection Allocate- ' . ' by user ' . $username . '.', 'success');
-                                                $this->logger->write_message("success","Successfully inserted value for Projection code" . $cbud['code']   . ' by user ' . $username);
+                                                $this->messages->add('Successfully inserted value to Projection Allocate- ' . ' by user ' . $this->username . '.', 'success');
+                                                $this->logger->write_message("success","Successfully inserted value for Projection code" . $cbud['code']   . ' by user ' . $this->username);
                                        }
 
 					$this->db->trans_start();
@@ -623,24 +646,23 @@ class Projection extends Controller {
                                         if ( ! $this->db->where('code', $cbud['code'])->update('projection', $update_data))
                                         {
                                         	$this->db->trans_rollback();
-                                                $this->messages->add('Error updating value to Projection for projection- ' . $cbud['code'] . ' by user ' . $username .  '.', 'error');
-                                                $this->logger->write_message("error", "Error updating value for Projection code " . $cbud['code']  . ' by user ' . $username);
+                                                $this->messages->add('Error updating value to Projection for projection- ' . $cbud['code'] . ' by user ' . $this->username .  '.', 'error');
+                                                $this->logger->write_message("error", "Error updating value for Projection code " . $cbud['code']  . ' by user ' . $this->username);
                                                // $this->template->load('template', 'budget/reappropriation', $this->reappropriation);
 						redirect('projectionl');
                                                 return;
                                         } else {
                                                 $this->db->trans_complete();
-                                                $this->messages->add('Successfully updated value for Projection- ' . ' by user ' . $username . '.', 'success');
-                                                $this->logger->write_message("success","Successfully updated value for Projection code " . $cbud['code']   . ' by user ' . $username);
+                                                $this->messages->add('Successfully updated value for Projection- ' . ' by user ' . $this->username . '.', 'success');
+                                                $this->logger->write_message("success","Successfully updated value for Projection code " . $cbud['code']   . ' by user ' . $this->username);
                                         }
 		
 				}//for db
 				
-			}//else
+	//		}//else
 
 		}//else
 
-		//$this->template->load('template', 'budget/reappropriation', $this->reappropriation);
 		redirect('projectionl');
                 return ;
 	}
@@ -651,74 +673,6 @@ class Projection extends Controller {
 		$search = '1234567890';
 		$count = strlen($str) - strlen(str_replace(str_split($search), '', $str));
 		return $count;
-	}
-
-	function startsWith($str1, $str2)
-	{
-    		return !strncmp($str1, $str2, strlen($str2));
-	}
-
-	function calculate($i, $code, $amount)
-	{
-		$username = $this->config->item('account_name');
-		$sum = 0;
-		
-		foreach($this->child_controller as $id => $cb)
-		{
-			if($cb['code'] != $code)
-			{
-				$temp = $this->startsWith($cb['code'], $code);
-				$len = $this->countDigits($cb['code']);
-
-				if($temp && ($len == $i + $this->a))
-				{
-					$sum = $sum + $cb['amount'];
-					$this->calculate($i + $this->a, $cb['code'], $cb['amount']);
-				}
-			}		
-		}
-
-		if($sum > $amount)
-		{
-			//Error Msg
-			$this->messages->add('An error has occured.', 'error');
-                        $this->messages->add('Sum of child projection does not match with value of unallocated projection ' . $code, 'error');
-			$this->messages->add('Please try updating values again', 'error');
-               	        $this->logger->write_message("error", "Sum of child projection does not match with value of projection " . $code . ' by user ' . $username);
-                      		// $this->template->load('template', 'budget/reappropriation', $this->reappropriation);
-			redirect('projection/reappro');
-       	                return;
-		}
-	}
-
-	function calculate_unallocated_projection($i, $code, $amount)
-	{
-		$sum = 0;
-		$count = 0;
-		$unallocated_projection_amount = '';
-		foreach($this->unallocated_child_controller as $id => $cb)
-		{
-			if($cb['code'] != $code)
-			{
-				$temp = $this->startsWith($cb['code'], $code);
-				$len = $this->countDigits($cb['code']);
-
-				if($temp && ($len == $i + $this->a))
-				{
-					$count++;
-					$sum = $sum + $cb['amount'];
-					//$dump = $this->calculate_unallocated_budget($i + $this->a, $cb['code'], $cb['amount']);
-					$this->calculate_unallocated_projection($i + $this->a, $cb['code'], $cb['amount']);
-				}
-			}		
-		}
-		
-		if($count>0 || $this->countDigits($code)==4)
-			$unallocated_projection_amount = $amount - $sum;
-                $name = 'unallocated_value_' . $code;
-		$this->reappropriation[$name] = $unallocated_projection_amount;
-		
-		return;
 	}
 
 }//class

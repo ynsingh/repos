@@ -3,12 +3,14 @@
 class Ledger extends Controller {
 
 var $ledger_code = 0;
+var $username;
 
 	function Ledger()
 	{
 		parent::Controller();
 		$this->load->model('Ledger_model');
 		$this->load->model('Group_model');
+		$this->username = $this->config->item('account_name');
 		return;
 	}
 
@@ -333,7 +335,10 @@ var $ledger_code = 0;
 		$data['ledger_id'] = $id;
 
 		$old_ledger_parent = $ledger_data->group_id;
-		$data_code = $ledger_data->code;		
+		$data_code = $ledger_data->code;	
+
+		// For projection module
+		$old_op_balance = $ledger_data->op_balance;	
 
 		if ($ledger_data->type == 1)
 			$data['ledger_type_cashbank'] = TRUE;
@@ -484,13 +489,157 @@ var $ledger_code = 0;
 				$this->db->trans_complete();
 				$this->messages->add('Updated Ledger account - ' . $data_name . '.', 'success');
 				$this->logger->write_message("success", "Updated Ledger account called " . $data_name . " [id:" . $data_id . "]");
-				redirect('account');
-				return;
+				//redirect('account');
+				//return;
+			}
+
+			/** 
+			 * Check whether 'target_projection' has value 
+			 * greater then '0', and the edited ledger code 
+			 * exists in projection table. If both the conditions 
+			 * are true, than update data in projection table. 
+			 */
+			$target_projection_amount = 0;
+			$this->db->select('bd_balance')->from('projection')->where('id', 1);
+			$target_projection = $this->db->get();
+			foreach ($target_projection->result() as $row)
+				$target_projection_amount = $row->bd_balance;
+			if($target_projection_amount > 0)
+			{
+				$this->db->select('id')->from('projection')->where('code', $data_code);
+				if($this->db->get()->num_rows() > 0){
+        	                //if($projection_code > 1){
+					/**
+					 * Projection will be updated only if,
+					 * value for op_balance has been updated
+					 */
+					if($old_op_balance != $data_op_balance){
+						/**
+						 * Here we are using difference in the previous
+						 * and current op_balance of the ledger.
+						 * Since, this difference needs to be added or 
+						 * subtracted from the target and parent projections.
+						 */
+						$changed_op_balance = $data_op_balance - $old_op_balance;
+						$this->update_projection($data_code, $data_op_balance, $changed_op_balance);
+					}
+				}
 			}
 		}
+		redirect('account');
 		return;
 	}
 
+	function update_projection($code, $new_amount, $changed_amount){
+		//$username = $this->config->item('account_name');
+		$earned_amount = 0;
+		//update value for target projection
+                $this->db->select('earned_amount')->from('projection')->where('code', '60');
+                $projection_q = $this->db->get();
+                foreach ($projection_q->result() as $row)
+                        $earned_amount = $row->earned_amount;
+        
+                $earned_amount = $earned_amount +  $changed_amount;
+
+                //Adding data to projection table for target projection
+                $this->db->trans_start();
+                $update_data = array(
+         	       'code' => '60',
+                       'earned_amount' => $earned_amount
+                );
+
+                if ( ! $this->db->where('code', '60')->update('projection', $update_data))
+                {
+                	$this->db->trans_rollback();
+                        $this->messages->add('Error updating earned_amount for Target Projection' . ' by user ' . $this->username . '.', 'error');
+                        $this->logger->write_message("error", "Error updating earned_amount for Target Projection" . ' by user ' . $this->username);
+                        redirect('projectionl');
+                        return;
+                } else {
+                        $this->db->trans_complete();
+                        $this->logger->write_message("success", "Updated Target Projection" . ' by user ' . $this->username);
+                }	
+
+		//Adding data to projection table for edited ledger
+		$this->db->trans_start();
+                $update_data1 = array(
+              	  'code' => $code,
+                  'earned_amount' => $new_amount
+                );
+
+                if ( ! $this->db->where('code', $code)->update('projection', $update_data1))
+                {
+                	$this->db->trans_rollback();
+                        $this->messages->add('Error updating value to Projection for projection- ' . $code . ' by user ' . $this->username .  '.', 'error');
+                        $this->logger->write_message("error", "Error updating value for Projection code " . $code  . ' by user ' . $this->username);
+                        redirect('projectionl');
+                        return;
+                } else {
+                        $this->db->trans_complete();
+                        $this->logger->write_message("success","Successfully updated value for Projection code " . $code  . ' by user ' . $this->username);
+                }
+
+		//update earned_amount for parent projection
+                $this->updateParentProjection($code, $changed_amount);
+
+	}//method update_projection
+
+	function updateParentProjection($child_code, $changed_amount)
+        {
+		//$username = $this->config->item('account_name');
+
+                //calculate length of parent code
+                $parent_code = substr($child_code, 0, -2);
+                $earned_amount = 0.00;
+                //$bd_balance = 0.00;
+                $len = $this->countDigits($parent_code);
+                if($len > 0)
+                {
+                        //update earned_amount and bd_balance of parent projection
+                        $this->db->select('bd_balance, earned_amount')->from('projection')->where('code', $parent_code);
+                        $projection_q = $this->db->get();
+                        foreach ($projection_q->result() as $row)
+                        {
+                                 $earned_amount = $row->earned_amount;
+                                //$bd_balance = $row->bd_balance;
+                        }
+                        $earned_amount = $earned_amount + $changed_amount;
+                        //$bd_balance = $bd_balance + $projection_amount;
+                        //Adding data to projection table
+                        $this->db->trans_start();
+                        $update_data = array(
+                                'code' => $parent_code,
+                                //'bd_balance' => $bd_balance,
+                                'earned_amount' => $earned_amount,
+                        );
+
+                        if ( ! $this->db->where('code', $parent_code)->update('projection', $update_data))
+                        {
+                             $this->db->trans_rollback();
+                             $this->messages->add('Error updating earned_amount for Projection - ' . $parent_code . ' by user ' . $this->username . '.', 'error');
+                             $this->logger->write_message("error", "Error updating earned_amount for Projection - " . $parent_code  . ' by user ' . $this->username);
+                             redirect('projectionl');
+                             return;
+                        } else {
+                             $this->db->trans_complete();
+                             //$this->messages->add('Updated Projection - ' . $parent_code . ' by user ' . $username . '.', 'success');
+                             $this->logger->write_message("success", "Updated Projection called " . $parent_code  . ' by user ' . $this->username);
+                        }
+
+                        //Update parent projection for given parent code
+                        $this->updateParentProjection($parent_code, $changed_amount);
+                }
+                return;
+
+        }//method updateParentProjection
+
+	function countDigits($str)
+        {
+                $search = '1234567890';
+                $count = strlen($str) - strlen(str_replace(str_split($search), '', $str));
+                return $count;
+        }
+		
 	function delete($id)
 	{
 		/* Check access */

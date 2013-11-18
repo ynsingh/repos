@@ -227,4 +227,25 @@ CREATE TABLE IF NOT EXISTS erpm_item_master (
   ERPMIM_Detailed_Desc varchar(2000) NOT NULL,
   ERPMIM_Remarks varchar(100) default NULL,
   PRIMARY KEY  (ERPMIM_ID)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE projection
+(
+                        id INTEGER (11)  NOT NULL AUTO_INCREMENT,
+                        code VARCHAR (25) NOT NULL,
+                        group_id INTEGER (11) NOT NULL,
+                        projection_name VARCHAR (100) NOT NULL,
+                        bd_balance DECIMAL (15, 2) DEFAULT 0.00,
+                        earned_amount decimal(15,2) DEFAULT '0.00',
+                        type VARCHAR (50) NOT NULL,
+                        PRIMARY KEY(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE projection_allocate
+(
+                        id INTEGER (11)  NOT NULL AUTO_INCREMENT,
+                        code VARCHAR (25) NOT NULL,
+                        allocation_amount DECIMAL (15, 2) DEFAULT 0.00,
+                        creation_date DATETIME NOT NULL,
+                        PRIMARY KEY(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

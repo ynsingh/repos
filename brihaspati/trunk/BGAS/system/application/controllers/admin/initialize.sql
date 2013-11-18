@@ -3,6 +3,7 @@ INSERT INTO `groups` VALUES (2,'10',0,'Liabilities and Owners Equity',0,0);
 INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0);
 INSERT INTO `groups` VALUES(4,'40',0,'Expenses',0,0);
 INSERT INTO budgets VALUES (1, '50', 0, 'Main Budget', 0.00, 'Yearly', 0,0);
+INSERT INTO projection VALUES(1, '60', 0, 'Target Projection', 0.00, 'Yearly', 0.00);
 INSERT INTO `groups` VALUES(5,'2001',1,'Fixed Assets',0,0);
 INSERT INTO `groups` VALUES(17,'200102',1,'Non-Plan',0,0);
 INSERT INTO `groups` VALUES(18,'20010203',17,'Roads, Bridges & culverts',0,0);
@@ -496,7 +497,7 @@ INSERT INTO `ledgers` VALUES(372,'20011019',86,'Underground Cable-A','0.00','D',
 INSERT INTO `ledgers` VALUES(373,'400506',87,'Infrastructure - Generator Running Expenses','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(374,'20011020',86,'Vacuum Cleaners(Dust Cleaner)-A','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(375,'200502',42,'Expenditure against on-going sponsored Schemes','0.00','D',0,0,0);
-INSERT INTO `ledgers` VALUES(376,'20011021',86,'Voltage Stabiliser-A','0.00','D',0,0,0);                                          
+INSERT INTO `ledgers` VALUES(376,'20011021',86,'Voltage Stabiliser-A','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(377,'400507',87,'Infrastructure - Insurence - Veicles','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(378,'200503',42,'Expenditure against Consultancy Assignments','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(379,'20011022',86,'Washig Machine-A','0.00','D',0,0,0);
@@ -983,10 +984,8 @@ INSERT INTO `ledgers` VALUES(861,'40031203',143,'Annual Day Celebration-M','0.00
 INSERT INTO `ledgers` VALUES(862,'40031204',143,'Scholarships and Stipends','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES(863,'300604',129,'Others-R','0.00','D',0,0,0);
 
-
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (1, 'receipt', 'Receipt', 'Received in Bank account or Cash account', 1, 1, '', '', 0, 2);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (2, 'payment', 'Payment', 'Payment made from Bank account or Cash account', 1, 1, '', '', 0, 3);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (3, 'contra', 'Contra', 'Transfer between Bank account and Cash account', 1, 1, '', '', 0, 4);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (4, 'journal', 'Journal', 'Transfer between Non Bank account and Cash account', 1, 1, '', '', 0, 5);
 INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (5, 'dpayment', 'Deferred Payment', 'For immediate booking of payment in foreign currency against letter of credot in INR as per applicable exchange rate', 1, 1, '', '', 0, 6);
-
