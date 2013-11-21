@@ -65,19 +65,25 @@
 	
 	<!-- -->
     	<target name="sign" depends="jar">
-		<copy file="${lib.dir}/jna-3.5.2.jar" tofile="${jnlp.dir}/jna-3.5.2.jar"/>
-		<copy file="${lib.dir}/jspeex-0.9.7.jar" tofile="${jnlp.dir}/jspeex-0.9.7.jar"/>
-		<copy file="${lib.dir}/vlcj-2.3.1.jar" tofile="${jnlp.dir}/vlcj-2.3.1.jar"/>
-		<copy file="${lib.dir}/HttpClient.jar" tofile="${jnlp.dir}/HttpClient.jar"/>
-		<copy file="${lib.dir}/commons-codec-1.4.jar" tofile="${jnlp.dir}/commons-codec-1.4.jar"/>
-	    	<signjar keystore="${jnlp.dir}/brihaspatisync"
-			 alias="client"	
-			 storepass="arvind">
+	    	<signjar keystore="${jnlp.dir}/brihaspatisync" alias="client" storepass="arvind">
 			 <path>
-                                <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+                                <fileset dir="${jnlp.dir}" includes="brihaspatisync.jar" />
                         </path>
 		</signjar>
 	</target>
+	
+	<target name="allsign" depends="jar">
+                <copy file="${lib.dir}/jna-3.5.2.jar" tofile="${jnlp.dir}/jna-3.5.2.jar"/>
+                <copy file="${lib.dir}/jspeex-0.9.7.jar" tofile="${jnlp.dir}/jspeex-0.9.7.jar"/>
+                <copy file="${lib.dir}/vlcj-2.3.1.jar" tofile="${jnlp.dir}/vlcj.jar"/>
+                <copy file="${lib.dir}/HttpClient.jar" tofile="${jnlp.dir}/HttpClient.jar"/>
+                <copy file="${lib.dir}/commons-codec-1.4.jar" tofile="${jnlp.dir}/commons-codec-1.4.jar"/>
+                <signjar keystore="${jnlp.dir}/brihaspatisync" alias="client" storepass="arvind">
+                         <path>
+                                <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+                        </path>
+                </signjar>
+        </target>
 	
 	<!-- -->
 	<target name="clean" description="clean up">
@@ -88,7 +94,7 @@
                 <delete dir="${doc.dir}"/>
 		<delete>
                         <path>
-                            <fileset dir="${jnlp.dir}" includes="**/*.jar" />
+                            <fileset dir="${jnlp.dir}" includes="brihaspatisync.jar" />
                         </path>
                 </delete>
 
