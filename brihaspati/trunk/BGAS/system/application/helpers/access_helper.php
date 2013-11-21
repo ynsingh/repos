@@ -107,6 +107,8 @@ if ( ! function_exists('check_access'))
 			'change password',
 			'delete budget',
 			'reappropriate budget',
+			'create projection',
+                        'reappropriate projection',
 		);
 		$permissions['accountant'] = array(
 			'view entry',
@@ -129,6 +131,8 @@ if ( ! function_exists('check_access'))
 			'view log',
 			'clear log',
 			'change password',
+			'create projection',
+                        'reappropriate projection',
 		);
 		$permissions['dataentry'] = array(
 			'view entry',

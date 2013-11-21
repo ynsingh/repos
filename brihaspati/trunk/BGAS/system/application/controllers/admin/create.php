@@ -92,6 +92,12 @@ class Create extends Controller {
 		$data['account_date'] = 'dd/mm/yyyy';
 		$data['account_timezone'] = 'UTC';
 
+		$data['chart_account_options'] = array(
+			'minimal' => 'minimal',
+			'standard' => 'standard',
+		);
+		$data['chart_account'] = 'minimal';
+
 		$data['database_name'] = array(
 			'name' => 'database_name',
 			'id' => 'database_name',
@@ -164,6 +170,7 @@ class Create extends Controller {
 			$data['account_currency']['value'] = $this->input->post('account_currency', TRUE);
 			$data['account_date'] = $this->input->post('account_date', TRUE);
 			$data['account_timezone'] = $this->input->post('account_timezone', TRUE);
+			$data['chart_account'] = $this->input->post('chart_account', TRUE);
 
 			$data['create_database'] = $this->input->post('create_database', TRUE);
 			$data['database_name']['value'] = $this->input->post('database_name', TRUE);
@@ -201,6 +208,8 @@ class Create extends Controller {
 			else
 				$data_account_date = "dd/mm/yyyy";
 			$data_account_timezone = $this->input->post('timezones', TRUE);
+
+			$data_chart_account = $this->input->post('chart_account', TRUE);
 
 			$data_database_type = 'mysql';
 			$data_database_host = $this->input->post('database_host', TRUE);
@@ -301,7 +310,14 @@ class Create extends Controller {
 				$this->messages->add('Initialized account database.', 'success');
 
 				/* Initial account setup */
-				$setup_initial_data = read_file('system/application/controllers/admin/initialize.sql');
+				//if $data_chart_account is minimal
+				if (($data_chart_account == 'minimal') || ($data_chart_account == '')){
+					$setup_initial_data = read_file('system/application/controllers/admin/minimal.sql');
+				}
+					//else $data_chart_account is standard
+				elseif ( $data_chart_account == 'standard'){
+					$setup_initial_data = read_file('system/application/controllers/admin/initialize.sql');
+				}
 				$setup_initial_data_array = explode(";", $setup_initial_data);
 				$newacc->trans_start();
 				foreach($setup_initial_data_array as $row)

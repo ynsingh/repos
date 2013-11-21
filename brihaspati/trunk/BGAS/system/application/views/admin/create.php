@@ -62,6 +62,13 @@
 	echo "</p>";
 
 	echo "<p>";
+        echo form_label('Chart of Account', 'chart_account');
+        echo "<br />";
+        echo form_dropdown('chart_account', $chart_account_options, $chart_account );
+        echo "</p>";
+
+
+	echo "<p>";
 	echo form_fieldset('Database Settings', array('class' => "fieldset-auto-width"));
 
 	echo "<p>";
