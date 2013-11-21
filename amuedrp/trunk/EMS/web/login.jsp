@@ -270,10 +270,13 @@ sessionId = session.getId().toString();
                     
                          
 <%String msg1="";
+msg1=(String) request.getAttribute("msg");
 if (request.getAttribute("msg")==null){
 String msgsession=(String)request.getParameter("session");
+//out.println("kjaskdfjkasdj");
 if(msgsession!=null){
     msg1= "Your Session "+msgsession;
+    
 }else
     {
     msg1=null;
@@ -286,7 +289,7 @@ else{
 <%
 if(msg1!=null)
       { 
-   // out.println(msg1);
+    out.println(msg1);
 }
  String msg11 =(String) request.getAttribute("msg1");
  //request.removeAttribute(msg11);
@@ -420,7 +423,7 @@ if(str!=null)
                         <%--<form  action="./admin/remote" method="post">--%>
       <%=resource.getString("loginwithopen")%><br/>
 <%=resource.getString("pleaseclickyour")%><input type="textbox" style="width:300px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;" name="email" value="http://202.141.40.216:8081/openid/username" id="email2"/>
-<br>     <input class="buttonhome" type="button" value="<%=resource.getString("login.button.sigin.login")%>" onclick="send()"/><br>Please replace username with your actual username.
+<br>     <input class="buttonhome" type="button" value="<%=resource.getString("login.button.sigin.login")%>" onclick="send()"/><br><%=resource.getString("login.ems.message")%>
         <%--</form>--%>
 </p>
 
@@ -431,11 +434,11 @@ if(str!=null)
 
                         <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;     <a href="<%=request.getContextPath()%>/admin/admin_registration.jsp"> <%=resource.getString("join")%></a>
                         <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>
-                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white">  NMEICT <%=resource.getString("homepage")%></a>
+                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white">  <%=resource.getString("login.ems.nmeict")%> <%=resource.getString("homepage")%></a>
                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="#" style="color:white">  <%=resource.getString("sitemap")%></a>
                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/ModuleHelp/Releasenotes.jsp" style="color:white"> <%=resource.getString("releasenotes")%></a>
                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/ModuleHelp/CompleteUserManual.pdf" style="color:white"> <%=resource.getString("usermanual")%></a>
-                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a  style="color:white" href="/EMS/ModuleHelp/index.html">HTML Help</a></a>
+                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a  style="color:white" href="/EMS/ModuleHelp/index.html"><%=resource.getString("login.ems.html.help")%></a></a>
 
                          </td></tr>
 
@@ -457,13 +460,7 @@ if(str!=null)
 
                     </table>
                             </td></tr></table>
-                
-
-                    
-                 
-
-
-
+              
                 </td></tr>
 
 

@@ -135,7 +135,7 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages><script language="javascript">print_country("country");</script>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("state")%>*</td><td><select name ="state" style="width:180px" id="state">
-                         <option value="">Select</option>
+                         <option value=""><%=resource.getString("login.registration.state.select")%></option>
 
                      </select></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="state">
 				<%=resource.getString("state_cannotbe_blank")%>
@@ -153,7 +153,7 @@ locale1=(String)session.getAttribute("locale");
 
 			</html:messages>
          </td></tr>
-             <tr><td dir="<%=rtl%>" align="<%=align%>">StaffID/Enrollment*</td><td><html:text  property="enrollment" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="enrollment">
+             <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.registration.staffid")%>/<%=resource.getString("login.registration.enrolment.no")%>*</td><td><html:text  property="enrollment" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="enrollment">
 				Enrollment/StaffID cannot be blank
 
 			</html:messages>
