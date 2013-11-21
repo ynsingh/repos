@@ -56,8 +56,8 @@ public class LocalServer implements Runnable {
 	/**
          * Start TCPSender Thread.
          */
-        public void start(){
-                if (runner == null) {	
+        public void start(){	
+		if (runner == null) {	
 			grabber=new VLCCapture(600,400);
 			flag=true;
                         runner = new Thread(this);
@@ -72,7 +72,7 @@ public class LocalServer implements Runnable {
         public void stop() {
                 if (runner != null) {
 			flag=false;
-                        runner = null;
+                        //runner = null;
 			grabber.close();
 			grabber=null;
 			System.out.println("Video Captureing  stop Successfully !!");
@@ -125,5 +125,8 @@ public class LocalServer implements Runnable {
 					runner.yield(); runner.sleep(3000);
 			} catch(Exception e) { }
 		}
+		try {
+                        runner = null;
+                }catch(Exception e){}
 	}
 }

@@ -91,7 +91,6 @@ public class Post_GetSharedScreen implements Runnable {
 			utilObject.removeType("Desktop_Data");	
 			flag=false;
 			getflag=false;
-                        runner = null;		
 			robot  = null;
 			System.out.println("PostSharedScreen stop successfully !!");
                 }
@@ -163,8 +162,13 @@ public class Post_GetSharedScreen implements Runnable {
 					StatusPanel.getController().setdestopClient("no");
                        		runner.yield(); runner.sleep(2000); 
 				System.gc();
-			}catch(Exception e){  StatusPanel.getController().setdestopClient("no"); }
+			} catch(Exception e){  StatusPanel.getController().setdestopClient("no"); }
 		}
+		try {
+			runner = null;	
+			Desktop_Sharing.getController().resetshowImage();
+			StatusPanel.getController().setdestopClient("no");
+		}catch(Exception e){}
 	}
 	
 	/**

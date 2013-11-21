@@ -73,7 +73,7 @@ public class StudentPostVideoCapture implements Runnable {
                 if (runner != null) {
 			flag=false;	
 			getflag=false;
-                        runner = null;
+                        //runner = null;
 			VideoPanel.getController().removeStudentPanel();
 			utilobject.removeType("stud_video");
 			System.out.println("Student Post Video Capture  stop successfully !!");
@@ -115,6 +115,9 @@ public class StudentPostVideoCapture implements Runnable {
                        		runner.yield(); runner.sleep(3000);
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
 		}
+		try {
+                        runner = null;
+                }catch(Exception e){}
 	}
 	
 	/**

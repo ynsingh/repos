@@ -70,7 +70,7 @@ public class PostVideoCapture implements Runnable {
                 if (runner != null) {
 			flag=false;
 			getflag=false;
-                        runner = null;
+                        //runner = null;
 			utilobject.removeType("ins_video");
 			System.out.println("Post Video Capture  stop successfully !!");
                 }
@@ -112,6 +112,9 @@ public class PostVideoCapture implements Runnable {
 	                       	runner.yield(); runner.sleep(3000);
 			}catch(Exception e){System.out.println("Exception in PostSharedScreen in get and post video image "+e.getMessage());}
 		}
+		try {
+                        runner = null;
+                }catch(Exception e){}
 	}
 
 	/**

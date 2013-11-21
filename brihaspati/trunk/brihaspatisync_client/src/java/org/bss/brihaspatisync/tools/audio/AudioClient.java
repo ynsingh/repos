@@ -59,7 +59,7 @@ public class AudioClient implements Runnable {
 	public void stopThread() {
         	if (runner != null) {
 			flag=false;
-            		runner = null;	
+            		//runner = null;	
 			StatusPanel.getController().setaudioClient("no");
 			postAudio(false);	
 			utilobject.removeType("Audio_Data");	
@@ -119,6 +119,10 @@ public class AudioClient implements Runnable {
 				System.out.println("Exception in AudioClient class  "+epe.getMessage()); 
 			}
         	}
+		try {
+                        runner = null;
+			StatusPanel.getController().setaudioClient("no");
+                }catch(Exception e){}
 	}
 	
 	/**

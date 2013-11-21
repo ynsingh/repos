@@ -63,10 +63,10 @@ public class ReceiveQueueHandler implements Runnable{
 	/**
          * Stop receiveQueueHandler Thread.
          */
-        public synchronized void stop() {
+        private synchronized void stop() {
                 if (runner != null) {
 			flag=false;
-			runner = null;
+			//runner = null;
 			System.out.println("ReceiveQueueHandler has stopped.");
              	}
         }
@@ -133,6 +133,9 @@ public class ReceiveQueueHandler implements Runnable{
 				runner.yield();
 				runner.sleep(10);
 			}catch(Exception e){}
-		}	
+		}
+		try {
+			runner = null;
+		} catch(Exception e){}	
 	}
 }

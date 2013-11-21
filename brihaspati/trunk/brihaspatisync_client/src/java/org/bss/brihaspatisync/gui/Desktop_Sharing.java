@@ -122,5 +122,16 @@ public class Desktop_Sharing implements MouseListener {
 			scaledImage.flush(); 
 		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
 	}
+	
+	public void resetshowImage(){
+                try{
+			imageDisplay.setIcon(new ImageIcon((this.getClass().getClassLoader()).getResource("resources/images/wb/index.jpg")));
+                        imageDisplay.setHorizontalAlignment(JLabel.CENTER);
+                        centerPanel.setLocation(1000,0);
+                        centerPanel.setSize(0,0);
+                        centerPanel.updateUI();
+
+                }catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
+        }
 }
 

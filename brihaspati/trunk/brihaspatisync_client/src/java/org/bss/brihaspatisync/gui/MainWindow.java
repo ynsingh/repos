@@ -170,6 +170,7 @@ public class MainWindow  extends JFrame implements ActionListener {
                 } else if(e.getActionCommand().equals("VideoServer")) {
                         new VideoServerConfigure();
                 } else if(e.getActionCommand().equals("Logout")) {
+			new Logout().sendLogoutRequest();	
                         desktop.removeAll();
 			desktop.setBackground(new Color(220,220,220));
 			menuItem1.setEnabled(false);
@@ -184,6 +185,7 @@ public class MainWindow  extends JFrame implements ActionListener {
                 	content.validate();
                 	content.repaint();
             	} else if(e.getActionCommand().equals("Sessionout")) {
+			new Logout().sendLogoutRequest();
 			desktop.removeAll();
                         desktop.setBackground(new Color(220,220,220));
                         desktop.add(new CourseSessionWindow());

@@ -34,7 +34,7 @@ public class Logout {
 	 * and reform peer network (use Backup Tree Algorithm)
 	 */
 
-	public void sendLogoutRequest(){
+	public void sendLogoutRequest() {
 		String parentIP="";		
 		try{
 			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);	
@@ -53,8 +53,6 @@ public class Logout {
                        	}
 									
 		}catch(Exception ex){}
-		System.exit(0);
-
 	}
 	
 	/**

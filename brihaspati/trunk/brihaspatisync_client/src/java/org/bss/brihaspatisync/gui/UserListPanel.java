@@ -109,7 +109,8 @@ public class UserListPanel extends Thread {
         	            		}
 					display_UserList();
 				}
-				this.sleep(500);this.yield();
+				this.sleep(500);
+				this.yield();
 			}catch(Exception e){}
 		}		
 	}	
@@ -225,7 +226,7 @@ public class UserListPanel extends Thread {
 		if(status.equals("available")){
 			return "resources/images/login.png";
                 }else if(status.equals("Get-Permission")){
-                        return "resources/images/user/getscreen.jpeg";
+                        return "resources/images/user/hr.jpeg";
 		}else if(status.equals("Allow-Permission")){
                         return "resources/images/user/allowscreen.jpeg";
 		}

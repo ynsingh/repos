@@ -60,7 +60,6 @@ public class JoinSession {
 					if(!(ref_ip.equals(""))) {
 						if(!(ThreadController.getThreadFlag()))
 			                		ThreadController.setThreadFlag(true);	
-						System.out.println(ref_ip);
 						StatusPanel.getController().sethttpClient("no");
 						StatusPanel.getController().setdestopClient("no");
 						StatusPanel.getController().setpptClient("no");
