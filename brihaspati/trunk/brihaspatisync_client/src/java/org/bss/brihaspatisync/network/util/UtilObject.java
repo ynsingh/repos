@@ -51,6 +51,16 @@ public class UtilObject {
         }
 
 	/**
+         * This method are used to remove rechive queue according to type .
+         */
+	
+	public synchronized void removeReceiveQueue(String type) {
+                if(!(ht_for_queue.containsKey(type))){
+                        ht_for_queue.remove(type);
+                }
+        }
+	
+	/**
  	 * This method are used to create send queue according to type .
  	 */
         public synchronized LinkedList getSendQueue(String type) {
@@ -60,6 +70,15 @@ public class UtilObject {
                 return (LinkedList)ht_for_send_queue.get(type);
         }	
 	
+	/**
+         * This method are used to remove send queue according to type .
+         */
+        public synchronized void removeSendQueue(String type) {
+                if(!(ht_for_send_queue.containsKey(type))){
+                        ht_for_send_queue.remove(type);
+                }
+        }
+
 	public UtilObject(){
 		this.ht_for_queue = new java.util.Hashtable();	
 		this.ht_for_send_queue = new java.util.Hashtable();	

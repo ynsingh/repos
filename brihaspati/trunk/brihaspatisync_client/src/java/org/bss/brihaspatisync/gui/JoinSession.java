@@ -44,7 +44,7 @@ public class JoinSession {
 			if(!(usr_name.equals(""))){
 				if(usr_name.equals("guest")) {
 					usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
-					usr_name=java.net.URLEncoder.encode(usr_name);
+					usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
 					client_obj.setUserName(usr_name);
 				}
 				String username="user="+URLEncoder.encode(usr_name,"UTF-8");
@@ -104,7 +104,7 @@ public class JoinSession {
                         org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
-			HandRaiseThreadController.getController().start();
+			HandRaiseThreadController.getController().startHandRaiseThread();
 			//start audio thread
 			String a_status=org.bss.brihaspatisync.util.AudioUtilObject.getAudioStatus();
                         if(a_status.equals("1")){
@@ -117,7 +117,7 @@ public class JoinSession {
 			String v_status=org.bss.brihaspatisync.util.AudioUtilObject.getVideoStatus();
 			if((client_obj.getUserRole()).equals("instructor")) {
 				if(v_status.equals("1")){	
-                        		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
+                        		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().startLocalServer();
 					org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(false);
 				}
 			} else{ 

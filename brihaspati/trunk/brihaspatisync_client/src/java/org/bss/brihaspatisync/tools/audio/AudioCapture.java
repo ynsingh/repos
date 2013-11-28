@@ -65,14 +65,14 @@ public class AudioCapture implements Runnable {
 		
         }
 	
-	protected void setflag(boolean flag){
+	protected void setflag(boolean flag1){
 		if((org.bss.brihaspatisync.util.ClientObject.getController().getUserRole()).equals("instructor")) {
-			if(flag)
+			if(flag1)
         	       		startCapture();
 			else 
                                 stopCapture();
 		} else {
-			if(flag) 
+			if(flag1) 
 				startCapture();
 			else  
 				stopCapture();
@@ -95,6 +95,7 @@ public class AudioCapture implements Runnable {
 					runner.yield();
 				} catch(Exception ex){ System.out.println("Eception in capture Audio class "+ex.getCause()); }
 			}
+			stopCapture();
                 } catch(Exception e){ System.out.println("Eception in capture Audio class "+e.getCause()); }
         }
 		

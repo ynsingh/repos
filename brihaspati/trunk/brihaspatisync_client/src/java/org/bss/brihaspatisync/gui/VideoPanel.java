@@ -69,6 +69,7 @@ public class VideoPanel {
  	 * Create JscrollPane in which images display label is added to show capture images.
  	 */ 
 	public JPanel createGUI() {  
+		try {
 		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
                 av_Pane.setBackground(Color.BLACK);
@@ -77,7 +78,7 @@ public class VideoPanel {
                 JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
                 welcome.setFont(new Font("Arial", Font.PLAIN, 12));
 
-                JLabel userLogin=new JLabel(org.bss.brihaspatisync.util.ClientObject.getController().getwelcomeUserName());
+                JLabel userLogin=new JLabel(java.net.URLDecoder.decode(org.bss.brihaspatisync.util.ClientObject.getController().getwelcomeUserName(),"UTF-8")) ;
                 userLogin.setForeground(new Color(0,0,0));
                 userLogin.setFont(new Font("Arial", Font.BOLD, 12));
                 labelPane.add(welcome);
@@ -111,6 +112,7 @@ public class VideoPanel {
         	mainPanel.add(leftPanel, new Integer(0), 0);
 	        mainPanel.add(centerPanel, new Integer(1), 0);
                 av_Pane.add(mainPanel,BorderLayout.CENTER);
+		} catch(Exception e ){System.out.println("Exception in VideoPanel class  "+e.getMessage());}
 		return av_Pane; 	
 	}
 	

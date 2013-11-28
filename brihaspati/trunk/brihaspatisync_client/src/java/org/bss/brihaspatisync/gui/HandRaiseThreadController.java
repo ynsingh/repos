@@ -52,7 +52,7 @@ public class HandRaiseThreadController implements Runnable{
 	/**
  	 * Start Thread
  	 */  
-        public synchronized void start() throws Exception {
+        public synchronized void startHandRaiseThread() throws Exception {
 		if (runner == null) {
                         runner = new Thread(this);
 			rec_Flag=true;
@@ -64,11 +64,17 @@ public class HandRaiseThreadController implements Runnable{
 	/**
          * Stop Thread
          */ 
-        public synchronized void stop() {
+        private synchronized void stopHandRaiseThread() {
                 if (runner != null) {
 			rec_Flag=false;
-                        runner.stop();
 			runner = null;
+			thread_controll=null;
+			stopallpermission=false;
+        		startgetpermission=false;
+        		startpostpermission=false;
+			stopsharescreen=false;
+        		startgetsharescreen=false;
+        		startpostsharescreen=false;
 			System.out.println("UserListThread is Stop !!");
              	}
         }
@@ -82,15 +88,15 @@ public class HandRaiseThreadController implements Runnable{
 						org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);	
 						org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw.getController().allowDrawforStudent();
 						
-						Post_GetSharedScreen.getController().start(false);
-						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
+						Post_GetSharedScreen.getController().startSharedScreen(false);
+						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().startLocalServer();
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
 					}catch(Exception e){System.out.println("Error in startpostpermission ");}
 				}
 				if(startgetpermission){
 					try {
 						startgetpermission=false;
-						Post_GetSharedScreen.getController().start(true);
+						Post_GetSharedScreen.getController().startSharedScreen(true);
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
 					}catch(Exception e){System.out.println("Error in startgetpermission ");}
                                 }
@@ -100,10 +106,10 @@ public class HandRaiseThreadController implements Runnable{
 						if(!(role.equals("instructor"))){
 							org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw.getController().denieDrawforStudent();
 							org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(false);
-							org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
+							org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stopLocalServer();
 						}
 						
-						Post_GetSharedScreen.getController().stop();		
+						Post_GetSharedScreen.getController().stopSharedScreen();		
 						StatusPanel.getController().setdestopClient("no");
                         	                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
 						
@@ -113,26 +119,27 @@ public class HandRaiseThreadController implements Runnable{
 				if(startpostsharescreen){
 					try {
 						startpostsharescreen=false;
-						Post_GetSharedScreen.getController().start(false);
+						Post_GetSharedScreen.getController().startSharedScreen(false);
 					}catch(Exception e){System.out.println("Error in startpostsharescreen ");}
 				}
 				if(startgetsharescreen){
 					try {
 	                                        startgetsharescreen=false;
-						Post_GetSharedScreen.getController().start(true);
+						Post_GetSharedScreen.getController().startSharedScreen(true);
 					}catch(Exception e){System.out.println("Error in startgetsharescreen ");}
                                 }
 				if(stopsharescreen){
 					try {
                                         	stopsharescreen=false;
-						Post_GetSharedScreen.getController().stop();
+						Post_GetSharedScreen.getController().stopSharedScreen();
 						StatusPanel.getController().setdestopClient("no");
 					}catch(Exception e){System.out.println("Error in stopsharescreen ");}
                                 }
 				runner.yield();
 				runner.sleep(500);
 			}catch(Exception e){}
-		}	
+		}
+		stopHandRaiseThread();	
 	}
 		
 	protected void startPostPermission(boolean flag) {

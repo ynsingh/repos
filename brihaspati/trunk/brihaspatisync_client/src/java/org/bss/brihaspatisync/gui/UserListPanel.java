@@ -123,13 +123,13 @@ public class UserListPanel extends Thread {
 					user_id.add(k,(String)st.nextToken());
 					statusVector.add(k,st.nextToken().trim());
         	        	        user_full_name.add(k,java.net.URLDecoder.decode(st.nextToken().trim()));
-				}else {
+				} else {
 					user_id.add((String)st.nextToken());
                                         statusVector.add(st.nextToken().trim());
                                         user_full_name.add(java.net.URLDecoder.decode(st.nextToken().trim()));
 				}
 			}
-		}catch(Exception e){}
+		}catch(Exception e){ }
 	}
 	
 	/**

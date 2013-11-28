@@ -177,10 +177,10 @@ public class MainWindow  extends JFrame implements ActionListener {
 	                menuItem2.setEnabled(false);	
 			desktop.add(new LoginWindow());
 			content.add(desktop,BorderLayout.CENTER);
-			org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().stop();
-			org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
+			//org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().stopSharedScreen();
+			//org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
                         org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
-                        org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
+                        //org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
 
                 	content.validate();
                 	content.repaint();
@@ -191,10 +191,10 @@ public class MainWindow  extends JFrame implements ActionListener {
                         desktop.add(new CourseSessionWindow());
                         content.add(desktop,BorderLayout.CENTER);
 
-			org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().stop();
-			org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
+			//org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().stopSharedScreen();
+			//org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
 			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
-			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
+			//org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
 
                         content.validate();
                         content.repaint();

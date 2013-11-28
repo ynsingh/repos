@@ -101,6 +101,7 @@ public class AudioPlayer implements Runnable {
                                        	mixed_byteThread.sleep(10);
                                 } catch(Exception ex) { System.out.println("Exception in AudioPlayer mixed_byteThread thread "+ex.getMessage());}
                    	}
+			stopThread();
               	}}).start();
 		
                 (playerThread=new Thread(){
@@ -119,6 +120,7 @@ public class AudioPlayer implements Runnable {
 						playerThread.sleep(5000);
                                         }catch(Exception e){ System.out.println("Exception in AudioPlayer in run() method "+e.getMessage());}
                                 }
+				stopThread();
                         }
                 }).start();
 	}
