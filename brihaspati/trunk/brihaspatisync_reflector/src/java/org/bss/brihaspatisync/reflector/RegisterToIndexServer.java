@@ -157,6 +157,26 @@ public class RegisterToIndexServer {
               	}
         }
 	
+	/**
+         * This method is used to remove user from userlist in iserver  
+         */
+	
+        public static void request_For_RemoveUser(String lectid,String user) {
+                try {
+                        lectid ="lectID="+URLEncoder.encode(lectid,"UTF-8");
+                        user="username="+URLEncoder.encode(user,"UTF-8");
+                        URL indexurl = new URL(indexServer+"req=logout&"+lectid+"&"+user);
+                        HttpsURLConnection connection=HttpsUtil.getController().createHTTPConnection(indexurl);
+                        if(connection !=null) {
+                                if(!bufferReader(connection.getInputStream()))
+                                        System.out.println("RegisterToIndexServer class change status faild !! ");
+                        } else
+                                System.out.println("Check your Network Connection or try again");
+                } catch(Exception e) {
+                        System.out.println("Exception in RegisterToIndexServer Class on requestToChangeStatus method "+e.getMessage());
+                }
+        }
+
 	
 	private static boolean bufferReader(InputStream ins ) {
 		boolean flag=false;

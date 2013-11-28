@@ -15,13 +15,12 @@ import org.bss.brihaspatisync.reflector.RegisterToIndexServer;
  */
 
 public class HandraiseAction {
-
+	
         private void startHandraiseAction(String handraise) {
                 try{
                 	RegisterToIndexServer.requestToChangeStatus(handraise);
                 }catch(Exception e){  System.out.println("Error on HandraiseAction :"+e.getCause()); }
         }
-
         public synchronized void setValue(String handraise){
                 startHandraiseAction(handraise);
         }
