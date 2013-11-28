@@ -75,6 +75,7 @@ public class ProcessRequest extends HttpServlet {
 		PrintWriter out = response.getWriter();
 
 		if(reqType.equals("reflector_logout")) {
+
 			/**
 			 * call to removePeer method to remove all entries from Reflector.xml and from ReflectorStatus.xml file.
 			 */
@@ -207,15 +208,14 @@ public class ProcessRequest extends HttpServlet {
 			 * and also sets client's status to deactive.
 			 **/
 			try {
-				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
-				String reflector=request.getParameter("reflector");
 				String username=request.getParameter("username");
+				String lectID=request.getParameter("lectID");
 				/** Remove Entry from the peer list from LecturePeer.xml */
-				if(!(reflector.equals(""))) {
-					String lectID=request.getParameter("lectID");
+				if(!(lectID.equals(""))) {
 					PeerManager.removePeer(lectID,username);
 					ReflectorStatusManager.updateStatusPeer(username);
-				}	
+				}
+				out.println("Successfull");	
 				out.flush();
         	                out.close();
 			} catch(Exception e) { ServerLog.log("Exception in logout in ProcessRequest class"+e.getMessage()); }
