@@ -155,12 +155,12 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 	private JScrollPane showLecture(Vector lectureVector) {
 		getTimeIndexingServer();
 		lectinfoVector=lectureVector;
-		int y=lectureVector.size();
-		runButton=new JButton[y];			
-		nameLabel=new JLabel[y];
-		descLabel=new JLabel[y];
-		buttonPanel=new JPanel[y];
-	        nsPane=new JPanel[y];
+		int lecture_size=lectureVector.size();
+		runButton=new JButton[lecture_size];			
+		nameLabel=new JLabel[lecture_size];
+		descLabel=new JLabel[lecture_size];
+		buttonPanel=new JPanel[lecture_size];
+	        nsPane=new JPanel[lecture_size];
 		center_mainPanel=new JPanel();
     	
  		center_mainPanel.setLayout(new GridLayout(0,2,5,3));
@@ -182,15 +182,15 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 
                 int curdate=Integer.parseInt(Integer.toString(curyear)+str_curmonth+str_curday);	
 		
-		for(int i=0;i<y;i++){
+		for(int i=0;i<lecture_size;i++){
 			try {
                 	        java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectureVector.get(i).toString(),",");
                         	String lectid=decrypt(str1.nextElement().toString());
 	                        courseid.add(lectid);
                 	        String lectCouseName=decrypt(str1.nextElement().toString());
-        	                String lectUserName=decrypt(str1.nextElement().toString());
                         	String lectName=decrypt(str1.nextElement().toString());
 	                        String lectInfo=decrypt(str1.nextElement().toString());
+        	                String lectUserName=decrypt(str1.nextElement().toString());
         	                String lectNo=decrypt(str1.nextElement().toString());
                 	        String lectVedio=decrypt(str1.nextElement().toString());
                         	String lectAudio=decrypt(str1.nextElement().toString());
@@ -241,7 +241,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			center_mainPanel.add(buttonPanel[i]);
 			}catch(Exception e){System.out.println("Error in load session in StudentCSPanel class  "+e.getMessage());}
 		}
-       		if(y==0){
+       		if(lecture_size==0){
 			return new JScrollPane();
 		}else{
 			scrollPane1=new JScrollPane(center_mainPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
