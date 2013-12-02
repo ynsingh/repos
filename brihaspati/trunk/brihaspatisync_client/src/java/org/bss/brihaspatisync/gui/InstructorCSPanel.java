@@ -465,7 +465,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			String indexServerName=client_obj.getIndexServerName();
 			String indexServer=indexServerName+"/ProcessRequest?req=cancleLecture&"+idCourse;
 			if(!(indexServerName.equals(""))) {
-				if(!(HttpsUtil.getController().getIndexingMessage(indexServer)))
+				if(!(HttpsUtil.getIndexingMessage(indexServer)))
                                 	System.out.println(Language.getController().getLangValue("InstructorCSPanel.Messageialog1"));
 			}  else
 				System.out.println("Insufficient indexServer name in cancleLecture() in InstructorCSPanel :"+indexServer);
@@ -487,7 +487,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 	private void getTimeIndexingServer() {
                 try {
-                        String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+                        //String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+                        String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getTimeIndexingServer();
                         if(indexServer != null) {
 				indexServer=java.net.URLDecoder.decode(indexServer.trim());
                                 indexServer=indexServer.replace("date","");

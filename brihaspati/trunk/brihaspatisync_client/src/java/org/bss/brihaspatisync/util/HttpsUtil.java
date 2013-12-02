@@ -45,46 +45,28 @@ import org.bss.brihaspatisync.network.Log;
  */
 
 public class HttpsUtil{
-       
-	private List list;
-	
-	private Proxy proxy;
-	
-	private int netType=0;
-	
-	private URL indexurl=null;
-	
-	private InetSocketAddress proxy_addr;
-	
-	private static HttpsUtil httpsUtil=null;
-	
-	private HttpsURLConnection connection=null;
+	private static HttpsURLConnection connection=null;
 
-	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-        
-	public static HttpsUtil getController(){
-		if (httpsUtil==null){
-			httpsUtil=new HttpsUtil();
-		}
-		return httpsUtil;
-	}
-	
+	private static RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 		
 	/**
    	 * The URL class is capable of handling http:// and https:// URLs
    	 */
-   	public HttpsURLConnection createHTTPConnection(URL url) throws IOException {
+   	public static HttpsURLConnection createHTTPConnection(URL url) throws IOException {
 		try {
+			InetSocketAddress proxy_addr=null;
 			if(runtime_object.getProxyHost().equals("")) {
 	                        System.setProperty("java.net.useSystemProxies","true");
-        	                list = ProxySelector.getDefault().select( new URI(url.toString()));
+        	                List list = ProxySelector.getDefault().select( new URI(url.toString()));
                 	        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
-                        	        proxy = (Proxy) iter.next();
+                        	        Proxy proxy = (Proxy) iter.next();
                                 	proxy_addr = (InetSocketAddress)proxy.address();
 				}
+				
+				/*
 				if(!(list.get(0).toString()).equals("DIRECT")) {
 					new org.bss.brihaspatisync.gui.PreferenceWindow().createWindow(url);
-				}
+				}*/
 			}
 
 
@@ -139,7 +121,7 @@ public class HttpsUtil{
      	 * Get The Issuer CN Name to verify that certificate is comming from 
      	 * original Server.
      	 */
-   	private String getIssuerCN_Name(X509Certificate cert){
+   	private static synchronized String getIssuerCN_Name(X509Certificate cert){
    	
    		String IssuerDN=cert.getIssuerDN().getName();
    		   		
@@ -156,7 +138,7 @@ public class HttpsUtil{
      	 * Get The Subject Organisation Name from certificate to verify that 
      	 * certificate is issued to valid server
      	 */
-   	private String getSubjectOrg_Name(X509Certificate cert){
+   	private static synchronized String getSubjectOrg_Name(X509Certificate cert){
    
    		String SubjectDN=cert.getSubjectDN().getName();
    		
@@ -171,7 +153,7 @@ public class HttpsUtil{
    		
    	}
 	
-	public synchronized boolean getIndexingMessage(String indexServer) {
+	public static synchronized boolean getIndexingMessage(String indexServer) {
         	boolean flag=false;
                	try {
 			URL indexurl = new URL(indexServer);
@@ -199,7 +181,7 @@ public class HttpsUtil{
 	/**
 	 * This method is used to get Reflector's Address from inexing server passed as parameter ,which is used to join session. 
 	 */
-	public synchronized String getReflectorAddress(String indexServer){
+	public static synchronized String getReflectorAddress(String indexServer){
 		String ref_ip="";
 		String parent_ref_ip="";
                 try {
@@ -246,7 +228,7 @@ public class HttpsUtil{
                 return ref_ip;
         }
 	
-	public synchronized String getStringMessage(String sendurl,String message){
+	public static synchronized String getStringMessage(String sendurl,String message){
                 try {
                         URL url = new URL(sendurl);
                         connection=createHTTPConnection(url);
@@ -271,7 +253,7 @@ public class HttpsUtil{
         }
 
 	
-	public synchronized Vector getvectorMessage(String sendurl,String message){
+	public static synchronized Vector getvectorMessage(String sendurl,String message){
         	Vector msgList=new Vector();
 		try {
                 	URL url = new URL(sendurl);
@@ -302,7 +284,7 @@ public class HttpsUtil{
         }
 	/** get all the session in instruvtor or student ***/	
 
-	public synchronized Vector getSessionForCourse(Vector courseList, String indexServerName) {
+	public static synchronized Vector getSessionForCourse(Vector courseList, String indexServerName) {
 		if(courseList !=null) {
 			Vector sessionList=new Vector();
 			for(int i=0;i<courseList.size();i++){
@@ -340,21 +322,12 @@ public class HttpsUtil{
 	/**
      	 * Verify the Organisation Name and Issuer Common Name 
      	 */
-   	private Boolean verifyCertificate(String Subject_OrgName, String IssuerCN_Name) {
+   	private static Boolean verifyCertificate(String Subject_OrgName, String IssuerCN_Name) {
 		String orgName=RuntimeDataObject.getController().getCertOrgName();
 		String issuerName=RuntimeDataObject.getController().getcertIssuerName();
    		if (Subject_OrgName.equals(orgName)&&(IssuerCN_Name.equals(issuerName)))
 			return true;
 		else
 		    return false;  	
-		
    	}
-	
-	public int getNetType() {
-		return netType;
-	}
-	
-	public void setNetType(int type){
-                netType=type;
-        }
 }

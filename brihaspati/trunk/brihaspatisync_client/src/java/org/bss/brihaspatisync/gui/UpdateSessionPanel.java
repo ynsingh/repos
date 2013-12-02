@@ -462,7 +462,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                 String indexServerName=client_obj.getIndexServerName();
                                 if(!(indexServerName.equals(""))) {
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
-                                        if(HttpsUtil.getController().getIndexingMessage(indexServer)) {
+                                        if(HttpsUtil.getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
                                                 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      frame.dispose();
 						insCSPanel.getmainPanel().remove(1);	
@@ -507,7 +507,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	
 	private void getTimeIndexingServer() {
                 try {
-  			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+  			String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getTimeIndexingServer();
                         if(indexServer != null) {
 				indexServer=java.net.URLDecoder.decode(indexServer.trim());
                                 indexServer=indexServer.replace("date","");

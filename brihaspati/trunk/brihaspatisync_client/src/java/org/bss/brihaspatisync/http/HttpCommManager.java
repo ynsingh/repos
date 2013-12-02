@@ -4,15 +4,13 @@ package org.bss.brihaspatisync.http;
  * HttpsConnection.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2007-2008,2013 ETRG,IIT Kanpur.
  */
 
 import java.util.Vector;
 import java.net.URLEncoder;
 import java.net.InetAddress;
-import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.util.HttpsUtil;
-import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.Log;
 
 /**
@@ -23,115 +21,101 @@ import org.bss.brihaspatisync.network.Log;
 
 public class HttpCommManager {
 	
-	private String indexServerName="";
+	private static String indexServerName="";
 
-   	private Vector loginResult=null;
-
-   	private static HttpCommManager httpsConnection=null;
-	
-	private HttpsUtil httpsUtil= HttpsUtil.getController();
-
-	/**
-	 * Controller for the class.
-	 */
-	public static HttpCommManager getController(){
-		if (httpsConnection==null){
-			httpsConnection=new HttpCommManager();
-		}
-		return httpsConnection;
-	}
-
-   	/** 
+   	private static Vector loginResult=null;
+   	
+	/** 
 	 * We instantiate connection to master server to retrieve the secondry indexing serveris' list
          * If there is secondary indexing serveris's list is find from master server, open main window GUI
          * otherwise it return from main method.
          */
-	public Vector connectToMasterServer() {
+	public static Vector connectToMasterServer() {
    		try {
 			/** First entry is kept as "Select", to signal the users that he need to make a choice of secondry indexing server,
 	        	 *  The url is created to retrieve the secondry indexing servers' list
         		 *  from master indexing server
          		 */
-			String m_url=RuntimeDataObject.getController().getMasterUrl()+"/ProcessRequest?req=getISList";
-                        if(!(m_url.equals(""))){
-				Vector indexServerList=httpsUtil.getvectorMessage(m_url,"noLecture");
+			String m_url=org.bss.brihaspatisync.util.RuntimeDataObject.getController().getMasterUrl()+"/ProcessRequest?req=getISList";
+                        if(!m_url.equals("")){
+				Vector indexServerList=HttpsUtil.getvectorMessage(m_url,"noLecture");
 				indexServerList.insertElementAt("Select",0); 
-				if(indexServerList.size()!=0){
-					return indexServerList;
-                                } else {
-                                        System.out.println("Error in getting secondary indexing Servers.");
-					return indexServerList;
-                                }
-			
-                        }else {
-                                System.out.println("Master URL not found. Clear the cache and download the new binary from www.brihaspatisolutions.co.in.\n");
-                        }
-                }catch (Exception ioe) {
-                        System.out.println("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());
-                }
+				return indexServerList;
+                        } 
+                } catch(Exception ioe) { System.out.println("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());}
+                System.out.println("Master URL not found. Clear the cache and download the new binary from www.brihaspatisolutions.co.in.\n");
 		return null;
    	}
 	
 	/**
 	 * Send login details with username and password to get a session key and userid for current login.
 	 */   	
-   	public boolean connectToIndexServer(String indexServer,String usr_name, String password){
+   	public static boolean connectToIndexServer(String indexServer,String usr_name, String password){
 		boolean index=false;
   		try{
 			// store indexServer name in local variable for later use.
-			if(indexServer!=null || usr_name!=null || password!=null){
+			if(indexServer!=null && usr_name !=null && password !=null){
   				String usr = "usr="+URLEncoder.encode(usr_name, "UTF-8");
       				String pass= "pass="+URLEncoder.encode(password, "UTF-8");
       				String ip="ip="+URLEncoder.encode((String)InetAddress.getLocalHost().getHostAddress(),"UTF-8");
 				String req_url=indexServer+"/ProcessRequest?req=login&"+usr+"&"+pass+"&"+ip;
-                                loginResult=httpsUtil.getvectorMessage(req_url,"noLecture");
+                                loginResult=HttpsUtil.getvectorMessage(req_url,"noLecture");
 				if((loginResult != null) && (loginResult.size()>0)){
 					indexServerName=indexServer;
                                         index=true;
   				}
-			}else{
+			} else 
 				System.out.println("No Sufficient Arguments to call connectToIndexServer()");
-			}
-
-         	}catch(Exception e){
-                	System.out.println("Error at connectToIndexserver()in HttpsConnection : "+e.getMessage());
-                }
+         	}catch(Exception e) { System.out.println("Exception at connectToIndexserver()in HttpsConnection : "); }
 		return index;
         }
-	
-	
- 	
-        public Vector getInstSessionList(){
-		return httpsUtil.getController().getSessionForCourse(getInstCourseList(),indexServerName);//return instSessionList;
+
+	/**
+	 * This method are used to get all instructor session list from iserver  
+	 */
+        public static Vector getInstSessionList() {
+		return HttpsUtil.getSessionForCourse(getInstCourseList(),indexServerName);
+        } 
+		
+	/**
+         * This method are used to get all student session list from iserver  
+         */	
+        public static Vector getStudSessionList(){
+                return HttpsUtil.getSessionForCourse(getStudCourseList(),indexServerName);
         }
 	
-        public Vector getStudSessionList(){
-                return httpsUtil.getController().getSessionForCourse(getStudCourseList(),indexServerName);//studSessionList;
-        }
-	
-        public Vector getStudCourseList(){
+	/**
+         * This method are used to get all course list from iserver in which user are student 
+         */
+        public static Vector getStudCourseList(){
 		try {
 			String id="id="+URLEncoder.encode((String)loginResult.get(0),"UTF-8");
 			String indexServer=indexServerName+"/ProcessRequest?req=getCourse&"+id+"&role="+3;
-			return httpsUtil.getvectorMessage(indexServer,"noLecture");
-		}catch(Exception e){ }
+			return HttpsUtil.getvectorMessage(indexServer,"noLecture");
+		}catch(Exception e) {System.out.println("Exception in getStudCourseList() "); }
                 return null;
         }
 	
-	public Vector getInstCourseList(){
+	/**
+         * This method are used to get all course list from iserver in which user are instructor 
+         */
+	public static Vector getInstCourseList(){
 		try {
 	                String id="id="+URLEncoder.encode((String)loginResult.get(0),"UTF-8");
         	        String indexServer=indexServerName+"/ProcessRequest?req=getCourse&"+id+"&role="+2;	
-                	return httpsUtil.getvectorMessage(indexServer,"noLecture");
-		}catch(Exception e){ }
+                	return HttpsUtil.getvectorMessage(indexServer,"noLecture");
+		}catch(Exception e){ System.out.println("Exception in getInstCourseList() "); }
                 return null;
       	}
 	
-	public String  getTimeIndexingServer(){
+	/**
+         * This method are used to get server time from iserver . 
+         */
+	public static String  getTimeIndexingServer(){
 		try {
                         String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&";
-			return httpsUtil.getStringMessage(indexServer,"UnSuccessfull");	
-		}catch(Exception e){System.out.println("Error in getTimeIndexingServer() ");}
+			return HttpsUtil.getStringMessage(indexServer,"UnSuccessfull");	
+		} catch(Exception e){System.out.println("Exception in getTimeIndexingServer() ");}
 		return null;
         }
 

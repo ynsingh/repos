@@ -316,7 +316,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		
 	private void getTimeIndexingServer() {
                 try {
-                        String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getController().getTimeIndexingServer();
+                        String indexServer=org.bss.brihaspatisync.http.HttpCommManager.getTimeIndexingServer();
                         if(indexServer != null) {
 				indexServer=java.net.URLDecoder.decode(indexServer.trim());
                                 indexServer=indexServer.replace("date","");

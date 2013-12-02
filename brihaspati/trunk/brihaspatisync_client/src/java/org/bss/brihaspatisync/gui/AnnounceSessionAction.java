@@ -44,7 +44,7 @@ public class AnnounceSessionAction implements ActionListener{
                                         String value;
 					if(!(indexServerName.equals(""))){
 						String 	indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
-						if(HttpsUtil.getController().getIndexingMessage(indexServer)){
+						if(HttpsUtil.getIndexingMessage(indexServer)){
 							
 							insCSPanel.getmainPanel().remove(1);
 					 		Vector course_Name=client_obj.getInstCourseList();

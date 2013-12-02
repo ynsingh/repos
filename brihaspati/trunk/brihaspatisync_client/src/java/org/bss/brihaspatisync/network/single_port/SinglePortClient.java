@@ -188,7 +188,7 @@ public class SinglePortClient implements Runnable {
 			if(send_data != null)	
 				postMethod.setRequestBody(new java.io.ByteArrayInputStream(send_data));
                         postMethod.setRequestHeader("session",clientObject.getLectureID()+","+clientObject.getUserName()+","+type);
-			if(client == null ) {
+			//if(client == null ) {
                                 client = new HttpClient();
                                 client.setConnectionTimeout(800000);
 				// Http Proxy Handler
@@ -199,7 +199,7 @@ public class SinglePortClient implements Runnable {
                                 	AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
 	                                client.getState().setProxyCredentials(authScope, credentials);
         	            	}
-			}
+			//}
 			int statusCode = client.executeMethod(postMethod);
 			byte[] receive_data_fromserver=postMethod.getResponseBody();
                         postMethod.releaseConnection();
@@ -208,6 +208,7 @@ public class SinglePortClient implements Runnable {
 			return receive_data_fromserver;
 		}catch(Exception e) { 
 			client=null;
+			org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus("sssss");
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 			ThreadController.setReflectorStatusThreadFlag(false);
 			System.out.println(this.getClass()+" in Send data from client to reflector "+e.getMessage());

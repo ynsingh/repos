@@ -59,7 +59,7 @@ public class JoinSession {
 				   if(!(indexName.equals(""))) {
 	                		String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
 					//get reflector ip from indexing server.
-					String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
+					String ref_ip =HttpsUtil.getReflectorAddress(indexServer);
 					if(!(ref_ip.equals(""))) {
 						if(!(ThreadController.getThreadFlag()))
 			                		ThreadController.setThreadFlag(true);	

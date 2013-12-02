@@ -57,7 +57,7 @@ public class Client {
 
 			MainWindow.getController().createGUI();
 			MailLogin.getController().joindirect(user_name,lect_id,course_id,indexServerName,ins_std);
-		}catch(Exception e){System.out.println("Error on Loading Look&Feel"+e.getMessage());}
+		} catch(Exception e) { System.out.println("Error on Loading Look&Feel"+e.getMessage()); }
 	}
 
 	/**

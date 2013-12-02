@@ -24,11 +24,6 @@ public class Logout {
 	private ClientObject client_obj=ClientObject.getController();
 	
 	/**
-	 * Constructor for class
-	 */
-	//private Logout(){ }
-
-	/**
 	 * close all local network thread and media threads 
          * send Logout request to indexing server to remove this client from existing peer network 
 	 * and reform peer network (use Backup Tree Algorithm)
@@ -49,7 +44,7 @@ public class Logout {
 			String reflectorIP =client_obj.getReflectorIP();
 			if(!(indexName.equals(""))){
                                String  indexServer=indexName+"/ProcessRequest?req=logout&"+ref_addr+"&"+username+"&"+lectID;
-   	                       HttpsUtil.getController().getIndexingMessage(indexServer);
+   	                       HttpsUtil.getIndexingMessage(indexServer);
                        	}
 									
 		}catch(Exception ex){}

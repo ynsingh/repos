@@ -177,11 +177,7 @@ public class MainWindow  extends JFrame implements ActionListener {
 	                menuItem2.setEnabled(false);	
 			desktop.add(new LoginWindow());
 			content.add(desktop,BorderLayout.CENTER);
-			//org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().stopSharedScreen();
-			//org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
                         org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
-                        //org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
-
                 	content.validate();
                 	content.repaint();
             	} else if(e.getActionCommand().equals("Sessionout")) {
@@ -190,12 +186,7 @@ public class MainWindow  extends JFrame implements ActionListener {
                         desktop.setBackground(new Color(220,220,220));
                         desktop.add(new CourseSessionWindow());
                         content.add(desktop,BorderLayout.CENTER);
-
-			//org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().stopSharedScreen();
-			//org.bss.brihaspatisync.tools.audio.AudioClient.getController().stopThread();
 			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);
-			//org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().stop();
-
                         content.validate();
                         content.repaint();
 			

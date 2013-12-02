@@ -316,18 +316,7 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 					RuntimeDataObject.getController().setProxyUser(user);
 		                        RuntimeDataObject.getController().setProxyPass(pass);
 					if(indexurl != null)
-						HttpsUtil.getController().createHTTPConnection(indexurl);		
-					/***
-        				fos = new FileOutputStream(f);
-      					dos=new DataOutputStream(fos);
-		      			dos.writeBytes("Type="+"2"+"\n");       
-	        			log.setLog("this is a test");
-        				dos.writeBytes("ProxyHost="+host+"\n");
-        				dos.writeBytes("ProxyPort="+port+"\n");
-	        			dos.writeBytes("ProxyUser="+user+"\n");
-		        		dos.writeBytes("ProxyPass="+pass);
-			       		dos.flush();        	
-					*********/
+						HttpsUtil.createHTTPConnection(indexurl);		
 	    			} catch (IOException e) {}
 			}
 		}

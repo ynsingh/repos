@@ -38,8 +38,6 @@ public class ClientObject {
 	private Vector usrStatusVector=null;
 	private Vector indexServerList=null;
 		
-	private HttpCommManager commMgr = HttpCommManager.getController();
-	
 	public static ClientObject getController(){
 		if(cb==null)
 			cb=new ClientObject();
@@ -75,7 +73,7 @@ public class ClientObject {
 	 */
 	public Vector getIndexServerList(){
 		if(indexServerList == null)
-			indexServerList=commMgr.connectToMasterServer();
+			indexServerList=HttpCommManager.connectToMasterServer();
 		return indexServerList;
 	}
 	
@@ -91,7 +89,7 @@ public class ClientObject {
          * as well as instructor from HttpCommManager.
          */
 	public Vector getSessionList(Vector course, String indexServer){
-		return HttpsUtil.getController().getSessionForCourse(course, indexServer);
+		return HttpsUtil.getSessionForCourse(course, indexServer);
 	}
 
 	/**
@@ -99,7 +97,7 @@ public class ClientObject {
          * from HttpCommManager.
          */
         public Vector getStudCourseList(){
-                return commMgr.getStudCourseList();
+                return HttpCommManager.getStudCourseList();
        }
 
         /**
@@ -107,7 +105,7 @@ public class ClientObject {
          * from HttpCommManager.
          */
         public Vector getInstCourseList(){
-		return commMgr.getInstCourseList();	
+		return HttpCommManager.getInstCourseList();	
         }
 
 	/**
@@ -115,7 +113,7 @@ public class ClientObject {
          * from HttpCommManager.
          */
 	public Vector getStudSessionList(){
-		return commMgr.getStudSessionList();
+		return HttpCommManager.getStudSessionList();
 	}
 
 	/**
@@ -123,7 +121,7 @@ public class ClientObject {
 	 * from HttpCommManager.
          */
 	public Vector getInstSessionList(){
-		return commMgr.getInstSessionList();
+		return HttpCommManager.getInstSessionList();
         }
 
      	/**
@@ -158,7 +156,7 @@ public class ClientObject {
 	 * return true otherwise it return false.
          */
 	public boolean getAuthentication(String indexSerName, String usr, String pass){
-		boolean value =commMgr.connectToIndexServer(indexSerName,usr,pass);
+		boolean value =HttpCommManager.connectToIndexServer(indexSerName,usr,pass);
 		return value;
 	}
 
