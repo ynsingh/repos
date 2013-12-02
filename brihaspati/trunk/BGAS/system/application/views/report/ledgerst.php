@@ -1,16 +1,41 @@
 <?php
+	$this->load->library('session');
+	$date1 = $this->session->userdata('date1');
+	$date2 = $this->session->userdata('date2');
+
 	$this->load->model('Ledger_model');
+
 	if ( ! $print_preview)
 	{
 		echo form_open('report/ledgerst/' . $ledger_id);
 		echo "<p>";
+		echo "<span id=\"tooltip-target-1\">";
+		echo form_label('Entry Date From', 'entry_date1');
+		echo " ";
+		echo form_input_date_restrict($entry_date1);
+		echo "</span>";
+		echo "<span id=\"tooltip-content-1\">Date format is " . $this->config->item('account_date_format') . ".</span>";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		echo "<span id=\"tooltip-target-2\">";
+		echo form_label('To Entry Date', 'entry_date2');
+		echo " ";
+		echo form_input_date_restrict($entry_date2);
+		echo "</span>";
+		echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		
 		echo form_input_ledger('ledger_id', $ledger_id);
 		echo " ";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
 		echo form_submit('submit', 'Show');
 		echo "</p>";
 		echo form_close();
 	}
-
+			
 	/* Pagination configuration */
 	if ( ! $print_preview)
 	{
@@ -60,18 +85,25 @@
 		echo "</tr>";
 		echo "</table>";
 		echo "<br />";
-		if ( ! $print_preview) {
-			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
-			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc')->limit($pagination_counter, $page_count);
-			$ledgerst_q = $this->db->get();
-		} else {
-			$page_count = 0;
-			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
-			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
-			$ledgerst_q = $this->db->get();
+		
+		if ( ! $print_preview) 
+		{
+			
+		$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
+		$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc')->limit($pagination_counter, $page_count);
+		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
+		$ledgerst_q = $this->db->get();
 		}
-
-		echo "<table border=0 cellpadding=5 class=\"simple-table ledgerst-table\">";
+		else {
+		$page_count = 0;
+		$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
+		$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
+		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
+		$ledgerst_q = $this->db->get();
+		}
+		echo "<table border=0 cellpadding=5 class=\"simple-table ledgerst-table\" width=\"70%\">";
 
 		echo "<thead><tr><th>Date</th><th>No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th><th>Balance</th></tr></thead>";
 		$odd_even = "odd";
@@ -101,7 +133,9 @@
 			/* Calculating previous balance */
 			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
 			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc')->limit($page_count, 0);
+		
 			$prevbal_q = $this->db->get();
+
 			foreach ($prevbal_q->result() as $row )
 			{
 				if ($row->entry_items_dc == "D")
@@ -113,10 +147,26 @@
 			/* Show new current total */
 			echo "<tr class=\"tr-balance\"><td colspan=6>Opening</td><td>" . convert_amount_dc($cur_balance) . "</td></tr>";
 		}
+			$page_count = 0;
 
-		foreach ($ledgerst_q->result() as $row)
-		{
-			$current_entry_type = entry_type_info($row->entries_entry_type);
+			if( $date1 > $date2 )
+			{
+				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+			}
+			else {
+			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
+			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);
+			$ledgerst_q = $this->db->get();
+			if( $ledgerst_q->num_rows() < 1 )
+			{
+				$this->messages->add('There is no ledger statement between ' . $date1 . ' and ' . $date2 . ' date.', 'success');
+			}
+
+			foreach ($ledgerst_q->result() as $row)
+			{
+				$current_entry_type = entry_type_info($row->entries_entry_type);
 
 			echo "<tr class=\"tr-" . $odd_even . "\">";
 			echo "<td>";
@@ -160,11 +210,25 @@
 			echo "</tr>";
 			$odd_even = ($odd_even == "odd") ? "even" : "odd";
 		}
+	}
 
 		/* Current Page Closing Balance */
 		echo "<tr class=\"tr-balance\"><td colspan=6>Closing</td><td>" .  convert_amount_dc($cur_balance) . "</td></tr>";
 		echo "</table>";
 	}
+	echo "<br>";
+	if ( ! $print_preview)
+	{
+	echo form_open('report/printpreview/ledgerst/' . $ledger_id);
+	echo form_submit('submit', 'Print Preview');
+	echo form_close();
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_open('report/download/ledgerst/' . $ledger_id);
+	echo form_submit('submit', 'Download CSV');
+	echo form_close();
+	}
+
 ?>
 <?php if ( ! $print_preview) { ?>
 <div id="pagination-container"><?php echo $this->pagination->create_links(); ?></div>

@@ -26,51 +26,285 @@ class Report extends Controller {
 		return;
 	}
 
-	function balancesheet($period = NULL)
+	function balancesheet($period = NULL )
 	{
+		$this->load->library('session');
 		$this->template->set('page_title', 'Balance Sheet');
 		$this->template->set('nav_links', array('report/download/balancesheet' => 'Download CSV', 'report/printpreview/balancesheet' => 'Print Preview'));
 		$data['left_width'] = "450";
 		$data['right_width'] = "450";
+		$page_count = " ";
+
+		/* Form fields */ 
+		
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+                        $data['print_preview'] =FALSE;
+		
+		/* Repopulating form */
+
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+		/* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/balancesheet', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$_POST['entry_date1']);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$_POST['entry_date2']);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2
+	                );
+			$this->session->set_userdata($newdata);
+		}
+
 		$this->template->load('template', 'report/balancesheet', $data);
 		return;
 	}
 
 	function profitandloss($period = NULL)
 	{
+		$this->load->library('session');
 		$this->template->set('page_title', 'Income And Expenses Statement');
 		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview'));
 		$data['left_width'] = "450";
 		$data['right_width'] = "450";
+
+		/* Form fields */ 
+		
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+                        $data['print_preview'] =FALSE;
+
+		/* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Repopulating form */
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/profitandloss', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2
+	                );
+			$this->session->set_userdata($newdata);
+		}
 		$this->template->load('template', 'report/profitandloss', $data);
+		return;
+	}
+
+	function paymentreceipt($period = NULL)
+	{
+		$this->load->library('session');
+		$this->template->set('page_title', 'Payment & Receipt');
+		$this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview'));
+		$data['left_width'] = "450";
+		$data['right_width'] = "450";
+
+		/* Form fields */ 
+		
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+                        $data['print_preview'] =FALSE;
+
+		/* Form validations */ 
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Repopulating form */ 
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/paymentreceipt', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2
+	                );
+			$this->session->set_userdata($newdata);
+		}
+		$this->template->load('template', 'report/paymentreceipt', $data );
 		return;
 	}
 
 	function trialbalance($period = NULL)
 	{
+		$this->load->library('session');
 		$this->template->set('page_title', 'Trial Balance');
 		$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview'));
 
-		$this->load->library('accountlist');
-		$this->template->load('template', 'report/trialbalance');
+		/* Form fields */ 
+		
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+			$data['date1'] = '';
+			$data['date2'] = '';
+			$data['print_preview'] =FALSE;
+
+		/* Form validations */ 
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Repopulating form */ 
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/trialbalance', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+				
+			$data['date1'] = $date1;
+			$data['date2'] = $date2;
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2,
+	                );
+			$this->session->set_userdata($newdata);
+		}
+		$this->template->load('template', 'report/trialbalance', $data); 
 		return;
 	}
 
 	function ledgerst($ledger_id = 0)
 	{
+		$this->load->library('session');
 		$this->load->helper('text');
 
 		/* Pagination setup */
 		$this->load->library('pagination');
 
 		$this->template->set('page_title', 'Ledger Statement');
-		if ($ledger_id != 0)
-			$this->template->set('nav_links', array('report/download/ledgerst/' . $ledger_id  => 'Download CSV', 'report/printpreview/ledgerst/' . $ledger_id => 'Print Preview'));
+		$this->template->set('nav_links', array('report/download/ledgerst/' . $ledger_id  => 'Download CSV', 'report/printpreview/ledgerst/' . $ledger_id => 'Print Preview'));
 
 		if ($_POST)
 		{
 			$ledger_id = $this->input->post('ledger_id', TRUE);
-			redirect('report/ledgerst/' . $ledger_id);
 		}
 		$data['print_preview'] = FALSE;
 		$data['ledger_id'] = $ledger_id;
@@ -90,7 +324,60 @@ class Report extends Controller {
 			redirect('report/ledgerst');
 			return;
 		}
+		/* Form fields */ 
+		
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
 
+		/* Repopulating form */
+ 
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
+		} 
+		
+		/* Form validations */ 
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/ledgerst', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			$newdata = array(
+	                   'date1'  => $date1,
+        	           'date2'  => $date2,
+	                );
+			$this->session->set_userdata($newdata);
+			redirect('report/ledgerst/' . $ledger_id);
+		}
 		$this->template->load('template', 'report/ledgerst', $data);
 		return;
 	}
@@ -105,6 +392,7 @@ class Report extends Controller {
 		$this->template->set('page_title', 'Reconciliation');
 
 		/* Check if path is 'all' or 'pending' */
+		
 		$data['show_all'] = FALSE;
 		$data['print_preview'] = FALSE;
 		$data['ledger_id'] = $ledger_id;
@@ -203,17 +491,24 @@ class Report extends Controller {
 				}
 			}
 		}
+
+		
+
 		$this->template->load('template', 'report/reconciliation', $data);
 		return;
 	}
 
 	function download($statement, $id = NULL)
 	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
 		{
 			$this->load->model('Ledger_model');
-			$all_ledgers = $this->Ledger_model->get_all_ledgers();
+			$all_ledgers = $this->Ledger_model->get_all_ledgers1($date1, $date2);
 			$counter = 0;
 			$trialbalance = array();
 			$temp_dr_total = 0;
@@ -324,6 +619,7 @@ class Report extends Controller {
 				return;
 
 			$this->load->model('Ledger_model');
+
 			$cur_balance = 0;
 			$counter = 0;
 			$ledgerst = array();
@@ -357,6 +653,8 @@ class Report extends Controller {
 
 			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
 			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);
 			$ledgerst_q = $this->db->get();
 			foreach ($ledgerst_q->result() as $row)
 			{
@@ -475,6 +773,7 @@ class Report extends Controller {
 			$counter++;
 
 			/* Opening Balance */
+			
 			list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($ledger_id);
 
 			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc, entry_items.reconciliation_date as entry_items_reconciliation_date');
@@ -584,24 +883,40 @@ class Report extends Controller {
 			$this->load->library('accountlist');
 			$this->load->model('Ledger_model');
 
-			$liability = new Accountlist();
-			$liability->init(2);
-			$liability_array = $liability->build_array();
-			$liability_depth = Accountlist::$max_depth;
-			$liability_total = -$liability->total;
-
-			Accountlist::reset_max_depth();
-
-			$asset = new Accountlist();
-			$asset->init(1);
-			$asset_array = $asset->build_array();
-			$asset_depth = Accountlist::$max_depth;
-			$asset_total = $asset->total;
-
-			$liability->to_csv($liability_array);
+			/* Liabilities and Owners Equity */
+			$liability_total = 0;
+			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
+			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 2)->where('affects_gross !=', 1);
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);	
+			$liability_list = $this->db->get();
+			foreach ($liability_list->result() as $row)
+			{
+				$liability = new Accountlist();
+				$liability->init($row->id);
+				$liability_total = -$liability->total;
+				$liability_array = $liability->build_array();
+				$liability->to_csv($liability_array);
+			}
 			Accountlist::add_blank_csv();
-			$asset->to_csv($asset_array);
 
+			/* asset */
+			$asset_total = 0;
+			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
+			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 1)->where('affects_gross !=', 1);
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);	
+			$asset_list = $this->db->get();
+			foreach ($asset_list->result() as $row)
+			{
+				$asset = new Accountlist();
+				$asset->init($row->id);
+				$asset_total = $asset->total;
+				$asset_array = $asset->build_array();
+				$asset->to_csv($asset_array);
+			}
+			Accountlist::add_blank_csv();
+			
 			$income = new Accountlist();
 			$income->init(3);
 			$expense = new Accountlist();
@@ -612,6 +927,8 @@ class Report extends Controller {
 			$diffop = $this->Ledger_model->get_diff_op_balance();
 
 			Accountlist::add_blank_csv();
+			Accountlist::add_blank_csv();
+
 			/* Liability side */
 			$total = $liability_total;
 			Accountlist::add_row_csv(array("Liabilities and Owners Equity Total", convert_cur($liability_total)));
@@ -741,10 +1058,13 @@ class Report extends Controller {
 
 			Accountlist::add_blank_csv();
 			Accountlist::add_blank_csv();
-
+			
 			/* Net P/L : Expenses */
 			$net_expense_total = 0;
-			$this->db->from('groups')->where('parent_id', 4)->where('affects_gross !=', 1);
+			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
+			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 4)->where('affects_gross !=', 1);
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);	
 			$net_expense_list_q = $this->db->get();
 			foreach ($net_expense_list_q->result() as $row)
 			{
@@ -758,7 +1078,10 @@ class Report extends Controller {
 
 			/* Net P/L : Incomes */
 			$net_income_total = 0;
-			$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);
+			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
+			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 3)->where('affects_gross !=', 1);
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);	
 			$net_income_list_q = $this->db->get();
 			foreach ($net_income_list_q->result() as $row)
 			{
@@ -819,17 +1142,72 @@ class Report extends Controller {
 			echo array_to_csv($balancesheet, "profitandloss.csv");
 			return;
 		}
+
+		/********************** PAYMENT AND RECEIPT ***********************/
+		if ($statement == "paymentreceipt")
+		{
+			$this->load->library('accountlist');
+			$this->load->model('Ledger_model');
+
+			Accountlist::add_blank_csv();
+			Accountlist::add_blank_csv();
+
+			/* Payment */
+			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
+			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 4)->where('affects_gross !=', 1);
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);
+			$net_expense_list_q = $this->db->get();
+			foreach ($net_expense_list_q->result() as $row)
+			{
+				$net_expense = new Accountlist();
+				$net_expense->init($row->id);
+				$net_exp_array = $net_expense->build_array();
+				$net_expense->to_csv($net_exp_array);
+			}
+			Accountlist::add_blank_csv();
+
+			/* Receipt */
+			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
+			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 3)->where('affects_gross !=', 1);
+			$this->db->where('date >=', $date1);
+			$this->db->where('date <=', $date2);			
+			$net_income_list_q = $this->db->get();
+			foreach ($net_income_list_q->result() as $row)
+			{
+				$net_income = new Accountlist();
+				$net_income->init($row->id);
+				$net_inc_array = $net_income->build_array();
+				$net_income->to_csv($net_inc_array);
+			}
+
+			Accountlist::add_blank_csv();
+			Accountlist::add_blank_csv();
+
+			
+			$balancesheet = Accountlist::get_csv();
+			$this->load->helper('csv');
+			echo array_to_csv($balancesheet, "paymentreceipt.csv");
+			return;
+		}
+
 		return;
 	}
 
 	function printpreview($statement, $id = NULL)
 	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
 		{
-			$this->load->library('accountlist');
 			$data['report'] = "report/trialbalance";
 			$data['title'] = "Trial Balance";
+                        $data['print_preview'] = TRUE;
+			$data['entry_date1'] = $date1;
+			$data['entry_date2'] = $date2;
 			$this->load->view('report/report_template', $data);
 			return;
 		}
@@ -840,6 +1218,9 @@ class Report extends Controller {
 			$data['title'] = "Balance Sheet";
 			$data['left_width'] = "";
 			$data['right_width'] = "";
+                        $data['print_preview'] = TRUE;
+			$data['entry_date1'] = $date1;
+			$data['entry_date2'] = $date2;
 			$this->load->view('report/report_template', $data);
 			return;
 		}
@@ -850,10 +1231,25 @@ class Report extends Controller {
 			$data['title'] = "Income And Expenses Statement";
 			$data['left_width'] = "";
 			$data['right_width'] = "";
+                        $data['print_preview'] = TRUE;
+			$data['entry_date1'] = $date1;
+			$data['entry_date2'] = $date2;
 			$this->load->view('report/report_template', $data);
 			return;
 		}
 		
+		if ($statement == "paymentreceipt")
+		{
+			$data['report'] = "report/paymentreceipt";
+			$data['title'] = "Payment & Receipt";
+			$data['left_width'] = "";
+			$data['right_width'] = "";
+                        $data['print_preview'] = TRUE;
+			$data['entry_date1'] = $date1;
+			$data['entry_date2'] = $date2;
+			$this->load->view('report/report_template', $data);
+			return;
+		}
 		if ($statement == "ledgerst")
 		{
 			$this->load->helper('text');
@@ -861,7 +1257,8 @@ class Report extends Controller {
 			/* Pagination setup */
 			$this->load->library('pagination');
 			$data['ledger_id'] = $this->uri->segment(4);
-			/* Checking for valid ledger id */
+		
+			/* Checking for valid ledger id */ 
 			if ($data['ledger_id'] < 1)
 			{
 				$this->messages->add('Invalid Ledger account.', 'error');
@@ -878,6 +1275,8 @@ class Report extends Controller {
 			$data['report'] = "report/ledgerst";
 			$data['title'] = "Ledger Statement for '" . $this->Ledger_model->get_name($data['ledger_id']) . "'";
 			$data['print_preview'] = TRUE;
+			$data['entry_date1'] = $date1;
+			$data['entry_date2'] = $date2;
 			$this->load->view('report/report_template', $data);
 			return;
 		}

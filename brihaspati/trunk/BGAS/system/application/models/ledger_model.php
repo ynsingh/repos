@@ -12,7 +12,6 @@ class Ledger_model extends Model {
 		$options = array();
 		$options[0] = "(Please Select)";
 		$this->db->from('ledgers')->order_by('code', 'asc');
-
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
@@ -32,7 +31,42 @@ class Ledger_model extends Model {
 		return $options;
 	}
 
-	
+	function get_all_ledgers1($date1 , $date2)
+	{
+		$options = array();
+		$options[0] = "(Please Select)";
+		
+		$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, c.id, c.name, c.code');
+		$this->db->from('entries a, entry_items b, ledgers c')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->order_by('code', 'asc');
+		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
+		$ledger = $this->db->get();
+		if( $date1 > $date2 )
+		{
+		$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+		}
+		else {
+			if( $ledger->num_rows() < 1 )
+			{
+			$this->messages->add('There is no trial balance statement between FROM & TO dates.', 'success');
+			}
+		foreach ($ledger->result() as $row)
+		{
+			$cd = $row->code;
+			$nme = $row->name;
+			if(substr($cd, 0, 2) == 10)
+				$name = "Liability : ".$nme;
+			if(substr($cd, 0, 2) == 20)
+				$name = "Asset : ".$nme;
+			if(substr($cd, 0, 2) == 30)
+				$name = "Income : ".$nme;
+			if(substr($cd, 0, 2) == 40)
+				$name = "Expenditure : ".$nme;
+			$options[$row->id] = $name;
+		}
+		}
+		return $options;
+	}	
 
 	function get_all_ledgers_bankcash()
 	{

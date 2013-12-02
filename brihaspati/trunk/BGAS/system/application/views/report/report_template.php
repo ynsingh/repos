@@ -1,28 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Webzash<?php if (isset($page_title)) echo ' | ' . $page_title; ?></title>
-<?php echo link_tag(asset_url() . 'images/favicon.ico', 'shortcut icon', 'image/ico'); ?>
 <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/printreport.css">
-</head>
-<body>
-	<div id="print-account-name"><span class="value"><?php echo  $this->config->item('account_name'); ?></span></div>
-	<div id="print-account-address"><span class="value"><?php echo $this->config->item('account_address'); ?></span></div>
-	<br />
-	<div id="print-report-title"><span class="value"><?php echo $title; ?></span></div>
-	<div id="print-report-period">
-		<span class="value">
-			Financial year<br />
-			<?php echo date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?>
-		</span>
-	</div>
-	<br />
-	<div id="main-content">
-		<?php $this->load->view($report); ?>
-	</div>
-	<br />
-	<form>
-	<input class="hide-print" type="button" onClick="window.print()" value="Print Statement">
-	</form>
-</body>
-</html>
+
+	<?php 
+	echo "<tr valign=\"top\">";
+	echo "<table border='0' cellpadding='3'class=\"simple-table report-table\" width=\"70%\">";
+
+		echo "<tr><td align=\"left\">";
+		$this->upload_path= realpath(BASEPATH.'../uploads/logo');
+		$file_list = get_filenames($this->upload_path);
+                if ($file_list)
+                {
+                        foreach ($file_list as $row)
+                        {
+				echo img(array('src' => base_url() . "uploads/logo/" . $row)); 
+			}
+		}
+		?>
+		<br>
+		<?php echo "&nbsp;&nbsp;&nbsp;" .  $this->config->item('account_name'); ?><br><?php echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .  $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2>" . "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+
+	<?php echo"</table>";?>
+		<?php
+			$data = array(
+               			'entry_date1' => $entry_date1,
+               			'entry_date2' => $entry_date2
+          			);
+		 $this->load->view($report,$data); 
+		?>
+		<br>
+	<form><input class="hide-print" type="button" onClick="window.print()" value="Print Statement"></form>

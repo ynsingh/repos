@@ -110,8 +110,8 @@ $(document).ready(function() {
 				echo"&nbsp;&nbsp;&nbsp;&nbsp;";
 				echo $this->config->item('account_ins_name');
 		
-				  }
-}
+		  }
+		}
 		else{
 		echo "<br/>";
 		echo "<br/>";
@@ -184,6 +184,7 @@ $(document).ready(function() {
 				<ul>
 					<li><?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?></li>	
 					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?></li>
+					<li><?php echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt')); ?></li>
 					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
 					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>
 					<li><?php echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation')); ?></li>
