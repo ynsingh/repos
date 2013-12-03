@@ -48,6 +48,7 @@ import org.smvdu.payroll.user.UserHistory;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+* Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
  */
 public class UserInfo implements Serializable {
@@ -67,7 +68,7 @@ public class UserInfo implements Serializable {
     private int currentMonth;
     private int currentYear;
     private String[] months = {"", "JAN", "FEB", "MARCH", "APRIL", "MAY",
-        "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOW", "DEC"};
+        "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"};
     private boolean admin = true;
     private String userName = "System";
     private String password;

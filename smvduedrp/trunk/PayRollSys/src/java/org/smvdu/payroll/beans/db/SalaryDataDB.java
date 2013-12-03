@@ -15,6 +15,10 @@ import org.smvdu.payroll.beans.SalaryData;
 import org.smvdu.payroll.beans.UserInfo;
 import org.smvdu.payroll.beans.composite.SessionController;
 import org.smvdu.payroll.module.attendance.LoggedEmployee;
+import javax.faces.application.FacesMessage;
+import org.smvdu.payroll.beans.setup.SalaryGrade;
+import org.smvdu.payroll.beans.db.SalaryGradeDB;
+import org.smvdu.payroll.beans.setup.SalaryHead;
 
 /**
  *
@@ -46,6 +50,7 @@ import org.smvdu.payroll.module.attendance.LoggedEmployee;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
  */
 public class SalaryDataDB {
@@ -76,6 +81,7 @@ public class SalaryDataDB {
 
     public void autoLoad()
     {
+        user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -85,16 +91,48 @@ public class SalaryDataDB {
             ps.setInt(2, user.getCurrentYear());
             ps.executeUpdate();
             ps.close();
-            ps=c.prepareStatement("insert into salary_data select emp_code,1,?,emp_basic,? from "
+	    ps=c.prepareStatement("select st_sal_code from "
+            + "emp_salary_head_master where st_org_code='"+user.getUserOrgCode()+"' ");
+
+            rs=ps.executeQuery();
+            while(rs.next())
+            {
+               //System.out.println("CopyData===rs1= "+rs.getString(1));
+                if(rs.getString(1).equals("1"))
+                {
+
+                    //System.out.println("CopyData===rs1==equals= "+rs.getString(1));
+                    ps=c.prepareStatement("insert into salary_data select emp_code,1,?,emp_basic,?,? from "
                     + "employee_master");
-            ps.setString(1, user.getCurrentYear()+"-"+user.getCurrentMonth()+"-1");
-            ps.setInt(2,1);
-            ps.executeUpdate();
-            ps.close();
+
+                    ps.setString(1, user.getCurrentYear()+"-"+user.getCurrentMonth()+"-1");
+                    ps.setInt(2,1);
+                    ps.setInt(3,user.getUserOrgCode());
+                    ps.executeUpdate();
+                    ps.close();
+                }
+		
+                if(!rs.getString(1).equals("1"))
+                {
+
+                    System.out.println("CopyData===rsnot equal=== "+rs.getString(1));
+                    ps=c.prepareStatement("insert into salary_data select emp_code,?,?,0,?,? from "
+                    + "employee_master");
+
+                    ps.setString(1,rs.getString(1));
+                    ps.setString(2, user.getCurrentYear()+"-"+user.getCurrentMonth()+"-1");
+                    ps.setInt(3,1);
+                    ps.setInt(4,user.getUserOrgCode());
+                    ps.executeUpdate();
+                    ps.close();
+                }
+            }
+            updateGradePay();
             ps=c.prepareStatement("commit");
             ps.executeUpdate();
             ps.close();
             c.close();
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Salary Generated successfully", ""));
         }
         catch(Exception e)
         {
@@ -365,5 +403,101 @@ public ArrayList<SalaryData> loadInit(Employee empCode)    {
             return false;
         }
     }
+
+public ArrayList<SalaryGrade> loadEmpgrdPay(int empcode){
+	try
+        {
+            Connection c = new CommonDB().getConnection();
+            //ps=c.prepareStatement("select grd_gp from salary_grade_master where grd_code=? ");
+            ps=c.prepareStatement("select grd_gp from salary_grade_master "
+            + " left join employee_master on emp_salary_grade=grd_code"
+            +"and grd_code='(select emp_salary_grade from employee_master where emp_code=?)'");
+            ps.setString(1, Integer.toString(empcode));
+            rs=ps.executeQuery();
+            ArrayList<SalaryGrade> grades = new ArrayList<SalaryGrade>();
+            while(rs.next())
+            {
+
+                SalaryGrade sg = new SalaryGrade();
+                //sg.setCode(rs.getInt(1));
+                sg.setGradePay(rs.getInt(1));
+                grades.add(sg);
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            //System.out.println("CopyData==up=emppay= "+grades);
+            return grades;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+	public int loadEmpgrdcode(String empcode) {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select emp_salary_grade from employee_master where emp_code=?");
+            ps.setString(1, empcode);
+            rs=ps.executeQuery();
+            rs.next();
+            int GPcode= rs.getInt(1);
+            rs.close();
+            ps.close();
+            c.close();
+            //  System.out.println("CopyData==up=empcode= "+GPcode);
+            return GPcode;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return -1;
+            
+        }
+    }
+        public void updateGradePay(){
+        try
+        {
+            UserInfo user = (UserInfo) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select emp_code,emp_salary_grade from "
+            + "employee_master where emp_org_code ='"+user.getUserOrgCode()+"' ");
+            rs=ps.executeQuery();   
+            while(rs.next())
+            {
+                //System.out.println("CopyData===rs2==2= "+rs+"\n======ps"+ps);
+                SalaryGradeDB sgdb=new SalaryGradeDB();
+                ArrayList<SalaryGrade> salgpdata=sgdb.load();
+                for(SalaryGrade sgp : salgpdata)
+                {
+                    //System.out.println("CopyData===throughSalaryGradeDB()== "+sgp.getGradePay()+"gradecode====="+sgp.getCode());
+                    ps=c.prepareStatement("update salary_data set sd_amount=?"
+                    + " where sd_emp_code=? and sd_head_code=?");
+                              
+                    //System.out.println("CopyData====throghemp==Gpcode="+rs.getString(1)+"\nrs2 gpcode==="+rs.getInt(2));
+                    if(sgp.getCode()==rs.getInt(2)){
+                        ps.setInt(1,sgp.getGradePay());
+                        ps.setString(2,rs.getString(1));
+                        ps.setInt(3,2);
+                        ps.executeUpdate();
+                        ps.clearParameters();
+                    }
+                }
+            } 
+            rs.close();
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+           
+        }
+    }
+
 
 }
