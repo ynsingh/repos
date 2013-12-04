@@ -42,6 +42,8 @@ public class LocalServer implements Runnable {
 	private Thread runner=null;
 	private boolean flag=false;
 	private VLCCapture grabber=null;
+	private HttpClient client=null;
+	private String os=System.getProperty("os.name");
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 
@@ -57,8 +59,10 @@ public class LocalServer implements Runnable {
          * Start TCPSender Thread.
          */
         public void startLocalServer(){	
-		if (runner == null) {	
-			grabber=new VLCCapture(600,400);
+		if (runner == null) {
+			if((os.startsWith("Linux")) || (os.startsWith("MAC"))) 	
+				grabber=new VLCCapture(600,400);
+			
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
@@ -73,7 +77,8 @@ public class LocalServer implements Runnable {
                 if (runner != null) {
 			flag=false;
                         runner = null;
-			grabber.close();
+			if (grabber != null) 
+				grabber.close();
 			grabber=null;
 			System.out.println("Video Captureing  stop Successfully !!");
                 }
@@ -89,15 +94,15 @@ public class LocalServer implements Runnable {
 				if(ThreadController.getReflectorStatusThreadFlag()) {
 					String ip=runtime_object.getVideoServer();
 					BufferedImage image=null;
-					String os=System.getProperty("os.name");
 				        if((os.startsWith("Windows")) || (!(ip.equals("127.0.0.1")))) {
-						HttpClient client = new HttpClient();
 						HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+						if(client ==null)
+							client = new HttpClient();
 					        client.setConnectionTimeout(80000);
                         		        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-		                               	int statusCode1 = client.executeMethod(method);
-	        		                byte[] bytes1=method.getResponseBody();
-        	                	        image = ImageIO.read(new ByteArrayInputStream(bytes1));
+		                               	client.executeMethod(method);
+	        		                byte[] bytes=method.getResponseBody();
+        	                	        image = ImageIO.read(new ByteArrayInputStream(bytes));
 		                	       	method.releaseConnection();
 					} else if((os.startsWith("Linux")) || (os.startsWith("MAC"))) {
 						if(grabber == null) {
