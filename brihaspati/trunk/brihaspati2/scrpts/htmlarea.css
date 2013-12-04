@@ -203,7 +203,10 @@ This css is called for new GUI of Brihaspati
 .main:hover {border:1px solid#d1d1d1;   border-color: #f3f3f3;}
 
 .img {height:55px; width:55px; border-radius:10px;}
-.img:hover {border:1px solid #ccc; -webkit-box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9); box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9); -moz-box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9);}
+.img:hover {height:53px; width:53px; border:1px solid #ccc; -webkit-box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9); box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9); -moz-box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9);}
+
+.imge {height:55px; width:55px; border-radius:10px;}
+.imge:hover {height:53px; width:53px; border:1px solid #ccc; -webkit-box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9); box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9); -moz-box-shadow:5px 5px 5px rgba(0, 0, 0, 0.9);}
 .scroll{
 	width:910px;
 	overflow-x:scroll;
