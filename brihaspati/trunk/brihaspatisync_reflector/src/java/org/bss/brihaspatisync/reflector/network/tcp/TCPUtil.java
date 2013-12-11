@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.reflector.network.tcp;
 
 import java.util.Vector;
 
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.VectorClass;
 

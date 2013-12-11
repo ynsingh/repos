@@ -20,7 +20,7 @@ public class VectorClass {
 	
 	private Vector backupTreeVector=new Vector(3);
 	
-        public VectorClass() { }
+        protected VectorClass() { }
 	
 	protected void addValue(String str){
 		if(!str.equals("noUser"))
@@ -29,7 +29,7 @@ public class VectorClass {
 			userlistvector="";
         }
 	
-	protected String getValue(){
+	public String getValue(){
 		return userlistvector;
         }
 	
@@ -58,7 +58,6 @@ public class VectorClass {
        	public Vector getBackupTreeValue(){
 		return backupTreeVector;
         }
-	
 }
 
 	

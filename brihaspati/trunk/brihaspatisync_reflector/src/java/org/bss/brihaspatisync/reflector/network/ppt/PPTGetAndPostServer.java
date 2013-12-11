@@ -23,7 +23,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 
 /**

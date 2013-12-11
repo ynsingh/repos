@@ -16,11 +16,11 @@ import java.util.Hashtable;
  */
 
 
-public class  MyHashTable {
+public class  StoreBufferMgnObject {
         
 	private static Hashtable ht = new Hashtable();
 	
-	public MyHashTable() { }	
+	public StoreBufferMgnObject() { }	
 	
 	/**
 	 *  This method is used to check bufferMgt Object in hash table according to media streeming
@@ -48,7 +48,7 @@ public class  MyHashTable {
 	 * This method is used to remove bufferMgt Object in hash table according to media streeming
 	 * if session time out .
 	 */  		
-	public static void removeBufferMgtObject(String lecture_id) {
+	public static void removeAllBufferMgtObject(String lecture_id) {
 		try {
 			if(ht.size()>0) {
 				java.util.ArrayList myArrayList=new java.util.ArrayList(ht.entrySet());
@@ -62,6 +62,15 @@ public class  MyHashTable {
 				}
 			}
 		}catch(Exception e){ System.out.println("Exception in MyHashTable class !! ");}
+        }
+	
+	
+	public static void removeBufferMgtObject(String type_lecture_id)  {
+                try {
+                        if(ht.size()>0) {
+                        	ht.remove(type_lecture_id);
+                        }
+                }catch(Exception e){ System.out.println("Exception in MyHashTable class !! ");}
         }
 }
 

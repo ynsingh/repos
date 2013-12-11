@@ -10,7 +10,7 @@ package org.bss.brihaspatisync.reflector.util;
 import java.util.Properties;
 import java.util.Vector;
 import java.io.InputStream;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -21,7 +21,7 @@ public class RuntimeDataObject {
 
         private Properties prop=null;
 
-	private MyHashTable all_tool_buffer=null;
+	private StoreBufferMgnObject all_tool_buffer=null;
 
         private String indexServerAddr="";
 
@@ -31,7 +31,7 @@ public class RuntimeDataObject {
 
         private Vector vector= new  Vector();
 
-	private MyHashTable userListVector=null;
+	//private MyHashTable userListVector=null;
 
         private Vector courseid = new  Vector();
 
@@ -98,9 +98,9 @@ public class RuntimeDataObject {
                 return null;
         }
 	
-	public MyHashTable getAll_Tool_BufferMng(){
+	public StoreBufferMgnObject getAll_Tool_BufferMng(){
                 if(all_tool_buffer == null)
-                        all_tool_buffer=new MyHashTable();
+                        all_tool_buffer=new StoreBufferMgnObject();
                 return all_tool_buffer;
         }
 		

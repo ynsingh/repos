@@ -19,7 +19,7 @@ import java.util.Collections;
  */
 
  
-public class  CreateHashTable {
+public class  PointerStoreAndUserRemove {
 	
 	private Vector vector=new Vector();
 		
@@ -29,7 +29,7 @@ public class  CreateHashTable {
          * received by the user from reflector.
          */ 
 
-	protected CreateHashTable() { 
+	protected PointerStoreAndUserRemove() { 
 		pointer_hashtable = new Hashtable<String, Integer> ();
 	}	
                           

@@ -20,7 +20,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 import org.bss.brihaspatisync.reflector.Reflector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;

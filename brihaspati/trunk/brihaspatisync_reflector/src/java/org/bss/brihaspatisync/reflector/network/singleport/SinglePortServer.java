@@ -19,7 +19,7 @@ import com.sun.net.httpserver.HttpServer;
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 
@@ -88,18 +88,18 @@ class MyHandler implements HttpHandler {
 		              	try {
 					user_connection_cotroller.setLoginidAndTime(lecture_id,username);
 					if(type.equals("Desktop_Data")) {		
-				                if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id))
-			                	        MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
-						BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+				                if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id))
+			                	        StoreBufferMgnObject.setBufferMgtObject(type+lecture_id,new BufferMgt());
+						BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject(type+lecture_id);
 						if( (bytes.length>0) && (bytes !=null)) 
 						        buffer_mgt.putByte(bytes,username);		
 						byte[] image_new=buffer_mgt.sendDataAndIncreasePointer(username);
                         	                if((image_new.length>0) && (image_new !=null) )
 							responseBody.write(image_new);	
 					}else if(type.equals("Audio_Data")) {
-	                                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id))
-                	                                MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
-                                	        BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+	                                        if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id))
+                	                                StoreBufferMgnObject.setBufferMgtObject(type+lecture_id,new BufferMgt());
+                                	        BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject(type+lecture_id);
                                         	if( ((bytes.length)>0 ) && (bytes !=null) ) 
                                                 	buffer_mgt.putAudioBytes(bytes,username);
         	                                byte[] sendbytes=buffer_mgt.sendData_AudioIncreasePointer(username);
@@ -115,10 +115,10 @@ class MyHandler implements HttpHandler {
 							userlist_data="nodata";
                                                 responseBody.write(userlist_data.getBytes());
 					} else if(type.equals("Chat_Wb_Data")) {
-						if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
-                                                        MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
+						if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id)){
+                                                        StoreBufferMgnObject.setBufferMgtObject(type+lecture_id,new BufferMgt());
                                                 }
-                                                BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+                                                BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject(type+lecture_id);
                                                 if((bytes.length>0) && (bytes !=null)) {
                                                         buffer_mgt.putByte(bytes,username);
                                                 }
@@ -127,10 +127,10 @@ class MyHandler implements HttpHandler {
                                                         responseBody.write(sendbytes);
                                                 }
 					} else if(type.equals("ins_video")){
-                	                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
-                                	                MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
+                	                        if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id)){
+                                	                StoreBufferMgnObject.setBufferMgtObject(type+lecture_id,new BufferMgt());
                                         	}
-	                                        BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+	                                        BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject(type+lecture_id);
         	                                if((bytes.length>0) && (bytes !=null)) {
                 	                                buffer_mgt.putByte(bytes,username);
                                 	        }
@@ -139,10 +139,10 @@ class MyHandler implements HttpHandler {
 							responseBody.write(sendbytes);
                                         	}
 					} else if(type.equals("stud_video")){
-	                                        if(!MyHashTable.getStatusBufferMgtObject(type+lecture_id)){
-                	                                MyHashTable.setBufferMgtObject(type+lecture_id,new BufferMgt());
+	                                        if(!StoreBufferMgnObject.getStatusBufferMgtObject(type+lecture_id)){
+                	                                StoreBufferMgnObject.setBufferMgtObject(type+lecture_id,new BufferMgt());
                         	                }
-                                	        BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject(type+lecture_id);
+                                	        BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject(type+lecture_id);
                                         	if((bytes.length>0) && (bytes !=null)) {
                                                 	buffer_mgt.putByte(bytes,username);
         	                                }

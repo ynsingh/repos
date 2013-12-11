@@ -20,10 +20,10 @@ public class  BufferMgt {
 
 	private java.util.LinkedList<byte[]> au_data=new java.util.LinkedList<byte[]>();
 
-	private CreateHashTable createhashtable=null;
+	private PointerStoreAndUserRemove pointerStore_userRemove=null;
 
 	public BufferMgt() {
-		createhashtable=new CreateHashTable();
+		pointerStore_userRemove=new PointerStoreAndUserRemove();
 		buffer=new Buffer();
 	}
 
@@ -33,19 +33,19 @@ public class  BufferMgt {
 
         private synchronized void removeBufferAndSetPointer() {
 		try {
-                       	java.util.Vector pointer=createhashtable.getAllPointer();
+                       	java.util.Vector pointer=pointerStore_userRemove.getAllPointer();
 			if(pointer.size()>0) {
 	                        int p1=(Integer)pointer.get(0); int maxpointer=buffer.size();
 				if(maxpointer>1000) {
-        	                	createhashtable.resetPointer(40+maxpointer-1000);
+        	                	pointerStore_userRemove.resetPointer(40+maxpointer-1000);
 	        	               	buffer.removeRange(40+maxpointer-1000);
 				} else if(p1>0) {
-					createhashtable.resetPointer(p1);
+					pointerStore_userRemove.resetPointer(p1);
 					buffer.removeRange(p1);
                              	}
 			} else 
 				buffer.removeRange(buffer.size());
-            	} catch(Exception e) {System.out.println("Exception remove method to Increase Pointer in BufferMgt class "+e.getMessage()); }
+            	} catch(Exception e) { System.out.println("Exception remove method to Increase Pointer in BufferMgt class "+e.getMessage()); }
     	}
 	
 	/**
@@ -55,16 +55,16 @@ public class  BufferMgt {
 	public synchronized byte[] sendDataAndIncreasePointer(String user_id) {
 		byte[] str=null;
 		try {	
-			int cur_position_pointer = createhashtable.getPointerBy_UserId(user_id);
+			int cur_position_pointer = pointerStore_userRemove.getPointerBy_UserId(user_id);
 			int size=buffer.size();
 			while( cur_position_pointer < size) {
 				String get_userid=(buffer.getSourceUser_id(cur_position_pointer)).toString();
 	               		if(!(get_userid.equals(user_id))) {
 					str=buffer.getObject(cur_position_pointer);
 					if(str != null) 
-        	                		createhashtable.setPointer(user_id,++cur_position_pointer);
+        	                		pointerStore_userRemove.setPointer(user_id,++cur_position_pointer);
 	                        } else 
-                	              	createhashtable.setPointer(user_id,++cur_position_pointer);
+                	              	pointerStore_userRemove.setPointer(user_id,++cur_position_pointer);
 				if(str !=null)
 					break;
 			}
@@ -77,7 +77,7 @@ public class  BufferMgt {
 		byte[] audiodata=null;
 		try {
 			au_data.clear();
-			int cur_position_pointer = createhashtable.getPointerBy_UserId(user_id);
+			int cur_position_pointer = pointerStore_userRemove.getPointerBy_UserId(user_id);
                         int size=buffer.size();
                         while( cur_position_pointer < size) {
                                 String get_userid=(buffer.getSourceUser_id(cur_position_pointer)).toString();
@@ -85,10 +85,10 @@ public class  BufferMgt {
                                         byte[] str=buffer.getObject(cur_position_pointer);
                                         if(str != null){
 						au_data.addLast(str);
-                                                createhashtable.setPointer(user_id,++cur_position_pointer);
+                                                pointerStore_userRemove.setPointer(user_id,++cur_position_pointer);
 					}
                                 } else
-                                        createhashtable.setPointer(user_id,++cur_position_pointer);
+                                        pointerStore_userRemove.setPointer(user_id,++cur_position_pointer);
                                 if(au_data.size()>50)
                                         break;
                         }
@@ -131,7 +131,7 @@ public class  BufferMgt {
 	 * if user is loged out or disconnected then remove (login id / user id ) in pointer hash table 
 	 */ 
 	public void removeUseridKey(String login_name) {
-		createhashtable.removeUseridKey(login_name);		
+		pointerStore_userRemove.removeUseridKey(login_name);		
 		removeBufferAndSetPointer();
 	}	
 }

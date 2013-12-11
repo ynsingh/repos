@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
-
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
+import org.bss.brihaspatisync.reflector.network.serverdata.*;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
  */
@@ -67,6 +67,14 @@ public class UserConnectionController implements Runnable {
                         	        	Map.Entry e=(Map.Entry)itr.next();
 	                        	        String lecture_id = (String)e.getKey();
         	                        	Hashtable hashtable=create_hashtable_lectureid.get(lecture_id);
+						VectorClass vectorclass=UserListHashTable.getCourseIdUserListVector(lecture_id);
+						if((vectorclass!=null) && (StoreBufferMgnObject.getStatusBufferMgtObject("Desktop_Data"+lecture_id))) {
+                        			        String senduserlist_to_client=vectorclass.getValue();
+							if(!(senduserlist_to_client.matches("(.*)Allow(.*)"))) {
+								BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("Desktop_Data"+lecture_id);	
+								StoreBufferMgnObject.removeBufferMgtObject("Desktop_Data"+lecture_id);
+							}
+			                        }
 						if(hashtable.size()>0) {
 							ArrayList userlistarray=new ArrayList(hashtable.entrySet());
 			                                Iterator itr_1=userlistarray.iterator();
@@ -76,24 +84,26 @@ public class UserConnectionController implements Runnable {
 								long l=(Long)hashtable.get(login_name);
 								long long_diff=System.currentTimeMillis()-l;
 								if(long_diff > 50000) {
+									try {
 									hashtable.remove(login_name);
-									BufferMgt buffer_mgt=MyHashTable.getBufferMgtObject("Audio_Data"+lecture_id);
+									BufferMgt buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("Audio_Data"+lecture_id);
 									if(buffer_mgt != null)
 										buffer_mgt.removeUseridKey(login_name);
-									buffer_mgt=MyHashTable.getBufferMgtObject("Desktop_Data"+lecture_id);	
+									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("Desktop_Data"+lecture_id);	
 									if(buffer_mgt != null)
 	                                                                        buffer_mgt.removeUseridKey(login_name);
 	
-									buffer_mgt=MyHashTable.getBufferMgtObject("Chat_Wb_Data"+lecture_id);
+									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("Chat_Wb_Data"+lecture_id);
 									if(buffer_mgt != null)
 	                                                                        buffer_mgt.removeUseridKey(login_name);
-									buffer_mgt=MyHashTable.getBufferMgtObject("ins_video"+lecture_id);
+									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("ins_video"+lecture_id);
 									if(buffer_mgt != null)
 	                                                                        buffer_mgt.removeUseridKey(login_name);
-									buffer_mgt=MyHashTable.getBufferMgtObject("stud_video"+lecture_id);
+									buffer_mgt=StoreBufferMgnObject.getBufferMgtObject("stud_video"+lecture_id);
 									if(buffer_mgt != null)
 	                                                                        buffer_mgt.removeUseridKey(login_name);
 									org.bss.brihaspatisync.reflector.RegisterToIndexServer.request_For_RemoveUser(lecture_id,login_name);
+									} catch(Exception ex){}				
 								}
 							}
 						} else 

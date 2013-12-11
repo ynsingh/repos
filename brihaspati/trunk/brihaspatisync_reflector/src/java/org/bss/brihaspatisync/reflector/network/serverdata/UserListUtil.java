@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
 
 import java.util.Vector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -39,7 +39,7 @@ public class UserListUtil {
 				else if((System.currentTimeMillis()-timeout)> 50000) {	
 		                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
 					UserListHashTable.removeCourseIdUserListVector(course_id);
-					MyHashTable.removeBufferMgtObject(course_id);
+					StoreBufferMgnObject.removeAllBufferMgtObject(course_id);
 					timeout=0;
 				}
 			} else {

@@ -65,7 +65,7 @@ public class RegisterToIndexServer {
                                         }
                                	}
 			} else 
-                        	System.out.println("Check your Network Connection or try again");
+                        	System.out.println("Check your Network Connection failed in iserver ");
 		} catch(Exception e) { 
 			System.out.println("Exception in RegisterToIndexServer class,Check your Network Connection or try again");
 		}
@@ -97,7 +97,7 @@ public class RegisterToIndexServer {
                                                 	in.close();
                                    	}
                              	} else
-                                	System.out.println("Check your Network Connection or try again");
+                                	System.out.println("Check your Network Connection failed ");
                       	} catch(Exception e){
                         	System.out.println("Exception in RegisterToIndexServer class on connectToMasterServer() mehod "+e.getMessage());
                      	}
