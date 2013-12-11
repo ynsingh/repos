@@ -93,6 +93,85 @@ class Report extends Controller {
 		return;
 	}
 
+	function new_balancesheet($period = NULL)
+	{
+		$this->template->set('page_title', 'Balance Sheet MHRD Format');
+		//$this->template->set('nav_links', array('report/download/new_balancesheet' => 'Download CSV', 'report/printpreview/new_balancesheet' => 'Print Preview'));
+		$this->template->set('nav_links', array('report/printpreview/new_balancesheet' => 'Print Preview'));
+		$data['left_width'] = "450";
+		$data['right_width'] = "450";
+		$this->template->load('template', 'report/new_balancesheet', $data);
+		return;
+	}
+
+	function schedule($code)
+	{
+		$data = array();
+		$id = '';
+		$schedule = '';
+		$name = '';
+		$data['code'] = $code;
+		$this->load->model('Group_model');
+		$group_details = $this->Group_model->get_schedule($code);
+		foreach ($group_details as $id => $group)
+                {
+			$id  = $group['id'];
+                        $schedule = $group['schedule'];
+			$name = $group['name'];
+		}
+		
+		if($name != '' && $id != ''){
+			$this->template->set('page_title', 'Schedule - ' . $schedule . ' ' . $name);
+			$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
+			$data['id'] = $id;
+		}
+		else{
+			$this->template->set('page_title', 'Schedule - Notes on Accounts');
+                        $this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
+			//$data['id'] = $id;
+		}
+
+		if($schedule == 1 || $schedule == 2){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 3 || $schedule == 4){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 5){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 6){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 7){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 8){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 9){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		elseif($schedule == 10){
+			$this->template->load('template', 'report/schedule_template', $data);
+                        return;
+		}
+		else{
+			//Schedule for Notes
+			$this->template->load('template', 'report/schedule_template', $code);
+                        return;
+		}
+
+		return;
+	}
+
 	function profitandloss($period = NULL)
 	{
 		$this->load->library('session');
@@ -878,7 +957,7 @@ class Report extends Controller {
 		}
 		
 		/************************ BALANCE SHEET ***********************/
-		if ($statement == "balancesheet")
+		if ($statement == "balancesheet" || $statement == "new_balancesheet")
 		{
 			$this->load->library('accountlist');
 			$this->load->model('Ledger_model');
@@ -1324,6 +1403,20 @@ class Report extends Controller {
 			$this->load->view('report/report_template', $data);
 			return;
 		}
+
+		if ($statement == "new_balancesheet")
+                {
+                        $data['report'] = "report/new_balancesheet";
+                        $data['title'] = "Balance Sheet MHRD Format";
+                        $data['left_width'] = "";
+                        $data['right_width'] = "";
+                        $data['print_preview'] = TRUE;
+                        $data['entry_date1'] = $date1;
+                        $data['entry_date2'] = $date2;
+                        $this->load->view('report/report_template', $data);
+                        return;
+                }
+
 		return;
 	}
 }

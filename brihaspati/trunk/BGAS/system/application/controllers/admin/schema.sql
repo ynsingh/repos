@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS groups (
   name varchar(100) NOT NULL,
   affects_gross int(1) NOT NULL DEFAULT 0,
   status int(1) NOT NULL DEFAULT 0,
+  schedule varchar(1),
   UNIQUE(code,name),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;

@@ -10,6 +10,14 @@
 		</div>
 		<div class="settings-container">
 			<div class="settings-title">
+				<?php echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format')); ?>
+			</div>
+			<div class="settings-desc">
+				&nbsp;
+			</div>
+		</div>
+		<div class="settings-container">
+			<div class="settings-title">
 				<?php echo anchor('report/profitandloss', 'Income and Expenses Statement', array('title' => 'Income and Expenses Statement')); ?>
 			</div>
 			    <div class="settings-desc">
