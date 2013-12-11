@@ -29,7 +29,7 @@ class GetParentlist
 	
 
 	{
-		echo $id;
+		//echo $id;
 		$CI =& get_instance();
 		if ($id == 0)
 		{
@@ -39,7 +39,6 @@ class GetParentlist
 
 		} else {
 			$CI->db->from('groups')->where('id', $id)->limit(1);
-			//$CI->db->from('groups')->where('id', $this->id);
 			$group_q = $CI->db->get();
 			$group = $group_q->row();
 			$this->parent_id = $group->parent_id;
@@ -62,19 +61,27 @@ class GetParentlist
 
 			$row->parent_id;
 			$row->code;
-
+			$useamt=0;
+                        $allow=0;
        			$CI->db->from('budgets')->where('code', $row->code);
                                         $query_l = $CI->db->get();
-                                        $query_l = $query_l->row();
+					//$row1= $query_l->result();
+                                        //$query_l = $query_l->row();
                                         //$this->id = $query_l->id;
-                                        $this->amt = $query_l->bd_balance;
+                                   /*     $this->amt = $query_l->bd_balance;
                                         $this->useamt = $query_l->consume_amount;
                                         $this->allow=$query_l->allowedover;
-                                        $budgetamt=$this->amt;
+                                        $budgetamt=$this->amt;*/
+					foreach($query_l->result() as $row1)
+					{
+					$this->amt = $row1->bd_balance;
+                                        $this->useamt = $row1->consume_amount;
+                                        $this->allow=$row1->allowedover;
                                         $useamt=$this->useamt;
                                         $allow=$this->allow;
-                                        $available_amont=$this->useamt + $data_amount;
+                                        $available_amont=$useamt + $data_amount;
                                         $update_data1 = array('consume_amount' => $available_amont);
+					$CI->db->trans_start();
                                         if ( ! $CI->db->where('code', $this->code)->update('budgets', $update_data1))
                                         {
                         	                $CI->db->trans_rollback();
@@ -82,17 +89,17 @@ class GetParentlist
                                                 $this->template->load('template', 'entry/add', $data);
                                                 return;
                                         }
-
-
-
+					$CI->db->trans_complete();
+					
 
 
 
 			$this->parent_groups[$counter]->init($row->parent_id,$data_amount);
-			
-			//$this->total = float_ops($this->total, $this->children_groups[$counter]->total, '+');
+
+			}
 			$counter++;
 		}
+	return $row->parent_id;
 	}
 
 }

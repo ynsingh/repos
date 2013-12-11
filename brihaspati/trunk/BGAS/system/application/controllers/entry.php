@@ -2,14 +2,13 @@
 
 class Entry extends Controller {
 
-	var $data = array();
-
 	function Entry()
 	{
 		parent::Controller();
 		$this->load->model('Entry_model');
 		$this->load->model('Ledger_model');
 		$this->load->model('Tag_model');
+		$this->load->library('GetParentlist');
 		return;
 	}
 
@@ -18,16 +17,15 @@ class Entry extends Controller {
 		redirect('entry/show/all');
 		return;
 	}
-
 	function show($entry_type)
 	{
 		$this->load->model('Tag_model');
+		//$this->messages->add('Test==>'.$entry_type);
 		$data['tag_id'] = 0;
 		$entry_type_id = 0;
 		if ($entry_type == 'tag')
 		{
 			$tag_id = (int)$this->uri->segment(4);
-			
 			if ($tag_id < 1)
 			{
 				$this->messages->add('Invalid Tag.', 'error');
@@ -40,7 +38,6 @@ class Entry extends Controller {
 		} else if ($entry_type == 'all') {
 			$entry_type_id = 0;
 			$this->template->set('page_title', 'All Entries');
-			$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL ENTRY'));
 		} else {
 			$entry_type_id = entry_type_name_to_id($entry_type);
 			if ( ! $entry_type_id)
@@ -51,15 +48,15 @@ class Entry extends Controller {
 			} else {
 				$current_entry_type = entry_type_info($entry_type_id);
 				$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
-				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
+				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry'));
 			}
-
 		}
 
 		$entry_q = NULL;
 
 		/* Pagination setup */
 		$this->load->library('pagination');
+
 		if ($entry_type == "tag")
 			$page_count = (int)$this->uri->segment(5);
 		else
@@ -119,6 +116,7 @@ class Entry extends Controller {
 
 		/* Pagination initializing */
 		$this->pagination->initialize($config);
+
 		/* Show entry add actions */
 		if ($this->session->userdata('entry_added_show_action'))
 		{
@@ -252,9 +250,6 @@ class Entry extends Controller {
 
 		$this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Entry');
 
-		/*if($entry_type_id == '2'){
-			$this->messages->add('Payment type.');
-		}*/
 
 		/* Form fields */
 		$data['entry_number'] = array(
@@ -338,7 +333,7 @@ class Entry extends Controller {
 				$data['cr_amount'][$count] = "";
 			}
 		}
-		/* validating form */
+		
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->messages->add(validation_errors(), 'error');
@@ -414,7 +409,7 @@ class Entry extends Controller {
 				} else {
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
 				}
-			}
+			 }
 
 			if (float_ops($dr_total, $cr_total, '!='))
 			{
@@ -474,7 +469,6 @@ class Entry extends Controller {
 			}
 
 			$data_date = $this->input->post('entry_date', TRUE);
-
 			$data_narration = $this->input->post('entry_narration', TRUE);
 			$data_tag = $this->input->post('entry_tag', TRUE);
 			if ($data_tag < 1)
@@ -540,10 +534,9 @@ class Entry extends Controller {
 				}	
 					 $data_ledger_id;
 
-					//get ledger code
-				$this->load->library('GetParentlist');
 				if($data_ledger_dc == "D")
-				{//001 
+				{//001
+					if($entry_type_id == '2'){//01
 				 	$this->db->from('ledgers')->where('id', $data_ledger_id);	
 					$query_q = $this->db->get();
 		                        $query_n = $query_q->row();
@@ -552,25 +545,28 @@ class Entry extends Controller {
 					$this->group_id = $query_n->group_id;
 					$ledg_code=$this->code;
 					$groupid=$this->group_id;
-                                        //echo  $this->messages->add('Test 01==>' .$groupid);
-                                        //echo  $this->messages->add('Test 01==>' .$groupid);
 
 					//get budget amnt 
 
 					$parents;
+					$query1=$this->db->from('budgets')->where('code', $ledg_code)->get();
+					
+					/**
+					* code for if particular head is not in budget,
+					* then made payment from parent which is present
+					* in budget.
+					*/
+					if($query1->num_rows() > 0)
+		                        {
 					$this->db->from('budgets')->where('code', $ledg_code);
                                         $query_l = $this->db->get();
                                         $query_l = $query_l->row();
-                                        //$this->id = $query_l->id;
                                         $this->amt = $query_l->bd_balance;
 					$this->useamt = $query_l->consume_amount;
-					$this->allow = $query_l->allowedover;
+					$this->allow=$query_l->allowedover;
                                         $budgetamt=$this->amt;
 					$useamt=$this->useamt;
 					$allow=$this->allow;
-					/* If entry type is payment */
-					if($entry_type_id == '2'){//01
-					/* if alloted budget amount is more than consume amount*/
 
 					if($budgetamt > $useamt)
 
@@ -603,7 +599,6 @@ class Entry extends Controller {
 									/* Update budget table */
 									$sumamt=$data_amount + $useamt;
 									$allow_left = $available_amount - $data_amount ;
-									//$this->messages->add("Test 0001===>" .$allow_left);
 									$update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
 						                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
                         						{
@@ -623,7 +618,6 @@ class Entry extends Controller {
                                 				        $this->useamt1 = $query_ll->consume_amount;
 									$update_data2 = $this->useamt1 + $data_amount;
 									$update_data3 = array('consume_amount' => $update_data2);
-									//$this->messages->add("Test 001===>" .$update_data2);
 									if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
                                                                         {
                                                                                 $this->db->trans_rollback();
@@ -654,12 +648,10 @@ class Entry extends Controller {
 							$this->db->from('budgets')->where('code', '50');
                                                         $query_ll = $this->db->get();
                                                         $query_ll = $query_ll->row();
-                                       //$this->id = $query_l->id;
                                                         $this->amt1 = $query_ll->bd_balance;
                                                         $this->useamt1 = $query_ll->consume_amount;
                                                         $update_data2 = $this->useamt1 + $data_amount;
                                                         $update_data3 = array('consume_amount' => $update_data2);
-                                       //                 $this->messages->add("Test 002===>" .$update_data2);
 
 
 							if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
@@ -672,7 +664,6 @@ class Entry extends Controller {
 
 						}
 					}//1	
-					//elseif($useamt > $budgetamt)
 					/* consume amount is greater than allocated budget amount*/ 
 					if($useamt >= $budgetamt)
 					{//2
@@ -717,12 +708,10 @@ class Entry extends Controller {
 							$this->db->from('budgets')->where('code', '50');
                                                         $query_ll = $this->db->get();
                                                         $query_ll = $query_ll->row();
-                                        //$this->id = $query_l->id;
                                                         $this->amt1 = $query_ll->bd_balance;
                                                         $this->useamt1 = $query_ll->consume_amount;
                                                         $update_data2 = $this->useamt1 + $data_amount;
                                                         $update_data3 = array('consume_amount' => $update_data2);
-                                                        $this->messages->add("Test 003===>" .$update_data2);
 
 
 							if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
@@ -738,12 +727,15 @@ class Entry extends Controller {
 
 							
 					}//2
-					//$this->load->library('GetParentlist');
-                                        //$parents = new GetParentlist();
-                                        //$parents->init($groupid,$data_amount);
 
-					}//01
-
+				//	}//01
+					}
+					else
+					{
+						$parents_get ="";
+                                		$parents_get=$this->init1l($groupid,$data_amount,$data);
+					}
+					}//01	
 				
 				}//001
 				
@@ -751,16 +743,19 @@ class Entry extends Controller {
 					'entry_id' => $entry_id,
 					'ledger_id' => $data_ledger_id,
 					'amount' => $data_amount,
-					'dc' => $data_ledger_dc,
+					
+'dc' => $data_ledger_dc,
 					'update_date' => $data_date,
 				);
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
-					$this->db->trans_rollback();
+					
+$this->db->trans_rollback();
 					$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
 					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
 					$this->template->load('template', 'entry/add', $data);
 					return;
+
 				}
 				
 			}
@@ -1558,14 +1553,13 @@ class Entry extends Controller {
 		if ($entry_sort == 'all') {
                         $entry_type_id = 0;
 			$this->template->set('page_title', 'All Entries');
-		$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL ENTRY'));
 		}else{	
 		$entry_type_id = entry_type_name_to_id($entry_sort);
 		}
 		if ($entry_sort != 'all') {
 		$current_entry_type = entry_type_info($entry_type_id);
 		$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
-		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry','entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
+		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry'));
 		}
 		/* Pagination setup */
 		
@@ -1621,233 +1615,256 @@ class Entry extends Controller {
                 return;
 	}
 
-	function printentry($entry_type)
-	{
-		/* Check access */
-		if ( ! check_access('print selected entry'))
-		{
-			$this->messages->add('Permission denied.', 'error');
-			redirect('entry/show/' . $entry_type);
-			return;
-		}
-
-		/* Check for account lock */
-		if ($this->config->item('account_locked') == 1)
-		{
-			$this->messages->add('Account is locked.', 'error');
-			redirect('entry/show/' . $entry_type);
-			return;
-		}
-
-		/* Entry Type*/ 
-		$entry_type_id = entry_type_name_to_id($entry_type);
-
-		if ( ! $entry_type_id)
-		{
-			$this->messages->add('Invalid Entry type', 'error');
-			redirect('entry/show/all');
-			return;
-		}else {
-
-			$current_entry_type = entry_type_info($entry_type_id);
-		}
-
-		$this->template->set('page_title', 'Print ' . $current_entry_type['name'] . ' Entry');
-
-		/* Form fields */
+        function init1l($id,$data_amount,$data)
+        {
 		
-		$data['entry_date1'] = array(
-			'name' => 'entry_date1',
-			'id' => 'entry_date1',
-			'maxlength' => '11',
-			'size' => '11',
-			'value' => date_today_php(),
-		);
-		$data['entry_date2'] = array(
-			'name' => 'entry_date2',
-			'id' => 'entry_date2',
-			'maxlength' => '11',
-			'size' => '11',
-			'value' => date_today_php(),
-		);
-
-		$data['current_entry_type'] = $current_entry_type;
-	  
-		/* displaying entries of selected entry type */
- 
-		$data['detail'] = array();
-		$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->from('entries')->where('entry_type', $entry_type_id)->order_by('date', 'desc')->order_by('number', 'desc');
-		$query = $this->db->get();
-                $data['detail']= $query;
-		
-		/* Repopulating form */
-		if ($_POST)
-		{
-			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
-			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
-		} 
-		/* Form validations */
-
-                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
-                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
-
-		/* Validating form */
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->messages->add(validation_errors(), 'error');
-			$this->template->load('template', 'entry/printentry', $data);
-			return;
-		}
-		else
-		{
-			$data_date1 = $this->input->post('entry_date1', TRUE);
-			$data_date2 = $this->input->post('entry_date2', TRUE);
-
-			/* converting date format(dd/mm/yy)to data format(y-m-d) */
-	
-			$date=explode("/",$_POST['entry_date1']);
-			$date1=$date[2]."-".$date[1]."-".$date[0];
-			$date=explode("/",$_POST['entry_date2']);
-			$date2=$date[2]."-".$date[1]."-".$date[0];
-
-			/* check for entry date */
-
-			if( $date1 > $date2)
-			{
-				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'error');
-			}
-				/* displaying values of selected date range */ 
-			else
-			{ 
-				$data['detail'] = array();
-				$this->db->from('entries');
-				$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date');
-				$this->db->where('entry_type', $entry_type_id);		
-				$this->db->where('date >=', $date1);
-				$this->db->where('date <=', $date2);
-				$query = $this->db->get();
-			        $data['detail']= $query;
-
-				/* check entry of selected date range is available or not */
-	  		
-				if( $query->num_rows() < 1 )
-				{
-					$this->messages->add('There is no entry between ' . $date1 . ' and ' . $date2 . ' date.', 'error');
-					$this->template->load('template', 'entry/printentry', $data);
-					return;	
-				}
-			}
-		$this->template->load('template', 'entry/printentry', $data);
-		return;
-		}
-	}
-
-	function printallentry($entry_type = 'all')
-	{
-		/* Check access */
-		if ( ! check_access('print all entry'))
-		{
-			$this->messages->add('Permission denied.', 'error');
-			redirect('entry/show/' . $entry_type);
-			return;
-		}
-
-		/* Check for account lock */
-		if ($this->config->item('account_locked') == 1)
-		{
-			$this->messages->add('Account is locked.', 'error');
-			redirect('entry/show/' . $entry_type);
-			return;
-		}
-
-	        $this->template->set('page_title', 'Print All Entry');
-
-		/* Form fields */ 
-		
-		$data['entry_date1'] = array(
-			'name' => 'entry_date1',
-			'id' => 'entry_date1',
-			'maxlength' => '11',
-			'size' => '11',
-			'value' => date_today_php(),
-		);
-		$data['entry_date2'] = array(
-			'name' => 'entry_date2',
-			'id' => 'entry_date2',
-			'maxlength' => '11',
-			'size' => '11',
-			'value' => date_today_php(),
-		);
- 
-		/* displaying entries of all entry type */ 
- 
-		$data['detail'] = array();
-		$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->from('entries')->order_by('date', 'desc')->order_by('number', 'desc');
-		$query = $this->db->get();
-                $data['detail']= $query;
-
-		/* Repopulating form */  
-		if ($_POST)
-		{
-			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
-			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
-		} 
-		/* Form validations */  
-
-                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
-                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
-
-		/* Validating form */
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->messages->add(validation_errors(), 'error');
-			$this->template->load('template', 'entry/printallentry', $data);
-			return;
-		}
-		else
-		{
-			$data_date1 = $this->input->post('entry_date1', TRUE);
-			$data_date2 = $this->input->post('entry_date2', TRUE);
-
-			/* converting date format(dd/mm/yy)to data format(y-m-d) */ 
-	
-			$date=explode("/",$_POST['entry_date1']);
-			$date1=$date[2]."-".$date[1]."-".$date[0];
-			$date=explode("/",$_POST['entry_date2']);
-			$date2=$date[2]."-".$date[1]."-".$date[0];
+        	$parent_id = 0;
+	        $code = "";
+		$this->load->library('GetParentlist');
+                if ($id == 0)
+                {
+					
+			$id = 0;
+			$this->messages->add('Please Add atleast one parent group for this ledger entry for Payment','error');
+			redirect('/entry/add/payment');
+			return $id;
 			
-			/* check for entry date */
+                } else {
+                        $this->db->from('groups')->where('id', $id);
+	                $group_q = $this->db->get();
+                        $group = $group_q->row();
+                        $this->parent_id = $group->parent_id;
+                        $this->code = $group->code;
+                        $this->db->from('budgets')->where('code', $this->code);
+                        $query_l = $this->db->get();
+                        $query_l = $query_l->num_rows();
+                        if($query_l>0)
+                        {
 
-			if( $date1 > $date2)
-			{
-				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'error');
-			}
-			/* displaying values of selected date range */    
-			else
-			{ 
-				$data['detail'] = array();
-				$this->db->from('entries');
-				$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date');
-				$this->db->where('date >=', $date1);
-				$this->db->where('date <=', $date2);
-				$query = $this->db->get();
-				$data['detail']= $query;
-	  		
-				if( $query->num_rows() < 1 )
-				{
-					$this->messages->add('There is no entry between ' . $date1 . ' and ' . $date2 . ' date.', 'error');
-					$this->template->load('template', 'entry/printallentry', $data);
-					return;	
-				}
-			}
-		$this->template->load('template', 'entry/printallentry', $data);
-		return;
-		}
-	}	
+                                $budgetamt = 0;
+                                $useamt = 0;
+                                $allow = 0;
+                                $ledg_code=$this->code;
+                                $this->db->from('budgets')->where('code', $this->code);
+                                $query_l = $this->db->get();
+                                $query_l = $query_l->row();
+                                $this->amt = $query_l->bd_balance;
+                                $this->useamt = $query_l->consume_amount;
+                                $this->allow=$query_l->allowedover;
+                                $budgetamt=$this->amt;
+                                $useamt=$this->useamt;
+                                $allow=$this->allow;
+
+                                /* if alloted budget amount is more than consume amount*/
+
+                                if($budgetamt > $useamt)
+
+                                {//if1
+                                        $available_amount=$budgetamt - $useamt ;//its wrong
+
+                                        /**  payment amount is greater than or equal to available amount **/
+                                      if($data_amount > $available_amount)	
+                                        {	
+                                        	/* check for allowed over expense*/
+                                                if(($allow == -1) || ($allow == 0))
+                                                {
+                                                        $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                        //$this->template->load('template','entry/add',$data);
+                                                        redirect('entry/add/payment');
+                                                        //redirect
+                                                        return ;
+                                                 }
+
+                                                else
+                                                 {
+                                                 	/* check for payment amount by adding allowd over amount + consume amount */
+                                                      $available_amount = $budgetamt - $useamt + $allow;
+                                                        if($data_amount >= $available_amount)
+                                                        {
+                                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                                //$this->template->load('template', 'entry/add',$data);
+								redirect('entry/add');
+                                                                return ;
+
+                                                         }
+                                                         else
+                                                         {
+                                                                /* Update budget table */
+                                                                $sumamt=$data_amount + $useamt;
+                                                                $allow_left = $available_amount - $data_amount ;
+                                                                $update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
+                                                                if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                                {
+                                                                        $this->db->trans_rollback();
+                                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                        //$this->template->load('template', 'entry/add', $data);
+									redirect('entry/add/payment');
+                                                                        return ;
+                                                                }
+                                                                $parents = new GetParentlist();
+                                                                $parents->init($groupid,$data_amount);
+                                                                $this->db->from('budgets')->where('code', '50');
+                                                                $query_ll = $this->db->get();
+                                                                $query_ll = $query_ll->row();
+                                                                $this->amt1 = $query_ll->bd_balance;
+                                                                $this->useamt1 = $query_ll->consume_amount;
+                                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                                $update_data3 = array('consume_amount' => $update_data2);
+                                                                if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                                {
+                                                                        $this->db->trans_rollback();
+                                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                                        $this->template->load('template', 'entry/add', $data);
+									redirect('entry/add/payment');
+                                                                        return;
+                                                                 }
+								return;
+							}
+						}
+
+					}
+                                        else
+                                        {
+                                                $sumamt=$data_amount + $useamt;
+                                                $update_data1 = array('consume_amount' => $sumamt );
+                                               /* if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                {
+                                                	$this->messages->add("Test in Getparent 7==>");
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+							redirect('entry/add');
+                                                        return;
+                                                }*/
+						//$this->messages->add('Line 1786 ===>'.$groupid.'===>'.$data_amount);
+						//echo "1789";
+                                                $parents = new GetParentlist();
+                                                $parents->init($id,$data_amount);
+						
+                                                $this->db->from('budgets')->where('code', '50');
+                                                $query_ll = $this->db->get();
+                                                $query_ll = $query_ll->row();
+                                       		//$this->id = $query_l->id;
+                                                $this->amt1 = $query_ll->bd_balance;
+                                                $this->useamt1 = $query_ll->consume_amount;
+                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                $update_data3 = array('consume_amount' => $update_data2);
+						//echo "$update_data2";	
+                                                if (!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                {
+                                                	//$this->messages->add("Test in Getparent 8==>");
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+							redirect('entry/add/payment');
+                                                        return;
+                                                }
+
+                                       	}
+					//$this->template->load('template', 'entry/add', $data);
+					//return $id;
+				}//1    
+
+
+				/* consume amount is greater than allocated budget amount*/
+                              if($useamt >= $budgetamt)
+                                {//2
+                                        /* check for allowed over expenses */
+                                      if(($allow == -1) || ($allow == 0))
+                                        {
+                                        	$this->messages->add('Budget is not sufficient to make this payment.','error');
+                                        	//$this->template->load('template', 'entry/add',$data);
+						redirect('entry/add/payment');
+                                                return;
+                                        }
+                                        /** get over consume amount and check with allowed left **/
+
+
+                                      $overconsume_amount = $useamt - $budgetamt ;
+                                        /* payment amount is greater than allowed over amount*/
+                                      if($data_amount > $allow)
+                                        {
+
+
+                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
+                                                //$this->template->load('template', 'entry/add',$data);
+						redirect('entry/add/payment');
+                                                return;
+                                        }
+                                        /* payment amount is less than allowed over amount*/
+                                      	if($data_amount <= $allow)
+                           	      	{
+					
+                                                $overconsume_amount = $useamt - $budgetamt ;
+                                                $available_amount = $allow ;
+                                                $allowed_left = $allow - $data_amount;
+                                                $consume_amount = $useamt + $data_amount;
+                                                $update_data1 = array('consume_amount' => $consume_amount, 'allowedover' => $allowed_left);
+                                                if (!$this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+							redirect('entry/add/payment');
+                                                        return;
+                                                }
+                                                $parents = new GetParentlist();
+                                                $parents->init($groupid,$data_amount);
+                                                $this->db->from('budgets')->where('code', '50');
+                                                $query_ll = $this->db->get();
+                                                $query_ll = $query_ll->row();
+                                        	//$this->id = $query_l->id;
+                                                $this->amt1 = $query_ll->bd_balance;
+                                                $this->useamt1 = $query_ll->consume_amount;
+                                                $update_data2 = $this->useamt1 + $data_amount;
+                                                $update_data3 = array('consume_amount' => $update_data2);
+
+                                                
+                                                if(!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                        //$this->template->load('template', 'entry/add', $data);
+							redirect('entry/add/payment');
+                                                        return;
+                                                }
+
+
+					}
+
+
+				}//2*/
+		//	return $id;
+                        }
+                        else{
+
+				$this->get_parent_groups($id,$data_amount,$data);
+				
+                        }
+		return $id;
+                }
+	}//function
+
+        function get_parent_groups($id1,$data_amount,$data)
+        {	
+
+		$parent_groups = array();
+                $this->db->from('groups')->where('id', $id1);
+                $parent_group_q = $this->db->get();
+		
+		
+                foreach ($parent_group_q->result() as $row)
+                {
+                        $row->parent_id;
+                        $row->code;
+                       	$this->init1l($row->parent_id,$data_amount,$data);
+                }
+		//return $row->parent_id;
+        }
 }
 
 /* End of file entry.php */
 /* Location: ./system/application/controllers/entry.php */
 
 
-
+//check the id of expense in last 
