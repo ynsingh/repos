@@ -61,7 +61,11 @@
                 </tr>
 		<tr bgcolor="$ui.menuColor" align="right">
                 <td  class="dt"><a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $bri_ta </a><br></td>
+              </tr>
+             <tr  bgcolor="$ui.menuColor" align="right">
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
                 </tr>
+
 
 
  #end
@@ -132,8 +136,17 @@
 			</td>
 		 </tr>
 		 #end
-
-	#end
+                  #if($data.getUser().getTemp("role") == "instructor")
+                 <tr bgcolor="$ui.menuColor" align="right">
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
+                </tr>
+                #else
+                 <tr align="right">
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","All") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
+                </tr>
+                #end
+ 
+     #end
 #######################TA Management##############
  #if($data.getUser().getTemp("role") == "teacher_assistant")
         <tr bgcolor="$ui.tableColor" align="right">
@@ -249,9 +262,20 @@
         <tr bgcolor="$ui.menuColor" align="right">
                 <td class="dt"><font color="#B2B2B2"> $brih_tracking $brih_reports </font></td>
         </tr>
+             #end
+  
+       #if($data.getUser().getTemp("modulename13") == "13")
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td class="dt"><a href=$link.setPage("call,StudentAttendanceMgmt,StudentAttendance.vm").addPathInfo("count","1").addPathInfo("mode","attend") style=text-decoration:none>$brih_attend $brih_mgmt</a><br></td>
+                </tr>
+        #else
+        <tr bgcolor="$ui.menuColor" align="right">
+                <td class="dt"><font color="#B2B2B2">$brih_attend $brih_mgmt</font></td>
+        </tr>
         #end
 
  #end
+
 
 
 </table>
