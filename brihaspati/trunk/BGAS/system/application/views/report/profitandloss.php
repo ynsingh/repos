@@ -1,8 +1,6 @@
 <?php
-	$this->load->library('session');
-	$date1 = $this->session->userdata('date1');
-	$date2 = $this->session->userdata('date2');
-        if ( ! $print_preview)
+
+	if ( ! $print_preview)
 	{
 	echo form_open('report/profitandloss/');
 	echo "<p>";
@@ -23,21 +21,31 @@
 	echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
 	echo form_submit('submit', 'Get');
 	echo " ";
 	echo "</p>";
 	echo form_close();
-	echo $this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview'));
 	}
 
 	$this->load->library('accountlist');
-	echo "<table border=0 width=\"90%\">";
+	echo "<table>";
 	echo "<tr valign=\"top\">";
 
 	/**********************************************************************/
 	/*********************** GROSS CALCULATIONS ***************************/
 	/**********************************************************************/
 
+	$this->load->library('session');
+	$date1 = $this->session->userdata('date1');
+	$date2 = $this->session->userdata('date2');
+
+	/* check for dates */
+	if($date1 > $date2)
+	{
+		$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+	}
+	else {
 	/* Gross P/L : Expenses */
 	$gross_expense_total = 0;
 	$this->db->from('groups')->where('parent_id', 4)->where('affects_gross', 1);
@@ -139,70 +147,41 @@
 
 	echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
 
-
 	/**********************************************************************/
 	/************************* NET CALCULATIONS ***************************/
 	/**********************************************************************/
 
 	/* Net P/L : Expenses */
-
 	$net_expense_total = 0;
+	$this->db->from('groups')->where('parent_id', 4)->where('affects_gross !=', 1);
+	$net_expense_list_q = $this->db->get();
 	echo "<tr valign=\"top\">";
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
 	echo "<thead><tr><th>Expenses (Net)</th><th align=\"right\">Amount</th></tr></thead>";
-	
-	$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-	$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 4)->where('affects_gross !=', 1);
-	$this->db->where('date >=', $date1);
-	$this->db->where('date <=', $date2);				
-	$net_expense_list_q = $this->db->get();
-	if( $date1 > $date2 )
-	{
-        $this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.' , 'success');
-	}
-	else {
-		if( $net_expense_list_q->num_rows() < 1 )
-		{
-		$this->messages->add('There is no Expenses (Net) statement between FROM & TO date.', 'success');
-		}
 	foreach ($net_expense_list_q->result() as $row)
 	{
-	$net_expense = new Accountlist();
-	$net_expense->init($row->id);
-	$net_expense->account_st_short(0);
-	$net_expense_total = float_ops($net_expense_total, $net_expense->total, '+');
-	}
+		$net_expense = new Accountlist();
+		$net_expense->init($row->id);
+		$net_expense->account_st_short(0);
+		$net_expense_total = float_ops($net_expense_total, $net_expense->total, '+');
 	}
 	echo "</table>";
 	echo "</td>";
 
 	/* Net P/L : Incomes */
 	$net_income_total = 0;
+	$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);
+	$net_income_list_q = $this->db->get();
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
 	echo "<thead><tr><th>Incomes (Net)</th><th align=\"right\">Amount</th></tr></thead>";
-	if( $date1 > $date2 )
-	{
-	$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
-	}
-	else {
-	$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-	$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 3)->where('affects_gross !=', 1);
-	$this->db->where('date >=', $date1);
-	$this->db->where('date <=', $date2);				
-	$net_income_list_q = $this->db->get();
-	if( $net_income_list_q->num_rows() < 1 )
-	{
-	$this->messages->add('There is no Income (Net) statement between FROM & TO date.', 'success');
-	}
 	foreach ($net_income_list_q->result() as $row)
 	{
-	$net_income = new Accountlist();
-	$net_income->init($row->id);
-	$net_income->account_st_short(0);
-	$net_income_total = float_ops($net_income_total, $net_income->total, '+');
-	}
+		$net_income = new Accountlist();
+		$net_income->init($row->id);
+		$net_income->account_st_short(0);
+		$net_income_total = float_ops($net_income_total, $net_income->total, '+');
 	}
 	echo "</table>";
 	echo "</td>";
@@ -300,17 +279,5 @@
 
 	echo "</tr>";
 	echo "</table>";
-	echo "<br>";
-        if ( ! $print_preview)
-	{
-	echo form_open('report/printpreview/profitandloss/');
-	echo form_submit('submit', 'Print Preview');
-	echo form_close();
-	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo form_open('report/download/profitandloss/');
-	echo form_submit('submit', 'Download CSV');
-	echo form_close();
 	}
 
-?>

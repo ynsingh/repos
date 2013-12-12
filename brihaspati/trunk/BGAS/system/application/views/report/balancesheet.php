@@ -26,73 +26,37 @@
 	echo form_close();
 	}
 ?>
-
 <?php
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
-
 	$this->load->library('accountlist');
-	echo "<table border=0 width=\"70%\">";
-	echo "<tr valign=\"top\">";
-	echo "<td width=\"" . $left_width . "\">";
-
-	/* display balancesheet of financial year */
-	$liability_total = 0;
-	echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-	echo "<thead><tr><th>Liabilities and Owners Equity</th><th align=\"right\">Amount</th></tr></thead>";
-	
-	$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-	$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 2);
-	$this->db->where('date >=', $date1);
-	$this->db->where('date <=', $date2);
-	$detail = $this->db->get();				
-	if( $date1 > $date2 )
+	/* check for dates */
+	if($date1 > $date2)
 	{
-	$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+		$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
 	}
 	else {
-	if( $detail->num_rows() < 1 )
-	{
-	$this->messages->add('There is no Liabilities and Owners Equity statement between FROM & TO date.', 'success');
-	}
-	foreach ($detail->result() as $row)
-	{
-		$liability = new Accountlist();
-		$liability->init($row->id);
-		$liability->account_st_short(0);
-		$liability_total = -$liability->total;
-	}
-	}
+	echo "<table border=0>";
+	echo "<tr valign=\"top\">";
+
+	$liability = new Accountlist();
+	echo "<td width=\"" . $left_width . "\">";
+	$liability->init(2);
+
+	echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
+	echo "<thead><tr><th>Liabilities and Owners Equity</th><th align=\"right\">Amount</th></tr></thead>";
+	$liability->account_st_short(0);
 	echo "</table>";
 	echo "</td>";
+	$liability_total = -$liability->total;
 
 	$asset = new Accountlist();
 	echo "<td width=\"" . $right_width . "\">";
-	$asset_total = 0;
+	$asset->init(1);
 	echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
 	echo "<thead><tr><th>Assets</th><th align=\"right\">Amount</th></tr></thead>";
-	if( $date1 > $date2 )
-	{
-	$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
-	}
-	else {
-	$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-	$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 1);
-	$this->db->where('date >=', $date1);
-	$this->db->where('date <=', $date2);
-	$detail = $this->db->get();
-	if( $detail->num_rows() < 1 )
-	{
-	$this->messages->add('There is no Assets statement between FROM & TO date.', 'success');
-	}
-	foreach ($detail->result() as $row)
-	{
-		$asset = new Accountlist();
-		$asset->init($row->id);
-		$asset->account_st_short(0);
-	}
-	}
+	$asset->account_st_short(0);
 	echo "</table>";
 	echo "</td>";
 	$asset_total = $asset->total;
@@ -111,9 +75,10 @@
 
 	$diffop = $this->Ledger_model->get_diff_op_balance();
 
-	/* Liability side */ 
+	/* Liability side */
 
 	$total = $liability_total;
+
 	echo "<tr valign=\"top\" class=\"total-area\">";
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
@@ -140,7 +105,7 @@
 		}
 	}
 
-	/* If Op balance Dr then Liability side, If Op balance Cr then Asset side */ 
+	/* If Op balance Dr then Liability side, If Op balance Cr then Asset side */
 	if ($diffop != 0)
 	{
 		if ($diffop > 0)
@@ -232,5 +197,6 @@
 	echo form_open('report/download/balancesheet/');
 	echo form_submit('submit', 'Download CSV');
 	echo form_close();
+	}
 	}
 

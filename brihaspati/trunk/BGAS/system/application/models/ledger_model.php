@@ -40,6 +40,7 @@ class Ledger_model extends Model {
 		$this->db->from('entries a, entry_items b, ledgers c')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->order_by('code', 'asc');
 		$this->db->where('date >=', $date1);
 		$this->db->where('date <=', $date2);
+        	//$this->db->group_by('c.code');	
 		$ledger = $this->db->get();
 		if( $date1 > $date2 )
 		{
@@ -50,20 +51,20 @@ class Ledger_model extends Model {
 			{
 			$this->messages->add('There is no trial balance statement between FROM & TO dates.', 'success');
 			}
-		foreach ($ledger->result() as $row)
-		{
-			$cd = $row->code;
-			$nme = $row->name;
-			if(substr($cd, 0, 2) == 10)
-				$name = "Liability : ".$nme;
-			if(substr($cd, 0, 2) == 20)
-				$name = "Asset : ".$nme;
-			if(substr($cd, 0, 2) == 30)
-				$name = "Income : ".$nme;
-			if(substr($cd, 0, 2) == 40)
-				$name = "Expenditure : ".$nme;
-			$options[$row->id] = $name;
-		}
+			foreach ($ledger->result() as $row)
+			{
+				$cd = $row->code;
+				$nme = $row->name;
+				if(substr($cd, 0, 2) == 10)
+					$name = "Liability : ".$nme;
+				if(substr($cd, 0, 2) == 20)
+					$name = "Asset : ".$nme;
+				if(substr($cd, 0, 2) == 30)
+					$name = "Income : ".$nme;
+				if(substr($cd, 0, 2) == 40)
+					$name = "Expenditure : ".$nme;
+				$options[$row->id] = $name;
+			}
 		}
 		return $options;
 	}	
@@ -276,9 +277,8 @@ class Ledger_model extends Model {
 	{
 		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
 
-		$dr_total = $this->get_dr_total($ledger_id);
-		$cr_total = $this->get_cr_total($ledger_id);
-
+		$dr_total = $this->get_dr_total1($ledger_id);
+		$cr_total = $this->get_cr_total1($ledger_id);
 		$total = float_ops($dr_total, $cr_total, '-');
 		if ($op_bal_type == "D")
 			$total = float_ops($total, $op_bal, '+');
@@ -317,6 +317,39 @@ class Ledger_model extends Model {
 		}
 		return $total_op;
 	}
+
+	/* Return debit total of selected date as positive value */
+	function get_dr_total1($ledger_id)
+	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
+		$this->db->where('date >=', $date1);
+	        $this->db->where('date <=', $date2);
+		$dr_total_q = $this->db->get();
+		if ($dr_total = $dr_total_q->row())
+			return $dr_total->drtotal;
+		else
+			return 0;
+	}
+
+	/* Return credit total of selected date as positive value */
+	function get_cr_total1($ledger_id)
+	{
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date2 = $this->session->userdata('date2');
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
+		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
+		$cr_total_q = $this->db->get();
+		if ($cr_total = $cr_total_q->row())
+			return $cr_total->crtotal;
+		else
+			return 0;
+	}
+
 
 	/* Return debit total as positive value */
 	function get_dr_total($ledger_id)

@@ -25,7 +25,7 @@ class Report extends Controller {
 		$this->template->load('template', 'report/index');
 		return;
 	}
-
+	
 	function balancesheet($period = NULL )
 	{
 		$this->load->library('session');
@@ -37,12 +37,23 @@ class Report extends Controller {
 
 		/* Form fields */ 
 		
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+			$default_end .= date('Y') + 1;
+
+		} else {
+			$default_start .= date('Y') - 1;
+			$default_end .= date('Y');
+		}
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_start,
 		);
 		$data['entry_date2'] = array(
 			'name' => 'entry_date2',
@@ -51,8 +62,22 @@ class Report extends Controller {
 			'size' => '11',
 			'value' => date_today_php(),
 		);
-                        $data['print_preview'] =FALSE;
+                $data['print_preview'] =FALSE;
 		
+		$data_date1 = $default_start;
+                $data_date2 = $default_end;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
+
 		/* Repopulating form */
 
 		if ($_POST)
@@ -181,13 +206,24 @@ class Report extends Controller {
 		$data['right_width'] = "450";
 
 		/* Form fields */ 
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+			$default_end .= date('Y') + 1;
+
+		} else {
+			$default_start .= date('Y') - 1;
+			$default_end .= date('Y');
+		}
 		
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_start,
 		);
 		$data['entry_date2'] = array(
 			'name' => 'entry_date2',
@@ -196,8 +232,21 @@ class Report extends Controller {
 			'size' => '11',
 			'value' => date_today_php(),
 		);
-                        $data['print_preview'] =FALSE;
+                $data['print_preview'] =FALSE;
 
+		$data_date1 = $default_start;
+                $data_date2 = $default_end;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
 		/* Form validations */
 
                 $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
@@ -246,13 +295,23 @@ class Report extends Controller {
 		$data['right_width'] = "450";
 
 		/* Form fields */ 
-		
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+			$default_end .= date('Y') + 1;
+
+		} else {
+			$default_start .= date('Y') - 1;
+			$default_end .= date('Y');
+		}
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_start,
 		);
 		$data['entry_date2'] = array(
 			'name' => 'entry_date2',
@@ -261,7 +320,21 @@ class Report extends Controller {
 			'size' => '11',
 			'value' => date_today_php(),
 		);
-                        $data['print_preview'] =FALSE;
+                $data['print_preview'] =FALSE;
+
+		$data_date1 = $default_start;
+                $data_date2 = $default_end;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
 
 		/* Form validations */ 
 
@@ -309,13 +382,23 @@ class Report extends Controller {
 		$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview'));
 
 		/* Form fields */ 
-		
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+			$default_end .= date('Y') + 1;
+
+		} else {
+			$default_start .= date('Y') - 1;
+			$default_end .= date('Y');
+		}
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_start,
 		);
 		$data['entry_date2'] = array(
 			'name' => 'entry_date2',
@@ -324,9 +407,23 @@ class Report extends Controller {
 			'size' => '11',
 			'value' => date_today_php(),
 		);
-			$data['date1'] = '';
-			$data['date2'] = '';
-			$data['print_preview'] =FALSE;
+		$data['date1'] = '';
+		$data['date2'] = '';
+		$data['print_preview'] =FALSE;
+
+		$data_date1 = $default_start;
+                $data_date2 = $default_end;
+
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
 
 		/* Form validations */ 
 
@@ -404,13 +501,23 @@ class Report extends Controller {
 			return;
 		}
 		/* Form fields */ 
-		
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+			$default_end .= date('Y') + 1;
+
+		} else {
+			$default_start .= date('Y') - 1;
+			$default_end .= date('Y');
+		}
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_start,
 		);
 		$data['entry_date2'] = array(
 			'name' => 'entry_date2',
@@ -964,36 +1071,21 @@ class Report extends Controller {
 
 			/* Liabilities and Owners Equity */
 			$liability_total = 0;
-			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 2)->where('affects_gross !=', 1);
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);	
-			$liability_list = $this->db->get();
-			foreach ($liability_list->result() as $row)
-			{
-				$liability = new Accountlist();
-				$liability->init($row->id);
-				$liability_total = -$liability->total;
-				$liability_array = $liability->build_array();
-				$liability->to_csv($liability_array);
-			}
+			$liability = new Accountlist();
+			$liability->init(2);
+			$liability_total = -$liability->total;
+			$liability_array = $liability->build_array();
+			$liability->to_csv($liability_array);
 			Accountlist::add_blank_csv();
 
 			/* asset */
 			$asset_total = 0;
-			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 1)->where('affects_gross !=', 1);
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);	
-			$asset_list = $this->db->get();
-			foreach ($asset_list->result() as $row)
-			{
-				$asset = new Accountlist();
-				$asset->init($row->id);
-				$asset_total = $asset->total;
-				$asset_array = $asset->build_array();
-				$asset->to_csv($asset_array);
-			}
+			$asset = new Accountlist();
+			$asset->init(1);
+			$asset_total = $asset->total;
+			$asset_array = $asset->build_array();
+			$asset->to_csv($asset_array);
+			
 			Accountlist::add_blank_csv();
 			
 			$income = new Accountlist();
@@ -1140,10 +1232,7 @@ class Report extends Controller {
 			
 			/* Net P/L : Expenses */
 			$net_expense_total = 0;
-			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 4)->where('affects_gross !=', 1);
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);	
+			$this->db->from('groups')->where('parent_id', 4)->where('affects_gross !=', 1);	
 			$net_expense_list_q = $this->db->get();
 			foreach ($net_expense_list_q->result() as $row)
 			{
@@ -1157,10 +1246,7 @@ class Report extends Controller {
 
 			/* Net P/L : Incomes */
 			$net_income_total = 0;
-			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 3)->where('affects_gross !=', 1);
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);	
+			$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);	
 			$net_income_list_q = $this->db->get();
 			foreach ($net_income_list_q->result() as $row)
 			{
@@ -1228,14 +1314,8 @@ class Report extends Controller {
 			$this->load->library('accountlist');
 			$this->load->model('Ledger_model');
 
-			Accountlist::add_blank_csv();
-			Accountlist::add_blank_csv();
-
 			/* Payment */
-			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 4)->where('affects_gross !=', 1);
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);
+			$this->db->from('groups')->where('parent_id', 4)->where('affects_gross !=', 1);
 			$net_expense_list_q = $this->db->get();
 			foreach ($net_expense_list_q->result() as $row)
 			{
@@ -1247,10 +1327,7 @@ class Report extends Controller {
 			Accountlist::add_blank_csv();
 
 			/* Receipt */
-			$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.group_id, c.code, d.id, d.affects_gross, d.parent_id');
-			$this->db->from('entries a, entry_items b, ledgers c, groups d')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('parent_id', 3)->where('affects_gross !=', 1);
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);			
+			$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);
 			$net_income_list_q = $this->db->get();
 			foreach ($net_income_list_q->result() as $row)
 			{

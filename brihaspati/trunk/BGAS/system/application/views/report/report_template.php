@@ -18,15 +18,9 @@
 		}
 		?>
 		<br>
-		<?php echo "&nbsp;&nbsp;&nbsp;" .  $this->config->item('account_name'); ?><br><?php echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .  $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2>" . "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+		<?php echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2>" . "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 
 	<?php echo"</table>";?>
-		<?php
-			$data = array(
-               			'entry_date1' => $entry_date1,
-               			'entry_date2' => $entry_date2
-          			);
-		 $this->load->view($report,$data); 
-		?>
+		<?php $this->load->view($report); ?>
 		<br>
 	<form><input class="hide-print" type="button" onClick="window.print()" value="Print Statement"></form>
