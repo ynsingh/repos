@@ -91,8 +91,18 @@ class Logo extends Controller {
 			$data_ins_name = $this->input->post('ins_name', TRUE);
 			$data_dept_name = $this->input->post('dept_name', TRUE);
 			$data_uni_name = $this->input->post('uni_name', TRUE);
-			delete_files($this->upload_path, TRUE);
-		
+		        $size = $_FILES["userfile"]["size"] / 1024;
+                        	 if($size > 0 && $size < 100)
+                                	{
+                              		 delete_files($this->upload_path, TRUE);
+                                	}
+                                	else
+                               		 {
+                                	$string=get_filenames($this->upload_path);
+                                	$value=$string[0];
+                                	$config['file_name'] = $value ;
+                                 	$this-> load->library('upload', $config);
+					 }
 
 			/* Update settings */
 			$this->db->trans_start();
