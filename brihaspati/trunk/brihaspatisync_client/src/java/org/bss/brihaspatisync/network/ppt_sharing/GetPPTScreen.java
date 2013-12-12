@@ -9,13 +9,12 @@ package org.bss.brihaspatisync.network.ppt_sharing;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.bss.brihaspatisync.util.ClientObject;
 import org.apache.commons.httpclient.methods.GetMethod;
-
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.awt.image.BufferedImage;
 
-import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -38,7 +37,6 @@ public class GetPPTScreen implements Runnable {
 	
 	private boolean flag=false;
 
-	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static GetPPTScreen get_ppt=null;
 	private int port=runtime_object.getPPTPort();
@@ -80,7 +78,7 @@ public class GetPPTScreen implements Runnable {
 		while(flag && ThreadController.getThreadFlag()) {
 		        try {
 				HttpClient client = new HttpClient();
-				HttpMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);//5271");
+				HttpMethod method = new GetMethod("http://"+ClientObject.getReflectorIP()+":"+port);//5271");
 		                client.setConnectionTimeout(8000);
                                 method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
 				// Http Proxy Handler

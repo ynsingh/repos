@@ -55,7 +55,7 @@ public class UtilObject {
          */
 	
 	public synchronized void removeReceiveQueue(String type) {
-                if(!(ht_for_queue.containsKey(type))){
+                if(ht_for_queue.containsKey(type)){
                         ht_for_queue.remove(type);
                 }
         }
@@ -74,7 +74,7 @@ public class UtilObject {
          * This method are used to remove send queue according to type .
          */
         public synchronized void removeSendQueue(String type) {
-                if(!(ht_for_send_queue.containsKey(type))){
+                if(ht_for_send_queue.containsKey(type)){
                         ht_for_send_queue.remove(type);
                 }
         }

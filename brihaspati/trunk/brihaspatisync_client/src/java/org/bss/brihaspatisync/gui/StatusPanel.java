@@ -216,13 +216,13 @@ public class StatusPanel extends JPanel implements Runnable {
 						}
 						sum =sum / (value.size());
 						if((sum> 12) && (key_type.equals("ins_video"))) {
-							org.bss.brihaspatisync.util.ClientObject.getController().setInsImageQuality(0.2f);
+							org.bss.brihaspatisync.util.ClientObject.setInsImageQuality(0.2f);
 						}
 						if((sum> 12) && (key_type.equals("stud_video"))) {
-							org.bss.brihaspatisync.util.ClientObject.getController().setStdImageQuality(0.2f);
+							org.bss.brihaspatisync.util.ClientObject.setStdImageQuality(0.2f);
 						}
 						if((sum> 12) && (key_type.equals("Desktop_Data"))) {
-							org.bss.brihaspatisync.util.ClientObject.getController().setDesktopImageQuality(0.2f);
+							org.bss.brihaspatisync.util.ClientObject.setDesktopImageQuality(0.2f);
 						}
 							
         				}

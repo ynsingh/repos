@@ -16,34 +16,18 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
- * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class HandRaiseAction implements MouseListener {
+public class InstructorHandRaiseAction implements MouseListener {
 
 	private UtilObject utilObject=UtilObject.getController();
 
-	private String selectedUsername="";
-
 	public void mouseClicked(MouseEvent e) { 
 		try {
-			selectedUsername=ClientObject.getSelectedListUsername();
+			String selectedUsername=ClientObject.getUserName();
 			String cmd=e.getComponent().getName();
-			if(cmd.equals("Get-Permission")) {
-                                selectedUsername=ClientObject.getUserName();
-                                ClientObject.setSelectedUserListname(selectedUsername);
-                                actionONRequest("Get-Permission",selectedUsername);
-                                StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8") +" "+" is get permission to use all tools ");
-                        }
-			if(selectedUsername.equals("")) {
-                       		StatusPanel.getController().setStatus(Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));
-                                javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));	
-				return;
-                       	}	
-
-                        if(cmd.equals("Allow-Permission")) {
+                        if(cmd.equals("Permission")) {
                         	actionONRequest("Allow-Permission",selectedUsername);
                                 StatusPanel.getController().setStatus(java.net.URLDecoder.decode(selectedUsername, "UTF-8")+" "+" is Allowed to use all tools ");
                         } else if(cmd.equals("Denie-Permission")) {
@@ -60,7 +44,7 @@ public class HandRaiseAction implements MouseListener {
 	/**
  	 * Action for make signal for appropriate Handraise option (e.g request for whiteboard, request for audio mic, request for screen sharing etc.)
  	 */
-	private void actionONRequest(String Request,String selectedUsername){
+	public void actionONRequest(String Request,String selectedUsername){
                 try {
 			String lectid=ClientObject.getLectureID();
 			if(!(lectid.equals(""))) {

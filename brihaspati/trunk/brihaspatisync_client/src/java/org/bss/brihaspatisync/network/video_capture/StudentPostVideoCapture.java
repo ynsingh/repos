@@ -53,7 +53,7 @@ public class StudentPostVideoCapture implements Runnable {
 	/**
  	 * Start Thread
  	 */  
-	public void start(boolean getscreen){
+	public void startStdVideoCapture(boolean getscreen){
                 if (runner == null) {
 			flag=true;
 			getflag=getscreen;
@@ -69,13 +69,15 @@ public class StudentPostVideoCapture implements Runnable {
          * Stop Thread.
          */
         
-	public void stop() {
+	public void stopStdVideoCapture() {
                 if (runner != null) {
 			flag=false;	
 			getflag=false;
-                        //runner = null;
+                        runner = null;
 			VideoPanel.getController().removeStudentPanel();
 			utilobject.removeType("stud_video");
+			utilobject.removeReceiveQueue("stud_video");
+                        utilobject.removeSendQueue("stud_video");
 			System.out.println("Student Post Video Capture  stop successfully !!");
                 }
         }
@@ -116,7 +118,7 @@ public class StudentPostVideoCapture implements Runnable {
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
 		}
 		try {
-                        runner = null;
+                        stopStdVideoCapture();
                 }catch(Exception e){}
 	}
 	
@@ -144,7 +146,7 @@ public class StudentPostVideoCapture implements Runnable {
                         ImageWriteParam param = writer.getDefaultWriteParam();
                         // compress to a given quality
                         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                        param.setCompressionQuality(ClientObject.getController().getStdImageQuality());
+                        param.setCompressionQuality(ClientObject.getStdImageQuality());
                         // appends a complete image stream containing a single image and
                         // associated stream and image metadata and thumbnails to the output
                         writer.write(null, new IIOImage(image, null, null), param);

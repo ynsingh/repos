@@ -27,11 +27,11 @@ public class MailLogin {
 	
 	public void  joindirect(String username,String lect_id,String course_id,String indexServerName,String ins_std) {
 		try {
-			ClientObject.getController().setIndexServerName(indexServerName);
-                      	ClientObject.getController().setUserName(username);
+			ClientObject.setIndexServerName(indexServerName);
+                      	ClientObject.setUserName(username);
 			MainWindow.getController().setCouseid(course_id);
-			ClientObject.getController().setLectureID(lect_id);
-                        ClientObject.getController().setUserRole(ins_std);
+			ClientObject.setLectureID(lect_id);
+                        ClientObject.setUserRole(ins_std);
                         new JoinSession(lect_id);
 		}catch(Exception e){System.out.println("Error in MilLogin");}	
 	}	

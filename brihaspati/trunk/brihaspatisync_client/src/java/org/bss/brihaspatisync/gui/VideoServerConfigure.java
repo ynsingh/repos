@@ -30,8 +30,8 @@ public class VideoServerConfigure implements ActionListener {
         private JPanel main_panel;
         private JPanel center_panel;
         private JPanel south_panel;
-        private JLabel name_label, name_labelPort;
-        private JTextField usr_text ,usr_textPort;
+        private JLabel name_label, name_labelPort,vlc_server_path_label,vlc_device_name_label;
+        private JTextField usr_text ,usr_textPort,vlc_server_path_text,vlc_device_name_text;
         private JButton ok_bttn,cancel_bttn;
 
 	public VideoServerConfigure(){
@@ -61,6 +61,24 @@ public class VideoServerConfigure implements ActionListener {
                 center_panel.add(name_labelPort);
                 center_panel.add(usr_textPort);
 		/*** port ******/
+
+		/*** set video server path *****/
+		vlc_server_path_label=new JLabel(" VlC Installer Path ");//Language.getController().getLangValue("VideoServerConfigurePort.lable"));
+                vlc_server_path_text=new JTextField(20);
+                vlc_server_path_text.setText(RuntimeDataObject.getController().getVLCServer());
+                center_panel.add(vlc_server_path_label);
+                center_panel.add(vlc_server_path_text);
+
+		vlc_device_name_label=new JLabel(" VlC Device Name ");//Language.getController().getLangValue("VideoServerConfigurePort.lable"));
+                vlc_device_name_text=new JTextField(20);
+                vlc_device_name_text.setText(RuntimeDataObject.getController().getVLCdeviceName());
+                center_panel.add(vlc_device_name_label);
+                center_panel.add(vlc_device_name_text);
+		
+		
+		/*** end video server path *****/
+		
+
                 main_panel.add(center_panel, BorderLayout.CENTER);
 
                 south_panel=new JPanel();
@@ -77,7 +95,7 @@ public class VideoServerConfigure implements ActionListener {
 
                 frame.getContentPane().add(main_panel);
 		java.awt.Dimension dim=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-                frame.setSize(450,100);
+                frame.setSize(450,300);
                 frame.setLocation((((int)dim.getWidth()/2)-185),(((int)dim.getHeight()/2)-220));
                 frame.setVisible(true);
 
@@ -89,6 +107,8 @@ public class VideoServerConfigure implements ActionListener {
 			if(!((usr_text.getText()).equals(""))){
                         	RuntimeDataObject.getController().setVideoServer(usr_text.getText());
                         	RuntimeDataObject.getController().setVideoServerPort(usr_textPort.getText());
+				RuntimeDataObject.getController().setVLCServer(vlc_server_path_text.getText());
+				RuntimeDataObject.getController().setVLCdeviceName(vlc_device_name_text.getText());
                              	frame.dispose();
                       	}else{
                         	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("VideoServerConfigure.Message"));

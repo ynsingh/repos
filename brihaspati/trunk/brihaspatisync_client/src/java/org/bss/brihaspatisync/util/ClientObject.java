@@ -18,48 +18,41 @@ import org.bss.brihaspatisync.http.HttpCommManager;
 
 public class ClientObject {
 
-	private static ClientObject cb=null;
-	private float desktopquality = 0.5f;
-	private float insquality = 0.5f;
-	private float stdquality = 0.5f;
+	private static float desktopquality = 0.5f;
+	private static float insquality = 0.5f;
+	private static float stdquality = 0.5f;
 	
-	private String indexServerName="";
+	private static String indexServerName="";
 	
-	private String lect_id="";
-	private String localIP="";
-	private String usr_name="";
-	private String usr_role="";
-	private String reflector_ip=null;
-	private String courseForAnnounce="";
-	private String parent_reflector_ip="";
-	private String selectedUserlistname="";
+	private static String lect_id="";
+	private static String localIP="";
+	private static String usr_name="";
+	private static String usr_role="";
+	private static String reflector_ip=null;
+	private static String courseForAnnounce="";
+	private static String parent_reflector_ip="";
+	private static String selectedUserlistname="";
 	
-	private Vector usrNameVector=null;
-	private Vector usrStatusVector=null;
-	private Vector indexServerList=null;
+	private static Vector usrNameVector=null;
+	private static Vector usrStatusVector=null;
+	private static Vector indexServerList=null;
 		
-	public static ClientObject getController(){
-		if(cb==null)
-			cb=new ClientObject();
-		return cb;
-	}
-	
-        public void setParentReflectorIP(String value){
+        public static void setParentReflectorIP(String value){
                 parent_reflector_ip=value;
         }
 		
-	public String getParentReflectorIP(){
+	public static String getParentReflectorIP(){
 		if(!parent_reflector_ip.equals("")){
 	                return parent_reflector_ip;
 		}
 		return null;
         }
 
-	protected void setReflectorIP(String value){
+	protected static void setReflectorIP(String value){
                 reflector_ip=value;
         }
 
-        public String getReflectorIP(){
+        public static String getReflectorIP(){
                 if( reflector_ip!=null ){
                         return reflector_ip;
                 }
@@ -71,7 +64,7 @@ public class ClientObject {
 	 * from HttpCommManager which initiate a connection with master server and get indexing server 
 	 * list.
 	 */
-	public Vector getIndexServerList(){
+	public static Vector getIndexServerList(){
 		if(indexServerList == null)
 			indexServerList=HttpCommManager.connectToMasterServer();
 		return indexServerList;
@@ -80,7 +73,7 @@ public class ClientObject {
 	/**
          * This method is used to get index server name which is choosen by this client for login authentication.
          */
-	public String getIndexServerName(){
+	public static String getIndexServerName(){
 		return indexServerName;
 	}
 	
@@ -88,7 +81,7 @@ public class ClientObject {
          * This method is used to retrive the list of sessions for all course in which this client is treated as a student
          * as well as instructor from HttpCommManager.
          */
-	public Vector getSessionList(Vector course, String indexServer){
+	public static Vector getSessionList(Vector course, String indexServer){
 		return HttpsUtil.getSessionForCourse(course, indexServer);
 	}
 
@@ -96,7 +89,7 @@ public class ClientObject {
          * This method is used to retrive the list of sessions for course in which this client is treated as a student,
          * from HttpCommManager.
          */
-        public Vector getStudCourseList(){
+        public static Vector getStudCourseList(){
                 return HttpCommManager.getStudCourseList();
        }
 
@@ -104,7 +97,7 @@ public class ClientObject {
          * This method is used to retrive the list of sessions for course in which this client is treated as a instructor,
          * from HttpCommManager.
          */
-        public Vector getInstCourseList(){
+        public static Vector getInstCourseList(){
 		return HttpCommManager.getInstCourseList();	
         }
 
@@ -112,7 +105,7 @@ public class ClientObject {
        	 * This method is used to retrive the list of sessions for course in which this client is treated as a student,
          * from HttpCommManager.
          */
-	public Vector getStudSessionList(){
+	public static Vector getStudSessionList(){
 		return HttpCommManager.getStudSessionList();
 	}
 
@@ -120,18 +113,18 @@ public class ClientObject {
          * This method is used to retrive the list of sessions for course in which this client is treated as a instructor,
 	 * from HttpCommManager.
          */
-	public Vector getInstSessionList(){
+	public static Vector getInstSessionList(){
 		return HttpCommManager.getInstSessionList();
         }
 
      	/**
          * This method is used to get user name of this client which is used to login authentication from login window.
          */
-	public String getUserName(){
+	public static String getUserName(){
 		return usr_name;
 	}
 	
-	public String getwelcomeUserName(){
+	public static String getwelcomeUserName(){
                 String name_new=usr_name;
                 try {
                         if(name_new.length()>9){
@@ -146,7 +139,7 @@ public class ClientObject {
 	/**
          * This method is used to get user role of this client.
          */
-	public String getUserRole(){
+	public static String getUserRole(){
 		return usr_role;
 	}
 	
@@ -155,7 +148,7 @@ public class ClientObject {
 	 * and password to database for client authentication.if authentication is successfull this method 
 	 * return true otherwise it return false.
          */
-	public boolean getAuthentication(String indexSerName, String usr, String pass){
+	public static boolean getAuthentication(String indexSerName, String usr, String pass){
 		boolean value =HttpCommManager.connectToIndexServer(indexSerName,usr,pass);
 		return value;
 	}
@@ -163,7 +156,7 @@ public class ClientObject {
 	/**
          * This method is used to get lecture id of lecture, which is joined by this client from InstSessionPanel or StudSessionPanel.
          */
-	public String getLectureID(){
+	public static String getLectureID(){
 		return lect_id;
 	}
 
@@ -174,114 +167,113 @@ public class ClientObject {
 	/**
          * This method is used to get course name from InstructorCSPanel which is used to announce new session in this course.
          */
-	public String getCourseForAnnounce(){
+	public static String getCourseForAnnounce(){
 		return courseForAnnounce;
 	}
 	
 	/**
          * This method is used store all user status to change icons in userlist.
          */
-	public Vector getUsrStatusVector(){
+	public static Vector getUsrStatusVector(){
 		return usrStatusVector;
 	}
 
 	/**
          * This method is used store user name to display all user in user list those are joined this Lecture.
          */
-	public Vector getUsrNameVector(){
+	public static Vector getUsrNameVector(){
 		return usrNameVector;
 	}
 
-	public void setIndexServerName(String value){
-		this.indexServerName=value;
+	public static void setIndexServerName(String value){
+		indexServerName=value;
         }
 
-        public void setUserName(String value){
-		this.usr_name=value;
+        public static void setUserName(String value){
+		usr_name=value;
         }
 
-        public void setUserRole(String value){
-		this.usr_role=value;
+        public static void setUserRole(String value){
+		usr_role=value;
         }
 
-        public void setLectureID(String value){
+        public static void setLectureID(String value){
 		value=value.replace("[","");	
 		value=value.replace("]","");	
-		this.lect_id=value;
+		lect_id=value;
         }
 
-
-	public void setCourseForAnnounce(String value){
-                this.courseForAnnounce=value;
+	public static void setCourseForAnnounce(String value){
+                courseForAnnounce=value;
         }
 
-	public void setUsrStatusVector(Vector value){
+	public static void setUsrStatusVector(Vector value){
 		if(usrStatusVector!=null)
 			usrStatusVector.clear();
-		this.usrStatusVector=value;
+		usrStatusVector=value;
 	}
 
-	public void setUsrNameVector(Vector value){
+	public static void setUsrNameVector(Vector value){
                 if(usrNameVector!=null)
                         usrNameVector.clear();
-                this.usrNameVector=value;
+                usrNameVector=value;
         }
-	public void setLocalIP(String str){
-		this.localIP=str;
+	public static void setLocalIP(String str){
+		localIP=str;
 	}
 	
-	public String getLocalIP(){
-                return this.localIP;
+	public static String getLocalIP(){
+                return localIP;
         }
 
-	private Vector LectureInfo=null;
-	private int LectureInfoindex=-1;
+	private static Vector LectureInfo=null;
+	private static int LectureInfoindex=-1;
 	
-	public void setLectureInfo(Vector info){
-                this.LectureInfo=info;
+	public static void setLectureInfo(Vector info){
+                LectureInfo=info;
         }
 
-	public Vector getLectureInfo(){
+	public static Vector getLectureInfo(){
                 return LectureInfo;
         }
 	
-	public void setLectureInfoIndex(int LectureInfoindex){
-                this.LectureInfoindex=LectureInfoindex;
+	public static void setLectureInfoIndex(int LectureInfoindex){
+                LectureInfoindex=LectureInfoindex;
         }
 	
-        public int getLectureInfoIndex(){
+        public static int getLectureInfoIndex(){
                 return LectureInfoindex;
         }
 	
-	public void setDesktopImageQuality(float quality) {
-		this.desktopquality = quality;
+	public static void setDesktopImageQuality(float quality) {
+		desktopquality = quality;
 	}
 	
-	public float getDesktopImageQuality(){
+	public static float getDesktopImageQuality(){
 		return desktopquality;
         }
 	
-	public void setInsImageQuality(float quality) {
-                this.insquality = quality;
+	public static void setInsImageQuality(float quality) {
+                insquality = quality;
         }
 
-        public float getInsImageQuality(){
+        public static float getInsImageQuality(){
                 return insquality;
         }
 
-	public void setStdImageQuality(float quality) {
-                this.stdquality = quality;
+	public static void setStdImageQuality(float quality) {
+                stdquality = quality;
         }
 
-        public float getStdImageQuality(){
+        public static float getStdImageQuality(){
                 return stdquality;
         }
 	
-	public void setSelectedUserListname(String str){
+	public static void setSelectedUserListname(String str){
                 selectedUserlistname=str;
         }
 
-        public String getSelectedListUsername(){
+        public static String getSelectedListUsername(){
                 return selectedUserlistname;
         }
 }

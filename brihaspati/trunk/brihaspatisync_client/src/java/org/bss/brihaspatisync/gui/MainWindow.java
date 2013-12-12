@@ -196,7 +196,7 @@ public class MainWindow  extends JFrame implements ActionListener {
 		}else if(e.getActionCommand().equals("Start-Recorder")) {
 			 // Action code for start recorder.
                 } else if(e.getActionCommand().equals("LectureInfo")) {
-		  	LectureInfo info=new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfo());                      
+		  	LectureInfo info=new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getLectureInfo());                      
                 }
 		else {
 			StatusPanel.getController().setStatus(Language.getController().getLangValue("MainWindow.MessageDialog1"));

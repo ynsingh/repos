@@ -34,13 +34,13 @@ public class HandRaiseThreadController implements Runnable{
 	private boolean startpostsharescreen=false;
 
         private static HandRaiseThreadController thread_controll=null;
-	private String username=ClientObject.getController().getUserName();;
-        private String role=ClientObject.getController().getUserRole();
+	private String username=ClientObject.getUserName();;
+        private String role=ClientObject.getUserRole();
 	
         /**
          * Controller for the class
          */
-	protected static HandRaiseThreadController getController(){
+	public static HandRaiseThreadController getController(){
                 if(thread_controll==null){
                         thread_controll=new HandRaiseThreadController();
                 }
@@ -90,14 +90,14 @@ public class HandRaiseThreadController implements Runnable{
 						
 						Post_GetSharedScreen.getController().startSharedScreen(false);
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().startLocalServer();
-						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
+						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().startStdVideoCapture(false);
 					}catch(Exception e){System.out.println("Error in startpostpermission ");}
 				}
 				if(startgetpermission){
 					try {
 						startgetpermission=false;
 						Post_GetSharedScreen.getController().startSharedScreen(true);
-						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
+						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().startStdVideoCapture(true);
 					}catch(Exception e){System.out.println("Error in startgetpermission ");}
                                 }
 				if(stopallpermission){
@@ -111,7 +111,7 @@ public class HandRaiseThreadController implements Runnable{
 						
 						Post_GetSharedScreen.getController().stopSharedScreen();		
 						StatusPanel.getController().setdestopClient("no");
-                        	                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
+                        	                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stopStdVideoCapture();
 						
 					}catch(Exception e){System.out.println("Error in stopallpermission ");}
                                 }

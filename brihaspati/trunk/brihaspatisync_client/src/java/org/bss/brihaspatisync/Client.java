@@ -39,7 +39,7 @@ public class Client {
                 		}
             		}
                	}catch(Exception e) { System.out.println("Error on Loading Look&Feel"); }
-                if(((ClientObject.getController().getIndexServerList()).size()) > 1)
+                if(((ClientObject.getIndexServerList()).size()) > 1)
 			MainWindow.getController().createGUI();
 		else
                 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("Client.MessageDialog"));

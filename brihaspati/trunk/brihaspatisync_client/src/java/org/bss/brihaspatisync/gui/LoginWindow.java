@@ -76,7 +76,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	
 	private MainWindow mainWindow=MainWindow.getController();		
 	
-	private ClientObject client_obj=ClientObject.getController();
+	//private ClientObject client_obj=ClientObject.getController();
 		
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
@@ -125,7 +125,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		chooseServerLabel=new JLabel(Language.getController().getLangValue("LoginWindow.ChooseServer"));
                 serverInfoPanel.add(chooseServerLabel);
               
-    		indexServerListCombo=new JComboBox(client_obj.getIndexServerList());
+    		indexServerListCombo=new JComboBox(ClientObject.getIndexServerList());
     		indexServerListCombo.addActionListener(this);
     		serverInfoPanel.add(indexServerListCombo);
 		
@@ -178,7 +178,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		
                	username =new JLabel(Language.getController().getLangValue("LoginWindow.username"));
                 username.setEnabled(false);
-                usernameText=new JTextField("guest");
+                usernameText=new JTextField("arvindjss17@gmail.com");
                 usernameText.setEnabled(false);
 		usernameText.setName("username");
 		usernameText.addMouseListener(this);
@@ -191,7 +191,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 });
                 password=new JLabel(Language.getController().getLangValue("LoginWindow.password"));
                 password.setEnabled(false);
-                passwordField=new JPasswordField("guest");
+                passwordField=new JPasswordField("arvind");
                 passwordField.setEnabled(false);
 		passwordField.setName("passwd");
 		passwordField.addMouseListener(this);
@@ -288,7 +288,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			JComboBox combo = (JComboBox)e.getSource();
         		indexServerName=(String)combo.getSelectedItem();
 			// set this indexServerName object to ClientObject for later use by this client.
-			client_obj.setIndexServerName(indexServerName);
+			ClientObject.setIndexServerName(indexServerName);
 			Update_Enable_Decable();
       		}else if(e.getSource()==languageListCombo) {
 			JComboBox combo = (JComboBox)e.getSource();
@@ -348,7 +348,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                         	usernameText.setText("guest");
                      	submitButton.setCursor(busyCursor);
                         if((!(usernameText.getText()).equals(""))) {
-                        	boolean loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+                        	boolean loginValue=ClientObject.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
 				System.out.println(loginValue);
                                 if(loginValue==false) {
                                 	passwordField.setText("");
@@ -356,7 +356,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                         StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
                                         submitButton.setCursor(defaultCursor);
                            	} else {
-                                	client_obj.setUserName(usernameText.getText());
+                                	ClientObject.setUserName(usernameText.getText());
 					mainWindow.setMenuItemText();
 		                        mainWindow.getDesktop().removeAll();
 					mainWindow.getDesktop().setBackground(new Color(220,220,220));	

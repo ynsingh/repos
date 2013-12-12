@@ -62,7 +62,9 @@ public class AudioClient implements Runnable {
             		runner = null;	
 			StatusPanel.getController().setaudioClient("no");
 			postAudio(false);	
-			utilobject.removeType("Audio_Data");	
+			utilobject.removeType("Audio_Data");
+			utilobject.removeReceiveQueue("Audio_Data");
+                        utilobject.removeSendQueue("Audio_Data");	
 			System.out.println("AudioClient stop successfully !!");
       		}
    	}
@@ -83,13 +85,12 @@ public class AudioClient implements Runnable {
 		while(flag && ThreadController.getThreadFlag()) {
 			try {
 				if(ThreadController.getReflectorStatusThreadFlag()) {
+					try {
 					/****   send audio data to reflector ****/
 					if(audiostartstopFlag) {
 						java.util.LinkedList audio_buffer=au_cap.getAudioData();
-						int size=audio_buffer.size();
-						byte[] audiodata=null;
+						int size=audio_buffer.size();byte[] audiodata=null;int currentOffset = 0;
 						if(size>10) {
-							int currentOffset = 0;
 							for(int i=0;i<size;i++) {
 								byte[] audioBytes=(byte[])audio_buffer.remove();
 								byte[] currentArray=getEncoder(audioBytes);
@@ -105,19 +106,22 @@ public class AudioClient implements Runnable {
                         		        	LinkedList send_queue=utilobject.getSendQueue("Audio_Data");
 	                			        send_queue.addLast(audiodata);
 						} 
+					}else {
+						utilobject.removeSendQueue("Audio_Data");	
 					}
+					
 					LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
                                         if(audio_rechive_data.size()>0) 
 						AudioPlayer.getController().startThread();
+					else
+						utilobject.removeReceiveQueue("Audio_Data");
 					StatusPanel.getController().setaudioClient("yes");
+					} catch(Exception e) { }
 				} else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
 				runner.sleep(100);
-			} catch(Exception epe) { 
-				StatusPanel.getController().setaudioClient("no"); 	
-				System.out.println("Exception in AudioClient class  "+epe.getMessage()); 
-			}
+			} catch(Exception epe) {StatusPanel.getController().setaudioClient("no"); 	}
         	}
 		try {
                         stopThread();

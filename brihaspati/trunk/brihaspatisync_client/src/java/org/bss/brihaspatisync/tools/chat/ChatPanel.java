@@ -90,7 +90,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 		
 		south_mainPanel=new JPanel();
 		textLabel = new BlinkLabel(Language.getController().getLangValue("ChatPanel.Label1"));
-                input_text=new JTextField(20);
+                input_text=new JTextField(12);
 		input_text.addMouseListener(this);
 		input_text.addKeyListener(this);
                 
@@ -154,7 +154,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
       		if (e.getKeyCode() == KeyEvent.VK_ENTER){
 			try {
 	         		tf = (JTextField)e.getSource();
-				msg = java.net.URLDecoder.decode(ClientObject.getController().getUserName(),"UTF-8")+" : "+tf.getText();
+				msg = java.net.URLDecoder.decode(ClientObject.getUserName(),"UTF-8")+" : "+tf.getText();
 				if (tf.getText().length() == 0)  return;
          			else {
 					showChatMSG(msg);

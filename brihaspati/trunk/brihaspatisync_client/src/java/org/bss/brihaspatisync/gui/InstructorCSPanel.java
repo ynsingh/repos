@@ -79,7 +79,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
         private JLabel upLabel[]=null;
         private JLabel cancleLabel[]=null;
 	
-	private ClientObject client_obj=ClientObject.getController();
 	private Log log=Log.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
@@ -151,12 +150,12 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                 north_mainPanel.add(announceLabel,gbc);
 
 		mainPanel.add(north_mainPanel, BorderLayout.NORTH);
-		mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+		mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
 		return mainPanel;
 	}
 	
 	private Vector reloadCourseList() {
-		Vector courseVec=client_obj.getInstCourseList();
+		Vector courseVec=ClientObject.getInstCourseList();
                 String str=courseVec.get(0).toString();
                 courseVec.clear();
                 String str1[]=str.split(",");
@@ -309,14 +308,14 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 				announceLabel.setEnabled(false);
                                 announceLabel.setText("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
 				announceLabel.removeMouseListener(this);
-				Vector courseVec=client_obj.getInstCourseList();
+				Vector courseVec=ClientObject.getInstCourseList();
                 		String str=courseVec.get(0).toString();
 		                courseVec.clear();
                 		String str1[]=str.split(",");
 		                for(int i=0;i<str1.length;i++){
                 	        	courseVec.add(str1[i]);
                 		}
-				mainPanel.add(showLecture(client_obj.getSessionList(courseVec,client_obj.getIndexServerName())),BorderLayout.CENTER);
+				mainPanel.add(showLecture(ClientObject.getSessionList(courseVec,ClientObject.getIndexServerName())),BorderLayout.CENTER);
 			}else if(((String)combo.getSelectedItem()).equals("noCourse")){
 				announceLabel.setEnabled(false);
 				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.msg"));	
@@ -325,10 +324,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                 announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
 				announceLabel.addMouseListener(this);
 				Vector courseName=new Vector();
-				client_obj.setCourseForAnnounce((String)combo.getSelectedItem());
+				ClientObject.setCourseForAnnounce((String)combo.getSelectedItem());
 				course_id=(String)combo.getSelectedItem();
 				courseName.addElement(course_id);
-				mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
+				mainPanel.add(showLecture(ClientObject.getSessionList(courseName,ClientObject.getIndexServerName())),BorderLayout.CENTER);
 			}
                 	center_mainPanel.validate();
                        	mainPanel.revalidate();
@@ -344,13 +343,13 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 					lect_id=str[0];
 					MainWindow.getController().setCouseid(str[1]);
 					// store this lect_id in client objects for later use by this client.
-					client_obj.setLectureID(lect_id);	
+					ClientObject.setLectureID(lect_id);	
 					// store role in client objects for later use by this client.
-					if(!((client_obj.getUserRole()).equals("instructor")))
-                                		client_obj.setUserRole("instructor");
+					if(!((ClientObject.getUserRole()).equals("instructor")))
+                                		ClientObject.setUserRole("instructor");
 					new JoinSession(lect_id);
-					client_obj.setLectureInfo(lectinfoVector);
-					client_obj.setLectureInfoIndex(i);
+					ClientObject.setLectureInfo(lectinfoVector);
+					ClientObject.setLectureInfoIndex(i);
 				}
 			}
 		} catch(Exception exc) { System.out.println("Exception in open GUI "+this.getClass()+"  "+exc.getMessage()); }
@@ -378,7 +377,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			        instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
                	        	instCourseCombo_Panel.revalidate();
 				mainPanel.remove(1);
-				mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+				mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
 				StatusPanel.getController().setStatus(Language.getController().getLangValue("InstructorCSPanel.msg1"));
 				reloadLabel.setCursor(defaultCursor);
 				reloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -425,7 +424,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 					}//if
 				} //for
 				mainPanel.remove(1);
-				mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+				mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
 	     			mainPanel.revalidate();
                         }catch(Exception e){ System.out.println("Exception in CancleInfo Action "+this.getClass()+" "+e.getMessage());  }
 			StatusPanel.getController().setProcessBar("no");
@@ -462,7 +461,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         String str[]=lect_id.split("-");
 			lect_id=str[0];
         	        String idCourse = "lectValue="+URLEncoder.encode(lect_id,"UTF-8");
-			String indexServerName=client_obj.getIndexServerName();
+			String indexServerName=ClientObject.getIndexServerName();
 			String indexServer=indexServerName+"/ProcessRequest?req=cancleLecture&"+idCourse;
 			if(!(indexServerName.equals(""))) {
 				if(!(HttpsUtil.getIndexingMessage(indexServer)))

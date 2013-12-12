@@ -66,7 +66,7 @@ public class AudioCapture implements Runnable {
         }
 	
 	protected void setflag(boolean flag1){
-		if((org.bss.brihaspatisync.util.ClientObject.getController().getUserRole()).equals("instructor")) {
+		if((org.bss.brihaspatisync.util.ClientObject.getUserRole()).equals("instructor")) {
 			if(flag1)
         	       		startCapture();
 			else 

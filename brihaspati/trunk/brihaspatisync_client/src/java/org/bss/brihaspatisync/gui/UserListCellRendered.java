@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.ListCellRenderer;
 import javax.swing.DefaultListCellRenderer;
+import org.bss.brihaspatisync.util.ClientObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -49,7 +50,8 @@ class UserListCellRendered implements ListCellRenderer {
                 }
                 if (isSelected) {
                         renderer.setForeground(theForeground);
-			org.bss.brihaspatisync.util.ClientObject.getController().setSelectedUserListname(userid);				
+			if((ClientObject.getUserRole()).equals("instructor"))	
+				ClientObject.setSelectedUserListname(userid);
                 }
                 if (theIcon != null) {
                         renderer.setIcon(theIcon);

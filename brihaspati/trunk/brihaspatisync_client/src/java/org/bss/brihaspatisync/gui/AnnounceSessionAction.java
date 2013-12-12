@@ -25,7 +25,7 @@ import java.util.Vector;
 
 public class AnnounceSessionAction implements ActionListener{
 
-	private ClientObject client_obj=ClientObject.getController();
+	//private ClientObject client_obj=ClientObject.getController();
 	private InstructorCSPanel insCSPanel=null;
 	private AnnounceSessionPanel ann_sess_panel=null;	
 	protected AnnounceSessionAction(InstructorCSPanel insCSPanel,AnnounceSessionPanel ann_sess_panel) {
@@ -40,15 +40,15 @@ public class AnnounceSessionAction implements ActionListener{
 			try{ 
 				if(!(ann_sess_panel.getLectureValues().equals(""))){
 					String lectValue = ann_sess_panel.getLectureValues();
-					String indexServerName=client_obj.getIndexServerName();
+					String indexServerName=ClientObject.getIndexServerName();
                                         String value;
 					if(!(indexServerName.equals(""))){
 						String 	indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
 						if(HttpsUtil.getIndexingMessage(indexServer)){
 							
 							insCSPanel.getmainPanel().remove(1);
-					 		Vector course_Name=client_obj.getInstCourseList();
-					 		insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(course_Name,client_obj.getIndexServerName())),BorderLayout.CENTER);
+					 		Vector course_Name=ClientObject.getInstCourseList();
+					 		insCSPanel.getmainPanel().add(insCSPanel.showLecture(ClientObject.getSessionList(course_Name,ClientObject.getIndexServerName())),BorderLayout.CENTER);
 							insCSPanel.getmainPanel().revalidate();
 							value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog1");
                               				System.out.println(value);

@@ -197,12 +197,12 @@ public class HttpsUtil{
 								// store current reflector ipAddress
 								ref_ip=str1[0].replaceAll("current","");
 								// set current reflector ipaddress in clientObject for use in runtime.
-								ClientObject.getController().setReflectorIP(ref_ip);
+								ClientObject.setReflectorIP(ref_ip);
 								// store parent reflector ipaddress of current reflector 
 								parent_ref_ip="parent"+str1[1].replaceAll("parent","");
 								// set parent reflector ipaddress of current reflector in ClientObject 
 								// for use in runtime
-								ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
+								ClientObject.setParentReflectorIP(parent_ref_ip);	
 								String a_status=str1[2].replaceAll("A=","");
 								AudioUtilObject.setAudioStatus(a_status);
 								String v_status=str1[3].replaceAll("V=","");

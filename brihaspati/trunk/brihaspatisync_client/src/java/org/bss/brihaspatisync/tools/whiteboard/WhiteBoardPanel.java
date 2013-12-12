@@ -35,7 +35,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.gui.Language;
-import org.bss.brihaspatisync.gui.HandRaiseAction;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -69,9 +68,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 	private int font_Size=10;       // Size of Font
 	private int font_Style=Font.PLAIN;      // BOLD, ITALIC, UNDERLINE
 	private ClassLoader clr;
-	private String role=ClientObject.getController().getUserRole();
-
-
+	private String role=ClientObject.getUserRole();
 
         public static WhiteBoardPanel getController(){
                 if (wbPanel==null){
@@ -159,7 +156,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                 eraser.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.EraserToolTip"));
                 eraser.setActionCommand("9");
                 eraser.addActionListener(this);
-		if((ClientObject.getController().getUserRole()).equals("student"))
+		if((ClientObject.getUserRole()).equals("student"))
 			eraser.setEnabled(false);		
                 toolBar.add(eraser);
                 toolBar.addSeparator();

@@ -44,7 +44,7 @@ public class GetAndPostPPT {
 	private boolean flag=false;
 	private int port =RuntimeDataObject.getController().getPPTPort();
 
-	private ClientObject client_obj=ClientObject.getController();
+	//private ClientObject client_obj=ClientObject.getController();
 
 
 	public static GetAndPostPPT getController(){
@@ -58,7 +58,7 @@ public class GetAndPostPPT {
 
 	public void startFTPClient(String fileformate) {
 		try{
-			String lect_id=client_obj.getLectureID();
+			String lect_id=ClientObject.getLectureID();
 			if(fileformate.equals("POST")){
                         	SendFile(lect_id);
                       	}

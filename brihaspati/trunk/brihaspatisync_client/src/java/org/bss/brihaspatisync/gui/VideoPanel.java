@@ -78,7 +78,7 @@ public class VideoPanel {
                 JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
                 welcome.setFont(new Font("Arial", Font.PLAIN, 12));
 
-                JLabel userLogin=new JLabel(java.net.URLDecoder.decode(org.bss.brihaspatisync.util.ClientObject.getController().getwelcomeUserName(),"UTF-8")) ;
+                JLabel userLogin=new JLabel(java.net.URLDecoder.decode(org.bss.brihaspatisync.util.ClientObject.getwelcomeUserName(),"UTF-8")) ;
                 userLogin.setForeground(new Color(0,0,0));
                 userLogin.setFont(new Font("Arial", Font.BOLD, 12));
                 labelPane.add(welcome);

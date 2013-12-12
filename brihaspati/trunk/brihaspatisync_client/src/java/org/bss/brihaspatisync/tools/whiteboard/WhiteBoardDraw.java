@@ -115,7 +115,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 	}
 
 	public void createGUI(){
-		if((ClientObject.getController().getUserRole()).equals("instructor")){
+		if((ClientObject.getUserRole()).equals("instructor")){
 			setCursor(new Cursor(1));
 			addMouseListener(this);
                         addMouseMotionListener(this);

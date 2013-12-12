@@ -75,7 +75,6 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
         
 	private Log log=Log.getController();
 	
-	private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
@@ -133,12 +132,12 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		
 	   	mainPanel.add(north_mainPanel, BorderLayout.NORTH);
 	   	
-                mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+                mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
     		return mainPanel;
 	}
 	
 	private Vector reloadCourseList(){
-		Vector courseVec=client_obj.getStudCourseList();
+		Vector courseVec=ClientObject.getStudCourseList();
                 String str=courseVec.get(0).toString();
                 courseVec.clear();
                 String str1[]=str.split(",");
@@ -166,8 +165,8 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
  		center_mainPanel.setLayout(new GridLayout(0,2,5,3));
     		center_mainPanel.setBorder(BorderFactory.createTitledBorder(Language.getController().getLangValue("StudentCSPanel.BorderText")));
 				
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.ActionLabel")+"</font></U></b>"),0);
 		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.LectureLabel")+"</font></U></b>"),0);
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.ActionLabel")+"</font></U></b>"),1);
 		String str_curday="";
                 String str_curmonth="";
 		
@@ -183,6 +182,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                 int curdate=Integer.parseInt(Integer.toString(curyear)+str_curmonth+str_curday);	
 		
 		for(int i=0;i<lecture_size;i++){
+			boolean f=false;
 			try {
                 	        java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectureVector.get(i).toString(),",");
                         	String lectid=decrypt(str1.nextElement().toString());
@@ -219,6 +219,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 					if((anausetime <= cue_finaltime) && (durationtime >= cue_finaltime) ) {				
 	                    			runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.JoinBttn"));
 						runButton[i].addActionListener(this);
+						f=true;
 					}else
 					runButton[i]=new JButton("");
                			}
@@ -237,8 +238,13 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			
 			buttonPanel[i].add(runButton[i]);
 			buttonPanel[i].add(descLabel[i]);
-			center_mainPanel.add(nsPane[i]);
-			center_mainPanel.add(buttonPanel[i]);
+			if(f) {
+				center_mainPanel.add(nsPane[i],2);
+				center_mainPanel.add(buttonPanel[i],3);
+			} else {
+				center_mainPanel.add(nsPane[i]);
+                                center_mainPanel.add(buttonPanel[i]);
+			}
 			}catch(Exception e){System.out.println("Error in load session in StudentCSPanel class  "+e.getMessage());}
 		}
        		if(lecture_size==0){
@@ -257,12 +263,12 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
       			JComboBox combo = (JComboBox)e.getSource();
         		mainPanel.remove(1);
 			if(((String)combo.getSelectedItem()).equals("--Show All--")){
-				Vector courseName=client_obj.getStudCourseList();
-                                mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
+				Vector courseName=ClientObject.getStudCourseList();
+                                mainPanel.add(showLecture(ClientObject.getSessionList(courseName,ClientObject.getIndexServerName())),BorderLayout.CENTER);
                         }else{
                                 Vector courseName=new Vector();
                                 courseName.addElement((String)combo.getSelectedItem());
-                                mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
+                                mainPanel.add(showLecture(ClientObject.getSessionList(courseName,ClientObject.getIndexServerName())),BorderLayout.CENTER);
                         }
 			center_mainPanel.validate();
                         mainPanel.revalidate();
@@ -274,10 +280,10 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 					StatusPanel.getController().setProcessBar("yes");
 					lect_id=courseid.get(i).toString();
 					// store this lect_id in client objects for later use by this client.
-                                        client_obj.setLectureID(lect_id);
+                                        ClientObject.setLectureID(lect_id);
 					// store role in client objects for later use by this client.
-					if(!(client_obj.getUserRole()).equals("student"))
-                                                client_obj.setUserRole("student");
+					if(!(ClientObject.getUserRole()).equals("student"))
+                                                ClientObject.setUserRole("student");
                                        	new JoinSession(lect_id);
                                	}
                        	}
@@ -303,7 +309,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
         	        studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
 			studentCourseCombo_Panel.revalidate();
 			mainPanel.remove(1);
-                       	mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+                       	mainPanel.add(showLecture(ClientObject.getSessionList(reloadCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
 			StatusPanel.getController().setStatus("reload Successfully");
 		}
 		StatusPanel.getController().setProcessBar("no");

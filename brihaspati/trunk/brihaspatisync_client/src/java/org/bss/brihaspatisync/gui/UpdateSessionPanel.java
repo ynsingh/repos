@@ -92,7 +92,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	private Vector returnVector=null;
 	private String lectValue;
 	private Log log=Log.getController();	
-	private ClientObject client_obj=ClientObject.getController();
+	//private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	private InstructorCSPanel insCSPanel=null;	
@@ -384,8 +384,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         }
                                 }
 				String courseName="";
-				if(!((client_obj.getCourseForAnnounce()).equals("")))
-                                        courseName=client_obj.getCourseForAnnounce();
+				if(!((ClientObject.getCourseForAnnounce()).equals("")))
+                                        courseName=ClientObject.getCourseForAnnounce();
 				if(courseName.equals("--Show All--")){
                                         JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog4"));
                                         lectValue=null;
@@ -432,7 +432,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         	        }
 					lectValue = "&"+"lect_id="+URLEncoder.encode(lecture_id,"UTF-8");
                                         lectValue =lectValue+"&"+"lectGetParameter="+URLEncoder.encode("GetUpdateLectValues","UTF-8");
-                                        lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
+                                        lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(ClientObject.getUserName(),"UTF-8");
                                         lectValue =lectValue+"&"+"lectCouseName="+URLEncoder.encode(courseId,"UTF-8");
                                         lectValue =lectValue+"&"+"lectName="+URLEncoder.encode((String)lectName_Text.getText(),"UTF-8");
                                         lectValue =lectValue+"&"+"lectInfo="+URLEncoder.encode((String)lecInfoArea.getText(),"UTF-8");
@@ -459,14 +459,14 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			try {
 				annBttn.setCursor(busyCursor);
 				String lectValue = getLectureValues();
-                                String indexServerName=client_obj.getIndexServerName();
+                                String indexServerName=ClientObject.getIndexServerName();
                                 if(!(indexServerName.equals(""))) {
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
                                         if(HttpsUtil.getIndexingMessage(indexServer)) {
 						/********************* modified ******************************/
                                                 JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));						      frame.dispose();
 						insCSPanel.getmainPanel().remove(1);	
-						insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(client_obj.getInstCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
+						insCSPanel.getmainPanel().add(insCSPanel.showLecture(ClientObject.getSessionList(ClientObject.getInstCourseList(),ClientObject.getIndexServerName())),BorderLayout.CENTER);
                                                 insCSPanel.getmainPanel().revalidate();
                                                 insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
                                         }else

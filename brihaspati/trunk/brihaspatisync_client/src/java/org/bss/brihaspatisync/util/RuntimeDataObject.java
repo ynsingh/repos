@@ -32,6 +32,8 @@ public class RuntimeDataObject {
 	private String videoServer="127.0.0.1";
 	private String videoServerPort="8090";
 	
+	private String vlcServer="C:\\Program Files\\VideoLAN\\VLC";
+        private String vlcDeviceName="HP Webcam-50";//"Default";
 	
         public static RuntimeDataObject getController(){
                 if(obj==null) {
@@ -52,10 +54,28 @@ public class RuntimeDataObject {
 	public void setVideoServer(String value){
                 videoServer=value;
         }
-
+	
         public String getVideoServer(){
                 return videoServer;
         }
+	//////////////////////////////////////
+	public void setVLCdeviceName(String value){
+                vlcDeviceName=value;
+        }
+
+        public String getVLCdeviceName(){
+                return vlcDeviceName;
+        }
+
+
+        public void setVLCServer(String value){
+                vlcServer=value;
+        }
+
+        public String getVLCServer(){
+                return vlcServer;
+        }
+	//////////////////
 	
 	public void setProxyHost(String value){
 		proxy_host=value;

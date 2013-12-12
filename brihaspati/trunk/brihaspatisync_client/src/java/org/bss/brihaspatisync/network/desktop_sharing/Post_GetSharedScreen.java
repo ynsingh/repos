@@ -88,12 +88,16 @@ public class Post_GetSharedScreen implements Runnable {
         
 	public void stopSharedScreen() {
                 if (runner != null) {
-			utilObject.removeType("Desktop_Data");	
 			flag=false;
 			getflag=false;
 			screen_mode=false;
 			robot  = null;
 			runner=null;
+			utilObject.removeType("Desktop_Data");	
+			Desktop_Sharing.getController().resetshowImage();
+			StatusPanel.getController().setdestopClient("no");
+			utilObject.removeReceiveQueue("Desktop_Data");
+                        utilObject.removeSendQueue("Desktop_Data");
 			System.out.println("PostSharedScreen stop successfully !!");
                 }
         }
@@ -168,10 +172,6 @@ public class Post_GetSharedScreen implements Runnable {
 		}
 		try {
 			stopSharedScreen();	
-			Desktop_Sharing.getController().resetshowImage();
-			StatusPanel.getController().setdestopClient("no");
-			utilObject.removeReceiveQueue("Desktop_Data");
-			utilObject.removeSendQueue("Desktop_Data");
 		}catch(Exception e){}
 	}
 	
@@ -200,7 +200,7 @@ public class Post_GetSharedScreen implements Runnable {
 			ImageWriteParam param = writer.getDefaultWriteParam();
 			// compress to a given quality
 			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-			param.setCompressionQuality(ClientObject.getController().getDesktopImageQuality());
+			param.setCompressionQuality(ClientObject.getDesktopImageQuality());
 			// appends a complete image stream containing a single image and
 		    	// associated stream and image metadata and thumbnails to the output
 			writer.write(null, new IIOImage(image, null, null), param);

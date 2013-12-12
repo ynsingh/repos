@@ -39,13 +39,15 @@ public class Desktop_Sharing implements MouseListener {
 	private JLabel imageDisplay = null;
         private static Desktop_Sharing desktopSharing=null;
 	
+		
 	public static Desktop_Sharing getController(){
                 if (desktopSharing==null){
                         desktopSharing=new Desktop_Sharing();
                 }
                 return desktopSharing;
         }
-
+	
+	
 	/**
  	 * Create JscrollPane in which images dislpay label is added to show screen share images.
  	 */ 
@@ -100,7 +102,7 @@ public class Desktop_Sharing implements MouseListener {
  	 */
 	public void showImage(BufferedImage originalImage){
 		try{
-
+			
 			Dimension mainPanel_dim=videoPanel.getSize();
 			int mainPanelWidth = (int)mainPanel_dim.getWidth();
         		int mainPanelHeight = (int)mainPanel_dim.getHeight();
@@ -114,24 +116,22 @@ public class Desktop_Sharing implements MouseListener {
                         int targetWidth = (int)(scale*imageWidth);
                         int targetHeight = (int)(scale*imageHeight);
 			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY,ImageScaler.Mode.FIT_EXACT, targetWidth, targetHeight,ImageScaler.OP_ANTIALIAS);
+			
 			imageDisplay.setIcon(new ImageIcon(scaledImage));
 			imageDisplay.setHorizontalAlignment(JLabel.CENTER);
 			centerPanel.setLocation(targetWidth-40,4);
 	                centerPanel.setSize(40,40);
 			centerPanel.updateUI();
-			scaledImage.flush(); 
-		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
+			//scaledImage.flush(); 
+		}catch(Exception ex){System.out.println("Exception in showImage at Desktop_Sharing class "+ex);}
 	}
 	
 	public void resetshowImage(){
                 try{
-			imageDisplay.setIcon(new ImageIcon((this.getClass().getClassLoader()).getResource("resources/images/wb/index.jpg")));
-                        imageDisplay.setHorizontalAlignment(JLabel.CENTER);
-                        centerPanel.setLocation(1000,0);
-                        centerPanel.setSize(0,0);
+			imageDisplay.setIcon(null);
                         centerPanel.updateUI();
 
-                }catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
+                } catch(Exception ex){System.out.println("Error in resetshowImage method in Desktop_Sharing class "+ex);}
         }
 }
 

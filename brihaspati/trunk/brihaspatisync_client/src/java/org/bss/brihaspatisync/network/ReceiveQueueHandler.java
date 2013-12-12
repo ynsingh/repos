@@ -29,10 +29,10 @@ public class ReceiveQueueHandler implements Runnable{
 	private int value_count=0;
         private Thread runner = null;
 	private boolean flag = false;	
+	private boolean startallthreadflag = false;	
         private static ReceiveQueueHandler rqh=null;
 	
 	private UtilObject utilobject = UtilObject.getController();
-	private ClientObject clientObject=ClientObject.getController();
         /**
          * Create Class Controller.
          */
@@ -66,7 +66,8 @@ public class ReceiveQueueHandler implements Runnable{
         private synchronized void stop() {
                 if (runner != null) {
 			flag=false;
-			//runner = null;
+			runner = null;
+			startallthreadflag=false;
 			System.out.println("ReceiveQueueHandler has stopped.");
              	}
         }
@@ -107,9 +108,9 @@ public class ReceiveQueueHandler implements Runnable{
                                            	}
 					}
 					
-					if(clientObject.getParentReflectorIP() != null ) {
-                                                String parentip=clientObject.getParentReflectorIP();
-                                                clientObject.setParentReflectorIP("");
+					if(ClientObject.getParentReflectorIP() != null ) {
+                                                String parentip=ClientObject.getParentReflectorIP();
+                                                ClientObject.setParentReflectorIP("");
 						String message="nodata"+"req"+parentip;
 						java.util.LinkedList sendqueue=utilobject.getSendQueue("UserList_Data");
 		                                sendqueue.addLast(message.getBytes());
@@ -129,13 +130,39 @@ public class ReceiveQueueHandler implements Runnable{
 	                        			}
 						}
 					} catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to remove queue for network slow"+ex.getMessage());}*/
+					if(!startallthreadflag) {
+						try {
+							startallthreadflag=true;
+				                        org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
+        	                			WhiteBoardDraw.getController().start();
+				                        ReceiveQueueHandler.getController().start();
+                        				org.bss.brihaspatisync.gui.HandRaiseThreadController.getController().startHandRaiseThread();
+			        	                //start audio thread
+                        				String a_status=org.bss.brihaspatisync.util.AudioUtilObject.getAudioStatus();
+			                        	if(a_status.equals("1")){
+                        			        	org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
+				                                if((ClientObject.getUserRole()).equals("instructor"))
+        	                			                org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
+				                        }
+	
+        	                			//start video thread
+				                        String v_status=org.bss.brihaspatisync.util.AudioUtilObject.getVideoStatus();
+                        				if((ClientObject.getUserRole()).equals("instructor")) {
+		        		                        if(v_status.equals("1")){
+                	        			                org.bss.brihaspatisync.network.video_capture.LocalServer.getController().startLocalServer();
+		                	        	                org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().startVideoCaptureThread(false);
+                			                	}
+				                        } else{
+				                                org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().startVideoCaptureThread(true);
+                	        			}
+						} catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to start all thread "+ex.getMessage());}
+					}
 				}
+				
 				runner.yield();
 				runner.sleep(10);
 			}catch(Exception e){}
 		}
-		try {
-			runner = null;
-		} catch(Exception e){}	
+		stop();
 	}
 }

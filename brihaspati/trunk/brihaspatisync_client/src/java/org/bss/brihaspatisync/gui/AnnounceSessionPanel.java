@@ -84,7 +84,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 
 	private Vector returnVector=null;
 	private String lectValue;
-	private ClientObject client_obj=ClientObject.getController();
+	//private ClientObject client_obj=ClientObject.getController();
 	private Log log=Log.getController();
 	private int h=0;
 	private int m=0;
@@ -344,8 +344,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
 					return lectValue;  
 				}
 				String st_duration=Integer.toString(durationBox.getSelectedIndex()+1)+":Hour";	
-				if(!((client_obj.getCourseForAnnounce()).equals("")))
-					courseName=client_obj.getCourseForAnnounce();
+				if(!((ClientObject.getCourseForAnnounce()).equals("")))
+					courseName=ClientObject.getCourseForAnnounce();
 				if(courseName.equals("--Show All--")){
 					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog5"));
 					lectValue=null;
@@ -378,7 +378,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener {
                                 }
 				try {
 					lectValue = "&"+"lectGetParameter="+URLEncoder.encode("GetAnnounceValues","UTF-8");
-					lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
+					lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(ClientObject.getUserName(),"UTF-8");
 					lectValue =lectValue+"&"+"lectCouseName="+URLEncoder.encode(courseName,"UTF-8");
 					lectValue =lectValue+"&"+"lectName="+URLEncoder.encode((String)lectName_Text.getText(),"UTF-8");
 					lectValue =lectValue+"&"+"lectInfo="+URLEncoder.encode((String)lecInfoArea.getText(),"UTF-8");

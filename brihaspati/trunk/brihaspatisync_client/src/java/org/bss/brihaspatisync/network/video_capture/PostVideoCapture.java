@@ -51,7 +51,7 @@ public class PostVideoCapture implements Runnable {
 	/**
  	 * Start Thread
  	 */  
-	public void start(boolean getscreen){
+	public void startVideoCaptureThread(boolean getscreen){
                 if (runner == null) {
 			flag=true;
 			getflag=getscreen;
@@ -66,12 +66,14 @@ public class PostVideoCapture implements Runnable {
          * Stop Thread.
          */
         
-	public void stop() {
+	public void stopVideoCaptureThread() {
                 if (runner != null) {
 			flag=false;
 			getflag=false;
-                        //runner = null;
+                        runner = null;
 			utilobject.removeType("ins_video");
+			utilobject.removeReceiveQueue("ins_video");
+                        utilobject.removeSendQueue("ins_video");
 			System.out.println("Post Video Capture  stop successfully !!");
                 }
         }
@@ -113,7 +115,7 @@ public class PostVideoCapture implements Runnable {
 			}catch(Exception e){System.out.println("Exception in PostSharedScreen in get and post video image "+e.getMessage());}
 		}
 		try {
-                        runner = null;
+                        stopVideoCaptureThread();
                 }catch(Exception e){}
 	}
 
@@ -141,7 +143,7 @@ public class PostVideoCapture implements Runnable {
                         ImageWriteParam param = writer.getDefaultWriteParam();
                         // compress to a given quality
                         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                        param.setCompressionQuality(ClientObject.getController().getInsImageQuality());
+                        param.setCompressionQuality(ClientObject.getInsImageQuality());
                         // appends a complete image stream containing a single image and
                         //associated stream and image metadata and thumbnails to the output
                         writer.write(null, new IIOImage(image, null, null), param);

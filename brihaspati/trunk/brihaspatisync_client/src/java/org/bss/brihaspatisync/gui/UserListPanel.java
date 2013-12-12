@@ -46,9 +46,8 @@ public class UserListPanel extends Thread {
 	private String diffuser_list="";		
 	private String turnof_onFlag="";
 
-	private ClientObject client_obj=ClientObject.getController();
-	private String role=client_obj.getUserRole();	
-	private String username=client_obj.getUserName();;	
+	private String role=ClientObject.getUserRole();	
+	private String username=ClientObject.getUserName();;	
 	private String a_status=AudioUtilObject.getAudioStatus();
         private String v_status=AudioUtilObject.getVideoStatus();
 	private Allow_Deny_Permission all_deny_per=new Allow_Deny_Permission();	
@@ -76,7 +75,7 @@ public class UserListPanel extends Thread {
                 scrollPane = new JScrollPane(jlist);
 	
               	mainPanel.add(all_deny_per.createGUI(),BorderLayout.NORTH);
-		all_deny_per.setEnable_Decable_Allow_Get(true);
+		all_deny_per.setEnable_Decable_Permission(true);
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
 		this.start();
 		return mainPanel;
@@ -148,13 +147,11 @@ public class UserListPanel extends Thread {
 			
 			if(role.equals("student")) {
 				if((user.equals(username)) && (status.equals("Allow-Permission") || (status.equals ("Get-Permission")))) {
-					all_deny_per.setEnable_Decable_Deny(true);
-                                        all_deny_per.setEnable_Decable_Allow_Get(false);	
+                                        all_deny_per.setEnable_Decable_Permission(false);	
+				} else {
+                                        all_deny_per.setEnable_Decable_Permission(true);	
 				}
-				if((user.equals(username)) && (!status.equals("Allow-Permission")) && (!status.equals ("Get-Permission"))) {
-                                        all_deny_per.setEnable_Decable_Deny(false);
-                                        all_deny_per.setEnable_Decable_Allow_Get(true);
-                                }		
+				
 				if(statusVector.contains("Allow-Permission")){					
 					try {
 						if((user.equals(username)) && (!flag)) {
@@ -170,8 +167,7 @@ public class UserListPanel extends Thread {
 					if(flag) {
 						flag=false;
 						HandRaiseThreadController.getController().stopAllPermission(true);
-						all_deny_per.setEnable_Decable_Deny(false);
-	                                        all_deny_per.setEnable_Decable_Allow_Get(true);
+	                                        all_deny_per.setEnable_Decable_Permission(true);
                         		}
 				}
 					
@@ -184,25 +180,15 @@ public class UserListPanel extends Thread {
 						flag=true;
 						HandRaiseThreadController.getController().startGetPermission(true);
 					}
+                                        all_deny_per.setEnable_Decable_Permission(false);
 				}else {
 					if(flag) {
                                                	flag=false;
                    				HandRaiseThreadController.getController().stopAllPermission(true);
                         		}
-					
+                                        all_deny_per.setEnable_Decable_Permission(true);
 				}
 			}
-			if(role.equals("instructor")) {	
-				if(statusVector.contains("Allow-Permission")) {
-					all_deny_per.setEnable_Decable_Deny(true);
-	                		all_deny_per.setEnable_Decable_Allow_Get(false);
-				} else {
-					all_deny_per.setEnable_Decable_Deny(false);
-		               		all_deny_per.setEnable_Decable_Allow_Get(true);
-				}
-			}else {
-				
-			}	
 			elements[i][0] = new Font("Helvetica", Font.PLAIN, 14);
         	        elements[i][1] = Color.black;
 			elements[i][2] = new ImageIcon(clr.getResource(getImageIcon(status)));

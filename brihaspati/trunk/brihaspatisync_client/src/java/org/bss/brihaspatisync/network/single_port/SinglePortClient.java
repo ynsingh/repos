@@ -32,7 +32,6 @@ public class SinglePortClient implements Runnable {
 	private Thread runner=null;
 	private HttpClient client = null;	
 	private UtilObject utilobject=UtilObject.getController();
-	private ClientObject clientObject=ClientObject.getController();
 	private int port=RuntimeDataObject.getController().client_single_port();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 
@@ -184,10 +183,10 @@ public class SinglePortClient implements Runnable {
 	 */
 	private byte[] sendDataToReflector(byte[] send_data,String type) {
 		try {
-                        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
+                        PostMethod postMethod = new PostMethod("http://"+ClientObject.getReflectorIP()+":"+port);
 			if(send_data != null)	
 				postMethod.setRequestBody(new java.io.ByteArrayInputStream(send_data));
-                        postMethod.setRequestHeader("session",clientObject.getLectureID()+","+clientObject.getUserName()+","+type);
+                        postMethod.setRequestHeader("session",ClientObject.getLectureID()+","+ClientObject.getUserName()+","+type);
 			//if(client == null ) {
                                 client = new HttpClient();
                                 client.setConnectionTimeout(800000);

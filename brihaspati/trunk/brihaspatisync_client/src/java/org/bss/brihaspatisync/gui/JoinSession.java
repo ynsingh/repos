@@ -28,7 +28,6 @@ import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
 
 public class JoinSession {
 
-	
 	protected JoinSession(){}
 
 	/**
@@ -36,46 +35,39 @@ public class JoinSession {
  	 * client system to it, to received the lecture transmission.The method does not return anything.
  	 */
 
-	private ClientObject client_obj=ClientObject.getController();
 	protected JoinSession(String Lecture_ID) {
                 try{
+			String usr_name=ClientObject.getUserName();
+			if(usr_name.equals("guest")) {
+				usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
+				if(!usr_name.equals("")) {
+					usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
+					ClientObject.setUserName(usr_name);
+				}else
+					return;
+			}
+			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
+			//start GUI for this lecture id 
+			String role="role="+URLEncoder.encode(ClientObject.getUserRole(),"UTF-8");
+                	String st="status="+URLEncoder.encode("available","UTF-8");
+			String indexName=ClientObject.getIndexServerName();
 			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
-			String usr_name=client_obj.getUserName();
-			if(!(usr_name.equals(""))){
-				if(usr_name.equals("guest")) {
-					usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
-					if(!usr_name.equals("")) {
-						usr_name=java.net.URLEncoder.encode(usr_name+" (guest)");
-						client_obj.setUserName(usr_name);
-					}else
-						return;
-				}
-				String username="user="+URLEncoder.encode(usr_name,"UTF-8");
-				//start GUI for this lecture id 
-				if(!(client_obj.getUserRole().equals(""))) {
-        	        	   String role="role="+URLEncoder.encode(client_obj.getUserRole(),"UTF-8");
-                		   String st="status="+URLEncoder.encode("available","UTF-8");
-				   String indexName=client_obj.getIndexServerName();
-				   if(!(indexName.equals(""))) {
-	                		String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
-					//get reflector ip from indexing server.
-					String ref_ip =HttpsUtil.getReflectorAddress(indexServer);
-					if(!(ref_ip.equals(""))) {
-						if(!(ThreadController.getThreadFlag()))
-			                		ThreadController.setThreadFlag(true);	
-						StatusPanel.getController().sethttpClient("no");
-						StatusPanel.getController().setdestopClient("no");
-						StatusPanel.getController().setpptClient("no");
-						// Thread for get userlist and other media data from reflector.
-						startGUIThread();
-						startThread(Lecture_ID);
-						StatusPanel.getController().setProcessBar("no");
-					} else {
-						StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
-					}
-				   } else
-                                	System.out.println("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
-				}
+			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
+			//get reflector ip from indexing server.
+			String ref_ip =HttpsUtil.getReflectorAddress(indexServer);
+			if(!(ref_ip.equals(""))) {
+				if(!(ThreadController.getThreadFlag()))
+			       		ThreadController.setThreadFlag(true);	
+				StatusPanel.getController().sethttpClient("no");
+				StatusPanel.getController().setdestopClient("no");
+				StatusPanel.getController().setpptClient("no");
+				// Thread for get userlist and other media data from reflector.
+				startGUIThread();
+				ThreadController.setReflectorStatusThreadFlag(true);
+	                        ReceiveQueueHandler.getController().start();
+				StatusPanel.getController().setProcessBar("no");
+			} else {
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 			}
           	}catch(Exception ex) {  System.out.println("Exception on Join Session !! "+ex.getMessage());}
 	}
@@ -97,35 +89,5 @@ public class JoinSession {
                         mainWindow.getContainer().validate();
                         mainWindow.getContainer().repaint();
 		}catch(Exception e){}
-	}
-
-	private void startThread(String lecture_id) {	
-		// Timer to print user list in gui.
-		// start thread controller which can handle send and receive thread of network.
-		try {	
-			ThreadController.setReflectorStatusThreadFlag(true);
-                        org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
-			WhiteBoardDraw.getController().start();
-                        ReceiveQueueHandler.getController().start();
-			HandRaiseThreadController.getController().startHandRaiseThread();
-			//start audio thread
-			String a_status=org.bss.brihaspatisync.util.AudioUtilObject.getAudioStatus();
-                        if(a_status.equals("1")){
-				org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
-                                if((client_obj.getUserRole()).equals("instructor"))
-                                        org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
-			}
-
-			//start video thread
-			String v_status=org.bss.brihaspatisync.util.AudioUtilObject.getVideoStatus();
-			if((client_obj.getUserRole()).equals("instructor")) {
-				if(v_status.equals("1")){	
-                        		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().startLocalServer();
-					org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(false);
-				}
-			} else{ 
-				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(true);
-			}
-                }catch(Exception e){}
 	}
 }

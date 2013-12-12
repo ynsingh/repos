@@ -23,6 +23,7 @@ public class AudioPlayer implements Runnable {
 
 	private static AudioPlayer ap=null;
 	private Thread runner=null;
+	private boolean flag=false;
 	private byte[] bigArray=null;
 	private int currentOffset = 0;
 	private Thread playerThread=null;
@@ -42,6 +43,7 @@ public class AudioPlayer implements Runnable {
 	protected void startThread(){
 		 if (runner == null) {
 			startSourceLine();
+			flag=true;
                         runner = new Thread(this);
                         runner.start();
                 }
@@ -50,6 +52,7 @@ public class AudioPlayer implements Runnable {
 
 	private void stopThread(){
 		if (runner != null) {
+			flag=false;
                         runner.stop();
                         runner = null;
 			sourceDataLine=null;
@@ -77,7 +80,7 @@ public class AudioPlayer implements Runnable {
 	public void run() {
 		(mixed_byteThread=new Thread() {
    		public void run(){
-                	while(org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
+                	while(flag && org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
                         	try {
 					LinkedList audio_rechive_data=utilobject.getReceiveQueue("Audio_Data");
 	                               	while(audio_rechive_data.size()>0) {
@@ -101,12 +104,11 @@ public class AudioPlayer implements Runnable {
                                        	mixed_byteThread.sleep(10);
                                 } catch(Exception ex) { System.out.println("Exception in AudioPlayer mixed_byteThread thread "+ex.getMessage());}
                    	}
-			stopThread();
               	}}).start();
 		
                 (playerThread=new Thread(){
                         public void run(){
-                                while(org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
+                                while(flag && org.bss.brihaspatisync.util.ThreadController.getThreadFlag()) {
                                         try {
                                                 while(audioplayerVector.size() > 0) {
                                                         byte[] original=audioplayerVector.remove();
@@ -118,9 +120,9 @@ public class AudioPlayer implements Runnable {
                                                 }
                                                 playerThread.yield();
 						playerThread.sleep(5000);
+						stopThread();
                                         }catch(Exception e){ System.out.println("Exception in AudioPlayer in run() method "+e.getMessage());}
                                 }
-				stopThread();
                         }
                 }).start();
 	}

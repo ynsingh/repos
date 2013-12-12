@@ -42,9 +42,9 @@ public class LocalServer implements Runnable {
 	private Thread runner=null;
 	private boolean flag=false;
 	private VLCCapture grabber=null;
+	private WindowsCamera w_grabber=null;
 	private HttpClient client=null;
 	private String os=System.getProperty("os.name");
-	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 
 	public static LocalServer getController(){
@@ -62,7 +62,8 @@ public class LocalServer implements Runnable {
 		if (runner == null) {
 			if((os.startsWith("Linux")) || (os.startsWith("MAC"))) 	
 				grabber=new VLCCapture(600,400);
-			
+			else
+				w_grabber=new WindowsCamera(600);
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
@@ -79,6 +80,8 @@ public class LocalServer implements Runnable {
                         runner = null;
 			if (grabber != null) 
 				grabber.close();
+			//if (w_grabber != null)
+                        //        w_grabber.close();
 			grabber=null;
 			System.out.println("Video Captureing  stop Successfully !!");
                 }
@@ -95,15 +98,18 @@ public class LocalServer implements Runnable {
 					String ip=runtime_object.getVideoServer();
 					BufferedImage image=null;
 				        if((os.startsWith("Windows")) || (!(ip.equals("127.0.0.1")))) {
-						HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
-						if(client ==null)
-							client = new HttpClient();
-					        client.setConnectionTimeout(80000);
-                        		        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-		                               	client.executeMethod(method);
-	        		                byte[] bytes=method.getResponseBody();
-        	                	        image = ImageIO.read(new ByteArrayInputStream(bytes));
-		                	       	method.releaseConnection();
+						image=w_grabber.grab();
+						if(image==null) {
+							HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+							if(client ==null)
+								client = new HttpClient();
+						        client.setConnectionTimeout(80000);
+                        			        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+		                        	       	client.executeMethod(method);
+	        		                	byte[] bytes=method.getResponseBody();
+	        	                	        image = ImageIO.read(new ByteArrayInputStream(bytes));
+			                	       	method.releaseConnection();
+						}
 					} else if((os.startsWith("Linux")) || (os.startsWith("MAC"))) {
 						if(grabber == null) {
 							//String cap_device=null;
@@ -120,7 +126,7 @@ public class LocalServer implements Runnable {
 					if(image != null) {
                                         	BufferImage.getController().handleBuffer();
                                                 BufferImage.getController().put(image);
-                                                if((clientObject.getUserRole()).equals("instructor")) 
+                                                if((ClientObject.getUserRole()).equals("instructor")) 
                                                 	VideoPanel.getController().runInstructorVidio(image);
                                               	else  
                                                		VideoPanel.getController().runStudentVidio(image);

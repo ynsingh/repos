@@ -21,7 +21,7 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 
 public class Logout {
 
-	private ClientObject client_obj=ClientObject.getController();
+	//private ClientObject client_obj=ClientObject.getController();
 	
 	/**
 	 * close all local network thread and media threads 
@@ -33,15 +33,15 @@ public class Logout {
 		String parentIP="";		
 		try{
 			org.bss.brihaspatisync.util.ThreadController.setThreadFlag(false);	
-			String ref_addr=client_obj.getReflectorIP();
+			String ref_addr=ClientObject.getReflectorIP();
 			String username="",lectID="";
 			if(!(ref_addr.equals(""))) {	
-				ref_addr="reflector="+URLEncoder.encode(client_obj.getReflectorIP(),"UTF-8");
-				username="username="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
-				lectID="lectID="+URLEncoder.encode(client_obj.getLectureID(),"UTF-8");
+				ref_addr="reflector="+URLEncoder.encode(ClientObject.getReflectorIP(),"UTF-8");
+				username="username="+URLEncoder.encode(ClientObject.getUserName(),"UTF-8");
+				lectID="lectID="+URLEncoder.encode(ClientObject.getLectureID(),"UTF-8");
 			}
-			String indexName=client_obj.getIndexServerName();
-			String reflectorIP =client_obj.getReflectorIP();
+			String indexName=ClientObject.getIndexServerName();
+			String reflectorIP =ClientObject.getReflectorIP();
 			if(!(indexName.equals(""))){
                                String  indexServer=indexName+"/ProcessRequest?req=logout&"+ref_addr+"&"+username+"&"+lectID;
    	                       HttpsUtil.getIndexingMessage(indexServer);
