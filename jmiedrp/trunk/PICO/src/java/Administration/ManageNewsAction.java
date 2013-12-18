@@ -130,6 +130,8 @@ public class ManageNewsAction extends DevelopmentSupport {
 //changing date from string form to Date formate to save in database
             try {
                 //               message = ""+dt.convertStringToDate(""+dateFormat.format(date)) + " : " + dt.convertDateToString(date,"yyyy-mm-dd");
+		//changing formate 
+                               message = ""+dt.convertStringToDate(""+dateFormat.format(date)) + " : " + dt.convertDateToString(date,"yyyy-mm-dd");
                 showingNewsinPageList = erpmNewsDAO.findbyDate(dt.convertStringToDate(dateFormat.format(date)));
 
             } catch (Exception e) {

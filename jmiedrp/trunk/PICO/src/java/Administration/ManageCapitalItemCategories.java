@@ -37,7 +37,7 @@ public class ManageCapitalItemCategories extends DevelopmentSupport {
 
     private String message;
     Integer ErpmccId;
-private short IMID;
+    private short IMID;
     public ErpmCapitalCategory geterpmcc() {
         return this.erpmcc;
     }

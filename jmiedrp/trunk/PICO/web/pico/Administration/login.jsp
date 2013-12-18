@@ -37,8 +37,8 @@
 
             </script>
 
-
-            <table border="0" width="100%">
+	         <div style=" height:400px; margin-top:50px; margin-left:250px">
+            <table border="0" width="80%" >
                 <tbody>
                     <tr>
                         <td width="5%"></td>
@@ -51,8 +51,6 @@
                         </td>
 
                         <td>
-                        </td>
-                        <td width="30%" bgcolor="gainsboro">
                         </td>
                 </tr>
                     <tr>
@@ -86,9 +84,6 @@
                                 </s:iterator>
                             </marquee>
                         <br><br>
-                     </td>
-                     <td>
-                            <p align="center"><img align="center" src="../images/mhrd.jpg" border="0" style="cursor:pointer;"/></p>
                      </td>
                 <td width="20%">
                     <s:form id="frmLogin" name="frmLogin" method="post" action="Login"  >
@@ -141,7 +136,7 @@
                     <s:url id="localeFR" namespace="/Administration" action="locale"  >
                         <s:param name="request_locale" >fr</s:param>
                     </s:url>
-                    <s:a href="%{localeEN}" >English</s:a>
+                    &nbsp &nbsp &nbsp&nbsp <s:a href="%{localeEN}" >English</s:a>
                     <s:a href="%{localezhCN}" >Chinese</s:a>
                     <s:a href="%{localeDE}" >German</s:a>
                     <s:a href="%{localeFR}" >France</s:a>
@@ -149,8 +144,8 @@
                </tr>               
            </tbody>                
             </table>
+		</div>
             <br><br>
-            <s:label label="Application Last Updated On 27-06-2013" labelSeparator=""></s:label>
             <br>
             <hr>
         <div id="footer">
