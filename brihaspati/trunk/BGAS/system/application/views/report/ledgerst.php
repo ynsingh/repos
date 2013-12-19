@@ -25,7 +25,9 @@
 		echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		
+	
+		echo form_label('Ledger Account', 'ledger_id');
+                echo " ";
 		echo form_input_ledger('ledger_id', $ledger_id);
 		echo " ";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -133,13 +135,13 @@
 			echo "<tr class=\"tr-balance\"><td colspan=6>Opening</td><td>" . convert_amount_dc($cur_balance) . "</td></tr>";
 		}
 
-		if ( ! $print_preview) 
-		{
 			if( $date1 > $date2 )
 			{
 				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+				redirect('report/ledgerst');
+                                return;
 			}
-			else {
+			else if ( ! $print_preview){
 				$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
 				$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
 				$this->db->where('date >=', $date1);
@@ -151,16 +153,15 @@
 					$this->messages->add('There is no ledger statement between ' . $date1 . ' and ' . $date2 . ' date.', 'success');
 				}
 			}
-		}
-		else {
-			$page_count = 0;
-			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
-			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
-
-			$this->db->where('date >=', $date1);
-			$this->db->where('date <=', $date2);
-			$ledgerst_q = $this->db->get();
-		}
+			else {
+				$page_count = 0;
+				$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
+				$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
+	
+				$this->db->where('date >=', $date1);
+				$this->db->where('date <=', $date2);
+				$ledgerst_q = $this->db->get();
+			}
 			foreach ($ledgerst_q->result() as $row)
 			{
 				$current_entry_type = entry_type_info($row->entries_entry_type);
@@ -207,23 +208,22 @@
 			echo "</tr>";
 			$odd_even = ($odd_even == "odd") ? "even" : "odd";
 		}
-
 		/* Current Page Closing Balance */
 		echo "<tr class=\"tr-balance\"><td colspan=6>Closing</td><td>" .  convert_amount_dc($cur_balance) . "</td></tr>";
 		echo "</table>";
-	}
-	echo "<br>";
-	if ( ! $print_preview)
-	{
+		echo "<br>";
 		echo form_open('report/printpreview/ledgerst/' . $ledger_id);
 		echo form_submit('submit', 'Print Preview');
 		echo form_close();
+	}
+	else{
+		$this->messages->add('Please select the ledger account.', 'success');
+	}
 		/*echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo form_open('report/download/ledgerst/' . $ledger_id);
 		echo form_submit('submit', 'Download CSV');
 		echo form_close();*/
-	}
 
 ?>
 <?php if ( ! $print_preview) { ?>

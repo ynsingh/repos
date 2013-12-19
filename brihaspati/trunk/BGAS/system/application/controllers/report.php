@@ -470,7 +470,7 @@ class Report extends Controller {
 	function ledgerst($ledger_id = 0)
 	{
 		$this->load->library('session');
-		//$this->load->helper('text');
+		$this->load->helper('text');
 		/* Pagination setup */
 		$this->load->library('pagination');
 
