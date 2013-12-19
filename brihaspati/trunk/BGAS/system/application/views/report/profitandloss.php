@@ -28,7 +28,7 @@
 	echo form_close();
 	}
 
-	$this->load->library('accountlist');
+	$this->load->library('reportlist');
 	echo "<table>";
 	echo "<tr valign=\"top\">";
 
@@ -55,7 +55,7 @@
 	echo "<thead><tr><th>Expenses (Gross)</th><th align=\"right\">Amount</th></tr></thead>";
 	foreach ($gross_expense_list_q->result() as $row)
 	{
-		$gross_expense = new Accountlist();
+		$gross_expense = new Reportlist();
 		$gross_expense->init($row->id);
 		$gross_expense->account_st_short(0);
 		$gross_expense_total = float_ops($gross_expense_total, $gross_expense->total, '+');
@@ -72,7 +72,7 @@
 	echo "<thead><tr><th>Incomes (Gross)</th><th align=\"right\">Amount</th></tr></thead>";
 	foreach ($gross_income_list_q->result() as $row)
 	{
-		$gross_income = new Accountlist();
+		$gross_income = new Reportlist();
 		$gross_income->init($row->id);
 		$gross_income->account_st_short(0);
 		$gross_income_total = float_ops($gross_income_total, $gross_income->total, '+');
@@ -161,7 +161,7 @@
 	echo "<thead><tr><th>Expenses (Net)</th><th align=\"right\">Amount</th></tr></thead>";
 	foreach ($net_expense_list_q->result() as $row)
 	{
-		$net_expense = new Accountlist();
+		$net_expense = new Reportlist();
 		$net_expense->init($row->id);
 		$net_expense->account_st_short(0);
 		$net_expense_total = float_ops($net_expense_total, $net_expense->total, '+');
@@ -178,7 +178,7 @@
 	echo "<thead><tr><th>Incomes (Net)</th><th align=\"right\">Amount</th></tr></thead>";
 	foreach ($net_income_list_q->result() as $row)
 	{
-		$net_income = new Accountlist();
+		$net_income = new Reportlist();
 		$net_income->init($row->id);
 		$net_income->account_st_short(0);
 		$net_income_total = float_ops($net_income_total, $net_income->total, '+');
@@ -280,4 +280,15 @@
 	echo "</tr>";
 	echo "</table>";
 	}
-
+	if(! $print_preview)
+	{
+	echo form_open('report/printpreview/trialbalance/');
+	echo form_submit('submit', 'Print Preview');
+	echo form_close();
+	/*echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_open('report/download/trialbalance/');
+	echo form_submit('submit', 'Download CSV');
+	echo form_close();*/
+	}
+?>

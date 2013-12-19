@@ -32,7 +32,7 @@
 ?>
 
 <?php
-	$this->load->library('accountlist');
+	$this->load->library('reportlist');
 	$left_width = "450";
 	$right_width = "450";
 
@@ -55,7 +55,7 @@
 		echo "<thead><tr><th>Payment</th><th align=\"right\">Amount</th></tr></thead>";
 		foreach ($net_expense_list_q->result() as $row)
 		{
-			$net_expense = new Accountlist();
+			$net_expense = new Reportlist();
 			$net_expense->init($row->id);
 			$net_expense->account_st_short(0);
 		}
@@ -73,7 +73,7 @@
 			
 		foreach ($net_income_list_q->result() as $row)
 		{
-			$net_income = new Accountlist();
+			$net_income = new Reportlist();
 			$net_income->init($row->id);
 			$net_income->account_st_short(0);
 		}
@@ -90,10 +90,10 @@
 			echo form_open('report/printpreview/paymentreceipt/');
 			echo form_submit('submit', 'Print Preview');
 			echo form_close();
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			/*echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			echo form_open('report/download/paymentreceipt/');
 			echo form_submit('submit', 'Download CSV');
-			echo form_close();
+			echo form_close();*/
 		}
 	}

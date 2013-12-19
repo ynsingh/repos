@@ -31,6 +31,7 @@ class Ledger_model extends Model {
 		return $options;
 	}
 
+	/* get all ledgers of selected date range */
 	function get_all_ledgers1($date1 , $date2)
 	{
 		$options = array();
@@ -40,16 +41,16 @@ class Ledger_model extends Model {
 		$this->db->from('entries a, entry_items b, ledgers c')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->order_by('code', 'asc');
 		$this->db->where('date >=', $date1);
 		$this->db->where('date <=', $date2);
-        	//$this->db->group_by('c.code');	
 		$ledger = $this->db->get();
+		/* check for dates */
 		if( $date1 > $date2 )
 		{
-		$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+			$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
 		}
 		else {
 			if( $ledger->num_rows() < 1 )
 			{
-			$this->messages->add('There is no trial balance statement between FROM & TO dates.', 'success');
+				$this->messages->add('There is no trial balance statement between FROM & TO dates.', 'success');
 			}
 			foreach ($ledger->result() as $row)
 			{
@@ -185,7 +186,7 @@ class Ledger_model extends Model {
 		return;
 	}
 
-
+	/* get entry name with its ledger type of selected date range */
 	function get_entry_name1($entry_id, $entry_type_id)
 	{
 		/* Selecting both to show debit side Ledger and credit side Ledger */
@@ -277,6 +278,21 @@ class Ledger_model extends Model {
 	{
 		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
 
+		$dr_total = $this->get_dr_total($ledger_id);
+		$cr_total = $this->get_cr_total($ledger_id);
+		$total = float_ops($dr_total, $cr_total, '-');
+		if ($op_bal_type == "D")
+			$total = float_ops($total, $op_bal, '+');
+		else
+			$total = float_ops($total, $op_bal, '-');
+		return $total;
+	}
+
+	/* get ledger balance for selected date */ 
+	function get_ledger_balance1($ledger_id)
+	{
+		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
+
 		$dr_total = $this->get_dr_total1($ledger_id);
 		$cr_total = $this->get_cr_total1($ledger_id);
 		$total = float_ops($dr_total, $cr_total, '-');
@@ -284,10 +300,23 @@ class Ledger_model extends Model {
 			$total = float_ops($total, $op_bal, '+');
 		else
 			$total = float_ops($total, $op_bal, '-');
-
 		return $total;
 	}
 
+	/* get ledger balance for balancesheet in selected date */ 
+	function get_balancesheet_ledger_balance($ledger_id)
+	{
+		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
+
+		$dr_total = $this->get_balancesheet_dr_total($ledger_id);
+		$cr_total = $this->get_balancesheet_cr_total($ledger_id);
+		$total = float_ops($dr_total, $cr_total, '-');
+		if ($op_bal_type == "D")
+			$total = float_ops($total, $op_bal, '+');
+		else
+			$total = float_ops($total, $op_bal, '-');
+		return $total;
+	}
 	function get_op_balance($ledger_id)
 	{
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
@@ -342,6 +371,50 @@ class Ledger_model extends Model {
 		$date2 = $this->session->userdata('date2');
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
 		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
+		$cr_total_q = $this->db->get();
+		if ($cr_total = $cr_total_q->row())
+			return $cr_total->crtotal;
+		else
+			return 0;
+	}
+	/* Return debit total of balancesheet of selected date as positive value */
+	function get_balancesheet_dr_total($ledger_id)
+	{
+		$default_start = '01/04/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+		} else {
+			$default_start .= date('Y') - 1;
+		}
+
+		$this->load->library('session');
+		$date2 = $this->session->userdata('date2');
+		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
+		$this->db->where('date >=', $default_start);
+	        $this->db->where('date <=', $date2);
+		$dr_total_q = $this->db->get();
+		if ($dr_total = $dr_total_q->row())
+			return $dr_total->drtotal;
+		else
+			return 0;
+	}
+
+	/* Return credit total of balancesheet of selected date as positive value */
+	function get_balancesheet_cr_total($ledger_id)
+	{
+		$default_start = '01/04/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+		} else {
+			$default_start .= date('Y') - 1;
+		}
+		$this->load->library('session');
+		$date2 = $this->session->userdata('date2');
+		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
+		$this->db->where('date >=', $default_start);
 		$this->db->where('date <=', $date2);
 		$cr_total_q = $this->db->get();
 		if ($cr_total = $cr_total_q->row())

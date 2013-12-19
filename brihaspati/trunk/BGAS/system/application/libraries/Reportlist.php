@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Accountlist
+class Reportlist
 {
 	var $id = 0;
 	var $name = "";
@@ -23,7 +23,7 @@ class Accountlist
 	public static $csv_data = array();
 	public static $csv_row = 0;
 
-	function Accountlist()
+	function Reportlist()
 	{
 		return;
 	}
@@ -52,8 +52,17 @@ class Accountlist
 		}
 		if($this->status==0)
 		{
+			$new_code = substr($this->code, 0, $this->code < 0 ? 3 : 2);
+			if($new_code == 10 || $new_code == 20)
+			{
 				$this->add_sub_groups();
-				$this->add_sub_ledgers();
+				$this->add_balancesheet_sub_ledgers();
+			}
+			elseif($new_code == 30 || $new_code == 40)
+			{
+				$this->add_sub_groups();
+				$this->add_income_expense_sub_ledgers();
+			}
 		}
 	}
 
@@ -65,14 +74,13 @@ class Accountlist
 		$counter = 0;
 		foreach ($child_group_q->result() as $row)
 		{
-			$this->children_groups[$counter] = new Accountlist();
+			$this->children_groups[$counter] = new Reportlist();
 			$this->children_groups[$counter]->init($row->id);
 			$this->total = float_ops($this->total, $this->children_groups[$counter]->total, '+');
 			$counter++;
 		}
 	}
-
-	function add_sub_ledgers()
+	function add_balancesheet_sub_ledgers()
 	{
 		$CI =& get_instance();
 		$CI->load->model('Ledger_model');
@@ -84,12 +92,32 @@ class Accountlist
 			$this->children_ledgers[$counter]['id'] = $row->id;
 			$this->children_ledgers[$counter]['code'] = $row->code;
 			$this->children_ledgers[$counter]['name'] = $row->name;
-			$this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_ledger_balance($row->id);
+			$this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_balancesheet_ledger_balance($row->id);
 			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
 			$this->total = float_ops($this->total, $this->children_ledgers[$counter]['total'], '+');
 			$counter++;
 		}
 	}
+
+	function add_income_expense_sub_ledgers()
+	{
+		$CI =& get_instance();
+		$CI->load->model('Ledger_model');
+		$CI->db->from('ledgers')->where('group_id', $this->id);
+		$child_ledger_q = $CI->db->get();
+		$counter = 0;
+		foreach ($child_ledger_q->result() as $row)
+		{
+			$this->children_ledgers[$counter]['id'] = $row->id;
+			$this->children_ledgers[$counter]['code'] = $row->code;
+			$this->children_ledgers[$counter]['name'] = $row->name;
+			$this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_ledger_balance1($row->id);
+			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
+			$this->total = float_ops($this->total, $this->children_ledgers[$counter]['total'], '+');
+			$counter++;
+		}
+	}
+
 	/* Display Account list in Balance sheet and Profit and Loss st */
 	function account_st_short($c = 0)
 	{

@@ -470,8 +470,7 @@ class Report extends Controller {
 	function ledgerst($ledger_id = 0)
 	{
 		$this->load->library('session');
-		$this->load->helper('text');
-
+		//$this->load->helper('text');
 		/* Pagination setup */
 		$this->load->library('pagination');
 
@@ -1409,11 +1408,11 @@ class Report extends Controller {
 		if ($statement == "ledgerst")
 		{
 			$this->load->helper('text');
-
+			$page_count = 0;
 			/* Pagination setup */
 			$this->load->library('pagination');
 			$data['ledger_id'] = $this->uri->segment(4);
-		
+			$data['page_count'] = $page_count;
 			/* Checking for valid ledger id */ 
 			if ($data['ledger_id'] < 1)
 			{

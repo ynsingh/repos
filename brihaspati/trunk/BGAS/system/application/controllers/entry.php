@@ -38,6 +38,7 @@ class Entry extends Controller {
 		} else if ($entry_type == 'all') {
 			$entry_type_id = 0;
 			$this->template->set('page_title', 'All Entries');
+			$this->template->set('nav_links', array('entry/printallentry/'=> 'PRINT ALL ENTRY'));
 		} else {
 			$entry_type_id = entry_type_name_to_id($entry_type);
 			if ( ! $entry_type_id)
@@ -48,7 +49,8 @@ class Entry extends Controller {
 			} else {
 				$current_entry_type = entry_type_info($entry_type_id);
 				$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
-				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry'));
+				$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
+
 			}
 		}
 
@@ -1861,6 +1863,244 @@ $this->db->trans_rollback();
                 }
 		//return $row->parent_id;
         }
+
+	function printentry($entry_type)
+	{
+		/* Check access */
+		if ( ! check_access('print selected entry'))
+		{
+			$this->messages->add('Permission denied.', 'error');
+			redirect('entry/show/' . $entry_type);
+			return;
+		}
+
+		/* Check for account lock */
+		if ($this->config->item('account_locked') == 1)
+		{
+			$this->messages->add('Account is locked.', 'error');
+			redirect('entry/show/' . $entry_type);
+			return;
+		}
+
+		/* Entry Type*/ 
+		$entry_type_id = entry_type_name_to_id($entry_type);
+
+		if ( ! $entry_type_id)
+		{
+			$this->messages->add('Invalid Entry type', 'error');
+			redirect('entry/show/all');
+			return;
+		}else {
+
+			$current_entry_type = entry_type_info($entry_type_id);
+		}
+
+		$this->template->set('page_title', 'Print ' . $current_entry_type['name'] . ' Entry');
+
+		/* Form fields */
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+		} else {
+			$default_start .= date('Y') - 1;
+		}
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_start,
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+
+		$data['current_entry_type'] = $current_entry_type;
+	  
+		/* displaying entries of selected entry type */
+ 
+		$data['detail'] = array();
+		$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->from('entries')->where('entry_type', $entry_type_id)->order_by('date', 'desc')->order_by('number', 'desc');
+		$query = $this->db->get();
+                $data['detail']= $query;
+		
+		/* Repopulating form */
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+		/* Form validations */
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'entry/printentry', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			/* converting date format(dd/mm/yy)to data format(y-m-d) */
+	
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+
+			/* check for entry date */
+
+			if( $date1 > $date2)
+			{
+				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'error');
+			}
+				/* displaying values of selected date range */ 
+			else
+			{ 
+				$data['detail'] = array();
+				$this->db->from('entries');
+				$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date');
+				$this->db->where('entry_type', $entry_type_id)->order_by('date', 'desc');		
+				$this->db->where('date >=', $date1);
+				$this->db->where('date <=', $date2);
+				$query = $this->db->get();
+			        $data['detail']= $query;
+
+				/* check entry of selected date range is available or not */
+	  		
+				if( $query->num_rows() < 1 )
+				{
+					$this->messages->add('There is no entry between ' . $date1 . ' and ' . $date2 . ' date.', 'success');
+					$this->template->load('template', 'entry/printentry', $data);
+					return;	
+				}
+			}
+		$this->template->load('template', 'entry/printentry', $data);
+		return;
+		}
+	}
+
+	function printallentry($entry_type = 'all')
+	{
+		/* Check access */
+		if ( ! check_access('print all entry'))
+		{
+			$this->messages->add('Permission denied.', 'error');
+			redirect('entry/show/' . $entry_type);
+			return;
+		}
+
+		/* Check for account lock */
+		if ($this->config->item('account_locked') == 1)
+		{
+			$this->messages->add('Account is locked.', 'error');
+			redirect('entry/show/' . $entry_type);
+			return;
+		}
+
+	        $this->template->set('page_title', 'Print All Entry');
+
+		/* Form fields */ 
+		$default_start = '01/04/';
+		$default_end = '31/03/';
+		if (date('n') > 3)
+		{
+			$default_start .= date('Y');
+		} else {
+			$default_start .= date('Y') - 1;
+		}
+		$data['entry_date1'] = array(
+			'name' => 'entry_date1',
+			'id' => 'entry_date1',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => $default_start,
+		);
+		$data['entry_date2'] = array(
+			'name' => 'entry_date2',
+			'id' => 'entry_date2',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => date_today_php(),
+		);
+ 
+		/* displaying entries of all entry type */ 
+ 
+		$data['detail'] = array();
+		$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->from('entries')->order_by('date', 'desc')->order_by('number', 'desc');
+		$query = $this->db->get();
+                $data['detail']= $query;
+
+		/* Repopulating form */  
+		if ($_POST)
+		{
+			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
+			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
+		} 
+		/* Form validations */  
+
+                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'entry/printallentry', $data);
+			return;
+		}
+		else
+		{
+			$data_date1 = $this->input->post('entry_date1', TRUE);
+			$data_date2 = $this->input->post('entry_date2', TRUE);
+
+			/* converting date format(dd/mm/yy)to data format(y-m-d) */ 
+	
+			$date=explode("/",$data_date1);
+			$date1=$date[2]."-".$date[1]."-".$date[0];
+			$date=explode("/",$data_date2);
+			$date2=$date[2]."-".$date[1]."-".$date[0];
+			
+			/* check for entry date */
+
+			if( $date1 > $date2)
+			{
+				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'error');
+			}
+			/* displaying values of selected date range */    
+			else
+			{ 
+				$data['detail'] = array();
+				$this->db->from('entries');
+				$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->order_by('date', 'desc');
+				$this->db->where('date >=', $date1);
+				$this->db->where('date <=', $date2);
+				$query = $this->db->get();
+				$data['detail']= $query;
+	  		
+				if( $query->num_rows() < 1 )
+				{
+					$this->messages->add('There is no entry between ' . $date1 . ' and ' . $date2 . ' date.', 'success');
+					$this->template->load('template', 'entry/printallentry', $data);
+					return;	
+				}
+			}
+		$this->template->load('template', 'entry/printallentry', $data);
+		return;
+		}
+	}	
 }
 
 /* End of file entry.php */
