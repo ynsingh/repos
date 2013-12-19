@@ -23,7 +23,6 @@ $page.setTitle("Home | $course | Course Management |  Course Configuration for G
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
 
