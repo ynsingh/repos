@@ -211,10 +211,12 @@
 		/* Current Page Closing Balance */
 		echo "<tr class=\"tr-balance\"><td colspan=6>Closing</td><td>" .  convert_amount_dc($cur_balance) . "</td></tr>";
 		echo "</table>";
+		if (!$print_preview){
 		echo "<br>";
 		echo form_open('report/printpreview/ledgerst/' . $ledger_id);
 		echo form_submit('submit', 'Print Preview');
 		echo form_close();
+		}
 	}
 	else{
 		$this->messages->add('Please select the ledger account.', 'success');
