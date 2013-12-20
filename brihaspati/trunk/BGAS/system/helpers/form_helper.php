@@ -424,6 +424,7 @@ if ( ! function_exists('form_submit'))
 {	
 	function form_submit($data = '', $value = '', $extra = '')
 	{
+		//$defaults = array('type' => 'submit', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value, 'class'=> "confirmClick");
 		$defaults = array('type' => 'submit', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value);
 
 		return "<input "._parse_form_attributes($data, $defaults).$extra." />";
@@ -1020,6 +1021,14 @@ if ( ! function_exists('_get_validation_object'))
 	}
 }
 
+if ( ! function_exists('form_submitjscript'))
+{
+        function form_submitjscript($data = '', $value = '', $extra = '')
+        {
+                $defaults = array('type' => 'submit', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value, 'class'=> "confirmClick", 'title'=> "submit this entry");
 
+                return "<input "._parse_form_attributes($data, $defaults).$extra." />";
+        }
+}
 /* End of file form_helper.php */
 /* Location: ./system/helpers/form_helper.php */
