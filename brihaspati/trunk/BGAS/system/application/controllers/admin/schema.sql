@@ -250,3 +250,23 @@ CREATE TABLE projection_allocate
                         creation_date DATETIME NOT NULL,
                         PRIMARY KEY(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE IF NOT EXISTS dep_assets(
+                        id INTEGER (100)  NOT NULL AUTO_INCREMENT,
+                        asset_id INTEGER (100) NOT NULL,
+                        code INTEGER (25) NOT NULL,
+                        name VARCHAR (100) NOT NULL,
+                        percentage INTEGER (100) NOT NULL,
+                        PRIMARY KEY(id),
+                        UNIQUE (code)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS dep_archive(
+                        id INTEGER (11)  NOT NULL AUTO_INCREMENT,
+                        code VARCHAR (25) NOT NULL,
+                        dep_amount INTEGER (255) NOT NULL,
+                        creation_date DATETIME NOT NULL,
+                        UNIQUE (code, id),
+                        PRIMARY KEY(id)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
