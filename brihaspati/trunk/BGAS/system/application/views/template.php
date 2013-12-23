@@ -189,8 +189,14 @@ $(document).ready(function() {
 					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
 					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>
 					<li><?php echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation')); ?></li>
+					<li><?php echo anchor('report/depreciation', 'Depreciation as today', array('title' => 'Depreciation as today')); ?></li>
 				</ul>
 			</li>
+			<li>
+                                <?php echo anchor('report/depreciation', 'Depreciation Of Assets', array('title' => 'Depreciation Of Assets',)); ?>
+
+                        </li>
+
 			<li>
 				<?php echo anchor('setting', 'Settings', array('title' => 'Settings')); ?>
 			</li>

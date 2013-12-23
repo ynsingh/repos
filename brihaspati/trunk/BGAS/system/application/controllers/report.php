@@ -7,7 +7,7 @@ class Report extends Controller {
 	{
 		parent::Controller();
 		$this->load->model('Ledger_model');
-
+		  $this->load->model('Budget_model');
 		/* Check access */
 		if ( ! check_access('view reports'))
 		{
@@ -117,6 +117,210 @@ class Report extends Controller {
 		$this->template->load('template', 'report/balancesheet', $data);
 		return;
 	}
+	 function depreciation($period = NULL)
+        {
+                $this->load->library('session');
+                $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today',  'report/addDep' => 'Add Depreciation Rate', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('page_title', 'Depreciation Of Assets');
+                $data['left_width'] = "450";
+                $data['right_width'] = "450";
+                $data['print_preview'] =FALSE;
+                $data['budget_over'] = TRUE;
+
+                if($_POST)
+                {
+                	$data['budget_over'] = $this->input->post('budget_over', TRUE);
+                }
+
+                $newdata = array(
+                        'budget_over'=>$data,
+                        );
+                $this->session->set_userdata($newdata);
+                $this->template->load('template', 'report/depreciation', $data);
+                return;
+        }
+
+        function addDep()
+        {
+                $this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/addDep' => 'Add Depreciation Rate', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('page_title', 'Add Depreciation Rate');
+		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
+		$options = array();
+                $this->db->select('a.id, a.name, a.parent_id, a.code, b.group_id, b.name, b.code');
+                $this->db->from('groups a,ledgers b')->where('a.id = b.group_id')->where('b.code LIKE', $account_code.'%');
+                $query = $this->db->get();
+
+                foreach($query->result() as $row)
+                {
+                	$new_id = "$row->code"."#"."$row->name";
+                	$options[$new_id] = $row->name;
+                }
+                $data['group_name']=$options;
+		
+                $data['group_name_active'] = 0;
+                $data['dep_amount'] = array(
+                        'name' => 'dep_amount',
+                        'id' => 'dep_amount',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => '',
+                );
+                /* Form validations */
+                $this->form_validation->set_rules('group_name', 'Assets name', 'trim|required');
+                $this->form_validation->set_rules('dep_amount', 'Depreciation Amount', 'trim|required');
+
+                /* Re-populating form */
+                if ($_POST)
+                {
+                	$data['group_name_active'] = $this->input->post('group_name', TRUE);
+                	$data['dep_amount']['value'] = $this->input->post('dep_amount', TRUE);
+                }
+                /* Validating form */
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'report/addDep', $data);
+                        return;
+                }
+                else
+		{
+                        $data_group_name = $this->input->post('group_name', TRUE);
+                        $my_values = explode('#',$data_group_name);
+                        $data_dep_amount = $this->input->post('dep_amount', TRUE);
+
+                        /* insert data into the dep_asstes table */
+                        $this->db->select('code, id,')->from('ledgers')->where('name ', $my_values[1] );
+                        $main_data = $this->db->get();
+                        $value=$main_data->num_rows();
+                                foreach($main_data->result() as $row)
+                                {
+                                        $main_data_id = $row->id;
+                                        $main_data_code = $row->code;
+                                }
+                           	$this->db->trans_start();
+                                $insert_data = array(
+                                'asset_id'=>$main_data_id,
+                                'code'=> $main_data_code,
+                                'name' => $my_values[1],
+                                'percentage' => $data_dep_amount,
+                                          );
+                                 if ( ! $this->db->insert('dep_assets', $insert_data))
+                                 {
+                                 	$this->db->trans_rollback();
+                                        $this->messages->add('Depreciation Percentage value is already added. ' . $my_values[1] . '.', 'error');
+                                        $this->template->load('template', 'report/addDep', $data);
+                                        return;
+                                 } else {
+                                        $this->db->trans_complete();
+                                        $this->messages->add('Added Values - ' . $my_values[1] . '.', 'success');
+                                        redirect('report/addDep');
+                                }            
+		}
+                $this->template->load('template', 'report/addDep', $data);
+                return;
+        }
+
+	function update()
+        {
+        	$this->template->set('page_title', 'Update Depreciation Rate');
+         	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/addDep' => 'Add Depreciation Rate', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+
+       		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
+
+	 	$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.name, c.group_id, c.code, d.id, d.parent_id, d.code, e.id, e.percentage');
+        	$this->db->from('entries a, entry_items b, ledgers c, groups d, dep_assets e')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('c.id = e.asset_id')->where('c.code LIKE', $account_code.'%')->where('b.dc', 'D');
+
+       		 $counter=0;
+        
+       		 $gross_expense_list_q = $this->db->get();
+       		 $this->depreciation['value'] = $gross_expense_list_q;
+                 foreach ($gross_expense_list_q->result() as $row)
+                 {
+                	$name = 'dep_value'. "_" . $row->id;
+                	$this->depreciation[$name] = array(
+                                'name' => $name,
+                                'id' => $row->id,
+                                'maxlength' => '50',
+                                'size' => '40',
+                                'value' => $row->percentage,
+                                );
+        		$counter++;
+        	}
+        	/* Repopulating form */
+      	        if ($_POST)
+       		 {
+                	foreach ($this->depreciation['value']->result() as $row)
+               		 {
+                        	$value = 'dep_value'. "_" .$row->id;
+			        $this->depreciation[$name]['value'] = $this->input->post($name, TRUE);
+                	 }
+        	}
+
+       		/*Form validations*/
+
+       		foreach ($this->depreciation['value']->result() as $row)
+        	{
+        		$name = 'dep_value'. "_" .$row->id;
+       	        	$this->form_validation->set_rules($name, 'Per_value1', 'trim|required');
+        	}
+		/* vaildating form */
+        	if ($this->form_validation->run() == FALSE)
+        	{
+                $this->messages->add(validation_errors(), 'error');
+                $this->template->load('template', 'report/update', $this->depreciation);
+                return;
+        	}
+        	else
+        	{
+                	foreach ($this->depreciation['value']->result() as $row)
+                	{
+               			 $name = 'dep_value'. "_" .$row->id;
+                		 $data_Per_value1 = $this->input->post($name, TRUE);
+                		 $value=$row->percentage;
+		
+	     			if($data_Per_value1 != $value)
+				{	
+					$today = date("Y-m-d H:i:s");
+		                      	$this->db->trans_start();
+		                       	$insert_data = array(
+						'code' => $row->code,
+		                                'dep_amount'=>$row->percentage,
+		                                'creation_date'=> $today,
+		                                	);
+		                        if ( ! $this->db->insert('dep_archive', $insert_data))
+		                        {
+		                                $this->db->trans_rollback();
+		                                $this->messages->add('Error updating value ' . $data_Per_value1 . '.', 'error');
+		                                $this->template->load('template', 'report/update', $this->depreciation);
+		                                return;
+		                        } else {
+		                                $this->db->trans_complete();                                    
+		       			}
+		                 }
+          		 $this->db->trans_start();
+                         $update_data = array(
+                               'percentage' => $data_Per_value1,
+                                       );
+		                 if ( ! $this->db->where('id', $row->id)->update('dep_assets', $update_data))
+		                 {
+		                 	$this->db->trans_rollback();
+		                        $this->messages->add('Error updating value ' . $data_Per_value1 . '.', 'error');
+		                      	$this->template->load('template', 'report/update', $this->depreciation);
+		                       	return;
+		                } else {
+		                       		$this->db->trans_complete();
+		                       	}
+                	}
+       	 	}
+		
+                $value = $this->db->trans_complete();
+                if($value==1)
+                {
+                    $this->messages->add('Update values.', 'success');
+                }
+                redirect('report/update');
+                return;
+        }
 
 	function new_balancesheet($period = NULL)
 	{
@@ -676,9 +880,6 @@ class Report extends Controller {
 				}
 			}
 		}
-
-		
-
 		$this->template->load('template', 'report/reconciliation', $data);
 		return;
 	}
@@ -1392,7 +1593,18 @@ class Report extends Controller {
 			$this->load->view('report/report_template', $data);
 			return;
 		}
-		
+
+		if ($statement == "depreciation")
+                {
+                       $data['report'] = "report/depreciation";
+                       $data['title'] = "Depreciation Of Assets";
+                       $data['print_preview'] = TRUE;
+                       $data['left_width'] = "";
+                       $data['right_width'] = "";
+                       $this->load->view('report/report_template', $data);
+                       return;
+                }
+
 		if ($statement == "paymentreceipt")
 		{
 			$data['report'] = "report/paymentreceipt";
