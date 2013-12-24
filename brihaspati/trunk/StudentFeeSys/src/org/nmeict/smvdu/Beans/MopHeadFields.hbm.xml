@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.MopHeadFields" table="mop_head_fields" catalog="student_fees">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="modeOfPayment" class="org.nmeict.smvdu.Beans.ModeOfPayment" update="false" insert="false" fetch="select">
+            <column name="id" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="headFieldName" type="string">
+            <column name="head_field_name" length="30" not-null="true" />
+        </property>
+        <property name="headFieldCreatorId" type="int">
+            <column name="head_field_creator_id" not-null="true" />
+        </property>
+        <property name="headFieldCreatorDateTime" type="timestamp">
+            <column name="head_field_creator_date_time" length="19" not-null="true" />
+        </property>
+        <property name="headFieldModifierDateTime" type="timestamp">
+            <column name="head_field_modifier_date_time" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>TODO supply a title</title>
+</h:head>
+
+<style type="text/css">
+.ui-panel-title {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.ui-dialog-title {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.ui-growl-title {
+	font-weight: bold;
+	font-size: 12px;
+	padding: 0px 0px 7px;
+	display: block;
+}
+
+.ui-corner-all {
+	border-radius: 0px 0px 0px 0px;
+}
+
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid
+	{
+	border-color: red;
+}
+
+.ui-button ui-widget ui-state-default ui-corner-all {
+	background-color: #4D90FF;
+}
+</style>
+
+<h:body>
+	<h:form id="form">
+		<p:panel>
+			<h:panelGrid columns="1">
+
+				<p:commandButton style="font-size:14px;font-weight: bold;"
+					onclick="pnl.show();" value="Add New" />
+
+
+				<p:dataTable id="dataTable" var="dt"
+					style="font-size: 14px;font-weight: bold"
+					binding="#{studentMaster.dataGrid}"
+					value="#{studentMaster.loadAllFee}" paginator="true" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+					<f:facet name="header">  
+            			Fee Details Of Students  
+        			   </f:facet>
+
+					<p:column filterBy="#{dt.entryNo}">
+						<f:facet name="header">
+							<h:outputText value="Entry No." />
+						</f:facet>
+						<h:outputText value="#{dt.entryNo}" />
+
+					</p:column>
+					<p:column filterBy="#{dt.departmentName}">
+						<f:facet name="header">
+							<h:outputText value="Department Name" />
+						</f:facet>
+						<h:outputText value="#{dt.departmentName}" />
+					</p:column>
+
+					<p:column filterBy="#{dt.degreeName}">
+						<f:facet name="header">
+							<h:outputText value="Degree Name" />
+						</f:facet>
+						<h:outputText value="#{dt.degreeName}" />
+					</p:column>
+					<p:column filterBy="#{dt.branchName}">
+						<f:facet name="header">
+							<h:outputText value="Branch Name" />
+						</f:facet>
+						<h:outputText value="#{dt.branchName}" />
+					</p:column>
+					<p:column filterBy="#{dt.semesterName}">
+						<f:facet name="header">
+							<h:outputText value="Semester Name" />
+						</f:facet>
+						<h:outputText value="#{dt.semesterName}" />
+					</p:column>
+					<p:column filterBy="#{dt.feeHeadName}">
+						<f:facet name="header">
+							<h:outputText value="Fee Head Name" />
+						</f:facet>
+						<h:outputText value="#{dt.feeHeadName}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="" />
+						</f:facet>
+						<p:commandButton update=":form:dis" oncomplete="sd.show()"
+							icon="ui-icon-search" style="font-size:10px;">
+							<f:setPropertyActionListener value="#{dt}"
+								target="#{studentMaster.studentFeeMaster}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGrid>
+			<p:dialog resizable="false" header="Add Fee Details" width="400"
+				height="380" widgetVar="pnl" modal="true">
+
+				<h:panelGrid columns="1">
+					<p:panel>
+						<h:panelGrid columns="2">
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Registration No." />
+							<p:autoComplete completeMethod="#{studentRegMaster.details}"
+								value="#{studentMaster.entryNo}"
+								style="font-size:15px;font-weight: bold;color: #4B4B4B; width: 220px;"
+								var="stm" forceSelection="true" itemLabel="#{stm.entryNo}"
+								itemValue="#{stm.entryNo}">
+								<p:ajax event="itemSelect" id="regId"
+									listener="#{studentMaster.selectRegistrationId}" />
+								<p:column>
+									<h:outputText value="#{stm.entryNo}"></h:outputText>
+								</p:column>
+								<p:column>
+									<h:outputText value="#{stm.departmentName}" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{stm.degreeName}" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{stm.branchName}" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{stm.semesterName}" />
+								</p:column>
+							</p:autoComplete>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel widgetVar="fed">
+						<h:panelGrid columns="2">
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Amount" />
+							<p:inputText
+								style="font-size: 14px; font-weight: bold;width:150px;"
+								value="#{studentMaster.studentOpbalAmount}" id="am" />
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Department Name" />
+							<p:selectOneMenu
+								style="width: 160px;font-size: 16px; font-weight: bold;"
+								value="#{studentMaster.departmentCode}">
+								<f:selectItems value="#{orgDepartmentType.items}" />
+							</p:selectOneMenu>
+
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Degree Type" />
+							<p:selectOneMenu
+								style="width: 160px;font-size: 16px; font-weight: bold;"
+								value="#{studentMaster.degreeCode}">
+								<f:selectItems value="#{orgDegreeType.items}" />
+							</p:selectOneMenu>
+
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Branch" />
+							<p:selectOneMenu
+								style="width: 160px;font-size: 16px; font-weight: bold;"
+								value="#{studentMaster.branchCode}">
+								<f:selectItems value="#{branchMaster.items}" />
+							</p:selectOneMenu>
+
+
+
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Semester" />
+							<p:selectOneMenu
+								style="width: 160px;font-size: 16px; font-weight: bold;"
+								value="#{studentMaster.semCode}">
+								<f:selectItems value="#{semesterBeans.items}" />
+							</p:selectOneMenu>
+							<h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Fee Head Name" />
+							<p:selectOneMenu
+								style="width: 160px;font-size: 16px; font-weight: bold;"
+								value="#{studentMaster.feeHeadCode}">
+								<f:selectItems value="#{otherFeeHead.items}" />
+							</p:selectOneMenu>
+							<f:facet name="footer">
+								<p:commandButton style="font-size:14px;font-weight: bold;"
+									value="Save" action="#{studentMaster.saveFee}" />
+								<p:commandButton style="font-size:14px;font-weight: bold;"
+									value="Close" onclick="pnl.hide();" />
+							</f:facet>
+							<p:tooltip for="am" value="Amount Given By Student" />
+						</h:panelGrid>
+					</p:panel>
+				</h:panelGrid>
+
+			</p:dialog>
+
+
+			<p:dialog height="320" widgetVar="sd" modal="true" showEffect="slide"
+				hideEffect="slide" width="415" header="Session Detail"
+				resizable="false">
+				<p:panel id="dis">
+					<h:panelGrid columns="2">
+						<h:outputText value="Student Name"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText value=""
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+						<h:outputText value="Department Name"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText
+							value="#{studentMaster.studentFeeMaster.departmentName}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+
+						<h:outputText value="Degree Name"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText value="#{studentMaster.studentFeeMaster.degreeName}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+
+
+						<h:outputText value="Branch Name"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText value="#{studentMaster.studentFeeMaster.branchName}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+
+						<h:outputText value="Entry No."
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText value="#{studentMaster.studentFeeMaster.entryNo}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+						<h:outputText value="Fee Type"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText
+							value="#{studentMaster.studentFeeMaster.feeHeadName}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+
+						<h:outputText value="Payble Fees"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText
+							value="#{studentMaster.studentFeeMaster.feeHeadValue}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+						<h:outputText value="Submitted Value"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText
+							value="#{studentMaster.studentFeeMaster.studentOpbalAmount}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+
+						<h:outputText value="Balence"
+							style="font-size: 12px; font-weight: bold;" />
+						<h:outputText value="#{studentMaster.studentFeeMaster.netBalence}"
+							style="color:#696969;font-size: 14px; font-weight: bold;" />
+					</h:panelGrid>
+				</p:panel>
+			</p:dialog>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

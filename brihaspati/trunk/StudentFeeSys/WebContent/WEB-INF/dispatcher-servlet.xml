@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+  
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgProfileService" p:orgProfileDAO-ref="orgProfileDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgProfileDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgOtherFeeHeadMasterService" p:orgOtherFeeHeadMasterDAO-ref="orgOtherFeeHeadMasterDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgOtherFeeHeadMasterDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.DegreeTypeService" p:degreeTypeDAO-ref="degreeTypeDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.DegreeTypeDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLoginProfileService" p:orgLoginProfileDAO-ref="orgLoginProfileDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLoginProfileDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.ExamcodeSetupService" p:examcodeSetupDAO-ref="examcodeSetupDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.ExamcodeSetupDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLogoProfileService" p:orgLogoProfileDAO-ref="orgLogoProfileDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLogoProfileDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgDepartmentTypeService" p:orgDepartmentTypeDAO-ref="orgDepartmentTypeDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgDepartmentTypeDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgBranchService" p:orgBranchDAO-ref="orgBranchDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgBranchDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.SemesterDetailsService" p:semesterDetailsDAO-ref="semesterDetailsDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.SemesterDetailsDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.StudentRegistrationMasterService" p:studentRegistrationMasterDAO-ref="studentRegistrationMasterDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.StudentRegistrationMasterDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.StudentFeeMasterService" p:studentFeeMasterDAO-ref="studentFeeMasterDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.StudentFeeMasterDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    
+    
+    
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgImageDetailsService" p:orgImageDetailsDAO-ref="orgImageDetailsDAO"/>
+    <bean class="org.nmeict.smvdu.Beans.SpringClassFile.OrgImageDetailsDAO" p:hibernateSessionFactory-ref="hibernateSessionFactory"/>
+    <!--
+    Most controllers will use the ControllerClassNameHandlerMapping above, but
+    for the index controller we are using ParameterizableViewController, so we must
+    define an explicit mapping for it.
+    -->
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="index.htm">indexController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/"
+          p:suffix=".jsp" />
+
+    <!--
+    The index controller.
+    -->
+    <bean name="indexController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="index" />
+
+</beans>

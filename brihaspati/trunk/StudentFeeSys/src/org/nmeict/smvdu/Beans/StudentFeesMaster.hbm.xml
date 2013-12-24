@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.StudentFeesMaster" table="student_fees_master" catalog="student_fees">
+        <id name="sfsSeqId" type="java.lang.Integer">
+            <column name="sfs_seq_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="otherFeeHeadMaster" class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" fetch="select">
+            <column name="fee_head_code" not-null="true" unique="true" />
+        </many-to-one>
+        <many-to-one name="adminFeeAdminMaster" class="org.nmeict.smvdu.Beans.AdminFeeAdminMaster" update="false" insert="false" fetch="select">
+            <column name="fee_head_code" not-null="true" unique="true" />
+        </many-to-one>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <many-to-one name="examCodeSetUp" class="org.nmeict.smvdu.Beans.ExamCodeSetUp" fetch="select">
+            <column name="exam_code_setup" not-null="true" />
+        </many-to-one>
+        <property name="regNo" type="string">
+            <column name="reg_no" length="20" not-null="true" />
+        </property>
+        <property name="entryNo" type="int">
+            <column name="entry_no" not-null="true" unique="true" />
+        </property>
+        <property name="departmentId" type="string">
+            <column name="department_id" length="20" not-null="true" />
+        </property>
+        <property name="branchId" type="string">
+            <column name="branch_id" length="28" not-null="true" unique="true" />
+        </property>
+        <property name="programId" type="string">
+            <column name="program_id" length="30" not-null="true" unique="true" />
+        </property>
+        <property name="balanceValue" type="double">
+            <column name="balance_value" precision="15" not-null="true" />
+        </property>
+        <property name="minCredit" type="int">
+            <column name="min_credit" not-null="true" />
+        </property>
+        <property name="maxCredit" type="int">
+            <column name="max_credit" not-null="true" />
+        </property>
+        <property name="paymentStatus" type="byte">
+            <column name="payment_status" not-null="true" />
+        </property>
+        <property name="creatorId" type="int">
+            <column name="creator_id" not-null="true" />
+        </property>
+        <property name="modifierId" type="int">
+            <column name="modifier_id" not-null="true" />
+        </property>
+        <property name="insertTime" type="time">
+            <column name="insert_time" length="8" not-null="true" />
+        </property>
+        <property name="modificationTime" type="time">
+            <column name="modification_time" length="8" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

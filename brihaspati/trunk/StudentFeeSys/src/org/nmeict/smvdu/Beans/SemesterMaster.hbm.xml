@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 11, 2013 4:42:28 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.SemesterMaster" table="semester_master" catalog="student_fees">
+        <id name="semSeqNo" type="java.lang.Integer">
+            <column name="sem_seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="examCodeSetUp" class="org.nmeict.smvdu.Beans.ExamCodeSetUp" fetch="select">
+            <column name="sem_exam_code" />
+        </many-to-one>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="sem_org_id" length="400" />
+        </many-to-one>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="depmnt_code" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degr_code" />
+        </many-to-one>
+        <property name="semesterName" type="string">
+            <column name="semester_name" length="100" />
+        </property>
+        <property name="semCreaterId" type="string">
+            <column name="sem_creater_id" length="300" />
+        </property>
+        <property name="semCreaterDate" type="date">
+            <column name="sem_creater_date" length="10" />
+        </property>
+        <set name="otherFeeHeadMasters" inverse="true" fetch="select" lazy="true">
+            <key>
+                <column name="semester_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" />
+        </set>
+        <set name="studentRegMasters" inverse="true" fetch="select" lazy="true">
+            <key>
+                <column name="sem_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentRegMaster" />
+        </set>
+        <set name="studentMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sem_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

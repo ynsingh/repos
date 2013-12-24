@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.CollegePendingStatus" table="college_pending_status" catalog="student_fees">
+        <id name="orgPenEmail" type="string">
+            <column name="org_pen_email" length="300" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_code" length="400" />
+        </many-to-one>
+        <property name="orgRequestStatus" type="java.lang.Byte">
+            <column name="org_request_status" />
+        </property>
+    </class>
+</hibernate-mapping>

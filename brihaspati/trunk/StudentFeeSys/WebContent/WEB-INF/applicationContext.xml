@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+   
+    <!--bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+
+<bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    p:driverClassName="${jdbc.driverClassName}"
+    p:url="${jdbc.url}"
+    p:username="${jdbc.username}"
+    p:password="${jdbc.password}" /-->
+    <!--Spring Security Configuration-->
+    
+    
+    
+    
+     
+
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+    
+    
+    <bean id="orgProfileService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgProfileService"/>
+    <bean id="orgProfileDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgProfileDAO"/>
+    
+    
+    <bean id="orgLoginProfileService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLoginProfileService"/>
+    <bean id="orgLoginProfileDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLoginProfileDAO"/>
+    
+    
+    <bean id="orgLogoProfileService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLogoProfileService"/>
+    <bean id="orgLogoProfileDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgLogoProfileDAO"/>
+    
+    
+    <bean id="orgOtherFeeHeadMasterService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgOtherFeeHeadMasterService"/>
+    <bean id="orgOtherFeeHeadMasterDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgOtherFeeHeadMasterDAO"/>
+    
+    
+    <bean id="degreeTypeDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.DegreeTypeDAO"/>
+    <bean id="degreeTypeService" class="org.nmeict.smvdu.Beans.SpringClassFile.DegreeTypeService"/>
+    
+    
+    <bean id="examcodeSetupDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.ExamcodeSetupDAO"/>
+    <bean id="examcodeSetupService" class="org.nmeict.smvdu.Beans.SpringClassFile.ExamcodeSetupService"/>
+    
+    
+    <bean id="orgDepartmentTypeDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgDepartmentTypeDAO"/>
+    <bean id="orgDepartmentTypeService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgDepartmentTypeService"/>
+    
+    
+    <bean id="orgBranchDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgBranchDAO"/>
+    <bean id="orgBranchService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgBranchService"/>
+    
+    
+    <bean id="semesterDetailsDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.SemesterDetailsDAO"/>
+    <bean id="semesterDetailsService" class="org.nmeict.smvdu.Beans.SpringClassFile.SemesterDetailsService"/>
+    
+    
+    <bean id="studentRegistrationMasterDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.StudentRegistrationMasterDAO"/>
+    <bean id="studentRegistrationMasterService" class="org.nmeict.smvdu.Beans.SpringClassFile.StudentRegistrationMasterService"/>
+    
+    
+    
+    <bean id="studentFeeMasterDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.StudentFeeMasterDAO"/>
+    <bean id="studentFeeMasterService" class="org.nmeict.smvdu.Beans.SpringClassFile.StudentFeeMasterService"/>
+    
+    
+    
+    
+    <bean id="orgImageDetailsDAO" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgImageDetailsDAO"/>
+    <bean id="orgImageDetailsService" class="org.nmeict.smvdu.Beans.SpringClassFile.OrgImageDetailsService"/>
+    
+    
+    
+    
+    <bean id="hibernateSessionFactory" class="org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection"/>      
+</beans>

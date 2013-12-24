@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 2, 2013 10:58:26 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.ExamCodeSetUp" table="exam_code_set_up" catalog="student_fees">
+        <id name="seqNo" type="java.lang.Integer">
+            <column name="seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="ecs_degree_type"/>
+        </many-to-one>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="ecs_department_type" />
+        </many-to-one>
+        <property name="semesterBegningDate" type="date">
+            <column name="semester_begning_date" length="10" />
+        </property>
+        <property name="semesterEndingDate" type="date">
+            <column name="semester_ending_date" length="10" />
+        </property>
+        <property name="semesterName" type="string">
+            <column name="semester_name" length="30"/>
+        </property>
+        <set name="adminFeeAdminMasters" inverse="true">
+            <key>
+                <column name="semester_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.AdminFeeAdminMaster" />
+        </set>
+        <set name="semesterMasters" inverse="true">
+            <key>
+                <column name="sem_exam_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.SemesterMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

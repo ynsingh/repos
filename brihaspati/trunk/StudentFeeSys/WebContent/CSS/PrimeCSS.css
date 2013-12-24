@@ -1,0 +1,17 @@
+@CHARSET "ISO-8859-1";
+.ui-growl-title 
+			{
+			    font-weight:12 px; bold;
+			    padding: 0px 0px 7px;
+			    display: block;
+			}
+			.ui-corner-all {
+    border-radius: 0px 0px 0px 0px;
+}
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
+    border-color:red;
+}
+.ui-button ui-widget ui-state-default ui-corner-all
+{
+	background-color:#4D90FF; 
+}

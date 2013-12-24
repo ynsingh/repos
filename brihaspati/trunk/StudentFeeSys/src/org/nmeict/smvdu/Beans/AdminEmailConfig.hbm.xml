@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.AdminEmailConfig" table="admin_email_config" catalog="student_fees">
+        <id name="adminEmailid" type="string">
+            <column name="admin_emailid" length="300" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="adminRecords" class="org.nmeict.smvdu.Beans.AdminRecords" fetch="select">
+            <column name="admin_id" length="300" />
+        </many-to-one>
+        <property name="adminConfigPass" type="string">
+            <column name="admin_config_pass" length="100" />
+        </property>
+        <property name="adminEmailStatus" type="java.lang.Byte">
+            <column name="admin_email_status" />
+        </property>
+    </class>
+</hibernate-mapping>

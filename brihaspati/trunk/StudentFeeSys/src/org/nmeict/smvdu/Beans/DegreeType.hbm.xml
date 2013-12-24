@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2013 1:05:39 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.DegreeType" table="degree_type" catalog="student_fees">
+        <id name="seqNo" type="java.lang.Integer">
+            <column name="seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" />
+        </many-to-one>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="org_degree_dp_type" />
+        </many-to-one>
+        <property name="degreeName" type="string">
+            <column name="degree_name" length="100" not-null="true" />
+        </property>
+        
+        <property name="degreeCreatedDateTime" type="timestamp">
+            <column name="degree_created_date_time" length="19" />
+        </property>
+        <property name="degreeModifierDateTime" type="timestamp">
+            <column name="degree_modifier_date_time" length="19" />
+        </property>
+        <property name="degreeCreatorId" type="string">
+            <column name="degree_creator_id" length="300" />
+        </property>
+        <property name="degreeModifierId" type="string">
+            <column name="degree_modifier_id" length="300" />
+        </property>
+        <set name="scholarshipTypesForDegreeType" inverse="true">
+            <key>
+                <column name="degree_type" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ScholarshipType" />
+        </set>
+        <set name="branchMasters" inverse="true" fetch="select" lazy="true">
+            <key>
+                <column name="bm_degree_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.BranchMaster" />
+        </set>
+        
+        <set name="modeOfPayments" inverse="true">
+            <key>
+                <column name="mop_degree_type" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ModeOfPayment" />
+        </set>
+        <set name="adminFeeAdminMasters" inverse="true">
+            <key>
+                <column name="degree_type" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.AdminFeeAdminMaster" />
+        </set>
+        <set name="scholarshipTypesForDegreeSeqNo" inverse="true">
+            <key>
+                <column name="degree_seq_no" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ScholarshipType" />
+        </set>
+        <set name="examCodeSetUps" lazy="true" fetch="select" inverse="true">
+            <key>
+                <column name="ecs_degree_type" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ExamCodeSetUp" />
+        </set>
+                <set name="semesterMasters" inverse="true">
+            <key>
+                <column name="degr_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.SemesterMaster" />
+        </set>
+        <set name="otherFeeHeadMasters" inverse="true" fetch="select" lazy="true">
+            <key>
+                <column name="degree_code" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" />
+        </set>
+        <set name="studentRegMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="degree_type" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentRegMaster" />
+        </set>
+        
+    </class>
+</hibernate-mapping>

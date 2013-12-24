@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.CourseGroupMaster" table="course_group_master" catalog="student_fees">
+        <id name="courseGroupSeqId" type="java.lang.Integer">
+            <column name="course_group_seq_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <property name="programCourseKey" type="string">
+            <column name="program_course_key" length="22" not-null="true" />
+        </property>
+        <property name="courseCode" type="string">
+            <column name="course_code" length="20" not-null="true" />
+        </property>
+        <property name="minCredit" type="int">
+            <column name="min_credit" not-null="true" />
+        </property>
+        <property name="maxCredit" type="int">
+            <column name="max_credit" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

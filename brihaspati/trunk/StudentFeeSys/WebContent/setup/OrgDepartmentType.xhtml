@@ -1,0 +1,114 @@
+
+<?xhtml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>TODO supply a title</title>
+</h:head>
+<style type="text/css">
+.ui-dialog-title
+{
+	
+	font-size: 15px;
+	font-weight: bold;
+}
+.ui-growl-title {
+    font-weight: bold;
+    font-size:12px;
+    padding: 0px 0px 7px;
+    display: block;
+    }
+.ui-corner-all {
+    border-radius: 0px 0px 0px 0px;
+}
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
+    border-color:red;
+}
+.ui-button ui-widget ui-state-default ui-corner-all
+{
+	background-color:#4D90FF; 
+}
+    </style>
+<h:body>
+	<h:form>
+            <p:growl id="growl" rendered="true" />  
+		
+			<h:panelGrid columns="1">
+				<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" onclick="pnl.show();" value="Add New" />
+				
+					<p:dataTable resizableColumns="true" id="degreeTable" var="dt" style="font-size: 14px;font-weight: bold" binding="#{orgDepartmentType.dataGrid}"
+						value="#{orgDepartmentType.loadAllDepartmentType}" paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+						<f:facet name="header">  
+            			<!-- Department Type -->
+                                                    <h:outputText value="Department List and Details"/>
+                                                </f:facet>
+						<p:column sortBy="#{dt.orgDepartmentName}">
+							<f:facet name="header">
+								<h:outputText value="Department Name" />
+							</f:facet>
+							<p:inplace id="domain" toggleable="true" editor="true">
+								<p:inputText value="#{dt.orgDepartmentName}" />
+							</p:inplace>
+
+						</p:column>
+						<p:column sortBy="#{dt.depatmentCreaterId}">
+							<f:facet name="header">
+								<h:outputText value="Department Creater Id" />
+							</f:facet>
+							<h:outputText value="#{dt.depatmentCreaterId}" />
+						</p:column>
+						<p:column sortBy="#{dt.depatmentModifierId}">
+							<f:facet name="header">
+								<h:outputText value="Department Modifier Id" />
+							</f:facet>
+							<h:outputText value="#{dt.depatmentModifierId}" />
+						</p:column>
+						<p:column sortBy="#{dt.depatmentCreaterDate}">
+							<f:facet name="header">
+								<h:outputText value="Department Creater Time" />
+							</f:facet>
+							<h:outputText value="#{dt.depatmentCreaterDate}" />
+						</p:column>
+						<p:column sortBy="#{dt.depatmentModifierDate}">
+							<f:facet name="header">
+								<h:outputText value="Department Modifier Time" />
+							</f:facet>
+							<h:outputText value="#{dt.depatmentModifierDate}" />
+						</p:column>
+                                                <p:column>
+                                                	<f:facet name="header">
+                                                        	<h:outputText value="Available action" />
+							</f:facet>
+                                                    <p:commandLink value="Delete" action="#{orgDepartmentType.delete(dt)}"/>
+                                                </p:column>
+					</p:dataTable>
+					<f:facet name="footer">
+							<p:commandButton  style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" update="degreeTable,growl" action="#{orgDepartmentType.update}"/> 
+					</f:facet>
+				
+			</h:panelGrid>
+		
+		<p:dialog header="Add New Department" resizable="false" width="340" height="100"
+			widgetVar="pnl" modal="true">
+			<h:panelGrid columns="2">
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Department Type " />
+                                <p:inputText style="font-size: 14px; font-weight: bold;width:150px;" value="#{orgDepartmentType.orgDepartmentName}" required="true" requiredMessage="Please Enter Department Name" />
+				<f:facet name="footer">
+					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Save" action="#{orgDepartmentType.saveDepartment}"
+						update="degreeTable,growl" />
+					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Close" onclick="pnl.hide();" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

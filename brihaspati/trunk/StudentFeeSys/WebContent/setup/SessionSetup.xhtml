@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>TODO supply a title</title>
+</h:head>
+<style type="text/css">
+.ui-growl-title {
+	font-weight: bold;
+	font-size: 12px;
+	padding: 0px 0px 7px;
+	display: block;
+}
+
+.ui-corner-all {
+	border-radius: 0px 0px 0px 0px;
+}
+
+.ui-inputfield .ui-inputtext .ui-widget .ui-state-default .ui-corner-all .ui-input-invalid
+	{
+	border-color: red;
+}
+
+.ui-button  {
+	background-color: #4D90FF;
+}
+
+.ui-datepicker {
+	font-size: 12px;
+}
+.ui-dialog-title
+{
+	
+	font-size: 15px;
+	font-weight: bold;
+}
+
+</style>
+<h:body>
+	<h:form id="form">
+		<p:growl id="growl" sticky="true" />
+		<h:panelGrid id="display" columns="1" cellpadding="3">
+
+			<p:commandButton
+				style="font-size:14px;font-weight: bold;color: #4B4B4B;"
+				onclick="pnl.show();" value="Add New" />
+
+
+			<p:dataTable id="dataTable" var="dt"
+				style="font-size: 14px;font-weight: bold"
+				binding="#{examCodeSetUp.dataGrid}"
+				value="#{examCodeSetUp.loadAllExamCodeSetUp}" paginator="true"
+				rows="10"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+				<f:facet name="header">  
+            			ExamCode/Session Name   
+        			   </f:facet>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="ExamCode/Session Name" />
+					</f:facet>
+					<p:inplace style="font-size: 12px; font-weight: bold;" id="domain"
+						toggleable="true" editor="true">
+						<p:inputText value="#{dt.semesterName}" />
+					</p:inplace>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Session Begnning" />
+					</f:facet>
+					<p:inplace style="font-size: 12px; font-weight: bold;" id="sdomain"
+						toggleable="true" editor="true">
+						<p:calendar value="#{dt.semesterBegningDate}" showOn="button"
+							navigator="true" />
+					</p:inplace>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Session Ending" />
+					</f:facet>
+					<p:inplace style="font-size: 12px; font-weight: bold;" id="edomain"
+						toggleable="true" editor="true">
+						<p:calendar value="#{dt.semesterEndingDate}" showOn="button"
+							navigator="true" />
+					</p:inplace>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Degree Name" />
+					</f:facet>
+					<h:outputText style="font-size: 12px; font-weight: bold;"
+						value="#{dt.degreeName}" />
+					<h:inputHidden value="#{dt.ecsDegreeType}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Department Name" />
+					</f:facet>
+					<h:outputText style="font-size: 12px; font-weight: bold;"
+						value="#{dt.departmentName}" />
+					<h:inputHidden value="#{dt.ecsOrgDepartmentType}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Detail View" />
+					</f:facet>
+					<p:commandButton update=":form:dis" oncomplete="sd.show()" icon="ui-icon-search" style="font-size:10px;">
+					 <f:setPropertyActionListener value="#{dt}" target="#{examCodeSetUp.oneExamSetupDetail}" /> 
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<f:facet name="footer">
+				<p:commandButton
+					style="font-size:14px;font-weight: bold;color: #4B4B4B;"
+					value="Update" update="@this growl"
+					action="#{examCodeSetUp.update}" />
+			</f:facet>
+		</h:panelGrid>
+
+		<p:dialog width="405" header="Session Name" resizable="false"
+			height="230" widgetVar="pnl" modal="true">
+
+			<h:panelGrid columns="2">
+				<h:outputText style="font-size: 12px; font-weight: bold;"
+					value="Session Name" />
+				<p:inputText style="font-size: 14px; font-weight: bold;width:153px;"
+                                             value="#{examCodeSetUp.semesterName}" />
+
+				<h:outputText style="font-size: 12px; font-weight: bold;"
+					value="Start Date" />
+				<p:calendar style="font-size: 12px; font-weight: bold;width:100px;"
+					value="#{examCodeSetUp.semesterBegningDate}" showOn="button"
+					navigator="true" />
+				<h:outputText style="font-size: 12px; font-weight: bold;"
+					value="End Date" />
+				<p:calendar style="font-size: 12px; font-weight: bold;width:100px;"
+					value="#{examCodeSetUp.semesterEndingDate}" showOn="button"
+					navigator="true" />
+				<h:outputText style="font-size: 12px; font-weight: bold;"
+					value="Department Type " />
+				<p:selectOneMenu
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{examCodeSetUp.ecsOrgDepartmentType}"
+					valueChangeListener="#{orgDegreeType.changeDegreeCode}">
+                                        <f:selectItem itemLabel="Select Department" itemValue="0" />
+					<f:selectItems value="#{orgDepartmentType.items}" />
+
+					<p:ajax event="change" update="@this di" />
+				</p:selectOneMenu>
+				<h:outputText style="font-size: 12px; font-weight: bold;"
+					value="Degree Type" />
+				<p:selectOneMenu id="di"
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{examCodeSetUp.ecsDegreeType}">
+                                    <f:selectItem itemLabel="Select Degree" itemValue="0" />
+					<f:selectItems value="#{orgDegreeType.items}" />
+				</p:selectOneMenu>
+				<f:facet name="footer">
+					<p:commandButton
+						style="font-size:14px;font-weight: bold;color: #4B4B4B;"
+						value="Save" update="@this growl"
+						action="#{examCodeSetUp.saveExamcode}" />
+					<p:commandButton
+						style="font-size:14px;font-weight: bold;color: #4B4B4B;"
+						value="Close" onclick="pnl.hide();" />
+				</f:facet>
+
+			</h:panelGrid>
+
+		</p:dialog>
+		
+		<p:dialog showEffect="slide" hideEffect="slide" width="415" header="Session Detail" resizable="false" 
+			height="240" widgetVar="sd" modal="true">
+			<p:panel id="dis">
+			<h:panelGrid columns="2">
+			
+				<h:outputText value="Examcode Name" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{examCodeSetUp.oneExamSetupDetail.semesterName}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+			
+				<h:outputText value="Degree Name" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{examCodeSetUp.oneExamSetupDetail.degreeName}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				<h:outputText value="Departement Name" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{examCodeSetUp.oneExamSetupDetail.departmentName}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				<h:outputText value="Session Begnning" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{examCodeSetUp.oneExamSetupDetail.semesterBegningDate}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				<h:outputText value="Session Ending" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{examCodeSetUp.oneExamSetupDetail.semesterEndingDate}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+			</h:panelGrid>
+				
+			</p:panel>
+			
+		</p:dialog>
+	</h:form>
+</h:body>
+
+
+
+</html>

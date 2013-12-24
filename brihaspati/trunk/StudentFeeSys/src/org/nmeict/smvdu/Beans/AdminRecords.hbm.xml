@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.AdminRecords" table="admin_records" catalog="student_fees">
+        <id name="userId" type="string">
+            <column name="user_id" length="300" />
+            <generator class="identity" />
+        </id>
+        <property name="seqId" type="int">
+            <column name="seq_id" not-null="true" unique="true" />
+        </property>
+        <property name="adminPass" type="string">
+            <column name="admin_pass" length="40" />
+        </property>
+        <property name="flag" type="java.lang.Byte">
+            <column name="flag" />
+        </property>
+        <property name="addDate" type="date">
+            <column name="add_date" length="10" />
+        </property>
+        <set name="adminEmailConfigs" inverse="true">
+            <key>
+                <column name="admin_id" length="300" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.AdminEmailConfig" />
+        </set>
+    </class>
+</hibernate-mapping>

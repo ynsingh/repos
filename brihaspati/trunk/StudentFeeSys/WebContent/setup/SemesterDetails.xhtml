@@ -1,0 +1,177 @@
+
+<?xhtml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>TODO supply a title</title>
+</h:head>
+<style type="text/css">
+.ui-dialog-title
+{
+	
+	font-size: 15px;
+	font-weight: bold;
+}
+    	.ui-growl-title {
+    font-weight: bold;
+    font-size:12px;
+    padding: 0px 0px 7px;
+    display: block;
+}
+ .ui-corner-all {
+    border-radius: 0px 0px 0px 0px;
+}
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
+    border-color:red;
+}
+.ui-button ui-widget ui-state-default ui-corner-all
+{
+	background-color:#4D90FF; 
+}
+    </style>
+<h:body>
+	<h:form id="form">
+		<p:growl id="growl" sticky="true" /> 
+			<h:panelGrid columns="1">
+				<p:commandButton style="font-size:14px;font-weight: bold;" onclick="pnl.show();" value="Add New" />
+				
+					<p:dataTable id="dataTable" var="dt"
+						style="font-size: 13px;font-weight: bold"
+						binding="#{semesterBeans.dataGrid}"
+						value="#{semesterBeans.loadAllSemesterDetails}" paginator="true"
+						rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+						<f:facet name="header">  
+            			Semester Details  
+        			   </f:facet>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Semester Name" />
+							</f:facet>
+							<p:inplace style="font-size: 12px; font-weight: bold;" id="domain" toggleable="true" editor="true">
+									<p:inputText value="#{dt.semesterName}" />
+								</p:inplace>
+						</p:column>
+
+						
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Semester Begning Date" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.semesterBegningDate}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Semester Ending Date" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.semesterEndingDate}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="" />
+							</f:facet>
+							<p:commandButton update=":form:dis" oncomplete="sd.show()" icon="ui-icon-search" style="font-size:10px;">
+								<f:setPropertyActionListener value="#{dt}" target="#{semesterBeans.semDetails}" />
+							</p:commandButton>
+						</p:column>
+                                                <!--p:column>
+							<f:facet name="header">
+								<h:outputText value="Available Action" />
+							</f:facet>
+                                                    <p:commandLink action="#{semesterBeans.delete(dt)}" value="Delete" />
+						</p:column -->
+					</p:dataTable>
+					<f:facet name="footer">
+						<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" update="dataTable,growl" action="#{semesterBeans.update}"/>
+					</f:facet>
+				
+			</h:panelGrid>
+		
+		<p:dialog header="Add New Semester" resizable="false" width="340" height="220"
+			widgetVar="pnl" modal="true" id="pn">
+			<h:panelGrid columns="2">
+				
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Semester Name " />
+                                <p:inputText style="font-size: 14px; font-weight: bold;width:158px;" value="#{semesterBeans.semesterName}" />
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Department Type " />
+				<p:selectOneMenu
+					id="di3"
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{semesterBeans.departmentCode}" 
+					valueChangeListener="#{orgDegreeType.changeDegreeCode}">
+					<f:selectItem itemLabel="Select Department" itemValue="0"/>
+					<f:selectItems value="#{orgDepartmentType.items}" />
+					
+					<p:ajax event="change" update="di1" />
+				</p:selectOneMenu>
+				<h:outputText style="font-size: 12px; font-weight: bold;" 
+				value="Degree Type " />
+				<p:selectOneMenu 
+				    id="di1"
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{semesterBeans.degreeCode}"
+					valueChangeListener="#{examCodeSetUp.examCodeValue}">
+					<f:selectItem itemLabel="Select Degree" itemValue="0"/>
+					<f:selectItems value="#{orgDegreeType.items}" />
+					<p:ajax event="change" update="di2" />
+				</p:selectOneMenu>
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Exam Session Name" />
+				<p:selectOneMenu 
+					id="di2"
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{semesterBeans.eCode}">
+                                    <f:selectItem itemLabel="Select ExamSession" itemValue="0"/>
+					<f:selectItems value="#{examCodeSetUp.items}" />
+				</p:selectOneMenu>
+				<f:facet name="footer">
+					<p:commandButton value="Save" style="font-size:14px;font-weight: bold;"
+						action="#{semesterBeans.saveSemester}" update="dataTable,growl" />
+					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Close" onclick="pnl.hide();" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+
+		<p:dialog height="270" widgetVar="sd" modal="true" showEffect="slide" hideEffect="slide" width="415" header="Session Detail" resizable="false">
+		<p:panel id="dis">
+			<h:panelGrid columns="2">
+			    <h:outputText value="Semester Name" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.semesterName}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+			
+				<h:outputText value="Department Name" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.departmentName}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				<h:outputText value="Degree Name" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.degreeName}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				
+				<h:outputText value="Begnning" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.semesterBegningDate}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				<h:outputText value="Ending" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.semesterEndingDate}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				<h:outputText value="Creater ID" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.semCreaterId}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+				
+				
+				<h:outputText value="Created Date" style="font-size: 12px; font-weight: bold;"/>
+				<h:outputText value="#{semesterBeans.semDetails.semCreaterDate}" style="color:#696969;font-size: 14px; font-weight: bold;"/>
+			</h:panelGrid>
+		</p:panel>
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

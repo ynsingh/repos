@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 11, 2013 10:54:14 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.BranchMaster" table="branch_master" catalog="student_fees">
+        <id name="bmSeqNo" type="java.lang.Integer">
+            <column name="bm_seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="bm_department_code" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="bm_degree_code" />
+        </many-to-one>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="bm_org_code" length="400" />
+        </many-to-one>
+        <property name="branchName" type="string">
+            <column name="branch_name" length="300" />
+        </property>
+        <property name="bmDegreeCreaterId" type="string">
+            <column name="bm_degree_creater_id" length="300" />
+        </property>
+        <property name="bmDegreeModifierId" type="string">
+            <column name="bm_degree_modifier_id" length="300" />
+        </property>
+        <property name="bmCreaterDate" type="date">
+            <column name="bm_creater_date" length="10" />
+        </property>
+        <property name="bmModifierDate" type="date">
+            <column name="bm_modifier_date" length="10" />
+        </property>
+        <set name="studentRegMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="branch_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentRegMaster" />
+        </set>
+       <set name="studentMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="branch_id" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentMaster" />
+        </set>
+        <set name="otherFeeHeadMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="branch_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

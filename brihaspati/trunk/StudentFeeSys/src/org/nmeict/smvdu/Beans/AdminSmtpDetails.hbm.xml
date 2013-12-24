@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.AdminSmtpDetails" table="admin_smtp_details" catalog="student_fees">
+        <id name="smtpName" type="string">
+            <column name="smtp_name" length="300" />
+            <generator class="identity" />
+        </id>
+        <property name="seqId" type="int">
+            <column name="seq_id" not-null="true" unique="true" />
+        </property>
+        <property name="smtpPort" type="java.lang.Integer">
+            <column name="smtp_port" />
+        </property>
+        <property name="authEmailid" type="string">
+            <column name="auth_emailid" length="300" />
+        </property>
+        <property name="authPassword" type="string">
+            <column name="auth_password" length="100" />
+        </property>
+        <property name="smtpStatus" type="java.lang.Byte">
+            <column name="smtp_status" />
+        </property>
+        <property name="smtpHostName" type="string">
+            <column name="smtp_host_name" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

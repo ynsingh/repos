@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.OrgProfile" table="org_profile" catalog="student_fees">
+        <id name="orgId" type="string">
+            <column name="org_id" length="400" />
+            <generator class="uuid.hex" />
+        </id>
+        <property name="orgName" type="string">
+            <column name="org_name" length="100" unique="true" />
+        </property>
+        <property name="orgCity" type="string">
+            <column name="org_city" length="50" />
+        </property>
+        <property name="orgPincode" type="java.lang.Integer">
+            <column name="org_pincode" />
+        </property>
+        <property name="orgState" type="string">
+            <column name="org_state" length="31" />
+        </property>
+        <property name="orgLl" type="java.lang.Integer">
+            <column name="org_ll" />
+        </property>
+        <property name="orgCountrycode" type="string">
+            <column name="org_countrycode" length="5" />
+        </property>
+        <property name="orgRegioncode" type="java.lang.Integer">
+            <column name="org_regioncode" />
+        </property>
+        <property name="orgInstitutedomain" type="string">
+            <column name="org_institutedomain" length="31" unique="true" />
+        </property>
+        <property name="orgToi" type="string">
+            <column name="org_toi" length="31" />
+        </property>
+        <property name="orgInstituteweb" type="string">
+            <column name="org_instituteweb" length="100" />
+        </property>
+        <property name="orgAffiliation" type="string">
+            <column name="org_affiliation" length="32" />
+        </property>
+        <property name="orgAdminfn" type="string">
+            <column name="org_adminfn" length="31" />
+        </property>
+        <property name="orgAdminln" type="string">
+            <column name="org_adminln" length="31" />
+        </property>
+        <property name="orgAdmindesig" type="string">
+            <column name="org_admindesig" length="31" />
+        </property>
+        <property name="orgAdminemailid" type="string">
+            <column name="org_adminemailid" length="31" />
+        </property>
+        <property name="orgMasterPassword" type="string">
+            <column name="org_master_password" length="20" />
+        </property>
+        <property name="orgTagline" type="string">
+            <column name="org_tagline" length="100" />
+        </property>
+        <property name="orgEmail" type="string">
+            <column name="org_email" length="100" />
+        </property>
+        <property name="orgWeb" type="string">
+            <column name="org_web" length="100" unique="true" />
+        </property>
+        <property name="orgPhone" type="string">
+            <column name="org_phone" length="35" />
+        </property>
+        <property name="orgAddress1" type="string">
+            <column name="org_address1" length="100" />
+        </property>
+        <property name="orgAddress2" type="string">
+            <column name="org_address2" length="100" />
+        </property>
+        <property name="orgLogo" type="binary">
+            <column name="org_logo" />
+        </property>
+        <property name="orgRecoveryId" type="string">
+            <column name="org_recovery_id" length="200" />
+        </property>
+        <property name="orgTanno" type="string">
+            <column name="org_tanno" length="20" />
+        </property>
+        <property name="orgRegNoti" type="java.lang.Integer">
+            <column name="org_reg_noti" />
+        </property>
+        <property name="orgStatus" type="java.lang.Byte">
+            <column name="org_status" />
+        </property>
+        <property name="orgRegDate" type="date">
+            <column name="org_reg_date" length="10" />
+        </property>
+        <property name="orgCountryName" type="string">
+            <column name="org_country_name" length="50" />
+        </property>
+        <one-to-one name="orgLoginDetails" class="org.nmeict.smvdu.Beans.OrgLoginDetails" cascade="all"/>
+        <one-to-one name="orgLogoDetails" class="org.nmeict.smvdu.Beans.OrgLogoDetails" cascade="all"/>
+        <set name="bankProfiles" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.BankProfile" />
+        </set>
+        <set name="courseGroupMasters" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.CourseGroupMaster" />
+        </set>
+        <set name="studentFeesMasters" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentFeesMaster" />
+        </set>
+        <set name="degreeTypes" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.DegreeType" />
+        </set>
+        <set name="tempFinalReports" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.TempFinalReport" />
+        </set>
+        <set name="studentRegMasters" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentRegMaster" />
+        </set>
+        <set name="challanMasters" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ChallanMaster" />
+        </set>
+        <set name="modeOfPayments" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ModeOfPayment" />
+        </set>
+        <set name="mopHeadFieldses" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.MopHeadFields" />
+        </set>
+        <set name="adminFeeAdminMasters" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.AdminFeeAdminMaster" />
+        </set>
+        <set name="examCodeSetUps" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="org_id" length="400" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ExamCodeSetUp" />
+        </set>
+        <set name="studentMasters" inverse="true">
+            <key>
+                <column name="org_id" length="400" not-null="true"/>
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentMaster" />
+        </set>
+        <set name="otherFeeHeadMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="org_id" length="400" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" />
+        </set>
+        <set name="collegePendingStatuses" inverse="true">
+            <key>
+                <column name="org_code" length="400" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.CollegePendingStatus" />
+        </set>
+        <set name="branchMasters" inverse="true" fetch="select">
+            <key>
+                <column name="bm_org_code" length="400" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.BranchMaster" />
+        </set>
+        <set name="semesterMasters" inverse="true">
+            <key>
+                <column name="sem_org_id" length="400" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.SemesterMaster" />
+        </set>
+         <set name="orgImageDetailsesForUserId" inverse="true"  lazy="true" fetch="select">
+            <key>
+                <column name="user_id" length="400" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OrgImageDetails"/>
+        </set>
+        <set name="orgImageDetailsesForOrgId" inverse="true" lazy="true"  fetch="select">
+            <key>
+                <column name="org_id" length="400" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OrgImageDetails" />
+        </set>
+    </class>
+</hibernate-mapping>

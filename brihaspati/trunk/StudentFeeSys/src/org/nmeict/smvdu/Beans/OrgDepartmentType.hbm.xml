@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2013 8:35:57 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.OrgDepartmentType" table="org_department_type" catalog="student_fees">
+        <id name="odtSeqNo" type="java.lang.Integer">
+            <column name="odt_seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_code" length="400" />
+        </many-to-one>
+        <property name="orgDepartmentName" type="string">
+            <column name="org_department_name" length="300" />
+        </property>
+        <property name="depatmentCreaterDate" type="date">
+            <column name="depatment_creater_date" length="10" />
+        </property>
+        <property name="depatmentModifierDate" type="date">
+            <column name="depatment_modifier_date" length="10" />
+        </property>
+        <set name="degreeTypes" inverse="true">
+            <key>
+                <column name="org_degree_dp_type" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.DegreeType" />
+        </set>
+        <set name="examCodeSetUps" inverse="true">
+            <key>
+                <column name="ecs_department_type" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ExamCodeSetUp" />
+        </set>
+        <set name="branchMasters" inverse="true" fetch="select" lazy="true">
+            <key>
+                <column name="bm_department_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.BranchMaster" />
+        </set>
+          <set name="semesterMasters" inverse="true">
+            <key>
+                <column name="depmnt_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.SemesterMaster" />
+        </set>
+        <set name="otherFeeHeadMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="department_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" />
+        </set>
+          <set name="studentMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="department_id" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentMaster" />
+        </set>
+        <set name="studentRegMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="department_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentRegMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

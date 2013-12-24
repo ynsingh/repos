@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+
+        </h:head>
+<style type="text/css">
+    	.ui-growl-title {
+    font-weight: bold;
+    font-size:12px;
+    padding: 0px 0px 7px;
+    display: block;
+}
+ .ui-corner-all {
+    border-radius: 0px 0px 0px 0px;
+}
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
+    border-color:red;
+}
+.ui-button ui-widget ui-state-default ui-corner-all
+{
+	background-color:#4D90FF; 
+}
+    </style>
+        <h:body>
+            <h:outputLink />
+            <p:layout style="min-width: 400px;min-height: 800px">
+                <p:layoutUnit position="north" size="180" resizable="true" closable="true" collapsible="true">
+                    <h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" url="../img/3_1.PNG"/>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    <h:outputLink value="index.xhtml"> Login page </h:outputLink>
+                    <h:form>
+                        <p:growl id="growl" showDetail="true" sticky="true" />  
+                        <p:panel id="orgReg" header="Register New Institute/College/University">
+                            <p:focus context="orgReg"/>
+                            <p:panelGrid columns="2">
+                                <h:column>
+                                    <h:outputText value="Institute/College/University : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgName}" style="font-size: 16px; font-weight: bold;" id="iname" required="true" requiredMessage="Please Enter Institute/College/Unversity Name">
+                                    </p:inputText>
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Institute Address : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgAddress1}" style="font-size: 16px; font-weight: bold;" id="iadd" required="true" requiredMessage="Please Enter Institute/College/Unversity Address">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="City : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgCity}" style="font-size: 16px; font-weight: bold;" id="icity" required="true" requiredMessage="Please Enter Institute/College/Unversity City">
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="ZipCode : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgPincode}" style="font-size: 16px; font-weight: bold;" id="izc" required="true" requiredMessage="Please Enter Institute/College/Unversity ZipCode" validatorMessage="Please Enter Institute/College/Unversity ZipCode">
+                                        <f:validateLength minimum="6" maximum="6" for="izc"/>
+                                        <f:converter converterId="javax.faces.Integer"/>
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="State : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgState}" style="font-size: 16px; font-weight: bold;" id="istate" required="true" requiredMessage="Please Enter Institute/College/Unversity State">
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Landline No. : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgPhone}" style="font-size: 16px; font-weight: bold;" id="ilann" required="true" requiredMessage="Please Enter Valid landline No." validatorMessage="Please Enter Valid landline No.">
+                                        <f:validateLength minimum="7" maximum="7" for="ilann"/>
+                                        <f:converter converterId="javax.faces.Integer"/>
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Country Code : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgCountrycode}" style="font-size: 16px; font-weight: bold;" id="icc" required="true" requiredMessage="Please Enter Country Code" validatorMessage="Please Enter Valid Country Code">
+                                        <f:converter converterId="javax.faces.Integer" for="icc"/>
+                                        <f:validateLength minimum="2" maximum="2" for="icc"/>
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Region Code (Ex. Jammu 0919) : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgRegioncode}" style="font-size: 16px; font-weight: bold;" id="ircc" required="true" requiredMessage="Please Enter Region Code" validatorMessage="Please Enter Valid Region Code">
+                                        <f:converter converterId="javax.faces.Integer" for="ircc"/>
+                                        <f:validateLength minimum="4" maximum="4" for="ircc"/>
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Number Eg. SMVDU(2345345)  : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgLl}" style="font-size: 16px; font-weight: bold;" id="inn" required="true" requiredMessage="Please Enter Landline No." validatorMessage="Please Enter Valid Landline No.">
+                                        <f:validateLength minimum="7" maximum="7" for="inn"/>
+                                        <f:converter converterId="javax.faces.Integer"/>
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Institute/College/University Domain : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="@" style="font-size: 16px; font-weight: bold;"/>
+                                    <p:inputText value="#{orgProfileBeans.orgInstitutedomain}" style="font-size: 16px; font-weight: bold;" id="idma" required="true" requiredMessage="Please Enter Institute/College/Unversity Domain" validatorMessage="Please Enter Valid Institute/College/Unversity Domain">
+                         
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Type Of Institute/College/University : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:selectOneMenu value="#{orgProfileBeans.orgToi}" style="width: 150px;font-size: 16px; font-weight: bold;">
+                                        <f:selectItem itemLabel="Govt." itemValue="Goverment" />  
+                                        <f:selectItem itemLabel="Private" itemValue="Private" />  
+                                        <f:selectItem itemLabel="Other" itemValue="Other" />  
+                                    </p:selectOneMenu>
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Institute/College/University Website: " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgWeb}" style="font-size: 16px; font-weight: bold;" id="iwname" required="true" requiredMessage="Please Enter Institute/College/Unversity Website Name" validatorMessage="Please Enter Valid Institute/College/Unversity Website Name">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Institute/College/University Affiliation: " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgAffiliation}" style="font-size: 16px; font-weight: bold;" id="iafiti" required="true" requiredMessage="Please Enter Institute/College/Unversity Affiliation">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Admin's First Name : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgAdminfn}" style="font-size: 16px; font-weight: bold;" id="iafn" required="true" requiredMessage="Please Enter Institute/College/Unversity Admin's Name">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Admin Last Name: " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgAdminln}" style="font-size: 16px; font-weight: bold;" id="ialn" required="true" requiredMessage="Please Enter Institute/College/Unversity Admin Last Name">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Admin's Designation : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgAdmindesig}" style="font-size: 16px; font-weight: bold;" id="iadde" required="true" requiredMessage="Please Enter Institute/College/Unversity Designation">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Admin's EmailId : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgAdminemailid}" style="font-size: 16px; font-weight: bold;" id="iadid" required="true" requiredMessage="Please Enter Institute/College/Unversity Admin EmailId">
+                                        
+                                    </p:inputText>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Admin's Password: " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:password value="#{orgProfileBeans.orgMasterPassword}" match="irc" label="password 1" style="font-size: 16px; font-weight: bold;" feedback="true" id="ic" required="true" requiredMessage="Please Enter Admin's Password" validatorMessage="Password Should Be At Least In 8 Charecter And At Most 14 Charecter" maxlength="14" strongLabel="Good">
+                                        <p:tooltip for="ic" value="Your Password Should Be At Least In 8 Charecter And At Most In 14 Charecter" style="font-size: 13px; color:#006666; font-weight: bold;"/>
+                                    </p:password>
+                                   
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Admin's Re Password: " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:password label="password 2" style="font-size: 16px; font-weight: bold;" id="irc" validatorMessage="Password Should Be At Least In 8 Charecter And At Most 14 Charecter" >
+                                    </p:password>
+                                   
+                                </h:column>
+                            </p:panelGrid>
+                            <f:facet name="footer">
+                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Save" update="growl" action="#{orgProfileBeans.saveProfile}"/>
+                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" type="reset" value="Reset"/>
+                            </f:facet>
+                        </p:panel>
+                    </h:form>
+                    <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
+                              draggable="false" closable="false">  
+                        <p:graphicImage value="img/ajaxloadingbar.gif" />  
+                    </p:dialog> 
+                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/ >  
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

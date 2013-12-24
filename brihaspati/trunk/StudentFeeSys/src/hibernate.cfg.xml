@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.datasource">java:comp/env/jdbc/student_fees</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
+    <property name="hibernate.c3p0.min_size">5</property>
+    <property name="hibernate.c3p0.max_size">20</property>
+    <property name="hibernate.c3p0.timeout">30000</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <mapping resource="org/nmeict/smvdu/Beans/ScholarshipType.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/UserMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/OrgLogoDetails.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/DegreeType.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/StudentFeesMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/OrgImageDetails.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/OrgDepartmentType.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/ChallanMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/OtherFeeHeadMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/MopHeadFields.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/ExamCodeSetUp.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/TempFinalReport.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/BankProfile.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/CollegePendingStatus.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/SemesterMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/AdminSmtpDetails.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/AdminEmailConfig.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/ModeOfPayment.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/AdminFeeAdminMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/OrgProfile.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/StudentRegMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/CourseGroupMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/StudentMaster.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/AdminRecords.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/OrgLoginDetails.hbm.xml"/>
+    <mapping resource="org/nmeict/smvdu/Beans/BranchMaster.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

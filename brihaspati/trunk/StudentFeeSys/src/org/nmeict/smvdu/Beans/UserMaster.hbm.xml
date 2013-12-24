@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.UserMaster" table="user_master" catalog="student_fees">
+        <id name="umSeqId" type="java.lang.Integer">
+            <column name="um_seq_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="50" not-null="true" />
+        </property>
+        <property name="createTime" type="time">
+            <column name="create_time" length="8" />
+        </property>
+        <property name="editTime" type="time">
+            <column name="edit_time" length="8" not-null="true" />
+        </property>
+        <property name="date" type="date">
+            <column name="date" length="10" />
+        </property>
+        <property name="modifierId" type="int">
+            <column name="modifier_id" not-null="true" />
+        </property>
+        <property name="loginTime" type="time">
+            <column name="login_time" length="8" not-null="true" />
+        </property>
+        <property name="logoutTime" type="time">
+            <column name="logout_time" length="8" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 11, 2013 7:52:20 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" table="other_fee_head_master" catalog="student_fees">
+        <id name="feeHeadCode" type="java.lang.Integer">
+            <column name="fee_head_code" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="department_code" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_code" not-null="true" />
+        </many-to-one>
+        <many-to-one name="semesterMaster" class="org.nmeict.smvdu.Beans.SemesterMaster" fetch="select">
+            <column name="semester_code" />
+        </many-to-one>
+        <many-to-one name="branchMaster" class="org.nmeict.smvdu.Beans.BranchMaster" fetch="select">
+            <column name="branch_code" />
+        </many-to-one>
+        <property name="feeHeadName" type="string">
+            <column name="fee_head_name" length="60" not-null="true" />
+        </property>
+        <property name="feeHeadValue" type="double">
+            <column name="fee_head_value" precision="15" not-null="true" />
+        </property>
+        <property name="programId" type="string">
+            <column name="program_id" length="20"/>
+        </property>
+        <property name="payableStatus" type="byte">
+            <column name="payable_status" not-null="true" />
+        </property>
+        <set name="scholarshipTypes" inverse="true">
+            <key>
+                <column name="scholarship_id" not-null="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.ScholarshipType" />
+        </set>
+        <set name="studentMasters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="fee_head_code" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentMaster" />
+        </set>
+    </class>
+</hibernate-mapping>

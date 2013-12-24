@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Student Fees | Welcome</title>
+
+	<script type="text/javaScript">
+		function loadIframe(iframeName, url) {
+
+			parent.document.getElementById('ifrm').src = url;
+
+			return true;
+		}
+	</script>
+</h:head>
+
+<style type="text/css">
+.ui-dialog-title {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.ui-growl-title {
+	font-weight: bold;
+	font-size: 12px;
+	padding: 0px 0px 7px;
+	display: block;
+}
+
+.ui-corner-all {
+	border-radius: 0px 0px 0px 0px;
+}
+
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid
+	{
+	border-color: red;
+}
+
+.ui-button ui-widget ui-state-default ui-corner-all {
+	background-color: #4D90FF;
+}
+
+.ui-tabs-selected {
+	font-size: 14px;
+	font-weight: bold;
+}
+.ui-button-icon-only
+{
+	background-image: url("/img/search12.png");
+}
+</style>
+<h:body>
+	<h:form>
+		<p:layout style="min-height: 600px;min-width:400px">
+			<p:layoutUnit position="north" size="180">
+				<h:graphicImage alt="Student Fees"
+					style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG" />
+			</p:layoutUnit>
+			<p:layoutUnit position="west" size="220" resizable="true"
+				collapsible="true">
+				<h:panelGrid columns="1">
+					<p:graphicImage id="pImage"
+						value="img/#{orgProfileSessionDetails.userId}/out.png"
+						height="200" width="200">
+					</p:graphicImage>
+					<p:separator id="customSeparator" style="height:3px;" />
+					<p:commandLink onclick="upImage.show();"
+						style="font-size: 12px; font-weight: bold;"
+						value="Change Profile Picture" />
+				</h:panelGrid>
+
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+
+				<p:menubar
+					style="height: 28px;font-size:15px;font-weight:bold;text-align:center;border:none;">
+					<p:submenu label="Setup" icon="ui-icon-gear">
+						<p:menuitem value="Fee Heads Value" url="#"
+							onclick="return loadIframe('ifrm', 'setup/FeeHeadsDetails.xhtml')" />
+						<p:menuitem value="Department" url="#"
+							onclick="return loadIframe('ifrm', 'setup/OrgDepartmentType.xhtml')" />
+						<p:menuitem value="Branch" url="#"
+							onclick="return loadIframe('ifrm', 'setup/OrgBranch.xhtml')" />
+						<p:menuitem value="Degree Type"
+							onclick="return loadIframe('ifrm', 'faces/setup/DegreeType.xhtml')" />
+						<p:menuitem value="Semester" url="#"
+							onclick="return loadIframe('ifrm', 'faces/setup/SemesterDetails.xhtml')" />
+						<p:menuitem value="Session/Semester"
+							onclick="return loadIframe('ifrm', 'faces/setup/SessionSetup.xhtml')" />
+						<p:menuitem value="Student Setup"
+							onclick="return loadIframe('ifrm', 'faces/setup/StudentReg.xhtml')" />
+						<p:separator />
+						<p:menuitem value="Exit" url="faces/MainPage.xhtml" />
+					</p:submenu>
+					<p:submenu label="Fee Management" icon="ui-icon-bearing">
+
+						<p:menuitem value="Fees Processing" icon="ui-icon-document"
+							onclick="return loadIframe('ifrm', 'faces/FeeProcess/FeeProcessing.xhtml')" />
+						<p:menuitem value="Default Fee Values" icon="ui-icon-extlink"
+							onclick="return loadIframe('ifrm', 'faces/FeeProcess/DefaultFeeValues.xhtml')" />
+					</p:submenu>
+
+					<p:submenu label="Reports" icon="ui-icon-report">
+
+					</p:submenu>
+
+					<p:submenu label="Tools" icon="ui-icon-help">
+						<p:menuitem value="Copy Data" icon="ui-icon-copy" url="#" />
+						<p:menuitem value="Setting" icon="ui-icon-wrench" url="#"
+							onclick="orgPro.show();" />
+						<p:menuitem value="Help" icon="ui-icon-help" url="#" />
+					</p:submenu>
+
+                                        <p:menuitem value="Logout" icon="ui-icon-extlink" action="#{logOutSession.logOut}" />
+
+				</p:menubar>
+
+				<iframe id="ifrm" style="border: 0px;" height="600" width="1000">
+				</iframe>
+				<p:dialog style="font-weight:bold;font-size:16px;" header="Setting"
+					modal="true" widgetVar="orgPro" height="400" width="650">
+
+
+
+					<p:growl id="growl" sticky="true" />
+					<p:wizard widgetVar="wiz">
+						<!-- p:tab id="Pi" title="Public Information"
+							style="font-weight:bold;font-size:14px" -->
+                                                <p:panel header="Public Information">
+								<p:panelGrid columns="2">
+									<h:outputText value="College Name" />
+									<p:inplace id="cn" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgName}" />
+									</p:inplace>
+									<h:outputText value="Website" />
+									<p:inplace id="web" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgWeb}" />
+									</p:inplace>
+									<h:outputText value="Domain" />
+									<p:inplace id="domain" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgInstitutedomain}" />
+									</p:inplace>
+									<h:outputText value="Affiliation" />
+									<p:inplace id="aff" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgAffiliation}" />
+									</p:inplace>
+									<h:outputText value="College Type" />
+									<p:inplace id="ct" toggleable="true" editor="true">
+										<p:selectOneMenu
+											value="#{orgProfileSessionDetails.orgProfileSession.orgToi}"
+											style="width: 150px;font-size: 16px; font-weight: bold;">
+
+											<f:selectItem itemLabel="Govt." itemValue="Goverment" />
+											<f:selectItem itemLabel="Private" itemValue="Private" />
+											<f:selectItem itemLabel="Other" itemValue="Other" />
+										</p:selectOneMenu>
+									</p:inplace>
+								</p:panelGrid>
+							</p:panel>
+						<!--/p:tab-->
+						<!--p:tab id="admin" title="Administrator Details"
+							style="font-weight:bold;font-size:14px" -->
+                                                <p:panel header="Administrator Details">
+								<p:panelGrid columns="2">
+									<h:outputText value="First Name" />
+									<p:inplace id="fn" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgAdminfn}" />
+									</p:inplace>
+									<h:outputText value="Last Name" />
+									<p:inplace id="ln" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgAdminln}" />
+									</p:inplace>
+									<h:outputText value="Admin Id" />
+									<p:inplace id="ai" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgAdminemailid}" />
+									</p:inplace>
+									<h:outputText value="Admin Designation" />
+									<p:inplace id="ad" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgAdmindesig}" />
+									</p:inplace>
+								</p:panelGrid>
+							</p:panel>
+						<!--/p:tab -->
+						<!--p:tab id="add" title="Address"
+							style="font-weight:bold;font-size:14px" -->
+							<p:panel>
+								<p:panelGrid columns="2">
+									<h:outputText value="Address" />
+									<p:inplace id="ads" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgAddress1}" />
+									</p:inplace>
+									<h:outputText value="City" />
+									<p:inplace id="cy" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgCity}" />
+									</p:inplace>
+									<h:outputText value="ZipCode" />
+									<p:inplace id="zc" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgPincode}" />
+									</p:inplace>
+									<h:outputText value="State" />
+									<p:inplace id="st" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgState}" />
+									</p:inplace>
+									<h:outputText value="Country Code" />
+									<p:inplace id="cc" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgCountrycode}" />
+									</p:inplace>
+									<h:outputText value="Region Code" />
+									<p:inplace id="rc" toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgRegioncode}" />
+									</p:inplace>
+								</p:panelGrid>
+							</p:panel>
+
+						<!--/p:tab -->
+						<!--p:tab id="pr" title="Contacts"
+							style="font-weight:bold;font-size:14px" -->
+                                                <p:panel header="Contacts">
+								<p:panelGrid columns="2">
+									<h:outputText value="Landline 1" />
+									<p:inplace toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgLl}" />
+									</p:inplace>
+									<h:outputText value="Landline 2" />
+									<p:inplace toggleable="true" editor="true">
+										<p:inputText
+											value="#{orgProfileSessionDetails.orgProfileSession.orgPhone}" />
+									</p:inplace>
+								</p:panelGrid>
+							</p:panel>
+							<p:separator />
+							<p:commandButton value="Update"
+								action="#{orgProfileBeans.update}" />
+						<!--/p:tab-->
+					</p:wizard>
+
+
+				</p:dialog>
+				<h:form>
+					<p:dialog resizable="false" width="670" widgetVar="upImage">
+
+						<p:tabView
+							style="font-size:14px;font-weight:bold;width:630px;border:none;">
+							<p:tab id="tab1" title="Upload Picture">
+								<p:fileUpload
+									style="font-size:13px;font-weight:bold;width:600px;"
+									fileUploadListener="#{orgImageDetails.uploadImage}"
+									mode="advanced" dragDropSupport="false" sizeLimit="1000000"
+									allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+
+								</p:fileUpload>
+
+							</p:tab>
+							<p:tab id="tab2" title="View Your Album">
+								<p:panel>
+									<h:panelGrid columns="1" style="width:600px;border:none;">
+									
+									<p:column>
+									<p:columnGroup>
+											<p:row>
+										<p:autoComplete  forceSelection="true" var="imgn"
+											itemLabel="#{imgn.imgName}" itemValue="#{imgn.imgName}"
+											id="acSimple" value="#{orgImageDetails.imgName}"
+											completeMethod="#{orgImageDetails.details}">
+											<p:column>
+												<h:outputText style="font-size:11px;font-weight:bold;"
+													value="#{imgn.imgName}" />
+											</p:column>
+											<p:column>
+												<p:graphicImage style="width:50px;height:50px;"
+													value="img/#{orgProfileSessionDetails.userId}/#{orgProfileSessionDetails.orgProfileSession.orgAdminemailid}/#{imgn.imgName}" />
+											</p:column>
+										</p:autoComplete>
+										<p:commandButton icon="ui-icon-search"
+											styleClass="ui-priority-primary" style="height:35px;" />
+										</p:row>
+										</p:columnGroup>
+										</p:column>
+										
+										<p:column>
+												<p:dataGrid value="#{orgImageDetails.imageList}" var="image"
+													columns="3" rows="6" paginator="true"
+													paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+													rowsPerPageTemplate="6,12,18">
+
+													<h:panelGrid columns="1">
+														<p:column>
+															<p:graphicImage style="width:100px;height:100px;"
+																value="img/#{orgProfileSessionDetails.userId}/#{orgProfileSessionDetails.orgProfileSession.orgAdminemailid}/#{image.imgName}" />
+														</p:column>
+														<p:columnGroup type="footer">
+															<p:row>
+
+																<p:commandButton icon="ui-icon-search"
+																	styleClass="ui-priority-primary" />
+
+																<p:commandButton icon="ui-icon-search"
+																	styleClass="ui-priority-primary" />
+															</p:row>
+														</p:columnGroup>
+
+													</h:panelGrid>
+
+
+												</p:dataGrid>
+											</p:column>
+											
+									</h:panelGrid>
+								</p:panel>
+							</p:tab>
+						</p:tabView>
+
+
+					</p:dialog>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+	</h:form>
+</h:body>
+</html>
+

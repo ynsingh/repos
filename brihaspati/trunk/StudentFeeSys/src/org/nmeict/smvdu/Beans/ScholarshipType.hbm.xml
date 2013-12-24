@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.ScholarshipType" table="scholarship_type" catalog="student_fees">
+        <id name="seqNo" type="java.lang.Integer">
+            <column name="seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="degreeTypeByDegreeSeqNo" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_seq_no" not-null="true" />
+        </many-to-one>
+        <many-to-one name="degreeTypeByDegreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <many-to-one name="otherFeeHeadMaster" class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" fetch="select">
+            <column name="scholarship_id" not-null="true" />
+        </many-to-one>
+        <property name="headCodePercentage" type="int">
+            <column name="head_code_percentage" not-null="true" />
+        </property>
+        <property name="scholarshipName" type="string">
+            <column name="scholarship_name" length="37" not-null="true" />
+        </property>
+        <property name="creatorId" type="int">
+            <column name="creator_id" not-null="true" />
+        </property>
+        <property name="modifierId" type="int">
+            <column name="modifier_id" not-null="true" />
+        </property>
+        <property name="createdDateTime" type="timestamp">
+            <column name="created_date_time" length="19" not-null="true" />
+        </property>
+        <property name="modifierDateTime" type="timestamp">
+            <column name="modifier_date_time" length="19" not-null="true" />
+        </property>
+        <property name="orgId" type="string">
+            <column name="org_id" length="35" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

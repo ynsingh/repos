@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 24, 2013 11:50:54 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.OrgImageDetails" table="org_image_details" catalog="student_fees">
+        <id name="imgSeqNo" type="java.lang.Integer">
+            <column name="img_seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfileByOrgId" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select" >
+            <column name="org_id" length="400" />
+        </many-to-one>
+        <many-to-one name="orgProfileByUserId" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select" >
+            <column name="user_id" length="400" />
+        </many-to-one>
+        <property name="imgPath" type="string">
+            <column name="img_path" length="500" />
+        </property>
+        <property name="imgName" type="string">
+            <column name="img_name" length="300" />
+        </property>
+        <property name="imgProfileFlag" type="java.lang.Byte">
+            <column name="img_profile_flag" />
+        </property>
+        <property name="upDate" type="date">
+            <column name="up_date" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>

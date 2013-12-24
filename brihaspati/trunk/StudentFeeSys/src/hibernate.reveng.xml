@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="student_fees"/>
+   <table-filter match-name="admin_fee_admin_master"/>
+  <table-filter match-name="other_fee_head_master"/>
+  <table-filter match-name="student_master"/>
+  <table-filter match-name="user_master"/>
+  <table-filter match-name="challan_master"/>
+  <table-filter match-name="org_logo_details"/>
+  <table-filter match-name="temp_final_report"/>
+  <table-filter match-name="org_department_type"/>
+  <table-filter match-name="branch_master"/>
+  <table-filter match-name="admin_email_config"/>
+  <table-filter match-name="semester_master"/>
+  <table-filter match-name="student_reg_master"/>
+  <table-filter match-name="org_image_details"/>
+  <table-filter match-name="scholarship_type"/>
+  <table-filter match-name="org_profile"/>
+  <table-filter match-name="mode_of_payment"/>
+  <table-filter match-name="degree_type"/>
+  <table-filter match-name="exam_code_set_up"/>
+  <table-filter match-name="mop_head_fields"/>
+  <table-filter match-name="course_group_master"/>
+  <table-filter match-name="student_fees_master"/>
+  <table-filter match-name="college_pending_status"/>
+  <table-filter match-name="admin_smtp_details"/>
+  <table-filter match-name="admin_records"/>
+  <table-filter match-name="bank_profile"/>
+  <table-filter match-name="org_login_details"/>
+  </hibernate-reverse-engineering>

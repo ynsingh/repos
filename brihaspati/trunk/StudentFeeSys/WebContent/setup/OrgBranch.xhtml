@@ -1,0 +1,149 @@
+
+<?xhtml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>TODO supply a title</title>
+</h:head>
+<style type="text/css">
+.ui-dialog-title
+{
+	
+	font-size: 15px;
+	font-weight: bold;
+}
+    	.ui-growl-title {
+    font-weight: bold;
+    font-size:12px;
+    padding: 0px 0px 7px;
+    display: block;
+}
+ .ui-corner-all {
+    border-radius: 0px 0px 0px 0px;
+}
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
+    border-color:red;
+}
+.ui-button ui-widget ui-state-default ui-corner-all
+{
+	background-color:#4D90FF; 
+}
+    </style>
+<h:body>
+
+	<h:form>
+	<p:growl id="growl" sticky="true"/> 
+		<p:panel>
+			<h:panelGrid columns="1">
+				<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" onclick="pnl.show();" value="Add New Branch" />
+				
+					<p:dataTable id="dataTable" var="dt"
+						style="font-size: 14px;font-weight: bold"
+						binding="#{branchMaster.dataGrid}"
+						value="#{branchMaster.listBranchMaster}" paginator="true"
+						rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+						<f:facet name="header">  
+            			Branch Type
+        			   </f:facet>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Branch Code" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.bmSeqNo}" />
+						</p:column>
+						<p:column filterBy="#{dt.branchName}">
+							<f:facet name="header">
+								<h:outputText value="Branch Name" />
+							</f:facet>
+							<p:inplace style="font-size: 12px; font-weight: bold;" id="domain" toggleable="true" editor="true">
+								<p:inputText style="font-size: 12px; font-weight: bold;" value="#{dt.branchName}" />
+							</p:inplace>
+
+						</p:column>
+						<p:column filterBy="#{dt.departmentName}">
+							<f:facet name="header">
+								<h:outputText value="Department Name" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.departmentName}" />
+						</p:column>
+
+						<p:column filterBy="#{dt.degreeName}">
+							<f:facet name="header">
+								<h:outputText value="Degree Name" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.degreeName}" />
+						</p:column>
+						<p:column filterBy="#{dt.bmDegreeCreaterId}">
+							<f:facet name="header">
+								<h:outputText value="Branch Creater Id" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.bmDegreeCreaterId}" />
+						</p:column>
+						<p:column filterBy="#{dt.bmCreaterDate}">
+							<f:facet name="header">
+								<h:outputText value="Branch Creater Time" />
+							</f:facet>
+							<h:outputText style="font-size: 12px; font-weight: bold;" value="#{dt.bmCreaterDate}" />
+						</p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="Available action" />
+                                                    </f:facet>
+                                                    <p:commandLink value="Delete" action="#{branchMaster.delete(dt)}"/>
+                                                </p:column>
+					</p:dataTable>
+					<f:facet name="footer">
+						<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" update="dataTable,growl" action="#{branchMaster.update}"/>
+					</f:facet>
+			
+
+			</h:panelGrid>
+	</p:panel>
+		<p:dialog resizable="false" header="Add New Type" width="380" height="140"
+			widgetVar="pnl" modal="true">
+			<h:panelGrid columns="2">
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Department Type " />
+				<p:selectOneMenu
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{branchMaster.departmentTypeCode}" 
+					valueChangeListener="#{orgDegreeType.changeDegreeCode}"
+					>
+					
+					<f:selectItems value="#{orgDepartmentType.items}"/>
+                     <p:ajax event="change" update="@this di"/>
+				</p:selectOneMenu>
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Degree Type " />
+				<p:selectOneMenu
+					id="di"
+					style="width: 160px;font-size: 14px; font-weight: bold;"
+					value="#{branchMaster.degreeTypeCode}">
+					 <f:selectItem itemLabel="Select Degree" itemValue="0"/>
+					<f:selectItems value="#{orgDegreeType.items}" />
+				</p:selectOneMenu>
+				<h:outputText style="font-size: 12px; font-weight: bold;" value="Branch Name " />
+                                <p:inputText style="font-size: 14px; font-weight: bold;width:158px;" value="#{branchMaster.branchName}" required="true" requiredMessage="Please Enter Branch Name."/>
+				<f:facet name="footer">
+					<p:commandButton style="font-size:14px;font-weight: bold;" update="growl" value="Save" action="#{branchMaster.saveBranch}" />
+					<p:commandButton style="font-size:14px;font-weight: bold;" value="Close" onclick="pnl.hide();" />
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+
+		<p:dialog widgetVar="dialog" modal="true">
+			<h:panelGrid id="display" columns="2" cellpadding="5">
+
+
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

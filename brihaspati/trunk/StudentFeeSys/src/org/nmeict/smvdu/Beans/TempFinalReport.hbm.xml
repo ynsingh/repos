@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.TempFinalReport" table="temp_final_report" catalog="student_fees">
+        <id name="seqNo" type="java.lang.Integer">
+            <column name="seq_no" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <property name="date" type="date">
+            <column name="date" length="10" not-null="true" />
+        </property>
+        <property name="challanNo" type="int">
+            <column name="challan_no" not-null="true" />
+        </property>
+        <property name="challanDate" type="date">
+            <column name="challan_date" length="10" not-null="true" />
+        </property>
+        <property name="studentOpbalAmt" type="double">
+            <column name="student_opbal_amt" precision="15" not-null="true" />
+        </property>
+        <property name="balance" type="double">
+            <column name="balance" precision="15" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

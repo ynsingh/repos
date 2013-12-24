@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 12, 2013 3:27:01 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.StudentMaster" table="student_master" catalog="student_fees">
+        <id name="smSeqId" type="java.lang.Integer">
+            <column name="sm_seq_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="otherFeeHeadMaster" class="org.nmeict.smvdu.Beans.OtherFeeHeadMaster" fetch="select">
+            <column name="fee_head_code" />
+        </many-to-one>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" />
+        </many-to-one>
+        <many-to-one name="semesterMaster" class="org.nmeict.smvdu.Beans.SemesterMaster" fetch="select">
+            <column name="sem_code" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_code" />
+        </many-to-one>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="department_id" />
+        </many-to-one>
+        <many-to-one name="branchMaster" class="org.nmeict.smvdu.Beans.BranchMaster" fetch="select">
+            <column name="branch_id" />
+        </many-to-one>
+        <property name="entryNo" type="string">
+            <column name="entry_no" length="20" />
+        </property>
+        <property name="batch" type="string">
+            <column name="batch" length="20" />
+        </property>
+        <property name="program" type="string">
+            <column name="program" length="20" />
+        </property>
+        <property name="studentOpbalAmount" type="java.lang.Double">
+            <column name="student_opbal_amount" precision="15" />
+        </property>
+    </class>
+</hibernate-mapping>

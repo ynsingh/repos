@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.OrgLogoDetails" table="org_logo_details" catalog="student_fees">
+        <id name="orgId" type="string">
+            <column name="org_id" length="400" />
+            <generator class="foreign">
+            	<param name="property">orgProfile</param>
+            </generator>
+        </id>
+        <one-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" cascade="all"></one-to-one>
+        <property name="orgWeb" type="string">
+            <column name="org_web" length="300" not-null="true" unique="true" />
+        </property>
+        <property name="orgLogo" type="binary">
+            <column name="org_logo" sql-type="mediumblob"/>
+        </property>
+        <property name="logoFormat" type="string">
+            <column name="logo_format" length="20" />
+        </property>
+        <property name="fileName" type="string">
+            <column name="file_name" length="300" />
+        </property>
+    </class>
+</hibernate-mapping>

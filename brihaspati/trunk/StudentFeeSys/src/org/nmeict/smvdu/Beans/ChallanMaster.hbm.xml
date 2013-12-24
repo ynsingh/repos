@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.ChallanMaster" table="challan_master" catalog="student_fees">
+        <id name="cmSeqId" type="java.lang.Integer">
+            <column name="cm_seq_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <property name="entryNo" type="string">
+            <column name="entry_no" length="20" not-null="true" />
+        </property>
+        <property name="examCode" type="string">
+            <column name="exam_code" length="20" not-null="true" />
+        </property>
+        <property name="challanNo" type="int">
+            <column name="challan_no" not-null="true" unique="true" />
+        </property>
+        <property name="challanDate" type="date">
+            <column name="challan_date" length="10" not-null="true" />
+        </property>
+        <property name="amount" type="float">
+            <column name="amount" precision="9" not-null="true" />
+        </property>
+        <property name="accountHead" type="string">
+            <column name="account_head" length="50" not-null="true" />
+        </property>
+        <property name="balance" type="double">
+            <column name="balance" precision="15" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

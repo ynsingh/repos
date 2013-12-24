@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 12, 2013 1:22:10 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.StudentRegMaster" table="student_reg_master" catalog="student_fees">
+        <id name="srmSeqId" type="java.lang.Integer">
+            <column name="srm_seq_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="orgDepartmentType" class="org.nmeict.smvdu.Beans.OrgDepartmentType" fetch="select">
+            <column name="department_code" />
+        </many-to-one>
+        <many-to-one name="semesterMaster" class="org.nmeict.smvdu.Beans.SemesterMaster" fetch="select">
+            <column name="sem_code" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <many-to-one name="branchMaster" class="org.nmeict.smvdu.Beans.BranchMaster" fetch="select">
+            <column name="branch_code" />
+        </many-to-one>
+        <property name="entryNo" type="string">
+            <column name="entry_no" not-null="true" length="100"/>
+        </property>
+        <property name="regNo" type="string">
+            <column name="reg_no" length="15" not-null="true" />
+        </property>
+        <property name="formNo" type="int">
+            <column name="form_no" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

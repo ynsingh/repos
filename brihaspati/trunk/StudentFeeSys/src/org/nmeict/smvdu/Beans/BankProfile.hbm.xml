@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.BankProfile" table="bank_profile" catalog="student_fees">
+        <id name="bankIfscCode" type="string">
+            <column name="bank_ifsc_code" length="60" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <property name="seqNo" type="int">
+            <column name="seq_no" not-null="true" unique="true" />
+        </property>
+        <property name="bankName" type="string">
+            <column name="bank_name" length="60" not-null="true" />
+        </property>
+        <property name="bankAddress" type="string">
+            <column name="bank_address" length="60" not-null="true" />
+        </property>
+        <property name="branchName" type="string">
+            <column name="branch_name" length="60" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

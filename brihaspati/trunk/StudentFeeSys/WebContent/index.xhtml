@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        <title>Facelet Title</title>
+        <style type="text/css">
+    	.ui-growl-title {
+    font-weight: bold;
+    font-size:12px;
+    padding: 0px 0px 7px;
+    display: block;
+}
+.ui-panel-titlebar
+{
+	background: url("img/bkg-body.png");
+}
+ .ui-corner-all {
+    border-radius: 0px 0px 0px 0px;
+}
+.ui-inputfield .ui-inputtext .ui-widget .ui-state-default .ui-corner-all .ui-input-invalid {
+    border-color:red;
+    font-size:12px;
+}
+.ui-panel-title
+{
+	color:#FFF;
+}
+    </style>
+    </h:head>
+    
+    <h:body>
+        
+        <p:layout fullPage="true" style="min-width: 400px;min-height: 400px;border:none;"> 
+            <p:layoutUnit position="north" size="180" style="border:none;">
+                <h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG"/>
+            </p:layoutUnit>
+            <p:layoutUnit position="east" size="400" style="border:none;">
+                <h:form>
+                <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:panel style="border: none;margin-top:50px;">
+                        <f:facet name="header">
+                            <h:outputText value="Login Here"/>
+                        </f:facet>
+                        <h:panelGrid columns="2">
+                            <h:outputText style="font-size:15px;font-weight: bold;" value="Org Name"/>
+                           <p:autoComplete 
+                            styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" 
+                            completeMethod="#{orgLogoDetails.details}" 
+                            value="#{orgLoginDetails.orgId}" 
+                            style="font-size:15px;font-weight: bold;color: #4B4B4B; width: 220px;"
+                             var="orgDe" forceSelection="true" itemLabel="#{orgDe.orgName}" itemValue="#{orgDe.orgId}">
+                                <p:column>
+                                    <h:outputText style="font-size:11px;font-weight:bold;" value="#{orgDe.orgName}"></h:outputText>
+                                </p:column> 
+                                <p:column>
+                                <h:outputText style="font-size:11px;font-weight:bold;" value="#{orgDe.orgWeb}"/>
+                                </p:column>
+                            </p:autoComplete>
+                            <h:outputText style="font-size:15px;font-weight: bold;" value="Email Id"/>
+                            <p:inputText styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" id="emailid" value="#{orgLoginDetails.adminId}"/>
+                            <h:outputText style="font-size:15px;font-weight: bold;" value="Password"/>
+                            <p:password styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" id="password" value="#{orgLoginDetails.orgPassword}"/>
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton value="Login" icon="ui-icon-disk" style="font-size:14px;font-weight: bold;" action="#{orgLoginDetails.validate}" update="growl"/>
+                            
+                            <p:commandButton value="Register New College" icon="ui-icon-disk" style="font-size:14px;font-weight: bold;" action="OrgProfile/RegisterProfile.xhtml"/>
+                        </f:facet>
+                    </p:panel>
+                    <p:tooltip style="font-size:12px;font-weight: bold;color: #4B4B4B;" for="emailid" value="Your Email Id Should Be Same As You Have Registered In Brihaspati" showEffect="clip" hideEffect="explode" />
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" style="border:none;">
+
+            </p:layoutUnit>
+        </p:layout>
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
+                              draggable="false" closable="false">  
+                        <p:graphicImage value="img/ajaxloadingbar.gif" />  
+                    </p:dialog> 
+                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+    </h:body>
+</html>
+

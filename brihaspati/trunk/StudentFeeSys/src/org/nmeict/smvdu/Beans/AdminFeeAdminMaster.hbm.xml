@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 30, 2013 9:21:43 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.nmeict.smvdu.Beans.AdminFeeAdminMaster" table="admin_fee_admin_master" catalog="student_fees">
+        <id name="feeHeadCode" type="java.lang.Integer">
+            <column name="fee_head_code" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="orgProfile" class="org.nmeict.smvdu.Beans.OrgProfile" fetch="select">
+            <column name="org_id" length="400" not-null="true" />
+        </many-to-one>
+        <many-to-one name="degreeType" class="org.nmeict.smvdu.Beans.DegreeType" fetch="select">
+            <column name="degree_type" not-null="true" />
+        </many-to-one>
+        <many-to-one name="examCodeSetUp" class="org.nmeict.smvdu.Beans.ExamCodeSetUp" fetch="select">
+            <column name="semester_code" />
+        </many-to-one>
+        <property name="feeHeadName" type="string">
+            <column name="fee_head_name" length="60" not-null="true" />
+        </property>
+        <property name="feeHeadValue" type="double">
+            <column name="fee_head_value" precision="15" not-null="true" />
+        </property>
+        <property name="branchCode" type="string">
+            <column name="branch_code" length="20" />
+        </property>
+        <property name="departmentCode" type="string">
+            <column name="department_code" length="20" />
+        </property>
+        <property name="payableStatus" type="java.lang.Byte">
+            <column name="payable_status" />
+        </property>
+        <property name="programId" type="string">
+            <column name="program_id" length="20" />
+        </property>
+        <set name="studentFeesMasters" inverse="true">
+            <key>
+                <column name="fee_head_code" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="org.nmeict.smvdu.Beans.StudentFeesMaster" />
+        </set>
+    </class>
+</hibernate-mapping>
