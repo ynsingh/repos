@@ -21,7 +21,7 @@ class User extends Controller {
 		}
 		else{
 
-			$setup_login = read_file('config/sqlscripts/createtable_bgasuser-20130920.sql');
+			$setup_login = read_file('system/application/controllers/admin/createtable_bgasuser.sql');
 	                $setup_login_array = explode(";", $setup_login);
         	        foreach($setup_login_array as $row)
                 	{

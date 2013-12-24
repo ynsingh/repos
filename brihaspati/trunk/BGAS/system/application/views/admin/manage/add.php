@@ -8,6 +8,18 @@
 	echo "<br />";
 	echo "<span class=\"form-help-text\">Example : prashant0708</span>";
 	echo "</p>";
+	
+	echo "<p>";
+        echo form_label('Organisation Name', 'org_name');
+        echo "<br />";
+        echo form_input($org_name);
+        echo "</p>";
+        
+        echo "<p>";
+        echo form_label('Account Unit Name', 'unit_name');
+        echo "<br />";
+        echo form_input($unit_name);
+        echo "</p>";
 
 	echo "<p>";
 	echo form_label('Database Name', 'database_name');

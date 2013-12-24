@@ -1,7 +1,7 @@
-INSERT INTO `groups` VALUES (1,'10',0,'Liabilities and Owners Equity',0,0);
-INSERT INTO `groups` VALUES (2,'20',0,'Assets',0,0);
-INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0);
-INSERT INTO `groups` VALUES(4,'40',0,'Expenses',0,0);
+INSERT INTO `groups` VALUES (1,'10',0,'Liabilities and Owners Equity',0,0,0);
+INSERT INTO `groups` VALUES (2,'20',0,'Assets',0,0,0);
+INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0,0);
+INSERT INTO `groups` VALUES(4,'40',0,'Expenses',0,0,0);
 INSERT INTO budgets VALUES (1, '50', 0, 'Main Budget', 0.00, 'Yearly', 0,0);
 INSERT INTO projection VALUES(1, '60', 0, 'Target Projection', 0.00, 'Yearly', 0.00);
 

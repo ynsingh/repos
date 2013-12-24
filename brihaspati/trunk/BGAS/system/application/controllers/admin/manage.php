@@ -56,6 +56,23 @@ class Manage extends Controller {
 			'value' => '',
 		);
 
+		$data['org_name'] = array(
+                        'name' => 'org_name',
+                        'id' => 'org_name',
+                        'maxlength' => '200',
+                        'size' => '30',
+                        'value' => '',
+                );
+
+                $data['unit_name'] = array(
+                        'name' => 'unit_name',
+                        'id' => 'unit_name',
+                        'maxlength' => '200',
+                        'size' => '30',
+                        'value' => '',
+                );
+
+
 		$data['database_name'] = array(
 			'name' => 'database_name',
 			'id' => 'database_name',
@@ -100,6 +117,9 @@ class Manage extends Controller {
 		if ($_POST)
 		{
 			$data['database_label']['value'] = $this->input->post('database_label', TRUE);
+			$data['org_name']['value'] = $this->input->post('org_name', TRUE);
+                        $data['unit_name']['value'] = $this->input->post('unit_name', TRUE);
+
 			$data['database_name']['value'] = $this->input->post('database_name', TRUE);
 			$data['database_username']['value'] = $this->input->post('database_username', TRUE);
 			$data['database_password']['value'] = $this->input->post('database_password', TRUE);
@@ -109,6 +129,8 @@ class Manage extends Controller {
 
 		/* Form validations */
 		$this->form_validation->set_rules('database_label', 'Label', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
+		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[5]|max_length[200]|alpha_numeric');
+                $this->form_validation->set_rules('unit_name', 'Unit Name', 'trim|required|min_length[2]|max_length[200]|alpha_numeric');
 		$this->form_validation->set_rules('database_name', 'Database Name', 'trim|required');
 
 		/* Validating form */
@@ -122,6 +144,8 @@ class Manage extends Controller {
 		{
 			$data_database_label = $this->input->post('database_label', TRUE);
 			$data_database_label = strtolower($data_database_label);
+			$data_org_name = $this->input->post('org_name', TRUE);
+                        $data_unit_name = $this->input->post('unit_name', TRUE);
 			$data_database_type = 'mysql';
 			$data_database_host = $this->input->post('database_host', TRUE);
 			$data_database_port = $this->input->post('database_port', TRUE);
@@ -129,6 +153,33 @@ class Manage extends Controller {
 			$data_database_username = $this->input->post('database_username', TRUE);
 			$data_database_password = $this->input->post('database_password', TRUE);
 
+			/* Adding org name unit name year and database name in login database */
+			
+				$date=Date("Y");
+                                $tablebad="bgasAccData";
+                                $db1=$this->load->database('login', TRUE);
+                                $db1->trans_start();
+                                $insert_data = array(
+                                        'organization'=> $data_org_name,
+                                        'unit'=>  $data_unit_name,
+                                        'databasename' =>  $data_database_name,
+                                        'year' =>$date ,
+                                );
+
+                                if ( ! $db1->insert($tablebad, $insert_data))
+                                {
+                                        $db1->trans_rollback();
+                                        $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+                                        $this->template->load('admin_template', 'admin/create', $data);
+                                        return;
+                                } else {
+                                        $db1->trans_complete();
+                                        $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
+
+                                }
+                                $db1->close();
+
+			/* Adding account settings to file. Code copied from manage controller */
 			$ini_file = $this->config->item('config_path') . "accounts/" . $data_database_label . ".ini";
 
 			/* Check if database ini file exists */
@@ -142,6 +193,7 @@ class Manage extends Controller {
 			$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
 
 			$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
+			// add entry in login database for generatig report
 
 			/* Writing the connection string to end of file - writing in 'a' append mode */
 			if ( ! write_file($ini_file, $con_details))
@@ -258,6 +310,23 @@ class Manage extends Controller {
 
 		/* Form validations */
 		$this->form_validation->set_rules('database_name', 'Database Name', 'trim|required');
+
+		// get the values from database and displayed
+		$db1=$this->load->database('login', TRUE);
+		$db1->select('organization,unit')->from('bgasAccData')->where('databasename',($this->input->post('database_name', TRUE)));
+		$query = $db1->get();
+		$data['org_name']='';
+		$data['unit_name']='';
+		if ($query->num_rows() > 0){
+			foreach($query->result() as $row){
+				$data['org_name'] = $row -> organization;
+				$data['unit_name'] = $row -> unit; 
+			}
+		}
+		else{
+			 $this->messages->add('Organization name and unit name not exist','error');
+		}
+		$db1->close();
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)

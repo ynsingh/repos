@@ -190,9 +190,44 @@ class Logo extends Controller {
 					}
 				}//new if		
 	//			return;
+			}//else
+
+			//get the id of this institute and accounting unit from bgasAccData under login
+			$db1=$this->load->database('login', TRUE);
+			$db1->select('id')->from('bgasAccData')->where('organization',$data_ins_name )->where('unit',$data_uni_name));
+	                $query = $db1->get();
+                	if ($query->num_rows() > 0){
+                       		foreach($query->result() as $row){
+                                	$idl = $row -> id;
+        	                }
+                	}
+                	else{
+                        	$this->messages->add('Organization name and unit name not exist inside logo.php','error');
+				$db1->close();
+				redirect('setting/logo');
+				return;
+                	}
+
+			// update data in bgasAccData under login database
+			$this->db1->trans_start();
+                        $update_data = array(
+                                'organization' => $data_ins_name,
+                                'unit' => $data_uni_name
+                        );
+                        if (!$this->db1->where('id', $idl)->update('bgasAccData', $update_data))
+                        {
+                                $this->db1->trans_rollback();
+                                $this->messages->add('Error updating Institute and unit name in bgasAccData under login database.', 'error');
+                                $this->logger->write_message("error", "Error updating Institute and unit name in bgasAccData under login database.");
+                                $this->template->load('template', 'setting/logo', $data);
+                                return;
+                        } else {
+                                $this->db1->trans_complete();
+                                $this->messages->add('Institute and unit name updated in bgasAccData under login database.', 'success');
 			}
-		}
-		 redirect('setting/logo');
+			$db1->close();
+
+		redirect('setting/logo');
 		$this->template->load('template', 'setting/logo', $data);
 		return;
 	}

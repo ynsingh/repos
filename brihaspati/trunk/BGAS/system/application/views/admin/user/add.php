@@ -2,7 +2,7 @@
 	echo form_open('admin/user/add');
 
 	echo "<p>";
-	echo form_label('Username', 'user_name');
+	echo form_label('Username (E-mail ID)', 'user_name');
 	echo "<br />";
 	echo form_input($user_name);
 	echo "</p>";

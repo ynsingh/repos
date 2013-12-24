@@ -8,6 +8,18 @@
 	echo "</p>";
 
 	echo "<p>";
+        echo "Organisation Name";
+        echo "<br />";
+        echo $org_name;
+        echo "</p>";
+        
+        echo "<p>";
+        echo "Account Unit Name";
+        echo "<br />";
+        echo $unit_name;
+        echo "</p>";
+
+	echo "<p>";
 	echo form_label('Database Name', 'database_name');
 	echo "<br />";
 	echo form_input($database_name);

@@ -42,6 +42,24 @@ class Create extends Controller {
 			'size' => '30',
 			'value' => '',
 		);
+
+		$data['org_name'] = array(
+                        'name' => 'org_name',
+                        'id' => 'org_name',
+                        'maxlength' => '200',
+                        'size' => '30',
+                        'value' => '',
+                );
+
+		$data['unit_name'] = array(
+                        'name' => 'unit_name',
+                        'id' => 'unit_name',
+                        'maxlength' => '200',
+                        'size' => '30',
+                        'value' => '',
+                );
+
+
 		$data['account_name'] = array(
 			'name' => 'account_name',
 			'id' => 'account_name',
@@ -141,6 +159,8 @@ class Create extends Controller {
 
 		/* Form validations */
 		$this->form_validation->set_rules('account_label', 'Label', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
+		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[5]|max_length[200]|alpha_numeric');
+		$this->form_validation->set_rules('unit_name', 'Unit Name', 'trim|required|min_length[2]|max_length[200]|alpha_numeric');
 		$this->form_validation->set_rules('account_name', 'Account Name', 'trim|required|min_length[2]|max_length[100]');
 		$this->form_validation->set_rules('account_address', 'Account Address', 'trim|max_length[255]');
 		$this->form_validation->set_rules('account_email', 'Account Email', 'trim|valid_email');
@@ -162,6 +182,8 @@ class Create extends Controller {
 		if ($_POST)
 		{
 			$data['account_label']['value'] = $this->input->post('account_label', TRUE);
+			$data['org_name']['value'] = $this->input->post('org_name', TRUE);
+			$data['unit_name']['value'] = $this->input->post('unit_name', TRUE);
 			$data['account_name']['value'] = $this->input->post('account_name', TRUE);
 			$data['account_address']['value'] = $this->input->post('account_address', TRUE);
 			$data['account_email']['value'] = $this->input->post('account_email', TRUE);
@@ -191,6 +213,8 @@ class Create extends Controller {
 		{
 			$data_account_label = $this->input->post('account_label', TRUE);
 			$data_account_label = strtolower($data_account_label);
+			$data_org_name = $this->input->post('org_name', TRUE);
+			$data_unit_name = $this->input->post('unit_name', TRUE);
 			$data_account_name = $this->input->post('account_name', TRUE);
 			$data_account_address = $this->input->post('account_address', TRUE);
 			$data_account_email = $this->input->post('account_email', TRUE);
@@ -338,7 +362,7 @@ class Create extends Controller {
 
 				/* Adding account settings */
 				$newacc->trans_start();
-				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, '', '', '')))
+				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name)))
 				{
 					$newacc->trans_rollback();
 					$this->messages->add('Error adding account settings.', 'error');
@@ -348,6 +372,33 @@ class Create extends Controller {
 					$newacc->trans_complete();
 					$this->messages->add('Added account settings.', 'success');
 				}
+
+				/* Adding org name unit name year and database name in login database */
+
+				$date=Date("Y");
+				$tablebad="bgasAccData";
+				$db1=$this->load->database('login', TRUE);
+                                $db1->trans_start();
+                                $insert_data = array(
+	                                'organization'=> $data_org_name,
+                                        'unit'=>  $data_unit_name,
+                                        'databasename' =>  $data_database_name,
+                                        'year' =>$date ,
+                                );
+
+                                if ( ! $db1->insert($tablebad, $insert_data))
+                                {
+                                	$db1->trans_rollback();
+                                        $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+					$db1->close();
+                                        $this->template->load('admin_template', 'admin/create', $data);
+                                        return;
+                                } else {
+                                        $db1->trans_complete();
+                                        $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
+
+                                }
+                                $db1->close();
 
 				/* Adding account settings to file. Code copied from manage controller */
 				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
