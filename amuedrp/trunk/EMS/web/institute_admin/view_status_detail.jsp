@@ -225,7 +225,18 @@ if (!rst.isEmpty()){
 
               </tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><br><br><br><br><br><br></td>
-                     <td align="<%=align%>" dir="<%=rtl%>">&nbsp;&nbsp;<input type="submit" name="submit" class="txt2" value="<%=resource.getString("changestatus")%>"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>
+                     <td align="<%=align%>" dir="<%=rtl%>">
+                         <% if(session.getAttribute("del")!= null){
+                                    session.removeAttribute("del");
+                                %>
+                         <input type="submit" name="submit" class="txt2" value="Delete"/>&nbsp;&nbsp;
+                         <% }
+                            else {
+                            %>
+                         <input type="submit" name="submit" class="txt2" value="<%=resource.getString("changestatus")%>"/>
+                         <% } %>
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>
                 </tr>
 
             </table>
@@ -240,8 +251,9 @@ if (!rst.isEmpty()){
     function quit()
 {
     //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
-    window.top.document.getElementById("pagetab").height = prevheight;
-    location.href="<%=request.getContextPath()%>/block_managers.do";
+    <%--window.top.document.getElementById("pagetab").height = prevheight;--%>
+    <%--location.href="<%=request.getContextPath()%>/institute_admin/block_managergrid.jsp";--%>
+            top.location="<%=request.getContextPath()%>/institute_admin/institute_admin_home.jsp";
 }
 
 function funload()

@@ -11,6 +11,8 @@ import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.SetVoter;
 import com.myapp.struts.instituteAdmin;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +43,16 @@ session.removeAttribute("election_id");
         request.setAttribute("voting", voting);
       String inst = (String)session.getAttribute("institute_id");
       ElectionDAO e=new ElectionDAO();
-      
 
-Election obj=(Election)e.Electionname(inst,election);
+    
 
-if(obj!=null && obj.getStatus().equalsIgnoreCase("started"))
+
+Calendar c1 = Calendar.getInstance();
+        Date d1 = c1.getTime();
+
+        Election obj=(Election)e.Electionname(inst,election);
+        System.out.println("jjjjjjjjjjjjjjjk"+obj.getEndDate());
+if(obj!=null && obj.getStatus().equalsIgnoreCase("started")&& obj.getEndDate().after(d1) )
 {
     String staff_id=(String)session.getAttribute("staff_id");
 
@@ -78,13 +85,10 @@ return mapping.findForward("success3");
     return mapping.findForward("success");
 
     }
-
-
-
 }
 else
 {
-    request.setAttribute("msgerr", "Sorry In Selected Election Voting Activity is not in-process");
+request.setAttribute("msgerr", "Sorry In Selected Election Voting Activity is not in-process");
 
 String role=(String)session.getAttribute("login_role");
 if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))

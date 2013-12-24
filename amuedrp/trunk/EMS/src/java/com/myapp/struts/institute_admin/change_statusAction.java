@@ -27,10 +27,13 @@ public class change_statusAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    private static final String SUCCESS1 = "success1";
     private String status;
     private String manager_id;
     private String institute_id;
     private String name;
+    private String submit;
+    private String staffId;
     private final ExecutorService executor=Executors.newFixedThreadPool(1);
     Email obj;
     private String admin_email;
@@ -50,10 +53,6 @@ public class change_statusAction extends org.apache.struts.action.Action {
         try{
 
 
-
-
-
-
         try{
 locale1=(String)session.getAttribute("locale");
 
@@ -69,12 +68,18 @@ locale1=(String)session.getAttribute("locale");
     else{ rtl="RTL";page=false;align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-
+System.out.println("button issssss  ppppppppppppp ");
             Election_Manager_StaffDetail ems= new Election_Manager_StaffDetail();
             StaffManagerDAO staffmanagerdao=new StaffManagerDAO();
              ElectionManagerDAO managerdao=new ElectionManagerDAO();
-String instituteId = (String)session.getAttribute("institute_id");
-              manager_id=electionManagerForm.getManager_id();
+            String instituteId = (String)session.getAttribute("institute_id");
+           submit=electionManagerForm.getsubmit();
+            System.out.println("button issssss   "+ submit);
+
+              if(submit!=null && submit.equals("Change Status"))
+              {
+
+               manager_id=electionManagerForm.getManager_id();
               //institute_id=electionManagerForm.getInstitute_id();
             status=electionManagerForm.getStatus();
 
@@ -90,10 +95,35 @@ String instituteId = (String)session.getAttribute("institute_id");
             name=ems.getStaffDetail().getFirstName() + " "+ems.getStaffDetail().getLastName();
 
             staffmanagerdao.update(ems);
-
+            
             String msg=resource.getString("status_changed_succeccfully");
              request.setAttribute("msg", msg);
+              }
+              else  if(submit!=null && submit.equals("Delete"))
+              {
+                   manager_id=electionManagerForm.getManager_id();
+                   System.out.println("manager idddddddddddd  "+manager_id);
+             
+                staffId=electionManagerForm.getStaff_id();
+            System.out.println("beforeeeeeeeeeeeee");
 
+         List<Election_Manager_StaffDetail> lstManager= (List<Election_Manager_StaffDetail>)managerdao.GetManagerDetails(manager_id,instituteId);
+            System.out.println("afterrrrrrrrrrrrrrr");
+                        if(!lstManager.isEmpty())
+                {
+                    ems = (Election_Manager_StaffDetail)lstManager.get(0);
+                   
+                }
+             System.out.println("afterrrrrrrrrrrrrrr iffffffffffff");
+           // ems.getElectionManager().setStaffId(staffId);
+
+           
+            staffmanagerdao.delete(ems);
+
+            String msg="Election Manager Deleted Successfully.";
+             request.setAttribute("msg", msg);
+             return mapping.findForward(SUCCESS1);
+              }
         }
         catch(Exception e){
         }
@@ -106,7 +136,7 @@ String instituteId = (String)session.getAttribute("institute_id");
                     obj.send();
                 }
             });
-System.out.println();
+            System.out.println();
 
         return mapping.findForward(SUCCESS);
     }

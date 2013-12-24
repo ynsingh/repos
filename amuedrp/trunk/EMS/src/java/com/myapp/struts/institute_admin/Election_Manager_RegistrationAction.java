@@ -81,7 +81,7 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
         department=ManagerRegistrationForm.getDepartment();
        // staff_id=ManagerRegistrationForm.getStaff_id();
        // manager_id=ManagerRegistrationForm.getManager_id();
-
+       institute_id=(String) session.getAttribute("institute_id");
         //auto generated Manager ID & Staff ID
 
         staff_id=(String)ElectionDAO.returnMaxElectionManagerId(institute_id);

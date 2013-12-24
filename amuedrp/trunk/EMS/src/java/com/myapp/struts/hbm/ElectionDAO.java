@@ -72,9 +72,8 @@ String id="";
             LogicalExpression le = Restrictions.and(a, b);
             LogicalExpression le1 = Restrictions.and(le, c);
 
-
             Integer maxbiblio = criteria.add(le1).setProjection(Projections.count("id.ruleId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.ruleId")).uniqueResult().toString());
-           System.out.println(maxbiblio);
+            System.out.println(maxbiblio);
 
             if (maxbiblio == null) {
                 maxbiblio = 1;
@@ -102,12 +101,19 @@ String id="";
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
+
             Criteria criteria = session.createCriteria(ElectionManager.class);
             Criterion a = Restrictions.eq("id.instituteId", institute_id);
+            System.out.println("fffffffff  "+institute_id);
+            System.out.println("dddddddddd sd  "+criteria.add(a).setProjection(Projections.count("id.instituteId")).uniqueResult().toString());
+            List tx = null;
+            Query query = session.createQuery("select max(cast(id.managerId as int)) FROM ElectionManager  where id.instituteId= :instituteid");
 
-           
-            Integer maxbiblio = criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.managerId")).uniqueResult().toString());
-           System.out.println(maxbiblio);
+                query.setString("instituteid",institute_id);
+                tx= query.list();
+                System.out.println("vvvvvvvvvvvvvvvv "+tx.get(0));
+            Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.instituteId")).uniqueResult().toString())==0?0:Integer.valueOf(tx.get(0).toString());
+            System.out.println(maxbiblio);
 
             if (maxbiblio == null) {
                 maxbiblio = 1;
@@ -116,11 +122,36 @@ String id="";
             }
 
            id=String.valueOf(maxbiblio);
-            session.getTransaction().commit();
-        }
-        catch(Exception e){
-        e.printStackTrace();
 
+                session.getTransaction().commit();
+
+
+//            Query query = session.createQuery("select max(cast(id.managerId as decimal)) from  com.myapp.struts.hbm.ElectionManager where id.instituteId= :instituteid");
+//
+//
+//
+//            query.setString("instituteid", institute_id);
+//         List <ElectionManager> obj= (List <ElectionManager>) query.list();
+//            session.getTransaction().commit();
+          //Integer v=(Integer) obj.get(0);
+            
+            
+//            Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.instituteId")).uniqueResult().toString())==0?0:Integer.valueOf(criteria.add(a).setProjection(Projections.max("id.managerId")).uniqueResult().toString());
+//            System.out.println(maxbiblio);
+//
+//            if (maxbiblio == null) {
+//                maxbiblio = 1;
+//            } else {
+//                maxbiblio++;
+//            }
+//
+//           id=String.valueOf(maxbiblio);
+//            session.getTransaction().commit();
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
         finally {
             session.close();
@@ -211,8 +242,6 @@ String id="";
             query.setString("instituteid", instituteId);
             query.executeUpdate();
             tx.commit();
-
-
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -453,9 +482,7 @@ else{             PagingAction o=new PagingAction(query,pageNumber,100);
 obj= (List<Election>) query.list();
 // System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
 }
-
-
-            
+       
             session.getTransaction().commit();
         }
     catch(RuntimeException e){

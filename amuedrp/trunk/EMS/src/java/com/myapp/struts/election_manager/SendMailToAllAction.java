@@ -203,7 +203,7 @@ return mapping.findForward(SUCCESS1);
  {
       List<VoterCandidate> rs =candidatedao.GetDetails1(institute_id,"REGISTERED",enrollment);
       userid=(String)session.getAttribute("user_id");
-System.out.println(rs.size()+"...................");
+System.out.println(rs.size()+" aaaaaaaaaaa...................");
            
 
                 VoterCandidate temp=new VoterCandidate();
@@ -213,27 +213,30 @@ System.out.println(rs.size()+"...................");
                                 if(mailbody==null){
                                     System.out.println("Mailbody@@@@@@@@@@");
                                     request.setAttribute("msg1","Please Add Candidate Mail Body");
-                                    return mapping.findForward(SUCCESS);
+                                    return mapping.findForward(SUCCESS1);
 
                                 }
 
                 if(mailbody.isEmpty())
                 {
                    request.setAttribute("msg1","Please Add Candidate Mail Body");
-                   return mapping.findForward(SUCCESS);
+                    System.out.println("I am in last ssssddddd");
+                   return mapping.findForward(SUCCESS1);
                 }
-
+                
                 obj=new Email(temp.getVoterRegistration().getEmail(),"","Mail From Election Manager from EMS","Dear "+temp.getVoterRegistration().getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
                 obj.send();
-                 log.add("Mail Send to Primary Mail Id"+temp.getVoterRegistration().getEmail());
+                 log.add("Mail Send to Primary Mail Id "+temp.getVoterRegistration().getEmail());
+                
                if(temp.getVoterRegistration().getAlternateMail()!=null){
                 obj=new Email(temp.getVoterRegistration().getAlternateMail(),"","Mail From Election Manager from EMS","Dear "+temp.getVoterRegistration().getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
                 obj.sendAlternatemail();
-                 log.add("Mail Send to Alternate Mail Id"+temp.getVoterRegistration().getAlternateMail());
+                 log.add("Mail Send to Alternate Mail Id "+temp.getVoterRegistration().getAlternateMail());
                }
 
 
         request.setAttribute("msg2", log);
+        
         return mapping.findForward(SUCCESS1);
 
    }
@@ -263,11 +266,11 @@ System.out.println(rs.size()+"...................");
 
                 obj=new Email(temp.getEmail(),"","Mail From Election Manager from EMS","Dear "+temp.getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
                 obj.send();
-                 log.add("Mail Send to Primary Mail Id"+temp.getEmail());
+                 log.add("Mail Send to Primary Mail Id "+temp.getEmail());
                if(temp.getAlternateMail()!=null){
                 obj=new Email(temp.getAlternateMail(),"","Mail From Election Manager from EMS","Dear "+temp.getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
                 obj.sendAlternatemail();
-                 log.add("Mail Send to Alternate Mail Id"+temp.getAlternateMail());
+                 log.add("Mail Send to Alternate Mail Id "+temp.getAlternateMail());
                }
 
 
@@ -302,11 +305,11 @@ return mapping.findForward("success3");
 
                 obj=new Email(rs.getEmail(),"","Mail From Election Manager from EMS","Dear "+rs.getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
                 obj.send();
-                 log.add("Mail Send to Primary Mail Id"+rs.getEmail());
+                 log.add("Mail Send to Primary Mail Id "+rs.getEmail());
                if(rs.getAlternateMail()!=null){
                 obj=new Email(rs.getAlternateMail(),"","Mail From Election Manager from EMS","Dear "+rs.getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
                 obj.sendAlternatemail();
-                 log.add("Mail Send to Alternate Mail Id"+rs.getAlternateMail());
+                 log.add("Mail Send to Alternate Mail Id "+rs.getAlternateMail());
                }
 
 

@@ -56,7 +56,7 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
             positions+="<noofchoice>"+pos.getNumberOfChoice()+"</noofchoice>";
             positions+="<instruction>"+pos.getInstruction()+"</instruction>";
             List<Candidate1> candi = emailDAO.getCandidate(pos.getId().getPositionId(), electionid, instituteId);
-            if(candi!=null)
+            if(!candi.isEmpty())
             {
                 System.out.println("candi count="+candi.size());
                 
@@ -78,7 +78,13 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
                 }
                 
             }
-  
+            else{
+                System.out.println("in elsesssssssssssssssss");
+                positions=null;
+                positions="<positions>";
+                positions+="</positions>";
+                return null;
+            }
                 positions+="</position>";
         }
         

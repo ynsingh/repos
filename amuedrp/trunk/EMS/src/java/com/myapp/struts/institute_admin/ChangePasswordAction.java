@@ -6,6 +6,8 @@
 package com.myapp.struts.institute_admin;
 
 import com.myapp.struts.admin.AdminViewActionForm;
+import com.myapp.struts.hbm.AdminRegistration;
+import com.myapp.struts.hbm.AdminRegistrationDAO;
 import com.myapp.struts.hbm.Login;
 import com.myapp.struts.hbm.LoginDAO;
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +31,8 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
-    
-
-
-      private int registration_id ;
+    private static final String SUCCESS1 = "success1";
+private int registration_id ;
 private String institute_name ;
 private String abbreviated_name ;
 private String institute_address ;
@@ -61,6 +60,8 @@ private String staff_id;
 private String user_id;
 private String working_status;
 private String password;
+private String button;
+
  Locale locale=null;
     String locale1="en";
     String rtl="ltr";
@@ -98,7 +99,9 @@ private String password;
         institute_id=adminRegistrationActionForm.getInstitute_id();
         user_id=adminRegistrationActionForm.getUser_id();
         password=adminRegistrationActionForm.getPassword();
-
+        button=adminRegistrationActionForm.getButton();
+        institute_website=adminRegistrationActionForm.getInstitute_website();
+        System.out.println("helloooooooooooooooooooo "+institute_name);
         HttpSession session = request.getSession();
 
 
@@ -116,15 +119,54 @@ locale1=(String)session.getAttribute("locale");
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
     else{ rtl="RTL";page=false;align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    System.out.println("Button is "+button);
+        if(button!=null && button.equals("Update"))
+        {
+            AdminRegistrationDAO admindao = new AdminRegistrationDAO();
+            AdminRegistration admf=new AdminRegistration();
+            
+            System.out.println("Institute idddddddddddd is"+institute_id);
+            List<AdminRegistration> adm =admindao.getAdminDeatilsByInstituteId(institute_id);
+            if(adm!=null && !adm.isEmpty())
+            {
+                admf = (AdminRegistration)adm.get(0);
+                admf.setInstituteName(institute_name);
+                admf.setAbbreviatedName(abbreviated_name);
+                admf.setInstituteAddress(institute_address);
+                admf.setCourtesy(courtesy);
+                admf.setAdminFname(admin_fname);
+                admf.setAdminLname(admin_lname);
+                admf.setAdminDesignation(admin_designation);
+                admf.setCity(city);
+                admf.setState(state);
+                admf.setCountry(country);
+                admf.setMobileNo(mobile_no);
+                admf.setPin(pin);
+                admf.setLandLineNo(land_line_no);
+                admf.setGender(gender);
+                admf.setTypeOfInstitute(type_of_institute);
+                admf.setWebsite(institute_website);
+                        admindao.update(admf);
+                System.out.println("in ifffffffffffffff");
+                String msg=resource.getString("record_updated_successfully");
+                    request.setAttribute("msg",msg);
+                 return mapping.findForward(SUCCESS1);
+            }
+            else{
+            System.out.println("in elseeeeeeeeeee");
+            return mapping.findForward(SUCCESS1);
+            }
 
+        }
+        else{
         LoginDAO logindao= new LoginDAO();
         List<Login> login1 =logindao.getUser(user_id);
         if(login1!=null && !login1.isEmpty())
         {
         Login login = login1.get(0);
         String usr=login.getUserId();
-        
 
+        
         System.out.println("pass"+"usr");
         password = PasswordEncruptionUtility.password_encrupt(password);
         login.setPassword(password);
@@ -132,13 +174,18 @@ locale1=(String)session.getAttribute("locale");
         logindao.update(login);
         session.invalidate();
         String msg=resource.getString("password_change_loginagain");
- request.setAttribute("msg", msg);
+            System.out.println("message isssssssssaaaaaaaaaaaa ");
+        request.setAttribute("msg", msg);
+        System.out.println("message isssssssss ");
         return mapping.findForward(SUCCESS);
         }
         else
         {
+              System.out.println("message isssssssssbbbbbbbbbbbbbbbbb ");
             request.setAttribute("msg", "Invalid User name  or Password!");
         return mapping.findForward(SUCCESS);
         }
+    }
+//    return null;
     }
 }

@@ -856,14 +856,17 @@ document.write('</div></span>');
                <%-- <li>
                     <a href="<%=request.getContextPath()%>/institute_admin/search_update_election_manager.jsp"   onclick="return pageload(3);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("updateelectionmanager")%></a>
                 </li>--%>
-                <%--<li>
-                    <a href="<%=request.getContextPath()%>/delete_managers.do" target="page" onclick="return pageload(2);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Delete Election Manager<%=resource.getString("deleteelectionmanager")%></a>
-                </li>--%>
-               <%-- <li>
+               <% System.out.println("Hello i am in header"); %>
+                <li>
+                    <a href="<%=request.getContextPath()%>/institute_admin/search_election_manager_todelete.jsp" <%--target="page"--%> onclick="return pageload(2);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Delete Election Manager<%--<%=resource.getString("deleteelectionmanager")%>--%></a>
+                </li>
+                <% System.out.println("hiiiiiiiiiiiiiiiii"); %>
+               <%-- --%><li>
                     <a href="<%=request.getContextPath()%>/institute_admin/search_block_election_manager.jsp"  onclick="return pageload(2);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("blockmanager")%></a>
-                </li>--%>
+                </li><%----%>
             </ul>
         </li>
+        
         <li>
             <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b><%=resource.getString("view_electionmanager")%></b></a>
             <ul>
@@ -950,6 +953,7 @@ document.write('</div></span>');
 
                 </tr>
         </table>--%></div>
+            
             <%String msgmail=(String)request.getAttribute("msgmail");%>
 <%if(msgmail!=null){%><%=msgmail %><%}%>
     </body></html>

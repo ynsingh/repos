@@ -39,6 +39,15 @@ private String gender;
 private String user_id;
 private String password;
 private String button;
+private String website;
+
+public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
     public String getButton() {
         return button;

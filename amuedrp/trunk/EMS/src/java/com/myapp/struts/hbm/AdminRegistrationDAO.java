@@ -21,6 +21,27 @@ import org.hibernate.transform.Transformers;
  */
 public class AdminRegistrationDAO {
 
+    public List getAdminDeatilsByInstituteId(String instituteId){
+  Session session =null;
+    List obj = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            //int i = registrationId.intValue();
+            Query query = session.createQuery("FROM AdminRegistration where instituteId = :instituteId");
+           query.setString("instituteId",instituteId);
+            obj= query.list();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+        return obj;
+}
+
 
     public List getAdminDeatilsByInstituteName(String instituteName){
   Session session =null;
@@ -60,7 +81,7 @@ public class AdminRegistrationDAO {
    session.getTransaction().commit();
         }
         catch(Exception e){
-
+            
         e.printStackTrace();
 
         }

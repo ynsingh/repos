@@ -32,6 +32,7 @@ public class Election_Manager_RegistrationActionForm extends ValidatorForm  {
     private String repassword;
     private String email_id;
     private String status;
+    private String submit;
 
    
     
@@ -53,7 +54,14 @@ public class Election_Manager_RegistrationActionForm extends ValidatorForm  {
         }
         return errors;
     }*/
+public String getsubmit() {
+        return submit;
+    }
 
+
+    public void setsubmit(String submit) {
+        this.submit = submit;
+    }
    
     public String getFirst_name() {
         return first_name;

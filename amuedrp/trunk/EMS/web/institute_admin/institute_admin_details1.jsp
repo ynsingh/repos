@@ -12,7 +12,15 @@
 <%
 if(session.isNew()){
 %>
-<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<script>
+    //Change on 13.11.2013
+    <%
+    String msg1="";
+    msg1=(String) request.getAttribute("msg");
+    %>
+        alert(<%=msg1%>);
+        //Change on 13.11.2013
+    parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
 <%@page import="java.sql.*,com.myapp.struts.admin.AdminReg_Institute,com.myapp.struts.hbm.*,java.util.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -106,11 +114,6 @@ String user_id=(String)session.getAttribute("user_id");
             </table>
         </div>
 
-
-
-
-
-
     </html:form>
 
 </body>
@@ -179,13 +182,14 @@ if(str=="")
 </html>
 <%
 String msg1=(String)request.getAttribute("msg");
-
+System.out.println("Hello password changed");
 if(msg1!=null)
     {
+    
     %>
     <script>
         alert("<%=msg1%>");
-        location.href = "<%=request.getContextPath()%>"+"/login.jsp"
+        location.href = "<%=request.getContextPath()%>"+"/login1.jsp"
     </script>
 <%}%>
 
@@ -196,13 +200,15 @@ if(msg1!=null)
 else{%>
 <%
 String msg1=(String)request.getAttribute("msg");
-
+System.out.println("Hello password changed successfully");
 if(msg1!=null)
     {
     %>
     <script>
         alert("<%=msg1%>");
+        //Change on 13.11.2013
         location.href = "<%=request.getContextPath()%>"+"/login.jsp"
+        //Change on 13.11.2013
     </script>
 <%}%><%
     }

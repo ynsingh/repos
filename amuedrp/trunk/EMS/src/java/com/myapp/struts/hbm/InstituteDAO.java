@@ -115,6 +115,7 @@ public List getInstituteDetailsByStatus(String institute_id, String status){
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
+            System.out.println("institute idddddddd "+institute_id +"      "+status);
             Query query = session.createQuery("FROM Institute where id.instituteId = :instituteId and working_status = :status");
             query.setString("instituteId",institute_id );
             query.setString("status",status );
@@ -213,6 +214,32 @@ public ElectionManager getElectionManagerDetails(String userId,String instituteI
         return tx;
 }
 
+// 23.11.2013
+
+public ElectionManager getElectionManagerDetailsWithStatus(String userId,String instituteId,String status){
+  Session session =null;
+    ElectionManager tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            System.out.println("with statussssssssssssssssssssss ");
+            Query query = session.createQuery("FROM ElectionManager where id.instituteId = :instituteId and userId =:userId and status =:status");
+            query.setString("instituteId", instituteId);
+            query.setString("userId", userId);
+            query.setString("status",status);
+            tx= (ElectionManager)query.uniqueResult();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+        return tx;
+}
+
+// 23.11.2013
 
 public VoterRegistration getVoterDetails(String staffId,String instituteId){
   Session session =null;

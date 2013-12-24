@@ -274,10 +274,11 @@ session.setAttribute("insti",ado.getInstituteName());
 
                 if (it.hasNext()) {
                     request.setAttribute("msg1", "Institute is Blocked, Contact Admin.");
+                    System.out.println("blocked instituteeeeeeeeeeeeeeeeeeeeeeee");
                     return mapping.findForward("failure");
 
                 } else {
-
+                         System.out.println("not blocked instituteeeeeeeeeeeeeeeeeeeeeeee");
 //                    if (rst!= null && login.getQuestion()==null) {
 //                       Institute rs1 = institutedao.getInstituteDetails(institute_id);
 //
@@ -326,9 +327,12 @@ session.setAttribute("insti",ado.getInstituteName());
                             session.setAttribute("institute_name", rs1.getInstituteName());
                         }
 
-                       ElectionManager electionmanager=   institutedao.getElectionManagerDetails(login.getUserId(),institute_id);
+                       ElectionManager electionmanager=   institutedao.getElectionManagerDetailsWithStatus(login.getUserId(),institute_id,"OK");
 
-      
+                            if(electionmanager==null){
+                                 request.setAttribute("msg1", "Election Manager is Blocked, Contact Admin.");
+                                return mapping.findForward("failure");
+                            }
                           if(electionmanager!=null)
                           {
 

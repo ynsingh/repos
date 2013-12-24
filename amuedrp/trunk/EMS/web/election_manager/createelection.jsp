@@ -566,13 +566,29 @@ if(j<0)j=0;
 
 //alert(j);
 }
-
+//Change on 13.11.2013
+function back(){
+   <% System.out.println("path isssssssss "+request.getContextPath()); %>
+           <%
+ role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   { %>
+    top.window.location="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+    <%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter")){%>
+        top.window.location="<%=request.getContextPath()%>/electionmanager.do";
+        <%}else{%>
+top.window.location="<%=request.getContextPath()%>/Voter/voter_home.jsp";
+<%}%>
+    }
+//Change on 13.11.2013
 function send()
 {
   <%
  role=(String)session.getAttribute("login_role");
 if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
    {
+
+System.out.println("i am in send");
 %>
 
 <%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter")){%>
@@ -1319,7 +1335,7 @@ rulerowcount=em1r.length;
     <input  name="button" type="button" value="<%=resource.getString("back")%>" class="txt1" onclick="return send();"/>
 
     <%}else{%>
-    <input  name="button" type="button" value="<%=resource.getString("back")%>" class="txt1" onclick="return send();"/>
+    <input  name="button" type="button" value="<%=resource.getString("back")%>" class="txt1" onclick="return back();"/>
     <%}%>
              </td></tr>
      </table>
