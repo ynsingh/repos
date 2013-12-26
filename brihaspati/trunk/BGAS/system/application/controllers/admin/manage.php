@@ -129,7 +129,7 @@ class Manage extends Controller {
 
 		/* Form validations */
 		$this->form_validation->set_rules('database_label', 'Label', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
-		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[5]|max_length[200]|alpha_numeric');
+		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[3]|max_length[200]|alpha_numeric');
                 $this->form_validation->set_rules('unit_name', 'Unit Name', 'trim|required|min_length[2]|max_length[200]|alpha_numeric');
 		$this->form_validation->set_rules('database_name', 'Database Name', 'trim|required');
 

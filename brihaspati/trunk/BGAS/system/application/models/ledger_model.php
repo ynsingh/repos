@@ -11,20 +11,21 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->order_by('code', 'asc');
+		//$this->db->from('ledgers')->order_by('code', 'asc');
+		$this->db->from('ledgers')->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
 			$cd = $row->code;
 			$nme = $row->name;
 			if(substr($cd, 0, 2) == 10)
-				$name = "Liability : ".$nme;
+				$name = $nme." - L";
 			if(substr($cd, 0, 2) == 20)
-				$name = "Asset : ".$nme;
+				$name = $nme." - A";
 			if(substr($cd, 0, 2) == 30)
-				$name = "Income : ".$nme;
+				$name = $nme." - I";
 			if(substr($cd, 0, 2) == 40)
-				$name = "Expenditure : ".$nme;
+				$name = $nme." - E";
 			$options[$row->id] = $name;
 		//	$options[$row->id] = $row->name;
 		}
@@ -57,13 +58,13 @@ class Ledger_model extends Model {
 				$cd = $row->code;
 				$nme = $row->name;
 				if(substr($cd, 0, 2) == 10)
-					$name = "Liability : ".$nme;
+					$name = $nme." - L";
 				if(substr($cd, 0, 2) == 20)
-					$name = "Asset : ".$nme;
+					$name = $nme." - A";
 				if(substr($cd, 0, 2) == 30)
-					$name = "Income : ".$nme;
+					$name = $nme." - I";
 				if(substr($cd, 0, 2) == 40)
-					$name = "Expenditure : ".$nme;
+					$name = $nme." - E";
 				$options[$row->id] = $name;
 			}
 		}
@@ -74,20 +75,21 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->where('type', 1)->order_by('code', 'asc');
+		//$this->db->from('ledgers')->where('type', 1)->order_by('code', 'asc');
+		$this->db->from('ledgers')->where('type', 1)->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
 			$cd = $row->code;
                         $nme = $row->name;
                         if(substr($cd, 0, 2) == 10)
-                                $name = "Liability : ".$nme;
+                                $name = $nme." - L";
                         if(substr($cd, 0, 2) == 20)
-                                $name = "Asset : ".$nme;
+                                $name = $nme." - A";
                         if(substr($cd, 0, 2) == 30)
-                                $name = "Income : ".$nme;
+                                $name = $nme." - I";
                         if(substr($cd, 0, 2) == 40)
-                                $name = "Expenditure : ".$nme;
+                                $name = $nme." - E";
                         $options[$row->id] = $name;
 
 		//	$options[$row->id] = $row->name;
@@ -99,20 +101,20 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->where('type !=', 1)->order_by('code', 'asc');
+		$this->db->from('ledgers')->where('type !=', 1)->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
 			$cd = $row->code;
                         $nme = $row->name;
                         if(substr($cd, 0, 2) == 10)
-                                $name = "Liability : ".$nme;
+                                $name = $nme." - L";
                         if(substr($cd, 0, 2) == 20)
-                                $name = "Asset : ".$nme;
+                                $name = $nme." - A";
                         if(substr($cd, 0, 2) == 30)
-                                $name = "Income : ".$nme;
+                                $name = $nme." - I";
                         if(substr($cd, 0, 2) == 40)
-                                $name = "Expenditure : ".$nme;
+                                $name = $nme." - E";
                         $options[$row->id] = $name;
 
 		//	$options[$row->id] = $row->name;
@@ -124,20 +126,20 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		$this->db->from('ledgers')->where('reconciliation', 1)->order_by('code', 'asc');
+		$this->db->from('ledgers')->where('reconciliation', 1)->order_by('name', 'asc');
 		$ledger_q = $this->db->get();
 		foreach ($ledger_q->result() as $row)
 		{
 			$cd = $row->code;
                         $nme = $row->name;
                         if(substr($cd, 0, 2) == 10)
-                                $name = "Liability : ".$nme;
+                                $name = $nme." - L";
                         if(substr($cd, 0, 2) == 20)
-                                $name = "Asset : ".$nme;
+                                $name = $nme." - A";
                         if(substr($cd, 0, 2) == 30)
-                                $name = "Income : ".$nme;
+                                $name = $nme." - I";
                         if(substr($cd, 0, 2) == 40)
-                                $name = "Expenditure : ".$nme;
+                                $name = $nme." - E";
                         $options[$row->id] = $name;
 
 		//	$options[$row->id] = $row->name;

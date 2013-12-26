@@ -64,7 +64,6 @@ class Logo extends Controller {
 			$data['dept_name']['value'] = ($account_data->dept_name) ? print_value($account_data->dept_name) : '';
 			$data['uni_name']['value'] = ($account_data->uni_name) ? print_value($account_data->uni_name) : '';
 		}
-		
                 
 		/* Form validations */
 		$this->form_validation->set_rules('ins_name', 'Institute name', 'trim|max_length[255]');
@@ -128,7 +127,6 @@ class Logo extends Controller {
 		                        'upload_path' => $this->upload_path,	 
 					'overwrite' => true,
                 		       	'max_size' => 100,
-				
                 		);
 				$this->db->select('id')->from('settings')->where('ins_name',$data_ins_name);
                                 $ins_id = $this->db->get();
@@ -142,8 +140,7 @@ class Logo extends Controller {
                                    $this->messages->add('logo file should be less then 100 KB.', 'error');
 
                                 }
-				
-				if($size > 0 && $size < 100)
+				if($size > 0 && $size < 100)//new if
 				{ 
 					$file =$_FILES['userfile']['name'];
 				        $ext = substr(strrchr($file, '.'), 1);
@@ -182,19 +179,16 @@ class Logo extends Controller {
                                 		{
 		        	                          echo $this->image_lib->display_errors();
                 	        	        }
-				
 						$this->messages->add('Institute logo  updated.', 'success');
 						redirect('setting/logo');
 						return ;
-												
 					}
 				}//new if		
 	//			return;
-			}//else
-
+			}//else 
 			//get the id of this institute and accounting unit from bgasAccData under login
 			$db1=$this->load->database('login', TRUE);
-			$db1->select('id')->from('bgasAccData')->where('organization',$data_ins_name )->where('unit',$data_uni_name));
+			$db1->select('id')->from('bgasAccData')->where('organization',$data_ins_name )->where('unit',$data_uni_name);
 	                $query = $db1->get();
                 	if ($query->num_rows() > 0){
                        		foreach($query->result() as $row){
@@ -230,6 +224,7 @@ class Logo extends Controller {
 		redirect('setting/logo');
 		$this->template->load('template', 'setting/logo', $data);
 		return;
+		}
 	}
 /*
 	function do_upload()

@@ -261,6 +261,8 @@ $(document).ready(function() {
 	echo form_input_date_restrict($entry_date);
 	echo "</span>";
 	echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
+	echo "     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
+        echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
 	echo "</p>";
 
 	echo "<table class=\"entry-table\">";
