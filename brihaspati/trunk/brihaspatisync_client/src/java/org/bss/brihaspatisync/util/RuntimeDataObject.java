@@ -33,7 +33,7 @@ public class RuntimeDataObject {
 	private String videoServerPort="8090";
 	
 	private String vlcServer="C:\\Program Files\\VideoLAN\\VLC";
-        private String vlcDeviceName="HP Webcam-50";//"Default";
+        private String vlcDeviceName="Default";//"Default";
 	
         public static RuntimeDataObject getController(){
                 if(obj==null) {

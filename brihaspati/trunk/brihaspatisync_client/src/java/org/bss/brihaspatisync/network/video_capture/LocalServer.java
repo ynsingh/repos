@@ -60,6 +60,7 @@ public class LocalServer implements Runnable {
          */
         public void startLocalServer(){	
 		if (runner == null) {
+			try {
 			if((os.startsWith("Linux")) || (os.startsWith("MAC"))) 	
 				grabber=new VLCCapture(600,400);
 			else
@@ -68,6 +69,7 @@ public class LocalServer implements Runnable {
                         runner = new Thread(this);
                         runner.start();
 			System.out.println("Video Captureing start sucessfully !!");
+			} catch (Exception e) {}
 		}
         }
 
@@ -97,21 +99,38 @@ public class LocalServer implements Runnable {
 				if(ThreadController.getReflectorStatusThreadFlag()) {
 					String ip=runtime_object.getVideoServer();
 					BufferedImage image=null;
-				        if((os.startsWith("Windows")) || (!(ip.equals("127.0.0.1")))) {
-						image=w_grabber.grab();
-						if(image==null) {
+					if(!(ip.equals("127.0.0.1"))) {
+						try {	
 							HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
-							if(client ==null)
-								client = new HttpClient();
-						        client.setConnectionTimeout(80000);
-                        			        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-		                        	       	client.executeMethod(method);
-	        		                	byte[] bytes=method.getResponseBody();
-	        	                	        image = ImageIO.read(new ByteArrayInputStream(bytes));
-			                	       	method.releaseConnection();
-						}
+                                                        if(client ==null)
+                                                                client = new HttpClient();
+                                                        client.setConnectionTimeout(80000);
+                                                        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+                                                        client.executeMethod(method);
+                                                        byte[] bytes=method.getResponseBody();
+                                                        image = ImageIO.read(new ByteArrayInputStream(bytes));
+                                                        method.releaseConnection();
+						} catch(Exception e) {}
+					} else if(os.startsWith("Windows")) {
+						try {
+							if(image==null) {
+								try {	
+									HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+									if(client ==null)
+										client = new HttpClient();
+								        client.setConnectionTimeout(80000);
+        	                				        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+			        	                	       	client.executeMethod(method);
+	        				                	byte[] bytes=method.getResponseBody();
+		        		                	        image = ImageIO.read(new ByteArrayInputStream(bytes));
+			                		       		method.releaseConnection();
+								} catch (Exception ex) {}
+							}  
+							if(image==null) 
+								image=w_grabber.grab();
+						} catch (Exception e) {}
 					} else if((os.startsWith("Linux")) || (os.startsWith("MAC"))) {
-						if(grabber == null) {
+						//if(grabber == null) {
 							//String cap_device=null;
 					                //if(os.startsWith("Windows"))
 					                //        cap_device="dshow://";
@@ -120,18 +139,18 @@ public class LocalServer implements Runnable {
 					                //if(os.startsWith("MAC"));
 					                //        cap_device="qtcapture://";
 					                //grabber=new VLCCapture(600,400);			
-						}
+						//}
 						image=grabber.grab();
 					}
 					if(image != null) {
-                                        	BufferImage.getController().handleBuffer();
                                                 BufferImage.getController().put(image);
+                                        	BufferImage.getController().handleBuffer();
                                                 if((ClientObject.getUserRole()).equals("instructor")) 
                                                 	VideoPanel.getController().runInstructorVidio(image);
                                               	else  
                                                		VideoPanel.getController().runStudentVidio(image);
                                     	}   
-                                        runner.yield(); runner.sleep(3000);
+                                        runner.yield(); runner.sleep(runtime_object.getTimeDelayFrame());
 				} else
 					runner.yield(); runner.sleep(3000);
 			} catch(Exception e) { }
