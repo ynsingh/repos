@@ -31,6 +31,7 @@ public class RuntimeDataObject {
 	private String proxy_pass="";
 	private String videoServer="127.0.0.1";
 	private String videoServerPort="8090";
+	private long time_delay=1030;
 	
 	private String vlcServer="C:\\Program Files\\VideoLAN\\VLC";
         private String vlcDeviceName="Default";//"Default";
@@ -75,6 +76,15 @@ public class RuntimeDataObject {
         public String getVLCServer(){
                 return vlcServer;
         }
+	public void setTimeDelayFrame(int value){
+                time_delay=value;
+        }
+
+        public long getTimeDelayFrame(){
+                return time_delay;
+        }
+	
+	
 	//////////////////
 	
 	public void setProxyHost(String value){
