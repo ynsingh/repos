@@ -25,8 +25,8 @@ $!data.getMessage()
 		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 		<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
-		$brih_preview
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'> #if($lang =="hindi")$brih_exam $brih_generate #else $brih_generate $brih_exam #end</a> | 
+          $brih_preview
 	</b></td>
 ## Creating the links for help regarding FAQ 
 	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
@@ -86,7 +86,7 @@ $!data.getMessage()
 						</option>
 	        				#end
 	        			</select> &nbsp;
-	        			<input type="button" class="button-ftextstyle" name="" value="Submit" onClick="checkValue(document.frm,this);">
+	        			<input type="button" class="button-ftextstyle" name="" value="$brih_submit" onClick="checkValue(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
 				#else
 					$brih_norandomquizmsg

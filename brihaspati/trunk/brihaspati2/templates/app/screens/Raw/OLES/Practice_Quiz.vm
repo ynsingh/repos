@@ -30,10 +30,10 @@ $!data.getMessage()
 		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
 		#if($quizMode == "random")
 			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3") style='text-decoration:none'> 
-			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_detail </a>|Practice Quiz Update
+			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_detail </a>| $brih_practice $brih_quiz $brih_update
 			
 		#else	
-			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_quiz $brih_creation</a> | Practice Quiz Creation
+			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2") style='text-decoration:none'>$brih_quiz $brih_creation</a> | $brih_practice $brih_quiz $brih_creation 
 			
 		#end	
 	</b></td>
@@ -58,11 +58,11 @@ $!data.getMessage()
 	#if($quizMode != "random")
 			
 		<tr bgcolor="$ui.menuColor" width="100%">
-			<td align="left" width="100%" colspan="5"><b><i><font size="3"color=$ui.fontColorBlue> Practice $brih_quiz $brih_generation </font><b></i></td>
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"color=$ui.fontColorBlue>$brih_practice $brih_quiz $brih_generation </font><b></i></td>
 		</tr>
 	#else		
 		<tr bgcolor="$ui.menuColor" width="100%">
-			<td align="left" width="100%" colspan="5"><b><i><font size="3" color=$ui.fontColorBlue>Practice quiz Update </font><b></i></td>
+			<td align="left" width="100%" colspan="5"><b><i><font size="3" color=$ui.fontColorBlue>$brih_practice $brih_quiz $brih_update </font><b></i></td>
 		</tr>		
 	#end
 	<tr>
@@ -118,7 +118,7 @@ $!data.getMessage()
             	</select></td> 
         </tr>
 	<tr>
-        	<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
+        	<td><b> #if($lang =="hindi")$brih_qus2 $brih_nos #else $brih_nos $brih_qus2 #end </b><font color=Red>*</font></td>
 		<td>
 		  	#if($mode == "update")
 		  		<input type="text" name="numberQuestion" value="$questionNumber">

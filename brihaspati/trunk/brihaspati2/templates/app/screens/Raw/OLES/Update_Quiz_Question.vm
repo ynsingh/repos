@@ -21,7 +21,7 @@ $!data.getMessage()
 	<td><b>
 		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'> #if($lang =="hindi")$brih_exam $brih_generate #else $brih_generate $brih_exam #end</a> |
 		<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_quiz $brih_detail</a>| 
 		$brih_quiz #if($lang =="hindi")  #end  $brih_qus $brih_update
 	</b></td>
@@ -57,7 +57,7 @@ $!data.getMessage()
 							<font color="$ui.fontColorBlue"><b>$brih_marks $brih_per $brih_qus
 					</td>
 					<td align=center width=17%>
-						<font color="$ui.fontColorBlue"><b>$brih_nos $brih_qus			
+						<font color="$ui.fontColorBlue"><b> #if($lang =="hindi")$brih_qus $brih_nos #else $brih_nos $brih_qus #end			
 					</td>
 					<td align=center width=8%>						
 					</td>

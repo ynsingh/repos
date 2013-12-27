@@ -24,12 +24,12 @@ $page.setBgColor("bgcolor")
 	<tr><td><b>
 		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1") style='text-decoration:none'> #if($lang =="hindi")$brih_exam $brih_generate #else $brih_generate $brih_exam #end</a> |
 		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4") style='text-decoration:none'>$brih_preview</a> | 
-		$!quizName	
+		$quizName	
 	</b></td>
 ## Creating the links for help regarding Quiz 
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>Help</a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>
 </tr>
 </table>
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())

@@ -26,7 +26,7 @@ $!data.getMessage()
 	<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$brih_queBank</a> |
-	$brih_view $brih_qus$brih_bank
+	#if($lang=="hindi")$brih_qus $brih_bank $brih_of $brih_view #else $brih_view $brih_qus $brih_bank #end
 </b></td>
 ## Creating the links for help regarding FAQ 
 <td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin") style='text-decoration:none'>$brih_help</a></td>
@@ -48,29 +48,29 @@ $!data.getMessage()
                         #elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2") style=text-decoration:none>$brih_generate $brih_exam</a></td>
+			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang=="hindi") $brih_exam $brih_generate #else $brih_generate $brih_exam #end</a></td>
 			#if($tdcolor != "3")
                         <td>
                         #elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none>  #if($lang=="hindi")$brih_exam $brih_QDannounce #else $brih_QDannounce $brih_exam #end</I></b></a></td>
 			#if($tdcolor != "4")
                         <td>
                         #elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
 			#if($tdcolor != "5")
                         <td>
                         #elseif($tdcolor == "5")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
 		</tr>
 		</table>
 <table width="100%" bgcolor="$ui.tableColor">
-		<tr bgcolor="$ui.menuColor"><td align="left"><b><i>$brih_qus2 of $topic<b></i></td>
+		<tr bgcolor="$ui.menuColor"><td align="left"><b><i>$brih_qus2 $brih_of $topic<b></i></td>
 			<td><b>$brih_qus $brih_type</b><font color=Red>*</font>
                         </td>
                         <td>
@@ -79,20 +79,20 @@ $!data.getMessage()
                         <option></option>
                         #else
 			<option value="$!questype">
-                        #if($questype=="All") All #end
-                        #if($questype=="mcq") Multiple Choice Question Type #end
-                        #if($questype=="tft") True/False Type #end
-                        #if($questype=="maq") Matching Type #end
-                        #if($questype=="sat") Short Answer Type #end
-                        #if($questype=="lat") Long Answer Type #end
+                        #if($questype=="All") $brih_all #end
+                        #if($questype=="mcq") $brih_multiplechoice $brih_qus $brih_type #end
+                        #if($questype=="tft") $brih_true/$brih_false $brih_type #end
+                        #if($questype=="maq") $brih_match $brih_type #end
+                        #if($questype=="sat") $brih_shortType $brih_answer $brih_type #end
+                        #if($questype=="lat") $brih_long $brih_answer $brih_type #end
                         </option>$!questype
                         #end
                         <option value="All">$brih_all
-                        <option value="mcq">$brih_multiplechoice $brih_qus $brih_type
-                        <option value="tft">$brih_true/$brih_false $brih_type 
-                        <option value="maq">$brih_match $brih_type
-                        <option value="sat">$brih_shortType $brih_answer $brih_type
-                        <option value="lat">$brih_long $brih_answer $brih_type
+                        <option value="mcq"> #if($lang=="hindi")$brih_multiplechoice $brih_qus #else $brih_multiplechoice $brih_qus $brih_type #end
+                        <option value="tft"> #if($lang=="hindi")$brih_true/$brih_false $brih_qus #else $brih_true/$brih_false $brih_type #end
+                        <option value="maq"> #if($lang=="hindi")$brih_match $brih_qus #else $brih_match $brih_type #end
+                        <option value="sat"> #if($lang=="hindi")$brih_shortType $brih_answer $brih_qus #else $brih_shortType $brih_answer $brih_type #end 
+                        <option value="lat"> #if($lang=="hindi")$brih_long $brih_answer $brih_qus #else $brih_long $brih_answer $brih_type #end
                         </option>
                         </select>
                         </td>
@@ -106,9 +106,9 @@ $!data.getMessage()
                         #end
 			 #if($difflevel!="All")
                         <option value="$!difflevel">
-                        #if($difflevel=="0-3") Easy #end
-                        #if($difflevel=="4-6") Medium #end
-                        #if($difflevel=="7-9") Hard #end
+                        #if($difflevel=="0-3")$brih_easy #end
+                        #if($difflevel=="4-6")$brih_medium #end
+                        #if($difflevel=="7-9")$brih_hard #end
                         </option>$!difflevel
                         #end
                         <option value="All">$brih_all

@@ -63,7 +63,7 @@ $!data.getMessage()
 	</tr>
 	#if($hbtn != "true")	
 	<tr bgcolor="$ui.menuColor">
-		<td width=20% colspan=2><b> Total Marks </td>
+		<td width=20% colspan=2><b>$brih_total $brih_marks </td>
 		<td>$!maxMarks</td>
 	</tr>		
 	<tr bgcolor="$ui.menuColor">
@@ -71,7 +71,7 @@ $!data.getMessage()
 		<td><b>$!studentMarks</b> </td>
 	</tr>
 	<tr>
-		<td width=20% colspan=2><b>$brih_min Passing Marks</td>
+		<td width=20% colspan=2><b>$brih_min $brih_passing $brih_marks</td>
                 <td>$!passingMarks</td>
 	</tr>
 	<tr bgcolor="$ui.menuColor">
@@ -120,7 +120,7 @@ $!data.getMessage()
 				</tr>
 				<tr>					
 					#if($!answer.getQuestionType()=="mcq")
-					<td width="30%"><b>Options</td>		
+					<td width="30%"><b>$brih_options</td>		
 					<td colspan=4>
 						<table width=100% >
 						#set($A="")
@@ -154,7 +154,7 @@ $!data.getMessage()
 							</tr>
 					</table></td></tr>
 						#elseif($!answer.getQuestionType()=="tft")
-						<td width="30%"><b>Options</td>		
+						<td width="30%"><b>$brih_options</td>		
 						<td colspan=4>
 						<table width=100% >
 							#if($!answer.getStudentAnswer()=="true")
@@ -185,7 +185,7 @@ $!data.getMessage()
 					#if($!answer.getStudentAnswer()!="")
 					<td colspan=4>$!answer.getStudentAnswer()</td>
 					#else
-					<td colspan=4>Not Attempted</td>
+					<td colspan=4>$brih_notAttempted</td>
 					#end					
 				</tr>
 				<tr >
@@ -193,7 +193,7 @@ $!data.getMessage()
 					<td colspan=4>$!answer.getInstructorAnswer()</td>
 				</tr>
 				<tr>
-					<td> <b> Marks Obtained</td>
+					<td> <b>$brih_marks $brih_obtained</td>
 					<td colspan=4>$!answer.getAwardedMarks()</td>
 				</tr>
 			</table>

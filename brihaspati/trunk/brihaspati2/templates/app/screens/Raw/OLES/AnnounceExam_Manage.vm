@@ -24,7 +24,7 @@ $!data.getMessage()
 		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 		<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")  style='text-decoration:none'> $online_online $brih_examat $brih_system</a>|
-		$brih_QDannounce $brih_exam
+		#if($lang=="hindi")$brih_exam $brih_QDannounce #else $brih_QDannounce $brih_exam #end
 	</b></td>
 ## Creating the links for help regarding FAQ 
 		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin")  style='text-decoration:none'>$brih_help</a></td>
@@ -45,13 +45,13 @@ $!data.getMessage()
 		#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_generate $brih_exam</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none> #if($lang=="hindi") $brih_exam $brih_generate #else $brih_generate $brih_exam #end</I></b></a></td>
 		#if($tdcolor != "3")
 		        <td>
 		#elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang=="hindi")$brih_exam $brih_QDannounce #else $brih_QDannounce $brih_exam #end</I></b></a></td>
 		#if($tdcolor != "4")
 			<td>
 		#elseif($tdcolor == "4")
@@ -82,12 +82,12 @@ $!data.getMessage()
                 #elseif($tdcolor == "8")
                 <td bgcolor="#AFDCEC">
                 #end
-                <b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice $brih_quiz $brih_qinfo</I></b></a></td>
+                <b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brih_practice $brih_quiz $brih_of1 $brih_qinfo #else $brih_practice $brih_quiz $brih_qinfo #end</I></b></a></td>
 	</tr>
 </table>
 
 ##Drop down list to select a quiz
-<table align="center" width="100%" bgcolor="$ui.tableColor">
+	<table align="center" width="100%" bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor" >
 		<td width=30% align="centre">
 	      		<b> $brih_select  $brih_quiz </b>

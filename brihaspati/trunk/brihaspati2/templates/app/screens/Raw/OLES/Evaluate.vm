@@ -75,13 +75,13 @@ $!data.getMessage()
 		#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_generate $brih_exam</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_exam $brih_generate  #else $brih_generate $brih_exam #end</I></b></a></td>
 		#if($tdcolor != "3")
 		        <td>
 		#elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_exam $brih_QDannounce #else $brih_QDannounce $brih_exam #end</I></b></a></td>
 		#if($tdcolor != "4")
 			<td>
 		#elseif($tdcolor == "4")
@@ -111,7 +111,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "8")
                 <td bgcolor="#AFDCEC">
         #end
-        <b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice $brih_quiz $brih_qinfo</I></b></a></td>
+        <b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brih_practice $brih_quiz $brih_of1 $brih_qinfo #else $brih_practice $brih_quiz $brih_qinfo #end</I></b></a></td>
 	</tr>
 </table>	
 <table width="100%" >
@@ -120,7 +120,7 @@ $!data.getMessage()
 		<td width="80%">
         	<SELECT name=quizlist class="drop" onChange="checkField(document.frm,this);" >
 			#if($!quizID=="")       		
-			<option>Select Quiz</option>
+			<option>$brih_select $brih_quiz</option>
 			#else
                                 <option value="$!quizName">$!quizName</option>  #end			
 				#foreach($topic in $quizList)

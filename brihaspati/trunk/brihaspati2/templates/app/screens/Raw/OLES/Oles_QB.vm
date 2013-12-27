@@ -91,7 +91,7 @@ $!data.getMessage()
 			 #elseif($tdcolor == "6")
             		<td bgcolor="#AFDCEC">
             		#end
-           		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security").addPathInfo("counttemp","1") style=text-decoration:none>$brith_security &nbsp;&nbsp;</I></b></a></td>
+           		<b><I><a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("count","6").addPathInfo("flag","security").addPathInfo("counttemp","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_code #else $brith_security &nbsp;&nbsp; #end</I></b></a></td>
            		#if($tdcolor != "7")
 			<td>
 			 #elseif($tdcolor == "7")
@@ -103,10 +103,10 @@ $!data.getMessage()
 			 #elseif($tdcolor == "8")
             		<td bgcolor="#AFDCEC">
             		#end
-           		<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice$brih_quiz $brih_qinfo</I></b></a></td>
+           		<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brih_practice $brih_quiz $brih_of1 $brih_qinfo #else $brih_practice $brih_quiz $brih_qinfo #end </I></b></a></td> 
 		</tr>
 		<tr bgcolor="$ui.menuColor"><td colspan="8">
-		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_queBank $brih_new $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_queBank #end </a></b>
+		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_new $brih_queBank $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_queBank #end </a></i>
 		</td></tr>
 #*		#if( $total_size!=0 )
 			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="8"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>

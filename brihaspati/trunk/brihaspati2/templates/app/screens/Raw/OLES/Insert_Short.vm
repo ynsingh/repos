@@ -53,14 +53,14 @@ $!data.getMessage()
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
         <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("mode","$mode").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
 	#if($acttype=="viewques" || $acttype=="editques")
-	<a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)>$brih_view $brih_queBank</a> |
+	<a href=$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","$mode").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel)> #if($lang=="hindi")$brih_queBank $brih_view #else $brih_view $brih_queBank #end</a> |
 	#end
 	#if($acttype=="viewques")
-        $brih_view $brih_qus
+        #if($lang=="hindi")$brih_qus $brih_view #else $brih_view $brih_qus #end
 	#elseif($acttype=="editques")
-        $brih_edit $brih_qus
+        #if($lang=="hindi")$brih_qus $brih_edit #else $brih_edit $brih_qus #end
 	#else	
-	$brih_add $brih_qus
+	#if($lang=="hindi")$brih_qus $brih_add #else $brih_add $brih_qus #end
 	#end
         </b></td>
 </tr>
@@ -99,13 +99,13 @@ $!data.getMessage()
  #if($typeques=="imgtypeques")
 #if($acttype !="viewques"))
  <tr>
-	#fileUpload ("<b>Upload Image </b><font color=Red>*</font>" "quesimg")
+	#fileUpload ("<b>$brih_Image $brih_upload </b><font color=Red>*</font>" "quesimg")
  </tr>
  #end
  #end
   <tr bgcolor="$ui.tableColor"> 
   	<td width=30% align="centre" >
-    	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") Reply #else Answer #end </font></b>
+    	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi")$brih_answer  #else Answer #end </font></b>
    	</td>
    	<td width=70% align="left" >
     	<font face="$ui.sansSerifFonts">
@@ -134,7 +134,7 @@ $!data.getMessage()
 	  	<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
   		<input type="button" name="eventSubmit_doFinishQuestion" class="button-ftextstyle" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
 		<input type="reset" value="$brih_reset" class="button-ftextstyle">
-		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" >$brih_back</a> 
+		<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")" style="text-decoration:none;" class="input_button" > #if($lang=="hindi")$brih_queBank $brih_back #else $brih_back #end</a> 
 		#end
 		#end
   <input type="hidden" name="actionName" value="">

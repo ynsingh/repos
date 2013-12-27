@@ -29,7 +29,7 @@ $!data.getMessage()
 	#if($addques=="addques")
 		$brih_add $brih_question
 	#else
-		$WikiCreate $brih_new $brih_queBank
+		$brih_new $brih_queBank $WikiCreate
 	#end
 </b></td>
 ## Creating the links for help regarding FAQ 
@@ -81,11 +81,11 @@ $!data.getMessage()
                 	<td>
 			<select name="Questype" class="drop" onChange="ChangeQuestype(document.frm);"/>
                 	<option>
-			<option value="mcq">$brih_multiplechoice $brih_qus $brih_type
-			<option value="tft">$brih_true/$brih_false $brih_type
-			<option value="maq" disabled="true">$brih_match $brih_type
-			<option value="sat">$brih_shortType $brih_answer $brih_type
-			<option value="lat">$brih_long $brih_answer $brih_type
+			<option value="mcq"> #if($lang =="hindi" || $lang == "gujarati")$brih_multiplechoice $brih_qus #else $brih_multiplechoice $brih_qus $brih_type #end 
+			<option value="tft"> #if($lang =="hindi" || $lang == "gujarati")$brih_true/$brih_false $brih_qus #else $brih_true/$brih_false $brih_type #end 
+			<option value="maq" disabled="true"> #if($lang =="hindi" || $lang == "gujarati")$brih_match $brih_qus #else $brih_match $brih_type #end
+			<option value="sat"> #if($lang =="hindi" || $lang == "gujarati")$brih_shortType $brih_answer $brih_qus #else $brih_shortType $brih_answer $brih_type #end
+			<option value="lat"> #if($lang =="hindi" || $lang == "gujarati")$brih_long $brih_answer $brih_qus #else $brih_long $brih_answer $brih_type #end
 			</option>
                 	</select>
                 	</td>
