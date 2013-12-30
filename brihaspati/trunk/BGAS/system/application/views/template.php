@@ -201,6 +201,9 @@ $(document).ready(function() {
 				<?php echo anchor('setting', 'Settings', array('title' => 'Settings')); ?>
 			</li>
 			<li>
+                               <?php echo anchor('payrollsetup', 'PayrollSetup', array('title' => 'PayrollSetup',)); ?>
+                        </li>
+			<li>
 				<?php echo anchor('help', 'Help', array('title' => 'Help',)); ?>
 				 
 			</li>
