@@ -242,15 +242,26 @@ class Create extends Controller {
 			$data_database_username = $this->input->post('database_username', TRUE);
 			$data_database_password = $this->input->post('database_password', TRUE);
 
-			$ini_file = $this->config->item('config_path') . "accounts/" . $data_account_label . ".ini";
+			/* check for database label exist */
+                        $db1=$this->load->database('login', TRUE);
+			$db1->select('dblable')->from('bgasAccData')->where('dblable', $data_account_label);
+                        if ($db1->get()->num_rows() < 1)
+                        {
+                                $this->messages->add('Account with same label already exists.', 'error');
+				$this->template->load('admin_template', 'admin/create', $data);
+                                return;
+                        }
+			$db1->close();
+		//	$ini_file = $this->config->item('config_path') . "accounts/" . $data_account_label . ".ini";
 
 			/* Check if database ini file exists */
-			if (get_file_info($ini_file))
+		/*	if (get_file_info($ini_file))
 			{
 				$this->messages->add('Account with same label already exists.', 'error');
 				$this->template->load('admin_template', 'admin/create', $data);
 				return;
 			}
+			/*
 
 			/* Check if start date is less than end date */
 			if ($data_fy_end <= $data_fy_start)
@@ -376,6 +387,15 @@ class Create extends Controller {
 				/* Adding org name unit name year and database name in login database */
 
 				$date=Date("Y");
+				$m = Date("m");
+				if($m>3){
+					$dy = $date + 1;
+					$fy=$date."-".$dy;
+				}
+				else{
+					$dy = $date - 1;
+					$fy = $dy."-".$date;
+				}
 				$tablebad="bgasAccData";
 				$db1=$this->load->database('login', TRUE);
                                 $db1->trans_start();
@@ -383,7 +403,13 @@ class Create extends Controller {
 	                                'organization'=> $data_org_name,
                                         'unit'=>  $data_unit_name,
                                         'databasename' =>  $data_database_name,
-                                        'year' =>$date ,
+                                        'fyear' => $fy,
+                                        'uname' => $data_database_username,
+                                        'dbpass' => $data_database_password,
+                                        'hostname' => $data_database_host,
+                                        'port' => $data_database_port,
+                                        'dbtype' => $data_database_type,
+                                        'dblable' => $data_account_label,
                                 );
 
                                 if ( ! $db1->insert($tablebad, $insert_data))
@@ -401,12 +427,13 @@ class Create extends Controller {
                                 $db1->close();
 
 				/* Adding account settings to file. Code copied from manage controller */
+				/* below code is replaced with mysql code
 				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
 
 				$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
-
+*/
 				/* Writing the connection string to end of file - writing in 'a' append mode */
-				if ( ! write_file($ini_file, $con_details))
+/*				if ( ! write_file($ini_file, $con_details))
 				{
 					$this->messages->add('Failed to create account settings file. Check if "' . $ini_file . '" file is writable.', 'error');
 					$this->messages->add('You can manually create a text file "' . $ini_file . '" with the following content :<br /><br />' . $con_details_html, 'error');
@@ -414,7 +441,7 @@ class Create extends Controller {
 					$this->messages->add('Added account settings file to list of active accounts.', 'success');
 				}
 
-				redirect('admin');
+*/				redirect('admin');
 				return;
 			}
 		}

@@ -11,7 +11,7 @@ class User extends Controller {
 	{
 		$this->template->set('page_title', 'Login');
 		$this->load->library('general');
-		
+
 		/* Create bgasuser table in login database*/
 		$db1=$this->load->database('login', TRUE);
 		/* check if table exist */
@@ -152,7 +152,7 @@ class User extends Controller {
 	{
 		$this->template->set('page_title', 'Change Account');
 		$this->load->library('general');
-
+		$db1=$this->load->database('login', TRUE);
 		/* Show manage accounts links if user has permission */
 		if (check_access('administer'))
 		{
@@ -172,13 +172,31 @@ class User extends Controller {
 		//$data['user_account'] = $this->session->userdata('user_account');
 		
 		/* Getting list of files in the config - accounts directory */
-		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
+/*		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');*/
 		$data['accounts'] = array();
-		if ($accounts_list)
+                $db1->select('dblable')->from('bgasAccData');
+		$list = $db1->get();
+                if($list->num_rows() < 1)
+                       {
+                                $this->messages->add('Problem with selection of account label.', 'error');
+                                $this->template->load('admin_template', 'admin/manage', $data);
+                                return;
+                        }
+                else
+                {
+                        foreach($list->result() as $row){
+                                $dlable = $row->dblable;
+                                $data['accounts'][$dlable] = $dlable;
+                        }
+                        
+                }
+		
+
+/*		if ($accounts_list)
 		{
 			foreach ($accounts_list as $row)
 			{
-				/* Only include file ending with .ini */
+				/* Only include file ending with .ini *
 				if (substr($row, -4) == ".ini")
 				{
 					$ini_label = substr($row, 0, -4);
@@ -186,6 +204,7 @@ class User extends Controller {
 				}
 			}
 		}
+*/
                 $user_account_active = $this->session->userdata('active_account'); 
 		/* Check user ini/sql db file */
 		if ( ! $active_user = $this->general->check_user($this->session->userdata('user_name')))
@@ -199,11 +218,12 @@ class User extends Controller {
                 {
                         $user_account = $row->accounts;
                 }
-		
+
 		if ($user_account != '*')
 		{
 			$valid_accounts = explode(",", $user_account);
 			$data['accounts'] = array_intersect($data['accounts'], $valid_accounts);
+//			$data['accounts'] = $valid_accounts;
 		}
 		
 		/* Form validations */

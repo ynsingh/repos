@@ -24,13 +24,32 @@ class Manage extends Controller {
 		$this->template->set('nav_links', array('admin/manage/add' => 'New account'));
 
 		/* Getting list of files in the config - accounts directory */
-		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
+		$data['accounts'] = array();
+/*		$db1=$this->load->database('login', TRUE);
+                $this->db1->select('dblable')->from('bgasAccData');
+		if ($this->db1->get()->num_rows() < 1)
+                        {
+                                $this->messages->add('Problem with selection of account label.', 'error');
+                                $this->template->load('admin_template', 'admin/manage', $data);
+                                return;
+                        }
+		else
+		{
+			$alist=$this->db1->get();
+			foreach ($alist->result() as $row){
+	                        $dlable = $row->dblable;
+				$data['accounts'][$dlable] = $dlable;
+			}
+			
+		}
+*/
+/*		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
 		$data['accounts'] = array();
 		if ($accounts_list)
 		{
 			foreach ($accounts_list as $row)
 			{
-				/* Only include file ending with .ini */
+				/* Only include file ending with .ini *
 				if (substr($row, -4) == ".ini")
 				{
 					$ini_label = substr($row, 0, -4);
@@ -38,7 +57,8 @@ class Manage extends Controller {
 				}
 			}
 		}
-
+*/
+//		$db1->close();
 		$this->template->load('admin_template', 'admin/manage/index', $data);
 		return;
 	}
@@ -153,17 +173,44 @@ class Manage extends Controller {
 			$data_database_username = $this->input->post('database_username', TRUE);
 			$data_database_password = $this->input->post('database_password', TRUE);
 
+			 /* check for database label exist */
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->select('dblable')->from('bgasAccData')->where('dblable', $data_account_label);
+                        if ($db1->get()->num_rows() < 1)
+                        {
+                                $this->messages->add('Account with same label already exists.', 'error');
+                                $this->template->load('admin_template', 'admin/manage/add', $data);
+                                return;
+                        }
+//                        $db1->close();
+
 			/* Adding org name unit name year and database name in login database */
 			
 				$date=Date("Y");
+				$m = Date("m");
+                                if($m>3){
+                                        $dy = $date + 1;
+                                        $fy=$date."-".$dy;
+                                }
+                                else{
+                                        $dy = $date - 1;
+                                        $fy = $dy."-".$date;
+                                }
+
                                 $tablebad="bgasAccData";
-                                $db1=$this->load->database('login', TRUE);
+                        //        $db1=$this->load->database('login', TRUE);
                                 $db1->trans_start();
                                 $insert_data = array(
                                         'organization'=> $data_org_name,
                                         'unit'=>  $data_unit_name,
                                         'databasename' =>  $data_database_name,
-                                        'year' =>$date ,
+                                        'fyear' =>$fy,
+					'uname' => $data_database_username,
+                                        'dbpass' => $data_database_password,
+                                        'hostname' => $data_database_host,
+                                        'port' => $data_database_port,
+                                        'dbtype' => $data_database_type,
+                                        'dblable' => $data_account_label,
                                 );
 
                                 if ( ! $db1->insert($tablebad, $insert_data))
@@ -179,34 +226,37 @@ class Manage extends Controller {
                                 }
                                 $db1->close();
 
-			/* Adding account settings to file. Code copied from manage controller */
-			$ini_file = $this->config->item('config_path') . "accounts/" . $data_database_label . ".ini";
-
-			/* Check if database ini file exists */
-			if (get_file_info($ini_file))
-			{
-				$this->messages->add('Account with same label already exists.', 'error');
-				$this->template->load('admin_template', 'admin/manage/add', $data);
-				return;
-			}
-
-			$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
-
-			$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
-			// add entry in login database for generatig report
-
-			/* Writing the connection string to end of file - writing in 'a' append mode */
-			if ( ! write_file($ini_file, $con_details))
-			{
-				$this->messages->add('Failed to add account settings file. Check if "' . $ini_file . '" file is writable.', 'error');
-				$this->messages->add('You can manually create a text file "' . $ini_file . '" with the following content :<br /><br />' . $con_details_html, 'error');
-				$this->template->load('admin_template', 'admin/manage/add', $data);
-				return;
-			} else {
 				$this->messages->add('Added account to list of active accounts.', 'success');
 				redirect('admin/manage');
 				return;
-			}
+			/* Adding account settings to file. Code copied from manage controller */
+//			$ini_file = $this->config->item('config_path') . "accounts/" . $data_database_label . ".ini";
+
+			/* Check if database ini file exists */
+//			if (get_file_info($ini_file))
+//			{
+//				$this->messages->add('Account with same label already exists.', 'error');
+//				$this->template->load('admin_template', 'admin/manage/add', $data);
+//				return;
+//			}
+
+//			$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
+
+//			$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
+			// add entry in login database for generatig report
+
+			/* Writing the connection string to end of file - writing in 'a' append mode */
+//			if ( ! write_file($ini_file, $con_details))
+//			{
+//				$this->messages->add('Failed to add account settings file. Check if "' . $ini_file . '" file is writable.', 'error');
+//				$this->messages->add('You can manually create a text file "' . $ini_file . '" with the following content :<br /><br />' . $con_details_html, 'error');
+//				$this->template->load('admin_template', 'admin/manage/add', $data);
+//				return;
+//			} else {
+//				$this->messages->add('Added account to list of active accounts.', 'success');
+//				redirect('admin/manage');
+//				return;
+//			}
 		}
 		return;
 	}
@@ -215,7 +265,7 @@ class Manage extends Controller {
 	{
 		$this->template->set('page_title', 'Edit account');
 
-		$ini_file = $this->config->item('config_path') . "accounts/" . $database_label . ".ini";
+//		$ini_file = $this->config->item('config_path') . "accounts/" . $database_label . ".ini";
 
 		/* Form fields */
 		$data['database_name'] = array(
@@ -268,20 +318,52 @@ class Manage extends Controller {
 			$data['database_username']['value'] = $this->input->post('database_username', TRUE);
 			$data['database_password']['value'] = $this->input->post('database_password', TRUE);
 		} else {
-			/* Check if database ini file exists */
+
+			/* check for database label exist */
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->select('*')->from('bgasAccData')->where('dblable', $database_label);
+			$query = $db1->get();
+                        if ($query->num_rows() < 1)
+                        {
+                                $this->messages->add('Account with label ' . $database_label . ' does not exists.', 'error');
+                                $this->template->load('admin_template', 'admin/manage', $data);
+                                return;
+                        }
+			else{
+				$data['org_name']='';
+		                $data['unit_name']='';
+				$data['database_host']='';
+				$data['database_port']='';
+				$data['database_name']='';
+				$data['database_username']='';
+				$data['database_password']='';
+				foreach($query->result() as $row){
+                                	$data['org_name']['value'] = $row -> organization;
+                                	$data['unit_name'] ['value']= $row -> unit;
+					$data['database_host']['value'] = $row -> hostname;
+                        	        $data['database_port']['value'] = $row -> port;
+                	                $data['database_name']['value'] = $row -> databasename;
+        	                        $data['database_username'] ['value']= $row -> uname;
+	                                $data['database_password']['value'] = $row -> dbpass;
+                        	}
+
+			}
+			$db1->close();
+		}
+			/* Check if database ini file exists *
 			if ( ! get_file_info($ini_file))
 			{
 				$this->messages->add('Account settings file labeled ' . $database_label . ' does not exists.', 'error');
 				redirect('admin/manage');
 				return;
 			} else {
-				/* Parsing database ini file */
+				/* Parsing database ini file *
 				$active_accounts = parse_ini_file($ini_file);
 				if ( ! $active_accounts)
 				{
 					$CI->messages->add('Invalid account settings file', 'error');
 				} else {
-					/* Check if all needed variables are set in ini file */
+					/* Check if all needed variables are set in ini file *
 					if (isset($active_accounts['db_hostname']))
 						$data['database_host']['value'] = $active_accounts['db_hostname'];
 					else
@@ -312,7 +394,7 @@ class Manage extends Controller {
 		$this->form_validation->set_rules('database_name', 'Database Name', 'trim|required');
 
 		// get the values from database and displayed
-		$db1=$this->load->database('login', TRUE);
+	/*	$db1=$this->load->database('login', TRUE);
 		$db1->select('organization,unit')->from('bgasAccData')->where('databasename',($this->input->post('database_name', TRUE)));
 		$query = $db1->get();
 		$data['org_name']='';
@@ -326,7 +408,7 @@ class Manage extends Controller {
 		else{
 			 $this->messages->add('Organization name and unit name not exist','error');
 		}
-		$db1->close();
+
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
@@ -344,13 +426,39 @@ class Manage extends Controller {
 			$data_database_username = $this->input->post('database_username', TRUE);
 			$data_database_password = $this->input->post('database_password', TRUE);
 
+			$tablebad="bgasAccData";
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->trans_start();
+                        $update_data = array(
+	                        'databasename' =>  $data_database_name,
+                                'uname' => $data_database_username,
+                                'dbpass' => $data_database_password,
+                                'hostname' => $data_database_host,
+                                'port' => $data_database_port,
+                        );
+			if ( ! $db1->where('dblable', $database_label)->update($tablebad, $update_data))
+                                {
+                                        $db1->trans_rollback();
+                                        $this->messages->add('Error in updating value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+                                        $db1->close();
+                                        $this->template->load('admin_template', 'admin/create', $data);
+                                        return;
+                                } else {
+                                        $db1->trans_complete();
+                                        $this->messages->add('Updating Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
+					redirect('admin/manage');
+					return;
+                        }
+                        $db1->close();
+/*
+
 			$ini_file = $this->config->item('config_path') . "accounts/" . $database_label . ".ini";
 
 			$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
 
 			$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
 
-			/* Writing the connection string to end of file - writing in 'a' append mode */
+			/* Writing the connection string to end of file - writing in 'a' append mode *
 			if ( ! write_file($ini_file, $con_details))
 			{
 				$this->messages->add('Failed to edit account settings file. Check if "' . $ini_file . '" file is writable.', 'error');
@@ -362,6 +470,7 @@ class Manage extends Controller {
 				redirect('admin/manage');
 				return;
 			}
+*/
 		}
 		return;
 	}

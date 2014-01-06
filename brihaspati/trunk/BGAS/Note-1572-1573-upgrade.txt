@@ -1,0 +1,12 @@
+For this build change, prepare a sql file as given below. This should be executed by
+
+mysql -h 127.0.0.1 -u SQLUSERNAME -p < upgradefile.sql.
+
+The upgradefile.sql will as follows. Add one line for each database.
+=======================================================================
+use login;
+#The format of the line is given below.
+#insert into bgasAccData values (serialID,'OrganizationName', 'UnitName', 'databaseName','financialYear','databaseUserName','databasePassword','mysqlServerAdd','3306','mysql','AccountLabel' );
+#sample line.
+insert into bgasAccData values (1,'webzash13', 'webzashtest123456', 'webzash13','2013-2014','databaseUserName','databasePassword','localhost','3306','mysql','webzash13' );
+======================================================================

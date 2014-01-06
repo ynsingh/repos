@@ -212,6 +212,7 @@ var ledger_code = "0";
 	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
 	echo "</p>";
 
+//	if (code.startwith(10|20){ 
 	echo "<p>";
 	echo form_label('Opening balance', 'op_balance');
 	echo "<br />";
@@ -222,7 +223,7 @@ var ledger_code = "0";
 	echo "</span>";
 	echo "<span id=\"tooltip-content-1\">&nbsp;&nbsp;Assets / Expenses => Dr. Balance<br />Liabilities / Incomes => Cr. Balance</span>";
 	echo "</p>";
-
+//	}
 	echo "<p>";
 	echo "<span id=\"tooltip-target-2\">";
 	echo form_checkbox('ledger_type_cashbank', 1, $ledger_type_cashbank) . " Bank or Cash Account";

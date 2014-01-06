@@ -12,24 +12,58 @@ class General {
 	function check_account($account_name)
 	{
 		$CI =& get_instance();
-		
-		$ini_file = $CI->config->item('config_path') . "accounts/" . $account_name . ".ini";
+		$logndb = $CI->load->database('login', TRUE);
+                $this->logndb =& $logndb;
+		$this->logndb->select('*')->from('bgasAccData')->where('dblable', $account_name);
+		$acc_data = $this->logndb->get();
+		if ($acc_data->num_rows() < 1)
+                {
+			$CI->messages->add('Account settings n database is missing.', 'error');
+                        return FALSE;
+                }
 	
-		/* Check if database ini file exists */
+		if ( ! $acc_data)
+                {
+                        $CI->messages->add('Invalid account data in database.', 'error');
+                        return FALSE;
+                }
+
+                foreach($acc_data->result() as $row)
+                {
+                        $hostname = $row->hostname;
+                        $port = $row->port;
+                        $dbname = $row->databasename;
+                        $dbuname = $row->uname;
+                        $dbpassw= $row->dbpass;
+                }
+
+		$account_data = array(
+			'db_hostname'=>$hostname,
+			'db_port'=>$port,
+			'db_name'=>$dbname,
+			'db_username'=>$dbuname,
+			'db_password'=>$dbpassw,
+
+		);
+
+
+/*		$ini_file = $CI->config->item('config_path') . "accounts/" . $account_name . ".ini";
+	
+		/* Check if database ini file exists *
 		if ( ! get_file_info($ini_file))
 		{
 			$CI->messages->add('Account settings file is missing.', 'error');
 			return FALSE;
 		}
 
-		/* Parsing database ini file */
+		/* Parsing database ini file *
 		$account_data = parse_ini_file($ini_file);
 		if ( ! $account_data)
 		{
 			$CI->messages->add('Invalid account settings.', 'error');
 			return FALSE;
 		}
-
+*/
 		/* Check if all needed variables are set in ini file */
 		if ( ! isset($account_data['db_hostname']))
 		{

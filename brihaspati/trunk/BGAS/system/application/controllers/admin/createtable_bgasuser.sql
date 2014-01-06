@@ -22,7 +22,14 @@ CREATE TABLE IF NOT EXISTS bgasAccData
                         organization VARCHAR (255) NOT NULL,
                         unit varchar (255) NOT NULL,
                         databasename VARCHAR (255) NOT NULL,
-                        year VARCHAR (4) NOT NULL,
+                        fyear VARCHAR (14) NOT NULL,
+			uname VARCHAR(255) NOT NULL,
+			dbpass VARCHAR (255) NOT NULL,
+			hostname VARCHAR (255) NOT NULL default 'localhost',
+			port int(9) NOT NULL default 3306,
+			dbtype VARCHAR (255) NOT NULL default 'mysql',
+			dblable VARCHAR (255) NOT NULL,
                         PRIMARY KEY(id),
-			UNIQUE(databasename)
+			UNIQUE(databasename),
+			UNIQUE (dblable)
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -99,11 +99,28 @@ class User extends Controller {
 		/* Getting list of files in the config - accounts directory */
 		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
-		if ($accounts_list)
+
+		$db1=$this->load->database('login', TRUE);
+		$db1->select('dblable')->from('bgasAccData');
+		$query = $db1->get();
+                if ($query->num_rows() < 1)
+                {
+                	$this->messages->add('No Account exists.', 'error');
+                        $this->template->load('admin_template', 'admin/manage/add', $data);
+                        return;
+                }
+		else{
+			foreach($query->result() as $row){
+				$data['accounts'][$row -> dblable] = $row -> dblable;
+			}
+		}
+		$db1->close;
+
+/*		if ($accounts_list)
 		{
 			foreach ($accounts_list as $row)
 			{
-				/* Only include file ending with .ini */
+				/* Only include file ending with .ini *
 				if (substr($row, -4) == ".ini")
 				{
 					$ini_label = substr($row, 0, -4);
@@ -111,7 +128,7 @@ class User extends Controller {
 			}
 			}
 		}
-
+*/
 		/* Repopulating form */
 		if ($_POST)
 		{
@@ -305,6 +322,23 @@ class User extends Controller {
 		/*Getting list of files in the config - accounts directory */
 		$accounts_list = get_filenames($this->config->item('config_path') . 'accounts');
 		$data['accounts'] = array('(All Accounts)' => '(All Accounts)');
+
+//		$db1=$this->load->database('login', TRUE);
+                $db1->select('dblable')->from('bgasAccData');
+                $query = $db1->get();
+                if ($query->num_rows() < 1)
+                {
+                        $this->messages->add('No Account exists.', 'error');
+                        $this->template->load('admin_template', 'admin/manage/edit', $data);
+                        return;
+                }
+                else{
+                        foreach($query->result() as $row){
+                                $data['accounts'][$row -> dblable] = $row -> dblable;
+                        }
+                }
+  //              $db1->close;
+/*
 		if ($accounts_list)
 		{
 			foreach ($accounts_list as $row)
@@ -317,7 +351,7 @@ class User extends Controller {
 				}
 			}
 		}
-
+*/
 		/* Repopulating form */
 		if ($_POST)
 		{

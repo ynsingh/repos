@@ -47,7 +47,7 @@ class Statuscheck {
 		{
 			$this->error_messages[] = 'Security Risk ! The application config directory "' . $check_path . '" is world writeable.';
 		}
-
+/*
 		$check_path = $CI->config->item('config_path') . "accounts/";
 		if (substr(symbolic_permissions(fileperms($check_path)), -3, 1) == "r")
 		{
@@ -67,7 +67,7 @@ class Statuscheck {
 		{
 			$this->error_messages[] = 'Security Risk ! The users directory "' . $check_path . '" is world writeable.';
 		}
-
+*/
 		$check_path = $CI->config->item('config_path') . "settings/";
 		if (substr(symbolic_permissions(fileperms($check_path)), -3, 1) == "r")
 		{
