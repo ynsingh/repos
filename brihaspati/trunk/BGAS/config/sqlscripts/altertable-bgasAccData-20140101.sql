@@ -1,3 +1,4 @@
+use login;
 alter table bgasAccData change year fyear VARCHAR(14);
 alter table bgasAccData add uname VARCHAR(255) NOT NULL  Default 'bgas' after fyear;
 alter table bgasAccData add dbpass VARCHAR(255) NOT NULL  Default 'bgas' after uname;
