@@ -4,7 +4,9 @@
  * All Rights Reserved.
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>  
  * @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>  
+ * @author <a href="rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 06-01-2014
 *#
 
 <head>
@@ -17,69 +19,70 @@
 $page.setTitle("Admin Home | Registeration Management | Register Secondary Instructor | Registeration")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
-<table align=left bgcolor="$ui.menuColor" width=100%>
-<tr>
+<table align="right" bgcolor="$ui.menuColor" width=100%>
+<tr align="right">
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
-	 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
-	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_listCourse</a> | 
 	#if($lang=="hindi")
 	 $entry $brih_regSecondaryIns 
 	#else
 	  $brih_regSecondaryIns $entry
 	#end
+	 |<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_listCourse</a> 
+	| <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> 
+	 |<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a>
 	 </td>
 </tr>
 </table>
-<table width=100% align=left bgcolor="$ui.tableColor">
-        <tr>
-	#if($tdcolor != "1")
-	<td width=33%>
-	#elseif($tdcolor=="1")
-	<td width=33% bgcolor="#AFDCEC">
-	#end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_course</a></td>
-	#if($tdcolor != "2")
-	<td width=33%>
-	#elseif($tdcolor=="2")
-	<td width=33% bgcolor="#AFDCEC">
-	#end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_multiple1 $brih_course</a></td>
-	#if($tdcolor != "3")
-	<td width=33%>
-	#elseif($tdcolor=="3")
-	<td width=33% bgcolor="#AFDCEC">
-	#end
+<table width=100% align="right" bgcolor="$ui.tableColor">
+        <tr align="right">
+ #if($tdcolor != "3")
+        <td width=33%>
+        #elseif($tdcolor=="3")
+        <td width=33% bgcolor="#AFDCEC">
+        #end
         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count","3") style=text-decoration:none>$brih_course $brih_list</a></td>
-        </tr>
+#if($tdcolor != "2")
+        <td width=33%>
+        #elseif($tdcolor=="2")
+        <td width=33% bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_multiple1 $brih_course</a></td>
+ #if($tdcolor != "1")
+        <td width=33%>
+        #elseif($tdcolor=="1")
+        <td width=33% bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_course</a></td>
+ </tr>
 </table>
+
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").setAction("InstructorRegisteration").addPathInfo("cName",$entry)">
-<table align=left width=100% bgcolor="$ui.tableColor">
-<tr bgcolor="$ui.menuColor">  
-		<td><b>$brih_course $brih_ID</b></td>
+<table align="right" width=100% bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.menuColor" align="right">  
 		<td><b>$entry</b></td>
+		<td><b>$brih_course $brih_ID</b></td>
       </tr>
-      <tr>
-        #formCell("$brih_email $brih_ID" "EMAIL" "")
-        ##formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+      <tr align="right">
+        <td> <input type="text" name="EMAIL" value=""> </td>
+        <td> $brih_email $brih_ID</td>
       </tr>
-      <tr bgcolor="$ui.menuColor" >
-        #formPasswordCell ("$brih_pwd" "PASSWD" "")
+      <tr bgcolor="$ui.menuColor" align="right" >
+         <td> <input type="passwd" name="PASSWD" vaue=""> </td>
+        <td> $brih_pwd </td>
       </tr>
-      <tr>
-  	#formCell ("$brih_first $brih_name" "FNAME" "")
+      <tr align="right">
+           <td> <input type="text" name="FNAME" value=""> </td>
+        <td>$brih_first $brih_name</td>
       </tr>
-      <tr bgcolor="$ui.menuColor">
-        #formCell("$brih_last $brih_name" "LNAME" "")
+      <tr bgcolor="$ui.menuColor" align="right">
+        <td> <input type="text" name="LNAME" value=""> </td>
+        <td>$brih_last $brih_name</td>
       </tr>
-      #*<tr>
-        #formCell("$brih_email $brih_ID" "EMAIL" "")
-      </tr>*#
-	<tr>
-	<td colspan=2 align=left>
-	    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+	<tr align="right">
+	<td colspan=2>
 	    <input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear"/>
+	    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
 	</td>
 	</tr>
     </table>
