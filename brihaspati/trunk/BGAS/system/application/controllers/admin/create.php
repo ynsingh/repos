@@ -245,7 +245,7 @@ class Create extends Controller {
 			/* check for database label exist */
                         $db1=$this->load->database('login', TRUE);
 			$db1->select('dblable')->from('bgasAccData')->where('dblable', $data_account_label);
-                        if ($db1->get()->num_rows() < 1)
+                        if ($db1->get()->num_rows() > 1)
                         {
                                 $this->messages->add('Account with same label already exists.', 'error');
 				$this->template->load('admin_template', 'admin/create', $data);
