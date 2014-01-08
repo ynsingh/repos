@@ -282,7 +282,7 @@
 	}
 	if(! $print_preview)
 	{
-	echo form_open('report/printpreview/trialbalance/');
+	echo form_open('report/printpreview/profitandloss/');
 	echo form_submit('submit', 'Print Preview');
 	echo form_close();
 	/*echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
