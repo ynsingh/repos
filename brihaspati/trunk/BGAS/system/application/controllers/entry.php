@@ -478,6 +478,7 @@ class Entry extends Controller {
 			$data_type = $entry_type_id;
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$entry_id = NULL;
+			$uname=$this->session->userdata('user_name');
 			$this->db->trans_start();
 			$insert_data = array(
 				'number' => $data_number,
@@ -486,6 +487,7 @@ class Entry extends Controller {
 				'entry_type' => $data_type,
 				'tag_id' => $data_tag,
 				'update_date' => $data_date,
+				'submitted_by' => $uname,
 			);
 
 			 //echo random_element($insert_data);
@@ -797,7 +799,7 @@ $this->db->trans_rollback();
 	function edit($entry_type, $entry_id = 0)
 	{
 		/* Check access */
-		if ( ! check_access('edit entry'))
+		if ( ! check_access('verify entry'))
 		{
 			$this->messages->add('Permission denied.', 'error');
 			redirect('entry/show/' . $entry_type);
@@ -832,7 +834,6 @@ $this->db->trans_rollback();
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
-
 		/* Form fields - Entry */
 		$data['entry_number'] = array(
 			'name' => 'entry_number',
@@ -861,10 +862,13 @@ $this->db->trans_rollback();
 		$data['entry_tag'] = $cur_entry->tag_id;
 		$data['entry_tags'] = $this->Tag_model->get_all_tags();
 		$data['has_reconciliation'] = FALSE;
-
+		$debitled="";
+		$debitid="";
+		$creditled="";
+		$creditid="";
 		/* Load current ledger details if not $_POST */
-		if ( ! $_POST)
-		{
+		//if ( ! $_POST)
+		//{
 			$this->db->from('entry_items')->where('entry_id', $entry_id);
 			$cur_ledgers_q = $this->db->get();
 			if ($cur_ledgers_q->num_rows <= 0)
@@ -878,9 +882,13 @@ $this->db->trans_rollback();
 				$data['ledger_id'][$counter] = $row->ledger_id;
 				if ($row->dc == "D")
 				{
+					$debitled=$row->dc;
+					$debitid= $row->ledger_id;
 					$data['dr_amount'][$counter] = $row->amount;
 					$data['cr_amount'][$counter] = "";
 				} else {
+					$creditled=$row->dc;
+					$creditid=$row->ledger_id;
 					$data['dr_amount'][$counter] = "";
 					$data['cr_amount'][$counter] = $row->amount;
 				}
@@ -899,8 +907,13 @@ $this->db->trans_rollback();
 			$data['dr_amount'][$counter] = "";
 			$data['cr_amount'][$counter] = "";
 			$counter++;
-		}
-
+		//}
+		$creditledgername = $this->Ledger_model->get_name($creditid);
+		$debitledgername = $this->Ledger_model->get_name($debitid);
+		$cramount= $cur_entry->cr_total;
+		$dramount= $cur_entry->dr_total;
+		$narrat= $cur_entry->narration;
+		$previousvalue="'Credit ledger name'"." ". $creditledgername .',' ."'Debited ledger name'"." ". $debitledgername.','."'Cr Amount'"." " . $cramount.','."'Dr Amount'"."  " . $dramount.','."'Narration' " . $narrat;
 		/* Form validations */
 		if ($current_entry_type['numbering'] == '3')
 			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
@@ -1076,6 +1089,7 @@ $this->db->trans_rollback();
 				'narration' => $data_narration,
 				'tag_id' => $data_tag,
 				'update_date' => $updatedate,
+				'modifiedvalue'=> $previousvalue,
 			);
 			if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
 			{
@@ -1142,6 +1156,7 @@ $this->db->trans_rollback();
 				'dr_total' => $dr_total,
 				'cr_total' => $cr_total,
 			);
+			//print_r($update_data);
 			if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
 			{
 				$this->db->trans_rollback();
@@ -1150,6 +1165,18 @@ $this->db->trans_rollback();
 				$this->template->load('template', 'entry/edit', $data);
 				return;
 			}
+			$uname=$this->session->userdata('user_name');
+			$verifyuser = array(
+                                'verified_by' => $uname,
+                                'status' => 1,
+                        );
+                        if ( ! $this->db->where('id', $entry_id)->update('entries', $verifyuser))
+                        {
+                                $this->db->trans_rollback();
+                                $this->messages->add('Error verify Entry .', 'error');
+				redirect('entry/show/' . $entry_type);
+                                return;
+                        }
 
 			/* Success */
 			$this->db->trans_complete();
@@ -1169,6 +1196,7 @@ $this->db->trans_rollback();
 			$this->logger->write_message("success", "Updated " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 
 			redirect('entry/show/' . $current_entry_type['label']);
+		//		$this->template->load('template', 'entry/edit', $data);
 			return;
 		}
 		return;
@@ -2101,6 +2129,70 @@ $this->db->trans_rollback();
 		return;
 		}
 	}	
+	function verify($entry_type, $entry_id = 0)
+	{
+		$entry_type_id = entry_type_name_to_id($entry_type);
+		if ( ! $entry_type_id)
+		{
+			$this->messages->add('Invalid Entry type.', 'error');
+			redirect('entry/show/all');
+			return;
+		} else {
+			$current_entry_type = entry_type_info($entry_type_id);
+		}
+
+		$this->template->set('page_title', 'Verify ' . $current_entry_type['name'] . ' Entry');
+
+		/* Load current entry details */
+		if ( ! $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id))
+		{
+			$this->messages->add('Invalid Entry.', 'error');
+			redirect('entry/show/' . $current_entry_type['label']);
+			return;
+		}
+		/* Load current entry details */
+		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		$cur_entry_ledgers = $this->db->get();
+		if ($cur_entry_ledgers->num_rows() < 1)
+		{
+			$this->messages->add('Entry has no associated Ledger accounts.', 'error');
+		}
+		$data['cur_entry'] = $cur_entry;
+		$data['cur_entry_ledgers'] = $cur_entry_ledgers;
+		$data['entry_type_id'] = $entry_type_id;
+		$data['current_entry_type'] = $current_entry_type;
+		$this->template->load('template', 'entry/verify', $data);
+		return;
+	}
+
+	function verifyentry($entry_type, $entry_id)
+	{
+			if ( ! check_access('verify entry'))
+                	{
+                        	$this->messages->add('Permission denied.', 'error');
+                        	redirect('entry/show/' . $entry_type);
+                        	return;
+                	}
+			$verifydate = date_php_to_mysql(date_today_php());
+			$uname=$this->session->userdata('user_name');
+			$update_data = array(
+                                'verified_by' => $uname,
+                                'status' => 1,
+				'update_date'=> $verifydate,
+                        );
+                        if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
+                        {
+                                $this->db->trans_rollback();
+                                $this->messages->add('Error verify Entry .', 'error');
+				redirect('entry/show/' . $entry_type);
+                                return;
+                        }
+			
+                        /* Success */
+                        $this->db->trans_complete();
+			redirect('entry/show/' . $entry_type);
+			return;
+	}
 }
 
 /* End of file entry.php */

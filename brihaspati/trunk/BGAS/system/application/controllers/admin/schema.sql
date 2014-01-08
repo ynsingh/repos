@@ -70,6 +70,10 @@ CREATE TABLE IF NOT EXISTS entries (
   cr_total decimal(15,2) NOT NULL DEFAULT '0.00',
   narration text NOT NULL,
   update_date datetime NOT NULL,
+  submitted_by VARCHAR(255) NOT NULL,
+  verified_by VARCHAR(255) NOT NULL,
+  status int(1) NOT NULL DEFAULT 0,
+  modifiedvalue BLOB;	
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

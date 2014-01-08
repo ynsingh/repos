@@ -324,7 +324,7 @@ $(document).ready(function() {
 	echo form_hidden('has_reconciliation', $has_reconciliation);
 
 	echo "<p>";
-	echo form_submit('submit', 'Update');
+	echo form_submit('submit', 'Update & Verify');
 	echo " ";
 	echo anchor('entry/edit/' . $current_entry_type['label'] . "/" . $entry_id, 'Reload', array('title' => 'Reload ' . $current_entry_type['name'] . ' Entry Original Data'));
 	echo " | ";

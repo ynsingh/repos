@@ -29,6 +29,7 @@
  * 'cf account'
  * 'backup account'
  * 'administer'
+ * 'verify entry'
  */
 
 if ( ! function_exists('check_access'))
@@ -78,6 +79,7 @@ if ( ! function_exists('check_access'))
 			'change password',
 			'create projection',
 			'reappropriate projection',
+			'verify entry',
 		);
 		$permissions['manager'] = array(
 			'view entry',
@@ -109,6 +111,7 @@ if ( ! function_exists('check_access'))
 			'reappropriate budget',
 			'create projection',
                         'reappropriate projection',
+			'verify entry',
 		);
 		$permissions['accountant'] = array(
 			'view entry',
@@ -133,6 +136,7 @@ if ( ! function_exists('check_access'))
 			'change password',
 			'create projection',
                         'reappropriate projection',
+			'verify entry',
 		);
 		$permissions['dataentry'] = array(
 			'view entry',
@@ -145,6 +149,7 @@ if ( ! function_exists('check_access'))
 			'create ledger',
 			'edit ledger',
 			'change password',
+			'verify entry',
 		);
 		$permissions['guest'] = array(
 			'view entry',
