@@ -6,8 +6,9 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011, 27-03-2012
- * @modified date: 15-03-2013
+ * @author <a href="mailto:rekha20july@hotmail.com">Rekha Devi Pal</a>
+ * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011, 27-03-2012, 
+ * @modified date: 15-03-2013,08-01-2014
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 <head>
@@ -21,7 +22,10 @@ $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor" align="right">
+<tr align="right"  bgcolor="$ui.menuColor">
+<td>
+<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
+</td>
 	#if($mode=="sclist")
 		<td>
 		#if($mode1=="list")
@@ -72,6 +76,7 @@ $!data.getMessage()
 			$brih_delete $brih_student 
 		#end
 	#end
+
 </td></tr>
 <tr bgcolor="$ui.tableColor" align="right">
 	#if($tdcolor != "7")
@@ -400,7 +405,6 @@ $!data.getMessage()
 
 </tr>
 #end
-#####################
 </form>
 <table width=100% bgcolor="$ui.menuColor" align=left>
 #set ( $count = 1 )
@@ -426,17 +430,19 @@ face="$ui.sansSerifFonts">$type</font>
 #end
 #if($mode == "AddMUser")
 <table width="100%" bgcolor="$ui.tableColor" align="left">
-<tr align="right"><td align="left" colspan=7>
+#*<tr align="right">
+<td align="right" colspan=7>
 <b>
 <font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
-</td></tr>
+</td></tr>*#
 <tr  bgcolor="$ui.menuColor" align="right">
+ <td>
+<img src="$content.getURI("/images/zipfile.jpg")">
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none> $brih_zip $brih_file $brih_upload</a></td>
+
 <td bgcolor="#AFDCEC" align="right"> 
 	<img src="$content.getURI("/images/text.jpg")"> 
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none> $brih_txt $brih_file $brih_upload</a></td>
-<td  align="right"> 
-	<img src="$content.getURI("/images/zipfile.jpg")"> 
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none> $brih_zip $brih_file $brih_upload</a></td>
 </tr>
 <tr bgcolor="$ui.menuColor" align="right"><td colspan=7>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">
