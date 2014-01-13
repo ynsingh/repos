@@ -79,30 +79,40 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 		<td>
 		<input type=checkbox name=modify>
 	#if($lang =="hindi") 
-		<b>$brih_desc $brih_modify</b></td>     
+		<b>$brih_desc $brih_modify</b> <input type="button" name=eventSubmit_doUpdate value=" $brih_desc $brih_update " onClick="Update(document.frm,this);"></td>    
 	#else 
-		<b>$brih_modify $brih_desc</b></td>      
+		<b>$brih_modify $brih_desc</b> <input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);"></td>     
 	#end
+#*
+	 #if($lang =="hindi")
+            <td>    <input type="button" name=eventSubmit_doUpdate value=" $brih_desc $brih_update " onClick="Update(document.frm,this);"></td>
+                        #else
+            <td>    <input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);"></td>
+                        #end
+*#	<td><input type="checkbox" name=delTopic><b>$brih_topicDelete</b> 
+	<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);"> </td>
+	
+	
 	</tr>
        	<tr bgcolor="$ui.tableColor">
-		<td>
+		<td colspan=4>
 		<textarea name=description rows=10 cols=90 onFocus="checkModify(document.frm);">$!topicDesc</textarea><br>
 		</td>
 	</tr>
-	<tr bgcolor="$ui.menuColor">
+#*	<tr bgcolor="$ui.menuColor">
 		<td><input type="checkbox" name=delTopic><b>$brih_topicDelete</b><br></td>
 	</tr>
-	<tr bgcolor="$ui.tableColor">
-		<td>
-		<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
+*#	<tr bgcolor="$ui.tableColor">
+		<td colspan=4>
+##		<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
 		<input type="button" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
 		<input type="button" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
-			#if($lang =="hindi")
+#*			#if($lang =="hindi")
 		<input type="button" name=eventSubmit_doUpdate value=" $brih_desc $brih_update " onClick="Update(document.frm,this);">
 			#else
 		<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
 			#end
-		<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
+*#		<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
 		<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
 		</td>
 	</tr>
@@ -245,12 +255,12 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 	<div style="background-color:$ui.menuColor;text-align:left">	
 	<input type="button" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
 	<input type="button" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
-	#if($lang == "hindi")
+#*	#if($lang == "hindi")
 	<input type="button" name=eventSubmit_doUpdate value="$brih_desc $brih_update" onClick="Update(document.frm,this);">
 	#else
 	<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
 	#end
-	<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
+*#	<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
 	<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
 	</div>
     </td>
