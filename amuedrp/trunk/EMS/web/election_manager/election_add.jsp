@@ -659,7 +659,17 @@ function status1(){
 }
 function checkdates()
 {
+        // 28.11.2013
+        if(document.getElementById('details').value=="")
+            {
+                alert ("Please Enter Election Details");
 
+            document.getElementById('details').focus();
+
+
+            return false;
+            }
+            // 28.11.2013
        if(document.getElementById('electionname').value=="")
         {
             alert ("Please Name Your Election");
@@ -1199,7 +1209,9 @@ rulerowcount=em1r.length;
             
         }
 <%
+System.out.println("Hello i am above");
 String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
+System.out.println("Hello i am below");
 %>
         </script>
     </head>

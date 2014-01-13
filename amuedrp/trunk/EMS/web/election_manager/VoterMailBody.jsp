@@ -63,6 +63,13 @@ document.Form1.submit();
 
 
 }
+function submit4(){
+   // alert("ok");
+
+document.Form1.action="<%=request.getContextPath()%>/sendallmail.do?&button=sendmailvv";
+document.Form1.method="post";
+document.Form1.submit();
+}
 </script>
     <%!
        String mailbody;
@@ -102,7 +109,14 @@ if(session.getAttribute("mail")!=null){
 %>
     <input type="Submit" onclick="return submit3();"  id="button" name="button" value="Send Mail To All" />
 
-    <%}else{%>
+    <%}else if(session.getAttribute("stat")!=null){
+    
+    %>
+     <input type="Submit" onclick="return submit4();"  id="button" name="button" value="Send Mail" />
+
+
+
+<%} else{%>
      <input type="Submit" onclick="return submit1();"  id="button" name="button" value="Send Mail" />
 
 

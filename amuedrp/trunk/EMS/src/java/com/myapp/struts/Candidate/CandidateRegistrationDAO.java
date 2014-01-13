@@ -267,6 +267,8 @@ VoterRegistration voter=null;
 Candidate1 candi=null;
         try {
             session.beginTransaction();
+
+
             Criteria criteria = session.createCriteria(Candidate1.class)
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("enrollment", Enrollment))
@@ -309,7 +311,83 @@ Candidate1 candi=null;
         }
         return candi;
     }
+    public static void deletecandidate(CandidateRegistration ca)
+    {
+        Session session =null;
+        Transaction tx = null;
+        try {
+            session= HibernateUtil.getSessionFactory().openSession();
 
+            tx = session.beginTransaction();
+                session.delete(ca);
+
+                tx.commit();
+            }
+            catch (RuntimeException e) {
+                if(ca != null)
+                    tx.rollback();
+                e.printStackTrace();
+                throw e;
+            }
+            finally {
+              session.close();
+            }
+    }
+
+public static void deleteCandi1(String electionId,String instituteId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM Candidate1 where id.electionId = :electionid2  and id.instituteId= :instituteid");
+            
+            query.setString("electionid2", electionId);
+            query.setString("instituteid", instituteId);
+            query.executeUpdate();
+            tx.commit();
+            
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+            
+            //  System.out.println(ex.toString());
+            
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+
+ public void delete(Candidate1 ca){
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+
+        tx = session.beginTransaction();
+            session.delete(ca);
+
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if(ca != null)
+                tx.rollback();
+            e.printStackTrace();
+            throw e;
+        }
+        finally {
+          session.close();
+        }
+    }
 
     public static Candidate1 searchcandidateMenifesto(String instituteId,String Enrollment,String election_id,String position_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -335,6 +413,7 @@ Candidate1 candi=null;
         }
         return candi;
     }
+    
     public static List<Candidate1> searchcandidate(String instituteId,String Enrollment)
     {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -577,6 +656,28 @@ CandidateRegistration candi=null;
         return candi;
     }
 
+ public static List<CandidateRegistration> getCandidateDetailsByElectionId(String instituteid,String id){
+  Session session =null;
+
+    List candi=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM CandidateRegistration where id.electionId=:electionId and id.instituteId=:instituteId");
+             query.setString("electionId",id );
+             query.setString("instituteId",instituteid );
+
+            candi= query.list();
+               session.getTransaction().commit();
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+        return candi;
+}
 
      public List getCandidateDetailsByStatus(String instituteid,String status){
   Session session =null;
@@ -830,7 +931,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
             session.beginTransaction();
 
             String sql="";
-            System.out.println("status="+ status);
+            System.out.println("status is ="+ status);
            // sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"' and b.institute_id=:institute_id order by"+sort;
            if(status==null)
            {
@@ -838,6 +939,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
                    sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"' and b.institute_id=:institute_id order by "+sort;
                else
                    sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id order by "+sort;
+
            }
             
            else
@@ -848,7 +950,9 @@ public static List<SetVoter> getVoterDetails(String instituteid){
                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id";
 
             if(status!=null && !status.equalsIgnoreCase("null") && status.isEmpty()==false )
-                {sql += " and b.status1=:status";}
+                {
+                    sql += " and b.status1=:status";
+                }
 
             sql+=" order by "+sort;
            }

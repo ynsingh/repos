@@ -87,17 +87,30 @@ body
    color: #000000;
 }
 </style>
+
+
 <script language="javascript">
 function fun()
 {
-    
+   
   <%if(status!=null){%>
     document.Form1.status.value = "<%=status%>";
-    <%}%>
+    <%-- alert("farooq"+"<%=status%>");--%>
+     
+    <%
+
+}
+System.out.println("Status isssssss "+ status);
+%>
+        
+
+
+         
 document.Form1.action="/EMS/votersetup.do?page=0";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();
+
   window.setTimeout('winresize()', 100);
 
 }
@@ -107,7 +120,9 @@ document.Form1.submit();
     //alert(document.width);
   
    var winwidth = document.width;
-    var IFRAMERef = frames['f1'];
+
+        var IFRAMERef = frames['f1'];
+    
    // alert(IFRAMERef);
     var frmwidth = IFRAMERef.document.width;
     var windiff=200;
@@ -127,6 +142,9 @@ document.Form1.submit();
     document.getElementById("ifr3").style.height = frmheight;
    
 }
+
+
+
 </script>
 
 </head>
@@ -196,7 +214,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  <tr style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;"><td colspan="2" id="ifr3" ><IFRAME  name="f1" src="/EMS/votersetup.do?page=0" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;"><td colspan="2" id="ifr3" ><IFRAME  name="f1" <%--src="/EMS/votersetup.do?page=0"--%> frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

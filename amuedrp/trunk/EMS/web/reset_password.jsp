@@ -109,10 +109,11 @@ function clearme()
                 <tr><td  dir="<%=rtl%>" align="<%=align%>" colspan="2">
                 
    <%
-   String   message="";
-     message =(String) request.getAttribute("msg");
-    if(message!=null) {%>
-               <%=message%>
+   // 22.11.2013
+  // String   message="";
+   //  message =(String) request.getAttribute("msg");
+   //if(message!=null) {%>
+               <%--<%=message+"  sd"%>--%>
                
             
           
@@ -121,12 +122,13 @@ function clearme()
         
         
                 
-   <% }
+   <% //}
+   // 22.11.2013
      String clear="clear";
     %>
 
  <%
-   message="";
+  String message="";
      message =(String) request.getAttribute("msg1");
     if(message!=null) {%>
                <%=message%>

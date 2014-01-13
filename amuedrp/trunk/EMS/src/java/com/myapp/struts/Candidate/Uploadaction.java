@@ -7,6 +7,7 @@ package com.myapp.struts.Candidate;
 //import com.myapp.struts.cataloguingDAO.DAO;
 
 import com.myapp.struts.hbm.DAO;
+import com.myapp.struts.utility.AppPath;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -57,7 +58,8 @@ public class Uploadaction extends org.apache.struts.action.Action {
 
             try
             {
-
+                    String path=AppPath.getPropertiesFilePath1();
+                     session.setAttribute("apppath", path);
 
                    InputStream inputStream = null;
                     uploadForm.getExcelFile().getInputStream().read();

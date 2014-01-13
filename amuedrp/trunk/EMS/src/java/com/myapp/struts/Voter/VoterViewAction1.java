@@ -7,6 +7,7 @@ package com.myapp.struts.Voter;
 import com.myapp.struts.AdminDAO.LoginDAO;
 import com.myapp.struts.hbm.InstituteDAO;
 import com.myapp.struts.hbm.Login;
+import com.myapp.struts.hbm.SetVoter;
 import com.myapp.struts.hbm.VoterRegistrationId;
 import com.myapp.struts.hbm.VoterRegistration;
 import java.util.List;
@@ -34,6 +35,46 @@ private VoterRegistrationId elid=new VoterRegistrationId();
 
     {
          HttpSession session=request.getSession();
+         
+         String btt= request.getParameter("bt");
+         System.out.println("button is "+btt);
+         if(btt!=null)
+         {
+            System.out.println("voter delete is in processsssssssssss");
+           String vid=(String) request.getParameter("id");
+           String institute_id=(String)session.getAttribute("institute_id");
+           VoterRegistration v=VoterRegistrationDAO.searchVoterRegistration(institute_id,vid);
+           List <SetVoter> sv=VoterRegistrationDAO.ListofSetVoter1(institute_id,vid);
+           
+           if(!sv.isEmpty())
+           {
+               session.setAttribute("msg1", "You cannot delete this Voter");
+               
+           return mapping.findForward("delete");
+           }
+           else
+           {
+               try{
+                  LoginDAO lg=new LoginDAO();
+                  lg.delete(v.getEmail());
+                  
+                  VoterRegistrationDAO vr= new VoterRegistrationDAO();
+                  
+                  vr.delete(v);
+              
+              session.setAttribute("msg", "Voter Deleted Successfully");
+               return mapping.findForward("delete");
+               }
+               catch(Exception er)
+               {
+                   return mapping.findForward("delete");
+               }
+           }
+           
+            
+         }
+         //else{
+         
         VoterRegActionForm employeeform=(VoterRegActionForm)form;
          String button="View";
 
@@ -45,7 +86,7 @@ private VoterRegistrationId elid=new VoterRegistrationId();
         
         VoterRegistration l=VoterRegistrationDAO.searchVoterRegistration(institute_id,id);
         
-   
+   System.out.println("voter delete is not process");
        if(button.equals("View"))
         {
             System.out.println("View Page");
@@ -118,7 +159,10 @@ private VoterRegistrationId elid=new VoterRegistrationId();
 //                  return mapping.findForward("add1");
 //
 //            }
-
+//                if(btt!=null)
+//                {
+//
+//                }
 
             return mapping.findForward("add");
                        }
@@ -129,6 +173,7 @@ private VoterRegistrationId elid=new VoterRegistrationId();
 
           return mapping.findForward("add");
        }
+        // }
         return mapping.findForward("duplicate");
     }
 

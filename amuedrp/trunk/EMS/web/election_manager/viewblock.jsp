@@ -126,8 +126,10 @@ pageContext.setAttribute("Edit",Edit);
 String status = (String)request.getParameter("status");
 
 if(status!=null && status.equalsIgnoreCase("B")){
+    
 request.setAttribute("button", "Change Status");
 }
+
 
    requestList = new ArrayList();
 requestList = (ArrayList)session.getAttribute("resultset");
@@ -425,7 +427,7 @@ else
   <%}%>
 
   <%
-String msg1=(String)session.getAttribute("msg1");
+String msg1=(String)request.getAttribute("msg1");
 if(msg1!=null){
 	    		out.println(msg1+"\n");
 
@@ -433,7 +435,7 @@ if(msg1!=null){
 session.removeAttribute("msg1");
 %>
   <%
-List msg=(List)request.getAttribute("msg");
+List msg=(List)request.getAttribute("msg2");
 if(msg!=null){
 	if(msg.isEmpty()==false ){
 		for(int i=0;i<msg.size(); i++)

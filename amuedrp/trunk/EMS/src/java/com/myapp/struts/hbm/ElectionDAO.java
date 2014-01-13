@@ -34,18 +34,28 @@ String id="";
         try {
             Criteria criteria = session.createCriteria(Election.class);
             Criterion a = Restrictions.eq("id.instituteId", institute_id);
-            
-           // LogicalExpression le = Restrictions.and(a, b);
-            Integer maxbiblio = criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult().toString());
-           System.out.println(maxbiblio);
+             List tx = null;
+            Query query = session.createQuery("select max(cast(id.electionId as int)) FROM Election  where id.instituteId= :instituteid");
 
+                query.setString("instituteid",institute_id);
+                tx= query.list();
+                System.out.println("vvvvvvvvvvvvvvvv "+tx.get(0));
+           // LogicalExpression le = Restrictions.and(a, b);
+                //Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult())==0?0:Integer.valueOf(tx.get(0).toString());
+                 Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult().toString())==0?0:Integer.valueOf(tx.get(0).toString());
+                 
+                System.out.println(maxbiblio);
+            ////////////
+                      
+            System.out.println(maxbiblio);
+           ////////////////
             if (maxbiblio == null) {
                 maxbiblio = 1;
             } else {
                 maxbiblio++;
             }
 
-           id=String.valueOf(maxbiblio);
+            id=String.valueOf(maxbiblio);
             session.getTransaction().commit();
         }
         catch(Exception e){
@@ -158,8 +168,255 @@ String id="";
         }
  return id;
     }
+     public static void deleteElectionManagerMigrate(String electionId,String instituteId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
 
-    
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM ElectionManagerMigrate where id.electionId = :electionid2  and id.instituteId= :instituteid");
+
+            query.setString("electionid2", electionId);
+            query.setString("instituteid", instituteId);
+            query.executeUpdate();
+            tx.commit();
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+
+ public static void deletePosition(String electionId,String instituteId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM Position1 where id.electionId = :electionid2  and id.instituteId= :instituteid");
+                
+            query.setString("electionid2", electionId);
+            query.setString("instituteid", instituteId);
+            query.executeUpdate();
+            tx.commit();
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+
+public static void deleteVoting(String electionId,String instituteId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM Voting where id.electionId = :electionid2  and id.instituteId= :instituteid");
+
+            query.setString("electionid2", electionId);
+            query.setString("instituteid", instituteId);
+            query.executeUpdate();
+            tx.commit();
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+public static void deleteVotingProcess(String electionId,String instituteId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM VotingProcess where id.electionId = :electionid2  and id.instituteId= :instituteid");
+
+            query.setString("electionid2", electionId);
+            query.setString("instituteid", instituteId);
+            query.executeUpdate();
+            tx.commit();
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+public static void deleteVotingBallot(String posid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM VotingBallot where id.positionId = :positionId");
+
+            query.setString("positionId", posid);
+           
+            query.executeUpdate();
+            tx.commit();
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+public static void deleteEligibility(Eligibility elr){
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+
+        tx = session.beginTransaction();
+            session.delete(elr);
+
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if(elr != null)
+                tx.rollback();
+            e.printStackTrace();
+            throw e;
+        }
+        finally {
+          session.close();
+        }
+    }
+public static void deleteElectionrule(Electionrule elr){
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+
+        tx = session.beginTransaction();
+            session.delete(elr);
+
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if(elr != null)
+                tx.rollback();
+            e.printStackTrace();
+            throw e;
+        }
+        finally {
+          session.close();
+        }
+    }
+    public static void deleteSetVoter(SetVoter sv){
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+
+        tx = session.beginTransaction();
+            session.delete(sv);
+
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if(sv != null)
+                tx.rollback();
+            e.printStackTrace();
+            throw e;
+        }
+        finally {
+          session.close();
+        }
+    }
+       public static List<SetVoter> searchVoter1(String Election_id,String institue_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<SetVoter> obj = null;
+        
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(SetVoter.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.electionId", Election_id))
+                    .add(Restrictions.eq("id.instituteId",institue_id)));
+            obj= (List<SetVoter>) criteria.list();
+            
+            session.getTransaction().commit();
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+
+        finally {
+            session.close();
+        }
+        return obj;
+    }
        public static SetVoter searchVoter(String Election_id,String institue_id,String enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         SetVoter obj = null;
@@ -229,6 +486,7 @@ String id="";
         return true;
 
     }
+        
         public static void delete(String electionId,String instituteId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -242,8 +500,10 @@ String id="";
             query.setString("instituteid", instituteId);
             query.executeUpdate();
             tx.commit();
-
-        } catch (Exception ex) {
+            
+        } 
+        catch (Exception ex)
+        {
             ex.printStackTrace();
             tx.rollback();
             System.out.println(ex);
@@ -251,7 +511,9 @@ String id="";
 
             //  System.out.println(ex.toString());
 
-        } finally {
+        } 
+        finally
+        {
             session.close();
         }
       //  return true;
@@ -278,6 +540,52 @@ String id="";
         finally {
             session.close();
         }
+        return obj;
+    }
+    public static List<Eligibility> searchElectionEligibility(String election_id,String institue_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Eligibility> obj = null;
+
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Eligibility.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.instituteId",institue_id))
+                    .add(Restrictions.eq("id.electionId",election_id)));
+            obj= (List<Eligibility>) criteria.list();
+            session.getTransaction().commit();
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+
+        return obj;
+    }
+    public static List<Electionrule> searchElectionrule(String election_id,String institue_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Electionrule> obj = null;
+
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Electionrule.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.instituteId",institue_id))
+                    .add(Restrictions.eq("id.electionId",election_id)));
+            obj= (List<Electionrule>) criteria.list();
+            session.getTransaction().commit();
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+
         return obj;
     }
         public static List<VoterRegistration> searchVoter(String institue_id) {

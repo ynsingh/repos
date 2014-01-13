@@ -112,6 +112,7 @@ pageContext.setAttribute("Edit",Edit);
  <%
 
  List rs = (List)session.getAttribute("resultset");
+ 
 String status = (String)request.getParameter("status");
 
 if(status!=null && status.equalsIgnoreCase("B")){
@@ -133,13 +134,14 @@ if(rs!=null){
   Iterator it = rs.iterator();
 //System.out.println("it="+(tcount));
 //requestList = (Login)rs.get(0);
-
+System.out.println("eeeeeeeeeeeeeeeeeee ");
    while (it.hasNext()) {
-
-	
-        voter = (VoterRegistration)rs.get(tcount);
+      //      ElectionDetails es;
+	/// es =(ElectionDetails)rs.get(tcount);
+        
+       voter = (VoterRegistration)rs.get(tcount);
        // staffdetail = (StaffDetail)rs.get(tcount).getStaffDetail();
-        System.out.println(voter.getId().getEnrollment());
+        //System.out.println(voter.getId().getEnrollment());
         Ob = new StaffDoc ();
         //ems=new Election_Manager_StaffDetail();
 
@@ -150,6 +152,8 @@ if(rs!=null){
         //Ob.setStaff_id(electionmanager.getStaffId());
         //Ob.setUser_id(electionmanager.getUserId());
         //Ob.setStatus(electionmanager.getStatus());
+
+
         Ob.setEnrollment(voter.getId().getEnrollment());
         Ob.setVoter_name(voter.getVoterName());
         Ob.setDepartment(voter.getDepartment());
@@ -157,6 +161,14 @@ if(rs!=null){
         Ob.setYear(voter.getYear());
         Ob.setStatus(voter.getStatus());
         Ob.setemail_id(voter.getEmail());
+
+       // Ob.setEnrollment(es.getVoterRegistration().getId().getEnrollment());
+     ///   Ob.setVoter_name(es.getVoterRegistration().getVoterName());
+     //   Ob.setDepartment(es.getVoterRegistration().getDepartment());
+      //  Ob.setCourse(es.getVoterRegistration().getCourse());
+      //  Ob.setYear(es.getVoterRegistration().getYear());
+     //   Ob.setStatus(es.getVoterRegistration().getStatus());
+     //   Ob.setemail_id(es.getVoterRegistration().getEmail());
         //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
 
 
@@ -408,7 +420,7 @@ if(msg1!=null){
 
 %>
   <%
-List msg=(List)request.getAttribute("msg");
+List msg=(List)request.getAttribute("msg2");
 if(msg!=null){
 	if(msg.isEmpty()==false ){
 		for(int i=0;i<msg.size(); i++)

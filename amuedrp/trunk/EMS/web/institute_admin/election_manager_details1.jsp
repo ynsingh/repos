@@ -83,6 +83,7 @@ if (!rst.isEmpty()){
         <html:form action="/manager_registration" method="post">
         <table width="100%" dir="<%=rtl%>">
              <br>
+             
              <tr><td style="text-decoration: underline;" align="center" class="txt" dir="<%=rtl%>"><%=resource.getString("electionmanagerdetail")%></td></tr>
 
             <tr>
@@ -119,45 +120,45 @@ if (!rst.isEmpty()){
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"> <%=resource.getString("firstname")%></td>
 
-                    <td align="<%=align%>" dir="<%=rtl%>"> <html:text property="first_name" value="<%=first_name%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"> <html:text property="first_name" value="<%=first_name%>" /></td>
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("lastname")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="last_name"value="<%=last_name%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="last_name"value="<%=last_name%>" /></td>
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("address")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text  property="address1" value="<%=address%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text  property="address1" value="<%=address%>" /></td>
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("city")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="city1" value="<%=city%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="city1" value="<%=city%>" /></td>
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("state")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="state1" value="<%=state%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="state1" value="<%=state%>" /></td>
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("pin")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="zip1" value="<%=pin%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="zip1" value="<%=pin%>" /></td>
                 </tr>
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("country")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="country1" value="<%=country%>" readonly="true" /></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="country1" value="<%=country%>"  /></td>
                 </tr>
 
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("gender")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="gender" value="<%=gender%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="gender" value="<%=gender%>" /></td>
                 </tr>
 
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("contactno")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="contact_no" value="<%=contact_no%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="contact_no" value="<%=contact_no%>" /></td>
                 </tr>
                  <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("mobileno")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="mobile_no" value="<%=mobile_no%>" readonly="true"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="mobile_no" value="<%=mobile_no%>" /></td>
                 </tr>
 
                  <tr>
@@ -168,7 +169,7 @@ if (!rst.isEmpty()){
 
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("department")%></td>
-                     <td align="<%=align%>" dir="<%=rtl%>"><html:text property="department" value="<%=department%>" readonly="true" /></td>
+                     <td align="<%=align%>" dir="<%=rtl%>"><html:text property="department" value="<%=department%>"  /></td>
                 </tr>
 
                 <tr>
@@ -200,7 +201,7 @@ if (!rst.isEmpty()){
                      
                 <tr>
                      <td align="<%=align%>" dir="<%=rtl%>"><br><br><br><br><br><br></td>
-                     <%--<td align="<%=align%>" dir="<%=rtl%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>--%>
+                     <td align="<%=align%>" dir="<%=rtl%>"><input type="submit" class="txt2" dir="<%=rtl%>" id="Button1" name="submit" value="<%=resource.getString("update")%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="back" class="txt2" value="<%=resource.getString("back")%>" onclick="quit()"/></td>
                 </tr>
 
             </table>
@@ -214,9 +215,12 @@ if (!rst.isEmpty()){
     var prevheight;
     function quit()
 {
-    //top.location="/EMS-Struts/institute_admin/institute_admin_home.jsp";
-    parent.document.getElementById("pagetab").height = prevheight;
-    location.href="<%=request.getContextPath()%>/view_managers.do";
+   
+    top.location="<%=request.getContextPath()%>/electionmanager.do";
+    <%--parent.document.getElementById("pagetab").height = prevheight;--%>
+     <%--alert("dd");--%>
+    <%--location.href="<%=request.getContextPath()%>/view_managers.do";--%>
+    
 }
 
 

@@ -52,7 +52,10 @@ public class ElectionManagerModuleAction extends org.apache.struts.action.Action
 
               List      rst2= electiondao.GetElectionDetails1(institute_id,manager_id,pageno);
                      session.setAttribute("resultset1", rst2);
-
+                     if(request.getParameter("bt")!=null)
+                     {
+                         return mapping.findForward("delete");
+                     }
         return mapping.findForward(SUCCESS);
     }
 }

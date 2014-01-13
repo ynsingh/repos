@@ -5,7 +5,9 @@
 <%
 if(session.isNew()){
 %>
-<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<script>
+    
+    parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election"%>
 <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
@@ -938,7 +940,15 @@ role=(String)session.getAttribute("login_role");
                 <li>
                     <a href="<%=request.getContextPath()%>/election_manager/election_add.jsp" onclick="<%--return switchMain()--%>"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("create_elction")%><%----%></a>
                 </li>
-               
+
+                <%-- <li>
+                    <a href="<%=request.getContextPath()%>/election_manager/Delete_Election.jsp" onclick="return switchMain()"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Delete Election</a>
+                </li>--%>
+               <li>
+                   
+                    <a href="<%=contextPath%>/electionmanager.do?bt=del<%--<%=request.getContextPath()%>/election_manager/Delete_Election.jsp--%>"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Delete Election</a>
+              
+               </li>
             </ul>
         </li>
         <li>
@@ -979,6 +989,11 @@ role=(String)session.getAttribute("login_role");
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                        <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=D"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("delete")%></a>
+                    </li>
+                    
                 <li>
                     <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter Frm Election</a>
                 </li>
@@ -1008,8 +1023,7 @@ role=(String)session.getAttribute("login_role");
                         <li>
                             <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=NR"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("accept/reject")%></a>
                         </li>
-                        
-
+                    
                 </ul>
            </li>
            <li>
@@ -1034,10 +1048,15 @@ role=(String)session.getAttribute("login_role");
                     <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("Update")%></a>
 
                 </li>--%>
+               <li>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=D"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("delete")%></a>
+               </li>
                 <li>
-                    <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><%=resource.getString("generate_report")%></a>
+                    <a href="<%=request.getContextPath()%>/Candidate/listelection.jsp" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><%=resource.getString("generate_report")%></a>
                     <ul>
-                      
+                     <%-- <li>
+                            <a href="<%=request.getContextPath()%>/Candidate/listelection.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("currentelection")%></a>
+                         </li>--%>
                     </ul>
                 </li>
                  <li>

@@ -1,4 +1,5 @@
-<%@page import="java.util.*,java.io.*,java.net.*"%>
+<%@page import="java.util.*,java.io.*,java.net.*,com.myapp.struts.utility.AppPath"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%
 if(session.isNew()){
@@ -11,6 +12,7 @@ if(session.isNew()){
          <jsp:include page="/election_manager/login.jsp"/>
         <html:base />
     </head>
+    <body>
     <table style="position:absolute; left:20%; top:30%" class="table">
             <tr><td align="center" colspan="3" height="25px" class="headerStyle">Import Voter Registration Data</td></tr>
             <tr><td height="5px"></td></tr>
@@ -142,22 +144,27 @@ StringBuffer str = new StringBuffer();
 String userid=(String)session.getAttribute("user_id");
 String nameOfTextFile = userid+"log.txt";
 String path=(String)session.getAttribute("apppath");
+String path1=path.substring(0, path.length()-14);
 //path=path.substring(0,path.lastIndexOf("/"));
 //path=path.substring(0,path.lastIndexOf("/"));
 //path=path.substring(0,path.lastIndexOf("/"));
 System.out.println(path+"..........................");
 try {
-    PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/EMSLOG/"+nameOfTextFile,true));
+    PrintWriter pw = new PrintWriter(new FileOutputStream(path+nameOfTextFile,true));
+    
 //System.out.println(pw);
     for(int i=0;i<obj.size();i++)
         str.append(obj.get(i)+"\n");
     pw.println(str+"\n");
     //clean up
+    
     pw.close();
 } catch(IOException e) {
    out.println(e.getMessage());
 }
-%>   <a href="<%="/EMS/EMSLOG/"+nameOfTextFile%>" target="_blank">View Log</a><%
+%>   <a href="<%=request.getContextPath()%>/EMSLOG/<%=nameOfTextFile%>" target="_blank">View Log</a>
+<%--<a href="<%= path1 %>EMSLOG\<%= nameOfTextFile%>" target="_blank">View Log</a>--%>
+<%
 }
 
                     %>

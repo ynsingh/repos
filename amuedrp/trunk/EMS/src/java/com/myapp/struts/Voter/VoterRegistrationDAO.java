@@ -252,6 +252,27 @@ public static boolean update(VoterRegistration obj) {
         return true;
 
     }
+public void delete(VoterRegistration ca){
+    Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+
+        tx = session.beginTransaction();
+            session.delete(ca);
+
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if(ca != null)
+                tx.rollback();
+            e.printStackTrace();
+            throw e;
+        }
+        finally {
+          session.close();
+        }
+    }
         public static void delete(String enrollment,String instituteId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -295,6 +316,30 @@ public static boolean update(VoterRegistration obj) {
 
             obj= (VoterRegistration) criteria.uniqueResult();
             session.getTransaction().commit();
+            
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
+    public static SetVoter ListofSetVoter(String instituteid,String Enrollment) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        SetVoter obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(SetVoter.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.enrollment", Enrollment))
+                    .add(Restrictions.eq("id.instituteId", instituteid)));
+
+            obj= (SetVoter) criteria.uniqueResult();
+            session.getTransaction().commit();
 
 
         }
@@ -306,6 +351,32 @@ public static boolean update(VoterRegistration obj) {
         }
         return obj;
     }
+
+
+    public static List<SetVoter>  ListofSetVoter1(String instituteid,String Enrollment) {
+        Session session =null;
+        List<SetVoter> obj=null;
+        try {
+        session= HibernateUtil.getSessionFactory().openSession();
+         session.beginTransaction();
+            Query query = session.createQuery("FROM SetVoter where id.instituteId=:instituteId and id.enrollment=:enrollment");
+
+             query.setString("instituteId",instituteid );
+             query.setString("enrollment",Enrollment );
+            obj= (List<SetVoter>) query.list();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException s){
+    s.printStackTrace();
+    }
+
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
+    
   /*  public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         SetVoter obj=null;
@@ -391,15 +462,17 @@ else{             PagingAction o=new PagingAction(query,pageNumber,30);
        return obj;
 }
 
-   public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
+    public List getVoterDetailsByStatus1(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
   Session session =null;
     List obj=null;
     List finalResult = new ArrayList();
     try {
         session= HibernateUtil.getSessionFactory().openSession();
-
+System.out.println("query is ");
             session.beginTransaction();
             String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
+
+System.out.println("institute iddddddddd is "+instituteid);
 if(status==null){
   if(fieldvalue!=null)
                // query1 = query1 + "  and "+field+"=:infield";
@@ -413,6 +486,113 @@ System.out.println(query1);
 
 }
 else{
+                
+            if(status!=null && !status.equalsIgnoreCase("AB") && fieldvalue!=null)
+               // query1 = query1 + " and status = :status and "+field+"=:infield ";
+         query1 = query1 + " and status = :status and "+field+" like '"+fieldvalue +"%'";
+            else if(status!=null && !status.equalsIgnoreCase("AB"))
+                query1 = query1 + " and status = :status ";
+
+            if(status!=null && status.equalsIgnoreCase("AB"))
+                    query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+            //else if(status!=null && status.equalsIgnoreCase("AB"))
+              //      query1 = query1 + " and (status like 'Block' or status like 'Registered'";
+query1=query1+" order by "+sort;
+System.out.println("in elsessssssssssssssss");
+}
+
+            Query query = session.createQuery(query1);
+
+
+           // if(fieldvalue!=null)
+           // {query.setString("infield", fieldvalue);
+
+          //  }
+
+
+            if(status!=null && !status.equalsIgnoreCase("AB"))
+                query.setString("status",status );
+             query.setString("instituteId",instituteid );
+System.out.println("query string issssssssss  "+query);
+
+
+if(pageNumber==0){
+
+            query = query.setFirstResult(0);
+              query.setMaxResults(100);
+              obj=query.list();
+}
+else{             PagingAction o=new PagingAction(query,pageNumber,100);
+
+ obj= o.getList();
+// System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
+}
+//            //code for paging
+//
+//            int setMaxRecords = startLimit + noOfRecords + 1;
+//            List result = obj;
+//
+//int count = result.size()-startLimit;
+//if( count < noOfRecords) {
+//noOfRecords = count;
+//}
+//int i=0;
+////logger.info("Start Count "+startLimit + ".Records Accessed "+noOfRecords);
+//while (noOfRecords > i) {
+////logger.info("Start Count "+startLimit+i+",Rdcord "+result.get(startLimit+i));
+//finalResult.add(result.get(startLimit+i));
+//i++;
+//}
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+
+        finally {
+            session.close();
+        }
+       return obj;
+}
+
+   public List getVoterDetailsByStatus(String instituteid,String status,String field,String fieldvalue,String sort, int pageNumber){
+  Session session =null;
+    List obj=null;
+    List finalResult = new ArrayList();
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String query1 = "FROM VoterRegistration where id.instituteId=:instituteId";
+
+            
+if(status==null){
+  if(fieldvalue!=null)
+               // query1 = query1 + "  and "+field+"=:infield";
+      query1 = query1 +" and "+field+" like '"+fieldvalue +"%'";
+
+   query1=query1+" order by "+sort;
+System.out.println(query1);
+
+
+
+
+}
+else{
+                System.out.println("in elsessssssssssssssss");
             if(status!=null && !status.equalsIgnoreCase("AB") && fieldvalue!=null)
                // query1 = query1 + " and status = :status and "+field+"=:infield ";
          query1 = query1 + " and status = :status and "+field+" like '"+fieldvalue +"%'";
@@ -428,6 +608,7 @@ query1=query1+" order by "+sort;
 
             Query query = session.createQuery(query1);
 
+            
            // if(fieldvalue!=null)
            // {query.setString("infield", fieldvalue);
 
@@ -439,7 +620,7 @@ query1=query1+" order by "+sort;
              query.setString("instituteId",instituteid );
 
 
-//System.out.println(query1);
+System.out.println("query is  "+query1);
 if(pageNumber==0){
 
             query = query.setFirstResult(0);

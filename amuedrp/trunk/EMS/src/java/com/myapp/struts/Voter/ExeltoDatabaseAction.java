@@ -72,9 +72,9 @@ session.removeAttribute("log");
 
 
         
+       String path=AppPath.getPropertiesFilePath1();
+       session.setAttribute("apppath", path);
        
-
-      
         int row_no = 0;
      
         String table_name = uploadForm.getCombo_table_name();

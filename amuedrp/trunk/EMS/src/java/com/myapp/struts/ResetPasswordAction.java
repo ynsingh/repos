@@ -90,7 +90,7 @@ if(role.equalsIgnoreCase("Superadmin"))
                     obj1.send();
                 }
             });
-      request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
+      request.setAttribute("msg1","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
         }
         else if(rs.getRole().equalsIgnoreCase("Election Manager")||rs.getRole().equalsIgnoreCase("Election Manager,voter")||rs.getRole().equalsIgnoreCase("Insti-admin") || rs.getRole().equalsIgnoreCase("Insti-admin,voter"))
@@ -112,7 +112,7 @@ if(role.equalsIgnoreCase("Superadmin"))
                 }
             });
 
-      request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
+      request.setAttribute("msg1","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
 
         }
@@ -163,7 +163,7 @@ if(rs.getRole().equalsIgnoreCase("voter"))
                 }
             });
 
- request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
+ request.setAttribute("msg1","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
 }
    }
@@ -212,7 +212,7 @@ if(rs.getRole().equalsIgnoreCase("Election Manager")|| rs.getRole().equalsIgnore
                 }
             });
 
- request.setAttribute("msg","Password Succesfully Updated & Mail Sent Successfully");
+ request.setAttribute("msg1","Password Succesfully Updated & Mail Sent Successfully");
       return mapping.findForward("success");
 }
    }

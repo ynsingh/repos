@@ -61,6 +61,8 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
     String rtl="ltr";
     boolean page=true;
     String align="left";
+    private String button;
+    
     
     
     @Override
@@ -83,9 +85,9 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
        // manager_id=ManagerRegistrationForm.getManager_id();
        institute_id=(String) session.getAttribute("institute_id");
         //auto generated Manager ID & Staff ID
-
-        staff_id=(String)ElectionDAO.returnMaxElectionManagerId(institute_id);
-        manager_id=staff_id;
+        button=ManagerRegistrationForm.getsubmit();
+        System.out.println("button issssssssssdddddd "+button);
+       
 
 
         System.out.println(staff_id+"   "+manager_id);
@@ -161,6 +163,55 @@ locale1=(String)session.getAttribute("locale");
        Iterator it5=rs5.iterator();
        Iterator it6= rs6.iterator();
        //while()
+       //25.11
+       if(button.equals("Update")){
+             ElectionManagerDAO electionmanagerdao1=new ElectionManagerDAO();
+              electionmanagerdao1=new ElectionManagerDAO();
+             //ElectionManager electionmanager1=new ElectionManager();
+             Election_Manager_RegistrationActionForm ManagerRegistrationForm1=(Election_Manager_RegistrationActionForm)form;
+             StaffDetailDAO st= new StaffDetailDAO();
+            manager_id=ManagerRegistrationForm1.getManager_id();
+            staff_id=ManagerRegistrationForm1.getStaff_id();
+            institute_id=ManagerRegistrationForm1.getInstitute_id();
+             List<ElectionManager> elm =electionmanagerdao1.ManagerDeatils(manager_id, institute_id);
+             List<StaffDetail> elm1 =st.getStaffDetails(staff_id, institute_id);
+            System.out.println("manager idddddddd "+manager_id +"  ddd ");
+             if(elm!=null && !elm.isEmpty())
+            {
+                //electionmanager1=(ElectionManager) elm.get(0);
+                 elm.get(0).setDepartment(ManagerRegistrationForm1.getDepartment());
+                 elm1.get(0).setFirstName(ManagerRegistrationForm1.getFirst_name());
+                 elm1.get(0).setLastName(ManagerRegistrationForm1.getLast_name());
+                  elm1.get(0).setAddress1(ManagerRegistrationForm1.getAddress1());
+                  elm1.get(0).setCity1(ManagerRegistrationForm1.getCity1());
+                  elm1.get(0).setCountry1(ManagerRegistrationForm1.getCountry1());
+                  elm1.get(0).setState1(ManagerRegistrationForm1.getState1());
+                  elm1.get(0).setZip1(ManagerRegistrationForm1.getZip1());
+                  elm1.get(0).setGender(ManagerRegistrationForm1.getGender());
+                  elm1.get(0).setContactNo(ManagerRegistrationForm1.getContact_no());
+                  elm1.get(0).setMobileNo(ManagerRegistrationForm1.getMobile_no());
+                  
+                
+                
+                //electionprimary.setInstituteId(institute_id);
+                //electionprimary.setManagerId(manager_id);
+
+//                electionmanager1.setDepartment(department);
+//                electionmanager1.setStaffId(staff_id);
+                
+                electionmanagerdao1.update(elm.get(0));
+                st.update(elm1.get(0));
+             }
+             String msg=resource.getString("record_updated_successfully");
+            request.setAttribute("msg",msg);
+        return mapping.findForward("success1");
+
+       }
+       else{
+       //25.11
+         staff_id=(String)ElectionDAO.returnMaxElectionManagerId(institute_id);
+        manager_id=staff_id;
+
        if(it.hasNext() || it1.hasNext() || it2.hasNext() )
        {
 String msg1=resource.getString("duplicate_user_id");
@@ -286,6 +337,7 @@ String msg1=resource.getString("duplicate_user_id");
                 }
             });
         return mapping.findForward(SUCCESS);
+        }
         }
         }
         catch(HibernateException e)

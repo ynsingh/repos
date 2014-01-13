@@ -62,7 +62,7 @@ String path=(String)session.getAttribute("apppath");
 //path=path.substring(0,path.lastIndexOf("/"));
 System.out.println(path);
 try {
-    PrintWriter pw = new PrintWriter(new FileOutputStream(path+"/EMSLOG/"+nameOfTextFile,true));
+    PrintWriter pw = new PrintWriter(new FileOutputStream(path+nameOfTextFile,true));
 //System.out.println(pw);
     for(int i=0;i<obj.size();i++)
         str.append(obj.get(i)+"\n");
@@ -72,7 +72,7 @@ try {
 } catch(IOException e) {
    out.println(e.getMessage());
 }
-%>   <a href="<%="/EMS/EMSLOG/"+nameOfTextFile%>" target="_blank">View Log</a><%
+%>   <a href="<%=request.getContextPath()%>/EMSLOG/<%=nameOfTextFile%>" target="_blank">View Log</a><%
 }
 
                     %>

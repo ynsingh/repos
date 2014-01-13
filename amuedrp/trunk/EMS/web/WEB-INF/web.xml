@@ -3,7 +3,7 @@
     "http://java.sun.com/j2ee/dtds/web-app_2_5.dtd">-->
 <web-app version="2.2" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_2.xsd">
 <!--<resource-ref>
-     <res-ref-name>jdbc/ems</res-ref-name>
+     <res-ref-name>jdbc/Testems</res-ref-name>
      <res-type>javax.sql.DataSource</res-type>
      <res-auth>Container</res-auth>
 
@@ -122,13 +122,28 @@
          </taglib>
 
     </jsp-config>
-	<security-constraint>
+      <!--<security-constraint>
     		<web-resource-collection>
       			<web-resource-name>EMS Internals</web-resource-name>
       			<url-pattern>/EMSLOG/*</url-pattern>
    		</web-resource-collection>
     	<auth-constraint>
-      		<role-name>superadmin</role-name>
+      		<role-name>Election Manager</role-name>
+
     	</auth-constraint>
+        <auth-constraint>
+      		<role-name>superadmin</role-name>
+
+    	</auth-constraint>
+
   	</security-constraint>
+	
+<security-role>
+    <role-name>superadmin</role-name>
+    <role-name>Election Manager</role-name>
+</security-role>
+      <login-config>
+<auth-method>BASIC</auth-method>
+<realm-name>User Basic Authentication</realm-name>
+</login-config>-->
 </web-app>

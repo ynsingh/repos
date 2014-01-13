@@ -17,6 +17,7 @@
 %>
 <%
 try{
+    session.removeAttribute("del");
 locale1=(String)session.getAttribute("locale");
 
     if(session.getAttribute("locale")!=null)

@@ -103,8 +103,8 @@ String mailbody;
        System.out.println("button!!!!!!!!!!!!!!!!"+button);
        String enrollment=(String)session.getAttribute("id");
        String textarea=lf.getCandidateid();
-   CandidateRegistrationDAO candidatedao= new CandidateRegistrationDAO();
-   ArrayList log=new ArrayList();
+       CandidateRegistrationDAO candidatedao= new CandidateRegistrationDAO();
+       ArrayList log=new ArrayList();
 //   if(button.equalsIgnoreCase("1")){
 //        System.out.println("button11"+button);
 //      List<VoterCandidate> rs =candidatedao.GetDetails(institute_id,"REGISTERED");
@@ -156,6 +156,7 @@ String mailbody;
 //
 //
 //   }
+       
     if(button.equalsIgnoreCase("sendmailtoall")){
 
      System.out.println("button22222"+button);
@@ -282,6 +283,47 @@ return mapping.findForward("success3");
 
    }
 
+
+   if(button.equalsIgnoreCase("sendmailvv"))
+ {
+      VoterRegistration rs =(VoterRegistration)VoterRegistrationDAO.searchVoterRegistration(institute_id, enrollment);
+      userid=(String)session.getAttribute("user_id");
+
+        
+
+                     mailbody=UserLog.readProperty("mail.properties", userid+"vm");
+                                if(mailbody==null){
+                                    System.out.println("Mailbody@@@@@@@@@@");
+                                    request.setAttribute("msg1","Please Add Voter Mail Body");
+                                  return mapping.findForward("success4");
+
+                                }
+
+                if(mailbody.isEmpty())
+                {
+                   request.setAttribute("msg1","Please Add Voter Mail Body");
+
+                 return mapping.findForward("success4");
+                }
+
+                obj=new Email(rs.getEmail(),"","Mail From Election Manager from EMS","Dear "+rs.getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+                obj.send();
+                 log.add("Mail Send to Primary Mail Id "+rs.getEmail());
+               if(rs.getAlternateMail()!=null){
+                obj=new Email(rs.getAlternateMail(),"","Mail From Election Manager from EMS","Dear "+rs.getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+                obj.sendAlternatemail();
+                 log.add("Mail Send to Alternate Mail Id "+rs.getAlternateMail());
+               }
+
+
+        request.setAttribute("msg2", log);
+        System.out.println("i am in lastttttttttttttttttvvvvvvvvvvvv");
+//        session.removeAttribute("stat");
+        return mapping.findForward("success4");
+
+   }
+
+
  if(button.equalsIgnoreCase("sendmailv"))
  {
       VoterRegistration rs =(VoterRegistration)VoterRegistrationDAO.searchVoterRegistration(institute_id, enrollment);
@@ -314,6 +356,7 @@ return mapping.findForward("success3");
 
 
         request.setAttribute("msg2", log);
+        System.out.println("i am in lasttttttttttttttttt");
         return mapping.findForward("success3");
 
    }

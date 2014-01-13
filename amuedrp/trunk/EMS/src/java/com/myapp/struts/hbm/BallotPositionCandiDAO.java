@@ -58,6 +58,39 @@ finally {
         }
 }
 
+    public static void deleteBallot(String electionId,String instituteId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+
+        try {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete From  Ballot where id.electionId = :electionid2  and id.instituteId= :instituteid");
+
+            query.setString("electionid2", electionId);
+            query.setString("instituteid", instituteId);
+            query.executeUpdate();
+            tx.commit();
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+       //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
+    
     public List getPositionID(int positionId,String instituteId){
  Session session =null;
     List tx = null;

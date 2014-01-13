@@ -151,7 +151,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
 //	        } catch(IOException ex) {
 //       			System.out.println(ex.getMessage());
 //        	}
-		request.setAttribute("msg", log);
+		request.setAttribute("msg2", log);
 		return mapping.findForward("success");
     	}
          public void mailSend(String to,String admin_password,String subject,String body){

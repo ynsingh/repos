@@ -331,6 +331,68 @@ public List<ElectionDetails> getElectionDetails(){
         return obj;
 }
 
+public List<ElectionDetails> getElectionDetails1(String searchkeyword,String searchby,String sortby, String institute_id){
+  Session session =null;
+    List<ElectionDetails> obj=null;
+    try {
+        
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            if(searchkeyword==null || searchkeyword.isEmpty()){
+                System.out.println("i am in ifffffffff");
+            Query query = session.createSQLQuery("select a.*,b.*,c.* from voter_registration a,election b,set_voter c where a.enrollment=c.enrollment and a.institute_id=c.institute_id and c.election_id=b.election_id and c.institute_id=b.institute_id and c.status='blocked' and a.institute_id='"+institute_id+"'")
+                    .addEntity(VoterRegistration.class)
+                    .addEntity(Election.class)
+                    .addEntity(SetVoter.class)
+                    .setResultTransformer(Transformers.aliasToBean(ElectionDetails.class));
+            obj=(List<ElectionDetails>) query.list();
+            }
+            else
+            if(searchkeyword!=null && searchkeyword.isEmpty()==false ){
+                if(searchby.equals("id.enrollment") )
+                {
+                    searchby="enrollment";
+                    
+                }
+                else if(searchby.equals("voterName")){
+                    searchby="voter_name";
+                }
+
+                if(sortby.equals("id.enrollment")){
+                    sortby="enrollment";
+                }
+                else if(sortby.equals("voterName")){
+                    sortby="voter_name";
+                }
+                System.out.println("i am in elseeeeeeeee  searchby="+searchby+" searchkeyword= "+searchkeyword + " sortby="+sortby);
+                Query query = session.createSQLQuery("select a.*,b.*,c.* from voter_registration a,election b,set_voter c where a.enrollment=c.enrollment and a.institute_id=c.institute_id and c.election_id=b.election_id and c.institute_id=b.institute_id and c.status='blocked'"+  "and a.institute_id='"+institute_id+"'"+" and a."+searchby+" like '"+searchkeyword +"%'"+" order by a."+sortby)
+                    .addEntity(VoterRegistration.class)
+                    .addEntity(Election.class)
+                    .addEntity(SetVoter.class)
+                    .setResultTransformer(Transformers.aliasToBean(ElectionDetails.class));
+            // query = query +" and "+searchby+" like '"+searchkeyword +"%'";
+
+  // query1=query1+" order by "+sort;
+   obj=(List<ElectionDetails>) query.list();
+            }
+            
+
+            System.out.println("@@@@@@@@@@@@@@@@ OBJ"+obj);
+
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+        return obj;
+}
+
+
+
 public List getAdminInstituteDetailsById(Integer registerationId){
   Session session =null;
     List obj=null;

@@ -357,7 +357,9 @@ else
 </table>
   <%
   String msg=(String)request.getAttribute("msg");
-  if(msg!=null){out.println(msg);}
+  if(msg!=null){
+  //    out.println(msg);
+  }
 
   
 String msg2=(String)session.getAttribute("exportmsg");
@@ -366,10 +368,12 @@ if(msg2!=null)
   out.println(msg2);
   %>
    <%-- <p class="err" style="font-size:12px"><%=msg%></p>--%>
- <% String requestpage=(String)request.getAttribute("exportpath");%>
+ <% String requestpage=(String)request.getAttribute("exportpath"); System.out.println("export path isssss "+requestpage);%>
     <a href="<%=request.getContextPath()%>/Export/<%=requestpage%>" target="_blank">Download It</a>
 
-<%}
+<%
+
+}
  session.removeAttribute("exportmsg");
 %>
 

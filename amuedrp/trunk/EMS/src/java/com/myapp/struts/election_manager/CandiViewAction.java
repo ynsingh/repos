@@ -18,6 +18,8 @@ import com.myapp.struts.hbm.Position1;
 import com.myapp.struts.hbm.PositionDAO;
 import com.myapp.struts.hbm.VoterRegistration;
 import com.myapp.struts.hbm.VoterRegistrationId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,10 +53,9 @@ private VoterRegistrationId elid=new VoterRegistrationId();
         String status="OK";
         List Institute = insti.getInstituteNameByStatus(status);
         System.out.println( "InstituteList"+""+Institute.size());
-session.setAttribute("Institute",Institute);
+        session.setAttribute("Institute",Institute);
 
-
-        CandidateRegActionForm employeeform=(CandidateRegActionForm)form;
+         CandidateRegActionForm employeeform=(CandidateRegActionForm)form;
          String button="add";
          String stat = request.getParameter("status");
          String eleid = request.getParameter("eid");
@@ -62,7 +63,45 @@ session.setAttribute("Institute",Institute);
           id=request.getParameter(id);
           String position = request.getParameter("pos");
            String eid=(String)session.getAttribute("institute_id");
+           String va=request.getParameter("va");
+           String institute_id=(String)session.getAttribute("institute_id");
+           if(va!=null)
+           {
+               System.out.println("i am in ifff");
+               Candidate1 c=CandidateRegistrationDAO.searchcandidateMenifesto(institute_id,id,eleid,position);
+               CandidateRegistration can=CandidateRegistrationDAO.searchCandidateRegistration(eid,id,position);
+               List <Election> el=ElectionDAO.ElectionID(eleid, institute_id);
+               Calendar cal = Calendar.getInstance();
+               Date d = cal.getTime();
+               
+               
+               if( el.get(0).getWithdrawlEndDate().after(d))
+            {
+         
+               
            
+
+            can.setStatus("Withdraw");
+            
+            CandidateRegistrationDAO.update(can);
+            CandidateRegistrationDAO cd=new CandidateRegistrationDAO();
+               cd.delete(c);
+               System.out.println("candidate name  "+c.getCandidateName());
+            request.setAttribute("msg", "Candidate Withdrawal Successful");
+            }
+            else
+            {
+                   System.out.println("candidate name in else part "+c.getCandidateName());
+                request.setAttribute("msg1", "You can not delete this candidate, withdraw time expire at  "+el.get(0).getWithdrawlEndDate());
+
+            }
+
+
+              
+                
+                return mapping.findForward("delete");
+           }
+           else{
           System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id+eid+position);
 
         VoterRegistration r=CandidateRegistrationDAO.searchVoterRegistration(eid,id);
@@ -194,4 +233,6 @@ System.out.println(stat+"....................");
         }
    return mapping.findForward("failure");
     }
+    }
+
 }

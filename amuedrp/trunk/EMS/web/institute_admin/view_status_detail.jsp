@@ -227,9 +227,9 @@ if (!rst.isEmpty()){
                      <td align="<%=align%>" dir="<%=rtl%>"><br><br><br><br><br><br></td>
                      <td align="<%=align%>" dir="<%=rtl%>">
                          <% if(session.getAttribute("del")!= null){
-                                    session.removeAttribute("del");
+                                    
                                 %>
-                         <input type="submit" name="submit" class="txt2" value="Delete"/>&nbsp;&nbsp;
+                                <input type="submit" name="submit" class="txt2" value="Delete" onclick="<%session.removeAttribute("del");%>"/>&nbsp;&nbsp;
                          <% }
                             else {
                             %>
