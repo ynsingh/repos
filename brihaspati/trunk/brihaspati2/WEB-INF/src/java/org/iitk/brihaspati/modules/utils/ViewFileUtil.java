@@ -123,7 +123,8 @@ public class ViewFileUtil
 		{
 			ErrorDumpUtil.ErrorLog("The Error in ViewFileUtil class ViewFile() --"+e);
 		}
-    }//
+	}//
+
 	public static void ViewInfo(String str,RunData data )
 	{
 		try{
@@ -132,6 +133,7 @@ public class ViewFileUtil
 		ServletOutputStream out=data.getResponse().getOutputStream();
 		String fixedStr = str.replaceAll("<br />", "\n");
                 out.write(fixedStr.getBytes());
+		out.close();
 		}
 		catch (Exception ex)
 		{
