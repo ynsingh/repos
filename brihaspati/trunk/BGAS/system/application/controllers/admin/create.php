@@ -279,33 +279,50 @@ class Create extends Controller {
 			/* Creating account database */
 			if ($this->input->post('create_database', TRUE) == "1")
 			{
-				$new_link = @mysql_connect($data_database_host . ':' . $data_database_port, $data_database_username, $data_database_password);
-				if ($new_link)
-				{
-					/* Check if database already exists */
-					$db_selected = mysql_select_db($data_database_name, $new_link);
-					if ($db_selected) {
-						mysql_close($new_link);
-						$this->messages->add('Database already exists.', 'error');
-						$this->template->load('admin_template', 'admin/create', $data);
-						return;
-					}
+				$ini_file = $this->config->item('config_path') . "accounts/sqladmin.ini";
+				if ( ! get_file_info($ini_file))
+                                {       
+                                	$this->messages->add('MySQL settings file label sqladmin.ini does not exists.', 'error');
+                                        $this->messages->add('So you first set the MySQL administrator user name and password.', 'error');
+                                        $this->template->load('admin_template', 'admin/create', $data);
+                                        return;
+                                }
+                                else
+                                {
+                                        $data_sql_accounts = parse_ini_file($ini_file);
+                                        $data_database_admin_username = $data_sql_accounts['sql_admin_name'];
+                                        $data_database_admin_password = $data_sql_accounts['sql_admin_password'];
 
-					/* Creating account database */
-					$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name);
-					if (mysql_query($db_create_q, $new_link))
+					$new_link = @mysql_connect($data_database_host . ':' . $data_database_port, $data_database_admin_username, $data_database_admin_password);
+					if ($new_link)
 					{
-						$this->messages->add('Created account database.', 'success');
+						/* Check if database already exists */
+						$db_selected = mysql_select_db($data_database_name, $new_link);
+						if ($db_selected) {
+							mysql_close($new_link);
+							$this->messages->add('Database already exists.', 'error');
+							$this->template->load('admin_template', 'admin/create', $data);
+							return;
+						}
+					
+						/* Creating account database */
+						$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name);
+						$db_create_q .= 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY '. mysql_real_escape_string($data_database_password);
+						$db_create_q .= 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY '. mysql_real_escape_string($data_database_password);
+						if (mysql_query($db_create_q, $new_link))
+						{
+							$this->messages->add('Created account database.', 'success');
+						} else {
+							$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
+							$this->template->load('admin_template', 'admin/create', $data);
+							return;
+						}
+						mysql_close($new_link);
 					} else {
-						$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
+						$this->messages->add('Error connecting to database. ' . mysql_error(), 'error');
 						$this->template->load('admin_template', 'admin/create', $data);
 						return;
 					}
-					mysql_close($new_link);
-				} else {
-					$this->messages->add('Error connecting to database. ' . mysql_error(), 'error');
-					$this->template->load('admin_template', 'admin/create', $data);
-					return;
 				}
 			}
 

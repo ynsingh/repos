@@ -42,6 +42,15 @@
 				Status report of the application
 			</div>
 		</div>
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php echo anchor('admin/sqlAdmin', 'MySQL Admin Setting', array('title' => 'MySQL Admin Setting')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                MySQL administrator Setting of the application
+                        </div>
+                </div>
+
 	</div>
 </div>
 <div class="clear">
