@@ -113,6 +113,7 @@ class Create extends Controller {
 		$data['chart_account_options'] = array(
 			'minimal' => 'minimal',
 			'standard' => 'standard',
+			'mhrd' => 'MHRD Format',
 		);
 		$data['chart_account'] = 'minimal';
 
@@ -306,13 +307,26 @@ class Create extends Controller {
 						}
 					
 						/* Creating account database */
-						$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name);
-						$db_create_q .= 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY '. mysql_real_escape_string($data_database_password);
-						$db_create_q .= 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY '. mysql_real_escape_string($data_database_password);
+						$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name).'; ';
+						$db_create_q1 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
+						$db_create_q2 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
+						$eflag=true; $eflag1=true; $eflag2=true;
 						if (mysql_query($db_create_q, $new_link))
 						{
-							$this->messages->add('Created account database.', 'success');
-						} else {
+							$eflag=false;
+							$this->messages->add('Created new account database.', 'success');
+						} 
+						if (mysql_query($db_create_q1, $new_link))
+						{
+							$eflag1=false;
+							$this->messages->add('Granting permission to user to access new database  with local ip.', 'success');
+						} 
+						if (mysql_query($db_create_q2, $new_link))
+						{
+							$eflag2=false;
+							$this->messages->add('Granting permission to user to access new database  with local name.', 'success');
+						} 
+						if ($eflag ||$eflag1  || $eflag2) {
 							$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
 							$this->template->load('admin_template', 'admin/create', $data);
 							return;
@@ -354,7 +368,8 @@ class Create extends Controller {
 					$newacc->query($row);
 					if ($newacc->_error_message() != "")
 					{
-						$this->messages->add('Error initializing account database.'.$newacc->_error_message(), 'error');
+						$this->messages->add('Error initializing account database under schema.sql.'.$row, 'error');
+						$this->messages->add('Error initializing account database under schema.sql.'.$newacc->_error_message(), 'error');
 						$this->template->load('admin_template', 'admin/create', $data);
 						return;
 					}
@@ -365,6 +380,9 @@ class Create extends Controller {
 				//if $data_chart_account is minimal
 				if (($data_chart_account == 'minimal') || ($data_chart_account == '')){
 					$setup_initial_data = read_file('system/application/controllers/admin/minimal.sql');
+				}
+				elseif ( $data_chart_account == 'mhrd'){
+					$setup_initial_data = read_file('system/application/controllers/admin/mhrdedu.sql');
 				}
 					//else $data_chart_account is standard
 				elseif ( $data_chart_account == 'standard'){

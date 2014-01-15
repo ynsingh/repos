@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS entries (
   submitted_by VARCHAR(255) NOT NULL,
   verified_by VARCHAR(255) NOT NULL,
   status int(1) NOT NULL DEFAULT 0,
-  modifiedvalue BLOB;	
+  modifiedvalue BLOB,	
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

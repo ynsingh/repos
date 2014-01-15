@@ -65,7 +65,7 @@ class Ledger_model extends Model {
 					$name = $nme." - I";
 				if(substr($cd, 0, 2) == 40)
 					$name = $nme." - E";
-				$options[$row->id] = $name;
+				$options[$row->id] = $name." ( ".$cd." )" ;
 			}
 		}
 		return $options;

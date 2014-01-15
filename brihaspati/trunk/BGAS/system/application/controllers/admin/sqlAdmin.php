@@ -78,7 +78,7 @@ class SqlAdmin extends Controller {
 
 		 /* Form validations */
                 $this->form_validation->set_rules('sql_admin_name', 'MySQL Admin Name', 'trim|required');
-                $this->form_validation->set_rules('sql_admin_password', 'MySQL Admin Password', 'trim|required');
+//                $this->form_validation->set_rules('sql_admin_password', 'MySQL Admin Password', 'trim|required');
 
 		 /* Validating form */
                 if ($this->form_validation->run() == FALSE)

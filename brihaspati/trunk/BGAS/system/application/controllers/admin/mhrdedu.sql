@@ -1,0 +1,46 @@
+INSERT INTO `groups` VALUES (1,'20',0,'Application of Funds',0,0,0);
+INSERT INTO `groups` VALUES (2,'10',0,'Sources of Funds',0,0,0);
+INSERT INTO `groups` VALUES(3,'30',0,'Incomes',0,0,0);
+INSERT INTO `groups` VALUES(4,'40',0,'Expenditure',0,0,0);
+INSERT INTO budgets VALUES (1, '50', 0, 'Main Budget', 0.00, 'Yearly', 0,0);
+INSERT INTO projection VALUES(1, '60', 0, 'Target Projection', 0.00, 'Yearly', 0.00);
+
+INSERT INTO `groups` VALUES(5,'1001',2,'Unrestricted Funds',0,0,0);
+INSERT INTO `groups` VALUES(6,'1002',2,'Restricted Funds',0,0,0);
+INSERT INTO `groups` VALUES(7,'1003',2,'Loan/Borrowings',0,0,0);
+INSERT INTO `groups` VALUES(8,'1004',2,'Current Liabilities And Provisions',0,0,0);
+INSERT INTO `groups` VALUES(9,'100101',5,'Corpus',0,0,0);
+INSERT INTO `groups` VALUES(10,'100102',5,'General Funds',0,0,0);
+INSERT INTO `groups` VALUES(11,'100103',5,'Designated-Earmarked Funds',0,0,0);
+INSERT INTO `groups` VALUES(12,'100301',7,'Secured',0,0,0);
+INSERT INTO `groups` VALUES(13,'100302',7,'Unsecured',0,0,0);
+INSERT INTO `groups` VALUES(14,'2001',1,'Fixed Assets',0,0,0);
+INSERT INTO `groups` VALUES(15,'2002',1,'Investments',0,0,0);
+INSERT INTO `groups` VALUES(16,'2003',1,'Current Assets',0,0,0);
+INSERT INTO `groups` VALUES(17,'2004',1,'Loans Advances and Deposits',0,0,0);
+INSERT INTO `groups` VALUES(18,'200101',14,'Tangible Assets',0,0,0);
+INSERT INTO `groups` VALUES(19,'200102',14,'Intangible Assets',0,0,0);
+INSERT INTO `groups` VALUES(20,'200103',14,'Capital Work-In-Progress',0,0,0);
+INSERT INTO `groups` VALUES(21,'200201',15,'Long Term',0,0,0);
+INSERT INTO `groups` VALUES(22,'200202',15,'Short Term',0,0,0);
+INSERT INTO `groups` VALUES(23,'3001',3,'Academic Receipts',0,0,0);
+INSERT INTO `groups` VALUES(24,'3002',3,'Grant and Donations',0,0,0);
+INSERT INTO `groups` VALUES(25,'3003',3,'Income from Investments',0,0,0);
+INSERT INTO `groups` VALUES(26,'3004',3,'Other Incomes',0,0,0);
+INSERT INTO `groups` VALUES(27,'4001',4,'Staff Payments and Benefits',0,0,0);
+INSERT INTO `groups` VALUES(28,'4002',4,'Academic Expenses',0,0,0);
+INSERT INTO `groups` VALUES(29,'4003',4,'Administrative and General expenses',0,0,0);
+INSERT INTO `groups` VALUES(30,'4004',4,'Transportations Expenses',0,0,0);
+INSERT INTO `groups` VALUES(31,'4005',4,'Repairs and Maintenance',0,0,0);
+INSERT INTO `groups` VALUES(32,'4006',4,'Finance Costs',0,0,0);
+INSERT INTO `groups` VALUES(33,'4007',4,'Other expenses',0,0,0);
+
+INSERT INTO `ledgers` VALUES (1,'10010201',10,'Contributions towards General Fund','0.00','D',0,0,0);
+INSERT INTO `ledgers` VALUES (2,'10010202',10,'Balance of net income/expenditure transferred from I/E Account','0.00','D',0,0,0);
+
+INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (1, 'receipt', 'Receipt', 'Received in Bank account or Cash account', 1, 1, '', '', 0, 2);
+INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (2, 'payment', 'Payment', 'Payment made from Bank account or Cash account', 1, 1, '', '', 0, 3);
+INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (3, 'contra', 'Contra', 'Transfer between Bank account and Cash account', 1, 1, '', '', 0, 4);
+INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (4, 'journal', 'Journal', 'Transfer between Non Bank account and Cash account', 1, 1, '', '', 0, 5);
+INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (5, 'dpayment', 'Expance (Deferred Payment)', 'For immediate booking of payment in foreign currency against letter of credot in INR as per applicable exchange rate', 1, 1, '', '', 0, 6);
+INSERT INTO entry_types (id, label, name, description, base_type, numbering, prefix, suffix, zero_padding, bank_cash_ledger_restriction) VALUES (6, 'dreceipt', 'Income (Deferred Receipt)', 'For immediate booking of receipt in foreign currency against letter of debet in INR as per applicable exchange rate', 1, 1, '', '', 0, 7);
