@@ -1,5 +1,5 @@
 ul#css3menu1,ul#css3menu1 ul{
-	margin:0;list-style:none;padding:0;background-color:#dedede;border-width:1px;border-style:solid;border-color:#5f5f5f;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+	margin:0px;list-style:none;padding:0;background-color:#dedede;border-width:1px;border-style:solid;border-color:#5f5f5f;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
 ul#css3menu1 ul{
 	display:none;position:absolute;left:0;top:100%;-moz-box-shadow:3.5px 3.5px 5px #000000;-webkit-box-shadow:3.5px 3.5px 5px #000000;box-shadow:3.5px 3.5px 5px #000000;padding:0 10px 10px;background-color:#ffffff;border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;border-color:#d4d4d4;}
 ul#css3menu1 li:hover>*{
@@ -9,7 +9,7 @@ ul#css3menu1 li:hover{
 ul#css3menu1 ul ul{
 	position:absolute;left:100%;top:0;}
 ul#css3menu1{
-	display:block;font-size:0;float:left;}
+	display:block;font-size:0;float:right;}
 ul#css3menu1 li{
 	display:block;white-space:nowrap;font-size:0;float:left;}
 ul#css3menu1>li,ul#css3menu1 li{
