@@ -176,7 +176,10 @@ class User extends Controller {
 		$data['accounts'] = array();
                 $db1->select('dblable')->from('bgasAccData');
 		$list = $db1->get();
-                if($list->num_rows() > 1)
+
+		//this is old line
+                //if($list->num_rows() > 1)
+                if($list->num_rows() > 0)
                        {
 //                                $this->messages->add('Problem with selection of account label.', 'error');
   //                              $this->template->load('admin_template', 'admin/manage', $data);
