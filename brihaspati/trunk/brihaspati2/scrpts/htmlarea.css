@@ -262,10 +262,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 .button-ftextstyle {background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
 
-.drop {background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;
-}
+.drop {background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;}
 .input_button {width:300px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
-.lgbtn { margin-left:100px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
+.lgbtn { margin-right:100px;background-color:#4D90FE;border:1px solid #FBC43C;border-radius:4px;padding:8px;font-size:13px;font-family:Arial;font-weight:bold;color:#fff;white-space:nowrap;text-align:center}
 .lgbt { margin-left:100px;text-align:center;padding-right:15px}
 .tp { margin-top:-20px;}
-.example { margin-left:124px;text-align:center}
+.example { margin-left:110px;text-align:left}
+.spce {margin-left:20px;text-align:left}
