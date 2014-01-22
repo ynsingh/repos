@@ -404,7 +404,7 @@ class Report extends Controller {
 	function profitandloss($period = NULL)
 	{
 		$this->load->library('session');
-		$this->template->set('page_title', 'Income And Expenses Statement');
+		$this->template->set('page_title', 'Income And Expenditure Statement');
 		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview'));
 		$data['left_width'] = "450";
 		$data['right_width'] = "450";
@@ -1310,7 +1310,7 @@ class Report extends Controller {
 				if (float_ops($pandl, 0, '>'))
 				{
 					$total = float_ops($total, $pandl, '+');
-					Accountlist::add_row_csv(array("Income & Expenses Account (Net Income)", convert_cur($pandl)));
+					Accountlist::add_row_csv(array("Income & Expenditure Account (Net Income)", convert_cur($pandl)));
 				}
 			}
 
@@ -1336,7 +1336,7 @@ class Report extends Controller {
 				if (float_ops($pandl, 0, '<'))
 				{
 					$total = float_ops($total, -$pandl, '+');
-					Accountlist::add_row_csv(array("Income And Expenses Account (Net Expenses)", convert_cur(-$pandl)));
+					Accountlist::add_row_csv(array("Income And Expenditure Account (Net Expenditure)", convert_cur(-$pandl)));
 				}
 			}
 		
@@ -1584,7 +1584,7 @@ class Report extends Controller {
 		if ($statement == "profitandloss")
 		{
 			$data['report'] = "report/profitandloss";
-			$data['title'] = "Income And Expenses Statement";
+			$data['title'] = "Income And Expenditure Statement";
 			$data['left_width'] = "";
 			$data['right_width'] = "";
                         $data['print_preview'] = TRUE;

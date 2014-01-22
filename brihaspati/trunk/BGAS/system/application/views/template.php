@@ -184,7 +184,7 @@ $(document).ready(function() {
 				<ul>
 					<li><?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?></li>
 					<li><?php echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format')); ?></li>
-					<li><?php echo anchor('report/profitandloss', 'Income & Expenses', array('title' => 'Income & Expenses')); ?></li>
+					<li><?php echo anchor('report/profitandloss', 'Income & Expenditure', array('title' => 'Income & Expenditure')); ?></li>
 					<li><?php echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt')); ?></li>
 					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
 					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>

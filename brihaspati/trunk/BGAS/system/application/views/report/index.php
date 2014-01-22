@@ -18,7 +18,7 @@
 		</div>
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('report/profitandloss', 'Income and Expenses Statement', array('title' => 'Income and Expenses Statement')); ?>
+				<?php echo anchor('report/profitandloss', 'Income and Expenditure  Statement', array('title' => 'Income and Expenditure Statement')); ?>
 			</div>
 			    <div class="settings-desc">
 				&nbsp;        

@@ -21,7 +21,7 @@ class Manage extends Controller {
 	{
 		$this->load->helper('file');
 		$this->template->set('page_title', 'Manage accounts');
-		$this->template->set('nav_links', array('admin/manage/add' => 'New account'));
+		$this->template->set('nav_links', array('admin/create' => 'New account'));
 
 		/* Getting list of files in the config - accounts directory */
 		$data['accounts'] = array();
