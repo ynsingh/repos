@@ -56,6 +56,8 @@ locale1=(String)session.getAttribute("locale");
 <title>Search Voter.....</title>
 
 
+
+
 <%
 try{
 if(session.getAttribute("institute_id")!=null){
@@ -72,6 +74,7 @@ else{
 
 %>
 
+
 <style type="text/css">
 body
 {
@@ -79,10 +82,13 @@ body
    color: #000000;
 }
 </style>
+
 <script language="javascript">
+
 function fun()
 {
-    
+
+        
     <%if(status!=null){%>
     document.Form1.status.value = "<%=status%>";
     <%}%>
@@ -101,6 +107,7 @@ function mailsend()
 
 document.Form1.action="<%=request.getContextPath()%>/election_manager/ViewMailBody.jsp?mail=sendmailtoall";
 document.Form1.method="post";
+document.Form1.target="f1";
 document.Form1.submit();
 
 }

@@ -30,11 +30,11 @@ import javax.servlet.http.HttpSession;
  * @author Edrp-04
  */
 public class Election_Manager_RegistrationAction extends org.apache.struts.action.Action {
-    
+
     /* forward name="success" path="" */
      private final ExecutorService executor=Executors.newFixedThreadPool(1);
     Email obj;
-  
+
     private static final String SUCCESS = "success";
      private String first_name;
     private String last_name;
@@ -62,9 +62,9 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
     boolean page=true;
     String align="left";
     private String button;
-    
-    
-    
+
+
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -87,7 +87,7 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
         //auto generated Manager ID & Staff ID
         button=ManagerRegistrationForm.getsubmit();
         System.out.println("button issssssssssdddddd "+button);
-       
+
 
 
         System.out.println(staff_id+"   "+manager_id);
@@ -120,7 +120,7 @@ locale1=(String)session.getAttribute("locale");
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
     else{ rtl="RTL";page=false;align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-    
+
 
 
 
@@ -129,40 +129,22 @@ locale1=(String)session.getAttribute("locale");
         StaffDetailDAO staffdetaildao=new StaffDetailDAO();
         LoginDAO logindao= new LoginDAO();
             //StaffManagerDAO staffmanagerdao=new StaffManagerDAO();
-        
-        
+
+
        StaffDetail staffdetail=new StaffDetail();
         ElectionManager electionmanager=new ElectionManager();
         ElectionManagerId electionprimary=new ElectionManagerId();
         StaffDetailId staffdetailprimary=new StaffDetailId();
         Login login =new Login();
 
-      
+
       // List rs1=logindao.getStaffDetails(staff_id, institute_id);
       // List rs2=electionmanagerdao.getStaffDetails(staff_id, institute_id);
 
 
 
-      
-      //Iterator i1= rs1.iterator();
-      //Iterator i2=rs2.iterator();
 
-       List rs=admindao.getAdminDeatilsByUserId(user_id);
-       List rs1=logindao.getUser(user_id);
-       List rs2=electionmanagerdao.getUserId(user_id);
-       List rs3=staffdetaildao.getStaffDetails(staff_id, institute_id);
-       List rs4=logindao.getStaffDetails(staff_id, institute_id);
-       List rs5=electionmanagerdao.getStaffDetails(staff_id, institute_id);
-       List rs6=electionmanagerdao.ManagerDeatils(manager_id, institute_id);
-      // List rs2=MyQueryResult.getMyExecuteQuery("select * from staff_detail where emai_id='"+admin_email+"'");
-       Iterator it = rs.iterator();
-       Iterator it1 = rs1.iterator();
-       Iterator it2 = rs2.iterator();
-       Iterator it3 = rs3.iterator();
-       Iterator it4 = rs4.iterator();
-       Iterator it5=rs5.iterator();
-       Iterator it6= rs6.iterator();
-       //while()
+
        //25.11
        if(button.equals("Update")){
              ElectionManagerDAO electionmanagerdao1=new ElectionManagerDAO();
@@ -190,15 +172,15 @@ locale1=(String)session.getAttribute("locale");
                   elm1.get(0).setGender(ManagerRegistrationForm1.getGender());
                   elm1.get(0).setContactNo(ManagerRegistrationForm1.getContact_no());
                   elm1.get(0).setMobileNo(ManagerRegistrationForm1.getMobile_no());
-                  
-                
-                
+
+
+
                 //electionprimary.setInstituteId(institute_id);
                 //electionprimary.setManagerId(manager_id);
 
 //                electionmanager1.setDepartment(department);
 //                electionmanager1.setStaffId(staff_id);
-                
+
                 electionmanagerdao1.update(elm.get(0));
                 st.update(elm1.get(0));
              }
@@ -209,9 +191,28 @@ locale1=(String)session.getAttribute("locale");
        }
        else{
        //25.11
+
          staff_id=(String)ElectionDAO.returnMaxElectionManagerId(institute_id);
         manager_id=staff_id;
-
+        //Iterator i1= rs1.iterator();
+      //Iterator i2=rs2.iterator();
+      System.out.println("staff id isssssssssss  "+staff_id+"   "+manager_id);
+       List rs=admindao.getAdminDeatilsByUserId(user_id);
+       List rs1=logindao.getUser(user_id);
+       List rs2=electionmanagerdao.getUserId(user_id);
+       List rs3=staffdetaildao.getStaffDetails(staff_id, institute_id);
+       List rs4=logindao.getStaffDetails(staff_id, institute_id);
+       List rs5=electionmanagerdao.getStaffDetails(staff_id, institute_id);
+       List rs6=electionmanagerdao.ManagerDeatils(manager_id, institute_id);
+      // List rs2=MyQueryResult.getMyExecuteQuery("select * from staff_detail where emai_id='"+admin_email+"'");
+       Iterator it = rs.iterator();
+       Iterator it1 = rs1.iterator();
+       Iterator it2 = rs2.iterator();
+       Iterator it3 = rs3.iterator();
+       Iterator it4 = rs4.iterator();
+       Iterator it5=rs5.iterator();
+       Iterator it6= rs6.iterator();
+       //while()
        if(it.hasNext() || it1.hasNext() || it2.hasNext() )
        {
 String msg1=resource.getString("duplicate_user_id");
@@ -313,7 +314,7 @@ String msg1=resource.getString("duplicate_user_id");
         System.out.println("Institute_id="+electionmanager.getId().getInstituteId()+" manager_id="+electionmanager.getId().getManagerId());
 
 
-        
+
         //staffmanagerdao.insert(ems);
 
         staffdetaildao.insert(staffdetail);
@@ -322,7 +323,7 @@ String msg1=resource.getString("duplicate_user_id");
          String msg=resource.getString("record_inserted_successfully");
          request.setAttribute("msg",msg);
          String mailbody=UserLog.readProperty("mail.properties", user_id+"em");
-         
+
 
        if(mailbody=="")
        mailbody="\n You are Registered as a Election Manager with given following details\n";

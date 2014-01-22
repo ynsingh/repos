@@ -504,7 +504,7 @@
                  <forward name="success2" path="/Candidate/candidate_accept.jsp"/>
                  <forward name="success3" path="/Candidate/candidate_viewall.jsp"/>
                 <forward name="accept" path="/election_manager/accept_candidate_request.jsp"/>
-                <forward name="delete" path="/election_manager/candidate_setup_2.jsp"/>
+                <forward name="delete" path="/election_manager/search_candidate.jsp?status=D"/>
 
          </action>
 

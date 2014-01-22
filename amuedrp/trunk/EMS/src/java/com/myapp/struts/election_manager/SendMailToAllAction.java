@@ -172,14 +172,14 @@ String mailbody;
                                 if(mailbody==null){
                                     System.out.println("Mailbody@@@@@@@@@@");
                                     request.setAttribute("msg1","Please Add Candidate Mail Body");
-                                    return mapping.findForward(SUCCESS);
+                                    return mapping.findForward(SUCCESS1);
 
                                 }
 
                 if(mailbody.isEmpty())
                 {
                    request.setAttribute("msg1","Please Add Candidate Mail Body");
-                   return mapping.findForward(SUCCESS);
+                   return mapping.findForward(SUCCESS1);
                 }
 
                 obj=new Email(temp.getVoterRegistration().getEmail(),"","Mail From Election Manager from EMS","Dear "+temp.getVoterRegistration().getVoterName()+"\n"+mailbody+"\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));

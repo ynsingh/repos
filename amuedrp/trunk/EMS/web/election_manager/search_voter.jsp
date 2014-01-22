@@ -214,7 +214,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  <tr style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;"><td colspan="2" id="ifr3" ><IFRAME  name="f1" <%--src="/EMS/votersetup.do?page=0"--%> frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <tr style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;"><td colspan="2" id="ifr3" ><IFRAME  name="f1" src="/EMS/votersetup.do?page=0" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

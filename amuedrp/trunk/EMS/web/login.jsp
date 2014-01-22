@@ -289,7 +289,7 @@ else{
 <%
 if(msg1!=null)
       { 
-    out.println(msg1);
+  //  out.println(msg1);
 }
  String msg11 =(String) request.getAttribute("msg1");
  //request.removeAttribute(msg11);

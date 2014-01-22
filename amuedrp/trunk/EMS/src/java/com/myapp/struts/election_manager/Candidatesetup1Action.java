@@ -38,12 +38,12 @@ public class Candidatesetup1Action extends org.apache.struts.action.Action {
          HttpSession session = request.getSession();
         String institute_id=(String)session.getAttribute("institute_id");
         String manager_id=(String)session.getAttribute("user_id");
-
+        
         VoterRegistration voter= new VoterRegistration();
         CandidateRegistration candidate= new CandidateRegistration();
         VoterRegistrationDAO admindao=new VoterRegistrationDAO();
         CandidateRegistrationDAO candidatedao= new CandidateRegistrationDAO();
-
+        
 
      
         String status= (String)request.getParameter("status");
@@ -51,14 +51,17 @@ public class Candidatesetup1Action extends org.apache.struts.action.Action {
         String searchby = request.getParameter("search_by");
        String searchkeyword = request.getParameter("search_keyword");
       String sortby = request.getParameter("sort_by");
+      
         if(status!=null)
-        {if(status.equalsIgnoreCase("A")) status="REGISTERED";
+        {
+            if(status.equalsIgnoreCase("A")) status="REGISTERED";
         else if(status.equalsIgnoreCase("B")) status="BLOCK";
         else if(status.equalsIgnoreCase("R")) status="REJECTED";
         else if(status.equalsIgnoreCase("U")) status="REGISTERED";
          else if(status.equalsIgnoreCase("NR")) status="not registered";
          else if(status.equalsIgnoreCase("D")) status="REGISTERED";
         }
+      
         if(sortby==null)
             sortby="voter_name";
    
@@ -71,20 +74,24 @@ public class Candidatesetup1Action extends org.apache.struts.action.Action {
       else
       {
             rst1=candidatedao.GetDetails2(institute_id,status,null,null,sortby);
+            
       }
 
 
                    // session.setAttribute("resultset", rst);
+                   
                     session.setAttribute("resultset1", rst1);
-                    if(st.equalsIgnoreCase("D"))
+                    System.out.println("hello i am fine ");
+                    if(st!=null && st.equalsIgnoreCase("D"))
                     {
                         return mapping.findForward("success1");
                     }
+                    
                         return mapping.findForward(SUCCESS);
             
       }
       catch(Exception er){
-          System.out.println("i am in exception");
+          System.out.println("i am in exception   "+er);
           return null;
       }
         

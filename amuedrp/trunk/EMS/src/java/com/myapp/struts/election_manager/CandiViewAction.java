@@ -87,12 +87,12 @@ private VoterRegistrationId elid=new VoterRegistrationId();
             CandidateRegistrationDAO cd=new CandidateRegistrationDAO();
                cd.delete(c);
                System.out.println("candidate name  "+c.getCandidateName());
-            request.setAttribute("msg", "Candidate Withdrawal Successful");
+            session.setAttribute("wmsg", "Candidate Withdrawal Successful");
             }
             else
             {
                    System.out.println("candidate name in else part "+c.getCandidateName());
-                request.setAttribute("msg1", "You can not delete this candidate, withdraw time expire at  "+el.get(0).getWithdrawlEndDate());
+                session.setAttribute("wmsg1", "You can not delete this candidate, withdraw time expire at  "+el.get(0).getWithdrawlEndDate());
 
             }
 
@@ -117,7 +117,7 @@ private VoterRegistrationId elid=new VoterRegistrationId();
 
 List<Candidate1> c1=p1.ElectionId(Integer.parseInt(c.getId().getPosition()), eid)   ;
 
-
+               System.out.println("position id issssss  "+c.getId().getPosition());
 
  String electionid=c.getId().getElectionId();
 
@@ -197,13 +197,16 @@ employeeform.setRequestDate(c.getRequestDate());
             employeeform.setProposedBy(c.getProposedBy());
             employeeform.setSecondedBy(c.getSecondedBy());
 
-//            employeeform.setEnrolled_in(c.getEnrolledIn());
-//            employeeform.setP_marks(c.getPMarks());
-//            employeeform.setP_attendence(c.getPAttendence());
-//
-//            employeeform.setBacklog(c.getBacklog());
-//            employeeform.setCriminal(c.getCriminal());
-//            employeeform.setIndisc(c.getIndisc());
+//uncommented on 11 jan
+            employeeform.setEnrolled_in(c.getEnrolledIn());
+            employeeform.setP_marks(c.getPMarks());
+            employeeform.setP_attendence(c.getPAttendence());
+
+            employeeform.setBacklog(c.getBacklog());
+            employeeform.setCriminal(c.getCriminal());
+            employeeform.setIndisc(c.getIndisc());
+//uncommented on 11 jan
+
             if(p!=null)
                 employeeform.setPosition(p.getPositionName());
             

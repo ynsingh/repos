@@ -51,14 +51,14 @@ String projectPath = getProject();
 
     if(os.equalsIgnoreCase("linux"))
     {
-       projectPath=projectPath+"/web/reports/";
-        // projectPath=projectPath+"/reports/";
+       //projectPath=projectPath+"/web/reports/";
+         projectPath=projectPath+"/reports/";
     return projectPath;
     }
     else
     { 
-      projectPath=projectPath+"\\web\\reports\\";   
-      //projectPath=projectPath+"\\reports\\";
+      //projectPath=projectPath+"\\web\\reports\\";   
+      projectPath=projectPath+"\\reports\\";
       System.out.println("project path "+projectPath);
     return projectPath;
     }
@@ -158,16 +158,16 @@ String projectPath = getProject();
 
     if(os.equalsIgnoreCase("linux"))
     {
-        projectPath=projectPath+"/web/EMSLOG/";
-//        projectPath=projectPath+"/EMSLOG/";
+      //  projectPath=projectPath+"/web/EMSLOG/";
+        projectPath=projectPath+"/EMSLOG/";
 
     return projectPath;
     }
     else
     {
     System.out.println("log path is  "+projectPath);
-    projectPath=projectPath+"\\web\\EMSLOG\\";
-//    projectPath=projectPath+"\\EMSLOG\\";
+//    projectPath=projectPath+"\\web\\EMSLOG\\";
+    projectPath=projectPath+"\\EMSLOG\\";
     return projectPath;
     }
 
@@ -262,14 +262,14 @@ public static String getProjectExportPath(){
 
     if(os.equalsIgnoreCase("linux"))
     {
-        projectPath=projectPath+"/web/Export/";
-        // projectPath=projectPath+"/Export/";
+        //projectPath=projectPath+"/web/Export/";
+         projectPath=projectPath+"/Export/";
         return projectPath;
     }
     else
     {
-       projectPath=projectPath+"\\web\\Export\\";
-      // projectPath=projectPath+"\\Export\\";
+       //projectPath=projectPath+"\\web\\Export\\";
+       projectPath=projectPath+"\\Export\\";
        return projectPath;
     }
 

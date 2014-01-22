@@ -1051,6 +1051,9 @@ role=(String)session.getAttribute("login_role");
                <li>
                             <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=D"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("delete")%></a>
                </li>
+               <li>
+                            <a href="<%=request.getContextPath()%>/election_manager/search_candidate.jsp?status=U"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Update</a>
+               </li>
                 <li>
                     <a href="<%=request.getContextPath()%>/Candidate/listelection.jsp" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><%=resource.getString("generate_report")%></a>
                     <ul>

@@ -138,7 +138,7 @@ public static boolean update(CandidateRegistration obj,VoterRegistration obj1) {
             tx.commit();
             
         } catch (RuntimeException e) {
-
+            System.out.println("runtime exception is  "+e);
             tx.rollback();
             return false;
 
@@ -922,7 +922,8 @@ public static List<SetVoter> getVoterDetails(String instituteid){
     {
             field="a."+field;
             sort="a."+sort;
-
+            System.out.println("field iss  "+field);
+            System.out.println("value iss  "+fieldvalue);
            Session session =null;
            List<VoterCandidate> candi=null;
           
@@ -933,19 +934,15 @@ public static List<SetVoter> getVoterDetails(String instituteid){
             String sql="";
             System.out.println("status is ="+ status);
            // sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"' and b.institute_id=:institute_id order by"+sort;
-           if(status==null)
+           if(status!=null)
            {
-               if(fieldvalue!=null && fieldvalue.isEmpty()==false)
-                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"' and b.institute_id=:institute_id order by "+sort;
-               else
-                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id order by "+sort;
 
-           }
-            
-           else
-           {
-            if(fieldvalue!=null && fieldvalue.isEmpty()==false)
-            sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id and "+field+" like '"+fieldvalue+"'";
+
+                if(fieldvalue!=null && fieldvalue.isEmpty()==false)
+            {
+                System.out.println("in ifff ");
+                sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id and "+field+" like '"+fieldvalue+"%'";
+            }
             else
                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id";
 
@@ -955,7 +952,22 @@ public static List<SetVoter> getVoterDetails(String instituteid){
                 }
 
             sql+=" order by "+sort;
+
+               
            }
+            
+           else
+           {
+           if(fieldvalue!=null && fieldvalue.isEmpty()==false)
+               {
+                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and "+field+" like '"+fieldvalue+"%' and b.institute_id=:institute_id order by "+sort;
+
+               }else
+                   sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id order by "+sort;
+
+           }
+            System.out.println("institute id is "+instituteId);
+            
             System.out.println(sql);
 
           Query query =  session.createSQLQuery(sql)
@@ -968,7 +980,9 @@ public static List<SetVoter> getVoterDetails(String instituteid){
           query.setString("status", status);
 
          candi=(List<VoterCandidate>)query.list();
-            session.getTransaction().commit();
+         System.out.println("size of resultset is  "+candi.size());
+         session.getTransaction().commit();
+         
         }
     catch(Exception e){
     e.printStackTrace();

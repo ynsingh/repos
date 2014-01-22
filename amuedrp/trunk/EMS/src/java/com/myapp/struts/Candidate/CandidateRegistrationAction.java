@@ -283,39 +283,42 @@ request.setAttribute("msg", "Registration Accepted Successfully");
             
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
              Election e1 = ElectionDAO.searchElectionByName(lf.getElections(), eid);
-
-
-          CandidateRegistration vr=voterdao.searchCandidateRegistration(eid, id,e1.getId().getElectionId());
-          System.out.println(eid+"   "+id+"  ");
-          VoterRegistration vr1=voterdao.searchVoterRegistration(eid, id);
-          
-          if(vr!=null)
-          {
-                if(vr.getBacklog().equalsIgnoreCase(lf.getBacklog())==false)
-                    vr.setBacklog(lf.getBacklog());
-                if(vr.getCriminal().equalsIgnoreCase(lf.getCriminal())==false)
-                    vr.setCriminal(lf.getCriminal());
-                if(vr.getEnrolledIn().equalsIgnoreCase(lf.getEnrolled_in())==false)
-                    vr.setEnrolledIn(lf.getEnrolled_in());
-                if(vr.getIndisc().equalsIgnoreCase(lf.getIndisc())==false)
-                    vr.setIndisc(lf.getIndisc());
-                if(vr.getPAttendence().equalsIgnoreCase(lf.getP_attendence())==false)
-                    vr.setPAttendence(lf.getP_attendence());
-                if(vr.getPMarks().equalsIgnoreCase(lf.getP_marks())==false)
-                    vr.setPMarks(lf.getP_marks());
-
                 Election e = ElectionDAO.searchElectionByName(lf.getElections(), eid);
                 Position1 p=null;
 
 
                 if(e!=null)
                     p = positiondao.getPositionByName(lf.getPosition(), e.getId().getElectionId(), eid);
+                String pid="";
+                if(p!=null)
+                    pid=String.valueOf(p.getId().getPositionId());
+          CandidateRegistration vr=CandidateRegistrationDAO.searchCandidateRegistration(eid, id,pid);
+          System.out.println(eid+"   "+id+"  ");
+          VoterRegistration vr1=CandidateRegistrationDAO.searchVoterRegistration(eid, id);
+             
+          if(vr!=null)
+          {
+              System.out.println("in update ddd "+vr.getId().getElectionId());
+                //if(vr.getBacklog().equalsIgnoreCase(lf.getBacklog())==false)
+                   vr.setBacklog(lf.getBacklog());
+               // if(vr.getCriminal().equalsIgnoreCase(lf.getCriminal())==false)
+                    vr.setCriminal(lf.getCriminal());
+                //if(vr.getEnrolledIn().equalsIgnoreCase(lf.getEnrolled_in())==false)
+                    vr.setEnrolledIn(lf.getEnrolled_in());
+               // if(vr.getIndisc().equalsIgnoreCase(lf.getIndisc())==false)
+                    vr.setIndisc(lf.getIndisc());
+               // if(vr.getPAttendence().equalsIgnoreCase(lf.getP_attendence())==false)
+                    vr.setPAttendence(lf.getP_attendence());
+              //  if(vr.getPMarks().equalsIgnoreCase(lf.getP_marks())==false)
+                    vr.setPMarks(lf.getP_marks());
+
+               
 
                 if(p!=null)
                 {
                     
                     vr.setPosition(String.valueOf(p.getId().getPositionId()));}
-                if(vr.getId().getEnrollment().equalsIgnoreCase(lf.getEnrollment())==false)
+                //if(vr.getId().getEnrollment().equalsIgnoreCase(lf.getEnrollment())==false)
                     vr.getId().setEnrollment(lf.getEnrollment());
                 
               
@@ -368,7 +371,7 @@ request.setAttribute("msg", "Registration Accepted Successfully");
 //                    obj.send();
 //                }
 //            });
-          session.setAttribute("msg","Candidate record Updated Successfully");
+          request.setAttribute("msg","Candidate record Updated Successfully");
           System.out.println("ddd");
 
              return mapping.findForward(SUCCESS);
