@@ -69,7 +69,7 @@
 	$gross_expense_list_q = $this->db->get();
 	echo "<td width=\"" . $left_width . "\">";
 	echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-	echo "<thead><tr><th>Expenses (Gross)</th><th align=\"right\">Amount</th></tr></thead>";
+	echo "<thead><tr><th>Expenditure (Gross)</th><th align=\"right\">Amount</th></tr></thead>";
 	foreach ($gross_expense_list_q->result() as $row)
 	{
 		$gross_expense = new Reportlist();
@@ -122,7 +122,7 @@
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
-	echo "<td class=\"bold\">Total Gross Expenses</td>";
+	echo "<td class=\"bold\">Total Gross Expenditure </td>";
 	echo "<td align=\"right\" class=\"bold\">" . convert_cur($gross_expense_total) . "</td>";
 	echo "</tr>";
 	if ($grosspl > 0)
@@ -178,7 +178,7 @@
 	$net_expense_list_q = $this->db->get();
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-	echo "<thead><tr><th>Expenses (Net)</th><th align=\"right\">Amount</th></tr></thead>";
+	echo "<thead><tr><th>Expenditure  (Net)</th><th align=\"right\">Amount</th></tr></thead>";
 	foreach ($net_expense_list_q->result() as $row)
 	{
 		$net_expense = new Reportlist();
@@ -245,7 +245,7 @@
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
-	echo "<td class=\"bold\">Total Expenses</td>";
+	echo "<td class=\"bold\">Total Expenditure </td>";
 	echo "<td align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
 	echo "</tr>";
 	if ($grosspl > 0)
