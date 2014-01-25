@@ -368,28 +368,28 @@
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="221" y="268" width="160" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{c1_marks}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="221" y="289" width="160" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{c1_attendence}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="221" y="311" width="160" height="15"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{c1_back}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="221" y="334" width="160" height="15"/>
 				<textElement>
 					<font size="10"/>

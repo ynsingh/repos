@@ -33,11 +33,8 @@ public class CreateElectionAction extends org.apache.struts.action.Action {
       private ElectionruleeligibilityDAO ere= new ElectionruleeligibilityDAO();
       
 
-ElectionId empid=new ElectionId ();
-
-
-
-   
+    ElectionId empid=new ElectionId ();
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -101,16 +98,17 @@ ElectionId empid=new ElectionId ();
          empid.setElectionId(id);
        // empid.setElectionId(lf.getElectionid());
         empid.setInstituteId(lf.getInstituteId());
-Election election = new Election();
-Electionrule electionrule = new Electionrule();
-Eligibility eligibility = new Eligibility();
-ElectionruleId electionruleid = new ElectionruleId();
-EligibilityId eligibilityid = new EligibilityId();
-Ballot ballot=new Ballot();
-BallotId ballotid=new BallotId();
+        Election election = new Election();
+        Electionrule electionrule = new Electionrule();
+        Eligibility eligibility = new Eligibility();
+        ElectionruleId electionruleid = new ElectionruleId();
+        EligibilityId eligibilityid = new EligibilityId();
+        Ballot ballot=new Ballot();
+        BallotId ballotid=new BallotId();
         election.setCreatedBy(lf.getCreatedby());
          election.setDescription(lf.getDescription());
           election.setElectionName(lf.getElectionname());
+          session.setAttribute("electionname",lf.getElectionname());
           System.out.println(lf.getStartdate());
            election.setEndDate(lf.getEnddate());
             election.setStartDate(lf.getStartdate());
@@ -156,7 +154,7 @@ session.setAttribute("election_id",lf.getElectionId());
 
         ere.insert(ob);
 
-            ArrayList underprocessList=new ArrayList();
+  ArrayList underprocessList=new ArrayList();
   Calendar cal1 = Calendar.getInstance();
     Date d = cal1.getTime();
         List<Election> election1 = ElectionDAO.Elections(institute_id);
@@ -189,13 +187,13 @@ System.out.println(underprocessList.size());
        empid.setElectionId(id);
        // empid.setElectionId(lf.getElectionid());
         empid.setInstituteId(lf.getInstituteId());
-Election election = new Election();
-//Electionrule electionrule = new Electionrule();
-//Eligibility eligibility = new Eligibility();
-//ElectionruleId electionruleid = new ElectionruleId();
-//EligibilityId eligibilityid = new EligibilityId();
-Ballot ballot=new Ballot();
-BallotId ballotid=new BallotId();
+        Election election = new Election();
+        //Electionrule electionrule = new Electionrule();
+        //Eligibility eligibility = new Eligibility();
+        //ElectionruleId electionruleid = new ElectionruleId();
+        //EligibilityId eligibilityid = new EligibilityId();
+        Ballot ballot=new Ballot();
+        BallotId ballotid=new BallotId();
         election.setCreatedBy(lf.getCreatedby());
          election.setDescription(lf.getDescription());
           election.setElectionName(lf.getElectionname());
@@ -268,7 +266,6 @@ ob.setBallot(ballot);
              if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
             {
                underprocessList.add(elec);
-
             }
 
 

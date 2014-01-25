@@ -1,6 +1,6 @@
 <%@page import="java.util.*,java.io.*,java.net.*"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@page import="java.util.*,java.io.*,com.myapp.struts.hbm.Election"%>
+<%@page import="java.util.*,java.io.*,com.myapp.struts.hbm.Election,com.myapp.struts.hbm.ElectionDAO"%>
 <%
 if(session.isNew()){
 %>
@@ -15,8 +15,10 @@ if(session.isNew()){
     </head>
     <body>
    <%
-
-   List<Election> election=(List<Election>)session.getAttribute("SetVoterList");
+   String institute_id=session.getAttribute("institute_id").toString();
+   String manager_id=(String)session.getAttribute("user_id");
+    List<Election>     election= ElectionDAO.GetElectionDetails1(institute_id,manager_id,0);
+   //List<Election> election=(List<Election>)session.getAttribute("SetVoterList");
 
 %>
     <table align="center" class="datagrid">

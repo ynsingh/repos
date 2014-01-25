@@ -56,6 +56,7 @@ locale1=(String)session.getAttribute("locale");
 		var election_id;
 
 		function castVote(id) {
+                     
     			election_id=id;
    
    // alert(document.getElementById("position").style.display);
@@ -64,16 +65,20 @@ locale1=(String)session.getAttribute("locale");
 			req.open("POST","<%=request.getContextPath()%>/VoteCast.do", true);
 			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			req.send("id="+election_id);
+                       
 			return true;
 		}
 		function updateCast(cartXML)
 		{
+                   
    			var em = cartXML.getElementsByTagName("cast")[0];
 			var em1 = em.getElementsByTagName("message");
 			var text=em1[0].firstChild.nodeValue;
 			if(text=="Voter Already voted for this election!"){
     				alert(text);
+                                
 			}else{
+                            
 				windload();
 			}
 		}
@@ -160,10 +165,13 @@ function windload()
 }
 function send()
 {
+    
     <%
+    
 String role=(String)session.getAttribute("login_role");
 if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
    {
+    
 %>
  top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
 
@@ -171,7 +179,8 @@ if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,vot
    { %>
  top.location.href="<%=request.getContextPath()%>/electionmanager.do";
 
-<%}else{%>
+<%}else{
+    System.out.println("hiii in sendd");%>
     top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
     <%}%>
 
@@ -433,7 +442,8 @@ function loadvoting()
                 String s=(String)request.getAttribute("voting");
                 if(s!=null){
                 %>
-                htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/pref_election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                //htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/pref_election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                htm+='<iframe name="f1" id="f1"  src="#" width="665px" style="height: '+ h1 +'px" />';
                 <%}else{%>
                      htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
                      <%}%>
@@ -582,6 +592,7 @@ var em2 = em1[0].firstChild.nodeValue;
 //alert(em2);
 if(em2=="pass")
  {
+     
      loadvoting();
      loadcount=1;
 }
@@ -594,7 +605,6 @@ send();
 }else{
     alert("Sorry you are not a Valid Voter");
     send();
-
 
 }
 }

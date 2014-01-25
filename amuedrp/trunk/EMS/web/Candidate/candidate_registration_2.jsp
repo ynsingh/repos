@@ -79,7 +79,7 @@ String instituteName=(String)session.getAttribute("institute_name");
           //alert(document.getElementById("img").value);
 
           document.getElementsById("filename").value=document.getElementById("img").value;
-          alert(document.getElementsById("filename").value);
+          //alert(document.getElementsById("filename").value);
       }
 
      function send()
@@ -474,14 +474,16 @@ String instituteName=(String)session.getAttribute("institute_name");
         position: absolute;
 
         visibility: show;" >
-        <%if (btn.equals("View") == true) {%>
+        <%if (btn.equals("Update") == true || btn.equals("View") == true) {%>
 
         <%if (session.getAttribute("image") != null) {%>
         <img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" style="border:solid 4px cyan" width="100px" height="100px"/>
 
         <%} else {%>
-
-        <img src="/EMS/images/no-image.jpg"  alt="no Image Selected11" style="border:solid 4px cyan" width="100px" height="100px"/>
+        <%--commented and code on 20 Jan 2014--%>
+        <%--<img src="/EMS/images/no-image.jpg"  alt="no Image Selected11" style="border:solid 4px cyan" width="100px" height="100px"/>--%>
+        <img src="/EMS/Candidate/viewimage.jsp"  alt="no Image Selected11" style="border:solid 4px cyan" width="100px" height="100px"/>
+        <%--commented and code on 20 Jan 2014--%>
         <%}%>
 
 

@@ -20,7 +20,7 @@ if(session.isNew()){
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%! boolean read = true;%>
-<jsp:include page="/Voter/voter_home.jsp"/>
+<%--<jsp:include page="/Voter/voter_home.jsp"/>--%>
 <script type="text/javascript">
 
     

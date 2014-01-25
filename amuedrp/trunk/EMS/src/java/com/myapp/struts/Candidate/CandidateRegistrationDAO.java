@@ -918,6 +918,38 @@ public static List<SetVoter> getVoterDetails(String instituteid){
     return candi;
 }
 
+      public List<VoterRegistration> GetblockfromloginVoterList1(String instituteId,String field,String fieldvalue,String sort)
+      {
+
+           Session session =null;
+          List<VoterRegistration> voter=null;
+        try {
+            session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query;
+            if(fieldvalue!=null && fieldvalue.isEmpty()==false)
+            {
+                 query = session.createQuery("FROM VoterRegistration where   id.instituteId=:instituteId and status ='Blockedfromlogin' and "+field+" like '"+fieldvalue+"%' order by "+sort);
+
+            }
+            else{
+             query = session.createQuery("FROM VoterRegistration where   id.instituteId=:instituteId and status ='Blockedfromlogin' order by "+sort);
+            }
+             query.setString("instituteId",instituteId );
+             
+            voter=(List<VoterRegistration>)query.list();
+            session.getTransaction().commit();
+            System.out.println(voter.size()+"........bbbb............");
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return voter;
+
+}
        public List<VoterCandidate> GetDetails2(String instituteId,String status,String field,String fieldvalue,String sort)
     {
             field="a."+field;
@@ -937,8 +969,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
            if(status!=null)
            {
 
-
-                if(fieldvalue!=null && fieldvalue.isEmpty()==false)
+            if(fieldvalue!=null && fieldvalue.isEmpty()==false)
             {
                 System.out.println("in ifff ");
                 sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id and "+field+" like '"+fieldvalue+"%'";

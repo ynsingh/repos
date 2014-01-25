@@ -142,7 +142,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
  function castVote() {
     //alert("index="+index+" current="+current);
    // alert(document.getElementById("position").style.display);
-
+   
     var req = newXMLHttpRequest();
 
 req.onreadystatechange = getReadyStateHandler(req, updateCast);
@@ -159,6 +159,7 @@ function updateCast(cartXML)
 var em1 = em.getElementsByTagName("message");
 
 alert(em1[0].firstChild.nodeValue);
+send1();
 }
             function previewBallot() {
     //alert("index="+index+" current="+current);
@@ -298,6 +299,28 @@ window.setTimeout('fn()', 400);
 
 //document.referrer.getElementById("overbody").style.height=h;
 }
+function send1()
+{
+
+    <%
+
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+
+%>
+ top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   { %>
+ top.location.href="<%=request.getContextPath()%>/electionmanager.do";
+
+<%}else{
+    System.out.println("hiii in senddeee");%>
+    top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
+    <%}%>
+
+   }
 function Validate(index,ch,posxm)
 {
    //alert("index="+index+"ch="+ch+"posxm="+posxm)
@@ -312,6 +335,7 @@ function Validate(index,ch,posxm)
         }
    }
 	castVote();
+        
 }
 var count1=new Array;
 var selectedcandi = new Array;

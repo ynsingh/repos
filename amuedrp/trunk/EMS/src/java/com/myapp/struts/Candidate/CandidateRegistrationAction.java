@@ -317,7 +317,8 @@ request.setAttribute("msg", "Registration Accepted Successfully");
                 if(p!=null)
                 {
                     
-                    vr.setPosition(String.valueOf(p.getId().getPositionId()));}
+                    vr.setPosition(String.valueOf(p.getId().getPositionId()));
+                }
                 //if(vr.getId().getEnrollment().equalsIgnoreCase(lf.getEnrollment())==false)
                     vr.getId().setEnrollment(lf.getEnrollment());
                 
@@ -353,13 +354,21 @@ request.setAttribute("msg", "Registration Accepted Successfully");
               vr1.setCountry1(lf.getCountry1());
               vr1.setZipCode1(lf.getZipcode1());
           }
-            // if (lf.getImg()!=null)
-          //  vr1.setImage(lf.getImg().getFileData());
-       //  else
-             //  if(iii!=null){vr1.setImage(iii);}
-            //   else{vr1.setImage(null);}
-
-
+//             if (lf.getImg()!=null)
+//            vr1.setImage(lf.getImg().getFileData());
+//         else
+//               if(iii!=null){vr1.setImage(iii);}
+//               else{vr1.setImage(null);}
+          //code on 20 Jan 2014
+                if (iii!=null)
+               {
+                  System.out.println("I image upload");
+                  String ext=UserLog.returnextension(v.getFileName());
+                  UserLog.writeImage1(id+eid+"."+ext, iii);
+                  vr1.setImage(id+eid+"."+ext);
+                  //employeeform.setFilename(rid+reid+"."+ext);
+               }
+ //code on 20 Jan 2014
           CandidateRegistrationDAO.update(vr,vr1);
 
         

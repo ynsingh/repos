@@ -33,7 +33,9 @@ public class VotersetupAction extends org.apache.struts.action.Action {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+           // throws Exception
+    {
+        try{
          List rst,rst1;
 
         HttpSession session = request.getSession();
@@ -116,7 +118,7 @@ public class VotersetupAction extends org.apache.struts.action.Action {
         CandidateRegistrationDAO candi=new CandidateRegistrationDAO();
  List<VoterRegistration>     v=null;
    //String institute_id=(String)session.getAttribute("institute_id");
-      v=candi.GetblockfromloginVoterList(institute_id);
+      v=candi.GetblockfromloginVoterList1(institute_id,searchby,searchkeyword,sortby);
 
  session.setAttribute("resultset", v);
  return mapping.findForward("success3");
@@ -132,5 +134,9 @@ public class VotersetupAction extends org.apache.struts.action.Action {
 
         session.setAttribute("resultset", rst);
         return mapping.findForward(SUCCESS);
+        }catch(Exception er){
+            System.out.println("i am in votersetupAction.java exception "+er);
+            return null;
+        }
     }
 }

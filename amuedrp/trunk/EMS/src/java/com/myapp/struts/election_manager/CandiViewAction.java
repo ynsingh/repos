@@ -155,8 +155,7 @@ System.out.println("View Page");
 
             if(r!=null){
               
-            
-                employeeform.setB_date(r.getBirthdate());
+            employeeform.setB_date(r.getBirthdate());
              employeeform.setC_add(r.getCAddress());
               employeeform.setCity(r.getCity());
                employeeform.setCity1(r.getCity1());
@@ -176,10 +175,10 @@ System.out.println("View Page");
             employeeform.setJ_date(r.getJoiningDate());
                  employeeform.setM_name(r.getMName());
                  employeeform.setM_number(r.getMobileNumber());
-employeeform.setSecondedBy(c.getSecondedBy());
-employeeform.setProposedBy(c.getProposedBy());
-employeeform.setPositionAccepted(c.getPositionAccepted());
-employeeform.setRequestDate(c.getRequestDate());
+            employeeform.setSecondedBy(c.getSecondedBy());
+            employeeform.setProposedBy(c.getProposedBy());
+            employeeform.setPositionAccepted(c.getPositionAccepted());
+            employeeform.setRequestDate(c.getRequestDate());
                 employeeform.setP_add(r.getPAddress());
             employeeform.setState(r.getState());
                  employeeform.setState1(r.getState1());
@@ -197,7 +196,7 @@ employeeform.setRequestDate(c.getRequestDate());
             employeeform.setProposedBy(c.getProposedBy());
             employeeform.setSecondedBy(c.getSecondedBy());
 
-//uncommented on 11 jan
+        //uncommented on 11 jan 2014
             employeeform.setEnrolled_in(c.getEnrolledIn());
             employeeform.setP_marks(c.getPMarks());
             employeeform.setP_attendence(c.getPAttendence());
@@ -205,7 +204,7 @@ employeeform.setRequestDate(c.getRequestDate());
             employeeform.setBacklog(c.getBacklog());
             employeeform.setCriminal(c.getCriminal());
             employeeform.setIndisc(c.getIndisc());
-//uncommented on 11 jan
+        //uncommented on 11 jan 2014
 
             if(p!=null)
                 employeeform.setPosition(p.getPositionName());
@@ -215,6 +214,7 @@ employeeform.setRequestDate(c.getRequestDate());
 
            
 System.out.println(stat+"....................");
+            
             request.setAttribute("button", button);
             request.setAttribute("status",c.getStatus());
            if(stat.equalsIgnoreCase("NR"))
