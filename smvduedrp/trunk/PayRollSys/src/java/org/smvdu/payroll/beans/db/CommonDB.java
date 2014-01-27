@@ -45,9 +45,10 @@ import javax.sql.DataSource;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITK
+*  Modified Date: 26 Dec 2013, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
- */
+*/
 public class CommonDB {
 
 
@@ -296,7 +297,7 @@ public class CommonDB {
         {
             Connection conn;
            Class.forName("com.mysql.jdbc.Driver");
-           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/pl","root","ctrls.123");
+           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/pl","etrg","brihaspatigroup");
             return conn;
         }
         catch(Exception e)
@@ -306,5 +307,25 @@ public class CommonDB {
             return null;
         }
     }
-
+    
+    /**
+     * Connection for Brihaspati General Accounting System (BGAS) Database
+     * @return : instance of Database Connection
+     */
+    public Connection getwebzashConnection()   {
+       try
+        {
+            Connection conn;
+           Class.forName("com.mysql.jdbc.Driver");
+           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/webzash","etrg","brihaspatigroup");
+            return conn;
+        }
+        catch(Exception e)
+        {
+            //ErrorManager.manageError(e);
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 }

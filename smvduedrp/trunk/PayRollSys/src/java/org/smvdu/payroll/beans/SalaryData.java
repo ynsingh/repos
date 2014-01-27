@@ -42,9 +42,10 @@ import org.smvdu.payroll.beans.db.SalaryDataDB;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
+*  Modified Date: 26 Dec 2013, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com).
 *
- */
+*/
 public class SalaryData extends SalaryHead implements ValueChangeListener{
 
     private int headCode;
@@ -151,4 +152,63 @@ public class SalaryData extends SalaryHead implements ValueChangeListener{
         System.err.println(event.getOldValue()+" New value "+event.getNewValue());
     }
 
+private int EntId;
+    private int EntryId;
+
+    public int getEntId() {
+        return EntId;
+    }
+
+    public void setEntId(int EntId) {
+        this.EntId = EntId;
+    }
+     public int getEntryId() {
+        return EntryId;
+    }
+
+    public void setEntryId(int EntryId) {
+        this.EntryId = EntryId;
+    }
+
+    //
+    private int ledgersId;
+    
+    public int getledgersId() {
+        return ledgersId;
+    }
+
+    public void setledgersId(int ledgersId) {
+        this.ledgersId = ledgersId;
+    }
+
+
+    private String budgetcode;
+    
+    public String getbudgetcode() {
+        return budgetcode;
+    }
+
+    public void setbudgetcode(String budgetcode) {
+        this.budgetcode = budgetcode;
+    }
+
+    private String budgetname;
+    
+    public String getbudgetname() {
+        return budgetname;
+    }
+
+    public void setbudgetname(String budgetname) {
+        this.budgetname = budgetname;
+    }
+
+    private int budgettype;
+    
+    public int getbudgettype() {
+        return budgettype;
+    }
+
+    public void setbudgettype(int budgettype) {
+        this.budgettype = budgettype;
+    }
 }

@@ -714,12 +714,12 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id > /SalaryOption.jsp</from-view-id >
-        <navigation-case >
-            <from-outcome > test</from-outcome >
-            <to-view-id > /SalaryOption.jsp</to-view-id >
-        </navigation-case >
-    </navigation-rule >
+        <from-view-id>/SalaryOption.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>test</from-outcome>
+            <to-view-id >/SalaryOption.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     <navigation-rule>
         <from-view-id>/EmployeeProfile.jsp</from-view-id>
         <navigation-case>
@@ -1078,6 +1078,23 @@
         </description>
         <managed-bean-name>adminManagedBean</managed-bean-name>
         <managed-bean-class>org.smvdu.payroll.Admin.AdminManagedBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>
+			SalaryProcessingSetupBean
+        </description>
+        <managed-bean-name>SalaryProcessingSetup</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.setup.SalaryProcessingSetup</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>
+			SalaryProcessingSetupController
+        </description>
+        <managed-bean-name>SalaryProcessingSetupController</managed-bean-name>
+        <managed-bean-class>org.smvdu.payroll.beans.composite.SalaryProcessingSetupController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 </faces-config>

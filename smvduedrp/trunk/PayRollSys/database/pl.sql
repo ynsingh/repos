@@ -1313,3 +1313,44 @@ INSERT INTO `user_group_master` (`grp_id`, `grp_name`) VALUES
   (4,'Master User'),
   (5,'Accounts');
 COMMIT;
+
+#
+# Structure for the `employee_salary_Libality`
+#
+
+CREATE TABALE `employee_salary_libality` (
+
+ 	esl_emp_code varchar(40) NOT NULL,
+        esl_month int(11) NOT NULL,
+        esl_year int(11) NOT NULL,
+        esl_totalsalary_amount int(11) NOT NULL,
+        esl_debit int(11) NOT NULL,
+        esl_credit int(11) NOT NULL,
+        esl_org_id int(11) NOT NULL,
+        KEY `esl_emp_code` (`esl_emp_code`),
+        KEY `esl_org_id` (`esl_org_id`),
+        CONSTRAINT `employee_salary_liability_fk1` FOREIGN KEY (`esl_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT `employee_salary_liability_ibfk_1` FOREIGN KEY (`esl_emp_code`) REFERENCES `employee_master` (`emp_code`) ON DELETE CASCADE ON UPDATE CASCADE
+
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+COMMIT;
+
+#
+# Structure for the `Salary_processing_setup` table :
+#
+
+CREATE TABLE `Salary_processing_setup` (
+  `seq_id` int(11) NOT NULL auto_increment,
+  `salary_process_mode` varchar(300) NOT NULL,
+  `flag` tinyint(4) default NULL,
+  `org_id` int(11) NOT NULL,
+  PRIMARY KEY  (`salary_process_mode`),
+  UNIQUE KEY  (`salary_process_mode`, `org_id`),
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `Salary_processing_setup` (`seq_id`, `salary_process_mode`, `flag`,`org_id`) VALUES
+  (1,'Salary Processing with Budget',1,1),
+  (2,'Salary Processing',0,1),
+COMMIT;
+

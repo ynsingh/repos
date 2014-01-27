@@ -28,11 +28,13 @@
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITK.
+*  Modified Date: 7 jan 2014, IITK (palseema30@gmail.com, kishore.shuklak@gmail.com)
 *
 --%>
 
 <%@page import="org.smvdu.payroll.api.UserOperationBeans.UserBeans"%>
+<%@page import="org.smvdu.payroll.beans.setup.SalaryProcessingSetup"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -74,13 +76,10 @@
                 }
 
             </script>
-            <script type="text/javaScript">
-                
-            </script>
-        </head>
-
+            </head>
         <body id="" class="mainpage">
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
+            <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
             <h:form>
                 <rich:panel style="height:170px; width:1340px;">
                         <div  align="left">
@@ -107,6 +106,7 @@
                             <rich:menuItem  id="se83"  onclick="return loadIframe('ifrm', 'TaxSlabSetup/EmployeeSlabValue.jsf')" value="Employee Slab Details"/>
                         </rich:menuGroup>
                         <rich:menuItem  id="se9"  onclick="return loadIframe('ifrm', 'account/AddUser.jsf')" value="System User Accounts"/>
+                        <rich:menuItem  id="se10"  onclick="return loadIframe('ifrm', 'setup/SalaryProcessingSetup.jsf')" value="Salary Processing Setup"/>
                        
                     </rich:dropDownMenu>
                     <rich:dropDownMenu id="em"   value="Employee"><%-- rendered="#{readUserTaskList.userTaskId == 'em'}" --%>
@@ -115,22 +115,25 @@
                         <rich:menuItem id="em3" onclick="return loadIframe('ifrm', 'employee/SearchEmployee.jsf')" value="Search Profiles"/>
 
                     </rich:dropDownMenu> 
-                    <rich:dropDownMenu  id="sa"   value="Salary ">
-                        <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing"/>
-                        <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>
-                        <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
-                        <rich:menuItem  id="sa4" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
+                    <rich:dropDownMenu  id="sa"   value="Salary">
+                        <%--rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing"/--%>
+                        <rich:menuItem  id="sa1" onclick="return loadIframe('ifrm','salary/SalaryFormula.jsf')" value="Salary Formula"/>
+                        <rich:menuItem  id="sa2" onclick="return loadIframe('ifrm','salary/DefaultSalaryData.jsf')" value="Default Salary values"/>
+                        <rich:menuItem  id="sa3" onclick="return loadIframe('ifrm','salary/SalarySettings.jsf')" value="Type wise Salary Head Setting"/>
+                        <rich:menuGroup id="sa4"  value="Salary Processing Setup" >
+                            <rich:menuItem id="sa41" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcesswithBudget.jsf')" value="Salary Processing with Budget" disabled="#{SalaryProcessingSetup.inactive}"/>
+                            <rich:menuItem  id="sa42" onclick="return loadIframe('ifrm','salary/MonthlySalaryProcessing.jsf')" value="Salary Processing" disabled="#{SalaryProcessingSetup.active}" />
+                        </rich:menuGroup>
                         <rich:separator/>
-
                         <rich:menuItem value="Exit"/>
                     </rich:dropDownMenu>
                     <rich:dropDownMenu  id="ad"  value="Administration ">
-                        <rich:menuItem  id="ad1"  onclick="return loadIframe('ifrm','adm/Salary.jsf')" value="Lock Salary"/>
-                        <rich:menuGroup id="ad2"  value="Module Management" direction="right-bottom">
-                            <rich:menuItem id="ad21" onclick="return loadIframe('ifrm','userOperation/createUser.jsf')" value="Create New User"/>
-                            <rich:menuItem id="ad22" onclick="return loadIframe('ifrm','userOperation/NewUserTask.jsf')" value="Assign Task"/>
-                            <rich:menuItem id="ad23" onclick="return loadIframe('ifrm','userOperation/NewUserTask.jsf')" value="Manage Task"/>
-                        </rich:menuGroup>
+                            <rich:menuItem  id="ad1"  onclick="return loadIframe('ifrm','adm/Salary.jsf')" value="Lock Salary"/>
+                            <rich:menuGroup id="ad2"  value="Module Management" direction="right-bottom">
+                                <rich:menuItem id="ad21" onclick="return loadIframe('ifrm','userOperation/createUser.jsf')" value="Create New User"/>
+                                <rich:menuItem id="ad22" onclick="return loadIframe('ifrm','userOperation/NewUserTask.jsf')" value="Assign Task"/>
+                                <rich:menuItem id="ad23" onclick="return loadIframe('ifrm','userOperation/NewUserTask.jsf')" value="Manage Task"/>
+                            </rich:menuGroup>
                     </rich:dropDownMenu>
                     
                     <rich:dropDownMenu  id="tm"  value="Tax Management">
