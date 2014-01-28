@@ -26,7 +26,7 @@ $!data.getMessage()
 		<a href=$link.setPage("Index.vm") style='text-decoration:none'>$brih_home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$course</a> |
 		<a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style='text-decoration:none'>$brih_select $brih_quiz</a> |
-		$brih_QDannounce $brih_exam
+		#if($lang=="hindi")$brih_exam $brih_QDannounce #else $brih_QDannounce $brih_exam #end
 	</b></td>
 ## Creating the links for help regarding FAQ 
 	<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin") style='text-decoration:none'>$brih_help</a></td>

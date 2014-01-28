@@ -26,9 +26,9 @@ $!data.getMessage()
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style='text-decoration:none'>$cnm</a> |
                 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style='text-decoration:none'>$online_online $brih_examat $brih_system</a>|
               	#if($flag1 == "show") 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'>$RemoteShow $brith_security $brih_string</a>
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","2").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_string $RemoteShow #else $RemoteShow $brith_security $brih_string #end</a>
               	#else 
-              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'>$brih_generate $brith_security $brih_string</a>
+              		<a href=$link.setPage("call,OLES,SecurityString.vm").addPathInfo("counttemp","1").addPathInfo("flag","security").addPathInfo("flag1","show") style='text-decoration:none'> #if($lang =="hindi" || $lang == "gujarati")$brith_security $brih_string $brih_generate #else $brih_generate $brith_security $brih_string #end</a>
               	#end
         </b></td>   
 ## Creating the links for help regarding QUIZ 
@@ -49,13 +49,13 @@ $!data.getMessage()
                 #elseif($tdcolor == "2")
                         <td bgcolor="#AFDCEC">
                 #end
-                <b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_generate $brih_exam</I></b></a></td>
+                <b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2").addPathInfo("mode","quizSetup") style=text-decoration:none> #if($lang=="hindi") $brih_exam $brih_generate #else $brih_generate $brih_exam #end</I></b></a></td>
                 #if($tdcolor != "3")
                         <td>
                 #elseif($tdcolor == "3")
                         <td bgcolor="#AFDCEC">
                 #end
-                <b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+                <b><I><a href=$link.setPage("call,OLES,AnnounceExam_Manage.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang=="hindi")$brih_exam $brih_QDannounce #else $brih_QDannounce $brih_exam #end</I></b></a></td>
                 #if($tdcolor != "4")
                         <td>
                 #elseif($tdcolor == "4")
@@ -85,7 +85,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "8")
                 <td bgcolor="#AFDCEC">
         	#end
-        	<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none>$brih_practice $brih_quiz $brih_qinfo &nbsp;&nbsp;</I></b></a></td>
+        	<b><I><a href=$link.setPage("call,OLES,PracticeQuizInfo.vm").addPathInfo("count","8") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati")$brih_practice $brih_quiz $brih_of1 $brih_qinfo #else $brih_practice $brih_quiz $brih_qinfo #end &nbsp;&nbsp;</I></b></a></td>
         </tr>
 </table>
 ##=============================
