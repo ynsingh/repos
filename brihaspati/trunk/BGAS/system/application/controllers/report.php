@@ -7,7 +7,7 @@ class Report extends Controller {
 	{
 		parent::Controller();
 		$this->load->model('Ledger_model');
-		  $this->load->model('Budget_model');
+		$this->load->model('Budget_model');
 		/* Check access */
 		if ( ! check_access('view reports'))
 		{
@@ -31,8 +31,8 @@ class Report extends Controller {
 		$this->load->library('session');
 		$this->template->set('page_title', 'Balance Sheet');
 		$this->template->set('nav_links', array('report/download/balancesheet' => 'Download CSV', 'report/printpreview/balancesheet' => 'Print Preview'));
-		$data['left_width'] = "450";
-		$data['right_width'] = "450";
+		$data['left_width'] = "550";
+		$data['right_width'] = "550";
 		$page_count = " ";
 
 		/* Form fields */ 
@@ -406,8 +406,8 @@ class Report extends Controller {
 		$this->load->library('session');
 		$this->template->set('page_title', 'Income And Expenditure Statement');
 		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview'));
-		$data['left_width'] = "450";
-		$data['right_width'] = "450";
+		$data['left_width'] = "550";
+		$data['right_width'] = "550";
 
 		/* Form fields */ 
 		$default_start = '01/04/';
@@ -495,8 +495,8 @@ class Report extends Controller {
 		$this->load->library('session');
 		$this->template->set('page_title', 'Payment & Receipt');
 		$this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview'));
-		$data['left_width'] = "450";
-		$data['right_width'] = "450";
+		$data['left_width'] = "550";
+		$data['right_width'] = "550";
 
 		/* Form fields */ 
 		$default_start = '01/04/';

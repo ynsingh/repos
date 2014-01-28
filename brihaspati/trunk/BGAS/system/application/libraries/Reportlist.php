@@ -7,16 +7,12 @@ class Reportlist
 	var $code = "";
 	var $status = 0;
 	var $total = 0;
+	var $total2 = 0;
 	var $optype = "";
 	var $opbalance = 0;
-	var $schedule = "";
 	var $children_groups = array();
 	var $children_ledgers = array();
 	var $counter = 0;
-	var $dr_total = 0;
-	var $cr_total = 0;
-	var $old_dr_total = 0;
-	var $old_cr_total = 0;
 
 	public static $temp_max = 0;
 	public static $max_depth = 0;
@@ -38,7 +34,6 @@ class Reportlist
 			$this->total = 0;
 
 		}
-
 		 else {
 			$CI->db->from('groups')->where('id', $id)->limit(1);
 			$group_q = $CI->db->get();
@@ -48,7 +43,7 @@ class Reportlist
 			$this->code = $group->code;
 			$this->status = $group->status;
 			$this->total = 0;
-			//$this->schedule = $group->schedule;
+			$this->total2 = 0;
 		}
 		if($this->status==0)
 		{
@@ -77,6 +72,8 @@ class Reportlist
 			$this->children_groups[$counter] = new Reportlist();
 			$this->children_groups[$counter]->init($row->id);
 			$this->total = float_ops($this->total, $this->children_groups[$counter]->total, '+');
+
+			$this->total2 = float_ops($this->total2, $this->children_groups[$counter]->total2, '+');
 			$counter++;
 		}
 	}
@@ -92,9 +89,15 @@ class Reportlist
 			$this->children_ledgers[$counter]['id'] = $row->id;
 			$this->children_ledgers[$counter]['code'] = $row->code;
 			$this->children_ledgers[$counter]['name'] = $row->name;
+
 			$this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_balancesheet_ledger_balance($row->id);
 			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
 			$this->total = float_ops($this->total, $this->children_ledgers[$counter]['total'], '+');
+
+			$this->children_ledgers[$counter]['total2'] = $CI->Ledger_model->get_balancesheet_old_ledger_balance($row->id);
+			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_prev_year_op_balance($row->id);
+			$this->total2 = float_ops($this->total2, $this->children_ledgers[$counter]['total2'], '+');
+
 			$counter++;
 		}
 	}
@@ -111,9 +114,15 @@ class Reportlist
 			$this->children_ledgers[$counter]['id'] = $row->id;
 			$this->children_ledgers[$counter]['code'] = $row->code;
 			$this->children_ledgers[$counter]['name'] = $row->name;
+
 			$this->children_ledgers[$counter]['total'] = $CI->Ledger_model->get_ledger_balance1($row->id);
 			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_op_balance($row->id);
 			$this->total = float_ops($this->total, $this->children_ledgers[$counter]['total'], '+');
+
+			$this->children_ledgers[$counter]['total2'] = $CI->Ledger_model->get_old_ledger_balance($row->id);
+			list ($this->children_ledgers[$counter]['opbalance'], $this->children_ledgers[$counter]['optype']) = $CI->Ledger_model->get_prev_year_op_balance($row->id);
+			$this->total2 = float_ops($this->total2, $this->children_ledgers[$counter]['total2'], '+');
+
 			$counter++;
 		}
 	}
@@ -126,10 +135,10 @@ class Reportlist
 		{
 			echo "<tr class=\"tr-group\">";
 			echo "<td class=\"td-group\">";
-			echo $this->print_space($this->counter);
 			echo "&nbsp;" .  $this->name;
 			echo "</td>";
-			echo "<td align=\"right\">" . convert_amount_dc($this->total) . $this->print_space($this->counter) . "</td>";
+			echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
+			echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
 			echo "</tr>";
 		}
 		foreach ($this->children_groups as $id => $data)
@@ -145,324 +154,15 @@ class Reportlist
 			{
 				echo "<tr class=\"tr-ledger\">";
 				echo "<td class=\"td-ledger\">";
-				echo $this->print_space($this->counter);
 				echo "&nbsp;" . anchor('report/ledgerst/' . $data['id'], $data['name'], array('title' => $data['name'] . ' Ledger Statement', 'style' => 'color:#000000'));
 				echo "</td>";
-				echo "<td align=\"right\">" . convert_amount_dc($data['total']) . $this->print_space($this->counter) . "</td>";
+				echo "<td align=\"right\">" . convert_amount_dc($data['total']) . "</td>";
+				echo "<td align=\"right\">" . convert_amount_dc($data['total2']) . "</td>";
 				echo "</tr>";
 			}
 			$this->counter--;
 		}
 	}
-
-	/* Display new Balance Sheet*/
-	function new_balance_sheet($c =0)
-        {
-                $this->counter = $c;
-                if ($this->id != 0 && $this->code > 100 )
-                {
-                        echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
-			//echo $this->print_space($this->counter);
-                        echo "&nbsp;" .  $this->name;
-                        echo "</td>";
-			echo "<td class=\"td-group\">";
-                        //echo "&nbsp;" .  $this->schedule;
-			echo "&nbsp;" . $this->counter;
-			//echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
-                        echo "</td>";
-                        echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
-                        echo "<td align=\"right\">" . 0 . "</td>";
-                        echo "</tr>";
-                }
-                foreach ($this->children_groups as $id => $data)
-                {
-			$len = $data->countDigits();
-			if($len == 4){
-                        	$this->counter++;
-                        	$data->new_balance_sheet($this->counter);
-			}
-                        //$this->counter--;
-                }
-		$this->counter = $this->counter + 1;
-		return $this->counter;
-        }
-
-	function countDigits()
-        {
-                //preg_match_all( "/[0-9]/", $str, $arr );
-                $search = '1234567890';
-                $count = strlen($this->code) - strlen(str_replace(str_split($search), '', $this->code));
-                return $count;
-        }
-
-	/* Displays schedule */
-	/*function schedule($c = 0)
-	//function schedule()
-        { 
-
-		// total will have opening balance
-		//$total = 0;
-		$len = $this->countDigits();
-                if ($this->id != 0  && $len > 4)
-                {
-                        echo "<tr class=\"tr-group\">";
-                        echo "<td class=\"td-group\">";
-                        //echo $this->print_space($this->counter);
-                        echo "&nbsp;" .  $this->name;
-                        echo "</td>";
-                        //echo "<td align=\"right\">" . convert_amount_dc($this->total) . $this->print_space($this->counter) . "</td>";
-
-			echo "<td>";
-                        echo "</td>";
-			
-			echo "<td>";
-	                echo "</td>";
-
-                	echo "<td>";
-        	        echo "</td>";
-			echo "<td>";
-	                echo "</td>";
-
-                        echo "</tr>";
-			
-                }
-                foreach ($this->children_groups as $id => $data)
-                {
-                        $this->counter++;
-                        $data->schedule($this->counter);
-                        $this->counter--;
-                }
-                if (count($this->children_ledgers) > 0)
-                {
-                        //$this->counter++;
-                        foreach ($this->children_ledgers as $id => $data)
-                        {
-				$CI =& get_instance();
-                        	$CI->db->select('entry_id, id, amount, dc');
-	                        $CI->db->from('entry_items')->where('ledger_id', $data['id']);
-        	                $entry_items_q = $CI->db->get();
-				if($entry_items_q->num_rows() > 0)
-				{
-					$entry_items_result = $entry_items_q->result();
-					echo "<tr class=\"tr-ledger\">";
-					echo "<td class=\"td-ledger\">";
-					echo $this->print_space($this->counter);
-					echo "&nbsp;" . $data['name'];			
-					echo "</td>";
-
-					echo "<td>";
-		                        echo "</td>";
-		
-                		        echo "<td>";
-	        	                echo "</td>";
-		
-		                        echo "<td>";
-                		        echo "</td>";
-
-		                        echo "<td>";
-        		                echo "</td>";
-	
-                        		echo "</tr>";
-	
-	                	        //$counter = 0;
-		                        foreach ($entry_items_result as $row)
-       			                {
-						if($row->dc == 'C'){
-							$CI =& get_instance();
-	                	                	$CI->db->select('narration');
-        	                		        $CI->db->from('entries')->where('id', $row->entry_id);
-		                	                $entries_q = $CI->db->get();
-							//$entries = $entries_q->row();
-							foreach($entries_q->result() as $entries){
-								$narration = $entries->narration;
-							
-								echo "<tr class=\"tr-ledger\">";
-		                	                        echo "<td class=\"td-ledger\">";
-        			                                echo $this->print_space($this->counter);
-                        	        	        	echo "&nbsp;" . "Add: " . $narration;
-	                        	                	echo "</td>";
-	
-								echo "<td>";
-				                                echo "</td>";
-			
-               	        				        echo "<td>";
-								echo convert_amount_dc($row->amount);
-			        	                        echo "</td>";
-	
-							        echo "<td>";
-								echo "0";
-        				                        echo "</td>";
-	
-								echo "<td>";
-                                                	        echo "0";
-                                                        	echo "</td>";
-
-				                                echo "</tr>";
-							}
-							$this->cr_total = $this->cr_total + $row->amount;
-						}
-						else{
-							$CI =& get_instance();
-                                                        $CI->db->select('narration');
-                                                        $CI->db->from('entries')->where('id', $row->entry_id);
-                                                        $entries_q = $CI->db->get();
-                                                        //$entries = $entries_q->row();
-							foreach($entries_q->result() as $entries){
-	                                                        $narration = $entries->narration;
-
-        	                                                echo "<tr class=\"tr-ledger\">";
-                	                                        echo "<td class=\"td-ledger\">";
-                        	                                echo $this->print_space($this->counter);
-                                	                        echo "&nbsp;" . "Deduct: " . $narration;
-                                        	                echo "</td>";
-                                                                
-                                                	        echo "<td>"; 
-								echo $row->amount;
-	                                                        echo "</td>";
-        	        
-                	                                        echo "<td>"; 
-                        	                                echo "</td>";
-	
-        	                                                echo "<td>";
-                	                                        echo "0";
-                        	                                echo "</td>";
-        
-                                	                        echo "<td>";
-                                        	                echo "0";
-                                                	        echo "</td>";
-
-                                                        	echo "</tr>";
-							}
-                                                        $this->dr_total = $this->dr_total - $row->amount;							
-						}
-                	        	}
-
-				}
-                        }
-                        //$this->counter--;
-                }
-		
-		//return $total;
-        }
-
-	function previous_year_data()
-	{
-		foreach ($this->children_groups as $id => $data)
-                {
-                        $this->counter++;
-                        $data->schedule($this->counter);
-                        $this->counter--;
-                }
-                if (count($this->children_ledgers) > 0)
-                {
-                        //$this->counter++;
-                        foreach ($this->children_ledgers as $id => $data)
-                        {
-
-				$CI =   &get_instance();
-		                $db1=$CI->load->database('bgasNew', TRUE);
-                		$db1->select('entry_id, id, amount, dc');
-		                $db1->from('entry_items')->where('ledger_id', $data['id']);
-                		$entry_items_q = $db1->get();
-                                if($entry_items_q->num_rows() > 0)
-                                {
-                                        $entry_items_result = $entry_items_q->result();
-                                        /*echo "<tr class=\"tr-ledger\">";
-                                        echo "<td class=\"td-ledger\">";
-                                        echo $this->print_space($this->counter);
-                                        echo "&nbsp;" . $data['name'];
-                                        echo "</td>";
-
-                                        echo "<td>";
-                                        echo "</td>";
-
-                                        echo "<td>";
-                                        echo "</td>";
-
-                                        echo "<td>";
-                                        echo "</td>";
-
-                                        echo "<td>";
-                                        echo "</td>";
-
-                                        echo "</tr>";*/
-                                        /*foreach ($entry_items_result as $row)
-                                        {
-                                                if($row->dc == 'C'){
-                                                        //$CI =& get_instance();
-                                                        $db1->select('narration');
-                                                        $db1->from('entries')->where('id', $row->entry_id);
-                                                        $entries_q = $db1->get();
-                                                        //$entries = $entries_q->row();
-                                                        foreach($entries_q->result() as $entries){
-                                                                $narration = $entries->narration;
-
-                                                                echo "<tr class=\"tr-ledger\">";
-                                                                echo "<td class=\"td-ledger\">";
-                                                                echo $this->print_space($this->counter);
-                                                                echo "&nbsp;" . "Add: " . $narration;
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                //echo convert_amount_dc($row->amount);
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                echo "0";
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                echo convert_amount_dc($row->amount);
-                                                                echo "</td>";
-
-                                                                echo "</tr>";
-                                                        }
-                                                        $this->old_cr_total = $this->old_cr_total + $row->amount;
-                                                }
-                                                else{
-                                                        //$CI =& get_instance();
-                                                        $db1->select('narration');
-                                                        $db1->from('entries')->where('id', $row->entry_id);
-                                                        $entries_q = $db1->get();
-                                                        //$entries = $entries_q->row();
-                                                        foreach($entries_q->result() as $entries){
-                                                                $narration = $entries->narration;
-
-                                                                echo "<tr class=\"tr-ledger\">";
-                                                                echo "<td class=\"td-ledger\">";
-                                                                echo $this->print_space($this->counter);
-                                                                echo "&nbsp;" . "Deduct: " . $narration;
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                //echo $row->amount;
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                echo convert_amount_dc($row->amount);
-                                                                echo "</td>";
-
-                                                                echo "<td>";
-                                                                echo "0";
-                                                                echo "</td>";
-
-                                                                echo "</tr>";
-                                                        }
-                                                        $this->old_dr_total = $this->old_dr_total - $row->amount;                                               
-                                                }
-                                        }
-
-                                }
-                        }
-		}
-	}*/
 
 	/* Display chart of accounts view */
 	function account_st_main($c = 0)

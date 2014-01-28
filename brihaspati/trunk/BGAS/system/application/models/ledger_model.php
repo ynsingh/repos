@@ -37,7 +37,6 @@ class Ledger_model extends Model {
 	{
 		$options = array();
 		$options[0] = "(Please Select)";
-		
 		$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, c.id, c.name, c.code');
 		$this->db->from('entries a, entry_items b, ledgers c')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->order_by('code', 'asc');
 		$this->db->where('date >=', $date1);
@@ -298,11 +297,32 @@ class Ledger_model extends Model {
 		$dr_total = $this->get_dr_total1($ledger_id);
 		$cr_total = $this->get_cr_total1($ledger_id);
 		$total = float_ops($dr_total, $cr_total, '-');
+
 		if ($op_bal_type == "D")
 			$total = float_ops($total, $op_bal, '+');
 		else
 			$total = float_ops($total, $op_bal, '-');
 		return $total;
+	}
+	/*get ledger balance of previous year for profit & loss and payment & receipt in selected date*/  
+	function get_old_ledger_balance($ledger_id)
+	{
+		list ($op_bal, $op_bal_type) = $this->get_prev_year_op_balance($ledger_id);
+
+		if($op_bal || $op_bal_type) {
+			$dr_total = $this->get_old_dr_total($ledger_id);
+			$cr_total = $this->get_old_cr_total($ledger_id);
+			$total = float_ops($dr_total, $cr_total, '-');
+			if ($op_bal_type == "D")
+				$total = float_ops($total, $op_bal, '+');
+			else
+				$total = float_ops($total, $op_bal, '-');
+			return $total;
+		}
+		else {
+			$this->messages->add('Previous Year\'s data does not exist.', 'success');
+			return 0;
+		}
 	}
 
 	/* get ledger balance for balancesheet in selected date */ 
@@ -313,12 +333,36 @@ class Ledger_model extends Model {
 		$dr_total = $this->get_balancesheet_dr_total($ledger_id);
 		$cr_total = $this->get_balancesheet_cr_total($ledger_id);
 		$total = float_ops($dr_total, $cr_total, '-');
-		if ($op_bal_type == "D")
+		if ($op_bal_type == "D"){
 			$total = float_ops($total, $op_bal, '+');
-		else
+		}else {
 			$total = float_ops($total, $op_bal, '-');
+		}
 		return $total;
 	}
+
+	/* get ledger balance of previous year for balancesheet in selected date */  
+	function get_balancesheet_old_ledger_balance($ledger_id)
+	{
+		list ($op_bal, $op_bal_type) =$this->get_prev_year_op_balance($ledger_id);
+
+		if($op_bal || $op_bal_type) {
+			$dr_total = $this->get_balancesheet_old_dr_total($ledger_id);
+			$cr_total = $this->get_balancesheet_old_cr_total($ledger_id);
+			$total = float_ops($dr_total, $cr_total, '-');
+			if ($op_bal_type == "D"){
+				$total = float_ops($total, $op_bal, '+');
+			}else {
+				$total = float_ops($total, $op_bal, '-');
+			}
+			return $total;
+		}
+		else {
+			return 0;
+		}
+			
+	}
+
 	function get_op_balance($ledger_id)
 	{
 		$this->db->from('ledgers')->where('id', $ledger_id)->limit(1);
@@ -327,6 +371,70 @@ class Ledger_model extends Model {
 			return array($op_bal->op_balance, $op_bal->op_balance_dc);
 		else
 			return array(0, "D");
+	}
+
+	/* get op_balance of previous year database */
+	function get_prev_year_op_balance($ledger_id)
+	{
+		$ins_name = '';
+		$uni_name = '';
+		$db_name = '';
+		$host_name = '';
+		$db_username = '';
+		$db_password = '';
+		$date1 = '';
+		$data = '';
+		$old_year = '';
+		$db_name ='';
+		$old_year_start = '';
+		$old_year_end = '';
+		$port = '';
+
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$ins_name = $row->ins_name;
+			$uni_name = $row->uni_name;
+			$date1 = explode("-", $row->fy_start);
+			$old_year_start = $date1[0]-1;
+			$date1 = explode("-", $row->fy_end);
+                        $old_year_end = $date1[0]-1;
+		}
+		$old_year = $old_year_start . "-" . $old_year_end;
+
+		/* connectivity with login database for getting the previous year database name */
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $old_year);
+		$db_name_q = $db1->get();
+		$db1->close();
+		foreach ($db_name_q->result() as $row)
+		{
+			$db_name = $row->databasename;
+			$db_username = $row->uname;
+			$db_password = $row->dbpass;
+			$host_name = $row->hostname;
+			$port = $row->port;
+		}
+		if( $db_name_q->num_rows() == 1 ) {
+			/* database connectivity for getting previous year opening balance */
+			$con = mysql_connect($host_name, $db_username, $db_password);
+			$op_balance = array();
+			if($con){
+				$value = mysql_select_db($db_name, $con);
+				$id = mysql_real_escape_string($ledger_id);
+				$cl = "select * from ledgers where id = '$id' limit 1";
+				$val = mysql_query($cl);
+				if($val != ''){
+					while($row = mysql_fetch_assoc($val)) 
+					{
+						$op_balance = array($row['op_balance'], $row['op_balance_dc']);
+						mysql_close($con);		
+						return $op_balance;
+					}
+				}
+			}
+		}
 	}
 
 	function get_diff_op_balance()
@@ -349,15 +457,96 @@ class Ledger_model extends Model {
 		return $total_op;
 	}
 
+	/* get op_balance of previous year database */
+	function get_prev_year_diff_op_balance()
+	{
+		$ins_name = '';
+		$uni_name = '';
+		$db_name = '';
+		$host_name = '';
+		$db_username = '';
+		$db_password = '';
+		$date1 = '';
+		$data = '';
+		$old_year_start = '';
+		$old_year_end = '';
+		$db_name ='';
+		$old_year = '';
+		$total_op = 0;
+
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$ins_name = $row->ins_name;
+			$uni_name = $row->uni_name;
+			$date1 = explode("-", $row->fy_start);
+			$old_year_start = $date1[0]-1;
+			$date1 = explode("-", $row->fy_end);
+                        $old_year_end = $date1[0]-1;
+		}
+		
+		$old_year = $old_year_start . "-" . $old_year_end;
+
+		/* connectivity with login database for getting the previous year database name */
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $old_year);
+		$db_name_q = $db1->get();
+		$db1->close();
+		foreach ($db_name_q->result() as $row)
+		{
+			$db_name = $row->databasename;
+			$db_username = $row->uname;
+			$db_password = $row->dbpass;
+			$host_name = $row->hostname;
+			$port = $row->port;
+		}
+		/* database connectivity for getting previous year opening balance */
+		$con = mysql_connect($host_name, $db_username, $db_password);
+		$op_balance = array();
+		if($con){
+			$value = mysql_select_db($db_name, $con);
+			$cl = "select * from ledgers order by 'id'";
+			$val = mysql_query($cl);
+			if($val != ''){
+				while($row = mysql_fetch_assoc($val)) 
+				{
+					list ($opbalance, $optype) = $this->get_prev_year_op_balance($row['id']);
+					if ($optype == "D")
+					{
+						$total_op = float_ops($total_op, $opbalance, '+');
+					} else {
+						$total_op = float_ops($total_op, $opbalance, '-');
+					}	
+				}
+			}
+		}
+		return $total_op;
+		mysql_close($con);
+	}
+
 	/* Return debit total of selected date as positive value */
 	function get_dr_total1($ledger_id)
 	{
+		$year_start = '';
+		$year_end = '';
 		$this->load->library('session');
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$year_start = $row->fy_start;
+			$year_end = $row->fy_end;
+		}
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
+		$date1 = explode("-",$date1);
+		$from_date = $year_start . "-". $date1[1] . "-" . $date1[2];
+		$date = explode("-",$date2);
+		$to_date = $year_end . "-" . $date[1] . "-" . $date[2];
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
-		$this->db->where('date >=', $date1);
-	        $this->db->where('date <=', $date2);
+		$this->db->where('date >=', $from_date);
+	        $this->db->where('date <=', $to_date);
 		$dr_total_q = $this->db->get();
 		if ($dr_total = $dr_total_q->row())
 			return $dr_total->drtotal;
@@ -365,15 +554,177 @@ class Ledger_model extends Model {
 			return 0;
 	}
 
+	/* Return debit total of previous year of selected date as positive value */
+	function get_old_dr_total($ledger_id)
+	{
+		$ins_name = '';
+		$uni_name = '';
+		$from_date = '';
+		$to_date = '';
+		$old_year_start = '';
+		$old_year_end = '';
+		$old_year = '';
+		$db_name ='';
+		$host_name = '';
+		$db_username = '';
+		$db_password = '';
+		$date1 = '';
+
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$ins_name = $row->ins_name;
+			$uni_name = $row->uni_name;
+			$date1 = explode("-", $row->fy_start);
+			$old_year_start = $date1[0]-1;
+			$date1 = explode("-", $row->fy_end);
+			$old_year_end = $date1[0]-1;
+		}
+		$old_year = $old_year_start . "-" . $old_year_end;
+		/* connectivity with login database for getting the previous year database name */
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $old_year);
+		$db_name_q = $db1->get();
+		$db1->close();
+		foreach ($db_name_q->result() as $row)
+		{
+			$db_name = $row->databasename;
+			$db_username = $row->uname;
+			$db_password = $row->dbpass;
+			$host_name = $row->hostname;
+			$port = $row->port;
+		}
+		/* get from date of previous year */
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date=explode("-",$date1);
+		$old_year = $date[0]-1;
+		$from_date = $old_year."-".$date[1]."-".$date[2];
+
+		/* get to date of previous year */
+		$date2 = $this->session->userdata('date2');
+		$date1=explode("-",$date2);
+		$old_year = $date1[0]-1;
+		$to_date = $old_year."-".$date1[1]."-".$date1[2];
+
+		/* database connectivity for getting previous year debit amount */
+		$con = mysql_connect($host_name, $db_username, $db_password);
+		$op_balance = array();
+		if($con){
+			$value = mysql_select_db($db_name, $con);
+			$id = mysql_real_escape_string($ledger_id);
+			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$from_date' and entries.date <= '$to_date'";
+			$val = mysql_query($abc);
+			if($val != ''){
+				while($row = mysql_fetch_assoc($val)) 
+				{
+					$dr_total = $row['sum(amount)'];
+					mysql_close($con);
+					return $dr_total;
+				}
+			}
+		}
+	}
+
+	/* Return credit total of previous year of selected date as positive value */
+	function get_old_cr_total($ledger_id)
+	{
+		$ins_name = '';
+		$uni_name = '';
+		$from_date = '';
+		$to_date = '';
+		$old_year = '';
+		$old_year_start = '';
+		$old_year_end = '';
+		$db_name ='';
+		$db_name ='';
+		$host_name = '';
+		$db_username = '';
+		$db_password = '';
+		$date1 = '';
+
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$ins_name = $row->ins_name;
+			$uni_name = $row->uni_name;
+			$date1 = explode("-", $row->fy_start);
+			$old_year_start = $date1[0]-1;
+			$date1 = explode("-", $row->fy_end);
+			$old_year_end = $date1[0]-1;
+		}
+		$old_year = $old_year_start . "-" . $old_year_end;
+
+		/* connectivity with login database for getting the previous year database name */
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $old_year);
+		$db_name_q = $db1->get();
+		$db1->close();
+		foreach ($db_name_q->result() as $row)
+		{
+			$db_name = $row->databasename;
+			$db_username = $row->uname;
+			$db_password = $row->dbpass;
+			$host_name = $row->hostname;
+			$port = $row->port;
+		}
+
+		/* get from date of previous year */
+		$this->load->library('session');
+		$date1 = $this->session->userdata('date1');
+		$date=explode("-",$date1);
+		$old_year = $date[0]-1;
+		$from_date = $old_year."-".$date[1]."-".$date[2];
+		/* get to date of previous year */
+		$date2 = $this->session->userdata('date2');
+		$date1 = explode("-",$date2);
+		$old_year = $date1[0]-1;
+		$to_date = $old_year."-".$date1[1]."-".$date1[2];
+
+		/* database connectivity for getting previous year debit amount */
+		$con = mysql_connect($host_name, $db_username, $db_password);
+		$op_balance = array();
+		if($con){
+			$value = mysql_select_db($db_name, $con);
+			$id = mysql_real_escape_string($ledger_id);
+			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' and entries.date >= '$from_date' and entries.date <= '$to_date'";
+			$val = mysql_query($abc);
+			if($val != ''){
+				while($row = mysql_fetch_assoc($val)) 
+				{
+					$cr_total = $row['sum(amount)'];
+					mysql_close($con);
+					return $cr_total;
+				}
+			}			
+		}
+	}
+
 	/* Return credit total of selected date as positive value */
 	function get_cr_total1($ledger_id)
 	{
+		$year_start = '';
+		$year_end = '';
 		$this->load->library('session');
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$year_start = $row->fy_start;
+			$year_end = $row->fy_end;
+		}
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
+		$date1 = explode("-",$date1);
+		$from_date = $year_start . "-". $date1[1] . "-" . $date1[2];
+
+		$date1 = explode("-",$date2);
+		$to_date = $year_end . "-" . $date1[1] . "-" . $date1[2];
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
-		$this->db->where('date >=', $date1);
-		$this->db->where('date <=', $date2);
+		$this->db->where('date >=', $from_date);
+		$this->db->where('date <=', $to_date);
 		$cr_total_q = $this->db->get();
 		if ($cr_total = $cr_total_q->row())
 			return $cr_total->crtotal;
@@ -383,18 +734,22 @@ class Ledger_model extends Model {
 	/* Return debit total of balancesheet of selected date as positive value */
 	function get_balancesheet_dr_total($ledger_id)
 	{
-		$default_start = '01/04/';
-		if (date('n') > 3)
+		$year_start = '';
+		$year_end = '';
+		$start_date = '';
+		$default_start = '-04-01';
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
 		{
-			$default_start .= date('Y');
-		} else {
-			$default_start .= date('Y') - 1;
+			$year_start = $row->fy_start;
+			$year_end = $row->fy_end;
 		}
-
+		$start_date = $year_start . $default_start;
 		$this->load->library('session');
 		$date2 = $this->session->userdata('date2');
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
-		$this->db->where('date >=', $default_start);
+		$this->db->where('date >=', $start_date);
 	        $this->db->where('date <=', $date2);
 		$dr_total_q = $this->db->get();
 		if ($dr_total = $dr_total_q->row())
@@ -403,20 +758,98 @@ class Ledger_model extends Model {
 			return 0;
 	}
 
+	/* Return debit total of balancesheet of selected date for previous year as positive value */
+	function get_balancesheet_old_dr_total($ledger_id)
+	{
+		$ins_name = '';
+		$uni_name = '';
+		$date1 = '';
+		$old_year_start = '';
+		$old_year_end = '';
+		$old_year = '';
+		$db_name ='';
+		$db_username ='';
+		$db_password ='';
+		$host_name ='';
+		$port ='';
+
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$ins_name = $row->ins_name;
+			$uni_name = $row->uni_name;
+			$date1 = explode("-", $row->fy_start);
+			$old_year_start = $date1[0]-1;
+			$date1 = explode("-", $row->fy_end);
+                        $old_year_end = $date1[0]-1;
+		}
+		$old_year = $old_year_start . "-" . $old_year_end;
+
+		/* connectivity with login database for getting the previous year database name */
+		$db1=$this->load->database('login', TRUE);
+		$db1->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $old_year);
+		$db_name_q = $db1->get();
+		$db1->close();
+		foreach ($db_name_q->result() as $row)
+		{
+			$db_name = $row->databasename;
+			$db_username = $row->uname;
+			$db_password = $row->dbpass;
+			$host_name = $row->hostname;
+			$port = $row->port;
+			}
+		/*starting date of previous financial year */
+		$default_start = '-04-01';
+		$default_start = $old_year_start . $default_start;
+
+		/*date selected by user of previous financial year */
+		$this->load->library('session');
+		$date2 = $this->session->userdata('date2');
+		$date1=explode("-",$date2);
+		$old_date = $date1[0]-1;
+		$date = $old_date."-".$date1[1]."-".$date1[2];
+
+		/* database connectivity for getting previous year debit amount */
+
+		$con = mysql_connect($host_name, $db_username, $db_password);
+		$op_balance = array();
+		if($con){
+			$value = mysql_select_db($db_name, $con);
+			$id = mysql_real_escape_string($ledger_id);
+			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'D' and entries.date >= '$default_start' and entries.date <= '$date'";
+			$val = mysql_query($abc);
+			if($val != ''){
+				while($row = mysql_fetch_assoc($val)) 
+				{
+					$dr_total = $row['sum(amount)'];
+					mysql_close($con);
+					return $dr_total;
+				}
+			}		
+		}
+	}
+
 	/* Return credit total of balancesheet of selected date as positive value */
 	function get_balancesheet_cr_total($ledger_id)
 	{
-		$default_start = '01/04/';
-		if (date('n') > 3)
+		$year_start = '';
+		$year_end = '';
+		$start_date = '';
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
 		{
-			$default_start .= date('Y');
-		} else {
-			$default_start .= date('Y') - 1;
+			$year_start = $row->fy_start;
+			$year_end = $row->fy_end;
 		}
+		$default_start = '-04-01';
+		$start_date = $year_start . $default_start;
+	
 		$this->load->library('session');
 		$date2 = $this->session->userdata('date2');
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
-		$this->db->where('date >=', $default_start);
+		$this->db->where('date >=', $start_date);
 		$this->db->where('date <=', $date2);
 		$cr_total_q = $this->db->get();
 		if ($cr_total = $cr_total_q->row())
@@ -425,6 +858,78 @@ class Ledger_model extends Model {
 			return 0;
 	}
 
+	/* Return credit total of balancesheet of selected date for previous year as positive value */
+	function get_balancesheet_old_cr_total($ledger_id)
+	{
+		$ins_name = '';
+		$uni_name = '';
+		$date1 = '';
+		$old_year_start = '';
+		$old_year_end = '';
+		$old_year = '';
+		$db_name ='';
+		$db_username ='';
+		$db_password ='';
+		$host_name ='';
+		$port ='';
+
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$ins_name = $row->ins_name;
+			$uni_name = $row->uni_name;
+			$date1 = explode("-", $row->fy_start);
+			$old_year_start = $date1[0]-1;
+			$date1 = explode("-", $row->fy_end);
+			$old_year_end = $date1[0]-1;
+		}
+		$old_year = $old_year_start . "-" . $old_year_end;
+
+			/* connectivity with login database for getting the previous year database name */
+			$db1=$this->load->database('login', TRUE);
+			$db1->from('bgasAccData')->where('organization', $ins_name)->where('unit', $uni_name)->where('fyear', $old_year);
+			$db_name_q = $db1->get();
+			$db1->close();
+			foreach ($db_name_q->result() as $row)
+			{
+				$db_name = $row->databasename;
+				$db_username = $row->uname;
+				$db_password = $row->dbpass;
+				$host_name = $row->hostname;
+				$port = $row->port;
+			}
+
+		/*starting date of previous financial year */
+		$default_start = '-04-01';
+		$default_start = $old_year_start . $default_start;
+
+		/*date selected by user of previous financial year */
+		$this->load->library('session');
+		$date2 = $this->session->userdata('date2');
+		$date1=explode("-",$date2);
+		$old_year_end = $date1[0]-1;
+		$date = $old_year_end."-".$date1[1]."-".$date1[2];
+
+		/* database connectivity for getting previous year debit amount */
+
+		$con = mysql_connect($host_name, $db_username, $db_password);
+		$op_balance = array();
+		if($con){
+			$value = mysql_select_db($db_name, $con);
+			$id = mysql_real_escape_string($ledger_id);
+			$abc = "select entry_items.entry_id, sum(amount)from entry_items INNER JOIN entries ON entry_items.entry_id = entries.id where entry_items.ledger_id = '$id' and entry_items.dc = 'C' and entries.date >= '$default_start' and entries.date <= '$date'";
+			$val = mysql_query($abc);
+			if($val != ''){
+				while($row = mysql_fetch_assoc($val)) 
+				{
+					$cr_total = $row['sum(amount)'];
+					mysql_close($con);
+					return $cr_total;
+				}
+			}
+		}
+	}
 
 	/* Return debit total as positive value */
 	function get_dr_total($ledger_id)
