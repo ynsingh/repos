@@ -8,6 +8,8 @@
 	<p><?php echo $this->config->item('account_address'); ?></p>
 	<p><strong><?php echo $current_entry_type['name']; ?> Entry</strong></p>
 	<p><?php echo $current_entry_type['name']; ?> Entry Number : <strong><?php echo full_entry_number($entry_type_id, $entry_number); ?></strong></p>
+	<p><?php echo $current_entry_type['name']; ?> Forward Reference Id : <strong><?php echo $forward_ref_id; ?></strong></p>
+        <p><?php echo $current_entry_type['name']; ?> Backward Reference Id : <strong><?php echo $back_ref_id; ?></strong></p>
 	<p><?php echo $current_entry_type['name']; ?> Entry Date : <strong><?php echo $entry_date; ?></strong></p>
 	<table border=1 cellpadding=6>
 		<thead>

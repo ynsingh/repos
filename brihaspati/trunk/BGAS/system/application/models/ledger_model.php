@@ -26,6 +26,12 @@ class Ledger_model extends Model {
 				$name = $nme." - I";
 			if(substr($cd, 0, 2) == 40)
 				$name = $nme." - E";
+
+			//lines added by Priyanka
+			//$new_id = $row->id."#".$row->code;
+                        //$options[$new_id] = $name;
+			//......
+			//this line existed
 			$options[$row->id] = $name;
 		//	$options[$row->id] = $row->name;
 		}
@@ -972,7 +978,16 @@ class Ledger_model extends Model {
 
 	}
 
-
+	function get_ledger_code($id)
+	{
+		$this->db->select('code');
+		$this->db->from('ledgers')->where('id =', $id);
+		$ledger_result = $this->db->get();
+		if ($ledger = $ledger_result->row())
+                        return $ledger->code;
+                else
+                        return 0;
+	}
 }
 ?>
 

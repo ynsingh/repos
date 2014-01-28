@@ -7,6 +7,10 @@
 <table border=0 cellpadding=5 class="simple-table">
 	<thead>
 		<tr>
+			<!--Ids added by Priyanka-->
+			<th>Id</th>
+			<th>Fwd Ref Id</th>
+			<th>Bkwd Ref Id</th>
 			<th>Date</th>
 			<th>Update Date</th>
 			<th>No</th>
@@ -26,6 +30,11 @@
 			$status = $row->status;
 			$current_entry_type = entry_type_info($row->entry_type);
 			echo "<tr>";
+
+			//Ids added by Priyanka
+			echo "<td>" . $row->id . "</td>";
+			echo "<td>" . $row->forward_refrence_id . "</td>";
+			echo "<td>" . $row->backward_refrence_id . "</td>";
 
 			echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
 			echo "<td>" . date_mysql_to_php_display($row->update_date) . "</td>";

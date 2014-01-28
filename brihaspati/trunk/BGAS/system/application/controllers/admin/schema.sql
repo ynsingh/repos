@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS entries (
   submitted_by VARCHAR(255) NOT NULL,
   verified_by VARCHAR(255) NOT NULL,
   status int(1) NOT NULL DEFAULT 0,
+  forward_refrence_id int(11) DEFAULT NULL,
+  backward_refrence_id int(11) DEFAULT NULL,
   modifiedvalue BLOB,	
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
@@ -85,6 +87,8 @@ CREATE TABLE IF NOT EXISTS entry_items (
   dc char(1) NOT NULL,
   reconciliation_date datetime NULL,
   update_date datetime NOT NULL,
+  forward_refrence_id int(11) DEFAULT NULL,
+  backward_refrence_id int(11) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

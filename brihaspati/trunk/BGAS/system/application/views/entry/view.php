@@ -3,6 +3,11 @@
 Entry Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span>
 </p>
 
+<p>Forward Reference Id : <span class="bold"><?php echo $forward_reference_id; ?></span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?></span>
+</p>
+
 <table border=0 cellpadding=5 class="simple-table entry-view-table">
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>
 <?php

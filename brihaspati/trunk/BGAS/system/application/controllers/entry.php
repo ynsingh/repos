@@ -216,6 +216,26 @@ class Entry extends Controller {
 		$data['cur_entry_ledgers'] = $cur_entry_ledgers;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
+
+		/**
+                 * Get reference ids from entries table
+                 * Lines added by Priyanka
+                 */
+
+                $data['forward_reference_id'] = '';
+                $data['backward_reference_id'] = '';
+                $this->db->select('forward_refrence_id, backward_refrence_id');
+                $this->db->from('entries')->where('id', $entry_id)->order_by('id', 'asc');
+                $reference_ids = $this->db->get();
+                if ($reference_ids->num_rows() >0)
+                {
+                        foreach($reference_ids->result() as $ref)
+                        {
+                                $data['forward_reference_id'] = $ref->forward_refrence_id;
+                                $data['backward_reference_id'] = $ref->backward_refrence_id;
+                        }
+                }
+
 		$this->template->load('template', 'entry/view', $data);
 		return;
 	}
@@ -237,6 +257,9 @@ class Entry extends Controller {
 			redirect('entry/show/' . $entry_type);
 			return;
 		}
+
+		/* Message for entries related to asset purchase. */
+		$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
 
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
@@ -261,6 +284,29 @@ class Entry extends Controller {
 			'size' => '11',
 			'value' => '',
 		);
+
+		/**
+		 * Refrence Ids have been added for reconciliation purpose.
+		 * The forward refrence id consists of entry_id of the related 
+		 * forward dated transaction and backward refrence id consists 
+		 * of entry_id of the backward dated transaction.
+		 */
+		/*$data['forward_refrence_id'] = array(
+			'name' => 'forward_refrence_id',
+			'id' => 'forward_refrence_id',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => '',
+		);
+		*/
+		$data['backward_refrence_id'] = array(
+			'name' => 'backward_refrence_id',
+			'id' => 'backward_refrence_id',
+			'maxlength' => '11',
+			'size' => '11',
+			'value' => '',
+		);
+
 		$data['entry_date'] = array(
 			'name' => 'entry_date',
 			'id' => 'entry_date',
@@ -289,6 +335,8 @@ class Entry extends Controller {
 			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
 		else
 			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+		//$this->form_validation->set_rules('forward_refrence_id', 'Forward Refrence Id', 'trim|is_natural_no_zero');
+		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim|is_natural_no_zero');
 		$this->form_validation->set_rules('entry_date', 'Entry Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
@@ -314,7 +362,9 @@ class Entry extends Controller {
 			$data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
 			$data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
 			$data['entry_tag'] = $this->input->post('entry_tag', TRUE);
-
+			//$data['forward_refrence_id'] = $this->input->post('forward_refrence_id', TRUE);
+			$data['backward_refrence_id'] = $this->input->post('backward_refrence_id', TRUE);
+			
 			$data['ledger_dc'] = $this->input->post('ledger_dc', TRUE);
 			$data['ledger_id'] = $this->input->post('ledger_id', TRUE);
 			$data['dr_amount'] = $this->input->post('dr_amount', TRUE);
@@ -323,13 +373,17 @@ class Entry extends Controller {
 		else {
 			for ($count = 0; $count <= 3; $count++)
 			{
-				
-				if ($count == 0 && $entry_type == "payment")
+				// these lines existed earlier
+				/*if ($count == 0 && $entry_type == "payment")
 					$data['ledger_dc'][$count] = "C";
 				else if ($count == 1 && $entry_type != "payment")
 					$data['ledger_dc'][$count] = "C";
 				else
 					$data['ledger_dc'][$count] = "D";
+				*/
+				// line added by Priyanka
+                                $data['ledger_dc'][$count] = "D";
+
 				$data['ledger_id'][$count] = 0;
 				$data['dr_amount'][$count] = "";
 				$data['cr_amount'][$count] = "";
@@ -355,19 +409,33 @@ class Entry extends Controller {
 			$non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
 			{
+				//these lines existed earlier
 				if ($data_all_ledger_id[$id] < 1)
 					continue;
-
+				
 				/* Check for valid ledger id */
 				$this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
+				
+				//lines added by Priyanka
+                                //$ledger_array = explode('#', $data_all_ledger_id[$id]);
+                                //$ledger_id = $ledger_array[0];
+                                //$ledger_code = $ledger_array[1];
+                                //if ($ledger_id < 1)
+                                  //      continue;
+                                //$ledger_code = $ledger_array[1];
+				//$this->db->from('ledgers')->where('id', $ledger_id);
+				//...
+					
 				$valid_ledger_q = $this->db->get();
 				if ($valid_ledger_q->num_rows() < 1)
 				{
 					$this->messages->add('Invalid Ledger account.', 'error');
 					$this->template->load('template', 'entry/add', $data);
 					return;
-				} else {
-					/* Check for valid ledger type */
+				}
+				// these checks existed earlier 
+				/*else {
+					/* Check for valid ledger type /
 					$valid_ledger = $valid_ledger_q->row();
 					if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
 					{
@@ -404,7 +472,7 @@ class Entry extends Controller {
 							return;
 						}
 					}
-				}
+				}*/
 				if ($data_all_ledger_dc[$id] == "D")
 				{
 					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
@@ -424,8 +492,9 @@ class Entry extends Controller {
 				return;
 			}
 
+			// these checks existed earlier
 			/* Check if atleast one Bank or Cash Ledger account is present */
-			if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
+			/*if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
 			{
 				if ( ! $bank_cash_present)
 				{
@@ -453,7 +522,7 @@ class Entry extends Controller {
 					$this->template->load('template', 'entry/add', $data);
 					return;
 				}
-			}
+			}*/
 
 			/* Adding main entry */
 			if ($current_entry_type['numbering'] == '2')
@@ -471,6 +540,8 @@ class Entry extends Controller {
 			}
 
 			$data_date = $this->input->post('entry_date', TRUE);
+			//$data_forw_refrence = $this->input->post('forward_refrence_id', TRUE);
+			$data_back_refrence = $this->input->post('backward_refrence_id', TRUE);
 			$data_narration = $this->input->post('entry_narration', TRUE);
 			$data_tag = $this->input->post('entry_tag', TRUE);
 			if ($data_tag < 1)
@@ -488,6 +559,8 @@ class Entry extends Controller {
 				'tag_id' => $data_tag,
 				'update_date' => $data_date,
 				'submitted_by' => $uname,
+				'forward_refrence_id' => '0',
+				'backward_refrence_id' => $data_back_refrence
 			);
 
 			 //echo random_element($insert_data);
@@ -522,9 +595,19 @@ class Entry extends Controller {
 
 				$data_ledger_dc = $data_all_ledger_dc[$id];
 				$data_ledger_id = $data_all_ledger_id[$id];
+				//lines added by Priyanka
+                                //$ledger_array = explode('#', $data_ledger_id);
+                                //$ledger_id = $ledger_array[0];
+                                //$ledger_code = $ledger_array[1];
+
+                                //if ($ledger_id < 1)
+                                 //       continue;
+				//...
 				
+                                //this line existed earlier
 				if ($data_ledger_id < 1)
 					continue;
+
 				//$data_amount = 0;
 				if ($data_all_ledger_dc[$id] == "D")
 				{
@@ -540,8 +623,10 @@ class Entry extends Controller {
 
 				if($data_ledger_dc == "D")
 				{//001
-					if($entry_type_id == '2'){//01
-				 	$this->db->from('ledgers')->where('id', $data_ledger_id);	
+					//these lines existed earlier
+					//if($entry_type_id == '2'){//01
+				 	$this->db->from('ledgers')->where('id', $data_ledger_id);
+                                        //$this->db->from('ledgers')->where('id', $ledger_id);	
 					$query_q = $this->db->get();
 		                        $query_n = $query_q->row();
                 		        $this->id = $query_n->id;
@@ -549,9 +634,21 @@ class Entry extends Controller {
 					$this->group_id = $query_n->group_id;
 					$ledg_code=$this->code;
 					$groupid=$this->group_id;
-
+					/**
+                                         * To identify "expense" entry, code of the selected ledger head
+                                         * is being fetched. If the ledger head has "Expenses" as its 
+                                         * super parent and the account is being debited, then it must
+                                         * be a "expense" entry.
+					 * Then, the corresponding budget amount is updated. Since,
+					 * the budget amount is set for "expense" only.
+                                         * Lines added by Priyanka
+                                         */
+					$this->load->model('Budget_model');
+                                        $account_code = $this->Budget_model->get_account_code('Expenses');
+					$temp = $this->startsWith($ledg_code, $account_code);
+                                        if($temp){//01
+					
 					//get budget amnt 
-
 					$parents;
 					$query1=$this->db->from('budgets')->where('code', $ledg_code)->get();
 					
@@ -685,9 +782,6 @@ class Entry extends Controller {
 						/* payment amount is greater than allowed over amount*/
 						if($data_amount > $allow)
 						{
-
-
-
 							$this->messages->add('Budget is not sufficient to make this payment.','error');
 	                                                $this->template->load('template', 'entry/add',$data);
 							return;
@@ -719,17 +813,13 @@ class Entry extends Controller {
 
 
 							if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
-                                                       {
-                                                                                $this->db->trans_rollback();
-                                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
-                                                                                $this->template->load('template', 'entry/add', $data);
-                                                                             return;
+        	                                        {
+                 	                                       $this->db->trans_rollback();
+                                                               $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                                               $this->template->load('template', 'entry/add', $data);
+                                                               return;
                                                         }
-
-							
 						}	
-
-							
 					}//2
 
 				//	}//01
@@ -747,21 +837,19 @@ class Entry extends Controller {
 					'entry_id' => $entry_id,
 					'ledger_id' => $data_ledger_id,
 					'amount' => $data_amount,
-					
-'dc' => $data_ledger_dc,
+					'dc' => $data_ledger_dc,
 					'update_date' => $data_date,
+					'forward_refrence_id' => '0',
+	                                'backward_refrence_id' => $data_back_refrence
 				);
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
-					
-$this->db->trans_rollback();
+					$this->db->trans_rollback();
 					$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
 					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
 					$this->template->load('template', 'entry/add', $data);
 					return;
-
 				}
-				
 			}
 
 			/* Updating Debit and Credit Total in entries table */
@@ -796,6 +884,20 @@ $this->db->trans_rollback();
 	}
 //end of Payment 
 
+	function startsWith($str1, $str2)
+        {
+                return !strncmp($str1, $str2, strlen($str2));
+        }
+
+	function ledger_code($ledger_id = 0)
+        {
+                if ($ledger_id > 0)
+                        echo $this->Ledger_model->get_ledger_code($ledger_id);
+                else
+                        echo "";
+                return;
+        }
+
 	function edit($entry_type, $entry_id = 0)
 	{
 		/* Check access */
@@ -814,6 +916,9 @@ $this->db->trans_rollback();
 			return;
 		}
 
+		/* Message for entries related to asset purchase. */
+                $this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');	
+	
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
 		if ( ! $entry_type_id)
@@ -862,6 +967,29 @@ $this->db->trans_rollback();
 		$data['entry_tag'] = $cur_entry->tag_id;
 		$data['entry_tags'] = $this->Tag_model->get_all_tags();
 		$data['has_reconciliation'] = FALSE;
+
+		/**
+                 * Refrence Ids have been added for reconciliation purpose.
+                 * The forward refrence id consists of entry_id of the related 
+                 * forward dated transaction and backward refrence id consists 
+                 * of entry_id of the backward dated transaction.
+                 */
+                $data['forward_refrence_id'] = array(
+                        'name' => 'forward_refrence_id',
+                        'id' => 'forward_refrence_id',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $cur_entry->forward_refrence_id,
+                );
+                
+                $data['backward_refrence_id'] = array(
+                        'name' => 'backward_refrence_id',
+                        'id' => 'backward_refrence_id',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => $cur_entry->backward_refrence_id,
+                );
+
 		$debitled="";
 		$debitid="";
 		$creditled="";
@@ -876,6 +1004,7 @@ $this->db->trans_rollback();
 				$this->messages->add('No Ledger accounts found!', 'error');
 			}
 			$counter = 0;
+
 			foreach ($cur_ledgers_q->result() as $row)
 			{
 				$data['ledger_dc'][$counter] = $row->dc;
@@ -922,6 +1051,8 @@ $this->db->trans_rollback();
 		$this->form_validation->set_rules('entry_date', 'Entry Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
+		$this->form_validation->set_rules('forward_refrence_id', 'Forward Refrence Id', 'trim');
+                $this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
 
 		/* Debit and Credit amount validation */
 		if ($_POST)
@@ -946,6 +1077,8 @@ $this->db->trans_rollback();
 			$data['ledger_id'] = $this->input->post('ledger_id', TRUE);
 			$data['dr_amount'] = $this->input->post('dr_amount', TRUE);
 			$data['cr_amount'] = $this->input->post('cr_amount', TRUE);
+			$data['forward_refrence_id'] = $this->input->post('forward_refrence_id', TRUE);
+                        $data['backward_refrence_id'] = $this->input->post('backward_refrence_id', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)
@@ -969,14 +1102,26 @@ $this->db->trans_rollback();
 
 				/* Check for valid ledger id */
 				$this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
+
+				//lines added by Priyanka
+                                //$ledger_array = explode('#', $data_all_ledger_id[$id]);
+                                //$ledger_id = $ledger_array[0];
+                                //$ledger_code = $ledger_array[1];
+                                //if ($ledger_id < 1)
+                                 //       continue;
+                                //$ledger_code = $ledger_array[1];
+                                //$this->db->from('ledgers')->where('id', $ledger_id);
+
 				$valid_ledger_q = $this->db->get();
 				if ($valid_ledger_q->num_rows() < 1)
 				{
 					$this->messages->add('Invalid Ledger account.', 'error');
 					$this->template->load('template', 'entry/edit', $data);
 					return;
-				} else {
-					/* Check for valid ledger type */
+				}
+				// these checks existed earlier 
+				/*else {
+					/* Check for valid ledger type 
 					$valid_ledger = $valid_ledger_q->row();
 					if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
 					{
@@ -1011,7 +1156,7 @@ $this->db->trans_rollback();
 							return;
 						}
 					}
-				}
+				}*/
 				if ($data_all_ledger_dc[$id] == "D")
 				{
 					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
@@ -1029,8 +1174,10 @@ $this->db->trans_rollback();
 				$this->template->load('template', 'entry/edit', $data);
 				return;
 			}
+
+			// these checks existed earlier
 			/* Check if atleast one Bank or Cash Ledger account is present */
-			if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
+			/*if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
 			{
 				if ( ! $bank_cash_present)
 				{
@@ -1056,9 +1203,9 @@ $this->db->trans_rollback();
 				{
 					$this->messages->add('Need to Debit or Credit atleast one NON - Bank or Cash account.', 'error');
 					$this->template->load('template', 'entry/edit', $data);
-					return;
+						return;
 				}
-			}
+			}*/
 
 			/* Updating main entry */
 			if ($current_entry_type['numbering'] == '3') {
@@ -1069,6 +1216,8 @@ $this->db->trans_rollback();
 				$data_number = $this->input->post('entry_number', TRUE);
 			}
 
+			$data_forw_refrence = $this->input->post('forward_refrence_id', TRUE);
+                        $data_back_refrence = $this->input->post('backward_refrence_id', TRUE);
 			$data_date = $this->input->post('entry_date', TRUE);
 			$data_narration = $this->input->post('entry_narration', TRUE);
 			$data_tag = $this->input->post('entry_tag', TRUE);
@@ -1080,7 +1229,6 @@ $this->db->trans_rollback();
 			
 //			$dateTime = new DateTime();
 //        		$updatedate = $dateTime->format("Y-m-d 00:00:00");
-			
 			$updatedate = date_php_to_mysql(date_today_php());
                         $this->db->trans_start();
 			$update_data = array(
@@ -1090,6 +1238,8 @@ $this->db->trans_rollback();
 				'tag_id' => $data_tag,
 				'update_date' => $updatedate,
 				'modifiedvalue'=> $previousvalue,
+				'forward_refrence_id' => $data_forw_refrence,
+                                'backward_refrence_id' => $data_back_refrence
 			);
 			if ( ! $this->db->where('id', $entry_id)->update('entries', $update_data))
 			{
@@ -1122,8 +1272,18 @@ $this->db->trans_rollback();
 			{
 				$data_ledger_dc = $data_all_ledger_dc[$id];
 				$data_ledger_id = $data_all_ledger_id[$id];
+
+				//lines added by Priyanka
+                                //$ledger_array = explode('#', $data_ledger_id);
+                                //$ledger_id = $ledger_array[0];
+                                //$ledger_code = $ledger_array[1];
+
+                                //if ($ledger_id < 1)
+                                  //      continue;
+
 				if ($data_ledger_id < 1)
 					continue;
+
 				$data_amount = 0;
 				if ($data_all_ledger_dc[$id] == "D")
 				{
@@ -1133,10 +1293,11 @@ $this->db->trans_rollback();
 					$data_amount = $data_all_cr_amount[$id];
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
 				}
-
 				$insert_ledger_data = array(
-					'entry_id' => $entry_id,
+					'entry_id' => $entry_id,	
 					'ledger_id' => $data_ledger_id,
+					'forward_refrence_id' => $data_forw_refrence,
+                                        'backward_refrence_id' => $data_back_refrence,
 					'amount' => $data_amount,
 					'dc' => $data_ledger_dc,
 					'update_date' => $updatedate,
@@ -1201,7 +1362,7 @@ $this->db->trans_rollback();
 		}
 		return;
 	}
-
+	
 	function delete($entry_type, $entry_id = 0)
 	{
 		/* Check access */
@@ -1303,6 +1464,8 @@ $this->db->trans_rollback();
 		$data['entry_dr_total'] =  $cur_entry->dr_total;
 		$data['entry_cr_total'] =  $cur_entry->cr_total;
 		$data['entry_narration'] = $cur_entry->narration;
+		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+		$data['back_ref_id'] = $cur_entry->backward_refrence_id;
 
 		/* Getting Ledger details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -1369,6 +1532,8 @@ $this->db->trans_rollback();
 		$data['entry_dr_total'] =  $cur_entry->dr_total;
 		$data['entry_cr_total'] =  $cur_entry->cr_total;
 		$data['entry_narration'] = $cur_entry->narration;
+		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+                $data['back_ref_id'] = $cur_entry->backward_refrence_id;
 
 		/* Getting Ledger details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -1432,6 +1597,8 @@ $this->db->trans_rollback();
 		$data['current_entry_type'] = $current_entry_type;
 		$data['entry_id'] = $entry_id;
 		$data['entry_number'] = $cur_entry->number;
+		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+                $data['back_ref_id'] = $cur_entry->backward_refrence_id;
 		$data['email_to'] = array(
 			'name' => 'email_to',
 			'id' => 'email_to',
@@ -1463,6 +1630,8 @@ $this->db->trans_rollback();
 			$entry_data['entry_dr_total'] =  $cur_entry->dr_total;
 			$entry_data['entry_cr_total'] =  $cur_entry->cr_total;
 			$entry_data['entry_narration'] = $cur_entry->narration;
+			$entry_data['forward_ref_id'] = $cur_entry->forward_refrence_id;
+	                $entry_data['back_ref_id'] = $cur_entry->backward_refrence_id;
 	
 			/* Getting Ledger details */
 			$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -2067,7 +2236,7 @@ $this->db->trans_rollback();
 		/* displaying entries of all entry type */ 
  
 		$data['detail'] = array();
-		$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->from('entries')->order_by('date', 'desc')->order_by('number', 'desc');
+		$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date, forward_refrence_id, backward_refrence_id')->from('entries')->order_by('date', 'desc')->order_by('number', 'desc');
 		$query = $this->db->get();
                 $data['detail']= $query;
 
@@ -2112,7 +2281,7 @@ $this->db->trans_rollback();
 			{ 
 				$data['detail'] = array();
 				$this->db->from('entries');
-				$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date')->order_by('date', 'desc');
+				$this->db->select('id,tag_id,entry_type,number,date,dr_total,cr_total,narration,update_date, forward_refrence_id, backward_refrence_id')->order_by('date', 'desc');
 				$this->db->where('date >=', $date1);
 				$this->db->where('date <=', $date2);
 				$query = $this->db->get();
@@ -2161,6 +2330,25 @@ $this->db->trans_rollback();
 		$data['cur_entry_ledgers'] = $cur_entry_ledgers;
 		$data['entry_type_id'] = $entry_type_id;
 		$data['current_entry_type'] = $current_entry_type;
+
+		/**
+		 * Get reference ids from entries table
+		 * Lines added by Priyanka
+		 */
+		
+		$data['forward_reference_id'] = '';
+		$data['backward_reference_id'] = '';
+		$this->db->select('forward_refrence_id, backward_refrence_id');
+		$this->db->from('entries')->where('id', $entry_id)->order_by('id', 'asc');
+                $reference_ids = $this->db->get();
+		if ($reference_ids->num_rows() >0)
+                {
+	                foreach($reference_ids->result() as $ref)
+        	        {
+				$data['forward_reference_id'] = $ref->forward_refrence_id;
+	                	$data['backward_reference_id'] = $ref->backward_refrence_id;
+	                }
+		}           
 		$this->template->load('template', 'entry/verify', $data);
 		return;
 	}
@@ -2197,6 +2385,5 @@ $this->db->trans_rollback();
 
 /* End of file entry.php */
 /* Location: ./system/application/controllers/entry.php */
-
-
 //check the id of expense in last 
+?>

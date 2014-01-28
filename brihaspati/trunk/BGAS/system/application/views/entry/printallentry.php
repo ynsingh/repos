@@ -27,6 +27,8 @@
 <table border=0 cellpadding=5 class="simple-table">
 	<thead>
 		<tr>
+			<th>Fwd Ref Id</th>
+                        <th>Bkwd Ref Id</th>
 			<th>Date</th>
 			<th>Update Date</th>
 			<th>No</th>
@@ -44,7 +46,9 @@
 		{
 			$current_entry_type = entry_type_info($row->entry_type);
 			echo "<tr>";
-
+	
+			echo "<td>" . $row->forward_refrence_id . "</td>";
+                        echo "<td>" . $row->backward_refrence_id . "</td>";
 			echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
 			echo "<td>" . date_mysql_to_php_display($row->update_date) . "</td>";
 			echo "<td>" . anchor('entry/view/' . $current_entry_type['label'] . "/" . $row->id, full_entry_number($row->entry_type, $row->number), array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a')) . "</td>";

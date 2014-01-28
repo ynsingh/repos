@@ -10,6 +10,9 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+//global variable
+var dc = '';
+
 
 	/* javascript floating point operations */
 	var jsFloatOps = function(param1, param2, op) {
@@ -135,6 +138,9 @@ $(document).ready(function() {
 
 	/* Dr - Cr dropdown changed */
 	$('.dc-dropdown').live('change', function() {
+		// line added by Priyanka
+		dc = $(this).attr('value');
+
 		var drValue = $(this).parent().next().next().children().attr('value');
 		var crValue = $(this).parent().next().next().next().children().attr('value');
 
@@ -172,7 +178,47 @@ $(document).ready(function() {
 
 	/* Ledger dropdown changed */
 	$('.ledger-dropdown').live('change', function() {
-		if ($(this).val() == "0") {
+		var ledgerid = $(this).val();
+		// lines added by Priyanka
+		$.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
+                                success: function(data) {
+                                        var code = $.trim(data);
+					var account = '';
+					//dc = '';
+
+					var n = code.indexOf("40");
+					//alert('dc = '+dc);
+					//alert('code ='+code);
+					//alert('n = '+n);
+					if(n == 0)
+                        		        account = 'Expense';
+
+					n = code.indexOf("30");
+					//alert('dc = '+dc);
+					//alert('code ='+code);
+					//alert('n = '+n);
+					if(n == 0)
+        	                        	account = 'Income';
+
+		                        if(dc == 'D' && account == 'Income'){
+        	                        	alert("You have made a wrong entry");
+                	        	        dc = 'D';
+                		                //account = '';
+        	                	}
+
+		                        if(dc == 'C' && account == 'Expense'){
+        	                	        alert("You have made a wrong entry");
+                		                dc = 'D';
+        	        	                //account = '';
+	                        	}
+                                }
+                        });
+		//....
+		
+		//this line existed earlier
+		//if ($(this).val() == "0") {
+		if(ledgerid == "0") {
 			$(this).parent().next().children().attr('value', "");
 			$(this).parent().next().next().children().attr('value', "");
 			$(this).parent().next().children().attr('disabled', 'disabled');
@@ -185,7 +231,9 @@ $(document).ready(function() {
 		$(this).parent().next().children().trigger('change');
 		$(this).parent().next().next().children().trigger('change');
 
-		var ledgerid = $(this).val();
+		//this line existed
+		//var ledgerid = $(this).val();
+
 		var rowid = $(this);
 		if (ledgerid > 0) {
 			$.ajax({
@@ -246,6 +294,7 @@ $(document).ready(function() {
 </script>
 
 <?php
+
 	echo form_open('entry/add/' . $current_entry_type['label']);
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
@@ -255,6 +304,7 @@ $(document).ready(function() {
 	echo "</span>";
 	echo "<span id=\"tooltip-content-1\">Leave Entry Number empty for auto numbering</span>";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
 	echo "<span id=\"tooltip-target-2\">";
 	echo form_label('Entry Date', 'entry_date');
 	echo " ";
@@ -263,6 +313,16 @@ $(document).ready(function() {
 	echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 	echo "     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
         echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
+	echo "</p>";
+
+	echo "<p>";
+	echo "<span id=\"tooltip-target-3\">";
+        echo form_label('Reference Id', 'backward_refrence_id');
+        echo " ";
+        echo form_input($backward_refrence_id);
+        echo "</span>";
+        echo "<span id=\"tooltip-content-3\">Enter the Entry Id of the related back dated transaction</span>";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "</p>";
 
 	echo "<table class=\"entry-table\">";
@@ -290,12 +350,17 @@ $(document).ready(function() {
 
 		echo "<td>" . form_dropdown_dc('ledger_dc[' . $i . ']', isset($ledger_dc[$i]) ? $ledger_dc[$i] : "D") . "</td>";
 
-		if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
+		// these checks existed earlier
+		/*if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
 			echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0, '', $type = 'bankcash') . "</td>";
 		else if ($current_entry_type['bank_cash_ledger_restriction'] == '5')
 			echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0, '', $type = 'nobankcash') . "</td>";
 		else
 			echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
+		*/
+
+		// line added by Priyanka	
+		echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
@@ -333,4 +398,4 @@ $(document).ready(function() {
 	echo "</p>";
 
 	echo form_close();
-
+?>

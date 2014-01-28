@@ -31,7 +31,7 @@ INSERT INTO `groups` VALUES(39,'1002',2,'Reserves and Surplus',0,0,0);
 INSERT INTO `groups` VALUES(40,'200406',37,'Non - Consumable Stores',0,0,0);
 INSERT INTO `groups` VALUES(41,'200407',37,'Spare Parts',0,0,0);
 INSERT INTO `groups` VALUES(42,'2005',1,'Current Assets - Debtors',0,0,0);
-INSERT INTO `groups` VALUES(43,'1003',2,'Earnmarked',0,0,0);
+INSERT INTO `groups` VALUES(43,'1003',2,'Earmarked',0,0,0);
 INSERT INTO `groups` VALUES(44,'2006',1,'Current Assets - Cash & Bank Balances Cash in Hand',0,0,0);
 INSERT INTO `groups` VALUES(45,'200601',44,'Bank Balance in Current Accounts with Scheduled Banks',0,0,0);
 INSERT INTO `groups` VALUES(46,'200602',44,'Bank Balance in Saving Accounts with Scheduled Banks',0,0,0);
