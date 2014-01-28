@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.SalaryHeadDB;
 import org.smvdu.payroll.beans.setup.SalaryHead;
+import org.smvdu.payroll.beans.SessionMaster;
+import org.smvdu.payroll.beans.db.SessionDB;
+
+
 
 /**
  *
@@ -52,9 +56,14 @@ public class IndividualGrossDB {
    
     public Integer[][] fetchSummary(String empCode)
     {
+                
         Integer[][] dataset = new Integer[3][13];
-        int month=4;
-        int year=2010;
+        String startDate = new SessionDB().StartDateOfCurrentSession();
+        String[] parts = startDate.split("-");
+        int year =Integer.parseInt( parts[0]); 
+        int month = Integer.parseInt(parts[1]);
+        //int month=4;
+        //int year=2013;
         int t1=0;
         int t2=0;
         int t3=0;
@@ -106,7 +115,9 @@ public class IndividualGrossDB {
     public Integer[][] fetchSalaryMatrix(String empCode) {
         ArrayList<String> sals = new SalaryHeadDB().getAllHeadAsString();
         Integer[][] dataset = new Integer[sals.size()][12];
-        String startDate = "2011-4-1";
+        //String startDate = "2013-4-1";
+        String startDate = new SessionDB().StartDateOfCurrentSession();
+        
         int dateOffset = 0;
         try {
             Connection c = new CommonDB().getConnection();
@@ -121,6 +132,7 @@ public class IndividualGrossDB {
                 ps.setString(4, startDate);
                 ps.setInt(5, dateOffset);
                 rs = ps.executeQuery();
+                //System.out.println("Total Rows :startDate: " +startDate+"\ndateOffset====:"+dateOffset);
                 int k = 0;
                 while (rs.next()) {
                     dataset[k][i] = rs.getInt(1);
@@ -131,7 +143,7 @@ public class IndividualGrossDB {
                 dateOffset += 31;
             }
             c.close();
-            System.out.println("Total Rows : " + dataset.length);
+            //System.out.println("Total Rows : " + dataset.length);
             return dataset;
 
         } catch (Exception e) {

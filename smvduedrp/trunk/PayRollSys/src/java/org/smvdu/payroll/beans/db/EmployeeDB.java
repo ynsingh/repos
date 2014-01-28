@@ -174,7 +174,7 @@ public class EmployeeDB {
                     + "left join salary_grade_master on grd_code = emp_salary_grade "
                     + " where emp_code=? and emp_org_code=?";
             ps = c.prepareStatement(q);
-            System.err.println(">>>>>>>  " + q + empCode + "Org ID " + orgCode);
+            //System.out.println(">>>>>>>  seeeeeema" + q +"\nempcode====="+ empCode + "\nOrg ID===== " + orgCode);
             ps.setString(1, empCode.trim());
             ps.setInt(2, orgCode);
             rs = ps.executeQuery();
@@ -254,8 +254,18 @@ public class EmployeeDB {
                 
                 //this.setStatus(rs.getInt(28));
                 emp.setGender(rs.getInt(29));
+                String gender="";
+                if(rs.getInt(29) == 0){
+                   gender="Female";
+                   emp.setGenderName(gender);
+                }   
+                else{  
+                    gender="Male";
+                    emp.setGenderName(gender);
+                }
+                
                 //emp.setBankName(rs.getString(30));
-                //System.out.println("Bank Name  :"+rs.getString(29));
+                //System.out.println("in employeedb======  :"+rs.getString(29));
                 //emp.setBankBranchName(rs.getString(31));
                 //System.out.println("Bank Name  :"+rs.getString(30));
                 if(rs.getString(30) == null) 

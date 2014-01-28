@@ -242,5 +242,25 @@ public class SessionDB {
         }
         return data;
     }
+    public String StartDateOfCurrentSession()
+    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select * from session_master where ss_current=1 and ss_org_id='"+userBean.getUserOrgCode()+"'");
+            rs = ps.executeQuery();
+            rs.next();
+            String startDate=rs.getString(3);
+            rs.close();
+            ps.close();
+            c.close();
+            return startDate;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
