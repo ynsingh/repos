@@ -1,10 +1,10 @@
 <?php
-	$this->load->library('accountlist');
+	$this->load->model('Ledger_model');
 	$Dep_method=0;
 	if ( ! $print_preview)
 	{
 		echo "<p>";
-		echo "<span id=\"tooltip-target-2\">";
+		echo "<span id=\"tooltip-target-1\">";
 		$inputpreferences   = array( 'name'        => 'commentflag',
 		                     'id'          => 'commentflag',
 		                     'value'       => 'N',
@@ -14,11 +14,11 @@
 		
 		echo form_checkbox($inputpreferences) . " Straight Line Method"; 
 		echo "</span>";
-		echo "<span id=\"tooltip-content-2\">Calculate Depreciation With Staight Line Method.</span>";
+		echo "<span id=\"tooltip-content-1\">Calculate Depreciation With Staight Line Method.</span>";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
-		echo "<span id=\"tooltip-target-3\">";
+		echo "<span id=\"tooltip-target-2\">";
 		$inputpreferences1   = array( 'name'        => 'commentflag',
 		                     'id'          => 'commentflag',
 		                     'value'       => 'N',
@@ -27,7 +27,7 @@
 		                    );
 		echo form_checkbox($inputpreferences1 ) . " Double Decline Method";
 		echo "</span>";
-		echo "<span id=\"tooltip-content-3\">Calculate Depreciation With Double Decline Method.</span>";
+		echo "<span id=\"tooltip-content-2\">Calculate Depreciation With Double Decline Method.</span>";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		echo "<span id=\"tooltip-target-3\">";
@@ -44,36 +44,45 @@
    	}
      	$gross_expense_total = 0;
 	echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"80%\">";
-	echo "<thead><tr><th>S.No</th><th>G.Ledger code</th><th>Asset Name</th><th>Date of Purchase</th><th>Cost</th><th>Dep.Amount</th><th>Current Value</th></tr></thead>";
+	echo "<thead><tr><th>S.No</th><th>Asset Name</th><th>Date of Purchase</th><th>Total Cost</th><th>Dep.Amount</th><th>Current Value</th></tr></thead>";
 	echo "<tbody>";
-		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
-		$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.name, c.group_id, c.code, d.id, d.parent_id, d.code, e.id, e.percentage');
-		$this->db->from('entries a, entry_items b, ledgers c, groups d, dep_assets e')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('c.id = e.asset_id')->where('c.code LIKE', $account_code.'%')->where('b.dc', 'D');
-		$gross_expense_list_q = $this->db->get();
-		$i=1;
-		foreach ($gross_expense_list_q->result() as $row)
-		{
-			echo "<tr>";
-			echo "<td>" . $i . '.' . "</td>";
-		        echo "<td>" . $row->code . "</td>";
-			echo "<td>" . $row->name . "</td>";
-		        echo "<td>" . date_mysql_to_php_display($row->date) . "</td>";
-		        echo "<td>" . $row->amount . "</td>";
-			$date1=$row->date;
-		        $date2=Date("d F Y");
-		        $date3=date_create("$date1");
-		        $date4=date_create("$date2");
-		        $diff=date_diff($date3,$date4);
-		        $day = $diff->format("%R%a days");
-		        $per_value=$row->percentage;
-		        $asset_amount=$row->amount;
-		        $value=$asset_amount * $per_value/(100*365);
-		        $tot_amount=$value * $day;
-		        echo "<td>" .  $tot_amount . "</td>";
-			$cur_value = $asset_amount - $tot_amount;
-			echo "<td>" . $cur_value . "</td>";
-			echo "</tr>";
-			$i++;
+		 $i=1;
+		 $account_code = $this->Budget_model->get_account_code('Fixed Assets');
+		 $this->db->select('name');
+                 $this->db->from('ledgers')->where('code LIKE', $account_code.'%');
+                 $gross_expense_list_q = $this->db->get();
+                 foreach($gross_expense_list_q->result() as $row)
+                        {
+                        	$name=$row->name;
+		        	/*load database pico*/
+                        	$logndb = $this->load->database('pico', TRUE);
+                        	$this->logndb =& $logndb;
+                        	$this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
+                        	$this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.ERPMIM_Item_Brief_Desc ',$name );
+                        	$this->logndb->group_by("ERPMIM_Item_Brief_Desc");
+                        	$user_data = $this->logndb->get();
+				if($user_data->num_rows() > 0){
+			        foreach($user_data->result() as $row1)
+                                {
+					
+					 $ERPMIM_Item_Brief_Desc= $row1->ERPMIM_Item_Brief_Desc;
+					 $IRD_WEF_Date=$row1->IRD_WEF_Date;
+					 $IRD_Rate= $row1->IRD_Rate;
+				
+					 echo "<tr>";
+					 echo "<td>" . $i . '.' . "</td>";
+					 echo "<td>" . anchor('report/duplicate_entry/'. $ERPMIM_Item_Brief_Desc,$ERPMIM_Item_Brief_Desc , array('title' => $ERPMIM_Item_Brief_Desc . ' duplicate_entry', 'style' => 'color:#000000')) . "</td>";
+				 	 echo "<td>" . $IRD_WEF_Date . "</td>";
+					 $value =$this->Ledger_model->get_asset_amount($row1->ERPMIM_Item_Brief_Desc);
+					 $my_values = explode('#',$value['key']);
+					 echo "<td>" . $my_values[0]  . "</td>";
+					 echo "<td>" . $my_values[1]  . "</td>";
+					 echo "<td>" . $my_values[2]  . "</td>";
+					 echo "</tr>";
+					 $i++;
+				}
+				}
+				$this->logndb->close();
 		}
 	echo "</tbody>";
         echo "</table>";

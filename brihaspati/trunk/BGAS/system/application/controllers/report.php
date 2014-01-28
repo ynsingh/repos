@@ -3,6 +3,9 @@
 class Report extends Controller {
 	var $acc_array;
 	var $account_counter;
+	var $logndb;
+	var $ledger_data;
+
 	function Report()
 	{
 		parent::Controller();
@@ -120,13 +123,13 @@ class Report extends Controller {
 	 function depreciation($period = NULL)
         {
                 $this->load->library('session');
-                $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today',  'report/addDep' => 'Add Depreciation Rate', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('nav_links', array('report/depreciation' => 'Depreciation As Today', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
                 $this->template->set('page_title', 'Depreciation Of Assets');
                 $data['left_width'] = "450";
                 $data['right_width'] = "450";
                 $data['print_preview'] =FALSE;
                 $data['budget_over'] = TRUE;
-
+		
                 if($_POST)
                 {
                 	$data['budget_over'] = $this->input->post('budget_over', TRUE);
@@ -142,7 +145,7 @@ class Report extends Controller {
 
         function addDep()
         {
-                $this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/addDep' => 'Add Depreciation Rate', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+                $this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
                 $this->template->set('page_title', 'Add Depreciation Rate');
 		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
 		$options = array();
@@ -223,104 +226,138 @@ class Report extends Controller {
 	function update()
         {
         	$this->template->set('page_title', 'Update Depreciation Rate');
-         	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/addDep' => 'Add Depreciation Rate', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
+	       	$this->template->set('nav_links', array( 'report/depreciation' => 'Depreciation As Today', 'report/update' => 'Update Depreciiation Rate', 'report/printpreview/depreciation' => 'Print Preview'));
 
-       		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
+		$account_code = $this->Budget_model->get_account_code('Fixed Assets');
+                $this->db->select('name, code');
+                $this->db->from('ledgers')->where('code LIKE', $account_code.'%');
+                $gross_expense_list_q = $this->db->get();       
+		$counter=0;
+	  	foreach($gross_expense_list_q->result() as $row1){
+                        $name=$row1->name;
+                        $code=$row1->code;
+			
+                        /*load database pico*/
+                        $logndb = $this->load->database('pico', TRUE);
+                        $this->logndb =& $logndb;
+                        $this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
+                        $this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.ERPMIM_Item_Brief_Desc ',$name );
+                        $this->logndb->group_by("ERPMIM_Item_Brief_Desc");
+                        $user_data = $this->logndb->get();
+	     
+			if($user_data->num_rows() > 0){
+				$key = 'value_'.$counter;
+	       			$this->depreciation[$key] = $user_data;
+        	        	foreach ($user_data->result() as $row)
+	        	        {
+        	        		$name = 'dep_value'. "_" . $row->ERPMIM_ID;
+                			$this->depreciation[$name] = array(
+		                                'name' =>$row->ERPMIM_Item_Brief_Desc,
+                	        	        'id' => $row->ERPMIM_ID,
+						'code' => $row1->code,
+                        	        	'maxlength' => '50',
+		                                'size' => '40',
+                		                'value' => $row->ERPMIM_Depreciation_Percentage,
+                                	);
+        			}
+				$counter++;
+			}
+		}
+		$this->depreciation['counter'] = --$counter;
+		$this->ledger_data = ++$counter;
 
-	 	$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, b.amount, b.dc, c.id, c.name, c.group_id, c.code, d.id, d.parent_id, d.code, e.id, e.percentage');
-        	$this->db->from('entries a, entry_items b, ledgers c, groups d, dep_assets e')->where('a.id = b.entry_id')->where('b.ledger_id = c.id')->where('c.group_id = d.id')->where('c.id = e.asset_id')->where('c.code LIKE', $account_code.'%')->where('b.dc', 'D');
-
-       		 $counter=0;
-        
-       		 $gross_expense_list_q = $this->db->get();
-       		 $this->depreciation['value'] = $gross_expense_list_q;
-                 foreach ($gross_expense_list_q->result() as $row)
-                 {
-                	$name = 'dep_value'. "_" . $row->id;
-                	$this->depreciation[$name] = array(
-                                'name' => $name,
-                                'id' => $row->id,
-                                'maxlength' => '50',
-                                'size' => '40',
-                                'value' => $row->percentage,
-                                );
-        		$counter++;
-        	}
-        	/* Repopulating form */
+        	/* Repopulating form*/
       	        if ($_POST)
-       		 {
-                	foreach ($this->depreciation['value']->result() as $row)
-               		 {
-                        	$value = 'dep_value'. "_" .$row->id;
-			        $this->depreciation[$name]['value'] = $this->input->post($name, TRUE);
-                	 }
+       		{
+			$counter = 0;
+			$check = $this->ledger_data;
+			if($check > 0){
+				$key = 'value_'.$counter;
+                		foreach ($this->depreciation[$key]->result() as $row)
+               		 	{
+                        		$value = 'dep_value'. "_" .$row->ERPMIM_ID;
+				        $this->depreciation[$name]['value'] = $this->input->post($name, TRUE);
+	                	}
+				$counter++;
+				$check--;
+			}				
+				
         	}
-
+	
        		/*Form validations*/
+		
+		$counter = 0;	
+		for($check = $this->ledger_data; $check > 0; $check--){
+			$key = 'value_'.$counter;
+       			foreach ($this->depreciation[$key]->result() as $row)
+        		{
+        			$name = 'dep_value'. "_" .$row->ERPMIM_ID;
+			       	$this->form_validation->set_rules($name, 'Per_value1', 'trim|required');
+        		}
+			$counter++;
+                        
+		}
 
-       		foreach ($this->depreciation['value']->result() as $row)
-        	{
-        		$name = 'dep_value'. "_" .$row->id;
-       	        	$this->form_validation->set_rules($name, 'Per_value1', 'trim|required');
-        	}
-		/* vaildating form */
+		/* vaildating form*/
         	if ($this->form_validation->run() == FALSE)
         	{
-                $this->messages->add(validation_errors(), 'error');
-                $this->template->load('template', 'report/update', $this->depreciation);
-                return;
+	                $this->messages->add(validation_errors(), 'error');
+        	        $this->template->load('template', 'report/update', $this->depreciation);
+                	return;
         	}
         	else
         	{
-                	foreach ($this->depreciation['value']->result() as $row)
-                	{
-               			 $name = 'dep_value'. "_" .$row->id;
-                		 $data_Per_value1 = $this->input->post($name, TRUE);
-                		 $value=$row->percentage;
-		
-	     			if($data_Per_value1 != $value)
-				{	
-					$today = date("Y-m-d H:i:s");
-		                      	$this->db->trans_start();
-		                       	$insert_data = array(
-						'code' => $row->code,
-		                                'dep_amount'=>$row->percentage,
-		                                'creation_date'=> $today,
-		                                	);
-		                        if ( ! $this->db->insert('dep_archive', $insert_data))
-		                        {
-		                                $this->db->trans_rollback();
-		                                $this->messages->add('Error updating value ' . $data_Per_value1 . '.', 'error');
-		                                $this->template->load('template', 'report/update', $this->depreciation);
-		                                return;
-		                        } else {
-		                                $this->db->trans_complete();                                    
-		       			}
-		                 }
-          		 $this->db->trans_start();
-                         $update_data = array(
-                               'percentage' => $data_Per_value1,
-                                       );
-		                 if ( ! $this->db->where('id', $row->id)->update('dep_assets', $update_data))
-		                 {
-		                 	$this->db->trans_rollback();
-		                        $this->messages->add('Error updating value ' . $data_Per_value1 . '.', 'error');
-		                      	$this->template->load('template', 'report/update', $this->depreciation);
-		                       	return;
-		                } else {
-		                       		$this->db->trans_complete();
-		                       	}
-                	}
-       	 	}
-		
-                $value = $this->db->trans_complete();
+			$counter = 0;
+			for($check = $this->ledger_data; $check > 0; $check--){
+				$key = 'value_'.$counter;
+                		foreach ($this->depreciation[$key]->result() as $row)
+                		{
+               				$name = 'dep_value'. "_" .$row->ERPMIM_ID;
+	                		$data_Per_value1 = $this->input->post($name, TRUE);
+				  	$this->logndb->trans_start();
+                	         	$update_data = array(
+                               			'ERPMIM_Depreciation_Percentage' =>  $data_Per_value1,
+                                       		);
+                        	         if ( ! $this->logndb->where('ERPMIM_ID', $row->ERPMIM_ID)->update('erpm_item_master', $update_data))
+                                	 {
+                                        	$this->logndb->trans_rollback();
+	                                        $this->messages->add('Error updating value ' . $data_Per_value1 . '.', 'error');
+        	                                $this->template->load('template', 'report/update', $this->depreciation);
+                	                        return;
+                        	       	} else {
+					        $this->logndb->trans_complete();
+                                	}	
+
+				}
+				$counter++;
+			}
+		}
+		$value=$this->db->trans_complete();
                 if($value==1)
                 {
                     $this->messages->add('Update values.', 'success');
                 }
-                redirect('report/update');
-                return;
+
+		$this->logndb->close();
+		redirect('report/update');
+             	return;
         }
+		
+	function duplicate_entry($ERPMIM_Item_Brief_Desc)
+        {
+        	 $this->template->set('page_title', 'Purchase Detail');
+		 /*load database pico*/
+                 $logndb = $this->load->database('pico', TRUE);
+                 $this->logndb =& $logndb;
+                 $this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
+                 $this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.ERPMIM_Item_Brief_Desc ',$ERPMIM_Item_Brief_Desc );
+                 $user_data = $this->logndb->get();
+		 $data['detail'] = $user_data ;
+		 $this->template->load('template', 'report/duplicate_entry', $data);
+                 return ;
+	
+        }
+
 
 	function new_balancesheet($period = NULL)
 	{
@@ -779,7 +816,6 @@ class Report extends Controller {
 		$this->load->library('pagination');
 
 		$this->template->set('page_title', 'Reconciliation');
-
 		/* Check if path is 'all' or 'pending' */
 		
 		$data['show_all'] = FALSE;

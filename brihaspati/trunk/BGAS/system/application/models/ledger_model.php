@@ -988,6 +988,58 @@ class Ledger_model extends Model {
                 else
                         return 0;
 	}
+
+
+	function get_asset_amount($id)
+        {
+                 $i=0;
+                 $tot_value='';
+                 $tot_cur_value='';
+                 $tot_amt='';
+                 $data=array();
+                 /*load database pico*/
+                 $logndb = $this->load->database('pico', TRUE);
+                 $this->logndb =& $logndb;
+                 $this->logndb->select('a.ERPMIM_ID, a.ERPMIM_Depreciation_Percentage, a.ERPMIM_Item_Brief_Desc, b.IRD_Rate, b.IR_Item_ID, b.IRD_WEF_Date');
+                 $this->logndb->from('erpm_item_master a, erpm_item_rate b')->where('a.ERPMIM_ID  = b.IR_Item_ID ')->where('a.ERPMIM_Item_Brief_Desc ',$id );
+                 $user_data = $this->logndb->get();
+
+                 if($user_data->num_rows() > 0){
+                         foreach($user_data->result() as $row1)
+                         {
+                                $ERPMIM_Item_Brief_Desc= $row1->ERPMIM_Item_Brief_Desc;
+	                        $ERPMIM_Depreciation_Percentage= $row1->ERPMIM_Depreciation_Percentage;
+                                $IRD_WEF_Date=$row1->IRD_WEF_Date;
+                                $IRD_Rate= $row1->IRD_Rate;
+                                $date2=Date("d F Y");
+                                $date3=date_create(" $IRD_WEF_Date");
+                                $date4=date_create("$date2");
+                                $diff=date_diff($date3,$date4);
+                                $day = $diff->format("%R%a days");
+                                $value= $IRD_Rate * $ERPMIM_Depreciation_Percentage/(100*365);
+                                $tot_amount=$value * $day;
+                                $cur_value = $IRD_Rate - $tot_amount;
+                                if($cur_value <= 0)
+                                {
+                                        $value=$IRD_Rate .'#'. $IRD_Rate .'#'. 0;
+                                        $data['key']=$value;
+                                        return $data;
+                                 }
+                                 else
+                                 {
+                                         $tot_value+=$tot_amount;
+                                         $tot_cur_value+=$cur_value;
+                                         $tot_amt+=$IRD_Rate;
+                                         $i++;
+                                  }
+                            }
+                    }
+
+                $value1=$tot_amt .'#'. $tot_value .'#'. $tot_cur_value;
+                $data['key']=$value1;
+                return $data;
+
+        }
 }
 ?>
 
