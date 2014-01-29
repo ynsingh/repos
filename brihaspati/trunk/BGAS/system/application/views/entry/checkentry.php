@@ -295,8 +295,7 @@ var dc = '';
 
 <?php
 
-	//echo form_open('entry/add/' . $current_entry_type['label']);
-	echo form_open('entry/checkentry/' . $current_entry_type['label']);
+	echo form_open('entry/add/' . $current_entry_type['label']);
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
 	echo form_label('Entry Number', 'entry_number');
@@ -393,7 +392,7 @@ var dc = '';
 	echo "</p>";
 
 	echo "<p>";
-	echo form_submitjscript('submit', 'Create');
+	echo form_submit('submit', 'Create');
 	echo " ";
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' . $current_entry_type['name'] . ' Entries'));
 	echo "</p>";

@@ -2381,6 +2381,186 @@ class Entry extends Controller {
 			redirect('entry/show/' . $entry_type);
 			return;
 	}
+
+	function checkentry($entry_type)
+        {
+                /* Check access */
+                if ( ! check_access('create entry'))
+                {
+                        $this->messages->add('Permission denied.', 'error');
+                        redirect('entry/show/' . $entry_type);
+                        return;
+                }
+
+                /* Check for account lock */
+                if ($this->config->item('account_locked') == 1)
+                {
+                        $this->messages->add('Account is locked.', 'error');
+                        redirect('entry/show/' . $entry_type);
+                        return;
+                }
+
+                /* Entry Type */
+                $entry_type_id = entry_type_name_to_id($entry_type);
+                if ( ! $entry_type_id)
+                {
+                        $this->messages->add('Invalid Entry type.', 'error');
+                        redirect('entry/show/all');
+                        return;
+                } else {
+                        $current_entry_type = entry_type_info($entry_type_id);
+                }
+
+                $this->template->set('page_title', 'New ' . $current_entry_type['name'] . ' Entry');
+
+
+                /* Form fields */
+		$data['backward_refrence_id'] = array(
+                        'name' => 'backward_refrence_id',
+                        'id' => 'backward_refrence_id',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => '',
+                );
+                $data['entry_number'] = array(
+                        'name' => 'entry_number',
+                        'id' => 'entry_number',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => '',
+                );
+                $data['entry_date'] = array(
+                        'name' => 'entry_date',
+                        'id' => 'entry_date',
+                        'maxlength' => '11',
+                        'size' => '11',
+                        'value' => date_today_php(),
+                );
+		$data['entry_narration'] = array(
+                        'name' => 'entry_narration',
+                        'id' => 'entry_narration',
+                        'cols' => '50',
+                        'rows' => '4',
+                        'value' => '',
+                );
+                $data['entry_type_id'] = $entry_type_id;
+                $data['current_entry_type'] = $current_entry_type;
+                $data['entry_tags'] = $this->Tag_model->get_all_tags();
+                $data['entry_tag'] = 0;
+                /* Form validations */
+                if ($current_entry_type['numbering'] == '2')
+                        $this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                else if ($current_entry_type['numbering'] == '3')
+                        $this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                else
+                        $this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim|is_natural_no_zero');
+                	$this->form_validation->set_rules('entry_date', 'Entry Date', 'trim|required|is_date|is_date_within_range');
+                	$this->form_validation->set_rules('entry_narration', 'trim');
+                	$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
+                /* Debit and Credit amount validation */
+                if ($_POST)
+                {
+                        foreach ($this->input->post('ledger_dc', TRUE) as $id => $ledger_data)
+                        {
+
+                                $this->form_validation->set_rules('dr_amount[' . $id . ']', 'Debit Amount', 'trim|currency');
+                                $this->form_validation->set_rules('cr_amount[' . $id . ']', 'Credit Amount', 'trim|currency');
+                        }
+                }
+
+                /* Repopulating form */
+                if ($_POST)
+                {
+                        $data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
+                        $data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
+                        $data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
+                        $data['entry_tag'] = $this->input->post('entry_tag', TRUE);
+			$data['backward_refrence_id'] = $this->input->post('backward_refrence_id', TRUE);
+                        $data['ledger_dc'] = $this->input->post('ledger_dc', TRUE);
+                        $data['ledger_id'] = $this->input->post('ledger_id', TRUE);
+                        $data['dr_amount'] = $this->input->post('dr_amount', TRUE);
+                        $data['cr_amount'] = $this->input->post('cr_amount', TRUE);
+                }
+		else {
+                        for ($count = 0; $count <= 3; $count++)
+                        {
+
+                                /*if ($count == 0 && $entry_type == "payment")
+                                        $data['ledger_dc'][$count] = "C";
+                                else if ($count == 1 && $entry_type != "payment")
+                                        $data['ledger_dc'][$count] = "C";
+                                else*/
+                                        $data['ledger_dc'][$count] = "D";
+                                $data['ledger_id'][$count] = 0;
+                                $data['dr_amount'][$count] = "";
+                                $data['cr_amount'][$count] = "";
+                        }
+                }
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'entry/add', $data);
+                        return;
+                }
+                else
+                {
+                        /* Checking for Valid Ledgers account and Debit and Credit Total */
+                        $data_all_ledger_id = $this->input->post('ledger_id', TRUE);
+                        $data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
+                        $data_all_dr_amount = $this->input->post('dr_amount', TRUE);
+                        $data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+                        $dr_total = 0;
+                        $cr_total = 0;
+			$det='';
+                        $bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
+                        $non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
+                        $data_narration = $this->input->post('entry_narration', TRUE);
+                        foreach ($data_all_ledger_dc as $id => $ledger_data)
+                        {
+                                if ($data_all_ledger_id[$id] < 1)
+                                        continue;
+
+                                /* Check for valid ledger id */
+                                $this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
+                                $valid_ledger_q = $this->db->get();
+                                if ($valid_ledger_q->num_rows() < 1)
+                                {
+                                        $this->messages->add('Invalid Ledger account.', 'error');
+                                        $this->template->load('template', 'entry/add', $data);
+                                        return;
+				} else {
+                                if ($data_all_ledger_dc[$id] == "D")
+                                {
+                                	$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+                                } else {
+                                        $cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+                                }
+                                /* Check for valid ledger type */
+                                $valid_ledger = $valid_ledger_q->row();
+                                $ledid= $valid_ledger-> id;
+                                $ledname= $valid_ledger-> name;
+                                $dc=$data_all_ledger_dc[$id];
+                                $det=$this->Ledger_model->get_other_ledger_name($ledid, $entry_type, $dc, $dr_total);
+                        	if($det){
+				break;
+                                }
+                                }
+                        }
+                        if($det){
+                        	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create ', 'error');
+                                $this->template->load('template', 'entry/checkentry', $data);
+                                return;
+                        }
+                        else{
+                                $this->add($entry_type);
+                                redirect('entry/show/' . $entry_type);
+				return;
+                        }
+                }
+                return;
+        }
+
 }
 
 /* End of file entry.php */

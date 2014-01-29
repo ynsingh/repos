@@ -1040,6 +1040,39 @@ class Ledger_model extends Model {
                 return $data;
 
         }
+
+	function get_other_ledger_name($entry_id, $entry_type_label, $ledger_type, $amount)
+        {
+                $output =false;
+                $dbidarray=array();
+                $cridarray=array();
+                $this->db->from('entry_items')->where('ledger_id', $entry_id)->where('amount',$amount);
+                $opp_entry_name_q = $this->db->get();
+                foreach ($opp_entry_name_q->result() as $row)
+                {
+                                $dcvalue=$row->dc;
+                                if($dcvalue=="C")
+				{
+                                $cridarray[]=$row->entry_id;
+				}
+                                else{
+                                $dbidarray[]=$row->entry_id;
+				}
+                }
+                foreach ($dbidarray as $key=>$cid){
+                                $cridarray[]=$row->entry_id;
+                }
+               	foreach ($dbidarray as $key=>$cid){
+                       	foreach ($cridarray as $key1=>$debitedid){
+                               	if($cid==$debitedid){
+                                      $output=true;
+                                      break;
+                               	}
+                       	}
+               	}
+                return $output;
+        }
+
 }
 ?>
 
