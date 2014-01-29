@@ -203,6 +203,7 @@ public class Assignments extends SecureAction
                                 */
                                 Criteria crit=new Criteria();
                                 crit.add(AssignmentPeer.GROUP_NAME,courseid);
+				crit.addAscendingOrderByColumn(AssignmentPeer.ASSIGN_ID);
                                 List u=AssignmentPeer.doSelect(crit);
 
 				 /**
