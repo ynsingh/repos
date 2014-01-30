@@ -6,13 +6,13 @@ package org.IGNOU.ePortfolio.Model;
  */
 public class ContactUs implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
     private int contactId;
     private String contactName;
     private String contactAddress;
     private Long contactOff;
     private Long contactMob;
     private String contactEmail;
-    private String aboutUs;
 
     public ContactUs() {
     }
@@ -21,14 +21,14 @@ public class ContactUs implements java.io.Serializable {
         this.contactId = contactId;
     }
 
-    public ContactUs(int contactId, String contactName, String contactAddress, Long contactOff, Long contactMob, String contactEmail, String aboutUs) {
+    public ContactUs(int contactId, String contactName, String contactAddress, Long contactOff, Long contactMob, String contactEmail) {
         this.contactId = contactId;
         this.contactName = contactName;
         this.contactAddress = contactAddress;
         this.contactOff = contactOff;
         this.contactMob = contactMob;
         this.contactEmail = contactEmail;
-        this.aboutUs = aboutUs;
+
     }
 
     public int getContactId() {
@@ -77,13 +77,5 @@ public class ContactUs implements java.io.Serializable {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
-    }
-
-    public String getAboutUs() {
-        return this.aboutUs;
-    }
-
-    public void setAboutUs(String aboutUs) {
-        this.aboutUs = aboutUs;
     }
 }

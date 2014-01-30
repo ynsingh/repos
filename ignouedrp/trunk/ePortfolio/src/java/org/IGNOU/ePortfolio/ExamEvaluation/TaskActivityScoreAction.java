@@ -5,21 +5,25 @@
 package org.IGNOU.ePortfolio.ExamEvaluation;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.TaskActivityDAO;
-import org.IGNOU.ePortfolio.Model.EvidenceSubmission;
+import org.IGNOU.ePortfolio.DAO.ActivitiesDao;
+import org.IGNOU.ePortfolio.Model.ActivitiesAnnounce;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  * @version 1
  */
-public class TaskActivityScoreAction extends ActionSupport {
+public class TaskActivityScoreAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
-    private TaskActivityDAO dao = new TaskActivityDAO();
-    private List<EvidenceSubmission> StdScrList;
+    private ActivitiesDao dao = new ActivitiesDao();
+    private List<ActivitiesAnnounce> StdScrList;
     private String notfound = getText("recordNotFound");
     private String msg;
 
@@ -28,7 +32,7 @@ public class TaskActivityScoreAction extends ActionSupport {
 
     public String GetScore() throws Exception {
         StdScrList = dao.EvidenceSubmissionListGradeNotNullByUserId(user_id);
-     if (StdScrList.isEmpty()) {
+        if (StdScrList.isEmpty()) {
             msg = notfound;
         }
         return SUCCESS;
@@ -48,30 +52,17 @@ public class TaskActivityScoreAction extends ActionSupport {
         this.user_id = user_id;
     }
 
-     /**
-     * @return the dao
-     */
-    public TaskActivityDAO getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(TaskActivityDAO dao) {
-        this.dao = dao;
-    }
     /**
      * @return the StdScrList
      */
-    public List<EvidenceSubmission> getStdScrList() {
+    public List<ActivitiesAnnounce> getStdScrList() {
         return StdScrList;
     }
 
     /**
      * @param StdScrList the StdScrList to set
      */
-    public void setStdScrList(List<EvidenceSubmission> StdScrList) {
+    public void setStdScrList(List<ActivitiesAnnounce> StdScrList) {
         this.StdScrList = StdScrList;
     }
 

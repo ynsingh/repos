@@ -4,6 +4,9 @@
     Author     : IGNOU Team
     Version    : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -29,9 +32,13 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -60,7 +67,7 @@
                                                     <s:select name="typeOfMedia" label="Type of Media" list="{'Audio','Magazine','Newspapers','Video','Website','Others'}" headerKey="1" headerValue="-- Select Type of Media --" cssClass="width255"/>
                                                     <s:textfield name="titleOfMedia" label="Title of the Media"/>
                                                     <s:textfield name="titleOfArticle" label="Title of the Article / Talk"/>
-                                                    <sj:datepicker id="date0" label="Date of Appearance of the Media" value="%{pubDate}" name="pubDate" changeMonth="true" changeYear="true"/>
+                                                    <sj:datepicker readonly="true"  id="date0" label="Date of Appearance of the Media" value="%{pubDate}" name="pubDate" changeMonth="true" changeYear="true"/>
                                                     <s:textfield name="url" label="URL, if any"/>
                                                     <s:textarea name="summary" label="Summary"/>
                                                     <tr>

@@ -5,6 +5,9 @@
     Version    : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -22,17 +25,21 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -65,7 +72,7 @@
                                                     <s:select label="Committee Type" name="committeeType"  cssClass="width255" headerKey="1" headerValue="-- Please Select Committee Type --" list="{'Conference','Journal','Project','Others'}" />
                                                     <s:select label="Role" name="role"  cssClass="width255" headerKey="1" headerValue="-- Please Select Your Role in Committee --" list="{'Convener','Chairman','Editor','Reviewer','Member'}" />
                                                     <s:textfield name="committeeName" label="Appointed Month and Year"/>
-                                                    <sj:datepicker id="date0" label="Appointed Month and Year" 
+                                                    <sj:datepicker readonly="true"  id="date0" label="Appointed Month and Year" 
                                                                    name="Date" value="today" 
                                                                    displayFormat="MM, yy"                                                            
                                                                    changeMonth="true" changeYear="true"

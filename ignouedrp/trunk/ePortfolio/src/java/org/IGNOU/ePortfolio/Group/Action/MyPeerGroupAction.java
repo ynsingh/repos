@@ -5,17 +5,21 @@
 package org.IGNOU.ePortfolio.Group.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PeerGroupDao;
 import org.IGNOU.ePortfolio.Model.UserList;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Vinay
  */
-public class MyPeerGroupAction extends ActionSupport /*implements SessionAware*/ {
+public class MyPeerGroupAction extends ActionSupport implements Serializable /*implements SessionAware*/ {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private PeerGroupDao dao = new PeerGroupDao();
     private UserList userModel = new UserList();
@@ -85,5 +89,4 @@ public class MyPeerGroupAction extends ActionSupport /*implements SessionAware*/
     public void setTitle(String title) {
         this.title = title;
     }
-
 }

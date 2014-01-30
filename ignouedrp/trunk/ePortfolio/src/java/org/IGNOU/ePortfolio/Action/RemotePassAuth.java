@@ -6,6 +6,7 @@ package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,9 @@ import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
  * @since 22-05-2012
  * @version 3
  */
-public class RemotePassAuth extends ActionSupport {
+public class RemotePassAuth extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
     private Map session = ActionContext.getContext().getSession();
     private String sourceid = ReadPropertyFile("iitkScourceId");
     private String skey = ReadPropertyFile("iitkKey");

@@ -1,9 +1,12 @@
-<%-- 
+<%--
     Document   : ReferencesInfoEdit
     Created on : Oct 11, 2011, 2:20:28 PM
 Author     : IGNOU Team
 Version      : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -27,11 +30,15 @@ Version      : 1
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
-            if (session.getAttribute("user_id") == null) {
-                response.sendRedirect("../Login.jsp");
-            }
+    <body><%
+        final Logger logger = Logger.getLogger(this.getClass());
+        String ipAddress = request.getRemoteAddr();
+        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+        String role = session.getAttribute("role").toString();
+        if (session.getAttribute("user_id") == null) {
+            session.invalidate();
+            response.sendRedirect("../Login.jsp");
+        }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -55,23 +62,36 @@ Version      : 1
                                         <s:property value="msg"/>
                                     </div>
                                     <div class="w100 fl-l">
-                                        <fieldset class="w400p mar0a">
+                                        <fieldset class="w700p mar0a">
                                             <legend><strong>Add References</strong></legend>
-                                            <s:form action="UpdateInfo" method="post" namespace="/MyProfile" name="myform">
+                                            <s:form action="UpdateInfo" method="post" namespace="/MyProfile" name="myform" theme="simple">
                                                 <s:iterator value="RefList" var="ProRef">
                                                     <s:hidden name="referencesId"/>
                                                     <s:hidden name="userId"/>
-                                                    <table width="100%" class="fl-l" cellpadding="4" border="0" cellspacing="0">
-                                                        <s:textfield name="name" label="Name"/>
-                                                        <s:textfield name="designation" label="Designation"/>
-                                                        <s:textfield name="department" label="Department / School"/>
-                                                        <s:textfield name="orgUniv" label="University, Organization"/>
-                                                        <s:textfield name="place" label="Address"/>
-                                                        <s:textfield name="city" label="City"/>
-                                                        <s:textfield name="state" label="State"/>
+                                                    <table width="100%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                         <tr>
+                                                            <td>Name</td>
+                                                            <td><s:textfield name="name" label="Name"/></td>
+                                                            <td>Designation</td>
+                                                            <td><s:textfield name="designation" label="Designation"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Department / School</td>
+                                                            <td><s:textfield name="department" label="Department / School"/></td>
+                                                            <td>University / Organization</td>
+                                                            <td><s:textfield name="orgUniv" label="University / Organization"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Address</td>
+                                                            <td><s:textfield name="place" label="Address"/></td>
+                                                            <td>City</td>
+                                                            <td><s:textfield name="city" label="City"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>State</td>
+                                                            <td><s:textfield name="state" label="State"/></td>
                                                             <td>Country</td>
-                                                            <td><select name="country" style="width: 255px;">
+                                                            <td><select name="country" style="width: 200px;">
                                                                     <option value="Afghanistan"> Afghanistan </option>
                                                                     <option value="Albania"> Albania </option>
                                                                     <option value="Algeria"> Algeria </option>
@@ -313,13 +333,21 @@ Version      : 1
                                                                 </select>
                                                             </td>
                                                         </tr>
-                                                        <s:textfield name="phoneno" label="Phone No."/>
-                                                        <s:textfield name="mobileno" label="Mobile No."/>
-                                                        <s:textfield name="emailId" label="Email ID"/>
-                                                        <s:textfield name="website" label="Website"/>
                                                         <tr>
-                                                            <td>&nbsp;</td>
-                                                            <td><s:submit value="Save Changes" theme="simple"/>
+                                                            <td>Phone No</td>
+                                                            <td><s:textfield name="phoneno" label="Phone No"/></td>
+                                                            <td>Mobile No</td>
+                                                            <td><s:textfield name="mobileno" label="Mobile No"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Phone No</td>
+                                                            <td> <s:textfield name="emailId" label="Email ID"/></td>
+                                                            <td>Mobile No</td>
+                                                            <td><s:textfield name="website" label="Website"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="4" align="center">
+                                                                <s:submit value="Submit" theme="simple"/>
                                                                 <s:reset value="Cancel" theme="simple" onClick="history.go(-1);" />
                                                             </td>
                                                         </tr>

@@ -5,10 +5,12 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.StudentExchangeDao;
 import org.IGNOU.ePortfolio.Model.StudentExchange;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,8 +18,10 @@ import org.IGNOU.ePortfolio.Model.StudentExchange;
  * @version 1
  * @since 28 December 2011
  */
-public class StudentExchangeInfoAction extends ActionSupport {
+public class StudentExchangeInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private StudentExchangeDao dao = new StudentExchangeDao();
     private StudentExchange ExchangeModel = new StudentExchange();

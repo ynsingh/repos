@@ -1,9 +1,12 @@
-<%-- 
+<%--
     Document   : TestimonialCreateForm
     Created on : Sep 14, 2012, 4:35:07 PM
     Author     : Vinay
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -21,7 +24,7 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
@@ -56,7 +59,10 @@
         </script>
     </head>
     <body>
-        <%  String role = session.getAttribute("role").toString();
+        <%  final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
             }
@@ -71,23 +77,24 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/> 
+                        <s:include value="/Left-Nevigation.jsp"/>
                         <!--Left box Ends Here-->
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">Testimonial Request Form</div>
-                           
-                                <div class="bradcum">
-                                    <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial 
-                                </div>
-                                <div class="marr15 fl-r mart10">                                    
-                                    <% if (role.contains("faculty")) {%>     
-                                    || <s:a action="StdTestiReq">Inbox</s:a>  || Sent Testimonials ||
-                                    <% } else if (role.contains("student")) {%>
-                                    || <a href="TestimonialRequestForm.jsp">New Request</a> || Inbox || Sent Request ||
-                                    <% }%> 
-                                </div>
-                                 <div class="w100 fl-l mart10">
+
+                            <div class="bradcum">
+                                <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial
+                            </div>
+                            <div class="marr15 fl-r mart10">
+                                <% if (role.contains("faculty")) {%>
+                                || <s:a action="StdTestiReq">Inbox</s:a>  || Sent Testimonials ||
+                                <% } else if (role.contains("student")) {%>
+                                || <a href="TestimonialRequestForm.jsp">New Request</a> || Inbox || Sent Request ||
+                                <% }%>
+                            </div>
+                            <div class="tab_btn_1 mart5"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                            <div class="w100 fl-l mart10">
                                 <s:iterator value="ReqsentList" status="stat">
                                     <s:if test="testiType=='Academic'">
                                         <s:form action="priviewTestiInfo" method="post" theme="simple">
@@ -429,7 +436,7 @@
                                             <s:hidden name="testiReqId"/>
                                             <fieldset class="w550p mar0a">
                                                 <legend class="fbld">Other Details</legend>
-                                                <table width="95%" class="mar0a" border="0" cellpadding="4" cellspacing="0" id="hide">    
+                                                <table width="95%" class="mar0a" border="0" cellpadding="4" cellspacing="0" id="hide">
                                                     <tr>
                                                         <th width="10%" align="left">To:</th>
                                                         <td width="70%"><s:textfield name="testiForEmail"  cssClass="w425p"/><br/>
@@ -452,7 +459,7 @@
                                                     <tr>
                                                         <th valign="top" align="left">Testimonial:</th><td>
                                                             <sjr:tinymce
-                                                                id="message"                              
+                                                                id="message"
                                                                 name="testiReqMessage"
                                                                 rows="20"
                                                                 cols="80"
@@ -468,9 +475,9 @@
                                                                 toolbarButtonsRow3=" "
                                                                 />
                                                         </td>
-                                                    </tr>       
+                                                    </tr>
                                                     <tr>
-                                                        <td colspan="2" align="center"> 
+                                                        <td colspan="2" align="center">
                                                             <s:submit value="Send"/>&nbsp;&nbsp;
                                                             <s:reset value="Back" onclick="history.go(-1);"/>
                                                         </td>
@@ -489,6 +496,6 @@
             </div>
         </div>
         </div>
-        <s:include value="/Footer.jsp"/>  
+        <s:include value="/Footer.jsp"/>
     </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 /*
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
@@ -72,7 +70,7 @@ public class TestScoreDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+           s.close();          
             sf.close();
         }
     }
@@ -97,7 +95,7 @@ public class TestScoreDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+           s.close();
             sf.close();
         }
     }
@@ -122,7 +120,7 @@ public class TestScoreDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+           s.close();
             sf.close();
         }
     }
@@ -148,7 +146,7 @@ public class TestScoreDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+           s.close();
             sf.close();
         }
     }
@@ -170,7 +168,7 @@ public class TestScoreDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();
+           s.close();
             sf.close();
         }
     }

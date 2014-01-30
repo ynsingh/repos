@@ -1,12 +1,16 @@
-<%-- 
+<%--
     Document   : Departments
     Created on : Nov 06, 2012, 04:50:05 PM
     Author     : IGNOU Team
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
+<%@taglib prefix="sjr" uri="/struts-jquery-richtext-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -20,7 +24,13 @@
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
+            });
+
+            $(document).ready(function() {
+                $(".add_dept a").click(function() {
+                    $("#add_dept_form").toggle();
+                });
             });
         </script>
     </head>
@@ -29,6 +39,9 @@
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
             }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
         %>
 
@@ -41,40 +54,122 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include  value="/Left-Nevigation.jsp"/> 
+                        <s:include  value="/Left-Nevigation.jsp"/>
                         <!--Left box Ends Here-->
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">Departments/School</div>
                             <div class="w100 fl-l mart10">
                                 <div class="w98 mar0a">
-                                    <div class="bradcum"> 
+                                    <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<s:a action="ShowRegisteredInstitute">Registered Institutes</s:a>&nbsp;>&nbsp; Departments/School
                                         </div>
-                                         <% if (role.contains("admin")) {%>
-                                        <div class="w98 maroa tr">
-                                            <a href="DepartmentAdd.jsp">Add Department/School</a>
-                                        </div>
-                                         <% } %>
-                                        <div class="w100 fl-l tc fbld fcred">
+                                    <% if (role.contains("admin")) {%>
+                                    <div class="add_dept fl-r mart10">
+                                        <a href="#" onclick="show_from()">Add Department/School</a>
+                                    </div>
+                                    <% }%>
+                                    <div class="w100 fl-l tc fbld fcred">
                                         <s:property value="msg"/>
                                     </div>
+
+                                    <div id="add_dept_form" style="display:none;" class="fl-l w100">
+                                        <fieldset class="w600p mar0a mart30">
+                                            <legend class="fbld">Add Department</legend>
+                                            <s:form method="post" action="AddDepartment" theme="simple" namespace="/Administrator">
+                                                <s:url id="Univ" action="UniversityAct" namespace="/Dropdown"/>
+                                                <table align="center">
+                                                    <tr><th>Institute/University</th><td>
+                                                            <sj:select
+                                                                href="%{Univ}"
+                                                                id="univCode"
+                                                                onChangeTopics="reloadprogrammlist"
+                                                                name="instituteId"
+                                                                list="univList"
+                                                                emptyOption="false"
+                                                                headerKey="-1"
+                                                                headerValue="Please Select University"
+                                                                label="Select University/Institute"
+                                                                sortable="false"
+                                                                required="true"
+                                                                />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Name:</th>
+                                                        <td><s:textfield name="departmentName"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Shot Name:</th>
+                                                        <td><s:textfield name="departmentCode"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left" valign="top">Introduction:</th>
+                                                        <td>
+                                                            <sjr:tinymce
+                                                                id="richtextTinymceAdvancedEditor"
+                                                                name="introduction"
+                                                                rows="10"
+                                                                cols="10"
+                                                                value="%{introduction}"
+                                                                editorLocal="en"
+                                                                editorTheme="advanced"
+                                                                editorSkin="o2k7"
+                                                                toolbarAlign="left"
+                                                                toolbarLocation="top"
+                                                                toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
+                                                                toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
+                                                                toolbarButtonsRow3=" "
+                                                                />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left" valign="top">Postal Address:</th>
+                                                        <td><s:textarea cssClass="w255p" rows="6" name="postalAddress"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left" valign="top">Phone No.:</th>
+                                                        <td>Region Code: <s:textfield name="phoneCode"/>Ex.(011)&nbsp;<br/>
+                                                            Number:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<s:textfield name="phoneNo"/>Ex. (29571923)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Mobile:</th>
+                                                        <td><s:textfield name="mobileNo"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Fax:</th>
+                                                        <td><s:textfield name="fax"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Email:</th>
+                                                        <td><s:textfield name="deptEmailId"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="2" align="center">
+                                                            <s:submit value="Save"/>&nbsp;&nbsp;<s:reset value="Reset"/>&nbsp;&nbsp;<s:reset value="Back" onClick="history.go(-1);" />
+                                                        </th>
+                                                    </tr>
+                                                </table>
+                                            </s:form>
+                                        </fieldset>
+                                    </div>
+
                                     <div class="w100 fl-l mart10">
-                                        <s:url id="Univer" action="UniversityAct" namespace="/Dropdown"/> 
-                                        <s:url id="dept" action="DeptAct" namespace="/Dropdown"/> 
+                                        <s:url id="Univer" action="UniversityAct" namespace="/Dropdown"/>
+                                        <s:url id="dept" action="DeptAct" namespace="/Dropdown"/>
                                         <s:form method="post" id="FormId" theme="simple" namespace="/Dropdown">
                                             <table class="tablepaging" id="tablepaging" width="95%" cellspacing="0" cellpadding="5" border="1">
                                                 <thead>
                                                     <tr><td width="180px;">University/Institute</td>
                                                         <td>
-                                                            <sj:select 
-                                                                href="%{Univer}" 
-                                                                id="univCode" 
-                                                                onChangeTopics="reloaddepartmentlist" 
-                                                                name="instituteId" 
-                                                                list="univList" 
-                                                                emptyOption="false" 
-                                                                headerKey="-1" 
+                                                            <sj:select
+                                                                href="%{Univer}"
+                                                                id="univCode1"
+                                                                onChangeTopics="reloaddepartmentlist"
+                                                                name="instituteId"
+                                                                list="univList"
+                                                                emptyOption="false"
+                                                                headerKey="-1"
                                                                 headerValue="Please Select University"
                                                                 label="Select University/Institute"
                                                                 sortable="false"
@@ -87,14 +182,14 @@
                                                     <th width="180px;" align="left" valign="top">Department/School</th>
                                                     <td>
                                                         <sj:radio
-                                                            href="%{dept}" 
-                                                            id="department" 
-                                                            formIds="FormId" 
-                                                            reloadTopics="reloaddepartmentlist" 
-                                                            name="departmentId" 
-                                                            list="departmentL" 
-                                                            emptyOption="false" 
-                                                            headerKey="-1" 
+                                                            href="%{dept}"
+                                                            id="department"
+                                                            formIds="FormId"
+                                                            reloadTopics="reloaddepartmentlist"
+                                                            name="departmentId"
+                                                            list="departmentL"
+                                                            emptyOption="false"
+                                                            headerKey="-1"
                                                             headerValue="Please Select a Programme"
                                                             label="Programme"
                                                             onChangeTopics=""

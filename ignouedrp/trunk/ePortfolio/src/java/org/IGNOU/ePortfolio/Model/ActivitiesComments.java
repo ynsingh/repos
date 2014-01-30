@@ -12,10 +12,10 @@ package org.IGNOU.ePortfolio.Model;
 public class ActivitiesComments implements java.io.Serializable {
 
     private long commentId;
-    private Evidence evidence;
+    private ActivitiesAnnounce evidence;
     private UserList userBySubmitorId;
     private UserList userByCommentorId;
-    private EvidenceSubmission evidenceSubmission;
+    private ActivitiesSubmission evidenceSubmission;
     private String comment;
     private String commentorFilePath;
     private Double rating;
@@ -27,7 +27,7 @@ public class ActivitiesComments implements java.io.Serializable {
         this.commentId = commentId;
     }
 
-    public ActivitiesComments(long commentId, Evidence evidence, UserList userBySubmitorId, UserList userByCommentorId, EvidenceSubmission evidenceSubmission, String comment, String commentorFilePath, Double rating) {
+    public ActivitiesComments(long commentId, ActivitiesAnnounce evidence, UserList userBySubmitorId, UserList userByCommentorId, ActivitiesSubmission evidenceSubmission, String comment, String commentorFilePath, Double rating) {
         this.commentId = commentId;
         this.evidence = evidence;
         this.userBySubmitorId = userBySubmitorId;
@@ -46,11 +46,11 @@ public class ActivitiesComments implements java.io.Serializable {
         this.commentId = commentId;
     }
 
-    public Evidence getEvidence() {
+    public ActivitiesAnnounce getEvidence() {
         return this.evidence;
     }
 
-    public void setEvidence(Evidence evidence) {
+    public void setEvidence(ActivitiesAnnounce evidence) {
         this.evidence = evidence;
     }
 
@@ -70,11 +70,11 @@ public class ActivitiesComments implements java.io.Serializable {
         this.userByCommentorId = userByCommentorId;
     }
 
-    public EvidenceSubmission getEvidenceSubmission() {
+    public ActivitiesSubmission getEvidenceSubmission() {
         return this.evidenceSubmission;
     }
 
-    public void setEvidenceSubmission(EvidenceSubmission evidenceSubmission) {
+    public void setEvidenceSubmission(ActivitiesSubmission evidenceSubmission) {
         this.evidenceSubmission = evidenceSubmission;
     }
 

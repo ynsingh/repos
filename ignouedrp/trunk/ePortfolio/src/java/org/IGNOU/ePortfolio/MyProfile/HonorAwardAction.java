@@ -36,9 +36,11 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.HonorAwardDao;
 import org.IGNOU.ePortfolio.Model.ProfileHonorAward;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 /**
@@ -47,11 +49,12 @@ import org.hibernate.HibernateException;
  * @since 13-Oct-2011 Modified by IGNOU Team on 14-Oct-2011 XML Validation are
  * implemented.
  */
-public class HonorAwardAction extends ActionSupport implements ModelDriven<Object> {
+public class HonorAwardAction extends ActionSupport implements Serializable  , ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
     private HonorAwardDao dao = new HonorAwardDao();
     private ProfileHonorAward ProHonor = new ProfileHonorAward();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String haTitle;
     private String issuer;

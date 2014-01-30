@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.IGNOU.ePortfolio.Model.Conference;
 import org.IGNOU.ePortfolio.Model.ConferenceAuthors;
 
 import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -22,8 +24,10 @@ import java.util.List;
  * @version 1
  * @since 28-02-2012
  */
-public class ConferenceInfoAction extends ActionSupport {
+public class ConferenceInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private Conference conf = new Conference();
     private ConferenceDao dao = new ConferenceDao();

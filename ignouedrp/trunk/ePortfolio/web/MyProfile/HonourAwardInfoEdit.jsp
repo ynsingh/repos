@@ -6,6 +6,9 @@ Author     : IGNOU Team
 Version      : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -66,7 +69,7 @@ Version      : 1
                                                     <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">   
                                                         <s:textfield name="haTitle" label="Title"/>
                                                         <s:textfield name="issuer" label="Issuer"/>
-                                                        <sj:datepicker id="date0" label="Issue Date" 
+                                                        <sj:datepicker readonly="true"  id="date0" label="Issue Date" 
                                                                        name="haDate" value="today" 
                                                                        displayFormat="MM, yy"                                                            
                                                                        changeMonth="true" changeYear="true"

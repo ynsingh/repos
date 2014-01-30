@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.DAO.ContactUsDao;
 import org.IGNOU.ePortfolio.Model.ContactUs;
@@ -13,8 +14,9 @@ import org.IGNOU.ePortfolio.Model.ContactUs;
  *
  * @author Amit
  */
-public class ContactUsAction extends ActionSupport {
+public class ContactUsAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private List<ContactUs> contactList;
     private ContactUsDao cuDao = new ContactUsDao();
     private int contactId;
@@ -25,31 +27,28 @@ public class ContactUsAction extends ActionSupport {
     private String contactEmail;
     private String aboutUs;
 
-
     public String contactAdd() {
-        cuDao.ContactUsSave(contactName, contactAddress, contactOff, contactMob, contactEmail,aboutUs);
+        cuDao.ContactUsSave(contactName, contactAddress, contactOff, contactMob, contactEmail);
         return SUCCESS;
     }
-    public String ContactEdit(){
-       contactList=(cuDao.ContactUsEditByContactId(contactId));
-       if(contactList.isEmpty())
-       {
-           return ERROR;
-       }
-       else{
-        return SUCCESS;
-       }
+
+    public String ContactEdit() {
+        contactList = (cuDao.ContactUsEditByContactId(contactId));
+        if (contactList.isEmpty()) {
+            return ERROR;
+        } else {
+            return SUCCESS;
+        }
     }
-    
-    public String ContactUpdate(){
-       cuDao.ContactUsUpdate(contactId, contactName, contactAddress, contactOff, contactMob, contactEmail,aboutUs);
+
+    public String ContactUpdate() {
+        cuDao.ContactUsUpdate(contactId, contactName, contactAddress, contactOff, contactMob, contactEmail, aboutUs);
         return SUCCESS;
-     }
-    
-    
+    }
+
     @Override
     public String execute() throws Exception {
-        contactList=(cuDao.ContactUsList());
+        contactList = (cuDao.ContactUsList());
         if (contactList.isEmpty()) {
             return INPUT;
         } else {
@@ -63,8 +62,6 @@ public class ContactUsAction extends ActionSupport {
     public List<ContactUs> getContactList() {
         return contactList;
     }
-
-  
 
     /**
      * @return the contactName
@@ -163,5 +160,4 @@ public class ContactUsAction extends ActionSupport {
     public void setAboutUs(String aboutUs) {
         this.aboutUs = aboutUs;
     }
-
 }

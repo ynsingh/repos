@@ -38,6 +38,7 @@ package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.DAO.FeedbackDao;
 import org.IGNOU.ePortfolio.Model.Feedback;
 
@@ -45,7 +46,7 @@ import org.IGNOU.ePortfolio.Model.Feedback;
  *
  * @author IGNOU Team
  */
-public class FeedbackAction extends ActionSupport implements ModelDriven<Object> {
+public class FeedbackAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
     private Feedback f = new Feedback();

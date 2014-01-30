@@ -4,6 +4,9 @@
     Author     : Amit
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,13 +22,17 @@
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -46,12 +53,20 @@
                             <div class="w100 fl-l mart10">
                                 <div class="w98 mar0a">
                                     <div class="w100 fl-l mart15">
+                                        <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
                                         <fieldset class="w500p mar0a">
                                             <legend class="fbld">Change Header Image</legend>
-                                            <s:form action="UpdateUnivLogo" method="post" enctype="multipart/form-data" namespace="/Administrator" >
-                                                <table width="40%" class="mar0a" cellpadding="2" cellspacing="0" border="0">
-                                                    <s:file name="uniLogo"/>
-                                                    <s:submit value="submit" align="center"/>
+                                            <s:form action="UpdateUnivLogo" method="POST" theme="simple" enctype="multipart/form-data" namespace="/Administrator" >
+                                                <table width="100%" class="mar0a" cellpadding="2" cellspacing="0" border="0">
+                                                    <tr>
+                                                        <th class="w300p">
+                                                            <span class="fl-l w100 mar0a tl">Select Image&nbsp;<br/>(Make Sure file name should be header and extention should be .png)</span>
+                                                        </th>
+                                                        <td>
+                                                            <s:file name="uniLogo"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr><td class="tc" colspan="2"><s:submit value="submit" align="center"/></td></tr>
                                                 </table>
                                             </s:form>
                                         </fieldset>

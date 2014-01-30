@@ -4,6 +4,9 @@
     Author     : IGNOU Team
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib  prefix="sx"  uri="/struts-dojo-tags"%>
@@ -37,7 +40,7 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -48,7 +51,7 @@
                 <div class="w100 fl-l">
                     <div class="header">
                         <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
-                       </div>
+                    </div>
                     <div class="menu_bg">
                         <div class="wau fl-l"><img src="images/blank.gif" alt="" width="20" height="10" /></div>
                         <div class="eportfolio_txt">ePORTFOLIO</div>

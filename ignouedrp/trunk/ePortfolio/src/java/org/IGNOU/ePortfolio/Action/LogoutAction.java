@@ -40,10 +40,12 @@ package org.IGNOU.ePortfolio.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+import org.IGNOU.ePortfolio.DAO.LoginDao;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -51,15 +53,14 @@ import org.apache.struts2.ServletActionContext;
  * @author IGNOU Team
  */
 @SuppressWarnings("serial")
-public class LogoutAction extends ActionSupport {
+public class LogoutAction extends ActionSupport implements Serializable {
 
     HttpServletResponse resp = ServletActionContext.getResponse();
     final Logger logger = Logger.getLogger(this.getClass());
+    private LoginDao dao = new LoginDao();
 
     @Override
     public String execute() throws Exception {
-
-        PropertyConfigurator.configure("log4j.properties");
         Map session = ActionContext.getContext().getSession();
         if (session.isEmpty()) {
             return INPUT;
@@ -67,14 +68,13 @@ public class LogoutAction extends ActionSupport {
         String picpath = session.get("appPath").toString();
         String picname = session.get("picname").toString();
         String user = session.get("user_id").toString();
+        String logId = session.get("logId").toString();
         File ecardt = new File(picpath + "/" + user.substring(0, 4) + "Ecard.png");
         if (ecardt.isFile()) {
             ecardt.delete();
         } else {
-
             logger.warn("Nothing to delete");
         }
-
         if (picname.equals("images/user.png")) {
             logger.warn("Nothing to delete");
         } else {
@@ -82,13 +82,14 @@ public class LogoutAction extends ActionSupport {
             session.remove("appPath");
             session.remove("picname");
         }
+        dao.logOutUpdate(Long.valueOf(logId));
         session.remove("user_id");
         session.remove("appPath");
         session.remove("picname");
         session.remove("role");
         session.remove("uName");
+        session.remove("logId");
         session.clear();
-
         logger.warn("user Logged Out with userid   " + user);
         return SUCCESS;
     }

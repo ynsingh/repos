@@ -4,6 +4,7 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,8 +24,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @version 1
  * @since 23-02-2012 Last Modified on 24-02-2012 by IGNOU Team
  */
-public class BookChapterDao {
+public class BookChapterDao implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
 
@@ -162,5 +164,4 @@ public class BookChapterDao {
             sessionFactory.close();
         }
     }
-
 }

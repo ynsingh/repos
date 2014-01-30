@@ -5,19 +5,24 @@
 package org.IGNOU.ePortfolio.Builder.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.VisitingCardDao;
 import org.IGNOU.ePortfolio.Model.Vistingcard;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Amit
  */
-public class VisitingCardInfoAction extends ActionSupport{
-     private String user_id = new UserSession().getUserInSession();
+public class VisitingCardInfoAction extends ActionSupport implements Serializable  {
+
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
+    private String user_id = new UserSession().getUserInSession();
     private VisitingCardDao vcDao = new VisitingCardDao();
-   private List<Vistingcard> vcList;
+    private List<Vistingcard> vcList;
     private Integer visitcardId;
     private String displayName;
     private String designation;
@@ -28,14 +33,13 @@ public class VisitingCardInfoAction extends ActionSupport{
     private String email;
     private String websiteOff;
     private String websitePer;
-    
-    
-     public String VisitingcardDetail() {
+
+    public String VisitingcardDetail() {
         vcList = vcDao.VisitingCardDetailByUserId(user_id);
         if (vcList.isEmpty()) {
             return INPUT;
         }
-        visitcardId=vcList.iterator().next().getVisitcardId();
+        visitcardId = vcList.iterator().next().getVisitcardId();
         return SUCCESS;
     }
 
@@ -45,7 +49,7 @@ public class VisitingCardInfoAction extends ActionSupport{
     }
 
     public String VisitingCardUpdate() {
-        vcDao.VisitingCardUpdate(visitcardId,user_id, displayName, designation, company, mobile, officePh, fax, email, websiteOff, websitePer);
+        vcDao.VisitingCardUpdate(visitcardId, user_id, displayName, designation, company, mobile, officePh, fax, email, websiteOff, websitePer);
         return SUCCESS;
     }
 
@@ -77,7 +81,6 @@ public class VisitingCardInfoAction extends ActionSupport{
         this.vcDao = vcDao;
     }
 
-    
     /**
      * @return the vcList
      */
@@ -231,5 +234,4 @@ public class VisitingCardInfoAction extends ActionSupport{
     public void setWebsitePer(String websitePer) {
         this.websitePer = websitePer;
     }
-    
 }

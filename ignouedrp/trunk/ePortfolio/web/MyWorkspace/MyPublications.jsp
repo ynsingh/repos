@@ -1,11 +1,15 @@
-<%-- 
+<%--
     Document   : MyPublications
     Created on : Dec 2, 2011, 2:23:01 PM
     Author     : IGNOU Team
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="sj" uri="/struts-jquery-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -14,17 +18,19 @@
         <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-        
+        <sj:head/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
     <body>
         <%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -40,7 +46,7 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/> 
+                        <s:include value="/Left-Nevigation.jsp"/>
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
@@ -51,6 +57,7 @@
                                     <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;> <a href="<s:url value="/MyWorkspace/MyWorkspace.jsp"/>">My Workspace</a> &nbsp;> My Publication
                                     </div>
+                                    <div class="fl-r mart5"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
                                     <table border="0" class="mar0a" cellpadding="0" cellspacing="10">
                                         <ul class="jcarousel-skin-tango">
                                             <s:url id="ConfID" action="ShowConference" namespace="/MyWorkspace"/>
@@ -58,7 +65,7 @@
                                             <s:url id="SJID" action="ShowJournal" namespace="/MyWorkspace"/>
                                             <s:url id="BCID" action="ShowBookChapter" namespace="/MyWorkspace"/>
                                             <s:url id="MPubID" action="showMP" namespace="/MyWorkspace"/>
-                                            <s:url id="ITID" action="showTL" namespace="/MyWorkspace"/> 
+                                            <s:url id="ITID" action="showTL" namespace="/MyWorkspace"/>
                                             <s:url id="PatID" action="ShowPatent" namespace="/MyWorkspace"/>
                                             <s:url id="TDID" action="showTD" namespace="/MyWorkspace"/>
                                             <s:url id="SEPID" action="ShowExchangePro" namespace="/MyWorkspace"/>
@@ -74,24 +81,24 @@
                                             <li><s:a href="%{SEPID}"><img src="<s:url value="/icons/student-exchange.gif"/>" width="60" height="60" /><span style="width:105px !important;">Student Exchange Programme</span></s:a></li>
                                             <li><s:a href="%{TDID}"><img src="<s:url value="/icons/thesis.gif"/>" width="60" height="60" /><span>Thesis / Dissertation</span></s:a></li>
                                             <li><s:a href="%{PatID}"><img src="<s:url value="/icons/patents.gif"/>" width="60" height="60" /><span>Patents</span></s:a></li>
-                                            <% if (role.contains("faculty")) {%>
+                                                <% if (role.contains("faculty")) {%>
                                             <li><s:a href="%{ConID}"><img src="<s:url value="/icons/consultancy.gif"/>" width="60" height="60" /><span>Consultancy</span></s:a></li>
                                             <li><s:a href="%{GovID}"><img src="<s:url value="/icons/governance.gif"/>" width="60" height="60" /><span>Corporate Life</span></s:a></li>
                                             <li><s:a href="%{RCID}"><img src="<s:url value="/icons/review-committies.gif"/>" width="60" height="60" /><span>Academic Responsibilities</span></s:a></li>
-                                            <% } else if (role.contains("student")) {%>
-                                            <% }%> 
-                                        </ul>  
-                                    </table> 
+                                                <% } else if (role.contains("student")) {%>
+                                                <% }%>
+                                        </ul>
+                                    </table>
                                 </div>
                             </div>
                             <!--Right box End Here-->
                         </div>
-                        
+
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>  
+        <s:include value="/Footer.jsp"/>
     </body>
 </html>

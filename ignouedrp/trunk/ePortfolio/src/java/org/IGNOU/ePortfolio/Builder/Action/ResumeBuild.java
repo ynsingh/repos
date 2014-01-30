@@ -5,22 +5,26 @@
 package org.IGNOU.ePortfolio.Builder.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PeerGroupDao;
 import org.IGNOU.ePortfolio.Model.UserList;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class ResumeBuild extends ActionSupport {
+public class ResumeBuild extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String resumeTitle;
     private String resumeObjective;
     private PeerGroupDao bdao = new PeerGroupDao();
     private List<UserList> userDetaillist;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private Date currentDate = new Date();
 

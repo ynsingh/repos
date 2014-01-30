@@ -6,53 +6,54 @@ package org.IGNOU.ePortfolio.Requests;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.RequestDao;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Vinay
  */
-public class ChangeRequestAction extends ActionSupport  {
+public class ChangeRequestAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private RequestDao dao = new RequestDao();
     private String msg, reqMsg = getText("msg.Request");
     private String FilePath = ReadPropertyFile("Filepath");
     private File uploadProof;
-    private String FileUpPath,uploadProofFileName;
-    private FileUploadCommon fupload=new FileUploadCommon();
+    private String FileUpPath, uploadProofFileName;
+    private FileUploadCommon fupload = new FileUploadCommon();
     private String requestType;
-     private String reason;
-     private String newRecord;
-     private Date requestDate;
-     private String recordProof;
-     private Boolean status;
-    
+    private String reason;
+    private String newRecord;
+    private Date requestDate;
+    private String recordProof;
+    private Boolean status;
 
     public ChangeRequestAction() {
     }
 
     @Override
     public String execute() throws Exception {
-            if(uploadProof!=null)
-           {
-           FileUpPath=FilePath+"/"+user_id+"/";
-           fupload.UploadFile(uploadProof, uploadProofFileName, FileUpPath);
-           dao.UserPersonalRequestSave(user_id,requestType,reason,newRecord,new Date(),uploadProofFileName, Boolean.FALSE);
-           msg = reqMsg;
-        return SUCCESS;
-        }
-        else
-           {
-              setUploadProofFileName("null");
-               dao.UserPersonalRequestSave(user_id,requestType,reason,newRecord,new Date(),uploadProofFileName, Boolean.FALSE);
-          return SUCCESS;
+        if (uploadProof != null) {
+            FileUpPath = FilePath + "/" + user_id + "/";
+            fupload.UploadFile(uploadProof, uploadProofFileName, FileUpPath);
+            dao.UserPersonalRequestSave(user_id, requestType, reason, newRecord, new Date(), uploadProofFileName, Boolean.FALSE);
+            msg = reqMsg;
+            return SUCCESS;
+        } else {
+            setUploadProofFileName("null");
+            dao.UserPersonalRequestSave(user_id, requestType, reason, newRecord, new Date(), uploadProofFileName, Boolean.FALSE);
+            return SUCCESS;
         }
     }
+
     /**
      * @return the msg
      */
@@ -94,6 +95,7 @@ public class ChangeRequestAction extends ActionSupport  {
     public void setFilePath(String FilePath) {
         this.FilePath = FilePath;
     }
+
     /**
      * @return the FileUpPath
      */

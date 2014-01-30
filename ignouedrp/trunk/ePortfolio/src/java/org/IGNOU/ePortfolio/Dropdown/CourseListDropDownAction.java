@@ -5,19 +5,22 @@
 package org.IGNOU.ePortfolio.Dropdown;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.CourseDao;
 import org.IGNOU.ePortfolio.Model.Course;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author vinay
  */
-public class CourseListDropDownAction extends ActionSupport {
+public class CourseListDropDownAction extends ActionSupport implements Serializable  {
 
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private static final long serialVersionUID = 1L;
     private Map<String, String> courseL;

@@ -5,9 +5,11 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -15,8 +17,10 @@ import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
  * @version 1
  * @since 07-11-2012
  */
-public class ProgrammeRegsitrationAction extends ActionSupport {
+public class ProgrammeRegsitrationAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProgrammeDao dao = new ProgrammeDao();
     private String departmentId, instituteId;

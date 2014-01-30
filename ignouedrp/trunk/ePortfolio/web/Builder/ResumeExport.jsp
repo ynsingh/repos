@@ -23,6 +23,9 @@
 <%@page import="java.util.List"%>
 <%@page import="org.IGNOU.ePortfolio.Builder.Action.ResumeBuild"%>
 <%@page import="java.io.File"%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%> 
 <%
     ResumeBuild rb = new ResumeBuild();

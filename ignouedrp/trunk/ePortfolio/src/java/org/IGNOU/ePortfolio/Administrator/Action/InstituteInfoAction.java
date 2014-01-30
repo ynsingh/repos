@@ -5,23 +5,26 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.EvidenceDao;
+import org.IGNOU.ePortfolio.DAO.ActivitiesDao;
 import org.IGNOU.ePortfolio.DAO.InstituteDAO;
 import org.IGNOU.ePortfolio.DAO.UserListDao;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
-import org.IGNOU.ePortfolio.Model.Evidence;
+import org.IGNOU.ePortfolio.Model.ActivitiesAnnounce;
 import org.IGNOU.ePortfolio.Model.Institute;
 import org.IGNOU.ePortfolio.Model.User;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class InstituteInfoAction extends ActionSupport {
+public class InstituteInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
     private Institute ins = new Institute();
     private InstituteDAO dao = new InstituteDAO();
     private List<Institute> InsList;
@@ -29,20 +32,22 @@ public class InstituteInfoAction extends ActionSupport {
     private int instituteId, evidenceId;
     private Integer programmeId;
     private Integer courseId;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private User u = new User();
     private List<User> UListInfo;
-    private List<Evidence> evdInfo;
-    private EvidenceDao evdao = new EvidenceDao();
+    private List<ActivitiesAnnounce> evdInfo;
+    private ActivitiesDao evdao = new ActivitiesDao();
     private UserProgrammeDao uiDao = new UserProgrammeDao();
     private UserListDao ulDao = new UserListDao();
     private List<String> stList = new ArrayList<String>();
     private int submissionId;
     private String userId;
-   
+
     public InstituteInfoAction() {
     }
-     public String ShowRegisteredInstitute() throws Exception {
+
+    public String ShowRegisteredInstitute() throws Exception {
         InsList = dao.InstituteList();
         if (InsList == null || InsList.isEmpty()) {
             return INPUT;
@@ -194,28 +199,28 @@ public class InstituteInfoAction extends ActionSupport {
     /**
      * @return the evdInfo
      */
-    public List<Evidence> getEvdInfo() {
+    public List<ActivitiesAnnounce> getEvdInfo() {
         return evdInfo;
     }
 
     /**
      * @param evdInfo the evdInfo to set
      */
-    public void setEvdInfo(List<Evidence> evdInfo) {
+    public void setEvdInfo(List<ActivitiesAnnounce> evdInfo) {
         this.evdInfo = evdInfo;
     }
 
     /**
      * @return the evdao
      */
-    public EvidenceDao getEvdao() {
+    public ActivitiesDao getEvdao() {
         return evdao;
     }
 
     /**
      * @param evdao the evdao to set
      */
-    public void setEvdao(EvidenceDao evdao) {
+    public void setEvdao(ActivitiesDao evdao) {
         this.evdao = evdao;
     }
 

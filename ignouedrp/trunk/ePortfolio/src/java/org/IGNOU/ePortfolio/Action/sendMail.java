@@ -41,15 +41,16 @@ package org.IGNOU.ePortfolio.Action;
  * @author IGNOU Team
  */
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
-public class sendMail extends ActionSupport {
+public class sendMail extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String SMTP_HOST_NAME = ReadPropertyFile("smtpHost");
     private String SMTP_PORT = ReadPropertyFile("smtpPort");
     private String SMTP_AUTH_USER = ReadPropertyFile("mailUser");
@@ -98,7 +99,7 @@ public class sendMail extends ActionSupport {
         props.put("mail.smtp.host", SMTP_HOST_NAME);
         props.put("mail.smtp.port", SMTP_PORT);
         props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
-        PropertyConfigurator.configure("log4j.properties");
+
         logger.warn(mailFrom + "Trying to send Mail to " + mailTo + "and" + mailCc + "and" + mailBcc);
         logger.warn("Subject of mail" + Sub);
         Authenticator auth = new sendMail.smtpAuth();
@@ -172,7 +173,7 @@ public class sendMail extends ActionSupport {
                 }
             }
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
+
             logger.error("Send Mail Function Error and Mail From " + mailFrom, e);
         }
 

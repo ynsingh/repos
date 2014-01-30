@@ -52,7 +52,7 @@ public class EventsDao {
         String Today = sdf.format(new Date());
         List<Events> EventInfolist = null;
         try {
-            EventInfolist = s.createQuery("from Events where postponed='0' and eventDateTo >= '" + Today + "'").list();
+            EventInfolist = s.createQuery("from Events where postponed='0' and eventDisplayDate<='" + Today + "' and eventDateTo >= '" + Today + "'").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
@@ -194,5 +194,4 @@ public class EventsDao {
             sessionFactory.close();
         }
     }
-
 }

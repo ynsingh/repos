@@ -4,6 +4,9 @@
     Author     : IGNOU Team
     Version    : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -21,17 +24,21 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -305,19 +312,19 @@
                                                     <s:textfield name="patentTitle" label="Title of the  Patent"/>
                                                     <s:select id="mymenu" label="No of Inventors" name="NoofInventor" style="width: 255px;" onchange="updatefields()" list="{'1','2','3','4','5','6','7','8','9','10'}" headerKey="0" headerValue="Select No. of Inventor"/>
                                                     <script type="text/javascript">
-                                                        var selectmenu=document.getElementById("mymenu")
+                                                        var selectmenu = document.getElementById("mymenu")
                                                         var i;
-                                                        var fieldcont="";
-                                                        selectmenu.onchange=function(){ //run some code when "onchange" event fires
-                                                            var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"
-                                                            for(i=0;i<chosenoption.value;i++){
-                                                                fieldcont+='<table border="0"><tr><td valign="top" width="123">Inventor First Name '+(i+1)+'</td><td><input type="text" name="fname['+i+']"/></td></tr>';
-                                                                fieldcont+='<tr><td valign="top" width="123">Inventor Last Name'+(i+1)+'</td><td><input type="text" name="lname['+i+']" /></td></tr>';
-                                                                fieldcont+='<tr><td valign="top">Address of Inventor'+(i+1)+'</td><td><textarea name="address['+i+']"></textarea></td></tr></table>';
-                                                            }  
-                                                            if(fieldcont){
-                                                                document.getElementById("formfields").innerHTML=fieldcont;
-                                                                fieldcont="";
+                                                        var fieldcont = "";
+                                                        selectmenu.onchange = function() { //run some code when "onchange" event fires
+                                                            var chosenoption = this.options[this.selectedIndex] //this refers to "selectmenu"
+                                                            for (i = 0; i < chosenoption.value; i++) {
+                                                                fieldcont += '<table border="0"><tr><td valign="top" width="123">Inventor First Name ' + (i + 1) + '</td><td><input type="text" name="fname[' + i + ']"/></td></tr>';
+                                                                fieldcont += '<tr><td valign="top" width="123">Inventor Last Name' + (i + 1) + '</td><td><input type="text" name="lname[' + i + ']" /></td></tr>';
+                                                                fieldcont += '<tr><td valign="top">Address of Inventor' + (i + 1) + '</td><td><textarea name="address[' + i + ']"></textarea></td></tr></table>';
+                                                            }
+                                                            if (fieldcont) {
+                                                                document.getElementById("formfields").innerHTML = fieldcont;
+                                                                fieldcont = "";
                                                             }
                                                         }
                                                     </script>
@@ -327,7 +334,7 @@
                                                     <s:textfield name="assignee" label="Assignees"/>
                                                     <s:textfield name="applNo" label="Appl. No."/>
                                                     <s:textfield name="field" label="Field"/>
-                                                    <sj:datepicker id="date0" label="Date of Patent" name="patentDate" changeMonth="true" changeYear="true"/>
+                                                    <sj:datepicker readonly="true"  id="date0" label="Date of Patent" name="patentDate" changeMonth="true" changeYear="true"/>
                                                     <s:textfield name="patentNo" label="Patent No."/>
                                                     <s:textfield name="affiliation" label="Affiliation"/>
                                                     <s:textfield name="language" label="Language"/>

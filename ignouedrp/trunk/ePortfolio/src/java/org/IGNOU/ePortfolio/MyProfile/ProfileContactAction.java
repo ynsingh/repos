@@ -6,16 +6,20 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProfileContactDao;
 import org.IGNOU.ePortfolio.Model.ProfileContact;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class ProfileContactAction extends ActionSupport implements ModelDriven<Object> {
+public class ProfileContactAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProfileContact PCMOdel = new ProfileContact();
     private ProfileContactDao dao = new ProfileContactDao();

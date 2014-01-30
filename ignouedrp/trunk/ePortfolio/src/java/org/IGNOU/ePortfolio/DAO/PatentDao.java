@@ -25,11 +25,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class PatentDao {
 
-    private SessionFactory sessionFactory= new AnnotationConfiguration().configure().buildSessionFactory();
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
-    
+
     public Patent PatentSave(Patent pModel) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -59,7 +59,7 @@ public class PatentDao {
     }
 
     public List<Patent> PatentListByUserId(String user_id) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -84,7 +84,7 @@ public class PatentDao {
     }
 
     public List<Patent> PatentEdit(long patentId) {
-       s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -111,7 +111,7 @@ public class PatentDao {
     }
 
     public Patent PatentDelete(long patentId) {
-       s =sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -133,7 +133,7 @@ public class PatentDao {
     }
 
     public Patent PatentUpdate(Long patentId, String userId, String patentType, String country, String patentTitle, String assignee, Integer applNo, String field, String patentDate, Integer patentNo, String affiliation, String language, String url, String abstract_, Integer api, ArrayList<String> fname, ArrayList<String> lname, ArrayList<String> address, Set<Inventor> inventors) {
-     s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -167,5 +167,4 @@ public class PatentDao {
             sessionFactory.close();
         }
     }
-
 }

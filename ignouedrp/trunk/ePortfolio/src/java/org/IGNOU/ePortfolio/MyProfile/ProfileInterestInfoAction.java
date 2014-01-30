@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -35,17 +35,21 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.InterestDao;
 import org.IGNOU.ePortfolio.Model.ProfileInterest;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class ProfileInterestInfoAction extends ActionSupport {
+public class ProfileInterestInfoAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private InterestDao Intdao = new InterestDao();
     private ProfileInterest IntList;
@@ -60,15 +64,15 @@ public class ProfileInterestInfoAction extends ActionSupport {
     private String myHobbies;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated");
+    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
 
     public String ShowInterestInfo() throws Exception {
         IntListList = getIntdao().ProfileInterestByUserId(user_id);
         if (IntListList.isEmpty()) {
-            return INPUT;
+            msg = notFound;
         } else {
-            return SUCCESS;
         }
+        return SUCCESS;
     }
 
     public String EditInterestInfo() {
@@ -296,5 +300,19 @@ public class ProfileInterestInfoAction extends ActionSupport {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
+    }
+
+    /**
+     * @return the notFound
+     */
+    public String getNotFound() {
+        return notFound;
+    }
+
+    /**
+     * @param notFound the notFound to set
+     */
+    public void setNotFound(String notFound) {
+        this.notFound = notFound;
     }
 }

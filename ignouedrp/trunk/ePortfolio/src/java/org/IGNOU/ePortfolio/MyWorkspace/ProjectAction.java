@@ -38,20 +38,23 @@ package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProjectDao;
 import org.IGNOU.ePortfolio.Model.Projects;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  * @version 1
  */
-public class ProjectAction extends ActionSupport implements ModelDriven<Object> {
+public class ProjectAction extends ActionSupport implements Serializable  , ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
     private ProjectDao dao = new ProjectDao();
     private Projects p = new Projects();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String proName;
     private Integer teamSize;

@@ -6,16 +6,20 @@ package org.IGNOU.ePortfolio.Builder.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.VisitingCardDao;
 import org.IGNOU.ePortfolio.Model.Vistingcard;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Amit
  */
-public class VisitingCardAction extends ActionSupport implements ModelDriven<Vistingcard> {
+public class VisitingCardAction extends ActionSupport implements Serializable, ModelDriven<Vistingcard> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private VisitingCardDao vcDao = new VisitingCardDao();
     private Vistingcard vcMod = new Vistingcard();

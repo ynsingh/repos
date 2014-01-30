@@ -5,6 +5,9 @@
     Version      : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -27,7 +30,10 @@
         </script>
     </head>
     <body>
-        <%            //  String role = session.getAttribute("role").toString();
+        <%            //  final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">

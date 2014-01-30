@@ -38,27 +38,30 @@ package org.IGNOU.ePortfolio.MyResources;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.FolderInfoDAO;
 import org.IGNOU.ePortfolio.Model.UserdocsFolder;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  * * @version 1 on 18 aug 2011
  */
-public class FolderInsert extends ActionSupport implements ModelDriven<UserdocsFolder> {
+public class FolderInsert extends ActionSupport implements Serializable, ModelDriven<UserdocsFolder> {
 
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private FolderInfoDAO finfodao = new FolderInfoDAO();
     private UserdocsFolder fModel = new UserdocsFolder();
     private String filepath = ReadPropertyFile("Filepath") + "/" + user_id + "/";
     private String filetype;
     private String name;
-   private String filedate;
+    private String filedate;
     private String msg;
     private String infoSaved = getText("msg.infoSaved");
 

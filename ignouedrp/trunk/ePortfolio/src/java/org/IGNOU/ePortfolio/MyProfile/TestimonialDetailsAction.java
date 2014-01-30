@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.PrintHtmlPdf;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
@@ -15,13 +16,16 @@ import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.Action.sendMail;
 import org.IGNOU.ePortfolio.DAO.TestimonialDao;
 import org.IGNOU.ePortfolio.Model.Testimonials;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Vinay
  */
-public class TestimonialDetailsAction extends ActionSupport {
+public class TestimonialDetailsAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private TestimonialDao dao = new TestimonialDao();
     private Testimonials testiModel = new Testimonials();
@@ -41,7 +45,7 @@ public class TestimonialDetailsAction extends ActionSupport {
     private sendMail sendmailAction = new sendMail();
     private String ButtonName;
     private String requestorId, testiForEmail, testiReqCc, testiReqBcc, createDate, report;
-    
+
     public TestimonialDetailsAction() {
     }
 

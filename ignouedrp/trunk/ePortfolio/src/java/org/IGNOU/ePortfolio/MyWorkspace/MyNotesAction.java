@@ -39,18 +39,22 @@ package org.IGNOU.ePortfolio.MyWorkspace;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MyNoteDao;
 import org.IGNOU.ePortfolio.Model.MyNotes;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class MyNotesAction extends ActionSupport implements ModelDriven<Object> {
+public class MyNotesAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private MyNotes nots = new MyNotes();
     private MyNoteDao dao = new MyNoteDao();

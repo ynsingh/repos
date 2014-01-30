@@ -5,11 +5,13 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 import org.IGNOU.ePortfolio.DAO.ThesisDissertationDao;
 import org.IGNOU.ePortfolio.Model.ThesisDissertation;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -17,8 +19,10 @@ import org.IGNOU.ePortfolio.Model.ThesisDissertation;
  * @version 1
  * @since 21-02-2012
  */
-public class ThesisDissertationInfoAction extends ActionSupport {
+public class ThesisDissertationInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ThesisDissertation TD = new ThesisDissertation();
     private ThesisDissertationDao dao = new ThesisDissertationDao();

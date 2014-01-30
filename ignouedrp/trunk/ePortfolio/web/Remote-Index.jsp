@@ -4,6 +4,9 @@
     Author     : IGNOU Team
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,16 +18,19 @@
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-        
+
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
     <body>
-        <% String role = session.getAttribute("role").toString();
+        <% final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
             }
@@ -60,15 +66,15 @@
                                             <li><a href="<s:url value="/MyProfile/MyProfile.jsp"/>"><img src="<s:url value="/icons/my-profile.gif"/>" alt="My Profile" /><span>My Profile</span></a></li>
                                             <li><s:a href="%{TestiID}"><img src="<s:url value="/icons/testmonials.gif"/>" alt="Testimonials" /><span>Testimonials</span></s:a></li>
                                             <li><s:a href="%{RefID}"><img src="<s:url value="/icons/references.gif"/>" alt="References" /><span>References</span></s:a></li>
-                                        </ul>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="w100 fl-l mart10">
-                                    <div class="hdng_gallery"><span>My Education and Work</span></div>
+                                    <div class="w100 fl-l mart10">
+                                        <div class="hdng_gallery"><span>My Education and Work</span></div>
                                     <% if (role.contains("faculty")) {%>     
-                                    <s:url id="EviID" action="FacultyTaskShow" namespace="/Evidence"/>
+                                    <s:url id="EviID" action="FacultyTaskShow" namespace="/Activity"/>
                                     <% } else if (role.contains("student")) {%>
-                                    <s:url id="EviID" action="StudentTaskList" namespace="/Evidence"/>
+                                    <s:url id="EviID" action="StudentTaskList" namespace="/Activity"/>
                                     <% }%> 
                                     <div class="gallery">
                                         <ul id="myconnectionicon" class="jcarousel-skin-tango">
@@ -107,7 +113,7 @@
                             </div>
                             <!--Right box Starts Here-->
                         </div>
-                        
+
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>

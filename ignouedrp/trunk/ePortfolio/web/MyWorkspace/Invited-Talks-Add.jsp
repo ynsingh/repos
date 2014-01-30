@@ -4,6 +4,9 @@
     Author     : IGNOU Team
     Version    : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -29,9 +32,13 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -79,13 +86,13 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Delivered on:</td>
-                                                        <td><sj:datepicker id="date0" name="deleveredOn" changeMonth="true" changeYear="true"/></td>
+                                                        <td><sj:datepicker readonly="true"  id="date0" name="deleveredOn" changeMonth="true" changeYear="true"/></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Time:</td>
-                                                        <td><sj:datepicker id="time0" name="timeFrom" timepicker="true" timepickerShowSecond="true" timepickerFormat="hh:mm:ss" timepickerOnly="true" cssClass="w55p" showOn="focus"/>
+                                                        <td><sj:datepicker readonly="true"  id="time0" name="timeFrom" timepicker="true" timepickerShowSecond="true" timepickerFormat="hh:mm:ss" timepickerOnly="true" cssClass="w55p" showOn="focus"/>
                                                             &nbsp;&nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;
-                                                            <sj:datepicker id="time1" name="timeTo" timepicker="true" timepickerShowSecond="true" timepickerFormat="hh:mm:ss" timepickerOnly="true" cssClass="w55p" showOn="focus"/>
+                                                            <sj:datepicker readonly="true"  id="time1" name="timeTo" timepicker="true" timepickerShowSecond="true" timepickerFormat="hh:mm:ss" timepickerOnly="true" cssClass="w55p" showOn="focus"/>
                                                         </td>
                                                     </tr>
                                                     <tr>

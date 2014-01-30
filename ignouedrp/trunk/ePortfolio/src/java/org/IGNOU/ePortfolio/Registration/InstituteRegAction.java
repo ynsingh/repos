@@ -6,6 +6,7 @@ package org.IGNOU.ePortfolio.Registration;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.DAO.InstituteDAO;
 import org.IGNOU.ePortfolio.Model.Institute;
 
@@ -15,7 +16,7 @@ import org.IGNOU.ePortfolio.Model.Institute;
  * @version 1
  * @since 21-04-2012
  */
-public class InstituteRegAction extends ActionSupport implements ModelDriven<Object> {
+public class InstituteRegAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
     Institute ins = new Institute();
     InstituteDAO dao = new InstituteDAO();

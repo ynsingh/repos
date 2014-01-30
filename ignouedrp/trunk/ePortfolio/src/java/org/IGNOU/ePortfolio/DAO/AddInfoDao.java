@@ -30,6 +30,7 @@ package org.IGNOU.ePortfolio.DAO;
  * Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.ProfileAcademic;
 import org.IGNOU.ePortfolio.Model.ProfileCertification;
@@ -47,8 +48,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
  *
  * @author IGNOU Team Add Academic Information.
  */
-public class AddInfoDao {
+public class AddInfoDao implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
 

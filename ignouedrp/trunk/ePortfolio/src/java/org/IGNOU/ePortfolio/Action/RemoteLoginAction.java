@@ -5,10 +5,11 @@
 package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import javax.servlet.http.HttpServletResponse;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 import org.apache.struts2.ServletActionContext;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
 
@@ -16,8 +17,9 @@ import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
  *
  * @author IGNOU Team
  */
-public class RemoteLoginAction extends ActionSupport {
+public class RemoteLoginAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String returnurl = ReadPropertyFile("returnURL");
     private String email, resp;
     private String sourceid = ReadPropertyFile("iitkScourceId");
@@ -31,7 +33,7 @@ public class RemoteLoginAction extends ActionSupport {
     public String RemoteLoginIDCheck() throws Exception {
         resp = RemoteAuth.AuthR(email, returnurl, sourceid);
         res.sendRedirect(resp);
-        PropertyConfigurator.configure("log4j.properties");
+
         logger.warn("Values are " + email + " " + returnurl + "  " + sourceid);
         return SUCCESS;
     }

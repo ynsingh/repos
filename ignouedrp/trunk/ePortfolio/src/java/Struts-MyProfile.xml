@@ -2,17 +2,17 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
-<!-- Author: IGNOU Team 
+<!-- Author: IGNOU Team
 * Version  1.0
 * Edited by IGNOU Team
 -->
- 
+
 <struts>
     <!-- Add your configuration elements here -->
 
     <package name="org.IGNOU.ePortfolio.MyProfile" namespace="/MyProfile" extends="struts-default">
         <!-- Configuration for the my profile Updating.
-        This is configured by IGNOU Team on 31-Aug-2011.-->      
+        This is configured by IGNOU Team on 31-Aug-2011.-->
         <action name="ShowAcademic_Info" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowAcademicInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -20,8 +20,7 @@
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
             <result name="success">AcademicInfo.jsp</result>
-            <result name="input">./AcademicInfoAdd.jsp</result>
-        </action> 
+        </action>
         <action name="ShowEmployeeInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="ShowEmploymentInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -29,7 +28,6 @@
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
             <result name="success">EmployeeInfo.jsp</result>
-            <result name="input">./EmployeeInfoAdd.jsp</result>
         </action>
         <action name="ShowPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInfoAction" method="ShowPersonalInfo">
             <interceptor-ref name="defaultStack"/>
@@ -41,35 +39,7 @@
             <result name="input">./PersonalInfoAdd.jsp</result>
             <result name="error">./error.jsp</result>
         </action>
-       <!--
-        <action name="ShowUserInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInformationAction">
-            <interceptor-ref name="defaultStack"/>
-            <interceptor-ref name="execAndWait">
-                <param name="excludeMethods">input,back,cancel</param>
-            </interceptor-ref>
-            <result name="wait">../Processing.jsp</result>
-            <result name="success">PersonalInformationEdit.jsp</result>
-            <result name="input">./PersonalInfoAdd.jsp</result>
-            <result name="error">./error.jsp</result>
-        </action>
-      
-        <action name="userUpdate" class="org.IGNOU.ePortfolio.MyProfile.PersonalInformationAction" method="UpdateUserInfo">
-            <interceptor-ref name="defaultStack"/>
-            <interceptor-ref name="execAndWait">
-                <param name="excludeMethods">input,back,cancel</param>
-            </interceptor-ref>
-            <result name="wait">../Processing.jsp</result>
-             <result name="success" type="redirectAction">
-                 <param name="actionName">ShowUserInfo</param>
-                <param name="msg">${msg}</param>
-            </result>
-            <result name="error">./error.jsp</result>
-            <result name="input">./PersonalInformationEdit.jsp</result>
-        </action>
-        -->
-        
         <action name="EditPersonalInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInfoAction" method="EditPersonal">
-           
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
                 <param name="excludeMethods">input,back,cancel</param>
@@ -78,7 +48,7 @@
             <result name="success">PersonalInfoEdit.jsp</result>
             <result name="error">./error.jsp</result>
         </action>
-        
+
         <action name="UpdatePerInfo" class="org.IGNOU.ePortfolio.MyProfile.PersonalInfoAction" method="UpdatePersonalInformation">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -92,11 +62,11 @@
             <result name="error">./error.jsp</result>
             <result name="input">./PersonalInfoEdit.jsp</result>
         </action>
-                     
+
         <!-- Configuration for the my profile Updating.
          * Version  1.1
-        This is configured by IGNOU Team on 04-Sep-2011.-->    
-     
+        This is configured by IGNOU Team on 04-Sep-2011.-->
+
         <action name="editAcademic" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="EditAcademicInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -130,7 +100,10 @@
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
-            <result name="input">AcademicInfoAdd.jsp</result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">ShowAcademic_Info</param>
+                <param name="msg">${msg}</param>
+            </result>
         </action>
         <action name="deleteAcademic" class="org.IGNOU.ePortfolio.MyProfile.DeleteAction" method="DeleteAcademicInfo">
             <interceptor-ref name="defaultStack"/>
@@ -149,7 +122,7 @@
         * Version  1.2
         *@Author IGNOU Team
         *-->
-       
+
         <action name="AddEmploment" class="org.IGNOU.ePortfolio.MyProfile.EmploymentInfoAction">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -173,7 +146,7 @@
             <result name="error">./error.jsp</result>
         </action>
         <action name="updateEmpInfo" class="org.IGNOU.ePortfolio.MyProfile.MyProfileAction" method="UpdateEmploymentInfo">
-           
+
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
                 <param name="excludeMethods">input,back,cancel</param>
@@ -194,11 +167,11 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">ShowEmployeeInfo</param>
-                <param name="msg">${msg}</param>    
+                <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
         </action>
-        
+
         <action name="AddSkill" class="org.IGNOU.ePortfolio.MyProfile.SkillAddAction">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -211,7 +184,7 @@
             </result>
             <result name="error">./error.jsp</result>
         </action>
-        
+
         <action name="ShowSkillInfo" class="org.IGNOU.ePortfolio.MyProfile.SkillAction" method="ShowSkillInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -250,7 +223,6 @@
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
             <result name="success">CertificationInfo.jsp</result>
-            <result name="input">./CertificationInfoAdd.jsp</result>
         </action>
         <!--
         * Added on 05-Oct-2011
@@ -295,7 +267,7 @@
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
-        </action>        
+        </action>
         <action name="deleteCertificate" class="org.IGNOU.ePortfolio.MyProfile.CertificationAction" method="deleteCertificateInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -324,7 +296,10 @@
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
-            <result name="input">./ReferencesInfoAdd.jsp</result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">ShowReference</param>
+                <param name="msg">${msg}</param>
+            </result>
         </action>
         <action name="ShowReference" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAction" method="ShowInfo">
             <interceptor-ref name="defaultStack"/>
@@ -334,14 +309,13 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">./References.jsp</result>
             <result name="error">./error.jsp</result>
-            <result name="input">./ReferencesInfoAdd.jsp</result>
         </action>
-            
+
         <!--
         * Added on 12-Oct-2011
         * Version  1.10
         * @Author  IGNOU Team
-        *--> 
+        *-->
         <action name="editReference" class="org.IGNOU.ePortfolio.MyProfile.ReferenceAction" method="EditInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -375,7 +349,7 @@
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
-        </action>        
+        </action>
         <action name="AddTestInfo" class="org.IGNOU.ePortfolio.MyProfile.TestScoreAction">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -438,7 +412,7 @@
         * Added on 13-Oct-2011
         * Version  1.11
         * @Author  IGNOU Team
-        *--> 
+        *-->
         <action name="AddHonor" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardAction">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -460,9 +434,8 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">./HonourAwardInfo.jsp</result>
             <result name="error">.error.jsp</result>
-            <result name="input">./HonourAwardInfoAdd.jsp</result>
-        </action> 
-        
+        </action>
+
         <action name="editAwardInfo" class="org.IGNOU.ePortfolio.MyProfile.HonorAwardInfoAction" method="EditHonoprInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -501,7 +474,7 @@
         * Added on 13-Oct-2011
         * Version  1.12
         * @Author  IGNOU Team
-        *--> 
+        *-->
         <action name="AddAffiliation" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationAction">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -510,7 +483,7 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">ShowAffiliation</param>
-                <param name="msg">${msg}</param>    
+                <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./ProfAffiliationInfoAdd.jsp</result>
@@ -524,12 +497,12 @@
             <result name="success">./ProfAffiliationInfo.jsp</result>
             <result name="error">.error.jsp</result>
             <result name="input">./ProfAffiliationInfoAdd.jsp</result>
-        </action> 
+        </action>
         <!--
         * Added on 17-Oct-2011
         * Version  1.13
         * @Author  IGNOU Team
-        *--> 
+        *-->
         <action name="editAffiliationInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfAffiliationInfoAction" method="EditAffiliationInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -547,7 +520,7 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">ShowAffiliation</param>
-                <param name="msg">${msg}</param>    
+                <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./ProfAffiliationInfoEdit.jsp</result>
@@ -560,12 +533,12 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">ShowAffiliation</param>
-                <param name="msg">${msg}</param>    
+                <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
         </action>
         <!--Profile picture section -->
-        
+
         <action name="UProfilePicture" class="org.IGNOU.ePortfolio.MyProfile.ProfilePictureCAction" method="UpdateProfilePicture">
             <interceptor-ref name="fileUpload">
                 <param name="maximumSize">500000</param>
@@ -573,12 +546,12 @@
                     image/png,image/gif,image/jpeg,image/pjpeg
                 </param>
             </interceptor-ref>
-            <interceptor-ref name="defaultStack"></interceptor-ref> 
+            <interceptor-ref name="defaultStack"></interceptor-ref>
             <result name="success">../Welcome-Index.jsp</result>
             <result name="input">../Welcome-Index.jsp</result>
         </action>
-       
-        
+
+
         <!--
         * Created on 1-Dec-2011
         * Version  1.0
@@ -595,13 +568,16 @@
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
-            <result name="input">ProfileInterestAdd.jsp</result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">ShowInterestInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
         </action>
         <!--
         * Created on 9-Dec-2011
         * Version  1.0
         * @Author IGNOU Team
-        * Added 
+        * Added
         *  -->
         <action name="ShowInterestInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfileInterestInfoAction" method="ShowInterestInfo">
             <interceptor-ref name="defaultStack"/>
@@ -611,9 +587,8 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">ProfileInterestShow.jsp</result>
             <result name="error">./error.jsp</result>
-            <result name="input">./ProfileInterestAdd.jsp</result>
         </action>
-        
+
         <action name="EditInterestInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfileInterestInfoAction" method="EditInterestInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -623,26 +598,26 @@
             <result name="success" >ProfileInterestEdit.jsp</result>
             <result name="error">./error.jsp</result>
         </action>
-         
+
         <action name="DeleteInterestInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfileInterestInfoAction" method="DeleteInterestInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
                 <param name="excludeMethods">input,back,cancel</param>
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
-            <result name="success" type="redirectAction"> 
+            <result name="success" type="redirectAction">
                 <param name="actionName">ShowInterestInfo</param>
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
-        </action>        
+        </action>
         <action name="UpdateInt" class="org.IGNOU.ePortfolio.MyProfile.ProfileInterestInfoAction" method="UpdateInterestInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
                 <param name="excludeMethods">input,back,cancel</param>
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
-            <result name="success" type="redirectAction"> 
+            <result name="success" type="redirectAction">
                 <param name="actionName">ShowInterestInfo</param>
                 <param name="msg">${msg}</param>
             </result>
@@ -653,7 +628,7 @@
         * Added on 11-Jan-2012
         * Version  2.0
         * @Author IGNOU Team
-        * Added 
+        * Added
         *  -->
         <action name="AddContactInfo" class="org.IGNOU.ePortfolio.MyProfile.ProfileContactAction">
             <interceptor-ref name="defaultStack"/>
@@ -667,7 +642,7 @@
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./ContactInfoAdd.jsp</result>
-        </action>        
+        </action>
         <action name="ShowContactInfo" class="org.IGNOU.ePortfolio.MyProfile.ContactInfoAction" method="ShowContactInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -676,7 +651,7 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">ContactInfo.jsp</result>
             <result name="input">./ContactInfoAdd.jsp</result>
-        </action>     
+        </action>
         <action name="EditContactInfo" class="org.IGNOU.ePortfolio.MyProfile.ContactInfoAction" method="ShowContactInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -685,23 +660,23 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">ContactInfoEdit.jsp</result>
             <result name="error">./error.jsp</result>
-        </action>        
+        </action>
         <action name="updateContact" class="org.IGNOU.ePortfolio.MyProfile.ContactInfoAction" method="UpdateContactInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
                 <param name="excludeMethods">input,back,cancel</param>
             </interceptor-ref>
-            <result name="wait">../Processing.jsp</result>            
-            <result name="success" type="redirectAction">                
+            <result name="wait">../Processing.jsp</result>
+            <result name="success" type="redirectAction">
                 <param name="actionName">ShowContactInfo</param>
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
             <result name="input" type="redirectAction">EditContactInfo</result>
         </action>
-       
+
         <!--Testimonial Mapping Start-->
-        
+
         <action name="TestiRequest" class="org.IGNOU.ePortfolio.MyProfile.TestimonialReqAction" method="execute">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -744,7 +719,7 @@
         <action name="readReq" class="org.IGNOU.ePortfolio.MyProfile.TestimonialReqInfoAction" method="ReadStdRequest">
             <result name="success">TestimonialRequestDetails.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
-        </action>        
+        </action>
         <action name="createTestifor" class="org.IGNOU.ePortfolio.MyProfile.TestimonialReqInfoAction" method="CreateTestiforRequest">
             <result name="success">TestimonialCreateForm.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
@@ -811,9 +786,9 @@
             <result name="success"  type="redirectAction">FacultyDraftTesti</result>
             <result name="error">../ErrorPage/error.jsp</result>
         </action>
-        
+
         <!--Testimonial Mapping End-->
-       
+
         <!--
         DEI User Information
         -->
@@ -836,5 +811,5 @@
             <result name="error">../ErrorPage/error.jsp</result>
             <result name="input" type="redirectAction">editDEIContactInfo</result>
         </action>
-    </package>   
+    </package>
 </struts>

@@ -5,6 +5,9 @@
 --%>
 
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -20,13 +23,20 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
+        <style type="text/css">
+		.ui-accordion .ui-accordion-header{ padding-left:28px;}
+		</style>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -72,13 +82,13 @@
                                                                     <li>Off No.: <s:property value="OTelephone"/></li>
                                                                     <li>Mob No.: <s:property value="mobileNo"/></li>
                                                                     <li>Fax No.: <s:property value="faxNo"/></li>
-                                                                </s:iterator>
+                                                                    </s:iterator>
                                                             </ul></td>
                                                     </tr>
                                                 </table>
                                                 <div class="fl-l marl50">
-                                                    <sj:accordion id="accordion1" autoHeight="false" >
-                                                                                                              <s:if test="EmployeeList!='NULL'">
+                                                    <sj:accordion id="accordion1">
+                                                        <s:if test="EmployeeList!='NULL'">
                                                             <sj:accordionItem title="Employment Information">
                                                                 <table border="1" cellpadding="4" cellspacing="0">
                                                                     <tbody>

@@ -6,9 +6,11 @@ package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MediaPublicationDao;
 import org.IGNOU.ePortfolio.Model.MediaPublication;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,8 +18,10 @@ import org.IGNOU.ePortfolio.Model.MediaPublication;
  * @version 1
  * @since 16 February 2012
  */
-public class MediaAddAction extends ActionSupport implements ModelDriven<Object> {
+public class MediaAddAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private MediaPublication mp = new MediaPublication();
     private MediaPublicationDao dao = new MediaPublicationDao();

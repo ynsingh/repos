@@ -16,7 +16,7 @@ import org.w3c.dom.*;
  *
  * @author vinay
  */
-public class XMLNodeDelete extends ActionSupport {
+public class XMLNodeDelete extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

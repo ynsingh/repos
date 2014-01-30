@@ -35,18 +35,22 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.AddInfoDao;
 import org.IGNOU.ePortfolio.Model.ProfileAcademic;
+import org.apache.log4j.Logger;
 
 /**
  * Created on 09-Sep-2011 Edited on 12-Sep-2011
  *
  * @author IGNOU Team
  */
-public class AcademicInfoAction extends ActionSupport {
+public class AcademicInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProfileAcademic PAM = new ProfileAcademic();
     private AddInfoDao dao = new AddInfoDao();

@@ -10,6 +10,7 @@ import java.util.Set;
  */
 public class UserList implements java.io.Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String emailId;
     private long registrationId;
     private String password;

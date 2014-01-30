@@ -9,9 +9,14 @@ Description:
 Database Configration.
 -->
 <hibernate-configuration>
-  <session-factory>
-	<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property> 
-	<property name="hibernate.connection.datasource">java:comp/env/jdbc/myeportdatasource</property>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/eportfolio</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+
+        <!-- .hbm Mapping -->
         <mapping resource="org/IGNOU/ePortfolio/Model/Userdocs.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/User.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/UserList.hbm.xml"/>
@@ -55,8 +60,8 @@ Database Configration.
         <mapping resource="org/IGNOU/ePortfolio/Model/GradeTypeMaster.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/GradeTypeDetailsMaster.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/GradeValue.hbm.xml"/>
-        <mapping resource="org/IGNOU/ePortfolio/Model/Evidence.hbm.xml"/>
-        <mapping resource="org/IGNOU/ePortfolio/Model/EvidenceSubmission.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ActivitiesAnnounce.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ActivitiesSubmission.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/Institute.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/ActivitiesComments.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/Allowcomment.hbm.xml"/>
@@ -72,5 +77,6 @@ Database Configration.
         <mapping resource="org/IGNOU/ePortfolio/Model/Testimonials.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/Vistingcard.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/ContactUs.hbm.xml"/>
-  </session-factory>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Logs.hbm.xml"/>
+    </session-factory>
 </hibernate-configuration>

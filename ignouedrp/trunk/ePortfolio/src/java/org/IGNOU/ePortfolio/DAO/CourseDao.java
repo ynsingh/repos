@@ -4,11 +4,14 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
+import com.opensymphony.xwork2.ActionContext;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.IGNOU.ePortfolio.Model.Course;
 import org.IGNOU.ePortfolio.Model.Programme;
 import org.IGNOU.ePortfolio.Model.UserList;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,6 +27,9 @@ public class CourseDao {
 
     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
+    private Map session = ActionContext.getContext().getSession();
+    private String role = session.get("role").toString();
+    final Logger logger = Logger.getLogger(this.getClass());
 
     @SuppressWarnings("unchecked")
     public List<Course> CourseListByCourseId(int courseId) {
@@ -45,6 +51,7 @@ public class CourseDao {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public List<Course> CourseListByProgrammeId(int programmeId) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
@@ -65,12 +72,23 @@ public class CourseDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Course> CourseListByUserId(String coursCreatorId) {
+    public List<Course> CourseListByUserId(String user_id) {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<Course> Courcelist = null;
         try {
-            Courcelist = s.createQuery("from Course where coursCreator='" + coursCreatorId + "'").list();
+            if (role.equals("admin")) {
+                Courcelist = s.createQuery("from Course").list();
+                logger.warn("All Course List for " + role);
+            }
+            if (role.equals("student")) {
+                Courcelist = s.createQuery("from Course where programme=(select programme.programmeId from UserList where emailId='" + user_id + "')").list();
+                logger.warn("Programme Specific Course List for " + role);
+            }
+            if (role.equals("faculty")) {
+                Courcelist = s.createQuery("from Course where programme=(select programme.programmeId from UserList where emailId='" + user_id + "') or coursCreator='" + user_id + "'").list();
+                logger.warn("Faculty Specific Course List for " + role);
+            }
             t.commit();
             return Courcelist;
         } catch (Throwable ex) {

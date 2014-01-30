@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Group.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.DAO.PeerGroupDao;
 import org.IGNOU.ePortfolio.Model.UserList;
@@ -13,8 +14,9 @@ import org.IGNOU.ePortfolio.Model.UserList;
  *
  * @author Vinay
  */
-public class ProfileDetailsAction extends ActionSupport {
-    
+public class ProfileDetailsAction extends ActionSupport implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private String emailId;
     private PeerGroupDao dao = new PeerGroupDao();
     private UserList userlistModel = new UserList();
@@ -29,7 +31,7 @@ public class ProfileDetailsAction extends ActionSupport {
 
     public ProfileDetailsAction() {
     }
-    
+
     public String PeerGroupProfileDetails() throws Exception {
         ProfileDetailsList = dao.UserListDetailByUserId(emailId);
         if (ProfileDetailsList.iterator().next().getProfileAcademics().isEmpty()) {

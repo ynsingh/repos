@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import org.IGNOU.ePortfolio.DAO.UserListDao;
 import org.IGNOU.ePortfolio.Model.User;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
@@ -22,11 +23,12 @@ import org.apache.struts2.interceptor.SessionAware;
  */
 public class ShowProfilePicture implements SessionAware {
 
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
+    private Map session = ActionContext.getContext().getSession();
     private UserListDao ppDao = new UserListDao();
     private static List<User> spp;
     private String filtype;
-    private Map session = ActionContext.getContext().getSession();
 
     public String ProPict() throws IOException {
         spp = ppDao.UserListByUserId(user_id);

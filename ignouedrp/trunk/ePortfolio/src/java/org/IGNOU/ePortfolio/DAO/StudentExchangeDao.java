@@ -13,16 +13,18 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
  *
  * @author IGNOU Team
  * @version 1
  * @since 27 December 2011
  */
 public class StudentExchangeDao {
-    
-    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
+
     public StudentExchange StudentExchangeSave(StudentExchange ExchangeModel) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -41,7 +43,7 @@ public class StudentExchangeDao {
             sessionFactory.close();
         }
     }
-    
+
     public List<StudentExchange> StudentExchangeListByUserId(String user_id) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -65,7 +67,7 @@ public class StudentExchangeDao {
             sessionFactory.close();
         }
     }
-    
+
     public StudentExchange StudentExchangeDelete(long studentExchangeId) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -87,7 +89,7 @@ public class StudentExchangeDao {
             sessionFactory.close();
         }
     }
-    
+
     public List<StudentExchange> StudentExchangeEdit(long studentExchangeId) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -113,7 +115,7 @@ public class StudentExchangeDao {
     }
 
     public StudentExchange StudentExchangeUpdate(long studentExchangeId, String programmeType, String nameUniversity, String role, String programmeTheme, String venue, String state, String country, String durationFrom, String durationTo, String degreeLevel, String degraeeName, String researchColl, String url, String description, String userId, String ifOther) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -133,7 +135,7 @@ public class StudentExchangeDao {
             UpdateInfo.setState(state);
             UpdateInfo.setUrl(url);
             UpdateInfo.setVenue(venue);
-            
+
             if (null != UpdateInfo) {
                 s.update(UpdateInfo);
             }
@@ -149,5 +151,4 @@ public class StudentExchangeDao {
             sessionFactory.close();
         }
     }
-   
 }

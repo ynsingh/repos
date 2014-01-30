@@ -6,6 +6,9 @@
 --%>
 
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -177,7 +180,7 @@
                                                     <s:textfield cssClass="width220" name="mname" label="Middle Name"/>
                                                     <s:textfield cssClass="width220" name="lname" label="Last Name" required="true"/>
                                                     <s:radio label="Gender"  name="gender"  list="{'Male','Female'}" required="true"/>
-                                                    <sj:datepicker label="Date of Birth" id="date0" maxDate="-1d" value="%{dob}" name="dateOfBirth" changeMonth="true" changeYear="true" required="true"/>
+                                                    <sj:datepicker readonly="true"  label="Date of Birth" id="date0" maxDate="-1d" value="%{dob}" name="dateOfBirth" changeMonth="true" changeYear="true" required="true"/>
                                                     <sj:select 
                                                         href="%{Univer}" 
                                                         id="univCode" 
@@ -269,7 +272,7 @@
         </div>
         <div class="footer_panel">
             <div class="footer_txt">
-                <div class="wau fl-l tl">Copyright 2008 IGNOU, MHRD. All right reserved</div>
+                <div class="wau fl-l tl">ePortfolio &COPY; 2011-13, MHRD. All Rights Reserved</div>
                 <div class="wau fl-r tr">Developed &amp; Maintained By: eGyanKosh Team, IGNOU</div>
             </div>
             <!--Footer Section Ends Here-->

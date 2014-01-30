@@ -36,9 +36,11 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.AddInfoDao;
 import org.IGNOU.ePortfolio.Model.ProfileCertification;
+import org.apache.log4j.Logger;
 
 /**
  * @version 1.1
@@ -46,11 +48,12 @@ import org.IGNOU.ePortfolio.Model.ProfileCertification;
  * @author IGNOU Team Modified by IGNOU Team on 14-Oct2011. XML Validation are
  * implemented.
  */
-public class CertificationAddAction extends ActionSupport implements ModelDriven<Object> {
+public class CertificationAddAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
     private AddInfoDao dao = new AddInfoDao();
     private ProfileCertification pc = new ProfileCertification();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String certificationName;
     private String certificationAuthority;

@@ -7,6 +7,7 @@ package org.IGNOU.ePortfolio.MyProfile;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
@@ -14,13 +15,16 @@ import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.TestimonialDao;
 import org.IGNOU.ePortfolio.Model.Testimonials;
 import org.IGNOU.ePortfolio.Model.UserList;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Vinay
  */
-public class TestimonialReqAction extends ActionSupport implements ModelDriven<Object> {
+public class TestimonialReqAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private TestimonialDao dao = new TestimonialDao();
     private Testimonials testiModel = new Testimonials();

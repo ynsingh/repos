@@ -12,7 +12,7 @@
             <column name="comment_id" />
             <generator class="increment" />
         </id>
-        <many-to-one name="evidence" class="org.IGNOU.ePortfolio.Model.Evidence" fetch="select" lazy="false" cascade="merge">
+        <many-to-one name="evidence" class="org.IGNOU.ePortfolio.Model.ActivitiesAnnounce" fetch="select" lazy="false" cascade="merge">
             <column name="activity_id" />
         </many-to-one>
         <many-to-one name="userBySubmitorId" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
@@ -21,7 +21,7 @@
         <many-to-one name="userByCommentorId" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
             <column name="commentor_id" length="100" />
         </many-to-one>
-        <many-to-one name="evidenceSubmission" class="org.IGNOU.ePortfolio.Model.EvidenceSubmission" fetch="select" lazy="false" cascade="merge">
+        <many-to-one name="evidenceSubmission" class="org.IGNOU.ePortfolio.Model.ActivitiesSubmission" fetch="select" lazy="false" cascade="merge">
             <column name="activity_submition_id" />
         </many-to-one>
         <property name="comment" type="string">

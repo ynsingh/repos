@@ -145,5 +145,4 @@ public class GovernanceDao {
             sessionFactory.close();
         }
     }
-
 }

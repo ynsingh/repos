@@ -3,6 +3,9 @@
     Created on : Jan 2, 2012, 10:44:02 AM
     Author     : Amit
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,15 +19,19 @@
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -56,7 +63,7 @@
                                                 <th width="10%" >Archive</th>
                                                 <th width="20%" >From</th>
                                                 <th width="50%">Subject</th>
-                                                <s:iterator value="fbList" status="stat">
+                                                    <s:iterator value="fbList" status="stat">
                                                     <tr>
                                                         <td align="center"> <s:property value="%{#stat.count}"/></td>
                                                         <td align="center"><a href="ArchiveFeedBackInfo?feedbackId=<s:property value="feedbackId"/>">Move</a></td>

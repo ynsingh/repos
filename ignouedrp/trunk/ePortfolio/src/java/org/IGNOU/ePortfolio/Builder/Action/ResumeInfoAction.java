@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ResumeDao;
@@ -19,41 +20,39 @@ import org.IGNOU.ePortfolio.Model.Resume;
  *
  * @author IGNOU Team
  */
-public class ResumeInfoAction extends ActionSupport{
-    private ResumeDao rsdao=new ResumeDao();
-    private String user_id=new UserSession().getUserInSession();
+public class ResumeInfoAction extends ActionSupport implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private ResumeDao rsdao = new ResumeDao();
+    private String user_id = new UserSession().getUserInSession();
     private List<Resume> resumelist;
     private Resume rslist;
     private long idResume;
-    private String resumeName,resumeType;
+    private String resumeName, resumeType;
     private byte[] resume;
-     private InputStream fis;
+    private InputStream fis;
     private FileOutputStream fos;
-    
-    public String ListResume() 
-    {
+
+    public String ListResume() {
         setResumelist(getRsdao().ResumeByUserId(getUser_id()));
         return "success";
 
     }
-     
-    public String ResumeDelete()
-    {
-    rsdao.ResumeDelete(getIdResume());
-    return SUCCESS;
+
+    public String ResumeDelete() {
+        rsdao.ResumeDelete(getIdResume());
+        return SUCCESS;
     }
-    
-    
-    public String DownloadResume() throws FileNotFoundException, IOException
-    {
-     resumelist = rsdao.ResumeDetailByIdResume(idResume);
-     resumeName=resumelist.iterator().next().getResumeName();
-     resumeType=resumelist.iterator().next().getResumeType();
-     resume= resumelist.iterator().next().getResume();
-     fis= new ByteArrayInputStream(resume); // download file directly
-     return SUCCESS;
+
+    public String DownloadResume() throws FileNotFoundException, IOException {
+        resumelist = rsdao.ResumeDetailByIdResume(idResume);
+        resumeName = resumelist.iterator().next().getResumeName();
+        resumeType = resumelist.iterator().next().getResumeType();
+        resume = resumelist.iterator().next().getResume();
+        fis = new ByteArrayInputStream(resume); // download file directly
+        return SUCCESS;
     }
-    
+
     /**
      * @return the rsdao
      */
@@ -179,7 +178,4 @@ public class ResumeInfoAction extends ActionSupport{
     public void setFis(InputStream fis) {
         this.fis = fis;
     }
-
-   
 }
- 

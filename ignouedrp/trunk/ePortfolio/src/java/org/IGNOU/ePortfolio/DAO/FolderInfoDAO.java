@@ -61,5 +61,4 @@ public class FolderInfoDAO {
         return obFolderModel;
 
     }
-
 }

@@ -61,10 +61,11 @@ public class ResourceDao {
         return obImageModel;
 
     }
+
     public Userdocs saveUserDocs(String user_id, Long size, String filetype, String filename, String filepath, String description, String filedate) {
         s = sessionFactory.openSession();
         s.beginTransaction();
-        Userdocs ud=new Userdocs();
+        Userdocs ud = new Userdocs();
         ud.setUser_id(user_id);
         ud.setSize(size);
         ud.setFiletype(filetype);
@@ -72,7 +73,7 @@ public class ResourceDao {
         ud.setFilename(filename);
         ud.setDescription(description);
         ud.setFiledate(filedate);
-         s.save(ud);
+        s.save(ud);
         s.getTransaction().commit();
         s.close();
         sessionFactory.close();

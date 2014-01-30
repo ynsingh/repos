@@ -36,9 +36,11 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProfAffiliationDao;
 import org.IGNOU.ePortfolio.Model.ProfileProAffiliation;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 /**
@@ -46,9 +48,10 @@ import org.hibernate.HibernateException;
  * @since 14-Oct-2011
  * @author IGNOU Team
  */
-public class ProfAffiliationAction extends ActionSupport implements ModelDriven<Object> {
+public class ProfAffiliationAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProfileProAffiliation ProfAffili = new ProfileProAffiliation();
     private ProfAffiliationDao dao = new ProfAffiliationDao();

@@ -36,9 +36,11 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.TestScoreDao;
 import org.IGNOU.ePortfolio.Model.ProfileTest;
+import org.apache.log4j.Logger;
 
 /**
  * @version 1.1
@@ -46,11 +48,12 @@ import org.IGNOU.ePortfolio.Model.ProfileTest;
  * @author IGNOU Team XML Validation are implemented by IGNOU Team on
  * 14-Oct-2011
  */
-public class TestScoreAction extends ActionSupport implements ModelDriven<Object> {
+public class TestScoreAction extends ActionSupport implements Serializable  , ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
     private TestScoreDao dao = new TestScoreDao();
     private ProfileTest test = new ProfileTest();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String tname;
     private Integer score;

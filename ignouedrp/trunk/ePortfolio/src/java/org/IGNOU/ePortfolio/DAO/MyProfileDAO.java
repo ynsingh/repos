@@ -1,37 +1,33 @@
 package org.IGNOU.ePortfolio.DAO;
 
 /**
- * 
- *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
- *  All Rights Reserved.
  *
- *  Redistribution and use in source and binary forms, with or
- *  without modification, are permitted provided that the following
- *  conditions are met:
+ * Copyright (c) 2011 eGyankosh, IGNOU, New Delhi. All Rights Reserved.
  *
- *  Redistributions of source code must retain the above copyright
- *  notice, this  list of conditions and the following disclaimer.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *  Redistribution in binary form must reproducuce the above copyright
- *  notice, this list of conditions and the following disclaimer in
- *  the documentation and/or other materials provided with the
- *  distribution.
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  *
  *
- *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED.  IN NO EVENT SHALL eGyankosh, IGNOU OR ITS CONTRIBUTORS BE LIABLE
- *  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
- *  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
- *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
- *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL eGyankosh,
+ * IGNOU OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL,SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *
- *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
+ * Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
 import java.util.List;
@@ -47,16 +43,17 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory object.
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
+ *
  * @version 12
  * @author IGNOU Team
  */
 public class MyProfileDAO {
 
-    private SessionFactory  sf = new AnnotationConfiguration().configure().buildSessionFactory();
-    private  Session s;
+    private SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+    private Session s;
 
-    
     @SuppressWarnings("unchecked")
     public List<ProfileAcademic> ProfileAcademicListByUserId(String user_id) {
         s = sf.openSession();
@@ -81,7 +78,7 @@ public class MyProfileDAO {
 
         List<ProfileEmployment> employmentlist = null;
         try {
-            employmentlist = s.createQuery("from ProfileEmployment where user_id='" + user_id + "'  order by jDate").list();
+            employmentlist = s.createQuery("from ProfileEmployment where user_id='" + user_id + "'  order by jDate desc").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
@@ -94,7 +91,7 @@ public class MyProfileDAO {
 
     @SuppressWarnings("unchecked")
     public ProfileAcademic ProfileAcademicUpdate(List<Long> academicInfoId, List<String> user_id, List<String> degree, List<String> university, List<String> location, List<String> fstudy, List<String> pyear, List<Integer> percent, List<String> division) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = s.beginTransaction();
         ProfileAcademic pa = new ProfileAcademic();
         try {
@@ -156,7 +153,7 @@ public class MyProfileDAO {
     /*Writen by IGNOU Team on 12-Sep-2011*/
     @SuppressWarnings("unchecked")
     public ProfileAcademic ProfileAcademicDelete(long academicInfoId) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -207,7 +204,7 @@ public class MyProfileDAO {
 
     @SuppressWarnings("unchecked")
     public ProfileEmployment ProfileEmploymentUpdate(long employmentInfo_id, String user_id, String jTitle, String orgName, String oAddress, String oCity, String oState, String oCountry, String jDate, String lDate, String description) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -239,7 +236,7 @@ public class MyProfileDAO {
 
     @SuppressWarnings("unchecked")
     public ProfileEmployment ProfileEmploymentDelete(long employmentInfoId) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -266,7 +263,6 @@ public class MyProfileDAO {
         Transaction t = null;
         try {
             t = s.beginTransaction();
-
             List<ProfileSkill> SkillList = null;
             try {
                 SkillList = s.createQuery("from ProfileSkill where user_id='" + user_id + "' and type='" + type + "'").list();
@@ -285,7 +281,8 @@ public class MyProfileDAO {
             sf.close();
         }
     }
-     @SuppressWarnings("unchecked")
+
+    @SuppressWarnings("unchecked")
     public List<ProfileSkill> ProfileSkillByUserId(String user_id) {
         s = sf.openSession();
         Transaction t = null;
@@ -294,7 +291,7 @@ public class MyProfileDAO {
 
             List<ProfileSkill> SkillList = null;
             try {
-                SkillList = s.createQuery("from ProfileSkill where user_id='" + user_id +"'").list();
+                SkillList = s.createQuery("from ProfileSkill where user_id='" + user_id + "'").list();
             } catch (HibernateException HE) {
                 System.out.println(HE);
             }
@@ -313,10 +310,12 @@ public class MyProfileDAO {
 
     /**
      * Added on 15-Sep-2011
-     *@param skillId 
+     *
+     * @param skillId
      * @return boolean
      * @author IGNOU Team
-     **/
+     *
+     */
     @SuppressWarnings("unchecked")
     public ProfileSkill ProfileSkillDelete(long skillId) {
         s = sf.openSession();
@@ -342,13 +341,15 @@ public class MyProfileDAO {
 
     /**
      * Added on 05-Oct-2011
-     * @param user_id 
+     *
+     * @param user_id
      * @return CertificateInfoList
      * @author IGNOU Team
-     **/
+     *
+     */
     @SuppressWarnings({"unchecked", "unchecked"})
     public List<ProfileCertification> ProfileCertificationListByUserId(String user_id) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -374,13 +375,15 @@ public class MyProfileDAO {
 
     /**
      * Added on 07-Oct-2011
-     *  @param certificationId 
-     * @return  CertificateInfoList
+     *
+     * @param certificationId
+     * @return CertificateInfoList
      * @author IGNOU Team
-     **/
+     *
+     */
     @SuppressWarnings("unchecked")
     public List<ProfileCertification> ProfileCertificationByCertificationId(long certificationId) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -436,7 +439,7 @@ public class MyProfileDAO {
 
     @SuppressWarnings("unchecked")
     public ProfileCertification ProfileCertificationDelete(long certificationId) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -459,10 +462,12 @@ public class MyProfileDAO {
 
     /**
      * Added on 11-Oct-2011
-     * @param userId 
+     *
+     * @param userId
      * @return ReferenceInfoList
      * @author IGNOU Team
-     **/
+     *
+     */
     @SuppressWarnings("unchecked")
     public List<ProfileReferences> ProfileReferencesListByUserId(String userId) {
         s = sf.openSession();
@@ -490,13 +495,15 @@ public class MyProfileDAO {
 
     /**
      * Added on 12-Oct-2011
-     * @param referencesId 
+     *
+     * @param referencesId
      * @return ReferenceInfoList
      * @author IGNOU Team
-     **/
+     *
+     */
     @SuppressWarnings("unchecked")
     public List<ProfileReferences> ProfileReferencesEdit(long referencesId) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -520,7 +527,7 @@ public class MyProfileDAO {
     }
 
     public ProfileReferences ProfileReferencesUpdate(long references_id, String user_id, String name, String designation, String org_univ, String place, String city, String state, String country, Long phoneno, Long mobileno, String email_id, String website) {
-         s = sf.openSession();
+        s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -573,5 +580,4 @@ public class MyProfileDAO {
             sf.close();
         }
     }
-
 }

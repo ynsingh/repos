@@ -4,6 +4,9 @@ Created on : Oct 18, 2012, 4:25:59 PM
 Author : Vinay
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -21,15 +24,19 @@ Author : Vinay
         <script type="text/javascript" src="<s:url value="/js/pagination.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
-    <body>
-        <%
-            if (session.getAttribute("user_id") == null) {
-                response.sendRedirect("../Login.jsp");
-            }
+    <body><%
+        final Logger logger = Logger.getLogger(this.getClass());
+        String ipAddress = request.getRemoteAddr();
+        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+        String role = session.getAttribute("role").toString();
+        if (session.getAttribute("user_id") == null) {
+            session.invalidate();
+            response.sendRedirect("../Login.jsp");
+        }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -57,10 +64,10 @@ Author : Vinay
                                             <table width="95%" class="tablepaging" id="tablepaging" cellspacing="0" cellpadding="5" border="1">
                                                 <thead>
                                                     <tr>
-                                                        <td width="5%">S.No.</td>
+                                                        <td width="5%">S. No.</td>
                                                         <td width="20%">Name</td>
-                                                        <td width="25%">Office</td>
-                                                        <td width="20%">Phone</td>
+                                                        <!--   <td width="25%">Office</td>
+                                                           <td width="20%">Phone</td>-->
                                                         <td width="25%">Email</td>
                                                     </tr>
                                                 </thead>
@@ -73,21 +80,22 @@ Author : Vinay
                                                                 <span class="w100p fl-l marl5"><s:property value="fname"/>&nbsp;<s:property value="lname"/></span>
                                                             </a>
                                                         </td>
-                                                        <td width="25%" valign="top">
-                                                            <s:iterator value="profileContacts">
-                                                                <s:property value="address1"/>, <s:property value="address2"/><br/>
-                                                                <s:property value="city"/>, <s:property value="state"/><br/>
-                                                                <s:property value="country"/>, <s:property value="pin"/>
-                                                            </s:iterator>
-                                                        </td>
-                                                        <td width="20%" valign="top">
-                                                            <s:iterator value="profileContacts">
-                                                                Res No.: <s:property value="HTelephone"/><br/>
-                                                                Off No.: <s:property value="OTelephone"/><br/>
-                                                                Mob No.: <s:property value="mobileNo"/><br/>
-                                                                Fax No.: <s:property value="faxNo"/>
-                                                            </s:iterator>
-                                                        </td>
+                                                        <!--     <td width="25%" valign="top">
+                                                        <s:iterator value="profileContacts">
+                                                            <s:property value="address1"/>, <s:property value="address2"/><br/>
+                                                            <s:property value="city"/>, <s:property value="state"/><br/>
+                                                            <s:property value="country"/>, <s:property value="pin"/>
+                                                        </s:iterator>
+                                                    </td>
+                                                     <td width="20%" valign="top">
+                                                        <s:iterator value="profileContacts">
+                                                            Res No.: <s:property value="HTelephone"/><br/>
+                                                            Off No.: <s:property value="OTelephone"/><br/>
+                                                            Mob No.: <s:property value="mobileNo"/><br/>
+                                                            Fax No.: <s:property value="faxNo"/>
+                                                        </s:iterator>
+                                                    </td>
+                                                        -->
                                                         <td width="25%" class="fbld" valign="top">
                                                             <a href="mailto:<s:property value="emailId"/>, <s:property value="email1"/>">
                                                                 <s:property value="emailId"/><br/>
@@ -95,7 +103,8 @@ Author : Vinay
                                                                     <s:property value="email1"/><br/>
                                                                     <s:property value="email2"/><br/>
                                                                     <s:property value="email3" />
-                                                                </s:iterator></a>
+                                                                </s:iterator>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </s:iterator>
@@ -108,21 +117,21 @@ Author : Vinay
                                                                 <span class="wau fl-l marl5"><s:property value="fname"/>&nbsp;<s:property value="lname"/></span>
                                                             </a>
                                                         </td>
-                                                        <td width="25%" valign="top">
-                                                            <s:iterator value="profileContacts">
-                                                                <s:property value="address1"/>, <s:property value="address2"/><br/>
-                                                                <s:property value="city"/>, <s:property value="state"/><br/>
-                                                                <s:property value="country"/>, <s:property value="pin"/>
-                                                            </s:iterator>
-                                                        </td>
-                                                        <td width="20%" valign="top">
-                                                            <s:iterator value="profileContacts">
-                                                                Res No.: <s:property value="HTelephone"/><br/>
-                                                                Off No.: <s:property value="OTelephone"/><br/>
-                                                                Mob No.: <s:property value="mobileNo"/><br/>
-                                                                Fax No.: <s:property value="faxNo"/>
-                                                            </s:iterator>
-                                                        </td>
+                                                        <!--       <td width="25%" valign="top">
+                                                        <s:iterator value="profileContacts">
+                                                            <s:property value="address1"/>, <s:property value="address2"/><br/>
+                                                            <s:property value="city"/>, <s:property value="state"/><br/>
+                                                            <s:property value="country"/>, <s:property value="pin"/>
+                                                        </s:iterator>
+                                                    </td>
+                                                    <td width="20%" valign="top">
+                                                        <s:iterator value="profileContacts">
+                                                            Res No.: <s:property value="HTelephone"/><br/>
+                                                            Off No.: <s:property value="OTelephone"/><br/>
+                                                            Mob No.: <s:property value="mobileNo"/><br/>
+                                                            Fax No.: <s:property value="faxNo"/>
+                                                        </s:iterator>
+                                                    </td> -->
                                                         <td width="25%" class="fbld" valign="top">
                                                             <a href="mailto:<s:property value="emailId"/>, <s:property value="email1"/>">
                                                                 <s:property value="emailId"/><br/>
@@ -149,7 +158,7 @@ Author : Vinay
         </div>
         </div>
         <s:include value="/Footer.jsp"/>
-        <script type="text/javascript"><!--
+        <script type="text/javascript">
             var pager = new Pager('tablepaging', 10);
             pager.init();
             pager.showPageNav('pager', 'pageNavPosition');

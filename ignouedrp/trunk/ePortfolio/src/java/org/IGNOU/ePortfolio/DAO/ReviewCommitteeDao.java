@@ -20,8 +20,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class ReviewCommitteeDao {
 
-    private SessionFactory sessionFactory  = new AnnotationConfiguration().configure().buildSessionFactory();
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
+
     public ReviewCommittee saveRCInfo(ReviewCommittee RCModel) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -42,7 +43,7 @@ public class ReviewCommitteeDao {
     }
 
     public List<ReviewCommittee> ShowRC(String user_id) {
-       s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -88,7 +89,7 @@ public class ReviewCommitteeDao {
     }
 
     public ReviewCommittee UpdateRC(long reviewCommitteeId, String userId, String committeeType, String role, String committeeName, String date, String frequency, String url, String review, byte[] minutesFile) {
-       s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -118,7 +119,7 @@ public class ReviewCommitteeDao {
     }
 
     public ReviewCommittee DeleteRC(long reviewCommitteeId) {
-       s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -128,7 +129,7 @@ public class ReviewCommitteeDao {
             }
             t.commit();
             return DeleteInfo;
-        } catch (Throwable ex) { //Log the Exception 
+        } catch (Throwable ex) { //Log the Exception
             t.rollback();
             System.err.println("Initial   SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -137,5 +138,4 @@ public class ReviewCommitteeDao {
             sessionFactory.close();
         }
     }
-
 }

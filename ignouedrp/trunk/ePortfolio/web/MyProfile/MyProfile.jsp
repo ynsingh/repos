@@ -1,12 +1,16 @@
-<%-- 
+<%--
     Document   : index
     Created on : Aug 9, 2011, 12:43:49 PM
 Author     : IGNOU Team
 Version      : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="sj" uri="/struts-jquery-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -15,8 +19,7 @@ Version      : 1
         <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-
+        <sj:head/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
@@ -24,11 +27,15 @@ Version      : 1
             });
         </script>
     </head>
-    <body>
-        <%
-            if (session.getAttribute("user_id") == null) {
-                response.sendRedirect("../Login.jsp");
-            }
+    <body><%
+        final Logger logger = Logger.getLogger(this.getClass());
+        String ipAddress = request.getRemoteAddr();
+        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+        String role = session.getAttribute("role").toString();
+        if (session.getAttribute("user_id") == null) {
+            session.invalidate();
+            response.sendRedirect("../Login.jsp");
+        }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -40,7 +47,7 @@ Version      : 1
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/> 
+                        <s:include value="/Left-Nevigation.jsp"/>
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
@@ -50,6 +57,7 @@ Version      : 1
                                 <div class="bradcum">
                                     <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;My Profile
                                 </div>
+                                <div class="fl-r mart5"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
                                 <div class="gallery">
                                     <s:url id="PBID" action="ShowBasicInfo" namespace="/MyProfile"/>
                                     <s:url id="PCID" action="ShowContactInfo" namespace="/MyProfile"/>
@@ -95,6 +103,6 @@ Version      : 1
                 </div>
             </div>
             </div>
-        <s:include value="/Footer.jsp"/>  
+        <s:include value="/Footer.jsp"/>
     </body>
 </html>

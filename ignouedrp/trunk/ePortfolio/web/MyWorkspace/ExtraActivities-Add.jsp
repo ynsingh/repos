@@ -3,6 +3,9 @@
     Created on : Feb 29, 2012, 12:37:07 PM
     Author     : IGNOU Team
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -20,17 +23,21 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
-            if(window.history.forward(1) != null)
+            if (window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -72,9 +79,9 @@
                                                         <tr>
                                                             <td>Time Period:</td>
                                                             <td>From&nbsp;&nbsp;&nbsp;
-                                                                <sj:datepicker id="date0" value="%{tfrom}" name="tfrom" changeMonth="true" changeYear="true" cssClass="w80p"/>
+                                                                <sj:datepicker readonly="true"  id="date0" value="%{tfrom}" name="tfrom" changeMonth="true" changeYear="true" cssClass="w80p"/>
                                                                 &nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;
-                                                                <sj:datepicker id="date1" value="%{tto}" name="tto" changeMonth="true" changeYear="true" cssClass="w80p"/>
+                                                                <sj:datepicker readonly="true"  id="date1" value="%{tto}" name="tto" changeMonth="true" changeYear="true" cssClass="w80p"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -118,25 +125,25 @@
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            frmvalidator.addValidation("organizationName","req","Which Organization do you support");
-            frmvalidator.addValidation("organizationName","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("organizationName","alpha_s","Alphabetic chars only");        
-            
-            frmvalidator.addValidation("role","req","Please enter Role");
-            frmvalidator.addValidation("role","maxlen=20","Max length is 20");
-            frmvalidator.addValidation("role","alpha_s","Alphabetic chars only");     
-            
-            frmvalidator.addValidation("cause","dontselect=-1","Please enter Cause"); 
-            
-            frmvalidator.addValidation("tfrom","req","Please enter Time Period");    
-            
-            frmvalidator.addValidation("tto","req","Please enter Time Period"); 
-                        
-            frmvalidator.addValidation("description","req","Please enter Description");
-            frmvalidator.addValidation("description","maxlen=200","Max length is 200");
-            frmvalidator.addValidation("description","alpha_s","Alphabetic chars only");        
-                                    
+            var frmvalidator = new Validator("myform");
+            frmvalidator.addValidation("organizationName", "req", "Which Organization do you support");
+            frmvalidator.addValidation("organizationName", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("organizationName", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("role", "req", "Please enter Role");
+            frmvalidator.addValidation("role", "maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("role", "alpha_s", "Alphabetic chars only");
+
+            frmvalidator.addValidation("cause", "dontselect=-1", "Please enter Cause");
+
+            frmvalidator.addValidation("tfrom", "req", "Please enter Time Period");
+
+            frmvalidator.addValidation("tto", "req", "Please enter Time Period");
+
+            frmvalidator.addValidation("description", "req", "Please enter Description");
+            frmvalidator.addValidation("description", "maxlen=200", "Max length is 200");
+            frmvalidator.addValidation("description", "alpha_s", "Alphabetic chars only");
+
         </script>
     </body>
 </html>

@@ -36,33 +36,36 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.AddInfoDao;
 import org.IGNOU.ePortfolio.Model.ProfileEmployment;
+import org.apache.log4j.Logger;
 
 /**
  * Created on 13-Sep-2011.
  *
  * @author IGNOU Team
  */
-public class EmploymentInfoAction extends ActionSupport implements ModelDriven<Object> {
-    
+public class EmploymentInfoAction extends ActionSupport implements Serializable  , ModelDriven<Object> {
+
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProfileEmployment PE = new ProfileEmployment();
     private AddInfoDao dao = new AddInfoDao();
     private String msg;
     private String infoSaved = getText("msg.infoSaved");
-    
+
     public EmploymentInfoAction() {
     }
-    
+
     @Override
     public Object getModel() {
         getPE().setUserId(user_id);
         return PE;
     }
-    
+
     @Override
     public String execute() throws Exception {
         dao.ProfileEmploymentSave(getPE());

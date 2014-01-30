@@ -39,19 +39,22 @@ package org.IGNOU.ePortfolio.MyPlans;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
 import org.IGNOU.ePortfolio.Model.UserPlan;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class UserPlanAction extends ActionSupport implements ModelDriven<UserPlan> {
+public class UserPlanAction extends ActionSupport implements Serializable  , ModelDriven<UserPlan> {
 
     private static final long serialVersionUID = 1L;
     private PlanTaskDAO hu = new PlanTaskDAO();
     private UserPlan upModel = new UserPlan();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String msg;
     private String infoSaved = getText("msg.infoSaved");

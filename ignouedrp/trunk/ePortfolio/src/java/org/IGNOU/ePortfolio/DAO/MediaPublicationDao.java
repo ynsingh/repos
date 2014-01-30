@@ -107,7 +107,7 @@ public class MediaPublicationDao {
             }
             t.commit();
             return UpdateInfo;
-        } catch (Throwable ex) { //Log the Exception 
+        } catch (Throwable ex) { //Log the Exception
             t.rollback();
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -137,5 +137,4 @@ public class MediaPublicationDao {
             sessionFactory.close();
         }
     }
-
 }

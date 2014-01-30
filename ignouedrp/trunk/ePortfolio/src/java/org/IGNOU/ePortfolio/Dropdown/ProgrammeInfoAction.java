@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Dropdown;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Programme;
@@ -13,7 +14,7 @@ import org.IGNOU.ePortfolio.Model.Programme;
  *
  * @author vinay
  */
-public class ProgrammeInfoAction extends ActionSupport {
+public class ProgrammeInfoAction extends ActionSupport implements Serializable  {
 
     private static long serialVersionUID = -2223948287805083119L;
     private int programmeId;

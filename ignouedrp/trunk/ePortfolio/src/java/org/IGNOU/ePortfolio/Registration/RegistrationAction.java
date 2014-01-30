@@ -32,6 +32,7 @@ package org.IGNOU.ePortfolio.Registration;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import net.tanesha.recaptcha.ReCaptchaImpl;
@@ -40,18 +41,19 @@ import org.IGNOU.ePortfolio.DAO.RegistrationDao;
 import org.IGNOU.ePortfolio.Model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts2.ServletActionContext;
 import static org.IGNOU.ePortfolio.Action.RandomTokenString.*;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.ReadPropertyFile;
 import org.IGNOU.ePortfolio.Action.sendMail;
+import org.apache.struts2.ServletActionContext;
 
 /**
  *
  * @author IGNOU Team
  * @version 1 Modified by IGNOU Team
  */
-public class RegistrationAction extends ActionSupport implements ModelDriven<User> {
+public class RegistrationAction extends ActionSupport implements Serializable  , ModelDriven<User> {
 
+    private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
     private User userModel = new User();
     private RegistrationDao rgDao = new RegistrationDao();

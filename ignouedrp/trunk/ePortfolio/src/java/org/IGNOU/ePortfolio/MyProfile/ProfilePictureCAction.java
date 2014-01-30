@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +22,9 @@ import org.IGNOU.ePortfolio.Model.User;
  *
  * @author Amit
  */
-public class ProfilePictureCAction extends ActionSupport {
+public class ProfilePictureCAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
     private String user_id = new UserSession().getUserInSession();
     private UserListDao uldao = new UserListDao();
     private String msg;

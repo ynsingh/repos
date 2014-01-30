@@ -1,9 +1,12 @@
-<%-- 
+<%--
     Document   : TestimonialRequestForm
     Created on : Sep 14, 2012, 4:00:33 PM
     Author     : Vinay
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -21,7 +24,7 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
         <script type="text/javascript">
@@ -59,7 +62,10 @@
         </script>
     </head>
     <body>
-        <%  String role = session.getAttribute("role").toString();
+        <%  final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
             }
@@ -74,39 +80,40 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/> 
+                        <s:include value="/Left-Nevigation.jsp"/>
                         <!--Left box Ends Here-->
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">Testimonial Request Form</div>
                             <div class="w100 fl-l mart10">
                                 <div class="bradcum">
-                                    <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial 
+                                    <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial
                                 </div>
                                 <div class="w100 fl-l mart5">
                                     <div class="w100 marr15 fl-r mart10 tr padrl20">
-                                        <% if (role.contains("faculty")) {%>     
+                                        <% if (role.contains("faculty")) {%>
                                         || Inbox || Create New Testimonial || Sent Testimonials ||
                                         <% } else if (role.contains("student")) {%>
                                         || <a href="TestimonialRequestForm.jsp">New Request</a> || <s:a action="TestimonialSent"> Inbox</s:a> || Sent Request ||
-                                        <% }%> 
+                                        <% }%>
                                     </div>
+                                    <div class="tab_btn_1 mart5"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
                                     <div class="w100 marr15 fl-l mart10">
                                         <s:form method="post" action="TestiRequest" theme="simple" namespace="/MyProfile" enctype="multipart/form-data">
                                             <fieldset class="w600p mar0a">
                                                 <legend><strong>Testimonial Request Form</strong></legend>
-                                                <table width="100%" class="fl-l" border="0" cellpadding="4" cellspacing="0" id="hide">  
+                                                <table width="100%" class="fl-l" border="0" cellpadding="4" cellspacing="0" id="hide">
                                                     <tr>
                                                         <th width="40%" align="left">To:</th>
                                                         <td width="60%">
-                                                            <s:url id="toID" action="getMailTo" namespace="/Dropdown"/> 
-                                                            <sj:select 
-                                                                href="%{toID}" 
-                                                                id="testiTo" 
-                                                                name="testiReqTo" 
-                                                                list="facultyList" 
-                                                                emptyOption="false" 
-                                                                headerKey="-1" 
+                                                            <s:url id="toID" action="getMailTo" namespace="/Dropdown"/>
+                                                            <sj:select
+                                                                href="%{toID}"
+                                                                id="testiTo"
+                                                                name="testiReqTo"
+                                                                list="facultyList"
+                                                                emptyOption="false"
+                                                                headerKey="-1"
                                                                 headerValue="Please Select a Faculty"
                                                                 />
                                                             <a onclick="toggleRow('hide1')" class="cursor">Add Cc</a>, <a onclick="toggleRow('hide2')" class="cursor">Add Bcc</a>
@@ -158,7 +165,7 @@
                                                                 <button type="reset" value="Cancel"  theme="simple" onClick="history.go(-1);">Cancel</button>
                                                             </th>
                                                         </tr>
-                                                    </table>   
+                                                    </table>
                                                 </fieldset>
                                             </fieldset>
                                         </s:form>
@@ -172,6 +179,6 @@
                 </div>
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>  
+        <s:include value="/Footer.jsp"/>
     </body>
 </html>

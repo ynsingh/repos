@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -35,10 +35,12 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 import org.IGNOU.ePortfolio.Model.ProfileReferences;
+import org.apache.log4j.Logger;
 
 /**
  * Created on 11-Oct-2011
@@ -46,18 +48,12 @@ import org.IGNOU.ePortfolio.Model.ProfileReferences;
  * @version 1
  * @author IGNOU Team
  */
-public class ReferenceAction extends ActionSupport {
+public class ReferenceAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
     private MyProfileDAO dao = new MyProfileDAO();
     private ProfileReferences ProRef;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private List<ProfileReferences> RefList;
     private long referencesId;
@@ -75,7 +71,7 @@ public class ReferenceAction extends ActionSupport {
     private String website;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated");
+    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
 
     public ReferenceAction() {
     }
@@ -83,12 +79,10 @@ public class ReferenceAction extends ActionSupport {
     public String ShowInfo() throws Exception {
         RefList = dao.ProfileReferencesListByUserId(getUser_id());
         if (RefList.isEmpty()) {
-            // return SUCCESS;
-            return INPUT;
+            msg = notFound;
         } else {
-            //return ERROR;
-            return SUCCESS;
         }
+        return SUCCESS;
     }
 
     public String EditInfo() throws Exception {
@@ -386,5 +380,19 @@ public class ReferenceAction extends ActionSupport {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
+    }
+
+    /**
+     * @return the notFound
+     */
+    public String getNotFound() {
+        return notFound;
+    }
+
+    /**
+     * @param notFound the notFound to set
+     */
+    public void setNotFound(String notFound) {
+        this.notFound = notFound;
     }
 }

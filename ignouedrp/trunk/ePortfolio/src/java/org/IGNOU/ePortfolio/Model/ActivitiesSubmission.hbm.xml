@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 16, 2012 1:18:11 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ActivitiesSubmission" table="activities_submission" catalog="eportfolio">
+        <id name="submissionId" type="int">
+            <column name="submission_id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="evidence" class="org.IGNOU.ePortfolio.Model.ActivitiesAnnounce" fetch="select" lazy="false" cascade="merge">
+            <column name="evidence_id" />
+        </many-to-one>
+        <many-to-one name="course" class="org.IGNOU.ePortfolio.Model.Course" fetch="select" lazy="false" cascade="merge">
+            <column name="course_id" />
+        </many-to-one>
+        <many-to-one name="user" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
+            <column name="user_id" length="100" />
+        </many-to-one>
+        <property name="instituteId" type="java.lang.Integer">
+            <column name="institute_id" />
+        </property>
+        <property name="programmeId" type="java.lang.Integer">
+            <column name="programme_id" />
+        </property>
+        <property name="instructions" type="string">
+            <column name="instructions" length="65535" />
+        </property>
+        <property name="attachment" type="string">
+            <column name="attachment" length="100" />
+        </property>
+        <property name="subDate" type="timestamp">
+            <column name="sub_date" length="19" />
+        </property>
+        <property name="submitted" type="java.lang.Boolean">
+            <column name="submitted" />
+        </property>
+        <property name="post" type="java.lang.Boolean">
+            <column name="post" />
+        </property>
+        <property name="saveDraft" type="java.lang.Boolean">
+            <column name="save_draft" />
+        </property>
+        <property name="gradesObtained" type="string">
+            <column name="grades_obtained" length="45" />
+        </property>
+        <property name="facultyComment" type="string">
+            <column name="faculty_comment" length="65535" />
+        </property>
+        <property name="facultyAttachment" type="string">
+            <column name="faculty_attachment" length="100" />
+        </property>
+        <property name="canComment" type="java.lang.Boolean">
+            <column name="can_comment" />
+        </property>
+        <property name="listStudent" type="string">
+            <column name="list_student" length="65535" />
+        </property>
+        <set name="activitiesCommentses" inverse="true" lazy="false">
+            <key>
+                <column name="activity_submition_id" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesComments" />
+        </set>
+    </class>
+</hibernate-mapping>

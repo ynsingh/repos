@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -35,19 +35,22 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProfAffiliationDao;
 import org.IGNOU.ePortfolio.Model.ProfileProAffiliation;
+import org.apache.log4j.Logger;
 
 /**
  * @version 1
  * @since 14-Oct-2011
  * @author IGNOU Team ID is Modified by IGNOU Team on 17-Oct-2011.
  */
-public class ProfAffiliationInfoAction extends ActionSupport {
+public class ProfAffiliationInfoAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProfileProAffiliation ProfAffili = new ProfileProAffiliation();
     private ProfAffiliationDao dao = new ProfAffiliationDao();
@@ -63,7 +66,7 @@ public class ProfAffiliationInfoAction extends ActionSupport {
     private List<ProfileProAffiliation> AffiliationList = null;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated");
+    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
 
     public ProfAffiliationInfoAction() {
     }
@@ -71,10 +74,10 @@ public class ProfAffiliationInfoAction extends ActionSupport {
     public String ShowAffiliationInfo() throws Exception {
         AffiliationList = dao.ProfileProAffiliationList(user_id);
         if (AffiliationList.isEmpty()) {
-            return INPUT;
+            msg = notFound;
         } else {
-            return SUCCESS;
         }
+        return SUCCESS;
     }
 
     public String EditAffiliationInfo() throws Exception {
@@ -323,5 +326,19 @@ public class ProfAffiliationInfoAction extends ActionSupport {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
+    }
+
+    /**
+     * @return the notFound
+     */
+    public String getNotFound() {
+        return notFound;
+    }
+
+    /**
+     * @param notFound the notFound to set
+     */
+    public void setNotFound(String notFound) {
+        this.notFound = notFound;
     }
 }

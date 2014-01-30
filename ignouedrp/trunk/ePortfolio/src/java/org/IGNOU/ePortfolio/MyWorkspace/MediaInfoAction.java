@@ -5,18 +5,22 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 import org.IGNOU.ePortfolio.DAO.MediaPublicationDao;
 import org.IGNOU.ePortfolio.Model.MediaPublication;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class MediaInfoAction extends ActionSupport {
+public class MediaInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private MediaPublication mp = new MediaPublication();
     private MediaPublicationDao dao = new MediaPublicationDao();

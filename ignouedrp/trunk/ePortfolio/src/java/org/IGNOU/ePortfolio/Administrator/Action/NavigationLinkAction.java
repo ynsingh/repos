@@ -8,6 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,8 +32,9 @@ import org.jdom2.output.XMLOutputter;
  *
  * @author IGNOUERP
  */
-public class NavigationLinkAction extends ActionSupport {
+public class NavigationLinkAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String caption, url, Id;
     private String path = getText("");
     private SAXBuilder builder = new SAXBuilder();

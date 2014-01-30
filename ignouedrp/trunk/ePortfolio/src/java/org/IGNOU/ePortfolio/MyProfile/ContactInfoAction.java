@@ -9,6 +9,7 @@ import in.ac.dei.edrp.api.DEIRemoteAccessAPI;
 import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,8 +27,9 @@ import org.jdom2.input.SAXBuilder;
  *
  * @author IGNOU Team
  */
-public class ContactInfoAction extends ActionSupport {
+public class ContactInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
     private String user_id = new UserSession().getUserInSession();
     private ContactDao dao = new ContactDao();
     private ProfileContact ProfileContact;

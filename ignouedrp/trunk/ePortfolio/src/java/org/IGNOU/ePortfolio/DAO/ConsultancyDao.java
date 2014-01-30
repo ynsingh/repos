@@ -155,5 +155,4 @@ public class ConsultancyDao {
             sessionFactory.close();
         }
     }
-
 }

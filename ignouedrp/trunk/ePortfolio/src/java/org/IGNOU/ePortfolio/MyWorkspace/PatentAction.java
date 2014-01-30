@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PatentDao;
 import org.IGNOU.ePortfolio.Model.Inventor;
 import org.IGNOU.ePortfolio.Model.Patent;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,8 +23,10 @@ import org.IGNOU.ePortfolio.Model.Patent;
  * @since 28-01-2012
  *
  */
-public class PatentAction extends ActionSupport {
+public class PatentAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private Patent patentModel = new Patent();
     private Inventor InventorModel = new Inventor();

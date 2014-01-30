@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24 Sep, 2013 4:17:55 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Logs" table="logs" catalog="eportfolio">
+        <id name="logId" type="java.lang.Long">
+            <column name="log_id" />
+            <generator class="increment" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="loginTime" type="timestamp">
+            <column name="login_time" length="10" />
+        </property>
+        <property name="logoutTime" type="timestamp">
+            <column name="logout_time" length="10" />
+        </property>
+        <property name="ip" type="string">
+            <column name="IP" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

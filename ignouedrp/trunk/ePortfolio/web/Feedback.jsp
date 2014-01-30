@@ -5,6 +5,9 @@ Author     : IGNOU Team
 Version      : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -22,9 +25,9 @@ Version      : 1
         <sx:head/>
         <sj:head />  
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -61,39 +64,39 @@ Version      : 1
                             <div class="v_gallery">
                                 <div class="w100 fl-l tc fbld fcgreen"><s:property value="feedbackmsg"/></div>
                                 <fieldset class="w550p mar0a mart15">
-                                            <legend class="fbld">Feedback</legend>
-                                     <s:form action="feedback" method="post">
-                                    <table width="90%" class="mar0a mart10" cellpadding="2" cellspacing="2" border="0" align="center">
-                                        <s:textfield name="name" cssClass="tdLabel" label="Name"/>
-                                        <s:textfield name="occupation" cssClass="tdLabel" label="Occupation"/>
-                                        <s:textfield name="organization" cssClass="tdLabel" label="Organization" />
-                                        <s:textfield size="25" name="emailId" cssClass="tdLabel" label="Email" />
-                                        <s:textfield size="10" name="phone" cssClass="tdLabel" label="Phone" />
-                                        <s:textfield name="FSubject" cssClass="tdLabel" label="Subject"/>
-                                        <sjr:tinymce
-                                            id="richtextTinymceAdvancedEditor"
-                                            name="comment"
-                                            label="Comments"
-                                            rows="10"
-                                            cols="10"
-                                            value="%{comment}"
-                                            editorLocal="en"
-                                            editorTheme="advanced"
-                                            editorSkin="o2k7"
-                                            toolbarAlign="left"
-                                            toolbarLocation="top"
-                                            toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
-                                            toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
-                                            toolbarButtonsRow3=" "
-                                            />
-                                        <tr>
-                                            <td colspan="2" align="center">
-                                                <s:submit value="Submit" theme="simple" />
-                                                <s:reset value="Cancel"  theme="simple" onClick="history.go(-1);" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </s:form>
+                                    <legend class="fbld">Feedback</legend>
+                                    <s:form action="feedback" method="post">
+                                        <table width="90%" class="mar0a mart10" cellpadding="2" cellspacing="2" border="0" align="center">
+                                            <s:textfield name="name" cssClass="tdLabel" label="Name"/>
+                                            <s:textfield name="occupation" cssClass="tdLabel" label="Occupation"/>
+                                            <s:textfield name="organization" cssClass="tdLabel" label="Organization" />
+                                            <s:textfield size="25" name="emailId" cssClass="tdLabel" label="Email" />
+                                            <s:textfield size="10" name="phone" cssClass="tdLabel" label="Phone" />
+                                            <s:textfield name="FSubject" cssClass="tdLabel" label="Subject"/>
+                                            <sjr:tinymce
+                                                id="richtextTinymceAdvancedEditor"
+                                                name="comment"
+                                                label="Comments"
+                                                rows="10"
+                                                cols="10"
+                                                value="%{comment}"
+                                                editorLocal="en"
+                                                editorTheme="advanced"
+                                                editorSkin="o2k7"
+                                                toolbarAlign="left"
+                                                toolbarLocation="top"
+                                                toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
+                                                toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
+                                                toolbarButtonsRow3=" "
+                                                />
+                                            <tr>
+                                                <td colspan="2" align="center">
+                                                    <s:submit value="Submit" theme="simple" />
+                                                    <s:reset value="Cancel"  theme="simple" onClick="history.go(-1);" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </s:form>
                                 </fieldset>
                             </div>
                             <!--Right box End Here-->
@@ -105,14 +108,14 @@ Version      : 1
             </div>
         </div>
         <!--Footer Section Starts Here-->
-       <div class="footer">
+        <div class="footer">
             <div class="f_menu"> 
                 <s:a action="ShowAboutUs" namespace="/Administrator">About Us</s:a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <s:a action="ShowContactUs" namespace="/Administrator">Contact Us</s:a>
             </div>
         </div>
         <div class="footer_panel">
             <div class="footer_txt">
-                <div class="wau fl-l tl">&COPY; 2011-12, MHRD. All Rights are Reserved</div>
+                <div class="wau fl-l tl">ePortfolio &COPY; 2011-13, MHRD. All Rights Reserved</div>
                 <div class="wau fl-r tr">Designed and Developed by eGyanKosh,Indira Gandhi National Open University</div>
             </div>
             <!--Footer Section Ends Here-->

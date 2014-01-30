@@ -11,7 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 
 /**
  *
@@ -29,7 +29,7 @@ public class PrintHtmlPdf {
             worker.parseXHtml(pdfWriter, document,new InputStreamReader(new ByteArrayInputStream(pdfData.getBytes("UTF-8"))));
             document.close();
            } catch (Exception e) {
-               PropertyConfigurator.configure("log4j.properties");
+             
                logger.warn("Error in PrintHtmlPdf with Data"+pdfData, e);
         }
         return FILE;

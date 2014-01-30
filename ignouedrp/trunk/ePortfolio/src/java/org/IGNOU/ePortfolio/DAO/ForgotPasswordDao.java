@@ -1,7 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -70,5 +70,4 @@ public class ForgotPasswordDao {
         sessionFactory.close();
         return false;
     }
-
 }

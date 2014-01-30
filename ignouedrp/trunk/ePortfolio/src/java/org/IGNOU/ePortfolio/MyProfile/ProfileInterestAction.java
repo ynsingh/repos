@@ -36,17 +36,21 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.InterestDao;
 import org.IGNOU.ePortfolio.Model.ProfileInterest;
+import org.apache.log4j.Logger;
 
 /**
  * Date 1 Dec 2011
  *
  * @author IGNOU Team
  */
-public class ProfileInterestAction extends ActionSupport implements ModelDriven<Object> {
+public class ProfileInterestAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProfileInterest ProInt = new ProfileInterest();
     private InterestDao dao = new InterestDao();

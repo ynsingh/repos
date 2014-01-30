@@ -20,9 +20,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class TalkLectureDao {
 
-    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();
+    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
-   
+
     public TalkLecture TalkLectureSave(TalkLecture TLModel) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -43,7 +43,7 @@ public class TalkLectureDao {
     }
 
     public List<TalkLecture> TalkLectureListByUserId(String user_id) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -61,7 +61,7 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-           sessionFactory.close();
+            sessionFactory.close();
         }
     }
 
@@ -115,7 +115,7 @@ public class TalkLectureDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-           sessionFactory.close();
+            sessionFactory.close();
         }
     }
 
@@ -130,7 +130,7 @@ public class TalkLectureDao {
             }
             t.commit();
             return DeleteInfo;
-        } catch (Throwable ex) { //Log the Exception 
+        } catch (Throwable ex) { //Log the Exception
             t.rollback();
             System.err.println("Initial   SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -139,5 +139,4 @@ public class TalkLectureDao {
             sessionFactory.close();
         }
     }
-
 }

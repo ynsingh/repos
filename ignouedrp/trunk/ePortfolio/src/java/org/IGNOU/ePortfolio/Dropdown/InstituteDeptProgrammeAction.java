@@ -5,20 +5,23 @@
 package org.IGNOU.ePortfolio.Dropdown;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.Programme;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author vinay
  */
-public class InstituteDeptProgrammeAction extends ActionSupport {
+public class InstituteDeptProgrammeAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = -2223948287805083119L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private Map<String, String> programmeL;
     private String instituteId, departmentId;

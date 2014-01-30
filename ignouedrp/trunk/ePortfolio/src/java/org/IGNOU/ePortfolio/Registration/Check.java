@@ -36,6 +36,7 @@ package org.IGNOU.ePortfolio.Registration;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.StringBufferInputStream;
 import java.util.List;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
@@ -45,7 +46,7 @@ import org.IGNOU.ePortfolio.Model.User;
  *
  * @author IGNOU Team
  */
-public class Check extends ActionSupport {
+public class Check extends ActionSupport implements Serializable  {
 
     private UserProgrammeDao updao = new UserProgrammeDao();
     private List<User> stRegList;

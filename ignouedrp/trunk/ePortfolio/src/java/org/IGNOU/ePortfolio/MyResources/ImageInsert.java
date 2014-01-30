@@ -39,37 +39,41 @@ package org.IGNOU.ePortfolio.MyResources;
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import org.IGNOU.ePortfolio.Action.FileUploadCommon;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ResourceDao;
 import org.IGNOU.ePortfolio.Model.Userdocs;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  * * @version 1.0 on 19 aug 2011
  */
-public class ImageInsert extends ActionSupport 
-    {
+public class ImageInsert extends ActionSupport implements Serializable  {
+
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ResourceDao rdao = new ResourceDao();
     private Userdocs ud = new Userdocs();
     private String filepath = ReadPropertyFile("Filepath") + "/" + user_id + "/";
-    private String filedate,filetype, filename, description ;
-     private long fileid;
+    private String filedate, filetype, filename, description;
+    private long fileid;
     private Long size;
-     private File userImage;
-    private String userImageFileName ;
+    private File userImage;
+    private String userImageFileName;
     private String msg;
     private String infoSaved = getText("msg.infoSaved");
-      
+
     public String dataInsert() throws IOException {
-      
-        new FileUploadCommon().UploadFile(userImage, getFilename()+getFiletype(), getFilepath());
+
+        new FileUploadCommon().UploadFile(userImage, getFilename() + getFiletype(), getFilepath());
         rdao.saveUserDocs(user_id, getSize(), getFiletype(), getFilename(), getFilepath(), getDescription(), new Date().toString());
-         msg = infoSaved;
+        msg = infoSaved;
         return SUCCESS;
     }
 
@@ -100,7 +104,8 @@ public class ImageInsert extends ActionSupport
     public void setInfoSaved(String infoSaved) {
         this.infoSaved = infoSaved;
     }
-/**
+
+    /**
      * @return the fileid
      */
     public long getFileid() {
@@ -113,7 +118,8 @@ public class ImageInsert extends ActionSupport
     public void setFileid(long fileid) {
         this.fileid = fileid;
     }
-     /**
+
+    /**
      * @return the size
      */
     public Long getSize() {
@@ -128,6 +134,7 @@ public class ImageInsert extends ActionSupport
 
         this.size = size;
     }
+
     /**
      * @return the filepath
      */
@@ -143,7 +150,8 @@ public class ImageInsert extends ActionSupport
 
         this.filepath = filepath;
     }
-     /**
+
+    /**
      * @return the filetype
      */
     public String getFiletype() {

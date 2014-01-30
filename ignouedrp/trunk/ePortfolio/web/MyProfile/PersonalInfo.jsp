@@ -4,6 +4,9 @@
 Author     : IGNOU Team
 Version      : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -23,9 +26,13 @@ Version      : 1
             });
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -164,7 +171,7 @@ Version      : 1
                                                                 &nbsp;
                                                                 <s:property value="lname"/>
                                                             </td>
-                                                            <td><a href="EditPersonalInfo?personalInfoId=<s:property value="personalInfoId"/>"><img src="<s:url value="/icons/edit.gif"/>" align="right" title="Edit Information"/></a></td>
+                                                            <td><a href="EditPersonalInfo?personalInfoId=<s:property value="registrationId"/>"><img src="<s:url value="/icons/edit.gif"/>" align="right" title="Edit Information"/></a></td>
                                                         </tr>
                                                         <tr>
                                                             <th align="left">Father's Name :</th>

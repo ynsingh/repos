@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 7, 2012 1:23:38 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ActivitiesAnnounce" table="activities_announce" catalog="eportfolio">
+        <id name="evidenceId" type="int">
+            <column name="EvidenceId" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="gradeValue" class="org.IGNOU.ePortfolio.Model.GradeValue" fetch="select" lazy="false" cascade="merge">
+            <column name="grade_scale" />
+        </many-to-one>
+        <many-to-one name="user" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
+            <column name="faculty_id" length="100" />
+        </many-to-one>
+        <many-to-one name="course" class="org.IGNOU.ePortfolio.Model.Course" fetch="select" lazy="false" cascade="merge">
+            <column name="course_id" />
+        </many-to-one>
+        <property name="evTitle" type="string">
+            <column name="ev_title" length="100" />
+        </property>
+        <property name="openDate" type="date">
+            <column name="open_date" length="19" />
+        </property>
+        <property name="closeDate" type="date">
+            <column name="close_date" length="19" />
+        </property>
+        <property name="lastAcceptDate" type="date">
+            <column name="last_accept_date" length="19" />
+        </property>
+        <property name="instruction" type="string">
+            <column name="Instruction" length="65535" />
+        </property>
+        <property name="addDateSchedule" type="java.lang.Boolean">
+            <column name="add_date_schedule" />
+        </property>
+        <property name="addAnnoOdate" type="java.lang.Boolean">
+            <column name="add_anno_odate" />
+        </property>
+        <property name="addtoGradebook" type="java.lang.Boolean">
+            <column name="addto_gradebook" />
+        </property>
+        <property name="assAttach" type="string">
+            <column name="ass_attach" length="100" />
+        </property>
+        <property name="instituteId" type="java.lang.Integer">
+            <column name="Institute_id" />
+        </property>
+        <property name="programmeId" type="java.lang.Integer">
+            <column name="programme_id" />
+        </property>
+        <property name="saveEvid" type="java.lang.Boolean">
+            <column name="save_evid" />
+        </property>
+        <property name="cancel" type="java.lang.Boolean">
+            <column name="cancel" />
+        </property>
+        <property name="cancelReason" type="string">
+            <column name="cancel_reason" length="65535" />
+        </property>
+        <set name="evidenceSubmissions" inverse="true" lazy="false">
+            <key>
+                <column name="evidence_id" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesSubmission" />
+        </set>
+        <set name="activitiesCommentses" inverse="true" lazy="false">
+            <key>
+                <column name="activity_id" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesComments" />
+        </set>
+    </class>
+</hibernate-mapping>

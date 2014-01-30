@@ -5,22 +5,24 @@
 package org.IGNOU.ePortfolio.Requests;
 
 import com.opensymphony.xwork2.ActionSupport;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ProgrammeDao;
 import org.IGNOU.ePortfolio.Model.PersonalInfo;
 import org.IGNOU.ePortfolio.Model.UserPersonalRequest;
 import org.IGNOU.ePortfolio.DAO.RequestDao;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 /**
  *
  * @author Vinay
  */
-public class RequestAction extends ActionSupport {
+public class RequestAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private RequestDao dao = new RequestDao();
     private List<UserPersonalRequest> UsrReqList;
@@ -85,7 +87,7 @@ public class RequestAction extends ActionSupport {
         if (UsrReqList.isEmpty()) {
             msg = noRequestFound;
         }
-        Headtitle="Processed Requests";
+        Headtitle = "Processed Requests";
         return SUCCESS;
     }
 
@@ -271,7 +273,6 @@ public class RequestAction extends ActionSupport {
         this.status = status;
     }
 
-   
     /**
      * @return the msg
      */

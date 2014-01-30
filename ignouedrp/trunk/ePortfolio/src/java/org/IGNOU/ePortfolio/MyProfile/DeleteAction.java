@@ -5,8 +5,10 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 import org.IGNOU.ePortfolio.Model.ProfileAcademic;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -14,8 +16,10 @@ import org.IGNOU.ePortfolio.Model.ProfileAcademic;
  * @version 2
  * @since 05-04-2012
  */
-public class DeleteAction extends ActionSupport {
+public class DeleteAction extends ActionSupport implements Serializable  {
 
+    final Logger logger = Logger.getLogger(this.getClass());
+    private static final long serialVersionUID = 1L;
     private ProfileAcademic PAcad = new ProfileAcademic();
     private MyProfileDAO dao = new MyProfileDAO();
     private long academicInfoId;

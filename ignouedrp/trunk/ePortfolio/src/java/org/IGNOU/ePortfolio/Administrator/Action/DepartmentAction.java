@@ -5,10 +5,12 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.DepartmentDao;
 import org.IGNOU.ePortfolio.Model.Department;
 import org.IGNOU.ePortfolio.Model.Institute;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,9 +18,10 @@ import org.IGNOU.ePortfolio.Model.Institute;
  * @version 1
  * @since 23-04-2012
  */
-public class DepartmentAction extends ActionSupport {
+public class DepartmentAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private Department dept = new Department();
     private DepartmentDao dao = new DepartmentDao();

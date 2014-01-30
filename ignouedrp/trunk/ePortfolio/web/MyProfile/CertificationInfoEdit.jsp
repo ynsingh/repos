@@ -4,6 +4,9 @@
 Author     : IGNOU Team
 Version      : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -30,9 +33,13 @@ Version      : 1
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -68,12 +75,12 @@ Version      : 1
                                                         <s:textfield name="certificationName" label="Certification Name"/>
                                                         <s:textfield name="certificationAuthority" label="Certification Authority"/>
                                                         <s:textfield name="license" label="License Number"/>
-                                                        <sj:datepicker id="date0" label="Valid From" name="certificationDate"
+                                                        <sj:datepicker readonly="true"  id="date0" label="Valid From" name="certificationDate"
                                                                        value="%{certificationDate}" displayFormat="MM, yy"                                                            
                                                                        changeMonth="true" changeYear="true"
                                                                        onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
                                                                        />
-                                                        <sj:datepicker id="date1" label="Valid Upto" name="validDate"
+                                                        <sj:datepicker readonly="true"  id="date1" label="Valid Upto" name="validDate"
                                                                        value="%{validDate}" displayFormat="MM, yy"                                                            
                                                                        changeMonth="true" changeYear="true"
                                                                        onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "

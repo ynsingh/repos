@@ -1,9 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
+  
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -36,20 +34,21 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.MyConnection
-;
+package org.IGNOU.ePortfolio.MyConnection;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MySocialInfoDao;
 import org.IGNOU.ePortfolio.Model.ProfileSocial;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class SocialInfoAction extends ActionSupport {
+public class SocialInfoAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +58,7 @@ public class SocialInfoAction extends ActionSupport {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private MySocialInfoDao dao = new MySocialInfoDao();
     private ProfileSocial ProfileSocial;

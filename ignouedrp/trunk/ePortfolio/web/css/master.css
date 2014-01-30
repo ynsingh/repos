@@ -20,6 +20,9 @@ img{border:none;}
 
 .hght60{height:100px !important;}
 .hght150{height:150px;}
+.hght200{height:200px;}
+.hght250{height:250px;}
+.hght300{height:300px;}
 .hght400{height:400px;}
 .hght450{height:450px;}
 .hght500{height:500px;}
@@ -149,7 +152,7 @@ a{text-decoration: none; color: #16387c;}
 
 .profile_img{width:40px; height:40px; float:left; cursor:pointer;}
 .profile_img img{margin:6px 0px; border:1px solid #000;}
-.pro_img_hov{width:100px; height:20px; text-align:center; font-size:11px; font-family:Verdana, Geneva, sans-serif; background:#fff; position:relative; 
+.pro_img_hov{width:100px; height:20px; text-align:center; font-size:11px; font-family:Verdana, Geneva, sans-serif; background:#fff; position:relative;
              left:50%; top:0%; margin-top:-20px; z-index:100;   /*display:none; */ cursor:default; font-weight:normal; display:none; border:1px solid #000; }
 .pro_img_hov tr td{width:100%; height:20px; float: left; line-height:16px;}
 .pro_img_hov tr td {width:100%; height:20px; text-decoration:none; line-height:18px; color:#000; float:left;}
@@ -191,7 +194,7 @@ a{text-decoration: none; color: #16387c;}
 
 textarea{width:180px;}
 
-.middle_bg{background:url(../images/white_bg.png) repeat; width:100%; float:left; min-height:400px; max-height:inherit;}
+.middle_bg{background:url(../images/white_bg.png) repeat; width:100%; float:left; min-height:420px; max-height:inherit; }
 .left_box{width:240px; float:left;}
 .u_name{width:100%; float:left; font-weight:bold;}
 .u_name p{padding-left:10px;}
@@ -239,11 +242,11 @@ ul.formfield input, ul.formfield select{ border:none;}
 .field2 input{width:103px; height:26px;}
 .field3{width:192px; float: left;}
 .field3 input{width:190px; height:26px;}
-.field4{width:85px; float:left;} 
+.field4{width:85px; float:left;}
 .field4 select{width:83px; height:26px;}
-.field5{width:75px; float:left;} 
+.field5{width:75px; float:left;}
 .field5 input{width:73px; height:26px;}
-.field6{width:65px; float:left;} 
+.field6{width:65px; float:left;}
 .field6 input{width:63px; height:26px;}
 .field7{width:65px; float:left;}
 .field7 input{width:73px; height:26px;}
@@ -408,7 +411,7 @@ table p{margin:0px; padding:0px;}
     color: #EAF5F7 !important;
     font-weight: bold !important;
     /*  width:400px !important; */
-}   
+}
 
 .pg-normal {
     color: #000000;
@@ -441,7 +444,9 @@ table p{margin:0px; padding:0px;}
 .tab_btn_2 a{text-decoration:none; background:none;}
 
 .tab_btn{width:100%; float:left; margin-top:15px;}
-.tab_btn a{text-decoration:none; background:url(../images/tab_a_bg.gif) repeat-x top center; color:#900; width:auto; height:21px; float:right; padding:5px 10px; margin-left:5px; font-weight:500; letter-spacing:1px;}
-.tab_btn a:hover{color:#F30;}
+.tab_btn a{text-decoration:none; background:url(../images/tab_a_bg.gif) repeat-x top center; color:#2571A1; width:auto; float:right; padding:5px 10px; margin-left:5px; font-weight:500; letter-spacing:1px; border:1px solid #bccad3; border-radius:5px;}
+.tab_btn_1 a{ background:none!important; border:none;}
+.tab_btn a:hover{color:#2571A1;}
 
 .txt_field{width:249px; height:30px; border:1px solid #c1c5c8; border-radius:0.50em; padding:0px 10px;}
+.nodisplay{ display: none;}

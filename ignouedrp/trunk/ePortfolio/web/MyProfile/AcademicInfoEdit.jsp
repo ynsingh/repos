@@ -1,10 +1,13 @@
-<%-- 
+<%--
    Document   : AcademicInfoEdit
    Created on : Sep 4, 2011, 2:33:49 PM
    Author     : IGNOU Team
    Version    : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -16,8 +19,7 @@
         <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-        <sj:head />        
+        <sj:head />
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
@@ -29,11 +31,15 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
-            if (session.getAttribute("user_id") == null) {
-                response.sendRedirect("../Login.jsp");
-            }
+    <body><%
+        final Logger logger = Logger.getLogger(this.getClass());
+        String ipAddress = request.getRemoteAddr();
+        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+        String role = session.getAttribute("role").toString();
+        if (session.getAttribute("user_id") == null) {
+            session.invalidate();
+            response.sendRedirect("../Login.jsp");
+        }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -45,14 +51,14 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/> 
+                        <s:include value="/Left-Nevigation.jsp"/>
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">Edit Academic Information</div>
                             <div class="v_gallery">
-                                <div class="bradcum"><a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <a href="ShowAcademic_Info">Academic Information</a> > Edit Academic Information</div> 
+                                <div class="bradcum"><a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <a href="ShowAcademic_Info">Academic Information</a> > Edit Academic Information</div>
                                 <div class="w100 fl-l"><div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div></div>
                                 <div class="w100 fl-l">
                                     <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
@@ -73,7 +79,7 @@
                                                     <tr>
                                                         <td><s:textfield name="degree" style="width: 115px;"/></td>
                                                         <td><s:textfield name="fstudy" style="width: 81px;"/></td>
-                                                        <td><s:textfield name="university" style="width: 163px;"/></td>   
+                                                        <td><s:textfield name="university" style="width: 163px;"/></td>
                                                         <td><s:textfield name="pyear" style="width: 66px;"/></td>
                                                         <td><s:textfield name="percent" style="width: 68px;"/></td>
                                                         <td><s:textfield name="location" style="width: 51px;"/></td>
@@ -99,6 +105,6 @@
                 </div>
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>  
+        <s:include value="/Footer.jsp"/>
     </body>
 </html>

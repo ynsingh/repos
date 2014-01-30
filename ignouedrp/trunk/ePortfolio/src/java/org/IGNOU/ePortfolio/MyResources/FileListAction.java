@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
@@ -54,19 +55,19 @@ import org.apache.log4j.Logger;
  * @author IGNOU Team
  * @version 1 on 17 aug 2011 Last Modified on 20 oct 2011 by IGNOU Team
  */
-public class FileListAction extends ActionSupport {
+public class FileListAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     private Userdocs imagelist;
     private List<Userdocs> imagelistlist;
     private FileDAO dao = new FileDAO();
     private long fileid;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String filename, description, filepath;
     private InputStream fis;
     private String filepathN, filename1, filepath1, filetype;
     private String filedate;
-    final Logger logger = Logger.getLogger(this.getClass());
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
     private String infoUpdated = getText("msg.infoUpdated");
@@ -145,7 +146,6 @@ public class FileListAction extends ActionSupport {
             filepath = filepath + filename + filetype;
             fis = new FileInputStream(new File(filepath));
         } catch (Exception e) {
-           
         }
         return SUCCESS;
     }

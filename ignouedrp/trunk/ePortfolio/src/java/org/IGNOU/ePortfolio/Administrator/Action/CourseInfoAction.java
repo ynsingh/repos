@@ -5,18 +5,21 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.CourseDao;
 import org.IGNOU.ePortfolio.Model.Course;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author vinay
  */
-public class CourseInfoAction extends ActionSupport {
+public class CourseInfoAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private CourseDao dao = new CourseDao();
     private List<Course> CourseList;
@@ -24,7 +27,7 @@ public class CourseInfoAction extends ActionSupport {
     public CourseInfoAction() {
     }
 
-    public String MyCoursesforFaculty() throws Exception {
+    public String MyCourses() throws Exception {
         CourseList = dao.CourseListByUserId(user_id);
         return SUCCESS;
     }

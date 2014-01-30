@@ -37,76 +37,65 @@ package org.IGNOU.ePortfolio.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.IGNOU.ePortfolio.DAO.LoginDao;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
+import org.IGNOU.ePortfolio.Model.Logs;
 import org.IGNOU.ePortfolio.Model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
  *
  * @author IGNOU Team
  */
-public class LoginAction extends ActionSupport implements SessionAware {
+public class LoginAction extends ActionSupport implements Serializable, SessionAware {
 
-    private String email_id;
-    private String password, role;
-    private String fname;
-    private String lname;
-    private Map session = ActionContext.getContext().getSession();
-    private String msg;
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
+    private Map session = ActionContext.getContext().getSession();
+    private String email_id, password, pwd, role, fname, lname, msg, uName, clientIP;
     private LoginDao ldao = new LoginDao();
     private List<User> userList;
     private UserProgrammeDao updao = new UserProgrammeDao();
-    private String uName;
     private String recordNotFound = getText("msg.user.notFound");
-    private String pwd, token;
+    private List<Logs> logInfo;
 
     @SuppressWarnings("unchecked")
     public String LoginCheck() throws IOException {
-
+        logger.warn(this + " " + session + " Accessed from IP: " + clientIP);
         userList = updao.UserListByUserId(email_id);
         if (userList.isEmpty()) {
-            PropertyConfigurator.configure("log4j.properties");
             logger.warn("User Name Not Found:- Entered Email Id is " + getEmail_id());
-            msg = recordNotFound;
+            msg = recordNotFound + "for " + getEmail_id();
             return ERROR;
         } else {
             role = userList.iterator().next().getRole();
         }
-        uName = userList.iterator().next().getFname() + " " + userList.iterator().next().getLname();
         try {
             pwd = DigestUtils.md5Hex(password);
             if (getLdao().FindUser(email_id, pwd, role)) {
+                logInfo = ldao.logList(email_id, clientIP);
                 session.put("user_id", getEmail_id());
                 session.put("role", getRole());
-                session.put("uName", uName);
-                session.put("name", userList.iterator().next().getFname());
+                session.put("name", userList.iterator().next().getFname() + " " + userList.iterator().next().getLname());
                 session.put("password", password);
-                // if (token.length() > 0 || token.endsWith(null)) {
-                session.put("token", "");
-                //} else {
-                // session.put(" token", token);
-                // }
-                PropertyConfigurator.configure("log4j.properties");
-                logger.warn("user logged in " + getEmail_id());
+                session.put("clientIP", clientIP);
+                 session.put("logId", logInfo.iterator().next().getLogId());
+                logger.warn("user logged in " + getEmail_id() + " Access from IP: " + clientIP);
                 return SUCCESS;
             } else {
-                PropertyConfigurator.configure("log4j.properties");
                 logger.warn("User Name and Password not matched:- Entered Email Id is " + getEmail_id() + " and Password is " + password);
                 msg = "User Name and Password Not Matched";
                 return ERROR;
             }
         } catch (Exception e) {
-            PropertyConfigurator.configure("log4j.properties");
             logger.warn("login error:-" + e);
-            return NONE;
+            return ERROR;
         }
     }
 
@@ -280,16 +269,30 @@ public class LoginAction extends ActionSupport implements SessionAware {
     }
 
     /**
-     * @return the token
+     * @return the clientIP
      */
-    public String getToken() {
-        return token;
+    public String getClientIP() {
+        return clientIP;
     }
 
     /**
-     * @param token the token to set
+     * @param clientIP the clientIP to set
      */
-    public void setToken(String token) {
-        this.token = token;
+    public void setClientIP(String clientIP) {
+        this.clientIP = clientIP;
+    }
+
+    /**
+     * @return the logInfo
+     */
+    public List<Logs> getLogInfo() {
+        return logInfo;
+    }
+
+    /**
+     * @param logInfo the logInfo to set
+     */
+    public void setLogInfo(List<Logs> logInfo) {
+        this.logInfo = logInfo;
     }
 }

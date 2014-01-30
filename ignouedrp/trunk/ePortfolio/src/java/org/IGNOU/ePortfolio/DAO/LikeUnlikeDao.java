@@ -4,6 +4,7 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.LikeDislike;
 import org.hibernate.HibernateException;
@@ -16,8 +17,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
  *
  * @author Amit
  */
-public class LikeUnlikeDao {
+public class LikeUnlikeDao implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
 

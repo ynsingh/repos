@@ -7,7 +7,7 @@ package org.IGNOU.ePortfolio.DAO;
 import java.util.Date;
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.Course;
-import org.IGNOU.ePortfolio.Model.EvidenceSubmission;
+import org.IGNOU.ePortfolio.Model.ActivitiesSubmission;
 import org.IGNOU.ePortfolio.Model.GradeTypeDetailsMaster;
 import org.IGNOU.ePortfolio.Model.GradeTypeMaster;
 import org.IGNOU.ePortfolio.Model.GradeValue;
@@ -159,12 +159,12 @@ public class GradeTypeDao {
     }
 
     @SuppressWarnings("unchecked")
-    public EvidenceSubmission EvidenceSubmissionMarksUpdate(int submissionId, String gradesObtained, String facultyComment, String facultyAttachment) {
+    public ActivitiesSubmission EvidenceSubmissionMarksUpdate(int submissionId, String gradesObtained, String facultyComment, String facultyAttachment) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
-            EvidenceSubmission UpdateEmpInfo = (EvidenceSubmission) s.load(EvidenceSubmission.class, submissionId);
+            ActivitiesSubmission UpdateEmpInfo = (ActivitiesSubmission) s.load(ActivitiesSubmission.class, submissionId);
             UpdateEmpInfo.setGradesObtained(gradesObtained);
             UpdateEmpInfo.setFacultyComment(facultyComment);
             UpdateEmpInfo.setFacultyAttachment(facultyAttachment);
@@ -227,5 +227,4 @@ public class GradeTypeDao {
             sessionFactory.close();
         }
     }
-
 }

@@ -9,9 +9,11 @@ import in.ac.dei.edrp.api.DEIRemoteAccessAPI;
 import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
 import org.IGNOU.ePortfolio.Action.UserSession;
+import org.apache.log4j.Logger;
 import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -24,8 +26,10 @@ import org.jdom2.input.SAXBuilder;
  * @version 1
  * @since 21-08-2012
  */
-public class DEIContactInfoAction extends ActionSupport {
+public class DEIContactInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String skey = ReadPropertyFile("deiKey");
     private String src_id = ReadPropertyFile("deiScourceId");

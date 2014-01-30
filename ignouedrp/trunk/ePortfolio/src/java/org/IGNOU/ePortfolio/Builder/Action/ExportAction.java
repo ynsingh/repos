@@ -9,16 +9,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.PrintHtmlPdf;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Amit
  */
-public class ExportAction extends ActionSupport {
+public class ExportAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String report;
     private String CFile = ReadPropertyFile("Filepath");

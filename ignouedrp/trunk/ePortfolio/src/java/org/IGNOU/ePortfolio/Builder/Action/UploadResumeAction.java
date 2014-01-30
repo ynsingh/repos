@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,29 +22,28 @@ import org.IGNOU.ePortfolio.Model.Resume;
  *
  * @author IGNOU Team
  */
-    public class UploadResumeAction extends ActionSupport
-    {
-    private Resume res = new Resume();
-    private ResumeDao rsdao=new ResumeDao();
-    private String user_id=new UserSession().getUserInSession();
-     private byte[] resume;
-     private String resumeName;
-     private Long resumeSize;
-     private String resumeType;
-     private Date uploadDate;
-     private File userResume;
-     private String userResumeFileName;
+public class UploadResumeAction extends ActionSupport implements Serializable {
 
-       
+    private static final long serialVersionUID = 1L;
+    private Resume res = new Resume();
+    private ResumeDao rsdao = new ResumeDao();
+    private String user_id = new UserSession().getUserInSession();
+    private byte[] resume;
+    private String resumeName;
+    private Long resumeSize;
+    private String resumeType;
+    private Date uploadDate;
+    private File userResume;
+    private String userResumeFileName;
+
     public String UploadResume() {
-            try {
-                rsdao.ResumeSave(user_id, getResume(), getResumeName(), getResumeSize(),getResumeType(), new Date());
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(UploadResumeAction.class.getName()).log(Level.SEVERE, null, ex);
-            }
-         return SUCCESS;
-     }    
-  
+        try {
+            rsdao.ResumeSave(user_id, getResume(), getResumeName(), getResumeSize(), getResumeType(), new Date());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(UploadResumeAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return SUCCESS;
+    }
 
     /**
      * @return the user_id
@@ -63,21 +63,20 @@ import org.IGNOU.ePortfolio.Model.Resume;
      * @return the resume
      */
     public byte[] getResume() throws FileNotFoundException {
-          FileInputStream fis = new FileInputStream(getUserResume());
-            ByteArrayOutputStream bs = new ByteArrayOutputStream();
-            byte[] bf = new byte[1024];
+        FileInputStream fis = new FileInputStream(getUserResume());
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        byte[] bf = new byte[1024];
         try {
 
             for (int readNum; (readNum = fis.read(bf)) != -1;) {
-                    bs.write(bf, 0, readNum);
-             
+                bs.write(bf, 0, readNum);
+
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(UploadResumeAction.class.getName()).log(Level.SEVERE, null, ex);
         }
-        resume=bs.toByteArray();
-          return resume;
+        resume = bs.toByteArray();
+        return resume;
     }
 
     /**
@@ -91,7 +90,7 @@ import org.IGNOU.ePortfolio.Model.Resume;
      * @return the resumeName
      */
     public String getResumeName() {
-         resumeName=getUserResumeFileName();
+        resumeName = getUserResumeFileName();
         return resumeName;
     }
 
@@ -106,7 +105,7 @@ import org.IGNOU.ePortfolio.Model.Resume;
      * @return the resumeSize
      */
     public Long getResumeSize() {
-         resumeSize=userResume.length()/1024;
+        resumeSize = userResume.length() / 1024;
         return resumeSize;
     }
 
@@ -121,7 +120,7 @@ import org.IGNOU.ePortfolio.Model.Resume;
      * @return the resumeType
      */
     public String getResumeType() {
-        resumeType=getUserResumeFileName().substring(getUserResumeFileName().indexOf(".", 4));
+        resumeType = getUserResumeFileName().substring(getUserResumeFileName().indexOf(".", 4));
         return resumeType;
     }
 
@@ -135,8 +134,8 @@ import org.IGNOU.ePortfolio.Model.Resume;
     /**
      * @return the uploadDate
      */
-    public Date getUploadDate()  {
-               return uploadDate;
+    public Date getUploadDate() {
+        return uploadDate;
     }
 
     /**
@@ -173,5 +172,4 @@ import org.IGNOU.ePortfolio.Model.Resume;
     public void setUserResumeFileName(String userResumeFileName) {
         this.userResumeFileName = userResumeFileName;
     }
-
 }

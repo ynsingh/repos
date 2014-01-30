@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -35,21 +35,24 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.HonorAwardDao;
 import org.IGNOU.ePortfolio.Model.ProfileHonorAward;
+import org.apache.log4j.Logger;
 
 /**
  * @version 1
  * @since 13-Oct-2011 (Created & Functional)
  * @author IGNOU Team
  */
-public class HonorAwardInfoAction extends ActionSupport {
+public class HonorAwardInfoAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private HonorAwardDao dao = new HonorAwardDao();
     private ProfileHonorAward ProHonor = new ProfileHonorAward();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private long honorAwardId;
     private String userId;
@@ -60,7 +63,7 @@ public class HonorAwardInfoAction extends ActionSupport {
     private List<ProfileHonorAward> HonorAwardList;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated");
+    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
 
     public HonorAwardInfoAction() {
     }
@@ -68,10 +71,10 @@ public class HonorAwardInfoAction extends ActionSupport {
     public String ShowHonorInfo() throws Exception {
         HonorAwardList = dao.ProfileHonorAwardListByUserId(user_id);
         if (HonorAwardList.isEmpty()) {
-            return INPUT;
+            msg = notFound;
         } else {
-            return SUCCESS;
         }
+        return SUCCESS;
     }
 
     public String EditHonoprInfo() throws Exception {
@@ -278,5 +281,19 @@ public class HonorAwardInfoAction extends ActionSupport {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
+    }
+
+    /**
+     * @return the notFound
+     */
+    public String getNotFound() {
+        return notFound;
+    }
+
+    /**
+     * @param notFound the notFound to set
+     */
+    public void setNotFound(String notFound) {
+        this.notFound = notFound;
     }
 }

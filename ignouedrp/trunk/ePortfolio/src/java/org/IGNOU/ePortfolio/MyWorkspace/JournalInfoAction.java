@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 import org.IGNOU.ePortfolio.DAO.JournalDao;
 import org.IGNOU.ePortfolio.Model.Journal;
 import org.IGNOU.ePortfolio.Model.JournalAuthor;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,8 +23,10 @@ import org.IGNOU.ePortfolio.Model.JournalAuthor;
  * @version 1
  * @since 27-02-2012
  */
-public class JournalInfoAction extends ActionSupport {
+public class JournalInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private Journal j = new Journal();
     private JournalDao dao = new JournalDao();

@@ -4,6 +4,9 @@
    Author     : IGNOU Team
    Version    : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -26,9 +29,13 @@
             });
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -61,15 +68,15 @@
                                                         </tr>
                                                         <tr>
                                                             <td><s:text name="sDate"/></td>
-                                                            <td><sj:datepicker id="date0" minDate="0d" name="eventDateFrom" label="Start Date" changeMonth="true" changeYear="true"/></td>
+                                                            <td><sj:datepicker readonly="true"  id="date0" minDate="0d" name="eventDateFrom" label="Start Date" changeMonth="true" changeYear="true"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td><s:text name="eDate"/></td>
-                                                            <td><sj:datepicker id="date1" minDate="0d" name="eventDateTo" label="End Date" changeMonth="true" changeYear="true"/></td>
+                                                            <td><sj:datepicker readonly="true"  id="date1" minDate="0d" name="eventDateTo" label="End Date" changeMonth="true" changeYear="true"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td><s:text name="aDate"/></td>
-                                                            <td><sj:datepicker id="date2" minDate="0d" name="eventDisplayDate" label="Announce Date" changeMonth="true" changeYear="true"/></td>
+                                                            <td><sj:datepicker readonly="true"  id="date2" minDate="0d" name="eventDisplayDate" label="Announce Date" changeMonth="true" changeYear="true"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td><s:text name="venue"/></td>

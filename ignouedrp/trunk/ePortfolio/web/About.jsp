@@ -5,6 +5,9 @@ Author     : IGNOU Team
 Version      : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -21,7 +24,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
@@ -32,7 +35,7 @@ Version      : 1
                 <div class="w100 fl-l">
                     <div class="header">
                         <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
-                       </div>
+                    </div>
                     <div class="menu_bg">
                         <div class="wau fl-l"><img src="images/blank.gif" alt="" width="20" height="10" /></div>
                         <div class="eportfolio_txt">ePORTFOLIO</div>
@@ -58,10 +61,10 @@ Version      : 1
                             <div class="v_gallery mart20 fl-l">
                                 <table align="center" class="mart20 fl-l">
                                     <s:iterator value="contactList">
-                                         <s:property value="aboutUs" />
+                                        <s:property value="aboutUs" />
                                     </s:iterator>
                                 </table>
-                               
+
                             </div>
                             <!--Right box End Here-->
                         </div>
@@ -79,7 +82,7 @@ Version      : 1
         </div>
         <div class="footer_panel">
             <div class="footer_txt">
-                <div class="wau fl-l tl">&COPY; 2011-12, MHRD. All Rights are Reserved</div>
+                <div class="wau fl-l tl">ePortfolio &COPY; 2011-13, MHRD. All Rights Reserved</div>
                 <div class="wau fl-r tr">Designed and Developed by eGyanKosh,Indira Gandhi National Open University</div>
             </div>
             <!--Footer Section Ends Here-->

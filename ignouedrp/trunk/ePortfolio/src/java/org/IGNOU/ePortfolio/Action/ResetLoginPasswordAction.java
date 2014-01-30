@@ -5,42 +5,43 @@
 package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.DAO.ResetLoginPasswordDao;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  *
  * @author Vinay
  */
-public class ResetLoginPasswordAction extends ActionSupport {
+public class ResetLoginPasswordAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private User u = new User();
     private ResetLoginPasswordDao dao = new ResetLoginPasswordDao();
-    private UserProgrammeDao upDao=new UserProgrammeDao();
+    private UserProgrammeDao upDao = new UserProgrammeDao();
     private List<User> userList;
     private String oldPassword, passwordField, passwordConfirmField, msg;
-    private String oldPwdHash,pwdFieldHash;
+    private String oldPwdHash, pwdFieldHash;
     private long registrationId;
-    final Logger logger = Logger.getLogger(this.getClass());
 
     public ResetLoginPasswordAction() {
     }
 
     public String ResetOldPassword() {
         userList = upDao.UserListByUserId(user_id);
-        oldPwdHash=DigestUtils.md5Hex(oldPassword);
+        oldPwdHash = DigestUtils.md5Hex(oldPassword);
         if (oldPwdHash.equals(userList.iterator().next().getPassword())) {
             registrationId = userList.iterator().next().getRegistrationId();
-            pwdFieldHash=DigestUtils.md5Hex(passwordField);
+            pwdFieldHash = DigestUtils.md5Hex(passwordField);
             dao.UserUpdateByRegistrationIdPassword(registrationId, pwdFieldHash);
-            PropertyConfigurator.configure("log4j.properties");
-            logger.warn("User change his password"+user_id+"registration Id"+registrationId);
+
+            logger.warn("User change his password" + user_id + "registration Id" + registrationId);
             return SUCCESS;
         } else {
             msg = "You Have Entered Wrong Password";

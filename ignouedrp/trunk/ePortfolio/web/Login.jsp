@@ -4,6 +4,9 @@
     Author     : IGNOU Team
     Version    : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sx" uri="/struts-dojo-tags" %>
@@ -48,15 +51,19 @@
                 <!--Middle Section Starts Here-->
                 <div class="w100 fl-l">
                     <div class="middle_bg">
-                        <div class="w50 mar0a tc fbld fcgreen mart50">
+                        <div class="mar0a tc fbld fcred">
                             <s:property value="msg"/>
+                            <%
+                                String ipAddress = request.getRemoteAddr();
+                                // out.println(ipAddress);
+                            %>
                         </div>
                         <div class="login_cont">
                             <div class="w68 fl-l mart70">
-
                                 <table width="100%" class="fl-l" border="0" cellspacing="0" cellpadding="2">
-                                    <s:form action="Login" method="post" theme="simple">
-                                        <tr>
+                                    <s:form action="Login" method="post" theme="simple" namespace="/">
+                                        <s:token/>
+                                        <input type="hidden" name="clientIP" value="<% out.println(ipAddress);%>"/><tr>
                                             <td width="10%">&nbsp;</td>
                                             <td width="80%"><s:textfield cssClass="txt_field" placeholder="Username" name="email_id" /></td>
                                             <td width="10%">&nbsp;</td> 
@@ -77,8 +84,6 @@
                                             </td>
                                             <td width="5%">&nbsp;</td>
                                         </tr>
-
-                                        <s:token/>
                                     </s:form>
                                 </table>
                             </div>
@@ -115,7 +120,7 @@
         </div>
         <div class="footer_panel">
             <div class="footer_txt">
-                <div class="wau fl-l tl">&COPY; 2011-12, MHRD. All Rights are Reserved</div>
+                <div class="wau fl-l tl">ePortfolio &COPY; 2011-13, MHRD. All Rights Reserved</div>
                 <div class="wau fl-r tr">Designed and Developed by eGyanKosh,Indira Gandhi National Open University</div>
             </div>
             <!--Footer Section Ends Here-->

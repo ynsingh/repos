@@ -9,6 +9,7 @@ import in.ac.dei.edrp.api.DEIRemoteAccessAPI;
 import in.ac.dei.edrp.api.StudentMasterBeanAPI;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,8 +31,9 @@ import org.jdom2.input.SAXBuilder;
  *
  * @author IGNOU Team
  */
-public class PersonalInfoAction extends ActionSupport {
+public class PersonalInfoAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
     private String user_id = new UserSession().getUserInSession();
     private PersonalInfo pi = new PersonalInfo();
     private PersonalInfoDao dao = new PersonalInfoDao();

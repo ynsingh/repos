@@ -24,15 +24,15 @@ import org.hibernate.cfg.AnnotationConfiguration;
 public class RequestDao {
 
     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-    private Session s;  
+    private Session s;
 
     public UserPersonalRequest UserPersonalRequestSave(String user_id, String requestType, String reason, String newRecord, Date requestDate, String recordProof, Boolean status) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         UserPersonalRequest upr = new UserPersonalRequest();
         try {
             t = s.beginTransaction();
-            UserList ul=new UserList();
+            UserList ul = new UserList();
             ul.setEmailId(user_id);
             upr.setUser(ul);
             upr.setRequestDate(requestDate);
@@ -89,7 +89,7 @@ public class RequestDao {
 
     @SuppressWarnings("unchecked")
     public List<UserPersonalRequest> UserPersonalRequestListByRequestId(Integer requestId) {
-         s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
         List<UserPersonalRequest> Reqlist = null;
         try {
@@ -121,7 +121,7 @@ public class RequestDao {
 
     @SuppressWarnings("unchecked")
     public PersonalInfo PersonalInfoUpdate(Integer requestId, String recordArchive, long personalInfoId, String emailId, String firstName, String lastName, String fatherName, String motherName, String otherGuardian, String gender, Date dateOfBirth, String pbirth, String mstatus, Long aadhaarNo, String passportNo, String panNo, Integer activeStatus, String castCategory, String religion, String nationality, String languageKnown) {
-       s = sessionFactory.openSession();
+        s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -164,5 +164,4 @@ public class RequestDao {
             sessionFactory.close();
         }
     }
-
 }

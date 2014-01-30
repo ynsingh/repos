@@ -4,6 +4,9 @@
     Version    : 1
     Author     : IGNOU Team
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -30,9 +33,13 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -67,7 +74,7 @@
                                                     <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                         <s:textfield name="tname" label="Test Name"/>
                                                         <s:textfield name="score" label="Score"/>
-                                                        <sj:datepicker id="date0" label="Date" maxDate="-1d" value="%{tdate}" name="tdate" changeMonth="true" changeYear="true"/>
+                                                        <sj:datepicker readonly="true"  id="date0" label="Date" maxDate="-1d" value="%{tdate}" name="tdate" changeMonth="true" changeYear="true"/>
                                                         <sjr:tinymce
                                                             id="richtextTinymceAdvancedEditor"
                                                             name="tdescription"

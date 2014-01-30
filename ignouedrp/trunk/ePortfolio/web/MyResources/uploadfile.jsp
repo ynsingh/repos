@@ -4,6 +4,9 @@
 Author     : IGNOU Team
 Version    : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -20,12 +23,15 @@ Version    : 1
         </script>
         <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
     <body>
         <%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -67,7 +73,7 @@ Version    : 1
                                                 </s:form>
                                             </fieldset>
                                             <fieldset class="w500p mar0a mart10">
-                                                <legend><strong>Upload Folder</strong></legend>
+                                                <legend><strong>Create Folder</strong></legend>
                                                 <s:form action="CreateFolder" method="post" name="myform_1">
                                                     <table width="50%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                         <s:textfield name="name" label="Create Folder"/>
@@ -103,8 +109,8 @@ Version    : 1
                                                         </td>
                                                         <td align="center"><s:if test="filetype==null"> <img src="../images/folder.gif"/> </s:if>
                                                             <s:elseif test="filetype!=null"> <img src="../images/file.gif"/> </s:elseif>
-                                                        </td>
-                                                        <td align="center"><s:property value="description"/>
+                                                            </td>
+                                                            <td align="center"><s:property value="description"/>
                                                         </td>
                                                         <td align="center"><s:property value="filedate"/>
                                                         </td>
@@ -126,16 +132,16 @@ Version    : 1
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform");
-            
-            frmvalidator.addValidation("userImage","req","Please Choose a file");    
-  
+            var frmvalidator = new Validator("myform");
+
+            frmvalidator.addValidation("userImage", "req", "Please Choose a file");
+
         </script>
         <script type="text/javascript">
-            var frmvalidator  = new Validator("myform_1");
-            
-            frmvalidator.addValidation("name","req","Please Enter a Name");     
-  
+            var frmvalidator = new Validator("myform_1");
+
+            frmvalidator.addValidation("name", "req", "Please Enter a Name");
+
         </script>
     </body>
 </html>

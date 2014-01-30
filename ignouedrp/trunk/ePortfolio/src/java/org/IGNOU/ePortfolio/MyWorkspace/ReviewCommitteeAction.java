@@ -5,10 +5,12 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ReviewCommitteeDao;
 import org.IGNOU.ePortfolio.Model.ReviewCommittee;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,8 +18,10 @@ import org.IGNOU.ePortfolio.Model.ReviewCommittee;
  * @version 1
  * @since 17-02-2012
  */
-public class ReviewCommitteeAction extends ActionSupport {
+public class ReviewCommitteeAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ReviewCommittee rc = new ReviewCommittee();
     private ReviewCommitteeDao dao = new ReviewCommitteeDao();

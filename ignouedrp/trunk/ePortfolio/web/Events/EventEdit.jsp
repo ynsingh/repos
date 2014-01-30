@@ -3,6 +3,9 @@
     Created on : Dec 12, 2011, 3:23:34 PM
     Author     : IGNOU Team
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -18,15 +21,20 @@
         <sj:head />
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
-         <script>
+        <script>
             $(function() {
-                $( "#accordion" ).accordion();
+                $("#accordion").accordion();
             });
         </script>
     </head>
     <body>
         <%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -47,43 +55,43 @@
                             <div class="w100 fl-l mart10">
                                 <div class="w98 mar0a">
                                     <div class="w100 fl-l">
-                                         <fieldset class="w500p mar0a">
+                                        <fieldset class="w500p mar0a">
                                             <legend class="fbld">Edit Event Detail</legend>
-                                         <s:form action="UpdateEvent" method="post">
-                                            <table width="85%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
-                                                <s:iterator value="eventList">
-                                                    <s:hidden name="eventsId"/>
-                                                    <s:textfield name="eventTitle" label="Event Title"/>
-                                                    <sj:datepicker id="date0" minDate="0d" name="eventDateFrom" label="Start Date" changeMonth="true" changeYear="true"/>
-                                                    <sj:datepicker id="date1" minDate="0d" name="eventDateTo" label="End Date" changeMonth="true" changeYear="true"/>
-                                                    <sj:datepicker id="date2" minDate="0d" name="eventDisplayDate" label="Announce Date" changeMonth="true" changeYear="true"/>
-                                                    <s:textfield name="venue" label="Venue name"/>
-                                                    <s:textfield name="country" label="Country"/>
-                                                    <s:textfield name="state" label="State/District"/>
-                                                    <s:textfield name="address" label="Address"/>
-                                                    <s:textfield name="city" label="City"/>
-                                                    <s:textfield name="pincode" label="Postal Code"/>
-                                                    <s:textfield name="phone" label="Phone No."/>
-                                                    <s:textfield name="emailId" label="Email Id"/>
-                                                    <s:textfield name="website" label="Website"/>
-                                                    <s:textarea  name="description" label="Description" cols="20" rows="5" />
-                                                    <tr>
-                                                        <td>Postponed the Event</td>
-                                                        <td width="50%"><s:checkbox label="Postponed" name="postponed" theme="simple"/>
-                                                            Postponed</td>
-                                                    </tr>
-                                                    <sj:textarea name="postponedReason" label="Postponed Reason" cols="20" rows="5"/>
-                                                    <tr>
-                                                        <td>&nbsp;</td>
-                                                        <td><s:submit theme="simple" value="Save Changes" />
-                                                            <s:reset theme="simple" value="Cancel" onClick="history.go(-1);" />
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </s:iterator>
-                                        </s:form>
-                                         </fieldset>
-                                        
+                                            <s:form action="UpdateEvent" method="post">
+                                                <table width="85%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                    <s:iterator value="eventList">
+                                                        <s:hidden name="eventsId"/>
+                                                        <s:textfield name="eventTitle" label="Event Title"/>
+                                                        <sj:datepicker readonly="true"  id="date0" minDate="0d" name="eventDateFrom" label="Start Date" changeMonth="true" changeYear="true"/>
+                                                        <sj:datepicker readonly="true"  id="date1" minDate="0d" name="eventDateTo" label="End Date" changeMonth="true" changeYear="true"/>
+                                                        <sj:datepicker readonly="true"  id="date2" minDate="0d" name="eventDisplayDate" label="Announce Date" changeMonth="true" changeYear="true"/>
+                                                        <s:textfield name="venue" label="Venue name"/>
+                                                        <s:textfield name="country" label="Country"/>
+                                                        <s:textfield name="state" label="State/District"/>
+                                                        <s:textfield name="address" label="Address"/>
+                                                        <s:textfield name="city" label="City"/>
+                                                        <s:textfield name="pincode" label="Postal Code"/>
+                                                        <s:textfield name="phone" label="Phone No."/>
+                                                        <s:textfield name="emailId" label="Email Id"/>
+                                                        <s:textfield name="website" label="Website"/>
+                                                        <s:textarea  name="description" label="Description" cols="20" rows="5" />
+                                                        <tr>
+                                                            <td>Postponed the Event</td>
+                                                            <td width="50%"><s:checkbox label="Postponed" name="postponed" theme="simple"/>
+                                                                Postponed</td>
+                                                        </tr>
+                                                        <sj:textarea name="postponedReason" label="Postponed Reason" cols="20" rows="5"/>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td><s:submit theme="simple" value="Save Changes" />
+                                                                <s:reset theme="simple" value="Cancel" onClick="history.go(-1);" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </s:iterator>
+                                            </s:form>
+                                        </fieldset>
+
                                     </div>
                                 </div>
                             </div>

@@ -4,6 +4,9 @@
 Author     : IGNOU Team
 Version      : 1
 --%>
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -24,9 +27,13 @@ Version      : 1
             });
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -166,7 +173,7 @@ Version      : 1
                                                                     </s:else>
                                                                 </s:if>
                                                                 <s:else>
-                                                                    <sj:datepicker id="date0" maxDate="-1d" value="%{dob}" name="dob" changeMonth="true" changeYear="true"/>
+                                                                    <sj:datepicker readonly="true"  id="date0" maxDate="-1d" value="%{dob}" name="dob" changeMonth="true" changeYear="true"/>
                                                                 </s:else>
                                                             </td>
                                                         </tr>
@@ -445,7 +452,7 @@ Version      : 1
                                                                         </s:else>
                                                                     </s:if>
                                                                     <s:else>
-                                                                        <sj:datepicker id="date0" maxDate="-1d" value="%{dateOfBirth}" name="dateOfBirth" changeMonth="true" changeYear="true"/>
+                                                                        <sj:datepicker readonly="true"  id="date0" maxDate="-1d" value="%{dateOfBirth}" name="dateOfBirth" changeMonth="true" changeYear="true"/>
                                                                     </s:else>
                                                                 </td>
                                                             </tr>

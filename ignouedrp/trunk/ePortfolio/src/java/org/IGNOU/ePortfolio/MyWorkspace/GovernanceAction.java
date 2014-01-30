@@ -6,9 +6,11 @@ package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.GovernanceDao;
 import org.IGNOU.ePortfolio.Model.Governance;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,8 +18,10 @@ import org.IGNOU.ePortfolio.Model.Governance;
  * @version 1
  * @since 25 December 2011
  */
-public class GovernanceAction extends ActionSupport implements ModelDriven<Object> {
+public class GovernanceAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private GovernanceDao dao = new GovernanceDao();
     private Governance governanceInfo = new Governance();

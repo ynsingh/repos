@@ -5,6 +5,9 @@
 --%>
 
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -31,9 +34,13 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -77,7 +84,7 @@
                                                             </s:iterator>
                                                             <s:textfield name="publisher" label="Publisher"/>
                                                             <s:textfield name="isbn" label="ISBN"/>
-                                                            <sj:datepicker id="date0" label="Published on" value="%{publishedOn}" name="publishedOn" changeMonth="true" changeYear="true"/>
+                                                            <sj:datepicker readonly="true"  id="date0" label="Published on" value="%{publishedOn}" name="publishedOn" changeMonth="true" changeYear="true"/>
                                                             <tr>
                                                                 <td>Pages</td>
                                                                 <td>From&nbsp;&nbsp;&nbsp;

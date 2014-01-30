@@ -39,6 +39,7 @@ package org.IGNOU.ePortfolio.MyPlans;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import java.util.Date;
 import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
 import org.IGNOU.ePortfolio.Model.UserPlan;
@@ -48,8 +49,9 @@ import org.IGNOU.ePortfolio.Model.UserPlanTask;
  *
  * @author IGNOU Team Last Modified on 12-07-2012 by IGNOU Team
  */
-public class NewTaskAction extends ActionSupport implements ModelDriven<Object> {
+public class NewTaskAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
     private UserPlanTask nt = new UserPlanTask();
     private PlanTaskDAO dao = new PlanTaskDAO();
     private UserPlan up = new UserPlan();

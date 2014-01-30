@@ -4,6 +4,9 @@
     Author     : IGNOU Team
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -29,9 +32,13 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -79,9 +86,9 @@
                                                             <tr>
                                                                 <td>Time Period:</td>
                                                                 <td>From&nbsp;&nbsp;&nbsp;
-                                                                    <sj:datepicker id="date0" value="%{tfrom}" name="tfrom" changeMonth="true" changeYear="true" cssClass="w80p"/>
+                                                                    <sj:datepicker readonly="true"  id="date0" value="%{tfrom}" name="tfrom" changeMonth="true" changeYear="true" cssClass="w80p"/>
                                                                     &nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;
-                                                                    <sj:datepicker id="date1" value="%{tto}" name="tto" changeMonth="true" changeYear="true" cssClass="w80p"/>
+                                                                    <sj:datepicker readonly="true"  id="date1" value="%{tto}" name="tto" changeMonth="true" changeYear="true" cssClass="w80p"/>
                                                                 </td>
                                                             </tr>
                                                             <tr><td valign="top">Description: </td>

@@ -1,9 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
+
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -39,26 +37,22 @@
 package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ProjectDao;
 import org.IGNOU.ePortfolio.Model.Projects;
+import org.apache.log4j.Logger;
 
 /**
  * @author IGNOU Team
  * @version 2
  * @since 20-Oct-2011 Modified by IGNOU Team on 02-Nov-2011
  */
-public class ProjectInfoAction extends ActionSupport {
+public class ProjectInfoAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ProjectDao dao = new ProjectDao();
     private Projects pro = new Projects();

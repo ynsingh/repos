@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -35,18 +35,21 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 import org.IGNOU.ePortfolio.Model.ProfileCertification;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class CertificationAction extends ActionSupport {
+public class CertificationAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private MyProfileDAO dao = new MyProfileDAO();
     private ProfileCertification Certificate;
@@ -59,8 +62,7 @@ public class CertificationAction extends ActionSupport {
     private String certificationDate;
     private String validDate;
     private String msg;
-    private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated");
+    private String infoDeleted = getText("msg.infoDeleted"), infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
 
     public CertificationAction() {
     }
@@ -69,10 +71,10 @@ public class CertificationAction extends ActionSupport {
     public String execute() throws Exception {
         CertificateList = dao.ProfileCertificationListByUserId(user_id);
         if (CertificateList.isEmpty()) {
-            return INPUT;
+            msg = notFound;
         } else {
-            return SUCCESS;
         }
+        return SUCCESS;
     }
 
     public String editCertificateInfo() throws Exception {
@@ -293,5 +295,19 @@ public class CertificationAction extends ActionSupport {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
+    }
+
+    /**
+     * @return the notFound
+     */
+    public String getNotFound() {
+        return notFound;
+    }
+
+    /**
+     * @param notFound the notFound to set
+     */
+    public void setNotFound(String notFound) {
+        this.notFound = notFound;
     }
 }

@@ -35,6 +35,7 @@
 package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
@@ -44,13 +45,13 @@ import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 
 /**
  *
  * @author IGNOU Team
  */
-public class ForgotPasswordAction extends ActionSupport {
+public class ForgotPasswordAction extends ActionSupport implements Serializable  {
 
     private String email_id;
     final Logger logger = Logger.getLogger(this.getClass());
@@ -81,12 +82,12 @@ public class ForgotPasswordAction extends ActionSupport {
                     + "\n Password: " + recoverpassword
                     + "\n Thanks for using ePortfolio";
             new sendMail().SendMail(From, to, subject, msg);
-            PropertyConfigurator.configure("log4j.properties");
+          
             logger.warn("User ReSet His Password" + to + "New Password is" + recoverpassword);
             return SUCCESS;
         } else {
             msg = "Email Id is Not registered, Please Register to Login";
-            PropertyConfigurator.configure("log4j.properties");
+          
             logger.warn("Non register Trying to recover password" + email_id);
             return ERROR;
         }

@@ -26,7 +26,7 @@
             <message key="Please Enter Office Address" />
         </field-validator>
     </field>
-    <field name="ocity">
+ <!--   <field name="ocity">
         <field-validator type="requiredstring">
             <message key="Please Enter City " />
         </field-validator>
@@ -42,16 +42,16 @@
         <field-validator type="requiredstring">
             <message key="Please Enter Country" />
         </field-validator>
-    </field>
+    </field> -->
     <field name="jdate">
         <field-validator type="requiredstring">
             <message key="Please Enter Joining Date" />
         </field-validator>
     </field>
-    
+  <!--  
     <field name="description">
         <field-validator type="requiredstring">
             <message key="Please Enter Description" />
-        </field-validator>
+        </field-validator>-->
     </field>
 </validators>

@@ -257,13 +257,13 @@
             <key>
                 <column name="user_id" length="100" />
             </key>
-            <one-to-many class="org.IGNOU.ePortfolio.Model.EvidenceSubmission" />
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesSubmission" />
         </set>
         <set name="evidences" inverse="true" lazy="false">
             <key>
                 <column name="faculty_id" length="100" />
             </key>
-            <one-to-many class="org.IGNOU.ePortfolio.Model.Evidence" />
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesAnnounce" />
         </set>
         <set name="activitiesCommentsesForSubmitorId" inverse="true" lazy="false">
             <key>

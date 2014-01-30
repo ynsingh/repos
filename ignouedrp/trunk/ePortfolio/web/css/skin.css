@@ -1,18 +1,18 @@
-.jcarousel-skin-tango{height:100px; margin:0px; padding:0px; float:left;}
+.jcarousel-skin-tango{height:100px; margin:0px;  float:left;}
 .jcarousel-skin-tango ul{margin:0px; padding:0px;}
 .jcarousel-skin-tango ul li{margin:0px; padding:0px; width:100px; height:auto;}
 .jcarousel-skin-tango ul li:hover{background:url(images/icon_bg.gif) repeat-x; border: 1px solid #8c8c8c; width: 98px; height:auto;
- -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px;}
+                                  -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px;}
 .jcarousel-skin-tango ul li img{padding: 5px 0px;}
 
 .jcarousel-skin-tango li{margin:0px; margin-top: 10px !important; padding:0px; width:107px; height:102px; float: left; list-style: none; text-align: center; margin-right: 60px;}
 .jcarousel-skin-tango li:hover{background:url(../images/icon_bg.gif) repeat-x; border: 1px solid #8c8c8c; width:105px; height:100px;
- -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px;}
+                               -webkit-border-radius:5px; -moz-border-radius:5px;  border-radius:5px;}
 .jcarousel-skin-tango li img{padding: 5px 0px 0px 0px;}
 .jcarousel-skin-tango li span{width:100px; float: left; font-weight:bold;}
 
 .jcarousel-skin-tango .jcarousel-direction-rtl {
-	direction: rtl;
+    direction: rtl;
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
@@ -46,14 +46,14 @@
 }
 
 .jcarousel-skin-tango .jcarousel-item-horizontal {
-	margin-left:0px;
+    margin-left:0px;
     margin-right:110px;
-	text-align:center;
-	font-weight:bold;
+    text-align:center;
+    font-weight:bold;
 }
 
 .jcarousel-skin-tango .jcarousel-direction-rtl .jcarousel-item-horizontal {
-	margin-left: 10px;
+    margin-left: 10px;
     margin-right: 0;
 }
 
@@ -118,7 +118,7 @@
     background-image: url(../images/next-horizontal.png);
 }
 
-.jcarousel-skin-tango .jcarousel-prev-horizontal:hover, 
+.jcarousel-skin-tango .jcarousel-prev-horizontal:hover,
 .jcarousel-skin-tango .jcarousel-prev-horizontal:focus {
     background-position: -32px 0;
 }

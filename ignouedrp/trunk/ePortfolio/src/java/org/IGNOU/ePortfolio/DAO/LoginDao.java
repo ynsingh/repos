@@ -30,9 +30,16 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import org.IGNOU.ePortfolio.Model.ActivitiesAnnounce;
+import org.IGNOU.ePortfolio.Model.Logs;
 import org.IGNOU.ePortfolio.Model.PersonalInfo;
 import org.IGNOU.ePortfolio.Model.User;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -47,12 +54,15 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @version 1
  * @since
  */
-public class LoginDao {
+public class LoginDao implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
 
     public boolean FindUser(String email_id, String password, String role) {
+        // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         s = sessionFactory.openSession();
         Query qr = s.createQuery("from User  where email_id='" + email_id + "' and password='" + password + "' and role='" + role + "'");
         @SuppressWarnings("unchecked")
@@ -78,6 +88,7 @@ public class LoginDao {
      */
     @SuppressWarnings("unchecked")
     public User UserSave(String emailId, String role, String fname, String lname, int InstituteId, int ProgrammeId) {
+        // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
@@ -102,11 +113,86 @@ public class LoginDao {
         } catch (Throwable ex) {
             //Log the Exception
             t.rollback();
+            logger.error(ex);
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
             sessionFactory.close();
         }
+    }
+
+//    public Logs LogLoginSave(String user_id, Date loginTime, String ip) {
+//        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+//        s = sessionFactory.openSession();
+//        Transaction t = null;
+//        try {
+//            t = s.beginTransaction();
+//            Logs l = new Logs();
+//            l.setUserId(user_id);
+//            l.setLoginTime(loginTime);
+//            l.setIp(ip);
+//            s.save(l);
+//            t.commit();
+//            return l;
+//        } catch (Throwable ex) {
+//            Log the Exception
+//            t.rollback();
+//            logger.error(ex);
+//            System.err.println("Initial SessionFactory creation failed." + ex);
+//            throw new ExceptionInInitializerError(ex);
+//        } finally {
+//           s.close();
+//            sessionFactory.close();
+//        }
+//    }
+    public Logs logOutUpdate(long logId) {
+        // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        s = sessionFactory.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+            Logs UpdateInfo = (Logs) s.load(Logs.class, logId);
+            UpdateInfo.setLogoutTime(new Date());
+            if (null != UpdateInfo) {
+                s.update(UpdateInfo);
+            }
+            t.commit();
+            return UpdateInfo;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sessionFactory.close();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Logs> logList(String user_id, String ip) {
+        s = sessionFactory.openSession();
+        Transaction t = null;
+        List<Logs> logInfo = null;
+        try {
+            t = s.beginTransaction();
+            Logs l = new Logs();
+            l.setUserId(user_id);
+            l.setLoginTime(new Date());
+            l.setIp(ip);
+            s.save(l);
+            t.commit();
+            s.flush();
+            s = sessionFactory.openSession();
+            t = s.beginTransaction();
+            logInfo = s.createQuery("from Logs where userId='" + user_id + "' and ip='" + ip + "' and logId='" + l.getLogId() + "'").list();
+        } catch (HibernateException HE) {
+            System.out.println(HE);
+        }
+        t.commit();
+        s.close();
+        sessionFactory.close();
+        return logInfo;
     }
 }

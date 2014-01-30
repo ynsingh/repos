@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.DAO.FeedbackDao;
 import org.IGNOU.ePortfolio.Model.Feedback;
@@ -13,16 +14,16 @@ import org.IGNOU.ePortfolio.Model.Feedback;
  *
  * @author IGNOU Team
  */
-public class FeedBackArchiveAction extends ActionSupport {
-  private FeedbackDao fbDao = new FeedbackDao();
+public class FeedBackArchiveAction extends ActionSupport implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private FeedbackDao fbDao = new FeedbackDao();
     private Feedback fback;
-    private List<Feedback> fbList;   
-    private  long feedbackId;
+    private List<Feedback> fbList;
+    private long feedbackId;
     private Boolean archive;
 
-   
-    
-     public String MoveFbsToArchive() throws Exception {
+    public String MoveFbsToArchive() throws Exception {
         Feedback ArchiveFeedback = getFbDao().FeedbackArchiveByFeedbackId(getFeedbackId());
         return SUCCESS;
     }
@@ -96,7 +97,4 @@ public class FeedBackArchiveAction extends ActionSupport {
     public void setArchive(Boolean archive) {
         this.archive = archive;
     }
-
-   
-
 }

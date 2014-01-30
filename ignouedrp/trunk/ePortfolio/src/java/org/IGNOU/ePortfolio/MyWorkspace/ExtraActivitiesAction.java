@@ -6,9 +6,11 @@ package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.ExtraActivitiesDao;
 import org.IGNOU.ePortfolio.Model.ExtraActivities;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,8 +18,10 @@ import org.IGNOU.ePortfolio.Model.ExtraActivities;
  * @version 1
  * @since 29-02-2012
  */
-public class ExtraActivitiesAction extends ActionSupport implements ModelDriven<Object> {
+public class ExtraActivitiesAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private ExtraActivities ext = new ExtraActivities();
     private ExtraActivitiesDao dao = new ExtraActivitiesDao();

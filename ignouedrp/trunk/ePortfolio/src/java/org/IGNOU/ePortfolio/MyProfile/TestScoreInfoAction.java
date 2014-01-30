@@ -1,5 +1,5 @@
 /*
- * 
+ *
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -35,27 +35,23 @@
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.TestScoreDao;
 import org.IGNOU.ePortfolio.Model.ProfileTest;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class TestScoreInfoAction extends ActionSupport {
+public class TestScoreInfoAction extends ActionSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
     private TestScoreDao dao = new TestScoreDao();
     private ProfileTest Score = new ProfileTest();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private List<ProfileTest> ScoreList;
     private long testId;
@@ -66,7 +62,7 @@ public class TestScoreInfoAction extends ActionSupport {
     private String tdescription;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated");
+    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
 
     public TestScoreInfoAction() {
     }
@@ -74,12 +70,10 @@ public class TestScoreInfoAction extends ActionSupport {
     public String ShowInfo() throws Exception {
         ScoreList = dao.ProfileTestListByUserId(getUser_id());
         if (ScoreList.isEmpty()) {
-            // return SUCCESS;
-            return INPUT;
+            msg = notFound;
         } else {
-            //return ERROR;
-            return SUCCESS;
         }
+        return SUCCESS;
     }
 
     public String EditInfo() throws Exception {
@@ -279,5 +273,19 @@ public class TestScoreInfoAction extends ActionSupport {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
+    }
+
+    /**
+     * @return the notFound
+     */
+    public String getNotFound() {
+        return notFound;
+    }
+
+    /**
+     * @param notFound the notFound to set
+     */
+    public void setNotFound(String notFound) {
+        this.notFound = notFound;
     }
 }

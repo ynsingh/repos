@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Dropdown;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import org.IGNOU.ePortfolio.Model.Department;
  *
  * @author vinay
  */
-public class DepartmentAction extends ActionSupport {
+public class DepartmentAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = -2223948287805083119L;
     private Map<String, String> departmentL;

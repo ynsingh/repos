@@ -37,17 +37,21 @@
 package org.IGNOU.ePortfolio.MyPlans;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
 import org.IGNOU.ePortfolio.Model.UserPlan;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author IGNOU Team
  */
-public class MyPlanAction extends ActionSupport {
+public class MyPlanAction extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private UserPlan myplanlist;
     private PlanTaskDAO dao = new PlanTaskDAO();

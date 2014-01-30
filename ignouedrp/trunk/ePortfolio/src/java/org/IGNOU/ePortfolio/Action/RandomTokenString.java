@@ -5,14 +5,18 @@
 package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.Random;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Administrator
  */
-public class RandomTokenString extends ActionSupport {
+public class RandomTokenString extends ActionSupport implements Serializable  {
 
+    private static final long serialVersionUID = 1L;
+    final Logger logger = Logger.getLogger(this.getClass());
     private static final String dCase = "abcdefghijklmnopqrstuvwxyz";
     private static final String uCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String sChar = "!@#$%^&*";

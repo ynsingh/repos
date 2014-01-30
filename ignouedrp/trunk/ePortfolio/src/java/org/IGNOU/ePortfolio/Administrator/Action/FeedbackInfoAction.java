@@ -5,6 +5,7 @@
 package org.IGNOU.ePortfolio.Administrator.Action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.sendMail;
 import org.IGNOU.ePortfolio.DAO.FeedbackDao;
@@ -15,8 +16,9 @@ import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.*;
  *
  * @author IGNOU Team
  */
-public class FeedbackInfoAction extends ActionSupport {
+public class FeedbackInfoAction extends ActionSupport implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private FeedbackDao fbDao = new FeedbackDao();
     private Feedback fback;
     private List<Feedback> fbList;
@@ -33,7 +35,8 @@ public class FeedbackInfoAction extends ActionSupport {
         fbList = (fbDao.FeedbackList());
         return SUCCESS;
     }
-     public String ShowArchiveFeedback() throws Exception {
+
+    public String ShowArchiveFeedback() throws Exception {
         fbList = (fbDao.ArchiveFeedbackList());
         return SUCCESS;
     }
@@ -53,9 +56,8 @@ public class FeedbackInfoAction extends ActionSupport {
         fbList = fbDao.FeedbackReplyListByFeedbackId(feedbackId);
         return SUCCESS;
     }
-             
 
-    public String  ForwardFeedback() {
+    public String ForwardFeedback() {
         fbList = fbDao.FeedbackReplyListByFeedbackId(feedbackId);
         return SUCCESS;
     }
@@ -65,7 +67,7 @@ public class FeedbackInfoAction extends ActionSupport {
         to = getEmailId();
         From = ReadPropertyFile("mailFrom");
         Password = ReadPropertyFile("mailPassword");
-        subject =  getFSubject();
+        subject = getFSubject();
         msg = "Dear &nbsp;" + getName() + "<br><br><br>" + getComment();
 
         new sendMail().SendMail(From, to, subject, msg);

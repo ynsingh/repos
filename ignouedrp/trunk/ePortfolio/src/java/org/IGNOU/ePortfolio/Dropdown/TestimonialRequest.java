@@ -5,6 +5,7 @@ package org.IGNOU.ePortfolio.Dropdown;
  * and open the template in the editor.
  */
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.UserProgrammeDao;
 import org.IGNOU.ePortfolio.Model.User;
 import org.IGNOU.ePortfolio.DAO.TestimonialDao;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,9 +21,11 @@ import org.IGNOU.ePortfolio.DAO.TestimonialDao;
  * @version 2
  * @since 31-08-2012
  */
-public class TestimonialRequest extends ActionSupport {
+public class TestimonialRequest extends ActionSupport implements Serializable  {
+    private static final long serialVersionUID = 1L;
 
-    private String user_id = new UserSession().getUserInSession();
+    final Logger logger = Logger.getLogger(this.getClass());
+private String user_id = new UserSession().getUserInSession();
     private TestimonialDao dao = new TestimonialDao();
     private UserProgrammeDao updao=new UserProgrammeDao();
     private Map<String, String> facultyList = null;

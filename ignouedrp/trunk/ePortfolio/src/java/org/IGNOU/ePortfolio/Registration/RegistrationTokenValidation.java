@@ -6,6 +6,7 @@ package org.IGNOU.ePortfolio.Registration;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import static org.IGNOU.ePortfolio.Action.ReadPropertiesFile.ReadPropertyFile;
@@ -13,13 +14,13 @@ import org.IGNOU.ePortfolio.Action.sendMail;
 import org.IGNOU.ePortfolio.DAO.RegistrationDao;
 import org.IGNOU.ePortfolio.Model.User;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 
 /**
  *
  * @author Vinay
  */
-public class RegistrationTokenValidation extends ActionSupport {
+public class RegistrationTokenValidation extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
@@ -39,7 +40,7 @@ public class RegistrationTokenValidation extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        PropertyConfigurator.configure("log4j.properties");
+      
         if (dao.UserUpdate(registrationId, emailId, uuid) == true) {
             logger.warn("Email Valicated Successfully, with Email: " + emailId + " Token: " + uuid + " Registration ID: " + registrationId + " on Date: " + new Date());
             String Message = "<p>Dear " + emailId + ",</p><p>You have Successfully Registered with ePortfolio. </p><p>Thanks</p><p>Admin, eGyankosh</p><p>IGNOU</p>";

@@ -5,6 +5,9 @@
     Version    : 1
 --%>
 
+<%@page import="java.io.Serializable"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
@@ -30,9 +33,13 @@
                 window.history.forward(1);
         </script>
     </head>
-    <body>
-        <%
+    <body><%
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
+                session.invalidate();
                 response.sendRedirect("../Login.jsp");
             }
         %>
@@ -115,8 +122,8 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>Duration:</td>
-                                                                <td>From&nbsp;<sj:datepicker id="date0" value="%{durationFrom}" name="durationFrom" cssClass="w80p" changeMonth="true" changeYear="true"/>
-                                                                    &nbsp;To&nbsp;<sj:datepicker id="date1" value="%{durationTo}" name="durationTo" cssClass="w80p" changeMonth="true" changeYear="true"/>
+                                                                <td>From&nbsp;<sj:datepicker readonly="true"  id="date0" value="%{durationFrom}" name="durationFrom" cssClass="w80p" changeMonth="true" changeYear="true"/>
+                                                                    &nbsp;To&nbsp;<sj:datepicker readonly="true"  id="date1" value="%{durationTo}" name="durationTo" cssClass="w80p" changeMonth="true" changeYear="true"/>
                                                                 </td>
                                                             </tr>
                                                             <tr>

@@ -36,20 +36,23 @@ package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.Serializable;
 import org.IGNOU.ePortfolio.Action.UserSession;
 import org.IGNOU.ePortfolio.DAO.AddInfoDao;
 import org.IGNOU.ePortfolio.Model.ProfileReferences;
+import org.apache.log4j.Logger;
 
 /**
  * Created on 11-Oct-2011 Version 1.1
  *
  * @author IGNOU Team
  */
-public class ReferenceAddAction extends ActionSupport implements ModelDriven<Object> {
+public class ReferenceAddAction extends ActionSupport implements Serializable, ModelDriven<Object> {
 
     private static final long serialVersionUID = 1L;
     private AddInfoDao dao = new AddInfoDao();
     private ProfileReferences Ref = new ProfileReferences();
+    final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
     private String name;
     private String designation;
