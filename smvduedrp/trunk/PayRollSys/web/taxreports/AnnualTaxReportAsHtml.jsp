@@ -67,7 +67,7 @@
             //HashMap map = new HashMap();
             //System.out.println("In JSP : "+new TaxController().getEffectiveInv());
             map.put("org_name", ub.getOrgName());
-            map.put("org_title", "Annual Tax ");
+            map.put("org_title", "Annual Tax Report");
             map.put("year", ""+ub.getCurrentYear());
             
             Image img = new OrgLogoDB().loadLogoImage();

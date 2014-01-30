@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AnnualIT" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<parameter name="org_name" class="java.lang.String"/>
-	<parameter name="title" class="java.lang.String"/>
+	<parameter name="org_title" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
@@ -60,101 +60,126 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="21" splitType="Stretch"/>
-	</title>
-	<pageHeader>
-		<band height="16" splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="9" splitType="Stretch"/>
-	</columnHeader>
 	<detail>
-		<band height="364" splitType="Stretch">
+		<band height="343" splitType="Stretch">
+                    <textField>
+				<reportElement x="150" y="69" width="50" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_code}]]></textFieldExpression>
+			</textField>
 			<textField>
-				<reportElement x="395" y="78" width="132" height="20"/>
-				<textElement/>
+				<reportElement x="400" y="69" width="225" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="113" y="98" width="210" height="20"/>
-				<textElement/>
+				<reportElement x="150" y="83" width="128" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{dept_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="113" y="118" width="100" height="20"/>
-				<textElement/>
+                        <textField>
+				<reportElement x="150" y="97" width="100" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_pan_no}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="395" y="118" width="51" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{grd_max}]]></textFieldExpression>
+                        <textField>
+				<reportElement x="400" y="97" width="48" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{grd_min}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="472" y="118" width="55" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{grd_min}]]></textFieldExpression>
+				<reportElement x="500" y="97" width="48" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{grd_max}]]></textFieldExpression>
 			</textField>
-			<textField>
+                        <line>
+				<reportElement x="450" y="104" width="8" height="1"/>
+			</line>
+                        <textField>
 				<reportElement x="35" y="178" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{sum(es_total_income)}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="113" y="16" width="253" height="20" forecolor="#FF6600"/>
-				<textElement/>
+                        <textField>
+				<reportElement x="103" y="6" width="328" height="18" forecolor="#FF6600"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="114" y="38" width="252" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{title}]]></textFieldExpression>
+                        
+                        <textField>
+				<reportElement x="400" y="83" width="350" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{desig_name}]]></textFieldExpression>
 			</textField>
+                        <textField>
+				<reportElement x="103" y="28" width="328" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{org_title}]]></textFieldExpression>
+			</textField>
+                        <line>
+                            	<reportElement x="10" y="115" width="550" height="1"/>
+			</line>
 			<staticText>
-				<reportElement x="35" y="78" width="78" height="20"/>
-				<textElement/>
+				<reportElement x="24" y="69" width="110" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Employee Code]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="35" y="98" width="78" height="20"/>
-				<textElement/>
+				<reportElement x="300" y="69" width="60" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+                        <staticText>
+				<reportElement x="24" y="83" width="81" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Department]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="113" y="78" width="87" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{emp_code}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="295" y="78" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[Employee Name]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="35" y="118" width="78" height="20"/>
-				<textElement/>
-				<text><![CDATA[Pan No]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="295" y="98" width="100" height="20"/>
-				<textElement/>
+				<reportElement x="300" y="83" width="100" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Designation]]></text>
 			</staticText>
-			<line>
-				<reportElement x="446" y="126" width="16" height="1"/>
-			</line>
-			<staticText>
-				<reportElement x="295" y="118" width="100" height="20"/>
-				<textElement/>
+                        <staticText>
+				<reportElement x="24" y="97" width="81" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ PAN No.]]></text>
+			</staticText>
+                        <staticText>
+				<reportElement x="300" y="97" width="60" height="14"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Pay Scale]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="395" y="98" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{desig_name}]]></textFieldExpression>
-			</textField>
-			<staticText>
+                    	<staticText>
 				<reportElement x="25" y="158" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Total Gross Income]]></text>
@@ -200,11 +225,11 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{et_percent}]]></textFieldExpression>
 			</textField>
-			<image onErrorType="Icon">
-				<reportElement x="34" y="16" width="79" height="58"/>
+                        <image onErrorType="Icon">
+				<reportElement x="24" y="4" width="79" height="58"/>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{org_logo}]]></imageExpression>
 			</image>
-			<textField>
+                        <textField>
 				<reportElement x="472" y="178" width="83" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Float"><![CDATA[$F{et_educess}]]></textFieldExpression>
@@ -226,13 +251,4 @@
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="44" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
-</jasperReport>
+	</jasperReport>
