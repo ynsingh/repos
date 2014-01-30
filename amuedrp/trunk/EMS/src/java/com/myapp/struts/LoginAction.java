@@ -227,12 +227,12 @@ session.setAttribute("insti",ado.getInstituteName());
             if(elec.getNstart().before(d) && elec.getNend().after(d))
             {
                currentelectionList.add(elec);
-		setVoter.add(elec);
+		//setVoter.add(elec);
             }
              if(elec.getNstart().before(d) && elec.getWithdrawlEndDate().after(d))
             {
                underprocessList.add(elec);
-		setVoter.add(elec);
+		//setVoter.add(elec);
             }
             if(elec.getStartDate().before(d) && elec.getEndDate().after(d))
             {
@@ -240,7 +240,7 @@ session.setAttribute("insti",ado.getInstituteName());
                 elec.setStatus("started");
                     ElectionDAO.update(elec);
                 electionList.add(elec);
-                setVoter.add(elec);
+                //setVoter.add(elec);
                     
 
             }
@@ -255,6 +255,13 @@ session.setAttribute("insti",ado.getInstituteName());
                  ElectionDAO.update(elec);
                   ClosedelectionList.add(elec);
             }
+            //code on 29 Jan 2014 and commented the line setVoter.add(elec) in above conditions
+            if(elec.getNstart().before(d) && elec.getEndDate().after(d))
+            {
+               setVoter.add(elec);
+            }
+                      
+            //code on 29 Jan 2014
         session.setAttribute("electionList", electionList);
         session.setAttribute("currentelectionList", currentelectionList);
         session.setAttribute("underprocessList", underprocessList);

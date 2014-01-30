@@ -17,9 +17,12 @@ if(session.isNew()){
     <%
     String msg1="";
     msg1=(String) request.getAttribute("msg");
+
     %>
         alert(<%=msg1%>);
+            
         //Change on 13.11.2013
+        
     parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
 <%@page import="java.sql.*,com.myapp.struts.admin.AdminReg_Institute,com.myapp.struts.hbm.*,java.util.*" %>
@@ -207,7 +210,8 @@ if(msg1!=null)
     <script>
         alert("<%=msg1%>");
         //Change on 13.11.2013
-        location.href = "<%=request.getContextPath()%>"+"/login.jsp"
+        //location.href
+        parent.location = "<%=request.getContextPath()%>"+"/login.jsp"
         //Change on 13.11.2013
     </script>
 <%}%><%

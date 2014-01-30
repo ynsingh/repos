@@ -184,9 +184,121 @@ private ElectionId elid=new ElectionId();
                        bw.newLine();
                         }
 
+                        
+                        
+                        
+                        PositionDAO pos=new PositionDAO();
+                        List <Position1> pos1=pos.getPosition(elid1,institute_id);
+                        result=votingdao.GetPreferencialResult(institute_id, elid1);
+                        Result   noofcand=(Result)votingdao.GetNoOfCand(institute_id, elid1);
+
+                        if(result!=null)
+                {
+                 System.out.println(result+"  kkkkkkkkkkkkkkk  "+noofcand.getCand());
+
+                System.out.println("Position count!!!!!!!!!!!!!!!!!!!="+result.size());
+                Iterator itpos = result.listIterator();
+                LinkedHashMap<String,ArrayList> m = new LinkedHashMap<String, ArrayList>();
+                ArrayList<String> lsPos = new ArrayList<String>();
+            while(itpos.hasNext())
+            {
+                System.out.println("Resulttttttt "+noofcand.getCand());
+                Result rs = (Result)itpos.next();
+
+                if(m.containsKey(rs.getPosition_name()))
+                {
+                    m.get(rs.getPosition_name()).add(rs.getEnrolment());
+                    //m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getCandidateName());
+                 System.out.println("jhgggggggggggg"+noofcand.getCand());
+
+
+
+
+                      for(i=0;i<rs.getPref().length();i++){
+                          String t=Character.toString(rs.getPref().charAt(i));
+
+                          m.get(rs.getPosition_name()).add(t==null?0:t);
+                      }
+
+
+                }
+                else
+                {
+
+
+                     lsPos.add(rs.getPosition_name().toString());
+                    lsPos.add(rs.getNumber_of_choice().toString());
+                    m.put(rs.getPosition_name(),new ArrayList<String>());
+                    m.get(rs.getPosition_name()).add(rs.getEnrolment());
+                  //  m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getCandidateName());
+                    for(i=0;i<rs.getPref().length();i++){
+                          String t=Character.toString(rs.getPref().charAt(i));
+
+                          m.get(rs.getPosition_name()).add(t==null?0:t);
+                      }
+                    }
+            }
+
+
+
+
+            itpos = result.iterator();
+
+                for (i=0;i<m.size();i++)
+                {
+                    List ls = (List)m.get((String)lsPos.get(2*i));
+                    bw.write("**************Preferential Result****************** ");
+                     bw.newLine();
+                     bw.write("Position Name   "+lsPos.get(2*i));
+                     bw.newLine();
+                   bw.write("Number of Choice  "+lsPos.get(2*i+1));
+                     bw.newLine();
+                    
+
+                    Iterator it = ls.iterator();
+                    while(it.hasNext())
+                    {
+                        System.out.println(it.next()+"###################");
+                        
+                        bw.write("Candidate Name  "+it.next().toString());
+                        bw.newLine();
+                       
+
+
+                        for(int j=0;j<noofcand.getCand();j++){
+                        bw.write("Preference  "+(j+1)+" : "+it.next().toString());
+                        bw.newLine();
+                        
+
+                    }
+
+
+                    }
+
+                }
+
+
+            }
+        else{
+
+                 bw.write("**************Preferential Result****************** ");
+                            bw.newLine();
+                            bw.write("Sorry No Result Found ");
+                       bw.newLine();
+        }
+
+                        if(!pos1.isEmpty())
+                        {
+                           for(i=0;i<=(pos1.size())-1;i++)
+                           {
+                               ElectionDAO.deletePreferentialVoting(Integer.toString(pos1.get(i).getId().getPositionId()),elid1, institute_id);
+                           }
+                        }
 
                         ElectionDAO.delete(elid1, institute_id);
-
+                        
                         List<CandidateRegistration> cdr=CandidateRegistrationDAO.getCandidateDetailsByElectionId(institute_id,elid1);
                         int sz=cdr.size();
                         System.out.println("size is "+sz);
@@ -324,8 +436,7 @@ private ElectionId elid=new ElectionId();
                         
                         
                         
-                       PositionDAO pos=new PositionDAO();
-                       List <Position1> pos1=pos.getPosition(elid1,institute_id);
+                       
                        String p;
                        if(!pos1.isEmpty())
                        {
@@ -334,7 +445,7 @@ private ElectionId elid=new ElectionId();
                                ElectionDAO.deleteVotingBallot(Integer.toString(pos1.get(i).getId().getPositionId()));
                            }
                        }
-                        
+                       
                         BallotPositionCandiDAO.deleteBallot(elid1, institute_id);
                         CandidateRegistrationDAO.deleteCandi1(elid1, institute_id);
                         ElectionDAO.deleteElectionManagerMigrate(elid1, institute_id);

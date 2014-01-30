@@ -196,6 +196,7 @@ if(em!=undefined)
              divtag1.id = "ElectionName";
              divtag1.style.backgroundColor = "#D8CEF6";
              divtag1.style.border = "solid 5px #F2F5A9";
+            
             var htm1 = '<span style="text-align:center">Preferencial Result For Election '+ elec +'</span>';
            // htm1+='<input type="button" name="calculate" value="Calculate" id="calculate" onclick="callme();"  />';
             divtag1.innerHTML = htm1;
@@ -235,10 +236,13 @@ htm = htm +'<table class="ballot"><tbody><tr><th style="text-align: left;width:2
 
 
 var ca = em1[iii].getElementsByTagName("candidate");
-for(jj=0;jj<ca.length;jj++){
-    htm+='<th>pref'+(jj+1)+'</th>';
+//commented by farooq
+//for(jj=0;jj<ca.length;jj++){
     
-}
+    //htm+='<th>pref'+(jj+1)+'</th>';
+    htm+='<th>Position'+'</th>';
+    
+//}
 htm+='</tr>';
 choice[iii]=noofchoice;
 var ch =0;
@@ -264,7 +268,7 @@ for(jj=0;jj<ca.length;jj++)
                             
        // var preferencialone=ca[jj].getElementsByTagName("pref"+(jj+1));
        
-     //   var preferencialtwo=ca[jj].getElementsByTagName("pref2");
+       //   var preferencialtwo=ca[jj].getElementsByTagName("pref2");
        // alert("pref2"+preferencialtwo);
        // var preferencialthree=ca[jj].getElementsByTagName("pref3");
        // alert("pref3"+preferencialthree);
@@ -338,9 +342,13 @@ for(jj=0;jj<ca.length;jj++)
          if(preferencialone[0].firstChild!=null)
                 pref1=preferencialone[0].firstChild.nodeValue;
   
+  //commented by farooq
+  //htm = htm +'<td style="text-align: center;"><label for="entry'+iii+'">'+pref1+'</label></td>';
   
-  htm = htm +'<td style="text-align: center;"><label for="entry'+iii+'">'+pref1+'</label></td>';
   }
+  //code on 17 Jan
+  htm = htm +'<td style="text-align: center;"><label for="entry">'+(jj+1)+'</label></td>';
+  //code on 17 Jan
   htm+='</tr>';
   ////alert(iii+"ivallll");    
 //ival = iii;

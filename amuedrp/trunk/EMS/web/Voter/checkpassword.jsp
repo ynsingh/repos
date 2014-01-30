@@ -442,9 +442,8 @@ function loadvoting()
                 String s=(String)request.getAttribute("voting");
                 if(s!=null){
                 %>
-                //htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/pref_election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
-                htm+='<iframe name="f1" id="f1"  src="#" width="665px" style="height: '+ h1 +'px" />';
-                <%}else{%>
+                htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/pref_election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                  <%}else{%>
                      htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
                      <%}%>
                     htm+='</div></div>';

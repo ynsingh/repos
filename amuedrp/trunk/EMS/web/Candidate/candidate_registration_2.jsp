@@ -468,11 +468,11 @@ String instituteName=(String)session.getAttribute("institute_name");
 
 <body>
     <div
-        style="  top:5%;
+        style="  top:7%;
         left:55%;
         right:5px;
         position: absolute;
-
+        
         visibility: show;" >
         <%if (btn.equals("Update") == true || btn.equals("View") == true) {%>
 
@@ -502,8 +502,8 @@ String instituteName=(String)session.getAttribute("institute_name");
 
 
     <div
-        style="  top:50px;
-        left:60%;
+        style="  top:145px;
+        left:55%;
         right:5px;
         position: absolute;
 
@@ -512,7 +512,7 @@ String instituteName=(String)session.getAttribute("institute_name");
 
         <html:form action="/candidateimageupload1" method="post" styleId="form1" enctype="multipart/form-data">
             <%if (btn.equals("Update") == true || btn.equals("View") == true) {%>
-            <html:file  property="img" name="CandidateRegActionForm" styleId="img" onchange="submit()"  onclick="copy1()" />
+             <html:file  property="img" name="CandidateRegActionForm" styleId="img" onchange="submit()"  onclick="copy1()" />
        
         <%}%>
 

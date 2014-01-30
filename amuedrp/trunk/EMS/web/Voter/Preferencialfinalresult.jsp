@@ -161,8 +161,8 @@ top.location.href="<%=request.getContextPath()%>/institute_admin/search_election
     return false;
 }
 
-            function previewBallot(p) {
-  //  alert(p);
+function previewBallot(p) {
+   // alert(p);
    // alert(document.getElementById("position").style.display);
 q=p;
     var req = newXMLHttpRequest();

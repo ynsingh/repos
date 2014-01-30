@@ -435,7 +435,8 @@ if(str!=null)
                         <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;     <a href="<%=request.getContextPath()%>/admin/admin_registration.jsp"> <%=resource.getString("join")%></a>
                         <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>
                         <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white">  <%=resource.getString("login.ems.nmeict")%> <%=resource.getString("homepage")%></a>
-                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="#" style="color:white">  <%=resource.getString("sitemap")%></a>
+                       <%--commented for some time because of under working stage--%>
+                        <%--<br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="#" style="color:white">  <%=resource.getString("sitemap")%></a>--%>
                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/ModuleHelp/Releasenotes.jsp" style="color:white"> <%=resource.getString("releasenotes")%></a>
                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/ModuleHelp/CompleteUserManual.pdf" style="color:white"> <%=resource.getString("usermanual")%></a>
                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a  style="color:white" href="/EMS/ModuleHelp/index.html"><%=resource.getString("login.ems.html.help")%></a></a>

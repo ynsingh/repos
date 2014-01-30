@@ -29,12 +29,31 @@ public class Result implements  Serializable {
     private String total;
     private String preference;
     private int cand;
+    private String candidateName;
+   // private int ch;
     //private String pref1;
   //  private String pref2;
    // private String pref3;
    // private String pref4;
   //  private String pref5;
     private String pref;
+
+//    public int getCh() {
+//        return ch;
+//    }
+//
+//    public void setCh(int ch) {
+//        this.ch = ch;
+//    }
+
+    
+    public String getCandidateName() {
+        return candidateName;
+    }
+
+    public void setCandidateName(String candidateName) {
+        this.candidateName = candidateName;
+    }
     
     
      public String getPref() {

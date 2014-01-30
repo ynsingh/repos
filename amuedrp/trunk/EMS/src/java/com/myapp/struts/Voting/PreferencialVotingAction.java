@@ -309,17 +309,12 @@ public class PreferencialVotingAction extends org.apache.struts.action.Action {
                     positions+="</position>";
                 }
                 positions+="</positions>";
-
             }
 
              System.out.println("XML ="+positions);
                 response.setContentType("application/xml");
                 response.getWriter().write(positions);
                 return null;
-
-
-
-
 
             }
             else 
@@ -329,11 +324,11 @@ public class PreferencialVotingAction extends org.apache.struts.action.Action {
                 //  result=prefresult;
            
 
-session.setAttribute("resultset", result);
+                session.setAttribute("resultset", result);
 
             if(result!=null)
             {
-                 System.out.println(result+"kkkkkkkkkkkkkkk"+noofcand.getCand());
+                 System.out.println(result+"  kkkkkkkkkkkkkkk  "+noofcand.getCand());
                 positions+="<positions>";
                 positions+="<election>"+elec.getElectionName()+"</election>";
                 System.out.println("Position count!!!!!!!!!!!!!!!!!!!="+result.size());
@@ -349,7 +344,8 @@ session.setAttribute("resultset", result);
                 if(m.containsKey(rs.getPosition_name()))
                 {
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
-                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    //m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getCandidateName());
                  System.out.println("jhgggggggggggg"+noofcand.getCand());      
          
 
@@ -378,7 +374,6 @@ session.setAttribute("resultset", result);
                       }
                  
                  
-                 
                 }
                 else
                 {       
@@ -388,7 +383,8 @@ session.setAttribute("resultset", result);
                     lsPos.add(rs.getNumber_of_choice().toString());
                     m.put(rs.getPosition_name(),new ArrayList<String>());
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
-                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                  //  m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getCandidateName());
                     for(int i=0;i<rs.getPref().length();i++){
                           String t=Character.toString(rs.getPref().charAt(i));
                           

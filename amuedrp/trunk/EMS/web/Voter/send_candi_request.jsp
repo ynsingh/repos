@@ -535,16 +535,17 @@ req.open("POST","<%=request.getContextPath()%>/applyCandidature.do?position="+po
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
+
 return true;
 }
 function responseRequest(cartXML)
 {
     var em = cartXML.getElementsByTagName("messages")[0];
-var em1 = em.getElementsByTagName("message");
-var t=em1[0].firstChild.nodeValue;
-
-alert(t);
-//location.href="<%=request.getContextPath()%>/applyCandidature.do?position="+p+"&election="+e+"&report=true";
+    var em1 = em.getElementsByTagName("message");
+    var t=em1[0].firstChild.nodeValue;
+    
+    alert(t);
+    //location.href="<%=request.getContextPath()%>/applyCandidature.do?position="+p+"&election="+e+"&report=true";
 
 }
 function checkPassword(pass,election) {
@@ -593,7 +594,9 @@ req.onreadystatechange = getReadyStateHandler(req, loadElection);
 req.open("POST","<%=request.getContextPath()%>/getElection.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
 req.send();
+
 return true;
 }
   function loadElection(cartXML)
@@ -607,10 +610,12 @@ var em1 = em.getElementsByTagName("election");
 //var em = cartXML.firstChild.value;
 
 for(iii=0;iii<em1.length;iii++)
-    { 
+    {
+        
         var electionId1 = em1[iii].getElementsByTagName("election_id");
      
         var electionName1 = em1[iii].getElementsByTagName("electionname");
+        
         var description1 = em1[iii].getElementsByTagName("description");
         var nstart1 = em1[iii].getElementsByTagName("Nstart");
         var nend1 = em1[iii].getElementsByTagName("Nend");
@@ -628,19 +633,22 @@ for(iii=0;iii<em1.length;iii++)
         var electionId = electionId1[0].firstChild.nodeValue;
 
         var electionName = electionName1[0].firstChild.nodeValue;
+      //  alert("length isss "+em1.length+"   "+electionName);
       //  alert("ff");
+      //alert("hello  "+electionName);
+      
         var description = description1[0].firstChild.nodeValue;
-          
+        
         var nstart = nstart1[0].firstChild.nodeValue;
         var nend = nend1[0].firstChild.nodeValue;
         var sstart = Sstart1[0].firstChild.nodeValue;
-        
+         
         var send = Send1[0].firstChild.nodeValue;
         var wstart = Wstart1[0].firstChild.nodeValue;
         var wend = Wend1[0].firstChild.nodeValue;
         var estart = Estart1[0].firstChild.nodeValue;
         var eend = Eend1[0].firstChild.nodeValue;
-
+       
        var doc = document.createElement("div");
        var id = "election"+iii;
        doc.id = id;
@@ -682,7 +690,7 @@ for(iii=0;iii<em1.length;iii++)
                var position = position1[0].firstChild.nodeValue;
                var candidature1 = post[jj].getElementsByTagName("candidature");
                var candidature = candidature1[0].firstChild.nodeValue;
-              var rules = post[jj].getElementsByTagName("Rules")[0];
+              var  rules = post[jj].getElementsByTagName("Rules")[0];
    
         var rule = rules.getElementsByTagName("rule");
 
@@ -693,8 +701,7 @@ for(iii=0;iii<em1.length;iii++)
   
    for(jjk=0;jjk<rule.length;jjk++)
            {
-
-              var positionIdrule1 = rule[jjk].getElementsByTagName("ruleId");
+               var positionIdrule1 = rule[jjk].getElementsByTagName("ruleId");
                var positionIdrule = positionIdrule1[0].firstChild.nodeValue;
                var position1rule = rule[jjk].getElementsByTagName("rulevalue");
                var positionr = position1rule[0].firstChild.nodeValue;
@@ -709,14 +716,14 @@ innerhtm +='<tr><td colspan=2><input type="button" value="Send Request For Candi
         
            }
       
-
+ block1.innerHTML = innerhtm;
+       doc.appendChild(block1);
+       curElec.appendChild(doc);
 }
 
       
-       block1.innerHTML = innerhtm;
-       doc.appendChild(block1);
-       curElec.appendChild(doc);
- 
+       
+      
    
 var doc2 = document.getElementById("currentElections");
 doc2.style.display = "block";

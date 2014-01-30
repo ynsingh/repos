@@ -99,7 +99,8 @@ public class PreferentialFinalResultAction extends org.apache.struts.action.Acti
                 if(m.containsKey(rs.getPosition_name()))
                 {
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
-                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                   // m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getCandidateName());
                     System.out.println("jhgggggg5677757gggggg"+noofcand.getCand());      
                           
                for(int i=0;i<rs.getPref().length();i++){
@@ -119,8 +120,8 @@ public class PreferentialFinalResultAction extends org.apache.struts.action.Acti
                     lsPos.add(rs.getNumber_of_choice().toString());
                     m.put(rs.getPosition_name(),new ArrayList<String>());
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
-                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
-                    
+                    //m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                     m.get(rs.getPosition_name()).add(rs.getCandidateName());
                     for(int i=0;i<rs.getPref().length();i++){
                     String t=Character.toString(rs.getPref().charAt(i));                          
                     m.get(rs.getPosition_name()).add(t==null?0:t);
@@ -143,7 +144,11 @@ public class PreferentialFinalResultAction extends org.apache.struts.action.Acti
                     positions+="<noofchoice>"+lsPos.get(2*i+1)+"</noofchoice>";
 
                     Iterator it = ls.iterator();
-                    while(it.hasNext())
+                    //code on 17 Jan
+                    int noc=Integer.parseInt(lsPos.get(2*i+1));
+                    for(int k=0;k<noc;k++)
+                    //code on 17 Jan
+                    //while(it.hasNext())
                     {
                         System.out.println(it.next()+"###################");
                         positions+="<candidate>";
@@ -151,8 +156,10 @@ public class PreferentialFinalResultAction extends org.apache.struts.action.Acti
                         
                         
                         positions+="<candidatename>"+it.next().toString()+"</candidatename>";
-                        System.out.println("Positionnnnnnnnnnnnn"+positions); 
-                        
+                        System.out.println("Positionnnnnnnnnnnnn"+positions);
+                        System.out.println("no of candidate issss "+lsPos.get(2*i+1));
+                       // int noc=Integer.parseInt(lsPos.get(2*i+1));
+                       // for(int k=0;k<noc;k++)
                         for(int j=0;j<noofcand.getCand();j++){ 
                         
                         positions+="<pref"+(j+1)+">"+it.next().toString()+"</pref"+(j+1)+">";

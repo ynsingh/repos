@@ -298,6 +298,38 @@ public static void deleteVotingProcess(String electionId,String instituteId) {
       //  return true;
 
     }
+public static void deletePreferentialVoting(String posid,String election_id, String institute_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete FROM PreferencialVoting where id.positionId = :positionId and id.electionId = :electionId and instituteId = :instituteId");
+
+            query.setString("positionId", posid);
+            query.setString("electionId", election_id);
+            query.setString("instituteId", institute_id);
+            query.executeUpdate();
+            tx.commit();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            tx.rollback();
+            System.out.println(ex);
+            //     return false;
+
+            //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+            session.close();
+        }
+      //  return true;
+
+    }
 public static void deleteVotingBallot(String posid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

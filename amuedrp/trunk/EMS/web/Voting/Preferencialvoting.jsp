@@ -155,12 +155,35 @@ req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send("cast="+finallist);
 return true;
 }
+function send1()
+{
+
+    <%
+
+String role=(String)session.getAttribute("login_role");
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+
+%>
+ top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
+
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
+   { %>
+ top.location.href="<%=request.getContextPath()%>/electionmanager.do";
+
+<%}else{
+    System.out.println("hiii in senddeee");%>
+    top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
+    <%}%>
+
+   }
 function updateCast(cartXML)
 {
    var em = cartXML.getElementsByTagName("cast")[0];
 var em1 = em.getElementsByTagName("message");
 
 alert(em1[0].firstChild.nodeValue);
+send1();
 }
             function previewBallot() {
     //alert("index="+index+" current="+current);

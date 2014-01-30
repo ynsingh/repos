@@ -14,7 +14,9 @@
 <%
 if(session.isNew()){
 %>
-<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<script>
+
+   parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
 
 <%!
@@ -869,12 +871,14 @@ if(!obj1.isEmpty()){
       
 
 <td><a href="<%=contextPath%>/nominationList1.do" target="ff"   style="text-decoration:none;font-size: 13px"  dir="<%=rtl%>">Current Nomination&nbsp;List</a>&nbsp;|&nbsp;</td>
-     <td><a href="<%=request.getContextPath()%>/catchroom1.do" style="font-size: 13px;text-decoration: none;" onclick="">Candidate Chat</a>&nbsp;|&nbsp;</td>
+<%--Chatting is commented for some time--%>
+<%--<td><a href="<%=request.getContextPath()%>/catchroom1.do" style="font-size: 13px;text-decoration: none;" onclick="">Candidate Chat</a>&nbsp;|&nbsp;</td>--%>
     
     
                    
 <%}else{%>
-<td><a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>&nbsp;</td>
+<%--Chatting is commented for some time--%>
+<%--<td><a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>&nbsp;</td>--%>
 <%}%>
 
                            </tr>
