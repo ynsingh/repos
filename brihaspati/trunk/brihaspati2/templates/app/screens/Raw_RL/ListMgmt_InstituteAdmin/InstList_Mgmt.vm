@@ -4,6 +4,7 @@
  * All Rights Reserved.
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -48,8 +49,17 @@ $!data.getMessage()
 	</td> </b>
 </tr>
 </table>
-<table width=100% lign="right" bgcolor="$ui.tableColor">
+<table width=100% bgcolor="$ui.tableColor">
 <tr align="right">
+
+       #if($tdcolor != "3")
+        <td width=30%>
+        #elseif($tdcolor == "3")
+        <td width=30% bgcolor="#AFDCEC">
+        #end  
+                <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","3").addPathInfo("searchFor","inst_admin") style=text-decoration:none>$brih_view_parents</a>
+        </td>
+
 	#if($tdcolor != "2")
 		<td width=50%> 
 	#elseif($tdcolor == "2")
@@ -92,7 +102,6 @@ $!data.getMessage()
 #if($status=="Noblank")
 	##set($headings = ["","$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
 	#set($headings = ["","", "$brih_status", "$brih_creation $brih_Da", "$brih_desc", "", "$brih_course $brih_Of1 $brih_name", "$brih_course $brih_Of1 $brih_ID", ""] )
-##<br>
 	<table bgcolor="$ui.tableColor" align="right" width="100%">
 	  <tr><td>
 	      <table align="right">
@@ -127,57 +136,62 @@ $!data.getMessage()
         	#end
 		</table>
 	</td></tr>
-         <tr bgcolor="$ui.menuColor" align="right">
+  <tr bgcolor="$ui.menuColor" align="right">
               ##<td align=center bgcolor="$ui.menuColor">
-              <td colspan=10>
-	#if($mode!="Search")
-         	#if($total_size<= $AdminConf)
-		         <font color="white">$brih_first</font> &nbsp;
-		         <font color="white">$brih_nxt</font> &nbsp;
-		         <font color="white">$brih_pre</font> &nbsp;
-		         <font color="white">$brih_last</font> &nbsp;
-	          #elseif($startIndex== $AdminConf_str)
-        		<font color="white">$brih_first</font> &nbsp;
-		        <font color="white">$brih_pre</font> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-	        #elseif($endIndex == $total_size || $endIndex > $total_size)
-        		<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-		         <u><font color="white">$brih_nxt</font></u> &nbsp;
-		         <u><font color="white">$brih_last</font></u> &nbsp;
-	          #else
-			 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-		#end
-	#else
-        	 #if($total_size<= $AdminConf)
-		         <font color="white">$brih_first</font>&nbsp;
-        		 <font color="white">$brih_nxt</font>&nbsp;
-	        	 <font color="white">$brih_pre</font>&nbsp;
-	        	 <font color="white">$brih_last</font>&nbsp;
-	          #elseif($startIndex== $AdminConf_str)
-        		  <font color="white">$brih_first</font> &nbsp;
-	        	  <font color="white">$brih_pre</font> &nbsp;
-	        	  <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-			 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-	         #elseif($endIndex == $total_size || $endIndex > $total_size)
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-		       <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-        		<font color="white">$brih_nxt</font> &nbsp;
-			<font color="white">$brih_last</font> &nbsp;
-	          #else
-        		<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-		       <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-        		<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-			<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
-		#end
-	#end
+         <td colspan=8>
+         #if($mode!="Search")
+         #if($total_size<= $AdminConf)
+                <img src="$content.getURI("images/First_blank.png")">
+                <img src="$content.getURI("images/Next_blank.png")">
+                <img src="$content.getURI("images/Previous_blank.png")">
+                <img src="$content.getURI("images/Last_blank.png")">
+
+        #elseif($startIndex== $AdminConf_str)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+        #elseif($endIndex == $total_size || $endIndex > $total_size)
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+    <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none;><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+     <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+     <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+     #end
+     #else
+         #if($total_size<= $AdminConf)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #elseif($startIndex== $AdminConf_str)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+          <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+      <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+         #elseif($endIndex == $total_size || $endIndex > $total_size)
+      <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+       <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+       <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+
+        #end
+    #end
     </td>
  </tr>
+
 </table>
+
+
 #end
 </form>
 <br>

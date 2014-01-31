@@ -1,0 +1,357 @@
+#*
+ * @(#) Parent_Mgmt.vm
+ * Copyright (c) 2013 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @create date : 11-10-2013
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+#if($mode == "instructor")
+	$page.setTitle("Home | $course | Student Management | Parent Details")
+#else
+	$page.setTitle("Admin Home | User Management")
+#end
+
+$page.setBgColor("#ffffff")
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+#set($lang = $data.getUser().getTemp("lang" ).toString()) 
+
+##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
+$!data.getMessage()
+
+#if($mode == "instructor" || $searchFor == "instructor")
+	<font face="$ui.sansSerifFonts">$!mmessage</font>
+	<table bgcolor="$ui.menuColor" width=100%>
+       <tr align="right">
+        <td width="30%">
+
+                      #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                                #if( $endIndex < $AdminConf )
+                                        [$k - $total_size] of $total_size
+                                #else
+                                        [$k - $endIndex] of $total_size
+                                #end
+                        #else
+                                [$k - $total_size] of $total_size
+                        #end
+                #end
+
+            <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+            <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+            <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a> |
+              #if($mode!="Search")
+                        $brih_view_parents
+                #else
+                        $brih_viewSel $brih_parent
+                #end
+        </td>
+</tr>
+</table>
+	<table bgcolor="$ui.tableColor" width=100%>
+	<tr>
+        #if($tdcolor != "1")
+        	<td colspan=2>
+        #elseif($tdcolor=="1")
+	        <td bgcolor="#AFDCEC" colspan=2>
+        #end
+        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_student $brih_add #else $brih_add $brih_students #end </a>
+        </td>
+        
+	#if($tdcolor != "2")
+        	<td colspan=2>
+        #elseif($tdcolor=="2")
+	        <td bgcolor="#AFDCEC" colspan=2>
+        #end
+       		<a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("count","2") style=text-decoration:none>$brih_rem_student</a>
+        	</td>
+        
+	#if($tdcolor != "3")
+	        <td colspan=2>
+        #elseif($tdcolor=="3")
+	        <td bgcolor="#AFDCEC" colspan=2>
+        #end
+	        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a>
+	        </td>
+
+        #if($tdcolor != "4")
+	        <td colspan=3>
+        #elseif($tdcolor=="4")
+	        <td bgcolor="#AFDCEC" colspan=3>
+        #end
+        	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a>
+	        </td>
+        	
+	#if($tdcolor != "5")
+	        <td colspan=2>
+        #elseif($tdcolor=="5")
+        	<td bgcolor="#AFDCEC" colspan=2>
+        #end
+	        <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a>
+        	</td>
+	
+        #if($tdcolor != "6")
+	        <td colspan=2>
+        #elseif($tdcolor=="6")
+        	<td bgcolor="#AFDCEC" colspan=2>
+        #end
+	        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("course",$course).addPathInfo("mode","instructor").addPathInfo("searchFor","instructor").addPathInfo("count","6") style=text-decoration:none>$brih_parent $brih_info</a>
+        	</td>
+	
+        #*if($status=="notempty")
+                #if($tdcolor != "6")
+        	        <td colspan=2>
+                #elseif($tdcolor=="6")
+                	<td bgcolor="#AFDCEC" colspan=2>
+                #end
+	                <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","6") style=text-decoration:none>$brih_listOfStudent $brih_download </a>
+        	        </td>
+        #end
+	
+        #if($tdcolor != "7")
+        	<td colspan=4>
+        #elseif($tdcolor=="5")
+	        <td bgcolor="#AFDCEC" colspan=4>	
+        #end
+        	<a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a>
+	        </td>
+	*#
+	</tr>
+
+#else
+	<table bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor">
+    <td>
+                        #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                                #if( $endIndex < $AdminConf )
+                                        [$k - $total_size] of $total_size
+                                #else
+                                        [$k - $endIndex] of $total_size
+                                #end
+                        #else
+                                [$k - $total_size] of $total_size
+                        #end
+                #end
+        </td>
+
+ <td align="right">
+                <font face="$ui.sansSerifFonts" size=3>
+                <b>
+                <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+                <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+                #if($mode!="Search")
+                        $brih_view_parents
+                #else
+                        $brih_viewSel $brih_parent
+                #end
+        </td>
+	</tr>
+	</table>
+
+	<table width=100% align=left bgcolor="$ui.tableColor">
+<tr align="right">
+        #if($tdcolor != "3")
+        <td width=30%>
+        #elseif($tdcolor == "3")
+        <td width=30% bgcolor="#AFDCEC">
+        #end  
+                <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","3").addPathInfo("searchFor","inst_admin") style=text-decoration:none>$brih_view_parents</a>
+        </td>
+
+        #if($tdcolor !="2")
+        <td width=50%>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC" width=50%>
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
+        #if($tdcolor !="1")
+        <td width=50%>
+        #elseif($tdcolor=="1")
+        <td width=50% bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none> $brih_listUsr</a></td>
+</tr>
+#end
+##added
+</table>
+<form name="frm" method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm")">
+<table width=100% align=left bgcolor="$ui.tableColor">
+        <tr bgcolor="$ui.menuColor">
+                <td align=left><b>$brih_match_str</b>
+                ##<td align=left>
+                        <input align=center type="text" name="valueString" value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                ##</td>
+                ##<td>
+                        <input type="button"  class="button-ftextstyle" name="Search" value="Search" onClick="checkNull(document.frm,this);">
+                        ##if($mode == "instrucor")
+                                <input type="hidden" name="searchFor" value=$searchFor>
+                        ##else
+                          ##      <input type="hidden" name="searchFor" value="instructor">
+                        ##end
+
+                        <input type="hidden" name="mode" value="Search">
+                        <input type="hidden" name="count" value="$tdcolor">
+                </td>
+                ##<td>
+                ##<td>
+                ##<td><b>Search By</b></td>
+                <td>
+                ##<td align=left>
+                        <select class="drop" name="queryList">
+                                <option value="ParentFName">$brih_parent $brih_first $brih_name</option>
+                                <option value="ParentLName">$brih_parent $brih_last $brih_name</option>
+                                <option value="ParentEmail">$brih_parent $brih_email</option>
+                                <option value="StudentEmail">$brih_student $brih_email</option>
+                                <option value="StudentRollNo">$brih_rollno</option>
+                        </select>
+                 <b>$brih_searchBy</b>
+                </td>
+
+        </tr>
+</table>
+
+#set($headings = ["$brih_availableAction","$brih_student $brih_detail","$brih_phone $brih_num","$brih_email","$brih_parent $brih_name"] )
+
+#if($status=="Noblank")
+<table bgcolor="$ui.tableColor" align="right" width="100%">
+  <tr><td>
+	##added
+        <table width=100% cellspacing=2>
+        <tr>
+          #foreach($heading in $headings)
+                  #headerCell($heading)
+          #end
+        </tr>
+	## get each parent detail
+        #foreach($entry in $details)
+	        #if($velocityCount%2==0)
+        		<tr bgcolor="$ui.tableColor">
+        	#else
+        		<tr bgcolor="$ui.menuColor">
+        	#end
+                  <td>
+			$entry.getParentFirstName() $entry.getParentLastName()
+                  </td>
+                 <td colspan=2>
+                                <font face="$ui.sansSerifFonts">
+<a href=$link.setPage("call,ParentManagement,InstEditParent.vm").addPathInfo("parentId",$entry.getParentId()).addPathInfo("studentId",$entry.getUserId()).addPathInfo("count","3") style=text-decoration:none>$brih_edit</a>
+                                </font>
+                        </td>
+                
+		  ##entryCell($entry.getGroupName())
+                  <td>$entry.getParentEmail()</td>
+                
+		  <td>
+			$entry.getParentMobileNo()
+                  </td>
+                
+		  <td>$entry.getUserName()
+			($entry.getEmail() / $entry.getRollNo())
+		  </td>
+
+		#if($mode == "All" || $searchFor == "inst_admin")
+		 	## edit parent details
+                  #*	<td colspan=2>
+                 		<font face="$ui.sansSerifFonts">
+<a href=$link.setPage("call,ParentManagement,InstEditParent.vm").addPathInfo("parentId",$entry.getParentId()).addPathInfo("studentId",$entry.getUserId()).addPathInfo("count","3") style=text-decoration:none>$brih_edit</a>
+                        	</font>
+                 	</td>*#
+		#end
+        </tr>
+        #end
+##added
+</table>
+##added
+##end
+##</table>
+        </td></tr>
+         <tr bgcolor="$ui.menuColor" align="right">
+              ##<td align=center bgcolor="$ui.menuColor">
+         <td colspan=8>
+         #if($mode!="Search")
+         #if($total_size<= $AdminConf)
+                <img src="$content.getURI("images/First_blank.png")">
+                <img src="$content.getURI("images/Next_blank.png")">
+                <img src="$content.getURI("images/Previous_blank.png")">
+                <img src="$content.getURI("images/Last_blank.png")">
+
+        #elseif($startIndex== $AdminConf_str)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+        #elseif($endIndex == $total_size || $endIndex > $total_size)
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+    <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none;><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+     <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+     <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+     #end
+ 	#else
+         #if($total_size<= $AdminConf)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #elseif($startIndex== $AdminConf_str)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+          <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+      <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+         #elseif($endIndex == $total_size || $endIndex > $total_size)
+      <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+       <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+       <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor).addPathInfo("searchFor",$searchFor) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
+
+        #end
+    #end
+    </td>
+ </tr>
+##</table>
+
+</table>
+##added
+#end
+
+</form>
+
+<br>
+<table width=100% bgcolor="$ui.tableColor" align=left>
+#set ( $count = 1 )
+        #foreach( $entry in $error_user )
+                #set ( $count2 = 1 )
+                #foreach( $type in $error_type )
+                        #if( $count == $count2 )
+                        <tr bgcolor="$ui.menuColor">
+                        <td align=center>
+                                <font face="$ui.sansSerifFonts">User
+Name <font color="brown">"$entry"</font></font>
+                        </td>
+                        <td align=center>
+                                <font
+face="$ui.sansSerifFonts">$type</font>
+                        </td>
+                        </tr>
+                        #end
+                        #set ( $count2 = $count2+1 )
+                #end
+                #set ( $count = $count+1 )
+        #end
+</table>
+##end
+##end
+
