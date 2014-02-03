@@ -11,34 +11,24 @@
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>Register an Institute</title>
             </f:facet>
-
+            <link type="text/css" rel="stylesheet" href="../CSS/PrimeCSS.css"/>
         </h:head>
-<style type="text/css">
-    	.ui-growl-title {
-    font-weight: bold;
-    font-size:12px;
-    padding: 0px 0px 7px;
-    display: block;
-}
- .ui-corner-all {
-    border-radius: 0px 0px 0px 0px;
-}
-.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
-    border-color:red;
-}
-.ui-button ui-widget ui-state-default ui-corner-all
-{
-	background-color:#4D90FF; 
-}
-    </style>
         <h:body>
             <h:outputLink />
-            <p:layout style="min-width: 400px;min-height: 800px">
-                <p:layoutUnit position="north" size="180" resizable="true" closable="true" collapsible="true">
+            <p:layout style="min-width: 400px;min-height: 1100px">
+                <!--p:layoutUnit position="north" size="180" resizable="true" closable="true" collapsible="true">
                    <h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" title="header image" url="../img/3_1.PNG"/>
-                </p:layoutUnit>
-                <p:layoutUnit position="center">
-                    <h:outputLink value="index.xhtml"> Login page </h:outputLink>
+                </p:layoutUnit-->
+                <p:layoutUnit position="north" size="150">
+                        <div  align="left" style="border:none;">
+                            <h:graphicImage url="/img/headerLogo.png"/>
+                        </div>
+                        <div  align="right" style="border:none;">
+                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;margin-right: 100px;"/>
+                        </div>
+		</p:layoutUnit>
+                <p:layoutUnit position="center" style="background:#d9e3ec; color:#d9e3ec;">
+                    <h:outputLink value="index.xhtml" style="font-size: 19px; font-weight: bold; bottom: 30px"> Login page </h:outputLink>
                     <h:form>
                         <!--p:growl id="growl" sticky="true" /--> 
                         <!--h:messages id="growl" style="color:black;margin:2px;" /-->
@@ -46,10 +36,10 @@
                         
                         <p:panel id="orgReg" header="Register New Institute/College/University">
                             <p:focus context="orgReg"/>
-                            <p:panelGrid columns="2">
+                            <p:panelGrid columns="2" style="background:green" >
                               
                                 <h:column>
-                                    <h:outputText value="Institute/College/University : " style="font-size: 14px; font-weight: bold;"/>
+                                    <h:outputText value="Institute/College/University : " style="font-size: 14px; font-weight: bold;background:#d9e3ec;"/>
                                 </h:column>
                                 <h:column>
                                     <p:inputText value="#{orgProfileBeans.orgName}" style="font-size: 16px; font-weight: bold;" id="iname" onfocus="true;" required="true" requiredMessage="Please Enter Institute/College/Unversity Name">
@@ -207,13 +197,13 @@
                                     <p:password label="password 2" style="font-size: 16px; font-weight: bold;" id="irc" validatorMessage="Password Does Not Match the Password Inserted Above." >
                                     </p:password>
                                 </h:column>
-                                
-                              </p:panelGrid>
-                            
+                               </p:panelGrid>                            
                             <f:facet name="footer">
-                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Save" update="growl" action="#{orgProfileBeans.saveProfile()}"/>
-                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" type="reset" value="Reset"/>
+                                <p:commandButton style="font-size:14px;font-weight: bold;color:#4B4B4B; background: #d9e3ec;" value="Save" update="growl" action="#{orgProfileBeans.saveProfile()}"/>
+                                &nbsp;&nbsp;
+                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;background: #d9e3ec;" type="reset" value="Reset"/>
                             </f:facet>
+                         
                             
                         </p:panel>
                     </h:form>

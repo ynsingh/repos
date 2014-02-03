@@ -7,41 +7,35 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"> 
     <h:head>
         <title>Facelet Title</title>
-        <style type="text/css">
-    	.ui-growl-title {
-    font-weight: bold;
-    font-size:12px;
-    padding: 0px 0px 7px;
-    display: block;
-}
-.ui-panel-titlebar
-{
-	background: url("img/bkg-body.png");
-}
- .ui-corner-all {
-    border-radius: 0px 0px 0px 0px;
-}
-.ui-inputfield .ui-inputtext .ui-widget .ui-state-default .ui-corner-all .ui-input-invalid {
-    border-color:red;
-    font-size:12px;
-}
-.ui-panel-title
-{
-	color:#FFF;
-}
-    </style>
+        <link type="text/css" rel="stylesheet" href="CSS/PrimeCSS.css"/>
     </h:head>
     
     <h:body>
         
-        <p:layout fullPage="true" style="min-width: 400px;min-height: 400px;border:none;"> 
-            <p:layoutUnit position="north" size="180" style="border:none;">
-                <h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG"/>
+        <p:layout fullPage="true" style="min-width: 100px;min-height: 400px;border:none;"> 
+            <p:layoutUnit position="north" size="200" style="border:none;">
+                <!--h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG"/-->
+                 <div  align="left" style="border:none;">
+                            <h:graphicImage url="/img/headerLogo.png"/>
+                        </div>
+                        <!--div  align="right" style="border:none;">
+                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;margin-right: 100px;"/>
+                        </div-->
+                        <p:panel style="background: #15366c;">
+                <a href="http://202.141.40.215:8080/brihaspati/servlet/brihaspati" style="font-size:15px;font-weight: bold;color: white;">BRIHASPATI |</a> 
+                <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="font-size:15px;font-weight: bold;color: white;">BGAS |</a>
+                <a href="http://202.141.40.218:8080/LibMS/" style="font-size:15px;font-weight: bold;color: white;">LIBMS |</a>
+                <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="font-size:15px;font-weight: bold;color: white;">PICO |</a>
+                <a href="http://202.141.40.218:8081/PayrollSys/" style="font-size:15px;font-weight: bold;color: white;" >PAYROLL |</a>
+                <a href="http://172.26.161.61:8085/faces/index.xhtml" style="font-size:15px;font-weight: bold;color: white;">STFMS</a>
+                </p:panel>
+                
             </p:layoutUnit>
-            <p:layoutUnit position="east" size="400" style="border:none;">
+            <!--p:layoutUnit position="east" size="400" style="border:none;"-->
+            <p:layoutUnit position="center" size="100" style="border:none;">
                 <h:form>
                 <p:growl id="growl" showDetail="true" sticky="true" />
-                    <p:panel style="border: none;margin-top:50px;">
+                    <p:panel style="border:none; margin-top:50px;">
                         <f:facet name="header">
                             <h:outputText value="Login Here"/>
                         </f:facet>
@@ -60,29 +54,43 @@
                                 <h:outputText style="font-size:11px;font-weight:bold;" value="#{orgDe.orgWeb}"/>
                                 </p:column>
                             </p:autoComplete>
-                            <h:outputText style="font-size:15px;font-weight: bold;" value="Email Id"/>
-                            <p:inputText styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" id="emailid" value="#{orgLoginDetails.adminId}"/>
+                            <h:outputText style="font-size:15px;font-weight: bold; background: #e5e5e5;" value="Email Id"/>
+                            <p:inputText styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" style="background: #e5e5e5;" id="emailid" value="#{orgLoginDetails.adminId}"/>
                             <h:outputText style="font-size:15px;font-weight: bold;" value="Password"/>
                             <p:password styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" id="password" value="#{orgLoginDetails.orgPassword}"/>
-                        </h:panelGrid>
                         <f:facet name="footer">
-                            <p:commandButton value="Login" icon="ui-icon-disk" style="font-size:14px;font-weight: bold;" action="#{orgLoginDetails.validate}" update="growl"/>
+                            <p:commandButton value="Login" icon="ui-icon-disk" style="font-size:14px;font-weight: bold; background: #e5e5e5;left: 25%;" action="#{orgLoginDetails.validate}" update="growl"/>
                             
-                            <p:commandButton value="Register New College" icon="ui-icon-disk" style="font-size:14px;font-weight: bold;" action="OrgProfile/RegisterProfile.xhtml"/>
+                            <!--p:commandLink value="Forgot Password" style="font-size:14px;font-weight: bold; background: #e5e5e5;left: 25%;" disabled="true" action=""/-->
                         </f:facet>
+                        </h:panelGrid>
                     </p:panel>
                     <p:tooltip style="font-size:12px;font-weight: bold;color: #4B4B4B;" for="emailid" value="Your Email Id Should Be Same As You Have Registered In Brihaspati" showEffect="clip" hideEffect="explode" />
                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="center" style="border:none;">
-
+            <!--p:layoutUnit position="center" size="200" style="border:none;"-->
+                <p:layoutUnit position="west" size="350" style="border:none;">
+                <p:panel style="border:none; margin-top:50px;">
+                     <h:panelGrid columns="1">
+                       <p:column>  
+                        <p:commandLink value="Register New College" style="font-size:14px;font-weight: bold;background:#d9e3ec" action="OrgProfile/RegisterProfile.xhtml"/>
+                       </p:column>
+                       <p:column>
+                        <p:commandLink value="Authenticate From Brihaspati Server" style="font-size:14px;font-weight:bold; background:#e5e5e5;" action="OrgProfile/RegisterProfile.xhtml" />
+                       </p:column>
+                     </h:panelGrid>
+                </p:panel>
             </p:layoutUnit>
+            <!--p:layoutUnit position="west" size="800" style="border:none;">
+                
+            </p:layoutUnit-->
+            
         </p:layout>
-        <p:dialog modal="true" widgetVar="statusDialog" header="Status"   
+        <p:dialog style="background:#d9e3ec;" modal="true" widgetVar="statusDialog" header="Status"   
                               draggable="false" closable="false">  
                         <p:graphicImage value="img/ajaxloadingbar.gif" />  
                     </p:dialog> 
-                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
     </h:body>
 </html>
 

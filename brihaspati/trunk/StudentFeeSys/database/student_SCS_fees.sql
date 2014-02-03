@@ -77,8 +77,8 @@ CREATE TABLE `org_profile` (
   `org_admindesig` VARCHAR(31) COLLATE latin1_swedish_ci DEFAULT NULL,
   `org_adminemailid` VARCHAR(31) COLLATE latin1_swedish_ci DEFAULT NULL,
   `org_master_password` VARCHAR(150) COLLATE latin1_swedish_ci DEFAULT NULL,
-  `org_tagline` VARCHAR(100) COLLATE latin1_swedish_ci DEFAULT NULL,
-  `org_email` VARCHAR(100) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `org_tagline` VARCHAR(100) COLLATE latin1_swedish_ci DEFAULT NULL, 
+  `org_email` VARCHAR(100) COLLATE latin1_swedish_ci  NOT NULL DEFAULT '',
   `org_web` VARCHAR(100) COLLATE latin1_swedish_ci DEFAULT NULL,
   `org_phone` VARCHAR(35) COLLATE latin1_swedish_ci DEFAULT NULL,
   `org_address1` VARCHAR(100) COLLATE latin1_swedish_ci DEFAULT NULL,
@@ -93,6 +93,7 @@ CREATE TABLE `org_profile` (
   PRIMARY KEY (`org_id`),
   UNIQUE KEY `org_institutedomain` (`org_institutedomain`),
   UNIQUE KEY `org_name` (`org_name`),
+  UNIQUE KEY `org_email` (`org_email`),
   UNIQUE KEY `org_web` (`org_web`),
   UNIQUE KEY `org_web_2` (`org_web`),
   UNIQUE KEY `org_name_2` (`org_name`),
@@ -302,7 +303,7 @@ COMMENT='InnoDB free: 11264 kB; (`org_id`) REFER `student_fees/org_profile`(`org
 #
 
 CREATE TABLE `college_pending_status` (
-  `org_code` VARCHAR(11) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `org_code` VARCHAR(400) COLLATE latin1_swedish_ci DEFAULT NULL,
   `org_request_status` TINYINT(4) DEFAULT NULL,
   `org_pen_email` VARCHAR(300) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`org_pen_email`),
@@ -657,21 +658,87 @@ COMMENT='InnoDB free: 11264 kB; (`org_id`) REFER `student_fees/org_profile`(`org
 # Structure for the `user_master` table : 
 #
 
+#CREATE TABLE `user_master` (
+#  `user_id` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+#  `password` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+#  `create_time` TIME DEFAULT NULL,
+#  `edit_time` TIME NOT NULL,
+#  `date` DATE DEFAULT NULL,
+#  `modifier_id` INTEGER(11) NOT NULL,
+#  `login_time` TIME NOT NULL,
+#  `logout_time` TIME NOT NULL,
+#  `org_id` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+#  `um_seq_id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+#  PRIMARY KEY (`um_seq_id`),
+#  KEY `org_id` (`org_id`)
+#
+#)ENGINE=InnoDB
+#AUTO_INCREMENT=1 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci'
+#COMMENT='InnoDB free: 11264 kB';
+
+#
+# Structure for the `user_master` table :
+#
+
+DROP TABLE IF EXISTS `user_master`;
+
 CREATE TABLE `user_master` (
-  `user_id` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
-  `password` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `user_id` int(11) NOT NULL auto_increment,
+  `user_name` varchar(100) NOT NULL default '',
+  `user_pass` varchar(150) NOT NULL,
+  `user_org_id` varchar(400) NOT NULL,
+  `user_grp_id` int(11) NOT NULL,
   `create_time` TIME DEFAULT NULL,
-  `edit_time` TIME NOT NULL,
+  `edit_time` TIME DEFAULT NULL,
   `date` DATE DEFAULT NULL,
   `modifier_id` INTEGER(11) NOT NULL,
   `login_time` TIME NOT NULL,
   `logout_time` TIME NOT NULL,
-  `org_id` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
-  `um_seq_id` INTEGER(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`um_seq_id`),
-  KEY `org_id` (`org_id`)
-
-)ENGINE=InnoDB
+  `user_profile_id` int(11) NOT NULL default '0',
+  `flag` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`user_id`),
+  UNIQUE KEY `user_name` (`user_name`),
+  KEY `user_org_id` (`user_org_id`),
+  KEY `user_id` (`user_id`),
+  KEY `user_grp_id` (`user_grp_id`),
+  KEY `user_name_2` (`user_name`),
+  CONSTRAINT `user_master_fk` FOREIGN KEY (`user_name`) REFERENCES `org_profile` (`org_email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_master_ibfk_1` FOREIGN KEY (`user_org_id`) REFERENCES `org_profile` (`org_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_master_ibfk_2` FOREIGN KEY (`user_grp_id`) REFERENCES `user_group_master` (`grp_id`) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 AUTO_INCREMENT=1 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci'
 COMMENT='InnoDB free: 11264 kB';
 
+#
+# Structure for the `user_group_master` table :
+#
+
+CREATE TABLE `user_group_master` (
+  `grp_id` int(11) NOT NULL auto_increment,
+  `grp_name` varchar(50) NOT NULL,
+  PRIMARY KEY  (`grp_id`,`grp_name`),
+  UNIQUE KEY `grp_name` (`grp_name`),
+  KEY `grp_id` (`grp_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# Data for the `user_group_master` table  (LIMIT 0,500)
+#
+
+INSERT INTO `user_group_master` (`grp_id`, `grp_name`) VALUES
+  (1,'User'),
+  (2,'Admin'),
+  (3,'Super'),
+  (4,'Master User'),
+  (5,'Accounts');
+COMMIT;
+#
+# Data for the `admin_records` table  (LIMIT 0,500)
+#
+
+INSERT INTO `admin_records` (`seq_id`, `user_id`, `admin_pass`, `flag`, `add_date`) VALUES
+  (1,'admin','hjhjhj',0,'2012-12-18'),
+  (2,'adminjk','jkljkl',0,'2017-11-17'),
+  (3,'adminjk1','123123',0,'2018-11-18'),
+  (4,'payadmin','admin123',1,'2025-11-25');
+COMMIT;

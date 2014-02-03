@@ -15,9 +15,14 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.nmeict.smvdu.Beans.Administrator.CollegeList;
+
+import org.nmeict.smvdu.Beans.Administrator.CollegeRequestStatus;
+import org.nmeict.smvdu.Beans.Administrator.ServerDetails;
+import org.nmeict.smvdu.Beans.email.OrgConformationEmail;
+
 import org.nmeict.smvdu.Beans.SpringClassFile.IOrgProfileService;
 import org.nmeict.smvdu.Beans.SpringClassFile.OrgProfileService;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
@@ -89,8 +94,16 @@ public class OrgProfile  implements java.io.Serializable {
     private String filePath;
     private String logoDetailOrgId;
     private String orgLogoFile;
+    private String ipAddress;
+    private String port;
     
-    
+    private String adUserId;
+    private boolean status;
+    private String imgUrl;
+    private String date;
+    private String adPassword;
+    private String adRePassword;
+        
     public OrgProfile() {
      }
 
@@ -185,7 +198,7 @@ public class OrgProfile  implements java.io.Serializable {
         this.orgCity = orgCity;
     }
     public Integer getOrgPincode() {
-        return this.orgPincode;
+            return this.orgPincode;
     }
     
     public void setOrgPincode(Integer orgPincode) {
@@ -630,6 +643,7 @@ Commented By shaista
 	public void setDataGrid(UIData dataGrid) {
 		this.dataGrid = dataGrid;
 	}
+        
 /*
 	public List getListOrganizations() {
                 System.out.print("\n\n\n organizationList==");
@@ -648,6 +662,22 @@ Commented By shaista
         }
  
  */
+	public String getIpAddress() {
+        	return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+
+        	this.ipAddress = ipAddress;
+	}
+
+	public String getPort() {
+        	return port;
+	}
+
+	public void setPort(String port) {
+        	this.port = port;
+	}
         
         public void saveProfile(){
         
@@ -823,7 +853,7 @@ Commented By shaista
                 //System.out.print("\n organizationsize=="+organizationList.size());
                 FacesContext context = FacesContext.getCurrentInstance();
             for(OrgProfile op : organizationList ){
-                System.out.print("\n---op.getOrgInstitutedomain()--"+op.getOrgInstitutedomain());
+               // System.out.print("\n---op.getOrgInstitutedomain()--"+op.getOrgInstitutedomain());
                 if(op.getOrgInstitutedomain().equals(this.getOrgInstitutedomain())){
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Organization already exist.", ""));
                     return;
@@ -831,7 +861,7 @@ Commented By shaista
             }
             
             
-            try{ 
+            try{
                 OrgLogoDetails orgld = new OrgLogoDetails(); 
                 OrgLoginDetails old = new OrgLoginDetails();
                 orgld.setOrgWeb(this.getOrgWeb()); 
@@ -854,14 +884,33 @@ Commented By shaista
                         return;
                     }
                 }
+
+		String orgCode= ""; 
                 old.setOrgProfile(this); 
                 orgld.setOrgProfile(this);
                 //old.setOrgId(this.getOrgId());  
                 this.setOrgLogoDetails(orgld); 
                 this.setOrgLoginDetails(old); 
+		this.setOrgEmail(this.getOrgAdminemailid());
+
                 getiOrgProfileService().addNewOrgProfile(this);
+		 new OrgConformationEmail().sendPendingCollegeMail(this);
+
+                organizationList = getiOrgProfileService().loadOrgProfile();
+                //System.out.print("\n organizationsize=="+organizationList.size());
+                context = FacesContext.getCurrentInstance();
+                for(OrgProfile op : organizationList ){
+                    //System.out.print("\n---op.getOrgInstitutedomain()--"+op.getOrgInstitutedomain());
+                    if(op.getOrgInstitutedomain().equals(this.getOrgInstitutedomain())){
+                        orgCode = op.getOrgId();
+                    }
+                }
+
+                new CollegeRequestStatus().saveRequestStatus(this, orgCode);
+                new ServerDetails().saveServerDetail(this, orgCode);
+
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Organization inserted successfully.", ""));
-                System.out.println("This is Ending OrgProfile class SAVE method==============yy");
+                //System.out.println("This is Ending OrgProfile class SAVE method==============yy");
              
             }
             catch(Exception ex){
@@ -871,22 +920,248 @@ Commented By shaista
 
 		
 	//public void update()
-        public String update()
-	{
-            //FacesContext context = FacesContext.getCurrentInstance();
-            try{
+    public String update(){
+        //FacesContext context = FacesContext.getCurrentInstance();
+        try{
                 getiOrgProfileService().updateOrgProfile(new OrgProfileSessionDetails().getOrgProfileSession());  
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Organization updated successfully.", ""));
-                System.out.println("This is Ending OrgProfile class Update method==============yy");
+                //System.out.println("This is Ending OrgProfile class Update method==============yy");
                 return "RegisterProfile.xhtml?faces-redirect=true";
-             }
-             catch(Exception ex){
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Organization did not update. Exception is"+ex, ""));
-                return null;
-             }
+        }
+        catch(Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Organization did not update. Exception is"+ex, ""));
+            return null;
+        }
                
-	}
+    }
+        
+    private ArrayList<OrgProfile> adminList;    
+    private UIData dataGrid1;
+        
+    public UIData getDataGrid1() {
+        return dataGrid1;
+    }
+    public void setDataGrid1(UIData dataGrid1)
+    {
+        this.dataGrid1 = dataGrid1;
+    }
+    
+    public ArrayList<OrgProfile> getAdminList() {
+        adminList = new CollegeList().activeAdminList();
+        dataGrid1.setValue(adminList);
+        return adminList;
+    }
 
+    public void setAdminList(ArrayList<OrgProfile> adminList) {
+        this.adminList = adminList;
+    }
+    
+    public String getAdUserId() {
+        return adUserId;
+    }
+
+    public void setAdUserId(String adUserId) {
+        this.adUserId = adUserId;
+    }
+    
+    public String getAdPassword() {
+        return adPassword;
+    }
+
+    public void setAdPassword(String adPassword) {
+        this.adPassword = adPassword;
+    }
+
+    public String getAdRePassword() {
+        return adRePassword;
+    }
+
+    public void setAdRePassword(String adRePassword) {
+        this.adRePassword = adRePassword;
+    }
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+     public void saveAdmin()
+    {
+        try
+        {
+            //System.out.println("Addeing.............");
+            FacesContext context =  FacesContext.getCurrentInstance();
+            
+            if(this.getAdUserId().isEmpty()){
+                context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User Id is Empty. Please Insert User Id.", ""));
+                return;
+            }
+            if(this.getAdPassword().isEmpty()){
+                 context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User password is Empty. Please Insert password.", ""));
+                 return;
+            }
+            if(this.getAdRePassword().isEmpty()){
+                context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User Re password is Empty. Please Insert password.", ""));
+                return;
+            }
+            if(!this.getAdPassword().equals(this.getAdRePassword())){
+                context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User Re password is Not Similar To Password. Please Insert Correct Password.", ""));
+                return;
+            }
+            
+            ArrayList<OrgProfile> adminList = (ArrayList<OrgProfile>) dataGrid1.getValue();
+            int active = 0;
+            for(OrgProfile admin : adminList)
+            {
+                if(admin.getAdUserId().equals(this.getAdUserId())) 
+                {
+                   context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getAdUserId()+": Already Exist.", ""));
+                   return; 
+                }
+            }
+            
+            boolean bl = new CollegeList().adminDB(this);
+            
+            if(bl)
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Admin Is Added : "+this.getAdUserId(), ""));
+            else
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "New Admin did Not Add: "+this.getAdUserId(), ""));
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+     
+    public void updateAdmin()
+    {
+        try
+        {
+            //System.out.println("Up Datong....");
+            FacesContext fc = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
+
+            ArrayList<OrgProfile> admin = (ArrayList<OrgProfile>) dataGrid1.getValue();
+            int active = 0;
+            for(OrgProfile ad : admin)
+            {
+                if(ad.isStatus() == true)
+                {
+                    //System.out.println("\n\nad.isStatus()==="+ad.isStatus());
+                    active++;
+                }
+            }
+            //System.out.println("Active Admin : "+active);
+            if(active > 1)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                 message.setSummary("More Than One Admin Can't Be Activated...");
+                 fc.addMessage("", message);
+                 return;
+            }
+           // if(active == 1)
+             //   this.setStatus(status);
+            Exception ex = new CollegeList().updateAdminStatus(admin);
+            adminList = getAdminList();
+            
+            
+            if(ex == null)
+            {
+                message.setSeverity(FacesMessage.SEVERITY_INFO);
+                 message.setSummary("Status Updated...");
+                 fc.addMessage("", message);
+            }
+            else
+            {
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                message.setSummary("Status Not Updated. PleaseTry Again");
+                 fc.addMessage(""+ex , message);
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+    private ArrayList<OrgProfile> pendingList;
+    private UIData dataGrid2;
+        
+    public UIData getDataGrid2() {
+        return dataGrid2;
+    }
+    public void setDataGrid2(UIData dataGrid2)
+    {
+        this.dataGrid2 = dataGrid2;
+    }
+    
+    public ArrayList<OrgProfile> getPendingList() {
+        pendingList = new CollegeList().getPendingCollegeList();
+        //System.out.println("\n\npendingList=="+pendingList.size());
+        dataGrid2.setValue(pendingList);
+        return pendingList;
+    }
+
+    public void setPendingList(ArrayList<OrgProfile> pendingList) {
+        this.pendingList = pendingList;
+    }
+    
+    public void updateRequest(){
+        try{
+            
+            ArrayList<OrgProfile> orgProf = (ArrayList<OrgProfile>) dataGrid2.getValue();
+            boolean blFlag = false;
+            for(OrgProfile o : orgProf)
+            {
+                //System.out.println(o.getOrgName()+" : "+o.getOrgWeb()+" : "+o.isStatus());
+           
+                if(o.isStatus())
+                    blFlag = true;
+                 
+            }
+            
+            if(!blFlag){
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please Select CheckBox", ""));
+                return;
+            }
+             
+            else{
+                    Exception ex= new CollegeList().updateRequest(orgProf);
+                    //System.out.println("\n\nex=="+ex);
+                    orgProf = (ArrayList<OrgProfile>) dataGrid2.getValue();
+                    
+                    if(ex == null){
+                        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College Are Updated", ""));
+                    }
+            }
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }
+
+
 
 

@@ -1,0 +1,114 @@
+
+<?xhtml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>TODO supply a title</title>
+</h:head>
+<style type="text/css">
+.ui-dialog-title
+{
+	
+	font-size: 15px;
+	font-weight: bold;
+}
+.ui-growl-title {
+	font-weight: bold;
+	font-size: 12px;
+	padding: 0px 0px 7px;
+	display: block;
+}
+
+.ui-corner-all {
+	border-radius: 0px 0px 0px 0px;
+}
+
+.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid
+	{
+	border-color: red;
+}
+
+.ui-button ui-widget ui-state-default ui-corner-all {
+	background-color: #4D90FF;
+}
+</style>
+<h:body>
+    <h:form>
+        <p:growl id="growl" sticky="true" />  
+		<h:panelGrid columns="1">
+                   
+			<p:commandButton style="font-size:14px;font-weight: bold;" onclick="pnl.show();" value="Add  New Administrator" />
+			
+				<p:dataTable id="dataTable" var="dt"
+					style="font-size: 14px;font-weight: bold"
+					binding="#{orgProfileBeans.dataGrid1}"
+					value="#{orgProfileBeans.adminList}" paginator="true"
+					rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+					<f:facet name="header">  
+            			List of Registered Admin  
+        			   </f:facet>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="User Id" />
+						</f:facet>
+                                                 <h:outputText value="#{dt.adUserId}"/>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Adding Date" />
+						</f:facet>
+						<h:outputText value="#{dt.date}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Check / UnCheck" />
+						</f:facet>
+						<h:selectBooleanCheckbox value="#{ins.status}"/>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							 <h:outputText value="Status"/>
+						</f:facet>
+						 <h:graphicImage value="/img/#{ins.imgUrl}"/>
+					</p:column>
+				</p:dataTable>
+				<f:facet name="footer">
+                                        <h:commandButton value="Update" action="#{OrgProfileBean.updateAdmin}"/>
+				</f:facet>
+			
+		</h:panelGrid>
+
+
+            <p:dialog resizable="false" width="380" height="120"
+		
+			widgetVar="pnl" modal="true">
+                
+                    <f:facet name="header">
+                        <h:outputText value="Add New Administrator" style="font-size: 16px; font-weight: bold;" />
+                    </f:facet>
+			<h:panelGrid columns="2">
+                            <h:outputText value="User ID"/>
+                            <h:inputText value="#{orgProfileBeans.adUserId}"/>
+                            <h:outputText value="Password"/>
+                            <h:inputSecret value="#{orgProfileBeans.adPassword}"/>
+                            <h:outputText value="Re Password"/>
+                            <h:inputSecret value="#{orgProfileBeans.adRePassword}"/>
+                            <f:facet name="footer">
+                                <h:commandButton value="Submit" action="#{orgProfileBeans.saveAdmin}"/>
+                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Close" onclick="pnl.hide();" />
+                            </f:facet>
+			</h:panelGrid>
+            </p:dialog>
+    </h:form>
+</h:body>
+</html>

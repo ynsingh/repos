@@ -10,6 +10,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 
+import org.nmeict.smvdu.Beans.db.UserDB;
 import org.nmeict.smvdu.Beans.SpringClassFile.IOrgLoginProfile;
 import org.nmeict.smvdu.Beans.SpringClassFile.OrgLoginProfileService;
 
@@ -108,40 +109,51 @@ public class OrgLoginDetails  implements java.io.Serializable {
 	{
 		try
 		{
+                        System.out.print("\n\n============ request=="+(HttpServletRequest) facesContext.getExternalContext().getRequest());
 			String page = null;
 			boolean b;
 			OrgProfile op = new OrgProfile();
 			//String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\");
 			String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-			System.out.println("Path : "+path); 
+			//System.out.println("Path : "+path); 
 			 BufferedImage image = null;
 			synchronized (this) 
 			{ 
 				image = ImageIO.read(new File(path+File.separator+"img"+File.separator+"Other298.jpg"));
-				b = getiOrgLoginProfile().validateOrgUser(this);
-				if(b == true) 
-				{
+				 int x = new UserDB().validate(adminId, orgPassword, orgId);
+
+                                if(x == 2){
+                                    return "AdminLogin.xhtml";
+                                }
+                                if(x == 3){
+                                    FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your Registration Request is Pending, So You Are Unable To Login.", ""));
+                                    return "null";
+                                }
+				else{ // else 1 start
+					b = getiOrgLoginProfile().validateOrgUser(this);
+					if(b == true) 
+					{
 					
-					File file = new File(path+File.separator+"img"+File.separator+orgId);
-//					File file1 = new File(path+File.separator+orgId);
-//					if(file1.exists() == true)
-//					{
-//						file1.delete();
-//					}
-					file.mkdir();
-					
+						File file = new File(path+File.separator+"img"+File.separator+orgId);
+//						File file1 = new File(path+File.separator+orgId);
+//						if(file1.exists() == true)
+	//					{
+//							file1.delete();
+//						}
+						file.mkdir();
+						
 						ImageIO.write(image, "jpg",new File(path+File.separator+"img"+File.separator+orgId+File.separator+"out.png"));
 						System.err.println("DDDDDDDDDDDD");
 					
-					op = getiOrgLoginProfile().loadAllDetails(this.getOrgId());
-					this.setOrgProfile(op);
-					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("org",this);
-					page = "MainPage.xhtml?faces-redirect=true";
-				}
-				else
-				{
-					FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User/Email ID or Password Are Not Correct", ""));
-				}
+						op = getiOrgLoginProfile().loadAllDetails(this.getOrgId());
+						this.setOrgProfile(op);
+						FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("org",this);
+						page = "MainPage.xhtml?faces-redirect=true";
+					}
+					else {
+						FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "User/Email ID or Password Are Not Correct", ""));
+					}
+				} //else 1 close
 			}
 			
 			this.setError(b);

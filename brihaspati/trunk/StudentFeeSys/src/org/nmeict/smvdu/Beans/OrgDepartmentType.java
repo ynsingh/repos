@@ -226,14 +226,21 @@ public class OrgDepartmentType  implements java.io.Serializable {
 	{
 		try
 		{
+                    boolean blFlag = false;
                     List<OrgDepartmentType> listOrgDepartmentType = (ArrayList<OrgDepartmentType>) dataGrid.getValue();
                     for(OrgDepartmentType odt : listOrgDepartmentType ){
                             if(odt.getOrgDepartmentName().equalsIgnoreCase(this.getOrgDepartmentName())){
-                                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, orgDepartmentName+" : Already exist", "" ));
-                                return null;
+                                blFlag=true;
+                                break;
                             }
-                        
+                        //System.err.println("\n\n\nShaistaaaaaaaaaa");   
                     }
+                    if(blFlag){
+                        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, orgDepartmentName+" : Already exist", "" ));
+                        return null;
+                    }
+                    else{
+                    
                         this.setOrgDepartmentName(this.getOrgDepartmentName().toUpperCase());
 			OrgProfile op = new OrgProfile();
 			op.setOrgId(new OrgProfileSessionDetails().getUserId());
@@ -245,6 +252,7 @@ public class OrgDepartmentType  implements java.io.Serializable {
 			//FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, ""+orgDepartmentName+" : Saved Successfully", ""));
                         return  "OrgDepartmentType.xhtml?faces-redirect=true";
                                 //FacesContext.getCurrentInstance().addMessage(\"\", new FacesMessage(FacesMessage.SEVERITY_INFO, orgDepartmentName+ \" : Saved Successfully.\", \"\"))?faces-redirect=true";
+                    }
 		}   
 		catch (Exception e) 
 		{ 

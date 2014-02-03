@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>JSP Page</title>
+        <link type="text/css" rel="stylesheet" href="CSS/PrimeCSS.css"/>
+        <script type="text/javaScript">
+                
+            function loadIframe(iframeName, url) {
+                    //alert("This is script");
+                    
+                    parent.document.getElementById('ifrm').src = url;
+
+                    if ( window.frames[iframeName] ) {
+                        window.frames[iframeName].location = url;
+                        return false;
+                    }
+                    return true;
+                }
+                // assign new url to iframe element's src property
+            </script>
+        </h:head>
+        
+        <body>
+            <p:layout style="min-height: 1000px;min-width:1200px">
+		<p:layoutUnit position="north" size="150">
+			<!--h:graphicImage alt="Student Fees"
+				style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG" /-->
+                        <div  align="left" style="border:none;">
+                            <h:graphicImage url="/img/headerLogo.png"/>
+                        </div>
+                        <!--div  align="right" style="border:none;">
+                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;margin-right: 100px;"/>
+                        </div-->
+		</p:layoutUnit>
+                <!--h:panelGrid columns="1">
+                    <p:panel style="height:120px; width:1340px;border: none;">
+                        <div  align="left" style="border:none;">
+                            <h:graphicImage url="/img/headerLogo.png"/>
+                        </div>
+                        <div  align="right" style="border:none;">
+                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;"/>
+                        </div>
+                    </p:panel-->
+                    <p:layoutUnit position="center">
+                    <h:form>
+                    <p:panel style="height:430px;font-size:19px;text-align:center;" id="list" header="Wellcome To Administrator Control Panel">
+                        
+                        <h:panelGrid columns="1">
+                            <p:panel style="height:50px;font-size:17px;font-weight:bold;width:1340px;">
+                                <h:panelGrid columns="22">
+                                    <h:column>
+                                        <h:commandLink value="Add New Administrator" style="font-size:14px;font-weight:bold; border-color:gray;" onclick="return loadIframe('ifrm', 'adminLogin/adminList.xhtml')"/>
+                                        <!--a href="adminLogin/adminList.xhtml">Add New Administrator</a -->
+                                    </h:column>
+                                    <!--h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandLink value="Add New Admin EmailID Config" onclick="return loadIframe('ifrm', 'adminLogin/AdminEmailConfig.xhtml')"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandLink value="Check Registered College/Institute's" onclick="return loadIframe('ifrm', 'adminLogin/CollegeList.xhtml')"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandLink value="Check Pending College/Institute's" onclick="return loadIframe('ifrm', 'adminLogin/PendingCollegeList.xhtml')"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandLink value="Change Admin Password" onclick="return loadIframe('ifrm', 'adminLogin/ChangePassword.xhtml')"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value=""/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandLink value="Server Configuration" onclick="return loadIframe('ifrm', 'adminLogin/ServerList.xhtml')"/>
+                                    </h:column-->
+                                    <h:column>
+                                        <h:commandButton id="lout"  image="/img/lout.gif" action="#{logOutSession.logOut}" />
+                                        <p:tooltip for="lout" value="Please Click Here to Logout." style="font-size:12px;font-weight: bold;color: black;" showEffect="clip" hideEffect="explode"/>
+                                    </h:column>
+                                    <h:column>
+                                        <!-- We have to add Bean class for showing pending png -->
+                                        <h:graphicImage id="im" rendered="#{adminManagedBean.imgerDraw}" value="/img/pending.png"/>
+                                        <p:tooltip for="im" value="Some College Are Wating For Your Approval" style="color: black;"/>
+                                    </h:column>
+                                    <!--h:form>
+                                        <p:tooltip style="font-size:12px;font-weight: bold;color: #4B4B4B;" for="lout" value="Click Here For Log Out." showEffect="clip" hideEffect="explode" />
+                                    </h:form-->
+                                </h:panelGrid>
+                            </p:panel>
+                            
+                            <!--hr style="margin: 0; width: 200px; height: 1px; background: black; border: none;" /-->
+                             <p:separator id="customSeparator" style="height:5px; background:black;  width: 1400px;" />
+                             <iframe id="ifrm" style="border:none;" height="400" width="1100" align="left">
+                            </iframe>
+                            
+                        </h:panelGrid>
+
+                    </p:panel>
+                         </h:form>
+                    </p:layoutUnit>
+                <!--/h:panelGrid-->
+            
+                <!--rich:modalPanel id="adm">
+                    <h:form>
+                        <rich:panel header="Add New Administrator">
+                            
+                        </rich:panel>
+                    </h:form>
+                </rich:modalPanel>
+                <rich:modalPanel id="actiAdm">
+                    <h:form>
+                        <rich:panel header="Active/Inactive Administrator">
+
+                        </rich:panel>
+                    </h:form>
+                </rich:modalPanel!-->
+           </p:layout>
+        </body>
+</f:view>
+</html>

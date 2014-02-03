@@ -1,0 +1,109 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+    
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>JSP Page</title>
+        <link type="text/css" rel="stylesheet" href="../bankDetails.css"/>
+       
+        <style type="text/css">
+            .ui-growl-title {
+                font-weight: bold;
+                font-size:12px;
+                padding: 0px 0px 7px;
+                display: block;
+            }
+            .ui-panel-titlebar {
+                background: url("img/bkg-body.png");
+            }
+            .ui-corner-all {
+                border-radius: 0px 0px 0px 0px;
+            }
+            .ui-inputfield .ui-inputtext .ui-widget .ui-state-default .ui-corner-all .ui-input-invalid {
+                border-color:brown;
+                font-size:12px;
+            }
+            .ui-panel-title {
+                color:#FFF;
+            }
+        </style>    
+    </h:head>
+    <body>
+        <p:panel>
+                <h:form>
+                    <p:growl id="growl" sticky="true" /> 
+                    <p:panel>
+                        <!--h:dataTable style="font-size:14px;font-weight:bold;" headerClass="headerStyle" rows="20" rowClasses="rowStyle"  value="#{orgProfileBeans.pendingList}" binding="#{orgProfileBeans.dataGrid2}"  var="ins"--> 
+                        <p:dataTable id="dataTable" var="dt" 
+					style="font-size: 14px;font-weight: bold;"
+					binding="#{orgProfileBeans.dataGrid2}"
+					value="#{orgProfileBeans.pendingList}" paginator="true"
+					rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+                            <h:column>
+                                <f:facet name="header">#{orgProfileBeans.pendingList} </f:facet>
+                                <f:facet name="header" >
+                                    <h:outputText value="Organization Id"/>
+                                </f:facet>
+                                <h:inputHidden value="#{dt.orgId}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="Institute Name"/>
+                                </f:facet>
+                                <h:outputText value="#{dt.orgName}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="Web Site"/>
+                                </f:facet>
+                                <h:outputText value="#{dt.orgWeb}"/> 
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="Admin Email ID"/>
+                                </f:facet>
+                                <h:outputText value="#{dt.orgEmail}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="Admin Phone"/>
+                                </f:facet>
+                                <h:outputText value="#{dt.orgPhone}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="Check/Uncheck"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox  value="#{dt.status}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:graphicImage value="/img/#{dt.imgUrl}"/>
+                            </h:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel>
+                        <h:panelGrid columns="2">
+                            <!--a4j:commandButton value="Update" action="#{OrgProfileBean.updateRequest}"/-->
+                            <!--a4j:commandButton reRender="list" value="Filter College's"/-->
+                            <h:commandButton value="Update" action="#{orgProfileBeans.updateRequest}"/>
+                            
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:panel>
+        </body>
+   
+    </f:view>
+</html>
