@@ -1,0 +1,210 @@
+#*
+ * @(#) AppMgmt.vm 
+ * Copyright (c) 2014 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+
+$page.setTitle("Admin Home | View Application List")
+
+$page.setBgColor($ui.bgcolor)
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
+</head>
+<body>
+
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang").toString())
+<table  bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor">
+		<td colspan=14> 
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+		$brih_Application #if($lang == "hindi") $brih_Of #end $brih_list	
+		</td>
+                <td align="right">
+               ## <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RolePermissionManagement.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font></a>
+        	</td>
+	</tr>
+</table>
+<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,AppMgmt.vm").setAction("ApplicationManagement")">
+<table  bgcolor="$ui.tableColor" width=100%>
+	<tr>
+		#if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_Application #if($lang == "hindi") $brih_Of #end $brih_list</a></td>
+		#if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","app").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_Application $brih_add #else  $brih_add $brih_Application #end </a></td>
+	#if($mode=="edit")
+		#if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","edit").addPathInfo("count","3") style=text-decoration:none>
+#if($lang == "hindi" || $lang == "gujarati") $brih_Application $brih_Of3 $brih_update #else $brih_update $brih_Application #end </a></id>
+	#end
+	</tr>
+</table>
+<div class="scroll">
+<table  bgcolor="$ui.tableColor" width=100%>
+	#if($mode=="all")
+      	<tr bgcolor="$ui.menuColor">
+        <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_name</td>
+        <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_acronym</td>
+        <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_Url</td>
+        <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_status</td>
+        <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_security</td>
+        <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_serverlocation</td>
+        <td align=center colspan=2>$brih_availableAction</td>
+        </tr>
+        	#foreach($data in $info)
+			        <tr><td>
+					  $data.getAppname()   	
+			        </td><td>
+		                          $data.getAcronym()   	
+			        </td><td>
+					  $data.getAppurl()   	
+			        </td><td>
+					#if(($data.getAppstatus()) == '0')
+					Active
+					#else
+					Inactive
+					#end
+					
+			        </td><td>
+					  $data.getAppsecretkey()   	
+			        </td><td>
+					  $data.getAppserverloc()   	
+			        </td><td>
+					 <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","edit").addPathInfo("count","3").addPathInfo("id","$data.getId()") style=text-decoration:none> $brih_update  </a>
+				</td>
+			        <td>
+					 <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").setAction("ApplicationManagement").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("id","$data.getId()") style=text-decoration:none> $brih_delete </a>
+				</td>
+			        </tr>
+		#end
+	#end
+	#if($mode=="app")
+	<tr bgcolor="$ui.menuColor"><td colspan=7> <b>$brih_enter $brih_Application $brih_detail </b></td></tr>
+	<tr>
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
+		<td> <input type="text" name="aname" value="" > </td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_acronym </td>
+		<td> <input type="text" name="aarcm" value="" > </td>
+	</tr>
+	<tr>
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_Url </td>
+		<td> <input type="text" name="aurl" value="" > </td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_status </td>
+		<td>	<select class="drop" name="astatus">
+                        <option value=0>Active</option>
+                        <option value=1>Inactive</option>
+		</td>
+	</tr>
+	<tr>
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_security </td>
+		<td> <input type="text" name="asec" value="" > </td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_serverlocation </td>
+		<td> <input type="text" name="aserloc" value="" > </td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName" value="eventSubmit_doAddRole">
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doAddRole" value="$brih_add">
+		</td>
+        </tr>
+
+	#end
+	#if($mode=="edit")
+		#foreach($data in $info)
+	<tr bgcolor="$ui.menuColor"><td colspan=7> <b>$brih_update $brih_Application $brih_detail </b></td></tr>
+        <tr>
+                <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
+                <td> <input type="text" name="aname" value="$data.getAppname()" > </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_acronym </td>
+                <td> <input type="text" name="aarcm" value="$data.getAcronym()" > </td>
+        </tr>
+        <tr>
+                <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_Url </td>
+                <td> <input type="text" name="aurl" value="$data.getAppurl()" > </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_status </td>
+                <td>    <select class="drop" name="astatus">
+                        <option value=0>Active</option>
+                        <option value=1>Inactive</option>
+                </td>
+        </tr>
+        <tr>
+                <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_security </td>
+                <td> <input type="text" name="asec" value="$data.getAppsecretkey()" > </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_serverlocation </td>
+                <td> <input type="text" name="aserloc" value="$data.getAppserverloc()" > </td>
+        </tr>
+                <input type="hidden" name="id" value="$data.getId()">
+        <tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+		<input type="hidden" name="actionName" value="eventSubmit_doUpdate">
+                <input type="submit" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update">
+                <input type="hidden" name="count" value="$tdcolor">
+                </td>
+        </tr>
+		#end
+	#end
+
+</table>
+</div>
+</form>
+</body>
+
+<SCRIPT LANGUAGE="javascript">
+
+        function checkActName(frm,field)
+        {
+			frm.actionName.value=field.name;
+        	        frm.submit();
+	
+	}
+ 
+        function apprv_rej(field,frm)
+        {
+		if(field.checked)
+        	{
+                	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+		}                
+        	else
+		{
+                      	var rmFile,index,actualString,preString,postString;
+	        	actualString=frm.deleteFileNames.value;
+        	        index=actualString.indexOf(field.name+"^",0);
+                	preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+	                actualString=preString+postString;
+        	        frm.deleteFileNames.value=actualString;
+		}                
+        }
+
+
+</SCRIPT>
+

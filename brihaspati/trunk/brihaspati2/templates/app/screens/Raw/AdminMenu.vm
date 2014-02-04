@@ -118,6 +118,11 @@
                 <a href=$link.setPage("call,Quotation,Quotation.vm").addPathInfo("mode","quote") style=text-decoration:none>$brih_quotation $brih_mgmt</a>
         </td>
 </tr>
+<tr>
+        <td class="dt">
+                <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_Application $brih_mgmt</a>
+        </td>
+</tr>
 
 </table>
 

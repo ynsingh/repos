@@ -680,4 +680,13 @@
         <column name="STUDENT_ID" size="255" type="VARCHAR"/>
         <column name="PARENT_ID" size="255" type="VARCHAR"/>
 </table>
+<table name="APPLIST" idMethod="idbroker" description="APPLICATION LIST WITH URL">
+        <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="APPNAME" required="true" Type="VARCHAR" size="255"/>
+        <column name="ACRONYM" Type="VARCHAR" size="255"/>
+        <column name="APPURL" required="true" Type="VARCHAR" size="255"/>
+        <column name="APPSTATUS" Type="INTEGER" size="1" default="0"/>
+        <column name="APPSECRETKEY" required="true" Type="VARCHAR" size="255"/>
+        <column name="APPSERVERLOC" Type="VARCHAR" size="255"/>
+</table>
 </database>
