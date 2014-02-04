@@ -11,7 +11,8 @@ CREATE TABLE APPLIST
 			APPSTATUS INTEGER(1) default 0,
 			APPSECRETKEY VARCHAR (255) NOT NULL,
 			APPSERVERLOC VARCHAR (255), 
-                	PRIMARY KEY(ID)
+                	PRIMARY KEY(ID),
+			UNIQUE(APPURL,APPSERVERLOC)
 );
 
 insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (170, 'APPLIST', 100, 1);

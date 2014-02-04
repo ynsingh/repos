@@ -688,5 +688,9 @@
         <column name="APPSTATUS" Type="INTEGER" size="1" default="0"/>
         <column name="APPSECRETKEY" required="true" Type="VARCHAR" size="255"/>
         <column name="APPSERVERLOC" Type="VARCHAR" size="255"/>
+	<unique>
+        	<unique-column name="APPURL"/>
+        	<unique-column name="APPSERVERLOC"/>
+	</unique>
 </table>
 </database>

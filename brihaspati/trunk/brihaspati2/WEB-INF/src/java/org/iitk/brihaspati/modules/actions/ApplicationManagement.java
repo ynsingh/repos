@@ -79,16 +79,26 @@ public class ApplicationManagement extends SecureAction_Admin{
                         String appSerLoc=pp.getString("aserloc","");
 //			ErrorDumpUtil.ErrorLog("Role name "+ rName);
 			Criteria crit=new Criteria();
-                        crit.add(ApplistPeer.APPNAME,appName);
-                        crit.add(ApplistPeer.ACRONYM, appAcrm);
-                        crit.add(ApplistPeer.APPURL,appUrl);
-                        crit.add(ApplistPeer.APPSTATUS, appStat);
-                        crit.add(ApplistPeer.APPSECRETKEY,appSec);
-                        crit.add(ApplistPeer.APPSERVERLOC,appSerLoc);
-			ApplistPeer.doInsert(crit);
+			crit.add(ApplistPeer.APPURL,appUrl);
+			crit.add(ApplistPeer.APPSERVERLOC,appSerLoc);
+                        List alist=ApplistPeer.doSelect(crit);
+			if(alist.size()<1){
+				crit=new Criteria();
+	                        crit.add(ApplistPeer.APPNAME,appName);
+        	                crit.add(ApplistPeer.ACRONYM, appAcrm);
+                	        crit.add(ApplistPeer.APPURL,appUrl);
+                        	crit.add(ApplistPeer.APPSTATUS, appStat);
+	                        crit.add(ApplistPeer.APPSECRETKEY,appSec);
+        	                crit.add(ApplistPeer.APPSERVERLOC,appSerLoc);
+				ApplistPeer.doInsert(crit);
 //			ErrorDumpUtil.ErrorLog("I am Here ");
-			msg=m_u.ConvertedString("appadd",LangFile);
-                        data.setMessage(msg);
+				msg=m_u.ConvertedString("appadd",LangFile);
+	                        data.setMessage(msg);
+			}
+			else{
+				msg=m_u.ConvertedString("appalready",LangFile);
+                                data.setMessage(msg);
+			}
                 	}//end of try 
                 	catch(Exception e)
                 	{
@@ -126,7 +136,7 @@ public class ApplicationManagement extends SecureAction_Admin{
                 	}//end of try 
                 	catch(Exception e)
                 	{
-				     data.setMessage("Error in doDeleteRole of action Application Management ==========> " + e);
+				     data.setMessage("Error in doDelete of action Application Management ==========> " + e);
 
 			}
 	}
