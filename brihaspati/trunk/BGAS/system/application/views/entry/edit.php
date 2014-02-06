@@ -300,12 +300,12 @@ var dc = '';
 <?php
 	echo form_open('entry/edit/' . $current_entry_type['label'] . "/" . $entry_id);
 	echo "<p>";
-	echo form_label('Entry Number', 'entry_number');
+	echo form_label('Bill/Voucher Number', 'entry_number');
 	echo " ";
 	echo $current_entry_type['prefix'] . form_input($entry_number) . $current_entry_type['suffix'];
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Entry Date', 'entry_date');
+	echo form_label('Bill/Voucher Date', 'entry_date');
 	echo " ";
 	echo form_input_date_restrict($entry_date);
 	echo "</span>";
@@ -318,7 +318,7 @@ var dc = '';
         echo " ";
         echo form_input($forward_refrence_id);
         echo "</span>";
-        echo "<span id=\"tooltip-content-3\">Enter the Entry Id of the related earlier dated transaction</span>";
+        echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related earlier dated transaction</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 	echo "<span id=\"tooltip-target-3\">";
@@ -326,7 +326,7 @@ var dc = '';
         echo " ";
         echo form_input($backward_refrence_id);
         echo "</span>";
-        echo "<span id=\"tooltip-content-3\">Enter the Entry Id of the related back dated transaction</span>";
+        echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
         echo "</p>";
 
 	echo "<table class=\"entry-table\">";

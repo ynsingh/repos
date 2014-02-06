@@ -1,4 +1,4 @@
-<?
+<?php
 	echo form_open('projection/add');
 
         echo "<p>";

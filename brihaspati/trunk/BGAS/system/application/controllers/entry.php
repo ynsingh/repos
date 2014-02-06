@@ -127,7 +127,7 @@ class Entry extends Controller {
 			$entry_added_type_label_temp = $this->session->userdata('entry_added_type_label');
 			$entry_added_type_name_temp = $this->session->userdata('entry_added_type_name');
 			$entry_added_number_temp = $this->session->userdata('entry_added_number');
-			$entry_added_message = 'Added ' . $entry_added_type_name_temp . ' Entry number ' . full_entry_number($entry_added_type_id_temp, $entry_added_number_temp) . ".";
+			$entry_added_message = 'Added ' . $entry_added_type_name_temp . ' Bill/Voucher number ' . full_entry_number($entry_added_type_id_temp, $entry_added_number_temp) . ".";
 			$entry_added_message .= " You can [ ";
 			$entry_added_message .= anchor('entry/view/' . $entry_added_type_label_temp . "/" . $entry_added_id_temp, 'View', array('class' => 'anchor-link-a')) . " | ";
 //			$entry_added_message .= anchor('entry/edit/' . $entry_added_type_label_temp . "/" . $entry_added_id_temp, 'Edit', array('class' => 'anchor-link-a')) . " | ";
@@ -152,7 +152,7 @@ class Entry extends Controller {
 			$entry_updated_type_label_temp = $this->session->userdata('entry_updated_type_label');
 			$entry_updated_type_name_temp = $this->session->userdata('entry_updated_type_name');
 			$entry_updated_number_temp = $this->session->userdata('entry_updated_number');
-			$entry_updated_message = 'Updated ' . $entry_updated_type_name_temp . ' Entry number ' . full_entry_number($entry_updated_type_id_temp, $entry_updated_number_temp) . ".";
+			$entry_updated_message = 'Updated ' . $entry_updated_type_name_temp . ' Bill/Voucher number ' . full_entry_number($entry_updated_type_id_temp, $entry_updated_number_temp) . ".";
 			$entry_updated_message .= " You can [ ";
 			$entry_updated_message .= anchor('entry/view/' . $entry_updated_type_label_temp . "/" . $entry_updated_id_temp, 'View', array('class' => 'anchor-link-a')) . " | ";
 		//	$entry_updated_message .= anchor('entry/edit/' . $entry_updated_type_label_temp . "/" . $entry_updated_id_temp, 'Edit', array('class' => 'anchor-link-a')) . " | ";
@@ -224,7 +224,7 @@ class Entry extends Controller {
 
                 $data['forward_reference_id'] = '';
                 $data['backward_reference_id'] = '';
-                $this->db->select('forward_refrence_id, backward_refrence_id');
+                $this->db->select('forward_refrence_id, backward_refrence_id, submitted_by, verified_by');
                 $this->db->from('entries')->where('id', $entry_id)->order_by('id', 'asc');
                 $reference_ids = $this->db->get();
                 if ($reference_ids->num_rows() >0)
@@ -233,6 +233,8 @@ class Entry extends Controller {
                         {
                                 $data['forward_reference_id'] = $ref->forward_refrence_id;
                                 $data['backward_reference_id'] = $ref->backward_refrence_id;
+				$data['submitted_by'] = $ref->submitted_by;
+				$data['verified_by'] = $ref->verified_by;
                         }
                 }
 
@@ -330,14 +332,14 @@ class Entry extends Controller {
 
 		/* Form validations */
 		if ($current_entry_type['numbering'] == '2')
-			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
 		else if ($current_entry_type['numbering'] == '3')
-			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
 		else
-			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
 		//$this->form_validation->set_rules('forward_refrence_id', 'Forward Refrence Id', 'trim|is_natural_no_zero');
 		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim|is_natural_no_zero');
-		$this->form_validation->set_rules('entry_date', 'Entry Date', 'trim|required|is_date|is_date_within_range');
+		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 
@@ -569,7 +571,7 @@ class Entry extends Controller {
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error addding Entry.', 'error');
-				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry");
+				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry");
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			} else {
@@ -846,7 +848,7 @@ class Entry extends Controller {
 				{
 					$this->db->trans_rollback();
 					$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
 					$this->template->load('template', 'entry/add', $data);
 					return;
 				}
@@ -861,7 +863,7 @@ class Entry extends Controller {
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error updating Entry total.', 'error');
-				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " since failed updating debit and credit total");
+				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed updating debit and credit total");
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			}
@@ -875,7 +877,7 @@ class Entry extends Controller {
 			$this->session->set_userdata('entry_added_type_name', $current_entry_type['name']);
 			$this->session->set_userdata('entry_added_number', $data_number);
 			/* Showing success message in show() method since message is too long for storing it in session */
-			$this->logger->write_message("success", "Added " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
+			$this->logger->write_message("success", "Added " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 			redirect('entry/show/' . $current_entry_type['label']);
 			$this->template->load('template', 'entry/add', $data);
 			return;
@@ -1045,10 +1047,10 @@ class Entry extends Controller {
 		$previousvalue="'Credit ledger name'"." ". $creditledgername .',' ."'Debited ledger name'"." ". $debitledgername.','."'Cr Amount'"." " . $cramount.','."'Dr Amount'"."  " . $dramount.','."'Narration' " . $narrat;
 		/* Form validations */
 		if ($current_entry_type['numbering'] == '3')
-			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
 		else
-			$this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|required|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
-		$this->form_validation->set_rules('entry_date', 'Entry Date', 'trim|required|is_date|is_date_within_range');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 		$this->form_validation->set_rules('forward_refrence_id', 'Forward Refrence Id', 'trim');
@@ -1245,7 +1247,7 @@ class Entry extends Controller {
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error updating Entry account.', 'error');
-				$this->logger->write_message("error", "Error updating entry details for " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
+				$this->logger->write_message("error", "Error updating entry details for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 				$this->template->load('template', 'entry/edit', $data);
 				return;
 			}
@@ -1255,7 +1257,7 @@ class Entry extends Controller {
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error deleting previous Ledger accounts from Entry.', 'error');
-				$this->logger->write_message("error", "Error deleting previous entry items for " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
+				$this->logger->write_message("error", "Error deleting previous entry items for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 				$this->template->load('template', 'entry/edit', $data);
 				return;
 			}
@@ -1306,7 +1308,7 @@ class Entry extends Controller {
 				{
 					$this->db->trans_rollback();
 					$this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-					$this->logger->write_message("error", "Error adding Ledger account item [id:" . $data_ledger_id . "] for " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
+					$this->logger->write_message("error", "Error adding Ledger account item [id:" . $data_ledger_id . "] for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 					$this->template->load('template', 'entry/edit', $data);
 					return;
 				}
@@ -1322,7 +1324,7 @@ class Entry extends Controller {
 			{
 				$this->db->trans_rollback();
 				$this->messages->add('Error updating Entry total.', 'error');
-				$this->logger->write_message("error", "Error updating entry total for " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
+				$this->logger->write_message("error", "Error updating entry total for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 				$this->template->load('template', 'entry/edit', $data);
 				return;
 			}
@@ -1354,7 +1356,7 @@ class Entry extends Controller {
 				$this->session->set_userdata('entry_updated_has_reconciliation', FALSE);
 
 			/* Showing success message in show() method since message is too long for storing it in session */
-			$this->logger->write_message("success", "Updated " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
+			$this->logger->write_message("success", "Updated " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 
 			redirect('entry/show/' . $current_entry_type['label']);
 		//		$this->template->load('template', 'entry/edit', $data);
@@ -1405,7 +1407,7 @@ class Entry extends Controller {
 		{
 			$this->db->trans_rollback();
 			$this->messages->add('Error deleting Entry - Ledger accounts.', 'error');
-			$this->logger->write_message("error", "Error deleting ledger entries for " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
+			$this->logger->write_message("error", "Error deleting ledger entries for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
 			redirect('entry/view/' . $current_entry_type['label'] . '/' . $entry_id);
 			return;
 		}
@@ -1413,13 +1415,13 @@ class Entry extends Controller {
 		{
 			$this->db->trans_rollback();
 			$this->messages->add('Error deleting Entry entry.', 'error');
-			$this->logger->write_message("error", "Error deleting Entry entry for " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
+			$this->logger->write_message("error", "Error deleting Entry entry for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
 			redirect('entry/view/' . $current_entry_type['label'] . '/' . $entry_id);
 			return;
 		}
 		$this->db->trans_complete();
 		$this->messages->add('Deleted ' . $current_entry_type['name'] . ' Entry.', 'success');
-		$this->logger->write_message("success", "Deleted " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
+		$this->logger->write_message("success", "Deleted " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
 		redirect('entry/show/' . $current_entry_type['label']);
 		return;
 	}
@@ -1466,6 +1468,9 @@ class Entry extends Controller {
 		$data['entry_narration'] = $cur_entry->narration;
 		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
 		$data['back_ref_id'] = $cur_entry->backward_refrence_id;
+		$data['submitted_by'] = $cur_entry->submitted_by;
+                $data['verified_by'] = $cur_entry->verified_by;
+		
 
 		/* Getting Ledger details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -1534,6 +1539,8 @@ class Entry extends Controller {
 		$data['entry_narration'] = $cur_entry->narration;
 		$data['forward_ref_id'] = $cur_entry->forward_refrence_id;
                 $data['back_ref_id'] = $cur_entry->backward_refrence_id;
+		$data['submitted_by'] = $cur_entry->submitted_by;
+                $data['verified_by'] = $cur_entry->verified_by;
 
 		/* Getting Ledger details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
@@ -1675,15 +1682,15 @@ class Entry extends Controller {
 			/* Sending email */
 			$this->email->from('', 'Webzash');
 			$this->email->to($this->input->post('email_to', TRUE));
-			$this->email->subject($current_entry_type['name'] . ' Entry No. ' . full_entry_number($entry_type_id, $cur_entry->number));
+			$this->email->subject($current_entry_type['name'] . ' Bill/Voucher No. ' . full_entry_number($entry_type_id, $cur_entry->number));
 			$this->email->message($message);
 			if ($this->email->send())
 			{
 				$data['message'] = "Email sent.";
-				$this->logger->write_message("success", "Emailed " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
+				$this->logger->write_message("success", "Emailed " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
 			} else {
 				$data['error'] = "Error sending email. Check you email settings.";
-				$this->logger->write_message("error", "Error emailing " . $current_entry_type['name'] . " Entry number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
+				$this->logger->write_message("error", "Error emailing " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $cur_entry->number) . " [id:" . $entry_id . "]");
 			}
 			$this->load->view('entry/email', $data);
 			return;
@@ -2135,8 +2142,8 @@ class Entry extends Controller {
 		} 
 		/* Form validations */
 
-                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
-                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date1', 'Bill/Voucher Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
@@ -2248,8 +2255,8 @@ class Entry extends Controller {
 		} 
 		/* Form validations */  
 
-                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
-                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date1', 'Bill/Voucher Date From', 'trim|required|is_date|is_date_within_range');
+                $this->form_validation->set_rules('entry_date2', 'To Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 
 		/* Validating form */
 		if ($this->form_validation->run() == FALSE)
@@ -2449,13 +2456,13 @@ class Entry extends Controller {
                 $data['entry_tag'] = 0;
                 /* Form validations */
                 if ($current_entry_type['numbering'] == '2')
-                        $this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
                 else if ($current_entry_type['numbering'] == '3')
-                        $this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
                 else
-                        $this->form_validation->set_rules('entry_number', 'Entry Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
 			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim|is_natural_no_zero');
-                	$this->form_validation->set_rules('entry_date', 'Entry Date', 'trim|required|is_date|is_date_within_range');
+                	$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
                 	$this->form_validation->set_rules('entry_narration', 'trim');
                 	$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
                 /* Debit and Credit amount validation */

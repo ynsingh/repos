@@ -494,7 +494,10 @@ class Budget_model extends Model {
 	function get_account_code($account_name)
 	{
 		$this->db->from('groups');
-                $this->db->select('code')->where('name =', $account_name);
+                $this->db->select('code');
+		$this->db->where('name =', $account_name);
+		if($account_name == 'Expenses')
+			$this->db->or_where('name = ', 'Expenditure'); 
                 $group = $this->db->get();
                 foreach($group->result() as $row)
 			return $row->code;                			

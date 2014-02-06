@@ -3,7 +3,7 @@
 
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Entry Date From', 'entry_date1');
+	echo form_label('Bill/Voucher Date From', 'entry_date1');
 	echo " ";
 	echo form_input_date_restrict($entry_date1);
 	echo "</span>";
@@ -11,7 +11,7 @@
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "<span id=\"tooltip-target-2\">";
-	echo form_label('To Entry Date', 'entry_date2');
+	echo form_label('To Bill/Voucher Date', 'entry_date2');
 	echo " ";
 	echo form_input_date_restrict($entry_date2);
 	echo "</span>";

@@ -1,6 +1,6 @@
-<p>Entry Number : <span class="bold"><?php echo full_entry_number($entry_type_id, $cur_entry->number); ?></span>
+<p>Bill/voucher Number : <span class="bold"><?php echo full_entry_number($entry_type_id, $cur_entry->number); ?></span>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Entry Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span>
+Bill/Voucher Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span>
 </p>
 
 <p>Forward Reference Id : <span class="bold"><?php echo $forward_reference_id; ?></span>
@@ -39,6 +39,7 @@ if ($cur_entry->dr_total != $cur_entry->cr_total)
 ?>
 </table>
 <p>Narration :<span class="bold"><?php echo $cur_entry->narration; ?></span></p>
+
 <?php 
 	echo  anchor('entry/verifyentry/' . $current_entry_type['label'] . "/" . $cur_entry->id , "Verify", array('title' => 'Verify ' . $current_entry_type['name'] . ' Entry', 'class' => 'red-link')) ;
 	echo " | ";

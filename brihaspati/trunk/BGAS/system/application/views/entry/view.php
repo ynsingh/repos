@@ -1,6 +1,6 @@
-<p>Entry Number : <span class="bold"><?php echo full_entry_number($entry_type_id, $cur_entry->number); ?></span>
+<p>Bill/Voucher Number : <span class="bold"><?php echo full_entry_number($entry_type_id, $cur_entry->number); ?></span>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Entry Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span>
+Bill/Voucher Date : <span class="bold"><?php echo date_mysql_to_php_display($cur_entry->date); ?></span>
 </p>
 
 <p>Forward Reference Id : <span class="bold"><?php echo $forward_reference_id; ?></span>
@@ -53,6 +53,12 @@ if ($cur_entry_tag == "")
 else
 	echo $cur_entry_tag;
 ?>
+</p>
+<p>
+	Submitted By : <span class="bold"><?php echo $submitted_by; ?></span>
+</p>
+<p>
+	Verified By : <span class="bold"><?php echo $verified_by; ?></span>
 </p>
 <?php 
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' .  $current_entry_type['name'] . ' Entries'));

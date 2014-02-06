@@ -298,15 +298,15 @@ var dc = '';
 	echo form_open('entry/add/' . $current_entry_type['label']);
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
-	echo form_label('Entry Number', 'entry_number');
+	echo form_label('Bill/Voucher Number', 'entry_number');
 	echo " ";
 	echo $current_entry_type['prefix'] . form_input($entry_number) . $current_entry_type['suffix'];
 	echo "</span>";
-	echo "<span id=\"tooltip-content-1\">Leave Entry Number empty for auto numbering</span>";
+	echo "<span id=\"tooltip-content-1\">Leave Bill / Voucher Number empty for auto numbering</span>";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 	echo "<span id=\"tooltip-target-2\">";
-	echo form_label('Entry Date', 'entry_date');
+	echo form_label('Bill/Voucher Date', 'entry_date');
 	echo " ";
 	echo form_input_date_restrict($entry_date);
 	echo "</span>";
@@ -321,7 +321,7 @@ var dc = '';
         echo " ";
         echo form_input($backward_refrence_id);
         echo "</span>";
-        echo "<span id=\"tooltip-content-3\">Enter the Entry Id of the related back dated transaction</span>";
+        echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "</p>";
 

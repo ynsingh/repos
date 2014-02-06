@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title><?php $current_entry_type['name']; ?> Entry Number <?php echo $entry_number; ?></title>
+<title><?php $current_entry_type['name']; ?> Bill/Voucher Number <?php echo $entry_number; ?></title>
 
 <style type="text/css">
 	body {
@@ -65,10 +65,10 @@
 	<br />
 	<div id="print-entry-type"><span class="value"><?php echo $current_entry_type['name']; ?> Entry</span></div>
 	<br />
-	<div id="print-entry-number"><?php echo $current_entry_type['name']; ?> Entry Number : <span class="value"><?php echo full_entry_number($entry_type_id, $entry_number); ?></span></div>
+	<div id="print-entry-number"><?php echo $current_entry_type['name']; ?> Bill/Voucher Number : <span class="value"><?php echo full_entry_number($entry_type_id, $entry_number); ?></span></div>
 	<div id="print-entry-number"><?php echo $current_entry_type['name']; ?> Forward Reference Id : <span class="value"><?php echo $forward_ref_id; ?></span></div>
         <div id="print-entry-number"><?php echo $current_entry_type['name']; ?> Backward Reference Id : <span class="value"><?php echo $back_ref_id; ?></span></div>
-	<div id="print-entry-number"><?php echo $current_entry_type['name']; ?> Entry Date : <span class="value"><?php echo $entry_date; ?></span></div>
+	<div id="print-entry-number"><?php echo $current_entry_type['name']; ?> Bill/Voucher Date : <span class="value"><?php echo $entry_date; ?></span></div>
 	<br />
 	<table id="print-entry-table">
 		<thead>
@@ -102,6 +102,8 @@
 	</table>
 	<br />
 	<div id="print-entry-narration">Narration : <span class="value"><?php echo $entry_narration; ?></span></div>
+	<div id="print-entry-narration">Submitted By : <span class="value"><?php echo $submitted_by; ?></span></div>
+	<div id="print-entry-narration">Verified By : <span class="value"><?php echo $verified_by; ?></span></div>
 	<br />
 </body>
 </html>
