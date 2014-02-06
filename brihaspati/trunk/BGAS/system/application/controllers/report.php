@@ -766,7 +766,19 @@ class Report extends Controller {
 			'size' => '11',
 			'value' => date_today_php(),
 		);
+		$data_date1 = $default_start;
+                $data_date2 = $default_end;
 
+                $date=explode("/",$data_date1);
+                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $date=explode("/",$data_date2);
+                $date2=$date[2]."-".$date[1]."-".$date[0];
+
+                $newdata = array(
+                      'date1'  => $date1,
+                      'date2'  => $date2
+                     );
+                $this->session->set_userdata($newdata);
 		/* Repopulating form */
  
 		if ($_POST)
