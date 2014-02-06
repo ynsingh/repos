@@ -3,12 +3,15 @@ package org.nmeict.smvdu.Beans;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.security.MessageDigest;
+import java.util.Enumeration;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.nmeict.smvdu.Beans.db.UserDB;
 import org.nmeict.smvdu.Beans.SpringClassFile.IOrgLoginProfile;
@@ -109,7 +112,21 @@ public class OrgLoginDetails  implements java.io.Serializable {
 	{
 		try
 		{
-                        System.out.print("\n\n============ request=="+(HttpServletRequest) facesContext.getExternalContext().getRequest());
+                    /*
+                     * 
+                     
+                        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+                        HttpSession session= request.getSession();
+                        Enumeration e= request.getHeaderNames();
+                        
+                        while (e.hasMoreElements()) {
+                            System.out.print("Element=="+e.nextElement().toString());
+                            //System.out.println("\n\naction=="+request.getParameter("action"));
+                        }
+                        System.out.print("\n Header="+request.getHeader("cookie")+"\nconnection=="+request.getHeader("connection"));
+                        System.out.print("\n\n request.getPathInfo()=="+request.getPathInfo()+"\n==URI"+request.getRequestURI()+"\nHeaderName="+request.getHeaderNames());
+                        System.out.print("\n\n============ request=="+((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL().toString());
+                        */
 			String page = null;
 			boolean b;
 			OrgProfile op = new OrgProfile();
