@@ -77,6 +77,7 @@ public class ApplicationManagement extends SecureAction_Admin{
                         String appUrl=pp.getString("aurl","");
                         String appSec=pp.getString("asec","");
                         String appSerLoc=pp.getString("aserloc","");
+                        String insname=pp.getString("insname","");
 //			ErrorDumpUtil.ErrorLog("Role name "+ rName);
 			Criteria crit=new Criteria();
 			crit.add(ApplistPeer.APPURL,appUrl);
@@ -90,6 +91,7 @@ public class ApplicationManagement extends SecureAction_Admin{
                         	crit.add(ApplistPeer.APPSTATUS, appStat);
 	                        crit.add(ApplistPeer.APPSECRETKEY,appSec);
         	                crit.add(ApplistPeer.APPSERVERLOC,appSerLoc);
+        	                crit.add(ApplistPeer.INSNAME,insname);
 				ApplistPeer.doInsert(crit);
 //			ErrorDumpUtil.ErrorLog("I am Here ");
 				msg=m_u.ConvertedString("appadd",LangFile);
@@ -166,6 +168,7 @@ public class ApplicationManagement extends SecureAction_Admin{
                         String appUrl=pp.getString("aurl","");
                         String appSec=pp.getString("asec","");
                         String appSerLoc=pp.getString("aserloc","");
+                        String insname=pp.getString("insname","");
 
 			Criteria crit=new Criteria();
        	                crit.add(ApplistPeer.ID,Id);
@@ -175,6 +178,7 @@ public class ApplicationManagement extends SecureAction_Admin{
                         crit.add(ApplistPeer.APPSTATUS, appStat);
                         crit.add(ApplistPeer.APPSECRETKEY,appSec);
                         crit.add(ApplistPeer.APPSERVERLOC,appSerLoc);
+                        crit.add(ApplistPeer.INSNAME,insname);
 			ApplistPeer.doUpdate(crit);
 //			ErrorDumpUtil.ErrorLog("I am Here ");
 			msg=m_u.ConvertedString("instAreg_msg4",LangFile);

@@ -66,31 +66,34 @@ $!data.getMessage()
         <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_status</td>
         <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_security</td>
         <td align=center>$brih_Application #if($lang == "hindi")  $brih_Of1 #end $brih_serverlocation</td>
+        <td align=center>$RemoteInstitute #if($lang == "hindi")  $brih_Of1 #end $brih_name</td>
         <td align=center colspan=2>$brih_availableAction</td>
         </tr>
-        	#foreach($data in $info)
+        	#foreach($adata in $info)
 			        <tr><td>
-					  $data.getAppname()   	
+					  $!adata.getAppname()   	
 			        </td><td>
-		                          $data.getAcronym()   	
+		                          $!adata.getAcronym()   	
 			        </td><td>
-					  $data.getAppurl()   	
+					  $!adata.getAppurl()   	
 			        </td><td>
-					#if(($data.getAppstatus()) == '0')
+					#if(($!adata.getAppstatus()) == '0')
 					Active
 					#else
 					Inactive
 					#end
 					
 			        </td><td>
-					  $data.getAppsecretkey()   	
+					  $!adata.getAppsecretkey()   	
 			        </td><td>
-					  $data.getAppserverloc()   	
+					  $!adata.getAppserverloc()   	
 			        </td><td>
-					 <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","edit").addPathInfo("count","3").addPathInfo("id","$data.getId()") style=text-decoration:none> $brih_update  </a>
+					$!adata.getInsname()
+			        </td><td>
+					 <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").addPathInfo("mode","edit").addPathInfo("count","3").addPathInfo("id","$adata.getId()") style=text-decoration:none> $brih_update  </a>
 				</td>
 			        <td>
-					 <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").setAction("ApplicationManagement").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("id","$data.getId()") style=text-decoration:none> $brih_delete </a>
+					 <a href=$link.setPage("call,Root_Admin,AppMgmt.vm").setAction("ApplicationManagement").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("id","$adata.getId()") style=text-decoration:none> $brih_delete </a>
 				</td>
 			        </tr>
 		#end
@@ -106,7 +109,7 @@ $!data.getMessage()
 		<td> <input type="text" name="aarcm" value="" > </td>
 	</tr>
 	<tr>
-		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_Url </td>
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_Url <font color="red">* </font></td>
 		<td> <input type="text" name="aurl" value="" > </td>
 	</tr>
 	<tr bgcolor="$ui.menuColor">
@@ -121,31 +124,35 @@ $!data.getMessage()
 		<td> <input type="text" name="asec" value="" > </td>
 	</tr>
 	<tr bgcolor="$ui.menuColor">
-		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_serverlocation </td>
+		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_serverlocation  <font color="red">* </font></td>
 		<td> <input type="text" name="aserloc" value="" > </td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td> $RemoteInstitute  #if($lang == "hindi") $brih_Of1 #end $brih_name  <font color="red">* </font></td>
+		<td> <input type="text" name="insname" value="" > </td>
 	</tr>
 	<tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName" value="eventSubmit_doAddRole">
-		<input type="submit" class="button-ftextstyle" name="eventSubmit_doAddRole" value="$brih_add">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doAddRole" value="$brih_add" onClick="checkField(document.frm,this);">
 		</td>
         </tr>
 
 	#end
 	#if($mode=="edit")
-		#foreach($data in $info)
+		#foreach($adata in $info)
 	<tr bgcolor="$ui.menuColor"><td colspan=7> <b>$brih_update $brih_Application $brih_detail </b></td></tr>
         <tr>
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
-                <td> <input type="text" name="aname" value="$data.getAppname()" > </td>
+                <td> <input type="text" name="aname" value="$!adata.getAppname()" > </td>
         </tr>
         <tr bgcolor="$ui.menuColor">
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_acronym </td>
-                <td> <input type="text" name="aarcm" value="$data.getAcronym()" > </td>
+                <td> <input type="text" name="aarcm" value="$!adata.getAcronym()" > </td>
         </tr>
         <tr>
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_Url </td>
-                <td> <input type="text" name="aurl" value="$data.getAppurl()" > </td>
+                <td> <input type="text" name="aurl" value="$!adata.getAppurl()" > </td>
         </tr>
         <tr bgcolor="$ui.menuColor">
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_status </td>
@@ -156,13 +163,17 @@ $!data.getMessage()
         </tr>
         <tr>
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_security </td>
-                <td> <input type="text" name="asec" value="$data.getAppsecretkey()" > </td>
+                <td> <input type="text" name="asec" value="$!adata.getAppsecretkey()" > </td>
         </tr>
         <tr bgcolor="$ui.menuColor">
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_serverlocation </td>
-                <td> <input type="text" name="aserloc" value="$data.getAppserverloc()" > </td>
+                <td> <input type="text" name="aserloc" value="$!adata.getAppserverloc()" > </td>
         </tr>
-                <input type="hidden" name="id" value="$data.getId()">
+	<tr bgcolor="$ui.menuColor">
+		<td> $RemoteInstitute  #if($lang == "hindi") $brih_Of1 #end $brih_name  <font color="red">* </font></td>
+		<td> <input type="text" name="insname" value="$!adata.getInsname()" > </td>
+	</tr>
+                <input type="hidden" name="id" value="$adata.getId()">
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
 		<input type="hidden" name="actionName" value="eventSubmit_doUpdate">
@@ -179,6 +190,20 @@ $!data.getMessage()
 </body>
 
 <SCRIPT LANGUAGE="javascript">
+
+	function checkField(frm,field)
+        {
+                if((frm.aurl.value!="") &&(frm.aserloc.value!="")&&(frm.insname.value!=""))
+                {
+                	frm.actionName.value=field.name;
+                        frm.submit();
+                }
+                else
+                {
+                        alert("Please fill the Mandatory(*) Fields !");
+                }
+        }
+                        
 
         function checkActName(frm,field)
         {
