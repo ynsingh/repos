@@ -384,7 +384,10 @@ class Entry extends Controller {
 					$data['ledger_dc'][$count] = "D";
 				*/
 				// line added by Priyanka
-                                $data['ledger_dc'][$count] = "D";
+				if ($count == 0 )
+					$data['ledger_dc'][$count] = "C";
+				else
+	                                $data['ledger_dc'][$count] = "D";
 
 				$data['ledger_id'][$count] = 0;
 				$data['dr_amount'][$count] = "";
