@@ -61,8 +61,9 @@ if(session.isNew()){
 
 <%
    }
-
+        System.out.println("hellooooooo");
 	List<Election> election=(List<Election>)session.getAttribute("SetVoterList");
+        System.out.println("number of servoter is "+election.size());
 %>
 
       <style type="text/css">
@@ -214,8 +215,12 @@ function disable(){
                       Select Election
                             <select name="electionId" class="btn2" id="election_id" size="1">
                              <option value="Select">Select</option>
-                            <%if(election.size()>0){%>
-                             <%
+                             
+                            <%--Modify on 1 feb 2014--%>
+                             <%--if(election.size()>0)--%>
+                             <%if(election!=null){%>
+                            <%--Modify on 1 feb 2014--%>
+                            <%
                             for(int i=0;i<election.size();i++)
                             {
                             %>

@@ -259,15 +259,17 @@ session.setAttribute("insti",ado.getInstituteName());
             if(elec.getNstart().before(d) && elec.getEndDate().after(d))
             {
                setVoter.add(elec);
-            }
-                      
-            //code on 29 Jan 2014
+            }                      
+            //end of code on 29 Jan 2014
+
+            
         session.setAttribute("electionList", electionList);
         session.setAttribute("currentelectionList", currentelectionList);
         session.setAttribute("underprocessList", underprocessList);
         session.setAttribute("ClosedelectionList", ClosedelectionList);
-        session.setAttribute("SetVoterList", setVoter);
+       
         }
+         session.setAttribute("SetVoterList", setVoter);
                 if(login.getRole()==null) login.setRole(" ");
                 if (login.getRole().equalsIgnoreCase("superadmin")) //superadmin
                 {

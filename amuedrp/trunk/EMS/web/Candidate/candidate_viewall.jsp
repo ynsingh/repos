@@ -466,7 +466,7 @@ System.out.println(status+"rrrrrrrrrrrrrr");
 
 
    <div
-        style="  top:10%;
+        style="  top:7%;
         left:55%;
         right:5px;
         position: absolute;

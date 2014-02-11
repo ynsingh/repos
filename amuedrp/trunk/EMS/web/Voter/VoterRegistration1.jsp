@@ -505,7 +505,7 @@ function check3()
 
     <div
    style="  top:65%;
-   left:55%;
+   left:60%;
    right:5px;
       position: absolute;
 
@@ -561,7 +561,7 @@ function check3()
 
      <div
    style="  top:45%;
-   right:37%;
+   right:30%;
       position: absolute;
 
       visibility: show;" >

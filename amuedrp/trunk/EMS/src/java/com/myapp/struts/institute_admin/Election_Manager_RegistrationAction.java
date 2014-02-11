@@ -81,8 +81,8 @@ public class Election_Manager_RegistrationAction extends org.apache.struts.actio
         contact_no=ManagerRegistrationForm.getContact_no();
         mobile_no=ManagerRegistrationForm.getMobile_no();
         department=ManagerRegistrationForm.getDepartment();
-       // staff_id=ManagerRegistrationForm.getStaff_id();
-       // manager_id=ManagerRegistrationForm.getManager_id();
+        // staff_id=ManagerRegistrationForm.getStaff_id();
+        // manager_id=ManagerRegistrationForm.getManager_id();
        institute_id=(String) session.getAttribute("institute_id");
         //auto generated Manager ID & Staff ID
         button=ManagerRegistrationForm.getsubmit();
@@ -195,24 +195,39 @@ locale1=(String)session.getAttribute("locale");
          staff_id=(String)ElectionDAO.returnMaxElectionManagerId(institute_id);
         manager_id=staff_id;
         //Iterator i1= rs1.iterator();
-      //Iterator i2=rs2.iterator();
-      System.out.println("staff id isssssssssss  "+staff_id+"   "+manager_id);
+       //Iterator i2=rs2.iterator();
+       System.out.println("staff id isssssssssss  "+staff_id+"   "+manager_id);
+       
+       List rs4=logindao.getStaffDetails(staff_id, institute_id);
+      
+      // List rs2=MyQueryResult.getMyExecuteQuery("select * from staff_detail where emai_id='"+admin_email+"'");
+      
+       Iterator it4 = rs4.iterator();
+       
+       //code added on 4 Feb 2014
+       int sid;
+       while(it4.hasNext()){
+           sid =Integer.parseInt(staff_id)+1;
+           staff_id=Integer.toString(sid);
+           rs4=logindao.getStaffDetails(staff_id, institute_id);
+           it4 = rs4.iterator();
+           System.out.println("staff id isssssssssss  "+staff_id+"   "+manager_id);
+       }
+       //code added on 4 Feb 2014
+       
+       manager_id=staff_id;
        List rs=admindao.getAdminDeatilsByUserId(user_id);
        List rs1=logindao.getUser(user_id);
        List rs2=electionmanagerdao.getUserId(user_id);
        List rs3=staffdetaildao.getStaffDetails(staff_id, institute_id);
-       List rs4=logindao.getStaffDetails(staff_id, institute_id);
-       List rs5=electionmanagerdao.getStaffDetails(staff_id, institute_id);
+        List rs5=electionmanagerdao.getStaffDetails(staff_id, institute_id);
        List rs6=electionmanagerdao.ManagerDeatils(manager_id, institute_id);
-      // List rs2=MyQueryResult.getMyExecuteQuery("select * from staff_detail where emai_id='"+admin_email+"'");
-       Iterator it = rs.iterator();
+        Iterator it = rs.iterator();
        Iterator it1 = rs1.iterator();
        Iterator it2 = rs2.iterator();
        Iterator it3 = rs3.iterator();
-       Iterator it4 = rs4.iterator();
        Iterator it5=rs5.iterator();
        Iterator it6= rs6.iterator();
-       //while()
        if(it.hasNext() || it1.hasNext() || it2.hasNext() )
        {
 String msg1=resource.getString("duplicate_user_id");
@@ -220,7 +235,7 @@ String msg1=resource.getString("duplicate_user_id");
             return mapping.findForward("failure");
        }
 
-       else if(it3.hasNext() || it4.hasNext() || it5.hasNext())
+       else if(it3.hasNext() || it5.hasNext())
        {
            String msg2=resource.getString("duplicate_staff_id");
          request.setAttribute("msg2", msg2);

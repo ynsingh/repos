@@ -76,7 +76,17 @@ public class AddVoterRegistrationAction extends org.apache.struts.action.Action 
                  request.setAttribute("msgerr1", "Sorry Mail Id Already Exist, Use Another");
                  return mapping.findForward("success1");
                }
-
+               
+               //code added on 4 Feb 2014
+               LoginDAO lgdao=new LoginDAO();
+               Login login1 =lgdao.getUserId(email);
+              if(login1!=null)
+              {
+                 request.setAttribute("msgerr1", "Sorry Mail Id Already Exist, Use Another");
+                 return mapping.findForward("success1");
+               }
+               //code added on 4 Feb 2014
+               
               StaffDetail obj2=StaffDetailDAO.searchStaffId(id,instituteid);
                if(obj2!=null)
                {

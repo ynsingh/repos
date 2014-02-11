@@ -211,8 +211,11 @@ return true;
       <td align="center">
 
           <b>Select Election </b>
-         <%if(election.size()>0){%>
-         <select name="electionId" id="election_id" >
+          <%--Modify on 1 feb 2014--%>
+             <%--if(election.size()>0)--%>
+             <%if(election!=null){%>
+          <%--Modify on 1 feb 2014--%>
+          <select name="electionId" id="election_id" >
              <option selected value="Select">Select<%--<%=resource.getString("managername")%>--%></option>
                 <%
 
