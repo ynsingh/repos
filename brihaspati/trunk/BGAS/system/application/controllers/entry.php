@@ -944,6 +944,15 @@ class Entry extends Controller {
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
+		$loginname=$this->session->userdata('user_name');
+                $submittername=$cur_entry->submitted_by;
+                if($loginname==$submittername){
+                        $this->messages->add('Submitter can not verify own entry');
+                        redirect('entry/show/' . $current_entry_type['label']);
+                        return;
+                }
+                else{
+
 		/* Form fields - Entry */
 		$data['entry_number'] = array(
 			'name' => 'entry_number',
@@ -1331,9 +1340,9 @@ class Entry extends Controller {
 				$this->template->load('template', 'entry/edit', $data);
 				return;
 			}
-			$uname=$this->session->userdata('user_name');
+			//$uname=$this->session->userdata('user_name');
 			$verifyuser = array(
-                                'verified_by' => $uname,
+                                'verified_by' => $loginname,
                                 'status' => 1,
                         );
                         if ( ! $this->db->where('id', $entry_id)->update('entries', $verifyuser))
@@ -1364,6 +1373,7 @@ class Entry extends Controller {
 			redirect('entry/show/' . $current_entry_type['label']);
 		//		$this->template->load('template', 'entry/edit', $data);
 			return;
+		}
 		}
 		return;
 	}
@@ -2371,8 +2381,15 @@ class Entry extends Controller {
                         	redirect('entry/show/' . $entry_type);
                         	return;
                 	}
+			$entry_type_id = entry_type_name_to_id($entry_type);
+                        $cur_entry = $this->Entry_model->get_entry($entry_id, $entry_type_id);
+                        $submittername=$cur_entry->submitted_by;	
 			$verifydate = date_php_to_mysql(date_today_php());
 			$uname=$this->session->userdata('user_name');
+			if($uname==$submittername){
+                                $this->messages->add('Submitter can not verify own entry');
+                        }
+                        else{	
 			$update_data = array(
                                 'verified_by' => $uname,
                                 'status' => 1,
@@ -2388,6 +2405,7 @@ class Entry extends Controller {
 			
                         /* Success */
                         $this->db->trans_complete();
+			}
 			redirect('entry/show/' . $entry_type);
 			return;
 	}
@@ -2526,6 +2544,8 @@ class Entry extends Controller {
                         $bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
                         $non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
                         $data_narration = $this->input->post('entry_narration', TRUE);
+			$ledidarray=array();
+			$leddcarray=array();
                         foreach ($data_all_ledger_dc as $id => $ledger_data)
                         {
                                 if ($data_all_ledger_id[$id] < 1)
@@ -2550,24 +2570,34 @@ class Entry extends Controller {
                                 $valid_ledger = $valid_ledger_q->row();
                                 $ledid= $valid_ledger-> id;
                                 $ledname= $valid_ledger-> name;
+				$ledidarray[]=$ledid;
                                 $dc=$data_all_ledger_dc[$id];
-                                $det=$this->Ledger_model->get_other_ledger_name($ledid, $entry_type, $dc, $dr_total);
-                        	if($det){
-				break;
-                                }
+				$leddcarray[]=$dc;
                                 }
                         }
-                        if($det){
-                        	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create ', 'error');
-                                $this->template->load('template', 'entry/checkentry', $data);
+			if (float_ops($dr_total, $cr_total, '!='))
+                        {
+                                $this->messages->add('Debit and Credit Total does not match!', 'error');
+                                $this->template->load('template', 'entry/add', $data);
                                 return;
+                        } else if (float_ops($dr_total, 0, '==') && float_ops($cr_total, 0, '==')) {
+                                $this->messages->add('Cannot save empty Entry.', 'error');
+                                $this->template->load('template', 'entry/add', $data);
+                                return;
+                        }
+                        $det=$this->Ledger_model->get_other_ledger_name($ledidarray, $entry_type, $leddcarray, $dr_total);
+			if($det){
+                        	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create ', 'error');
+                                //$this->template->load('template', 'entry/checkentry', $data);
+                                //return;
                         }
                         else{
                                 $this->add($entry_type);
-                                redirect('entry/show/' . $entry_type);
-				return;
+                                //redirect('entry/show/' . $entry_type);
+				//return;
                         }
                 }
+                $this->template->load('template', 'entry/checkentry', $data);
                 return;
         }
 

@@ -1044,27 +1044,27 @@ class Ledger_model extends Model {
 	function get_other_ledger_name($entry_id, $entry_type_label, $ledger_type, $amount)
         {
                 $output =false;
-                $dbidarray=array();
-                $cridarray=array();
-                $this->db->from('entry_items')->where('ledger_id', $entry_id)->where('amount',$amount);
+                $idarray1=array();
+                $idarray2=array();
+		$ledid1=$entry_id[0];
+		$ledid2=$entry_id[1];
+		$ltype1=$ledger_type[0];
+		$ltype2=$ledger_type[1];
+               	$this->db->from('entry_items')->where('ledger_id', $ledid1)->where('amount',$amount)->where('dc',$ltype1);
                 $opp_entry_name_q = $this->db->get();
                 foreach ($opp_entry_name_q->result() as $row)
                 {
-                                $dcvalue=$row->dc;
-                                if($dcvalue=="C")
-				{
-                                $cridarray[]=$row->entry_id;
-				}
-                                else{
-                                $dbidarray[]=$row->entry_id;
-				}
+                	$idarray1[]=$row->entry_id;
                 }
-                foreach ($dbidarray as $key=>$cid){
-                                $cridarray[]=$row->entry_id;
+               	$this->db->from('entry_items')->where('ledger_id', $ledid2)->where('amount',$amount)->where('dc',$ltype2);
+                $opp_entry_name = $this->db->get();
+                foreach ($opp_entry_name->result() as $row)
+                {
+                	$idarray2[]=$row->entry_id;
                 }
-               	foreach ($dbidarray as $key=>$cid){
-                       	foreach ($cridarray as $key1=>$debitedid){
-                               	if($cid==$debitedid){
+               	foreach ($idarray1 as $id1){
+                       	foreach ($idarray2 as $id2){
+                               	if($id1==$id2){
                                       $output=true;
                                       break;
                                	}
@@ -1072,9 +1072,5 @@ class Ledger_model extends Model {
                	}
                 return $output;
         }
-
 }
 ?>
-
-
-
