@@ -50,7 +50,6 @@ $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_general_ci";
 
-
 $db['login']['hostname'] = "127.0.0.1";
 $db['login']['username'] = "bgas";
 $db['login']['password'] = "bgas";
@@ -64,6 +63,18 @@ $db['login']['cachedir'] = "";
 $db['login']['char_set'] = "utf8";
 $db['login']['dbcollat'] = "utf8_general_ci";
 
+$db['brihaspati']['hostname'] = "127.0.0.1";
+$db['brihaspati']['username'] = "bgas";
+$db['brihaspati']['password'] = "bgas";
+$db['brihaspati']['database'] = "brihaspati";
+$db['brihaspati']['dbdriver'] = "mysql";
+$db['brihaspati']['dbprefix'] = "";
+$db['brihaspati']['pconnect'] = FALSE;
+$db['brihaspati']['db_debug'] = FALSE;
+$db['brihaspati']['cache_on'] = FALSE;
+$db['brihaspati']['cachedir'] = "";
+$db['brihaspati']['char_set'] = "utf8";
+$db['brihaspati']['dbcollat'] = "utf8_general_ci";
 
 $db['pl']['hostname'] = "127.0.0.1";
 $db['pl']['username'] = "bgas";

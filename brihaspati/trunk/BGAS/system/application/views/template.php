@@ -77,11 +77,26 @@ $(document).ready(function() {
 		<div id="logo">
 		<?php echo anchor('', 'Brihaspati General Accounting System', array('class' => 'anchor-link-b'));?>
  
-	</div>
+		</div>
 
 		<?php
+			$db2=$this->load->database('brihaspati', TRUE);
+                        $applist="";
+			$table="APPLIST";
+                        if($db2->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
+                                $this->messages->add('Brihaspati database with APPLICATION LIST table exists.', 'success');
+                                $db2->from('APPLIST');
+                                $db2->select('*')->where('APPSTATUS = ', 0);
+                                $applist = $db2->get();
+                        }
+			else{
+                                $this->messages->add('Brihaspati database with APPLICATION LIST table is not exists. so contact to administrator for application header', 'success');
+                        }
+
+
+
+			echo "<div id=\"admin\">";
 			if ($this->session->userdata('user_name')) {
-				echo "<div id=\"admin\">";
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
 				echo " | ";
 				/* Check if allowed administer rights */
@@ -92,9 +107,32 @@ $(document).ready(function() {
 				echo anchor('user/profile', 'Profile', array('title' => "Profile", 'class' => 'anchor-link-b'));
 				echo " | ";
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
-				echo " | ";
-				echo "</div>";
 			}
+			echo "</div>";
+			echo "<div>";
+                                foreach($applist->result() as $row)
+                                {
+                                        $appacrm ="";
+                                        if($row->ACRONYM == "")
+                                                $appacrm = $row->APPNAME;
+                                        else
+                                                $appacrm = $row->ACRONYM;
+
+                                        $urlf="";
+                                        if ($this->session->userdata('user_name'))
+                                                $urlf=$row->APPURL."?lgdst=lgdn";
+                                        else
+                                                $urlf=$row->APPURL."?lgdst=nlgdn";
+
+					if((strcasecmp(($row->ACRONYM), "BGAS") != 0 )||(strcasecmp(($row->APPNAME),"Brihaspati General Accounting System")!=0)){
+					//if((($row->ACRONYM) != "BGAS")||(($row->APPNAME) != "Brihaspati General Accounting System")){
+                                        	echo anchor($urlf, $appacrm, array('title' => $row->APPNAME, 'class' => 'anchor-link-b'));
+                                        	echo " | ";
+					}
+                                }
+                        echo "</div>";
+                        $db2->close();
+
 		?>
 
 		 <?php
