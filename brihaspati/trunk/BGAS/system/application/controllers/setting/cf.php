@@ -180,6 +180,10 @@ class Cf extends Controller {
 			$data_account_print_margin_right = $account_data->print_margin_right;
 			$data_account_print_orientation = $account_data->print_orientation;
 			$data_account_print_page_format = $account_data->print_page_format;
+			
+			$data_ins_name = $account_data->ins_name;
+			$data_dept_name = $account_data->dept_name;
+			$data_uni_name = $account_data->uni_name;
 
 			$data_database_type = 'mysql';
 			$data_database_host = $this->input->post('database_host', TRUE);
@@ -281,7 +285,7 @@ class Cf extends Controller {
 
 				/* Adding account settings */
 				$newacc->trans_start();
-				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, $data_account_manage_inventory, 0, $data_account_email_protocol, $data_account_email_host, $data_account_email_port, $data_account_email_username, $data_account_email_password, $data_account_print_paper_height, $data_account_print_paper_width, $data_account_print_margin_top, $data_account_print_margin_bottom, $data_account_print_margin_left, $data_account_print_margin_right, $data_account_print_orientation, $data_account_print_page_format, 4)))
+				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, $data_account_manage_inventory, 0, $data_account_email_protocol, $data_account_email_host, $data_account_email_port, $data_account_email_username, $data_account_email_password, $data_account_print_paper_height, $data_account_print_paper_width, $data_account_print_margin_top, $data_account_print_margin_bottom, $data_account_print_margin_left, $data_account_print_margin_right, $data_account_print_orientation, $data_account_print_page_format, 4, $data_ins_name, $data_dept_name, $data_uni_name)))
 				{
 					$newacc->trans_rollback();
 					$this->messages->add('Error adding account settings.', 'error');
@@ -300,7 +304,7 @@ class Cf extends Controller {
 				$group_q = $this->db->get();
 				foreach ($group_q->result() as $row)
 				{
-					if ( ! $newacc->query("INSERT INTO groups (id, code, parent_id, name, affects_gross) VALUES (?, ?, ?, ?, ?)", array($row->id, $row->code, $row->parent_id, $row->name, $row->affects_gross)))
+					if ( ! $newacc->query("INSERT INTO groups (id, code, parent_id, name, affects_gross, schedule) VALUES (?, ?, ?, ?, ?, ?)", array($row->id, $row->code, $row->parent_id, $row->name, $row->affects_gross, $row->schedule)))
 					{
 						$this->messages->add('Failed to add Group account - ' . $row->name . '.', 'error');
 						$cf_status = FALSE;
@@ -313,6 +317,53 @@ class Cf extends Controller {
 				$liability = new Accountlist();
 				$liability->init(2);
 				$cf_ledgers = array_merge($assets->get_ledger_ids(), $liability->get_ledger_ids());
+
+				/**
+				 * Calculate the net profit/loss for the year.
+				 * Credit it from the 'Capital Fund' account
+				 * and debit it from the 'Income' account.
+				 */
+
+				/*$this->load->library('reportlist');
+			        $income = new Reportlist();
+			        $income->init(3);
+			        $expense = new Reportlist();
+			        $expense->init(4);
+			        $income_total = -$income->total;
+			        $expense_total = $expense->total;
+			        $pandl = float_ops($income_total, $expense_total, '-');
+			        
+				$this->db->from('ledgers')->where->('name =', 'Capital Fund');
+				$this->db->select('op_balance, code');					
+				$q_result = $this->db->get();
+				$query_row = $q_result->row();
+				$ledger_code = $query_row->code;
+				$op_bal = $query_row->op_balance;
+				$op_bal = float_ops($op_bal, $pandl, '+');
+
+				$array1 = array('op_balance' => $op_bal);
+				
+                                if ( ! $this->db->where('code', $ledger_code)->update('ledgers', $array1))
+                                {
+                                	$this->db->trans_rollback();
+                                        $this->messages->add('Error adding net profit/loss to Capital Fund.', 'error');
+                                }
+
+				$this->db->from('ledgers')->where->('name =', 'Capital Fund');
+                                $this->db->select('op_balance, code');
+                                $q_result = $this->db->get();
+                                $query_row = $q_result->row();
+                                $ledger_code = $query_row->code;
+                                $op_bal = $query_row->op_balance;
+                                $op_bal = float_ops($op_bal, $pandl, '+');
+
+                                $array1 = array('op_balance' => $op_bal);
+
+                                if ( ! $this->db->where('code', $ledger_code)->update('ledgers', $array1))
+                                {
+                                        $this->db->trans_rollback();
+                                        $this->messages->add('Error adding net profit/loss to Capital Fund.', 'error');
+                                }*/
 
 				/* Importing Ledgers */
 				$this->db->from('ledgers')->order_by('id', 'asc');
@@ -375,6 +426,44 @@ class Cf extends Controller {
 				else
 					$this->messages->add('Error carrying forward to new account.', 'error');
 
+				/* Adding org name unit name year and database name in login database */
+				$date=Date("Y");
+                                $m = Date("m");
+                                if($m>3){
+                                        $dy = $date + 1;
+                                        $fy=$date."-".$dy;
+                                }
+                                else{
+                                        $dy = $date - 1;
+                                        $fy = $dy."-".$date;
+                                }
+
+                                $tablebad="bgasAccData";
+                                $db1=$this->load->database('login', TRUE);
+                                $db1->trans_start();
+                                $insert_data = array(
+                                        'organization'=> $data_ins_name,
+                                        'unit'=>  $data_uni_name,
+                                        'databasename' =>  $data_database_name,
+                                        'fyear' => $fy,
+                                        'uname' => $data_database_username,
+                                        'dbpass' => $data_database_password,
+                                        'hostname' => $data_database_host,
+                                        'port' => $data_database_port,
+                                        'dbtype' => $data_database_type,
+                                        'dblable' => $data_account_label
+                                );
+
+                                if ( ! $db1->insert($tablebad, $insert_data))
+                                {
+                                        $db1->trans_rollback();
+                                        $this->messages->add('Error in Adding value in  bgasAccData table under login data base ' . $data_database_name . '.', 'error');
+                                        $db1->close();
+                                } else {
+                                        $db1->trans_complete();
+                                        $this->messages->add('Added Values in bgasAccData table under login data base- ' . $data_database_name . '.', 'success');
+                                }
+				$db1->close();
 
 				/* Adding account settings to file. Code copied from manage controller */
 				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
