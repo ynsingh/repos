@@ -37,17 +37,31 @@
 		<?php
 			 /* Check applist table exists in brihaspati database*/
         	        $db2=$this->load->database('brihaspati', TRUE);
+		
+		//	if (isset($this->db2->conn_id) && is_resource($this->db2->conn_id)) {
+		//	     echo 'database is loaded and conected';
+		//	}  
+
+		//	if ( $this->load->database() === FALSE )
+		//	{
+		//	   exit('THE END IS NIGH!');
+		//	}
+
+			if ($db2){
 			$applist="";
 	                /* check if table exist */
                 	$table="APPLIST";
+			$Flag=FALSE;
                 	if($db2->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
 				$this->messages->add('Brihaspati database with APPLICATION LIST table exists.', 'success');
 				$db2->from('APPLIST');
                                 $db2->select('*')->where('APPSTATUS = ', 0);
                                 $applist = $db2->get();
+				$Flag=TRUE;
                 	}	
 			else{
 				$this->messages->add('Brihaspati database with APPLICATION LIST table is not exists. so contact to administrator for application header', 'success');
+			}
 			}
 			echo "<div id=\"admin\">";
 			if ($this->session->userdata('user_name')) {
@@ -64,6 +78,7 @@
 			}
 			echo "</div>";
 			echo "<div>";
+				if(($db2)&&($Flag)){
                                 foreach($applist->result() as $row)
                                 {
 					$appacrm ="";
@@ -84,6 +99,7 @@
 						echo " | ";
 					}
                                 }
+				}
 			echo "</div>";
 			$db2->close();
 		?>

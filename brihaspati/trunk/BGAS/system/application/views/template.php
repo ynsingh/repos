@@ -80,7 +80,9 @@ $(document).ready(function() {
 		</div>
 
 		<?php
+			$Flag=FALSE;
 			$db2=$this->load->database('brihaspati', TRUE);
+			if($db2){
                         $applist="";
 			$table="APPLIST";
                         if($db2->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
@@ -88,11 +90,12 @@ $(document).ready(function() {
                                 $db2->from('APPLIST');
                                 $db2->select('*')->where('APPSTATUS = ', 0);
                                 $applist = $db2->get();
+				$Flag=TRUE;
                         }
 			else{
                                 $this->messages->add('Brihaspati database with APPLICATION LIST table is not exists. so contact to administrator for application header', 'success');
                         }
-
+			}
 
 
 			echo "<div id=\"admin\">";
@@ -110,6 +113,8 @@ $(document).ready(function() {
 			}
 			echo "</div>";
 			echo "<div>";
+				if(($db2)&&($Flag)){
+                                        $urlf="";
                                 foreach($applist->result() as $row)
                                 {
                                         $appacrm ="";
@@ -130,6 +135,8 @@ $(document).ready(function() {
                                         	echo " | ";
 					}
                                 }
+				
+				}//end if
                         echo "</div>";
                         $db2->close();
 
