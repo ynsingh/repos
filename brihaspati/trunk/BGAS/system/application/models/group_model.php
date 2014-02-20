@@ -61,12 +61,13 @@ class Group_model extends Model {
                 $group = array();
 		$counter = 0;
                 $this->db->from('groups');
-		$this->db->select('id, schedule, name')->where('code', $code);
+//		$this->db->select('id, schedule, name')->where('code', $code);
+		$this->db->select('id, name')->where('code', $code);
                 $group_schedule = $this->db->get();
                 foreach ($group_schedule->result() as $row)
                 {	
 			$group[$counter]['id'] = $row->id;
-			$group[$counter]['schedule'] = $row->schedule;
+//			$group[$counter]['schedule'] = $row->schedule;
 			$group[$counter]['name'] = $row->name;
 			$counter++;
                 }

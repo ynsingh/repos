@@ -81,7 +81,7 @@ $(document).ready(function() {
 
 		<?php
 			$Flag=FALSE;
-			$db2=$this->load->database('brihaspati', TRUE);
+			$db2=$this->load->database('brihaspati');
 			if($db2){
                         $applist="";
 			$table="APPLIST";
@@ -135,10 +135,9 @@ $(document).ready(function() {
                                         	echo " | ";
 					}
                                 }
-				
+                        	$db2->close();
 				}//end if
                         echo "</div>";
-                        $db2->close();
 
 		?>
 
@@ -247,14 +246,14 @@ $(document).ready(function() {
 				<?php echo anchor('setting', 'Settings', array('title' => 'Settings')); ?>
 			</li>
 			<li>
-                               <?php echo anchor('payrollsetup', 'PayrollSetup', array('title' => 'PayrollSetup',)); ?>
+                               <?php echo anchor('payrollsetup', 'Payroll Setup', array('title' => 'PayrollSetup',)); ?>
                         </li>
 			<li>
 				<?php echo anchor('help', 'Help', array('title' => 'Help',)); ?>
 				 
 			</li>
 			<li>
-                                <?php echo anchor('changepassword', 'Changepassword', array('title' => 'changepassword', 'class' => 'last')); ?>
+                                <?php echo anchor('changepassword', 'Change Password', array('title' => 'changepassword', 'class' => 'last')); ?>
                         </li>
 		</ul>
 	</div>
