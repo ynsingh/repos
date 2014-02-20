@@ -37,6 +37,8 @@ import java.util.ResourceBundle;
 import com.opensymphony.xwork2.ActionContext;
 
 import pojo.hibernate.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 public class IssueItemsAction extends DevelopmentSupport {
 
@@ -122,6 +124,8 @@ public class IssueItemsAction extends DevelopmentSupport {
     private String returnDueDate;
     private String emailAddress;
     private static Boolean varShowGFR;
+	
+	static String dataSourceURL=null;
 
     public Boolean getVarShowGFR() {
         return varShowGFR;
@@ -902,6 +906,9 @@ public class IssueItemsAction extends DevelopmentSupport {
             //if available quantity for issue is less than issue quantity then issue is not allowed else item will be allowed to issued
             if (TotalQnty < eid.getIsdIssuedQuantity().intValue()) {
                 populate_issueDetails();
+		issueDetList1 = eidDao.findByEimId(getIssueMasterId());
+                setBTNDSBL("false");
+
                 message = "You cannot Issue " + eid.getIsdIssuedQuantity() + ". It is more than the Available Quantity i.e. " + TotalQnty + ".";
                 return SUCCESS;
             } else {
@@ -1844,8 +1851,12 @@ public class IssueItemsAction extends DevelopmentSupport {
 
             return SUCCESS;
         } catch (Exception e) {
+	 if (e.getCause().toString().contains("java.sql.BatchUpdateException: Cannot delete or update a parent row")) {
+            message = "This record cannot be Deleted. It is being used in other Tables." ;
+            } else {
             message = "Exception in Delete method -> IssueItemstAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
-            return ERROR;
+           }
+	 return ERROR;
         }
     }
 
@@ -2010,9 +2021,16 @@ public class IssueItemsAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+            //Locale locale = ActionContext.getContext().getLocale();
+            //ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            //Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+
+		 Context ctx = new InitialContext();
+            if (ctx == null) {
+               throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
@@ -2026,7 +2044,8 @@ public class IssueItemsAction extends DevelopmentSupport {
 
             whereCondition = "gfr_program_mapping.`GPM_Program_ID` = 26";
 
-            hm.put("condition", whereCondition);
+            		hm.put("condition", whereCondition);
+		hm.put("screen_name", "ISSUE ITEMS");
 
             JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
             JasperExportManager.exportReportToPdfStream(jp, baos);
@@ -2061,9 +2080,16 @@ public class IssueItemsAction extends DevelopmentSupport {
         String whereCondition = "";
 
         try {
-            Locale locale = ActionContext.getContext().getLocale();
-            ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+            //Locale locale = ActionContext.getContext().getLocale();
+            //ResourceBundle bundle = ResourceBundle.getBundle("pico", locale);
+            //Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bundle.getString("dbName"), bundle.getString("mysqlUserName"), bundle.getString("mysqlPassword")); 
+		
+		Context ctx = new InitialContext();
+            if (ctx == null) {
+                throw new RuntimeException("JNDI");
+            }
+            dataSourceURL = (String) ctx.lookup("java:comp/env/ReportURL").toString();
+            Connection conn = DriverManager.getConnection(dataSourceURL);
 
             HttpServletResponse response = ServletActionContext.getResponse();
             response.setHeader("Cache-Control", "no-cache");
