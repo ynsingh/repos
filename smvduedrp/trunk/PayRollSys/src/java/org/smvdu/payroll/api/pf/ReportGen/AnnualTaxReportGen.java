@@ -66,19 +66,21 @@ public class AnnualTaxReportGen {
  public void annualtaxReportAsPDF()
     {
 
-  try
+        try
         {
+            
+            //new JasperToXml().jasperfileresult();
             java.sql.Connection cn = new CommonDB().getConnection();
             UserInfo ub = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
             HashMap map = new HashMap();
             map.put("org_name", ub.getOrgName());
-            map.put("title", "Annual Tax Report");
+            map.put("org_title", "Annual Tax Report");
             map.put("year","" + ub.getCurrentYear());
             Image img = new OrgLogoDB().loadLogoImage();
             map.put("org_logo",img);
             FacesContext facesContext = FacesContext.getCurrentInstance();
             HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             JasperPrint jasperPrint = JasperFillManager.fillReport(path+File.separator+"JasperFile/AnnualIT.jasper", map, cn);
             //InputStream reportStream = facesContext.getExternalContext().getResourceAsStream("JasperFile/salaryslip.jasper");
             ServletOutputStream servletOutputStream = response.getOutputStream();

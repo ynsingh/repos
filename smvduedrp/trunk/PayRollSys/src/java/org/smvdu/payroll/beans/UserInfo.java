@@ -17,6 +17,7 @@ import org.smvdu.payroll.beans.db.UserDB;
 import org.smvdu.payroll.beans.db.UserGroupDB;
 import org.smvdu.payroll.user.ActiveProfile;
 import org.smvdu.payroll.user.UserHistory;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -47,10 +48,10 @@ import org.smvdu.payroll.user.UserHistory;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+* Contributors: Members of ERP Team @ SMVDU, Katra
 * Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
- */
+*/
 public class UserInfo implements Serializable {
 
     private String bankName = new String();
@@ -110,7 +111,7 @@ public class UserInfo implements Serializable {
 
     public String getMemberId() {
         memberId = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("teamId");
-        System.out.println("Member ID : " + memberId);
+        //System.out.println("Member ID : " + memberId);
         return memberId;
     }
 
@@ -158,6 +159,7 @@ public class UserInfo implements Serializable {
     private String groupName;
 
     public int getGroupCode() {
+       //System.out.println("groupcode===="+groupCode);
         return groupCode;
     }
 
@@ -166,6 +168,7 @@ public class UserInfo implements Serializable {
     }
 
     public String getGroupName() {
+        //System.out.println("groupName===="+groupName);
         return groupName;
     }
 
@@ -191,11 +194,13 @@ public class UserInfo implements Serializable {
     }
 
     public int getUserOrgCode() {
+        //System.out.println("userorgcode===="+userOrgCode);
         return userOrgCode;
     }
 
     public void setUserOrgCode(int userOrgCode) {
         this.userOrgCode = userOrgCode;
+        //System.out.println("userorgcode===in set menthod="+userOrgCode);
         orgName = new OrgProfileDB().getProfileName(userOrgCode);
     }
 
@@ -259,6 +264,7 @@ public class UserInfo implements Serializable {
             ug = gs.get(i);
             SelectItem si = new SelectItem(ug.getId(), ug.getName());
             groups[i] = si;
+            //System.out.println("groups====="+groups);
         }
         return groups;
     }
@@ -308,6 +314,7 @@ public class UserInfo implements Serializable {
     }
 
     public boolean isAdmin() {
+        //System.out.println("admin====="+admin);
         return admin;
     }
 
@@ -415,9 +422,10 @@ public class UserInfo implements Serializable {
 
 
     public String validate() {
-         FacesContext facesContext = FacesContext.getCurrentInstance();
-         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-         System.out.println("Login : "+request.getParameter("user1")+" :: Login1 : "+request.getParameter("user"));
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        System.out.println("Login : "+request.getParameter("user1")+" :: Login1 : "+request.getParameter("user"));
+        //System.err.println("userrokle : "+value);
         int x = new UserDB().validate(userName, password,userOrgCode,this);
         System.err.println("Login status : "+x); 
         if(x == 2)
@@ -449,8 +457,8 @@ public class UserInfo implements Serializable {
             ap.setOrgId(userOrgCode);
             if (profile != null) {
                 ap.setProfile(profile);
+                       
             }
-            
             currentDate = new CommonDB().getDate();
             String[] dd = currentDate.split("-");
             currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
@@ -461,13 +469,84 @@ public class UserInfo implements Serializable {
             ap.setYear(currentYear);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
             return "MainPage.jsf";
-        } else {
+        }
+        else {
             FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong User Name or Password", ""));
             return "Login.jsf";
         }
 
         //FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "Main.jsf");
     }
+    public void remoteuservalidate(String useremail,String pass, int userorgCode) {
+    //public void remoteuservalidate() {
+        try{
+                userName=useremail;
+                password=pass;
+                userOrgCode=userorgCode;
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+                System.out.println("Login : "+request.getParameter("user1")+" :: Login1 : "+request.getParameter("user"));
+                int x = new UserDB().validate(userName, password,userOrgCode,this);
+                System.err.println("Login status : "+x); 
+                ExternalContext extContext = facesContext.getExternalContext(); 
+                if(x == 2)
+                {
+                    extContext.redirect(extContext.getRequestContextPath()+"/AdminLogin.jsf");
+                    //return "AdminLogin.jsf";
+                }
+                if (x == 3) {
+                    new UserTaskDB().insertNewTaskList();
+                    ActiveProfile ap = new ActiveProfile();
+                    ap.setOrgId(userOrgCode);
+                    if (profile != null) {
+                        ap.setProfile(profile);
+                    }
+            
+                    currentDate = new CommonDB().getDate();
+                    String[] dd = currentDate.split("-");
+                    currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+                    currentMonth = Integer.parseInt(dd[1]);
+                    currentYear = Integer.parseInt(dd[0]);
+                    ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+                    ap.setMonth(currentMonth);
+                    ap.setYear(currentYear);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+                    //return "MainPage.jsf";
+                    extContext.redirect(extContext.getRequestContextPath()+"/MainPage.jsf");
+            } 
+            if (x == 1) {
+                //System.err.println("Login status condition: "+x); 
+                //  new UserTaskDB().insertNewTaskList();
+                ActiveProfile ap = new ActiveProfile();
+                ap.setOrgId(userOrgCode);
+                if (profile != null) {
+                    ap.setProfile(profile);
+                    //System.err.println("Login status in setcondition:===profile: "+profile);
+                }
+                currentDate = new CommonDB().getDate();
+                String[] dd = currentDate.split("-");
+                currentMonthName = months[Integer.parseInt(dd[1])] + "," + dd[0];
+                currentMonth = Integer.parseInt(dd[1]);
+                currentYear = Integer.parseInt(dd[0]);
+                ap.setMonthName(months[Integer.parseInt(dd[1])] + "," + dd[0]);
+                ap.setMonth(currentMonth);
+                ap.setYear(currentYear);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ActiveProfile", ap);
+                extContext.redirect(extContext.getRequestContextPath()+"/MainPage.jsf");
+                
+            }
+            else {
+                FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong User Name or Password", ""));
+                extContext.redirect(extContext.getRequestContextPath()+"/Login.jsf");
+            
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            //return null;
+        }
+    }     
 
     public void setUserName(String userName) {
         this.userName = userName;

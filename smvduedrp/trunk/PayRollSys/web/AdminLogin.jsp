@@ -32,12 +32,13 @@
         <body>
             <h:form>
                 <h:panelGrid columns="1">
-                    <rich:panel style="height:170px; width:1340px;">
+                    <rich:panel style="height:150px; width:1340px;">
                         <div  align="left">
-                            <h:graphicImage url="/img/pls1.png"/>
+                            <%--<h:graphicImage url="/img/pls1.png"/>--%>
+                            <h:graphicImage url="/img/payrollheader.png"/>
                         </div>
                         <div  align="right">
-                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>
+                            <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
                         </div>
                     </rich:panel>
                     <rich:panel style="height:430px;font-size:19px;text-align:center;" id="list" header="Wellcome To Administrator Control Panel">

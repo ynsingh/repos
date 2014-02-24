@@ -13,10 +13,11 @@ import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.UserGroup;
 import org.smvdu.payroll.beans.UserInfo;
+import org.smvdu.payroll.beans.composite.OrgController;
 
 /**
- *
- *  *  Copyright (c) 2010 - 2011 SMVDU, Katra.
+*
+*  Copyright (c) 2010 - 2011.2014 SMVDU, Katra.
 *  All Rights Reserved.
 **  Redistribution and use in source and binary forms, with or 
 *  without modification, are permitted provided that the following 
@@ -43,9 +44,10 @@ import org.smvdu.payroll.beans.UserInfo;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
- */
+*  Contributors: Members of ERP Team @ SMVDU, Katra,IITkanpur.
+*  Modified Date: 17 feb 2014, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
+*/
+
 public class UserDB {
 
     private PreparedStatement ps;
@@ -161,23 +163,23 @@ public class UserDB {
             if(rs.next())
             {
                 UserGroup ug =new UserGroup();
-            ug.setId(rs.getInt(2));
-            ug.setName(rs.getString(3));
-            info.setUserGroup(ug);
-            info.setUserId(rs.getInt(1));
-            if(empCode==null)
-            {
-                info.setProfileActive(false);
-            }
-            else
-            {
-                Employee emp = new EmployeeDB().loadProfile(empCode,userBean.getUserOrgCode());
-                if(emp!=null)
+                ug.setId(rs.getInt(2));
+                ug.setName(rs.getString(3));
+                info.setUserGroup(ug);
+                info.setUserId(rs.getInt(1));
+                if(empCode==null)
                 {
-                    info.setProfile(emp);
-                    info.setProfileActive(true);
+                    info.setProfileActive(false);
                 }
-            }
+                else
+                {   
+                    Employee emp = new EmployeeDB().loadProfile(empCode,userBean.getUserOrgCode());
+                    if(emp!=null)
+                    {
+                        info.setProfile(emp);
+                        info.setProfileActive(true);
+                    }
+                }
                 return 3;
             }
             pst.close();
@@ -191,7 +193,6 @@ public class UserDB {
             rs=ps.executeQuery();
             boolean b =rs.next();
             
-            System.out.println(b);
             int k = 1;
             UserGroup ug =new UserGroup();
             ug.setId(rs.getInt(2));
@@ -220,6 +221,47 @@ public class UserDB {
         {
             e.printStackTrace();
             return -1;
+        }
+    }
+    
+    public int getOrgcode(String email)    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select user_org_id from user_master where user_name=?");
+            ps.setString(1, email);
+            rs=ps.executeQuery();
+            rs.next();
+            int s = rs.getInt(1);
+            rs.close();
+            ps.close();
+            c.close();
+            return s;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public String getpassword(String email)    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select user_pass from user_master where user_name=?");
+            ps.setString(1, email);
+            rs=ps.executeQuery();
+            rs.next();
+            String s = rs.getString(1);
+            rs.close();
+            ps.close();
+            c.close();
+            return s;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
         }
     }
 

@@ -28,8 +28,9 @@
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
-*
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
+*/
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
@@ -43,20 +44,19 @@
     <f:view>
         <rich:panel style="height:560px;width:100%;" header="Payroll System | Welcome">
             
-            
             <rich:panel  style="width:100%;">
-            <h:panelGrid columns="2">
-            <h:outputText value="Developed By : SMVDU"/>
-
-            <h:outputText value="Last Updated On : 15/09/11 11:00 AM "/>
-
-            <h:outputText value="Last Updated By  : Developer Team At SMVDU "/>
-            <h:outputText value="Contact Details  : Sonika Gupta ,sg.smvdu@gmail.com "/>
-            </h:panelGrid>
+            <h:panelGrid >
+            <h:outputText value=" Developed By : SMVDU and IIT KANPUR"/>
+            <h:outputText value=""/>
+            <h:outputText value="  Last Updated By  : Developer Team IIT Kanpur"  style="font-weight:bold;"/>
+            <h:outputText value=""/>
+            <h:outputText value="Contact Details  : SMVDU Team"/>
+            <h:outputText value="Sonika Gupta : sgsmvdu@gmail.com"/>
+            <h:outputText value="Contact Details : IIT KANPUR Developer Team " style="font-weight:bold;"/>
+            <h:outputText value="Kishore kr Shukla : kishore.shukla@gmail.com, Manorama Pal : palseema30@gmail.com, Om Prakash : omprakashkgp@gmail.com"/>
+	    </h:panelGrid>
         </rich:panel>
         </rich:panel>
-        
-
-        
+       
     </f:view>
 </html>

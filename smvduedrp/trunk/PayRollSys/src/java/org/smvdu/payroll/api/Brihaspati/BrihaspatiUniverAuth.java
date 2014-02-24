@@ -4,21 +4,46 @@
  */
 package org.smvdu.payroll.api.Brihaspati;
 
-import java.io.File;
-import java.util.ArrayList;
-import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt;
+//import javax.servlet.http.HttpServletResponse;
+import javax.faces.context.ExternalContext;
 import org.iitk.brihaspati.modules.utils.security.RemoteAuth;
 
 /**
- *
- * @author smvdu
- */
+*
+*  Copyright (c) 2010 - 2011,2014 SMVDU, Katra, IITKanpur.
+*  All Rights Reserved.
+**  Redistribution and use in source and binary forms, with or 
+*  without modification, are permitted provided that the following 
+*  conditions are met: 
+**  Redistributions of source code must retain the above copyright 
+*  notice, this  list of conditions and the following disclaimer. 
+* 
+*  Redistribution in binary form must reproduce the above copyright
+*  notice, this list of conditions and the following disclaimer in 
+*  the documentation and/or other materials provided with the 
+*  distribution. 
+* 
+* 
+*  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED 
+*  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+*  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+*  DISCLAIMED.  IN NO EVENT SHALL SMVDU OR ITS CONTRIBUTORS BE LIABLE 
+*  FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+*  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+*  OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+*  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+*  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+*  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+*  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+* 
+* 
+*  Contributors: Members of ERP Team @ SMVDU, Katra,IITKanpur.
+*  Modified Date: 17 Feb 2014, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
+*
+*/
+
 public class BrihaspatiUniverAuth {
 
     /**
@@ -30,36 +55,20 @@ public class BrihaspatiUniverAuth {
     public void brihaspatiAuth(BrihaspatiUniverAuthBean bua) {
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
+            System.out.println("Resp from seema-facesContext---: "+facesContext);
             HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-           // String path1 = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-            //System.out.println(path1);
-            System.out.println("KLOP : "+request.getContextPath()+"?email="+bua.getEmailId()+"&context="+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath());
+            //stem.out.println("seema= : "+request.getContextPath()+"?email="+bua.getEmailId()+"&context="+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath());
             String paySourceId = "smvdu_payroll";
-             //System.out.println("Hello World  : "+skey+"     :     "+serverurl);*/
-             String resp = RemoteAuth.AuthR(bua.getEmailId(),request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/PayrollSys/adminLogin/brihaspatiMainLogin.jsf","smvdu_payroll");
-             NavigationHandler navh = facesContext.getApplication().getNavigationHandler();
-            navh.handleNavigation(facesContext, null, resp);
-            System.out.println("Resp : "+resp);
-            /*String path = System.getProperty("user.home") + File.separator + "remote_auth" + File.separator + "brihaspati3-remote-access.properties";
-            String line = ReadNWriteInTxt.readLin(path, paySourceId);
-            String skey = StringUtils.substringBetween(line, ";", ";");
-            String serverurl = StringUtils.substringAfterLast(line, ";");
-            
-            /*String skey=new BrihaspatiProFile().propertieDataSeqKey();
-             String serverurl=new BrihaspatiProFile().propertieDataUrl();*/
-            
-           
-            //String login =
-            /*System.out.println("Request Url : :  " + request.getRequestURI());
-            System.out.println("Context : "+request.getParameter("context")); 
-            String rand = request.getParameter("rand");
-            String hash = request.getParameter("hash");
-            String encd = request.getParameter("encd");
-            System.out.println(rand+" : : "+hash+" : : "+encd);
-            System.out.println("Resp : "+resp);*/
-            //return resp;
-        } catch (Exception ex) {
+            //String resp = RemoteAuth.AuthR(bua.getEmailId(),request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/PayrollSys/adminLogin/brihaspatiMainLogin.jsf","smvdu_payroll");
+             String resp = RemoteAuth.AuthR(bua.getEmailId(),request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/PayrollSys/adminLogin/verifyfrombrihaspati.jsf","smvdu_payroll");
+             ExternalContext extContext = facesContext.getExternalContext(); 
+             extContext.redirect(resp);
+          
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+   
+    
 }

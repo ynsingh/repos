@@ -29,7 +29,8 @@
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+*  Contributors: Members of ERP Team @ SMVDU, Katra, IITKanpur
+*  Modified Date: 02 Dec 2013, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 *
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
@@ -46,46 +47,67 @@
         <title>Payroll System | Login</title>
     </head>
     <f:view>
-        <h:panelGrid style="margin-left:150px;margin-top:20px;" columns="2">
-            <h:graphicImage alt="Payroll System" url="/img/pls.png"/>
-            <rich:panel style="height:480px;" header="">
-                <h:form>
-                    <rich:messages>
-                        <f:facet name="errorMarker">
-                            <h:graphicImage url="/img/err.png"/>
-                        </f:facet>
-                    </rich:messages>
-                    <rich:panel>
-                        <h:graphicImage width="210px;" url="/icons/lg.jpg"/>
-                        <h:outputText value="Login"  style="align:left;font-size:20px;"/>
-                        <h:panelGrid bgcolor="grey"  columns="2">
-                           <h:outputText value="Organization Name"/>
-                            <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}">
-                                <f:selectItem itemLabel="Administrator"/>
-                                <f:selectItems id="user1" value="#{OrgController.items}"/>
-                            </h:selectOneMenu>
-                            <h:outputText value="Username"/>
-                            <h:inputText label="User Name" value="#{UserBean.userName}" />
-                            <h:outputText value=" Password:"/>
-                            <h:inputSecret label="Password" value="#{UserBean.password}"/>
-                            <h:outputText value=" >> "/>
-                            <h:commandButton  action="#{UserBean.validate}" value="Login" />
-                        </h:panelGrid>
-                    </rich:panel>
-                    <h:outputText value=""/>
-                    </h:form>
-                <rich:separator/>
-                <rich:separator/>
-                <a href="adminLogin/OrgMain.jsf">Register New Institute</a> 
-                <%--<a href="adminLogin/adminLogin.jsf">Administrator Login</a>--%>
-                </rich:panel>
-                </h:panelGrid>
-        <rich:panel style="margin-left:150px;width:80%;background-color:red;">
-            <h:panelGrid columns="4">
-                <h:graphicImage width="50px;" height="50px;" />
-                <h:outputText value="Developed by SMVD University"/>
-            </h:panelGrid>
-        </rich:panel>
+        <h:panelGrid style="margin-left; margin-left:200px;" columns="1">
+            <h:panelGrid>
+                <h:graphicImage alt="payroll" url="/img/payrollheader.png" style="valign:middle"/>
+                <rich:panel style="background-color:#425C83;height:25px;Color:white">
+               <a href="http://172.26.81.189:8080/PayrollSys/" style="color:white;font-family:arial;font-weight:bold;text-decoration:none" onclick="return false;">PAYROLL SYSTEM</a></font>   &nbsp;   
+               <a href="http://202.141.40.215:8080/brihaspati/servlet/brihaspati" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">BRIHASPATI</a> &nbsp;
+               <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">BGAS</a> &nbsp;
+               <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="color:white;font-family:arial;font-weight:bold;text-decoration:none">PICO</a>  &nbsp;
+               <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white;font-family:arial;font-weight:bold;text-decoration:none" onclick="return false;">STUDENT FEES MANAGEMENT SYSTEM</a>
+            </rich:panel>   
+        </h:panelGrid>
+             <h:form>
+            <rich:messages>
+                    <f:facet name="errorMarker">
+                         <h:graphicImage url="/img/err.png"/>
+                     </f:facet>
+                </rich:messages>
+                  <rich:panel header="Important Link" style="width:30%;float:left;text-align:left; height:500px ">
+                   <br/>
+                   <%--<h:outputText value=" Important Link" style="font-weight:bold"/>--%>
+                   <a href="adminLogin/OrgMain.jsf" style="font-weight:bold;">Register New Institute</a><br/> 
+                   <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="font-weight:bold;">NMEICT home page</a><br/>
+                   <a href="adminLogin/index.html" style="font-weight:bold;" onclick="return false;">Release Notes</a><br/>
+                   <a href="docs/indexnew.html" style="font-weight:bold;" onclick="return false;">User Manual</a><br/>
+                   <a href="docs/ModuleHelp/index.jsp" style="font-weight:bold;" onclick="return false;">HTML Help</a><br/>
+                   <a href="adminLogin/brihaspatiMainLogin.jsf" style="font-weight:bold;">Aunthenticate From Brihaspati Server  </a> 
+                                    
+            </rich:panel>
+            <rich:panel header="Please Login" style="width:920px;float:left;text-align:left;height:500px"> 
+                   <%--<h:outputText value=" Please Login"  style=" float:right;text-align:left;font-size:20px;"/>--%>
+                    <br/>
+                    <br/>
+                    <h:panelGrid columns="2" style="  ">
+                     <h:outputText value="Organization Name"/>
+                    <h:selectOneMenu id="user" value="#{UserBean.userOrgCode}" >
+                    <f:selectItem itemLabel="Administrator" />
+                    <f:selectItems id="user1" value="#{OrgController.items}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="Username" />
+                    <h:inputText label="User Name" value="#{UserBean.userName}" />
+                    <h:outputText value=" " />
+                    <h:outputText value="Example: brihaspati@iitk.ac.in" style="color:blue;font-weight:bold"/>
+                    <h:outputText value=" Password:"/>
+                    <h:inputSecret label="Password" value="#{UserBean.password}"/>
+                    <h:outputText value=" " />
+                    <h:commandButton  action="#{UserBean.validate}" value="Login" /><br/>
+                    <h:outputText value=" " />
+                    <h:outputText value=" " />
+                    <a href="#" style="text-decoration:none;alignment-adjust:auto;font-weight:bold;" onclick="return false;">Forgot Password</a><br/>
+                    <%--<rich:separator style="align:left;width:800px" />--%>
+                    </h:panelGrid>
+                    <input type="hidden" name="userrole" value="user" />
+                                     
+           </rich:panel>
+           </h:form>
+           <rich:panel style="background-color: #425C83;height:25px; text-color:white">
+            <h:outputText value="Developed by SMVD University and IIT Kanpur" style="color:white"/>
+            </rich:panel>
+            </h:panelGrid>   
+        
+        <%--            
             <rich:modalPanel id="newuser" height="470" width="400">
             <h:panelGrid columns="1">
                 <rich:panel id="mes">
@@ -136,12 +158,12 @@
                         </h:selectBooleanCheckbox>
                         <h:commandLink value="Accept Terms And Condition"/>
                         <rich:separator/>
-                        <rich:separator/>
+                        <rich:separator/>--%>
                         <%-- <h:outputText value="Registration Code "/>
                         <h:inputText  id="reg" value="#{userOrgRegBeans.regCode}" required="true">
                             <a4j:support event="onchange" action="#{userOrgRegBeans.registartionCode}" reRender="mes,suc"/>
                         </h:inputText>--%>
-                            <h:panelGroup>
+                       <%--     <h:panelGroup>
                                 <a4j:commandButton id="suc" value="Save" action="#{userOrgRegBeans.save}" disabled="#{userOrgRegBeans.enable}"/>
                                 <h:commandButton styleClass="panel" value="Reset" onclick="this.form.reset()"/>
                             </h:panelGroup>
@@ -149,6 +171,6 @@
              </h:form>
             </rich:panel>
             </h:panelGrid>
-        </rich:modalPanel>    
+        </rich:modalPanel>  --%>  
     </f:view>
 </html>

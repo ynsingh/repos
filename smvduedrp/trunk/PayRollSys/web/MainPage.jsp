@@ -81,12 +81,13 @@
             <a4j:keepAlive beanName="userBeans" ajaxOnly="true"/>
             <a4j:keepAlive beanName="SalaryProcessingSetup" ajaxOnly="true"/>
             <h:form>
-                <rich:panel style="height:170px; width:1340px;">
+                <rich:panel style="height:150px; width:100%;">
                         <div  align="left">
-                            <h:graphicImage url="/img/pls1.png"/>
+                            <%--<h:graphicImage url="/img/pls1.png"/>--%>
+				<h:graphicImage url="/img/payrollheader.png"/>
                         </div>
                         <div  align="right">
-                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>
+                            <%--<h:graphicImage url="/img/3_1.PNG" style="margin-top:-100px;"/>--%>
                         </div>
                     </rich:panel>
                 <rich:toolBar width="100%;" height="10px">
