@@ -455,6 +455,7 @@ class Report extends Controller {
 	//function schedule($code)
 	function schedule($code, $count)
 	{
+		$this->template->set('schedule', 'true');
 		$data = array();
 		$id = '';
 		$schedule = '';
@@ -472,13 +473,16 @@ class Report extends Controller {
 		if($name != '' && $id != ''){
 			//$this->template->set('page_title', 'Schedule - ' . $schedule . ' ' . $name);
 			$this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
-			//$to_print = 'Schedule - ' . $count . ' ' . $name;
-			$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
+			/*$arr = array(
+	                      'code'  => $code,
+        	              'count'  => $count
+                        );*/
+	                $this->session->set_userdata('code', $code);
+			$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule/'. $count => 'Print Preview'));
 			$data['id'] = $id;
 		}
 		else{
 			$this->template->set('page_title', 'Schedule - Notes on Accounts');
-			//$to_print = 'Schedule - Notes on Accounts';
                         $this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
 			//$data['id'] = $id;
 		}
@@ -1698,6 +1702,8 @@ class Report extends Controller {
 		$this->load->library('session');
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
+		$code = $this->session->userdata('code');
+		$count = $id;
 
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
@@ -1848,18 +1854,45 @@ class Report extends Controller {
                         return;
                 }
 
-		/*if ($statement == "schedule")
+		if ($statement == "schedule")
                 {
-			$data['report'] = "report/schedule_template";
-                        $data['title'] = $id;
+			$arr = array();
+	                $group_id = '';
+        	        $title = '';
+                	$name = '';
+	                $arr['code'] = $code;
+        	        $this->load->model('Group_model');
+                	$group_details = $this->Group_model->get_schedule($code);
+	                foreach ($group_details as $id => $group)
+        	        {
+                	        $group_id  = $group['id'];
+	                        $name = $group['name'];
+        	        }
+
+                	if($name != '' && $group_id != ''){
+	                        $title =  'Schedule - ' . $count . ' ' . $name;
+                        	$arr['id'] = $group_id;
+                	}
+	                else{
+        	                $title = 'Schedule - Notes on Accounts';
+        	        }
+
+			if($count == 2)
+				$data['report'] = "report/schedule_template_1";
+			else
+				$data['report'] = "report/schedule_template";
+
+                        $data['title'] = $title;
                         $data['left_width'] = "";
                         $data['right_width'] = "";
                         $data['print_preview'] = TRUE;
                         $data['entry_date1'] = $date1;
                         $data['entry_date2'] = $date2;
+			$data['isSchedule'] = "true";
+			$data['arr'] = $arr;
                         $this->load->view('report/report_template', $data);
                         return;
-                }*/
+                }
 
 		return;
 	}

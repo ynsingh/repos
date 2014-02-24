@@ -114,7 +114,7 @@ class User extends Controller {
 				$data['accounts'][$row -> dblable] = $row -> dblable;
 			}
 		}
-		$db1->close;
+		$db1->close();
 
 /*		if ($accounts_list)
 		{

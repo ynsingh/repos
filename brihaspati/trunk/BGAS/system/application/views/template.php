@@ -97,7 +97,8 @@ $(document).ready(function() {
                         }
 			}
 
-
+			if(isset($schedule)){}
+			else{
 			echo "<div id=\"admin\">";
 			if ($this->session->userdata('user_name')) {
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
@@ -112,6 +113,7 @@ $(document).ready(function() {
 				echo anchor('user/logout', 'Logout', array('title' => "Logout", 'class' => 'anchor-link-b'));
 			}
 			echo "</div>";
+			}
 			echo "<div>";
 				if(($db2)&&($Flag)){
                                         $urlf="";
@@ -185,19 +187,25 @@ $(document).ready(function() {
 			?>
 		</div>
 	</div>
-	<div id="menu">
-		<ul class="sf-menu">
-			<li class="current">
-			<a href="<?php print base_url(); ?>" title="Dashboard">Dashboard</a>
-			</li>
-			<li>
-				<?php echo anchor('budgetl', 'Budgets', array('title' => 'Budget accounts')); ?>
-			</li>
-			<li>
-				<?php echo anchor('account', 'Accounts', array('title' => 'Chart of accounts')); ?>
-			</li>
-			<li>
-				<?php
+
+	
+	<?php 
+	//Check added by Priyanka
+	if(isset($schedule)){}
+	else{ 
+	echo "<div id=\"menu\">";
+		echo "<ul class=\"sf-menu\">";
+			echo "<li class=\"current\">";
+				//echo "<a href=" . base_url() . "title=\"Dashboard\">Dashboard</a>";
+				echo anchor(base_url(), 'Dashboard', array('title' => 'Dashboard'));
+			echo "</li>";
+			echo "<li>";
+				echo anchor('budgetl', 'Budgets', array('title' => 'Budget accounts'));
+			echo "</li>";
+			echo "<li>";
+				echo anchor('account', 'Accounts', array('title' => 'Chart of accounts')); 
+			echo "</li>";
+			echo "<li>";
 					/* Showing Entry Type sub-menu */
 					$entry_type_all = $this->config->item('account_entry_types');
 					$entry_type_count = count($entry_type_all);
@@ -212,52 +220,82 @@ $(document).ready(function() {
 					} else {
 						echo anchor('entry', 'Entries', array('title' => 'Entries'));
 						echo "<ul>";
-						echo "<li>" . anchor('entry/show/all', 'All', array('title' => 'All Entries')) . "</li>";
+						echo "<li>"; 
+							 echo anchor('entry/show/all', 'All', array('title' => 'All Entries'));
+						echo "</li>";
 						foreach ($entry_type_all as $id => $row)
 						{
 							// line added by Priyanka
 							if($row['name'] == 'Journal'){
-								echo "<li>" . anchor('entry/show/' . $row['label'], $row['name'], array('title' => $row['name'] . ' Entries')) . "</li>";
+								echo "<li>";
+								echo anchor('entry/show/' . $row['label'], $row['name'], array('title' => $row['name'] . ' Entries'));
+								echo  "</li>";
 							}
 						}
 						echo "</ul>";
 					}
-				?>
-			</li>
-			<li>
-				<?php echo anchor('report', 'Reports', array('title' => 'Reports')); ?>
-				<ul>
-					<li><?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?></li>
-					<li><?php echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format')); ?></li>
-					<li><?php echo anchor('report/profitandloss', 'Income & Expenditure', array('title' => 'Income & Expenditure')); ?></li>
-					<li><?php echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt')); ?></li>
-					<li><?php echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); ?></li>
-					<li><?php echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement')); ?></li>
-					<li><?php echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation')); ?></li>
-					<li><?php echo anchor('report/depreciation', 'Depreciation as today', array('title' => 'Depreciation as today')); ?></li>
-				</ul>
-			</li>
-			<li>
-                                <?php echo anchor('report/depreciation', 'Depreciation Of Assets', array('title' => 'Depreciation Of Assets',)); ?>
+				
+			echo "</li>";
+			echo "<li>";
+				echo anchor('report', 'Reports', array('title' => 'Reports')); 
+				echo "<ul>";
+					echo "<li>";
+						echo  anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet'));
+					echo "</li>";
+					echo "<li>"; 
+						echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format')); 
+					echo "</li>";
+					echo "<li>";
+						echo anchor('report/profitandloss', 'Income & Expenditure', array('title' => 'Income & Expenditure'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); 
+					echo "</li>";
+					echo "<li>";
+						echo anchor('report/ledgerst', 'Ledger Statement', array('title' => 'Ledger Statement'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('report/reconciliation/pending', 'Reconciliation', array('title' => 'Reconciliation'));
+					echo "</li>";
+					echo "<li>";
+						echo anchor('report/depreciation', 'Depreciation as today', array('title' => 'Depreciation as today'));
+					echo "</li>";
+				echo "</ul>";
+			echo "</li>";
 
-                        </li>
+			echo "<li>";
+                                echo anchor('report/depreciation', 'Depreciation Of Assets', array('title' => 'Depreciation Of Assets',));
+                        echo "</li>";
 
-			<li>
-				<?php echo anchor('setting', 'Settings', array('title' => 'Settings')); ?>
-			</li>
-			<li>
-                               <?php echo anchor('payrollsetup', 'Payroll Setup', array('title' => 'PayrollSetup',)); ?>
-                        </li>
-			<li>
-				<?php echo anchor('help', 'Help', array('title' => 'Help',)); ?>
-				 
-			</li>
-			<li>
-                                <?php echo anchor('changepassword', 'Change Password', array('title' => 'changepassword', 'class' => 'last')); ?>
-                        </li>
-		</ul>
-	</div>
-	<div id="content">
+			echo "<li>";
+				echo anchor('setting', 'Settings', array('title' => 'Settings')); 
+			echo "</li>";
+
+			echo "<li>";
+                               echo anchor('payrollsetup', 'Payroll Setup', array('title' => 'PayrollSetup',)); 
+                        echo "</li>";
+
+			echo "<li>";
+				echo anchor('help', 'Help', array('title' => 'Help',)); 
+			echo "</li>";
+
+			echo "<li>";
+                                echo anchor('changepassword', 'Change Password', array('title' => 'changepassword', 'class' => 'last')); 
+                        echo "</li>";
+		echo "</ul>";
+	echo "</div>";
+	}
+	?>
+
+	<?php if(isset($schedule)){ 
+	echo "<div id=\"content\" style=\"margin-top:20px\">";
+	}
+	else{
+	echo "<div id=\"content\">";
+	} ?>
 		<div id="sidebar">
 			<?php if (isset($page_sidebar)) echo $page_sidebar; ?>
 			</div>
