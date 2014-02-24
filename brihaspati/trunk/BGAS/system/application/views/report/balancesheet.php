@@ -1,3 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/loading.css">
+<?php
+/* Dynamically adding css files from controllers */
+if (isset($add_css))
+{
+	foreach ($add_css as $id => $row)
+	{
+		echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"" . asset_url() . $row ."\">";
+	}
+}
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#register_submit").click( function() {
+	var overlay = $('<div id="overlay"></div>');
+		overlay.show();
+		overlay.appendTo(document.body);
+		$('.popup').show();
+	});
+});
+</script>
+</head>
+<body> 
 <?php
 	if ( ! $print_preview)
 	{	
@@ -18,12 +44,11 @@
 		echo "</span>";
 		echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo form_submit('submit', 'Get') ;
-		echo " ";
-		echo "</p>";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";?>
+		<input type='submit' value="GET" id='register_submit'>
+		<?php echo "</p>";
 		echo form_close();
-	}
+	 }
 ?>
 <?php
 	$this->load->library('session');
@@ -215,4 +240,12 @@
 		echo form_close();*/
 	}
 ?>
-
+<div class='popup'>
+	<div class='cnt223'>
+		<p>
+			<img src="<?php echo base_url(); ?>images/loadingAnimation.gif" alt="loading...">
+		</p>
+	</div>
+</div>
+</body>
+</html>

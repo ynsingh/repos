@@ -11,7 +11,7 @@
 <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/menu.css">
 <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/jquery.datepick.css">
 <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/thickbox.css">
-
+<link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/loading.css">
 <?php
 /* Dynamically adding css files from controllers */
 if (isset($add_css))
@@ -64,6 +64,12 @@ $(document).ready(function() {
 		dateFormat: '<?php echo $this->config->item('account_date_format'); ?>',
 		minDate: '<?php echo date_mysql_to_php($this->config->item('account_fy_start')); ?>',
 		maxDate: '<?php echo date_mysql_to_php($this->config->item('account_fy_end')); ?>',
+	});
+	$(".loading").click( function() {
+		var overlay = $('<div id="overlay"></div>');
+		overlay.show();
+		overlay.appendTo(document.body);
+		$('.popup').show();
 	});
 });
 </script>
@@ -240,16 +246,16 @@ $(document).ready(function() {
 				echo anchor('report', 'Reports', array('title' => 'Reports')); 
 				echo "<ul>";
 					echo "<li>";
-						echo  anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet'));
+						echo  anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet', 'class' => 'loading'));
 					echo "</li>";
 					echo "<li>"; 
-						echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format')); 
+						echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format', 'class' => 'loading')); 
 					echo "</li>";
 					echo "<li>";
-						echo anchor('report/profitandloss', 'Income & Expenditure', array('title' => 'Income & Expenditure'));
+						echo anchor('report/profitandloss', 'Income & Expenditure', array('title' => 'Income & Expenditure', 'class' => 'loading'));
 					echo "</li>";
 					echo "<li>";
-						echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt'));
+						echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading'));
 					echo "</li>";
 					echo "<li>";
 						echo anchor('report/trialbalance', 'Trial Balance', array('title' => 'Trial Balance')); 
@@ -302,6 +308,13 @@ $(document).ready(function() {
 		<div id="main">
 			<div id="main-title">
 				<?php if (isset($page_title)) echo $page_title; ?>
+			</div>
+			<div class='popup'>
+				<div class='cnt223'>
+					<p>
+						<img src="<?php echo base_url(); ?>images/loadingAnimation.gif" alt="loading...">
+					</p>
+				</div>
 			</div>
 			<?php if (isset($nav_links)) {
 				echo "<div id=\"main-links\">";

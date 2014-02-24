@@ -2,7 +2,7 @@
 	<div id="left-col">
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet')); ?>
+				<?php echo anchor('report/balancesheet', 'Balance Sheet', array('title' => 'Balance Sheet', 'class' => 'loading')); ?>
 			</div>
        	                <div class="settings-desc">
 				&nbsp;    
@@ -10,7 +10,7 @@
 		</div>
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format')); ?>
+				<?php echo anchor('report/new_balancesheet', 'Balance Sheet MHRD Format', array('title' => 'Balance Sheet MHRD Format', 'class' => 'loading')); ?>
 			</div>
 			<div class="settings-desc">
 				&nbsp;
@@ -18,7 +18,7 @@
 		</div>
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('report/profitandloss', 'Income and Expenditure  Statement', array('title' => 'Income and Expenditure Statement')); ?>
+				<?php echo anchor('report/profitandloss', 'Income and Expenditure  Statement', array('title' => 'Income and Expenditure Statement', 'class' => 'loading')); ?>
 			</div>
 			    <div class="settings-desc">
 				&nbsp;        
@@ -26,7 +26,7 @@
 		</div>
 		<div class="settings-container">
 			<div class="settings-title">
-				<?php echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt')); ?>
+				<?php echo anchor('report/paymentreceipt', 'Payment & Receipt', array('title' => 'Payment & Receipt', 'class' => 'loading')); ?>
 			</div>
 			<div class="settings-desc">
 				&nbsp;
