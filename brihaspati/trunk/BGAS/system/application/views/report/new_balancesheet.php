@@ -52,7 +52,7 @@
         	if($pandl > 0)
                 	$liability_total = float_ops($liability_total, $pandl, '+');
                 else
-                        $liability_total = float_ops($liability_total, -$pandl, '+');
+                        $liability_total = float_ops($liability_total, $pandl, '+');
                 if($old_pandl > 0)
                         $old_liability_total = float_ops($old_liability_total, $old_pandl, '+');
                 else
