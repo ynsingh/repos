@@ -259,13 +259,13 @@ class Reportlist
 					if ($pandl != 0 || $old_pandl !=0)
 				        {
 				                if($pandl > 0)
-							$this->total = float_ops($this->total, -$pandl, '+');
-						else
 							$this->total = float_ops($this->total, $pandl, '+');
-						if($old_pandl > 0)
-				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
 						else
+							$this->total = float_ops($this->total, -$pandl, '+');
+						if($old_pandl > 0)
 				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
+						else
+				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
 					}
                         	        /*$this->calculate_netpl($this->id);
                 	                $net_profit_loss = $this->calculate_netpl($this->id);
@@ -313,13 +313,13 @@ class Reportlist
                                         if ($pandl != 0 || $old_pandl !=0)
                                         {
                                                 if($pandl > 0)
-                                                        $this->total = float_ops($this->total, -$pandl, '+');
-                                                else
                                                         $this->total = float_ops($this->total, $pandl, '+');
-                                                if($old_pandl > 0)
-                                                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
                                                 else
+                                                        $this->total = float_ops($this->total, -$pandl, '+');
+                                                if($old_pandl > 0)
                                                         $this->total2 = float_ops($this->total2, $old_pandl, '+');
+                                                else
+                                                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
                                         }
                                         /*$this->calculate_netpl($this->id);
                                         $net_profit_loss = $this->calculate_netpl($this->id);

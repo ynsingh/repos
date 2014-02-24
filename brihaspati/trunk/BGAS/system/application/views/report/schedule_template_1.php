@@ -141,7 +141,7 @@
 	                echo "</tr>";
 		}
                 elseif($pandl < 0){
-                        $total = float_ops($total, -$pandl, '+');	
+                        $total = float_ops($total, $pandl, '+');	
 			echo "<tr>";
                         echo "<td class=\"bold\">";
 				echo "Deduct: Balance of net expenditure transferred from the Income and Expenditure Account";
@@ -185,7 +185,7 @@
                         echo "</tr>";
 		}
                 elseif($old_pandl < 0){
-                        $old_total = float_ops($old_total, -$old_pandl, '+');
+                        $old_total = float_ops($old_total, $old_pandl, '+');
 			echo "<tr>";
                         echo "<td class=\"bold\">";
                                 echo "Deduct: Balance of net expenditure transferred from the Income and Expenditure Account";
@@ -207,66 +207,6 @@
 		}
         }
                                 
-	/*if($net_profit_loss > 0){
-		echo "<tr>";
-        	        echo "<td width=40% class=\"bold\">";
-                	        echo "Add: Balance of net income transferred from the Income and Expenditure Account";
-	                echo "</td>";
-
-        	        echo "<td colspan =2 width=30% align=\"right\">";
-        			echo $net_profit_loss;
-	                echo "</td>";
-	
-        	        echo "<td  colspan = 2 width=30% align=\"right\">";
-                	        echo "";
-	                echo "</td>";
-        	echo "</tr>";
-	}elseif($net_profit_loss < 0){
-                echo "<tr>";
-                        echo "<td width=40% class=\"bold\">";
-                                echo "Deduct: Balance of net expenditure transferred from the Income and Expenditure Account";
-                        echo "</td>";
-
-                        echo "<td colspan =2 width=30% align=\"right\">";
-                                echo convert_cur(-$net_profit_loss);
-                        echo "</td>";
-
-                        echo "<td  colspan = 2 width=30% align=\"right\">";
-                                echo "";
-                        echo "</td>";
-                echo "</tr>";
-        }
-
-	//Calculate net profit/loss for previous year
-	if($net_profit_loss_old > 0){
-                echo "<tr>";
-                        echo "<td width=40% class=\"bold\">";
-                                echo "Add: Balance of net income transferred from the Income and Expenditure Account";
-                        echo "</td>";
-
-                        echo "<td colspan =2 width=30% align=\"right\">";
-                                echo "";
-                        echo "</td>";
-
-                        echo "<td  colspan = 2 width=30% align=\"right\">";
-                                echo $net_profit_loss_old;
-                        echo "</td>";
-                echo "</tr>";
-        }elseif($net_profit_loss_old < 0){
-                echo "<tr>";
-                        echo "<td width=40% class=\"bold\">";
-                                echo "Deduct: Balance of net expenditure transferred from the Income and Expenditure Account";
-                        echo "</td>";
-
-                        echo "<td colspan =2 width=30% align=\"right\">";
-                                echo "";
-                        echo "</td>";
-
-                        echo "<td  colspan = 2 width=30% align=\"right\">";
-                                echo convert_cur(-$net_profit_loss_old);
-                        echo "</td>";
-                echo "</tr>";
-        }*/
 
 	echo "<tr>";
                 echo "<td width=40% class=\"bold\">";
