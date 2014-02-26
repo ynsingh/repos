@@ -94,7 +94,7 @@ public class OrgProfileDAO implements IOrgProfileDAO{
     	Session s = null;
         try
         {
-        	System.out.println("Org Name : "+orgProfile.getOrgName());
+        	//System.out.println("Org Name : "+orgProfile.getOrgName());
             s = HibernateDataSourceConnection.currentSession();
             s.beginTransaction();
             s.update(orgProfile.getOrgId(),orgProfile);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
+Document StudentReg
+Author Shaista
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -10,35 +10,12 @@ and open the template in the editor.
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<title>TODO supply a title</title>
+	<link type="text/css" rel="stylesheet" href="CSS/PrimeCSS.css"/>
 </h:head>
-<style type="text/css">
-.ui-dialog-title
-{
-	
-	font-size: 15px;
-	font-weight: bold;
-}
-    	.ui-growl-title {
-    font-weight: bold;
-    font-size:12px;
-    padding: 0px 0px 7px;
-    display: block;
-}
- .ui-corner-all {
-    border-radius: 0px 0px 0px 0px;
-}
-.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
-    border-color:red;
-}
-.ui-button ui-widget ui-state-default ui-corner-all
-{
-	background-color:#4D90FF; 
-}
-    </style>
 <h:body>
 	<h:form>
 		<p:growl id="growl" sticky="true" />
-		<p:panel> 
+		<p:panel style="border:none;  background: #d9e3ec;"> 
 			<h:panelGrid columns="1">
 				<p:commandButton style="font-size:14px;font-weight: bold;" onclick="pnl.show();" value="Add New" />
 					<p:dataTable id="dataTable" var="dt"
@@ -105,7 +82,7 @@ and open the template in the editor.
 		</p:panel>
 		<p:dialog resizable="false" header="Add New Fees Head" width="390" height="350"
 			widgetVar="pnl" modal="true">
-			<p:panel>
+			<p:panel style="border:none;  background: #d9e3ec;">
 				<h:panelGrid columns="2">
 
 					<h:outputText style="font-size: 12px; font-weight: bold;" value="Student Form No." />

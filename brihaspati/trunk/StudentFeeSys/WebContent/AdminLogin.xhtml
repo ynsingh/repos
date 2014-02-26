@@ -1,4 +1,7 @@
-
+<!--
+Document AdminLogin
+Author Shaista
+-->
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -31,32 +34,30 @@
         </h:head>
         
         <body>
-            <p:layout style="min-height: 1000px;min-width:1200px">
-		<p:layoutUnit position="north" size="150">
-			<!--h:graphicImage alt="Student Fees"
-				style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG" /-->
-                        <div  align="left" style="border:none;">
-                            <h:graphicImage url="/img/headerLogo.png"/>
-                        </div>
-                        <!--div  align="right" style="border:none;">
-                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;margin-right: 100px;"/>
-                        </div-->
+            <!--<p:layout style="min-height: 1000px;min-width:1200px"> -->
+            <p:layout style="width: 1350px; height: 800px;"> 
+            <p:layoutUnit position="north" size="180">
+                <!--h:graphicImage alt="Student Fees"
+        		style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG" /-->
+                <div  align="left" style="border:none;">
+                    <h:graphicImage url="/img/headerLogo.png"/>
+                </div>
+                <p:panel style="background: #15366c; width: 1320px; height: 35px">
+                <a href="http://202.141.40.215:8080/brihaspati/servlet/brihaspati" style="font-size:15px;font-weight: bold;color: white;">BRIHASPATI |</a> 
+                <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="font-size:15px;font-weight: bold;color: white;">BGAS |</a>
+                <a href="http://202.141.40.218:8080/LibMS/" style="font-size:15px;font-weight: bold;color: white;">LIBMS |</a>
+                <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="font-size:15px;font-weight: bold;color: white;">PICO |</a>
+                <a href="http://202.141.40.218:8081/PayrollSys/" style="font-size:15px;font-weight: bold;color: white;" >PAYROLL |</a>
+                <!--<a href="http://172.26.161.61:8085/faces/index.xhtml" style="font-size:15px;font-weight: bold;color: white;">STFMS</a> -->
+                </p:panel>
 		</p:layoutUnit>
-                <!--h:panelGrid columns="1">
-                    <p:panel style="height:120px; width:1340px;border: none;">
-                        <div  align="left" style="border:none;">
-                            <h:graphicImage url="/img/headerLogo.png"/>
-                        </div>
-                        <div  align="right" style="border:none;">
-                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;"/>
-                        </div>
-                    </p:panel-->
-                    <p:layoutUnit position="center">
+                
+                    <p:layoutUnit position="center" style="border:none; background: #d9e3ec;">
                     <h:form>
-                    <p:panel style="height:430px;font-size:19px;text-align:center;" id="list" header="Wellcome To Administrator Control Panel">
+                    <p:panel id="list" header="Wellcome To Administrator Control Panel">
                         
                         <h:panelGrid columns="1">
-                            <p:panel style="height:50px;font-size:17px;font-weight:bold;width:1340px;">
+                            <p:panel style="height:500;font-size:17px;font-weight:bold;width:1290px;">
                                 <h:panelGrid columns="22">
                                     <h:column>
                                         <h:commandLink value="Add New Administrator" style="font-size:14px;font-weight:bold; border-color:gray;" onclick="return loadIframe('ifrm', 'adminLogin/adminList.xhtml')"/>
@@ -123,7 +124,7 @@
                             </p:panel>
                             
                             <!--hr style="margin: 0; width: 200px; height: 1px; background: black; border: none;" /-->
-                             <p:separator id="customSeparator" style="height:5px; background:black;  width: 1400px;" />
+                             <p:separator id="customSeparator" style="height:5px; background:black;  width: 1300px;" />
                              <iframe id="ifrm" style="border:none;" height="400" width="1100" align="left">
                             </iframe>
                             
@@ -131,6 +132,11 @@
 
                     </p:panel>
                          </h:form>
+                    </p:layoutUnit>
+                    <p:layoutUnit position="south">
+                        <p:panel style="background: #15366c; width: 1330px; height: 35px;font-size:15px;font-weight: bold;">
+                        <h:outputText  value="Student Fee System. Develped by IIT Kanpur" style="font-size:15px;font-weight: bold; color: white;" />
+                        </p:panel>
                     </p:layoutUnit>
                 <!--/h:panelGrid-->
             

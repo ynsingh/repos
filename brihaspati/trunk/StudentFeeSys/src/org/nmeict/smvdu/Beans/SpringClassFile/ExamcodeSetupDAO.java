@@ -18,6 +18,10 @@ import org.nmeict.smvdu.Beans.OrgDepartmentType;
 import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
+/**
+ * @author Shaista Bano
+ */
+
 public class ExamcodeSetupDAO implements IExamcodeSetupDAO{
 
 	private HibernateDataSourceConnection hibernateSessionFactory;
@@ -64,7 +68,7 @@ public class ExamcodeSetupDAO implements IExamcodeSetupDAO{
 			s = HibernateDataSourceConnection.currentSession();
 			s.beginTransaction();
 			int examUpdateFlush = 0;
-			System.out.println("Calling "+new OrgProfileSessionDetails().getOrgProfileSession().getOrgId()+" : "+examCodeSetup.size());
+			//System.out.println("Calling "+new OrgProfileSessionDetails().getOrgProfileSession().getOrgId()+" : "+examCodeSetup.size());
 			for(ExamCodeSetUp ecs : examCodeSetup)
 			{
 				ecs.setOrgProfile(new OrgProfileSessionDetails().getOrgProfileSession());
@@ -81,7 +85,7 @@ public class ExamcodeSetupDAO implements IExamcodeSetupDAO{
 					s.flush();
 					s.clear();
 				}
-				System.out.println("calling update");
+				//System.out.println("calling update");
 				//System.out.println("------> "+ecs.getEcsDegreeType()+" : "+ecs.getSemesterName()+" : "+ecs.getOrgProfile().getOrgId());
 			}
             s.getTransaction().commit();

@@ -1,4 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<!--
+Document index.xhtml
+Author Shaista Bano
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -27,21 +31,31 @@
                 <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="font-size:15px;font-weight: bold;color: white;">BGAS |</a>
                 <a href="http://202.141.40.218:8080/LibMS/" style="font-size:15px;font-weight: bold;color: white;">LIBMS |</a>
                 <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="font-size:15px;font-weight: bold;color: white;">PICO |</a>
-                <a href="http://202.141.40.218:8081/PayrollSys/" style="font-size:15px;font-weight: bold;color: white;" >PAYROLL |</a>
+                <a href="http://202.141.40.218:8081/PayrollSys/" style="font-size:15px;font-weight: bold;color: white;" >PAYROLL </a>
                 <!--<a href="http://172.26.161.61:8085/faces/index.xhtml" style="font-size:15px;font-weight: bold;color: white;">STFMS</a> -->
                 </p:panel>
                 
             </p:layoutUnit>
                 <p:layoutUnit position="west" size="400" style="border:none; background: #d9e3ec;">
                 <!--<p:layoutUnit position="west" style="border:none;" >-->
-                <p:panel style="border:none;  background: #d9e3ec; height: 520px;" header="Important Link">
+                <p:panel style="border:none;  background: #d9e3ec; height: 540px;" header="Important Link">
                      <h:panelGrid columns="1">
-                       <p:column>  
-                        <p:commandLink value="Register New College" style="font-size:14px;font-weight: bold;background:#d9e3ec" action="OrgProfile/RegisterProfile.xhtml"/>
-                       </p:column>
-                       <p:column>
-                        <p:commandLink value="Authenticate From Brihaspati Server" style="font-size:14px;font-weight:bold; background:#e5e5e5;" action="RemoteAction.xhtml" />
-                       </p:column>
+                        
+                        <p:column>
+                            <p:commandLink value="Authenticate From Brihaspati Server" style="font-size:14px;font-weight:bold; background:#e5e5e5;" action="RemoteAuthentication/RemoteAction.xhtml" />
+                        </p:column>
+                         <p:column>
+                            <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="font-size:15px;font-weight: bold;"> NMEICT Home Page </a>
+                        </p:column>
+                         <p:column>  
+                            <p:commandLink value="Register New College" style="font-size:14px;font-weight: bold;background:#d9e3ec" action="OrgProfile/RegisterProfile.xhtml"/>
+                        </p:column>
+                        <p:column>
+                            <a href="#" style="font-size:15px;font-weight: bold;" onclick="return false;"> Release Notes </a>
+                        </p:column>
+                         <p:column>
+                             <a href="/docs/html-manager-howto.html" style="font-size:15px;font-weight: bold;"> User Manual </a>
+                        </p:column>
                          <br> </br> <br> </br> 
                      </h:panelGrid>
                 </p:panel>
@@ -51,7 +65,7 @@
             <!--<p:layoutUnit position="center" style="border:none; height: 500px;"> -->
                 <h:form>
                 <p:growl id="growl" showDetail="true" sticky="true" />
-                    <p:panel style="border:none; background: #d9e3ec; height: 520px; width:930px;">
+                    <p:panel style="border:none; background: #d9e3ec; height: 540px; width:930px;">
                         <f:facet name="header">
                             <h:outputText value="Login Here"/>
                         </f:facet>

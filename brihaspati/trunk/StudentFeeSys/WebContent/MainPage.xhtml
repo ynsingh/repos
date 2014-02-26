@@ -1,4 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<!--
+Document MainPage
+Author Shaista
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -22,7 +26,7 @@
 </h:head>
     
 <h:body>
-	<p:layout style="min-height: 600px;min-width:1200px">
+    <p:layout style="min-height: 800px;min-width:1350px">
 		<p:layoutUnit position="north" size="200">
 			<!--h:graphicImage alt="Student Fees"
 				style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG" /-->
@@ -32,25 +36,15 @@
                         <!--div  align="right" style="border:none;">
                             <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;margin-right: 100px;"/>
                         </div-->
-                        <p:panel style="height:30px;font-size:19px;text-align:center;" id="list" header="Wellcome To Institute Administrator Control Panel"/>
+                        <p:panel style="width: 1320px;" id="list" header="Wellcome To Institute Administrator Control Panel"/>
 		</p:layoutUnit>
-                
 		<p:layoutUnit position="west" size="220" resizable="true" collapsible="true">
-			<!--h:form id="form2">
-				<p:graphicImage id="playerImage" value="img/Other298.jpg"
-					height="200" width="200">
-				</p:graphicImage>
-				<p:separator id="customSeparator" style="height:10px" />
-				<p:panel>
-				</p:panel>
-			</h:form-->
-                        
                             <h:panelGrid columns="1">
 					<p:graphicImage id="pImage"
 						value="img/#{orgProfileSessionDetails.userId}/out.png"
-						height="200" width="200">
+                                                height="150" width="150" style="margin-left: 20px;">
 					</p:graphicImage>
-					<p:separator id="customSeparator" style="height:3px;" />
+					<p:separator id="customSeparator" style="height:3px; width: 220px" />
 					<p:commandLink onclick="upImage.show();"
 						style="font-size: 12px; font-weight: bold;"
 						value="Change Profile Picture" />
@@ -60,7 +54,7 @@
                     
 			<h:form id="form3">
 				<p:menubar
-					style="height: 20px;font-size:15px;font-weight:bold;text-align:center;">
+					style="height: 20px;font-size:15px;font-weight:bold;text-align:center;width: 1100px;">
 					<p:submenu label="Setup" icon="ui-icon-gear">
 						<p:menuitem value="Fee Heads Value" url="#"
 							onclick="return loadIframe('ifrm', 'setup/FeeHeadsDetails.xhtml')" />
@@ -103,7 +97,7 @@
 					<p:menuitem value="Logout" icon="ui-icon-extlink" action="#{logOutSession.logOut}" />
 				</p:menubar>
 
-				<iframe id="ifrm" style="border: 0px;" height="800" width="1000">
+				<iframe id="ifrm" style="border: 0px; margin-right: 300px" height="800" width="1100">
 				</iframe>
 				<p:dialog style="font-weight:bold;font-size:16px;" header="Setting"
 					modal="false" widgetVar="orgPro" height="400" width="650">

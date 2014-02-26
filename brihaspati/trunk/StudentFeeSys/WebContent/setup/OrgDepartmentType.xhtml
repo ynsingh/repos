@@ -1,8 +1,8 @@
 
 <?xhtml version="1.0" encoding="UTF-8"?>
 <!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
+Document Department
+Author Shaista
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -11,37 +11,22 @@ and open the template in the editor.
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 	<title>TODO supply a title</title>
+	<link type="text/css" rel="stylesheet" href="../CSS/PrimeCSS.css"/>
 </h:head>
-<style type="text/css">
-.ui-dialog-title
-{
-	
-	font-size: 15px;
-	font-weight: bold;
-}
-.ui-growl-title {
-    font-weight: bold;
-    font-size:12px;
-    padding: 0px 0px 7px;
-    display: block;
-    }
-.ui-corner-all {
-    border-radius: 0px 0px 0px 0px;
-}
-.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid {
-    border-color:red;
-}
-.ui-button ui-widget ui-state-default ui-corner-all
-{
-	background-color:#4D90FF; 
-}
-    </style>
 <h:body>
 	<h:form>
-            <p:growl id="growl" rendered="true" />  
-		
-			<h:panelGrid columns="1">
+            <!--<p:growl id="growl" rendered="true" />  -->
+            <p:growl id="growl" sticky="true"/> 
+                        <h:panelGrid columns="1">
 				<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" onclick="pnl.show();" value="Add New" />
+                                 <p:messages>
+                            <f:facet name="infoMarker">
+                            <h:graphicImage url="../img/success.png"/>
+                            </f:facet>
+                            <f:facet name="errorMarker">
+                            <h:graphicImage url="../img/err.png"/>
+                            </f:facet>
+                        </p:messages>
 				
 					<p:dataTable resizableColumns="true" id="degreeTable" var="dt" style="font-size: 14px;font-weight: bold" binding="#{orgDepartmentType.dataGrid}"
 						value="#{orgDepartmentType.loadAllDepartmentType}" paginator="true" rows="10"
@@ -92,22 +77,27 @@ and open the template in the editor.
                                                 </p:column>
 					</p:dataTable>
 					<f:facet name="footer">
-							<p:commandButton  style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" update="degreeTable,growl" action="#{orgDepartmentType.update}"/> 
+							<p:commandButton  style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" 
+                                                                          update="growl" action="#{orgDepartmentType.update}"/> 
 					</f:facet>
 				
 			</h:panelGrid>
 		
 		<p:dialog header="Add New Department" resizable="false" width="340" height="100"
 			widgetVar="pnl" modal="true">
+                     <h:form id="frm1">
+                         <p:growl id="growl" sticky="true"/>
 			<h:panelGrid columns="2">
 				<h:outputText style="font-size: 12px; font-weight: bold;" value="Department Type " />
-                                <p:inputText style="font-size: 14px; font-weight: bold;width:150px;" value="#{orgDepartmentType.orgDepartmentName}" required="true" requiredMessage="Please Enter Department Name" />
+                                <p:inputText style="font-size: 14px; font-weight: bold;width:150px;" value="#{orgDepartmentType.orgDepartmentName}" 
+                                             required="true" requiredMessage="Please Enter Department Name"/>
 				<f:facet name="footer">
-					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Save" action="#{orgDepartmentType.saveDepartment}"
-						update="degreeTable,growl" />
+					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Save" 
+                                                         update="growl" action="#{orgDepartmentType.saveDepartment}"/>
 					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Close" onclick="pnl.hide();" />
 				</f:facet>
 			</h:panelGrid>
+                    </h:form>
 		</p:dialog>
 	</h:form>
 </h:body>

@@ -23,6 +23,7 @@ import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 /**
  * 
  * @author KESU
+ * @author Shaista Bano
  */
 public class OrgLoginProfileDAO implements IOrgLoginProfileDAO {
 	private HibernateDataSourceConnection hibernateSessionFactory;
@@ -52,7 +53,7 @@ public class OrgLoginProfileDAO implements IOrgLoginProfileDAO {
                                 orgLoginDetails.encode(orgLoginDetails.getOrgPassword())));
 				//orgLoginDetails.getOrgPassword()));
 			List l = criteria.list();
-			System.out.println(":" + l.size());
+			//System.out.println(":" + l.size());
 			if (l.size() == 1) {
 				flag = true;
 			}

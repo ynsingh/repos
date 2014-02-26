@@ -6,11 +6,16 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean(name="themes")
 @SessionScoped
 
+/**
+ * @author Shaista Bano
+ */
+
 public class Themes {
 
 	private String theme = "cruze";
 	private boolean flag = false;
-	private String defaultTheme = "blitzer";
+	//private String defaultTheme = "blitzer";
+	private String defaultTheme = "bluesky";
 	
 	public boolean isFlag() {
 		return flag;

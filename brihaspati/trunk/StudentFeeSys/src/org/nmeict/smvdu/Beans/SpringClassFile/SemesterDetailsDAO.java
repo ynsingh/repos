@@ -20,6 +20,10 @@ import org.nmeict.smvdu.Beans.SemesterMaster;
 import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
+/**
+  * @author Shaista Bano
+ */
+
 public class SemesterDetailsDAO implements ISemesterDetailsDAO{
 
 	private HibernateDataSourceConnection hibernateSessionFactory = new HibernateDataSourceConnection();
@@ -175,7 +179,7 @@ public class SemesterDetailsDAO implements ISemesterDetailsDAO{
         public void deleteSemester(SemesterMaster semesterMaster){
                 Session s = null;
                 try{
-                    System.out.print("\n\nDAOOOO ================Semester Delete");
+                   // System.out.print("\n\nDAOOOO ================Semester Delete");
 	            s = HibernateDataSourceConnection.currentSession();
 	            s.beginTransaction();
 	            s.delete(semesterMaster);

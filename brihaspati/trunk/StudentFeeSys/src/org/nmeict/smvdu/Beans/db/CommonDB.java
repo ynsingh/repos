@@ -45,7 +45,8 @@ import javax.sql.DataSource;
 *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 * 
 * 
-*  Contributors: Members of ERP Team @ SMVDU, Katra
+* Contributors: Members of ERP Team @ SMVDU
+* @author Shaista Bano
 *
  */
 public class CommonDB {
@@ -296,7 +297,8 @@ public class CommonDB {
         {
             Connection conn;
            Class.forName("com.mysql.jdbc.Driver");
-           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","etrg","brihaspatigroup");
+           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","","");
+           //conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","etrg","brihaspatigroup");
             return conn;
         }
         catch(Exception e)

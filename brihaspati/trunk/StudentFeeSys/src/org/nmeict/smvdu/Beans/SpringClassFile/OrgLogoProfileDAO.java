@@ -50,7 +50,7 @@ public class OrgLogoProfileDAO implements IOrgLogoProfileDAO{
         try
         {
             s = HibernateDataSourceConnection.currentSession();
-            System.out.println(query);
+            //System.out.println(query);
           Criteria criteria = s.createCriteria(OrgLogoDetails.class,"old");
             criteria.createAlias("orgProfile","orp",CriteriaSpecification.LEFT_JOIN).
             setProjection(Projections.projectionList().
@@ -72,7 +72,7 @@ public class OrgLogoProfileDAO implements IOrgLogoProfileDAO{
             	//od.setLogoImage(ImageIO.read(new ByteArrayInputStream((byte[])o[4]))); 
             	//od.setLogoFormat((String)o[5]); 
             	orgReturnLogoDetails.add(od);
-            	System.out.println(o[0] + " : "+o[1]+" : "+o[2]+" : "); 
+            	//System.out.println(o[0] + " : "+o[1]+" : "+o[2]+" : "); 
             }
            //orgLogoDetails = s.createQuery("select orp.orgName,orp.orgCity,orp.orgPinCode,orp.orgState,orp.orgWeb from OrgLogoDetails olo Left Join OrgProfile orp on olo.orgWeb = orp.orgWeb where orp.orgName like '"+query.trim().toString()+"'%").list();
            /* for(OrgLogoDetails orld : orgLogoDetails)

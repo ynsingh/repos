@@ -19,6 +19,10 @@ import org.nmeict.smvdu.Beans.OrgProfile;
 import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
+/**
+ * @author Shaista Bano
+ */
+
 public class OrgBranchDAO implements IOrgBranchDAO{
 
 	private HibernateDataSourceConnection hibernateSessionFactory = new HibernateDataSourceConnection();
@@ -121,7 +125,7 @@ public class OrgBranchDAO implements IOrgBranchDAO{
 			}
 			List list = (List)criteria.list();
 			Iterator i = list.iterator();
-			System.out.println("Branch Size : "+list.size()); 
+			//System.out.println("Branch Size : "+list.size()); 
 			while(i.hasNext())
 			{
 				Object[] o = (Object[]) i.next(); 

@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+Document RemoteAction
+Author Shaista
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        <title>Facelet Title</title>
+        <link type="text/css" rel="stylesheet" href="CSS/PrimeCSS.css"/>
+    </h:head>
+    
+    <h:body>
+        <p:layout style="width: 1350px; height: 850px;"> 
+            <p:layoutUnit position="north" size="180">
+                
+                 <div  align="left" style="border:none;">
+                    <h:graphicImage url="/img/headerLogo.png"/>
+                </div>
+                <p:panel style="background: #15366c; width: 1320px; height: 35px">
+                <a href="http://202.141.40.215:8080/brihaspati/servlet/brihaspati" style="font-size:15px;font-weight: bold;color: white;">BRIHASPATI |</a> 
+                <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="font-size:15px;font-weight: bold;color: white;">BGAS |</a>
+                <a href="http://202.141.40.218:8080/LibMS/" style="font-size:15px;font-weight: bold;color: white;">LIBMS |</a>
+                <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="font-size:15px;font-weight: bold;color: white;">PICO |</a>
+                <a href="http://202.141.40.218:8081/PayrollSys/" style="font-size:15px;font-weight: bold;color: white;" >PAYROLL |</a>
+                <!--<a href="http://172.26.161.61:8085/faces/index.xhtml" style="font-size:15px;font-weight: bold;color: white;">STFMS</a> -->
+                </p:panel>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="center" size="400" style="border: none; background: #d9e3ec;">
+                <h:form>
+                <h:outputLink value="../faces/index.xhtml" style="font-size: 15px; font-weight: bold; bottom: 30px;background: #d9e3ec;"> Login page |</h:outputLink> &nbsp;
+                <h:outputText style="font-size:15px;font-weight: bold; bottom: 30px; background: #d9e3ec;" value="RemoteLogin"/> <br></br>
+                <p:growl id="growl" showDetail="true" sticky="true" />
+                <p:panel style="border:none; background: #d9e3ec; height: 560px;">
+                        
+                        <f:facet name="header">
+                            <h:outputText value="Authenticate From Server"/>
+                        </f:facet>
+                        <h:panelGrid columns="2" >
+                            <h:outputText style="font-size:15px;font-weight: bold; background: #e5e5e5;" value="Email Id"/>
+                            <p:inputText style="background: #e5e5e5;" id="emailid" value="#{remoteActionBeans.emailId}" required="true" requiredMessage="Please Enter Email Id."/>
+                            
+                        <f:facet name="footer">
+                            <br></br>
+                            <p:commandButton value="Submit" icon="ui-icon-disk" style="font-size:14px;font-weight: bold; background: #e5e5e5;margin-left: 20%;" update="growl" action="#{remoteActionBeans.chkAuthenticate}"/>
+                        </f:facet>
+                             
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="south">
+                <p:panel style="background: #15366c; width: 1330px; height: 35px;font-size:15px;font-weight: bold;">
+                    <h:outputText  value="Student Fee System. Develped by IIT Kanpur" style="font-size:15px;font-weight: bold; color: white;" />
+                                   
+                </p:panel>
+            </p:layoutUnit>
+            
+        </p:layout>
+        <p:dialog widgetVar="statusDialog" modal="true">
+        </p:dialog> 
+        
+      <!-- <p:dialog style="background:#d9e3ec;" modal="true" widgetVar="statusDialog" header="Status"   
+                              draggable="false" closable="false">  
+                        <p:graphicImage value="img/ajaxloadingbar.gif" />  
+                    </p:dialog> 
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> -->
+    </h:body>
+</html>
+

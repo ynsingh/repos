@@ -17,6 +17,10 @@ import org.nmeict.smvdu.Beans.OrgProfile;
 import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
+/**
+ * @author Shaista Bano
+ */
+
 public class OrgImageDetailsDAO implements IOrgImageDetailsDAO{
 
 	
@@ -88,7 +92,7 @@ public class OrgImageDetailsDAO implements IOrgImageDetailsDAO{
 			 
 			if(query.equals(" ")== false) 
 			{
-				System.out.println("Come...");
+				//System.out.println("Come...");
 				criteria.add(Restrictions.eq("oid.imgName",query));
 			}
 			

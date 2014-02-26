@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+Document VerifiedLoginPage
+Author Shaista
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <!--<ui:include/> -->
+    
+    <h:head>
+        <title>Facelet Title</title>
+        <link type="text/css" rel="stylesheet" href="CSS/PrimeCSS.css"/>
+    </h:head>
+    
+    <h:body>
+        <p:layout style="width: 1350px; height: 850px;"> 
+                       
+            <p:layoutUnit position="center" size="400" style="border: none; background: #d9e3ec;">
+                <p:growl sticky="true" />
+                <h:form>
+                <p:panel style="border:none; background: #d9e3ec; height: 560px;">
+                        
+                            <f:metadata> 
+                                <f:event type="preRenderView" listener="#{verifiedLoginPageBean.studentFeeLogin}"></f:event>
+                            </f:metadata>   
+                    </p:panel>
+                </h:form>
+            </p:layoutUnit>
+            
+        </p:layout>
+        <p:dialog widgetVar="statusDialog" modal="true">
+        </p:dialog> 
+      
+    </h:body>
+</html>
+
