@@ -263,7 +263,7 @@ $page.setTitle("Home | $course | Course management")
         </td>
 	<td colspan=2>
                 <div style="display:none;" id="textboxDiv">
-                        <b> $brih_mail $mailmsg </b>
+                        <b> $brih_mail $brih_mailmsg </b>
                 </div>
         </td>
         <td>
