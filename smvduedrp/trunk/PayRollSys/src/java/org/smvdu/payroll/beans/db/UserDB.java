@@ -45,7 +45,7 @@ import org.smvdu.payroll.beans.composite.OrgController;
 * 
 * 
 *  Contributors: Members of ERP Team @ SMVDU, Katra,IITkanpur.
-*  Modified Date: 17 feb 2014, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
+*  Modified Date: 26 feb 2014, IITK (palseema@rediffmail.com, kshuklak@rediffmail.com)
 */
 
 public class UserDB {
@@ -140,80 +140,92 @@ public class UserDB {
    
     public int validate(String user,String pass,int userCode,UserInfo info)  {
         String empCode =null;
+        PreparedStatement pst;
+        int k=0;
         try
         {
-            Connection c = new CommonDB().getConnection();
-            PreparedStatement pst;
-            pst = c.prepareStatement("select user_id,admin_pass,flag from admin_records where user_id='"+user+"' and admin_pass='"+pass+"' and flag='"+1+"'");;
-            ResultSet rst;
-            rst = pst.executeQuery();
-            if(rst.next() == true)
-            {
-                return 2;
-            }
-            pst.close();
-            rst.close();
-            ps=c.prepareStatement("select user_task_id,user_grp_id,grp_name,user_org_code from user_task_group "
-                    + "left join user_group_master "
-                    + "on grp_id =user_grp_id where user_task_id='"+user+"' and user_task_password='"+pass+"' and user_task_flag = '"+1+"' and user_org_code = '"+userCode+"'");
-            /*System.out.println("select user_id,user_grp_id,grp_name from user_master "
-                    + "left join user_group_master "
-                    + "on grp_id =user_grp_id where user_name='"+user+"' and user_pass='"+pass+"' and flag = '"+1+"'");*/
-            rs = ps.executeQuery();
-            if(rs.next())
-            {
-                UserGroup ug =new UserGroup();
-                ug.setId(rs.getInt(2));
-                ug.setName(rs.getString(3));
-                info.setUserGroup(ug);
-                info.setUserId(rs.getInt(1));
-                if(empCode==null)
-                {
-                    info.setProfileActive(false);
-                }
-                else
-                {   
-                    Employee emp = new EmployeeDB().loadProfile(empCode,userBean.getUserOrgCode());
-                    if(emp!=null)
-                    {
-                        info.setProfile(emp);
-                        info.setProfileActive(true);
-                    }
-                }
-                return 3;
-            }
-            pst.close();
-            rst.close();
-            ps=c.prepareStatement("select user_id,user_grp_id,grp_name from user_master "
-                    + "left join user_group_master "
-                    + "on grp_id =user_grp_id where user_name='"+user+"' and user_pass='"+pass+"' and flag = '"+1+"'");
-            /*ps.setString(1, user);
-            ps.setString(2, pass);
-            ps.setBoolean(3, true);*/
-            rs=ps.executeQuery();
-            boolean b =rs.next();
             
-            int k = 1;
-            UserGroup ug =new UserGroup();
-            ug.setId(rs.getInt(2));
-            ug.setName(rs.getString(3));
-            info.setUserGroup(ug);
-            info.setUserId(rs.getInt(1));
-            rs.close();
-            ps.close();
-            c.close();
-            if(empCode==null)
-            {
-                info.setProfileActive(false);
+            Connection c = new CommonDB().getConnection();
+            if(userCode == 0){
+                pst = c.prepareStatement("select user_id,admin_pass,flag from admin_records where user_id='"+user+"' and admin_pass='"+pass+"' and flag='"+1+"'");;
+                ResultSet rst;
+                rst = pst.executeQuery();
+                if(rst.next() == true)
+                {
+                    k=2;
+                    //return 2;
+                }
+                pst.close();
+                rst.close();
             }
             else
             {
-                Employee emp = new EmployeeDB().loadProfile(empCode,userBean.getUserOrgCode());
-                if(emp!=null)
+                ps=c.prepareStatement("select user_task_id,user_grp_id,grp_name,user_org_code from user_task_group "
+                            + "left join user_group_master "
+                            + "on grp_id =user_grp_id where user_task_id='"+user+"' and user_task_password='"+pass+"' and user_task_flag = '"+1+"' and user_org_code = '"+userCode+"'");
+                            /*System.out.println("select user_id,user_grp_id,grp_name from user_master "
+                            + "left join user_group_master "
+                            + "on grp_id =user_grp_id where user_name='"+user+"' and user_pass='"+pass+"' and flag = '"+1+"'");*/
+                rs = ps.executeQuery();
+                if(rs.next())
                 {
-                    info.setProfile(emp);
-                    info.setProfileActive(true);
+                    UserGroup ug =new UserGroup();
+                    ug.setId(rs.getInt(2));
+                    ug.setName(rs.getString(3));
+                    info.setUserGroup(ug);
+                    info.setUserId(rs.getInt(1));
+                    if(empCode==null)
+                    {
+                        info.setProfileActive(false);
+                    }
+                    else
+                    {   
+                        Employee emp = new EmployeeDB().loadProfile(empCode,userBean.getUserOrgCode());
+                        if(emp!=null)
+                        {
+                            info.setProfile(emp);
+                            info.setProfileActive(true);
+                        }
+                    }
+                    k=3;
+                    //return 3;
                 }
+                ps.close();
+                rs.close();
+                ps=c.prepareStatement("select user_id,user_grp_id,grp_name from user_master "
+                        + "left join user_group_master "
+                        + "on grp_id =user_grp_id where user_name='"+user+"' and user_pass='"+pass+"' and flag = '"+1+"' and user_org_id = '"+userCode+"'");
+                        /*ps.setString(1, user);
+                        ps.setString(2, pass);
+                        ps.setBoolean(3, true);*/
+                rs=ps.executeQuery();
+                //boolean b =rs.next();
+                if(rs.next())
+                {
+                //int k = 1;
+                    UserGroup ug =new UserGroup();
+                    ug.setId(rs.getInt(2));
+                    ug.setName(rs.getString(3));
+                    info.setUserGroup(ug);
+                    info.setUserId(rs.getInt(1));
+                    rs.close();
+                    ps.close();
+                    c.close();
+                    if(empCode==null)
+                    {
+                        info.setProfileActive(false);
+                    }
+                    else
+                    {
+                        Employee emp = new EmployeeDB().loadProfile(empCode,userBean.getUserOrgCode());
+                        if(emp!=null)
+                        {
+                            info.setProfile(emp);
+                            info.setProfileActive(true);
+                        }
+                    }
+                    k=1;
+                }//if
             }
             return k;
         }
