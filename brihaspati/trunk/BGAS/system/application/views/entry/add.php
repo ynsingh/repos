@@ -6,12 +6,26 @@
 		$add_type = "nobankcash";
 	else
 		$add_type = "all";
+	
 ?>
 <script type="text/javascript">
 
 $(document).ready(function() {
 //global variable
 var dc = '';
+//var bank_cash = '';
+
+	/*cheque field hide and show functionality*/
+        $(".cheque-item").hide(function(){
+                });
+                $(".bank_value").hide(function(){
+                });
+                                $("#ch_no").hide(function(){
+                                        });
+                                        $(".ledger-dropdown").change(function(){
+                                                                                        
+                                        });
+
 
 
 	/* javascript floating point operations */
@@ -179,6 +193,7 @@ var dc = '';
 	/* Ledger dropdown changed */
 	$('.ledger-dropdown').live('change', function() {
 		var ledgerid = $(this).val();
+		var cheque = $(this).parent().next().next().next().children().attr('value');
 		// lines added by Priyanka
 		$.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
@@ -214,7 +229,64 @@ var dc = '';
 	                        	}
                                 }
                         });
+
 		//....
+			//Lines added by manshi........
+                        var rowid = $(this);
+                         $.ajax({
+                                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
+                                        success: function(bank) {
+                                        var bank_cash = $.trim(bank);
+                         //               bank_cash = $.trim(bank);
+                                        //var bank_cash1='';
+                                        //bank_cash1='';
+					//Check account either bank cash or non bank cash.......
+                                        if(bank_cash == '1' ){
+                                                $(".cheque-item").show();
+                                                $("#ch_no").show();
+                                                $(".bank_value").show();
+                                                rowid.parent().next().next().next().children().attr('disabled', '');
+                                          }
+					//Define Entry Types.........
+                                        if(dc == 'C' && bank_cash == '1')
+                                        {
+                                        var value =$("select.type_dropdown option:selected").val("Payment");
+                                        var value = $('select.type_dropdown option:selected').text('Payment');
+                                        }
+                                        if(dc == 'D' && bank_cash == '1')
+                                        {
+                                        var value =$("select.type_dropdown option:selected").val("Receipt");
+                                        var value = $('select.type_dropdown option:selected').text('Receipt');
+
+                                        }
+                                        if( window.globalVar == '1' &&  bank_cash == '1')
+                                        {
+                                        var value =$("select.type_dropdown option:selected").val("Contra");
+                                        var value = $('select.type_dropdown option:selected').text('Contra');   
+                                        }
+                                        if( window.globalVar == '0' &&  bank_cash == '0')
+                                        {
+                                        var value =$("select.type_dropdown option:selected").val("Journal");
+                                        var value = $('select.type_dropdown option:selected').text('Journal');   
+                                        }
+			
+                        		//Define Globle Variable in jquery......                        
+                                        if(bank_cash == '1')
+                                        {
+                                        window.globalVar = "1";
+                                        
+                                        }
+                                        if(bank_cash == '0')
+                                        {
+                                        window.globalVar = "0";
+                                        
+                                        }
+
+
+                                }
+                        });
+                //....
+
 		
 		//this line existed earlier
 		//if ($(this).val() == "0") {
@@ -243,15 +315,15 @@ var dc = '';
 					if (isNaN(ledger_bal))
 						ledger_bal = 0;
 					if (jsFloatOps(ledger_bal, 0, '=='))
-						rowid.parent().next().next().next().next().next().children().text("0");
+						rowid.parent().next().next().next().next().next().next().children().text("0");
 					else if (jsFloatOps(ledger_bal, 0, '<'))
-						rowid.parent().next().next().next().next().next().children().text("Cr " + -data);
+						rowid.parent().next().next().next().next().next().next().children().text("Cr " + -data);
 					else
-						rowid.parent().next().next().next().next().next().children().text("Dr " + data);
+						rowid.parent().next().next().next().next().next().next().children().text("Dr " + data);
 				}
 			});
 		} else {
-			rowid.parent().next().next().next().next().next().children().text("");
+			rowid.parent().next().next().next().next().next().next().children().text("");
 		}
 	});
 
@@ -278,6 +350,7 @@ var dc = '';
 		$.ajax({
 			url: <?php echo '\'' . site_url('entry/addrow/' . $add_type) . '\''; ?>,
 			success: function(data) {
+			
 				$(cur_obj).parent().parent().after(data);
 				$(cur_obj).attr('src', add_image_url);
 			}
@@ -313,10 +386,6 @@ var dc = '';
 	echo "</span>";
 	echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
 	echo "     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ";
-        echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
-	echo "</p>";
-
-	echo "<p>";
 	echo "<span id=\"tooltip-target-3\">";
         echo form_label('Reference Id', 'backward_refrence_id');
         echo " ";
@@ -325,9 +394,26 @@ var dc = '';
         echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "</p>";
+	
+                echo "<span class=\"bank_value\">";
+                echo form_label('Bank Name', 'bank_name');
+                echo " ";
+                echo "<td>" . form_input($bank_name) . "</td>";
+
+
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                echo form_label('Banificiary Name', 'banif_name');
+                echo " ";
+                echo "<td>" . form_input($banif_name) . "</td>";
+                echo"</span>";
+
+                echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
+
+                echo"</br>";
+
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
 	{
@@ -347,6 +433,17 @@ var dc = '';
 			'value' => isset($cr_amount[$i]) ? $cr_amount[$i] : "",
 			'class' => 'cr-item',
 		);
+		$cheque = array(
+                        'name' => 'cheque[' . $i . ']',
+                        'id' => 'cheque[' . $i . ']',
+                        'maxlength' => '15',
+                        'size' => '15',
+                        'disabled'    => 'disable',
+                        'value' => isset($cheque[$i]) ? $cheque[$i] : "",
+                        'class' => 'cheque-item',
+                );
+
+
 		echo "<tr>";
 
 		echo "<td>" . form_dropdown_dc('ledger_dc[' . $i . ']', isset($ledger_dc[$i]) ? $ledger_dc[$i] : "D") . "</td>";
@@ -365,6 +462,7 @@ var dc = '';
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
+		echo "<td>" . form_input($cheque) . "</td>";
 
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
@@ -385,6 +483,13 @@ var dc = '';
 	echo "<br />";
 	echo form_textarea($entry_narration);
 	echo "</p>";
+
+	echo "<p>";
+        echo form_label('Entry Type', 'entry_name');
+        echo "<br />";
+        echo form_dropdown('entry_name', $entry_name, $active_entry_name, "class = \"type_dropdown\"");
+        echo "</p>";
+
 
 	echo "<p>";
 	echo form_label('Tag', 'entry_tag');

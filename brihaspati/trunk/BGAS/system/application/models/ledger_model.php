@@ -102,6 +102,18 @@ class Ledger_model extends Model {
 		return $options;
 	}
 
+	function get_ledgers_bankcash($id)
+        {
+                $options = array();
+                $this->db->from('ledgers')->where('type', 1)->where('id', $id);
+                $ledger_q = $this->db->get();
+                if ($ledger = $ledger_q->row())
+                        return 1;
+                else
+                        return 0;
+
+        }
+
 	function get_all_ledgers_nobankcash()
 	{
 		$options = array();
