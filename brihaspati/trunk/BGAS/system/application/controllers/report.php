@@ -869,15 +869,15 @@ class Report extends Controller {
                 $data_date2 = $default_end;
 
                 $date=explode("/",$data_date1);
-                $date1=$date[2]."-".$date[1]."-".$date[0];
+                $start_date=$date[2]."-".$date[1]."-".$date[0];
                 $date=explode("/",$data_date2);
-                $date2=$date[2]."-".$date[1]."-".$date[0];
+                $end_date=$date[2]."-".$date[1]."-".$date[0];
 
-                $newdata = array(
-                      'date1'  => $date1,
-                      'date2'  => $date2
+                $newrange = array(
+                      'startdate'  => $start_date,
+                      'enddate'  => $end_date
                      );
-                $this->session->set_userdata($newdata);
+                $this->session->set_userdata($newrange);
 		/* Repopulating form */
  
 		if ($_POST)
@@ -1704,7 +1704,6 @@ class Report extends Controller {
 		$date2 = $this->session->userdata('date2');
 		$code = $this->session->userdata('code');
 		$count = $id;
-
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
 		{
@@ -1794,6 +1793,8 @@ class Report extends Controller {
 			$data['entry_date1'] = $date1;
 			$data['entry_date2'] = $date2;
 			$this->load->view('report/report_template', $data);
+			$this->session->unset_userdata('date1');
+			$this->session->unset_userdata('date2');
 			return;
 		}
 
@@ -1893,7 +1894,6 @@ class Report extends Controller {
                         $this->load->view('report/report_template', $data);
                         return;
                 }
-
 		return;
 	}
 }

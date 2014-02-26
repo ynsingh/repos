@@ -2,9 +2,12 @@
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
-
+	$start_date = $this->session->userdata('startdate');
+	$end_date = $this->session->userdata('enddate');
 	$this->load->model('Ledger_model');
 
+	$from_date = '';
+	$to_date = '';
 	if ( ! $print_preview)
 	{
 		echo form_open('report/ledgerst/' . $ledger_id);
@@ -134,37 +137,44 @@
 			/* Show new current total */
 			echo "<tr class=\"tr-balance\"><td colspan=6>Opening</td><td>" . convert_amount_dc($cur_balance) . "</td></tr>";
 		}
-
-			if( $date1 > $date2 )
-			{
-				$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
-				redirect('report/ledgerst');
-                                return;
-			}
-			else if ( ! $print_preview){
-				$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
-				$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
-				$this->db->where('date >=', $date1);
-				$this->db->where('date <=', $date2);
-				$this->db->limit($pagination_counter, $page_count);		
-				$ledgerst_q = $this->db->get();
-				if( $ledgerst_q->num_rows() < 1 )
+		if($date1 == '' && $date2 == '')
+		{
+			$from_date = $start_date;
+			$to_date = $end_date;
+		}
+		else {
+			$from_date = $date1;
+			$to_date = $date2;
+		}
+		if( $from_date > $to_date )
+		{
+			$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
+			redirect('report/ledgerst');
+                        return;
+		}
+		else if ( ! $print_preview){
+			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
+			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
+			$this->db->where('date >=', $from_date);
+			$this->db->where('date <=', $to_date);
+			$this->db->limit($pagination_counter, $page_count);		
+			$ledgerst_q = $this->db->get();
+			if( $ledgerst_q->num_rows() < 1 )
 				{
-					$this->messages->add('There is no ledger statement between ' . $date1 . ' and ' . $date2 . ' date.', 'success');
+					$this->messages->add('There is no ledger statement between ' . $from_date . ' and ' . $to_date . ' date.', 'success');
 				}
-			}
-			else {
-				$page_count = 0;
-				$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
-				$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
-	
-				$this->db->where('date >=', $date1);
-				$this->db->where('date <=', $date2);
-				$ledgerst_q = $this->db->get();
-			}
-			foreach ($ledgerst_q->result() as $row)
-			{
-				$current_entry_type = entry_type_info($row->entries_entry_type);
+		}
+		else {
+			$page_count = 0;
+			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.narration as entries_narration, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
+			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc');
+			$this->db->where('date >=', $from_date);
+			$this->db->where('date <=', $to_date);
+			$ledgerst_q = $this->db->get();
+		}
+		foreach ($ledgerst_q->result() as $row)
+		{
+			$current_entry_type = entry_type_info($row->entries_entry_type);
 
 			echo "<tr class=\"tr-" . $odd_even . "\">";
 			echo "<td>";

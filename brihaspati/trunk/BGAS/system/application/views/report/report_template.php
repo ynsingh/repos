@@ -19,7 +19,23 @@
 	?>
 	
 	<br>
-	<?php echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>" . "For the period " . $this->session->userdata('date1') . " to " . $this->session->userdata('date2') . "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+	<?php
+	$date1 = $this->session->userdata('date1');
+	$date2 = $this->session->userdata('date2');
+	$start_date = $this->session->userdata('startdate');
+	$end_date = $this->session->userdata('enddate');
+	$from_date = '';
+	$to_date = '';
+	if($date1 == '' && $date2 == '')
+	{
+		$from_date = $start_date;
+		$to_date = $end_date;
+	}
+	else {
+		$from_date = $date1;
+		$to_date = $date2;
+	}
+	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>" . "For the period " . $from_date . " to " . $to_date . "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 
 	<?php echo"</table>";?>
 
