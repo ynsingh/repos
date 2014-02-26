@@ -78,7 +78,7 @@ $(document).ready(function() {
 		$gross_income_list_q = $this->db->get();
 		echo "<td width=\"" . $right_width . "\">";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th>Incomes (Gross)</th><th align=\"right\">Current year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Incomes (Gross)</th><th width=\"125\" align=\"right\">Current year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
 		foreach ($gross_income_list_q->result() as $row)
 		{
 			$gross_income = new Reportlist();
@@ -98,7 +98,7 @@ $(document).ready(function() {
 		$gross_expense_list_q = $this->db->get();
 		echo "<td width=\"" . $left_width . "\">";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th>Expenditure (Gross)</th><th align=\"right\">Current Year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Expenditure (Gross)</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
 		foreach ($gross_expense_list_q->result() as $row)
 		{
 			$gross_expense = new Reportlist();
@@ -126,9 +126,9 @@ $(document).ready(function() {
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
-		echo "<td class=\"bold\">Total Gross Incomes</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($gross_income_total) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_gross_income_total) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total Gross Incomes</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($gross_income_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_gross_income_total) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -141,15 +141,15 @@ $(document).ready(function() {
 		        $old_grosstotal = float_ops($old_grosstotal, -$old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Gross Loss C/O</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$grosspl) . "</td>";
-		        echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$old_grosspl) . "</td>";
+			echo "<td width=\"300\" class=\"bold\">Gross Loss C/O</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$grosspl) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$old_grosspl) . "</td>";
 			echo "</tr>";
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
-		echo "<td class=\"bold\">Total</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($grosstotal) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_grosstotal) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosstotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosstotal) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
@@ -161,9 +161,9 @@ $(document).ready(function() {
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
-		echo "<td class=\"bold\">Total Gross Expenditure</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($gross_expense_total) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_gross_expense_total) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total Gross Expenditure</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($gross_expense_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_gross_expense_total) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -171,9 +171,9 @@ $(document).ready(function() {
 		        $old_grosstotal = float_ops($old_grosstotal, $old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Gross Profit C/O</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($grosspl) . "</td>";
-		        echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_grosspl) . "</td>";
+			echo "<td width=\"300\" class=\"bold\">Gross Profit C/O</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosspl) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosspl) . "</td>";
 			echo "</tr>";
 		} else if ($grosspl < 0 || $old_grosspl < 0) {
 			echo "<tr>";
@@ -182,9 +182,9 @@ $(document).ready(function() {
 			echo "</tr>";
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
-		echo "<td class=\"bold\">Total</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($grosstotal) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_grosstotal) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosstotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosstotal) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
@@ -205,7 +205,7 @@ $(document).ready(function() {
 		$net_income_list_q = $this->db->get();
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th>Incomes (Net)</th><th align=\"right\">Current Year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Incomes (Net)</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
 		foreach ($net_income_list_q->result() as $row)
 		{
 			$net_income = new Reportlist();
@@ -224,7 +224,7 @@ $(document).ready(function() {
 		$net_expense_list_q = $this->db->get();
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th>Expenditure (Net)</th><th align=\"right\">Current Year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Expenditure (Net)</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
 		foreach ($net_expense_list_q->result() as $row)
 		{
 			$net_expense = new Reportlist();
@@ -252,9 +252,9 @@ $(document).ready(function() {
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
-		echo "<td class=\"bold\">Total Incomes</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total Incomes</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -262,9 +262,9 @@ $(document).ready(function() {
 		        $net_old_total = float_ops($net_old_total, $old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Gross Profit B/F</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($grosspl) . "</td>";
-		        echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_grosspl) . "</td>";
+			echo "<td width=\"300\" class=\"bold\">Gross Profit B/F</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosspl) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosspl) . "</td>";
 			echo "</tr>";
 
 		} else if ($grosspl < 0 || $old_grosspl < 0) {
@@ -284,15 +284,15 @@ $(document).ready(function() {
 			$nettotal = float_ops($nettotal, -$netpl, '+');
 			$net_old_total = float_ops($net_old_total, -$old_netpl, '+');
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Net Loss</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$netpl) . "</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$old_netpl) . "</td>";
+			echo "<td width=\"300\" class=\"bold\">Net Loss</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$netpl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$old_netpl) . "</td>";
 			echo "</tr>";
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
-		echo "<td class=\"bold\">Total</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
@@ -304,9 +304,9 @@ $(document).ready(function() {
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
-		echo "<td class=\"bold\">Total Expenditure</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total Expenditure</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -319,9 +319,9 @@ $(document).ready(function() {
 		        $net_old_total = float_ops($net_old_total, -$old_grosspl, '+');
 
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Gross Loss B/F</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$grosspl) . "</td>";
-		        echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$old_grosspl) . "</td>";
+			echo "<td width=\"300\" class=\"bold\">Gross Loss B/F</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$grosspl) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$old_grosspl) . "</td>";
 
 			echo "</tr>";
 		}
@@ -330,9 +330,9 @@ $(document).ready(function() {
 			$nettotal = float_ops($nettotal, $netpl, '+');
 		        $net_old_total = float_ops($net_old_total, $old_netpl, '+');
 			echo "<tr valign=\"top\">";
-			echo "<td class=\"bold\">Net Profit</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($netpl) . "</td>";
-		        echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_netpl) . "</td>";
+			echo "<td width=\"300\" class=\"bold\">Net Profit</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($netpl) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_netpl) . "</td>";
 			echo "</tr>";
 		} else if ($netpl < 0 || $old_netpl < 0) {
 			echo "<tr>";
@@ -342,9 +342,9 @@ $(document).ready(function() {
 
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
-		echo "<td class=\"bold\">Total</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"300\" class=\"bold\">Total</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";

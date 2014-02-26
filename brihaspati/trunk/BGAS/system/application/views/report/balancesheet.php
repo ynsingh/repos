@@ -64,12 +64,12 @@ $(document).ready(function() {
 	else {
 		echo "<table border=0>";
 		echo "<tr valign=\"top\">";
-	
+		//echo "<tr>";
 		$liability = new Reportlist();
 		echo "<td width=\"" . $left_width . "\">";
 		$liability->init(2);
 		echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-		echo "<thead><tr><th>Liabilities and Owners Equity</th><th align=\"right\">Current Year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Liabilities and Owners Equity</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
 		$liability->account_st_short(0);
 		echo "</table>";
 		echo "</td>";
@@ -80,7 +80,7 @@ $(document).ready(function() {
 		echo "<td width=\"" . $right_width . "\">";
 		$asset->init(1);
 		echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-		echo "<thead><tr><th>Assets</th><th align=\"right\">Current Year Amount</th><th align=\"right\"> Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Assets</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\"> Previous Year Amount</th></tr></thead>";
 		$asset->account_st_short(0);
 		echo "</table>";
 		echo "</td>";
@@ -103,19 +103,19 @@ $(document).ready(function() {
 
 	$diffop = $this->Ledger_model->get_diff_op_balance();
 	$old_diffop = $this->Ledger_model->get_prev_year_diff_op_balance();
-
+	//echo "</table>";
 	/* Liability side */
 
 	$total = $liability_total;
 	$old_total = $old_liability_total;
-
+	//echo "<table border=0>";
 	echo "<tr valign=\"top\" class=\"total-area\">";
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
-	echo "<td class=\"bold\">Liability and Owners Equity Total</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($liability_total) . "</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_liability_total) . "</td>";
+	echo "<td width=\"300\" class=\"bold\">Liability and Owners Equity Total</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($liability_total) . "</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_liability_total) . "</td>";
 	echo "</tr>";
 	
 	/* If Profit then Liability side, If Loss then Asset side */
@@ -173,9 +173,9 @@ $(document).ready(function() {
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
-	echo "<td class=\"bold\">Asset Total</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($asset_total) . "</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_asset_total) . "</td>";
+	echo "<td width=\"300\" class=\"bold\">Asset Total</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($asset_total) . "</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_asset_total) . "</td>";
 	echo "</tr>";
 
 	/* If Profit then Liability side, If Loss then Asset side */
