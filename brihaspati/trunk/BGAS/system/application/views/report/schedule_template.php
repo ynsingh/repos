@@ -65,7 +65,7 @@
 	echo "</tr>";
 	
 //	$object->schedule(0);
-	$object->callToSchedule(0);
+	$object->callToSchedule(1);
 	$cr_total = $object->cr_total;
 	//$cr_total = $cr_total + $object->credit_total;
         $dr_total = $object->dr_total;
@@ -76,7 +76,7 @@
 	        $total = $dr_total - $cr_total;
 	$object->getPreviousYearDetails();	
 	//$object->previous_year_data(0);
-	$object->callToOldSchedule(0);
+	$object->callToOldSchedule(1);
 	$old_cr_total = $object->old_cr_total;
         $old_dr_total = $object->old_dr_total;
         //$old_total = $old_cr_total - $old_dr_total;
@@ -133,4 +133,8 @@
         echo "</tr>";
 
 	echo "</table>";
+
+	//unset schedule() method's static values
+	$object->schedule(null);
+	$object->previous_year_data(null);
 ?>

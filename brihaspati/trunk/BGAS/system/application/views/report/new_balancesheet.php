@@ -1,39 +1,5 @@
 <?php
 	
-	if ( ! $print_preview){
-		echo form_open('report/new_balancesheet/');
-                echo "<p>";
-                echo "<span id=\"tooltip-target-1\">";
-                echo form_label('Entry Date From', 'entry_date1');
-                echo " ";
-                echo form_input_date_restrict($entry_date1);
-                echo "</span>";
-                echo "<span id=\"tooltip-content-1\">Date format is " . $this->config->item('account_date_format') . ".</span>";
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo "<span id=\"tooltip-target-2\">";
-                echo form_label('To Entry Date', 'entry_date2');
-                echo " ";
-                echo form_input_date_restrict($entry_date2);
-                echo "</span>";
-                echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo form_submit('submit', 'Get') ;
-                echo " ";
-                echo "</p>";
-                echo form_close();
-	}
-		$this->load->library('session');
-	        $date1 = $this->session->userdata('date1');
-        	$date2 = $this->session->userdata('date2');
-		// check for dates 
-	        if($date1 > $date2)
-        	{
-                	$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
-	        }
-		else{
-
 	$liability_total = 0;
 	$old_liability_total = 0;
 	$this->load->library('reportlist');
@@ -138,5 +104,4 @@
 	        echo "</td>";
         echo "</tr>";
 	echo "</table>";
-}
 ?>

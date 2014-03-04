@@ -231,4 +231,8 @@
         echo "</tr>";
 
 	echo "</table>";
+
+	//unset schedule() method's static values
+        $liability->schedule(null);
+        $liability->previous_year_data(null);
 ?>

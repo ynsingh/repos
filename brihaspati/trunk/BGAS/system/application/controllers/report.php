@@ -5,12 +5,18 @@ class Report extends Controller {
 	var $account_counter;
 	var $logndb;
 	var $ledger_data;
+	var $id;
+	var $name;
+	var $code;
+	var $children_groups = array();
+	var $counter = 1;
 
 	function Report()
 	{
 		parent::Controller();
 		$this->load->model('Ledger_model');
 		$this->load->model('Budget_model');
+		$this->load->model('Group_model');
 		/* Check access */
 		if ( ! check_access('view reports'))
 		{
@@ -361,15 +367,9 @@ class Report extends Controller {
 
 	function new_balancesheet($period = NULL)
 	{
-
 		$this->load->library('session');
-		$this->template->set('page_title', 'Balance Sheet MHRD Format');
-                //$this->template->set('nav_links', array('report/download/new_balancesheet' => 'Download CSV', 'report/printpreview/new_balancesheet' => 'Print Preview'));
-                $this->template->set('nav_links', array('report/printpreview/new_balancesheet' => 'Print Preview'));
-                $data['left_width'] = "450";
-                $data['right_width'] = "450";
 
-		$default_start = '01/04/';
+                $default_start = '01/04/';
                 $default_end = '31/03/';
                 if (date('n') > 3)
                 {
@@ -381,23 +381,7 @@ class Report extends Controller {
                         $default_end .= date('Y');
                 }
 
-		$data['entry_date1'] = array(
-                        'name' => 'entry_date1',
-                        'id' => 'entry_date1',
-                        'maxlength' => '11',
-                        'size' => '11',
-                        'value' => $default_start,
-                );
-                $data['entry_date2'] = array(
-                        'name' => 'entry_date2',
-                        'id' => 'entry_date2',
-                        'maxlength' => '11',
-                        'size' => '11',
-                        'value' => date_today_php(),
-                );
-                $data['print_preview'] =FALSE;
-
-                $data_date1 = $default_start;
+		$data_date1 = $default_start;
                 $data_date2 = $default_end;
 
                 $date=explode("/",$data_date1);
@@ -411,46 +395,154 @@ class Report extends Controller {
                      );
                 $this->session->set_userdata($newdata);
 
-		// Repopulating form 
+		$this->template->set('page_title', 'Balance Sheet MHRD Format');
+                //$this->template->set('nav_links', array('report/download/new_balancesheet' => 'Download CSV', 'report/printpreview/new_balancesheet' => 'Print Preview'));
+                $this->template->set('nav_links', array('report/printpreview/new_balancesheet' => 'Print Preview', 'report/printPreview_schedules/1' => 'Print All Schedules'));
 
-                if ($_POST)
-                {
-                        $data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
-                        $data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);
-                }
-                // Form validations 
-
-                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
-                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
-
-                // Validating form 
-                if ($this->form_validation->run() == FALSE)
-                {
-                        $this->messages->add(validation_errors(), 'error');
-                        $this->template->load('template', 'report/new_balancesheet', $data);
-                        return;
-                }
-                else
-                {
-                        $data_date1 = $this->input->post('entry_date1', TRUE);
-                        $data_date2 = $this->input->post('entry_date2', TRUE);
-
-                        $date=explode("/",$_POST['entry_date1']);
-                        $date1=$date[2]."-".$date[1]."-".$date[0];
-                        $date=explode("/",$_POST['entry_date2']);
-                        $date2=$date[2]."-".$date[1]."-".$date[0];
-
-                        $newdata = array(
-                           'date1'  => $date1,
-                           'date2'  => $date2
-                        );
-                        $this->session->set_userdata($newdata);
-                }
-
-
-		$this->template->load('template', 'report/new_balancesheet', $data);
+		$this->template->load('template', 'report/new_balancesheet');
 		return;
 	}
+
+	function startsWith($str1, $str2)
+        {
+                return !strncmp($str1, $str2, strlen($str2));
+        }
+
+	function printPreview_schedules($c = 1)
+	{
+ 	        $this->load->library('session');
+                $date1 = $this->session->userdata('date1');
+                $date2 = $this->session->userdata('date2');
+
+		$this->counter = 1;
+		if($c == 1){
+	                $this->template->set('page_title', 'Print All Schedules');
+        	        $this->template->set('nav_links', array('report/download/all_schedules' => 'Download CSV', 'report/printPreview_schedules/2' => 'Print Preview'));
+			//$this->template->load('template', 'report/print_all_schedules');
+		}
+
+		$check = 2;
+		//$count = 0;
+		$counter = 0;
+		$data = array();
+		$arr = array();
+		$arr1 = array();
+		$main = array();
+                $id = '';
+                $schedule = '';
+                $name = '';
+
+		while($check>0){
+			$this->init($check);
+			foreach ($this->children_groups as $id => $row){
+				$count = 0;
+				$this->id = $row['id'];
+				$this->code = $row['code'];
+				if($this->countDigits($row['code']) == 4){
+					$this->db->from('groups')->where('parent_id', $this->id);
+	        	        	$child_group_q = $this->db->get();
+	        	        	$counter1 = 0;
+					$children_sub_groups = array();
+        			        foreach ($child_group_q->result() as $child)
+			                {
+                        			$children_sub_groups[$counter1]['id'] = $child->id;
+			                        $children_sub_groups[$counter1]['name'] = $child->name;
+                        			$children_sub_groups[$counter1]['code'] = $child->code;
+						$counter1++;
+						$count++;
+			                }
+
+					if($count == 0){
+				                $data['code'] = $this->code;
+				                $group_details = $this->Group_model->get_schedule($this->code);
+			        	        foreach ($group_details as $id => $group)
+			                	{
+			                        	$data['id']  = $group['id'];
+	                        			$data['name'] = $group['name'];
+				                }
+						$main['arr'][$counter] = $data;
+                                                $counter++;
+					}//if count
+					else{
+						foreach($children_sub_groups as $id => $child)
+						{
+							$data['code'] = $child['code'];
+		                                        $group_details = $this->Group_model->get_schedule($child['code']);
+                		                        foreach ($group_details as $id => $group)
+                                		        {
+                                                		$data['id']  = $group['id'];
+			                                        $data['name'] = $group['name'];
+                        		                }
+							$main['arr'][$counter] = $data;
+			                                $counter++;
+						}
+					}
+				
+				}
+				elseif($this->countDigits() == 6 && $this->id != 0 && $this->code > 100){
+					$data['code'] = $this->code;
+                                        $group_details = $this->Group_model->get_schedule($this->code);
+                                        foreach ($group_details as $id => $group)
+                                        {
+                                        	$data['id']  = $group['id'];
+                                                $data['name'] = $group['name'];
+                                        }
+					$main['arr'][$counter] = $data;
+                                        $counter++;
+				}
+				//$main['arr'][$counter] = $data;
+				//$counter++;
+			}//for
+
+			$check--;
+		}//while
+
+		if($c == 1)
+	                $this->template->load('template', 'report/printPreview', $main);
+		else
+			$this->load->view('report/print_schedules', $main);
+                return;
+	}
+
+	function init($i)
+	{
+		
+                $this->db->from('groups');
+                $this->db->select('name, code, status')->where('id', $i);
+                $group_q = $this->db->get();
+                $group = $group_q->row();
+		$this->id = $i;
+                $this->name = $group->name;
+                $this->code = $group->code;
+		if($group->status==0)
+	                $this->sub_groups();
+	}
+
+	function sub_groups()
+	{
+		$this->db->from('groups')->where('parent_id', $this->id);
+                $child_group_q = $this->db->get();
+                $counter = 0;
+                foreach ($child_group_q->result() as $row)
+                {
+                        $this->children_groups[$counter]['id'] = $row->id;
+                        $this->children_groups[$counter]['name'] = $row->name;
+                        $this->children_groups[$counter]['code'] = $row->code;
+                        //$this->init($row->id);
+                        $counter++;
+                }
+	}
+
+	function countDigits($code=null)
+        {
+                //preg_match_all( "/[0-9]/", $str, $arr );
+                $search = '1234567890';
+		if($code != null)
+			$count = strlen($code) - strlen(str_replace(str_split($search), '', $code));
+		else
+	                $count = strlen($this->code) - strlen(str_replace(str_split($search), '', $this->code));
+                return $count;
+        }
 
 	//function schedule($code)
 	function schedule($code, $count)
@@ -471,12 +563,7 @@ class Report extends Controller {
 		}
 		
 		if($name != '' && $id != ''){
-			//$this->template->set('page_title', 'Schedule - ' . $schedule . ' ' . $name);
 			$this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
-			/*$arr = array(
-	                      'code'  => $code,
-        	              'count'  => $count
-                        );*/
 	                $this->session->set_userdata('code', $code);
 			$this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule/'. $count => 'Print Preview'));
 			$data['id'] = $id;
@@ -484,11 +571,10 @@ class Report extends Controller {
 		else{
 			$this->template->set('page_title', 'Schedule - Notes on Accounts');
                         $this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
-			//$data['id'] = $id;
 		}
 
-		//if($schedule == 2){
-		if($count == 2){
+		//if($count == 2){
+		if($name == 'General Funds' || $name == 'Reserves and Surplus'){
 			$this->template->load('template', 'report/schedule_template_1', $data);
                         return;
 		}
@@ -496,43 +582,6 @@ class Report extends Controller {
 			$this->template->load('template', 'report/schedule_template', $data);
                         return;
 		}			
-		/*elseif($schedule == 3){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		elseif($schedule == 4){
-                        $this->template->load('template', 'report/schedule_template', $data);
-                        return;
-                }
-		elseif($schedule == 5){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		elseif($schedule == 6){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		elseif($schedule == 7){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		elseif($schedule == 8){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		elseif($schedule == 9){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		elseif($schedule == 10){
-			$this->template->load('template', 'report/schedule_template', $data);
-                        return;
-		}
-		else{
-			//Schedule for Notes
-			$this->template->load('template', 'report/schedule_template', $code);
-                        return;
-		}*/
 
 		return;
 	}
@@ -1878,7 +1927,8 @@ class Report extends Controller {
         	                $title = 'Schedule - Notes on Accounts';
         	        }
 
-			if($count == 2)
+			//f($count == 2)
+			if($name == 'General Funds' || $name == 'Reserves and Surplus')
 				$data['report'] = "report/schedule_template_1";
 			else
 				$data['report'] = "report/schedule_template";
@@ -1894,6 +1944,7 @@ class Report extends Controller {
                         $this->load->view('report/report_template', $data);
                         return;
                 }
+
 		return;
 	}
 }
