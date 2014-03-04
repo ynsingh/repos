@@ -36,7 +36,7 @@
 		</div>
 		<?php
 			 /* Check applist table exists in brihaspati database*/
-        	        $db2=$this->load->database('brihaspati');
+        	        $db2=$this->load->database('brihaspati',TRUE);
 		
 		//	if (isset($this->db2->conn_id) && is_resource($this->db2->conn_id)) {
 		//	     echo 'database is loaded and conected';
@@ -47,8 +47,8 @@
 		//	   exit('THE END IS NIGH!');
 		//	}
 
-			if ($db2){
 			$applist="";
+			if ($db2){
 	                /* check if table exist */
                 	$table="APPLIST";
 			$Flag=FALSE;

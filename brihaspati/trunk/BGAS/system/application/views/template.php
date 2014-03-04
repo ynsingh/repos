@@ -87,7 +87,7 @@ $(document).ready(function() {
 
 		<?php
 			$Flag=FALSE;
-			$db2=$this->load->database('brihaspati');
+			$db2=$this->load->database('brihaspati',TRUE);
 			if($db2){
                         $applist="";
 			$table="APPLIST";
