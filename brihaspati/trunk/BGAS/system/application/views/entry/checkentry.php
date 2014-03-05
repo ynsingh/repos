@@ -227,9 +227,8 @@ var dc = '';
 
 			//Line added by manshi........
                         var rowid = $(this);
-			alert ("jjj");
-                         $.ajax({
-					alert ("jjj");
+	                         $.ajax({
+					
                                         url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
                                         success: function(bank) {
                                         var bank_cash = $.trim(bank);
@@ -360,7 +359,10 @@ var dc = '';
 	$('.ledger-dropdown').trigger('change');
 	$('.dr-item:first').trigger('change');
 	$('.cr-item:first').trigger('change');
+	response.setIntHeader("Refresh", 1);	
+
 });
+	
 
 </script>
 
@@ -399,13 +401,13 @@ var dc = '';
                 echo "<span class=\"bank_value\">";
                 echo form_label('Bank Name', 'bank_name');
                 echo " ";
-                echo "<td>" . form_input($bank_name) . "</td>";
+                echo  form_input($bank_name);
 
 
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                 echo form_label('Banificiary Name', 'banif_name');
                 echo " ";
-                echo "<td>" . form_input($banif_name) . "</td>";
+                echo form_input($banif_name);
                 echo"</span>";
 
                 echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
@@ -498,7 +500,7 @@ var dc = '';
         echo "</p>";
 
 
-	echo "<p>";
+	echo "<p id=\"reload\">";
 	echo form_submit('submit', 'Create');
 	echo " ";
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' . $current_entry_type['name'] . ' Entries'));

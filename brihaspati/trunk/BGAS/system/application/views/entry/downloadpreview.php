@@ -97,6 +97,10 @@
 				echo "</tr>";
 			}
 			echo "<tr class=\"tr-total\"><td class=\"total-name\">Total</td><td class=\"total-dr\">" . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\">" . $currency . " " . $entry_cr_total . "</td></tr>";
+		$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row['id']);
+                        $ledger_q = $this->db->get();
+                        if ($ledger = $ledger_q->row())
+
 		?>
 		</tbody>
 	</table>
@@ -104,6 +108,14 @@
 	<div id="print-entry-narration">Narration : <span class="value"><?php echo $entry_narration; ?></span></div>
 	<div id="print-entry-narration">Submitted By : <span class="value"><?php echo $submitted_by; ?></span></div>
 	<div id="print-entry-narration">Verified By : <span class="value"><?php echo $verified_by; ?></span></div>
+       <?php 
+	if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
+	{
+	echo "Bank Name :" . $ledger->name . "</br>"; 
+	echo "Beneficiary Name :" . $ledger->bank_name . "</br>";
+	echo "Cheque No :" . $ledger->cheque_no . "</br>";
+	}
+	?>
 	<br />
 </body>
 </html>

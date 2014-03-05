@@ -36,20 +36,11 @@
 		</div>
 		<?php
 			 /* Check applist table exists in brihaspati database*/
-        	        $db2=$this->load->database('brihaspati',TRUE);
+//        	        $db2=$this->load->database('brihaspati',TRUE);
 		
-		//	if (isset($this->db2->conn_id) && is_resource($this->db2->conn_id)) {
-		//	     echo 'database is loaded and conected';
-		//	}  
-
-		//	if ( $this->load->database() === FALSE )
-		//	{
-		//	   exit('THE END IS NIGH!');
-		//	}
-
-			$applist="";
+/*			$applist="";
 			if ($db2){
-	                /* check if table exist */
+	                /* check if table exist *
                 	$table="APPLIST";
 			$Flag=FALSE;
                 	if($db2->query("SHOW TABLES LIKE '".$table."'")->num_rows()==1){
@@ -63,6 +54,7 @@
 				$this->messages->add('Brihaspati database with APPLICATION LIST table is not exists. so contact to administrator for application header', 'success');
 			}
 			}
+*/
 			echo "<div id=\"admin\">";
 			if ($this->session->userdata('user_name')) {
 				echo anchor('', 'Accounts', array('title' => "Accounts", 'class' => 'anchor-link-b'));
@@ -78,7 +70,7 @@
 			}
 			echo "</div>";
 			echo "<div>";
-				if(($db2)&&($Flag)){
+/*				if(($db2)&&($Flag)){
                                 foreach($applist->result() as $row)
                                 {
 					$appacrm ="";
@@ -101,6 +93,7 @@
                                 }
 			$db2->close();
 				}
+*/
 			echo "</div>";
 		?>
 	</div>

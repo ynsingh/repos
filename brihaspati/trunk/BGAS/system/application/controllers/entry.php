@@ -372,6 +372,8 @@ class Entry extends Controller {
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 		$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
+		$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
+		$this->form_validation->set_rules('banif_name', 'Beneficiary name', 'trim');
 		/* Debit and Credit amount validation */
 			
 		
@@ -401,8 +403,8 @@ class Entry extends Controller {
 			$data['ledger_id'] = $this->input->post('ledger_id', TRUE);
 			$data['dr_amount'] = $this->input->post('dr_amount', TRUE);
 			$data['cr_amount'] = $this->input->post('cr_amount', TRUE);
-			$data['bank_name'] = $this->input->post('bank_name', TRUE);
-                        $data['banif_name'] = $this->input->post('banif_name', TRUE);
+			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+                        $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
 
 		} 
@@ -672,6 +674,7 @@ class Entry extends Controller {
 			$data_amount = 0;
 			$useamt = 0;
 			$allow = 0;
+
 
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
 			{
@@ -956,7 +959,10 @@ class Entry extends Controller {
                         {
                                 if ($data_all_ledger_id[$id] < 1)
                                         continue;
-				
+				$this->db->select('id')->from('entries')->order_by('id', 'desc')->limit (1);
+	                        $ledger_q = $this->db->get();
+                        	if ($ledger = $ledger_q->row())
+                       				
                                 $this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
                                 $valid_ledger_q = $this->db->get();
                                 $valid_ledger = $valid_ledger_q->row();
@@ -978,7 +984,7 @@ class Entry extends Controller {
                                                                 'amount' => $data_amount,
                                                                 'name' => $data_banif_name,
                                                                 'dc'=>'D',
-								'entry_no'=>$data_number,
+								'entry_no'=>$ledger->id,
                                                                 'cheque_date'=>$data_date,
                                                                 'cheque_no' => $val,
                                                                 );
@@ -986,7 +992,6 @@ class Entry extends Controller {
                                                         if ( ! $this->db->insert('reconcilation', $insert_data))
                                                         {
                                                                 $this->db->trans_rollback();
-                                                                $this->messages->add('Error addding Entry.', 'error');
                                                                 $this->template->load('template', 'entry/add', $data);
                                                                 return;
                                                                 } else {
@@ -1005,7 +1010,7 @@ class Entry extends Controller {
                                                                 'amount' => $data_amount,
                                                                 'name' => $data_banif_name,
                                                                 'dc'=>'C',
-                                                                'entry_no'=>$data_number,
+                                                                'entry_no'=>$ledger->id,
                                                                 'cheque_date'=>$data_date,
                                                                 'cheque_no' => $val,
                                                                 );
@@ -1013,7 +1018,6 @@ class Entry extends Controller {
                                                         if ( ! $this->db->insert('reconcilation', $insert_data))
                                                         {
                                                            	$this->db->trans_rollback();
-                                                                $this->messages->add('Error addding Entry.', 'error');
                                                                 $this->template->load('template', 'entry/add', $data);
                                                                 return;
                                                                 } else {
@@ -1115,6 +1119,19 @@ class Entry extends Controller {
 		}
 		$loginname=$this->session->userdata('user_name');
                 $submittername=$cur_entry->submitted_by;
+		$bank_name='';
+		$name='';
+		$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
+                $ledger_q = $this->db->get();
+               // if ($ledger = $ledger_q->row())
+		foreach($ledger_q->result() as $row)
+                                {
+                                $bank_name = $row->bank_name;
+                                $name= $row->name;
+                                }
+
+		
+
                 if($loginname==$submittername){
                         $this->messages->add('Submitter can not verify own entry');
                         redirect('entry/show/' . $current_entry_type['label']);
@@ -1142,14 +1159,14 @@ class Entry extends Controller {
                         'id' => 'bank_name',
                         'maxlength' => '11',
                         'size' => '11',
-                        'value' => '',
+                        'value' => $bank_name,
                 );
                 $data['banif_name'] = array(
                         'name' => 'banif_name',
                         'id' => 'banif_name',
                         'maxlength' => '11',
                         'size' => '11',
-                        'value' => '',
+                        'value' => $name,
                 );
 
 		$data['entry_narration'] = array(
@@ -1291,10 +1308,10 @@ class Entry extends Controller {
 			$data['ledger_id'] = $this->input->post('ledger_id', TRUE);
 			$data['dr_amount'] = $this->input->post('dr_amount', TRUE);
 			$data['cr_amount'] = $this->input->post('cr_amount', TRUE);
-			$data['forward_refrence_id'] = $this->input->post('forward_refrence_id', TRUE);
-                        $data['backward_refrence_id'] = $this->input->post('backward_refrence_id', TRUE);
-			$data['bank_name'] = $this->input->post('bank_name', TRUE);
-                        $data['banif_name'] = $this->input->post('banif_name', TRUE);
+			$data['forward_refrence_id']['value'] = $this->input->post('forward_refrence_id', TRUE);
+                        $data['backward_refrence_id']['value'] = $this->input->post('backward_refrence_id', TRUE);
+			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+                        $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
 
 		}
@@ -1593,18 +1610,17 @@ class Entry extends Controller {
                                                 {
 
                                                         $bank_cash_present = TRUE;
-                                                         $this->db->trans_start();
-                                                        $insert_data = array(
+                                                        $this->db->trans_start();
+                                                        $update_data1 = array(
                                                                 'Bank_name'=>$data_bank_name,
                                                                 'amount' => $data_amount,
                                                                 'name' => $data_banif_name,
                                                                 'dc'=>'D',
-                                                                'entry_no'=>$data_number,
                                                                 'cheque_date'=>$data_date,
                                                                 'cheque_no' => $val,
                                                                 );
 
-                                                        if ( ! $this->db->insert('reconcilation', $insert_data))
+                                                        if ( ! $this->db->where('entry_no', $entry_id)->update('reconcilation', $update_data1))
                                                         {
                                                                 $this->db->trans_rollback();
                                                                 $this->messages->add('Error addding Entry.', 'error');
@@ -1620,18 +1636,17 @@ class Entry extends Controller {
                                                 if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
                                                 {
                                                         $bank_cash_present = TRUE;
-                                                         $this->db->trans_start();
-                                                        $insert_data = array(
+                                                        $this->db->trans_start();
+                                                        $update_data2 = array(
                                                                 'Bank_name'=>$data_bank_name,
                                                                 'amount' => $data_amount,
                                                                 'name' => $data_banif_name,
                                                                 'dc'=>'C',
-                                                                'entry_no'=>$data_number,
                                                                 'cheque_date'=>$data_date,
                                                                 'cheque_no' => $val,
                                                                 );
 
-                                                        if ( ! $this->db->insert('reconcilation', $insert_data))
+                                                        if ( ! $this->db->where('entry_no', $entry_id)->update('reconcilation', $update_data1))
                                                         {
                                                            $this->db->trans_rollback();
                                                                 $this->messages->add('Error addding Entry.', 'error');
@@ -1790,6 +1805,7 @@ class Entry extends Controller {
 					'name' => $this->Ledger_model->get_name($row->ledger_id),
 					'dc' => $row->dc,
 					'amount' => $row->amount,
+					'id'=>$entry_id,
 				);
 				$counter++;
 			}
@@ -1860,6 +1876,7 @@ class Entry extends Controller {
 					'name' => $this->Ledger_model->get_name($row->ledger_id),
 					'dc' => $row->dc,
 					'amount' => $row->amount,
+					'id'=>$entry_id,
 				);
 				$counter++;
 			}
@@ -2853,8 +2870,8 @@ class Entry extends Controller {
                         $data['ledger_id'] = $this->input->post('ledger_id', TRUE);
                         $data['dr_amount'] = $this->input->post('dr_amount', TRUE);
                         $data['cr_amount'] = $this->input->post('cr_amount', TRUE);
-			$data['bank_name'] = $this->input->post('bank_name', TRUE);
-                        $data['banif_name'] = $this->input->post('banif_name', TRUE);
+			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+                        $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                 }
 		else {
                         for ($count = 0; $count <= 3; $count++)

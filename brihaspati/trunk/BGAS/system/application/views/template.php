@@ -86,7 +86,7 @@ $(document).ready(function() {
 		</div>
 
 		<?php
-			$Flag=FALSE;
+/*			$Flag=FALSE;
 			$db2=$this->load->database('brihaspati',TRUE);
 			if($db2){
                         $applist="";
@@ -102,7 +102,7 @@ $(document).ready(function() {
                                 $this->messages->add('Brihaspati database with APPLICATION LIST table is not exists. so contact to administrator for application header', 'success');
                         }
 			}
-
+*/
 			if(isset($schedule)){}
 			else{
 			echo "<div id=\"admin\">";
@@ -121,7 +121,7 @@ $(document).ready(function() {
 			echo "</div>";
 			}
 			echo "<div>";
-				if(($db2)&&($Flag)){
+/*				if(($db2)&&($Flag)){
                                         $urlf="";
                                 foreach($applist->result() as $row)
                                 {
@@ -145,6 +145,7 @@ $(document).ready(function() {
                                 }
                         	$db2->close();
 				}//end if
+*/
                         echo "</div>";
 
 		?>

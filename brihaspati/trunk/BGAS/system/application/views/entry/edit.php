@@ -361,6 +361,7 @@ var dc = '';
 	$('.ledger-dropdown').trigger('change');
 	$('.dr-item:first').trigger('change');
 	$('.cr-item:first').trigger('change');
+	response.setIntHeader("Refresh", 1);
 });
 
 </script>
@@ -413,10 +414,13 @@ var dc = '';
 
                 echo"</br>";
 
-	
+	$val='';
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th colspan=2>Actions</th><th colspan=2>Cur Balance</th></tr></thead>";
-
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Cheque No</th><th colspan=2>Actions</th><th colspan=2>Cur Balance</th></tr></thead>";
+	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
+        $ledger_q = $this->db->get();
+        if ($ledger = $ledger_q->row())
+	$val=$ledger->cheque_no;
 	foreach ($ledger_dc as $i => $ledger)
 	{
 		$dr_amount_item = array(
@@ -441,7 +445,8 @@ var dc = '';
                         'maxlength' => '15',
                         'size' => '15',
                         'disabled'    => 'disable',
-                        'value' => isset($cheque[$i]) ? $cheque[$i] : "",
+                       // 'value' => isset($cheque[$i]) ? $cheque[$i] : "",
+			'value'    => $val,
                         'class' => 'cheque-item',
                 );
 
