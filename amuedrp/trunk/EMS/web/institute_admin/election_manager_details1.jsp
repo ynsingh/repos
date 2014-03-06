@@ -124,7 +124,7 @@ if (!rst.isEmpty()){
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("lastname")%></td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="last_name"value="<%=last_name%>" /></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text property="last_name" value="<%=last_name%>" /></td>
                 </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("address")%></td>

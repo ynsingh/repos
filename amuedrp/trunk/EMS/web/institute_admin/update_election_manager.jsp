@@ -130,7 +130,7 @@ if (!rst.isEmpty()){
                  <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"></td> </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("lastname")%>*</td>
-                    <td align="<%=align%>" dir="<%=rtl%>"><html:text  styleId="last_name" property="last_name"value="<%=last_name%>"/></td>
+                    <td align="<%=align%>" dir="<%=rtl%>"><html:text  styleId="last_name" property="last_name" value="<%=last_name%>"/></td>
                <td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> </td> </tr>
                 <tr>
                     <td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("address")%></td>
