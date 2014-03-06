@@ -26,6 +26,7 @@ public class Email {
 	String path;
 	String buffer;
 	String frmAdd;
+	String starttls;
 	Session session ;
 	MimeMessage message;
 
@@ -42,8 +43,9 @@ public class Email {
         		host = libmspro.getProperty("host");
         		port = libmspro.getProperty("port");
         		frmAdd = libmspro.getProperty("faddress");
+                        starttls= libmspro.getProperty("starttls");
 			Properties props = System.getProperties();
-        		props.put("mail.smtp.starttls.enable", "true");
+        		props.put("mail.smtp.starttls.enable", starttls);
         		props.put("mail.smtp.host", host);
         		props.setProperty("mail.transport.protocol", "smtp");
         		props.put("mail.smtp.user", userid);

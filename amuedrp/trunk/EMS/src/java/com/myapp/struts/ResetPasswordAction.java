@@ -5,7 +5,7 @@
 
 package com.myapp.struts;
 
-import  com.myapp.struts.*;
+import com.myapp.struts.*;
 import com.myapp.struts.hbm.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,38 +37,37 @@ public class ResetPasswordAction extends org.apache.struts.action.Action {
     boolean page=true;
     String align="left";
     
-      private final ExecutorService executor=Executors.newFixedThreadPool(1);
-  Email obj1;
+    private final ExecutorService executor=Executors.newFixedThreadPool(1);
+    Email obj1;
     
-  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {
-try
-{
+    try
+       {
         SuperAdminActionForm admin=(SuperAdminActionForm)form;
         Login login= new Login();
         user_id1=admin.getUser_id1().trim();
 
         HttpSession session=request.getSession();
         String institute_id=(String)session.getAttribute("institute_id");
-String role=(String)session.getAttribute("login_role");
+        String role=(String)session.getAttribute("login_role");
 
-if(role.equalsIgnoreCase("Superadmin"))
-{
-
-    LoginDAO logindao= new LoginDAO();
-    System.out.println("user_id= "+user_id1);
-    Login rs = (Login)logindao.getUserId(user_id1);
-    if(rs!=null)
+        if(role.equalsIgnoreCase("Superadmin"))
         {
+
+           LoginDAO logindao= new LoginDAO();
+           System.out.println("user_id= "+user_id1);
+           Login rs = (Login)logindao.getUserId(user_id1);
+           if(rs!=null)
+           {
     
     /*Password Generate and Reset It*/
-    String    password= admin.getPassword1();
+              String    password= admin.getPassword1();
 
-        String password1 = PasswordEncruptionUtility.password_encrupt(password);
+              String password1 = PasswordEncruptionUtility.password_encrupt(password);
         
         if(rs.getRole().equalsIgnoreCase("Voter"))
         {
