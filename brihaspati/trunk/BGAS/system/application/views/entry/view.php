@@ -29,11 +29,14 @@ foreach ($cur_entry_ledgers->result() as $row)
 	echo "</tr>";
 	$odd_even = ($odd_even == "odd") ? "even" : "odd";
 }
-	
-	 $this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row->entry_id);
-         $ledger_q = $this->db->get();
-         if ($ledger = $ledger_q->row())
-	
+	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row->entry_id);
+        $ledger_q = $this->db->get();
+	foreach($ledger_q->result() as $row)
+        {
+        	$bank_name = $row->bank_name;
+                $name= $row->name;
+		$cheque_no= $row->cheque_no;
+	}	
 ?>
 <tr class="entry-total"><td colspan=2><strong>Total</strong></td><td id=dr-total>Dr <?php echo $cur_entry->dr_total; ?></td><td id=cr-total">Cr <?php echo $cur_entry->cr_total; ?></td></tr>
 <?php
@@ -67,21 +70,36 @@ else
 	Verified By : <span class="bold"><?php echo $verified_by; ?></span>
 </p>
 <?php
-        if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        {
-	echo "<p>";
-        echo "Bank Name :" . $ledger->name . "</br>"; 
-	echo "</p>";
-	echo "<p>";
-        echo "Beneficiary Name :" . $ledger->bank_name . "</br>";
-	echo "</p>";
-	echo "<p>";
-        echo "Cheque No :" . $ledger->cheque_no . "</br>";
-	echo "</p>";
-        }
-        ?>
-
-	
+	if($ledger_q->num_rows() == 0)
+	{
+        	if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
+        	{
+			echo "<p>";
+        		echo "Bank Name :" . '' . "</br>"; 
+			echo "</p>";
+			echo "<p>";
+        		echo "Beneficiary Name :" . '' . "</br>";
+			echo "</p>";
+			echo "<p>";
+        		echo "Cheque No :" . '' . "</br>";
+			echo "</p>";
+        	}
+	}
+	elseif($ledger_q->num_rows() > 0){
+		if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
+        	{
+        		echo "<p>";
+        		echo "Bank Name :" . $name . "</br>";           
+        		echo "</p>";
+        		echo "<p>";
+        		echo "Beneficiary Name :" . $bank_name . "</br>";
+        		echo "</p>";
+        		echo "<p>";
+        		echo "Cheque No :" . $cheque_no . "</br>";
+        		echo "</p>";
+        	}
+	}
+?>
 <?php 
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' .  $current_entry_type['name'] . ' Entries'));
 	echo " | ";

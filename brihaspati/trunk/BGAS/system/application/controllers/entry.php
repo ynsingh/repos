@@ -177,7 +177,7 @@ class Entry extends Controller {
 
 		$data['entry_data'] = $entry_q;
 		$data['entry_sort'] = $entry_type;
-
+		
 		$this->template->load('template', 'entry/index', $data);
 		return;
 
@@ -450,7 +450,6 @@ class Entry extends Controller {
                         $data_date = $this->input->post('entry_date', TRUE);
                         $data_cheque = $this->input->post('cheque', TRUE);
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
-			
 			$bank_cash_global = '';
 			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                         {
@@ -952,9 +951,8 @@ class Entry extends Controller {
 				return;
 			}
 			/*lines added by manshi*/
-			
-                        
-
+			if($data_cheque[0] != NULL)
+			{
                         foreach ($data_all_ledger_dc as $id => $ledger_data)
                         {
                                 if ($data_all_ledger_id[$id] < 1)
@@ -1023,13 +1021,9 @@ class Entry extends Controller {
                                                                 } else {
                                                                 $this->db->trans_complete();
                                                                 }
-
                                                 }
-				
-			
-                        }
-		
-		
+                        		}
+				}
 
 			/* Success */
 			$this->db->trans_complete();

@@ -23,6 +23,7 @@
 		<tbody>
 		<?php
 			$currency = $this->config->item('account_currency_symbol');
+
 			foreach ($ledger_data as $id => $row)
 			{
 				echo "<tr class=\"tr-ledger\">";
@@ -30,7 +31,7 @@
 				{
 					echo "<td class=\"ledger-name item\">By " . $row['name'] . "</td>";
 				} else {
-					echo "<td class=\"ledger-name item\">&nbsp;&nbsp;To " . $row['name'] . "</td>";
+					echo "<td class=\"ledger-name item\">To " . $row['name'] . "</td>";
 				}
 				if ($row['dc'] == "D")
 				{
@@ -46,7 +47,13 @@
 			
 			$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row['id']);
          		$ledger_q = $this->db->get();
-         		if ($ledger = $ledger_q->row())
+         		foreach($ledger_q->result() as $row)
+                                {
+                                $bank_name = $row->bank_name;
+                                $name= $row->name;
+                                $cheque_no= $row->cheque_no;
+                                }
+
 
 		?>
 		</tbody>
@@ -56,12 +63,24 @@
 	<div id="print-entry-narration">Submitted By : <span class="value"><?php echo $submitted_by; ?></span></div>
         <div id="print-entry-narration">Verified By : <span class="value"><?php echo $verified_by; ?></span></div>
 	 <?php
+	if($ledger_q->num_rows() == 0)
+        {
         if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
         {
-        echo "Bank Name :" . $ledger->name . "</br>"; 
-        echo "Beneficiary Name :" . $ledger->bank_name . "</br>";
-        echo "Cheque No :" . $ledger->cheque_no . "</br>";
+        echo "Bank Name :" . '' . "</br>";
+        echo "Beneficiary Name :" . '' . "</br>";
+        echo "Cheque No :" . '' . "</br>";
         }
+        }
+        elseif($ledger_q->num_rows() > 0){
+         if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
+        {
+        echo "Bank Name :" . $name . "</br>";
+        echo "Beneficiary Name :" . $bank_name . "</br>";
+        echo "Cheque No :" . $cheque_no . "</br>";
+        }
+        }
+
         ?>
 	
 	<br />
