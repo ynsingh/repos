@@ -238,14 +238,17 @@ class Reportlist
                         echo "&nbsp;" .  $this->name;
                         echo "</td>";
                         echo "<td class=\"td-group\">";
-                        //echo "&nbsp;" .  $this->schedule;
-                        //echo "&nbsp;" . $this->counter;
-                        
+               		        	
+			$CI =& get_instance();
+                        $CI->load->model('Setting_model');
+                        $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
+ 
 			if($check == 0){
                         	//echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
                         	echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
 				/* Get Balance of net income/(expenditure) for 'this' ledger head*/
-	                        if($c == 2){
+	                        //if($c == 2){
+				if($ledger_name == $this->name){
 					$income = new Reportlist();
 			                $income->init(3);
 			                $expense = new Reportlist();
@@ -258,14 +261,16 @@ class Reportlist
 				        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
 					if ($pandl != 0 || $old_pandl !=0)
 				        {
-				                if($pandl > 0)
-							$this->total = float_ops($this->total, $pandl, '+');
-						else
+				                if($pandl > 0){
+							//we need to change the sign
 							$this->total = float_ops($this->total, -$pandl, '+');
-						if($old_pandl > 0)
-				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
+						}
 						else
+							$this->total = float_ops($this->total, $pandl, '+');
+						if($old_pandl > 0)
 				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
+						else
+				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
 					}
                         	        /*$this->calculate_netpl($this->id);
                 	                $net_profit_loss = $this->calculate_netpl($this->id);
