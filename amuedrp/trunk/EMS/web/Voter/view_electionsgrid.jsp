@@ -272,6 +272,8 @@ else
       <item   value="Preferencial Voting" hyperLink="${path}/voting.do?election=${doc.election_id}&amp;voting=p"  hAlign="left" styleClass="item"/>
     </column>
     --%>
+
+<%-- The above code is commented to hide the preferential ballot button. It will be enabled once the functionality is tested and made completely functional. --%>
       
       <column width="20%">
       <header value="Action" hAlign="left" styleClass="header"/>

@@ -258,7 +258,7 @@ DROP TABLE IF EXISTS `electionrule`;
 CREATE TABLE `electionrule` (
   `rule_id` varchar(20) NOT NULL DEFAULT '',
   `election_id` varchar(20) NOT NULL DEFAULT '',
-   `position_id` int NOT NULL DEFAULT '',
+   `position_id` int NOT NULL DEFAULT '0',
   `institute_id` varchar(20) NOT NULL DEFAULT '',
   `criteria` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`rule_id`,`election_id`,`institute_id`,`position_id`),
@@ -623,5 +623,16 @@ UNLOCK TABLES;
 
 -- Dump completed on 2012-02-08 11:07:33
 
+DROP TABLE IF EXISTS `preferencial_voting`;
 
-CREATE TABLE preferencial_voting (voter_ballot_id VARCHAR(20), position_id VARCHAR(20) NOT NULL, candidate_id VARCHAR(20) NOT NULL, election_id VARCHAR(20) NOT NULL, institute_id VARCHAR(20), voter_id VARCHAR(255) NOT NULL, status VARCHAR(20), preference VARCHAR(20), PRIMARY KEY (candidate_id, election_id, position_id, voter_id));
+CREATE TABLE `preferencial_voting` (
+	voter_ballot_id VARCHAR(20) NOT NULL, 
+	position_id VARCHAR(20) NOT NULL, 
+	candidate_id VARCHAR(20) NOT NULL, 
+	election_id VARCHAR(20) NOT NULL, 
+	institute_id VARCHAR(20) NOT NULL, 
+	voter_id VARCHAR(255) NOT NULL, 
+	status VARCHAR(20) NOT NULL, 
+	preference VARCHAR(20) NOT NULL, 
+	PRIMARY KEY (candidate_id, election_id, position_id, voter_id)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
