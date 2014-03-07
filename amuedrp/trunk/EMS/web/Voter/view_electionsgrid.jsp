@@ -267,14 +267,6 @@ else
       <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
 </column>
 
-<%-- <column width="10%">
-      <header value="" hAlign="left" styleClass="header"/>
-      <item   value="Preferencial Voting" hyperLink="${path}/voting.do?election=${doc.election_id}&amp;voting=p"  hAlign="left" styleClass="item"/>
-    </column>
-    --%>
-
-<%-- The above code is commented to hide the preferential ballot button. It will be enabled once the functionality is tested and made completely functional. --%>
-      
       <column width="20%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Preview Ballot &amp; View Menifesto" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
