@@ -94,7 +94,8 @@
 	        echo "</td>";
 
         	echo "<td>";
-			echo "&nbsp;" . anchor_popup('report/schedule/notes', $count, array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+			//echo "&nbsp;" . anchor_popup('report/schedule/notes', $count, array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+			echo "&nbsp;" . anchor('report/new_balancesheet', $count, array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
 	        echo "</td>";
 
         	echo "<td>";

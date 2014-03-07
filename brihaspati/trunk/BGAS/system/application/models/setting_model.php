@@ -17,6 +17,18 @@ class Setting_model extends Model {
 		$account_q = $this->db->get();
 		return $account_q->row();
 	}
+
+	function get_from_settings($key)
+	{
+		$value = '';
+		$this->db->select($key);
+		$this->db->from('settings')->where('id', 1);
+		$query_result = $this->db->get();
+		$result = $query_result->row();
+		$value = $result->$key;
+		return $value;
+	}
+
 /*	function do_upload()
 	{
 		$config = array(

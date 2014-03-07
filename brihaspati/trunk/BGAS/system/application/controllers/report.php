@@ -573,8 +573,10 @@ class Report extends Controller {
                         $this->template->set('nav_links', array('report/download/schedule' => 'Download CSV', 'report/printpreview/schedule' => 'Print Preview'));
 		}
 
-		//if($count == 2){
-		if($name == 'General Funds' || $name == 'Reserves and Surplus'){
+		$this->load->model('Setting_model');
+		$ledger_name = $this->Setting_model->get_from_settings('ledger_name');
+		//if($name == 'General Funds' || $name == 'Reserves and Surplus'){
+		if($name == $ledger_name){
 			$this->template->load('template', 'report/schedule_template_1', $data);
                         return;
 		}
@@ -1927,8 +1929,10 @@ class Report extends Controller {
         	                $title = 'Schedule - Notes on Accounts';
         	        }
 
-			//f($count == 2)
-			if($name == 'General Funds' || $name == 'Reserves and Surplus')
+			//if($name == 'General Funds' || $name == 'Reserves and Surplus')
+			$this->load->model('Setting_model');
+	                $ledger_name = $this->Setting_model->get_from_settings('ledger_name');
+        	        if($name == $ledger_name)
 				$data['report'] = "report/schedule_template_1";
 			else
 				$data['report'] = "report/schedule_template";

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS groups (
   name varchar(100) NOT NULL,
   affects_gross int(1) NOT NULL DEFAULT 0,
   status int(1) NOT NULL DEFAULT 0,
-  schedule varchar(1),
+  schedule varchar(10),
   UNIQUE(code,name),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
@@ -141,7 +141,8 @@ CREATE TABLE IF NOT EXISTS settings (
   database_version int(10) NOT NULL,
   ins_name varchar(255) default NULL,
   dept_name varchar(255) default NULL,
-  uni_name varchar(255) default NULL
+  uni_name varchar(255) default NULL,
+  ledger_name varchar(100) default NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

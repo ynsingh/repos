@@ -56,7 +56,7 @@
 	echo "<br />";
 	echo form_input_date($fy_start);
 	echo "<br />";
-	echo "<span class=\"form-help-text\">Warning : Financial Year Start cannot be changed later.<br />Format as per 'Date Foramt' selected abobe.</span>";
+	echo "<span class=\"form-help-text\">Warning : Financial Year Start cannot be changed later.<br />Format as per 'Date Foramt' selected above.</span>";
 	echo "</p>";
 
 	echo "<p>";
@@ -64,7 +64,7 @@
 	echo "<br />";
 	echo form_input_date($fy_end);
 	echo "<br />";
-	echo "<span class=\"form-help-text\">Warning : Financial Year End cannot be changed later.<br />Format as per 'Date Foramt' selected abobe.</span>";
+	echo "<span class=\"form-help-text\">Warning : Financial Year End cannot be changed later.<br />Format as per 'Date Foramt' selected above.</span>";
 	echo "</p>";
 
 	echo "<p>";
@@ -118,6 +118,14 @@
 	echo "</p>";
 
 	echo form_fieldset_close();
+	echo "</p>";
+
+	echo "<p>";
+	echo form_label('Ledger Name', 'ledger_name');
+	echo "<br/>";
+	echo form_input($ledger_name);
+	echo "<br/>";
+	echo "<b>Note: </b>Account head to which the profit and loss balance will be forwarded.";
 	echo "</p>";
 
 	echo "<p>";

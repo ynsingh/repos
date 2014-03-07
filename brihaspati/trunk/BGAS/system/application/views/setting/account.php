@@ -50,6 +50,14 @@
 	echo "</p>";
 
 	echo "<p>";
+        echo form_label('Ledger Name', 'ledger_name');
+        echo "<br/>";
+        echo form_input($ledger_name);
+        echo "<br/>";
+        echo "<b>Note: </b>Account head to which the profit and loss balance will be forwarded.";
+        echo "</p>";
+
+	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
 	echo form_checkbox('account_locked', 1, $account_locked) . " Account Locked";
 	echo "</span>";
