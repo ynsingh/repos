@@ -29,6 +29,11 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
             throws Exception {
         List rst;
         HttpSession session = request.getSession();
+//added date 7march2014
+       if(!session.getAttribute("login_role").toString().equalsIgnoreCase("superadmin"))
+        {
+           return mapping.findForward("failure");
+        }
          AdminRegistrationDAO admindao = new AdminRegistrationDAO();
 
           int pageno=Integer.parseInt((String)(request.getParameter("page")==null || request.getParameter("page")=="" ?"0":request.getParameter("page")));

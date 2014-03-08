@@ -100,8 +100,10 @@
                          <forward name="candidate" path="/Candidate/home.jsp"/>
 
            </action>
+
            <action path="/superadmin" type="com.myapp.struts.superadminModuleAction">
                               <forward name="success" path="/admin/admin_home.jsp"/>
+			       <forward name="failure" path="/login.jsp"/>
            </action>
            <action  input="/manage_superadmin.jsp" name="SuperAdminActionForm" path="/manage_superadmin" scope="request" type="com.myapp.struts.SuperAdminAction" validate="true">
                         <forward name="success" path="/manage_superadmin.jsp"/>
