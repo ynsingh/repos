@@ -10,6 +10,8 @@ import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.SetVoter;
 import com.myapp.struts.instituteAdmin;
+import com.myapp.struts.hbm.voterDAO;
+import com.myapp.struts.hbm.VotingProcess;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +38,28 @@ public class CheckElection extends org.apache.struts.action.Action {
        
 
 HttpSession session=request.getSession();
+
+ // Code will execute after the election end
+        String instId = (String)session.getAttribute("institute_id");
+        String eleid=(String)request.getParameter("election");
+        String voId = (String)session.getAttribute("user_id");
+        System.out.println("instid  "+instId +"  eleid   "+eleid+" voId  "+voId);
+        voterDAO voterdao = new voterDAO();
+        VotingProcess vp = voterdao.getVoter(instId, eleid, voId);
+
+        if(vp!=null){
+            String msgal="Voter Already Voted";
+            request.setAttribute("msgal",msgal);
+            return mapping.findForward("success4");
+        }
+
+        else{
+// end of comment.
+
+
+
+
+
 session.removeAttribute("election_id");
 
         String election = request.getParameter("election");
@@ -105,6 +129,8 @@ return mapping.findForward("success3");
 
 
 
+}
+//end condittion braces according to above commit.
 }
 
     }

@@ -18,6 +18,18 @@ if(session.isNew()){
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%--Code will execute after the election end  --%>
+<%
+if(request.getAttribute("msgal")!=null){
+ %>
+ <script>
+    alert("Already Voted For this election");
+    </script>
+    <%
+}
+
+%>
+<%-- comment end --%>
 
 
 <%
@@ -256,7 +268,7 @@ else
 
 <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
+      <item   value="View" hyperLink=""  hAlign="left" styleClass="item"/>
     </column>
     <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>

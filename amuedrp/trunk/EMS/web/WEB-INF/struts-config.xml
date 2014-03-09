@@ -634,7 +634,7 @@
 
          <action path="/checkPass" type="com.myapp.struts.Voter.checkPassword"/>
          <action  path="/electionResult" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.VotingAction" >
-                <forward name="success" path="/Voting/electionResult.jsp"/>
+                <forward name="success" path="/Voting/electionResult.jsp"/> 
          </action>
           <action  path="/preferencialelectionResult" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.PreferencialVotingAction" >
                 <forward name="success" path="/Voter/Preferencialfinalresult.jsp"/>
@@ -654,6 +654,7 @@
               <forward name="success1" path="/get_elections.do"/>
               <forward name="success2" path="/electionmanager.do"/>
                <forward name="success3" path="/Voter/voter_home.jsp?g=x"/>
+	       <forward name="success4" path="/Voter/view_electionsgrid.jsp"/>
               </action>
 
 

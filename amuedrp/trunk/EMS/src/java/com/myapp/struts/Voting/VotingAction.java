@@ -73,7 +73,12 @@ public class VotingAction extends org.apache.struts.action.Action {
         session.removeAttribute("election_id");
         session.removeAttribute("electionName");
 
-        if(report!=null)
+	Election elec11 = ElectionDAO.searchElection(election,institute_id);
+	
+	 if(report!=null && elec11.getPublish()!=null && elec11.getPublish().equalsIgnoreCase("yes"))
+//	if(report!=null && elec11.getPublish().equalsIgnoreCase("yes"))
+	
+//        if(report!=null)
         {
                List list;
               Election elec = ElectionDAO.searchElection(election,institute_id);
@@ -150,6 +155,11 @@ if(!list.isEmpty()){
  // path=path+"/src/java/com/myapp/struts/circulation/JasperReport";
         }
 
+        }
+        else if( report!=null )
+        {
+            if(session.getAttribute("login_role").toString().equalsIgnoreCase("Voter"))
+            return mapping.findForward("redirect");
         }
 
 
