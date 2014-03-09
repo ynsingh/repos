@@ -108,7 +108,7 @@ public class Email {
 			transport.connect(host, userid, pass);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
-                        UserLog.ErrorLog("Mail Send "+toAddress,"MailSendLog.txt");
+                        UserLog.ErrorLog("Mail Send "+to,"MailSendLog.txt");
 		} catch (Exception e) {
 			 UserLog.ErrorLog(e.getMessage(),"MailSendLog.txt");
 		}
