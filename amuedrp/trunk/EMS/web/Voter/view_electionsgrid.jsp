@@ -270,10 +270,6 @@ else
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="View" hyperLink=""  hAlign="left" styleClass="item"/>
     </column>
-    <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Results" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
-    </column>
 <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
