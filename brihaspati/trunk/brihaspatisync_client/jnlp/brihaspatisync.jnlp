@@ -17,14 +17,16 @@
 		<all-permissions/> 
 	</security>
 	<resources>
-		<j2se version="1.6+" initial-heap-size="128m" max-heap-size="1024m" java-vm-args="-Xincgc"/>  
+		<j2se version="1.6+" initial-heap-size="128m" max-heap-size="1024m" java-vm-args="-Xincgc"/>   
 		<property name="sun.java2d.d3d" value="false"/>
 		<jar href="brihaspatisync.jar"/>
-		<jar href="vlcj-2.3.1.jar"/>
+		<jar href="vlcj.jar"/>
 		<jar href="jna-3.5.2.jar"/>
 		<jar href="jspeex-0.9.7.jar"/>
 		<jar href="commons-codec-1.4.jar"/>
 		<jar href="HttpClient.jar"/>
+		<jar href="syncreflector.jar"/>
+		<jar href="commons-io-1.1.jar"/>
 	</resources>
 	<application-desc main-class="org.bss.brihaspatisync.Client">
 		<argument>no</argument>
