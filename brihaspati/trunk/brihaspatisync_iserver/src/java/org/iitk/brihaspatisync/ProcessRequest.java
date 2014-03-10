@@ -97,7 +97,7 @@ public class ProcessRequest extends HttpServlet {
 			try {
 				String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
 				String status=request.getParameter("status");
-				String message =ReflectorManager.Register(reflectorIP,status);
+				String message =ReflectorManager.register(reflectorIP);
 				response.setContentLength(message.length());
                 	        out.println(message);
                         	out.flush();
@@ -210,10 +210,12 @@ public class ProcessRequest extends HttpServlet {
 			try {
 				String username=request.getParameter("username");
 				String lectID=request.getParameter("lectID");
+				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
+
 				/** Remove Entry from the peer list from LecturePeer.xml */
 				if(!(lectID.equals(""))) {
 					PeerManager.removePeer(lectID,username);
-					ReflectorStatusManager.updateStatusPeer(username);
+					ReflectorStatusManager.updateStatusPeer(ipAddress.replace("/",""));
 				}
 				out.println("Successfull");	
 				out.flush();
@@ -344,17 +346,17 @@ public class ProcessRequest extends HttpServlet {
                 	* if reflector is not running message is sent back to client for it.
                 	**/
 			try {
-				String lect_id=request.getParameter("lect_id");
-				InetAddress ipaddress=InetAddress.getByName(request.getRemoteAddr());
-				String publicIP=ipaddress.toString();
+				String sessionid = request.getParameter("lect_id");
+				String publicip =(InetAddress.getByName(request.getRemoteAddr())).toString();
+				publicip=publicip.replaceAll("/","");
+				String privateip=request.getParameter("privateip");
 				String user=request.getParameter("user");
 				String status=request.getParameter("status");
 				String role=request.getParameter("role");
-				String privateIP=ipaddress.toString();
 				String logintime=ServerUtil.getSystemDateTime();
                                 logintime=logintime.substring(4,20);
 				String proxy="NO";	
-				String message=ReflectorStatusManager.Register(user,lect_id,role);  
+				String message=ReflectorStatusManager.Register(sessionid,publicip,privateip);  
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ) {
 					String ref_ip=message;
 					if(ref_ip.startsWith("current")) {
@@ -362,10 +364,10 @@ public class ProcessRequest extends HttpServlet {
                 	                        ref_ip=str1[0].replaceAll("current","");
 						str1=null;
 						String first_lst_name=ProcessRequestMethods.getFullName(user);	
-						String msg=PeerManager.createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip,first_lst_name);
+						String msg=PeerManager.createPeer(sessionid,publicip,user,role,status,publicip,proxy,ref_ip,first_lst_name);
 					}
        				}
-				String av_status=ServerUtil.getAVStatus(lect_id);
+				String av_status=ServerUtil.getAVStatus(sessionid);
 				message	= message+av_status;	
 				response.setContentLength(message.length());
                         	out.println(message);

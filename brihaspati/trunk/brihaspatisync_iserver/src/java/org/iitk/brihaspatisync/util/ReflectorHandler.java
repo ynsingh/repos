@@ -2,7 +2,7 @@ package org.iitk.brihaspatisync.util;
 
 /*@(#)ServerUtil.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008, 2013 All Rights Reserved.
+ * Copyright (c) 2007-2008, 2013 ,2014 All Rights Reserved.
  */
 
 import java.util.Date;
@@ -97,7 +97,7 @@ public class ReflectorHandler {
 			java.io.File filepath=new java.io.File(context.getRealPath(lectid+".xml"));
                         if(filepath.exists())
                         	filepath.delete();
-           	} catch(Exception e){ ServerLog.log(" Error in ReflectorHandler.java "+e.getMessage()); }
+           	} catch(Exception e){ ServerLog.log(" Exceptio in ReflectorHandler.java "+e.getMessage()); }
 	}
 
 	/** 
@@ -149,7 +149,7 @@ public class ReflectorHandler {
                 try {
                         Criteria crit=new Criteria();
                         l=LecturePeer.doSelect(crit);
-                }catch(Exception e) { ServerLog.log("Error Log in Lecture select "+e.getMessage());}
+                } catch(Exception e) { ServerLog.log("Exception  in Lecture select "+e.getMessage());}
              	return l;
         }	
 		
