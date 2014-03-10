@@ -55,7 +55,9 @@ public class WhiteBoardDataSender {
                     	msg=msg.append(msgdata1);
                   	message=java.net.URLEncoder.encode(msg.toString());
 			java.util.LinkedList sendqueue=utilObject.getSendQueue("Chat_Wb_Data");
+			java.util.LinkedList local_sendqueue=utilObject.getLocalSendQueue("Chat_Wb_Data");
                         sendqueue.addLast(message.getBytes());
+                        local_sendqueue.addLast(message.getBytes());
               	} catch(Exception e) { System.out.println("Error On WhiteBoardDataSender"+e.getMessage()); }
      	}
 }

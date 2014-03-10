@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.network.video_capture;
  * PostVideoCapture.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2012,2013 ETRG, IIT Kanpur.
+ * Copyright (c) 2012,2013,2014 ETRG, IIT Kanpur.
  */
 
 import javax.imageio.ImageIO;
@@ -30,6 +30,7 @@ import org.bss.brihaspatisync.network.util.UtilObject;
  */
 
 public class PostVideoCapture implements Runnable {
+
 	private boolean flag=false;
 	private Thread runner=null;
 	private boolean getflag=false;
@@ -89,12 +90,16 @@ public class PostVideoCapture implements Runnable {
 							BufferImage.getController().remove();
 							encode(image);	
 							LinkedList send_queue=utilobject.getSendQueue("ins_video");
+							LinkedList local_send_queue=utilobject.getLocalSendQueue("ins_video");
 							if(send_queue.size()==0 ){
                                                         	send_queue.addLast(os.toByteArray());
+                                                        	local_send_queue.addLast(os.toByteArray());
 	                                                }else {
 								int k=compare(os.toByteArray(),(byte[])send_queue.get((send_queue.size())-1));
-                                	                        if(k!=0)
+                                	                        if(k!=0) {
                                         	                        send_queue.addLast(os.toByteArray());
+                                        	                        local_send_queue.addLast(os.toByteArray());
+								}
                                                 	}
 							os.flush();
 							os.reset();

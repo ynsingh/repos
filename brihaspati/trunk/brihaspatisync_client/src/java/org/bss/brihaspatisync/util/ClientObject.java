@@ -32,6 +32,7 @@ public class ClientObject {
 	private static String courseForAnnounce="";
 	private static String parent_reflector_ip="";
 	private static String selectedUserlistname="";
+	private static String parent_ref="";
 	
 	private static Vector usrNameVector=null;
 	private static Vector usrStatusVector=null;
@@ -48,7 +49,7 @@ public class ClientObject {
 		return null;
         }
 
-	protected static void setReflectorIP(String value){
+	public static void setReflectorIP(String value){
                 reflector_ip=value;
         }
 
@@ -276,5 +277,18 @@ public class ClientObject {
         public static String getSelectedListUsername(){
                 return selectedUserlistname;
         }
+	
+	/** 
+	 * set grand parent reflector ip, if parent reflector is disconect
+	 **/   	
+        public static void setParentReflector(String str){
+                parent_ref=str;
+		org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(str);
+        }
+	
+        public static String getParentReflector(){
+                return parent_ref;
+        }
+
 }
 

@@ -164,7 +164,9 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 		                	sb=sb.append(msg);
                 		        send_msg=java.net.URLEncoder.encode(sb.toString());
 					java.util.LinkedList sendqueue=utilObject.getSendQueue("Chat_Wb_Data");
+					java.util.LinkedList local_sendqueue=utilObject.getLocalSendQueue("Chat_Wb_Data");
 					sendqueue.addLast(send_msg.getBytes());
+					local_sendqueue.addLast(send_msg.getBytes());
 	               		}
                         }catch(Exception ex){}
              		input_text.setText("");

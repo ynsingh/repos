@@ -4,13 +4,17 @@ package org.bss.brihaspatisync.gui;
  * JoinSession.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur
+ * Copyright (c) 2011.2014 ETRG, IIT Kanpur
  */
 
 import java.io.File;
 import java.awt.BorderLayout;
 import java.net.URLEncoder;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+
 import java.util.Vector;
+import java.util.Enumeration;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
@@ -36,7 +40,7 @@ public class JoinSession {
  	 */
 
 	protected JoinSession(String Lecture_ID) {
-                try{
+                try {
 			String usr_name=ClientObject.getUserName();
 			if(usr_name.equals("guest")) {
 				usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
@@ -46,13 +50,35 @@ public class JoinSession {
 				}else
 					return;
 			}
+			/**
+			 * send local ip to iserver
+			 **/
+			Enumeration ifaces = NetworkInterface.getNetworkInterfaces();
+                	String ip="";
+                	while (ifaces.hasMoreElements()) {
+                        	NetworkInterface ni = (NetworkInterface)ifaces.nextElement();
+        	                Enumeration addrs = ni.getInetAddresses();
+                	        while (addrs.hasMoreElements()) {
+                        	        InetAddress ia = (InetAddress)addrs.nextElement();
+                                	if(!(ia.getHostAddress().equals("127.0.0.1")) ) {
+                                        	String ip1=ia.getHostAddress();
+						java.util.StringTokenizer Tok = new java.util.StringTokenizer(ip1,".");
+						if(Tok.countTokens()==4) {	
+							ip=ip1;
+						}		
+					}
+                        	}
+                	}
+			
 			String username="user="+URLEncoder.encode(usr_name,"UTF-8");
 			//start GUI for this lecture id 
 			String role="role="+URLEncoder.encode(ClientObject.getUserRole(),"UTF-8");
                 	String st="status="+URLEncoder.encode("available","UTF-8");
 			String indexName=ClientObject.getIndexServerName();
 			String lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
-			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
+			String privateip="privateip="+URLEncoder.encode(ip,"UTF-8");
+			
+			String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st+"&"+privateip;
 			//get reflector ip from indexing server.
 			String ref_ip =HttpsUtil.getReflectorAddress(indexServer);
 			if(!(ref_ip.equals(""))) {
@@ -66,6 +92,7 @@ public class JoinSession {
 				ThreadController.setReflectorStatusThreadFlag(true);
 	                        ReceiveQueueHandler.getController().start();
 				StatusPanel.getController().setProcessBar("no");
+				org.bss.brihaspatisync.reflector.Reflector.getController().init("client");
 			} else {
 				StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 			}
@@ -88,6 +115,6 @@ public class JoinSession {
                         mainWindow.getContainer().add(mainWindow.getDesktop(),BorderLayout.CENTER);
                         mainWindow.getContainer().validate();
                         mainWindow.getContainer().repaint();
-		}catch(Exception e){}
+		} catch(Exception e) { System.out.println("Exception in start GUI Thread "+e.getMessage()); }
 	}
 }

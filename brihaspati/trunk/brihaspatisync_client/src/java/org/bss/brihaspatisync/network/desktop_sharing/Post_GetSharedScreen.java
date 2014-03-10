@@ -139,12 +139,16 @@ public class Post_GetSharedScreen implements Runnable {
 						BufferedImage image=captureScreen();
 						encode(image);
 						LinkedList send_queue=utilObject.getSendQueue("Desktop_Data");
+						LinkedList local_send_queue=utilObject.getLocalSendQueue("Desktop_Data");
 						if(send_queue.size() ==0 ) {
 							send_queue.addLast(os.toByteArray());
+							local_send_queue.addLast(os.toByteArray());
 						}else {
 							int k=compare(os.toByteArray(),(byte[])send_queue.get((send_queue.size())-1));
-							if(k!=0)	
+							if(k!=0){	
 								send_queue.addLast(os.toByteArray());	
+								local_send_queue.addLast(os.toByteArray());	
+							}
 						}
 						os.flush();
 						os.reset();	

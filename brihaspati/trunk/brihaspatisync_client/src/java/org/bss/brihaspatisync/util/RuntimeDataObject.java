@@ -59,7 +59,7 @@ public class RuntimeDataObject {
         public String getVideoServer(){
                 return videoServer;
         }
-	//////////////////////////////////////
+	
 	public void setVLCdeviceName(String value){
                 vlcDeviceName=value;
         }
@@ -83,9 +83,6 @@ public class RuntimeDataObject {
         public long getTimeDelayFrame(){
                 return time_delay;
         }
-	
-	
-	//////////////////
 	
 	public void setProxyHost(String value){
 		proxy_host=value;

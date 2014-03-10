@@ -104,7 +104,9 @@ public class AudioClient implements Runnable {
 						}
 						if(audiodata != null) {
                         		        	LinkedList send_queue=utilobject.getSendQueue("Audio_Data");
+                        		        	LinkedList local_send_queue=utilobject.getLocalSendQueue("Audio_Data");
 	                			        send_queue.addLast(audiodata);
+	                			        local_send_queue.addLast(audiodata);
 						} 
 					}else {
 						utilobject.removeSendQueue("Audio_Data");	

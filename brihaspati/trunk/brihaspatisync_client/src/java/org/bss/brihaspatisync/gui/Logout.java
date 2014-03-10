@@ -21,8 +21,6 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 
 public class Logout {
 
-	//private ClientObject client_obj=ClientObject.getController();
-	
 	/**
 	 * close all local network thread and media threads 
          * send Logout request to indexing server to remove this client from existing peer network 
