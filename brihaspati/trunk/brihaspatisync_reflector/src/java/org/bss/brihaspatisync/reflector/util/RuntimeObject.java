@@ -17,35 +17,27 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
  */
 
-public class RuntimeDataObject {
+public class RuntimeObject {
 
         private Properties prop=null;
-
 	private StoreBufferMgnObject all_tool_buffer=null;
-
         private String indexServerAddr="";
-
         private boolean handraiseflag=false;
-
         private boolean presentationflag=false;
-
         private Vector vector= new  Vector();
-
-	//private MyHashTable userListVector=null;
-
         private Vector courseid = new  Vector();
-
         private Vector master_ref= new  Vector();
-
-        private static RuntimeDataObject obj=null;
+        private static RuntimeObject obj=null;
+        private String parent_ref="";
+	private String reflectorrunning="";
 
 
 	/**
  	 * Controller for this class
  	 */  
-        public static RuntimeDataObject getController() {
+        public static RuntimeObject getController() {
                 if(obj==null) {
-                        obj=new RuntimeDataObject();
+                        obj=new RuntimeObject();
                 }
                 return obj;
          }
@@ -145,6 +137,23 @@ public class RuntimeDataObject {
          
 	public boolean getPresentationFlag(){
                 return presentationflag;
+        }
+	
+	public void setReflectorRunning(String str){
+
+                reflectorrunning=str;
+        }
+
+        public String getReflectorRunning(){
+                return reflectorrunning;
+        }
+	
+	public void setParentReflector(String str){
+		parent_ref=str;
+        }
+
+        public String getParentReflector(){
+                return parent_ref;
         }
 
 }

@@ -32,7 +32,7 @@ public class LogoutReflector {
 	public static void stopReflector(){
 		try {	
 			System.out.println("stop ref 1");	
-			String indexServer=org.bss.brihaspatisync.reflector.util.RuntimeDataObject.getController().getindexServerAddr();
+			String indexServer=org.bss.brihaspatisync.reflector.util.RuntimeObject.getController().getindexServerAddr();
 			System.out.println("indexServer "+indexServer);	
 			if(!indexServer.equals("")) {	
 				String req_url=indexServer+"req=reflector_logout";

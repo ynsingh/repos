@@ -19,7 +19,7 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
@@ -36,7 +36,7 @@ public class ParentReflectorCommunication implements Runnable {
 	private String parentreflector_ip="";	
 	private String username="parentreflector";
 	private Vector type_vector=new Vector();
-	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+	private RuntimeObject runtimeObject=RuntimeObject.getController();
 	private int server_port = CertificateVerify.getController().getSinglePortServer();
         private org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
 

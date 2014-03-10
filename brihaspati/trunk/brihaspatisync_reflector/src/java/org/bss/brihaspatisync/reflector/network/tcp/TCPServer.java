@@ -14,7 +14,7 @@ import java.net.ServerSocket;
 import java.io.IOException;
 
 import org.bss.brihaspatisync.reflector.Reflector;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 //import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
 

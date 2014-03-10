@@ -7,11 +7,8 @@ package org.bss.brihaspatisync.reflector.network.http;
  * Copyright (c) 2011-2013 ETRG, IIT Kanpur.
  */
 
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
-
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 import org.bss.brihaspatisync.reflector.network.serverdata.HandraiseAction;
 
@@ -39,7 +36,7 @@ public class HttpGetPost {
 
 			String req=new String(bytes);		
                         String data_value[]=req.split("req");
-                        RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+                        RuntimeObject runtimeObject=RuntimeObject.getController();
                         runtimeObject.setMastrerReflecterCourseid(lecture_id);
 			if(data_value[0].startsWith("HandRaiseAction")){
                                	data_value[0]=java.net.URLDecoder.decode(data_value[0]).replaceAll("HandRaiseAction","");
@@ -52,12 +49,6 @@ public class HttpGetPost {
                                	/** set course id and ip */
                                 runtimeObject.setCourseid_IP(lecture_id+"#"+username);
                         }
-                        if(data_value[1].startsWith("parent")) {
-				data_value[1]=data_value[1].replace("parent","");
-                                if(!data_value[1].equals("")) {
-                                       	//org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(lecture_id,data_value[1]);
-                               	}
-                         } 
                 }catch(Exception ex){System.out.println("Error in in http post and get server "+ex.getMessage());}
         }
 }

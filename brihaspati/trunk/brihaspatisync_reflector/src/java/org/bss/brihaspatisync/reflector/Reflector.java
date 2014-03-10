@@ -44,7 +44,7 @@ public class Reflector {
 	/**
 	 * Controller for this class
 	 */
-	private static Reflector getController(){
+	public static Reflector getController(){
 		if(reflector==null)
 			reflector=new Reflector();
 		return reflector;
@@ -54,7 +54,7 @@ public class Reflector {
          * init(String str) - This functions starts the reflector in either text mode or GUI mode
 	 * depending on the whether str is "startjnlp" or "start" respectively.
 	 */
-	private void init(String str){
+	public void init(String str){
 		if(str.equals("startjnlp")) {	
 			startGUI();
 		}else if(str.equals("start")){
@@ -65,12 +65,11 @@ public class Reflector {
 					for(int i=0;i<indexServerList.size();i++) {
 						System.out.println("\n "+i+"    "+indexServerList.get(i).toString());
 					}
-					System.out.print("\nEnter option: \n");
 					java.util.Scanner in = new java.util.Scanner(System.in);
 					int inexno  = Integer.parseInt(in.nextLine());
 					if((inexno>-1) && (indexServerList.size()>inexno)) {
 						String iserver_ip=indexServerList.get(inexno).toString();
-						org.bss.brihaspatisync.reflector.util.RuntimeDataObject.getController().setindexServerAddr(iserver_ip);
+						org.bss.brihaspatisync.reflector.util.RuntimeObject.getController().setindexServerAddr(iserver_ip);
 						String start_or_stop=RegisterToIndexServer.connectToIndexServer();
 						if(!(start_or_stop.equals("fail_registeration")))
 		                        		System.out.println("Reflector started successfuly ");
@@ -83,6 +82,10 @@ public class Reflector {
                      	}else {
                         	System.out.println("Reflector is already running.");
 			}
+		} else if(str.equals("client")) {
+			RegisterToIndexServer.startThreads(str);
+			org.bss.brihaspatisync.reflector.util.RuntimeObject.getController().setReflectorRunning(str);
+				
 		}
 	}      	
 	
@@ -126,7 +129,7 @@ public class Reflector {
                 Object[] message = new Object[] {"Select I_Server ",combo};
                 int r = JOptionPane.showConfirmDialog(null, message, "I_Server", JOptionPane.OK_CANCEL_OPTION);
                 if (r == JOptionPane.OK_OPTION) {
-			org.bss.brihaspatisync.reflector.util.RuntimeDataObject.getController().setindexServerAddr((String)combo.getSelectedItem());
+			org.bss.brihaspatisync.reflector.util.RuntimeObject.getController().setindexServerAddr((String)combo.getSelectedItem());
 		}	
                 if(indexServerList.size()>0){
                 	flag=true;

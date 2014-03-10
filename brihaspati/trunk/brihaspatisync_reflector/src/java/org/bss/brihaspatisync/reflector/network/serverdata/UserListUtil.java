@@ -8,7 +8,7 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
  */
 
 import java.util.Vector;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 /**
@@ -37,7 +37,7 @@ public class UserListUtil {
 				if(timeout==0)
 					timeout=System.currentTimeMillis();
 				else if((System.currentTimeMillis()-timeout)> 50000) {	
-		                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
+		                       	RuntimeObject.getController().resetMastrerReflecterCourseid(course_id);
 					UserListHashTable.removeCourseIdUserListVector(course_id);
 					StoreBufferMgnObject.removeAllBufferMgtObject(course_id);
 					timeout=0;

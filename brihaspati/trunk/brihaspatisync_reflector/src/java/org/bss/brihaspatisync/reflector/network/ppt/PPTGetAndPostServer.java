@@ -22,7 +22,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 
@@ -70,7 +70,7 @@ public class PPTGetAndPostServer {
 }
 	
 class PPTHandler implements HttpHandler {
-	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+	private RuntimeObject runtimeObject=RuntimeObject.getController();
         public void handle(HttpExchange exchange) throws IOException {
 		try {
 			/*

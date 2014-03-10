@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 
 import org.bss.brihaspatisync.reflector.network.nms.PostNmsServer;
@@ -111,14 +111,14 @@ public class RegisterToIndexServer {
 	
 	public static String connectToIndexServer() {
               	try {
-                	indexServer=RuntimeDataObject.getController().getindexServerAddr();
+                	indexServer=RuntimeObject.getController().getindexServerAddr();
 		      	if(!indexServer.equals("")) {
                                 String status= "status="+URLEncoder.encode("active", "UTF-8");
                                 URL indexurl = new URL(indexServer+"req=reflector_registration&"+status);
                                 HttpsURLConnection connection=HttpsUtil.getController().createHTTPConnection(indexurl);
                                 if(connection !=null) {
                                         if(bufferReader(connection.getInputStream())) {
-						startThreads(); 
+						startThreads("startip"); 
 						return "Successfully";
 					} else {
 						System.out.println("Reflector already started !! ");
@@ -197,12 +197,14 @@ public class RegisterToIndexServer {
 		return flag;
 	} 	
 
-	protected static String startThreads(){
+	protected static String startThreads(String str){
 		try{
 			org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().start();	
-                        UL_Timer=new Timer(true);
-               	        UL_Timer.schedule(UserListTimer.getController(),01,60*60*2);
-			System.out.println("timer start successfully");
+			if(!str.equals("client")) {
+                        	UL_Timer=new Timer(true);
+	               	        UL_Timer.schedule(UserListTimer.getController(),01,60*60*2);
+				System.out.println("timer start successfully");
+			}
 			return "start_ok";
 	       	} catch(Exception e) { System.out.println("Exception in startThreads method of PeerManager class "+e.getMessage()); }
 		return "";

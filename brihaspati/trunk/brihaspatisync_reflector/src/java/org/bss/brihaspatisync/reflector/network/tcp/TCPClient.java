@@ -23,7 +23,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.buffer_mgt.StoreBufferMgnObject;
 
 import org.bss.brihaspatisync.reflector.Reflector;
-import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.util.CertificateVerify;
 import org.bss.brihaspatisync.reflector.network.serverdata.VectorClass;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;

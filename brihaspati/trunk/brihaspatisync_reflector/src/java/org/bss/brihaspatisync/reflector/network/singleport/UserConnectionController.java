@@ -116,7 +116,7 @@ public class UserConnectionController implements Runnable {
 		}
 	}	
 	
-	protected void setLoginidAndTime(String lecture_id,String user_id) {
+	public void setLoginidAndTime(String lecture_id,String user_id) {
 		/**
 		 * create hash table according to lecture id ,
 		 * then lecture id hash table contains user id and curent time 
