@@ -284,6 +284,14 @@ $(document).ready(function() {
 			echo "<li>";
                                echo anchor('payrollsetup', 'Payroll Setup', array('title' => 'PayrollSetup',)); 
                         echo "</li>";
+			echo "<li>";
+				echo anchor('addparty', 'Secondary Accounting System', array('title' => 'Secondary Accounting System'));
+				echo "<ul>";
+					echo "<li>";
+					echo anchor('addparty/add', 'Add Party', array('title' => 'AddParty'));
+					echo "</li>";
+				echo "</ul>";
+                        echo "</li>";
 
 			echo "<li>";
 				echo anchor('help', 'Help', array('title' => 'Help',)); 

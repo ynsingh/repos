@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS addsecondparty (
+        id int(11) NOT NULL AUTO_INCREMENT,
+        sacunit VARCHAR(25) NOT NULL,
+        partyname VARCHAR(100) NOT NULL,
+        mobnum VARCHAR (25) NOT NULL,
+	email VARCHAR(100) NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        permanentaddress varchar(255) NOT NULL,
+        bancacnum VARCHAR (25) NOT NULL,
+        bankname VARCHAR(255) NOT NULL,
+        branchname VARCHAR(255) NOT NULL,
+        ifsccode VARCHAR(25) DEFAULT NULL,
+        bankaddress varchar(255) NOT NULL,
+        pan VARCHAR(15) DEFAULT NULL,
+        tan VARCHAR(15) DEFAULT NULL,
+        staxnum VARCHAR(15) DEFAULT NULL,
+	partyrole VARCHAR(100) NOT NULL,
+        UNIQUE KEY(pan),
+        PRIMARY KEY (id)
+);

@@ -16,6 +16,10 @@ $(document).ready(function() {
 	$("#tooltip-target-1").ezpz_tooltip();
 	$("#tooltip-target-2").ezpz_tooltip();
 	$("#tooltip-target-3").ezpz_tooltip();
+	$("#tooltip-target-4").ezpz_tooltip();
+	$("#tooltip-target-5").ezpz_tooltip();
+	$("#tooltip-target-6").ezpz_tooltip();
+	$("#tooltip-target-7").ezpz_tooltip();
 })
 
 
