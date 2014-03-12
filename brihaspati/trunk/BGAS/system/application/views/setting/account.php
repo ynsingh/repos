@@ -52,9 +52,9 @@
 	echo "<p>";
         echo form_label('Ledger Name', 'ledger_name');
         echo "<br/>";
-        echo form_input($ledger_name);
+        echo form_dropdown('ledger_name', $ledger_name, $ledger_name_active);
         echo "<br/>";
-        echo "<b>Note: </b>Account head to which the profit and loss balance will be forwarded.";
+        echo "<b>Note: </b>Account head to which the profit and loss balance will be carry forward.";
         echo "</p>";
 
 	echo "<p>";

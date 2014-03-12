@@ -455,6 +455,7 @@ class Ledger_model extends Model {
 		}
 	}
 
+
 	function get_diff_op_balance()
 	{
 		/* Calculating difference in Opening Balance */
@@ -1084,5 +1085,37 @@ class Ledger_model extends Model {
                	}
                 return $output;
         }
+
+	function get_ledger_list($ledger_name)
+	{
+		$ledgers = array();	
+		$this->db->select('id');
+		$this->db->from('groups')->where('name =', $ledger_name);
+		$query = $this->db->get();
+		$result = $query->row();
+		$parent_id = $result->id;
+		
+		$this->db->select('name, id');
+		$this->db->from('groups')->where('parent_id =', $parent_id);
+		$query = $this->db->get();
+		$ledgers[0] = "Group Name: Ledger Name";
+		//$counter = 1;
+
+		foreach($query->result() as $group)
+		{
+			//$temp = $group->name;
+			$this->db->select('name');
+			$this->db->from('ledgers')->where('group_id =', $group->id);
+			$query = $this->db->get();
+			
+			foreach($query->result() as $ledger)			
+			{
+				$ledgers[$group->name.": ".$ledger->name] = $group->name.": ".$ledger->name;
+				//$counter++;
+			}
+		}
+
+		return $ledgers;
+	}
 }
 ?>

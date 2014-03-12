@@ -21,6 +21,7 @@ class Account extends Controller {
 	function index()
 	{
 		$this->template->set('page_title', 'Account Settings');
+		$this->load->model('Ledger_model');
 		$account_data = $this->Setting_model->get_current();
 
 		$default_start = '01/04/';
@@ -76,13 +77,8 @@ class Account extends Controller {
 		$data['account_timezone'] = 'UTC';
 		$data['account_locked'] = FALSE;
 	
-		$data['ledger_name'] = array(
-			'name' => 'ledger_name',
-			'id' => 'ledger_name',
-			'maxlength' => '100',
-			'size' => '40',
-			'value' => $account_data->ledger_name 
-		);
+		$data['ledger_name'] = $this->Ledger_model->get_ledger_list('Liabilities and Owners Equity');
+		$data['ledger_name_active'] = $account_data->liability_ledger_name;
 
 		/* Current account settings */
 		if ($account_data)
@@ -96,7 +92,7 @@ class Account extends Controller {
 			$data['fy_start'] = date_mysql_to_php(print_value($account_data->fy_start));
 			$data['fy_end'] = date_mysql_to_php(print_value($account_data->fy_end));
 			$data['account_locked'] = print_value($account_data->account_locked);
-		//	$data['ledger_name'] = print_value($account_data->ledger_name);
+			//$data['ledger_name'] = print_value($account_data->ledger_name);
 		}
 
 		/* Form validations */
@@ -119,7 +115,7 @@ class Account extends Controller {
 			$data['account_date'] = $this->input->post('account_date', TRUE);
 			$data['account_timezone'] = $this->input->post('account_timezone', TRUE);
 			$data['account_locked'] = $this->input->post('account_locked', TRUE);
-			$data['ledger_name'] = $this->input->post('ledger_name', TRUE);
+			$data['ledger_name_active'] = $this->input->post('ledger_name', TRUE);
 		}
 
 		/* Validating form */
@@ -152,7 +148,9 @@ class Account extends Controller {
 			if ($data_account_locked != 1)
 				$data_account_locked = 0;
 
-			$data_ledger_name = $this->input->post('ledger_name', TRUE);
+			$data_liability_ledger_name = $this->input->post('ledger_name', TRUE);
+			$arr = explode(': ',$data_liability_ledger_name);
+			$data_ledger_name = $arr[0];
 
 			/* Update settings */
 			$this->db->trans_start();
@@ -164,7 +162,8 @@ class Account extends Controller {
 				'date_format' => $data_account_date,
 				'timezone' => $data_account_timezone,
 				'account_locked' => $data_account_locked,
-				'ledger_name' => $data_ledger_name
+				'ledger_name' => $data_ledger_name,
+				'liability_ledger_name' => $data_liability_ledger_name
 			);
 			if ( ! $this->db->where('id', 1)->update('settings', $update_data))
 			{

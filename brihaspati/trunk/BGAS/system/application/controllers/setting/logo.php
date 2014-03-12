@@ -203,20 +203,24 @@ class Logo extends Controller {
                 	}
 
 			// update data in bgasAccData under login database
-			$this->db1->trans_start();
+			//$this->db1->trans_start();
+			$db1->trans_start();
                         $update_data = array(
                                 'organization' => $data_ins_name,
                                 'unit' => $data_uni_name
                         );
-                        if (!$this->db1->where('id', $idl)->update('bgasAccData', $update_data))
+                        //if (!$this->db1->where('id', $idl)->update('bgasAccData', $update_data))
+                        if (!$db1->where('id', $idl)->update('bgasAccData', $update_data))
                         {
-                                $this->db1->trans_rollback();
+                                //$this->db1->trans_rollback();
+                                $db1->trans_rollback();
                                 $this->messages->add('Error updating Institute and unit name in bgasAccData under login database.', 'error');
                                 $this->logger->write_message("error", "Error updating Institute and unit name in bgasAccData under login database.");
                                 $this->template->load('template', 'setting/logo', $data);
                                 return;
                         } else {
-                                $this->db1->trans_complete();
+                                //$this->db1->trans_complete();
+                                $db1->trans_complete();
                                 $this->messages->add('Institute and unit name updated in bgasAccData under login database.', 'success');
 			}
 			$db1->close();

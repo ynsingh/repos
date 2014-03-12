@@ -37,6 +37,15 @@ class Cf extends Controller {
 		/* Current settings */
 		$account_data = $this->Setting_model->get_current();
 
+		$ledger_name = $account_data->ledger_name;
+                if($ledger_name == '' || $ledger_name == '0' || $ledger_name == null)
+                {
+	                $this->messages->add('Account head to which the profit and loss balance will be carry forward, does not exist.', 'error');
+                        $this->messages->add('So, please go to the \'Settings --> Account Settings\' page to set the name of account head.', 'error');
+                        redirect('setting');
+                        return;
+                }
+
 		/* Form fields */
 		$last_year_end = $this->config->item('account_fy_end');
 		list($last_year_end_date, $last_year_end_time) = explode(' ', $last_year_end);
@@ -165,6 +174,7 @@ class Cf extends Controller {
 			$data_account_timezone = $this->config->item('account_timezone');
 
 			$data_ledger_name = $account_data->ledger_name;
+			$data_liability_ledger_name = $account_data->liability_ledger_name;
 			$data_account_manage_inventory = $account_data->manage_inventory;
 			$data_account_account_locked = $account_data->account_locked;
 
@@ -264,7 +274,7 @@ class Cf extends Controller {
 				$this->template->load('template', 'setting/cf', $data);
 				return;
 			} else if ($newacc->query("SHOW TABLES")->num_rows() > 0) {
-				$this->messages->add('Selected database in not empty.', 'error');
+				$this->messages->add('Selected database is not empty.', 'error');
 				$this->template->load('template', 'setting/cf', $data);
 				return;
 			} else {
@@ -287,7 +297,7 @@ class Cf extends Controller {
 
 				/* Adding account settings */
 				$newacc->trans_start();
-				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, $data_account_manage_inventory, 0, $data_account_email_protocol, $data_account_email_host, $data_account_email_port, $data_account_email_username, $data_account_email_password, $data_account_print_paper_height, $data_account_print_paper_width, $data_account_print_margin_top, $data_account_print_margin_bottom, $data_account_print_margin_left, $data_account_print_margin_right, $data_account_print_orientation, $data_account_print_page_format, 4, $data_ins_name, $data_dept_name, $data_uni_name, $data_ledger_name)))
+				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, $data_account_manage_inventory, 0, $data_account_email_protocol, $data_account_email_host, $data_account_email_port, $data_account_email_username, $data_account_email_password, $data_account_print_paper_height, $data_account_print_paper_width, $data_account_print_margin_top, $data_account_print_margin_bottom, $data_account_print_margin_left, $data_account_print_margin_right, $data_account_print_orientation, $data_account_print_page_format, 4, $data_ins_name, $data_dept_name, $data_uni_name, $data_ledger_name, $data_liability_ledger_name)))
 				{
 					$newacc->trans_rollback();
 					$this->messages->add('Error adding account settings.', 'error');
@@ -319,53 +329,6 @@ class Cf extends Controller {
 				$liability = new Accountlist();
 				$liability->init(2);
 				$cf_ledgers = array_merge($assets->get_ledger_ids(), $liability->get_ledger_ids());
-
-				/**
-				 * Calculate the net profit/loss for the year.
-				 * Credit it from the 'Capital Fund' account
-				 * and debit it from the 'Income' account.
-				 */
-
-				/*$this->load->library('reportlist');
-			        $income = new Reportlist();
-			        $income->init(3);
-			        $expense = new Reportlist();
-			        $expense->init(4);
-			        $income_total = -$income->total;
-			        $expense_total = $expense->total;
-			        $pandl = float_ops($income_total, $expense_total, '-');
-			        
-				$this->db->from('ledgers')->where->('name =', 'Capital Fund');
-				$this->db->select('op_balance, code');					
-				$q_result = $this->db->get();
-				$query_row = $q_result->row();
-				$ledger_code = $query_row->code;
-				$op_bal = $query_row->op_balance;
-				$op_bal = float_ops($op_bal, $pandl, '+');
-
-				$array1 = array('op_balance' => $op_bal);
-				
-                                if ( ! $this->db->where('code', $ledger_code)->update('ledgers', $array1))
-                                {
-                                	$this->db->trans_rollback();
-                                        $this->messages->add('Error adding net profit/loss to Capital Fund.', 'error');
-                                }
-
-				$this->db->from('ledgers')->where->('name =', 'Capital Fund');
-                                $this->db->select('op_balance, code');
-                                $q_result = $this->db->get();
-                                $query_row = $q_result->row();
-                                $ledger_code = $query_row->code;
-                                $op_bal = $query_row->op_balance;
-                                $op_bal = float_ops($op_bal, $pandl, '+');
-
-                                $array1 = array('op_balance' => $op_bal);
-
-                                if ( ! $this->db->where('code', $ledger_code)->update('ledgers', $array1))
-                                {
-                                        $this->db->trans_rollback();
-                                        $this->messages->add('Error adding net profit/loss to Capital Fund.', 'error');
-                                }*/
 
 				/* Importing Ledgers */
 				$this->db->from('ledgers')->order_by('id', 'asc');

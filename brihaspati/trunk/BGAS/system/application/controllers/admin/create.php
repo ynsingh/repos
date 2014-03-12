@@ -158,14 +158,6 @@ class Create extends Controller {
 		);
 		$data['create_database'] = FALSE;
 
-		$data['ledger_name'] = array(
-			'name' => 'ledger_name',
-			'id' => 'ledger_name',
-			'maxlength' =>'100',
-			'size' => '40',
-			'value' => ''
-		);
-
 		/* Form validations */
 		$this->form_validation->set_rules('account_label', 'Label', 'trim|required|min_length[2]|max_length[30]|alpha_numeric');
 		$this->form_validation->set_rules('org_name', 'Organisation Name', 'trim|required|min_length[3]|max_length[200]|alpha_numeric');
@@ -186,7 +178,6 @@ class Create extends Controller {
 
 		$this->form_validation->set_rules('database_name', 'Database Name', 'trim|required');
 		$this->form_validation->set_rules('database_username', 'Database Username', 'trim|required');
-		$this->form_validation->set_rules('ledger_name', 'Ledger Name', 'trim|required');
 
 		/* Repopulating form */
 		if ($_POST)
@@ -210,7 +201,6 @@ class Create extends Controller {
 			$data['database_password']['value'] = $this->input->post('database_password', TRUE);
 			$data['database_host']['value'] = $this->input->post('database_host', TRUE);
 			$data['database_port']['value'] = $this->input->post('database_port', TRUE);
-			$data['ledger_name']['value'] = $this->input->post('ledger_name', TRUE);
 		}
 
 		/* Validating form */
@@ -252,7 +242,6 @@ class Create extends Controller {
 			$data_database_name = $this->input->post('database_name', TRUE);
 			$data_database_username = $this->input->post('database_username', TRUE);
 			$data_database_password = $this->input->post('database_password', TRUE);
-			$data_ledger_name = $this->input->post('ledger_name', TRUE);
 
 			/* check for database label exist */
                         $db1=$this->load->database('login', TRUE);
@@ -447,7 +436,7 @@ class Create extends Controller {
 
 				/* Adding account settings */
 				$newacc->trans_start();
-				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $data_ledger_name)))
+				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, '', '')))
 				{
 					$newacc->trans_rollback();
 					$this->messages->add('Error adding account settings.', 'error');
