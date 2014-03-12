@@ -316,34 +316,62 @@ class Create extends Controller {
 							$this->template->load('admin_template', 'admin/create', $data);
 							return;
 						}
-					
-						/* Creating account database */
-						$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name).'; ';
-						$db_create_q1 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
-						$db_create_q2 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
-						$eflag=true; $eflag1=true; $eflag2=true;
-						if (mysql_query($db_create_q, $new_link))
-						{
-							$eflag=false;
-							$this->messages->add('Created new account database.', 'success');
-						} 
-						if (mysql_query($db_create_q1, $new_link))
-						{
-							$eflag1=false;
-							$this->messages->add('Granting permission to user to access new database  with local ip.', 'success');
-						} 
-						if (mysql_query($db_create_q2, $new_link))
-						{
-							$eflag2=false;
-							$this->messages->add('Granting permission to user to access new database  with local name.', 'success');
-						} 
-						if ($eflag ||$eflag1  || $eflag2) {
-							$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
-							$this->template->load('admin_template', 'admin/create', $data);
-							return;
+						else{
+							$upflag=true;
+							$eflag=true; $eflag1=true; $eflag2=true;
+							$data_database_name1='mysql';
+							$db_selected1 = mysql_select_db($data_database_name1, $new_link);
+							/* Check if database user already exists */
+							$query="select * from user where User='".$data_database_username."'";
+							$result = mysql_query($query);
+							$num_rows = mysql_num_rows($result);
+//							$this->$db_selected1->select('*')->from('user')->where('User',$data_database_username);
+    						        if($num_rows > 0)
+				                        {
+								/* Check with password matched */
+								$link_me = @mysql_connect($data_database_host . ':' . $data_database_port, $data_database_username, $data_database_password);
+
+	    						        if(!$link_me)
+					                        {
+									$upflag=false;
+									mysql_close($new_link);
+									$this->messages->add('Database user name already exists and password is not matched.', 'error');
+									$this->template->load('admin_template', 'admin/create', $data);
+									return;
+								}
+							//mysql_close($new_link);
+							}
+							if($upflag){
+								/* Creating account database */
+								$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name).'; ';
+								$db_create_q1 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
+								$db_create_q2 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
+								if (mysql_query($db_create_q, $new_link))
+								{
+									$eflag=false;
+									$this->messages->add('Created new account database.', 'success');
+								} 
+								if (mysql_query($db_create_q1, $new_link))
+								{
+									$eflag1=false;
+									$this->messages->add('Granting permission to user to access new database  with local ip.', 'success');
+								} 
+								if (mysql_query($db_create_q2, $new_link))
+								{
+									$eflag2=false;
+									$this->messages->add('Granting permission to user to access new database  with local name.', 'success');
+								} 
+								if ($eflag ||$eflag1  || $eflag2) {
+									mysql_close($new_link);
+									$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
+									$this->template->load('admin_template', 'admin/create', $data);
+									return;
+								}
+								mysql_close($new_link);
+							}
 						}
-						mysql_close($new_link);
-					} else {
+					} //end if new link
+					else {
 						$this->messages->add('Error connecting to database. ' . mysql_error(), 'error');
 						$this->template->load('admin_template', 'admin/create', $data);
 						return;
