@@ -283,7 +283,6 @@ public class ClientObject {
 	 **/   	
         public static void setParentReflector(String str){
                 parent_ref=str;
-		org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(str);
         }
 	
         public static String getParentReflector(){

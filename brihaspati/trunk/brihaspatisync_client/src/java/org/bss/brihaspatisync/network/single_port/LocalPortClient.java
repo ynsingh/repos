@@ -176,7 +176,6 @@ public class LocalPortClient implements Runnable {
 						}else if(type.equals("parent_ref")) {
 							try {
 								byte[] send_data=ClientObject.getReflectorIP().getBytes("UTF-8");
-								System.out.println("loval ref ----------->>>>>> "+ClientObject.getReflectorIP());
 								byte[] receive_data_fromserver=sendDataToLocalReflector(send_data,type);
 							} catch(Exception e) {}		
 						}		

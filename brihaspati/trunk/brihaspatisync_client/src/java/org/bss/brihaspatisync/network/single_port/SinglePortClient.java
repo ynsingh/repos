@@ -182,7 +182,6 @@ public class SinglePortClient implements Runnable {
 				runner.sleep(10);
 				System.gc();
 			}catch(Exception ep) { 
-				org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(this.getClass()+" Exception  "+ep.getMessage()); 
 				org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 			}
 		}	
@@ -223,8 +222,7 @@ public class SinglePortClient implements Runnable {
 			return receive_data_fromserver;
 		}catch(Exception e) { 
 			client=null;
-				ClientObject.setReflectorIP(ClientObject.getParentReflector());		
-				org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(ClientObject.getParentReflector());
+			ClientObject.setReflectorIP(ClientObject.getParentReflector());		
 			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 			//ThreadController.setReflectorStatusThreadFlag(false);
 			System.out.println(this.getClass()+" in Send data from client to reflector "+e.getMessage());
