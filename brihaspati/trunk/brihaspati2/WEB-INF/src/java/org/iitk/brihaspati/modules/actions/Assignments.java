@@ -203,7 +203,7 @@ public class Assignments extends SecureAction
                                 */
                                 Criteria crit=new Criteria();
                                 crit.add(AssignmentPeer.GROUP_NAME,courseid);
-				crit.addAscendingOrderByColumn(AssignmentPeer.ASSIGN_ID);
+				crit.addAscendingOrderByColumn(AssignmentPeer.ID);
                                 List u=AssignmentPeer.doSelect(crit);
 
 				 /**
@@ -219,6 +219,7 @@ public class Assignments extends SecureAction
                                 		Assignment element=(Assignment)(u.get(i));
                 		                String assgnid=(element.getAssignId());
 		                                assno=Integer.parseInt(StringUtils.substringAfterLast(assgnid,"-"));
+						ErrorDumpUtil.ErrorLog("list of assignment-------------"+element.toString()+" and n is "+assno);
                         		}
                                 	//agroup_name=courseid+"-"+u.size();
 					assno=assno+1;
