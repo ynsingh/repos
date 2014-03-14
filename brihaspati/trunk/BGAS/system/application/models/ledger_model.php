@@ -2,6 +2,7 @@
 
 class Ledger_model extends Model {
 
+var $ledgers = array();
 	function Ledger_model()
 	{
 		parent::Model();
@@ -1088,34 +1089,41 @@ class Ledger_model extends Model {
 
 	function get_ledger_list($ledger_name)
 	{
-		$ledgers = array();	
+		//$ledgers = array();	
 		$this->db->select('id');
 		$this->db->from('groups')->where('name =', $ledger_name);
+		if($ledger_name == 'Liabilities and Owners Equity')
+                        $this->db->or_where('name = ', 'Sources of Funds');
 		$query = $this->db->get();
-		$result = $query->row();
-		$parent_id = $result->id;
+		if($query->num_rows() > 0){
+			$result = $query->row();
+			$parent_id = $result->id;
 		
-		$this->db->select('name, id');
-		$this->db->from('groups')->where('parent_id =', $parent_id);
-		$query = $this->db->get();
-		$ledgers[0] = "Group Name: Ledger Name";
-		//$counter = 1;
-
-		foreach($query->result() as $group)
-		{
-			//$temp = $group->name;
-			$this->db->select('name');
-			$this->db->from('ledgers')->where('group_id =', $group->id);
+			$this->db->select('name, id');
+			$this->db->from('groups')->where('parent_id =', $parent_id);
 			$query = $this->db->get();
-			
-			foreach($query->result() as $ledger)			
+			$this->ledgers[0] = "Group Name: Ledger Name";
+			//$counter = 1;
+
+			foreach($query->result() as $group)
 			{
-				$ledgers[$group->name.": ".$ledger->name] = $group->name.": ".$ledger->name;
-				//$counter++;
+				$this->get_ledger_list($group->name);
+				$this->db->select('name');
+				$this->db->from('ledgers')->where('group_id =', $group->id);
+				$query = $this->db->get();
+			
+				if($query->num_rows() > 0){
+					foreach($query->result() as $ledger)			
+					{
+						$this->ledgers[$group->name.": ".$ledger->name] = $group->name.": ".$ledger->name;
+						//$counter++;
+					}
+				}
+//				else
+//					$this->ledgers[$group->name.": "] = $group->name.": ";
 			}
 		}
-
-		return $ledgers;
+		return $this->ledgers;
 	}
 }
 ?>

@@ -227,6 +227,11 @@ class Reportlist
         {
 		$check = 0;
                 $this->counter = $c;
+
+		$CI =& get_instance();
+                $CI->load->model('Setting_model');
+                $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
+
 		if($this->countDigits() == 4 && $this->id != 0 && $this->code > 100){
 			foreach($this->children_groups as $id => $data)
                 	{
@@ -236,17 +241,12 @@ class Reportlist
 
 			echo "<tr class=\"tr-group\">";
                         echo "<td class=\"td-group\">";
-                       // echo $this->print_space($this->counter);
                         echo "&nbsp;" .  $this->name;
                         echo "</td>";
                         echo "<td class=\"td-group\">";
                		        	
-			$CI =& get_instance();
-                        $CI->load->model('Setting_model');
-                        $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
- 
 			if($check == 0){
-                        	//echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
+				$this->counter++;
                         	echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
 				/* Get Balance of net income/(expenditure) for 'this' ledger head*/
 	                        //if($c == 2){
@@ -274,39 +274,23 @@ class Reportlist
 						else
 				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
 					}
-                        	        /*$this->calculate_netpl($this->id);
-                	                $net_profit_loss = $this->calculate_netpl($this->id);
-        	                        $this->netpl = $this->netpl + $net_profit_loss;*/
 	                        }
 			}
-			/* Add opening balance to the total amount */
-                        //$this->calculate_op_balance('new', 'balance_sheet');
-                        //$this->calculate_op_balance('old', 'balance_sheet');
 
                         echo "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
                         echo "</tr>";
 		}elseif($this->countDigits() == 6 && $this->id != 0 && $this->code > 100){
-		
+			$this->counter++;
 			echo "<tr>";
                         echo "<td class=\"td-group\">";
-                       // echo $this->print_space($this->counter);
                         echo "&nbsp;" .  $this->name;
                         echo "</td>";
                         echo "<td class=\"td-group\">";
-                        //echo "&nbsp;" .  $this->schedule;
-                        //echo "&nbsp;" . $this->counter;
-                        /* Get Balance of net income/(expenditure) for 'this' ledger head*/
-                        /*if($c == 1){
-                                $this->calculate_netpl($data['id']);
-                                $net_profit_loss = $this->calculate_netpl($data['id']);
-                                $this->netpl = $this->netpl + $net_profit_loss;
-                        }*/
-
-                        //echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
 			echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
-				if($c == 2){
+				//if($c == 2){
+				if($ledger_name == $this->name){
                                         $income = new Reportlist();
                                         $income->init(3);
                                         $expense = new Reportlist();
@@ -319,8 +303,10 @@ class Reportlist
                                         $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
                                         if ($pandl != 0 || $old_pandl !=0)
                                         {
-                                                if($pandl > 0)
-                                                        $this->total = float_ops($this->total, $pandl, '+');
+                                                if($pandl > 0){
+							//we need to change the sign
+                                                        $this->total = float_ops($this->total, -$pandl, '+');	
+						}
                                                 else
                                                         $this->total = float_ops($this->total, -$pandl, '+');
                                                 if($old_pandl > 0)
@@ -328,13 +314,7 @@ class Reportlist
                                                 else
                                                         $this->total2 = float_ops($this->total2, -$old_pandl, '+');
                                         }
-                                        /*$this->calculate_netpl($this->id);
-                                        $net_profit_loss = $this->calculate_netpl($this->id);
-                                        $this->netpl = $this->netpl + $net_profit_loss;*/
                         	}
-			/* Add opening balance to the total amount */
-                        //$this->calculate_op_balance('new', 'balance_sheet');
-                        //$this->calculate_op_balance('old', 'balance_sheet');
 
                         echo "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
@@ -346,18 +326,16 @@ class Reportlist
                 {
                         $len = $data->countDigits();
                         if($len == 4){
-				if($check == 0)
-                                	$this->counter++;
+				//if($check == 0)
+                                //	$this->counter++;
                                 $this->counter = $data->new_balance_sheet($this->counter);
                         }elseif($len == 6){
-				//$this->counter++;
                                 $this->counter = $data->new_balance_sheet($this->counter);
-				$this->counter++;
+				//$this->counter++;
 			}
-                        //$this->counter--;
+                        
                 }
 
-                //$this->counter = $this->counter + 1;
                 return $this->counter;
         }
 
