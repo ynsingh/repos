@@ -167,6 +167,7 @@ class Reportlist
 		$counter = 0;
 		foreach ($child_ledger_q->result() as $row)
 		{
+			if($row->name != 'Transfer Account'){
 			$this->children_ledgers[$counter]['id'] = $row->id;
 			$this->children_ledgers[$counter]['code'] = $row->code;
 			$this->children_ledgers[$counter]['name'] = $row->name;
@@ -180,6 +181,7 @@ class Reportlist
 			$this->total2 = float_ops($this->total2, $this->children_ledgers[$counter]['total2'], '+');
 
 			$counter++;
+			}
 		}
 	}
 
@@ -367,10 +369,51 @@ class Reportlist
                 return $count;
         }	
 
-	function calculate_op_balance($year, $name)
-	{
-		foreach ($this->children_groups as $id => $data)
-		{
+	function callToOpBalance($year, $name){
+                $credit_total = 0;
+                $debit_total = 0;
+		$old_credit_total = 0;
+		$old_debit_total = 0;
+		$op_balance = 0;
+		$old_op_balance = 0;
+		$total = 0;
+		$total2 = 0;
+
+		if($year == 'new'){
+			if( $name == 'schedule'){
+                		list($credit_total, $debit_total, $op_balance) = $this->calculate_op_balance($year, $name);
+				$this->cr_total = $this->cr_total + $credit_total;
+		                $this->dr_total = $this->dr_total + $debit_total;
+				$this->opening_balance = $this->opening_balance + $op_balance;
+			}
+			else
+			{
+				list($total, $op_balance) = $this->calculate_op_balance($year, $name);
+	                        $this->total = $this->total + $total;
+        	                $this->opening_balance = $this->opening_balance + $op_balance;
+			}
+		}
+		elseif($year == 'old'){ 
+			if( $name == 'schedule'){
+	                	list($old_credit_total, $old_debit_total, $old_op_balance) = $this->calculate_op_balance($year, $name);
+				$this->old_cr_total = $this->old_cr_total + $old_credit_total;
+		                $this->old_dr_total = $this->old_dr_total + $old_debit_total;
+				$this->opening_balance_prev = $this->opening_balance_prev + $old_op_balance;
+			}
+			else
+			{
+                        	list($total2, $old_op_balance) = $this->calculate_op_balance($year, $name);
+	                        $this->total2 = $this->total2 + $total2;
+        	                $this->opening_balance = $this->opening_balance + $old_op_balance;
+                	}
+		}
+
+        }
+
+	function calculate_op_balance_naew($year, $name)
+        {
+                foreach ($this->children_groups as $id => $data)
+                {
                         $this->counter++;
                         $data->calculate_op_balance($this->counter, $name);
                         $this->counter--;
@@ -379,47 +422,149 @@ class Reportlist
                 {
                         //$this->counter++;
                         foreach ($this->children_ledgers as $id => $data)
-			{
-				//Get opening balance
+                        {
+                                //Get opening balance
                                 $CI =& get_instance();
                                 $CI->load->model('Ledger_model');
-				if($year == 'new'){
-	                                //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
-	                                list($opBal, $optype) = $CI->Ledger_model->get_op_balance($data['id']);
-        	                        $this->opening_balance = $this->opening_balance + $opBal;
-					if($name == 'schedule'){
-						if($optype == 'C')
-							$this->cr_total = $this->cr_total + $opBal;
-						elseif($optype == 'D')
-                        	        		$this->dr_total = $this->dr_total + $opBal;
-					}else
-					{
-						if($optype == 'C')
+                                if($year == 'new'){
+                                        //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
+                                        list($opBal, $optype) = $CI->Ledger_model->get_op_balance($data['id']);
+                                        $this->opening_balance = $this->opening_balance + $opBal;
+                                        if($name == 'schedule'){
+                                                if($optype == 'C')
+                                                        $this->cr_total = $this->cr_total + $opBal;
+                                                elseif($optype == 'D')
+                                                        $this->dr_total = $this->dr_total + $opBal;
+                                        }else
+                                        {
+                                                if($optype == 'C')
                                                         $this->total = $this->total - $opBal;
                                                 elseif($optype == 'D')
                                                         $this->total = $this->total + $opBal;
-					}
+                                        }
 
-				}
-				elseif($year == 'old'){
-				        //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
-				        list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
+                                }
+                                elseif($year == 'old'){
+                                        //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
+                                        list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
                                         $this->opening_balance_prev = $this->opening_balance_prev + $opBal;
-					if($name == 'schedule'){
-	                                        if($optype == 'C')
-        	                                        $this->old_cr_total = $this->old_cr_total + $opBal;
-                	                        elseif($optype == 'D')
-                        	                        $this->old_dr_total = $this->old_dr_total + $opBal;	
-					}
-					else
-					{
-						if($optype == 'C')
+                                        if($name == 'schedule'){
+                                                if($optype == 'C')
+                                                        $this->old_cr_total = $this->old_cr_total + $opBal;
+                                                elseif($optype == 'D')
+                                                        $this->old_dr_total = $this->old_dr_total + $opBal;
+                                        }
+                                        else
+                                        {
+                                                if($optype == 'C')
                                                         $this->total2 = $this->total2 - $opBal;
                                                 elseif($optype == 'D')
                                                         $this->total2 = $this->total2 + $opBal;
-					}
+                                        }
                                 }
+                        }
+                }
+        }
+
+	function calculate_op_balance($year, $name)
+	{
+		static $credit_total = 0;
+                static $debit_total = 0;
+                static $old_credit_total = 0;
+                static $old_debit_total = 0;
+                static $total = 0;
+                static $total2 = 0;
+		static $op_balance = 0;
+                static $old_op_balance = 0;
+
+		if($year == null)
+		{
+			$credit_total = null;
+	                $debit_total = null;
+        	        $old_credit_total = null;
+                	$old_debit_total = null;
+	                $op_balance = null;	
+        	        $old_op_balance = null;
+			$total = null;
+			$total2 = null;
+		}
+		else{
+			foreach ($this->children_groups as $id => $data)
+			{
+                	        $this->counter++;
+                        	//$data->calculate_op_balance($this->counter, $name);
+				$data->calculate_op_balance($year, $name);
+        	                $this->counter--;
+                	}
+	                if (count($this->children_ledgers) > 0)
+        	        {
+                	        //$this->counter++;
+                        	foreach ($this->children_ledgers as $id => $data)
+				{
+					//Get opening balance
+                	                $CI =& get_instance();
+                        	        $CI->load->model('Ledger_model');
+					if($year == 'new'){
+		                                //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
+		                                list($opBal, $optype) = $CI->Ledger_model->get_op_balance($data['id']);
+        		                        //$this->opening_balance = $this->opening_balance + $opBal;
+        		                        $op_balance = $op_balance + $opBal;
+						if($name == 'schedule'){
+							if($optype == 'C')
+								//$this->cr_total = $this->cr_total + $opBal;
+								$credit_total = $credit_total + $opBal;
+							elseif($optype == 'D')
+        	                	        		//$this->dr_total = $this->dr_total + $opBal;
+                	        	        		$debit_total = $debit_total + $opBal;
+						}else
+						{
+							if($optype == 'C')
+                                                	        //$this->total = $this->total - $opBal;
+                                                        	$total = $total - $opBal;
+	                                                elseif($optype == 'D')
+        	                                                //$this->total = $this->total + $opBal;
+                	                                        $total = $total + $opBal;
+						}
+	
+					}
+					elseif($year == 'old'){
+					        //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
+					        list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
+                                        	//$this->opening_balance_prev = $this->opening_balance_prev + $opBal;
+                                        	$old_op_balance = $old_op_balance + $opBal;
+						if($name == 'schedule'){
+		                                        if($optype == 'C')
+        		                                        //$this->old_cr_total = $this->old_cr_total + $opBal;
+        	        	                                $old_credit_total = $old_credit_total + $opBal;
+                	        	                elseif($optype == 'D')
+                        	        	                //$this->old_dr_total = $this->old_dr_total + $opBal;	
+                        	                	        $old_debit_total = $old_debit_total + $opBal;	
+						}	
+						else
+						{
+							if($optype == 'C')
+                                	                        //$this->total2 = $this->total2 - $opBal;
+                                        	                $total2 = $total2 - $opBal;
+                                                	elseif($optype == 'D')
+                                                        	//$this->total2 = $this->total2 + $opBal;
+		                                                $total2 = $total2 + $opBal;
+						}
+                        	        }
+				}
 			}
+		}//else null
+
+		if($year == 'new'){
+			if($name == 'schedule')
+				return array($credit_total, $debit_total, $op_balance);
+			else
+				return array($total, $op_balance);
+		}
+		elseif($year == 'old'){
+			if($name == 'schedule')
+				return array($old_credit_total, $old_debit_total, $old_op_balance);
+			else
+				return array($total2, $old_op_balance);
 		}
 	}
 

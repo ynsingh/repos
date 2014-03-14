@@ -4,6 +4,7 @@
         $old_dr_total = 0;
         $old_total = 0;
 	$opening_balance = 0;
+	$opening_balance_prev = 0;
 	//$this->load->library('balanceSheet');
 	//$liability = new BalanceSheet();
 	$this->load->library('reportlist');
@@ -16,11 +17,13 @@
 
 	$object->init($i);
 	//get opening balance
-	$object->calculate_op_balance('new','schedule');
+	//$object->calculate_op_balance('new','schedule');
+	$object->callToOpBalance('new', 'schedule');
 	$opening_balance = $object->opening_balance;
 	$dr_total = $object->dr_total;
         $cr_total = $object->cr_total;
-	$object->calculate_op_balance('old', 'schedule');
+	//$object->calculate_op_balance('old', 'schedule');
+	$object->callToOpBalance('old', 'schedule');
 	$opening_balance_prev = $object->opening_balance_prev;
 	$old_dr_total = $object->old_dr_total;
 	$old_cr_total = $object->old_cr_total;
@@ -137,4 +140,5 @@
 	//unset schedule() method's static values
 	$object->schedule(null);
 	$object->previous_year_data(null);
+	$object->calculate_op_balance(null,'schedule');
 ?>

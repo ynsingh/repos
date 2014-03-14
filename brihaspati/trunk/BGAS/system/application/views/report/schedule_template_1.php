@@ -17,12 +17,14 @@
 
 	$liability->init($i);
         //get opening balance
-        $liability->calculate_op_balance('new', 'schedule');
+        //$liability->calculate_op_balance('new', 'schedule');
+	$liability->callToOpBalance('new', 'schedule');
         $opening_balance = $liability->opening_balance;
         $dr_total = $liability->dr_total;
         $cr_total = $liability->cr_total;
 
-        $liability->calculate_op_balance('old', 'schedule');
+        //$liability->calculate_op_balance('old', 'schedule');
+	$liability->callToOpBalance('old', 'schedule');
         $opening_balance_prev = $liability->opening_balance_prev;
         $old_dr_total = $liability->old_dr_total;
         $old_cr_total = $liability->old_cr_total;
@@ -235,4 +237,5 @@
 	//unset schedule() method's static values
         $liability->schedule(null);
         $liability->previous_year_data(null);
+	$liability->calculate_op_balance(null,'schedule');
 ?>
