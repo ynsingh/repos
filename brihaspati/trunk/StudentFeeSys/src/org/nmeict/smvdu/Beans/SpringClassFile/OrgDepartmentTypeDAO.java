@@ -13,6 +13,10 @@ import org.nmeict.smvdu.Beans.OrgDepartmentType;
 import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
+/*
+ *@author Shaista 
+ **/
+
 public class OrgDepartmentTypeDAO implements IOrgDepartmentTypeDAO{
 
 	private HibernateDataSourceConnection hibernateSessionFactory = new HibernateDataSourceConnection();
@@ -58,11 +62,13 @@ public class OrgDepartmentTypeDAO implements IOrgDepartmentTypeDAO{
 			s = HibernateDataSourceConnection.currentSession();
 			s.beginTransaction();
 			int i=0;
+                        //System.out.println("size=="+orgDepartmentType.size());
 			for(OrgDepartmentType odt : orgDepartmentType)
 			{
-
-				odt.setOrgProfile(new OrgProfileSessionDetails().getOrgProfileSession());
-				s.update(odt.getOdtSeqNo().toString(),odt);  
+				//odt.setOrgProfile(new OrgProfileSessionDetails().getOrgProfileSession());
+				//s.update(odt.getOdtSeqNo().toString(),odt); 
+                                //System.out.println("odt.getDepartment=="+odt.getOrgDepartmentName());
+                                s.update(odt);
 				i++;
 				if(i%50 == 0)
 				{

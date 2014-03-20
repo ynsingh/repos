@@ -297,8 +297,9 @@ public class CommonDB {
         {
             Connection conn;
            Class.forName("com.mysql.jdbc.Driver");
-           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","","");
-           //conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","etrg","brihaspatigroup");
+           //conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","","");
+           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/student_fees","etrg","brihaspatigroup");
+           //System.out.println("getConnection==");
             return conn;
         }
         catch(Exception e)
@@ -308,5 +309,26 @@ public class CommonDB {
             return null;
         }
     }
+    
+    /**
+     * Connection for Brihaspati General Accounting System (BGAS) Database
+     * @return : instance of Database Connection
+     */
+    public Connection getBGASConnection()   {
+       try
+        {
+           Connection conn;
+           Class.forName("com.mysql.jdbc.Driver");
+           conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/bgas","etrg","brihaspatigroup");
+           return conn;
+        }
+        catch(Exception e)
+        {
+            //ErrorManager.manageError(e);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

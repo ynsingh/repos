@@ -10,6 +10,9 @@
      /*background: url("../img/bg.png");*/
      background: url("../img/bkg-body.png");
 }
+.ui-dailog{
+    background: url("../img/bkg-body.png");
+}
 
 .ui-growl-title {
     font-weight: bold;

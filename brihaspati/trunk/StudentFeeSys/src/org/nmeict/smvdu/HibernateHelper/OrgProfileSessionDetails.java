@@ -11,6 +11,9 @@ import org.nmeict.smvdu.Beans.OrgLoginDetails;
 import org.nmeict.smvdu.Beans.OrgLogoDetails;
 import org.nmeict.smvdu.Beans.OrgProfile;
 
+/*
+ * @author Shaista
+ **/
 
 @ManagedBean(name="orgProfileSessionDetails")
 @SessionScoped
@@ -29,6 +32,7 @@ public class OrgProfileSessionDetails implements Serializable{
 		else
 		{
 			userId = old.getOrgId();
+                        //System.out.println("userID=="+userId);
 			//path= FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\")+"img"+File.separator+userId;
 			path= FacesContext.getCurrentInstance().getExternalContext().getRealPath("/")+"img"+File.separator+userId;
 			//"E:\\"+File.separator+userId+File.separator;

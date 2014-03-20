@@ -17,7 +17,7 @@ Author Shaista Bano
     <h:body>
         
         <!--<p:layout fullPage="true" style="min-width: 100px;min-height: 300px;border:none;background: #d9e3ec"> -->
-            <p:layout style="width: 1350px; height: 800px;"> 
+            <p:layout style="width: 1335px; height: 800px;"> 
             <p:layoutUnit position="north" size="180">
                 <!--h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" url="img/3_1.PNG"/-->
                  <div  align="left" style="border:none;">
@@ -36,9 +36,9 @@ Author Shaista Bano
                 </p:panel>
                 
             </p:layoutUnit>
-                <p:layoutUnit position="west" size="400" style="border:none; background: #d9e3ec;">
+                <p:layoutUnit position="west" size="350" style="border:none;">
                 <!--<p:layoutUnit position="west" style="border:none;" >-->
-                <p:panel style="border:none;  background: #d9e3ec; height: 540px;" header="Important Link">
+                <p:panel style="border:none;  background: #d9e3ec; height: 540px; font-size:15px;font-weight: bold;" header="Important Link">
                      <h:panelGrid columns="1">
                         
                         <p:column>
@@ -47,8 +47,8 @@ Author Shaista Bano
                          <p:column>
                             <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="font-size:15px;font-weight: bold;"> NMEICT Home Page </a>
                         </p:column>
-                         <p:column>  
-                            <p:commandLink value="Register New College" style="font-size:14px;font-weight: bold;background:#d9e3ec" action="OrgProfile/RegisterProfile.xhtml"/>
+                        <p:column>  
+                           <p:commandLink value="Register New College" style="font-size:15px;font-weight: bold;" action="OrgProfile/RegisterProfile.xhtml"/>
                         </p:column>
                         <p:column>
                             <a href="#" style="font-size:15px;font-weight: bold;" onclick="return false;"> Release Notes </a>
@@ -61,13 +61,13 @@ Author Shaista Bano
                 </p:panel>
             </p:layoutUnit>
             <!--p:layoutUnit position="east" size="400" style="border:none;"-->
-            <p:layoutUnit position="center" size="350" style="border: none; background: #d9e3ec;">
+            <p:layoutUnit position="center" size="300" style="border: none;">
             <!--<p:layoutUnit position="center" style="border:none; height: 500px;"> -->
                 <h:form>
                 <p:growl id="growl" showDetail="true" sticky="true" />
-                    <p:panel style="border:none; background: #d9e3ec; height: 540px; width:930px;">
+                    <p:panel style="border:none; background: #d9e3ec; height: 540px; width:970px;">
                         <f:facet name="header">
-                            <h:outputText value="Login Here"/>
+                            <h:outputText style="font-size:15px;font-weight: bold;" value="Login Here"/>
                         </f:facet>
                         <h:panelGrid columns="2" >
                             <h:outputText style="font-size:15px;font-weight: bold;" value="Org Name"/>
@@ -84,17 +84,19 @@ Author Shaista Bano
                                 <h:outputText style="font-size:11px;font-weight:bold;" value="#{orgDe.orgWeb}"/>
                                 </p:column>
                             </p:autoComplete>
-                            <h:outputText style="font-size:15px;font-weight: bold; background: #e5e5e5;" value="Email Id"/>
+                            <h:outputText style="font-size:15px;font-weight: bold; color: #4B4B4B;" value="Email Id"/>
                             <p:inputText styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" style="background: #e5e5e5;" id="emailid" value="#{orgLoginDetails.adminId}"/>
                             <h:outputText value="" />
                             <h:outputText style="font-size:15px;font-weight: bold; background: #e5e5e5; color: blue; align:right;" value="Example: brihaspati@iitk.ac.in"/> 
                             <h:outputText style="font-size:15px;font-weight: bold;" value="Password"/>
                             <p:password styleClass="#{not orgLoginDetails.error ?'ui-input-invalid':''}" id="password" value="#{orgLoginDetails.orgPassword}"/>
                         <f:facet name="footer">
-                            <p:commandButton value="Login" icon="ui-icon-disk" style="font-size:14px;font-weight: bold; background: #e5e5e5; margin-left: 25%;" action="#{orgLoginDetails.validate}" update="growl"/> 
+                            <p:commandButton value="Login" icon="ui-icon-disk" style="font-size:14px;font-weight: bold;color: #4B4B4B; margin-left: 25%;"
+                                             action="#{orgLoginDetails.validate}" update="growl"/>
                             <br></br>
                             <br></br>
-                            <p:commandLink value="Forgot Password" style="font-size:14px;font-weight: bold; background: #e5e5e5;margin-left: 25%;" disabled="true" action="#{orgLoginDetails.validate}"/>
+                            <p:commandLink value="Forgot Password" style="font-size:14px;font-weight: bold; background: #e5e5e5;margin-left: 25%;" 
+                                           disabled="true" action="#{orgLoginDetails.validate}"/>
                         </f:facet>
                              
                         </h:panelGrid>
@@ -108,12 +110,12 @@ Author Shaista Bano
                 
             </p:layoutUnit-->
             <p:layoutUnit position="south">
-                <p:panel style="background: #15366c; width: 1330px; height: 35px;font-size:15px;font-weight: bold;">
+                <p:panel style="background: #15366c; width: 1320px; height: 35px;font-size:15px;font-weight: bold;">
                     <h:outputText  value="Student Fee System. Develped by IIT Kanpur" style="font-size:15px;font-weight: bold; color: white;" />
                                    
                 </p:panel>
             </p:layoutUnit>
-            
+                         
         </p:layout>
         <p:dialog style="background:#d9e3ec;" modal="true" widgetVar="statusDialog" header="Status"   
                               draggable="false" closable="false">  

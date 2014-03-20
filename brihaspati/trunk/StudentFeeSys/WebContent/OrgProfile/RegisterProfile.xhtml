@@ -5,7 +5,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
@@ -14,32 +13,33 @@
             <link type="text/css" rel="stylesheet" href="../CSS/PrimeCSS.css"/>
         </h:head>
         <h:body>
-            <h:outputLink />
-            <p:layout style="min-width: 400px;min-height: 1100px">
-                <!--p:layoutUnit position="north" size="180" resizable="true" closable="true" collapsible="true">
-                   <h:graphicImage alt="Student Fees" style="min-width: 150px;min-height: 150px;" title="header image" url="../img/3_1.PNG"/>
-                </p:layoutUnit-->
-                <p:layoutUnit position="north" size="150">
-                        <div  align="left" style="border:none;">
+            <p:layout style="width: 1335px;height: 1100px"> 
+                <p:layoutUnit position="north" size="180">
+                        <div  align="left" style="border: none;">
                             <h:graphicImage url="/img/headerLogo.png"/>
                         </div>
-                        <div  align="right" style="border:none;">
-                            <h:graphicImage url="/img/3_1.PNG" style="margin-top:-112px;margin-right: 100px;"/>
-                        </div>
+		<p:panel style="background: #15366c; width: 1320px; height: 35px; border: none;">
+                <a href="http://202.141.40.215:8080/brihaspati/servlet/brihaspati" style="font-size:15px;font-weight: bold;color: white;">BRIHASPATI |</a> 
+                <a href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login" style="font-size:15px;font-weight: bold;color: white;">BGAS |</a>
+                <a href="http://202.141.40.218:8080/LibMS/" style="font-size:15px;font-weight: bold;color: white;">LIBMS |</a>
+                <a href="http://202.141.40.218:8080/pico/Administration/Index.action" style="font-size:15px;font-weight: bold;color: white;">PICO |</a>
+                <a href="http://202.141.40.218:8081/PayrollSys/" style="font-size:15px;font-weight: bold;color: white;" >PAYROLL </a>
+                <!--<a href="http://172.26.161.61:8085/faces/index.xhtml" style="font-size:15px;font-weight: bold;color: white;">STFMS</a> -->
+                </p:panel>
 		</p:layoutUnit>
-                <p:layoutUnit position="center" style="background:#d9e3ec; color:#d9e3ec;">
-                    <h:outputLink value="index.xhtml" style="font-size: 19px; font-weight: bold; bottom: 30px"> Login page </h:outputLink>
+                <p:layoutUnit position="center">
+                    <h:outputLink value="index.xhtml" style="font-size: 15px; font-weight: bold; bottom: 30px; margin-left: 10px;"> Login page </h:outputLink>
                     <h:form>
-                        <!--p:growl id="growl" sticky="true" /--> 
+                        <p:growl id="growl" sticky="true" showDetail="true"/> 
                         <!--h:messages id="growl" style="color:black;margin:2px;" /-->
-                        <p:growl id="growl" rendered="true" showDetail="true"/>  
+                        <!--<p:growl id="growl" rendered="true" showDetail="true"/>  -->
                         
-                        <p:panel id="orgReg" header="Register New Institute/College/University">
+                        <p:panel id="orgReg" style="width:1320px; height:800px;font-size: 14px; font-weight: bold;" header="Register New Institute/College/University">
                             <p:focus context="orgReg"/>
-                            <p:panelGrid columns="2" style="background:green" >
+                            <p:panelGrid columns="2">
                               
                                 <h:column>
-                                    <h:outputText value="Institute/College/University : " style="font-size: 14px; font-weight: bold;background:#d9e3ec;"/>
+                                    <h:outputText value="Institute/College/University : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
                                 <h:column>
                                     <p:inputText value="#{orgProfileBeans.orgName}" style="font-size: 16px; font-weight: bold;" id="iname" onfocus="true;" required="true" requiredMessage="Please Enter Institute/College/Unversity Name">
@@ -54,7 +54,6 @@
                                         
                                     </p:inputText>
                                 </h:column>
-                              
                                 
                                 <h:column>
                                     <h:outputText value="City : " style="font-size: 14px; font-weight: bold;"/>
@@ -65,7 +64,6 @@
                                    
                                 </h:column>
                                  
-                                
                                 <h:column>
                                     <h:outputText value="ZipCode : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -83,16 +81,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgState}" style="font-size: 16px; font-weight: bold;" id="istate" required="true" requiredMessage="Please Enter Institute/College/Unversity State">
                                     </p:inputText>
                                 </h:column> 
-                                <h:column>
-                                    <h:outputText value="Landline No. : " style="font-size: 14px; font-weight: bold;"/>
-                                </h:column>
-                                <h:column>
-                                    <p:inputText value="#{orgProfileBeans.orgPhone}" style="font-size: 16px; font-weight: bold;" id="ilann" required="true" requiredMessage="Please Enter Valid landline No." validatorMessage="Please Enter Valid landline No.">
-                                        <f:validateLength minimum="7" maximum="7" for="ilann"/>
-                                        <f:converter converterId="javax.faces.Integer"/>
-                                    </p:inputText>
-                                </h:column>
-                               
+                                
                                 <h:column>
                                     <h:outputText value="Country Code : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -102,8 +91,9 @@
                                         <f:validateLength minimum="2" maximum="2" for="icc"/>
                                     </p:inputText>
                                 </h:column>
+                                
                                 <h:column>
-                                    <h:outputText value="Region Code (Ex. Jammu 0919) : " style="font-size: 14px; font-weight: bold;"/>
+                                    <h:outputText value="Region Code (i.g. For Jammu 0919) : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
                                 <h:column>
                                     <p:inputText value="#{orgProfileBeans.orgRegioncode}" style="font-size: 16px; font-weight: bold;" id="ircc" required="true" requiredMessage="Please Enter Region Code" validatorMessage="Please Enter Valid Region Code">
@@ -111,6 +101,17 @@
                                         <f:validateLength minimum="2" maximum="4" for="ircc"/>
                                     </p:inputText>
                                 </h:column> 
+                                
+                                <h:column>
+                                    <h:outputText value="Landline No. : " style="font-size: 14px; font-weight: bold;"/>
+                                </h:column>
+                                <h:column>
+                                    <p:inputText value="#{orgProfileBeans.orgPhone}" style="font-size: 16px; font-weight: bold;" id="ilann" required="true" requiredMessage="Please Enter Valid landline No." validatorMessage="Please Enter Valid landline No.">
+                                        <f:validateLength minimum="7" maximum="7" for="ilann"/>
+                                        <f:converter converterId="javax.faces.Integer"/>
+                                    </p:inputText>
+                                </h:column>
+                                
                                 <h:column>
                                     <h:outputText value="Number Eg. SMVDU(2345345)  : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -120,6 +121,7 @@
                                         <f:converter converterId="javax.faces.Integer"/>
                                     </p:inputText>
                                  </h:column> 
+                                
                                 <h:column>
                                     <h:outputText value="Institute/College/University Domain : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -128,6 +130,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgInstitutedomain}" style="font-size: 16px; font-weight: bold;" id="idma" required="true" requiredMessage="Please Enter Institute/College/Unversity Domain" validatorMessage="Please Enter Valid Institute/College/Unversity Domain">
                                      </p:inputText>
                                 </h:column>
+                                
                                 <h:column>
                                     <h:outputText value="Type Of Institute/College/University : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -138,6 +141,7 @@
                                         <f:selectItem itemLabel="Other" itemValue="Other" />  
                                     </p:selectOneMenu>
                                 </h:column> 
+                                
                                 <h:column>
                                     <h:outputText value="Institute/College/University Website: " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column> 
@@ -147,6 +151,7 @@
                                     </p:inputText>
                                    
                                 </h:column>
+                                
                                 <h:column>
                                     <h:outputText value="Institute/College/University Affiliation: " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -154,6 +159,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgAffiliation}" style="font-size: 16px; font-weight: bold;" id="iafiti" required="true" requiredMessage="Please Enter Institute/College/Unversity Affiliation">
                                      </p:inputText>
                                  </h:column> 
+                                
                                 <h:column>
                                     <h:outputText value="Admin's First Name : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -161,6 +167,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgAdminfn}" style="font-size: 16px; font-weight: bold;" id="iafn" required="true" requiredMessage="Please Enter Institute/College/Unversity Admin's Name">
                                       </p:inputText>
                                   </h:column>
+                                
                                 <h:column>
                                     <h:outputText value="Admin Last Name: " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -168,6 +175,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgAdminln}" style="font-size: 16px; font-weight: bold;" id="ialn" required="true" requiredMessage="Please Enter Institute/College/Unversity Admin Last Name">
                                     </p:inputText>
                                 </h:column>
+                                
                                 <h:column>
                                     <h:outputText value="Admin's Designation : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -175,6 +183,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgAdmindesig}" style="font-size: 16px; font-weight: bold;" id="iadde" required="true" requiredMessage="Please Enter Institute/College/Unversity Designation">
                                     </p:inputText>
                                 </h:column> 
+                                
                                 <h:column>
                                     <h:outputText value="Admin's EmailId : " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -182,6 +191,7 @@
                                     <p:inputText value="#{orgProfileBeans.orgAdminemailid}" style="font-size: 16px; font-weight: bold;" id="iadid" required="true" requiredMessage="Please Enter Institute/College/Unversity Admin EmailId">
                                     </p:inputText>
                                 </h:column> 
+                                
                                 <h:column>
                                     <h:outputText value="Admin's Password: " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -190,6 +200,7 @@
                                         <p:tooltip for="ic" value="Your Password Should Be At Least In 8 Charecter And At Most In 14 Charecter" style="font-size: 13px; color:#006666; font-weight: bold;"/>
                                     </p:password>
                                 </h:column>
+                                
                                 <h:column>
                                     <h:outputText value="Admin's Re Password: " style="font-size: 14px; font-weight: bold;"/>
                                 </h:column>
@@ -197,14 +208,15 @@
                                     <p:password label="password 2" style="font-size: 16px; font-weight: bold;" id="irc" validatorMessage="Password Does Not Match the Password Inserted Above." >
                                     </p:password>
                                 </h:column>
-                               </p:panelGrid>                            
-                            <f:facet name="footer">
-                                <p:commandButton style="font-size:14px;font-weight: bold;color:#4B4B4B; background: #d9e3ec;" value="Save" update="growl" action="#{orgProfileBeans.saveProfile()}"/>
-                                &nbsp;&nbsp;
-                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;background: #d9e3ec;" type="reset" value="Reset"/>
-                            </f:facet>
-                         
-                            
+                                
+                               </p:panelGrid>
+                            <p:panelGrid columns="1">
+                                <f:facet name="footer">
+                                    <p:commandButton style="font-size:14px;font-weight: bold;color:#4B4B4B;" value="Save" update="growl" action="#{orgProfileBeans.saveProfile}"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton style="font-size:14px;font-weight: bold;color:#4B4B4B;" type="reset" value="Reset"/>
+                                </f:facet>
+                            </p:panelGrid>
                         </p:panel>
                     </h:form>
                     
@@ -216,10 +228,9 @@
                     <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
                 </p:layoutUnit>
 
-            </p:layout>
+           </p:layout>
 
         </h:body>
 
-    </f:view>
 </html>
 

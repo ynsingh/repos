@@ -23,7 +23,7 @@ import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
 /**
  *
- * @author guest
+ * @author Shaista
  */
 public class CollegeList {
     private OrgLoginDetails old;
@@ -252,7 +252,7 @@ public String getSMTPAuthDetails()
             Connection cn = new CommonDB().getConnection();
             PreparedStatement pst;
             ResultSet rst;
-            pst = cn.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_request_status from org_profile inner join college_pending_status on org_email=org_pen_email where org_request_status = '"+0+"'");
+            pst = cn.prepareStatement("select org_id,org_name,org_web,org_email,org_phone,org_request_status from org_profile inner join college_pending_status on org_email=org_pen_email where org_request_status = 0");
             rst = pst.executeQuery();
             while(rst.next())
             {
@@ -276,6 +276,9 @@ public String getSMTPAuthDetails()
                 }
                 pendingList.add(o);
             }
+            pst.close();
+            rst.close();
+            cn.close();
             //System.out.println("\npendingList=== "+pendingList.size());
             return pendingList;
         }
@@ -303,36 +306,40 @@ public String getSMTPAuthDetails()
             PreparedStatement pst1 = null;
             PreparedStatement pst2 = null;
             ResultSet rst = null;
-            int st;
             String password = null;
+            
             for(OrgProfile or : org)
             {
                 if(or.isStatus() == true)
                 {
-                    st =1;
+                    //System.out.println("or.getOrgEmail()=="+or.getOrgEmail());
                     pst2 = connection.prepareStatement("select org_master_password from org_profile where org_email = '"+or.getOrgEmail()+"'");
                     rst = pst2.executeQuery();
                     if(rst.next())
                     {
                         password = rst.getString(1);
+                       // System.out.println("password=="+password);
                     }
                     rst.close();
                     pst2.close();
-                    pst1 = connection.prepareStatement("insert into user_master(user_name,user_pass,user_org_id,user_grp_id,user_profile_id,flag) values('"+or.getOrgEmail()+"','"+password+"','"+or.getOrgId()+"','"+4+"','"+0+"','"+1+"')");
+                    connection.close();
+                    /*
+                    connection = new CommonDB().getConnection();
+                    pst1 = connection.prepareStatement("insert into user_master(user_name,user_pass,user_org_id,user_grp_id,modifier_id,user_profile_id,flag) values('"+or.getOrgEmail()+"','"+password+"','"+or.getOrgId()+"',4,101,0,1)");
                     pst1.executeUpdate();
                     pst1.clearParameters();
-                    new OrgConformationEmail().sendMail(or);
-                    pst = connection.prepareStatement("delete from college_pending_status where org_pen_email = '"+or.getOrgEmail()+"'");
+                    connection.close();*/
+                    
+                    //new OrgConformationEmail().sendMail(or);
+                    connection = new CommonDB().getConnection();
+                    pst = connection.prepareStatement("update college_pending_status set org_request_status = 1 where org_pen_email = '"+or.getOrgEmail()+"'");
+                    //pst = connection.prepareStatement("delete from college_pending_status where org_pen_email = '"+or.getOrgEmail()+"'");
                     pst.executeUpdate();
                     pst.clearParameters();
                 }
-                else
-                {
-                    st = 0;
-                }
             }
             pst.close();
-            pst1.close();
+            //pst1.close();
 
             connection.close();
             return null;

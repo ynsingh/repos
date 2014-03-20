@@ -14,21 +14,25 @@ Author Shaista
 	<link type="text/css" rel="stylesheet" href="../CSS/PrimeCSS.css"/>
 </h:head>
 <h:body>
-	<h:form>
+	
             <!--<p:growl id="growl" rendered="true" />  -->
-            <p:growl id="growl" sticky="true"/> 
-                        <h:panelGrid columns="1">
-				<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" onclick="pnl.show();" value="Add New" />
-                                 <p:messages>
-                            <f:facet name="infoMarker">
-                            <h:graphicImage url="../img/success.png"/>
-                            </f:facet>
-                            <f:facet name="errorMarker">
-                            <h:graphicImage url="../img/err.png"/>
-                            </f:facet>
-                        </p:messages>
-				
-					<p:dataTable resizableColumns="true" id="degreeTable" var="dt" style="font-size: 14px;font-weight: bold" binding="#{orgDepartmentType.dataGrid}"
+           
+                <h:panelGrid columns="1">
+                        <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" onclick="pnl.show();" value="Add New" />
+                            <p:messages> </p:messages>
+                            <h:messages> </h:messages>
+                                    <!--<f:facet name="infoMarker">
+                                        <h:graphicImage url="../img/success.png"/>
+                                    </f:facet>
+                                    <f:facet name="errorMarker">
+                                        <h:graphicImage url="../img/err.png"/>
+                                    </f:facet> -->
+                            
+                </h:panelGrid>
+                     
+                            <h:form>
+                                
+                                <p:dataTable resizableColumns="true" id="degreeTable" var="dt" style="font-size: 14px;font-weight: bold" binding="#{orgDepartmentType.dataGrid}"
 						value="#{orgDepartmentType.loadAllDepartmentType}" paginator="true" rows="10"
 						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
@@ -76,12 +80,14 @@ Author Shaista
                                                     <p:commandLink value="Delete" action="#{orgDepartmentType.delete(dt)}"/>
                                                 </p:column>
 					</p:dataTable>
-					<f:facet name="footer">
-							<p:commandButton  style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" 
-                                                                          update="growl" action="#{orgDepartmentType.update}"/> 
-					</f:facet>
-				
-			</h:panelGrid>
+                                <h:panelGrid>
+                                    <f:facet name="footer">
+        				<p:commandButton  style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" 
+                                                                 action="#{orgDepartmentType.update}"/> 
+                                    </f:facet>
+                
+                                </h:panelGrid>
+                            </h:form>
 		
 		<p:dialog header="Add New Department" resizable="false" width="340" height="100"
 			widgetVar="pnl" modal="true">
@@ -99,6 +105,6 @@ Author Shaista
 			</h:panelGrid>
                     </h:form>
 		</p:dialog>
-	</h:form>
+	
 </h:body>
 </html>

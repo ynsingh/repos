@@ -11,7 +11,7 @@ import org.nmeict.smvdu.Beans.db.CommonDB;
 
 /**
  *
- * @author guest
+ * @author Shaista
  */
 public class CollegeRequestStatus {
      private Connection connection;
@@ -31,7 +31,7 @@ public class CollegeRequestStatus {
         {
             connection = new CommonDB().getConnection();
             PreparedStatement pst;
-            pst = connection.prepareStatement("insert into college_pending_status(org_code,org_request_status,org_pen_email) values('"+code+"','"+0+"','"+org.getOrgAdminemailid()+"')");
+            pst = connection.prepareStatement("insert into college_pending_status(org_code,org_request_status,org_pen_email) values('"+code+"',0,'"+org.getOrgAdminemailid()+"')");
             pst.executeUpdate();
             pst.close();
             connection.close();

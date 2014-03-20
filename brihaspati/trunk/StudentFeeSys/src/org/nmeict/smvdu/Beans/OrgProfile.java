@@ -850,20 +850,38 @@ Commented By shaista
                     message.setSummary("Plz Enter EmailID In Correct Format ");
                     fc.addMessage("", message);
                     return;
-                }                                          
+                } 
+            FacesContext context = FacesContext.getCurrentInstance();
+            try{
+
                 List<OrgProfile> organizationList = getiOrgProfileService().loadOrgProfile();
                 //System.out.print("\n organizationsize=="+organizationList.size());
-                FacesContext context = FacesContext.getCurrentInstance();
-            for(OrgProfile op : organizationList ){
-               // System.out.print("\n---op.getOrgInstitutedomain()--"+op.getOrgInstitutedomain());
-                if(op.getOrgInstitutedomain().equals(this.getOrgInstitutedomain())){
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Organization already exist.", ""));
-                    return;
+                
+                for(OrgProfile op : organizationList ){
+                    // System.out.print("\n---op.getOrgInstitutedomain()--"+op.getOrgInstitutedomain());
+                    if(op.getOrgInstitutedomain().equals(this.getOrgInstitutedomain()) ){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getOrgInstitutedomain()+" already exist. Please give different domain Name.", ""));
+                        return;
+                    }
+                    if(op.getOrgName().equalsIgnoreCase(this.getOrgName())){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getOrgName()+" already exist. Please give different Organization Name.", ""));
+                        return;
+                    }
+                
+                    /*
+                    if(op.getOrgWeb().equals(this.getOrgWeb())){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getOrgWeb()+" already exist. Please give different Web Site Name.", ""));
+                        return; 
+                    }
+                    */
+                
+                    if(op.getOrgAdminemailid().equals(this.getOrgAdminemailid())){
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, this.getOrgAdminemailid()+" already exist. Please give different Admin Email ID.", ""));
+                        return;
+                    }
                 }
-            }
             
             
-            try{
                 OrgLogoDetails orgld = new OrgLogoDetails(); 
                 OrgLoginDetails old = new OrgLoginDetails();
                 orgld.setOrgWeb(this.getOrgWeb()); 
@@ -896,7 +914,7 @@ Commented By shaista
 		this.setOrgEmail(this.getOrgAdminemailid());
 
                 getiOrgProfileService().addNewOrgProfile(this);
-		 new OrgConformationEmail().sendPendingCollegeMail(this);
+		new OrgConformationEmail().sendPendingCollegeMail(this);
 
                 organizationList = getiOrgProfileService().loadOrgProfile();
                 //System.out.print("\n organizationsize=="+organizationList.size());
@@ -1128,6 +1146,7 @@ Commented By shaista
     }
     
     public void updateRequest(){
+        
         try{
             
             ArrayList<OrgProfile> orgProf = (ArrayList<OrgProfile>) dataGrid2.getValue();
@@ -1149,17 +1168,19 @@ Commented By shaista
             else{
                     Exception ex= new CollegeList().updateRequest(orgProf);
                     //System.out.println("\n\nex=="+ex);
-                    orgProf = (ArrayList<OrgProfile>) dataGrid2.getValue();
-                    
+                   
                     if(ex == null){
-                        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College Are Updated", ""));
+                        //FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "College Are Updated", ""));
+                       getPendingList();
+                       FacesContext.getCurrentInstance().getExternalContext().redirect("PendingCollegeList.xhtml?faces-redirect=true");
                     }
             }
-            
+        
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            return;
         }
     }
 }

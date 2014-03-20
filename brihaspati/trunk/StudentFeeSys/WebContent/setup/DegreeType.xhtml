@@ -17,7 +17,7 @@ Author Shaista
 	<h:form>
 <p:growl id="growl" sticky="true" />  
 		<h:panelGrid columns="1">
-			<p:commandButton style="font-size:14px;font-weight: bold;" onclick="pnl.show();" value="Add New" />
+			<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" onclick="pnl.show();" value="Add New" />
 			
 				<p:dataTable id="dataTable" var="dt"
 					style="font-size: 14px;font-weight: bold"
@@ -84,7 +84,7 @@ Author Shaista
                                         </p:column>
 				</p:dataTable>
 				<f:facet name="footer">
-					<p:commandButton style="font-size:14px;font-weight: bold;" value="Update" update="growl"
+					<p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Update" update="growl"
 						action="#{orgDegreeType.update}" />
 				</f:facet>
 			
