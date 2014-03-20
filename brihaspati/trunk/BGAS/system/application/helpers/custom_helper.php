@@ -209,8 +209,10 @@ if ( ! function_exists('float_ops'))
 		$result = 0;
 		$param1 = $param1 * 100;
 		$param2 = $param2 * 100;
-		$param1 = (int)round($param1, 0);
-		$param2 = (int)round($param2, 0);
+		//$param1 = (int)round($param1, 0);
+		//$param2 = (int)round($param2, 0);
+		$param1 = round($param1, 0);
+                $param2 = round($param2, 0);
 		switch ($op)
 		{
 		case '+':
