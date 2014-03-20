@@ -1,90 +1,240 @@
 #* * @(#)InstituteProfile.vm
- * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @modify date: 18-03-2011
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul pal</a>
+ * @author <a href="mailto:rekha20july@gmail.com">Rekha Devi Pal</a>
+ * @modify date: 25-02-2011, 19-10-2011, 20-03-2014
+ 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
 $page.setBgColor($ui.bgcolor)
-<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
+#macro(option1)
+	<option value=+>+</option>
+        <option value=0>0</option>
+#end
+#macro(option2)
+        <option value=0>0</option>
+        <option value=+>+</option>
+#end
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.tableColor" width=100%>
-<tr align="right" bgcolor="$ui.menuColor">
-	<td colspan="2">
+<tr bgcolor="$ui.menuColor" align="right">
+<td align="right">
+<a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a><img src="$content.getURI("/images/lefthand.gif")"></td>
+
+	<td>
 	<font face="$ui.sansSerifFonts" size=3>
 	<b>
-     	<a href=$link.setPage("Index.vm")> $institute $brih_Of2 $brih_ad $brih_Of1 $brih_home</a> | $brih_Institute $brih_Of2 $brih_ap
+     	<a href=$link.setPage("Index.vm")> $RemoteInstitute $brih_ad $brih_home</a> |#if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap 
 	</td>
 </tr>
+	</table>
+<table bgcolor="$ui.tableColor" width=100% align="right">
 ## Form action in InstchangeAParam.java
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,InstituteProfile.vm").setAction("InstchangeAParam")">
-    <tr align="right"><td colspan=2><font size=4> $brih_Institute $brih_Of2 $brih_ap  ($iname)</font></td></tr>
-    <tr align="right" bgcolor="$ui.menuColor">
+    <tr align="right"><td colspan=2><font size=4> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap  ($iname)</font></td></tr>
+    <tr bgcolor="$ui.menuColor" align="right">
+      ##formCell("First Name" "AFName" "$!afname")
 	<td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AFName" value="$!afname"> </font></td>
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_first $brih_name </font></td> 
     </tr>
-    <tr align="right" bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.tableColor" align="right">
+      ##formCell("Last Name" "ALName" "$!alname")	
 	<td width="50"> <font face="$ui.sansSerifFonts"><input type="text" size="30" name="ALName" value="$!alname"> </font></td>
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_last $brih_name </td>   
     </tr>
-    <tr align="right" bgcolor="$ui.menuColor">
-      	<td width="50"> <font face="$ui.sansSerifFonts"> 		<input type="text" size="30" name="AdminConf" value="$!AdminConf"> </font></td>
-		<td width="30"> <font face="$ui.sansSerifFonts">$brih_lcv </font></td>
+    <tr bgcolor="$ui.menuColor" align="right">
+      ##formCell("List Config. Value (Range of List 1-100)" "AdminConf" "$!AdminConf")	
+        <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminConf" value="$!AdminConf"> </font></td>
+	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_lcv </font></td>
     </tr>
-    <tr align="right" bgcolor="$ui.tableColor">
-	
+    <tr bgcolor="$ui.tableColor" align="right">
+      ##formCell("Course Expiry Time(in days)" "AdminCrsExp" "$!CrsExp")	
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminCrsExp" value="$!CrsExp"> </font></td>
-<td width="30"> <font face="$ui.sansSerifFonts"> $brih_course $brih_Of $brih_expiry </font></td>	
+	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_course $brih_expiry </font></td>	
     </tr>
-    <tr align="right" bgcolor="$ui.menuColor">
-
+    <tr bgcolor="$ui.menuColor" align="right">
+      ##formCell("Local Domain Name" "mailDomain" "$!dName")	
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailDomain" value="$!dName"> </font> </td>
-	<td width="30"> <font face="$ui.sansSerifFonts"> $RemoteLocal $brih_domain $brih_Of1 $brih_name </font></td>
-
+	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang != "english") $RemoteLocal $brih_domain $brih_Of1 $brih_name #else  $RemoteLocal $brih_domain $brih_name #end </font></td>
     </tr>
-    <tr align="right" bgcolor="$ui.tableColor">
-    
+	## formEmailCell("admin email")
+   <tr bgcolor="$ui.tableColor" align="right">
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
-    <td width=30><font face="$ui.sansSerifFonts"> $brih_ad $brih_Of1 $brih_email </td>             
+        <td width=30><font face="$ui.sansSerifFonts"> $brih_ad $brih_email  </td>             
 </tr>
-    <tr align="right" bgcolor="$ui.menuColor">
-	
+    <tr bgcolor="$ui.menuColor" align="right">
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
-<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_Of1 $brih_quota ($quota_sze)</td>
+	<td width=30><font face="$ui.sansSerifFonts">$brih_course #if($lang =="hindi") $brih_Of1 #end $brih_quota ($quota_sze)</td>	
 </tr>
-    <tr align="right" bgcolor="$ui.tableColor">
-	
+    <tr bgcolor="$ui.tableColor" align="right">
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
-<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_Of1 $brih_quota ( $quota_sze)</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_quota ( $quota_sze)</td>	
    </tr>
 ##--------------------------------------FAQ---------------------
-    <tr align="right" bgcolor="$ui.menuColor">
-        
+    <tr bgcolor="$ui.menuColor" align="right">
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
-<td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
+        <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
     </tr>
-##--------------------------------------FAQ---------------------
-    <tr align="right" bgcolor="$ui.tableColor">
-
-	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
-	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
-   </tr>
 ##-------------------------------------student expiry days----added by @Tej--------------
-   <tr align="right" bgcolor="$ui.menuColor">
-
+   <tr bgcolor="$ui.menuColor" align="right"> 
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="expdays" value="$!expdays"></font></td>
-	<td width=30><font face="$ui.sansSerifFont">$brih_student $brih_Of2 $brih_course $brih_Of $brih_expiry</td>
+	<td width=30><font face="$ui.sansSerifFont">$brih_student $brih_course $brih_expiry</td>
    </tr>
-		
-   <tr align="right" bgcolor="$ui.tableColor">
+<tr "$ui.tableColor" align="right">
+                 <td align="right">
+
+                        #if($!offradio=="3")
+                               $private <input type="radio" name="Offdirectory" value="$private" checked/>
+                               $protected <input type="radio" name="Offdirectory" value="$protected"/>
+                               $public <input type="radio" name="Offdirectory" value="$public"/>
+                        #elseif($!offradio=="2")
+                               $private<input type="radio" name="Offdirectory" value="$private"/>
+                               $protected<input type="radio" name="Offdirectory" value="$protected" checked />
+                               $public<input type="radio" name="Offdirectory" value="$public"/>
+                        #else
+                               $private <input type="radio" name="Offdirectory" value="$private"/>
+                               $protected <input type="radio" name="Offdirectory" value="$protected"/>
+                               $public <input type="radio" name="Offdirectory" value="$public" checked />
+                        #end
+                        <input title="Number (Maximum limit 10 digit)" type="text" name="Offphnumber" value="$!offphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Offphnumber" onclick="remove(name)">
+                        <input title="State code (Maximum limit 5 digit)" type="text" name="Offrcode" value="$!offrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Offrcode" onclick="remove(name)">
+                        <input title="Country code (Maximum limit 4 digit)" type="text" name="Offccode" value="$!offccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Offccode" onclick="remove(name)">
+                        <select name="Offprefix" class="drop">
+                                #if($!offprefix=="+")
+                                        #option1()
+                                #else
+                                        #option2()
+                                #end
+                        </select>
+                        </td>
+                        <td align="right">$brih_officeno</td>
+
+        </tr>
+<tr bgcolor="$ui.menuColor" align="right">
+                                <td>
+                                #if($!mobradio=="3")
+                                       $private <input type="radio" name="Mobdirectory" value="$private" checked />
+                                       $protected <input type="radio" name="Mobdirectory" value="$protected"/>
+                                       $public <input type="radio" name="Mobdirectory" value="$public"/>
+                                #elseif($!mobradio=="2")
+                                       $private <input type="radio" name="Mobdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Mobdirectory" value="$protected" checked/>
+                                       $public <input type="radio" name="Mobdirectory" value="$public"/>
+                                #else
+                                       $private <input type="radio" name="Mobdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Mobdirectory" value="$protected"/>
+                                       $public<input type="radio" name="Mobdirectory" value="$public" checked />
+                                #end
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Mobphnumber" value="$!mobphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Mobphnumber" onclick="remove(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Mobrcode" value="$!mobrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Mobrcode" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Mobccode" value="$!mobccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Mobccode" onclick="remove(name)">
+                                <select name="Mobprefix" class="drop">
+                                        #if($!mobprefix=="+")
+                                                #option1()
+                                        #else   
+                                                #option2()
+                                        #end
+                                </select>
+                                </td>
+                                <td>$brih_mobileno</td>
+                        </tr>
+                          <tr align="right">
+                                <td>
+                                #if($!homeradio=="3")
+                                       $private <input type="radio" name="Homedirectory" value="$private" checked />
+                                       $protected <input type="radio" name="Homedirectory" value="$protected"/>
+                                      $public<input type="radio" name="Homedirectory" value="$public"/>
+                                #elseif($!homeradio=="2")
+                                       $private <input type="radio" name="Homedirectory" value="$private"/>
+                                       $protected <input type="radio" name="Homedirectory" value="$protected" checked />
+                                       $public <input type="radio" name="Homedirectory" value="$public"/>
+                                #else
+                                        <input type="radio" name="Homedirectory" value="$private"/>$private
+                                        <input type="radio" name="Homedirectory" value="$protected"/>$protected
+                                        <input type="radio" name="Homedirectory" value="$public" checked />$public
+                                #end
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Homephnumber" value="$!homephone" maxlength="10" onkeypress="return isNumberKey(event)" id="Homephnumber" onclick="remove(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Homercode" value="$!homercode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Homercode" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Homeccode" value="$!homeccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Homeccode" onclick="remove(name)">
+                                <select name="Homeprefix" class="drop">
+                                        #if($!homeprefix=="+")
+                                                #option1()
+                                        #else
+                                                #option2()
+                                        #end
+                                </select>
+                                </td>
+                                <td>$brih_homeno</td>
+                        </tr>
+                            <tr bgcolor="$ui.menuColor" align="right">
+                                <td>
+                                #if($!othradio=="3")
+                                       $private <input type="radio" name="Othdirectory" value="$private" checked />
+                                       $protected <input type="radio" name="Othdirectory" value="$protected"/>
+                                       $public <input type="radio" name="Othdirectory" value="$public"/>
+                                #elseif($!othradio=="2")
+                                       $private <input type="radio" name="Othdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Othdirectory" value="$protected" checked />
+                                       $public <input type="radio" name="Othdirectory" value="$public"/>
+                                #else
+                                       $private <input type="radio" name="Othdirectory" value="$private"/>
+                                       $protected <input type="radio" name="Othdirectory" value="$protected"/>
+                                       $public <input type="radio" name="Othdirectory" value="$public" checked />
+                                #end
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Othphnumber" value="$!othphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Othphnumber" onclick="remove(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Othrcode" value="$!othrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Othrcode" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Othccode" value="$!othccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Othccode" onclick="remove(name)">
+                                <select name="Othprefix" class="drop">
+                                        #if($!othprefix=="+")
+                                                #option1()
+                                        #else
+                                                #option2()
+                                        #end
+                                </select>
+                                </td>
+                                <td>$brih_otherno</td>
+                        </tr>
+<tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_address" "address" "$!address")
+                <td> <input type="txt" name="address" value="$!address"</td>
+                <td> $brih_address </td>
+        </tr>
+        ##<tr bgcolor="$ui.menuColor">
+        <tr align="right">
+##              #formCell("$Inst_state" "state" "$!state")
+                <td> <input type="txt" name="state"  value="$!state" > </td>
+                <td> $Inst_state </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_country" "country" "$!country")
+                <td> <input type="txt" name="country" value="$!country" > </td>
+                <td> $brih_country </td>
+
+        </tr>
+        ##<tr bgcolor="$ui.menuColor">
+        <tr align="right">
+                ##formCell("$brih_dept" "department" "$!department")
+                <td> <input type="txt" name="department" value="$!department" > </td>
+                <td> $brih_dept </td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+##              #formCell("$Inst_designation" "designation" "$!designation")
+                <td> <input type="txt" name="designation"  value="$!designation" > </td>
+                <td> $Inst_designation </td>
+
+        </tr>
+	
+   <tr align="right">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName">
+	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
-	  <input type="reset" name="reset" value="$brih_reset" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
 	  <input type="hidden" name="count" value="$tdcolor">
  	<input type="hidden" name="iname" value="$iname">
       </td>
@@ -153,6 +303,26 @@ function isNumberString(chString)
         }
         return true;
 }
+function isNumberKey(evt)
+        {
+                var charCode = (evt.which) ? evt.which : event.keyCode
+                   if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+                return true;
+        }
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+function remove(name)
+{
+	if(document.getElementById(name).value=="x")
+        {
+        	document.getElementById(name).value="";
+        }
+}
+
+
+
 </SCRIPT>
-
-
