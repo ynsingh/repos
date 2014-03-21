@@ -115,8 +115,8 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 		<td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_status </td>
 		<td>	<select class="drop" name="astatus">
-                        <option value=0>Active</option>
-                        <option value=1>Inactive</option>
+                        <option value=0>$brih_active</option>
+                        <option value=1>$brih_inactive</option>
 		</td>
 	</tr>
 	<tr>
@@ -157,8 +157,8 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
                 <td> $brih_Application  #if($lang == "hindi") $brih_Of1 #end $brih_status </td>
                 <td>    <select class="drop" name="astatus">
-                        <option value=0>Active</option>
-                        <option value=1>Inactive</option>
+                        <option value=0>$brih_active</option>
+                        <option value=1>$brih_inactive</option>
                 </td>
         </tr>
         <tr>
