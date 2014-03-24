@@ -6,10 +6,24 @@ if(session.isNew()){
 %>
 <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
+<%
+String role=(String)session.getAttribute("login_role");
+
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}else if(role.equalsIgnoreCase("Election Manager") || role.equalsIgnoreCase("Election Manager,voter")){%>
+<jsp:include page="/election_manager/login.jsp"/>
+<%}else{
+    %>
+    <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%
+}%>
 <html>
     <head>
        
-         <jsp:include page="/election_manager/login.jsp"/>
+         <%--<jsp:include page="/election_manager/login.jsp"/>--%>
         <html:base />
     </head>
     <body>
@@ -138,21 +152,31 @@ if(session.isNew()){
                 <table>
                     <%
                         List obj=(List)session.getAttribute("log");
+                       
 if(obj!=null){
+     
 StringBuffer str = new StringBuffer();
 //always give the path from root. This way it almost always works.
 String userid=(String)session.getAttribute("user_id");
+
 String nameOfTextFile = userid+"log.txt";
+
 String path=(String)session.getAttribute("apppath");
+System.out.println("path is "+path);
+if(path!=null){
 String path1=path.substring(0, path.length()-14);
+}
+System.out.println("fineeeeeeeeeee");
 //path=path.substring(0,path.lastIndexOf("/"));
 //path=path.substring(0,path.lastIndexOf("/"));
 //path=path.substring(0,path.lastIndexOf("/"));
 System.out.println(path+"..........................");
 try {
+    System.out.println("in try");
     PrintWriter pw = new PrintWriter(new FileOutputStream(path+nameOfTextFile,true));
     
 //System.out.println(pw);
+    
     for(int i=0;i<obj.size();i++)
         str.append(obj.get(i)+"\n");
     pw.println(str+"\n");
@@ -160,6 +184,7 @@ try {
     
     pw.close();
 } catch(IOException e) {
+     System.out.println("in catch");
    out.println(e.getMessage());
 }
 %>   <a href="<%=request.getContextPath()%>/EMSLOG/<%=nameOfTextFile%>" target="_blank">View Log</a>
@@ -174,6 +199,7 @@ try {
                     <%
                         if(obj!=null){
                         for(int i=0;i<obj.size();i++){
+                             System.out.println("in for");
                           %><tr><td>  <%=obj.get(i)%></td></tr>
                        <% }}
                       //  if (request.getAttribute("msg") != null) {

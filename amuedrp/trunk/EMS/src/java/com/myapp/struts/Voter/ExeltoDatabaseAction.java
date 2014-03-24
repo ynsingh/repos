@@ -399,6 +399,7 @@ session.removeAttribute("log");
 
                                         }   if (map_table[column_index].equals("email")) {
 
+
                                              if(cellvalue.trim().isEmpty()){
                                               request.setAttribute("msg1", "EmailID Cannot Blank , Import Terminates");
                                               log.add("EmailID Cannot Blank at Record No="+row_no);session.setAttribute("log",log);
@@ -439,6 +440,17 @@ session.removeAttribute("log");
 
                                             }
 
+                                                LoginDAO lgdo=new LoginDAO();
+                                                Login lg=lgdo.getUserId(genericobj.getEmail());
+
+                                              if(lg!=null){
+                                              request.setAttribute("msg1", "Email Id Already Assigned to Some One Else , Import Terminates");
+                                              log.add("Email Id Already Assigned to Some One Else for record No"+row_no);session.setAttribute("log",log);
+                                              continue begin;
+
+
+                                            }
+
                                         }   
                                         if (map_table[column_index].equals("alternate_mail")) {
 
@@ -473,13 +485,23 @@ session.removeAttribute("log");
                       VoterRegistration x=VoterRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
                       AdminRegistration x1=AdminRegistrationDAO.searchVoterRegistration(institute_id, voterid.getEnrollment());
                       StaffDetail staff=StaffDetailDAO.searchStaffId(voterid.getEnrollment(), institute_id);
-
+                     // LoginDAO lgdo=new LoginDAO();
+                      //Login lg=lgdo.getUserId(userid);
+                      System.out.println("user iddddd is "+userid);
                       if(x!=null && x.getEmail().equalsIgnoreCase(genericobj.getEmail())){
                      //  request.setAttribute("msg1", "Voter with Enrollment No"+x.getId().getEnrollment()+" Already Exist , Import Terminates");
                        log.add("Voter with given Email ID "+x.getId().getEnrollment()+" Already Exist cannot Import at record no="+row_no);
                        session.setAttribute("log",log);//   return mapping.findForward(SUCCESS);
                       continue begin;
                       }
+//                      if(lg!=null){
+//                                  log.add("Voter with given Email ID "+x.getId().getEnrollment()+" Already Exist cannot Import at record no="+row_no);
+//                       session.setAttribute("log",log);//   return mapping.findForward(SUCCESS);
+//                       System.out.println("i am in loggggg");
+//                      continue begin;
+//
+//
+//                      }
 
 
                       if(x1==null && staff==null){
@@ -504,7 +526,7 @@ session.removeAttribute("log");
 //System.out.println(voterid.getEnrollment()+"....................");
 //serach Record Inserted
   x=VoterRegistrationDAO.searchVoterRegistration(institute_id, genericobj.getId().getEnrollment());
-                      if(x==null){
+                      if(x==null ){
                       // request.setAttribute("msg1", "Voter with Enrollment No"+x.getId().getEnrollment()+" Cannot be Inserted , Import Terminates");
                         log.add("Voter with Enrollment No"+x.getId().getEnrollment()+" Cannot be Inserted  AT ROW NO"+row_no);
 
@@ -525,18 +547,21 @@ staffid.setStaffId(genericobj.getId().getEnrollment());
 staffd.setId(staffid);
 
 login.setStaffDetail(staffd);
+                          System.out.println("above logindao");
 logindao.insert(login, userid);
+                          System.out.println("below logindao");
 System.out.println(login.getUserId());
 
  
 
 
-
-           mail=new Email(x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for Election Management System (EMS) Login ="+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-
-                    mail.send();
-			log.add( "\nMail has been send successfully to= "+userid);
-			session.setAttribute("log",log);
+// block email on 24mar2014 till election of IIT Kanpur completed and must uncommented after that
+//           mail=new Email(x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for Election Management System (EMS) Login ="+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
+//
+//                    mail.send();
+			//log.add( "\nMail has been send successfully to= "+userid);
+                        //session.setAttribute("log",log);
+//end of block email on 24mar2014 till election of IIT Kanpur completed and must uncommented after that
                       }
                       }
    //if Voter list has record of CEO
