@@ -357,12 +357,12 @@ top.location.href="/EMS/institute_admin/search_election_details.jsp";
 
 <input type="button" value="Close" onclick="send()"/>
                 </td></tr>
-            <tr><td>
+<%--            <tr><td>
                     <a style="color:white" href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><br>
 
                 </td>
                 <td align="right"><a style="color:white" href="<%=request.getContextPath()%>/printlog.do?election=<%=election%>">Show PDF Report In Graphical Format</a>
-</td></tr>
+</td></tr>  --%>
         </table>
  
         <div id="main" align="center" style="width: 100%; height: 100%;font-family: Gill, Helvetica, sans-serif ;font-size: 12px" >

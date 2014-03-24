@@ -50,11 +50,7 @@ public class LoginAction extends org.apache.struts.action.Action {
         session_id = session.getId();
      
         try {
-            locale1 = (String) session.getAttribute("locale");
-
-
-
-
+//            locale1 = (String) session.getAttribute("locale");
 
             if (session.getAttribute("locale") != null) {
                 locale1 = (String) session.getAttribute("locale");
@@ -76,8 +72,8 @@ public class LoginAction extends org.apache.struts.action.Action {
         ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 
-LoginActionForm loginActionForm;
-loginActionForm = (LoginActionForm) form;
+        LoginActionForm loginActionForm;
+        loginActionForm = (LoginActionForm) form;
 
    
         user_id = loginActionForm.getUsername();
@@ -85,137 +81,85 @@ loginActionForm = (LoginActionForm) form;
         button = loginActionForm.getButton1();
 
 
-         String remote=(String)session.getAttribute("remoteauth");
-  System.out.println(user_id+"mmmmmmmmmmmmmmmmmmmmmmm"+remote);
-if(remote!=null)
-{
-                user_id=(String)session.getAttribute("email_id");
-}
-
-   if(button==null)
-           button="Log In";
-
-
-    
-
-        if (button.equals("Log In")) {
-           if((user_id!=null ) && !(user_id.equals("")))
-        {
-
-           String password1=null;
-               if(password!=null)
-               password1 = PasswordEncruptionUtility.password_encrupt(password);
-
-
-
-
-
-
-
-
-
-          
-            LoginDAO dao = new LoginDAO();
-           
-            try{
-          
-         
-  System.out.println(user_id+"mmmmmmmmmmmmmmmmmmmmmmm"+remote);
-if(remote!=null)
-{
-                user_id=(String)session.getAttribute("email_id");
-              
-
-                rst = dao.getUser(user_id);
-                rst1 = (List)dao.getUser(user_id);
- if(rst.size()==0 || rst1.size()==0)
-            {
-
-                session.removeAttribute("remoteauth");
-                request.setAttribute("msg", "Invalid User or Password");
-                return mapping.findForward("failure");
-                
-            }
-     
-              
-
-}
-else{
-               rst = dao.getLoginDetails(user_id, password);
-                rst1 = (List)dao.getLoginDetails(user_id, password1);
-
-
-
-
-
-}
-
-            }catch(Exception e)
-        {
-             request.setAttribute("msg1", "Database Not Connected! Please Contact Web Admin");
-             System.out.println("Error:"+e.getMessage());
-             return mapping.findForward("failure");
+        String remote=(String)session.getAttribute("remoteauth");
+        System.out.println(user_id+"Reached-LoginAction.java line 89"+remote);
+        if(remote!=null){
+           user_id=(String)session.getAttribute("email_id");
         }
 
+        if(button==null) button="Log In";
 
+        if (button.equals("Log In")) {
+           if((user_id!=null ) && !(user_id.equals(""))) {
 
-           
-            
-            Login login=new Login();
-
-
-
-
-            if (!rst.isEmpty()||!rst1.isEmpty()) //record found
-            {
-           
-            
-                if (rst.isEmpty()){
-                login = (Login) rst1.get(0);}
-            else{
-                login = (Login) rst.get(0);
-            }
-
-             
-               
-                InstituteDAO  obj=new InstituteDAO();
-            Institute x= obj.getInstituteDetails(login.getStaffDetail().getId().getInstituteId());
-if(x!=null)
-{      session.setAttribute("institute_name", x.getInstituteName());
-       
-}
-
-
-
-                session.setAttribute("institute_id", login.getStaffDetail().getId().getInstituteId());
-                session.setAttribute("username", login.getUserName());
-              
-                session.setAttribute("staff_id", login.getStaffDetail().getId().getStaffId());
-                session.setAttribute("user_id", login.getUserId());
-                session.setAttribute("login_role", login.getRole());
-                session.setAttribute("password", login.getPassword());
-                session.setAttribute("loginname", login.getUserName());
-
+              String password1=null;
+              if(password!=null)
+                 password1 = PasswordEncruptionUtility.password_encrupt(password);
           
-                staff_id = login.getStaffDetail().getId().getStaffId();
-                institute_id =login.getStaffDetail().getId().getInstituteId();
+              LoginDAO dao = new LoginDAO();
+           
+              try {
+                 System.out.println(user_id+" Reached loginAction.java line no.102, "+remote);
+                 if(remote!=null) {
+                    user_id=(String)session.getAttribute("email_id");
+                    rst = dao.getUser(user_id);
+                    rst1 = (List)dao.getUser(user_id);
+                    if(rst.size()==0 || rst1.size()==0) {
+                       session.removeAttribute("remoteauth");
+                       request.setAttribute("msg", "Invalid User or Password");
+                       return mapping.findForward("failure");
+                    }
+                 } else{
+                    rst = dao.getLoginDetails(user_id, password);
+                    rst1 = (List)dao.getLoginDetails(user_id, password1);
+                 }
+              } catch(Exception e){
+                 request.setAttribute("msg1", "Database Not Connected! Please Contact Web Admin");
+                 System.out.println("Error:"+e.getMessage());
+                 return mapping.findForward("failure");
+              }
 
-                InstituteDAO insti= new InstituteDAO();
-Institute ado=(Institute)insti.getInstituteDetails(institute_id);
-session.setAttribute("insti",ado.getInstituteName());
-       List<Election> election = ElectionDAO.Elections(institute_id);
-        Iterator ite = election.iterator();
+              Login login=new Login();
+
+              if (!rst.isEmpty()||!rst1.isEmpty()) { //record found
+                 if (rst.isEmpty()){
+                    login = (Login) rst1.get(0);}
+                 else {
+                    login = (Login) rst.get(0);
+                 }
+                 InstituteDAO  obj=new InstituteDAO();
+                 Institute x= obj.getInstituteDetails(login.getStaffDetail().getId().getInstituteId());
+                 if(x!=null) {
+                    session.setAttribute("institute_name", x.getInstituteName());
+                 }
+
+                 session.setAttribute("institute_id", login.getStaffDetail().getId().getInstituteId());
+                 session.setAttribute("username", login.getUserName());
+              
+                 session.setAttribute("staff_id", login.getStaffDetail().getId().getStaffId());
+                 session.setAttribute("user_id", login.getUserId());
+                 session.setAttribute("login_role", login.getRole());
+                 session.setAttribute("password", login.getPassword());
+                 session.setAttribute("loginname", login.getUserName());
+
+                 staff_id = login.getStaffDetail().getId().getStaffId();
+                 institute_id =login.getStaffDetail().getId().getInstituteId();
+
+                 InstituteDAO insti= new InstituteDAO();
+                 Institute ado=(Institute)insti.getInstituteDetails(institute_id);
+                 session.setAttribute("insti",ado.getInstituteName());
+                 List<Election> election = ElectionDAO.Elections(institute_id);
+                 Iterator ite = election.iterator();
         
-        ArrayList electionList=new ArrayList();
-        ArrayList currentelectionList=new ArrayList();
-       ArrayList ClosedelectionList=new ArrayList();
-       ArrayList underprocessList=new ArrayList();
-       ArrayList setVoter=new ArrayList();
+                 ArrayList electionList=new ArrayList();
+                 ArrayList currentelectionList=new ArrayList();
+                 ArrayList ClosedelectionList=new ArrayList();
+                 ArrayList underprocessList=new ArrayList();
+                 ArrayList setVoter=new ArrayList();
        
-        String status="OK";
+                 String status="OK";
 
-
-        List Institute = insti.getInstituteNameByStatus(status);
+                 List Institute = insti.getInstituteNameByStatus(status);
       
         session.setAttribute("Institute",Institute);
         while(ite.hasNext())

@@ -395,10 +395,10 @@ top.location.href="/EMS/institute_admin/search_election_details.jsp";
     </head>
 
     <body onload="previewBallot(this)" style="margin: 0px;">
-
+<%--
 <a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><br>
 <a href="<%=request.getContextPath()%>/printlog.do?election=<%=election%>">Show PDF Report In Graphical Format</a>
- 
+--%> 
         <div id="main" align="center" style="width: 100%; height: 100%" class="datagrid">
             <div id="middle" style="width: 100%;margin-left: 0%; position: relative;">
                 <form id="form1">
