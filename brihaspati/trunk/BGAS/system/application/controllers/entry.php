@@ -476,6 +476,9 @@ class Entry extends Controller {
 					$bank_cash_global = '0';
                         }
 			}
+			// get the correct id
+
+			$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
 			$dr_total = 0;
 			$cr_total = 0;
 			$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
