@@ -1,3 +1,34 @@
+<script type = "text/javascript">
+	var flag = '';
+	//var ledger = '';
+
+	$(document).ready(function()
+		{
+			$.ajax({
+                                url: <?php echo '\'' . site_url('setting/account/get_account_flag').'\''; ?>,
+                                success: function(flag) {
+                                        //alert(flag);
+                                        flag = $.trim(flag);
+                                        /*if(flag == 'false'){
+                                                alert('On the Account Settings page, set the \'Account Type\' and \'Ledger Name\', to which net profit/loss will be transferred');
+                                        }*/
+                                }
+                	});
+			
+			$.ajax({
+				url: <?php echo '\''. site_url('setting/account/get_ledger_name').'\'';?>,
+				success: function(ledger_name) {
+					var ledger = $.trim(ledger_name);
+					if((flag == 'false') || (ledger == '')){
+                                		alert('On the Account Settings page, set the \'Account Type\' and \'Ledger Name\', to which net profit/loss will be transferred');
+                        		}
+				}
+			});
+			
+		}
+	);
+</script>
+
 <?php
 	
 	$liability_total = 0;

@@ -235,6 +235,13 @@ class Create extends Controller {
 			$data_account_timezone = $this->input->post('timezones', TRUE);
 
 			$data_chart_account = $this->input->post('chart_account', TRUE);
+			$ledger_name = '';
+			$liability_ledger_name = '';
+			if($data_chart_account == 'mhrd')
+			{
+				$ledger_name = 'General Funds';	
+				$liability_ledger_name = 'Balance of net income/expenditure transferred from I/E Account';
+			}
 
 			$data_database_type = 'mysql';
 			$data_database_host = $this->input->post('database_host', TRUE);
@@ -436,7 +443,7 @@ class Create extends Controller {
 
 				/* Adding account settings */
 				$newacc->trans_start();
-				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, '', '')))
+				if ( ! $newacc->query("INSERT INTO settings (id, name, address, email, fy_start, fy_end, currency_symbol, date_format, timezone, manage_inventory, account_locked, email_protocol, email_host, email_port, email_username, email_password, print_paper_height, print_paper_width, print_margin_top, print_margin_bottom, print_margin_left, print_margin_right, print_orientation, print_page_format, database_version, ins_name, dept_name, uni_name, ledger_name, liability_ledger_name, chart_account, account_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array(1, $data_account_name, $data_account_address, $data_account_email, $data_fy_start, $data_fy_end, $data_account_currency, $data_account_date, $data_account_timezone, 0, 0, '', '', 0, '', '', 0, 0, 0, 0, 0, 0, '', '', 4, $data_org_name, '', $data_unit_name, $ledger_name, $liability_ledger_name, $data_chart_account, 'true')))
 				{
 					$newacc->trans_rollback();
 					$this->messages->add('Error adding account settings.', 'error');

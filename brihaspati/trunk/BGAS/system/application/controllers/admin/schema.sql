@@ -143,7 +143,9 @@ CREATE TABLE IF NOT EXISTS settings (
   dept_name varchar(255) default NULL,
   uni_name varchar(255) default NULL,
   ledger_name varchar(100) default NULL,
-  liability_ledger_name varchar(100) default NULL
+  liability_ledger_name varchar(100) default NULL,
+  chart_account varchar(100) default 'minimal',
+  account_flag varchar(20) default 'false'
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
