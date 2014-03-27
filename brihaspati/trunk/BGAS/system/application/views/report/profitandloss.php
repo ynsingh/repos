@@ -25,6 +25,7 @@ $(document).ready(function() {
 </head>
 <body> 
 <?php
+	setlocale(LC_MONETARY, 'en_IN');
 
 	if ( ! $print_preview)
 	{
@@ -127,8 +128,8 @@ $(document).ready(function() {
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
 		echo "<td width=\"300\" class=\"bold\">Total Gross Incomes</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($gross_income_total) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_gross_income_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($gross_income_total)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_gross_income_total)) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -142,14 +143,14 @@ $(document).ready(function() {
 
 			echo "<tr valign=\"top\">";
 			echo "<td width=\"300\" class=\"bold\">Gross Loss C/O</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$grosspl) . "</td>";
-		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$old_grosspl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$grosspl)) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_grosspl)) . "</td>";
 			echo "</tr>";
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
 		echo "<td width=\"300\" class=\"bold\">Total</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosstotal) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosstotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($grosstotal)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_grosstotal)) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
@@ -162,8 +163,8 @@ $(document).ready(function() {
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
 		echo "<td width=\"300\" class=\"bold\">Total Gross Expenditure</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($gross_expense_total) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_gross_expense_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($gross_expense_total)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_gross_expense_total)) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -172,8 +173,8 @@ $(document).ready(function() {
 
 			echo "<tr valign=\"top\">";
 			echo "<td width=\"300\" class=\"bold\">Gross Profit C/O</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosspl) . "</td>";
-		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosspl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($grosspl)) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_grosspl)) . "</td>";
 			echo "</tr>";
 		} else if ($grosspl < 0 || $old_grosspl < 0) {
 			echo "<tr>";
@@ -183,8 +184,8 @@ $(document).ready(function() {
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
 		echo "<td width=\"300\" class=\"bold\">Total</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosstotal) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosstotal) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($grosstotal)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_grosstotal)) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
@@ -253,8 +254,8 @@ $(document).ready(function() {
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
 		echo "<td width=\"300\" class=\"bold\">Total Incomes</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($nettotal)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_old_total)) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -263,8 +264,8 @@ $(document).ready(function() {
 
 			echo "<tr valign=\"top\">";
 			echo "<td width=\"300\" class=\"bold\">Gross Profit B/F</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($grosspl) . "</td>";
-		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_grosspl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($grosspl)) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_grosspl)) . "</td>";
 			echo "</tr>";
 
 		} else if ($grosspl < 0 || $old_grosspl < 0) {
@@ -285,14 +286,14 @@ $(document).ready(function() {
 			$net_old_total = float_ops($net_old_total, -$old_netpl, '+');
 			echo "<tr valign=\"top\">";
 			echo "<td width=\"300\" class=\"bold\">Net Loss</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$netpl) . "</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$old_netpl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$netpl)) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_netpl)) . "</td>";
 			echo "</tr>";
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
 		echo "<td width=\"300\" class=\"bold\">Total</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($nettotal)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_old_total)) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";
@@ -305,8 +306,8 @@ $(document).ready(function() {
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-total-table\" width=\"100%\">";
 		echo "<tr valign=\"top\">";
 		echo "<td width=\"300\" class=\"bold\">Total Expenditure</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($nettotal)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_old_total)) . "</td>";
 		echo "</tr>";
 		if ($grosspl > 0 || $old_grosspl > 0)
 		{
@@ -320,8 +321,8 @@ $(document).ready(function() {
 
 			echo "<tr valign=\"top\">";
 			echo "<td width=\"300\" class=\"bold\">Gross Loss B/F</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$grosspl) . "</td>";
-		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur(-$old_grosspl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$grosspl)) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_grosspl)) . "</td>";
 
 			echo "</tr>";
 		}
@@ -331,8 +332,8 @@ $(document).ready(function() {
 		        $net_old_total = float_ops($net_old_total, $old_netpl, '+');
 			echo "<tr valign=\"top\">";
 			echo "<td width=\"300\" class=\"bold\">Net Profit</td>";
-			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($netpl) . "</td>";
-		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_netpl) . "</td>";
+			echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($netpl)) . "</td>";
+		        echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_netpl)) . "</td>";
 			echo "</tr>";
 		} else if ($netpl < 0 || $old_netpl < 0) {
 			echo "<tr>";
@@ -343,8 +344,8 @@ $(document).ready(function() {
 		}
 		echo "<tr valign=\"top\" class=\"tr-balance\">";
 		echo "<td width=\"300\" class=\"bold\">Total</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($nettotal) . "</td>";
-		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($net_old_total) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($nettotal)) . "</td>";
+		echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($net_old_total)) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "</td>";

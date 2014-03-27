@@ -63,7 +63,7 @@
 		$dr_total = $this->Ledger_model->get_dr_total($ledger_id);
 		if ($dr_total)
 		{
-			echo $dr_total;
+			echo money_format('%!i', $dr_total);
 			$temp_dr_total = float_ops($temp_dr_total, $dr_total, '+');
 		} else {
 			echo "0";
@@ -73,7 +73,7 @@
 		$cr_total = $this->Ledger_model->get_cr_total($ledger_id);
 		if ($cr_total)
 		{
-			echo $cr_total;
+			echo money_format('%!i', $cr_total);
 			$temp_cr_total = float_ops($temp_cr_total, $cr_total, '+');
 		} else {
 			echo "0";
@@ -87,7 +87,7 @@
 		echo "<img src=\"" . asset_url() . "images/icons/match.png\">";
 	else
 		echo "<img src=\"" . asset_url() . "images/icons/nomatch.png\">";
-	echo "</td><td>Dr " . convert_cur($temp_dr_total) . "</td><td>Cr " . convert_cur($temp_cr_total) . "</td></tr>";
+	echo "</td><td>Dr " . money_format('%!i', convert_cur($temp_dr_total)) . "</td><td>Cr " . money_format('%!i', convert_cur($temp_cr_total)) . "</td></tr>";
 	echo "</table>";
 	echo "<br>";
 	if(! $print_preview)

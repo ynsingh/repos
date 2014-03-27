@@ -114,8 +114,8 @@ $(document).ready(function() {
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
 	echo "<td width=\"300\" class=\"bold\">Liability and Owners Equity Total</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($liability_total) . "</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_liability_total) . "</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($liability_total)) . "</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_liability_total)) . "</td>";
 	echo "</tr>";
 	
 	/* If Profit then Liability side, If Loss then Asset side */
@@ -127,8 +127,8 @@ $(document).ready(function() {
 			$old_total = float_ops($old_total, $old_pandl, '+');
 			echo "<tr valign=\"top\">";
 			echo "<td class=\"bold\">Profit & Loss Account (Net Profit)</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($pandl) . "</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_pandl) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($pandl)) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_pandl)) . "</td>";
 			echo "</tr>";
 		} else {
 			echo "<tr>";
@@ -147,8 +147,8 @@ $(document).ready(function() {
 			$old_total = float_ops($old_total, $old_diffop, '+');
 			echo "<tr valign=\"top\">";
 			echo "<td class=\"bold\">Diff in O/P Balance</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($diffop) . "</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_diffop) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($diffop)) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_diffop)) . "</td>";
 			echo "</tr>";
 		} else {
 			echo "<tr>";
@@ -160,8 +160,8 @@ $(document).ready(function() {
 
 	echo "<tr valign=\"top\" class=\"tr-balance\">";
 	echo "<td class=\"bold\">Total</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($total) . "</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_total) . "</td>";
+	echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($total)) . "</td>";
+	echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_total)) . "</td>";
 	echo "</tr>";
 	echo "</table>";
 	echo "</td>";
@@ -174,8 +174,8 @@ $(document).ready(function() {
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
 	echo "<td width=\"300\" class=\"bold\">Asset Total</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($asset_total) . "</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . convert_cur($old_asset_total) . "</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($asset_total)) . "</td>";
+	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_asset_total)) . "</td>";
 	echo "</tr>";
 
 	/* If Profit then Liability side, If Loss then Asset side */
@@ -192,8 +192,8 @@ $(document).ready(function() {
 			$old_total = float_ops($old_total, -$old_pandl, '+');
 			echo "<tr valign=\"top\">";
 			echo "<td class=\"bold\">Profit & Loss Account (Net Loss)</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$pandl) . "</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$old_pandl) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$pandl)) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_pandl))  . "</td>";
 			echo "</tr>";
 		}
 	}
@@ -212,15 +212,15 @@ $(document).ready(function() {
 			$old_total = float_ops($old_total, -$old_diffop, '+');
 			echo "<tr valign=\"top\">";
 			echo "<td class=\"bold\">Diff in O/P Balance</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$diffop) . "</td>";
-			echo "<td align=\"right\" class=\"bold\">" . convert_cur(-$old_diffop) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$diffop)) . "</td>";
+			echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur(-$old_diffop)) . "</td>";
 			echo "</tr>";
 		}
 	}
 	echo "<tr valign=\"top\" class=\"tr-balance\">";
 	echo "<td class=\"bold\">Total</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($total) . "</td>";
-	echo "<td align=\"right\" class=\"bold\">" . convert_cur($old_total) . "</td>";
+	echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($total)) . "</td>";
+	echo "<td align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_total)) . "</td>";
 	echo "</tr>";
 	echo "</table>";
 

@@ -36,12 +36,14 @@ if ( ! function_exists('convert_amount_dc'))
 {
 	function convert_amount_dc($amount)
 	{
+		setlocale(LC_MONETARY, 'en_IN');
+
 		if ($amount == "D")
 			return "0";
 		else if ($amount < 0)
-			return "Cr " . convert_cur(-$amount);
+			return "Cr " . money_format('%!i', convert_cur(-$amount));
 		else
-			return "Dr " . convert_cur($amount);
+			return "Dr " . money_format('%!i', convert_cur($amount));
 	}
 }
 
@@ -59,12 +61,14 @@ if ( ! function_exists('convert_opening'))
 {
 	function convert_opening($amount, $dc)
 	{
+		setlocale(LC_MONETARY, 'en_IN');
+
 		if ($amount == 0)
 			return "0";
 		else if ($dc == 'D')
-			return "Dr " . convert_cur($amount);
+			return "Dr " . money_format('%!i', convert_cur($amount));
 		else
-			return "Cr " . convert_cur($amount);
+			return "Cr " . money_format('%!i', convert_cur($amount));
 	}
 }
 

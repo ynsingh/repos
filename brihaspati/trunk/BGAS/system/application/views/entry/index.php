@@ -43,6 +43,8 @@
 	</thead>
 	<tbody>
 	<?php
+		setlocale(LC_MONETARY, 'en_IN');
+
 		$check = 1;
 		foreach ($entry_data->result() as $row)
 		{
@@ -77,8 +79,8 @@
 				echo "</td>";
 
 				echo "<td>" . $current_entry_type['name'] . "</td>";
-				echo "<td>" . $row->dr_total . "</td>";
-				echo "<td>" . $row->cr_total . "</td>";
+				echo "<td>" . money_format('%!i', $row->dr_total) . "</td>";
+				echo "<td>" . money_format('%!i', $row->cr_total) . "</td>";
 				echo "<td>" . $row->submitted_by . "</td>";
 				echo "<td>" ;
 

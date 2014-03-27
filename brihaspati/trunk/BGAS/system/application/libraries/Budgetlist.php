@@ -131,6 +131,7 @@ class Budgetlist
 	//function budget_st_main($c = 0)
 	function budget_st_main($c = 0, $account)
 	{
+		setlocale(LC_MONETARY, 'en_IN');
 		$this->counter = $c;
 
 		/*
@@ -225,7 +226,7 @@ class Budgetlist
         	                        echo "</td>";
                 	        	echo "<td>";
                         		echo $this->print_space($this->counter);
-	                                echo "&nbsp;" .  $data['bd_balance'];
+	                                echo "&nbsp;" .  money_format('%!i', $data['bd_balance']);
         	                	echo "</td>";
                 		       	echo "<td>";
                                 	echo $this->print_space($this->counter);
@@ -235,7 +236,7 @@ class Budgetlist
 	
 					echo "<td>";
 					echo $this->print_space($this->counter);
-                        	        echo "&nbsp;" .  $available_amount;
+                        	        echo "&nbsp;" .  money_format('%!i',$available_amount);
                                 	echo " </td>";
 
 					if(!($data['code'] == '50'))
@@ -255,7 +256,7 @@ class Budgetlist
 					echo "<td>";
         	        		        echo "&nbsp;<strong>" . "Allocated Amount" .  "</strong>";
                 	        	        echo $this->print_space($this->counter);
-                                        	echo "&nbsp;" .  $this->sum;
+                                        	echo "&nbsp;" .  money_format('%!i', $this->sum);
 					echo " </td>";
 	
 					echo "<td>";
@@ -269,7 +270,7 @@ class Budgetlist
                 	                        echo "&nbsp;<strong>" . "Unallocated Amount" .  "</strong>";
                         	                echo $this->print_space($this->counter);
 						$temp = $this->main_budget_amount - $this->sum;
-                                        	echo "&nbsp;" .  $temp;
+                                        	echo "&nbsp;" .  money_format('%!i', $temp);
 	                                echo " </td>";
         	                       
 					echo "<td>";
@@ -281,7 +282,7 @@ class Budgetlist
 					echo "<td align=\"right\">";
                         	                echo "&nbsp;<strong>" . "Consumed Amount" .  "</strong>";
                                 	        echo $this->print_space($this->counter);
-                                        	echo "&nbsp;" .  $this->consumed_amount;
+                                        	echo "&nbsp;" .  money_format('%!i', $this->consumed_amount);
 	                                echo " </td>";
 	
 					echo "<td>";
@@ -338,13 +339,13 @@ class Budgetlist
         	                        echo "</td>";
                 	        	echo "<td>";
                         		echo $this->print_space($this->counter);
-	                                echo "&nbsp;" .  $data['bd_balance'];
+	                                echo "&nbsp;" .  money_format('%!i', $data['bd_balance']);
         	                	echo "</td>";
 					$unearned_amount=$data['bd_balance'] - $data['earned'];
 	
 					echo "<td>";
 					echo $this->print_space($this->counter);
-                        	        echo "&nbsp;" .  $unearned_amount;
+                        	        echo "&nbsp;" .  money_format('%!i', $unearned_amount);
                                 	echo " </td>";
 
                 		        //echo "<td class=\"td-actions\">" . anchor('projection/edit/' . $data['id'] , "Edit", array('title' => 'Edit Projection', 'class' => 'red-link'));
@@ -363,7 +364,7 @@ class Budgetlist
         	        		        echo "&nbsp;<strong>" . "Target Projection" .  "</strong>";
                 	        	        echo $this->print_space($this->counter);
                                         	//echo "&nbsp;" .  $this->sum;
-                                        	echo "&nbsp;" .  $this->main_projection_amount;
+                                        	echo "&nbsp;" .  money_format('%!i', $this->main_projection_amount);
 					echo " </td>";
 	
 					echo "<td>";
@@ -376,7 +377,7 @@ class Budgetlist
 				        echo "<td align=\"right\">";
 					        echo "&nbsp;<strong>" . "Achieved Projection" .  "</strong>";
                         	                echo $this->print_space($this->counter);
-                                        	echo "&nbsp;" .  $this->earned_amount;
+                                        	echo "&nbsp;" .  money_format('%!i', $this->earned_amount);
 	                                echo " </td>";
         	                       
 					echo "<td>";
@@ -393,7 +394,7 @@ class Budgetlist
                                 	        echo $this->print_space($this->counter);
 						//$temp = $this->sum - $this->earned_amount;
 						$temp = $this->main_projection_amount - $this->earned_amount;
-                                        	echo "&nbsp;" .  $temp;
+                                        	echo "&nbsp;" .  money_format('%!i', $temp);
 	                                echo " </td>";
 	
 					echo "<td>";

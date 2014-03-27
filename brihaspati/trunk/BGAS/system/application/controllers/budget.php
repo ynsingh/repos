@@ -551,6 +551,9 @@ class Budget extends Controller {
 
 
 	function reappro(){
+
+		setlocale(LC_MONETARY, 'en_IN');
+
                 $username = $this->config->item('account_name');
 		//$parent_controller = array();
 		//$child_controller = array();
@@ -592,7 +595,6 @@ class Budget extends Controller {
 		$count = 0;
 			
 		//code for generating unallocated budget
-		//$this->reappropriation['budget'] = $budget_arr;
 		$sum = 0;
 		foreach ($this->reappropriation['budget'] as $id => $bud)
                 {	
@@ -620,12 +622,27 @@ class Budget extends Controller {
 			}
 		}
 		$temp_amount = $main_budget_amount - $sum;
-		$this->reappropriation['unallocated_value_50'] = $temp_amount;
+		$this->reappropriation['unallocated_value_50'] = money_format('%!i', $temp_amount);
 
 		foreach($this->unallocated_parent_controller as $id => $pb)
                 {
 	                $this->calculate_unallocated_budget(4, $pb['code'], $pb['amount']);
                 }
+
+		/*foreach($this->reappropriation['budget'] as $id => $bud)
+		{
+			$temp = $this->countDigits($bud['code']);
+			if($temp == 4){
+				$sum = $sum + $bud['bd_balance'];
+				$this->unallocated_parent_controller[$counter]['id'] = $bud['id'];
+				$this->unallocated_parent_controller[$counter]['code'] = $bud['code'];
+				$this->unallocated_parent_controller[$counter]['amount'] = $bud['bd_balance'];
+				$counter++;
+			}
+			else{
+				
+			}
+		}*/
 
 		// Form Validation 
              	foreach ($this->reappropriation['budget'] as $id => $bud)
@@ -830,6 +847,7 @@ class Budget extends Controller {
 				$temp = $this->startsWith($cb['code'], $code);
 				$len = $this->countDigits($cb['code']);
 
+
 				if($temp && ($len == $i + $this->a))
 				{
 					$count++;
@@ -842,8 +860,12 @@ class Budget extends Controller {
 		
 		if($count>0 || $this->countDigits($code)==4)
 			$unallocated_budget_amount = $amount - $sum;
+		$this->logger->write_message("error","amount for " . $code . " = " . $unallocated_budget_amount);
                 $name = 'unallocated_value_' . $code;
-                $this->reappropriation[$name] = $unallocated_budget_amount;
+		if($unallocated_budget_amount != '')
+                	$this->reappropriation[$name] = money_format('%!i', $unallocated_budget_amount);
+		else
+			$this->reappropriation[$name] = $unallocated_budget_amount;
 		return;
 	}
 

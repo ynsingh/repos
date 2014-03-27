@@ -111,6 +111,8 @@ procedure updateParentProjection(proj_id, proj_amount){
 </script>
 
 <?php
+	setlocale(LC_MONETARY, 'en_IN');
+
         $counter = 0;
         echo form_open('projection/reappro');
         echo "<table  border=0 cellpadding=6 class=\"simple-table account-table\">";
@@ -148,7 +150,7 @@ procedure updateParentProjection(proj_id, proj_amount){
                                         $data2 = array(
                                                 'name'        => $name,
                                                 'id'          => $data['code'],
-                                                'value'       => $data['bd_balance'],
+                                                'value'       => money_format('%!i', $data['bd_balance']),
                                                 'maxlength'   => '100',
                                                 'size'        => '20',
                                                 'class'       => 'projection',

@@ -30,7 +30,8 @@
 </script>
 
 <?php
-	
+	setlocale(LC_MONETARY, 'en_IN');
+
 	$liability_total = 0;
 	$old_liability_total = 0;
 	$this->load->library('reportlist');
@@ -79,11 +80,11 @@
 		echo "</td>";
 
 		echo "<td align=\"right\" class=\"bold\">";
-			echo convert_cur($liability_total);
+			echo money_format('%!i', convert_cur($liability_total));
 		echo "</td>";
 
 		echo "<td align=\"right\" class=\"bold\">";
-			echo convert_cur($old_liability_total);
+			echo money_format('%!i', convert_cur($old_liability_total));
 	        echo "</td>";
 	echo "</tr>";
 
@@ -111,11 +112,11 @@
 	        echo "</td>";
 
         	echo "<td align=\"right\" class=\"bold\">";
-	        	echo convert_cur($asset_total);
+	        	echo money_format('%!i', convert_cur($asset_total));
         	echo "</td>";
 
 	        echo "<td align=\"right\" class=\"bold\">";
-			echo convert_cur($old_asset_total);
+			echo money_format('%!i', convert_cur($old_asset_total));
         	echo "</td>";
         echo "</tr>";
 

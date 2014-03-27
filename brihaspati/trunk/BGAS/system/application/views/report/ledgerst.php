@@ -1,4 +1,6 @@
 <?php
+	setlocale(LC_MONETARY, 'en_IN');
+
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
@@ -200,7 +202,7 @@
 					echo "<td>";
 						echo convert_dc($row->entry_items_dc);
 						echo " ";
-						echo $row->entry_items_amount;
+						echo money_format('%!i', $row->entry_items_amount);
 					echo "</td>";
 					echo "<td></td>";
 				} else {
@@ -209,7 +211,7 @@
 					echo "<td>";
 						echo convert_dc($row->entry_items_dc);
 						echo " ";
-						echo $row->entry_items_amount;
+						echo money_format('%!i', $row->entry_items_amount);
 					echo "</td>";
 				}
 			echo "<td>";

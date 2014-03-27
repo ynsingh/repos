@@ -1,4 +1,6 @@
 <?php
+	setlocale(LC_MONETARY, 'en_IN');
+
 	$this->load->model('Ledger_model');
 	if ( ! $print_preview)
 	{
@@ -148,7 +150,7 @@
 				echo "<td>";
 				echo convert_dc($row->entry_items_dc);
 				echo " ";
-				echo $row->entry_items_amount;
+				echo money_format('%!i', $row->entry_items_amount);
 				echo "</td>";
 				echo "<td></td>";
 			} else {
@@ -156,7 +158,7 @@
 				echo "<td>";
 				echo convert_dc($row->entry_items_dc);
 				echo " ";
-				echo $row->entry_items_amount;
+				echo money_format('%!i', $row->entry_items_amount);
 				echo "</td>";
 			}
 

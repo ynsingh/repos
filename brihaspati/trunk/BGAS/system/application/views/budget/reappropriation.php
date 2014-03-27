@@ -1,5 +1,7 @@
 
 <?php
+	setlocale(LC_MONETARY, 'en_IN');
+
         $counter = 0;
         $id = 0;
         $ccount = 0;
@@ -40,7 +42,7 @@
 					$data2 = array(
                                                 'name'        => $name,
                                                 'id'          => $data['code'],
-                                                'value'       => $data['bd_balance'],
+                                                'value'       => money_format('%!i', $data['bd_balance']),
                                                 'maxlength'   => '100',
                                                 'size'        => '20',
                                                 'class'       => 'budget',
