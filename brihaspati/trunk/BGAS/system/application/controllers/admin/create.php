@@ -109,12 +109,23 @@ class Create extends Controller {
 		);
 		$data['account_date'] = 'dd/mm/yyyy';
 		$data['account_timezone'] = 'UTC';
-
+		
+/*
+		if(flagmplacc){
 		$data['chart_account_options'] = array(
 			'minimal' => 'minimal',
 			'standard' => 'standard',
 			'mhrd' => 'MHRD Format',
 		);
+		}else{
+*/
+		$data['chart_account_options'] = array(
+			'mhrd' => 'MHRD Format',
+		);
+/*
+		}
+*/		
+
 		$data['chart_account'] = 'minimal';
 
 		$data['database_name'] = array(
