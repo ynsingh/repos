@@ -19,6 +19,7 @@ class Entry extends Controller {
 	}
 	function show($entry_type)
 	{
+
 		$this->load->model('Tag_model');
 		//$this->messages->add('Test==>'.$entry_type);
 		$data['tag_id'] = 0;
@@ -53,7 +54,6 @@ class Entry extends Controller {
 
 			}
 		}
-
 		$entry_q = NULL;
 
 		/* Pagination setup */
@@ -177,7 +177,218 @@ class Entry extends Controller {
 
 		$data['entry_data'] = $entry_q;
 		$data['entry_sort'] = $entry_type;
-		
+		// code to search user defined text 
+		$text = '';
+		$search_text = '';
+		$fy_start = '';
+		$fy_end = '';
+		if (date('n') > 3)
+		{
+			$fy_start = date('Y');
+			$fy_end = date('Y') + 1;
+		} else {
+			$fy_start = date('Y') - 1;
+			$fy_end = date('Y');
+		}
+		$data['search'] = '';
+		$data['entry_path'] = "show/" . $entry_type;
+		if ($entry_type) {
+			$data['search_by'] = array(
+				"Select" => "Select",
+		                "id" => "Id",
+		                "forward_refrence_id"=> "Fwd Ref Id",
+				"backward_refrence_id"=> "Bkwd Ref Id",
+		                "date"=> "Date",
+		                "update_date"=> "Update Date",
+		                "number"=> "No",
+		                "name"=> "Ledger Account",
+		                "narration"=> "Narration",
+		                "entry_type"=> "Type",
+		                "dr_total"=> "DR Amount",
+		                "cr_total"=> "CR Amount",
+		                "submitted_by"=> "Submitted By",
+		                "verified_by"=> "Verified By",
+		        );
+			$data['search_by_active'] = '';
+
+			$data['text'] = array(
+				'name' => 'text',
+				'id' => 'text',
+				'maxlength' => '100',
+				'size' => '40',
+				'value' => '',
+			);
+			if ($_POST)
+			{
+				$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+				$data['text']['value'] = $this->input->post('text', TRUE);
+			}
+			
+			/* Form Validation */
+			$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
+			$this->form_validation->set_rules('text', 'Text', 'trim|required');
+			/* Validating form */
+
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->messages->add(validation_errors(), 'error');
+				$this->template->load('template', 'entry/index', $data);
+				return;
+			}
+			else
+			{
+				$data_search_by = $this->input->post('search_by', TRUE);
+				$data_text = $this->input->post('text', TRUE);
+			}
+			if($data_search_by == "Select")
+			{
+				$this->messages->add('Please select search type from dropdown list.', 'error');
+			}
+			else {
+				// id, forward ref.id, backward ref.id and number should be a number
+				if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" || $data_search_by == "number") {
+					$search_text = $data_text;
+					if(! ctype_digit($data_text)) {
+						$this->messages->add('Please enter a number.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				if($data_search_by == "entry_type")
+				{
+					$search_text = $data_text;
+					// entry type should be alphabatic
+					if(ctype_alpha($data_text)) {
+						$str = strtolower($data_text);
+						$data_text = entry_type_name_to_id($str);
+						//if entry type is not a valid name
+						if( $data_text == "") {
+							$this->messages->add("Invalid entry type.", 'error');
+							redirect('entry/' . $data['entry_path']);
+						}
+					}
+					else {
+						$this->messages->add('Please enter a valid entry type.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}				
+				}
+				if($data_search_by == "dr_total" || $data_search_by == "cr_total") {
+					$search_text = $data_text;
+					// debit and credit total should be number or decimal
+					if(! is_numeric($data_text)) {
+						$this->messages->add('Please enter a number.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				if($data_search_by == "submitted_by" || $data_search_by == "verified_by") {
+					$search_text = $data_text;
+					// submitter and verifier should be alphanumeric
+					if(! ctype_alpha($data_text)) {
+						$this->messages->add('Please enter alphanumeric value.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				if($data_search_by == "date" || $data_search_by == "update_date")
+				{
+					$search_text = $data_text;
+					// if date and update date is single digit
+					if(ctype_digit($data_text)) {
+						$field = $data_search_by . '      ' . 'LIKE';
+					}
+					else {
+						$date=explode(' ', $data_text);
+						// if date and update format is dd mm yy only
+						if(count($date)>1) {
+							// if date and update date contain two digit
+							if(count($date) == '2') {
+								// if month is character
+								if(ctype_alpha($date['1'])) {
+									if(strtotime($date['1'])) {
+										$month = $date['1'];
+										$x = date('m', strtotime($month));
+										$data_text = $x . "-" . $date[0];
+										$field = $data_search_by . '      ' . 'LIKE';
+									}
+									else {
+										$this->messages->add('Invalid Month.', 'error');
+										redirect('entry/' . $data['entry_path']);
+									}
+								}
+								// if month is digit
+								else if(ctype_digit($date['1'])) {
+									// if month is valid or not
+									if("1" <= $date['1'] && $date['1'] <= "12") {
+										$field = $data_search_by . '      ' . 'LIKE';
+										$data_text = $date[1]. "-" . $date[0];
+									}
+									else {
+										$this->messages->add('Invalid Month.', 'error');
+										redirect('entry/' . $data['entry_path']);
+									}
+								}
+								// if date is unvalid
+								else {
+									$this->messages->add('Invalid date format. Please enter date in dd mm yy format.', 'error');
+									redirect('entry/' . $data['entry_path']);
+								}
+							}
+							// if date and update date contain three digit
+							if(count($date) == '3') {
+								$date0 = $date['0'];
+								$x = $date['1'];
+								$date2 = $date['2'];
+								//it converts month name to digit
+								if(ctype_alpha($date['1'])) {
+									$month = $date['1'];
+									$x = date('m', strtotime($month));
+									$data_text = $date[2]. "-" . $x . "-" . $date[0];
+								}
+								$data_text = $date0. "-" . $x . "-" . $date2;
+								//check for date is valid or not
+								$valid_date = checkdate($x,$date0,$date2);
+								if($valid_date == 'true') {
+									//check date is exist in financial year or not
+									if($date2 == $fy_start || $date2 == $fy_end) {
+										$data_text = $date2."-". $x ."-".$date0;
+									}
+									else {
+										$this->messages->add($data_text . ' does not exist in financial year.', 'error');
+										redirect('entry/' . $data['entry_path']);
+									}
+								}
+								else {
+									$this->messages->add($data_text . ' is invalid date.', 'error');
+									redirect('entry/' . $data['entry_path']);
+								}	
+							}
+						}
+						else {
+							$this->messages->add('Invalid date format. Please enter date in dd mm yy format.', 'error');
+							redirect('entry/' . $data['entry_path']);
+						}
+					}		
+				}
+				$field = $data_search_by . '      ' . 'LIKE';
+				$text = $data_text;
+				// if search type is not name
+				if($data_search_by != "name") {
+					$this->db->from('entries')->where($field, '%' . $text . '%')->order_by('date', 'desc')->order_by('id', 'desc');
+					$entry_q = $this->db->get();
+					if( $entry_q->num_rows() < 1 )
+					{
+						$this->messages->add($search_text . ' is not found.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				else {
+					$this->db->from('entries');
+                                        $entry_q = $this->db->get();
+				}
+			}
+		}
+		$data['search'] = $data_search_by;	
+		$data['entry_data'] = $entry_q;
+		$data['entry_sort'] = $entry_type;
+		$data['entry_path'] = "show/" . $entry_type;
 		$this->template->load('template', 'entry/index', $data);
 		return;
 
@@ -769,7 +980,7 @@ class Entry extends Controller {
 							if(($allow == -1) || ($allow == 0))
                                                 	{
                                                         	$this->messages->add('Budget is not sufficient to make this payment.','error');
-                                                        	$this->template->load('template', 'entry/add',$data);
+                                                       // 	$this->template->load('template', 'entry/add',$data);
                                                         	return;
                                                 	}
 							else
@@ -779,7 +990,7 @@ class Entry extends Controller {
 								if($data_amount >= $available_amount)
 								{
 	                                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
-        	                                                        $this->template->load('template', 'entry/add',$data);
+        	                                          //              $this->template->load('template', 'entry/add',$data);
                 	                                                return;
 
 								}
@@ -860,7 +1071,6 @@ class Entry extends Controller {
 						if(($allow == -1) || ($allow == 0))
 	                                        {
                                                 	$this->messages->add('Budget is not sufficient to make this payment.','error');
-                                                	$this->template->load('template', 'entry/add',$data);
                                                 	return;
 						}
 						/** get over consume amount and check with allowed left **/
@@ -870,7 +1080,6 @@ class Entry extends Controller {
 						/* payment amount is greater than allowed over amount*/
 						if($data_amount > $allow)
 						{
-							$this->messages->add('Budget is not sufficient to make this payment.','error');
 	                                                $this->template->load('template', 'entry/add',$data);
 							return;
 						}
@@ -954,8 +1163,6 @@ class Entry extends Controller {
 				return;
 			}
 			/*lines added by manshi*/
-			if($data_cheque[0] != NULL)
-			{
                         foreach ($data_all_ledger_dc as $id => $ledger_data)
                         {
                                 if ($data_all_ledger_id[$id] < 1)
@@ -974,6 +1181,8 @@ class Entry extends Controller {
                                         return;
                                 }
 						$val=$data_cheque[$id];
+						if($val != NULL)
+						{
                                   		$valid_ledger = $valid_ledger_q->row();
                                                 if ($data_all_ledger_dc[$id] == 'D' && $valid_ledger->type == 1)
                                                 {
@@ -1629,7 +1838,7 @@ class Entry extends Controller {
 
                                                 }
                                          if ($valid_ledger->type != 1)
-                                                        $non_bank_cash_present = TRUE;
+                                                $non_bank_cash_present = TRUE;
                                                 if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
                                                 {
                                                         $bank_cash_present = TRUE;
@@ -1643,10 +1852,10 @@ class Entry extends Controller {
                                                                 'cheque_no' => $val,
                                                                 );
 
-                                                        if ( ! $this->db->where('entry_no', $entry_id)->update('reconcilation', $update_data1))
+                                                        if ( ! $this->db->where('entry_no', $entry_id)->update('reconcilation', $update_data2))
                                                         {
-                                                           $this->db->trans_rollback();
-                                                                $this->messages->add('Error addding Entry.', 'error');
+                                                           	$this->db->trans_rollback();
+                                                                $this->messages->add('Error addding Entry', 'error');
                                                                 $this->template->load('template', 'entry/add', $data);
                                                                 return;
                                                                 } else {
@@ -2153,6 +2362,211 @@ class Entry extends Controller {
 		$data['entry_data'] = $entry_q;
 		$data['entry_sort'] = $entry_sort;
 		$this->pagination->initialize($config);
+
+		$text = '';
+		$fy_start = '';
+		$fy_end = '';
+		if (date('n') > 3)
+		{
+			$fy_start = date('Y');
+			$fy_end = date('Y') + 1;
+		} else {
+			$fy_start = date('Y') - 1;
+			$fy_end = date('Y');
+		}
+		$data['search'] = '';
+		$data['entry_path'] = "sort/" . $entry_sort;
+		if ($entry_sort) {
+			$data['search_by'] = array(
+				"Select" => "Select",
+		                "id" => "Id",
+		                "forward_refrence_id"=> "Fwd Ref Id",
+				"backward_refrence_id"=> "Bkwd Ref Id",
+		                "date"=> "Date",
+		                "update_date"=> "Update Date",
+		                "number"=> "No",
+		                "name"=> "Ledger Account",
+		                "narration"=> "Narration",
+		                "entry_type"=> "Type",
+		                "dr_total"=> "DR Amount",
+		                "cr_total"=> "CR Amount",
+		                "submitted_by"=> "Submitted By",
+		                "verified_by"=> "Verified By",
+		        );
+			$data['search_by_active'] = '';
+
+			$data['text'] = array(
+				'name' => 'text',
+				'id' => 'text',
+				'maxlength' => '100',
+				'size' => '40',
+				'value' => '',
+			);
+			if ($_POST)
+			{
+				$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+				$data['text']['value'] = $this->input->post('text', TRUE);
+			}
+			
+			/* Form Validation */
+			$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
+			$this->form_validation->set_rules('text', 'Text', 'trim|required');
+			/* Validating form */
+
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->messages->add(validation_errors(), 'error');
+				$this->template->load('template', 'entry/index', $data);
+				return;
+			}
+			else
+			{
+				$data_search_by = $this->input->post('search_by', TRUE);
+				$data_text = $this->input->post('text', TRUE);
+			}
+			if($data_search_by == "Select")
+			{
+				$this->messages->add('Please select search type from dropdown list.', 'error');
+			}
+			else {
+				if($data_search_by == "id" || $data_search_by == "forward_refrence_id" || $data_search_by == "backward_refrence_id" || $data_search_by == "number") {
+					// id, forward ref.id, backward ref.id and number should be a number
+					if(! ctype_digit($data_text)) {
+						$this->messages->add('Please enter a number.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				if($data_search_by == "entry_type")
+				{
+					// entry type should be alphabatic
+					if(ctype_alpha($data_text)) {
+						$str = strtolower($data_text);
+						$data_text = entry_type_name_to_id($str);
+						// if entry type is not a valid name
+						if( $data_text == "") {
+							$this->messages->add("Invalid entry type.", 'error');
+							redirect('entry/' . $data['entry_path']);
+						}
+					}
+					else {
+						$this->messages->add('Please enter a valid entry type.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}				
+				}
+				if($data_search_by == "dr_total" || $data_search_by == "cr_total") {
+					// if debit and credit total is not digit and decimal
+					if(! is_numeric($data_text)) {
+						$this->messages->add('Please enter a number.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				if($data_search_by == "submitted_by" || $data_search_by == "verified_by") {
+					// if submitter and verifier is not alphanumeric
+					if(! ctype_alnum($data_text)) {
+						$this->messages->add('Please enter alphanumeric value.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				if($data_search_by == "date" || $data_search_by == "update_date")
+				{
+					// if date and update date is digit
+					if(ctype_digit($data_text)) {
+						$field = $data_search_by . '      ' . 'LIKE';
+					}
+					else {
+						$date=explode(' ', $data_text);
+						// if date and update format is dd mm yy only
+						if(count($date)>1) {
+						// if date and update date are two digit
+							if(count($date) == '2') {
+								// if month of date and update date is alphabatic
+								if(ctype_alpha($date['1'])) {
+									if(strtotime($date['1'])) {
+										$month = $date['1'];
+										$x = date('m', strtotime($month));
+										$data_text = $x . "-" . $date[0];
+										$field = $data_search_by . '      ' . 'LIKE';
+									}
+									else {
+										$this->messages->add('Invalid Month.', 'error');
+										redirect('entry/' . $data['entry_path']);
+									}
+								}
+								// if month of date and update date is numeric
+								else if(ctype_digit($date['1'])) {
+									// if month of date and update date is valid month
+									if("1" <= $date['1'] && $date['1'] <= "12") {
+										$field = $data_search_by . '      ' . 'LIKE';
+										$data_text = $date[1]. "-" . $date[0];
+									}
+									else {
+										$this->messages->add('Invalid Month.', 'error');
+										redirect('entry/' . $data['entry_path']);
+									}
+								}
+								else {
+									$this->messages->add('Invalid date format. Please enter date in dd mm yy format.', 'error');
+									redirect('entry/' . $data['entry_path']);
+								}
+							}
+							// if date and update date are three digit
+							if(count($date) == '3') {
+								$date0 = $date['0'];
+								$x = $date['1'];
+								$date2 = $date['2'];
+								// if month of date and update date is alphabatic
+								if(ctype_alpha($date['1'])) {
+									$month = $date['1'];
+									$x = date('m', strtotime($month));
+									$data_text = $date[2]. "-" . $x . "-" . $date[0];
+								}
+								$data_text = $date0. "-" . $x . "-" . $date2;
+								// if date and update date are a valid date
+								$valid_date = checkdate($x,$date0,$date2);
+								if($valid_date == 'true') {
+									// if date and update date are exist in financial year
+									if($date2 == $fy_start || $date2 == $fy_end) {
+										$data_text = $date2."-". $x ."-".$date0;
+									}
+									else {
+										$this->messages->add($data_text . ' does not exist in financial year.', 'error');
+										redirect('entry/' . $data['entry_path']);
+									}
+								}
+								else {
+									$this->messages->add($data_text . ' is invalid date.', 'error');
+									redirect('entry/' . $data['entry_path']);
+								}	
+							}
+						}
+						else {
+							$this->messages->add('Invalid date format. Please enter date in dd mm yy format.', 'error');
+							redirect('entry/' . $data['entry_path']);
+						}
+					}		
+				}
+				$field = $data_search_by . '      ' . 'LIKE';
+				$text = $data_text;
+				// if search type is not name
+				if($data_search_by != "name") {
+					$this->db->from('entries')->where($field, '%' . $text . '%')->order_by('date', 'desc')->order_by('id', 'desc');
+					$entry_q = $this->db->get();
+					if( $entry_q->num_rows() < 1 )
+					{
+						$this->messages->add($text . ' is not found.', 'error');
+						redirect('entry/' . $data['entry_path']);
+					}
+				}
+				else {
+					$this->db->from('entries');
+                                        $entry_q = $this->db->get();
+				}
+			}
+		}
+		$data['search'] = $data_search_by;
+		$data['entry_data'] = $entry_q;
+		$data['entry_sort'] = $entry_sort;
+		$data['entry_path'] = "sort/" . $entry_sort;
                 $this->template->load('template', 'entry/index', $data);
                 return;
 	}

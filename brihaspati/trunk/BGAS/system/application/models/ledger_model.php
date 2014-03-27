@@ -174,7 +174,28 @@ var $ledgers = array();
 		else
 			return "(Error)";
 	}
+	// to search ledger account in entries
+	function get_entry_name_match($entry_id, $entry_type_id, $text)
+	{
+		/* Selecting whether to show debit side Ledger or credit side Ledger */
+		$current_entry_type = entry_type_info($entry_type_id);
+		$ledger_type = 'C';
 
+		if ($current_entry_type['bank_cash_ledger_restriction'] == 3)
+			$ledger_type = 'D';
+		$this->db->select('ledgers.name as name');
+		$this->db->from('entry_items')->join('ledgers', 'entry_items.ledger_id = ledgers.id')->where('entry_items.entry_id', $entry_id)->where('entry_items.dc', $ledger_type)->where('ledgers.name LIKE', '%' . $text . '%');
+		$ledger_q = $this->db->get();
+		$html = '';
+		if( $ledger_q->num_rows() == 1 ) {
+			foreach ($ledger_q->result() as $ledger)
+			{
+				$html .= anchor('entry/view/' . $current_entry_type['label'] . "/" . $entry_id, $ledger->name, array('title' => 'View ' . $current_entry_type['name'] . ' Entry', 'class' => 'anchor-link-a'));
+			}
+			return $html;
+		}
+		return;
+	}
 	function get_entry_name($entry_id, $entry_type_id)
 	{
 		/* Selecting whether to show debit side Ledger or credit side Ledger */
@@ -1086,7 +1107,6 @@ var $ledgers = array();
                	}
                 return $output;
         }
-
 	function get_ledger_list($ledger_name)
 	{
 		//$ledgers = array();	
