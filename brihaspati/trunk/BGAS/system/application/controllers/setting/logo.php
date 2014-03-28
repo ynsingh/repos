@@ -90,19 +90,50 @@ class Logo extends Controller {
 			$data_ins_name = $this->input->post('ins_name', TRUE);
 			$data_dept_name = $this->input->post('dept_name', TRUE);
 			$data_uni_name = $this->input->post('uni_name', TRUE);
-		        $size = $_FILES["userfile"]["size"] / 1024;
-                        	 if($size > 0 && $size < 100)
-                                	{
-                              		 delete_files($this->upload_path, TRUE);
-                                	}
-                                	else
-                               		 {
-                                	$string=get_filenames($this->upload_path);
-                                	$value=$string[0];
-                                	$config['file_name'] = $value ;
-                                 	$this-> load->library('upload', $config);
-					 }
+		        //Code For Save Image With Database Name And Uploaded File Extension...
+			$file_name = $_FILES["userfile"]["name"];
+			$size = $_FILES["userfile"]["size"] / 1024;
+			$this->db->select('name')->from('settings')->where('ins_name',$data_ins_name);
+                        $ins_id = $this->db->get();
+                        foreach( $ins_id->result() as $row)
+                        {
+                                $name= $row->name;
+                        }
 
+                        if($size)
+                        {
+				$ext = substr(strrchr($file_name, '.'), 1);
+                        	$full_name =  $name . '.' .  $ext;
+                        	$config['file_name'] = $full_name ;
+				$file_list = get_filenames($this->upload_path);
+				$len=count($file_list);
+				for($count=0; $count<=$len; $count++)
+				{
+					$my_values = explode('.',$file_list[$count]);
+					if($my_values[0] == $name)
+					{
+						unlink($this->upload_path.'/'.$file_list[$count]);  
+					}
+				}
+				}else
+                        	{
+                        		$string=get_filenames($this->upload_path);
+                       			$len1=count($string);
+                        		for($count1=0; $count1<$len1; $count1++)
+                        		{
+					
+						$my_values1 = explode('.',$string[$count1]);
+						
+                                		if($my_values1[0] == $name)
+                                		{
+							$config['file_name'] = $string[$count1] ;
+							$this-> load->library('upload', $config);
+                                		}
+                        		}
+
+			}//end
+			
+			
 			/* Update settings */
 			$this->db->trans_start();
 			$update_data = array(
@@ -121,31 +152,17 @@ class Logo extends Controller {
 				$this->db->trans_complete();
 				$this->messages->add('Institute name  updated.', 'success');
 				$this->logger->write_message("success", "Updated Institute name ");
-				//start upload
-				$config = array(
-                 		       'allowed_types' => 'jpg|jpeg|gif|png|txt|doc|pdf|odt',
-		                        'upload_path' => $this->upload_path,	 
-					'overwrite' => true,
-                		       	'max_size' => 100,
-                		);
-				$this->db->select('id')->from('settings')->where('ins_name',$data_ins_name);
-                                $ins_id = $this->db->get();
-                                foreach( $ins_id->result() as $row)
-                                 {
-                                        $ins_id1 = $row->id;
-                                 }
-                                 $size = $_FILES["userfile"]["size"] / 1024;
-				if( $size > 100 )
-                                {
-                                   $this->messages->add('logo file should be less then 100 KB.', 'error');
-
-                                }
-				if($size > 0 && $size < 100)//new if
-				{ 
+					//start upload
+					$config = array(
+                 		       		'allowed_types' => 'jpg|jpeg|gif|png|txt|doc|pdf|odt',
+		                        	'upload_path' => $this->upload_path,	 
+						'overwrite' => true,
+                				);
+                                	$size = $_FILES["userfile"]["size"] / 1024;
 					$file =$_FILES['userfile']['name'];
-				        $ext = substr(strrchr($file, '.'), 1);
-                	           	$full_name =  $ins_id1 . '.' .  $ext;
-				        $config['file_name'] = $full_name ;
+					$ext = substr(strrchr($file, '.'), 1);
+                	        	$full_name =  $name . '.' .  $ext;
+					$config['file_name'] = $full_name ;
 		                	$this-> load->library('upload', $config);
                 		 
 					if ( ! $this->upload->do_upload())
@@ -157,34 +174,23 @@ class Logo extends Controller {
 					
 						return;
 			                } else {
-						$data = $this->upload->data();
-								
-						/* Resize the uploaded image */
-						$filename = $data['file_name'];
-        	        	                $config['image_library'] = 'gd2';
-                                		$config['source_image'] = $data['file_path'] . $filename;
-	                	               //$config['new_image'] =  $data['file_path'] . $filename;
-					        $config['maintain_ratio'] = TRUE;
-                	              		$config['x_axis'] = '100';
-						$config['y_axis'] = '60';
-						$config['new_image'] =  $data['file_path'] . $filename;
-						$config['height'] =75;
-		                                $config['width'] = 100;
-                		                $config['master_dim'] = 'auto';
-       						$this->image_lib->initialize($config);
-		                                $this->image_lib->resize();
-						$this->image_lib->crop();
-				
-						if (! $this->image_lib->resize())
-                                		{
-		        	                          echo $this->image_lib->display_errors();
-                	        	        }
-						$this->messages->add('Institute logo  updated.', 'success');
-						redirect('setting/logo');
-						return ;
-					}
-				}//new if		
-	//			return;
+							$data = $this->upload->data();
+							$max_height = 80;
+							$max_width = 100;			
+							/* Resize the uploaded image */
+							$filename = $data['file_name'];
+        	        	                	$config['image_library'] = 'gd2';
+                                			$config['source_image'] = $data['file_path'] . $filename;
+					        	$config['maintain_ratio'] = TRUE;
+		                                	$config['width'] = $max_width;
+							$config['height'] =$max_height;
+							$this->image_lib->clear();
+       							$this->image_lib->initialize($config);
+		                                	$this->image_lib->resize();
+							$this->messages->add('Institute logo  updated.', 'success');
+							redirect('setting/logo');
+							return ;
+						}
 			}//else 
 			//get the id of this institute and accounting unit from bgasAccData under login
 			$db1=$this->load->database('login', TRUE);
