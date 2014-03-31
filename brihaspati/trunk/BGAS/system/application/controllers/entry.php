@@ -2264,11 +2264,11 @@ class Entry extends Controller {
 		echo '</td>';
 
 		echo '<td>';
-		if ($add_type == 'bankcash')
-			echo form_input_ledger('ledger_id[' . $i . ']', 0, '', $type = 'bankcash');
-		else if ($add_type == 'nobankcash')
-			echo form_input_ledger('ledger_id[' . $i . ']', 0, '', $type = 'nobankcash');
-		else
+	//	if ($add_type == 'bankcash')
+	//		echo form_input_ledger('ledger_id[' . $i . ']', 0, '', $type = 'bankcash');
+	//	else if ($add_type == 'nobankcash')
+	//		echo form_input_ledger('ledger_id[' . $i . ']', 0, '', $type = 'nobankcash');
+	//	else
 			echo form_input_ledger('ledger_id[' . $i . ']');
 		echo '</td>';
 
@@ -2278,12 +2278,9 @@ class Entry extends Controller {
 		echo '<td>';
 		echo form_input($cr_amount);
 		echo '</td>';
-		if($add_type == 'bankcash')
-		{
 		echo '<td>';
               	echo form_input($cheque);
               	echo '</td>';
-		}
 
 		echo '<td>';
 		echo img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow'));
