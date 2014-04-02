@@ -13,10 +13,13 @@ if(session.isNew()){
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
 String role=(String)session.getAttribute("login_role");
+System.out.println("role issssssssss  "+role);
+if(role!=null)
+{
 if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
    {
 %>
-
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter"))
    {
     String c=(String)request.getParameter("compute");
@@ -25,7 +28,19 @@ if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,vot
 %>
 
 <jsp:include page="/election_manager/login.jsp"/>
-<%}}%>
+<%}}
+    else{
+    %>
+    <%--<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>--%>
+    <%
+    }}
+else{
+%>
+    <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+    <%
+
+}
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -142,7 +157,9 @@ function send()
 {
 
 
-  <%if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+  <%
+  if(role==null){}else{
+  if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
    {
 %>
 top.location.href="<%=request.getContextPath()%>/institute_admin/search_election_details.jsp";
@@ -152,8 +169,10 @@ top.location.href="<%=request.getContextPath()%>/institute_admin/search_election
 <%}else{%>
 
  top.location.href="<%=request.getContextPath()%>/Voter/voter_home.jsp";
-    <%}%>
+    <%}}%>
+
     return false;
+    
 }
 
             function previewBallot(p) {
@@ -357,12 +376,12 @@ top.location.href="/EMS/institute_admin/search_election_details.jsp";
 
 <input type="button" value="Close" onclick="send()"/>
                 </td></tr>
-<%--            <tr><td>
+            <tr><td>
                     <a style="color:white" href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><br>
 
                 </td>
                 <td align="right"><a style="color:white" href="<%=request.getContextPath()%>/printlog.do?election=<%=election%>">Show PDF Report In Graphical Format</a>
-</td></tr>  --%>
+</td></tr>
         </table>
  
         <div id="main" align="center" style="width: 100%; height: 100%;font-family: Gill, Helvetica, sans-serif ;font-size: 12px" >

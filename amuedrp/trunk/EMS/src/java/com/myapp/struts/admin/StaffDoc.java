@@ -3,6 +3,38 @@ package com.myapp.struts.admin;
 
 
 public class StaffDoc {
+    // code start on 9 March
+    private String result;
+    private String castvote;
+    private String hyperlink;
+       
+    public String getHyperlink() {
+        return hyperlink;
+    }
+
+    public void setHyperlink(String hyperlink) {
+        this.hyperlink = hyperlink;
+    }
+
+
+    public String getCastvote() {
+        return castvote;
+    }
+
+    public void setCastvote(String castvote) {
+        this.castvote = castvote;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+    // code end on 9 March
+
+
     protected String menifesto;
 
     public String getMenifesto() {
@@ -13,7 +45,7 @@ public class StaffDoc {
         this.menifesto = menifesto;
     }
 
-    
+
         protected String staff_id;
         protected String first_name;
 	protected String last_name;
@@ -78,7 +110,7 @@ public class StaffDoc {
     }
 
 
-        
+
 
     public String getIndex() {
         return index;
@@ -88,7 +120,7 @@ public class StaffDoc {
         this.index = index;
     }
 
-        
+
 
     public String getPositionName() {
         return positionName;
@@ -98,7 +130,7 @@ public class StaffDoc {
         this.positionName = positionName;
     }
 
-        
+
 
     public String getPosition_id() {
         return position_id;
@@ -108,7 +140,7 @@ public class StaffDoc {
         this.position_id = position_id;
     }
 
-        
+
 
     public String getNenddate() {
         return Nenddate;
@@ -197,7 +229,7 @@ public class StaffDoc {
     public void setManager_id(String manager_id) {
         this.manager_id = manager_id;
     }
-	
+
 
      public String getStaff_id() { return staff_id;}
      public void setStaff_id(String staff_id) {this.staff_id = staff_id;}
@@ -375,5 +407,5 @@ public class StaffDoc {
         this.enddate = enddate;
     }
 
-        
+
 			} //End of Class

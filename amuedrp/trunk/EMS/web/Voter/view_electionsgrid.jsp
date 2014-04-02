@@ -4,7 +4,7 @@ if(session.isNew()){
 %>
 <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
-<%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.ElectionManager"%>
+<%@page import="com.myapp.struts.Voter.*,com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.ElectionManager"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -18,7 +18,7 @@ if(session.isNew()){
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-<%--Code will execute after the election end  --%>
+<%--code started on 9 March--%>
 <%
 if(request.getAttribute("msgal")!=null){
  %>
@@ -29,10 +29,9 @@ if(request.getAttribute("msgal")!=null){
 }
 
 %>
-<%-- comment end --%>
-
-
+<%--code end on 9 March--%>
 <%
+
 try{
 if(session.getAttribute("institute_id")!=null){
 System.out.println("institute_id"+session.getAttribute("institute_id"));
@@ -136,11 +135,17 @@ if(rs!=null){
 System.out.println("it="+(tcount));
 //requestList = (Login)rs.get(0);
 
+        // code start on 9 March
+        String instId = (String)session.getAttribute("institute_id");
+        String voId = (String)session.getAttribute("user_id");
+        int i=0,j=0;
+        // code end on 9 March
+
    while (it.hasNext()) {
 
 	System.out.println("it="+(tcount));
         election = (Election)rs.get(tcount);
-        
+
 
         Ob = new StaffDoc ();
         ems=new Election_Manager_StaffDetail();
@@ -150,11 +155,74 @@ System.out.println("it="+(tcount));
         Ob.setElection_name(election.getElectionName());
         Ob.setManager_id(election.getCreatedBy());
         Ob.setStatus(election.getStatus());
+
+        // code start on 9 March
+        if(election.getPublish()!=null && election.getPublish().toString().equalsIgnoreCase("yes"))
+            {
+                Ob.setResult("Result");
+                i++;
+            }
+        else{
+                Ob.setResult("");
+        }
+
+
+        String eleid=election.getId().getElectionId();
+
+        voterDAO voterdao = new voterDAO();
+        VotingProcess vp = voterdao.getVoter(instId, eleid, voId);
+        if(vp!=null){
+            Ob.setCastvote("Voted");
+            j++;
+            Ob.setHyperlink("");
+            
+        }
+        else{
+            if(!election.getStatus().equalsIgnoreCase("started"))
+                {
+            Ob.setCastvote("");
+            }
+            else{
+                SetVoter sev=null;
+                 VoterRegistration vor= VoterRegistrationDAO.searchVoterEmail(instId,voId);
+                 if(vor!=null)
+                  {   sev=VoterRegistrationDAO.searchVoterList(instId, eleid, vor.getId().getEnrollment());
+
+                  if(sev!=null)
+            {Ob.setCastvote("Cast Vote");
+                  j++;
+
+                  }
+        else
+          {  Ob.setCastvote("");}
+                 }
+      
+            Ob.setHyperlink(request.getContextPath()+"/voting.do?election="+Ob.getElection_id());
+            }
+        
+        
+
+        }
+        // code end on 9 March
    requestList.add(Ob);
    tcount++;
 it.next();
    //System.out.println("tcount="+tcount);
 		     }
+        if(i!=0){
+
+          pageContext.setAttribute("h_action1","Action");
+        }
+        else{
+        pageContext.setAttribute("h_action1","");
+        }
+        if(j!=0){
+
+          pageContext.setAttribute("h_action2","Action");
+        }
+        else{
+        pageContext.setAttribute("h_action2","");
+        }
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
@@ -163,6 +231,7 @@ it.next();
    }
 
 String path=request.getContextPath();
+
 pageContext.setAttribute("path", path);
 pageContext.setAttribute("rec",perpage);
 pageContext.setAttribute("amp","&");
@@ -221,7 +290,7 @@ function isNumberKey(evt)
     </head>
     <body onload="funload()">
 
-        
+
 
 <%if(tcount==0)
 {%>
@@ -229,10 +298,16 @@ function isNumberKey(evt)
 <%}
 else
 {%>
+<script>
+
+    alert(document.getElementsByName("datagrid1").item(0).nodeName.value);
+
+</script>
 <table align="<%=align%>" dir="<%=rtl%>" width="100%">
     <tr><td colspan="2" align="center">View Next&nbsp;
             <%--<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
         --%>
+
         <select id="rec" onchange="changerec()" style="width:50px">
            <option value="10">10</option>
             <option value="20">20</option>
@@ -249,7 +324,7 @@ else
       <item   value="${doc.election_id}"  hAlign="left" hyperlinkTarget="_mainframe"    styleClass="item"/>
     </column>
 
-   
+
     <column width="10%">
       <header value="Election Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}" hAlign="left"   styleClass="item"/>
@@ -268,17 +343,22 @@ else
 
 <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="View" hyperLink=""  hAlign="left" styleClass="item"/>
+      <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
     </column>
-<column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
-</column>
-
+    
       <column width="20%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Preview Ballot &amp; View Menifesto" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
+        </column>
+        <column width="10%">
+              <header value="${h_action2}" hAlign="left" styleClass="header"/>
+              <item   value="${doc.castvote}" hyperLink="${doc.hyperlink}"  hAlign="left" styleClass="item"/>
+        </column>
+      <column width="10%">
+      <header value="${h_action1}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.result}" hyperLink="${path}/Voter/finalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
     </column>
+
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -314,7 +394,7 @@ else
 </td>
 
 </tr>
- 
+
 
 
 
