@@ -2301,13 +2301,14 @@ class Entry extends Controller {
 		if ($entry_sort == 'all') {
                         $entry_type_id = 0;
 			$this->template->set('page_title', 'All Entries');
+			$this->template->set('nav_links', array('entry/printallentry' => 'Print All Entry'));
 		}else{	
 		$entry_type_id = entry_type_name_to_id($entry_sort);
 		}
 		if ($entry_sort != 'all') {
 		$current_entry_type = entry_type_info($entry_type_id);
 		$this->template->set('page_title', $current_entry_type['name'] . ' Entries');
-		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry'));
+		$this->template->set('nav_links', array('entry/add/' . $current_entry_type['label'] => 'New ' . $current_entry_type['name'] . ' Entry', 'entry/printentry/' . $current_entry_type['label'] => 'Print ' . $current_entry_type['name'] . ' Entry'));
 		}
 		/* Pagination setup */
 		

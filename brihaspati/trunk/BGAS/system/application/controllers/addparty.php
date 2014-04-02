@@ -30,6 +30,80 @@ class Addparty extends Controller {
 		$this->db->from('addsecondparty');
 		$pdetail = $this->db->get();
 		$data['party_detail'] = $pdetail;
+		// code for searching a given text
+		$text = '';
+		$data['search'] = '';
+		$data['search_by'] = array(
+			"Select" => "Select",
+                        "sacunit" => "Secondary Unit",
+                        "partyname"=> "Party Name",
+			"mobnum"=> "Mobile NO.",
+			"email"=> "Email Id",
+			"bancacnum"=> "Bank A/C No.",
+			"bankname"=> "Bank Name",
+			"branchname"=> "Branch Name",
+			"ifsccode"=> "IFSC Code",
+			"pan"=> "PAN No.",
+			"tan"=> "TAN No.",
+			"staxnum"=> "Service Tax No.",
+                );
+		$data['search_by_active'] = '';
+
+		$data['text'] = array(
+			'name' => 'text',
+			'id' => 'text',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => '',
+		);
+		if ($_POST)
+		{
+			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			$data['text']['value'] = $this->input->post('text', TRUE);
+		}
+		/* Form validation */
+
+		$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
+		$this->form_validation->set_rules('text', 'Text', 'trim|required');
+		/* Validating form */
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'addparty/index', $data);
+			return;
+		}
+		else
+		{
+			$data_search_by = $this->input->post('search_by', TRUE);
+			$data_text = $this->input->post('text', TRUE);
+		}
+		if($data_search_by == "Select")
+		{
+			$this->messages->add('Please select search type from dropdown list.', 'error');
+			redirect('addparty/index');
+		}
+		else {
+			if($data_search_by == "partyname" || $data_search_by == "mobnum" || $data_search_by == "bancacnum" || $data_search_by == "ifsccode" || $data_search_by == "pan" || $data_search_by == "tan" || $data_search_by == "staxnum")
+			{
+				if(! ctype_alnum($data_text)) {
+					$this->messages->add('Please enter alphanumeric value.', 'error');
+					redirect('addparty/index');
+				}
+			}
+		}
+		$field = $data_search_by . '      ' . 'LIKE';
+		$text = $data_text;
+
+		$this->db->from('addsecondparty')->where($field, '%' . $text . '%');
+		$pdetail = $this->db->get();
+		$data['party_detail'] = $pdetail;
+		if( $pdetail->num_rows() < 1 )
+		{
+			$this->messages->add($text . ' is not found.', 'error');
+			redirect('addparty/index');
+		}
+		$data['search'] = $data_search_by;
 		$this->template->load('template', 'addparty/index', $data);
 		return;
 	}

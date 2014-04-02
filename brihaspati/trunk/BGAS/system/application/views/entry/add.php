@@ -1,10 +1,10 @@
 <?php
 	/* Add row ledger type */
-//	if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
-//		$add_type = "bankcash";
-//	else if ($current_entry_type['bank_cash_ledger_restriction'] == '5')
-//		$add_type = "nobankcash";
-//	else
+	if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
+		$add_type = "bankcash";
+	else if ($current_entry_type['bank_cash_ledger_restriction'] == '5')
+		$add_type = "nobankcash";
+	else
 		$add_type = "all";
 	
 ?>
@@ -353,6 +353,8 @@ var dc = '';
 			
 				$(cur_obj).parent().parent().after(data);
 				$(cur_obj).attr('src', add_image_url);
+				$(".cheque-item").show();
+				$("#ch_no").show();
 			}
 		});
 	});

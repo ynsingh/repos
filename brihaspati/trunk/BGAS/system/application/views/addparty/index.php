@@ -1,3 +1,21 @@
+<?php
+	echo form_open('addparty/show');
+	echo "<p>";
+	echo form_label('Search By', 'search_by');
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_dropdown('search_by', $search_by, $search_by_active);
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_label('Text', 'text');
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_input($text);
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	echo form_submit('submit', 'Search');
+	echo " ";
+	echo "</p>";
+	echo form_close();
+?>
 <table border=0 cellpadding=5 class="simple-table">
 	<thead>
 		<tr>
