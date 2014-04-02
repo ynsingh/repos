@@ -62,6 +62,8 @@ import org.iitk.brihaspati.om.TurbineUser;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modify date: 09-08-2012 (Priyanka),07-02-2013,10-06-2013
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @modified date: 31-03-2014(Dewanshu Singh)
  */
 
 public class TopicMetaDataXmlReader
@@ -389,7 +391,7 @@ public class TopicMetaDataXmlReader
                 if(files!=null)
                 {
                         Attributes ats;
-                        String fileName,grade,Duedate,UserName;
+                        String fileName,grade,Duedate,UserName,Fullname,Rollnm;
                         for(int j=0;j<files.length;j++)
                         {
 
@@ -399,11 +401,15 @@ public class TopicMetaDataXmlReader
                                 grade=ats.getValue("grade");
                                 Duedate=ats.getValue("Duedate");
                                 UserName=ats.getValue("username");
+                                Fullname=ats.getValue("Fullname");
+                                Rollnm=ats.getValue("Rollnm");
 
                                 fileEntry.setfileName(fileName);
                                 fileEntry.setGrade(grade);
                                 fileEntry.setDuedate(Duedate);
                                 fileEntry.setUserName(UserName);
+                                fileEntry.setFullname(Fullname);
+                                fileEntry.setRollnm(Rollnm);
                                 vt.add(fileEntry);
 
                         }

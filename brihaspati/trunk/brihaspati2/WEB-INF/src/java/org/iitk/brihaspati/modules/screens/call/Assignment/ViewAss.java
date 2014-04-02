@@ -82,6 +82,8 @@ import org.iitk.brihaspati.modules.utils.NewsDetail;
 	 *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
 	 *   @author  <a href="smita37uiet@gmail.com">smita Pal</a>
 	 *   @author  <a href="Tej Bahadur@gmail.com">Tej Bahadur</a>
+	 * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+	 * @modified date: 31-03-2014(Dewanshu Singh)
 	*/
 
 
@@ -134,6 +136,7 @@ public class ViewAss extends  SecureScreen
                                         {
                                                 Assign =Assign+"/"+Assid;
                                                 context.put("str1",Assid);
+						//context.put("dest_folder",Assid);
                                         }
                                 }
                         }

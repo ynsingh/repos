@@ -62,6 +62,8 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modify date: 09-08-2012, 25-09-2012 (Priyanka),06-06-2013
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @modified date: 31-03-2014(Dewanshu Singh)
  */
 
 public class TopicMetaDataXmlWriter
@@ -700,13 +702,15 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
                 xmlWriter.appendElement("File",null,ats);
 
 	}
-	public static void appendUpdationMailElement(XmlWriter xmlWriter,String fileName,String username,String grade,String Duedate)
+	public static void appendUpdationMailElement(XmlWriter xmlWriter,String fileName,String username,String grade,String Duedate,String Fullname,String Rollnm)
         {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","fileName","","",StringUtil.replaceXmlSpecialCharacters(fileName));
                 ats.addAttribute("","username","","",StringUtil.replaceXmlSpecialCharacters(username));
                 ats.addAttribute("","grade","","",StringUtil.replaceXmlSpecialCharacters(grade));
                 ats.addAttribute("","Duedate","","",StringUtil.replaceXmlSpecialCharacters(Duedate));
+                ats.addAttribute("","Fullname","","",StringUtil.replaceXmlSpecialCharacters(Fullname));
+                ats.addAttribute("","Rollnm","","",StringUtil.replaceXmlSpecialCharacters(Rollnm));
                 xmlWriter.appendElement("File",null,ats);
         }
 
@@ -733,8 +737,10 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
         	                                String username=((FileEntry)v.get(i)).getUserName();
                 	                        String grade=((FileEntry)v.get(i)).getGrade();
                         	                String Duedate=((FileEntry)v.get(i)).getDuedate();
+                        	                String Fullname=((FileEntry)v.get(i)).getFullname();
+                        	                String Rollnm=((FileEntry)v.get(i)).getRollnm();
 		
-                	                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate);
+                	                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate,Fullname,Rollnm);
                         	        }
 				}
                         }
@@ -764,9 +770,11 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
         	                                String fileName=((FileEntry)v.get(i)).getfileName();
                 	                        String username=((FileEntry)v.get(i)).getUserName();
                         	                String grade=((FileEntry)v.get(i)).getGrade();
-                                	        String Duedate=((FileEntry)v.get(i)).getDuedate();
+						String Duedate=((FileEntry)v.get(i)).getDuedate();
+                                	        String Fullname =((FileEntry)v.get(i)).getFullname();
+                                	        String Rollnm=((FileEntry)v.get(i)).getRollnm();
 						if(!usrName.equals(username))	
-		                                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate);
+		                                        appendUpdationMailElement(xmlWriter,fileName,username,grade,Duedate,Fullname,Rollnm);
                 	                }
 				}
                         }

@@ -173,7 +173,9 @@ $!data.getMessage()
 			#set ($stlp = $stlp + 1)
 			#end
 		 #end
-	</td></tr>
+		##downloading assignments
+        <a href="$link.setPage("call,Zipcreate.vm").addPathInfo("dest_folder",$str1)" style="text-decoration:none">$brih_download $brih_assignment</a>
+	</td></tr> 
 	<tr bgcolor="$ui.menuColor">
 		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name , $brih_full $brih_name , $brih_rollno</b> </td>
 ##		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>

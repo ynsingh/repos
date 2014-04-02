@@ -43,6 +43,8 @@ package org.iitk.brihaspati.modules.utils;
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  * @author: <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modify 20-08-2010,08-02-2013
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @modified date: 31-03-2014(Dewanshu Singh)
  */
 public class FileEntry
 {
@@ -61,6 +63,9 @@ public class FileEntry
 	private String result;
         private String cid;
 	private String fileName;
+	private String Fullname;
+	private String Rollnm;
+
         private String userid;
         private String Grade;
         private String feedback;
@@ -345,6 +350,25 @@ public class FileEntry
                 {
                         return fileName;
                 }
+		
+                 public void setFullname(String Fullname)
+                {
+                        this.Fullname=Fullname;
+                }
+                public String getFullname()
+                {
+                        return Fullname;
+                }
+		
+		public void setRollnm(String Rollnm)
+                {
+                        this.Rollnm=Rollnm;
+                }
+                public String getRollnm()
+                {
+                        return Rollnm;
+                }
+
 
                 public void setmarks(String marks)
                 {

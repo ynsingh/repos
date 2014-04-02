@@ -57,6 +57,7 @@ import org.iitk.brihaspati.om.Assignment;
 import org.iitk.brihaspati.om.AssignmentPeer;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;//sunil
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
@@ -74,6 +75,8 @@ import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 	*  @author<a href="nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
 	*  @author<a href="arvindjss17@gmail.com">Arvind Pal</a>
 	*  @author<a href="sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
+	*  <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+	* @modified date: 31-03-2014 (Dewanshu Singh)
 	*/
 
 public class Assignments extends SecureAction
@@ -93,6 +96,7 @@ public class Assignments extends SecureAction
 			String LangFile=data.getUser().getTemp("LangFile").toString();
 			String msg="";			
                         ParameterParser pp=data.getParameters();
+			
 
                         /**
                         * Get courseid  and coursename for the user currently logged in
@@ -102,6 +106,12 @@ public class Assignments extends SecureAction
                         User user=data.getUser();
                         String username=user.getName();
                         String courseid=(String)user.getTemp("course_id","");
+			int userid=UserUtil.getUID(username);
+			// get the full of student 
+                                String Fullname=UserUtil.getFullName(userid);
+                        // Get the roll no of this student              
+                                String Rollnm=CourseProgramUtil.getUserRollNo(username,courseid);
+
 				
 				
                         /**
@@ -337,7 +347,7 @@ public class Assignments extends SecureAction
 							}
 						}
 
-                                        		TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate);     
+                                        		TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate,Fullname,Rollnm);     
 						xmlwriter.writeXmlFile();
 
 //						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
@@ -448,7 +458,7 @@ public class Assignments extends SecureAction
 							fileName1=pp.getString("filename","");
 						}
 					
-						TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName1,username,Grade,Duedate);
+						TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName1,username,Grade,Duedate,Fullname,Rollnm);
 						xmlwriter.writeXmlFile();
 
 //						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
@@ -521,6 +531,11 @@ public class Assignments extends SecureAction
                         /**  Select Role from temp  */
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
+			// get the full of student 
+                                String Fullname=UserUtil.getFullName(userid);
+                        // Get the roll no of this student              
+                                String Rollnm=CourseProgramUtil.getUserRollNo(username,courseid);
+
                         
 			/**
                         * create current Date
@@ -602,7 +617,7 @@ public class Assignments extends SecureAction
                                         //String Duedate=pp.getString("date");
                                         
 					//xmlwriter=new XmlWriter(Assign+"/__file.xml");
-					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date);
+					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date,Fullname,Rollnm);
                                         xmlwriter.writeXmlFile();
 					//msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
 					msg= MultilingualUtil.ConvertedString("assignment_msg5",LangFile);
@@ -654,11 +669,15 @@ public class Assignments extends SecureAction
                         int userid=UserUtil.getUID(username);
                         String str4=Integer.toString(userid);
 
+
                         /**  Get Role id Student or Instructor   */
 
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
-
+			// get the full of student 
+                                String Fullname=UserUtil.getFullName(userid);
+                        // Get the roll no of this student              
+                                String Rollnm=CourseProgramUtil.getUserRollNo(username,courseid);
 
 			/**
                         * create current Date
@@ -738,7 +757,7 @@ public class Assignments extends SecureAction
                                 xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
                                 String Grade="10";
                                 //String Duedate=pp.getString("date");
-                                TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date);
+                                TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date,Fullname,Rollnm);
                                 xmlwriter.writeXmlFile();
 				msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
                                 data.setMessage(msg);
@@ -831,6 +850,11 @@ public class Assignments extends SecureAction
 
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
+			// get the full of student 
+                                String Fullname=UserUtil.getFullName(userid);
+                        // Get the roll no of this student              
+                                String Rollnm=CourseProgramUtil.getUserRollNo(username,courseid);
+
 			/**
                         * create current Date
                         */
@@ -918,7 +942,7 @@ public class Assignments extends SecureAction
                                         }
 
                                         xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__permission.xml",-1);
-                                        TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,DB_subject1,str2,DB_subject,Duedate);
+                                        TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,DB_subject1,str2,DB_subject,Duedate,"","");
                                         xmlwriter.writeXmlFile();	
 					msg= MultilingualUtil.ConvertedString("assignment_msg16",LangFile);
 					data.setMessage(msg);
@@ -1056,7 +1080,7 @@ public class Assignments extends SecureAction
                                 if(reset==true)
                                 {
                                         xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__permission.xml",search);
-                                        TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,DB_subject1,str2,DB_subject,Duedate);
+                                        TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,DB_subject1,str2,DB_subject,Duedate,"","");
                                         xmlwriter.writeXmlFile();
 					msg= MultilingualUtil.ConvertedString("assignment_msg10",LangFile);
 					data.setMessage(msg);
