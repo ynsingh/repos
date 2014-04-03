@@ -206,7 +206,7 @@ var $group_code = 0;
 
 	function get_code($num, $code)
 	{
-			if($num < 9)
+			if($num <= 9)
                 	{
                 		$i = 0;
                        		do{

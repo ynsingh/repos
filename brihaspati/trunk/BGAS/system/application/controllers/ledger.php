@@ -220,7 +220,7 @@ var $username;
 */
         function get_code($num, $code)
         {
-	        if($num < 9)
+	        if($num <= 9)
                 {
         	        $i = 0;
                         do{
