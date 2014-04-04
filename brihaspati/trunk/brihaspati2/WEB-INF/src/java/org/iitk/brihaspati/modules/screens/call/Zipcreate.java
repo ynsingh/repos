@@ -82,8 +82,6 @@ public class Zipcreate extends SecureScreen
 		String Dest = pp.getString("dest_folder", ""); 
 		String courseid=(String)user.getTemp("course_id");
 		SOURCE_FOLDER = TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment/"+Dest);
-		ErrorDumpUtil.ErrorLog("source folder ==== "+SOURCE_FOLDER);
-		ErrorDumpUtil.ErrorLog("destination folder ==== "+Dest);
 		OUTPUT_ZIP_FILE = TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment/"+"/"+Dest+".zip");
 		generateFileList(new File(SOURCE_FOLDER));
    		zipIt(OUTPUT_ZIP_FILE);
@@ -119,22 +117,18 @@ public class Zipcreate extends SecureScreen
 			try
       			{
          			source = SOURCE_FOLDER.substring(SOURCE_FOLDER.lastIndexOf("/") + 1, SOURCE_FOLDER.length());
-				ErrorDumpUtil.ErrorLog("source folder >> "+SOURCE_FOLDER);
       			}
      			catch (Exception e)
      			{
         			source = SOURCE_FOLDER;
      			}
-			ErrorDumpUtil.ErrorLog("source >> "+source);
      			fos = new FileOutputStream(zipFile);
      			zos = new ZipOutputStream(fos);
 
-     			ErrorDumpUtil.ErrorLog("Output to Zip : " + zipFile);
      			FileInputStream in = null;
 
     			for (String file : fileList)
      			{
-				ErrorDumpUtil.ErrorLog("file ==== "+file);
 				String user_name = "";
 				String full_name = "";
 				String roll_no = "";
@@ -142,7 +136,6 @@ public class Zipcreate extends SecureScreen
 		        	Vector Assignmentlist1=new Vector();
 	       		 	topicmetadata=new TopicMetaDataXmlReader(SOURCE_FOLDER+"/__file.xml");
        	 			Assignmentlist1=topicmetadata.getAssignmentDetails();
-				ErrorDumpUtil.ErrorLog("Assignment List ==== "+Assignmentlist1);
         			if(Assignmentlist1!=null)
         			{
    	     				for(int c=0;c<Assignmentlist1.size();c++)
@@ -153,41 +146,34 @@ public class Zipcreate extends SecureScreen
 							String extension = filereader1.substring(filereader1.lastIndexOf(".") + 1, filereader1.length());
 							try{
 							roll_no =((FileEntry) Assignmentlist1.elementAt(c)).getRollnm();
-							ErrorDumpUtil.ErrorLog("Roll no====="+roll_no);
 							if(!roll_no.equals("") && !roll_no.equals(null))
 							{	
 								zipFile_name = roll_no;
-                                                                ErrorDumpUtil.ErrorLog("if rollnmber is not null"+roll_no);
 							}
 							else{
 								full_name =((FileEntry) Assignmentlist1.elementAt(c)).getFullname();
-								ErrorDumpUtil.ErrorLog("if roll number is null"+full_name);	
 								if(!full_name.equals("") && !full_name.equals(null))
 								{
-									ErrorDumpUtil.ErrorLog("if fullname is not null"+full_name);
                                                                         zipFile_name = full_name;
 								}
 								else{
 									user_name =((FileEntry) Assignmentlist1.elementAt(c)).getUserName();	
-									ErrorDumpUtil.ErrorLog("if roll number and full nmae is null"+user_name);
 
 									zipFile_name = user_name;
 								}
 							}
 							}catch(Exception en){
 								user_name =((FileEntry) Assignmentlist1.elementAt(c)).getUserName();    
-                                                                        ErrorDumpUtil.ErrorLog("if roll number and full nmae is null"+user_name);
+                                                                ErrorDumpUtil.ErrorLog("if roll number and full nmae is null"+user_name);
 
                                                                         zipFile_name = user_name;
 							}
 							zipFile_name = zipFile_name + "." +extension;
-							ErrorDumpUtil.ErrorLog("final file name"+zipFile_name);
                 				}
              				}			
         			}
 
         			ZipEntry ze = new ZipEntry(source + File.separator + zipFile_name);
-				ErrorDumpUtil.ErrorLog("File Added : " + zipFile_name);
         			zos.putNextEntry(ze);
         			try
         			{
@@ -206,7 +192,6 @@ public class Zipcreate extends SecureScreen
 
      				zos.closeEntry();
 				fileList.clear();
-     				ErrorDumpUtil.ErrorLog("Folder successfully compressed");
 
 			}
   			catch (Exception ex)

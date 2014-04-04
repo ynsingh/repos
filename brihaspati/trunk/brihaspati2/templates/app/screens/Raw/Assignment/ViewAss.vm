@@ -161,7 +161,7 @@ $!data.getMessage()
                 #foreach($e in $Assignmentlist )
 
                         #if(($e.getAssignmentfile()!= "") && ($stlp == 0))
-			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a> /
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$str1).addPathInfo("filename",$!e.getAssignmentfile())","newWin"); style="text-decoration:none">$brih_assignment </a> 
  			#set ($stlp = $stlp + 1)
                         #end
 
@@ -173,8 +173,11 @@ $!data.getMessage()
 			#set ($stlp = $stlp + 1)
 			#end
 		 #end
+		
 		##downloading assignments
-        <a href="$link.setPage("call,Zipcreate.vm").addPathInfo("dest_folder",$str1)" style="text-decoration:none">$brih_download $brih_assignment</a>
+		#if($studentfilecheck == "ok")
+        		<a href="$link.setPage("call,Zipcreate.vm").addPathInfo("dest_folder",$str1)" style="text-decoration:none">/$brih_download $brih_assignment</a>
+		#end
 	</td></tr> 
 	<tr bgcolor="$ui.menuColor">
 		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name , $brih_full $brih_name , $brih_rollno</b> </td>
