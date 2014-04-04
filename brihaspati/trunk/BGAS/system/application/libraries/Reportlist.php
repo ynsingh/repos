@@ -14,6 +14,7 @@ class Reportlist
 	var $children_groups = array();
 	var $children_ledgers = array();
 	var $counter = 0;
+	//var $check = 0;
 
 	var $dr_total = 0;
         var $cr_total = 0;
@@ -41,6 +42,11 @@ class Reportlist
 		return;
 	}
 
+	/**
+	 * Method for getting previous year's
+	 * database name and other details.
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+	 */
 	function getPreviousYearDetails()
         {
                 $CI =& get_instance();
@@ -222,7 +228,10 @@ class Reportlist
 		}
 	}
 
-	/* Display new Balance Sheet*/
+	/** Method for displaying Balance Sheet
+	 * in MHRD format.
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+	 */
         function new_balance_sheet($c =0)
         {
 		$check = 0;
@@ -232,12 +241,19 @@ class Reportlist
                 $CI->load->model('Setting_model');
                 $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
 
-		if($this->countDigits() == 4 && $this->id != 0 && $this->code > 100){
-			foreach($this->children_groups as $id => $data)
-                	{
-				if($data->countDigits() == 6)
+		if(($this->countDigits() == 4) && ($this->id != 0) && ($this->code > 100)){
+		//	foreach($this->children_groups as $id => $data)
+                //	{
+				//if($data->countDigits() == 6)
+				if($this->name == 'Unrestricted Funds'){
 					$check++;
-                	}
+					//$this->check++;
+				}else{
+					$check = 0;
+                                        //$this->check = 0;
+				}
+	
+                //	}
 
 			echo "<tr class=\"tr-group\">";
                         echo "<td class=\"td-group\">";
@@ -282,12 +298,30 @@ class Reportlist
                         echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
                         echo "</tr>";
 		}elseif($this->countDigits() == 6 && $this->id != 0 && $this->code > 100){
-			$this->counter++;
+//			$this->counter++;
 			echo "<tr>";
                         echo "<td class=\"td-group\">";
                         echo "&nbsp;" .  $this->name;
                         echo "</td>";
+			
+			$CI =& get_instance();
+                        $CI->db->select('parent_id');
+                        $CI->db->from('groups')->where('id', $this->id);
+                        $groups_q = $CI->db->get();
+			$groups= $groups_q->row();
+	                $parent_id = $groups->parent_id;
+
+			$CI =& get_instance();
+                        $CI->db->select('name');
+                        $CI->db->from('groups')->where('id', $parent_id);
+                        $groups_q = $CI->db->get();
+                        $groups= $groups_q->row();
+                        $name = $groups->name;
+			
                         echo "<td class=\"td-group\">";
+			if($name  == 'Unrestricted Funds'){
+			$this->counter++;
+
 			echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
 				//if($c == 2){
 				if($ledger_name == $this->name){
@@ -315,7 +349,7 @@ class Reportlist
                                                         $this->total2 = float_ops($this->total2, -$old_pandl, '+');
                                         }
                         	}
-
+			}
                         echo "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
@@ -325,17 +359,10 @@ class Reportlist
 		foreach ($this->children_groups as $id => $data)
                 {
                         $len = $data->countDigits();
-                        if($len == 4){
-				//if($check == 0)
-                                //	$this->counter++;
-                                $this->counter = $data->new_balance_sheet($this->counter);
-                        }elseif($len == 6){
-                                $this->counter = $data->new_balance_sheet($this->counter);
-				//$this->counter++;
-			}
-                        
+                        $this->counter = $data->new_balance_sheet($this->counter);
+  
                 }
-
+		//}
                 return $this->counter;
         }
 
@@ -347,6 +374,10 @@ class Reportlist
                 return $count;
         }	
 
+	/**
+	 * Supplementary method for calling method: schedule().	
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+	 */
 	function callToOpBalance($year, $name){
                 $credit_total = 0;
                 $debit_total = 0;
@@ -388,8 +419,43 @@ class Reportlist
 
         }
 
-	function calculate_op_balance_naew($year, $name)
+	function calculateOpBalance($year, $name)
         {
+		$CI =& get_instance();
+                $CI->load->model('Ledger_model');
+                if($year == 'new'){
+    	            //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
+                    list($opBal, $optype) = $CI->Ledger_model->get_op_balance($this->id);
+                    $this->opening_balance = $this->opening_balance + $opBal;
+                    if($name == 'schedule'){
+	                    if($optype == 'C')
+        	                    $this->cr_total = $this->cr_total + $opBal;
+                            elseif($optype == 'D')
+                                    $this->dr_total = $this->dr_total + $opBal;
+                    }else
+                    {
+                            if($optype == 'C')
+                                    $this->total = $this->total - $opBal;
+                            elseif($optype == 'D')
+                                    $this->total = $this->total + $opBal;
+                    }
+
+                }elseif($year == 'old'){
+                    //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
+                    list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($this->id);
+                    $this->opening_balance_prev = $this->opening_balance_prev + $opBal;
+                    if($name == 'schedule'){
+                   	 if($optype == 'C')
+                        	 $this->old_cr_total = $this->old_cr_total + $opBal;
+                         elseif($optype == 'D')
+                                 $this->old_dr_total = $this->old_dr_total + $opBal;
+                    }else{
+                         if($optype == 'C')
+                                 $this->total2 = $this->total2 - $opBal;
+                         elseif($optype == 'D')
+                                 $this->total2 = $this->total2 + $opBal;
+                    }
+                }
                 foreach ($this->children_groups as $id => $data)
                 {
                         $this->counter++;
