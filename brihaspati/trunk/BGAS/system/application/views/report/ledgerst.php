@@ -42,10 +42,6 @@
 		echo "</p>";
 		echo form_close();
 	}
-			
-	/* Pagination configuration */
-	if ( ! $print_preview)
-	{
 		if($date1 == '' && $date2 == '')
 		{
 			$from_date = $start_date;
@@ -54,7 +50,10 @@
 		else {
 			$from_date = $date1;
 			$to_date = $date2;
-		}
+		}	
+	/* Pagination configuration */
+	if ( ! $print_preview)
+	{		
 		$this->load->library('pagination');
 		$page_count = (int)$this->uri->segment(4);
 		$page_count = $this->input->xss_clean($page_count);

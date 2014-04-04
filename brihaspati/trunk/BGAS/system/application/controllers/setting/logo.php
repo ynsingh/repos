@@ -28,6 +28,11 @@ class Logo extends Controller {
 	{
 		$this->template->set('page_title', 'Upload Logo');
 		$account_data = $this->Setting_model->get_current();
+		$this->upload_path1= realpath(BASEPATH.'../');
+		if (!is_dir($this->upload_path1 . "/uploads")) {
+		$this->messages->add('Please give Permission to the BGAS directory manually by ru command(chmod 777 ~ BGAS)', 'success');
+		}
+		
 		$this->load->helper('file');
 		/* Form fields */
 		$data['ins_name'] = array(

@@ -405,7 +405,7 @@ var dc = '';
 
 
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                echo form_label('Banificiary Name', 'banif_name');
+                echo form_label('Beneficiary Name', 'banif_name');
                 echo " ";
                 echo "<td>" . form_input($banif_name) . "</td>";
                 echo"</span>";
