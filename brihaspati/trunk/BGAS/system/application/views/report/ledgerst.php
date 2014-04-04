@@ -46,6 +46,15 @@
 	/* Pagination configuration */
 	if ( ! $print_preview)
 	{
+		if($date1 == '' && $date2 == '')
+		{
+			$from_date = $start_date;
+			$to_date = $end_date;
+		}
+		else {
+			$from_date = $date1;
+			$to_date = $date2;
+		}
 		$this->load->library('pagination');
 		$page_count = (int)$this->uri->segment(4);
 		$page_count = $this->input->xss_clean($page_count);
@@ -56,7 +65,7 @@
 		$config['num_links'] = 10;
 		$config['per_page'] = $pagination_counter;
 		$config['uri_segment'] = 4;
-		$config['total_rows'] = (int)$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->count_all_results();
+		$config['total_rows'] = (int)$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('date >=', $from_date)->where('date <=', $to_date)->count_all_results();
 		$config['full_tag_open'] = '<ul id="pagination-flickr">';
 		$config['full_close_open'] = '</ul>';
 		$config['num_tag_open'] = '<li>';
@@ -78,11 +87,10 @@
 		$this->pagination->initialize($config);
 
 	}
-
 	if ($ledger_id != 0)
 	{
 		list ($opbalance, $optype) = $this->Ledger_model->get_op_balance($ledger_id); /* Opening Balance */
-		$clbalance = $this->Ledger_model->get_ledger_balance($ledger_id); /* Final Closing Balance */
+		$clbalance = $this->Ledger_model->get_ledger_balance1($ledger_id); /* Final Closing Balance */
 
 		/* Ledger Summary */
 		echo "<table class=\"ledger-summary\">";
@@ -121,11 +129,12 @@
 			} else {
 				$cur_balance = float_ops($cur_balance, $opbalance, '-');
 			}
-
 			/* Calculating previous balance */
+
 			$this->db->select('entries.id as entries_id, entries.number as entries_number, entries.date as entries_date, entries.entry_type as entries_entry_type, entry_items.amount as entry_items_amount, entry_items.dc as entry_items_dc');
 			$this->db->from('entries')->join('entry_items', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->order_by('entries.date', 'asc')->order_by('entries.number', 'asc')->limit($page_count, 0);
-		
+			$this->db->where('date >=', $from_date);
+			$this->db->where('date <=', $to_date);		
 			$prevbal_q = $this->db->get();
 
 			foreach ($prevbal_q->result() as $row )
@@ -135,18 +144,8 @@
 				else
 					$cur_balance = float_ops($cur_balance, $row->entry_items_amount, '-');
 			}
-
 			/* Show new current total */
 			echo "<tr class=\"tr-balance\"><td colspan=6>Opening</td><td>" . convert_amount_dc($cur_balance) . "</td></tr>";
-		}
-		if($date1 == '' && $date2 == '')
-		{
-			$from_date = $start_date;
-			$to_date = $end_date;
-		}
-		else {
-			$from_date = $date1;
-			$to_date = $date2;
 		}
 		if( $from_date > $to_date )
 		{

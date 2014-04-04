@@ -329,7 +329,7 @@ var $ledgers = array();
 		return $total;
 	}
 
-	/* get ledger balance for selected date */ 
+	/* get ledger balance for selected date in current financial year*/ 
 	function get_ledger_balance1($ledger_id)
 	{
 		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
@@ -365,7 +365,7 @@ var $ledgers = array();
 		}
 	}
 
-	/* get ledger balance for balancesheet in selected date */ 
+	/* get ledger balance for balancesheet in selected date in current financial year */ 
 	function get_balancesheet_ledger_balance($ledger_id)
 	{
 		list ($op_bal, $op_bal_type) = $this->get_op_balance($ledger_id);
@@ -413,6 +413,19 @@ var $ledgers = array();
 			return array(0, "D");
 	}
 
+	function get_op_balance1($ledger_id, $from_date, $to_date)
+	{
+		$this->db->select('a.id, a.date, b.entry_id, b.ledger_id, c.id, c.op_balance, c.op_balance_dc');
+		$this->db->from('entries a, entry_items b, ledgers c')->where('a.id = b.entry_id')->where('b.ledger_id', $ledger_id);
+		$this->db->where('date >=', $from_date);
+		$this->db->where('date <=', $to_date);
+		$op_bal_q = $this->db->get();
+		if ($op_bal = $op_bal_q->row()) {
+			return array($op_bal->op_balance, $op_bal->op_balance_dc);
+		} else {
+			return array(0, "D");
+		}
+	}
 	/* get op_balance of previous year database */
 	function get_prev_year_op_balance($ledger_id)
 	{
@@ -566,28 +579,15 @@ var $ledgers = array();
 		mysql_close($con);
 	}
 
-	/* Return debit total of selected date as positive value */
+	/* Return debit total of selected date in current financial year as positive value */
 	function get_dr_total1($ledger_id)
 	{
-		$year_start = '';
-		$year_end = '';
 		$this->load->library('session');
-		$this->db->from('settings');
-		$detail = $this->db->get();
-		foreach ($detail->result() as $row)
-		{
-			$year_start = $row->fy_start;
-			$year_end = $row->fy_end;
-		}
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
-		$date1 = explode("-",$date1);
-		$from_date = $year_start . "-". $date1[1] . "-" . $date1[2];
-		$date = explode("-",$date2);
-		$to_date = $year_end . "-" . $date[1] . "-" . $date[2];
 		$this->db->select_sum('amount', 'drtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'D');
-		$this->db->where('date >=', $from_date);
-	        $this->db->where('date <=', $to_date);
+		$this->db->where('date >=', $date1);
+	        $this->db->where('date <=', $date2);
 		$dr_total_q = $this->db->get();
 		if ($dr_total = $dr_total_q->row())
 			return $dr_total->drtotal;
@@ -743,29 +743,15 @@ var $ledgers = array();
 		}
 	}
 
-	/* Return credit total of selected date as positive value */
+	/* Return credit total of selected date as positive value in current financial year*/
 	function get_cr_total1($ledger_id)
 	{
-		$year_start = '';
-		$year_end = '';
 		$this->load->library('session');
-		$this->db->from('settings');
-		$detail = $this->db->get();
-		foreach ($detail->result() as $row)
-		{
-			$year_start = $row->fy_start;
-			$year_end = $row->fy_end;
-		}
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
-		$date1 = explode("-",$date1);
-		$from_date = $year_start . "-". $date1[1] . "-" . $date1[2];
-
-		$date1 = explode("-",$date2);
-		$to_date = $year_end . "-" . $date1[1] . "-" . $date1[2];
 		$this->db->select_sum('amount', 'crtotal')->from('entry_items')->join('entries', 'entries.id = entry_items.entry_id')->where('entry_items.ledger_id', $ledger_id)->where('entry_items.dc', 'C');
-		$this->db->where('date >=', $from_date);
-		$this->db->where('date <=', $to_date);
+		$this->db->where('date >=', $date1);
+		$this->db->where('date <=', $date2);
 		$cr_total_q = $this->db->get();
 		if ($cr_total = $cr_total_q->row())
 			return $cr_total->crtotal;
