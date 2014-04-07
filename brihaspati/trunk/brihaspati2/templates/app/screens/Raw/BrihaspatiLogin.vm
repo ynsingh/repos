@@ -106,16 +106,16 @@ $!msg
 &nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")"><a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> #if($lang == "hindi")$brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi")$brih_Of1 #end $brih_reg </b> </a>
 <br>
 	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $RemoteInstitute $brih_list</b></a>
+&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $RemoteInstitute #if($lang == "hindi") $brih_of1 #end $brih_list</b></a>
 <br>
 	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general") style="text-decoration:none"><b>$brih_FAQ #if($lang =="hindi")$brih_Of #end $brih_list</b></a>
+&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general") style="text-decoration:none"><b>$brih_FAQ #if($lang =="hindi" || $lang =="bhojpuri")$brih_Of #end $brih_list</b></a>
 <br>
 	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english") style="text-decoration:none"><b>$brih_parent $brih_reg</b> </a>
+&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_parent $brih_reg</b> </a>
 <br>
 	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_auth $brih_from $brih_bri $brih_server</b> </a>
+&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> #if($lang =="hindi" || $lang =="bhojpuri")$brih_bri $brih_server $brih_from $brih_auth #else $brih_auth $brih_from $brih_bri $brih_server #end</b> </a>
 
 	</td></tr> ## 6, 5
 	</table> ## 4
@@ -378,7 +378,7 @@ $!msg
 <input type=hidden name="flag" value="$flag">
 ##<tr><td></td><td class="lgbt"><img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User") style="text-decoration:none">$brih_forgot $brih_pwd</a></td></tr>
 <tr><td></td><td><img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User") style="text-decoration:none">$brih_forgot $brih_pwd</a></td></tr>
-<tr><td></td><td colspan=4><img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang) style="text-decoration:none">$brih_resend $brih_act $brih_Url</a></td></tr>
+<tr><td></td><td colspan=4><img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang) style="text-decoration:none"> #if($lang =="hindi" || $lang =="gujarati" || $lang == "bhojpuri") $brih_Url $brih_resend #else $brih_resend $brih_act $brih_Url #end </a></td></tr>
 </font>
 </td> </tr> ## 6, 5
 <tr><td colspan=4><span style= "font-size:16px;font-family:Times New Roman;font-weight:bold;">$brih_guestMsg2</span></td></tr>
