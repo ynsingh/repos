@@ -207,16 +207,27 @@ class Cf extends Controller {
 			$data_database_username = $this->input->post('database_username', TRUE);
 			$data_database_password = $this->input->post('database_password', TRUE);
 
+			/* check for database label exist */
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->select('dblable')->from('bgasAccData')->where('dblable', $data_account_label);
+                        if ($db1->get()->num_rows() > 1)
+                        {
+                                $this->messages->add('Account with same label already exists.', 'error');
+                                $this->template->load('admin_template', 'admin/create', $data);
+                                return;
+                        }
+                        $db1->close();
+			/*
 			$ini_file = $this->config->item('config_path') . "accounts/" . $data_account_label . ".ini";
 
-			/* Check if database ini file exists */
+			/* Check if database ini file exists /
 			if (get_file_info($ini_file))
 			{
 				$this->messages->add('Account with same label already exists.', 'error');
 				$this->template->load('template', 'setting/cf', $data);
 				return;
 			}
-
+		*/
 			/* Check if start date is less than end date */
 			if ($data_fy_end <= $data_fy_start)
 			{
@@ -233,35 +244,106 @@ class Cf extends Controller {
 			/* Creating account database */
 			if ($this->input->post('create_database', TRUE) == "1")
 			{
-				$new_link = @mysql_connect($data_database_host . ':' . $data_database_port, $data_database_username, $data_database_password);
-				if ($new_link)
-				{
-					/* Check if database already exists */
-					$db_selected = mysql_select_db($data_database_name, $new_link);
-					if ($db_selected) {
-						mysql_close($new_link);
-						$this->messages->add('Database already exists.', 'error');
-						$this->template->load('template', 'setting/cf', $data);
-						return;
-					}
+				$ini_file = $this->config->item('config_path') . "accounts/sqladmin.ini";
+                                if ( ! get_file_info($ini_file))
+                                {
+                                        $this->messages->add('MySQL settings file label sqladmin.ini does not exists.', 'error');
+                                        $this->messages->add('So you first set the MySQL administrator user name and password.', 'error');
+                                        $this->template->load('admin_template', 'admin/create', $data);
+                                        return;
+                                }
+                                else
+                                {
+                                        $data_sql_accounts = parse_ini_file($ini_file);
+                                        $data_database_admin_username = $data_sql_accounts['sql_admin_name'];
+                                        $data_database_admin_password = $data_sql_accounts['sql_admin_password'];
 
-					/* Creating account database */
-					$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name);
-					if (mysql_query($db_create_q, $new_link))
+					$new_link = @mysql_connect($data_database_host . ':' . $data_database_port, $data_database_admin_username, $data_database_admin_password);
+					if ($new_link)
 					{
-						$this->messages->add('Created account database.', 'success');
-					} else {
-						$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
+						/* Check if database already exists */
+						$db_selected = mysql_select_db($data_database_name, $new_link);
+						if ($db_selected) {
+							mysql_close($new_link);
+							$this->messages->add('Database already exists.', 'error');
+							$this->template->load('template', 'setting/cf', $data);
+							return;
+						}
+						else{
+                                	               $upflag=true;
+                                        	       $eflag=true; $eflag1=true; $eflag2=true;
+	                                               $data_database_name1='mysql';
+        	                                       $db_selected1 = mysql_select_db($data_database_name1, $new_link);
+                	                               /* Check if database user already exists */
+                        	                       $query="select * from user where User='".$data_database_username."'";
+                                	               $result = mysql_query($query);
+                                        	       $num_rows = mysql_num_rows($result);
+//                                              	        $this->$db_selected1->select('*')->from('user')->where('User',$data_database_username);
+	                                               if($num_rows > 0)
+        	                                       {
+                	                               		/* Check with password matched */
+                        	                                $link_me = @mysql_connect($data_database_host . ':' . $data_database_port, $data_database_username, $data_database_password);
+                                	                        if(!$link_me)
+                                        	                {
+	                                        	                $upflag=false;
+                                                        	        mysql_close($new_link);
+                                                                	$this->messages->add('Database user name already exists and password is not matched.', 'error');
+	                                                                $this->template->load('template', 'setting/cf', $data);
+        	                                                        return;
+                	                                         }
+                        	                             //mysql_close($new_link);
+                                	                }
+							if($upflag){
+                                                	                /* Creating account database */
+                                                        	        $db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name).'; ';
+                                                                	$db_create_q1 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@127.0.0.1 IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
+	                                                                $db_create_q2 = 'GRANT ALL ON '. mysql_real_escape_string($data_database_name).'.* TO '. mysql_real_escape_string($data_database_username).'@localhost IDENTIFIED BY "'. mysql_real_escape_string($data_database_password).'"; ';
+        	                                                        if (mysql_query($db_create_q, $new_link))
+                	                                                {
+                        	                                                $eflag=false;
+                                	                                        $this->messages->add('Created new account database.', 'success');
+                                        	                        }
+                                                	                if (mysql_query($db_create_q1, $new_link))
+                                                        	        {
+                                                                	        $eflag1=false;
+                                                                        	$this->messages->add('Granting permission to user to access new database  with local ip.', 'success');
+	                                                                }	
+        	                                                        if (mysql_query($db_create_q2, $new_link))
+                	                                                {
+                        	                                                $eflag2=false;
+                                	                                        $this->messages->add('Granting permission to user to access new database  with local name.', 'success');
+                                        	                        }
+                                                	                if ($eflag ||$eflag1  || $eflag2) {
+                                                        	                mysql_close($new_link);
+                                                                	        $this->messages->add('Error creating account database. ' . mysql_error(), 'error');
+                                                                        	$this->template->load('template', 'setting/cf', $data);
+	                                                                        return;
+        	                                                        }
+                	                                                mysql_close($new_link);
+                        	                        }//end upflag
+                                	        }//end selected db else
+
+				//		}					
+						/* Creating account database */
+	/*					$db_create_q = 'CREATE DATABASE ' . mysql_real_escape_string($data_database_name);
+						if (mysql_query($db_create_q, $new_link))
+						{
+							$this->messages->add('Created account database.', 'success');
+						} else {
+							$this->messages->add('Error creating account database. ' . mysql_error(), 'error');
+							$this->template->load('template', 'setting/cf', $data);
+							return;
+						}
+						mysql_close($new_link);
+*/
+					 }//close if new link
+					 else {
+						$this->messages->add('Error connecting to database. ' . mysql_error(), 'error');
 						$this->template->load('template', 'setting/cf', $data);
 						return;
 					}
-					mysql_close($new_link);
-				} else {
-					$this->messages->add('Error connecting to database. ' . mysql_error(), 'error');
-					$this->template->load('template', 'setting/cf', $data);
-					return;
-				}
-			}
+				} //sql admin ini file else
+			}//create database if not created
 
 			/* Setting database */
 			$dsn = "mysql://${data_database_username}:${data_database_password}@${data_database_host}:${data_database_port}/${data_database_name}";
@@ -389,10 +471,53 @@ class Cf extends Controller {
 					}
 				}
 
-				if ($cf_status)
-					$this->messages->add('Account carried forward.', 'success');
-				else
-					$this->messages->add('Error carrying forward to new account.', 'error');
+				/* Importing budgets values */
+				if ($this->db->table_exists('budgets'))
+				{
+					$this->db->from('budgets')->order_by('id','asc');
+					$budgets_q = $this->db->get();
+					foreach ($budgets_q->result() as $row)
+					{
+						if( ! $newacc->query("INSERT INTO budgets (id, code, group_id, budgetname, bd_balance, type, allowedover, consume_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->code, $row->group_id, $row->budgetname, $row->bd_balance, $row->type, $row->allowedover, '')))
+						{
+							$this->messages->add('Failed to add budgets values ' . $row->budgetname . '.', 'error');
+							$cf_status = FALSE;
+						}
+					}
+				}
+
+				/* Importing payrollsetup details */
+				if ($this->db->table_exists('payrollsetup'))
+				{		
+					$this->db->from('payrollsetup')->order_by('id','asc');
+                                	$payset_q = $this->db->get();
+					if(($payset_q->num_rows()) > 0){
+        	                        	foreach ($payset_q->result() as $row)
+                	        	        {
+                		                        if( ! $newacc->query("INSERT INTO payrollsetup (id, code, budgetname, type) VALUES (?, ?, ?, ?)", array($row->id, $row->code, $row->budgetname, $row->type)))
+        	                	                {
+	                                	                $this->messages->add('Failed to add payrollsetup values ' . $row->budgetname . '.', 'error');
+                                                		$cf_status = FALSE;
+                                        		}
+	                                	}
+					}
+				}
+				/* Importing Secondary unit details */
+				if ($this->db->table_exists('addsecondparty'))
+				{
+					$this->db->from('addsecondparty')->order_by('id','asc');
+                	                $secparty_q = $this->db->get();
+					if(($secparty_q->num_rows()) > 0){
+	                                	foreach ($secparty_q->result() as $row)
+	        	                        {
+        	        	                        if( ! $newacc->query("INSERT INTO addsecondparty (id, sacunit, partyname, mobnum, email, address, permanentaddress, bancacnum, bankname,  branchname, ifsccode, bankaddress, pan, tan, staxnum, partyrole) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", array($row->id, $row->sacunit, $row->partyname, $row->mobnum, $row->email, $row->address, $row->permanentaddress, $row->bancacnum, $row->bankname, $row->branchname, $row->ifsccode, $row->bankaddress, $row->pan, $row->tan, $row->staxnum, $row->partyrole)))
+                	        	                {
+                        	        	                $this->messages->add('Failed to add addsecondparty values ' . $row->partyname . '.', 'error');
+                                	        	        $cf_status = FALSE;
+	                                	        }
+	        	                        }
+					}
+				}
 
 				/* Adding org name unit name year and database name in login database */
 				$date=Date("Y");
@@ -433,12 +558,18 @@ class Cf extends Controller {
                                 }
 				$db1->close();
 
-				/* Adding account settings to file. Code copied from manage controller */
+
+				if ($cf_status)
+					$this->messages->add('Account carried forward.', 'success');
+				else
+					$this->messages->add('Error carrying forward to new account.', 'error');
+/**
+				/* Adding account settings to file. Code copied from manage controller /
 				$con_details = "[database]" . "\r\n" . "db_type = \"" . $data_database_type . "\"" . "\r\n" . "db_hostname = \"" . $data_database_host . "\"" . "\r\n" . "db_port = \"" . $data_database_port . "\"" . "\r\n" . "db_name = \"" . $data_database_name . "\"" . "\r\n" . "db_username = \"" . $data_database_username . "\"" . "\r\n" . "db_password = \"" . $data_database_password . "\"" . "\r\n";
 
 				$con_details_html = '[database]' . '<br />db_type = "' . $data_database_type . '"<br />db_hostname = "' . $data_database_host . '"<br />db_port = "' . $data_database_port . '"<br />db_name = "' . $data_database_name . '"<br />db_username = "' . $data_database_username . '"<br />db_password = "' . $data_database_password . '"<br />';
 
-				/* Writing the connection string to end of file - writing in 'a' append mode */
+				/* Writing the connection string to end of file - writing in 'a' append mode /
 				if ( ! write_file($ini_file, $con_details))
 				{
 					$this->messages->add('Failed to add account settings file. Check if "' . $ini_file . '" file is writable.', 'error');
@@ -446,14 +577,15 @@ class Cf extends Controller {
 				} else {
 					$this->messages->add('Added account settings file to list of active accounts.', 'success');
 				}
-
+*/
 				redirect('setting');
 				return;
 			}
 		}
+		redirect("setting");
 		return;
-	}
-}
+	}//end of Index method
+}//end of class
 
 /* End of file cf.php */
 /* Location: ./system/application/controllers/setting/cf.php */

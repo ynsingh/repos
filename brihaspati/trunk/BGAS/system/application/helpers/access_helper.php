@@ -158,7 +158,6 @@ if ( ! function_exists('check_access'))
 			'print all entry',
 			'email entry',
 			'download entry',
-			'change password',
 		);
 
 		if ( ! isset($user_role))

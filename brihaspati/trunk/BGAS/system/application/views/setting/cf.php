@@ -6,7 +6,7 @@
 	echo "<br />";
 	echo form_input($account_label);
 	echo "<br />";
-	echo "<span class=\"form-help-text\">Example : prashant0708</span>";
+	echo "<span class=\"form-help-text\">Example : bgas14-15</span>";
 	echo "</p>";
 
 	echo "<p>";

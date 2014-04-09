@@ -545,6 +545,8 @@ class Report extends Controller {
         }
 
 	//function schedule($code)
+	// $code is chart of account code 
+	// $count is schedule number
 	function schedule($code, $count)
 	{
 		$this->template->set('schedule', 'true');

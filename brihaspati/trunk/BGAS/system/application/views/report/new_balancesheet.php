@@ -126,7 +126,8 @@
 	        echo "</td>";
 
         	echo "<td>";
-			echo "&nbsp;" . anchor_popup('report/schedule/notes', '22', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+			//echo "&nbsp;" . anchor_popup('report/schedule/notes', '22', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
+			echo "&nbsp;" . anchor_popup('notes', '22', array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
 			//echo "&nbsp;" . anchor('report/new_balancesheet', $count+1, array('title' => 'Notes On Accounts', 'style' => 'color:#000000'));
 	        echo "</td>";
 
