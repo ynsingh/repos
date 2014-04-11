@@ -1,4 +1,13 @@
 <div>
+	<div id="up-row">
+	<div class="settings-container">
+		<div class="settings-title">
+			<?php print '<strong><font size=5>'. "Before Carrying forward the account to next year, make sure that you have set the account type and ledger name for transfer or profit/loss in the account settings.".'</font></strong>';?>
+		</div>
+		<div class="settings-desc">
+		</div>
+	</div>
+	</div>
 	<div id="left-col">
 		<div class="settings-container">
 			<div class="settings-title">

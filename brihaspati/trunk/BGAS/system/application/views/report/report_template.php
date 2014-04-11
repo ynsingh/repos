@@ -47,7 +47,11 @@
 		$from_date = $date1;
 		$to_date = $date2;
 	}
-	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>" . "For the period " . $from_date . " to " . $to_date . "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
+	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>";
+	if(($title != "Balance Sheet")||($page_title != "Balance Sheet MHRD Format")){
+	echo	 "For the period " . $from_date . " to " . $to_date ;
+	}
+	echo  "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
 
 	<?php echo"</table>";?>
 

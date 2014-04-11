@@ -847,6 +847,7 @@ class Entry extends Controller {
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$entry_id = NULL;
 			$uname=$this->session->userdata('user_name');
+			$today = date("Y-m-d H:i:s");
 			$this->db->trans_start();
 			$insert_data = array(
 				'number' => $data_number,
@@ -854,7 +855,7 @@ class Entry extends Controller {
 				'narration' => $data_narration,
 				'entry_type' => $id,
 				'tag_id' => $data_tag,
-				'update_date' => $data_date,
+				'update_date' => $today,
 				'submitted_by' => $uname,
 				'forward_refrence_id' => '0',
 				'backward_refrence_id' => $data_back_refrence

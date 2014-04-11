@@ -221,7 +221,6 @@ class Budget extends Controller {
 					'group_id' => $data_parent_id,
 					'budgetname' => $my_values[1],
                        			'bd_balance' => $data_amount,
-                              		//	'op_balance_dc' => NULL,
                        			'type' => $data_type,
                        			'allowedover' => $data_budget_over,
            	 			);
