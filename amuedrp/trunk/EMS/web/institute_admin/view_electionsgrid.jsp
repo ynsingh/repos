@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.ElectionManager"%>
+<%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.ElectionManager,com.myapp.struts.Voter.*"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -132,8 +132,12 @@ pageContext.setAttribute("Change_Status",Change_Status);
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
 if(rs!=null){
-  Iterator it = rs.iterator();
-
+        Iterator it = rs.iterator();
+        //10 March code
+        String instId = (String)session.getAttribute("institute_id");
+        String voId = (String)session.getAttribute("user_id");
+        int i=0,j=0;
+        //10 March code
    while (it.hasNext()) {
         election = (Election)rs.get(tcount);
         Ob = new StaffDoc ();
@@ -142,12 +146,78 @@ if(rs!=null){
         Ob.setElection_name(election.getElectionName());
         Ob.setManager_id(election.getCreatedBy());
         Ob.setStatus(election.getStatus());
+
+        // 10 March Code
+        if(election.getPublish()!=null && election.getPublish().toString().equalsIgnoreCase("yes"))
+            {
+                Ob.setResult("Result");
+                i++;
+            }
+        else{
+                Ob.setResult("");
+        }
+
+
+        String eleid=election.getId().getElectionId();
+
+        voterDAO voterdao = new voterDAO();
+        VotingProcess vp = voterdao.getVoter(instId, eleid, voId);
+        
+        if(vp!=null){
+            Ob.setCastvote("Voted");
+            j++;
+            Ob.setHyperlink("");
+
+        }
+        else{
+            if(!election.getStatus().equalsIgnoreCase("started"))
+                {
+            Ob.setCastvote("");
+            }
+            else{
+                SetVoter sev=null;
+                System.out.println("enrollment no issss bbbbb   "+voId);
+               
+                StaffDetail stfd=StaffDetailDAO.getStaffDetails2(voId, instId);
+                
+                if(stfd!=null)
+                  {  sev=VoterRegistrationDAO.searchVoterList(instId, eleid, stfd.getEnrollment());}
+               
+        if(sev!=null)
+            {Ob.setCastvote("Cast Vote");
+            j++;
+        }
+        else
+          {  Ob.setCastvote("");}
+            Ob.setHyperlink(request.getContextPath()+"/voting.do?election="+Ob.getElection_id());
+            }
+                
+            
+        }
+        
+
+               // 10 March code
+
        requestList.add(Ob);
         tcount++;
         it.next();
-		     }
+	}
+        // 11 March code
+        if(i!=0){
 
+          pageContext.setAttribute("h_action1","Action");
+        }
+        else{
+        pageContext.setAttribute("h_action1","");
+        }
+        if(j!=0){
 
+          pageContext.setAttribute("h_action2","Action");
+        }
+        else{
+        pageContext.setAttribute("h_action2","");
+        }
+        // 11 March code
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
@@ -265,18 +335,19 @@ else
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
     </column>
-    <column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Results" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
-    </column>
-<column width="10%">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
-    </column>
       <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
+    <column width="10%">
+      <header value="${h_action1}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.result}" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="10%">
+      <header value="${h_action2}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.castvote}" hyperLink="${doc.hyperlink}"  hAlign="left" styleClass="item"/>
+    </column>
+      
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>

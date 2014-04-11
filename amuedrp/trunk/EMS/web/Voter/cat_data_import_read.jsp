@@ -162,6 +162,7 @@ String userid=(String)session.getAttribute("user_id");
 String nameOfTextFile = userid+"log.txt";
 
 String path=(String)session.getAttribute("apppath");
+System.out.println("path isssssssssssssssssssss "+path);
 System.out.println("path is "+path);
 if(path!=null){
 String path1=path.substring(0, path.length()-14);

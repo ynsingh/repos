@@ -204,6 +204,15 @@ function submitForget()
 {
     var buttonvalue="Forget Password";
     document.getElementById("button1").setAttribute("value", buttonvalue);
+    
+        if(document.getElementById("username")!=null)
+            {
+                document.form1.action="<%=request.getContextPath()%>/loginforgetpassword.do";
+            document.form1.submit();
+
+            }
+
+
     return true;
 }
 

@@ -33,6 +33,10 @@ public class ElectionManagerModuleAction extends org.apache.struts.action.Action
             throws Exception {
         List rst,rst1;
         HttpSession session = request.getSession();
+         if(!session.getAttribute("login_role").toString().equalsIgnoreCase("Election Manager"))
+        {
+           return mapping.findForward("failure");
+        }
         String institute_id=(String)session.getAttribute("institute_id");
         String manager_id=(String)session.getAttribute("user_id");
 

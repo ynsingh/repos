@@ -21,7 +21,7 @@ import org.hibernate.transform.Transformers;
  * @author Edrp-04
  */
 public class ElectionManagerDAO {
-     public List VotedVoterList(String institueid,String electionid)
+    public List VotedVoterList(String institueid,String electionid)
     {
     Session session =null;
     List tx = null;
@@ -31,7 +31,7 @@ public class ElectionManagerDAO {
             System.out.println("innnnnnnnnnnnnnnnn");
             String sql="";
 
-            sql = "select i.instituteName As i_institute_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.email AS v_email,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,e.electionName As e_election_name,e.startDate As e_start,e.endDate As e_end FROM Institute i,VoterRegistration v,VotingProcess sv,Election e WHERE   i.id.instituteId=v.id.instituteId and i.id.instituteId=sv.id.instituteId and v.id.instituteId=sv.id.instituteId and v.email=sv.id.voterId  and  sv.Status='Voted' and sv.id.instituteId=e.id.instituteId and sv.id.electionId=e.id.electionId and v.id.instituteId = :instituteId and sv.id.electionId=:electionId";
+            sql = "select i.instituteName As i_institute_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.email AS v_email,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,e.electionName As e_election_name,e.startDate As e_start,e.endDate As e_end FROM Institute i,VoterRegistration v,VotingProcess sv,Election e WHERE   i.id.instituteId=v.id.instituteId and i.id.instituteId=sv.id.instituteId and v.id.instituteId=sv.id.instituteId and v.email=sv.id.voterId  and  sv.Status='Voted' and sv.id.instituteId=e.id.instituteId and sv.id.electionId=e.id.electionId and v.id.instituteId = :instituteId and sv.id.electionId=:electionId Group By(v.email)";
 /*select i.institute_name As i_institute_name,v.voter_name AS v_voter_name,v.gender
 AS v_gender,v.email AS v_email,v.image AS v_image,v.course AS v_course,v.department
 AS v_department,v.enrollment AS v_enrollment FROM institute i,voter_registration v,votingprocess sv

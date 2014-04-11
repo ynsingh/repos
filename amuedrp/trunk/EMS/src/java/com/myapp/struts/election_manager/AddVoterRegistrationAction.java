@@ -173,14 +173,14 @@ public class AddVoterRegistrationAction extends org.apache.struts.action.Action 
                 logindao.insert(login);
                 request.setAttribute("msg", "Voter Successfully Added");
 
-                //block email on 24mar till election of IIT Kanpur completed and must uncommented after that
+                //code commented to block the email on 24 March 2014
 //                obj=new Email(lf.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+lf.getV_name()+"+mailbody+"+userid +" , Password for EMS Login "+admin_password+".\n\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 //                executor.submit(new Runnable() {
 //                        public void run() {
 //                        obj.send();
 //                    }
 //                    });
-                //end of block email on 24mar till election of IIT Kanpur completed and must uncommented after that
+                // code commented to block the email 24 March 2014 for some time
         
        }
         else if(button.equalsIgnoreCase("Change Status") || button.equalsIgnoreCase("UnBlock"))

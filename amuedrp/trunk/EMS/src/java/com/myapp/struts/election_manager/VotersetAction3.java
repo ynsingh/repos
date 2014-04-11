@@ -88,9 +88,9 @@ EO, IITKAA 2012
 
         subRPOTKM="Credentials for voting in "+e1.getElectionName();
 	bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not voted in "+e1.getElectionName()+". Please accept any security certificate presented by the browser. Voting over web portal will close on"+e1.getEndDate()+" IST.\n\n For casting your ballot on web portal, you can click on the following link\n\n"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email=";
-	bodymessRPOTKM11="\n\n or \n\n http://202.141.40.218:8080"+request.getContextPath()+"/voterlogin.do?email=";
+	bodymessRPOTKM11="\n\n or \n\n http://172.26.82.23:8080"+request.getContextPath()+"/voterlogin.do?email=";
 
-        bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at\nhttp://202.141.40.218:8080/EMS\nhttp://educontent.iitk.ernet.in:8080/EMS\nhttps://202.141.40.218:8443/EMS\nhttps://educontent.iitk.ernet.in:8443/EMS\nfor voting. Your login is ";
+        bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at\nhttp://172.26.82.23:8080/EMS\nhttp://educontent.iitk.ernet.in:8080/EMS\nhttps://172.26.82.23:8080/EMS\nhttps://educontent.iitk.ernet.in:8443/EMS\nfor voting. Your login is ";
         bodymessRPOTKM3="\n\nYou are requested to use the latest mail for casting your ballot.\n\n\n\n\n"+username+"\n\nEO,"+e1.getElectionName();
 
 

@@ -12,8 +12,19 @@ if(session.isNew()){
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%
+String role=(String)session.getAttribute("login_role");
 
-<jsp:include page="adminheader.jsp"></jsp:include>
+if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
+   {
+%>
+<jsp:include page="/institute_admin/adminheader.jsp"/>
+<%}else{
+    %>
+    <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%
+}%>
+<%--<jsp:include page="adminheader.jsp"></jsp:include>--%>
  <%
 String msg=(String)request.getAttribute("msg");
 if(msg!=null){

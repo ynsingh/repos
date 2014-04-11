@@ -133,6 +133,29 @@ e.printStackTrace();
         }
         return tx;
 }
+// code on 11 March 2014
+public static StaffDetail getStaffDetails2(String uid,String instituteId){
+ Session session =null;
+    StaffDetail tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM StaffDetail where emailId=:emailId and id.instituteId=:instituteId");
+             query.setString("emailId", uid);
+             query.setString("instituteId", instituteId);
+           tx= (StaffDetail)query.uniqueResult();
+           session.getTransaction().commit();
+        }
+
+    catch(RuntimeException e){
+e.printStackTrace();
+}
+        finally {
+            session.close();
+        }
+        return tx;
+}
+// code on 11 March 2014
 public StaffDetail getStaffDetails1(String staffId,String instituteId){
  Session session =null;
     StaffDetail tx = null;

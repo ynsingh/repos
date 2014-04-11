@@ -555,13 +555,13 @@ System.out.println(login.getUserId());
  
 
 
-// block email on 24mar2014 till election of IIT Kanpur completed and must uncommented after that
+// code commented to block the email 24 March 2014 for some time
 //           mail=new Email(x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for Election Management System (EMS) Login ="+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
 //
 //                    mail.send();
 			//log.add( "\nMail has been send successfully to= "+userid);
                         //session.setAttribute("log",log);
-//end of block email on 24mar2014 till election of IIT Kanpur completed and must uncommented after that
+// code commented to block the email 24 March 2014 for some time
                       }
                       }
    //if Voter list has record of CEO

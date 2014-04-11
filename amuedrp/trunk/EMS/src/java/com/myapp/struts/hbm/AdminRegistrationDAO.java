@@ -528,6 +528,33 @@ public List getAdminDeatilsByUserId(String UserId){
         }
         return obj;
 }
+//code on 11 March 2014
+public static AdminRegistration searchVoterRegistration1(String instituteid,String uid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        AdminRegistration obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(AdminRegistration.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("userId", uid))
+                    .add(Restrictions.eq("instituteId", instituteid)));
+
+            obj= (AdminRegistration) criteria.uniqueResult();
+            session.getTransaction().commit();
+
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
+
+// code on 11 March 2014
  public static AdminRegistration searchVoterRegistration(String instituteid,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AdminRegistration obj=null;

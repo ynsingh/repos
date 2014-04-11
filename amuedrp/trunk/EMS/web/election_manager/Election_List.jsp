@@ -11,7 +11,7 @@ if(session.isNew()){
 <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
 <jsp:include page="/election_manager/login.jsp"/>
-<%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election,com.myapp.struts.utility.*"%>
+<%@page import="com.myapp.struts.Voter.*,com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election,com.myapp.struts.utility.*"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -121,8 +121,11 @@ System.out.println(rs.size());
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
 if(rs!=null){
-  Iterator it = rs.iterator();
-
+        Iterator it = rs.iterator();
+        //10 March code
+        String instId = (String)session.getAttribute("institute_id");
+        String voId = (String)session.getAttribute("user_id");
+        //10 March code
    while (it.hasNext()) {
 
 	election=(Election)rs.get(tcount);
@@ -148,6 +151,53 @@ if(rs!=null){
         Ob.setElection_id(election.getId().getElectionId());
         Ob.setElection_name(election.getElectionName());
         Ob.setStatus(election.getStatus());
+        
+        //10 March code
+        if(election.getPublish()!=null && election.getPublish().toString().equalsIgnoreCase("yes"))
+            {
+            Ob.setResult("Result");
+            }
+        else{
+        Ob.setResult("");
+        }
+
+
+        String eleid=election.getId().getElectionId();
+
+        voterDAO voterdao = new voterDAO();
+        VotingProcess vp = voterdao.getVoter(instId, eleid, voId);
+
+        if(vp!=null){
+            Ob.setCastvote("Voted");
+            Ob.setHyperlink("");
+
+        }
+        else{
+            if(!election.getStatus().equalsIgnoreCase("started"))
+                {
+            Ob.setCastvote("");
+            }
+            else{
+                SetVoter sev=null;
+                 AdminRegistration adr=AdminRegistrationDAO.searchVoterRegistration1(instId, voId);
+                 if(adr!=null)
+                  {   sev=VoterRegistrationDAO.searchVoterList(instId, eleid, adr.getEnrollment());
+
+                  if(sev!=null)
+            {Ob.setCastvote("Cast Vote");}
+        else
+          {  Ob.setCastvote("");}
+            
+            
+                 }
+            Ob.setHyperlink(request.getContextPath()+"/voting.do?election="+Ob.getElection_id());
+            }
+        //Ob.setCastvote("Cast Vote");}
+        //Ob.setHyperlink(request.getContextPath()+"/voting.do?election="+Ob.getElection_id());
+
+        }
+        //10 March code
+
         if(Ob.getStatus().equalsIgnoreCase("under-process"))
             pageContext.setAttribute("votingStatus", "Not-Started");
         else if(Ob.getStatus().equalsIgnoreCase("started"))
@@ -236,6 +286,14 @@ else
       <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}"   hAlign="left" styleClass="item"/>
     </column>
+      <column width="5%">
+      <header value="Vote Cast Till Date" hAlign="left" styleClass="header"/>
+      <item   value="${doc.totalvoted}" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
+      <column width="3%">
+      <header value="View All Voted Voter" hAlign="left" styleClass="header"/>
+      <item   value="PDF" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
 <column width="3%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Update" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
@@ -244,25 +302,7 @@ else
 <column width="3%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
-    </column>
-    <column width="5%">
-      <header value="" hAlign="left" styleClass="header"/>
-      <item   value="Results" hyperLink="${path}/Voter/finalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
-    </column> 
-    
-    
-<column width="5%">
-<header value="" hAlign="left" styleClass="header"/>
-
-   
-      <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
-
-
-  </column>
-      <column width="5%">
-      <header value="" hAlign="left" styleClass="header"/>
-      <item   value="PreferencialResults" hyperLink="${path}/Voter/Preferencialfinalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
-    </column>
+    </column>   
 
       <column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
@@ -283,36 +323,21 @@ else
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Publish Election" hyperLink="${path}/electionview1.do?id=${doc.election_id}&amp;publish='y'"  hAlign="left" styleClass="item"/>
     </column>
-        <column width="5%">
-      <header value="Vote Cast Till Date" hAlign="left" styleClass="header"/>
-      <item   value="${doc.totalvoted}" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+        
+      <column width="5%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="${doc.result}" hyperLink="${path}/Voter/finalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
     </column>
-      <column width="3%">
-      <header value="View All Voted Voter" hAlign="left" styleClass="header"/>
-      <item   value="PDF" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
-    </column>
-       <column width="3%" >
-      <header value=""   hAlign="left" styleClass="header"   />
-   <item>
-      <![CDATA[<a href="/EMS/xmlexport.do?election=${doc.election_id}">XML</a>]]>
-  </item>
 
-    </column>
-   <column width="3%" >
-      <header value=""   hAlign="left" styleClass="header"   />
-   <item>
-      <![CDATA[<a href="/EMS/xlsexport.do?election=${doc.election_id}">XLS</a>]]>
-  </item>
 
-    </column>
-   
-       <column width="5%" >
-      <header value=""   hAlign="left" styleClass="header"   />
-   <item>
-      <![CDATA[<a href="/EMS/csvexport.do?election=${doc.election_id}&amp;export='csv'">CSV</a>]]>
-  </item>
+<column width="5%">
+<header value="" hAlign="left" styleClass="header"/>
 
-    </column>
+
+      <item   value="${doc.castvote}" hyperLink="${doc.hyperlink}"  hAlign="left" styleClass="item"/>
+
+
+  </column>
 
 
  </columns>

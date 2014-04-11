@@ -32,6 +32,7 @@ String id="";
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
+           
             Criteria criteria = session.createCriteria(Election.class);
             Criterion a = Restrictions.eq("id.instituteId", institute_id);
              List tx = null;
@@ -39,7 +40,7 @@ String id="";
 
                 query.setString("instituteid",institute_id);
                 tx= query.list();
-                System.out.println("vvvvvvvvvvvvvvvv "+tx.get(0));
+                System.out.println("bbbbbbbbbbb "+tx.get(0));
            // LogicalExpression le = Restrictions.and(a, b);
                 //Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult())==0?0:Integer.valueOf(tx.get(0).toString());
                  Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult().toString())==0?0:Integer.valueOf(tx.get(0).toString());
@@ -67,6 +68,55 @@ String id="";
         }
  return id;
     }
+
+     public static String returnMaxElectionRuleId1(String institute_id,String election_id,Integer position_id) {
+
+
+        String id="";
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            //Criteria criteria = session.createCriteria(Election.class);
+            //Criterion a = Restrictions.eq("id.instituteId", institute_id);
+             List tx = null;
+            Query query = session.createQuery("select max(cast(id.ruleId as int)) FROM Electionrule  where id.instituteId= :instituteid and id.electionId= :electionId and id.positionId= :positionId");
+
+                query.setString("instituteid",institute_id);
+                query.setString("electionId",election_id);
+                query.setInteger("positionId",position_id);
+                tx= query.list();
+                System.out.println("bbbbbbbb sssssssssss "+tx.get(0));
+           // LogicalExpression le = Restrictions.and(a, b);
+                //Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult())==0?0:Integer.valueOf(tx.get(0).toString());
+                // Integer maxbiblio = Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult().toString())==0?0:Integer.valueOf(tx.get(0).toString());
+
+                //System.out.println("hhhhhhhhhhh "+tx.get(0).toString());
+            ////////////
+           Integer maxbiblio=0;//=Integer.parseInt(tx.get(0).toString());
+          //  System.out.println(maxbiblio);
+           ////////////////
+            if (tx.get(0) == null) {
+                maxbiblio = 1;
+            } else {
+              maxbiblio= Integer.parseInt(tx.get(0).toString());
+                maxbiblio++;
+            }
+
+            id=String.valueOf(maxbiblio);
+            session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+ return id;
+    }
+
+
      public static String returnMaxElectionRuleId(String institute_id,String election_id,Integer position_id) {
 
 

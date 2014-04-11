@@ -250,13 +250,13 @@ var divtag = document.createElement("div");
 l=0;
 function createcriteriaforupdate(posi,iii)
 {
-   // alert("positionid="+posi+","+"dividdd="+iii)
+    <%--alert("positionid="+posi+","+"dividdd="+iii)--%>
   iii++;
  // alert("divid,after increment="+iii);
   
      searchCriteria1(posi,(iii-1));
      
-    // alert("AFTERsearchcriteriacallrulecount"+rulerowcount);
+     //alert("AFTERsearchcriteriacallrulecount"+rulerowcount);
 k=0;
 l=rulerowcount;
 //alert("RULE"+l);
@@ -418,7 +418,7 @@ for(i=0;i<em1.length;i++)
 }
 
 function search1(current,pos_id) {
-   // alert("search1 ,current="+current+"position_id="+pos_id);
+    <%--alert("search1 ,current="+current+"position_id="+pos_id);--%>
     var position = "criteria_name0"+current;
     var position_name = document.getElementById(position).value;
     var electionId = document.getElementById("electionId").value;
@@ -505,19 +505,22 @@ req.open("POST","<%=request.getContextPath()%>/getPosition.do?getElectionId="+el
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
+<%--alert(" hellpp pppppppp  "+electionId);--%>
 return true;
 }
 
 function updatePositions(cartXML)
 {
 
-
 var em = cartXML.getElementsByTagName("positions")[0];
+<%--alert("hellooooooooooo");--%>
+
 var em1 = em.getElementsByTagName("position");
 
-for(iii=0;iii<em1.length;iii++)
+    for(iii=0;iii<em1.length;iii++)
     {
-      //position block creation
+        <%--alert("hello");--%>
+        //position block creation
                 var divtag = document.createElement("div");
                 divtag.id = "position"+iii;
                 divtag.style.backgroundColor = "#D8CEF6";
@@ -528,7 +531,7 @@ for(iii=0;iii<em1.length;iii++)
 
                 divtag.style.marginTop = "5px";
                 divtag.style.marginLeft = "3px";
- var positionname1 = em1[iii].getElementsByTagName("positionname");
+var positionname1 = em1[iii].getElementsByTagName("positionname");
 var positionname = positionname1[0].firstChild.nodeValue;
 var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
 var noofchoice = noofchoice1[0].firstChild.nodeValue;
@@ -544,8 +547,8 @@ var inst = "instruct0"+iii;
 ///alert(iii);
 
                 <%if(!button.equals("View") && !button.equals("Block")){%>
-                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ positionid +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea><input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px"  onclick="createcriteriaforupdate('+positionid+','+iii+');"></td></tr></table>';<%}else{%>
-                           divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea><input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteriaforupdate('+positionid+','+iii+');"></td></tr></table>';<%}%>
+                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text"  Id="position_name0'+iii +'" size="25px"/><input type="hidden"  Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text"  Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ positionid +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea readonly="true" id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea><input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px"  onclick="createcriteriaforupdate('+positionid+','+iii+');"></td></tr></table>';<%}else{%>
+                           divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" readonly="true" Id="position_name0'+iii +'" size="25px"/><input type="hidden" readonly="true" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" readonly="true" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea readonly="true" id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea><%--<input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteriaforupdate('+positionid+','+iii+');">--%></td></tr></table>';<%}%>
                         document.getElementById("position").appendChild(divtag);
           //end of block
 
@@ -949,7 +952,7 @@ function valid(rule_name)
 var k=0;
 var l=0;
 function update_criteria(posi,current1) {
-    
+    current1=current1+1;
    var ele=document.getElementById("position"+posi).getElementsByTagName('input');
 
      pos=ele[1].value;
@@ -981,7 +984,7 @@ if (rule_name.length < 1)
 
 }
 
-
+<%--alert("Rule Name "+rule_name+" election id "+electionId+" Rule id "+rule_id+" position "+pos);--%>
 
 req.onreadystatechange = getReadyStateHandler(req, update2);
 
@@ -1028,8 +1031,10 @@ for(i=0;i<em1.length;i++)
 
 
 function search2(posi,current1) {
-   //alert("position idllllllll="+posi+"current="+current1);
-   
+   <%--alert("position idllllllll="+posi+"current="+current1);--%>
+
+   <%--current1+2;--%>
+   <%--alert("bbbbb");--%>
    var ele=document.getElementById("position"+posi).getElementsByTagName('input');
 
      pos=ele[1].value;
@@ -1038,7 +1043,7 @@ function search2(posi,current1) {
 var c=0;
 
        cn = document.getElementById( "position"+posi ).childNodes;
-  for (var i = current1+1;c<=0; i++)
+  for (var i = current1+2;c<=0; i++)
   {
 
      var list=cn[i].getElementsByTagName('input');
@@ -1054,8 +1059,8 @@ return false;
 
 }
 
-
-
+<%--alert("Rule Name "+rule_name+" election id "+electionId+" Rule id "+rule_id+" position "+pos);--%>
+<%--return false;--%>
 req.onreadystatechange = getReadyStateHandler(req, update4);
 
 req.open("POST","<%=request.getContextPath()%>/UpdateRule.do", true);
@@ -1073,6 +1078,7 @@ req.send("setRule="+rule_name+"&setElectionId="+electionId+"&ruleId="+rule_id+"&
 return true;
 
 }
+
 function update4(cartXML)
 {
    
@@ -1085,9 +1091,15 @@ for(i=0;i<em1.length;i++)
        alert(em1[i].firstChild.nodeValue);
 
     }
+    //line added on 14 March 2014
+    refreshpage();
 }
 
-
+//function added on 14 March 2014
+function refreshpage()
+{
+window.location.reload();
+}
 
 
 
@@ -1142,9 +1154,9 @@ var positionid1 = positionId1[0].firstChild.nodeValue;
 
 
                 <%if(!button.equals("View") && !button.equals("Block")){%>
-                          divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+c +'"  value='+positionname1 +' size="25px"/><input type="hidden" Id="rule_id0'+c +'" value='+positionid1 +' size="25px"/></td><td><input type="button" id="but0'+ c +'" value="<%=resource.getString("update")%>" onclick="update_criteria('+posi+','+ c +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="search2('+posi+','+ c +');"/></td></tr></table><br>';
+                          divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+c +'"  value="'+positionname1 +'" size="25px"/><input type="hidden" Id="rule_id0'+c +'" value="'+positionid1 +'" size="25px"/></td><td><input type="button" id="but0'+ c +'" value="<%=resource.getString("update")%>" onclick="update_criteria('+posi+','+ c +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="search2('+posi+','+ c +');"/></td></tr></table><br>';
                <%}else{%>
-                           divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+c +'"  value='+positionname1 +' size="25px"/><input type="hidden" Id="rule_id0'+c +'" value='+positionid1 +' size="25px"/></td></tr></table><br>';
+                           divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" readonly="true" Id="rule_name0'+c +'"  value="'+positionname1 +'" size="25px"/><input type="hidden" readonly="true" Id="rule_id0'+c +'" value="'+positionid1 +'" size="25px"/></td></tr></table><br>';
                 <%}%>
                         
         //end of block
@@ -1220,9 +1232,11 @@ rulerowcount=em1r.length;
 %>
         </script>
     </head>
-    <body onload="funconLoad()" dir="<%=rtl%>" >
-   <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
-
+    <body onload="funconLoad()" dir="<%=rtl%>">
+        
+        
+            
+            <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
 
    <html:form method="post" action="/createelection" onsubmit="return checkdates()">
        <table align="center" style="font-family: Gill, Helvetica, sans-serif;" width="50%" valign="top" dir="<%=rtl%>">
@@ -1239,7 +1253,9 @@ rulerowcount=em1r.length;
       <%=resource.getString("electionname")%><html:text readonly="<%=read %>" name="DepActionForm" style="width: 295px"  property="electionname" styleId="electionname"/><br><span style="font-size: 12px"><%=resource.getString("nameurelection")%>*</span>
   </td>
          </tr></table></td></tr>
-         <tr><td colspan="2" dir="<%=rtl%>">
+         <tr>
+             <td colspan="2" dir="<%=rtl%>">
+
          <div style="background-color: transparent; border: 2px solid teal">
              <span style="vertical-align: top; margin-left: 20px;">
                  <div style="background-color: teal;width: 100%;color: white" dir="<%=rtl%>"> <%=resource.getString("detail")%>  </div><br><html:textarea readonly="<%=read %>" style="width: 700px;margin-left: 20px;" name="DepActionForm" property="description" styleId="details"/>
@@ -1248,7 +1264,8 @@ rulerowcount=em1r.length;
 
                  <tr><td dir="<%=rtl%>"> <span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationstart")%>: </span><br><span style="font-size: 12px"><%=resource.getString("nomi")%>*</span><br><html:text readonly="true" name="DepActionForm" property="nominationStart"    styleId="Nstart_date"/><a href="javascript:NewCal('Nstart_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td>
              <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("nominationend")%>:</span><br><span style="font-size: 12px"><%=resource.getString("nomic")%> *</span><br><html:text readonly="true" name="DepActionForm" property="nominationEnd"    styleId="Nend_date"/><a href="javascript:NewCal('Nend_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td></tr>
-         <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnystart")%>: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="true" name="DepActionForm" property="scrutnyDate"    styleId="Scr_date"/><a href="javascript:NewCal('Scr_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td>
+            <tr>
+                <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnystart")%>: </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="true" name="DepActionForm" property="scrutnyDate"    styleId="Scr_date"/><a href="javascript:NewCal('Scr_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td>
              <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("scrutnyend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="true" name="DepActionForm" property="scrutnyEndDate"    styleId="Scrend_date"/><a href="javascript:NewCal('Scrend_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td></tr>
         <tr><td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawstrat")%> </span><br><span style="font-size: 12px">  *</span><br><html:text readonly="true" name="DepActionForm" property="withdrawlDate"    styleId="wtd_date"/><a href="javascript:NewCal('wtd_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td>
              <td dir="<%=rtl%>"><span style="font-size: 14px;font-weight: 600"><%=resource.getString("withdrawend")%>:</span><br><span style="font-size: 12px"> *</span><br><html:text readonly="true" name="DepActionForm" property="withdrawlEndDate"    styleId="wtdend_date"/><a href="javascript:NewCal('wtdend_date','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="19" alt="Pick a date"/></a></td></tr>
@@ -1259,11 +1276,11 @@ rulerowcount=em1r.length;
          <tr>
              <td style="vertical-align: top" dir="<%=rtl%>">
              <span style="font-size: 14px;font-weight: 600">Result can be declared by Election Officer after this date and time: </span><br><span style="font-size: 12px">(After voting result will be displayed)*</span><br><html:text readonly="true" name="DepActionForm" property="resultDeclarationDate"    styleId="result_DeclarationDate"/><a href="javascript:NewCal('result_DeclarationDate','ddmmyyyy',true,24)"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" hieght="19" alt="Pick a date"/></a></td>
-
-        </tr>
-
-             </table>
-         </div></td></tr>
+         </tr>
+         </table>
+            </div>
+                </td>
+         </tr>
          <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid teal">
                  <div style="background-color: teal;width: 100%;color: white"><%=resource.getString("position")%>
                  </div>
@@ -1273,7 +1290,7 @@ rulerowcount=em1r.length;
              <div id="criteria" style="width: 950px;">
 
             </div>
-            
+
            <%--new code--%>
         </div></td></tr>
          <tr><td dir="<%=rtl%>">
@@ -1304,8 +1321,8 @@ rulerowcount=em1r.length;
                  </table>
             </td>
          </tr>--%>
-                  
-        
+
+
                  <html:hidden name="DepActionForm" property="status" styleId="status"/>
 <%--
          <%if(request.getAttribute("button").equals("Block")){%>
@@ -1343,6 +1360,7 @@ rulerowcount=em1r.length;
                </td></tr>
        </table>
   </html:form>
+   
     </body>
 </html>
 

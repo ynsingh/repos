@@ -59,29 +59,25 @@ public class VotingAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        HttpSession session = request.getSession();
+         HttpSession session = request.getSession();
         String election =(String) request.getParameter("election");
         String report =(String) request.getParameter("report");
-        String institute_id=(String)session.getAttribute("institute_id");
-        String institute_name =(String)session.getAttribute("institute_name");
-        String path = AppPath.getProjectImagePath();
-        System.out.println("pathImageeeeeeeeeeeee"+path);
-        String postal =(String) request.getParameter("postal");
-        String agm =(String) request.getParameter("agm");
+         String institute_id=(String)session.getAttribute("institute_id");
+         String institute_name =(String)session.getAttribute("institute_name");
+         String path = AppPath.getProjectImagePath();
+         System.out.println("pathImageeeeeeeeeeeee"+path);
+          String postal =(String) request.getParameter("postal");
+              String agm =(String) request.getParameter("agm");
 
         String positions="";
         session.removeAttribute("election_id");
         session.removeAttribute("electionName");
-
-	Election elec11 = ElectionDAO.searchElection(election,institute_id);
-	
-	if(report!=null && elec11.getPublish()!=null && elec11.getPublish().equalsIgnoreCase("yes"))
-//	if(report!=null && elec11.getPublish().equalsIgnoreCase("yes"))
-	
-//        if(report!=null)
+        Election elec11 = ElectionDAO.searchElection(election,institute_id);
+        System.out.println("election status is "+elec11.getPublish()+"     "+report);
+        if(report!=null && elec11.getPublish()!=null && elec11.getPublish().equalsIgnoreCase("yes"))
         {
-            List list;
-            Election elec = ElectionDAO.searchElection(election,institute_id);
+               List list;
+              Election elec = ElectionDAO.searchElection(election,institute_id);
             VotingDAO votingdao= new VotingDAO();
 
             session.setAttribute("election_id", election);
@@ -108,48 +104,53 @@ public class VotingAction extends org.apache.struts.action.Action {
                 System.out.println("totalvotes######"+r);
                 rs.setTotal(String.valueOf(r));
                 finalResult.add(rs);
-                i++;
+            i++;
             }
 
+
+
+
         // String path = servlet.getServletContext().getRealPath("/");
-            JasperCompileManager.compileReportToFile(AppPath.getReportPath()+"ResultReport.jrxml");
+         JasperCompileManager.compileReportToFile(AppPath.getReportPath()+"ResultReport.jrxml");
         // String enroll=lf.getEnrollment();
-            System.out.println("enroll");
-            list=finalResult;
-            if(!list.isEmpty()){
+ System.out.println("enroll");
+        list=finalResult;
+if(!list.isEmpty()){
         // System.out.println(list.get(0)+""+enroll);
-               JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
+         JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
 
-               OutputStream ouputStream = response.getOutputStream();
-               response.setContentType("application/pdf");
+          OutputStream ouputStream = response.getOutputStream();
+           response.setContentType("application/pdf");
 
-               HashMap hash= new HashMap();
-               hash.put("systemdate",dateNow);
-               hash.put("institute_name",institute_name);
-               hash.put("path",path);
-
-               JasperFillManager.fillReportToFile(AppPath.getReportPath()+"ResultReport.jasper",hash,data);
-
-               File file= new File(AppPath.getReportPath()+"ResultReport.jrprint");
-
-               JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
-
-               JRPdfExporter pdf=new JRPdfExporter();
-
-               pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
-               pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, AppPath.getReportPath()+"ResultReport.pdf");
-
-               pdf.exportReport();
-               JRExporter exporter = null;
-               exporter = new JRHtmlExporter();
-               JasperExportManager.exportReportToPdfStream(print, ouputStream);
+         HashMap hash= new HashMap();
+         hash.put("systemdate",dateNow);
+         hash.put("institute_name",institute_name);
+         hash.put("path",path);
 
 
+         JasperFillManager.fillReportToFile(AppPath.getReportPath()+"ResultReport.jasper",hash,data);
+
+         File file= new File(AppPath.getReportPath()+"ResultReport.jrprint");
+
+         JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
+
+         JRPdfExporter pdf=new JRPdfExporter();
+
+         pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
+         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, AppPath.getReportPath()+"ResultReport.pdf");
+
+         pdf.exportReport();
+         JRExporter exporter = null;
+                exporter = new JRHtmlExporter();
+            JasperExportManager.exportReportToPdfStream(print, ouputStream);
 
 
 
- // path=path+"/src/java/com/myapp/struts/circulation/JasperReport";
-           }
+
+
+       path=path+"/src/java/com/myapp/struts/circulation/JasperReport";
+        }
+
         }
         else if( report!=null )
         {

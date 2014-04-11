@@ -26,39 +26,52 @@ public class Email {
 	String path;
 	String buffer;
 	String frmAdd;
-	String starttls;
 	Session session ;
 	MimeMessage message;
 
 	public Email(String to,String password,String subject,String body){
 
-		this.to = to; this.subject=subject;this.text=body;this.path=path;
-		try{
-			String os=(String)System.getProperty("os.name");
-			Properties libmspro = new Properties();
-			path=AppPath.getPropertiesFilePath();
-                        libmspro.load(new FileInputStream(path+"ems.properties"));
-			userid = libmspro.getProperty("webadmin");
-        		buffer = libmspro.getProperty("webpass");
-        		host = libmspro.getProperty("host");
-        		port = libmspro.getProperty("port");
-        		frmAdd = libmspro.getProperty("faddress");
-                        starttls= libmspro.getProperty("starttls");
-			Properties props = System.getProperties();
-        		props.put("mail.smtp.starttls.enable", starttls);
-        		props.put("mail.smtp.host", host);
-        		props.setProperty("mail.transport.protocol", "smtp");
-        		props.put("mail.smtp.user", userid);
-        		props.put("mail.smtp.password",buffer);
-        		props.put("mail.smtp.port", port);
-        		props.put("mail.smtp.auth", "true");
-        		session = Session.getDefaultInstance(props, null);
+		this.to = to; this.subject=subject;this.text=body; this.path=path;
+                Email_Sing proper=Email_Sing.getInstance();
+                Properties props=proper.getEmail_Sing();
+                userid=props.getProperty("mail.smtp.user");
+                buffer=props.getProperty("mail.smtp.password");
+                port=props.getProperty("mail.smtp.port");
+                host=props.getProperty("mail.smtp.host");
+                frmAdd=props.getProperty("frmAdd");
+                session = Session.getDefaultInstance(props, null);
         		message = new MimeMessage(session);
-		}
-		catch (Exception ex) {
-	        	ex.printStackTrace();
-                        UserLog.ErrorLog(ex.getMessage(),"MailSendLog.txt");
-           	}
+                
+
+              
+
+
+                    
+//		try{
+//			String os= (String)System.getProperty("os.name");
+//			Properties libmspro = new Properties();
+//			path=AppPath.getPropertiesFilePath();
+//                        libmspro.load(new FileInputStream(path+"ems.properties"));
+//			userid = libmspro.getProperty("webadmin");
+//        		buffer = libmspro.getProperty("webpass");
+//        		host = libmspro.getProperty("host");
+//        		port = libmspro.getProperty("port");
+//        		frmAdd = libmspro.getProperty("faddress");
+//			Properties props = System.getProperties();
+//        		props.put("mail.smtp.starttls.enable", "true");
+//        		props.put("mail.smtp.host", host);
+//        		props.setProperty("mail.transport.protocol", "smtp");
+//        		props.put("mail.smtp.user", userid);
+//        		props.put("mail.smtp.password",buffer);
+//        		props.put("mail.smtp.port", port);
+//        		props.put("mail.smtp.auth", "true");
+//        		session = Session.getDefaultInstance(props, null);
+//        		message = new MimeMessage(session);
+//		}
+//		catch (Exception ex) {
+//	        	ex.printStackTrace();
+//                        UserLog.ErrorLog(ex.getMessage(),"MailSendLog.txt");
+//           	}
 	}
 
 	public void send(){
@@ -108,7 +121,7 @@ public class Email {
 			transport.connect(host, userid, pass);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
-                        UserLog.ErrorLog("Mail Send "+to,"MailSendLog.txt");
+                        UserLog.ErrorLog("Mail Send "+toAddress,"MailSendLog.txt");
 		} catch (Exception e) {
 			 UserLog.ErrorLog(e.getMessage(),"MailSendLog.txt");
 		}

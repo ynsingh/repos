@@ -9,9 +9,9 @@ import com.myapp.struts.Voting.VoterElectionActionForm;
 import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.SetVoter;
-import com.myapp.struts.instituteAdmin;
-import com.myapp.struts.hbm.voterDAO;
 import com.myapp.struts.hbm.VotingProcess;
+import com.myapp.struts.hbm.voterDAO;
+import com.myapp.struts.instituteAdmin;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,7 +39,8 @@ public class CheckElection extends org.apache.struts.action.Action {
 
 HttpSession session=request.getSession();
 
- // Code will execute after the election end
+
+ // Code start on 9 March 2014
         String instId = (String)session.getAttribute("institute_id");
         String eleid=(String)request.getParameter("election");
         String voId = (String)session.getAttribute("user_id");
@@ -52,12 +53,9 @@ HttpSession session=request.getSession();
             request.setAttribute("msgal",msgal);
             return mapping.findForward("success4");
         }
-
+        
         else{
-// end of comment.
-
-
-
+// Code ended on 9 March 2014
 
 
 session.removeAttribute("election_id");
@@ -84,7 +82,7 @@ if(obj!=null && obj.getStatus().equalsIgnoreCase("started")&& obj.getEndDate().a
   //  System.out.println(election+"..................."+inst+o.getPassword());
 
     if(o!=null){
-        if(o.getStatus()!=null){
+        if(o.getStatus()!=null && !o.getStatus().isEmpty()){
         request.setAttribute("msgerr", "Sorry You are not a valid Voter for this Election");
 
 String role=(String)session.getAttribute("login_role");
@@ -130,8 +128,9 @@ return mapping.findForward("success3");
 
 
 }
-//end condittion braces according to above commit.
-}
+// Code start on 9 March 2014
+    }
+        // Code ended on 9 March 2014
 
     }
 }

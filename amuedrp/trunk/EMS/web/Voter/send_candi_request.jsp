@@ -77,7 +77,7 @@ function updateCast(cartXML)
 var em1 = em.getElementsByTagName("message");
 var text=em1[0].firstChild.nodeValue;
 if(text=="Voter Already voted for this election!"){
-  //  alert(text);
+    alert(text);
 }
     else
 {windload();}

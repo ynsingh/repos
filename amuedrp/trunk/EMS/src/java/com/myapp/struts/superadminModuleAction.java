@@ -26,16 +26,17 @@ public class superadminModuleAction extends org.apache.struts.action.Action {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+             {
         List rst;
         HttpSession session = request.getSession();
-//added date 7march2014
-       if(!session.getAttribute("login_role").toString().equalsIgnoreCase("superadmin"))
+try{
+        if(!session.getAttribute("login_role").toString().equalsIgnoreCase("superadmin"))
         {
            return mapping.findForward("failure");
         }
-         AdminRegistrationDAO admindao = new AdminRegistrationDAO();
 
+         AdminRegistrationDAO admindao = new AdminRegistrationDAO();
+         
           int pageno=Integer.parseInt((String)(request.getParameter("page")==null || request.getParameter("page")=="" ?"0":request.getParameter("page")));
        System.out.println("Page No"+pageno);
 
@@ -80,6 +81,9 @@ test();
                   
         
         return mapping.findForward(SUCCESS);
+        
+    }
+catch(Exception er){return mapping.findForward("failure");}
     }
      void test(){
                   //0123456789012345678901

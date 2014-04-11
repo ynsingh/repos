@@ -43,6 +43,8 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
         {
             System.out.println("Position count="+position.size());
             Iterator itpos = position.listIterator();
+            // below line added on 14 March
+            int check=0;
 
             while(itpos.hasNext())
             {
@@ -56,10 +58,12 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
             positions+="<noofchoice>"+pos.getNumberOfChoice()+"</noofchoice>";
             positions+="<instruction>"+pos.getInstruction()+"</instruction>";
             List<Candidate1> candi = emailDAO.getCandidate(pos.getId().getPositionId(), electionid, instituteId);
+
             if(!candi.isEmpty())
             {
                 System.out.println("candi count="+candi.size());
-                
+                //below line added on 14 March
+                check++;
                 Iterator it = candi.listIterator();
 
                 while(it.hasNext())
@@ -79,11 +83,20 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
                 
             }
             else{
-                System.out.println("in elsesssssssssssssssss");
+                //code on 14 March 2014
+                System.out.println("in elsesssssssssssssssss  "+check);
+                if(check!=0)
+                {
+                System.out.println("in elsessssssss check "+check);
+
+                }else{
+                // code ended
                 positions=null;
                 positions="<positions>";
                 positions+="</positions>";
                 return null;
+                }
+                
             }
                 positions+="</position>";
         }

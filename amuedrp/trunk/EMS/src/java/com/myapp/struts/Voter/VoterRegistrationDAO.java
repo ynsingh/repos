@@ -328,6 +328,7 @@ public void delete(VoterRegistration ca){
         return obj;
     }
 
+    
     public static SetVoter ListofSetVoter(String instituteid,String Enrollment) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         SetVoter obj=null;

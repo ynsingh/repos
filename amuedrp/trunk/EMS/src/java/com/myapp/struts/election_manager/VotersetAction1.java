@@ -110,7 +110,7 @@ EO, IITKAA Elections 2012
         String user_id=(String)session.getAttribute("user_id");
         String username=(String)session.getAttribute("username");
         Election e1=ElectionDAO.searchElection(election, institute_id);
-        bodymessRP4=" \n\n Use this to login into the system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS .\n\n Click on 'cast vote'. Now enter the key sent in the email with subject \"One time key.... \", now choose the candidates for various posts and click on vote now.\n\n YOU NEED NOT TO DO ANYTHING ELSE. OTHER FUNCTIONALITIES ARE BEING DISABLED/USELESS AS OF NOW.\n\n Sorry for inconvenience. Your feedback can be sent on "+user_id+"\n\n"+username+" \nEO, "+e1.getElectionName()+"\n";
+        bodymessRP4=" \n\n Use this to login into the system at http://172.26.82.23:8080/EMS or http://172.26.82.23:8080/EMS .\n\n Click on 'cast vote'. Now enter the key sent in the email with subject \"One time key.... \", now choose the candidates for various posts and click on vote now.\n\n YOU NEED NOT TO DO ANYTHING ELSE. OTHER FUNCTIONALITIES ARE BEING DISABLED/USELESS AS OF NOW.\n\n Sorry for inconvenience. Your feedback can be sent on "+user_id+"\n\n"+username+" \nEO, "+e1.getElectionName()+"\n";
         bodymessOTK3="\n\n If you have lost your login and password, \nemail to "+user_id+"\n\n"+username+"\nEO, "+e1.getElectionName()+"\n";
 
 	String action=loginActionForm.getAction();
