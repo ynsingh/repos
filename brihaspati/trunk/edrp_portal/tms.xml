@@ -2,7 +2,7 @@
 <CATALOG>
   <TMS>
     <NAME>				Project Management System&#13;
-                           swq</NAME>
+                           swq  </NAME>
     <ANAME>&#13;
 				(PMS)&#13;
                         </ANAME>
@@ -15,11 +15,11 @@
                         Document Managing User can share documents for their projects.&#13;
                         n-Level Role Roles can be created upto n-level.&#13;
                         Reporting User can view project report,by project completion,planning or canceled etc..w&#13;
-			                 </INFO>
+			                   </INFO>
     <URL>http://202.141.40.218:8081/PMS/&#13;
                                          </URL>
     <IMG>   &#13;
 				images/home/PMS.jpg&#13;
                         </IMG>
   </TMS>
-</CATALOG>
+<SERVER><URL>http://202.141.40.218:8081/PMS</URL></SERVER></CATALOG>

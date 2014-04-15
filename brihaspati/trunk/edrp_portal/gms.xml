@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CATALOG>
+  <BRIH>
+    <NAME>Grant Management System (GMS)  </NAME>
+    <ANAME>&#13;
+</ANAME>
+    <INFO>Base version of MGMS is available online&#13;
+&#13;
+N-level project and fund allocations; details of grant period, fund allocation, and allows online submission of utilization certificate.&#13;
+&#13;
+Any institute may register for these services.   &#13;
+Base version of MGMS is available online&#13;
+&#13;
+N-level project and fund allocations; details of grant period, fund allocation, and allows online submission of utilization certificate.&#13;
+&#13;
+Any institute may register for these services.   </INFO>
+    <URL>http://202.141.40.218:8081/gms-0.1 </URL>
+    <IMG>&#13;
+images/home/gms.png&#13;
+</IMG>
+  </BRIH>
+<SERVER><URL>http://202.141.40.218:8081/gms-0.1</URL></SERVER></CATALOG>

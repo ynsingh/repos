@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CATALOG>
+  <BRIH>
+    <NAME>Brihaspati Sync </NAME>
+    <ANAME>&#13;
+</ANAME>
+    	<INFO> Brihaspatisync is a platform-independent highly scalable live lecture delivery and interaction tool for holding live classroom sessions over internet using both multicast and unicast technology.&#13;
+&#13;
+The Brihaspatisync is built using java as standalone application. There are five basic components in this system. The server module manage the authentication process, allocation  and deallocation of multicast IP address. It uses MySQL database which is shared with Brihaspati (The virtual class room). consequently, the instructor, student logins and  passwords are across both the tools. </INFO>
+    	<URL>https://202.141.40.216:8443/brihaspatisync_client/jnlp/brihaspatisync.jnlp</URL>
+    	<IMG>&#13;
+images/home/brihsync.png&#13;
+	</IMG>
+  	</BRIH>
+	</CATALOG>

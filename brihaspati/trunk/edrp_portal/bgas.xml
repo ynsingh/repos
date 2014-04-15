@@ -2,17 +2,17 @@
 <CATALOG>
   <BGAS>
     <NAME>				Brihaspati Genral Accounting System&#13;
-		           </NAME>
+		                  </NAME>
     <ANAME>&#13;
 				(BGAS)&#13;
 			</ANAME>
     <INFO>				 BGAS is standard integrated accounting and genral ledger system. It is composed of a set of a module that correspond to the main business function of accounting management&#13;
 				 modules include Genral , Ledger Accounts, Payable Acounts, Fixed and Personal Assets.&#13;
-			   wa</INFO>
+			     </INFO>
     <URL>				http://202.141.40.215/~brihaspati/BGAS/index.php/user/login&#13;
 			            </URL>
     <IMG>&#13;
 				images/home/BGAS.jpg&#13;
 			</IMG>
   </BGAS>
-</CATALOG>
+<SERVER><URL>http://202.141.40.215/~brihaspati/BGAS/index.php/user/login</URL></SERVER><SERVER><URL>http://202.141.40.215/~brihaspati/BGAS/index.php/user/login</URL></SERVER></CATALOG>

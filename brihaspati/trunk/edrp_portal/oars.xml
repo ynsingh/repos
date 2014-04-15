@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CATALOG>
+  <BRIH>
+    <NAME>Online Admission and Course Registration System (OARS)  </NAME>
+    <ANAME>&#13;
+</ANAME>
+    <INFO> Online admission and Course Registration System is designed to handel the Admission and Course resgistraions of students by Online. The system provied an easy and user friendly environment .This is an easy, quick and integrated system that saves a significant amount of time and effort   </INFO>
+    <URL>http://202.141.40.215:8080/brihaspati/servlet/oars                             </URL>
+    <IMG>&#13;
+images/home/oals.png&#13;
+</IMG>
+  </BRIH>
+<SERVER><URL>http://172.27.82.19</URL></SERVER></CATALOG>

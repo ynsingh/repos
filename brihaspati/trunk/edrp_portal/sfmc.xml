@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CATALOG>
+  <BRIH>
+    <NAME>Student Fee Management System(SFMS)</NAME>
+    <ANAME>&#13;
+</ANAME>
+    <INFO>                                 Computerized the manually operated System.&#13;
+ This system incorporates GUI technology that enables users for easy working on this module.&#13;
+ This is an easy, quick and integrated system     that saves a significant amount of time and effort.&#13;
+ One can assign fee heads to different structure and customize its properties like calculation basis, calculation type etc. &#13;
+ Various fees related reports will be generated from this module.&#13;
+ </INFO>
+    <URL>http://202.141.40.215:8080/sfmc   </URL>
+    <IMG>&#13;
+images/home/sfm.png&#13;
+</IMG>
+  </BRIH>
+<SERVER><URL>http://202.141.40.215:8080/sfmc </URL></SERVER></CATALOG>

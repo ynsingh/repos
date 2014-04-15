@@ -182,78 +182,85 @@ else
 					<tr>
 						<td colspan="2">
 							
-								<div id="myImageFlow" class="imageflow" style="width:890px; _margin-bottom:-20px;">
-									<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />		
-                                    <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
-									<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
-									<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />
-                                    <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
-                                    <!--<img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->
-                                    <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
-                                    <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />	
-                                    <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
-                                     <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
-									
-									<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
-                                    <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
-									<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
-									<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />
-                                    <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
-                                    <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" />	-->
-									<img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
-                                    <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
-                                    <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
-                                     <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
-                                    
-									<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
-                                    <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
-									<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
-									<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />	
-                                   <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
-                                   <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->
-                                   <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
-                                   <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
-                                   <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
-                                    <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
-									
-									<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
-                                    <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
-									<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
-									<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />	
-                                    <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
-                                    <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->	
-                                    <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
-                                    <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
-                                    <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
-                                     <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
-									
-									<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
-                                    <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
-									<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
-									<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />	
-                                    <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
-                                    <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->
-                                    <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
-                                    <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
-                                    <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
-                                     <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
-								</div>   
-
-							</div>
-						</td>
-					</tr>
-					
-										</table>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
+				<div id="myImageFlow" class="imageflow" style="width:890px; _margin-bottom:-20px;">
+				<img src="images/home/sfm.png" border="0" usemap="#MapZinnov4" />		
+				<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />		
+				<img src="images/home/oals.png" border="0" usemap="#MapZinnov2" />		
+                                <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
+				<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
+				<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />
+                                <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
+                                <!--<img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->
+                                <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
+                                <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />	
+                                <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
+				<img src="images/home/brihsync.png" border="0" usemap="#MapZinnov3" />		
+                                <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
+                                <img src="images/home/gms.png" border="0" usemap="#Map13" />
+				<img src="images/home/sfm.png" border="0" usemap="#MapZinnov4" />		
+				<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
+				<img src="images/home/oals.png" border="0" usemap="#MapZinnov2" />
+                                <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
+				<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
+				<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />
+                                <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
+                                <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" />	-->
+				<img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
+                                <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
+                                <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
+				<img src="images/home/brihsync.png" border="0" usemap="#MapZinnov3" />		
+                                <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
+                                <img src="images/home/gms.png" border="0" usemap="#Map13" />
+				<img src="images/home/sfm.png" border="0" usemap="#MapZinnov4" />		
+        			<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
+        			<img src="images/home/oals.png" border="0" usemap="#MapZinnov2" />
+                                <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
+				<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
+				<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />	
+                                <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
+                                <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->
+                                <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
+                                <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
+                                <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
+				<img src="images/home/brihsync.png" border="0" usemap="#MapZinnov3" />		
+                                <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
+                                <img src="images/home/gms.png" border="0" usemap="#Map13" />
+				<img src="images/home/sfm.png" border="0" usemap="#MapZinnov4" />		
+				<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
+        			<img src="images/home/oals.png" border="0" usemap="#MapZinnov2" />
+                                <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
+				<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
+				<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />	
+                                <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
+                                <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->	
+                                <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
+                                <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
+                                <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
+				<img src="images/home/brihsync.png" border="0" usemap="#MapZinnov3" />		
+                                <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
+                                <img src="images/home/gms.png" border="0" usemap="#Map13" />
+				<img src="images/home/sfm.png" border="0" usemap="#MapZinnov4" />		
+				<img src="images/home/PICO.jpg" border="0" usemap="#MapZinnov" />
+        			<img src="images/home/oals.png" border="0" usemap="#MapZinnov2" />
+                                <img src="images/home/BRIHASPATI.jpg" border="0" usemap="#Map5c" />		
+				<img src="images/home/LMS.jpg" border="0" usemap="#Map3" />										
+				<img src="images/home/EMS.jpg" border="0" usemap="#Map5" />	
+                                <img src="images/home/BGAS.jpg" border="0" usemap="#Map5d" />
+                                <!-- <img src="/images/home/oil-slide.jpg" border="0" usemap="#Map8" /> -->
+                                <img src="images/home/EMS.jpg" border="0" usemap="#Map9" />
+                                <img src="images/home/LMS.jpg" border="0" usemap="#Map10" />
+                                <img src="images/home/PMS.jpg" border="0" usemap="#Map11" />
+				<img src="images/home/brihsync.png" border="0" usemap="#MapZinnov3" />		
+                                <img src="images/home/TMS.jpg" border="0" usemap="#Map12" />
+                                <img src="images/home/gms.png" border="0" usemap="#Map13" />
+				</div>   
+				</div>
 				</table>
-			</td>
-		</tr>
-		
-</table>
+				</td>
+				</tr>
+				</table>
+				</td>
+				</tr>
 
 <map name="Map3" id="Map3">
 <area shape="rect" coords="18,306,144,347" href="http://202.141.40.218:8080/LibMS/" / alt="Library Management System" title="Library Management System">
@@ -271,6 +278,15 @@ else
 </map>
 <map name="MapZinnov" id="MapZinnov">   
    <area shape="rect" coords="21,251,127,301"  href="http://202.141.40.218:8080/pico/Administration/Index.action" alt="Purchase and Inventory Control System" title="Purchase and Inventory Control System" target="_blank"/>  
+</map>
+<map name="MapZinnov2" id="MapZinnov2">
+   <area shape="rect" coords="21,251,127,301"  href="http://180.149.53.46:8084/CMS" alt="Online Admission and Course Registration System" title="Online Admission and Course Registration System" target="_blank"/>
+</map>
+<map name="MapZinnov3" id="MapZinnov3">
+   <area shape="rect" coords="19,317,109,367"  href="https://202.141.40.216:8443/brihaspatisync_client/" alt="Brihaspati_Sync" title="Brihaspati_Sync" target="_blank"/>
+</map>
+<map name="MapZinnov4" id="MapZinnov4">
+   <area shape="rect" coords="11,275,114,306"  href="https://202.141.40.215:8443/studentfeesmgms/" alt="SFMC" title="SFMC" target="_blank"/>
 </map>
 <map name="Map5d" id="Map5d">
   <area shape="rect" coords="14,311,119,361" href="http://202.141.40.215/~brihaspati/BGAS/index.php/user/login"  target="_blank" alt="Brihaspati Genral Accounting System" title="Brihaspati Genral Accounting System"/>
@@ -290,7 +306,9 @@ else
 <map name="Map12" id="Map12">
   <area shape="rect" coords="17,278,109,306" href="http://202.141.40.218:8081/PayrollSys/" target="_blank" alt="Payroll and Tax Management System" title="Payroll and Tax Management System" />
 </map>
-
+<map name="Map13" id="Map13">
+  <area shape="rect" coords="17,278,109,306" href="http://202.141.40.218:8081/PayrollSys/" target="_blank" alt="Grant management System" title="Grant management System"" />
+</map>
 </div></div>
 <div id="footer">
 <p>
