@@ -24,32 +24,7 @@ $(document).ready(function() {
 </script>
 </head>
 <body> 
-<?php
-	if ( ! $print_preview)
-	{	
-		echo form_open('report/balancesheet/');
-		echo "<p>";
-		echo "<span id=\"tooltip-target-1\">";
-		echo form_label('Entry Date From', 'entry_date1');
-		echo " ";
-		echo form_input_date_restrict($entry_date1);
-		echo "</span>";
-		echo "<span id=\"tooltip-content-1\">Date format is " . $this->config->item('account_date_format') . ".</span>";
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo "<span id=\"tooltip-target-2\">";
-		echo form_label('To Entry Date', 'entry_date2');
-		echo " ";
-		echo form_input_date_restrict($entry_date2);
-		echo "</span>";
-		echo "<span id=\"tooltip-content-2\">Date format is " . $this->config->item('account_date_format') . ".</span>";
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";?>
-		<input type='submit' value="GET" id='register_submit'>
-		<?php echo "</p>";
-		echo form_close();
-	 }
-?>
+
 <?php
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
@@ -62,7 +37,10 @@ $(document).ready(function() {
 		$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
 	}
 	else {
-		echo "<table border=0>";
+		if( $print_preview)
+		echo "<table border=0 align=\"center\">";
+		else
+		echo "<table border=0 >";
 		echo "<tr valign=\"top\">";
 		//echo "<tr>";
 		$liability = new Reportlist();

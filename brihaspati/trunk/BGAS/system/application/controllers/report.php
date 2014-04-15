@@ -42,6 +42,7 @@ class Report extends Controller {
 		$this->template->set('nav_links', array('report/download/balancesheet' => 'Download CSV', 'report/printpreview/balancesheet' => 'Print Preview'));
 		$data['left_width'] = "550";
 		$data['right_width'] = "550";
+                $data['print_preview'] =FALSE;
 		$page_count = " ";
 
 		/* Form fields */ 
@@ -57,28 +58,9 @@ class Report extends Controller {
 			$default_start .= date('Y') - 1;
 			$default_end .= date('Y');
 		}
-		$data['entry_date1'] = array(
-			'name' => 'entry_date1',
-			'id' => 'entry_date1',
-			'maxlength' => '11',
-			'size' => '11',
-			'value' => $default_start,
-		);
-		$data['entry_date2'] = array(
-			'name' => 'entry_date2',
-			'id' => 'entry_date2',
-			'maxlength' => '11',
-			'size' => '11',
-			'value' => date_today_php(),
-		);
-                $data['print_preview'] =FALSE;
-		
-		$data_date1 = $default_start;
-                $data_date2 = $default_end;
-
-                $date=explode("/",$data_date1);
+		$date=explode("/",$default_start);
                 $date1=$date[2]."-".$date[1]."-".$date[0];
-                $date=explode("/",$data_date2);
+                $date=explode("/",$default_end);
                 $date2=$date[2]."-".$date[1]."-".$date[0];
 
                 $newdata = array(
@@ -86,43 +68,6 @@ class Report extends Controller {
                       'date2'  => $date2
                      );
                 $this->session->set_userdata($newdata);
-
-		/* Repopulating form */
-
-		if ($_POST)
-		{
-			$data['entry_date1']['value'] = $this->input->post('entry_date1', TRUE);
-			$data['entry_date2']['value'] = $this->input->post('entry_date2', TRUE);		
-		} 
-		/* Form validations */
-
-                $this->form_validation->set_rules('entry_date1', 'Entry Date From', 'trim|required|is_date|is_date_within_range');
-                $this->form_validation->set_rules('entry_date2', 'To Entry Date', 'trim|required|is_date|is_date_within_range');
-
-		/* Validating form */
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->messages->add(validation_errors(), 'error');
-			$this->template->load('template', 'report/balancesheet', $data);
-			return;
-		}
-		else
-		{
-			$data_date1 = $this->input->post('entry_date1', TRUE);
-			$data_date2 = $this->input->post('entry_date2', TRUE);
-
-			$date=explode("/",$_POST['entry_date1']);
-			$date1=$date[2]."-".$date[1]."-".$date[0];
-			$date=explode("/",$_POST['entry_date2']);
-			$date2=$date[2]."-".$date[1]."-".$date[0];
-
-			$newdata = array(
-	                   'date1'  => $date1,
-        	           'date2'  => $date2
-	                );
-			$this->session->set_userdata($newdata);
-		}
-
 		$this->template->load('template', 'report/balancesheet', $data);
 		return;
 	}
@@ -144,8 +89,172 @@ class Report extends Controller {
                 $newdata = array(
                         'budget_over'=>$data,
                         );
-                $this->session->set_userdata($newdata);
-                $this->template->load('template', 'report/depreciation', $data);
+                $this->session->set_userdata($newdata);	
+		// code for searching a given text
+		$text = '';
+		$data['search'] = '';
+		$data['gross_expense_list_q'] = '';
+		$data['user_data'] = '';
+		$fy_start = '';
+		$fy_end = '';
+		if (date('n') > 3)
+		{
+			$fy_start = date('Y');
+			$fy_end = date('Y') + 1;
+		} else {
+			$fy_start = date('Y') - 1;
+			$fy_end = date('Y');
+		}
+		$data['search_by'] = array(
+			"Select" => "Select",
+                        "ERPMIM_Item_Brief_Desc" => "Asset Name",
+                        "IRD_WEF_Date"=> "Date of Purchase",
+			"total_cost" => "Total Cost",
+			"dep_amount" => "Dep.Amount",
+			"curr_value" => "Current Value",
+                );
+		$data['search_by_active'] = '';
+
+		$data['text'] = array(
+			'name' => 'text',
+			'id' => 'text',
+			'maxlength' => '100',
+			'size' => '40',
+			'value' => '',
+		);
+		if ($_POST)
+		{
+			$data['search_by_active']['value'] = $this->input->post('search_by', TRUE);
+			$data['text']['value'] = $this->input->post('text', TRUE);
+		}
+		/* Form validation */
+
+		$this->form_validation->set_rules('search_by', 'Search By', 'trim|required');
+		$this->form_validation->set_rules('text', 'Text', 'trim|required');
+		/* Validating form */
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'report/depreciation', $data);
+			return;
+		}
+		else
+		{
+			$data_search_by = $this->input->post('search_by', TRUE);
+			$data_text = $this->input->post('text', TRUE);
+		}
+		if(gmp_sign($data_text) == -1) {
+			$this->messages->add('Text should be a positive value.', 'error');
+			redirect('report/depreciation');
+		}
+	
+		if($data_search_by == "total_cost" || $data_search_by == "dep_amount" || $data_search_by == "curr_value") {
+			if(! is_numeric($data_text)) {
+				$this->messages->add('Please enter numeric value.', 'error');
+				redirect('report/depreciation');
+			}
+		}
+		if($data_search_by == "IRD_WEF_Date") {
+			$search_text = $data_text;
+			// if date is single digit
+			if(ctype_digit($data_text)) {
+				$field = $data_search_by . '      ' . 'LIKE';
+			}
+			else {
+				$date=explode('-', $data_text);
+				// if date format is yy-mm-dd only
+				if(count($date)>1) {
+				// if date contain two digit
+					if(count($date) == '2') {
+						//text is in mm-dd 
+						if(strlen($date['0']) == 2) {
+							// if month is character
+							if(ctype_alpha($date[0])) {
+								if(strtotime($date[0])) {
+									$month = $date[0];
+									$x = date('m', strtotime($month));
+									$data_text = $x . "-" . $date[1];
+									$field = $data_search_by . '      ' . 'LIKE';
+								}
+								else {
+									$this->messages->add('Invalid Month.', 'error');
+									redirect('report/depreciation');
+								}
+							}
+							// if month is digit
+							else if(ctype_digit($date['0'])) {
+							// if month is valid or not
+								if("1" <= $date['0'] && $date['0'] <= "12") {
+									$field = $data_search_by . '      ' . 'LIKE';
+									$data_text = $date[0]. "-" . $date[1];
+								}
+								else {
+									$this->messages->add('Invalid Month.', 'error');
+									redirect('report/depreciation');
+								}
+							}
+							// if date is invalid
+							else {
+								$this->messages->add('Invalid date format. Please enter date in yy-mm-dd format.', 'error');
+								redirect('report/depreciation');
+							}
+						}
+						//text is in yy-mm 
+						if(strlen($date['0']) == 4) {
+							if($date['0'] == $fy_start || $date['0'] == $fy_end) {
+								$data_text = $date['0']."-".$date['1'];
+							}
+							else {
+								$this->messages->add($data_text . ' does not exist in financial year.', 'error');
+								redirect('report/depreciation');
+							}
+						}
+					}
+					// if date contain three digit
+					if(count($date) == '3') {
+						$date0 = $date['0'];
+						$x = $date['1'];
+						$date2 = $date['2'];
+						//it converts month name to digit
+						if(ctype_alpha($date['1'])) {
+							$month = $date['1'];
+							$x = date('m', strtotime($month));
+							$data_text = $date[0]. "-" . $x . "-" . $date[2];
+						}
+						$data_text = $date0. "-" . $x . "-" . $date2;
+						//check for date is valid or not
+						$valid_date = checkdate($x,$date2,$date0);
+						if($valid_date == 'true') {
+						//check date is exist in financial year or not
+							if($date0 == $fy_start || $date0 == $fy_end) {
+								$data_text = $date2."-". $x ."-".$date0;
+							}
+							else {
+								$this->messages->add($data_text . ' does not exist in financial year.', 'error');
+								redirect('report/depreciation');
+							}
+						}
+						else {
+							$this->messages->add($data_text . ' is invalid date.', 'error');
+							redirect('report/depreciation');
+						}	
+					}
+				}
+				else {
+					$this->messages->add('Invalid date format. Please enter date in yy-mm-dd format.', 'error');
+					redirect('report/depreciation');
+				}
+			}
+		}
+		$newrange = array(
+                        'search'=>$data_search_by,
+                        'text'=>$data_text
+                        );
+                $this->session->set_userdata($newrange);	
+		$data['search'] = $data_search_by;
+		//$data['text'] = $data_text;
+		$this->template->load('template', 'report/depreciation', $data);
                 return;
         }
 
@@ -781,7 +890,6 @@ class Report extends Controller {
 		{
 			$default_start .= date('Y');
 			$default_end .= date('Y') + 1;
-
 		} else {
 			$default_start .= date('Y') - 1;
 			$default_end .= date('Y');
@@ -1756,6 +1864,8 @@ class Report extends Controller {
 		$date1 = $this->session->userdata('date1');
 		$date2 = $this->session->userdata('date2');
 		$code = $this->session->userdata('code');
+		$search = $this->session->userdata('search');
+		$text = $this->session->userdata('text');
 		$count = $id;
 		/********************** TRIAL BALANCE *************************/
 		if ($statement == "trialbalance")
@@ -1797,13 +1907,19 @@ class Report extends Controller {
 
 		if ($statement == "depreciation")
                 {
-                       $data['report'] = "report/depreciation";
-                       $data['title'] = "Depreciation Of Assets";
-                       $data['print_preview'] = TRUE;
-                       $data['left_width'] = "";
-                       $data['right_width'] = "";
-                       $this->load->view('report/report_template', $data);
-                       return;
+			$field = $search . '      ' . 'LIKE';
+                        $data['report'] = "report/depreciation";
+                        $data['title'] = "Depreciation Of Assets";
+                        $data['print_preview'] = TRUE;
+                        $data['left_width'] = "";
+                        $data['right_width'] = "";
+                        $data['search'] = $search;	
+                        $data['text'] = $text;			
+                        $data['field'] = $field;					
+                        $this->load->view('report/report_template', $data);
+			$this->session->unset_userdata('search');
+			$this->session->unset_userdata('text');
+                        return;
                 }
 
 		if ($statement == "paymentreceipt")

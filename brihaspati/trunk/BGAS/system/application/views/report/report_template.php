@@ -4,10 +4,13 @@
 
 	<?php 
 		echo "<tr valign=\"top\">";
-		echo "<table border='0' cellpadding='3'class=\"simple-table report-table\" width=\"70%\">";
-
+		if($title == "Balance Sheet" || $title == "Payment & Receipt" || $title == "Income And Expenditure Statement"){
+		echo "<table border='0' cellpadding='5'class=\"simple-table report-table\" width=\"100%\" align=\"center\">";
+		}
+		else
+		echo "<table border='0' cellpadding='5'class=\"simple-table report-table\" width=\"70%\">";
 		echo "<tr><td align=\"left\">";
-		 $this->db->select('id, name')->from('settings');
+		$this->db->select('id, name')->from('settings');
                 $ins_id = $this->db->get();
                 foreach( $ins_id->result() as $row)
                 {
@@ -23,7 +26,7 @@
                                 $my_values = explode('.',$row2);
                                 if($my_values[0] == $row1)
                                 {
-                                echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+                                	echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
                                 }
                         }
                 }
@@ -48,7 +51,8 @@
 		$to_date = $date2;
 	}
 	echo $this->config->item('account_name'); ?><br><?php echo $this->config->item('account_address') . "</td>"; ?><?php echo "<td align=\"center\" class=\"bold\" >" . "<h2>" . $title . "</h2><br>";
-	if(($title != "Balance Sheet")||($page_title != "Balance Sheet MHRD Format")){
+
+	if($title != "Balance Sheet" && $title != "Balance Sheet MHRD Format"){
 	echo	 "For the period " . $from_date . " to " . $to_date ;
 	}
 	echo  "</td>" ; echo "<td align=\"right\">" . 'Financial year' . '<br>' . date_mysql_to_php_display($this->config->item('account_fy_start')); ?> - <?php echo date_mysql_to_php_display($this->config->item('account_fy_end')); ?><?php echo "</td></tr>";?>
