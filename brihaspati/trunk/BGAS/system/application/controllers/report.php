@@ -46,23 +46,14 @@ class Report extends Controller {
 		$page_count = " ";
 
 		/* Form fields */ 
-		
-		$default_start = '01/04/';
-		$default_end = '31/03/';
-		if (date('n') > 3)
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
 		{
-			$default_start .= date('Y');
-			$default_end .= date('Y') + 1;
-
-		} else {
-			$default_start .= date('Y') - 1;
-			$default_end .= date('Y');
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
 		}
-		$date=explode("/",$default_start);
-                $date1=$date[2]."-".$date[1]."-".$date[0];
-                $date=explode("/",$default_end);
-                $date2=$date[2]."-".$date[1]."-".$date[0];
-
+		//echo $date1 . $date2;
                 $newdata = array(
                       'date1'  => $date1,
                       'date2'  => $date2
@@ -477,27 +468,13 @@ class Report extends Controller {
 	function new_balancesheet($period = NULL)
 	{
 		$this->load->library('session');
-
-                $default_start = '01/04/';
-                $default_end = '31/03/';
-                if (date('n') > 3)
-                {
-                        $default_start .= date('Y');
-                        $default_end .= date('Y') + 1;
-
-                } else {
-                        $default_start .= date('Y') - 1;
-                        $default_end .= date('Y');
-                }
-
-		$data_date1 = $default_start;
-                $data_date2 = $default_end;
-
-                $date=explode("/",$data_date1);
-                $date1=$date[2]."-".$date[1]."-".$date[0];
-                $date=explode("/",$data_date2);
-                $date2=$date[2]."-".$date[1]."-".$date[0];
-
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
+		}
                 $newdata = array(
                       'date1'  => $date1,
                       'date2'  => $date2
@@ -706,20 +683,28 @@ class Report extends Controller {
 		$this->template->set('nav_links', array('report/download/profitandloss' => 'Download CSV', 'report/printpreview/profitandloss' => 'Print Preview'));
 		$data['left_width'] = "550";
 		$data['right_width'] = "550";
+		$default_end_date;
 
 		/* Form fields */ 
-		$default_start = '01/04/';
-		$default_end = '31/03/';
-		if (date('n') > 3)
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
 		{
-			$default_start .= date('Y');
-			$default_end .= date('Y') + 1;
-
-		} else {
-			$default_start .= date('Y') - 1;
-			$default_end .= date('Y');
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
 		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
 		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
+		}
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
@@ -732,12 +717,13 @@ class Report extends Controller {
 			'id' => 'entry_date2',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_end_date,
 		);
+
                 $data['print_preview'] =FALSE;
 
 		$data_date1 = $default_start;
-                $data_date2 = $default_end;
+                $data_date2 = $default_end_date;
 
                 $date=explode("/",$data_date1);
                 $date1=$date[2]."-".$date[1]."-".$date[0];
@@ -795,19 +781,29 @@ class Report extends Controller {
 		$this->template->set('nav_links', array('report/download/paymentreceipt' => 'Download CSV', 'report/printpreview/paymentreceipt' => 'Print Preview'));
 		$data['left_width'] = "550";
 		$data['right_width'] = "550";
+		$default_end_date;
 
 		/* Form fields */ 
-		$default_start = '01/04/';
-		$default_end = '31/03/';
-		if (date('n') > 3)
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
 		{
-			$default_start .= date('Y');
-			$default_end .= date('Y') + 1;
-
-		} else {
-			$default_start .= date('Y') - 1;
-			$default_end .= date('Y');
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
 		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
+		}
+
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
@@ -820,12 +816,12 @@ class Report extends Controller {
 			'id' => 'entry_date2',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_end_date,
 		);
                 $data['print_preview'] =FALSE;
 
 		$data_date1 = $default_start;
-                $data_date2 = $default_end;
+                $data_date2 = $default_end_date;
 
                 $date=explode("/",$data_date1);
                 $date1=$date[2]."-".$date[1]."-".$date[0];
@@ -882,17 +878,27 @@ class Report extends Controller {
 		$this->load->library('session');
 		$this->template->set('page_title', 'Trial Balance');
 		$this->template->set('nav_links', array('report/download/trialbalance' => 'Download CSV', 'report/printpreview/trialbalance' => 'Print Preview'));
+		$default_end_date;
 
 		/* Form fields */ 
-		$default_start = '01/04/';
-		$default_end = '31/03/';
-		if (date('n') > 3)
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
 		{
-			$default_start .= date('Y');
-			$default_end .= date('Y') + 1;
-		} else {
-			$default_start .= date('Y') - 1;
-			$default_end .= date('Y');
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
+		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
 		}
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
@@ -906,14 +912,14 @@ class Report extends Controller {
 			'id' => 'entry_date2',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_end_date,
 		);
 		$data['date1'] = '';
 		$data['date2'] = '';
 		$data['print_preview'] =FALSE;
 
 		$data_date1 = $default_start;
-                $data_date2 = $default_end;
+                $data_date2 = $default_end_date;
 
                 $date=explode("/",$data_date1);
                 $date1=$date[2]."-".$date[1]."-".$date[0];
@@ -1000,18 +1006,29 @@ class Report extends Controller {
 			redirect('report/ledgerst');
 			return;
 		}
-		/* Form fields */ 
-		$default_start = '01/04/';
-		$default_end = '31/03/';
-		if (date('n') > 3)
-		{
-			$default_start .= date('Y');
-			$default_end .= date('Y') + 1;
+		$default_end_date;
 
-		} else {
-			$default_start .= date('Y') - 1;
-			$default_end .= date('Y');
+		/* Form fields */ 
+		$this->db->from('settings');
+		$detail = $this->db->get();
+		foreach ($detail->result() as $row)
+		{
+			$date1 = $row->fy_start;
+			$date2 = $row->fy_end;
 		}
+		$date=explode("-",$date1);
+		$date2 = explode("-", $row->fy_end);
+		$default_start = '01/04/'.$date[0];
+		$default_end = '31/03/'.$date2[0];
+		
+		$curr_date = date_today_php();
+		if($curr_date >= $default_end) {
+			$default_end_date = $default_end;
+		}
+		else {
+			$default_end_date = $curr_date;
+		}
+		
 		$data['entry_date1'] = array(
 			'name' => 'entry_date1',
 			'id' => 'entry_date1',
@@ -1024,10 +1041,10 @@ class Report extends Controller {
 			'id' => 'entry_date2',
 			'maxlength' => '11',
 			'size' => '11',
-			'value' => date_today_php(),
+			'value' => $default_end_date,
 		);
 		$data_date1 = $default_start;
-                $data_date2 = $default_end;
+                $data_date2 = $default_end_date;
 
                 $date=explode("/",$data_date1);
                 $start_date=$date[2]."-".$date[1]."-".$date[0];

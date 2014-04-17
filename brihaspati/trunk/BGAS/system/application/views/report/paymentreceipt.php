@@ -3,14 +3,14 @@
 <head>
 <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>css/loading.css">
 <?php
-/* Dynamically adding css files from controllers 
+// Dynamically adding css files from controllers 
 if (isset($add_css))
 {
 	foreach ($add_css as $id => $row)
 	{
 		echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"" . asset_url() . $row ."\">";
 	}
-}*/
+}
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -24,7 +24,6 @@ $(document).ready(function() {
 </script>
 </head>
 <body> 
-
 <?php
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
@@ -58,7 +57,11 @@ $(document).ready(function() {
 
 <?php
 	$this->load->library('reportlist');
+	$fy_start=explode("-",$date1);
+	$fy_end=explode("-",$date2);
 
+	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
+	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 	/* check for dates */
 	if($date1 > $date2)
 	{
@@ -75,7 +78,7 @@ $(document).ready(function() {
 		echo "<tr valign=\"top\">";
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th>Payment</th><th align=\"right\">Current Year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Payment</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		foreach ($net_expense_list_q->result() as $row)
 		{
 			$net_expense = new Reportlist();
@@ -88,7 +91,7 @@ $(document).ready(function() {
 		/* Receipt */
 		echo "<td width=\"" . $right_width . "\">";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th>Receipt</th><th align=\"right\">Current Year Amount</th><th align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Receipt</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 	
 		$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);			
 		$net_income_list_q = $this->db->get();
@@ -108,14 +111,6 @@ $(document).ready(function() {
 		echo "<br>";
 	}
 ?>
-<div class='popup'>
-	<div class='cnt223'>
-		<p>
-			<img src="<?php echo base_url(); ?>images/loadingAnimation.gif" alt="loading...">
-		</p>
-	</div>
-</div>
-</body>
 <?php
 
 	if ( ! $print_preview)
@@ -130,4 +125,12 @@ $(document).ready(function() {
 		echo form_close();*/
 	}
 ?>
+<div class='popup'>
+	<div class='cnt223'>
+		<p>
+			<img src="<?php echo base_url(); ?>images/loadingAnimation.gif" alt="loading...">
+		</p>
+	</div>
+</div>
+</body>
 </html>

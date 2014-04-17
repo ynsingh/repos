@@ -30,8 +30,18 @@
 </script>
 
 <?php
-	setlocale(LC_MONETARY, 'en_IN');
+	$this->load->library('session');
+	$date1 = $this->session->userdata('date1');
+	$date2 = $this->session->userdata('date2');
 
+	$fy_start=explode("-",$date1);
+	$fy_end=explode("-",$date2);
+
+	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
+	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
+
+	setlocale(LC_MONETARY, 'en_IN');
+	
 	$liability_total = 0;
 	$old_liability_total = 0;
 	$this->load->library('reportlist');
@@ -63,7 +73,7 @@
 	//$old_liability_total = float_ops($old_liability_total, -$liability->total2, '+');
 
 	echo "<table border=0 class=\"simple-table balance-sheet-table\" >";
-	echo "<thead><tr><th></th><th>Schedule</th><th>Current Year</th><th>Previous Year</th></tr></thead>";
+	echo "<thead><tr><th></th><th>Schedule</th><th>Current Year<br>$curr_year</th><th>Previous Year<br>$prev_year</th></tr></thead>";
 	echo "<tr>";
         echo "<td colspan=4 class=\"bold\">";
         echo "Sources Of Funds";

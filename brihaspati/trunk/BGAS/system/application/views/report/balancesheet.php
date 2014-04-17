@@ -30,7 +30,11 @@ $(document).ready(function() {
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
 	$this->load->library('reportlist');
+	$fy_start=explode("-",$date1);
+	$fy_end=explode("-",$date2);
 
+	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
+	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 	/* check for dates */
 	if($date1 > $date2)
 	{
@@ -47,7 +51,7 @@ $(document).ready(function() {
 		echo "<td width=\"" . $left_width . "\">";
 		$liability->init(2);
 		echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Liabilities and Owners Equity</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Liabilities and Owners Equity</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		$liability->account_st_short(0);
 		echo "</table>";
 		echo "</td>";
@@ -58,7 +62,7 @@ $(document).ready(function() {
 		echo "<td width=\"" . $right_width . "\">";
 		$asset->init(1);
 		echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Assets</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\"> Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Assets</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\"> Previous Year Amount<br>$prev_year</th></tr></thead>";
 		$asset->account_st_short(0);
 		echo "</table>";
 		echo "</td>";

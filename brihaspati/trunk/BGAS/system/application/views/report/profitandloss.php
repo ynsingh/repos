@@ -64,7 +64,11 @@ $(document).ready(function() {
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
 	$date2 = $this->session->userdata('date2');
+	$fy_start=explode("-",$date1);
+	$fy_end=explode("-",$date2);
 
+	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
+	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 	/* check for dates */
 	if($date1 > $date2)
 	{
@@ -79,7 +83,7 @@ $(document).ready(function() {
 		$gross_income_list_q = $this->db->get();
 		echo "<td width=\"" . $right_width . "\">";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Incomes (Gross)</th><th width=\"125\" align=\"right\">Current year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Incomes (Gross)</th><th width=\"125\" align=\"right\">Current year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		foreach ($gross_income_list_q->result() as $row)
 		{
 			$gross_income = new Reportlist();
@@ -99,7 +103,7 @@ $(document).ready(function() {
 		$gross_expense_list_q = $this->db->get();
 		echo "<td width=\"" . $left_width . "\">";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Expenditure (Gross)</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Expenditure (Gross)</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		foreach ($gross_expense_list_q->result() as $row)
 		{
 			$gross_expense = new Reportlist();
@@ -206,7 +210,7 @@ $(document).ready(function() {
 		$net_income_list_q = $this->db->get();
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Incomes (Net)</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Incomes (Net)</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		foreach ($net_income_list_q->result() as $row)
 		{
 			$net_income = new Reportlist();
@@ -225,7 +229,7 @@ $(document).ready(function() {
 		$net_expense_list_q = $this->db->get();
 		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Expenditure (Net)</th><th width=\"125\" align=\"right\">Current Year Amount</th><th width=\"125\" align=\"right\">Previous Year Amount</th></tr></thead>";
+		echo "<thead><tr><th width=\"300\">Expenditure (Net)</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		foreach ($net_expense_list_q->result() as $row)
 		{
 			$net_expense = new Reportlist();
