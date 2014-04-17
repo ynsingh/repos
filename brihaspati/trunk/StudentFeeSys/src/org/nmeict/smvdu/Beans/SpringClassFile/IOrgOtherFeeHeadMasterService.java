@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.nmeict.smvdu.Beans.OtherFeeHeadMaster;
 
+/*
+ *@author SHAISTA BANO
+ */
+
 public interface IOrgOtherFeeHeadMasterService {
 	/**
 	  * Add New OtherFeeHeadMaster
@@ -31,6 +35,15 @@ public interface IOrgOtherFeeHeadMasterService {
  
  
  public List<OtherFeeHeadMaster> loadOtherFeeHeadCode();
+ 
+ 
+    /**
+	  * Search OtherFeeHeadMaster
+	  *
+	  * @param  String otherFeeHeadCode
+	  */
+
+  public List<OtherFeeHeadMaster> loadFeeHeadCode(int departmentCode, int degreeCode, int branchCode, int semCode);
  
  
     /**

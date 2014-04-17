@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
+<?xhtml version="1.0" encoding="UTF-8"?>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
@@ -9,174 +10,193 @@ and open the template in the editor.
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
-	<title>TODO supply a title</title>
+    <title>TODO supply a title</title>
+    <link type="text/css" rel="stylesheet" href="../CSS/PrimeCSS.css"/>
 </h:head>
-<style type="text/css">
-.ui-dialog-title
-{
-	
-	font-size: 15px;
-	font-weight: bold;
-}
-.ui-growl-title {
-	font-weight: bold;
-	font-size: 12px;
-	padding: 0px 0px 7px;
-	display: block;
-}
-
-.ui-corner-all {
-	border-radius: 0px 0px 0px 0px;
-}
-
-.ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-input-invalid
-	{
-	border-color: red;
-}
-
-.ui-button ui-widget ui-state-default ui-corner-all {
-	background-color: #4D90FF;
-}
-</style>
 <h:body>
-	<h:form>
-	<p:growl id="growl" sticky="true"/>
-		<p:panel header="Fee Heads">
-			<h:panelGrid columns="1">
-				<p:commandButton style="font-size:14px;font-weight: bold;" onclick="pnl.show();" value="Add New" />
-				<p:panel>
-					<p:dataTable id="dataTable" var="dt"
-						style="font-size: 14px;font-weight: bold"
-						binding="#{otherFeeHead.dataGrid}"
-						value="#{otherFeeHead.loadAllFeeHead}" paginator="true" rows="10"
-						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
-						<f:facet name="header">  
-            			Degree Type Of Institutes  
-        			   </f:facet>
+    <h:form>
+        <p:growl id="growl" sticky="true" />  
+        
+        <h:panelGrid columns="1" id="pnl1">
+                       
+            <f:facet name="header">
+                <p:commandButton onclick="pnl2.show();" style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Add New Fee Head" />
+                <p:commandButton onclick="pnl.show();" style="font-size:14px;font-weight: bold;color: #4B4B4B;" id="feeSetup" value="Add New Setup" />
+            </f:facet> 
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Fee Head Name" />
-							</f:facet>
-							<p:inplace id="domain" toggleable="true" editor="true">
-								<p:inputText value="#{dt.feeHeadName}" />
-							</p:inplace>
+        </h:panelGrid>
+        <p:dataTable id="dataTable" var="dt" 
+					style="font-size: 14px;font-weight: bold;"
+					binding="#{otherFeeHead.dataGrid}"
+					value="#{otherFeeHead.loadAllFeeHead}" paginator="true"
+					rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15,20,25,30,35,40,45,50">
+        <f:facet name="header">  
+            List of Fee Heads  
+        </f:facet>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Fee Head Name" />
+            </f:facet>
+            <h:outputText value="#{dt.feeHeadName}"/>
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Fee Head Default Value" />
+            </f:facet>
+            <p:inplace id="cdomain" toggleable="true" editor="true">
+                <p:inputText value="#{dt.feeHeadValue}" />
+            </p:inplace>
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Department Name" />
+            </f:facet>
+            <h:outputText value="#{dt.departmentName}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Degree Name"/>
+            </f:facet>
+            <h:outputText value="#{dt.degreeName}" /> 
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Branch Name" />
+            </f:facet>
+            <h:outputText value="#{dt.branchName}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Semester Name" />
+            </f:facet>
+            <h:outputText value="#{dt.semesterName}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Program Id" />
+            </f:facet>
+            <h:outputText value="#{dt.programId}" />
+        </p:column>
+        <p:column>
+            <f:facet name="header">
+                <h:outputText value="Available action" />
+            </f:facet>
+            <p:commandLink value="Delete" action="#{otherFeeHead.deleteFeeHeads(dt)}"/>
+        </p:column>
 
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Fee Head Default Value" />
-							</f:facet>
-							<p:inplace id="cdomain" toggleable="true" editor="true">
-								<p:inputText value="#{dt.feeHeadValue}" />
-							</p:inplace>
-						</p:column>
+    </p:dataTable>
+        <h:panelGrid >
+                <f:facet name="footer">
+                    <p:commandButton value="Update" style="font-size:14px;font-weight: bold;color: #4B4B4B;" action="#{otherFeeHead.update}" update="growl"/>
+                </f:facet>
+            </h:panelGrid>
+        
+    </h:form>
+    <p:dialog resizable="false" header="Add New Fees Head" width="900" height="800"
+		widgetVar="pnl" modal="true">
+            <h:form id="frm1">
+                    <p:growl id="growl" sticky="true"/>
+                        <h:panelGrid columns="1" id="pnl1">
+                            <p:dataTable id="dataTable1" var="dt1"
+                                         style="font-size: 14px;font-weight: bold;"
+                                         binding="#{otherFeeHead.dataGrid2}"
+                                         value="#{otherFeeHead.feeHeadList}">
+                                <f:facet name="header">
+                                    List of Fee Heads
+                                </f:facet>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Check / UnCheck" />
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox value="#{dt1.status}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Fees Head Name" />
+                                    </f:facet>
+                                    <h:outputText value="#{dt1.feeHeadName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Fee Head Value" />
+                                    </f:facet>
+                                    <p:inputText value="#{dt1.feeHeadValue}" required="true" requiredMessage="Please Enter Fee Head Amount."/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Fee ID"/>
+                                    </f:facet >
+                                    <p:inputText value="#{dt1.feeHeadId}" readonly="true"/>
+                                </p:column>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Department Name" />
-							</f:facet>
-							<h:outputText value="#{dt.departmentName}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Degree Name" />
-							</f:facet>
-							<h:outputText value="#{dt.degreeName}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Branch Name" />
-							</f:facet>
-							<h:outputText value="#{dt.branchName}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Semester Name" />
-							</f:facet>
-							<h:outputText value="#{dt.semesterName}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Program Id" />
-							</f:facet>
-							<h:outputText value="#{dt.programId}" />
-						</p:column>
-                                                <p:column>
-                                                	<f:facet name="header">
-                                                        	<h:outputText value="Available action" />
-							</f:facet>
-                                                    <p:commandLink value="Delete" action="#{otherFeeHead.deleteFeeHeads(dt)}"/>
-                                                </p:column>
-					</p:dataTable>
-					<f:facet name="footer">
-						<p:commandButton style="font-size:14px;font-weight: bold;" value="Update" update="dataTable"
-							action="#{otherFeeHead.update}" />
-					</f:facet>
-				</p:panel>
-			</h:panelGrid>
-		</p:panel>
-		<p:dialog resizable="false" header="Add New Fees Head" width="400" height="350"
-			widgetVar="pnl" modal="true">
-			<p:panel>
-				<h:panelGrid columns="2">
+                            </p:dataTable>
+                        </h:panelGrid>
+                           
+                        <h:panelGrid columns="2">
 
-					<h:outputText style="font-size: 12px; font-weight: bold;" value="Fees Head Name" />
-                                        <p:inputText style="font-size: 14px; font-weight: bold;width:157px;" value="#{otherFeeHead.feeHeadName}" required="true" requiredMessage="Please Enter Fee Head Name"/>
-					<h:outputText style="font-size: 12px; font-weight: bold;" value="Program ID" />
-                                        <p:inputText style="font-size: 14px; font-weight: bold;width:157px;" value="#{otherFeeHead.programId}" required="true" requiredMessage="Please Enter Program Id"/>
-					<h:outputText style="font-size: 12px; font-weight: bold;" value="Default Value" />
-					<p:inputText style="font-size: 14px; font-weight: bold;width:157px;" value="#{otherFeeHead.feeHeadValue}" />
+                            <h:outputText style="font-size: 12px; font-weight: bold;" value="Program ID" />
+                            <p:inputText style="font-size: 14px; font-weight: bold;width:157px;" value="#{otherFeeHead.programId}" />
+                            <h:outputText style="font-size: 12px; font-weight: bold;" value="Department" />
+                            <p:selectOneMenu
+                                    style="width: 160px;font-size: 16px; font-weight: bold;"
+                                    value="#{otherFeeHead.departmentCode}"
+                                    valueChangeListener="#{orgDegreeType.changeDegreeCode}">
+				<f:selectItem itemLabel="Select Department" itemValue="0"/>
+				<f:selectItems value="#{orgDepartmentType.items}" />
+				<p:ajax event="change" update="di1" />
+                            </p:selectOneMenu>
+                            <h:outputText style="font-size: 12px; font-weight: bold;" 
+                                    value="Degree Type" />
+                            <p:selectOneMenu
+                		    id="di1"
+                                    style="width: 160px;font-size: 14px; font-weight: bold;"
+                                    value="#{otherFeeHead.degreeCode}"
+                                    valueChangeListener="#{branchMaster.branchCode}">
+                                <!--<f:selectItem itemLabel="Select Degree" itemValue="0"/> -->
+				<f:selectItems value="#{orgDegreeType.items}" />
+				<p:ajax event="change" update="di2" />
+                            </p:selectOneMenu>
 
-					<h:outputText style="font-size: 12px; font-weight: bold;" value="Department" />
-					<p:selectOneMenu
-						style="width: 160px;font-size: 16px; font-weight: bold;"
-						value="#{otherFeeHead.departmentCode}"
-						valueChangeListener="#{orgDegreeType.changeDegreeCode}">
-						<f:selectItem itemLabel="Select Department" itemValue="0"/>
-						<f:selectItems value="#{orgDepartmentType.items}" />
-						<p:ajax event="change" update="di1" />
-					</p:selectOneMenu>
-
-					<h:outputText style="font-size: 12px; font-weight: bold;" 
-					value="Degree Type" />
-					<p:selectOneMenu
-					    id="di1"
-						style="width: 160px;font-size: 14px; font-weight: bold;"
-						value="#{otherFeeHead.degreeCode}"
-						valueChangeListener="#{branchMaster.branchCode}">
-						<f:selectItem itemLabel="Select Degree" itemValue="0"/>
-						<f:selectItems value="#{orgDegreeType.items}" />
-						<p:ajax event="change" update="di2" />
-					</p:selectOneMenu>
-
-					<h:outputText style="font-size: 12px; font-weight: bold;"
+                            <h:outputText style="font-size: 12px; font-weight: bold;"
 					 value="Branch" />
-					<p:selectOneMenu
+                            <p:selectOneMenu
 					id="di2"
-						style="width: 160px;font-size: 16px; font-weight: bold;"
-						value="#{otherFeeHead.branchCode}">
-						<f:selectItems value="#{branchMaster.items}" />
-					</p:selectOneMenu>
+                                        style="width: 160px;font-size: 16px; font-weight: bold;"
+                                        value="#{otherFeeHead.branchCode}">
+                                <f:selectItems value="#{branchMaster.items}" />
+                            </p:selectOneMenu>
 
-
-
-					<h:outputText style="font-size: 12px; font-weight: bold;" value="Semester" />
-					<p:selectOneMenu
-						id="di3"
-						style="width: 160px;font-size: 16px; font-weight: bold;"
-						value="#{otherFeeHead.semCode}">
-						<f:selectItems value="#{semesterBeans.items}" />
-					</p:selectOneMenu>
-
-					<p:commandButton style="font-size:14px;font-weight: bold;" value="Save" action="#{otherFeeHead.saveFeeHead}"
-						update="dataTable" />
-					<p:commandButton style="font-size:14px;font-weight: bold;" value="Close" onclick="pnl.hide();" />
-
-				</h:panelGrid>
-			</p:panel>
-		</p:dialog>
-	</h:form>
+                            <h:outputText style="font-size: 12px; font-weight: bold;" value="Semester" />
+                            <p:selectOneMenu
+                                        id="di3"
+					style="width: 160px;font-size: 16px; font-weight: bold;"
+					value="#{otherFeeHead.semCode}">
+				<f:selectItems value="#{semesterBeans.items}" />
+                            </p:selectOneMenu>
+                            <f:facet name="footer">
+                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Save" 
+                                                 update="growl" action="#{otherFeeHead.saveFeeHead}" />
+                                <p:commandButton style="font-size:14px;font-weight: bold;color: #4B4B4B;" value="Close" onclick="pnl.hide();"/>
+                            </f:facet>
+                        </h:panelGrid>
+                    </h:form>
+        </p:dialog>
+    <p:dialog resizable="false" header="Add New Fees Head" width="400" height="150" widgetVar="pnl2" modal="true">
+            <h:form id="frm2">
+                <p:growl id="growl" sticky="true"/>
+                    <h:panelGrid columns="2">
+                        <h:outputText style="font-size: 12px; font-weight: bold;" value="Fees Head Name" />
+                            <h:inputText style="font-size: 14px; font-weight: bold;width:157px;" value="#{feeHeadMaster.feeHeadName}" 
+                                             required="true" requiredMessage="Please Enter Fee Head Name" />
+                            <f:facet name="footer">
+                                <p:commandButton style="font-size:14px;font-weight: bold;" id="fname" value="Save" 
+                                                     update="growl" action="#{feeHeadMaster.saveMasterFeeHead}"/>
+                                <p:commandButton style="font-size:14px;font-weight: bold;" value="Close" onclick="pnl2.hide();" />
+                            </f:facet>
+                    </h:panelGrid>
+            </h:form>
+        </p:dialog>
 </h:body>
 </html>

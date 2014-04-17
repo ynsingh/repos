@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 11, 2013 7:52:20 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
@@ -23,6 +23,9 @@
         <many-to-one name="branchMaster" class="org.nmeict.smvdu.Beans.BranchMaster" fetch="select">
             <column name="branch_code" />
         </many-to-one>
+        <property name="feeHeadId" type="java.lang.Integer">
+            <column name="fee_head_id" />
+        </property>
         <property name="feeHeadName" type="string">
             <column name="fee_head_name" length="60" not-null="true" />
         </property>

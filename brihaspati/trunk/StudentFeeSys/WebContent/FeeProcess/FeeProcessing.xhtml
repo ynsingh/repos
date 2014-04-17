@@ -15,9 +15,12 @@ and open the template in the editor.
 </h:head>
 
 <h:body>
-	<h:form id="form">
+	
 		<p:panel>
+                    <h:form id="form">
+                    
 			<h:panelGrid columns="1">
+                            
 
 				<p:commandButton style="font-size:14px;font-weight: bold;"
 					onclick="pnl.show();" value="Add New" />
@@ -82,13 +85,16 @@ and open the template in the editor.
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
+                            
 			</h:panelGrid>
-			<p:dialog resizable="false" header="Add Fee Details" width="400"
-				height="380" widgetVar="pnl" modal="true">
-
+                    
+			<p:dialog resizable="false" header="Add Fee Details" width="600"
+				height="880" widgetVar="pnl" modal="true">
+                            <h:form id="frm2">
+                                <p:growl id="growl" sticky="true"/>
 				<h:panelGrid columns="1">
 					<p:panel>
+                                           
 						<h:panelGrid columns="2">
 							<h:outputText style="font-size: 12px; font-weight: bold;"
 								value="Registration No." />
@@ -116,14 +122,41 @@ and open the template in the editor.
 								</p:column>
 							</p:autoComplete>
 						</h:panelGrid>
+                                           
 					</p:panel>
 					<p:panel widgetVar="fed">
-						<h:panelGrid columns="2">
-							<h:outputText style="font-size: 12px; font-weight: bold;"
-								value="Amount" />
-							<p:inputText
-								style="font-size: 14px; font-weight: bold;width:150px;"
-								value="#{studentMaster.studentOpbalAmount}" id="am" />
+						<h:panelGrid columns="1">
+                                                    <p:dataTable id="dataTable1" var="dt1"
+                                         style="font-size: 14px;font-weight: bold;"
+                                         binding="#{studentMaster.dataGrid2}"
+                                         value="#{studentMaster.feeHeadList}">
+                                <f:facet name="header">
+                                    List of Fee Heads
+                                </f:facet>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Check / UnCheck" />
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox value="#{dt1.status}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Fees Head Name" />
+                                    </f:facet>
+                                    <h:outputText value="#{dt1.feeHeadName}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText style="font-size: 12px; font-weight: bold;"
+								value="Amount Given By Student" />
+                                        
+                                    </f:facet>
+                                    <p:inputText value="#{dt1.feeHeadValue}" required="true" requiredMessage="Please Enter Fee Head Amount." id="am"/>
+                                </p:column>
+                               <p:tooltip for="am" value="Amount Given By Student" /> 
+                            </p:dataTable>
+                                                </h:panelGrid>
+                                                    <h:panelGrid columns="2">
 							<h:outputText style="font-size: 12px; font-weight: bold;"
 								value="Department Name" />
 							<p:selectOneMenu
@@ -157,24 +190,19 @@ and open the template in the editor.
 								value="#{studentMaster.semCode}">
 								<f:selectItems value="#{semesterBeans.items}" />
 							</p:selectOneMenu>
-							<h:outputText style="font-size: 12px; font-weight: bold;"
-								value="Fee Head Name" />
-							<p:selectOneMenu
-								style="width: 160px;font-size: 16px; font-weight: bold;"
-								value="#{studentMaster.feeHeadCode}">
-								<f:selectItems value="#{otherFeeHead.items}" />
-							</p:selectOneMenu>
+							
 							<f:facet name="footer">
 								<p:commandButton style="font-size:14px;font-weight: bold;"
-									value="Save" action="#{studentMaster.saveFee}" />
+									value="Save" action="#{studentMaster.saveFee}" update="growl" />
 								<p:commandButton style="font-size:14px;font-weight: bold;"
 									value="Close" onclick="pnl.hide();" />
 							</f:facet>
-							<p:tooltip for="am" value="Amount Given By Student" />
+							
 						</h:panelGrid>
 					</p:panel>
-				</h:panelGrid>
 
+				</h:panelGrid>
+                            </h:form>
 			</p:dialog>
 
 
@@ -182,6 +210,7 @@ and open the template in the editor.
 				hideEffect="slide" width="415" header="Session Detail"
 				resizable="false">
 				<p:panel id="dis">
+                                   
 					<h:panelGrid columns="2">
 						<h:outputText value="Student Name"
 							style="font-size: 12px; font-weight: bold;" />
@@ -237,9 +266,10 @@ and open the template in the editor.
 						<h:outputText value="#{studentMaster.studentFeeMaster.netBalence}"
 							style="color:#696969;font-size: 14px; font-weight: bold;" />
 					</h:panelGrid>
+                                      
 				</p:panel>
 			</p:dialog>
+                        </h:form>
 		</p:panel>
-	</h:form>
 </h:body>
 </html>

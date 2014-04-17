@@ -1,6 +1,7 @@
 package org.nmeict.smvdu.Beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import org.nmeict.smvdu.Beans.SpringClassFile.IStudentRegistrationMasterService;
 import org.nmeict.smvdu.Beans.SpringClassFile.StudentRegistrationMasterService;
+import org.nmeict.smvdu.Beans.db.SemesterUtil;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
 
@@ -331,18 +333,29 @@ public class StudentRegMaster  implements java.io.Serializable {
                         return null;
                             
                     }
-                    List<StudentRegMaster> studentRegMasterList = (ArrayList<StudentRegMaster>) dataGrid.getValue(); 
-                    for(StudentRegMaster srm: studentRegMasterList){
+                    //List<StudentRegMaster> studentRegMasterList = (ArrayList<StudentRegMaster>) dataGrid.getValue(); 
+                    loadAllStudentRegDetails = getiStudentRegistrationMasterService().loadAllStudent();
+                    System.out.println("11lAS=="+loadAllStudentRegDetails.size());
+                    for(StudentRegMaster srm: loadAllStudentRegDetails){
+                       /* System.out.println("this.getSemCode()="+this.getSemCode()+"srm.getSemCode()="+srm.getSemCode());
+                        System.out.println("reg="+srm.getRegNo().equals(this.getRegNo()) );
+                        System.out.println("entry="+ srm.getEntryNo().equals(this.getEntryNo()));
+                        System.out.println("department="+srm.getDepartmentCode().equals(this.getDepartmentCode()));
+                        System.out.println("Degree="+srm.getDegreeCode().equals(this.getDegreeCode()));
+                        System.out.println(  "branch="+(srm.getBranchCode().equals(this.getBranchCode())));
+                        System.out.println("Sem==");
+                        System.out.println(srm.getSemCode().equals(this.getSemCode()));*/
+                        
                         if(srm.getRegNo().equals(this.getRegNo()) 
                                 && srm.getFormNo() == this.getFormNo()
                                 && srm.getEntryNo().equals(this.getEntryNo())
-                                && srm.getDepartmentCode() == this.getDepartmentCode()
-                                && srm.getDegreeCode() == this.getDegreeCode()
-                                && srm.getBranchCode() == this.getBranchCode()
-                                && srm.getSemCode() == this.getSemCode()){
+                                && srm.getDepartmentCode().equals(this.getDepartmentCode())
+                                && srm.getDegreeCode().equals(this.getDegreeCode())
+                                && (srm.getBranchCode().equals(this.getBranchCode()))
+                                && (srm.getSemCode().equals(this.getSemCode()))){
                                 message = new FacesMessage();
                                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                                message.setSummary("Entered combinations of Student Details Already Exist.");
+                                message.setSummary("Combinations of Student Details Already Exist.");
                                 //message.setDetail("Degree Doesn't Exist in Selected Department.");
                                 fc.addMessage("", message);
                                 return null;
@@ -364,12 +377,36 @@ public class StudentRegMaster  implements java.io.Serializable {
                     this.setDegreeType(dt);
                     this.setSemesterMaster(sm);
                     this.setBranchMaster(bm);
-                    getiStudentRegistrationMasterService().addStudentKeyDetails(this);
+                    
+                    
+                    OtherFeeHeadMaster ofhm = new OtherFeeHeadMaster();
+                    List<OtherFeeHeadMaster> otherFeeHeadMasterList = 
+                                                                    ofhm.getiOrgOtherFeeHeadMasterService()
+                                                                    .loadFeeHeadCode(this.getDepartmentCode(),this.getDegreeCode(),
+                                                                                        this.getBranchCode(), this.getSemCode());
+                    //System.out.println("size==="+otherFeeHeadMasterList.size());
+                    if(otherFeeHeadMasterList.size() > 0){
+                        getiStudentRegistrationMasterService().addStudentKeyDetails(this);
+                        for(OtherFeeHeadMaster o: otherFeeHeadMasterList ){
+                            //System.out.println("FeeList==="+o.getDegreeCode()+ o.getDepartmentCode()+o.getBranchCode()+o.getSemCode()+o.getFeeHeadCode()+o.getFeeHeadName()+o.getFeeHeadId()+o.getFeeHeadValue());
+                            StudentMaster stuMast = new StudentMaster();
+                            stuMast.addStudentFeeLiability(o,this.getEntryNo());
+                        }
+                    }
+                    else{
+                        message = new FacesMessage();
+                        message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        message.setSummary("Please Set Fee Heads and it's value for selected degree, branch, and semster.");
+                        //message.setDetail("Degree Doesn't Exist in Selected Department.");
+                        fc.addMessage("", message);
+                        return null;
+                        //"FeeHeadsDetails.xhtml?faces-redirect=true";
+                    }
+                    
                     //FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, ""+entryNo+" : Saved Successfully", ""));
                     return "StudentReg.xhtml?faces-redirect=true";
-		}
-		catch(Exception ex)
-		{
+        }
+		catch(Exception ex){
 			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, ""+ex, ""));
                         return null;
 		}

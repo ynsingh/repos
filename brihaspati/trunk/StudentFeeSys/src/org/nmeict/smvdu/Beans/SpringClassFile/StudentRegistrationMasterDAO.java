@@ -20,6 +20,10 @@ import org.nmeict.smvdu.Beans.StudentRegMaster;
 import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 
+/*
+ *@author Shaista Bano
+ */
+
 public class StudentRegistrationMasterDAO implements IStudentRegistrationMasterDAO{
 
 	private HibernateDataSourceConnection hibernateSessionFactory = new HibernateDataSourceConnection();
@@ -126,6 +130,7 @@ public class StudentRegistrationMasterDAO implements IStudentRegistrationMasterD
             projection.add(Projections.property("srm.regNo")); // String
             projection.add(Projections.property("srm.formNo")); // Integer
             projection.add(Projections.property("sem.semesterName"));
+            projection.add(Projections.property("sem.semSeqNo"));//Integer
             criteria.setProjection(projection);
             criteria.add(Restrictions.eq("op.orgId",new OrgProfileSessionDetails().getUserId()));
             List list = (List) criteria.list();
@@ -144,21 +149,20 @@ public class StudentRegistrationMasterDAO implements IStudentRegistrationMasterD
             	srm.setEntryNo(o[6].toString());
             	srm.setRegNo(o[7].toString()); 
             	srm.setFormNo((Integer)o[8]);  
-            	srm.setSemesterName(o[9].toString()); 
+            	srm.setSemesterName(o[9].toString());
+                srm.setSemCode((Integer)o[10]);
             	returnAllStudent.add(srm);
             }
             s.getTransaction().commit();
-		}
-		catch(Exception ex)
-		{
-			s.getTransaction().rollback();
-		}
-		finally
-		{
-			if(s.isOpen()==true)
-	        HibernateDataSourceConnection.closeSession();
-		}
-		return returnAllStudent;
+	}
+	catch(Exception ex){
+		s.getTransaction().rollback();
+	}
+	finally	{
+		if(s.isOpen()==true)
+	 	       HibernateDataSourceConnection.closeSession();
+	}
+	return returnAllStudent;
 	}
 
 	@Override

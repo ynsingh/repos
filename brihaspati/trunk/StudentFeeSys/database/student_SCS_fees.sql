@@ -475,6 +475,7 @@ COMMENT='InnoDB free: 11264 kB; (`sem_exam_code`) REFER `student_fees/exam_code_
 
 CREATE TABLE `other_fee_head_master` (
   `fee_head_code` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `fee_head_id` INTEGER(11) NOT NULL  Default '0', 
   `fee_head_name` VARCHAR(60) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
   `fee_head_value` DOUBLE(15,2) NOT NULL,
   `branch_code` INTEGER(11) DEFAULT NULL,
@@ -573,17 +574,21 @@ COMMENT='InnoDB free: 11264 kB; (`org_id`) REFER `student_fees/org_profile`(`org
 #
 
 CREATE TABLE `student_master` (
-  `entry_no` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
-  `batch` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
-  `program` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
-  `student_opbal_amount` DOUBLE(15,2) DEFAULT NULL,
-  `degree_code` INTEGER(11) DEFAULT NULL,
-  `org_id` VARCHAR(400) COLLATE latin1_swedish_ci DEFAULT NULL,
-  `department_id` INTEGER(11) DEFAULT NULL,
   `sm_seq_id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `org_id` VARCHAR(400) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `entry_no` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `degree_code` INTEGER(11) DEFAULT NULL,
+  `department_id` INTEGER(11) DEFAULT NULL,
   `branch_id` INTEGER(11) DEFAULT NULL,
   `sem_code` INTEGER(11) DEFAULT NULL,
   `fee_head_code` INTEGER(11) DEFAULT NULL,
+  `fee_Id` INTEGER(11) NOT NULL DEFAULT 0,
+  `batch` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `program` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `student_opbal_amount` DOUBLE(15,2) Default 0.00,
+  `DR_of_liability` DOUBLE(15,2) DEFAULT NULL,
+  `CR_of_liability` DOUBLE(15,2) DEFAULT NULL,
+  `fee_submission_date` DATE DEFAULT NULL,
   PRIMARY KEY (`sm_seq_id`),
   KEY `org_id` (`org_id`),
   KEY `degree_type` (`degree_code`),
@@ -599,7 +604,7 @@ CREATE TABLE `student_master` (
   CONSTRAINT `student_master_fk5` FOREIGN KEY (`fee_head_code`) REFERENCES `other_fee_head_master` (`fee_head_code`) ON DELETE CASCADE ON UPDATE CASCADE
 
 )ENGINE=InnoDB
-AUTO_INCREMENT=5 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci'
+AUTO_INCREMENT=1 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci'
 COMMENT='InnoDB free: 11264 kB; (`org_id`) REFER `student_fees/org_profile`(`org_id`) ON ';
 
 #
@@ -742,3 +747,38 @@ INSERT INTO `admin_records` (`seq_id`, `user_id`, `admin_pass`, `flag`, `add_dat
   (3,'adminjk1','123123',0,'2018-11-18'),
   (4,'payadmin','admin123',1,'2025-11-25');
 COMMIT;
+
+#
+# Structure for the `feeHead_master` table :
+#
+
+CREATE TABLE `feeHead_master` (
+  `seq_id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `fee_head_name` VARCHAR(300) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `fee_head_amt`  DOUBLE(15,2) NOT NULL,
+  `fee_head_id` INTEGER(11) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`seq_id`),
+  UNIQUE KEY `fee_head_name` (`fee_head_name`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=1 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci'
+COMMENT='InnoDB free: 11264 kB';
+
+#
+# Data for the `feeHead_master` table  (LIMIT 0,500)
+#
+
+INSERT INTO `feeHead_master` (`seq_id`, `fee_head_name`, `fee_head_amt`, `fee_head_id`) VALUES
+  (1,'Admission Fees ',0.00,677),
+  (2,'Enrolment Fees ',0.00,678),
+  (3,'Tuition Fees',0.00,679),
+  (4,'Library Fees',0.00,680),
+  (5,'Annual/Semester Examination Fees',0.00,681),
+  (6,' Marks Sheet Fees',0.00,682),
+  (7,'Sale of Question Papers',0.00,683),
+  (8,'Medical Fees',0.00,684),
+  (9,'Miscellaneous Fees',0.00,685),
+  (10,'Library Card',0.00,686),
+  (11,'Student Identity Card',0.00,687),
+  (12,'Hostel Fees',0.00,688);
+  COMMIT;

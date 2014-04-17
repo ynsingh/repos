@@ -4,6 +4,10 @@ import java.util.List;
 
 import org.nmeict.smvdu.Beans.OtherFeeHeadMaster;
 
+/*
+ * @author Shaista Bano
+ */
+
 public class OrgOtherFeeHeadMasterService implements IOrgOtherFeeHeadMasterService{
 
 	private OrgOtherFeeHeadMasterDAO orgOtherFeeHeadMasterDAO = new OrgOtherFeeHeadMasterDAO();
@@ -33,7 +37,13 @@ public class OrgOtherFeeHeadMasterService implements IOrgOtherFeeHeadMasterServi
 		// TODO Auto-generated method stub
 		return getOrgOtherFeeHeadMasterDAO().loadOtherFeeHeadCode(); 
 	}
-
+        
+        @Override
+	public List<OtherFeeHeadMaster> loadFeeHeadCode(int departmentCode, int degreeCode, int branchCode, int semCode) {
+		// TODO Auto-generated method stub
+		return getOrgOtherFeeHeadMasterDAO().loadFeeHeadCode(departmentCode, degreeCode, branchCode, semCode); 
+	}
+        
 	@Override
 	public OtherFeeHeadMaster searchOtherFeeHeadCode(String orgEntity) {
 		// TODO Auto-generated method stub

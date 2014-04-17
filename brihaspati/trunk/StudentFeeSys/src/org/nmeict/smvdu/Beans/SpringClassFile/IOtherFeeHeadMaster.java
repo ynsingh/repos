@@ -34,12 +34,21 @@ public interface IOtherFeeHeadMaster {
    
    public List<OtherFeeHeadMaster> loadOtherFeeHeadCode();
    
+   /**
+	  * Search OtherFeeHeadMaster
+	  *
+	  * @param  String otherFeeHeadCode
+	  */
+ 
+   public List<OtherFeeHeadMaster> loadFeeHeadCode(int departmentCode, int degreeCode, int branchCode, int semCode);
+ 
    
    /**
 	  * Search OtherFeeHeadMaster
 	  *
 	  * @param  String otherFeeHeadCode
 	  */
+   
    
    public OtherFeeHeadMaster searchOtherFeeHeadCode(String orgEntity);
 

@@ -38,5 +38,17 @@
         <property name="studentOpbalAmount" type="java.lang.Double">
             <column name="student_opbal_amount" precision="15" />
         </property>
+         <property name="debitLiability" type="java.lang.Double">
+            <column name="DR_of_liability" precision="15" />
+        </property>
+        <property name="creditLiability" type="java.lang.Double">
+            <column name="CR_of_liability" precision="15" />
+        </property>
+        <property name="feeSubmissionDate" type="date">
+            <column name="fee_submission_date" length="10"/>
+        </property>
+        <property name="feeHeadId" type="java.lang.Integer">
+            <column name="fee_head_id" />
+        </property>
     </class>
 </hibernate-mapping>

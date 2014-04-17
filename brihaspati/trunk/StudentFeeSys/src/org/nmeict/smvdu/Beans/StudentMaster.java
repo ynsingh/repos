@@ -1,7 +1,9 @@
 package org.nmeict.smvdu.Beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.bean.ManagedBean;
@@ -9,11 +11,16 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.hibernate.Session;
+import org.nmeict.smvdu.Beans.FeeHeads.FeeHeadMaster;
 
 import org.nmeict.smvdu.Beans.SpringClassFile.IStudentFeeMasterService;
 import org.nmeict.smvdu.Beans.SpringClassFile.IStudentRegistrationMasterService;
 import org.nmeict.smvdu.Beans.SpringClassFile.StudentFeeMasterService;
 import org.nmeict.smvdu.Beans.SpringClassFile.StudentRegistrationMasterService;
+import org.nmeict.smvdu.Beans.db.FeeHeadMasterUtil;
+import org.nmeict.smvdu.Beans.db.StudentMasterUtil;
+import org.nmeict.smvdu.HibernateHelper.HibernateDataSourceConnection;
 import org.nmeict.smvdu.HibernateHelper.OrgProfileSessionDetails;
 import org.primefaces.event.SelectEvent;
 
@@ -43,6 +50,8 @@ public class StudentMaster  implements java.io.Serializable {
      private Double totalBalance;
      private Double netBalence;
      private Double feeHeadValue;
+     private Double creditLiability;
+     private Double debitLiability;
      private String feeHeadName;
      private Integer feeHeadCode;
      private Integer semCode;
@@ -55,6 +64,7 @@ public class StudentMaster  implements java.io.Serializable {
      private String degreeName;
      private String examCodeName;
      private String semesterName;
+     private Date feeSubmissionDate;
      private UIData dataGrid;
      private List<StudentMaster> loadAllFee = new ArrayList<StudentMaster>();
      private List<StudentRegMaster> loadAllStudentRegDetails = new ArrayList<StudentRegMaster>();
@@ -65,7 +75,9 @@ public class StudentMaster  implements java.io.Serializable {
     public StudentMaster() {
     }
 
-    public StudentMaster(OtherFeeHeadMaster otherFeeHeadMaster, OrgProfile orgProfile, SemesterMaster semesterMaster, DegreeType degreeType, OrgDepartmentType orgDepartmentType, BranchMaster branchMaster, String entryNo, String batch, String program, Double studentOpbalAmount) {
+    public StudentMaster(OtherFeeHeadMaster otherFeeHeadMaster, OrgProfile orgProfile, SemesterMaster semesterMaster, 
+            DegreeType degreeType, OrgDepartmentType orgDepartmentType, BranchMaster branchMaster, String entryNo, String batch, String program, Double studentOpbalAmount,
+            Double creditLiability, Double debitLiability, Date feeSubmissionDate) {
        this.otherFeeHeadMaster = otherFeeHeadMaster;
        this.orgProfile = orgProfile;
        this.semesterMaster = semesterMaster;
@@ -76,6 +88,9 @@ public class StudentMaster  implements java.io.Serializable {
        this.batch = batch;
        this.program = program;
        this.studentOpbalAmount = studentOpbalAmount;
+       this.creditLiability = creditLiability;
+       this.debitLiability = debitLiability;
+       this.feeSubmissionDate = feeSubmissionDate;
     }
    
     
@@ -289,7 +304,7 @@ public class StudentMaster  implements java.io.Serializable {
 	
 	public List<StudentMaster> getLoadAllFee() {
 		loadAllFee = getiStudentFeeMasterService().loadAllFeeDetails();
-		 List<StudentRegMaster> op = getLoadAllStudentRegDetails();
+		List<StudentRegMaster> op = getLoadAllStudentRegDetails();
 		dataGrid.setValue(loadAllFee);
 		return loadAllFee;
 	}
@@ -316,59 +331,7 @@ public class StudentMaster  implements java.io.Serializable {
 	public void setNetBalence(Double netBalence) {
 		this.netBalence = netBalence;
 	}
-
-	//public void saveFee()
-        public String saveFee()	{
-            
-            try{    
-                FacesContext fc = FacesContext.getCurrentInstance();
-                FacesMessage message = null;
-                if(this.getEntryNo().isEmpty()){
-                    message = new FacesMessage();
-                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                    message.setSummary("Please Enter Student Registration Number. It Cann't  be Empty.");
-                    //message.setDetail("Degree Doesn't Exist in Selected Department.");
-                    fc.addMessage("", message);
-                    return null;
-                }
-                if(this.getStudentOpbalAmount() == 0){
-                    message = new FacesMessage();
-                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                    message.setSummary("Please Enter Amount. It Cann't  be Empty.");
-                    //message.setDetail("Degree Doesn't Exist in Selected Department.");
-                    fc.addMessage("", message);
-                    return null;
-                }
-                
-		OrgProfile op = new OrgProfile();
-		OrgDepartmentType odt = new OrgDepartmentType();
-		DegreeType dt = new DegreeType();
-		BranchMaster bm = new BranchMaster();
-		SemesterMaster sm = new SemesterMaster();
-		OtherFeeHeadMaster otfm = new OtherFeeHeadMaster();
-		op.setOrgId(new OrgProfileSessionDetails().getOrgProfileSession().getOrgId());
-		odt.setOdtSeqNo(this.getDepartmentCode());
-		dt.setSeqNo(this.getDegreeCode());
-		bm.setBmSeqNo(this.getBranchCode());
-		sm.setSemSeqNo(this.getSemCode());
-		otfm.setFeeHeadCode(this.getFeeHeadCode());
-		this.setOrgProfile(op);
-		this.setOrgDepartmentType(odt);
-		this.setDegreeType(dt);
-		this.setBranchMaster(bm);
-		this.setSemesterMaster(sm);
-		this.setOtherFeeHeadMaster(otfm);
-		getiStudentFeeMasterService().addStudentFeeMaster(this);
-                return "FeeProcessing.xhtml?faces-redirect=true";
-            }
-            catch (Exception e){
-                    FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, ""+e, ""));
-                   return null;
-                
-            }
-	}
-
-	public IStudentFeeMasterService getiStudentFeeMasterService() {
+        public IStudentFeeMasterService getiStudentFeeMasterService() {
 		return iStudentFeeMasterService;
 	}
 
@@ -410,7 +373,282 @@ public class StudentMaster  implements java.io.Serializable {
 	{
 		//System.out.println("Id----->"+this.entryNo);
 	}
+        
+        public Double getDebitLiability() {
+		return debitLiability;
+	}
 
-}
+	public void setDebitLiability(Double debitLiability) {
+		this.debitLiability = debitLiability;
+	}
+        
+        public Double getCreditLiability() {
+		return creditLiability;
+	}
+
+	public void setCreditLiability(Double creditLiability) {
+		this.creditLiability = creditLiability;
+	}
+        public Date getFeeSubmissionDate(){
+                return feeSubmissionDate;
+        }
+        
+        public void setFeeSubmissionDate(Date feeSubmissionDate){
+            this.feeSubmissionDate = feeSubmissionDate;
+        }
+        
+        Integer feeHeadId;
+        public Integer getFeeHeadId() {
+		return feeHeadId;
+	}
+
+	public void setFeeHeadId(Integer feeHeadId) {
+		this.feeHeadId = feeHeadId;
+	}
+
+	//public void saveFee()
+        public String saveFee()	{
+            
+            try{ 
+                ArrayList<OtherFeeHeadMaster> feeList = (ArrayList<OtherFeeHeadMaster>) dataGrid2.getValue();
+                Vector vc = new Vector();
+                Vector feeName_feeValue = new Vector();
+                int tempDegreeCode = 0, tempBranchCode = 0, tempSemCode = 0;
+                tempDegreeCode = this.getDegreeCode();
+                tempBranchCode = this.getBranchCode();
+                tempSemCode = this.getSemCode();
+                
+                //System.out.println("FeeList=="+feeList.size());
+                for(OtherFeeHeadMaster fl : feeList){
+                     
+                    //System.out.println("fl.isStatus()="+fl.isStatus());
+                    if(fl.isStatus() == true){
+                        Integer feeCode = new FeeHeadMasterUtil().getFeeHeadCode(fl.getFeeHeadName(), tempDegreeCode, tempBranchCode, tempSemCode);
+                        //System.out.println("\n\n 1111111111111111 feeHeadCode=="+feeCode);
+                        fl.setFeeHeadCode(feeCode);
+                        vc.add(fl);
+                        if(fl.getFeeHeadValue() == 0 )
+                            feeName_feeValue.add(fl);
+                        
+                    }
+                }
+                
+                FacesContext fc = FacesContext.getCurrentInstance();
+                FacesMessage message = null;
+               
+                if(this.getEntryNo().isEmpty()){
+                    message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Please Enter Student Registration Number. It Cann't  be Empty.");
+                    //message.setDetail("Degree Doesn't Exist in Selected Department.");
+                    fc.addMessage("", message);
+                    return null;
+                }
+              
+		OrgProfile op = new OrgProfile();
+		OrgDepartmentType odt = new OrgDepartmentType();
+		DegreeType dt = new DegreeType();
+		BranchMaster bm = new BranchMaster();
+		SemesterMaster sm = new SemesterMaster();
+		//OtherFeeHeadMaster otfm = new OtherFeeHeadMaster();
+		op.setOrgId(new OrgProfileSessionDetails().getOrgProfileSession().getOrgId());
+		odt.setOdtSeqNo(this.getDepartmentCode());
+		dt.setSeqNo(this.getDegreeCode());
+		bm.setBmSeqNo(this.getBranchCode());
+		sm.setSemSeqNo(this.getSemCode());
+		//otfm.setFeeHeadCode(this.getFeeHeadCode());
+                /*
+		this.setOrgProfile(op);
+		this.setOrgDepartmentType(odt);
+		this.setDegreeType(dt);
+		this.setBranchMaster(bm);
+		this.setSemesterMaster(sm);
+		this.setOtherFeeHeadMaster(otfm);
+                //this.getStudentOpbalAmount();*/
+                if(vc.size() > 0){
+                    /*
+                     * Adding selected Fee Heads name which values have not been inserted.
+                     * To display the message
+                     */
+                    if(feeName_feeValue.size() > 0){
+                        String tempStr ="";
+                        for(int i=0; i < feeName_feeValue.size(); i++){
+                            OtherFeeHeadMaster fl =(OtherFeeHeadMaster)feeName_feeValue.get(i);
+                            if(tempStr.isEmpty())
+                                tempStr = fl.getFeeHeadName();
+                            else
+                                tempStr = tempStr+", " + fl.getFeeHeadName();
+                        }
+                        message = new FacesMessage();
+                        message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        message.setSummary("The Value of Selected Fee Head's Name:"+tempStr+" is Empty.");
+                        fc.addMessage("", message);
+                        return null;
+                    }
+                    else{
+                        for(int i=0; i <vc.size(); i++){ //for According to check box selection
+
+                            OtherFeeHeadMaster fl =(OtherFeeHeadMaster)vc.get(i);
+                            feeHeadCode = fl.getFeeHeadCode();
+                            feeHeadName = fl.getFeeHeadName();
+                            studentOpbalAmount = fl.getFeeHeadValue();
+                            
+                            OtherFeeHeadMaster otfm = new OtherFeeHeadMaster();
+                            otfm.setFeeHeadCode(feeHeadCode);
+                            //System.out.println("feeHeadCode="+feeHeadCode+"feeHeadName="+feeHeadName+"\n opBalamount ="+studentOpbalAmount);
+                            
+                            if(this.getStudentOpbalAmount() > 0){       
+                                List<StudentMaster> loadAllFeeLiabillity = new ArrayList<StudentMaster>();
+                                loadAllFeeLiabillity =  new StudentMasterUtil().loadStudentFeeDetails(this.getEntryNo(), tempDegreeCode, tempBranchCode, tempSemCode, feeHeadCode);
+                                //System.out.println("loadAllFeeLiabillity.size=="+loadAllFeeLiabillity.size());
+                                for(StudentMaster tmpSm : loadAllFeeLiabillity){ // for 2 Updation of paid fees and libility of fees
+                                    /*
+                                    System.out.println("entry="+ tmpSm.getEntryNo().equals(this.getEntryNo()));
+                                    System.out.println("Degree="+tmpSm.getDegreeCode().equals(this.getDegreeCode()));
+                                    System.out.println( "branch="+(tmpSm.getBranchCode().equals(this.getBranchCode())));
+                                    System.out.println("sem="+tmpSm.getSemCode().equals(this.getSemCode()));
+                                    System.out.println("FeeHeadCode="+this.getFeeHeadCode()+"--tmpSm.getFeeHeadCode()="+tmpSm.getFeeHeadCode()+"\n FeeCode="+(tmpSm.getFeeHeadCode().equals(this.getFeeHeadCode())));
+                                */
+                                    if(tmpSm.getEntryNo().equals(this.getEntryNo()) && tmpSm.getFeeHeadCode().equals(this.getFeeHeadCode()) 
+                                        && tmpSm.getDegreeCode().equals(this.getDegreeCode()) && tmpSm.getBranchCode().equals(this.getBranchCode())
+                                        && tmpSm.getSemCode().equals(this.getSemCode()) ){
+                                    
+                                        tmpSm.setOrgProfile(op);
+                                        tmpSm.setOrgDepartmentType(odt);
+                                        tmpSm.setDegreeType(dt);
+                                        tmpSm.setBranchMaster(bm);
+                                        tmpSm.setSemesterMaster(sm);
+                                        tmpSm.setOtherFeeHeadMaster(otfm);  
+                                        tmpSm.setCreditLiability(tmpSm.getCreditLiability() - this.getStudentOpbalAmount());
+                                        tmpSm.setStudentOpbalAmount(tmpSm.getStudentOpbalAmount()+this.getStudentOpbalAmount());
+                                        tmpSm.setFeeSubmissionDate(new Date());
+                                        
+                                        if(tmpSm.getDebitLiability() == null)
+                                            tmpSm.setDebitLiability(0.00);
+                                        
+                                        tmpSm.setDebitLiability(tmpSm.getDebitLiability()+this.getStudentOpbalAmount());
+                                        Integer feeIdforLedger = tmpSm.getFeeHeadId();
+                                        System.out.println("feeIdForLedger=="+feeIdforLedger);
+                                        new StudentMasterUtil().update(tmpSm);
+                                    } //if
+                                    
+                                } //close for 2 
+                                
+                            }// if close studentOpbalAmount > 0
+                            
+                            feeHeadName = "";
+                            feeHeadCode = 0;
+                            studentOpbalAmount = 0.00;
+                            
+                        } //for1 
+                        
+                    } //else
+                } //if close v.size() >0
+                else{
+                    message = new FacesMessage();
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    message.setSummary("Please Select Check Box.");
+                    fc.addMessage("", message);
+                    return null;
+                }
+                return "FeeProcessing.xhtml?faces-redirect=true";
+            }
+            catch (Exception e){
+                    FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, ""+e, ""));
+                   return null;
+                
+            }
+	}
+        
+        public void addStudentFeeLiability(OtherFeeHeadMaster o, String entryNo){
+            /*
+             * Getting detail of Student Fee from StudentFeeMasterDAO class
+             * According to instituteId and registration(entry) no.
+             */
+            List<StudentMaster> loadAllFeeLiabillity = new ArrayList<StudentMaster>();
+            loadAllFeeLiabillity =  new StudentMasterUtil().loadStudentFeeDetails(entryNo,o);
+            
+            //System.out.println("loadAllFee="+loadAllFeeLiabillity.size());
+            if(loadAllFeeLiabillity.isEmpty()){
+                OrgProfile op = new OrgProfile();
+                OrgDepartmentType odt = new OrgDepartmentType();
+                DegreeType dt = new DegreeType();
+                BranchMaster bm = new BranchMaster();
+                SemesterMaster sm = new SemesterMaster();
+                OtherFeeHeadMaster otfm = new OtherFeeHeadMaster();
+                op.setOrgId(new OrgProfileSessionDetails().getOrgProfileSession().getOrgId());
+                dt.setSeqNo(o.getDegreeCode());
+                odt.setOdtSeqNo(o.getDepartmentCode());
+                bm.setBmSeqNo(o.getBranchCode());
+                sm.setSemSeqNo(o.getSemCode());
+                otfm.setFeeHeadCode(o.getFeeHeadCode());
+                this.setFeeHeadName(o.getFeeHeadName());
+                this.setFeeHeadId(o.getFeeHeadId());
+                this.setCreditLiability(o.getFeeHeadValue());
+                this.setOrgProfile(op);
+                this.setOrgDepartmentType(odt);
+                this.setDegreeType(dt);
+                this.setBranchMaster(bm);
+                this.setSemesterMaster(sm);
+                this.setOtherFeeHeadMaster(otfm);
+                this.setEntryNo(entryNo);
+                
+                //System.out.println("444"+this.getStudentOpbalAmount());
+                if(this.getStudentOpbalAmount() == null ){
+                    //System.out.println("666="+this.getStudentOpbalAmount());
+                    this.setStudentOpbalAmount(0.00);
+                }
+                //System.out.println("2222="+this.getStudentOpbalAmount());
+                getiStudentFeeMasterService().addStudentFeeMaster(this);
+            }
+        }
+
+	
+        
+        /*
+                     * Getting semesterName
+                     * Getting Session time of given degree Code.
+                     */
+                    /*
+                   
+                    
+                    String semName = new SemesterUtil().getSemesterName(this.getSemCode());
+                    Vector temSession = new SemesterUtil().getSemBeginEndDate(this.getSemCode(), semName);
+                    
+                    */
+    private List<OtherFeeHeadMaster> feeHeadList;
+    private UIData dataGrid2;
+    private boolean status;
+    
+       
+    public UIData getDataGrid2() {
+        return dataGrid2;
+    }
+    
+    public void setDataGrid2(UIData dataGrid2)
+    {
+        this.dataGrid2 = dataGrid2;
+    }
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+       public List<OtherFeeHeadMaster> getFeeHeadList() {
+        feeHeadList = new FeeHeadMaster().getFeesHeadList();
+        //System.out.println("\n\nMasterFeeList=="+feeHeadList.size());
+        dataGrid2.setValue(feeHeadList);
+        return feeHeadList;
+    }
+
+    public void setFeeHeadList(List<OtherFeeHeadMaster> feeHeadList) {
+        this.feeHeadList = feeHeadList;
+    } 
+    
+    }
 
 

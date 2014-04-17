@@ -125,11 +125,8 @@ public class StudentFeeMasterDAO implements IStudentFeeMasterDAO{
 		return returnFeeHeadValue;
 	}
 	
-	public StudentMaster loadStudentDetail(String entryId)
-	{
-		return null;
-	}
-	
-	
-	
+	public List<StudentMaster> loadStudentDetail(String entryId){
+        	return null;
+	}           
+		
 }
