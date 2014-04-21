@@ -280,7 +280,7 @@ class Reportlist
 					if ($pandl != 0 || $old_pandl !=0)
 				        {
 				                if($pandl > 0){
-							//we need to change the sign
+							//change in sign is needed
 							$this->total = float_ops($this->total, -$pandl, '+');
 						}
 						else
@@ -338,15 +338,15 @@ class Reportlist
                                         if ($pandl != 0 || $old_pandl !=0)
                                         {
                                                 if($pandl > 0){
-							//we need to change the sign
+							//change in sign is needed				
                                                         $this->total = float_ops($this->total, -$pandl, '+');	
 						}
                                                 else
-                                                        $this->total = float_ops($this->total, -$pandl, '+');
+                                                        $this->total = float_ops($this->total, $pandl, '+');
                                                 if($old_pandl > 0)
-                                                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
+                                                        $this->total2 = float_ops($this->total2,-$old_pandl, '+');
                                                 else
-                                                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
+                                                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
                                         }
                         	}
 			}
@@ -669,19 +669,15 @@ class Reportlist
                         //$this->counter++;
                         foreach ($this->children_ledgers as $id => $data)
                         {
-                                /* Get Balance of net income/(expenditure) for 'this' ledger head*/
-                                /*if($c == 1){
-                                        $this->calculate_netpl($data['id']);
-                                        $net_profit_loss = $this->calculate_netpl($data['id']);
-                                        $this->netpl = $this->netpl + $net_profit_loss;
-                                }*/
-
+				$c_total = 0;
+				$d_total = 0;
+				
 				echo "<tr class=\"tr-ledger\">";
 	                                echo "<td class=\"td-ledger\">";
         	                                echo $this->print_space($this->counter);
                 	                        echo "&nbsp;" . "<b>" . $data['name'] . "<b>";
                                         echo "</td>";
-                                echo "</tr>";
+//                                echo "</tr>";
 
                                 $CI =& get_instance();
                                 $CI->db->select('entry_id, id, amount, dc');
@@ -690,14 +686,6 @@ class Reportlist
                                 if($entry_items_q->num_rows() > 0)
                                 {
                                         $entry_items_result = $entry_items_q->result();
-                                        /*echo "<tr class=\"tr-ledger\">";
-                                        echo "<td class=\"td-ledger\">";
-                                        echo $this->print_space($this->counter);
-                                        echo "&nbsp;" . "<b>" . $data['name'] . "<b>";
-                                        echo "</td>";
-
-                                        echo "</tr>";
-					*/
                                         //$counter = 0;
                                         foreach ($entry_items_result as $row)
                                         {
@@ -709,7 +697,7 @@ class Reportlist
                                                         //$entries = $entries_q->row();
                                                         foreach($entries_q->result() as $entries){
                                                                 $narration = $entries->narration;
-								if($this->startsWith($data['code'], '10')){
+								/*if($this->startsWith($data['code'], '10')){
                                                                 echo "<tr class=\"tr-ledger\">";
                                                                 echo "<td class=\"td-ledger\">";
                                                                 echo $this->print_space($this->counter);
@@ -758,9 +746,9 @@ class Reportlist
                                                                 echo "</td>";
 
                                                                 echo "</tr>";
-                                                                }
+                                                                }*/
                                                         }                                                        
-							//$this->cr_total = $this->cr_total + $row->amount;
+							$c_total = $c_total + $row->amount;
 							$credit_total = $credit_total + $row->amount;
                                                 }
                                                 else{
@@ -771,7 +759,7 @@ class Reportlist
                                                         //$entries = $entries_q->row();
                                                         foreach($entries_q->result() as $entries){
                                                                 $narration = $entries->narration;
-								if($this->startsWith($data['code'], '10')){
+								/*if($this->startsWith($data['code'], '10')){
                                 	                                echo "<tr class=\"tr-ledger\">";
                                         	                        echo "<td class=\"td-ledger\">";
                                                 		                echo $this->print_space($this->counter);
@@ -820,31 +808,33 @@ class Reportlist
                 	                                                echo "</td>";
 
                         	                                        echo "</tr>";
-								}
+								}*/
                                                         }
-		                                        //$this->dr_total = $this->dr_total + $row->amount;
+		                                        $d_total = $d_total + $row->amount;
 							$debit_total = $debit_total + $row->amount;                                               
                                                 }
-						/*$cr_total = $CI->Ledger_model->get_cr_total1($data['id']);
-						//$this->cr_total = $this->cr_total + $cr_total;
-					        $dr_total = $CI->Ledger_model->get_dr_total1($data['id']);
-						//$this->dr_total = $this->dr_total + $dr_total;
-						if($this->startsWith($data['code'], '10')){
-							echo "rtertrt";
-							$temp = $cr_total - $dr_total;
-							$this->total = $this->total + $temp;
-						}
-					        else{
-							echo "rtertrt>>>";
-							$temp = $dr_total - $cr_total;
-					                $this->total = $this->total + $temp;
-							echo "<br>";
-						}*/
                                         }
+					echo "<td align=\"right\">";
+                        	                echo convert_amount_dc($d_total);
+		                        echo "</td>";
+	
+                		        echo "<td align=\"right\">";
+                	                        echo convert_amount_dc(-$c_total);
+		                        echo "</td>";
 
+					echo "<td>";
+                                                echo "";
+                                        echo "</td>";
+
+                                        echo "<td>";
+                                                echo "";
+					echo "</td>";
+                        		echo "</tr>";
                                 }
+
                         }                        //$this->counter--;
                 }
+
 		}//else for null
                 return array($credit_total, $debit_total);
         }
@@ -855,6 +845,9 @@ class Reportlist
 		$amount = 0;
 		static $old_credit_total = 0;
 		static $old_debit_total = 0;
+
+		$c_total = 0;
+		$d_total = 0;
 
 		if($c == null)
                 {
@@ -874,13 +867,9 @@ class Reportlist
                         //$this->counter++;
                         foreach ($this->children_ledgers as $id => $data)
                         {//2
-				/* Get Balance of net income/(expenditure) for 'this' ledger head*/
-                                /*if($c == 1){
-                                        $this->calculate_netpl($data['id']);
-                                        $net_profit_loss = $this->calculate_netpl($data['id']);
-                                        $this->netpl_old = $this->netpl_old + $net_profit_loss;
-                                }*/
-				
+				$c_total = 0;
+				$d_total = 0;			
+	
                 		if($this->prevYearDB != "" ){//3
                         		/* database connectivity for getting previous year opening balance */
 	                        	$con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
@@ -907,7 +896,7 @@ class Reportlist
                                 		                                                if($row1 != null){//11
                                                 		                                        $narration = $row1['narration'];
 	                                               							if($row['dc'] == 'C'){//12
-														if($this->startsWith($data['code'], '10')){
+													/*	if($this->startsWith($data['code'], '10')){
 						                                                                echo "<tr class=\"tr-ledger\">";
                                                 						                echo "<td class=\"td-ledger\">";
 						                	                                                echo $this->print_space($this->counter);
@@ -951,11 +940,12 @@ class Reportlist
                                                                                                                 echo "</td>";
 
                                                                                                                 echo "</tr>";
-														}
+														}*/
 														$old_credit_total = $old_credit_total + $row['amount'];
+														$c_total = $c_total + $row['amount'];
 					                                                		}//12
                                                 							else{//13
-														if($this->startsWith($data['code'], '10')){
+														/*if($this->startsWith($data['code'], '10')){
                                                         	                                	        echo "<tr class=\"tr-ledger\">";
                                                                 						echo "<td class=\"td-ledger\">";
 					                                	                                	echo $this->print_space($this->counter);
@@ -1001,9 +991,10 @@ class Reportlist
                                                                                                                 echo "</td>";
 
                                                                                                                 echo "</tr>";
-														}
+														}*/
                                                         	                                                //$this->old_dr_total = $this->old_dr_total - $row->amount;
 														$old_debit_total = $old_debit_total + $row['amount'];
+														$d_total = $d_total + $row['amount'];
                                                 							}//13
 												}//11
 												mysql_close($con1);
@@ -1012,10 +1003,36 @@ class Reportlist
                                         				}//8
                                					}//7
 								// mysql_close($con);
+									echo "<tr>";
+									echo "<td>";
+                                                                                echo "";
+                                                                        echo "</td>";
+
+									echo "<td>";
+										echo "";
+									echo "</td>";
+
+									echo "<td>";
+										echo "";
+									echo "</td>";
+
+									echo "<td align=\"right\">";
+                                                                        	echo convert_amount_dc($d_total);
+                                                                        echo "</td>";
+
+                                                                        echo "<td align=\"right\">";
+                                                                                echo convert_amount_dc(-$c_total);
+                                                                        echo "</td>";
+                                                                        
+									echo "</tr>";
+                                                                        
                                                         }//6
 							//	mysql_close($con);
+		
                                                 }//5
                                         }//4
+					
+
                                 }//3
                                 //}
                         }//2
@@ -1301,18 +1318,30 @@ class Reportlist
         {
 		$check = 0;
                 $this->counter = $c;
+		
+		$CI =& get_instance();
+                $CI->load->model('Setting_model');
+                $ledger_name = $CI->Setting_model->get_from_settings('ledger_name');
+
 		if($this->countDigits() == 4 && $this->id != 0 && $this->code > 100){
-			foreach($this->children_groups as $id => $data)
+			/*foreach($this->children_groups as $id => $data)
                 	{
 				if($data->countDigits() == 6)
 					$check++;
-                	}
+                	}*/
+				
+			if($this->name == 'Unrestricted Funds'){
+	                        $check++;
+                        }else{
+                                $check = 0;
+                        }
 
 			if($check == 0){
                         	//echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
 				//$this->schedule
 				/* Get Balance of net income/(expenditure) for 'this' ledger head*/
-	                        if($c == 2){
+				if($ledger_name == $this->name){
+	                        //if($c == 2){
 					$income = new Reportlist();
 			                $income->init(3);
 			                $expense = new Reportlist();
@@ -1326,22 +1355,16 @@ class Reportlist
 					if ($pandl != 0 || $old_pandl !=0)
 				        {
 				                if($pandl > 0)
-							$this->total = float_ops($this->total, $pandl, '+');
-						else
 							$this->total = float_ops($this->total, -$pandl, '+');
-						if($old_pandl > 0)
-				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
 						else
+							$this->total = float_ops($this->total, $pandl, '+');
+						if($old_pandl > 0)
 				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
+						else
+				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
 					}
-                        	        /*$this->calculate_netpl($this->id);
-                	                $net_profit_loss = $this->calculate_netpl($this->id);
-        	                        $this->netpl = $this->netpl + $net_profit_loss;*/
 	                        }
 			}
-			/* Add opening balance to the total amount */
-                        //$this->calculate_op_balance('new', 'balance_sheet');
-                        //$this->calculate_op_balance('old', 'balance_sheet');
 
                         echo "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
@@ -1354,19 +1377,27 @@ class Reportlist
                        // echo $this->print_space($this->counter);
                         echo "&nbsp;" .  $this->name;
                         echo "</td>";
-                        echo "<td class=\"td-group\">";
-                        //echo "&nbsp;" .  $this->schedule;
-                        //echo "&nbsp;" . $this->counter;
-                        /* Get Balance of net income/(expenditure) for 'this' ledger head*/
-                        /*if($c == 1){
-                                $this->calculate_netpl($data['id']);
-                                $net_profit_loss = $this->calculate_netpl($data['id']);
-                                $this->netpl = $this->netpl + $net_profit_loss;
-                        }*/
 
+			$CI =& get_instance();
+                        $CI->db->select('parent_id');
+                        $CI->db->from('groups')->where('id', $this->id);
+                        $groups_q = $CI->db->get();
+                        $groups= $groups_q->row();
+                        $parent_id = $groups->parent_id;
+
+                        $CI =& get_instance();
+                        $CI->db->select('name');
+                        $CI->db->from('groups')->where('id', $parent_id);
+                        $groups_q = $CI->db->get();
+                        $groups= $groups_q->row();
+                        $name = $groups->name;
+
+                        echo "<td class=\"td-group\">";
+			if($name  == 'Unrestricted Funds'){
                         //echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
-			echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
-				if($c == 2){
+			//echo "&nbsp;" . anchor_popup('report/schedule/' . $this->code . '/' . $this->counter, $this->counter, array('title' => $this->name, 'style' => 'color:#000000'));
+				if($ledger_name == $this->name){
+				//if($c == 2){
                                         $income = new Reportlist();
                                         $income->init(3);
                                         $expense = new Reportlist();
@@ -1380,22 +1411,16 @@ class Reportlist
                                         if ($pandl != 0 || $old_pandl !=0)
                                         {
                                                 if($pandl > 0)
-                                                        $this->total = float_ops($this->total, $pandl, '+');
-                                                else
                                                         $this->total = float_ops($this->total, -$pandl, '+');
-                                                if($old_pandl > 0)
-                                                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
                                                 else
+                                                        $this->total = float_ops($this->total, $pandl, '+');
+                                                if($old_pandl > 0)
                                                         $this->total2 = float_ops($this->total2, -$old_pandl, '+');
+                                                else
+                                                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
                                         }
-                                        /*$this->calculate_netpl($this->id);
-                                        $net_profit_loss = $this->calculate_netpl($this->id);
-                                        $this->netpl = $this->netpl + $net_profit_loss;*/
                         	}
-			/* Add opening balance to the total amount */
-                        //$this->calculate_op_balance('new', 'balance_sheet');
-                        //$this->calculate_op_balance('old', 'balance_sheet');
-
+			}
                         echo "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total) . "</td>";
                         echo "<td align=\"right\">" . convert_amount_dc($this->total2) . "</td>";
@@ -1404,7 +1429,9 @@ class Reportlist
 
 		foreach ($this->children_groups as $id => $data)
                 {
-                        $len = $data->countDigits();
+			$len = $data->countDigits();
+                        $this->counter = $data->new_balance_sheet($this->counter);
+                        /*$len = $data->countDigits();
                         if($len == 4){
 				if($check == 0)
                                 	$this->counter++;
@@ -1413,8 +1440,7 @@ class Reportlist
 				//$this->counter++;
                                 $this->counter = $data->new_balance_sheet($this->counter);
 				$this->counter++;
-			}
-                        //$this->counter--;
+			}*/
                 }
 
                 //$this->counter = $this->counter + 1;

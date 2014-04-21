@@ -40,11 +40,11 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                                echo convert_cur($opening_balance);
+                                echo  money_format('%!i', convert_cur($opening_balance));
                         echo "</td>";
                 }else{
                         echo "<td width=15% align=\"right\">";
-                                echo convert_cur($opening_balance);
+                                echo  money_format('%!i', convert_cur($opening_balance));
                         echo "</td>";
 
                         echo "<td width=15%>";
@@ -56,11 +56,11 @@
                         echo "</td>";
 
                         echo "<td width=15% align=\"right\">";
-                                echo convert_cur($opening_balance_prev);
+                                echo  money_format('%!i', convert_cur($opening_balance_prev));
                         echo "</td>";
                 }else{
                         echo "<td width=15% align=\"right\">";
-                                echo convert_cur($opening_balance_prev);
+                                echo  money_format('%!i', convert_cur($opening_balance_prev));
                         echo "</td>";
 
                         echo "<td width=15%>";
@@ -90,19 +90,19 @@
 
                 echo "<td width=15% align=\"right\">";
                         //echo $total;
-			echo convert_cur($dr_total);
+			echo  money_format('%!i', convert_cur($dr_total));
                 echo "</td>";
 
                 echo "<td width=15% align=\"right\">";
-			echo convert_cur($cr_total);
+			echo  money_format('%!i', convert_cur($cr_total));
                 echo "</td>";
 
-                echo "<td width=15%>";
-			echo convert_cur($old_dr_total);
+                echo "<td width=15% align=\"right\">";
+			echo  money_format('%!i', convert_cur($old_dr_total));
                 echo "</td>";
 
-                echo "<td width=15%>";
-			echo convert_cur($old_cr_total);
+                echo "<td width=15% align=\"right\">";
+			echo  money_format('%!i', convert_cur($old_cr_total));
                 echo "</td>";
         echo "</tr>";
 	//$liability->schedule();
@@ -131,7 +131,7 @@
 			echo "</td>";
 
                         echo "<td align=\"right\">";
-                                echo convert_cur($pandl);
+                                echo  money_format('%!i', convert_cur($pandl));
                         echo "</td>";
 
                         echo "<td>";
@@ -143,14 +143,14 @@
 	                echo "</tr>";
 		}
                 elseif($pandl < 0){
-                        $total = float_ops($total, $pandl, '+');	
+                        $total = float_ops($total, -$pandl, '+');	
 			echo "<tr>";
                         echo "<td class=\"bold\">";
 				echo "Deduct: Balance of net expenditure transferred from the Income and Expenditure Account";
                         echo "</td>";
 
 			echo "<td align=\"right\">";
-				echo convert_cur(-$pandl);
+				echo  money_format('%!i', convert_cur(-$pandl));
                         echo "</td>";
 
                         echo "<td>";
@@ -181,13 +181,13 @@
                         echo "</td>";
 
                         echo "<td align=\"right\">";
-				echo convert_cur($old_pandl);
+				echo  money_format('%!i', convert_cur($old_pandl));
                         echo "</td>";
 
                         echo "</tr>";
 		}
                 elseif($old_pandl < 0){
-                        $old_total = float_ops($old_total, $old_pandl, '+');
+                        $old_total = float_ops($old_total, -$old_pandl, '+');
 			echo "<tr>";
                         echo "<td class=\"bold\">";
                                 echo "Deduct: Balance of net expenditure transferred from the Income and Expenditure Account";
@@ -200,7 +200,7 @@
                         echo "</td>";
 
                         echo "<td align=\"right\">";
-                                echo convert_cur(-$old_pandl);
+                                echo  money_format('%!i', convert_cur(-$old_pandl));
                         echo "</td>";
 
                         echo "<td>";
@@ -216,7 +216,7 @@
                 echo "</td>";
 
                 echo "<td colspan =2 width=30% align=\"right\">";
-		        echo convert_cur($total);
+		        echo  money_format('%!i', convert_cur($total));
                         //echo $dr_total;
                 echo "</td>";
 
@@ -225,7 +225,7 @@
                // echo "</td>";
 
                 echo "<td  colspan = 2 width=30% align=\"right\">";
-			echo convert_cur($old_total);
+			echo  money_format('%!i', convert_cur($old_total));
                 echo "</td>";
 
                 //echo "<td width=15%>";

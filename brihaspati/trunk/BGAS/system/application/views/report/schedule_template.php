@@ -38,11 +38,11 @@
 			echo "</td>";
 	
 			echo "<td width=15% align=\"right\">";
-				echo convert_cur($opening_balance);
+				echo  money_format('%!i', convert_cur($opening_balance));
 	        	echo "</td>";
 		}else{
 			echo "<td width=15% align=\"right\">";
-				echo convert_cur($opening_balance);
+				echo  money_format('%!i', convert_cur($opening_balance));
                         echo "</td>";
 
                         echo "<td width=15%>";
@@ -54,11 +54,11 @@
                         echo "</td>";
         
                         echo "<td width=15% align=\"right\">";
-                                echo convert_cur($opening_balance_prev);
+                                echo  money_format('%!i', convert_cur($opening_balance_prev));
                         echo "</td>";
                 }else{
                         echo "<td width=15% align=\"right\">";
-                                echo convert_cur($opening_balance_prev);
+                                echo  money_format('%!i', convert_cur($opening_balance_prev));
                         echo "</td>";
 
                         echo "<td width=15%>";
@@ -67,18 +67,16 @@
 
 	echo "</tr>";
 	
-//	$object->schedule(0);
 	$object->callToSchedule(1);
 	$cr_total = $object->cr_total;
-	//$cr_total = $cr_total + $object->credit_total;
+
         $dr_total = $object->dr_total;
-        //$dr_total = $dr_total + $object->debit_total;
-	if(!strncmp($object->code, '10', strlen('10')))
+        if(!strncmp($object->code, '10', strlen('10')))
 		$total = $cr_total - $dr_total;
 	else
 	        $total = $dr_total - $cr_total;
 	$object->getPreviousYearDetails();	
-	//$object->previous_year_data(0);
+	
 	$object->callToOldSchedule(1);
 	$old_cr_total = $object->old_cr_total;
         $old_dr_total = $object->old_dr_total;
@@ -96,19 +94,19 @@
 
                 echo "<td width=15% align=\"right\">";
                         //echo $total;
-			echo convert_cur($dr_total);
+			echo  money_format('%!i', convert_cur($dr_total));
                 echo "</td>";
 
                 echo "<td width=15% align=\"right\">";
-			echo convert_cur($cr_total);
+			echo  money_format('%!i', convert_cur($cr_total));
                 echo "</td>";
 
-                echo "<td width=15%>";
-			echo convert_cur($old_dr_total);
+                echo "<td width=15% align=\"right\">";
+			echo  money_format('%!i', convert_cur($old_dr_total));
 		echo "</td>";
 
-                echo "<td width=15%>";
-			echo convert_cur($old_cr_total);
+                echo "<td width=15% align=\"right\">";
+			echo  money_format('%!i', convert_cur($old_cr_total));
                 echo "</td>";
         echo "</tr>";
 	//$liability->schedule();
@@ -119,7 +117,7 @@
                 echo "</td>";
 
                 echo "<td colspan =2 width=30% align=\"right\">";
-		        echo convert_cur($total);
+		        echo  money_format('%!i', convert_cur($total));
                         //echo $dr_total;
                 echo "</td>";
 
@@ -128,7 +126,7 @@
                // echo "</td>";
 
                 echo "<td  colspan = 2 width=30% align=\"right\">";
-			echo convert_cur($old_total);
+			echo  money_format('%!i', convert_cur($old_total));
                 echo "</td>";
 
                 //echo "<td width=15%>";

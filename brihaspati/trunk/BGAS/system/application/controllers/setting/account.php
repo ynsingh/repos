@@ -264,7 +264,6 @@ class Account extends Controller {
 
 	function get_account_flag(){
 		$flag = '';
-		$this->logger->write_message("success", "get_");
 		$this->db->select('account_flag');
 		$this->db->from('settings')->where('id',1);
 		$result = $this->db->get();
