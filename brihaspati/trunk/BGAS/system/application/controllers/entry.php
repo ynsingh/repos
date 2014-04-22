@@ -523,14 +523,14 @@ class Entry extends Controller {
 		$data['bank_name'] = array(
                         'name' => 'bank_name',
                         'id' => 'bank_name',
-                        'maxlength' => '11',
+                        'maxlength' => '255',
                         'size' => '11',
                         'value' => '',
                 );
 		$data['banif_name'] = array(
                         'name' => 'banif_name',
                         'id' => 'banif_name',
-                        'maxlength' => '11',
+                        'maxlength' => '255',
                         'size' => '11',
                         'value' => '',
                 );
@@ -1182,6 +1182,7 @@ class Entry extends Controller {
                                         return;
                                 }
 						$val=$data_cheque[$id];
+						
 						if($val != NULL)
 						{
                                   		$valid_ledger = $valid_ledger_q->row();
@@ -1210,8 +1211,8 @@ class Entry extends Controller {
                                                                 }
 
                                                 }
-					 if ($valid_ledger->type != 1)
-                                                        $non_bank_cash_present = TRUE;
+					 	if ($valid_ledger->type != 1)
+                                                $non_bank_cash_present = TRUE;
                                                 if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
                                                 {
                                                          $bank_cash_present = TRUE;
@@ -1236,6 +1237,7 @@ class Entry extends Controller {
                                                                 }
                                                 }
                         		}
+
 				}
 
 			/* Success */
@@ -1364,14 +1366,14 @@ class Entry extends Controller {
 		$data['bank_name'] = array(
                         'name' => 'bank_name',
                         'id' => 'bank_name',
-                        'maxlength' => '11',
+                        'maxlength' => '255',
                         'size' => '11',
                         'value' => $bank_name,
                 );
                 $data['banif_name'] = array(
                         'name' => 'banif_name',
                         'id' => 'banif_name',
-                        'maxlength' => '11',
+                        'maxlength' => '255',
                         'size' => '11',
                         'value' => $name,
                 );
@@ -3196,14 +3198,14 @@ class Entry extends Controller {
 		$data['bank_name'] = array(
                         'name' => 'bank_name',
                         'id' => 'bank_name',
-                        'maxlength' => '11',
+                        'maxlength' => '255',
                         'size' => '11',
                         'value' => '',
                 );
                 $data['banif_name'] = array(
                         'name' => 'banif_name',
                         'id' => 'banif_name',
-                        'maxlength' => '11',
+                        'maxlength' => '255',
                         'size' => '11',
                         'value' => '',
                 );

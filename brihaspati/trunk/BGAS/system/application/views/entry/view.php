@@ -70,35 +70,21 @@ else
 	Verified By : <span class="bold"><?php echo $verified_by; ?></span>
 </p>
 <?php
-	if($ledger_q->num_rows() == 0)
-	{
-        	if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        	{
-			echo "<p>";
-        		echo "Bank Name :" . '' . "</br>"; 
-			echo "</p>";
-			echo "<p>";
-        		echo "Beneficiary Name :" . '' . "</br>";
-			echo "</p>";
-			echo "<p>";
-        		echo "Cheque No :" . '' . "</br>";
-			echo "</p>";
-        	}
-	}
-	elseif($ledger_q->num_rows() > 0){
-		if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        	{
-        		echo "<p>";
-        		echo "Bank Name :" . $name . "</br>";           
-        		echo "</p>";
-        		echo "<p>";
-        		echo "Beneficiary Name :" . $bank_name . "</br>";
-        		echo "</p>";
-        		echo "<p>";
-        		echo "Cheque No :" . $cheque_no . "</br>";
-        		echo "</p>";
-        	}
-	}
+	if($ledger_q->num_rows() > 0){
+        	if( $cheque_no != NULL)
+         	{
+                        echo "<p>";
+                        echo "Bank Name :" . $name . "</br>";
+                        echo "</p>";
+                        echo "<p>";
+                        echo "Beneficiary Name :" . $bank_name . "</br>";
+                        echo "</p>";
+                        echo "<p>";
+                        echo "Cheque No :" . $cheque_no . "</br>";
+                        echo "</p>";
+                }
+        }
+
 ?>
 <?php 
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' .  $current_entry_type['name'] . ' Entries'));
