@@ -279,16 +279,15 @@ class Reportlist
 				        $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
 					if ($pandl != 0 || $old_pandl !=0)
 				        {
-				                if($pandl > 0){
-							//change in sign is needed
+						//the change in sign is needed
+				                if($pandl > 0)
 							$this->total = float_ops($this->total, -$pandl, '+');
-						}
 						else
-							$this->total = float_ops($this->total, $pandl, '+');
+							$this->total = float_ops($this->total, -$pandl, '+');
 						if($old_pandl > 0)
 				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
 						else
-				                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
+				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
 					}
 	                        }
 			}
@@ -337,16 +336,15 @@ class Reportlist
                                         $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
                                         if ($pandl != 0 || $old_pandl !=0)
                                         {
-                                                if($pandl > 0){
-							//change in sign is needed				
+						//the change in sign is needed
+                                                if($pandl > 0)
                                                         $this->total = float_ops($this->total, -$pandl, '+');	
-						}
                                                 else
-                                                        $this->total = float_ops($this->total, $pandl, '+');
+                                                        $this->total = float_ops($this->total, -$pandl, '+');
                                                 if($old_pandl > 0)
                                                         $this->total2 = float_ops($this->total2,-$old_pandl, '+');
                                                 else
-                                                        $this->total2 = float_ops($this->total2, $old_pandl, '+');
+                                                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
                                         }
                         	}
 			}
@@ -669,8 +667,8 @@ class Reportlist
                         //$this->counter++;
                         foreach ($this->children_ledgers as $id => $data)
                         {
-				$c_total = 0;
-				$d_total = 0;
+				$c_total = 0.00;
+				$d_total = 0.00;
 				
 				echo "<tr class=\"tr-ledger\">";
 	                                echo "<td class=\"td-ledger\">";

@@ -1,10 +1,10 @@
 <?php
 	$i = 0;
-	$old_cr_total = 0;
-        $old_dr_total = 0;
-        $old_total = 0;
-	$opening_balance = 0;
-	$opening_balance_prev = 0;
+	$old_cr_total = 0.00;
+        $old_dr_total = 0.00;
+        $old_total = 0.00;
+	$opening_balance = 0.00;
+	$opening_balance_prev = 0.00;
 	//$this->load->library('balanceSheet');
 	//$liability = new BalanceSheet();
 	$this->load->library('reportlist');
