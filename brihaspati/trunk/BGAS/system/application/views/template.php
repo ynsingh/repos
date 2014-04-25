@@ -70,6 +70,7 @@ $(document).ready(function() {
 		overlay.show();
 		overlay.appendTo(document.body);
 		$('.popup').show();
+		history.go(0);
 	});
 });
 </script>
