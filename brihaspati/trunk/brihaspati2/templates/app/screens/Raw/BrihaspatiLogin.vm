@@ -40,7 +40,7 @@ $!msg
         	</td></tr> ## 6, 5
         	<tr><td> ## 5, 6
 		#if($detail.size()> 5)
-		<div style="width: 260px; height: 100px; overflow-y: scroll;">
+		<div style class="scrl">
 		#end
 		#if($status!="empty")
                 #set($count=1)
