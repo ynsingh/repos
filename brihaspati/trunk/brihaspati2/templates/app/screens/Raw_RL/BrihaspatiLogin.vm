@@ -7,345 +7,343 @@
  * @modified date: 10-08-2010, 24-09-2010 (Shaista)
  * @modified date: 15-02-2011 (Shaista), 27-03-2012
 *#
-<head>
-<style type="text/css">
- .scrollable{
-  /* overflow: auto;*/
-  /* overflow: scroll;*/
-   /* width: 70px;  adjust this width depending to amount of text to display */
-   height: 40px; /* adjust height depending on number of options to display */
-   border: 1px silver solid;
- }
- .scrollable select{
-   border: none;
- }
-</style>
-</head>
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
 </head>
-<div class="main" style="width:1100px; margin:-10px auto;">
-#*<table width="100%">
-<tr><td>
-##<marquee direction="left">
-<font size=4>$!fNoti</font>
-##</morque>
-</td></tr>
-</table>
-*#
-<table align=left class="main" bgcolor="$ui.tableColor"> ## Ta1
-<tr><td colspan="3">
-<marquee direction="right">
-<font size=4>$!fNoti</font>
-</marquee>
-</td></tr>
-<tr><td colspan="3">
-<marquee direction="right"> <font size=4>$!quotation</font></marquee>
-</td></tr>
-##</table>
-##<table width="100%">
-<tr> ## tr1
-	<td valign="top" bgcolor="$ui.tableColor" width="65%"> ## TD1 
-		<table align="left" width="100%" class="login">
-		<tr align="right">
-			 #if($!load_flag == 0)
-			 	<td colspan=4>
-				$brih_trafficMessage1&nbsp;<img src="$content.getURI("/images/green.gif")" border="0"></td>
-				
-                        #end
-                        #if($!load_flag == 1)
-                        	<td colspan=4>
-                                $brih_trafficMessage2&nbsp;<img src="$content.getURI("/images/orange.jpg")" border="0"></td>
-				
-                        #end
-			#if($!load_flag == 2) 
-				<td colspan=4>
-                                $brih_trafficMessage3&nbsp;<img src="$content.getURI("/images/red.gif")" border="0"></td>
-				
-                        #end
-		</tr>
-		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
-		<tr align="right">
-        	<td colspan="3">
-			##<div class="scrollable">
-			<select id="language" onChange ="javascript:OnChange();" class="drop">
-                                #if ($lang == "urdu")
-                                	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
-				#elseif($lang == "arabic")
-	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
-				#elseif($lang == "persian")
-	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")"> $brih_persian </option>
-                                #end
-				#if($lang != "arabic")
-	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic( $brih_arabic1 </option>
-	                                ##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
-				#end
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> ($brih_bangla1) $brih_bangla
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bhojpuri")">  ($brih_bhojpuri1) $brih_bhojpuri
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","chinese")"> ($brih_chinese1) $brih_chinese
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","dutch")">  (Nederlands) $brih_dutch
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","english")"> (English) $brih_english
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> (Franýais) $brih_french
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> (Deutsch) $brih_german
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> ($brih_greek1) $brih_greek 
-				 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujarati")"> ($brih_gujarati1) $brih_gujarati
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")">($brih_gurmukhi1) $brih_gurmukhi
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> ($brih_hindi1) $brih_hindi
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> (Italiano) $brih_italian
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","japanese")"> ($brih_japanese1) $brih_japanese
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> ($brih_korean1) $brih_korean
-			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> ($brih_malayalam1) $brih_malayalam
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> ($brih_marathi1) $brih_marathi
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> ($brih_nepali1) $brih_nepali
-                                #if ($lang != "persian")
-	        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")">($brih_persian( $brih_persian1 
-				#end
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","portuguese")"> ($brih_portugue($brih_portuguese1 
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> ($brih_russian1) $brih_russian
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (EspaýOB) $brih_spanish
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> ($brih_telugu1) $brih_telugu
-                                #if ($lang != "urdu")
-                                	<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> ($brih_urdu( $brih_urdu1 </option>
-                                	##<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")">  $brih_urdu </option>
-                                	##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
-				#end
-                        </select>
-	        </td>
-        	        <td align="right"><b> $brih_language $brih_select </b></td>
-		</tr>
-<form name="frm" method="post" action="$link.setAction("myLogin")">
-		<tr align="right">
-                        <td align=right colspan="3"> <input type="text" size="20" name="username" value="" ></td>
-                        <td align=right ><b>$brih_usr</b></td>
 
-                </tr>
-                <tr align="right">
-                        <td align=right colspan="3"> <input type="password" size="20" name="password" value="" ></td>
-                        <td align=right ><b>$brih_pwd</b></td>
+<div class="main" style="width:1100px; margin:-10px auto; background:$ui.tableColor;"> ##Main
+	<table align=center style= "font-size:16px;font-family:Times New Roman;font-weight:bold;">
+		<tr><td align=center>$!fNoti</td></tr>
+		<tr><td align=center>$!quotation</td></tr>
+	</table>
+	#if(($openid_identifier== "Google") ||($openid_identifier== "Yahoo"))
+		$!data.getMessage()
+	#end
+	$!msg
 
-                </tr>
+	<table valign="top"> ##Main
+		<tr> ##Main
 
-                <tr>
+			<td valign="top"> ##1
+				<table align="right" class="desc" valign="top"> ## 4
+			        	<div class="tp">
+						<tr align="right">
 
-		<tr align="right">
-		<td colspan="4">
-			<font face="$ui.sansSerifFonts">
-			<input type="button" value="$brih_login" class="button-ftextstyle" onClick="checkUNamePwd(document.frm,this);">
-			</font>
-		</td>
-		</tr>
-		##<input type=hidden name="LangFile" value="$LangFile">
-		<input type=hidden name="lang" value="$lang">
-		<input type=hidden name="flag" value="$flag">
-		<tr align="right"><td colspan=4 align="right">$brih_guestMsg2</td></tr>
-</form>
-<tr align="right"><td colspan=4 align="right">
-	#if($!load_flag == 0)
-		<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+					        	#if($!load_flag == 0)
+					                	<td colspan=4>
+						                        $brih_trafficMessage1</td> <td  width="5%"><img src="$content.getURI("/images/green.gif")" border="0"></td>
+							#end
+							#if($!load_flag == 1)
+					                	<td colspan=4>
+					                        $brih_trafficMessage2</td> <td  width="5%"><img src="$content.getURI("/images/orange.jpg")" border="0"></td>
+							#end
+					                #if($!load_flag == 2) 
+					                	<td colspan=4>
+					                        $brih_trafficMessage3</td><td  width="5%"><img src="$content.getURI("/images/red.gif")" border="0"></td>
+							#end
+						</tr>
+						<tr align="right">
+				                	<td colspan=4>
+					                      $brih_noOfUsersLoggedIn $!active_user
+				        	        </td>
+					        </tr>
+				        	<tr align="right">
+				                	<td colspan=4>
+	                				     $brih_timeTakenAtLastLogin: $!login_time
+			        		        </td>
+					        </tr>
+					</div>
+
+					<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
+					<tr align="right">
+        					<td colspan="3">
+							<select id="language" onChange ="javascript:OnChange();" class="urdu_drop">
+		        	                        #if ($lang == "urdu")
+                                				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
+							#elseif($lang == "arabic")
+	                			                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
+							#elseif($lang == "persian")
+	                			                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")"> $brih_persian </option>
+			                                #end
+							#if($lang != "arabic")
+				                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic( $brih_arabic1 </option>
+							#end
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> ($brih_bangla1) $brih_bangla
+        						<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bhojpuri")">  ($brih_bhojpuri1) $brih_bhojpuri
+							<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","chinese")"> ($brih_chinese1) $brih_chinese
+							<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","dutch")">  (Nederlands) $brih_dutch
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","english")"> (English) $brih_english
+                        			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> (Franýais) $brih_french
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> (Deutsch) $brih_german
+        						<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> ($brih_greek1) $brih_greek 
+							<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujarati")"> ($brih_gujarati1) $brih_gujarati
+							<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")">($brih_gurmukhi1) $brih_gurmukhi
+                        			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> ($brih_hindi1) $brih_hindi
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> (Italiano) $brih_italian
+							<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","japanese")"> ($brih_japanese1) $brih_japanese
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> ($brih_korean1) $brih_korean
+						        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> ($brih_malayalam1) $brih_malayalam
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> ($brih_marathi1) $brih_marathi
+							<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> ($brih_nepali1) $brih_nepali
+			                                #if ($lang != "persian")
+	        						<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")">($brih_persian( $brih_persian1 
+							#end
+        						<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","portuguese")"> ($brih_portuguese ($brih_portuguese  
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> ($brih_russian1) $brih_russian
+        						<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (EspaýOB) $brih_spanish
+			        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil
+			                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> ($brih_telugu1) $brih_telugu
+			                                #if ($lang != "urdu")
+                        				       	<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> ($brih_urdu( $brih_urdu1 </option>
+							#end
+				                        </select>
+		        			</td>
+			        		<td align="right"><b> $brih_language $brih_select </b></td>
+					</tr>
+					<form name="frm" method="post" action="$link.setAction("myLogin")">
+					<tr align="right">
+		                	        <td align=right colspan="3"> <input type="text" size="20" name="username" value="" ></td>
+                		        	<td align=right ><b>$brih_usr</b></td>
+
+			                </tr>
+					<tr><td align=right colspan="3">Example: brihaspati@iitk.ac.in</td></tr>
+			                <tr align="right">
+                        			<td align=right colspan="3"> <input type="password" size="20" name="password" value="" ></td>
+			                        <td align=right ><b>$brih_pwd</b></td>
+
+			                </tr>
+					#if(($ldapcat == "null")||($ldapcat ==""))
+						&nbsp;
+					#else
+						<tr align="right">
+							<td colspan="3">
+								<select id="lcate_id" name="lcate" class="drop">
+									<option>  </option>
+									#foreach($num in $ldapcat.split(","))
+										<option value=$num> $num </option>
+									#end
+								</select>
+							</td>
+							<td>$brih_ldap $brih_cat</td>
+						</tr>
+					#end
+					<tr align="right">
+						<td colspan=3> ## 5, 6
+							<font face="$ui.sansSerifFonts">
+							<input type="button" value="$brih_login" class="leftMarginloginbutton" style="width:100px" onClick="checkUNamePwd(document.frm,this);">
+							<input type=hidden name="lang" value="$lang">
+							<input type=hidden name="flag" value="$flag">
+				        </td></tr> 
+					<tr><td align="right" colspan=3>
+						<b> <a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User") style="text-decoration:none">$brih_forgot $brih_pwd</a>
+                				<td><img src="$content.getURI("/images/orange_sq_but.gif")"> </td></b>
+					</td></tr>
+					<tr>
+						<td align="right" colspan=3>
+						<b> <a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang) style="text-decoration:none">$brih_act $brih_Url $brih_resend </a>
+                				<td> <img src="$content.getURI("/images/orange_sq_but.gif")"> </td>
+			                	</b></td>
+					</tr>
+				        <tr align="right">
+						<td colspan=4>
+				        	    <span style= "font-size:16px;font-family:Times New Roman;font-weight:bold;">$brih_guestMsg2</span>
+						</td>
+				        </tr>
+					</form>
+
+				    	<tr align="right">
+		        			<td width="70%" style="float:right;"><br>$brih_signin:</td>
+						<td colspan="3" width="30%">
+						#if($!load_flag == 0)
+			        		        <a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email" style="height:35px; width:45px;"></a>
+							        ##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				                	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email" style="height:35px; width:45px;"></a>
 &nbsp;&nbsp;
-	#end
-<br>	 
-	#*<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
-	*#
-	#if($!load_flag == 1)
-		 <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")'} else {void('')};"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		 <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")'} else {void('')};"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
-		<br>
-	#end
-	#if($!load_flag == 2)
-		 <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
-		
-		<br>
-	#end
-	<font face="$ui.sansSerifFonts">
-		<br> $brih_signin -
-	</font>
-	<br>
-</td></tr>
-#*
-*#
-##<table align="right">
-	<tr align="right"><td colspan=4 align="right"><b>
-		<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
-		<img src="$content.getURI("/images/orange_sq_but.gif")">
-		</b></td></tr>
-		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang)>$brih_reg2 $brih_course $brih_list</a>
-			<img src="$content.getURI("/images/orange_sq_but.gif")">
-		</b></td></tr>
-		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration")> $online_online $brih_reg </a>
-			<img src="$content.getURI("/images/orange_sq_but.gif")">
-		</b></td></tr>
-
-		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang)> $brih_open $brih_access $brih_course</a>
-			<td><img src="$content.getURI("/images/orange_sq_but.gif")"> <td>
-		</b></td></tr>
-
-		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> $RemoteInstitute1 $brih_ad $brih_Of1 $brih_reg </a>
-			<img src="$content.getURI("/images/orange_sq_but.gif")">
-		</b></td></tr>
-
-		</tr>
-		<tr align="right"><td colspan=4> <b>
-		<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang)><b>$brih_reg2 $RemoteInstitute $brih_Of $brih_list</b></a>
-		<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-		</b></td></tr>
-		<tr align="right"><td colspan="4" align="right" ><b>
-			<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_Of $brih_list </a>
-			<img src="$content.getURI("/images/orange_sq_but.gif")">
-			
-		</b></td></tr>
-		##Add ResendActivation link in login page
-		<tr align="right"><td colspan="4" align="right"> <b>
-			<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b> $brih_act $brih_key $brih_resend </b></a>
-			<td> <img src="$content.getURI("/images/orange_sq_but.gif")"> </td>
-		</b></td></tr>
-		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) > $brih_brihaspati $brih_server $brih_from1  $brih_auth </a>
-			<td><img src="$content.getURI("/images/orange_sq_but.gif")"> <td>
-		</b></td></tr>
-
-
-		</table>
-	</td> ## TD1 end
-	<td valign="top" width="50%"> ## TD2
-		<table align="left" bgcolor="$ui.tableColor" class="urdu_desc">
-			<tr align="right"><td>
-				<b>$brih_msg</b>
-			</td></tr>
-			<tr><td>
-			<b>What is BRIHASPATI?</b><br>
-			A platform independent, highly scalable content-delivery tool for web based e-learning system !!<br>
-			<b><u>Entities !!</u></b><br>
-			ENJOY the features of Administrator, Instructor (Primary/Secondary) or Student !!
-			<br><b><u>Interactive communication tools !!</u></b>
-			<ul><li> CHAT :- Users can communicate online...</ul>
-			<ul><li> WHITE BOARD :- Instructor can make drawings,freehand or pre-defined components while chatting...</ul>
-			<ul><li> SCORM player in brihaspati</ul>
-			<ul><li> Content authoring and course instruction functionality decoupled</ul>
-			<ul><li> Multiserver architecture</ul>
-			<ul><li> Synchronous tool</ul>
-			</td></tr>
-		</table>
-	</td> ## TD2
+			        		#end
+						<br>
+						#if($!load_flag == 1)
+				        	         <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")'} else {void('')};"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email" style="height:35px; width:45px;"></a>
+							##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                		 <a href="javascript: if(confirm('Traffic on site is high, it may take longer to login. If you still want to continue then click OK.')) {window.location.href='$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")'} else {void('')};"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email" style="height:35px; width:45px;"></a>  
+	        				       ## <br>
+					        #end
+						#if($!load_flag == 2)
+							<a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email" style="height:35px; width:45px;"></a>
+							##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                				 <a href="javascript: alert('High traffic on site. Please try again later or wait for the light on login page to be green.');"><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email" style="height:35px; width:45px;"></a>  
 	
-	<td valign="top" width="45%"> ## TD3
-		<table bgcolor="$ui.tableColor" width="100%" class="urdu_news">
-	        	<tr bgcolor="$ui.menuColor" align="right"><td>
-				<u><b>$brih_newsHeadline</b></u> <img src="$content.getURI("/images/newspaper.gif")">
-        		</td></tr>
-        		<tr align="right"><td><marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide">
-			#if($status!="empty")
-	                	#set($count=1)
-        		        #foreach($news in $detail)
-		                        #if($count % 2 == 0)
-	               		                <font size=3>
-	                                	<table bgcolor="$ui.buttonBoxColor" width="100%">
-			                                <tr align=right>
-			                        	        <td>
-                        			        	<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
-				                                $news.getNews_Subject() <image src="$content.getURI("/images/orangeLeft_arrow.gif")">
-		        		                        </td>
-                			                </tr>
-                                		</table>
-		                                </font>
-        	                        	#set($count = $count + 1)
-		                        #else
-		                                <font size=3>
-                		                <table><tr align="right"> <td> <a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
-                                $news.getNews_Subject() <image src="$content.getURI("/images/orangeLeft_arrow.gif")">
+			                		##<br>
+        					#end
+						</td>
+					</tr>
+				</table> ##4
+			</td> ##1
+			<td valign="top"> ## 2
+				<table align="right" class="desc" valign="top"> ## 4
+					<tr align="right"><td valign="top"> ## 5, 6
+        					<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $brih_course $brih_Of2 $brih_list</b></a>
+						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<br>
 
-		                                </td></tr></table>
-                		                </font>
-                                		#set($count = $count + 1)
-		                        #end
-		                #end
-			#else
-				<b>$brih_newsNo</b>
-			#end
-        	        </marquee></td></tr>
-			<tr><td align="left">
-				&laquo;<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_news $brih_more </a>
-				##<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_more $brih_news &raquo;</a>
-	                </td></tr>
-		</tr>
-		</table>
-		<div style="width:343px; z-index:100; height:25px; border:1px solid #ccc; font-size:13px; background:$ui.menuColor; position:absolute;"><span style="margin:4px 18px; position:absolute; align:right;"> $sec_session</span></div>
-	        <div id="scroll" style="width:343px; height:100px; border:1px solid #ccc; ">
-        	<br><br>
-	        #if($lec_details.size()==0)
-        	        $session_info
-	        #else
-        	#foreach($st in $lec_details)
-	        <span style="margin-left:10px;float:right;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lang",$lang).addPathInfo("lectureId",$st.lid).addPathInfo("mode","Alecture")","newWin"); style="float:left; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">$brih_more</a><br>
-        	#end
-	        #end
-        	</div>
-	</td> ## TD3
-</tr> ## tr1 end
-</table> ## Ta1 end
-##</form>
+				        	<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration") style="text-decoration:none"><b> $online_online $brih_reg </b></a>
+                				<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<br>
 
-</div>
+						<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_open $brih_access $brih_Of2 $brih_courses</b></a>
+					       <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+					        <br>
+						<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> $RemoteInstitute1 $brih_ad $brih_Of1 $brih_reg </b> </a>
+						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<br>
+						<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $RemoteInstitute $brih_Of $brih_list</b></a>
+						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<br>
+						<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general") style="text-decoration:none"><b>$brih_FAQ $brih_Of $brih_list </b></a>
+						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<br>
+						<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english") style="text-decoration:none"><b>$brih_parent $brih_Of1 $brih_reg</b> </a>&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<br>
+					        <span class="spce" style= "font-size:15px;font-family:Times New Roman;">
+						<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> $brih_brihaspati $brih_server $brih_from1  $brih_auth</b></a>
+						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+	
+					</td></tr> ## 6, 5
+			        </table> ## 4
+			</td> ##2
+
+			<td valign="top"> ##3
+				<table align="center"> ## 1
+					<tr> ##1
+						<td valign=top>  ## 3, 3
+							<table class="news" style= "font-size:16px;font-family:Times New Roman;"> ## 4
+			                			<tr bgcolor="$ui.menuColor"><td align="center"> 
+								 <b>$brih_newsHeadline</b><img src="$content.getURI("/images/news.png")">
+						                </td></tr>
+								<tr align="right"><td> ## 5, 6
+						        		#if($detail.size()> 5)
+										 <div style class="scrl">
+							                #end
+							                #if($status!="empty")
+				        			        	#set($count=1)
+										#set($count=1)
+							                	#foreach($news in $detail)
+							                        	#if($count % 2 == 0)
+							                                	<font size=3>
+	                                							<table bgcolor="$ui.buttonBoxColor" width="100%"> ## 7
+							        	        	                <tr colspan=4 align="right"> ## 8
+								        	        	                <td>
+															<font size=3> 
+									        	        	        	<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more </a>
+															$news.getNews_Subject() ## 9
+															</font> 
+							                	        	        	</td> ## 9
+								                                	</tr> ## 8
+							                	                </table> ## 7
+        	                        							</font>
+					                                			#set($count = $count + 1)
+				                                			#else
+                	        			        				<table width="100%">
+													<tr align="right"><td colspan=4> ## 7, 8, 9
+										                                <font size=3> 
+										                           	<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more </a>
+														$news.getNews_Subject()   
+									                                </font>
+                	                								</td></tr></table> ## close 7, 8, 9
+                			                						#set($count = $count + 1)
+											#end
+							        		#end
+									#else
+		        	        				        <b>$brih_newsNo-</b>
+									#end
+	                						</div>
+								</td></tr> ## close 5, 6
+				                		<tr  width="100%"><td colspan=6> ## 5, 6
+									<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)" style="text-decoration:none">&laquo; $brih_news $brih_more </a>
+							        </td></tr> ## 6, 5
+							</table> ## close 4
+						        <table class="session" style= "font-size:16px;font-family:Times New Roman;" width="150%"> ## 4
+        	        					<tr bgcolor="$ui.menuColor" align="right" style="height:50px"><td align="center">  ## 5, 6
+				                			<b>$sec_session</b>
+					        	        </td></tr>
+						        	#if($lec_details.size()==0)
+									<tr><td align="right" valign="top"> <br>$session_info</td> </tr> 
+							        #else
+					        			#foreach($st in $lec_details)
+										<tr><td>
+						        				$brih_more <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lang",$lang).addPathInfo("lectureId",$st.lid).addPathInfo("mode","Alecture")","newWin"); style="float:right; font-size:16px;font-family:Times New Roman; margin-right:10px; text-decoration:none; font-weight:normal;" class="link"> $brih_more </a> <span style="margin-left:10px;">$st.lecname</span> <br>
+						        			</td> </tr> 
+								        #end
+				        			#end
+								##</div>
+							</table> 
+			        		</td> ##td 3,3 
+					</tr> ##1
+				</table> ##1
+			</td> ##
+
+		</tr> ##Main
+	</table> ##Main
+</div> ##Main
+<br>
+</body>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {
-                Win1=window.open(url,popupName,"resizable,height=200,width=400");
+                Win1=window.open(url,popupName,"resizable,height=200,width=400, scrollbars=yes");
         }
 
-	function popup(url,popupName)
+        function popup(url,popupName)
         {
                 var w=650;
                 var h=200;
                 var left = (screen.width/2)-(w/2);
-                var top = (screen.height/2)-(h/2);
+                var top     = (screen.height/2)-(h/2);
                 Win2 = window.open (url,popupName, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
                 //Win2=window.open(url,popupName,"resizable,height=200,width=650");
         }
 
+##      window.onload = setupRefresh;
 
-        window.onload = setupRefresh;
+##       function setupRefresh() {
+##        setTimeout("refreshPage();", 60000); // milliseconds
+##        }
+##      function refreshPage() {
+##              window.location = location.href;
+##      }
 
-        function setupRefresh() {
-        setTimeout("refreshPage();", 60000); // milliseconds
+        function checkUNamePwd(frm,field)
+        {
+                if(frm.username.value!="")
+                {
+                        if(frm.password.value!="")
+                        {
+                                loadFlag(frm,field);
+                                //frm.submit();
+                        }
+                        else
+                        {
+                                alert("Password should not be blank !!");
+                                frm.password.focus();
+                        }
+                }
+                else
+		 {
+                        alert("User Name should not be blank !!");
+                        frm.username.focus();
+                }
         }
-        function refreshPage() {
-        window.location = location.href;
-        }	
-
-	function checkUNamePwd(frm,field)
-	{
-		if(frm.username.value!="")
-		{
-			if(frm.password.value!="")
-			{
-				//frm.submit();  
-				 loadFlag(frm,field);
-			}
-	        	else
-	        	{
-                		alert("Password should not be blank !!"); 
-				frm.password.focus();
-			}
-		}
-	        else
-	        {
-                	alert("User Name should not be blank !!"); 
-			frm.username.focus();
-		}
-	}
 
 function doSomething(e)
  {
@@ -367,7 +365,6 @@ var x=document.getElementById("language");
 //x.options[x.selectedIndex].text=str;
 window.location=x.value;
 }
-
 $(function(){
      $('#scroll').slimScroll({
          height: '200px',
@@ -379,31 +376,31 @@ function loadFlag(frm,field)
 {
         var loadFlag = $!load_flag;
 
-	if(frm.username.value == "admin")
+        if(frm.username.value == "admin")
         {
                 frm.submit();
         }
-	else
-	{
-        	if(loadFlag == "0")
-        	{
-                	frm.submit();
-        	}
+        else
+        {
+                if(loadFlag == "0")
+                {
+                        frm.submit();
+                }
 
-        	if(loadFlag == "1")
-        	{
-                	var r=confirm("Traffic on site is high, it may take longer to login. If you still want to continue then click OK.");
-                	if (r)
-                	{
-                        	frm.submit();
-                	}
-        	}
-        	if(loadFlag == "2")
-        	{
-                	alert("High traffic on site. Please try again later or wait for the light on login page to be green.");
-        	}
-	}
+                if(loadFlag == "1")
+		{
+                        var r=confirm("Traffic on site is high, it may take longer to login. If you still want to continue then click OK.");
+                        if (r)
+                        {
+                                frm.submit();
+                        }
+                }
+                if(loadFlag == "2")
+                {
+                        alert("High traffic on site. Please try again later or wait for the light on login page to be green.");
+                }
+        }
 }
 
-                         
 </SCRIPT>
+

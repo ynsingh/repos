@@ -68,7 +68,7 @@ $!msg
 		#else
 			<b>$brih_newsNo</b>
 		#end
-                </marquee>
+                ##</marquee>
 		</td></tr> ## 6, 5
 		<tr><td align=right> ## 5, 6
 		<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)" style="text-decoration:none">$brih_more $brih_news &raquo;</a>
@@ -76,18 +76,19 @@ $!msg
         </table> ## 4
 
 	<table class="session" style= "font-size:16px;font-family:Times New Roman;"> ## 4
-                <tr bgcolor="$ui.menuColor"><td align=center>  ## 5, 6
+                <tr bgcolor="$ui.menuColor" style="height:50px"><td align=center>  ## 5, 6
                 <b>$sec_session</b>
                 </td></tr>
         #if($lec_details.size()==0)
-               <td> $session_info</td>
+		<tr><td valign="top"> <br>$session_info</td></tr>
         #else
-        #foreach($st in $lec_details)
-        <span style="margin-left:10px;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lang",$lang).addPathInfo("lectureId",$st.lid).addPathInfo("mode","Alecture")","newWin"); style="float:right; font-size:16px;font-family:Times New Roman; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">$brih_more</a><br>
-        #end
+	        #foreach($st in $lec_details)
+		<tr> <td>
+	        	<span style="margin-left:10px;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lang",$lang).addPathInfo("lectureId",$st.lid).addPathInfo("mode","Alecture")","newWin"); style="float:right; font-size:16px;font-family:Times New Roman; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">$brih_more</a><br>
+		</td></tr>
+        	#end
         #end
         </table>
-	
 
 	</td> ## 3
 	<td valign="top"> ## 3
