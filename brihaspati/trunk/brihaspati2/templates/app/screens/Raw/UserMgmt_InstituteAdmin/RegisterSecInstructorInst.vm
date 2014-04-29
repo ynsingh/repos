@@ -30,7 +30,7 @@ $!data.getMessage()
 	 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
 	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
 	 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("instituteId",$InstituteId).addPathInfo("count","3") style=text-decoration:none>$brih_listCourse</a> | 
-	#if($lang=="hindi")
+	#if($lang=="hindi" || $lang=="bhojpuri")
 	 $entry $brih_regSecondaryIns 
 	#else
 	  $brih_regSecondaryIns $entry
@@ -45,13 +45,13 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_course</a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none> #if($lang=="hindi" || $lang=="bhojpuri") $brih_course $brih_reg1 #else $brih_reg1 $brih_course #end</a></td>
 	#if($tdcolor != "2")
 	<td width=33%>
 	#elseif($tdcolor=="2")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_multiple1 $brih_course</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none> #if($lang=="hindi" || $lang=="bhojpuri")$brih_multiple1 $brih_course $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end</a></td>
 	#if($tdcolor != "3")
 	<td width=33%>
 	#elseif($tdcolor=="3")

@@ -82,13 +82,13 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-      <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #elseif( $lang == "gujarati") $brih_course $brih_reg1 #else $brih_reg1 $brih_course #end</a> </td> 
+      <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #elseif( $lang == "gujarati" || $lang =="bhojpuri") $brih_course $brih_of $brih_reg1 #else $brih_reg1 $brih_course #end</a> </td> 
 	#if($tdcolor != "2")
         <td width=33%>
 	#elseif($tdcolor == "2")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati") $brih_multiple1 $brih_course $brih_inside $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
+   <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("instituteId",$InstituteId).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "gujarati" || $lang =="bhojpuri") $brih_multiple1 $brih_course $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
 	#if($tdcolor != "3")
         <td width=33%>
 	#elseif($tdcolor == "3")

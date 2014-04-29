@@ -35,7 +35,7 @@
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td class="dt">
-         <a href=$link.setPage("call,CourseMgmt_InstituteAdmin,UploadLogo.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_logo $brih_upload  #else $brih_upload $brih_logo #end </a>
+         <a href=$link.setPage("call,CourseMgmt_InstituteAdmin,UploadLogo.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi" || $lang=="bhojpuri") $brih_logo $brih_upload  #else $brih_upload $brih_logo #end </a>
       </td>
    </tr>
    <tr>
@@ -85,7 +85,7 @@
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td class="dt">
-         <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a>
+         <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a>
       </td>
    </tr>
 <tr>

@@ -23,7 +23,7 @@ $!data.getMessage()
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
 		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a> |
 	#if(($mode=="")&&($actionName==""))
-		#if ($lang=="hindi") $brih_course $brih_Of1 $brih_backup #else $brih_course Wise $brih_backup #end
+		#if ($lang=="hindi" || $lang=="bhojpuri") $brih_course $brih_Of1 $brih_backup #else $brih_course Wise $brih_backup #end
 	#elseif($mode=="blist") 
 	$brih_backup $brih_list 
 	#end
@@ -46,7 +46,7 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > #if($lang == "hindi") $brih_content $brih_Of1 $brih_backup #else $brih_backup $brih_content #end </a></td>
+    	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > #if($lang == "hindi" || $lang == "bhojpuri") $brih_content $brih_Of1 $brih_backup #else $brih_backup $brih_content #end </a></td>
 	#if($tdcolor!="2")
 	<td>
 	#elseif($tdcolor=="2")

@@ -22,7 +22,7 @@ $!data.getMessage()
 <tr><td>
         ##<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> |
-        #if($lang=="hindi")
+        #if($lang=="hindi" || $lang=="bhojpuri")
                 $RemoteInstitute $brih_logo $brih_upload 
         #else
                  $brih_upload $RemoteInstitute $brih_logo
@@ -34,7 +34,7 @@ $!data.getMessage()
 
 	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_InstituteAdmin,UploadLogo.vm").setAction("UserAction_InstituteAdmin")">
 <table width=100% bgcolor="$ui.tableColor" cellpadding="2" align="left">
-        <tr bgcolor="$ui.menuColor"><td colspan=2><b> #if($lang=="hindi") $RemoteInstitute $brih_logo $brih_upload #else $brih_upload $RemoteInstitute $brih_logo #end </b></td></tr>
+        <tr bgcolor="$ui.menuColor"><td colspan=2><b> #if($lang=="hindi" || $lang=="bhojpuri") $RemoteInstitute $brih_logo $brih_upload #else $brih_upload $RemoteInstitute $brih_logo #end </b></td></tr>
         <tr>
 
                 #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")

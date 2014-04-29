@@ -27,7 +27,7 @@ $!data.getMessage()
                 <td>
                 <font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> | #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> | #if($lang == "hindi" || $lang == "bhojpuri") $brih_program $brih_add  #else $brih_add $brih_program #end
                 </td>
         </tr>
 </table> ##table close
@@ -46,7 +46,7 @@ $!data.getMessage()
         #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
         #end
-                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
         #if($tdcolor != "3")
                 <td>
         #elseif($tdcolor == "3")

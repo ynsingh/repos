@@ -20,7 +20,7 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
-        <td><font face="$ui.sansSerifFonts" size=3><a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home</a> |
+        <td><font face="$ui.sansSerifFonts" size=3><a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_view_parents</a> | $brih_edit $brih_parent $brih_detail
         </td>
@@ -34,7 +34,7 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>
-        #if($lang == "hindi")
+        #if($lang == "hindi" || $lang == "bhojpuri")
                 $brih_listUsr
         #else
                 $brih_view_all $brih_usr
@@ -45,7 +45,7 @@ $!data.getMessage()
         #elseif($tdcolor=="1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_view_all $brih_course</a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri") $brih_view_all1 #else $brih_view_all $brih_course #end</a>
         </td>
 	#if($tdcolor != "3")    
         <td>
@@ -53,7 +53,7 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
 ##        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>View All Course</a>
-        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","3") style=text-decoration:none>$brih_view_all $brih_parent</a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,Parent_Mgmt.vm").addPathInfo("mode","All").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang == "bhojpuri")$brih_view_parents #else $brih_view_all $brih_parent #end</a>
         </td>
 
 </tr>
@@ -65,23 +65,23 @@ $!data.getMessage()
         <table align=left width=100% bgcolor="$ui.tableColor">
         #foreach($parent in $ParentDetail)
         	<tr bgcolor="$ui.menuColor">
-                	#formCell ("First Name" "fname" "$parent.getParentFirstName()")
+                	#formCell ("$brih_first $brih_name" "fname" "$parent.getParentFirstName()")
         	</tr>
 	        <tr>
-        	        #formCell ("Last Name" "lname" "$parent.getParentLastName()")
+        	        #formCell ("$brih_last $brih_name" "lname" "$parent.getParentLastName()")
 	        </tr>
         	<tr bgcolor="$ui.menuColor">
-                	#formCell ("Email" "email" "$parent.getParentEmail()")
+                	#formCell ("$brih_email" "email" "$parent.getParentEmail()")
 	        </tr>
         	<tr>
-                	#entry1Cell("Username" "$parent.getUserName()")
+                	#entry1Cell("$brih_usrName" "$parent.getUserName()")
 	        </tr>
         	<tr bgcolor="$ui.menuColor">
-	                #formCell ("Mobile Number" "mobile" "$parent.getParentMobileNo()")
+	                #formCell ("$brih_mobileno" "mobile" "$parent.getParentMobileNo()")
         	</tr>
 	        <tr bgcolor="$ui.menuColor">
         	        <td colspan=2 align=left>
-                		<input type="submit" class="button-ftextstyle"  name="eventSubmit_doUpdate" value="Update" />
+				<input type="submit" class="button-ftextstyle"  name="eventSubmit_doUpdate" value=$brih_update />
 	                </td>
         	</tr>
         	<input type="hidden" name="parentId" value="$parent.getParentId()"/>

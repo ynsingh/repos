@@ -33,7 +33,7 @@ $!data.getMessage()
 	<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,TA_Management,InstAdminTA_Management.vm").setAction("TA_Registeration")">
 	<table width="100%" bgcolor="$ui.tableColor">
 	<tr>
-		<td>$brih_select $brih_courseName </td>
+		<td> #if($lang == "bhojpuri" || $lang == "hindi") $brih_courseName $brih_select #else $brih_select $brih_courseName #end </td>
                 <td colspan=2><select class="drop" name="crsname" size="1" onChange="Changename(document.frm,this);" style="width:300px;"/>
 		#if($cname!="")
 		 	<option value="$cname" style="width:275px;">$coursename</option>
@@ -46,7 +46,7 @@ $!data.getMessage()
 			#end
 		#end
 		</td>
-		<td colspan=2> <img src="$content.getURI("/images/star.png")"> $brih_indicate $brih_primary </td>
+		<td colspan=2> <img src="$content.getURI("/images/star.png")"> #if($lang == "hindi" || $lang == "bhojpuri") $brih_primary $brih_indicate  #else $brih_indicate $brih_primary #end </td>
 	</tr>
 	#if(($Instrdetail.size()>0)||($userdetail.size()>0))
 	        <tr bgcolor="$ui.menuColor">

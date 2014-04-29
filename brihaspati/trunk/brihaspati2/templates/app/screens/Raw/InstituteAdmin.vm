@@ -21,7 +21,7 @@ $flname
 <tr bgcolor="$ui.menuColor">
 	<td align="center">
 			###if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
-			#if($lang =="hindi")
+			#if($lang =="hindi" || $lang =="bhojpuri")
 			        <font size=4 face="$ui.sansSerifFonts"><b>#UNAME()  $brih_welcome
 			        </font>
 			#else
