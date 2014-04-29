@@ -265,7 +265,7 @@ $page.setBgColor($ui.bgcolor)
 											#end
 							        		#end
 									#else
-		        	        				        <b>$brih_newsNo-</b>
+		        	        				        <b>$brih_newsNo -</b>
 									#end
 	                						</div>
 								</td></tr> ## close 5, 6
