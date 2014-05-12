@@ -25,12 +25,31 @@ class Group_model extends Model {
 	function get_ledger_groups()
 	{
 		$options = array();
+		$arrayasset= array();
+                $arraylblt= array();
+                $arrayexpnd= array();
+                $arrayincm= array();
 		$this->db->from('groups')->where('id >', 4)->order_by('name', 'asc');
 		$group_parent_q = $this->db->get();
 		foreach ($group_parent_q->result() as $row)
 		{
-			$options[$row->id] = $row->name;
+			$cd = $row->code;
+                        $nm = $row->name;
+			if(substr($cd,0,2)== 10){
+                        	$arraylblt[$row->name]=" L- ".$nm;
+                        }
+                        if(substr($cd,0,2)== 20){
+                        	$arrayasset[$row->name]="A- ".$nm;
+                        }
+                        if(substr($cd,0,2)== 30){
+                        	$arrayincm[$row->name]=" I- ".$nm;
+                        }
+                        if(substr($cd,0,2)== 40){
+                        	$arrayexpnd[$row->name]=" E- ".$nm;
+                        }
+	
 		}
+		$options=array_merge($arraylblt,$arrayasset,$arrayincm,$arrayexpnd);
 		return $options;
 	}
 

@@ -76,7 +76,7 @@ var $username;
 		/* Form validations */
 //		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|unique[ledgers.code]');
 		$this->form_validation->set_rules('ledger_name', 'Ledger name', 'trim|required|min_length[2]|max_length[100]|unique[ledgers.name]');
-		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required|is_natural_no_zero');
+		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required');
 		$this->form_validation->set_rules('op_balance', 'Opening balance', 'trim|currency');
 		$this->form_validation->set_rules('op_balance_dc', 'Opening balance type', 'trim|required|is_dc');
 
@@ -100,9 +100,17 @@ var $username;
 		}
 		else
 		{
+			$data_group_id=0;	
 //			$data_code = $this->input->post('ledger_code', TRUE);
 			$data_name = $this->input->post('ledger_name', TRUE);
-			$data_group_id = $this->input->post('ledger_group_id', TRUE);
+			//$data_group_id = $this->input->post('ledger_group_id', TRUE);
+			$data_group_name = $this->input->post('ledger_group_id', TRUE);
+			$this->db->select('id')->from('groups')->where('name',$data_group_name);
+                        $group_parent_qn = $this->db->get();
+                        foreach ($group_parent_qn->result() as $row1)
+                        {
+                                $data_group_id=$row1->id;
+                        }
 			$data_op_balance = $this->input->post('op_balance', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_ledger_type_cashbank_value = $this->input->post('ledger_type_cashbank', TRUE);
@@ -349,7 +357,7 @@ var $username;
 		/* Form validations */
 //		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.code.' . $id . ']');
 		$this->form_validation->set_rules('ledger_name', 'Ledger name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.name.' . $id . ']');
-		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required|is_natural_no_zero');
+		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required');
 		$this->form_validation->set_rules('op_balance', 'Opening balance', 'trim|currency');
 		$this->form_validation->set_rules('op_balance_dc', 'Opening balance type', 'trim|required|is_dc');
 
@@ -373,9 +381,17 @@ var $username;
 		}
 		else
 		{
+                        $data_group_id=0;
 //			$data_code = $this->input->post('ledger_code', TRUE);
 			$data_name = $this->input->post('ledger_name', TRUE);
-			$data_group_id = $this->input->post('ledger_group_id', TRUE);
+			//echo $data_group_id = $this->input->post('ledger_group_id', TRUE);
+			$data_group_name = $this->input->post('ledger_group_id', TRUE);
+			$this->db->select('id')->from('groups')->where('name',$data_group_name);
+                        $group_parent_qn = $this->db->get();
+                        foreach ($group_parent_qn->result() as $row1)
+                        {
+                                $data_group_id=$row1->id;
+                        }
 			$data_op_balance = $this->input->post('op_balance', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_id = $id;

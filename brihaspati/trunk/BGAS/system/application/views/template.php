@@ -239,14 +239,14 @@ $(document).ready(function() {
 						echo anchor('entry', 'Entries', array('title' => 'Entries'));
 						echo "<ul>";
 						echo "<li>"; 
-							 echo anchor('entry/show/all', 'All', array('title' => 'All Entries'));
+							 echo anchor('entry/show/all', 'View All', array('title' => 'All Entries'));
 						echo "</li>";
 						foreach ($entry_type_all as $id => $row)
 						{
 							// line added by Priyanka
 							if($row['name'] == 'Journal'){
 								echo "<li>";
-								echo anchor('entry/show/' . $row['label'], $row['name'], array('title' => $row['name'] . ' Entries'));
+								echo anchor('entry/show/' . $row['label'], 'Create ' . $row['name'], array('title' => $row['name'] . ' Entries'));
 								echo  "</li>";
 							}
 						}
@@ -296,8 +296,12 @@ $(document).ready(function() {
                                echo anchor('payrollsetup', 'Payroll Setup', array('title' => 'PayrollSetup',)); 
                         echo "</li>";
 			echo "<li>";
-				echo anchor('addparty', 'Secondary Accounting System', array('title' => 'Secondary Accounting System'));
+				//echo anchor('addparty', 'Secondary Accounting System', array('title' => 'Secondary Accounting System'));
+				echo anchor('addparty', 'Sec Unit Id', array('title' => 'Sec Unit Id'));
 				echo "<ul>";
+					echo "<li>";
+					echo anchor('addparty', 'View Party', array('title' => 'ViewParty'));
+					echo "</li>";
 					echo "<li>";
 					echo anchor('addparty/add', 'Add Party', array('title' => 'AddParty'));
 					echo "</li>";
