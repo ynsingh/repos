@@ -2095,6 +2095,37 @@ class Entry extends Controller {
 		return;
 	}
 
+	function cheque_print($entry_type, $entry_id = 0, $cheque_type)
+        {
+                $data['cheque_type'] = $cheque_type;
+                $data['entry_id'] = $entry_id;
+                $data['entry_type'] = $entry_type;
+                /* Getting Ledger details */
+                $this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
+                $ledger_q = $this->db->get();
+                $counter = 0;
+                $data['ledger_data'] = array();
+                if ($ledger_q->num_rows() > 0)
+                {
+                        foreach ($ledger_q->result() as $row)
+                        {
+                                $data['ledger_data'][$counter] = array(
+                                        'id' => $row->ledger_id,
+                                        'name' => $this->Ledger_model->get_name($row->ledger_id),
+                                        'dc' => $row->dc,
+                                        'amount' => $row->amount,
+                                        'id'=>$entry_id,
+                                        'cheque_type'=>$cheque_type,
+                                );
+                                $counter++;
+                        }
+                }
+
+                $this->load->view('entry/cheque_print', $data);
+                return;
+        }
+
+
 	function email($entry_type, $entry_id = 0)
 	{
 		$this->load->model('Setting_model');

@@ -98,4 +98,18 @@ else
 	echo anchor_popup('entry/email/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Email', array('title' => 'Email this ' . $current_entry_type['name'] . ' Entry', 'width' => '400', 'height' => '200'));
 	echo " | ";
 	echo anchor('entry/download/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Download', array('title' => "Download entry", 'title' => 'Download this ' . $current_entry_type['name'] . ' Entry'));
+ 	if($ledger_q->num_rows() > 0){
+        if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
+        {
+       // $this->load->library('numbertowords');
+        echo " | ";
+        echo anchor_popup('entry/cheque_print/' .  $current_entry_type['label'] . "/" . $cur_entry->id . "/Order", 'Print Order Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+        echo " OR ";
+        echo anchor_popup('entry/cheque_print/' .  $current_entry_type['label'] . "/" . $cur_entry->id . "/Bearer", 'Print Bearer Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+
+        }
+        }
+
+?>
+
 
