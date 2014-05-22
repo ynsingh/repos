@@ -12,18 +12,25 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 <thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th></tr></thead>
 <?php
 foreach ($cur_entry_ledgers->result() as $row)
-{	
-	echo "<td>" . convert_dc($row->dc) . "</td>";
-	echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
-	if ($row->dc == "D")
-	{
-		echo "<td>Dr " . $row->amount . "</td>";
-		echo "<td></td>";
-	} else {
-		echo "<td></td>";
-		echo "<td>Cr " . $row->amount . "</td>";
+{
+	$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
+        $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
+//        $temp = $this->startsWith($ledger_code, $account_code);
+        $temp = !strncmp($ledger_code, $account_code, strlen($account_code));
+
+	if(!($temp && $row->dc == "D")){	
+		echo "<td>" . convert_dc($row->dc) . "</td>";
+		echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
+		if ($row->dc == "D")
+		{
+			echo "<td>Dr " . $row->amount . "</td>";
+			echo "<td></td>";
+		} else {
+			echo "<td></td>";
+			echo "<td>Cr " . $row->amount . "</td>";
+		}
+		echo "</tr>";
 	}
-	echo "</tr>";
 }
 ?>
 <tr class="entry-total"><td colspan=2><strong>Total</strong></td><td id=dr-total>Dr <?php echo $cur_entry->dr_total; ?></td><td id=cr-total">Cr <?php echo $cur_entry->cr_total; ?></td></tr>

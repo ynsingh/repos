@@ -210,11 +210,19 @@ class Budget_model extends Model {
 
 		//Get account code
 		$account_code = $this->get_account_code($account_name);
-
+		
 		if($account_name == 'Expenses'){
 			//Added 'Main Budget' as first value
 			//to be displayed in the list
-			$new_id = "50"."#"."Main Budget";
+			$main_budget_code = 0;
+			$this->db->from('budgets');
+			$this->db->where('budgetname =', 'Main Budget');
+			$budgetq = $this->db->get();
+			foreach($budgetq->result() as $row)
+				$main_budget_code = $row->code;
+
+			//$new_id = "50"."#"."Main Budget";
+			$new_id = $main_budget_code."#"."Main Budget";
         	        $options[$new_id] = 'Main Budget';
 		}
 
@@ -261,8 +269,10 @@ class Budget_model extends Model {
 	{
 		$budgets = array();
 		$counter = 0;
+		$main_budget_code = 0;
 		$this->db->from('budgets');
-                $this->db->select('id, code, budgetname, bd_balance, group_id')->where('code =', '50');
+                //$this->db->select('id, code, budgetname, bd_balance, group_id')->where('code =', '50');
+                $this->db->select('id, code, budgetname, bd_balance, group_id')->where('budgetname =', 'Main Budget');
 		$budget_q = $this->db->get();
                 foreach($budget_q->result() as $row)
                 {
@@ -271,12 +281,17 @@ class Budget_model extends Model {
                         $budget[$counter]['budgetname'] = $row->budgetname;
                         $budget[$counter]['bd_balance'] = $row->bd_balance;
                         $budget[$counter]['group_id'] = $row->group_id;
+			$main_budget_code = $row->code;
                         $counter++;
                 }
 
+		//get code for expense
+		$expense_code = $this->get_account_code('Expenses');
 		$this->db->from('budgets');
-		$this->db->select('id, code, budgetname, bd_balance, group_id')->where('code <>', '40');
-		$this->db->where('code <>', '50')->order_by('code', 'asc');
+		//$this->db->select('id, code, budgetname, bd_balance, group_id')->where('code <>', '40');
+		$this->db->select('id, code, budgetname, bd_balance, group_id')->where('code <>', $expense_code);
+		//$this->db->where('code <>', '50')->order_by('code', 'asc');
+		$this->db->where('code <>', $main_budget_code)->order_by('code', 'asc');
 		$budget_q1 = $this->db->get();
 		foreach($budget_q1->result() as $row)
 		{
@@ -498,6 +513,10 @@ class Budget_model extends Model {
 		$this->db->where('name =', $account_name);
 		if($account_name == 'Expenses')
 			$this->db->or_where('name = ', 'Expenditure'); 
+		if($account_name == 'Liabilities and Owners Equity')
+			$this->db->or_where('name = ', 'Sources of Funds');
+		if($account_name == 'Assets')
+			$this->db->or_where('name = ', 'Application of Funds');
                 $group = $this->db->get();
                 foreach($group->result() as $row)
 			return $row->code;                			
@@ -521,4 +540,27 @@ class Budget_model extends Model {
                 }
 		return $projection;
 	}
+
+	/** 
+         * Returns code of the requested budget or projection, 
+         * as specified in the 'budgets' or 'projection' table
+         * @author Priyanka Rawat <rpriyanka12@ymail.com>
+         */
+        function get_code($name, $table)
+        {
+                $this->db->from($table);
+                $this->db->select('code');
+		if($table == 'budgets'){
+	                $this->db->where('budgetname =', $name);
+		}elseif($table == 'projection'){
+			$this->db->where('projection_name =', $name);
+		}else{
+			$this->db->where('name =', $name);
+		}
+                $query_r = $this->db->get();
+                foreach($query_r->result() as $row)
+                        return $row->code;
+        }
+
+	
 }

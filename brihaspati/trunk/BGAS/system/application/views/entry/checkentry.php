@@ -106,6 +106,49 @@ var dc = '';
 				$("table tr #cr-diff").text("");
 			}
 		}
+
+		/**
+                 * Following code is for fund drop down list 
+                 * @author Priyanka Rawat
+                 */
+                var bank_cash = '';
+                var ledger_value = $(this).parent().prev().children().attr('value');
+                //alert("ledger value = "+ledger_value);
+
+                $.ajax({
+                                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
+                                        success: function(bank) {
+                                                bank_cash = $.trim(bank);
+                                                //alert("bank cash ="+bank_cash);
+                                        }
+                });
+
+                if(bank_cash == '0'){
+                        var fundtotal = 0;
+                        var fund_amount = 0;
+
+                        $("table tr #fund").each(function() {
+                                var fund_ledger_id = $(this).children.val();
+                                alert("fund id = "+fund_ledger_id);
+
+                                $.ajax({
+                                        url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+                                        success: function(data){
+                                                fund_amount = $.trim(data);
+                                                fund_amount = parseFloat(fund_amount);
+                                                if (isNaN(fund_amount))
+                                                        fund_amount = 0;
+                                                fundTotal = jsFloatOps(fundTotal, fund_amount, '+');
+
+                                                alert("dr total = "+drTotal);
+                                                alert("fund total = "+fundTotal);
+                                                if(drTotal > fundTotal)
+                                                        alert("Amount payable is more than the available fund.");
+                                        }
+                                });
+                        });
+                }
+                //...
 	});
 
 	$('.cr-item').live('change', function() {
@@ -148,8 +191,77 @@ var dc = '';
 
 	/* Dr - Cr dropdown changed */
 	$('.dc-dropdown').live('change', function() {
-		// line added by Priyanka
+		/**
+                 * Following code is for fund drop down list 
+                 * @author Priyanka Rawat
+                 */
 		dc = $(this).attr('value');
+		var bank_cash = '';
+                var account = '';
+                var ledger_value = $(this).parent().next().children().attr('value');
+                //alert("ledger value = "+ledger_value);
+
+                $.ajax({
+                                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
+                                        success: function(bank) {
+                                                bank_cash = $.trim(bank);
+                                                //alert("bank cash ="+bank_cash);
+                                        }
+                });
+
+                
+                        var dr_name = $(this).parent().next().next().children().attr('name');             
+//                alert("dr name = "+dr_name);
+
+                        $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
+                                success: function(data) {
+                                        /*var code = $.trim(data);
+
+                                        var n = code.indexOf("40");
+                                        if(n == 0)
+                                                account = 'Expense';
+
+                                        n = code.indexOf("30");
+                                        if(n == 0)
+                                                account = 'Income';
+                                        
+                                        n = code.indexOf("20");
+                                        if(n == 0)
+                                                account = 'Asset';
+
+					*/
+
+					account = $.trim(data);
+
+                                        if(dc == 'D' && account == 'Income'){
+                                                alert("You have made a wrong entry");
+                                        }
+
+                                        if(dc == 'C' && account == 'Expense'){
+                                                alert("You have made a wrong entry");
+                                        }
+
+                                        //following code is for fund dropdown list
+                                        var first_index = dr_name.lastIndexOf("[");
+                                        var last_index = dr_name.lastIndexOf("]"); 
+                                        var fund_index = dr_name.substring(first_index+1, last_index);                                               
+                                        //alert("fund index = "+fund_index);
+                                        temp = ".fund-list"+fund_index;
+
+                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
+                                                //alert("i m here 1");
+                                                //alert(temp);
+                                                $(temp).show();
+                                        }else{
+                                                //alert("pp 1");
+                                                //alert(temp);
+                                                $(temp).hide();
+                                        }
+                                }
+                        });
+                
+                //....
 
 		var drValue = $(this).parent().next().next().children().attr('value');
 		var crValue = $(this).parent().next().next().next().children().attr('value');
@@ -189,41 +301,7 @@ var dc = '';
 	/* Ledger dropdown changed */
 	$('.ledger-dropdown').live('change', function() {
 		var ledgerid = $(this).val();
-		// lines added by Priyanka
-		$.ajax({
-                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
-                                success: function(data) {
-                                        var code = $.trim(data);
-					var account = '';
-					//dc = '';
-
-					var n = code.indexOf("40");
-					//alert('dc = '+dc);
-					//alert('code ='+code);
-					//alert('n = '+n);
-					if(n == 0)
-                        		        account = 'Expense';
-
-					n = code.indexOf("30");
-					//alert('dc = '+dc);
-					//alert('code ='+code);
-					//alert('n = '+n);
-					if(n == 0)
-        	                        	account = 'Income';
-
-		                        if(dc == 'D' && account == 'Income'){
-        	                        	alert("You have made a wrong entry");
-                	        	        dc = 'D';
-                		                //account = '';
-        	                	}
-
-		                        if(dc == 'C' && account == 'Expense'){
-        	                	        alert("You have made a wrong entry");
-                		                dc = 'D';
-        	        	                //account = '';
-	                        	}
-                                }
-                        });
+		var bank_cash = '';
 
 			//Line added by manshi........
                         var rowid = $(this);
@@ -231,7 +309,7 @@ var dc = '';
 					
                                         url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
                                         success: function(bank) {
-                                        var bank_cash = $.trim(bank);
+                                        bank_cash = $.trim(bank);
                                         if(bank_cash == '1' ){
                                                 $(".cheque-item").show();
                                                 $("#ch_no").show();
@@ -284,7 +362,65 @@ var dc = '';
                         	});
                 //....
 
-		//....
+		/**
+                 * Following code is for fund drop down list 
+                 * @author Priyanka Rawat
+                 */
+
+                var account = '';
+                var dc_value = $(this).parent().prev().children().attr('value');
+//              alert("dc value = "+dc_value);
+                var dr_name = $(this).parent().next().children().attr('name');          
+//              alert("dr name = "+dr_name);
+
+                $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
+                                success: function(data) {
+                                        /*var code = $.trim(data);
+                                        
+                                        var n = code.indexOf("40");
+                                        if(n == 0)
+                                                account = 'Expense';
+
+                                        n = code.indexOf("30");
+                                        if(n == 0)
+                                                account = 'Income';
+                                        
+                                        n = code.indexOf("20");
+                                        if(n == 0)
+                                                account = 'Asset';
+					*/
+
+					account = $.trim(data);
+
+                                        if(dc_value == 'D' && account == 'Income'){
+                                                alert("You have made a wrong entry");
+                                        }
+
+                                        if(dc_value == 'C' && account == 'Expense'){
+                                                alert("You have made a wrong entry");
+                                        }
+
+                                        //following code is for fund dropdown list
+                                        var first_index = dr_name.lastIndexOf("[");
+                                        var last_index = dr_name.lastIndexOf("]"); 
+                                        var fund_index = dr_name.substring(first_index+1, last_index);                                             
+                                        //alert("fund index = "+fund_index);
+                                        temp = ".fund-list"+fund_index;
+
+                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
+                                                //alert("i m here");
+                                                //alert(temp);
+                                                $(temp).show();
+                                        }else{
+                                                //alert("pp");
+                                                //alert(temp);
+                                                $(temp).hide();
+                                        }
+                                }
+                        });
+
+                //.... 
 		
 		//this line existed earlier
 		//if ($(this).val() == "0") {
@@ -354,11 +490,53 @@ var dc = '';
 		});
 	});
 
+	/** 
+         * Check fund availability code
+         * @author Priyanka Rawat       
+         */
+        $('#fund').live('change', function(){
+                var fundTotal = 0;
+
+                $("table tr #fund").each(function() {
+                        var fund_ledger_id = $(this).children().val();
+                        alert("fund id = "+fund_ledger_id);
+                        var fund_amount = 0;
+                
+                        $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+                                success: function(data){
+                                        fund_amount = $.trim(data);
+                                        alert("fund amount = "+fund_amount);
+        
+                                        fund_amount = parseFloat(fund_amount);
+                                        if (isNaN(fund_amount))
+                                                fund_amount = 0;
+                                        fundTotal = jsFloatOps(fundTotal, fund_amount, '+');
+                                                                        
+                                        var drTotal = 0;
+
+                                        $("table tr .dr-item").each(function() {
+                                                var curDr = $(this).attr('value');
+                                                curDr = parseFloat(curDr);
+                                                if (isNaN(curDr))
+                                                        curDr = 0;
+                                                drTotal = jsFloatOps(drTotal, curDr, '+');
+                                        });
+                                        alert("dr total = "+drTotal);
+                                        alert("fund total = "+fundTotal);
+                                        if(drTotal > fundTotal)
+                                                alert("Amount payable is more than the available fund.");
+                                }
+                        });
+                });
+
+        });
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
 	$('.ledger-dropdown').trigger('change');
 	$('.dr-item:first').trigger('change');
 	$('.cr-item:first').trigger('change');
+	$('#fund').trigger('change');
 	response.setIntHeader("Refresh", 1);	
 
 });
@@ -431,7 +609,8 @@ var dc = '';
 		);
 		$cr_amount_item = array(
 			'name' => 'cr_amount[' . $i . ']',
-			'id' => 'cr_amount[' . $i . ']',
+			//'id' => 'cr_amount[' . $i . ']',
+			'id' => 'cr_amount' . $i,
 			'maxlength' => '15',
 			'size' => '15',
 			'value' => isset($cr_amount[$i]) ? $cr_amount[$i] : "",
@@ -467,6 +646,9 @@ var dc = '';
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		echo "<td>" . form_input($cheque) . "</td>";	
 	
+		$temp = "fund-list".$i;
+                echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
+
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
 

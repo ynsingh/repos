@@ -7,7 +7,9 @@ class Entry extends Controller {
 		parent::Controller();
 		$this->load->model('Entry_model');
 		$this->load->model('Ledger_model');
+		$this->load->model('Group_model');
 		$this->load->model('Tag_model');
+		$this->load->model('Budget_model');
 		$this->load->library('GetParentlist');
 		return;
 	}
@@ -17,6 +19,7 @@ class Entry extends Controller {
 		redirect('entry/show/all');
 		return;
 	}
+
 	function show($entry_type)
 	{
 
@@ -55,6 +58,69 @@ class Entry extends Controller {
 			}
 		}
 		$entry_q = NULL;
+
+
+		/**
+		 * Following code checks, whether 'Transit Income' account exists or not.
+		 * And if does not exist, it creates one in Income head.
+		 */
+		$this->db->from('ledgers')->where('name =', 'Transit Income');
+                $query_result = $this->db->get();
+
+                if($query_result->num_rows() == 0)
+                {
+	                $this->db->from('groups');
+                        $this->db->select('id');
+                        $this->db->where('name =', 'Incomes');
+                        $group = $this->db->get();
+                        foreach($group->result() as $row){
+         	               $group_id = $row->id;
+                        }
+                                        
+			$num = $this->Ledger_model->get_numOfChild($group_id);
+                        $l_code = $this->Group_model->get_group_code($group_id);
+
+                        if($num == 0){
+	                        $ledger_code = $l_code . '01';
+        	        } else{
+                                $ledger_code=$this->get_code($num, $l_code);
+                        }
+
+	                $i=0;
+        
+                        do{
+    	                    if($i>0){
+	                            $num = $num + 1;
+                                    $ledger_code=$this->get_code($num, $l_code);
+                            }
+                            $this->db->from('groups');
+                            $this->db->select('id')->where('code =',$ledger_code);
+                            $group_q = $this->db->get();
+                            $i++;
+                        }while($group_q->num_rows()>0);
+                      
+                        /* Adding ledger 'Transit Income' in Income head */
+                        $this->db->trans_start();
+                        $insert_data = array(
+         	               'code' => $ledger_code,
+                               'name' => 'Transit Income',
+                               'group_id' => $group_id,
+                               'op_balance' => '0.00',
+                               'op_balance_dc' => 'C',
+                               'type' => '0',
+                               'reconciliation' => '0',
+                        );
+                 
+	                if ( ! $this->db->insert('ledgers', $insert_data)){
+	                        $this->db->trans_rollback();
+                                $this->messages->add('Error addding Ledger account - Transit Income in Income head.', 'error');
+                                $this->logger->write_message("error", "Error adding Ledger account: Transit Income");
+                         } else {
+                                $this->db->trans_complete();
+                                $this->messages->add('Added Ledger account - Transit Income.', 'success');
+                                $this->logger->write_message("success", "Added Ledger account called Transit Income");
+                         }
+		}
 
 		/* Pagination setup */
 		$this->load->library('pagination');
@@ -394,6 +460,31 @@ class Entry extends Controller {
 
 	}
 
+	function get_code($num, $code)
+        {
+                if($num < 9)
+                {
+                        $i = 0;
+                        do{
+                                $i++;
+                                $data_code = $code . '0' . $num+$i;
+                                $this->db->from('ledgers');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $ledger_q = $this->db->get();
+                        }while($ledger_q->num_rows() > 0);
+                } else{
+                        $i = 0;
+                        do{
+                                $i++;
+                                $data_code = $code . $num+$i;
+                                $this->db->from('ledgers');
+                                $this->db->select('id')->where('code =',$data_code);
+                                $ledger_q = $this->db->get();
+                        }while($ledger_q->num_rows() > 0);
+               }
+               return $data_code;
+        }
+
 	function view($entry_type, $entry_id = 0)
 	
 	{
@@ -417,8 +508,19 @@ class Entry extends Controller {
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
+
+		//get 'Transit Income' id
+                $this->db->select('id');
+                $this->db->from('ledgers');
+                $this->db->where('name', 'Transit Income');
+                $query = $this->db->get();
+                $income = $query->row();
+                $income_id = $income->id;
+
 		/* Load current entry details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		//exclude Transit Income account
+		$this->db->where('ledger_id !=', $income_id);
 		$cur_entry_ledgers = $this->db->get();
 		if ($cur_entry_ledgers->num_rows() < 1)
 		{
@@ -473,7 +575,7 @@ class Entry extends Controller {
 		}
 
 		/* Message for entries related to asset purchase. */
-		$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
+		//$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
 
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
@@ -555,7 +657,10 @@ class Entry extends Controller {
 		$data['entry_tags'] = $this->Tag_model->get_all_tags();
 		$data['entry_tag'] = 0;
 
-		 $options = array();
+		$data['fund_list'] = $this->Ledger_model->get_ledgers();
+                $data['fund_list_active'] = 0;
+
+		$options = array();
                 $this->db->select('name, label');
                 $this->db->from('entry_types');
                 $query = $this->db->get();
@@ -617,6 +722,7 @@ class Entry extends Controller {
 			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
+			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 
 		} 
 		else {
@@ -662,6 +768,7 @@ class Entry extends Controller {
                         $data_cheque = $this->input->post('cheque', TRUE);
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$bank_cash_global = '';
+
 			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                         {
 
@@ -880,6 +987,7 @@ class Entry extends Controller {
 			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
 			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 
 			$dr_total = 0;
 			$cr_total = 0;
@@ -1011,7 +1119,8 @@ class Entry extends Controller {
 									$parents = new GetParentlist();
 				                                        $parents->init($groupid,$data_amount);
 
-									$this->db->from('budgets')->where('code', '50');
+									//$this->db->from('budgets')->where('code', '50');
+									$this->db->from('budgets')->where('budgetname', 'Main Budget');
 				                                        $query_ll = $this->db->get();
                                 				        $query_ll = $query_ll->row();
                                         //$this->id = $query_l->id;
@@ -1019,7 +1128,8 @@ class Entry extends Controller {
                                 				        $this->useamt1 = $query_ll->consume_amount;
 									$update_data2 = $this->useamt1 + $data_amount;
 									$update_data3 = array('consume_amount' => $update_data2);
-									if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+									//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+									if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
                                                                         {
                                                                                 $this->db->trans_rollback();
                                                                                 $this->messages->add('Error updating total expenses amount in budget.', 'error');
@@ -1046,7 +1156,8 @@ class Entry extends Controller {
 							$parents = new GetParentlist();
 		                                        $parents->init($groupid,$data_amount);
 							
-							$this->db->from('budgets')->where('code', '50');
+							//$this->db->from('budgets')->where('code', '50');
+							$this->db->from('budgets')->where('budgetname = ', 'Main Budget');
                                                         $query_ll = $this->db->get();
                                                         $query_ll = $query_ll->row();
                                                         $this->amt1 = $query_ll->bd_balance;
@@ -1055,7 +1166,8 @@ class Entry extends Controller {
                                                         $update_data3 = array('consume_amount' => $update_data2);
 
 
-							if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+							//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+							if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
                                          		{
                                                                                 $this->db->trans_rollback();
                                                                                 $this->messages->add('Error updating total expenses amount in budget.', 'error');
@@ -1101,7 +1213,8 @@ class Entry extends Controller {
                                                         }
 							$parents = new GetParentlist();
 		                                        $parents->init($groupid,$data_amount);
-							$this->db->from('budgets')->where('code', '50');
+							//$this->db->from('budgets')->where('code', '50');
+							$this->db->from('budgets')->where('budgetname', 'Main Budget');
                                                         $query_ll = $this->db->get();
                                                         $query_ll = $query_ll->row();
                                                         $this->amt1 = $query_ll->bd_balance;
@@ -1110,7 +1223,8 @@ class Entry extends Controller {
                                                         $update_data3 = array('consume_amount' => $update_data2);
 
 
-							if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+							//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+							if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
         	                                        {
                  	                                       $this->db->trans_rollback();
                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
@@ -1131,6 +1245,48 @@ class Entry extends Controller {
 				
 				}//001
 				
+				/* Code for making entry in Fund and Transit Income account. */
+				$fund_ledger = $data_all_fund_ledger[$id];
+				if($fund_ledger > 0 && $data_ledger_dc == 'D'){
+					$insert_fund_data = array(
+                                       		'entry_id' => $entry_id,
+	                                        'ledger_id' => $fund_ledger,
+               		                        'amount' => $data_amount,
+                               		        'dc' => 'D',
+	                                        'update_date' => $data_date,
+               		                        'forward_refrence_id' => '0',
+                               		        'backward_refrence_id' => $data_back_refrence
+	                                );
+
+        	                        if ( ! $this->db->insert('entry_items', $insert_fund_data))
+		                        {
+                	                        $this->db->trans_rollback();
+	                                        $this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
+                        	        }
+
+					$this->db->select('id');
+					$this->db->from('ledgers')->where('name', 'Transit Income');
+					$query = $this->db->get();
+					$income = $query->row();
+					$income_id = $income->id;
+									
+					$insert_income_data = array(
+	                                        'entry_id' => $entry_id,
+        	                                'ledger_id' => $income_id,
+                	                        'amount' => $data_amount,
+                        	                'dc' => 'C',
+                                		'update_date' => $data_date,
+	                                        'forward_refrence_id' => '0',
+        	                                'backward_refrence_id' => $data_back_refrence
+                	                );
+
+	                                if ( ! $this->db->insert('entry_items', $insert_income_data))
+        	                        {
+                	                        $this->db->trans_rollback();
+                                	        $this->logger->write_message("error", "Error adding transit income");
+        	                        }
+				}//....
+
 				$insert_ledger_data = array(
 					'entry_id' => $entry_id,
 					'ledger_id' => $data_ledger_id,
@@ -1265,10 +1421,26 @@ class Entry extends Controller {
 
 	function ledger_code($ledger_id = 0)
         {
-                if ($ledger_id > 0)
-                        echo $this->Ledger_model->get_ledger_code($ledger_id);
-                else
+		$account_code = 0;
+                if ($ledger_id > 0){
+                        $code = $this->Ledger_model->get_ledger_code($ledger_id);
+			$account_code = $this->Budget_model->get_account_code('Expenses');
+			$temp = $this->startsWith($code, $account_code);
+                        if($temp)
+	                        echo "Expense";
+
+			$account_code = $this->Budget_model->get_account_code('Incomes');
+                        $temp = $this->startsWith($code, $account_code);
+                        if($temp)
+                                echo "Income";
+                                        
+			$account_code = $this->Budget_model->get_account_code('Assets');
+                        $temp = $this->startsWith($code, $account_code);
+                        if($temp)
+                                echo "Asset";
+                }else{
                         echo "";
+		}
                 return;
         }
 	
@@ -1430,6 +1602,9 @@ class Entry extends Controller {
                         'value' => $cur_entry->backward_refrence_id,
                 );
 
+		//$data['fund_list'] = $this->Ledger_model->get_ledgers();
+                //$data['fund_list_active'] = 0;
+
 		$debitled="";
 		$debitid="";
 		$creditled="";
@@ -1445,26 +1620,103 @@ class Entry extends Controller {
 			}
 			$counter = 0;
 
+			$flag = 0;
+			$fund_id = '';
+
+			//get 'Transit Income' id
+			$this->db->select('id');
+                        $this->db->from('ledgers');
+                        $this->db->where('name', 'Transit Income');
+                        $query = $this->db->get();
+                        $income = $query->row();
+			$income_id = $income->id;
+
 			foreach ($cur_ledgers_q->result() as $row)
 			{
-				$data['ledger_dc'][$counter] = $row->dc;
-				$data['ledger_id'][$counter] = $row->ledger_id;
-				if ($row->dc == "D")
-				{
-					$debitled=$row->dc;
-					$debitid= $row->ledger_id;
-					$data['dr_amount'][$counter] = $row->amount;
-					$data['cr_amount'][$counter] = "";
-				} else {
-					$creditled=$row->dc;
-					$creditid=$row->ledger_id;
-					$data['dr_amount'][$counter] = "";
-					$data['cr_amount'][$counter] = $row->amount;
+				$temp = null;
+				$account_code = null;
+				$bank_cash = null;
+				$index = -1;
+
+				//check whether ledger is 'Transit Income'
+                                if($row->ledger_id != $income_id){
+
+					/* code for fund list*/
+                                        $ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
+                                        $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
+                                        $temp = $this->startsWith($ledger_code, $account_code);
+
+                                        //if ledger is a liability account
+                                        if($temp && $flag == 0 && $row->dc == 'D'){
+ 	                                       $fund_id = $row->ledger_id;
+                                               $flag = 1;
+                                        }else{
+						$flag = 0;
+					}
+
+					if($flag == 0){
+						$data['ledger_dc'][$counter] = $row->dc;
+						$data['ledger_id'][$counter] = $row->ledger_id;
+	
+						if ($row->dc == "D")
+						{
+							$debitled=$row->dc;
+							$debitid= $row->ledger_id;
+
+							$account_code = $this->Budget_model->get_account_code('Assets');
+        	        	                        $temp = $this->startsWith($ledger_code, $account_code);
+							//if ledger is an asset account					
+							if($temp){
+								$bank_cash = $this->Ledger_model->get_ledgers_bankcash($debitid);
+								if($bank_cash == 0){
+                                                                //$data['fund_list_active'.$counter][$counter]= $fund_id;
+	                                                                $data['fund_list'][$counter] = $fund_id;
+                                                                	$flag = 0;
+	                                                                $fund_id = null;
+        	                                                        $bank_cash = null;
+                	                                        }
+							}
+
+
+							if($temp == null){
+								$account_code = $this->Budget_model->get_account_code('Expenses');
+	                                                        $temp = $this->startsWith($ledger_code, $account_code);
+								if($temp){
+                                                                //$data['fund_list_active'.$counter][$counter]= $fund_id;
+                                                                	$data['fund_list'][$counter] = $fund_id;
+	                                                                $flag = 0;
+        	                                                        $fund_id = null;
+                	                                                $bank_cash = null;
+                        	                                }
+							}
+
+	
+							//if ledger is an asset non-bank/cash account
+							//if($temp && $bank_cash == 0 && $flag = 1){
+						/*	if($temp && $bank_cash == 0){
+								//$data['fund_list_active'.$counter][$counter]= $fund_id;
+								$data['fund_list'][$counter] = $fund_id;
+								$flag = 0;
+								$fund_id = null;
+								$bank_cash = null;
+							}*/
+	
+							$data['dr_amount'][$counter] = $row->amount;
+							$data['cr_amount'][$counter] = "";
+						} else {
+							$creditled=$row->dc;
+							$creditid=$row->ledger_id;
+							$data['dr_amount'][$counter] = "";
+							$data['cr_amount'][$counter] = $row->amount;
+							$data['fund_list_active'.$counter][$counter]= 0;
+						}
+						if ($row->reconciliation_date)
+							$data['has_reconciliation'] = TRUE;
+						$counter++;
+					}
 				}
-				if ($row->reconciliation_date)
-					$data['has_reconciliation'] = TRUE;
-				$counter++;
 			}
+			
 			/* Two extra rows */
 			$data['ledger_dc'][$counter] = 'D';
 			$data['ledger_id'][$counter] = 0;
@@ -1522,7 +1774,7 @@ class Entry extends Controller {
 			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
-
+			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)
@@ -1726,6 +1978,7 @@ class Entry extends Controller {
 			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
 			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 
 			$dr_total = 0;
 			$cr_total = 0;
@@ -1754,6 +2007,49 @@ class Entry extends Controller {
 					$data_amount = $data_all_cr_amount[$id];
 					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
 				}
+
+				/* Code for making entry in Fund and Transit Income account. */
+                                $fund_ledger = $data_all_fund_ledger[$id];
+                                if($fund_ledger > 0 && $data_ledger_dc == 'D'){
+                                        $insert_fund_data = array(
+                                                'entry_id' => $entry_id,
+                                                'ledger_id' => $fund_ledger,
+                                                'amount' => $data_amount,
+                                                'dc' => 'D',
+                                                'update_date' => $updatedate,
+                                                'forward_refrence_id' => $data_forw_refrence,
+                                                'backward_refrence_id' => $data_back_refrence
+                                        );
+
+                                        if ( ! $this->db->insert('entry_items', $insert_fund_data))
+                                        {
+                                                $this->db->trans_rollback();
+                                                $this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
+                                        }
+
+                                        $this->db->select('id');
+                                        $this->db->from('ledgers')->where('name', 'Transit Income');
+                                        $query = $this->db->get();
+                                        $income = $query->row();
+                                        $income_id = $income->id;
+
+                                        $insert_income_data = array(
+                                                'entry_id' => $entry_id,
+                                                'ledger_id' => $income_id,
+                                                'amount' => $data_amount,
+                                                'dc' => 'C',
+                                                'update_date' => $updatedate,
+                                                'forward_refrence_id' => $data_forw_refrence,
+                                                'backward_refrence_id' => $data_back_refrence
+                                        );
+
+                                        if ( ! $this->db->insert('entry_items', $insert_income_data))
+                                        {
+                                                $this->db->trans_rollback();
+                                                $this->logger->write_message("error", "Error adding transit income");
+                                        }
+                                }//....
+
 				$insert_ledger_data = array(
 					'entry_id' => $entry_id,	
 					'ledger_id' => $data_ledger_id,
@@ -2691,14 +2987,16 @@ class Entry extends Controller {
                                                                 }
                                                                 $parents = new GetParentlist();
                                                                 $parents->init($groupid,$data_amount);
-                                                                $this->db->from('budgets')->where('code', '50');
+                                                                //$this->db->from('budgets')->where('code', '50');
+                                                                $this->db->from('budgets')->where('budgetname', 'Main Budget');
                                                                 $query_ll = $this->db->get();
                                                                 $query_ll = $query_ll->row();
                                                                 $this->amt1 = $query_ll->bd_balance;
                                                                 $this->useamt1 = $query_ll->consume_amount;
                                                                 $update_data2 = $this->useamt1 + $data_amount;
                                                                 $update_data3 = array('consume_amount' => $update_data2);
-                                                                if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                                //if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+                                                                if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
                                                                 {
                                                                         $this->db->trans_rollback();
                                                                         $this->messages->add('Error updating total expenses amount in budget.', 'error');
@@ -2729,7 +3027,8 @@ class Entry extends Controller {
                                                 $parents = new GetParentlist();
                                                 $parents->init($id,$data_amount);
 						
-                                                $this->db->from('budgets')->where('code', '50');
+                                                //$this->db->from('budgets')->where('code', '50');
+                                                $this->db->from('budgets')->where('budgetname', 'Main Budget');
                                                 $query_ll = $this->db->get();
                                                 $query_ll = $query_ll->row();
                                        		//$this->id = $query_l->id;
@@ -2738,7 +3037,8 @@ class Entry extends Controller {
                                                 $update_data2 = $this->useamt1 + $data_amount;
                                                 $update_data3 = array('consume_amount' => $update_data2);
 						//echo "$update_data2";	
-                                                if (!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                //if (!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                if (!$this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
                                                 {
                                                 	//$this->messages->add("Test in Getparent 8==>");
                                                         $this->db->trans_rollback();
@@ -2798,7 +3098,8 @@ class Entry extends Controller {
                                                 }
                                                 $parents = new GetParentlist();
                                                 $parents->init($groupid,$data_amount);
-                                                $this->db->from('budgets')->where('code', '50');
+                                                //$this->db->from('budgets')->where('code', '50');
+                                                $this->db->from('budgets')->where('budgetname', 'Main Budget');
                                                 $query_ll = $this->db->get();
                                                 $query_ll = $query_ll->row();
                                         	//$this->id = $query_l->id;
@@ -2808,7 +3109,8 @@ class Entry extends Controller {
                                                 $update_data3 = array('consume_amount' => $update_data2);
 
                                                 
-                                                if(!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                //if(!$this->db->where('code', '50')->update('budgets', $update_data3))
+                                                if(!$this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
                                                 {
                                                         $this->db->trans_rollback();
                                                         $this->messages->add('Error updating total expenses amount in budget.', 'error');
@@ -3108,8 +3410,18 @@ class Entry extends Controller {
 			redirect('entry/show/' . $current_entry_type['label']);
 			return;
 		}
+
+		//get 'Transit Income' id
+                $this->db->select('id');
+                $this->db->from('ledgers');
+                $this->db->where('name', 'Transit Income');
+                $query = $this->db->get();
+                $income = $query->row();
+                $income_id = $income->id;
+
 		/* Load current entry details */
 		$this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('id', 'asc');
+		$this->db->where('ledger_id !=', $income_id);
 		$cur_entry_ledgers = $this->db->get();
 		if ($cur_entry_ledgers->num_rows() < 1)
 		{
@@ -3127,6 +3439,7 @@ class Entry extends Controller {
 		
 		$data['forward_reference_id'] = '';
 		$data['backward_reference_id'] = '';
+
 		$this->db->select('forward_refrence_id, backward_refrence_id');
 		$this->db->from('entries')->where('id', $entry_id)->order_by('id', 'asc');
                 $reference_ids = $this->db->get();
@@ -3274,6 +3587,10 @@ class Entry extends Controller {
                 $data['active_entry_name'] = 0;
 
                 $data['entry_tag'] = 0;
+
+		$data['fund_list'] = $this->Ledger_model->get_ledgers();
+                $data['fund_list_active'] = 0;
+
                 /* Form validations */
                 if ($current_entry_type['numbering'] == '2')
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
@@ -3315,6 +3632,7 @@ class Entry extends Controller {
                         $data['cr_amount'] = $this->input->post('cr_amount', TRUE);
 			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
+			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
                 }
 		else {
                         for ($count = 0; $count <= 3; $count++)
@@ -3347,6 +3665,7 @@ class Entry extends Controller {
 			$data_banif_name = $this->input->post('banif_name', TRUE);
                         $data_bank_name = $this->input->post('bank_name', TRUE);
                         $data_entry_name = $this->input->post('entry_name', TRUE);
+			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 
                         $dr_total = 0;
                         $cr_total = 0;
@@ -3411,6 +3730,13 @@ class Entry extends Controller {
                 $this->template->load('template', 'entry/checkentry', $data);
                 return;
         }
+
+	function ledger_fund($id){
+		$ledger_amount = $this->Ledger_model->get_ledger_balance($id);
+		$ledger_amount = 0 - $ledger_amount;
+		echo $ledger_amount;
+		return;
+	}
 
 }
 

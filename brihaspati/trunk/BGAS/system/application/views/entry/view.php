@@ -14,20 +14,26 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 $odd_even = "odd";
 foreach ($cur_entry_ledgers->result() as $row)
 {
-	
-	echo "<tr class=\"tr-" . $odd_even . "\">";
-	echo "<td>" . convert_dc($row->dc) . "</td>";
-	echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
-	if ($row->dc == "D")
-	{
-		echo "<td>Dr " . $row->amount . "</td>";
-		echo "<td></td>";
-	} else {
-		echo "<td></td>";
-		echo "<td>Cr " . $row->amount . "</td>";
+	$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
+        $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
+//        $temp = $this->startsWith($ledger_code, $account_code);
+	$temp = !strncmp($ledger_code, $account_code, strlen($account_code));
+
+	if(!($temp && $row->dc == "D")){
+		echo "<tr class=\"tr-" . $odd_even . "\">";
+		echo "<td>" . convert_dc($row->dc) . "</td>";
+		echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
+		if ($row->dc == "D")
+		{
+			echo "<td>Dr " . $row->amount . "</td>";
+			echo "<td></td>";
+		} else {
+			echo "<td></td>";
+			echo "<td>Cr " . $row->amount . "</td>";
+		}
+		echo "</tr>";
+		$odd_even = ($odd_even == "odd") ? "even" : "odd";
 	}
-	echo "</tr>";
-	$odd_even = ($odd_even == "odd") ? "even" : "odd";
 }
 	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row->entry_id);
         $ledger_q = $this->db->get();

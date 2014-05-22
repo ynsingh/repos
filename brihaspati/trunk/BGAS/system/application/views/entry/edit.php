@@ -12,6 +12,7 @@
 $(document).ready(function() {
 //global variable
 var dc = '';
+
 	/*cheque field hide and show functionality*/
         $(".cheque-item").hide(function(){
                 });
@@ -106,6 +107,42 @@ var dc = '';
 				$("table tr #cr-diff").text("");
 			}
 		}
+
+		bank_cash = -1;
+                var ledger_value = $(this).parent().prev().children().attr('value');
+                var dr_name = $(this).attr('name');
+                //var dr_amount = $(this).val();
+		var dr_amount = $(this).attr('value');
+                var check = 0;
+                $.ajax({
+                                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
+                                        success: function(bank) {
+                                                bank_cash = $.trim(bank);
+                                                if(bank_cash == 0){
+                                                        var first_index = dr_name.lastIndexOf("[");
+                                                        var last_index = dr_name.lastIndexOf("]"); 
+                                                        var fund_index = dr_name.substring(first_index+1, last_index);                                                                                          temp = ".fund-list"+fund_index;
+                                                        //var fund_ledger_id = $(temp).val();
+							var fund_ledger_id = $(temp).attr('value');
+                                                        if(fund_ledger_id != 0)
+                                                                check = 1;
+                                                        $.ajax({
+                                                                url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+                                                                success: function(data){
+                                                                        fund_amount = $.trim(data);
+                                                                        fund_amount = parseFloat(fund_amount);
+                                                                        if (isNaN(fund_amount))
+                                                                                fund_amount = 0;
+                                                                        if((jsFloatOps(dr_amount, fund_amount, '>')) && check == 1){
+                                                                                alert("Amount payable is more than the available fund.");
+                                                                        }
+                                                        
+                                                                }
+                                                        });
+                                                }
+                                        }
+                });
+	
 	});
 
 	$('.cr-item').live('change', function() {
@@ -148,92 +185,111 @@ var dc = '';
 
 	/* Dr - Cr dropdown changed */
 	$('.dc-dropdown').live('change', function() {
-		//line added by Priyanka
-                dc = $(this).attr('value');
 		
-		var drValue = $(this).parent().next().next().children().attr('value');
-		var crValue = $(this).parent().next().next().next().children().attr('value');
+		var dc = $(this).attr('value');
+                var dr_name = $(this).parent().next().next().children().attr('name');
+                var ledger_value = $(this).parent().next().children().attr('value');
+		var first_index = dr_name.lastIndexOf("[");
+                var last_index = dr_name.lastIndexOf("]"); 
+                var fund_index = dr_name.substring(first_index+1, last_index);                                               
+                var temp = ".fund-list"+fund_index;
 
-		if ($(this).parent().next().children().val() == "0") {
-			return;
-		}
-
-		drValue = parseFloat(drValue);
-		if (isNaN(drValue))
-			drValue = 0;
-
-		crValue = parseFloat(crValue);
-		if (isNaN(crValue))
-			crValue = 0;
-
-		if ($(this).attr('value') == "D") {
-			if (drValue == 0 && crValue != 0) {
-				$(this).parent().next().next().children().attr('value', crValue);
-			}
-			$(this).parent().next().next().next().children().attr('value', "");
-			$(this).parent().next().next().next().children().attr('disabled', 'disabled');
-			$(this).parent().next().next().children().attr('disabled', '');
-		} else {
-			if (crValue == 0 && drValue != 0) {
-				$(this).parent().next().next().next().children().attr('value', drValue);
-			}
-			$(this).parent().next().next().children().attr('value', "");
-			$(this).parent().next().next().children().attr('disabled', 'disabled');
-			$(this).parent().next().next().next().children().attr('disabled', '');
-		}
-		/* Recalculate Total */
-		$('.dr-item:first').trigger('change');
-		$('.cr-item:first').trigger('change');
-	});
-
-	/* Ledger dropdown changed */
-	$('.ledger-dropdown').live('change', function() {
-		var ledgerid = $(this).val();
-		// lines added by Priyanka
-		$.ajax({
-                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
+		if ($(this).parent().next().children().val() != "0") {
+                $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
                                 success: function(data) {
-                                        var code = $.trim(data);
-                                        var account = '';
-					//dc = '';
-
+                                        /*var code = $.trim(data);
                                         var n = code.indexOf("40");
-                                        /*alert('dc = '+dc);
-                                        alert('code ='+code);
-                                        alert('n1 = '+n);*/
-                                        if(n == 0)
+                                        if(n == 0){
                                                 account = 'Expense';
+                                        }else{
+                                                n = code.indexOf("30");
+                                                if(n == 0){
+                                                        account = 'Income';
+                                                }else{
+                                                        n = code.indexOf("20");
+                                                        if(n == 0){
+                                                                account = 'Asset';
+                                                        }else{
+                                                                account = '';
+                                                        }
+                                                }
+                                        }*/
 
-                                        n = code.indexOf("30");
-                                        /*alert('dc = '+dc);
-                                        alert('code ='+code);
-                                        alert('n = '+n);*/
-                                        if(n == 0)
-                                                account = 'Income';
+					account = $.trim(data);
 
                                         if(dc == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry 1");
-                                                dc = 'D';
-                                                //account = '';
+                                                alert("You have made a wrong entry");
                                         }
 
                                         if(dc == 'C' && account == 'Expense'){
                                                 alert("You have made a wrong entry");
-                                                dc = 'D';
-                                                //account = '';
                                         }
-                                }
-                        });
-                //....
+		                        //following code is for fund dropdown list
+                		        $.ajax({
+                                		url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
+		                                success: function(bank) {
+                		                      bank_or_cash = $.trim(bank);
+		                                      if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_or_cash == '0')){
+                		                            $(temp).show();
+                                		      }else{
+		                                            $(temp).hide();
+                		                      }
+                                		}
+                        		});
+				}
+			});
+		}else{
+			$(temp).hide();
+		}	
+
+		var drValue = $(this).parent().next().next().children().attr('value');
+                var crValue = $(this).parent().next().next().next().children().attr('value');
+                if ($(this).parent().next().children().val() == "0") {
+                
+                        return;
+                }
+
+                drValue = parseFloat(drValue);
+                if (isNaN(drValue))
+                        drValue = 0;
+
+                crValue = parseFloat(crValue);
+                if (isNaN(crValue))
+                        crValue = 0;
+
+                if ($(this).attr('value') == "D") {
+                        if (drValue == 0 && crValue != 0) {
+                                $(this).parent().next().next().children().attr('value', crValue);
+                        }
+                        $(this).parent().next().next().next().children().attr('value', "");
+                        $(this).parent().next().next().next().children().attr('disabled', 'disabled');
+                        $(this).parent().next().next().children().attr('disabled', '');
+                } else {
+                        if (crValue == 0 && drValue != 0) {
+                                $(this).parent().next().next().next().children().attr('value', drValue);
+                        }
+                        $(this).parent().next().next().children().attr('value', "");
+                        $(this).parent().next().next().children().attr('disabled', 'disabled');
+                        $(this).parent().next().next().next().children().attr('disabled', '');
+                }
+                /* Recalculate Total */
+                $('.dr-item:first').trigger('change');
+                $('.cr-item:first').trigger('change');
+
+	});
+
+	/* Ledger dropdown changed */
+	$('.ledger-dropdown').live('change', function() {
+		var ledgerid = $(this).attr('value');
+
+		bank_cash = '';
 				//Lines added by manshi........
                         var rowid = $(this);
                          $.ajax({
                                         url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
                                         success: function(bank) {
-                                        var bank_cash = $.trim(bank);
-                         //               bank_cash = $.trim(bank);
-                                        //var bank_cash1='';
-                                        //bank_cash1='';
+                                        bank_cash = $.trim(bank);
                                         //Check account either bank cash or non bank cash.......
                                         if(bank_cash == '1' ){
                                                 $(".cheque-item").show();
@@ -241,90 +297,101 @@ var dc = '';
                                                 $(".bank_value").show();
                                                 rowid.parent().next().next().next().children().attr('disabled', '');
                                           }
-                                        //Define Entry Types.........
-                  /*                      if(dc == 'C' && bank_cash == '1')
-                                        {
-                                        var value =$("select.type_dropdown option:selected").val("Payment");
-                                        var value = $('select.type_dropdown option:selected').text('Payment');
-                                        }
-                                        if(dc == 'D' && bank_cash == '1')
-                                        {
-                                        var value =$("select.type_dropdown option:selected").val("Receipt");
-                                        var value = $('select.type_dropdown option:selected').text('Receipt');
-
-                                        }
-                                        if( window.globalVar == '1' &&  bank_cash == '1')
-                                        {
-                                        var value =$("select.type_dropdown option:selected").val("Contra");
-                                        var value = $('select.type_dropdown option:selected').text('Contra');   
-                                        }
-					if( window.globalVar == '0' &&  bank_cash == '0')
-                                        {
-                                        var value =$("select.type_dropdown option:selected").val("Journal");
-                                        var value = $('select.type_dropdown option:selected').text('Journal');   
-                                        }
-                        
-                                        //Define Globle Variable in jquery......                        
-                                        if(bank_cash == '1')
-                                        {
-                                        window.globalVar = "1";
-                                        
-                                        }
-                                        if(bank_cash == '0')
-                                        {
-                                        window.globalVar = "0";
-                                        
-                                        }*/
-
-
                                 }
                         });
                 //....
 
+		//fund code added by Priyanka
+                var dc_value = $(this).parent().prev().children().attr('value');
+                var dr_name = $(this).parent().next().children().attr('name');          
+		var first_index = dr_name.lastIndexOf("[");
+                var last_index = dr_name.lastIndexOf("]"); 
+                var fund_index = dr_name.substring(first_index+1, last_index);                                             
+                var temp = ".fund-list"+fund_index;
 
-                //var ledgerName = $(this).val();
-                //var ledgerArray = ledgerName.split('#');
-                //var id_val = ledgerArray[0];
-                //var code = ledgerArray[1];
-                //....
-                
-                //this line existed earlier
-		//if ($(this).val() == "0") {
-		if(ledgerid == "0") {
-			$(this).parent().next().children().attr('value', "");
-			$(this).parent().next().next().children().attr('value', "");
-			$(this).parent().next().children().attr('disabled', 'disabled');
-			$(this).parent().next().next().children().attr('disabled', 'disabled');
-		} else {
-			$(this).parent().next().children().attr('disabled', '');
-			$(this).parent().next().next().children().attr('disabled', '');
-			$(this).parent().prev().children().trigger('change');
-		}
-		$(this).parent().next().children().trigger('change');
-		$(this).parent().next().next().children().trigger('change');
-
-		//this line existed
-		//var ledgerid = $(this).val();
-
-		var rowid = $(this);
 		if(ledgerid > 0){
-			$.ajax({
-				url: <?php echo '\'' . site_url('ledger/balance') . '/\''; ?> + ledgerid,
-				success: function(data) {
-					var ledger_bal = parseFloat(data);
-					if (isNaN(ledger_bal))
-						ledger_bal = 0;
-					if (jsFloatOps(ledger_bal, 0, '=='))
-						rowid.parent().next().next().next().next().next().next().children().text("0");
-					else if (jsFloatOps(ledger_bal, 0, '<'))
-						rowid.parent().next().next().next().next().next().next().children().text("Cr " + -data);
-					else
-						rowid.parent().next().next().next().next().next().next().children().text("Dr " + data);
+                $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
+                                success: function(data) {
+                                        /*var code = $.trim(data);
+                                        var n = code.indexOf("40");
+                                        if(n == 0){
+                                                account = 'Expense';
+                                        }else{
+                                                n = code.indexOf("30");
+                                                if(n == 0){
+                                                        account = 'Income';
+                                                }else{
+                                                        n = code.indexOf("20");
+                                                        if(n == 0){
+                                                                account = 'Asset';
+                                                        }else{
+                                                                account = '';
+                                                        }
+                                                }
+                                        }*/
+
+					account = $.trim(data);
+
+                                        if(dc_value == 'D' && account == 'Income'){
+                                                alert("You have made a wrong entry");
+                                        }
+
+                                        if(dc_value == 'C' && account == 'Expense'){
+                                                alert("You have made a wrong entry");
+                                        }
+                			//following code is for fund dropdown list
+			                $.ajax({
+                        			url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
+			                        success: function(bank) {
+                        			        bankorcash = $.trim(bank);
+			                                if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bankorcash == '0')){
+                        			                $(temp).show();
+			                                }else{
+                        			                $(temp).hide();
+			                                }
+                        			}
+                			});
 				}
 			});
-		} else {
-			rowid.parent().next().next().next().next().next().next().children().text("");
+		}else{
+			$(temp).hide();
 		}
+
+		if(ledgerid == "0") {
+                        $(this).parent().next().children().attr('value', "");
+                        $(this).parent().next().children().attr('value', "");
+                        $(this).parent().next().next().children().attr('value', "");
+                        $(this).parent().next().children().attr('disabled', 'disabled');
+                } else {
+                        $(this).parent().next().children().attr('disabled', '');
+                        $(this).parent().next().children().attr('disabled', '');
+                        $(this).parent().next().next().children().attr('disabled', '');
+                }
+                $(this).parent().next().children().trigger('change');
+                $(this).parent().next().children().trigger('change');
+
+                var rowid = $(this);
+                if(ledgerid > 0){
+                        $.ajax({
+                                url: <?php echo '\'' . site_url('ledger/balance') . '/\''; ?> + ledgerid,
+                                success: function(data) {
+                                        var ledger_bal = parseFloat(data);
+                                        if (isNaN(ledger_bal))
+                                                ledger_bal = 0;
+                                        if (jsFloatOps(ledger_bal, 0, '=='))
+                                                rowid.parent().next().next().next().next().next().next().children().text("0");
+                                        else if (jsFloatOps(ledger_bal, 0, '<'))
+                                                rowid.parent().next().next().next().next().next().next().children().text("Cr " + -data);
+                                        else
+                                                rowid.parent().next().next().next().next().next().next().children().text("Dr " + data);
+                                }
+                        });
+                } else {
+                        rowid.parent().next().next().next().next().next().next().children().text("");
+                }
+
+
 	});
 
 	/* Recalculate Total */
@@ -356,12 +423,43 @@ var dc = '';
 		});
 	});
 
+
+	/** 
+         * Check fund availability code
+         * @author Priyanka Rawat       
+         */
+	$('#fund').live('change', function(){
+		 var fund_ledger_id = $(this).children().val();
+                //      var fund_amount = 0;
+                        var fund_name = $(this).children().attr('name');
+                        var first_index = fund_name.lastIndexOf("[");
+                        var last_index = fund_name.lastIndexOf("]"); 
+                        var dr_index = fund_name.substring(first_index+1, last_index);                                             
+                        temp = '#dr_amount' + dr_index;
+                        var dr_amount = $(temp).val();  
+
+                        if(fund_ledger_id != 0)
+                        {
+                        $.ajax({
+                                url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
+                                success: function(data){
+                                        var fund_amount = $.trim(data);
+                                        if (jsFloatOps(dr_amount, fund_amount, '>')) {
+                                               alert("Amount payable is more than the available fund. ");
+                                        }
+                                }
+                        });
+                        }      
+
+        });
+
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
 	$('.ledger-dropdown').trigger('change');
 	$('.dr-item:first').trigger('change');
 	$('.cr-item:first').trigger('change');
-	response.setIntHeader("Refresh", 1);
+//	$('#dc').trigger('change');
+  //      $('#ledger').trigger('change');
 });
 
 </script>
@@ -387,7 +485,7 @@ var dc = '';
         echo " ";
         echo form_input($forward_refrence_id);
         echo "</span>";
-        echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related earlier dated transaction</span>";
+        echo "<span id=\"tooltip-content-2\">Enter the Bill/Voucher Id of the related earlier dated transaction</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 	echo "<span id=\"tooltip-target-3\">";
@@ -425,7 +523,8 @@ var dc = '';
 	{
 		$dr_amount_item = array(
 			'name' => 'dr_amount[' . $i . ']',
-			'id' => 'dr_amount[' . $i . ']',
+			//'id' => 'dr_amount[' . $i . ']',
+			'id' => 'dr_amount'.$i,
 			'maxlength' => '15',
 			'size' => '15',
 			'value' => isset($dr_amount[$i]) ? $dr_amount[$i] : "",
@@ -433,7 +532,8 @@ var dc = '';
 		);
 		$cr_amount_item = array(
 			'name' => 'cr_amount[' . $i . ']',
-			'id' => 'cr_amount[' . $i . ']',
+			//'id' => 'cr_amount[' . $i . ']',
+			'id' => 'cr_amount' . $i,
 			'maxlength' => '15',
 			'size' => '15',
 			'value' => isset($cr_amount[$i]) ? $cr_amount[$i] : "",
@@ -452,7 +552,7 @@ var dc = '';
 
 		echo "<tr>";
 
-		echo "<td>" . form_dropdown_dc('ledger_dc[' . $i . ']', isset($ledger_dc[$i]) ? $ledger_dc[$i] : "D") . "</td>";
+		echo "<td id = \"dc\">" . form_dropdown_dc('ledger_dc[' . $i . ']', isset($ledger_dc[$i]) ? $ledger_dc[$i] : "D") . "</td>";
 
 		// these checks existed earlier
 		/*if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
@@ -464,11 +564,16 @@ var dc = '';
 		*/
 
 		// line added by Priyanka       
-                echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
+		echo "<td id = \"ledger\">" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
 
-		echo "<td>" . form_input($dr_amount_item) . "</td>";
+		echo "<td id =\"dr\">" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
 		echo "<td>" . form_input($cheque) . "</td>";
+
+		/* code for fund list*/
+		$temp_var = "fund-list".$i;
+		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp_var."\"") . "</td>";
+
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
 

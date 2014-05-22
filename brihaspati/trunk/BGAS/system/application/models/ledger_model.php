@@ -19,13 +19,17 @@ var $ledgers = array();
 		{
 			$cd = $row->code;
 			$nme = $row->name;
-			if(substr($cd, 0, 2) == 10)
+			//if(substr($cd, 0, 2) == 10)
+			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))			
 				$name = $nme." - L";
-			if(substr($cd, 0, 2) == 20)
+			//if(substr($cd, 0, 2) == 20)
+			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
 				$name = $nme." - A";
-			if(substr($cd, 0, 2) == 30)
+			//if(substr($cd, 0, 2) == 30)
+			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
 				$name = $nme." - I";
-			if(substr($cd, 0, 2) == 40)
+			//if(substr($cd, 0, 2) == 40)
+			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
 				$name = $nme." - E";
 
 			//lines added by Priyanka
@@ -38,6 +42,27 @@ var $ledgers = array();
 		}
 		return $options;
 	}
+
+	/** 
+         * Returns code of the requested account, 
+         * as specified in the 'groups' table
+         * @author Priyanka Rawat <rpriyanka12@ymail.com>
+         */
+        function get_account_code($account_name)
+        {
+                $this->db->from('groups');
+                $this->db->select('code');
+                $this->db->where('name =', $account_name);
+                if($account_name == 'Expenses')
+                        $this->db->or_where('name = ', 'Expenditure');
+                if($account_name == 'Liabilities and Owners Equity')
+                        $this->db->or_where('name = ', 'Sources of Funds');
+                if($account_name == 'Assets')
+                        $this->db->or_where('name = ', 'Application of Funds');
+                $group = $this->db->get();
+                foreach($group->result() as $row)
+                        return $row->code;
+        }
 
 	/* get all ledgers of selected date range */
 	function get_all_ledgers1($date1 , $date2)
@@ -63,13 +88,17 @@ var $ledgers = array();
 			{
 				$cd = $row->code;
 				$nme = $row->name;
-				if(substr($cd, 0, 2) == 10)
+				//if(substr($cd, 0, 2) == 10)
+				if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
 					$name = $nme." - L";
-				if(substr($cd, 0, 2) == 20)
+				//if(substr($cd, 0, 2) == 20)
+				if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
 					$name = $nme." - A";
-				if(substr($cd, 0, 2) == 30)
+				//if(substr($cd, 0, 2) == 30)
+				if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
 					$name = $nme." - I";
-				if(substr($cd, 0, 2) == 40)
+				//if(substr($cd, 0, 2) == 40)
+				if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
 					$name = $nme." - E";
 				$options[$row->id] = $name." ( ".$cd." )" ;
 			}
@@ -88,13 +117,17 @@ var $ledgers = array();
 		{
 			$cd = $row->code;
                         $nme = $row->name;
-                        if(substr($cd, 0, 2) == 10)
+                        //if(substr($cd, 0, 2) == 10)
+			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
                                 $name = $nme." - L";
-                        if(substr($cd, 0, 2) == 20)
+                        //if(substr($cd, 0, 2) == 20)
+			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
                                 $name = $nme." - A";
-                        if(substr($cd, 0, 2) == 30)
+                        //if(substr($cd, 0, 2) == 30)
+			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
                                 $name = $nme." - I";
-                        if(substr($cd, 0, 2) == 40)
+                        //if(substr($cd, 0, 2) == 40)
+			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
                                 $name = $nme." - E";
                         $options[$row->id] = $name;
 
@@ -125,13 +158,17 @@ var $ledgers = array();
 		{
 			$cd = $row->code;
                         $nme = $row->name;
-                        if(substr($cd, 0, 2) == 10)
+                        //if(substr($cd, 0, 2) == 10)
+			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
                                 $name = $nme." - L";
-                        if(substr($cd, 0, 2) == 20)
+                        //if(substr($cd, 0, 2) == 20)
+			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
                                 $name = $nme." - A";
-                        if(substr($cd, 0, 2) == 30)
+                        //if(substr($cd, 0, 2) == 30)
+			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
                                 $name = $nme." - I";
-                        if(substr($cd, 0, 2) == 40)
+                        //if(substr($cd, 0, 2) == 40)
+			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
                                 $name = $nme." - E";
                         $options[$row->id] = $name;
 
@@ -150,13 +187,17 @@ var $ledgers = array();
 		{
 			$cd = $row->code;
                         $nme = $row->name;
-                        if(substr($cd, 0, 2) == 10)
+                        //if(substr($cd, 0, 2) == 10)
+			if(substr($cd, 0, 2) == $this->get_account_code('Liabilities and Owners Equity'))
                                 $name = $nme." - L";
-                        if(substr($cd, 0, 2) == 20)
+                        //if(substr($cd, 0, 2) == 20)
+			if(substr($cd, 0, 2) == $this->get_account_code('Assets'))
                                 $name = $nme." - A";
-                        if(substr($cd, 0, 2) == 30)
+                        //if(substr($cd, 0, 2) == 30)
+			if(substr($cd, 0, 2) == $this->get_account_code('Incomes'))
                                 $name = $nme." - I";
-                        if(substr($cd, 0, 2) == 40)
+                        //if(substr($cd, 0, 2) == 40)
+			if(substr($cd, 0, 2) == $this->get_account_code('Expenses'))
                                 $name = $nme." - E";
                         $options[$row->id] = $name;
 
@@ -1111,6 +1152,36 @@ var $ledgers = array();
 			}
 		}
 		return $this->ledgers;
+	}
+
+	function get_ledgers(){
+
+		$funds = array();
+
+		$income_code = $this->get_account_code('Liabilities and Owners Equity');
+
+		$this->db->select('name, id, group_id');
+		$this->db->from('ledgers');
+		//$this->db->like('code', '10', 'after'); 
+		$this->db->like('code', $income_code, 'after');
+		$query = $this->db->get();
+
+		$funds[0] = 'Select Fund';
+		if($query->num_rows() > 0){
+			foreach($query->result() as $ledger){
+				//$this->db->select('name');
+				//$this->db->from('groups');
+				//$this->db->where('id=', $ledger->group_id);
+				//$this->db->like('name', 'Current Liabilities', 'both');
+				//$group_query = $this->db->get();
+				
+			//	if($group_query->num_rows() == 0)
+					$funds[$ledger->id] = $ledger->name;
+			}
+		}
+
+		return $funds;
+	
 	}
 }
 ?>

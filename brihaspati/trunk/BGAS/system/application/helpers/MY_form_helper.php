@@ -33,6 +33,42 @@ if ( ! function_exists('form_dropdown_dc'))
 	}
 }
 
+if ( ! function_exists('form_dropdown_fund'))
+{
+        function form_dropdown_fund($name, $selected = NULL, $extra = '')
+        {
+		$CI =& get_instance();
+                $CI->load->model('Ledger_model');
+
+                $options = $CI->Ledger_model->get_ledgers();;
+
+                // If no selected state was submitted we will attempt to set it automatically
+                if ( ! ($selected))
+                {
+                        // If the form name appears in the $_POST array we have a winner!
+                        if (isset($_POST[$name]))
+                        {
+                                $selected = $_POST[$name];
+                        }
+                }
+
+                if ($extra != '') $extra = ' '.$extra;
+
+                $form = '<select name="'.$name.'"'.$extra.' >';
+
+                foreach ($options as $key => $val)
+                {
+                        $key = (string) $key;
+                        $sel = ($key == $selected) ? ' selected="selected"' : '';
+                        $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                }
+
+                $form .= '</select>';
+
+                return $form;
+        }
+}
+
 if ( ! function_exists('form_input_date'))
 {
 	function form_input_date($data = '', $value = '', $extra = '')
