@@ -1,192 +1,30 @@
 <script type="text/javascript">
 $(document).ready(function() {
-var num = "0";
-var parent_code = "0";
-var data_code = "0";
-var i = "0";
-var j = "0";
-var rows = "0";
 
-	var jsFloatOps = function(param1, param2, op) {
-                param1 = param1 * 100;
-                param2 = param2 * 100;
-                param1 = param1.toFixed(0);
-                param2 = param2.toFixed(0);
-                param1 = Math.floor(param1);
-                param2 = Math.floor(param2);
-                var result = 0;
-                if (op == '+') {
-                        result = param1 + param2;
-                        result = result/100;
-                        return result;
-                }
-		if (op == '>') {
-                        if (param1 > param2)
-                                return true;
-                        else
-                                return false;
-                }
-		if (op == '==') {
-                        if (param1 == param2)
-                                return true;
-                        else
-                                return false;
-                }
-        }
-
-        /* Calculate ledger code */
-/*        $('.ledger-parent').change(function() {
-		var parent_id = $(".ledger-parent").val();
-
-		$.ajax({
-                        url: <?php echo '\'' . site_url('ledger/get_numOfChild') . '/\''; ?> + parent_id,
-                        success: function(json) {
-				var obj = jQuery.parseJSON(json);
-				num = obj['NUM'];
+        //code for displaying parent child hierarchy
+        $('.ledger-parent').change(function() {
+                        if($(this).val() == "Please Select"){
+                                $('.parent').hide();
+                        
+                        }else{
+                                $('.parent').show();
+                                name = $(this).val();
+                                $.ajax({
+                                        url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + name,
+                                        success: function() {
+                                                location.reload();
+                                        }
+                                 });
                         }
-                });
+        });     
 
-		$.ajax({
-                        url: <?php echo '\'' . site_url('ledger/get_group_code') . '/\''; ?> + parent_id,
-                        success: function(json) {
-				var obj = jQuery.parseJSON(json);
-				parent_code = obj['LCODE'];
-                        }
-                });
 
-		//alert("parent id = "+parent_id);
-		//alert("num = "+num);
-		//alert("parent code = "+parent_code);
-		if(jsFloatOps('0', num, '=='))
-                {
-                	data_code = parent_code + "01";
-                } else{
-			if(jsFloatOps('9', num, '>'))
-                	{
-                        	i = 0;
-                        	do{
-					//alert("inside if 1");
-					i = parseFloat(i);
-                                	i = jsFloatOps(i, '1', '+');
-					num = parseFloat(num);
-					var l_num = jsFloatOps(num, i, '+');
-                                	data_code = parent_code + "0" + l_num;
-					//alert("data code 1 = "+data_code);
-					$.ajax({
-                                		url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
-                                		success: function(json) {
-                                        		var obj = jQuery.parseJSON(json);
-                                        		rows = obj['ROWS'];
-							//alert("rows inside if 1 = "+rows);
-                                		}
-                        		});
-                         	}while(jsFloatOps(rows, '0', '>'));
-                	} else{
-                        	i = 0;
-                        	do{
-					//alert("inside else 1");
-					i = parseFloat(i);
-                                	i = jsFloatOps(i, '1', '+');
-					num = parseFloat(num);
-					var l_num = jsFloatOps(num, i, '+');
-                                	data_code = parent_code + l_num;
-					//alert("data code 2 = "+data_code);
-					$.ajax({
-                                                url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
-                                                success: function(json) {
-                                                        var obj = jQuery.parseJSON(json);
-                                                        rows = obj['ROWS'];
-							//alert("rows inside else 1 = "+rows);
-                                                }
-                                        });
-                        	}while(jsFloatOps(rows, '0', '>'));
-                	}
-                }//else
-
-                j = 0;
-                do{
-                	if(jsFloatOps(j, '0', '>'))
-                        {
-				num = parseFloat(num);
-				j = parseFloat(j);
-	                        //var g_num = jsFloatOps(num, j, '+');
-	                        num = jsFloatOps(num, j, '+');
-				if(jsFloatOps('9', num, '>'))
-				{
-					i = 0;
-					do{
-						//alert("inside if 2");
-						i = parseFloat(i);
-						i = jsFloatOps(i, '1', '+');
-						num = parseFloat(num);
-						var temp = jsFloatOps(num, i, '+');
-						data_code = parent_code + "0" + temp;
-						//alert("data code 3 = "+data_code);
-						$.ajax({
-                                                	url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
-                                                	success: function(json) {
-                                                        	var obj = jQuery.parseJSON(json);
-                                                        	rows = obj['ROWS'];
-								//alert("rows inside if 2 = "+rows);
-                                                	}
-                                        	});
-					}while(jsFloatOps(rows, '0', '>'));
-				} else{
-                                	i = 0;
-                                	do{
-						//alert("inside else 2");
-						i = parseFloat(i);
-                                        	i = jsFloatOps(i, '1', '+');
-						num = parseFloat(num);
-                                        	var temp = jsFloatOps(num, i, '+');
-                                        	data_code = parent_code + temp;
-						//alert("data code 4 = "+data_code);
-                                        	$.ajax({
-                                                	url: <?php echo '\'' . site_url('ledger/get_ledger_code') . '/\''; ?> + data_code,
-                                                	success: function(json) {
-                                                        	var obj = jQuery.parseJSON(json);
-                                                        	rows = obj['ROWS'];
-								//alert("rows inside else 2 = "+rows);
-                                                	}
-                                        	});
-                                	}while(jsFloatOps(rows, '0', '>'));
-                        	}	
-                        }
-			$.ajax({
-                        	url: <?php echo '\'' . site_url('ledger/get_groupCode') . '/\''; ?> + data_code,
-                                success: function(json) {
-                                	var obj = jQuery.parseJSON(json);
-                                        rows = obj['ROWS'];
-					//alert("rows in group = "+rows);
-                                }
-                        });
-			//alert("rows = "+rows);
-			j = jsFloatOps(j, '1', '+');
-                }while(jsFloatOps(rows, '0', '>'));
-		//alert("final data code = "+data_code);
-		$("#ledger").val(data_code);
-        });
-
-        $('.ledger-parent').trigger('change');*/
 });
 </script>
 
 <?php
 	echo form_open('ledger/edit/' . $ledger_id);
-	
-/*	echo "<p>";
-	echo form_label('Ledger code', 'ledger_code');
-	echo "<br />";
-	$data = array(
-        'name'        => 'ledger_code',
-        'id'          => 'ledger',
-        'value'       => $ledger_code,
-	'readonly'    => 'readonly',
-        );
-        //echo form_input($ledger_code);
-        echo form_input($data);
-	echo "</p>";
-*/
+
 	echo "<p>";
 	echo form_label('Ledger name', 'ledger_name');
 	echo "<br />";
@@ -198,6 +36,69 @@ var rows = "0";
 	echo "<br />";
 	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
 	echo "</p>";
+
+	/**
+         * Code for diplaying parent child hierarchy
+         * for the selected ledger head.
+         * @author Priyanka Rawat <rpriyanka12@ymail.com>
+         */
+	$attributes = array('class' => "parent", 'style' => "width:600px");
+        echo form_fieldset('Parent Child Hierarchy', $attributes);
+        echo "<p>";
+
+        $this->load->library('session');
+        $groupid = $this->session->userdata('ledger_group_id');
+        $group_array = array();
+        $counter = 0;
+
+        if($groupid != 0){
+                $id = $groupid;
+        }else{
+                //$id = $ledger_id;
+		$this->db->select('group_id, name');
+                $this->db->from('ledgers')->where('id =', $ledger_id);
+                $ledgers_result = $this->db->get();
+                $ledgers = $ledgers_result->row();
+		$group_array[$counter] = $ledgers->name;
+                $counter++;
+		$id = $ledgers->group_id;
+	}
+
+        if($id != 0){
+                //$id = $groupid;
+                do{
+                        $this->db->select('parent_id, name');
+                        $this->db->from('groups')->where('id =', $id);
+                        $query_result = $this->db->get();
+                        $data = $query_result->row();
+                        //echo $data->name;
+                        $group_array[$counter] = $data->name;
+                        $counter++;
+
+                        //if($data->parent_id >  4){
+                        if($data->parent_id){
+                        //      echo " -> ";
+                                $id = $data->parent_id;
+                        }else{
+                                $id = 0;
+                                $counter--;
+                        }
+
+                }while($id != 0);
+
+
+                do{
+                        echo $group_array[$counter];
+                        $counter--;
+
+                        if($counter >= 0)
+                                echo " -> ";
+                }while($counter >= 0);
+
+                $this->session->unset_userdata('ledger_group_id');
+        }
+        echo "</p>";
+        echo form_fieldset_close();
 
 	echo "<p>";
 	echo form_label('Opening balance', 'op_balance');

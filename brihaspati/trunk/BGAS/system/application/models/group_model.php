@@ -15,6 +15,9 @@ class Group_model extends Model {
 		else
 			$this->db->from('groups')->where('id >', 0)->where('id !=', $id)->order_by('name', 'asc');
 		$group_parent_q = $this->db->get();
+
+		$options[0] = "Please Select";
+
 		foreach ($group_parent_q->result() as $row)
 		{
 			$options[$row->id] = $row->name;
@@ -31,27 +34,55 @@ class Group_model extends Model {
                 $arrayincm= array();
 		$this->db->from('groups')->where('id >', 4)->order_by('name', 'asc');
 		$group_parent_q = $this->db->get();
+
 		foreach ($group_parent_q->result() as $row)
 		{
 			$cd = $row->code;
                         $nm = $row->name;
-			if(substr($cd,0,2)== 10){
+			//if(substr($cd,0,2)== 10){
+			if(substr($cd,0,2) == $this->get_account_code('Liabilities and Owners Equity')){
                         	$arraylblt[$row->name]=" L- ".$nm;
                         }
-                        if(substr($cd,0,2)== 20){
+                        //if(substr($cd,0,2)== 20){
+			if(substr($cd,0,2) == $this->get_account_code('Assets')){
                         	$arrayasset[$row->name]="A- ".$nm;
                         }
-                        if(substr($cd,0,2)== 30){
+                        //if(substr($cd,0,2)== 30){
+			if(substr($cd,0,2) == $this->get_account_code('Incomes')){
                         	$arrayincm[$row->name]=" I- ".$nm;
                         }
-                        if(substr($cd,0,2)== 40){
+                        //if(substr($cd,0,2)== 40){
+			if(substr($cd,0,2) == $this->get_account_code('Expenses')){
                         	$arrayexpnd[$row->name]=" E- ".$nm;
                         }
 	
 		}
+
+		$arrayexpnd['Please Select']="Please Select";
 		$options=array_merge($arraylblt,$arrayasset,$arrayincm,$arrayexpnd);
 		return $options;
 	}
+
+	/** 
+         * Returns code of the requested account, 
+         * as specified in the 'groups' table
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+         */
+        function get_account_code($account_name)
+        {
+                $this->db->from('groups');
+                $this->db->select('code');
+                $this->db->where('name =', $account_name);
+                if($account_name == 'Expenses')
+                        $this->db->or_where('name = ', 'Expenditure');
+                if($account_name == 'Liabilities and Owners Equity')
+                        $this->db->or_where('name = ', 'Sources of Funds');
+                if($account_name == 'Assets')
+                        $this->db->or_where('name = ', 'Application of Funds');
+                $group = $this->db->get();
+                foreach($group->result() as $row)
+                        return $row->code;
+        }
 
        function get_numOfChild($id)
         {

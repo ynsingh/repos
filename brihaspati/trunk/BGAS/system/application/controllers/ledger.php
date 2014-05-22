@@ -338,7 +338,15 @@ var $username;
 			'size' => '15',
 			'value' => $ledger_data->op_balance,
 		);
-		$data['ledger_group_active'] = $ledger_data->group_id;
+		
+		$this->db->select('name');
+		$this->db->from('groups')->where('id =', $ledger_data->group_id);
+		$query_result = $this->db->get();
+		$group = $query_result->row();
+		
+		//$data['ledger_group_active'] = $ledger_data->group_id;
+		$data['ledger_group_active'] = $group->name;
+
 		$data['op_balance_dc'] = $ledger_data->op_balance_dc;
 		$data['ledger_id'] = $id;
 
@@ -549,22 +557,28 @@ var $username;
 	function update_projection($code, $new_amount, $changed_amount){
 		//$username = $this->config->item('account_name');
 		$earned_amount = 0;
+		$proj_code = '';
 		//update value for target projection
-                $this->db->select('earned_amount')->from('projection')->where('code', '60');
+                //$this->db->select('earned_amount')->from('projection')->where('code', '60');
+                $this->db->select('code, earned_amount')->from('projection')->where('projection_name', 'Target Projection');
                 $projection_q = $this->db->get();
-                foreach ($projection_q->result() as $row)
+                foreach ($projection_q->result() as $row){
                         $earned_amount = $row->earned_amount;
+			$proj_code = $row->code;
+		}
         
                 $earned_amount = $earned_amount +  $changed_amount;
 
                 //Adding data to projection table for target projection
                 $this->db->trans_start();
                 $update_data = array(
-         	       'code' => '60',
+         	       //'code' => '60',
+			'code' => $proj_code,
                        'earned_amount' => $earned_amount
                 );
 
-                if ( ! $this->db->where('code', '60')->update('projection', $update_data))
+                //if ( ! $this->db->where('code', '60')->update('projection', $update_data))
+                if ( ! $this->db->where('projection_name', 'Target Projection')->update('projection', $update_data))
                 {
                 	$this->db->trans_rollback();
                         $this->messages->add('Error updating earned_amount for Target Projection' . ' by user ' . $this->username . '.', 'error');
@@ -733,7 +747,16 @@ var $username;
 		return;
 	}
 
-
+	function set_group_id($name){
+		$this->db->select('id');
+		$this->db->from('groups')->where('name =', $name);
+		$result = $this->db->get();
+		$group = $result->row();
+		$group_id = $group->id;
+		
+		$this->load->library('session');
+                $this->session->set_userdata('ledger_group_id', $group_id);		
+	}
 }
 
 /* End of file ledger.php */
