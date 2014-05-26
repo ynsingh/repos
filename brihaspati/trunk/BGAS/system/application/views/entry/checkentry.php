@@ -129,7 +129,6 @@ var dc = '';
 
                         $("table tr #fund").each(function() {
                                 var fund_ledger_id = $(this).children.val();
-                                alert("fund id = "+fund_ledger_id);
 
                                 $.ajax({
                                         url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
@@ -140,8 +139,6 @@ var dc = '';
                                                         fund_amount = 0;
                                                 fundTotal = jsFloatOps(fundTotal, fund_amount, '+');
 
-                                                alert("dr total = "+drTotal);
-                                                alert("fund total = "+fundTotal);
                                                 if(drTotal > fundTotal)
                                                         alert("Amount payable is more than the available fund.");
                                         }
@@ -506,7 +503,6 @@ var dc = '';
                                 url: <?php echo '\'' . site_url('entry/ledger_fund/') . '/\''; ?> + fund_ledger_id,
                                 success: function(data){
                                         fund_amount = $.trim(data);
-                                        alert("fund amount = "+fund_amount);
         
                                         fund_amount = parseFloat(fund_amount);
                                         if (isNaN(fund_amount))
@@ -522,8 +518,6 @@ var dc = '';
                                                         curDr = 0;
                                                 drTotal = jsFloatOps(drTotal, curDr, '+');
                                         });
-                                        alert("dr total = "+drTotal);
-                                        alert("fund total = "+fundTotal);
                                         if(drTotal > fundTotal)
                                                 alert("Amount payable is more than the available fund.");
                                 }
@@ -545,6 +539,9 @@ var dc = '';
 </script>
 
 <?php
+	echo "<p>";
+        echo anchor_popup('notes', img(array('src' => asset_url() . "images/icons/tip.png", 'align' => 'right', 'alt' => 'Help')));
+        echo "</p>";
 
 	echo form_open('entry/add/' . $current_entry_type['label']);
 	echo "<p>";
