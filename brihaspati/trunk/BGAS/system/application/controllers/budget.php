@@ -149,7 +149,7 @@ class Budget extends Controller {
 			//if($data_parent_code == '40')
 			if($data_parent_code == $account_code){
 				//$data_parent_code = '50';
-				$this->db->select('bd_balance')->from('budgets')->where('budgetname = ', 'Main Budget');
+				$this->db->select('code')->from('budgets')->where('budgetname = ', 'Main Budget');
 				$m_budget = $this->db->get();
                                 foreach($m_budget->result() as $row)
                                 {
