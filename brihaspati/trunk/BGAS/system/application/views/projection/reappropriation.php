@@ -62,30 +62,59 @@ procedure updateParentProjection(proj_id, proj_amount){
 */
 	$('.projection').click(function() {
 		count = jsFloatOps(count, 1, '+');
-		//alert('count = '+count);
-		old_amount = $(this).attr('value');		
-		//alert("old_amount =" + old_amount);
+		//old_amount = $(this).attr('value');		
+		var old_proj_amount = $(this).attr('value');
+                var old_amount_array = old_proj_amount.split(',');
+                
+                for (var i = 0; i < old_amount_array.length; i++) {
+                        old_amount = old_amount + old_amount_array[i];
+                }
 	});
 
 	// .projection implies that class = projection
 	$('.projection').live('change', function() {   
 		count = parseFloat(count);
-		//alert('count--- '+count);
 		if(jsFloatOps(count, 0, '>')){
 		        var code = $(this).attr('id');
-			var amount = $(this).attr('value');
+			//var amount = $(this).attr('value');
+			var proj_amount = $(this).attr('value');
+			var amount_array = proj_amount.split(',');
+			var amount = '';
+			for (var i = 0; i < amount_array.length; i++) {
+				amount = amount+amount_array[i];
+		        }
+
 			var changed_amount = jsFloatOps(amount, old_amount, '-');
+			old_amount = '';
 			//update parent projection
 			updateParentProjection(code, changed_amount);
 			
 			//update target projection
 		        //get 'target_amount' where id = '60';
 			// #60 impiles that id = 60
-			var target_amount = $("#60").val();
+			$.ajax({
+                                url: <?php echo '\'' . site_url('projection/get_target_projection_code') . '\''; ?>,
+                                success: function(data) {
+					code = $.trim(data);
+					temp = "#"+code;
+					//var target_amount = $(temp).val();
+					var target_proj_amount = $(temp).val();
+		                        var target_amount_array = target_proj_amount.split(',');
+                			var target_amount = '';
+		                        for (var i = 0; i < target_amount_array.length; i++) {
+                                		target_amount = target_amount + target_amount_array[i];
+		                        }
+					
+                		        target_amount = jsFloatOps(target_amount, changed_amount, '+');
+                		        $(temp).val(target_amount);
+				}
+			});
+
+			//var target_amount = $("#60").val();
 			//target_amount = target_amount + changed_amount;
-			target_amount = jsFloatOps(target_amount, changed_amount, '+');
+			//target_amount = jsFloatOps(target_amount, changed_amount, '+');
 		        //set 'target_amount' where id = 60;
-			$("#60").val(target_amount);
+			//$("#60").val(target_amount);
 		}
 		
 	});
@@ -97,7 +126,14 @@ procedure updateParentProjection(proj_id, proj_amount){
         	{
 	                //get 'amount' where id = parent_code;
 			var code = "#"+parent_code;
-			var amount = $(code).val();
+			//var amount = $(code).val();
+			var project_amount = $(this).attr('value');
+                        var amount_array = project_amount.split(',');
+                        var amount = '';
+                        for (var i = 0; i < amount_array.length; i++) {
+                                amount = amount+amount_array[i];
+                        }
+
         	        amount = jsFloatOps(amount, proj_amount, '+');
                 	//set 'amount' where id = parent_code;
 			$(code).val(amount);

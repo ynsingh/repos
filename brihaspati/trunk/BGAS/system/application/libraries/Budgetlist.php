@@ -187,6 +187,7 @@ class Budgetlist
 			 * in the budgets table.
 			 */
 			$account_code = 0;
+			$main_budget_code = 0;
 			if (count($this->budget) > 0)
 			{
 				$this->counter++;
@@ -199,12 +200,21 @@ class Budgetlist
 		                        foreach ($groups_q->result() as $row)
 						$account_code = $row->code;
 
-					if($data['code'] < 10000 && $data['code'] != '50' &&  $data['code'] != $account_code){
+					//get code of 'Main Budget'
+					$CI->db->from('budgets');
+					$CI->db->select('code')->where('budgetname','Main Budget');
+					$main_budget = $CI->db->get();
+					foreach($main_budget->result() as $row)
+						$main_budget_code = $row->code;	
+
+					//if($data['code'] < 10000 && $data['code'] != '50' &&  $data['code'] != $account_code){
+					if($data['code'] < 10000 && $data['code'] != $main_budget_code &&  $data['code'] != $account_code){
 						$this->sum = $this->sum + $data['bd_balance'];
 						$this->consumed_amount = $this->consumed_amount + $data['consume'];
 					}
                         
-					if($data['code'] == '50')
+					//if($data['code'] == '50')
+					if($data['code'] == $main_budget_code)
 					{
 						$this->main_budget_amount = $data['bd_balance'];
 					}
@@ -239,7 +249,8 @@ class Budgetlist
                         	        echo "&nbsp;" .  money_format('%!i',$available_amount);
                                 	echo " </td>";
 
-					if(!($data['code'] == '50'))
+					//if(!($data['code'] == '50'))
+					if(!($data['code'] == $main_budget_code))
 					{
                 		                	echo "<td class=\"td-actions\">" . anchor('budget/edit/' . $data['id'] , "Edit", array('title' => 'Edit Budget', 'class' => 'red-link'));
 					}
@@ -294,6 +305,7 @@ class Budgetlist
 			}
 		}//if account == 'budget'
 		else{
+			$target_projection_code = 0;
 			if (count($this->projection) > 0)
 			{
 				$this->counter++;
@@ -301,7 +313,7 @@ class Budgetlist
                 		{
 					$CI =& get_instance();
 					$CI->db->from('groups');
-                                        $CI->db->select('code')->where('name =', 'Incomes');
+                                        $CI->db->select('code')->where('name', 'Incomes');
                                         $groups_q = $CI->db->get();
                                         foreach ($groups_q->result() as $row)
                                                 $account_code = $row->code;
@@ -316,7 +328,14 @@ class Budgetlist
 						$this->main_projection_amount = $data['bd_balance'];
 					}*/
 
-					if($data['code'] == '60')
+					$CI->db->from('projection');
+					$CI->db->select('code')->where('projection_name', 'Target Projection');
+					$target_proj = $CI->db->get();
+					foreach($target_proj->result() as $row)
+						$target_projection_code = $row->code;
+
+					//if($data['code'] == '60')
+					if($data['code'] == $target_projection_code)
                                         {
                                                 $this->earned_amount = $data['earned'];
 						$this->main_projection_amount = $data['bd_balance'];

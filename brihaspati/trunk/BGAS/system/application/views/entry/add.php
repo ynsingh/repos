@@ -517,6 +517,30 @@ var dc = '';
   
 	});
 
+	$('#ledger').live('change', function(){
+		var ledgerid = $(this).children().val();
+//		alert("ledger id = "+ledgerid);
+
+		var ledger_name = $(this).children().attr('name');
+                var first_index = ledger_name.lastIndexOf("[");
+                var last_index = ledger_name.lastIndexOf("]"); 
+                var temp = ledger_name.substring(first_index+1, last_index);
+		var id = "#tr-row"+temp;
+//		alert("id = "+id);
+
+		if(ledgerid > 0){
+			$(id).show();
+                        $.ajax({
+ 	                       url: <?php echo '\'' . site_url('entry/set_group_id') . '/\''; ?> + ledgerid,
+                               success: function(data) {
+         	                      //location.reload();
+					$(id).val(data);
+                               }
+                       });
+		}else{
+			$(id).hide();
+		}
+	});
 
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
@@ -529,6 +553,9 @@ var dc = '';
 </script>
 
 <?php
+	echo "<p align=\"right\">";
+	echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));
+	echo "</p>";
 
 	//echo form_open('entry/add/' . $current_entry_type['label']);
 	echo form_open('entry/checkentry/' . $current_entry_type['label']);
@@ -621,7 +648,7 @@ var dc = '';
 		*/
 
 		// line added by Priyanka	
-		echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
+		echo "<td id =\"ledger\">" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
@@ -635,6 +662,27 @@ var dc = '';
 
 		echo "<td class=\"ledger-balance\"><div></div></td>";
 
+		echo "</tr>";
+
+		/**
+	         * Code for diplaying parent child hierarchy
+        	 * for the selected ledger head.
+	         * @author Priyanka Rawat <rpriyanka12@ymail.com>
+        	 */
+		$row_temp = "tr-row".$i;
+		$data = array(
+	              'name'        => 'parent',
+        	      'id'          => $row_temp,
+	              'value'       => '',
+        	      'maxlength'   => '300',
+        	      //'style'       => 'width:100%',
+			'style'       => 'width:200%; border: none;'
+            	);
+		echo "<tr>";
+		echo "<td></td>";
+	        echo "<td>";
+		        echo form_input($data);
+		        echo "</td>";
 		echo "</tr>";
 	}
 

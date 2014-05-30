@@ -575,7 +575,7 @@ class Entry extends Controller {
 		}
 
 		/* Message for entries related to asset purchase. */
-		//$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
+		$this->messages->add('If asset is being purchased. Then, make an additional entry related to corresponding fund.', 'success');
 
 		/* Entry Type */
 		$entry_type_id = entry_type_name_to_id($entry_type);
@@ -1157,7 +1157,7 @@ class Entry extends Controller {
 		                                        $parents->init($groupid,$data_amount);
 							
 							//$this->db->from('budgets')->where('code', '50');
-							$this->db->from('budgets')->where('budgetname = ', 'Main Budget');
+							$this->db->from('budgets')->where('budgetname', 'Main Budget');
                                                         $query_ll = $this->db->get();
                                                         $query_ll = $query_ll->row();
                                                         $this->amt1 = $query_ll->bd_balance;
@@ -3739,6 +3739,38 @@ class Entry extends Controller {
 		return;
 	}
 
+	function set_group_id($ledgerid){
+		$this->db->select('group_id');
+                $this->db->from('ledgers')->where('id =', $ledgerid);
+                $result = $this->db->get();
+                $group = $result->row();
+                $group_id = $group->group_id;
+
+		$parent = '';
+                if($group_id != 0){
+	                $id = $group_id;
+                        do{
+        	                $this->db->select('parent_id, name');
+                                $this->db->from('groups')->where('id =', $id);
+                                $query_result = $this->db->get();
+                                $data = $query_result->row();
+                                $parent = $parent . $data->name . " -> ";
+
+                                if($data->parent_id){
+                	                $id = $data->parent_id;
+                                }else{
+                                        $id = 0;
+                                }
+                         }while($id != 0);
+
+                         $this->db->select('name');
+                         $this->db->from('ledgers')->where('id =', $ledgerid);
+                         $ledger = $this->db->get();
+                         $ledger_name = $ledger->row();
+                         $parent = $parent . $ledger_name->name;
+                }
+		echo $parent;
+        }
 }
 
 /* End of file entry.php */

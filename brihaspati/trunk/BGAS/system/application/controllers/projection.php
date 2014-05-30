@@ -143,10 +143,13 @@ class Projection extends Controller {
 			}
 
 			//update value for target projection
-			$this->db->select('bd_balance, earned_amount')->from('projection')->where('code', '60');
+			//$this->db->select('bd_balance, earned_amount')->from('projection')->where('code', '60');
+			$this->db->select('code, bd_balance, earned_amount')->from('projection')->where('projection_name', 'Target Projection');
                         $projection_q = $this->db->get();
+			$proj_code = '';
                         foreach ($projection_q->result() as $row)
                         {
+				$proj_code = $row->code;
                                 $earned_amount = $row->earned_amount;
                                 $bd_balance = $row->bd_balance;
                         }
@@ -156,12 +159,14 @@ class Projection extends Controller {
                         //Adding data to projection table for target projection
                         $this->db->trans_start();
                         $update_data = array(
-                                'code' => '60',
+                                //'code' => '60',
+				'code' => $proj_code,
                                 'bd_balance' => $bd_balance,
                                 'earned_amount' => $earned_amount,
                         );
 
-                        if ( ! $this->db->where('code', '60')->update('projection', $update_data))
+                        //if ( ! $this->db->where('code', '60')->update('projection', $update_data))
+                        if ( ! $this->db->where('projection_name', 'Target Projection')->update('projection', $update_data))
                         {
                              $this->db->trans_rollback();
                              $this->messages->add('Error updating earned_amount for Target Projection' . ' by user ' . $this->username . '.', 'error');
@@ -178,7 +183,8 @@ class Projection extends Controller {
                         $today = date("Y-m-d H:i:s");
                         $this->db->trans_start();
                         $insert_data1 = array(
-                                'code' => '60',
+                                //'code' => '60',
+				'code' => $proj_code,
                                 'allocation_amount' => $bd_balance,
                                 'creation_date' => $today,
                         );
@@ -598,7 +604,11 @@ class Projection extends Controller {
 			foreach($this->reappropriation['projection'] as $id => $proj)
 			{
 				$name = 'projection_value_' .$proj['id'];
-				$new_amount =  $this->input->post($name, TRUE);
+				//$new_amount =  $this->input->post($name, TRUE);
+				$amount =  $this->input->post($name, TRUE);
+                                $amount_array = explode(',', $amount);
+                                $new_amount = implode('', $amount_array);
+
 				//add value to final array only if its value has been changed
 				if($new_amount != $proj['bd_balance'])
 				{
@@ -673,6 +683,19 @@ class Projection extends Controller {
 		$search = '1234567890';
 		$count = strlen($str) - strlen(str_replace(str_split($search), '', $str));
 		return $count;
+	}
+
+	function get_code($name, $table){
+		echo $this->Budget_model->get_code($name, $table);
+	}
+
+	function get_target_projection_code(){
+		$this->db->select('code');
+		$this->db->from('projection');
+		$this->db->where('projection_name =', 'Target Projection');
+		$query_r = $this->db->get();
+                foreach($query_r->result() as $row)
+                        echo $row->code;
 	}
 
 }//class

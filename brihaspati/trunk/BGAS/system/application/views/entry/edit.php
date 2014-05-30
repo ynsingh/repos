@@ -453,6 +453,31 @@ var dc = '';
 
         });
 
+	$('#ledger').live('change', function(){
+                var ledgerid = $(this).children().val();
+//              alert("ledger id = "+ledgerid);
+
+                var ledger_name = $(this).children().attr('name');
+                var first_index = ledger_name.lastIndexOf("[");
+                var last_index = ledger_name.lastIndexOf("]"); 
+                var temp = ledger_name.substring(first_index+1, last_index);
+                var id = "#tr-row"+temp;
+//              alert("id = "+id);
+
+                if(ledgerid > 0){
+                        $(id).show();
+                        $.ajax({
+                               url: <?php echo '\'' . site_url('entry/set_group_id') . '/\''; ?> + ledgerid,
+                               success: function(data) {
+                                      //location.reload();
+                                        $(id).val(data);
+                               }
+                       });
+                }else{
+                        $(id).hide();
+                }
+        });
+
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
 	$('.ledger-dropdown').trigger('change');
@@ -465,6 +490,10 @@ var dc = '';
 </script>
 
 <?php
+	echo "<p align=\"right\">";
+        echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));
+        echo "</p>";
+
 	echo form_open('entry/edit/' . $current_entry_type['label'] . "/" . $entry_id);
 	echo "<p>";
 	echo form_label('Bill/Voucher Number', 'entry_number');
@@ -580,6 +609,26 @@ var dc = '';
 		echo "<td class=\"ledger-balance\"><div></div></td>";
 
 		echo "</tr>";
+
+		/**
+                 * Code for diplaying parent child hierarchy
+                 * for the selected ledger head.
+                 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+                 */
+                $row_temp = "tr-row".$i;
+                $data = array(
+                      'name'        => 'parent',
+                      'id'          => $row_temp,
+                      'value'       => '',
+                      //'style'       => 'width:50%; height: 10%; border: none;',
+                      'style'       => 'width:200%; border: none;',
+                );
+                echo "<tr>";
+                echo "<td></td>";
+                echo "<td>";
+                        echo form_input($data);
+                        echo "</td>";
+                echo "</tr>";
 	}
 
 	echo "<tr><td colspan=7></td></tr>";

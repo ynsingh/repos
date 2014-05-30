@@ -243,7 +243,6 @@ var dc = '';
                                         var first_index = dr_name.lastIndexOf("[");
                                         var last_index = dr_name.lastIndexOf("]"); 
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                               
-                                        //alert("fund index = "+fund_index);
                                         temp = ".fund-list"+fund_index;
 
                                         if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
@@ -402,7 +401,6 @@ var dc = '';
                                         var first_index = dr_name.lastIndexOf("[");
                                         var last_index = dr_name.lastIndexOf("]"); 
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                             
-                                        //alert("fund index = "+fund_index);
                                         temp = ".fund-list"+fund_index;
 
                                         if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
@@ -496,7 +494,6 @@ var dc = '';
 
                 $("table tr #fund").each(function() {
                         var fund_ledger_id = $(this).children().val();
-                        alert("fund id = "+fund_ledger_id);
                         var fund_amount = 0;
                 
                         $.ajax({
@@ -522,9 +519,36 @@ var dc = '';
                                                 alert("Amount payable is more than the available fund.");
                                 }
                         });
-                });
+                });	
 
         });
+
+	$('#ledger').live('change', function(){
+                var ledgerid = $(this).children().val();
+//              alert("ledger id = "+ledgerid);
+
+                var ledger_name = $(this).children().attr('name');
+                var first_index = ledger_name.lastIndexOf("[");
+                var last_index = ledger_name.lastIndexOf("]"); 
+                var temp = ledger_name.substring(first_index+1, last_index);
+                var id = "#tr-row"+temp;
+//              alert("id = "+id);
+
+                if(ledgerid > 0){
+                        $(id).show();
+                        $.ajax({
+                               url: <?php echo '\'' . site_url('entry/set_group_id') . '/\''; ?> + ledgerid,
+                               success: function(data) {
+                                      //location.reload();
+                                        $(id).val(data);
+                               }
+                       });
+                }else{
+                        $(id).hide();
+                }
+        });
+
+
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
 	$('.ledger-dropdown').trigger('change');
@@ -539,8 +563,8 @@ var dc = '';
 </script>
 
 <?php
-	echo "<p>";
-        echo anchor_popup('notes', img(array('src' => asset_url() . "images/icons/tip.png", 'align' => 'right', 'alt' => 'Help')));
+	echo "<p align=\"right\">";
+        echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));
         echo "</p>";
 
 	echo form_open('entry/add/' . $current_entry_type['label']);
@@ -637,7 +661,7 @@ var dc = '';
 		*/
 
 		// line added by Priyanka	
-		echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
+		echo "<td id =\"ledger\">" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
@@ -652,6 +676,27 @@ var dc = '';
 		echo "<td class=\"ledger-balance\"><div></div></td>";
 
 		echo "</tr>";
+
+		/**
+                 * Code for diplaying parent child hierarchy
+                 * for the selected ledger head.
+                 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+                 */
+                $row_temp = "tr-row".$i;
+                $data = array(
+                      'name'        => 'parent',
+                      'id'          => $row_temp,
+                      'value'       => '',
+                      'maxlength'   => '300',
+                      //'style'       => 'width:100%',
+			'style'       => 'width:200%; border: none;'
+                );
+                echo "<tr>";
+                echo "<td></td>";
+                echo "<td>";
+                        echo form_input($data);
+                        echo "</td>";
+                echo "</tr>";
 	}
 
 	echo "<tr><td colspan=\"7\"></td></tr>";	

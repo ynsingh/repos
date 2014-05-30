@@ -7,6 +7,11 @@ class Help extends Controller {
 		$this->template->load('template', 'help/index');
 		return;
 	}
+
+	function entry(){
+		$this->template->load('template', 'help/entry');
+		return;
+	}
 }
 
 /* End of file help.php */

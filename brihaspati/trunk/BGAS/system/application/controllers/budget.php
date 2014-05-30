@@ -34,16 +34,19 @@ class Budget extends Controller {
                 $this->template->set('page_title', 'New Budget');
 	
 		//check whether 'Main Budget' value is set
-		$this->db->select('bd_balance')->from('budgets')->where('code = ', '50');
+		//$this->db->select('bd_balance')->from('budgets')->where('code = ', '50');
+		$this->db->select('bd_balance')->from('budgets')->where('budgetname =', 'Main Budget');
                 $main_budget = $this->db->get();
                 foreach($main_budget->result() as $row)
                 {
                 	$main_budget_amount = $row->bd_balance;
                 }
+		
 		if($main_budget_amount == '0.00')
 		{
 			$this->messages->add('Please add budget amount for "Main Budget"', 'error');	
 		}
+		
 
 		//get username of currently logged in user
 		$child_budget = array();
@@ -606,8 +609,8 @@ class Budget extends Controller {
                 foreach($main_budget->result() as $row)
                 {
     	            $main_budget_code = $row->code;
-                }	
-
+                }
+	
 		//code for generating unallocated budget
 		$sum = 0;
 		foreach ($this->reappropriation['budget'] as $id => $bud)
@@ -694,7 +697,11 @@ class Budget extends Controller {
 			foreach($this->reappropriation['budget'] as $id => $bud)
 			{
 				$name = 'budget_value'. "_" .$bud['id'];
-				$new_amount =  $this->input->post($name, TRUE);
+				//$new_amount =  $this->input->post($name, TRUE);
+				$amount =  $this->input->post($name, TRUE);
+				$amount_array = explode(',', $amount);
+				$new_amount = implode('', $amount_array);
+
 				if($new_amount != $bud['bd_balance'])
 				{
 					$final_budget[$count1]['id'] = $bud['id'];

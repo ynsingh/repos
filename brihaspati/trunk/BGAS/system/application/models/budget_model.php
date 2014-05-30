@@ -216,7 +216,7 @@ class Budget_model extends Model {
 			//to be displayed in the list
 			$main_budget_code = 0;
 			$this->db->from('budgets');
-			$this->db->where('budgetname =', 'Main Budget');
+			$this->db->where('budgetname', 'Main Budget');
 			$budgetq = $this->db->get();
 			foreach($budgetq->result() as $row)
 				$main_budget_code = $row->code;
@@ -272,7 +272,7 @@ class Budget_model extends Model {
 		$main_budget_code = 0;
 		$this->db->from('budgets');
                 //$this->db->select('id, code, budgetname, bd_balance, group_id')->where('code =', '50');
-                $this->db->select('id, code, budgetname, bd_balance, group_id')->where('budgetname =', 'Main Budget');
+                $this->db->select('id, code, budgetname, bd_balance, group_id')->where('budgetname', 'Main Budget');
 		$budget_q = $this->db->get();
                 foreach($budget_q->result() as $row)
                 {
