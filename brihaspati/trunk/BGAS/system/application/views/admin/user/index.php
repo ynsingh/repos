@@ -46,6 +46,8 @@ foreach ($users->result()  as $row)
 	 echo "<td>" . $user_account . "</td>";
        
         echo "<td>" . anchor('admin/user/edit/'.$row->id, 'Edit', array('title' => 'Back to admin')); "</td>";
+	if(($user_role!="guest") && ($user_name1!="admin"))
+        echo "<td>" . anchor('admin/user/permission/'.$row->id, 'Assign Permission', array('title' => 'Back to admin')); "</td>";
 	echo "<td>" .anchor('admin/user/delete/'.$row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete Student")) . "</td>";
 //  echo "<td>" .anchor('admin/user/delete/', img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete Student')), array('class' => "confirmClick", 'title' => "Delete Student")) . "</td>";
 

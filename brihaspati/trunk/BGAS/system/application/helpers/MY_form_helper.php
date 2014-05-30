@@ -95,7 +95,42 @@ if ( ! function_exists('form_input_ledger'))
 	{
 		$CI =& get_instance();
 		$CI->load->model('Ledger_model');
+                $data_user_name= $CI->session->userdata('user_name');
+                //get role of user
+                $user_account_active = $CI->session->userdata('active_account');
+                $db1=$CI->load->database('login', TRUE);
+                $db1->select('role')->from('bgasuser')->where('username', $data_user_name);
+                $role= $db1->get();
+                //$userrole;
+                foreach($role->result() as $row)
+                {
+                        $userrole=$row->role;
+                }
+                //$db1->close();
 
+                //get account detail and find out if user have all account head permission.     
+                $db1=$CI->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $user_account_active);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $dbname= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $db1->close();
+                $con = mysql_connect($databasehost, $databaseusername, $databasepassword);
+                if($con){
+                        $value = mysql_select_db($dbname, $con);
+                        $query = "select * from bgas_acl where username='$data_user_name' and headid='*'";
+                        $val = mysql_query($query);
+                        $num_rows = mysql_num_rows($val);
+                }
+
+                if(($userrole == 'administrator') || ($num_rows != "0"))
+                {
 		if ($type == 'bankcash')
 			$options = $CI->Ledger_model->get_all_ledgers_bankcash();
 		else if ($type == 'nobankcash')
@@ -104,6 +139,24 @@ if ( ! function_exists('form_input_ledger'))
 			$options = $CI->Ledger_model->get_all_ledgers_reconciliation();
 		else
 			$options = $CI->Ledger_model->get_all_ledgers();
+
+		}
+                else
+                {
+                if ($type == 'bankcash')
+                        $options = $CI->Ledger_model->get_all_ledgers_bankcash();
+                else if ($type == 'nobankcash')
+                        $options = $CI->Ledger_model->get_all_ledgers_nobankcash();
+                else if ($type == 'reconciliation')
+                        $options = $CI->Ledger_model->get_all_ledgers_reconciliation();
+                else
+                {
+                        $options = $CI->Ledger_model->get_all_ledgers_permission();
+                        //        $options = $CI->Ledger_model->get_all_ledgers();
+                }
+
+                }
+
 
 		// If no selected state was submitted we will attempt to set it automatically
 		if ( ! ($selected))
@@ -114,6 +167,7 @@ if ( ! function_exists('form_input_ledger'))
 				$selected = $_POST[$name];
 			}
 		}
+
 
 		if ($extra != '') $extra = ' '.$extra;
 

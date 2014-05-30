@@ -329,3 +329,15 @@ CREATE TABLE IF NOT EXISTS addsecondparty (
         UNIQUE KEY(pan),
         PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1  AUTO_INCREMENT=1;
+
+CREATE TABLE bgas_acl
+(
+id int(11) NOT NULL AUTO_INCREMENT,
+username varchar(100) NOT NULL,
+headid varchar(100) NOT NULL,
+roleid int(11) NOT NULL,
+ptype int(1) NOT NULL,
+atype varchar(20) NOT NULL,
+PRIMARY KEY(id),
+UNIQUE (username, headid, roleid)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -475,16 +475,147 @@ class Manage extends Controller {
 		return;
 	}
 
+	// deletion of an account as well database and taking backups of accounts	
+
 	function delete($database_label)
 	{
-		$this->template->set('page_title', 'Delete account');
 
-		$ini_file = $this->config->item('config_path') . "accounts/" . $database_label . ".ini";
-		$this->messages->add('Delete ' . $ini_file . ' file manually.', 'error');
-		$this->messages->add('Only the settings file will be delete. Account database will have to be deleted manually.', 'status');
+                $db1=$this->load->database('login', TRUE);
+		
+		//get database detail of account
+		$db1->from('bgasAccData')->where('dblable', $database_label);
+               	$accountdetail = $db1->get();
+                foreach ($accountdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $dbname= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+		
+                $db1->close();
+
+	        //call method for taking backup
+	
+		$this->backup_tables($databasehost,$databaseusername,$databasepassword,$dbname);
 		redirect('admin/manage');
+		
 		return;
 	}
+	
+	function backup_tables($databasehost,$databaseuser,$databasepassword,$dbname,$tables = '*')
+	{
+		$con = mysql_connect($databasehost,$databaseuser,$databasepassword);
+		mysql_select_db($dbname,$con);
+
+		//get all of the tables
+		if($tables == '*')
+		{	
+			$tables = array();
+			$result = mysql_query('SHOW TABLES');
+			while($row = mysql_fetch_row($result))
+			{
+				$tables[] = $row[0];
+			}
+		}
+		else
+		{
+			$tables = is_array($tables) ? $tables : explode(',',$tables);
+		}		
+		$return = "";
+		//cycle through all the table in database $dbname
+		foreach($tables as $table)
+		{
+			$result = mysql_query('SELECT * FROM '.$table);
+			$num_fields = mysql_num_fields($result);
+			$return.= 'DROP TABLE '.$table.';';
+			$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+			$return.= "nn".$row2[1].";nn";
+
+			while($row = mysql_fetch_row($result))
+			{
+				$return.= 'INSERT INTO '.$table.' VALUES(';
+				for($j=0; $j<$num_fields; $j++)
+				{
+					$row[$j] = addslashes($row[$j]);
+					$row[$j] = preg_replace("#n#","n",$row[$j]);
+					if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+					if ($j<($num_fields-1)) { $return.= ','; }
+				}
+				$return.= ");n";
+			}
+			$return.="nnn";
+		}
+
+		//save the backup file of deleted account
+
+		$bpath=$this->config->item('backup_path');		
+		$handle = fopen($bpath.$dbname.'-'.date("Y-m-d").'.sql','w+') or die('Can\'t open file');
+		fwrite($handle,$return);
+		fclose($handle);
+		
+		//drop the database
+	
+		$link = mysql_connect($databasehost, $databaseuser, $databasepassword);
+		if (!$link) {
+			die('Could not connect: ' . mysql_error());
+		}
+		$sql = 'DROP DATABASE '.$dbname;
+		if (mysql_query($sql, $link)) {
+    			echo "Database ".$dbname. " was successfully dropped\n";
+		} else {
+    			echo 'Error dropping database: ' . mysql_error() . "\n";
+		}
+		
+		//delete the account record from bgasAccData table
+
+		$db1=$this->load->database('login', TRUE);
+		//$sqldel="DELETE from bgasAccData where databasename='$databaseuser'";
+		//$result = mysql_query($sqldel);
+	
+		$db1->from('bgasAccData')->where('databasename', $dbname);	
+		$accdetail = $db1->get();
+		$dblable;	
+		foreach ($accdetail->result() as $row)
+                {
+                        $dblable=$row->dblable;
+                }
+		$db1->from('bgasuser');
+		$query1 = $db1->get();
+                foreach($query1->result() as $row)
+                {
+			$id = $row->id;
+	                $accname = $row->accounts;
+			if (strpos($accname, $dblable) !== false)
+			{
+				$straccnew="";
+				$dblablenew= $dblable.",";
+				if (strpos($accname, $dblablenew) !== false)	
+				{
+					$straccnew=str_replace($dblable.",","",$accname);
+				}
+				else
+				{
+					$straccnew=str_replace($dblable,"",$accname);
+				}
+				$update_data = array('accounts' => $straccnew);
+
+				$db1->where('id', $id)->update('bgasuser', $update_data);
+			}
+                
+		}
+                //delete the account record from bgasAccData table
+
+                //$db1=$this->load->database('login', TRUE);
+		//his->messages->add('value===>'.$dblable);
+                $sqldel="DELETE from bgasAccData where dblable='$dblable'";
+                $result = mysql_query($sqldel);
+
+		$this->messages->add('Account <b>' .$dblable. '</b> has been deleted Successfully and backup of account is stored in backups directory');
+	 	return;	
+	}
+	
 }
 
 /* End of file manage.php */

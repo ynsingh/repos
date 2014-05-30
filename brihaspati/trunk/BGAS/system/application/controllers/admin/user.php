@@ -579,6 +579,358 @@ class User extends Controller {
 		redirect('admin/user');
 		return;
 	}
+        function permission($user_id =0)
+        {
+                $user_id;
+                $this->template->set('page_title', 'User Permission');
+                $user_password='';
+                $user_email='';
+                $options;
+                $data['accounts1'] = array('name' => 'user_name');
+                $user_accounts = array();
+                $db1=$this->load->database('login', TRUE);
+                $db1->from('bgasuser')->where('id', $user_id);
+                $user_name1 = $db1->get();
+                foreach($user_name1->result() as $row)
+                {
+                        $user_name = $row->username;
+                        if($user_name=='guest')
+                        {
+                                $this->messages->add('Permission denied.', 'error');
+                                redirect('admin/user');
+                                return;
+                        }
+
+                        $new_id = $row->accounts; echo "<br>";
+
+                        // if user account is '*' then get all accounts 
+                        $count=0;
+                        if($new_id == '*')
+                        {
+                                $db1->from('bgasAccData');
+                                $accname = $db1->get();
+                                print_r(sizeof($accname->result()));
+
+                                foreach($accname->result() as $row1)
+                                {
+                                        $var1=$row1->dblable;
+                                        $value[$count]=$row1->dblable;
+                                        $count++;
+                                }
+                                $data['accounts'] = $value;
+
+                        }
+                        else
+                        {
+                                $options[$new_id] = $row->accounts; echo "<br>";
+                                $my_values = explode(',',$new_id); echo "<br>";
+                                //print_r($my_values);
+                                $data['accounts'] = $my_values;
+                        }
+                        $user_email = $row->email;
+                }
+
+
+
+                /* Form fields */
+                $data['user_name'] = array(
+                        'name' => 'user_name',
+                        'id' => 'user_name',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => $user_name,
+                        'readonly' =>'readonly',
+
+                );
+                $data['user_email'] = array(
+                        'name' => 'user_email',
+                        'id' => 'user_email',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => $user_email,
+                        'readonly' =>'readonly',
+                );
+
+
+                $data['user_id'] = $user_id;
+                $data['user_status'] = TRUE;
+                /* Accounts Form fields */
+                $data['accounts_active'] = array('(All Accounts)');
+
+                /* Repopulating form */
+                if ($_POST)
+                {
+                        $data['user_name']['value'] = $this->input->post('user_name', TRUE);
+                        //$data['user_password']['value'] = $this->input->post('user_password', TRUE);
+                        $data['user_email']['value'] = $this->input->post('user_email', TRUE);
+//                        $data['active_user_role'] = $this->input->post('user_role', TRUE);
+                        $data['user_status'] = $this->input->post('user_status', TRUE);
+                        $data['accounts_active'] = $this->input->post('accounts', TRUE);
+                } 
+
+                /* Form validations */
+                $this->form_validation->set_rules('user_name', 'username', 'trim|required' . $user_id);
+                $this->form_validation->set_rules('user_email', 'Email', 'trim|required|valid_email' . $user_id);
+                $this->form_validation->set_rules('user_status', 'Active', 'trim');
+
+                /* Validating form */
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('admin_template', 'admin/user/permission', $data);
+                        return;
+                }
+                else
+                {
+                        $data_user_name = $this->input->post('user_name', TRUE);
+                       // $data_user_password = $this->input->post('user_password', TRUE);
+                        $data_user_email = $this->input->post('user_email', TRUE);
+                        $data_user_role = $this->input->post('user_role', TRUE);
+                        $data_user_status = $this->input->post('user_status', TRUE);
+                        if ($data_user_status == 1)
+                                $data_user_status = 1;
+                        else
+                                $data_user_status = 0;
+                        $data_accounts = $this->input->post('accounts', TRUE);
+
+                        /* Forming account querry string */
+                        $data_accounts_string = '';
+                        if ( ! $data_accounts)
+                        {
+                                $this->messages->add('Please select account.', 'error');
+                                $this->template->load('admin_template', 'admin/user/permission', $data);
+                                return;
+                        } else {
+                                if (in_array('(All Accounts)', $data_accounts))
+                                {
+                                        $data_accounts_string = '*';
+                                } else {
+                                        /* Filtering out bogus accounts */
+                                        $data_accounts_valid = array_intersect($data['accounts'], $data_accounts);
+                                        $data_accounts_string = implode(",", $data_accounts_valid);
+                                }
+                        }
+
+
+                        }
+                 $this->template->load('admin_template', 'admin/user/assignpermission');
+        return;
+
+
+        }
+        function assignpermission($user_name,$accountname)
+        {
+                $this->load->library('general');
+                $this->load->model('Ledger_model');
+                $data['account_name'] = $accountname;
+                //$ini_file = $this->config->item('config_path') . "accounts/" . $accountname . ".ini"; 
+
+               /* $db1=$this->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accountname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $databasename= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                if ($new_link)
+                {
+                        $db_selected = mysql_select_db($databasename, $new_link);
+                        if ($db_selected) {
+
+                        }
+                }*/
+                $data['user_name']=$user_name;
+                $data['accountname'] = $accountname;
+                $this->template->load('admin_template','/admin/user/assignpermission',$data);
+
+        }
+        function addpermission($user_name,$id,$accountname,$htype)
+        {
+                $data['accountname'] = $accountname;
+                $data['id']=$id;
+                $data['user_name']= $user_name;
+                $data['htype']=$htype;
+                $db1=$this->load->database('login', TRUE);
+                $db1->from('bgasAccData')->where('dblable', $accountname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $dbname= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                if ($new_link)
+                {
+                        $db_selected = mysql_select_db($dbname, $new_link);
+                        if ($db_selected) {
+
+                        }
+                }
+                $query = "select name from groups where id='$id'";
+                $result = mysql_query($query);
+                $row = mysql_fetch_assoc($result);
+                $headn = $row['name'];
+                $data['name']=$headn;
+                $this->template->load('admin_template','/admin/user/addpermission',$data);
+                return;
+        }
+        function permitpermission($htype,$id)
+        {
+                if ($_POST)
+                {
+                        $data['account_name']['value'] = $this->input->post('account_name', TRUE);
+                        $data['user_name']['value'] = $this->input->post('user_name', TRUE);
+                        $data['head_name']['value'] = $this->input->post('head_name', TRUE);
+                        //$data['account_name']['value'] = $this->input->post('account_name', TRUE);
+                        $data['type']['value'] = $this->input->post('type', TRUE);
+                }
+                $this->form_validation->set_rules('account_name', 'Account Name', 'trim|required');
+                $this->form_validation->set_rules('user_name', 'User Name', 'trim|required');
+                $this->form_validation->set_rules('head_name', 'Head Name', 'trim|required');
+                $this->form_validation->set_rules('type', '', 'trim|required');
+                if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('admin_template', 'admin/user/addpermission', $data);
+                        return;
+                }
+                else
+                {
+                        $account_name = $this->input->post('account_name', TRUE);
+                        $user_name = $this->input->post('user_name', TRUE);
+                        $head_name = $this->input->post('head_name', TRUE);
+                        $type = $this->input->post('type', TRUE);
+
+                        $db1=$this->load->database('login', TRUE);
+                        $db1->from('bgasAccData')->where('dblable', $account_name);
+                        $accdetail = $db1->get();
+                        foreach ($accdetail->result() as $row)
+                        {
+                                $databasehost=$row->hostname;
+                                $dbname= $row->databasename;
+                                $databaseport=$row->port;
+                                $databaseusername=$row->uname;
+                                $databasepassword=$row->dbpass;
+                        }
+                        $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                        if ($new_link)
+                        {
+                                $db_selected = mysql_select_db($dbname, $new_link);
+                                if ($db_selected) {
+					
+                                }
+                        }
+
+
+                        $tt=1;
+                        //$query = sprintf('INSERT INTO bgas_acl '.'(id,username,groupid,roleid,ptype,atype) '.'VALUES ('','$user_name','','','','')');
+                        $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','$id','1','$type','$htype')";
+                        $result = mysql_query($query);
+                        if (!$result) {
+
+                               // $message  = 'Invalid query: ' . mysql_error() . "\n";
+                               // $message .= 'Whole query: ' . $query;
+                               // die($message);
+                        }
+                $data['accountname']=$account_name;
+                $data['user_name']=$user_name;
+                $this->messages->add('Permission assign to Group Head:- '.$head_name);
+                $this->template->load('admin_template','/admin/user/assignpermission',$data);
+                return;
+                }
+
+
+        }
+        //assign permission to a user for all heads.
+        function allpermission($user_name,$accountname,$user_email)
+        {
+                $this->load->library('general');
+                $this->load->model('Ledger_model');
+                $data['account_name'] = $accountname;
+                $db1=$this->load->database('login', TRUE);
+
+                $db1->from('bgasAccData')->where('dblable', $accountname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $dbname= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                //echo $new_link;
+                if ($new_link)
+                {
+                        $db_selected = mysql_select_db($dbname, $new_link);
+                                if ($db_selected) {
+
+
+                                }
+                }
+
+                $type=3;
+                echo $query = "INSERT INTO bgas_acl"."(username,headid,roleid,ptype,atype)" . "VALUES ('$user_name','*','1','$type','grp')";
+                $result = mysql_query($query);
+                $data['user_name']=$user_name;
+                $data['accountname'] = $accountname;
+                $data['user_email'] = $user_email;
+                $this->messages->add('Permission Assign Succesfully to the Account - '.$accountname);
+                redirect('/admin/user');
+                return;
+        }
+        function removepermission($user_name,$id,$accountname,$name)
+        {
+                $this->load->library('general');
+                $this->load->model('Ledger_model');
+                $data['account_name'] = $accountname;
+                $db1=$this->load->database('login', TRUE);
+
+                $db1->from('bgasAccData')->where('dblable', $accountname);
+                $accdetail = $db1->get();
+                foreach ($accdetail->result() as $row)
+                {
+                        $databasehost=$row->hostname;
+                        $dbname= $row->databasename;
+                        $databaseport=$row->port;
+                        $databaseusername=$row->uname;
+                        $databasepassword=$row->dbpass;
+                }
+                $new_link = @mysql_connect($databasehost . ':' . $databaseport, $databaseusername, $databasepassword);
+                //echo $new_link;
+                if ($new_link)
+                {
+                        $db_selected = mysql_select_db($dbname, $new_link);
+                        if ($db_selected) {
+
+//                                }
+ //               }
+
+                		$type=3;
+
+		                $query = "delete from bgas_acl where headid='$id' and username='$user_name'";
+                		$result = mysql_query($query);
+	                	$data['user_name']=$user_name;
+	        	        $data['accountname'] = $accountname;
+        	        	$data['user_email'] = $user_email;
+                		$this->messages->add('Permission Remove Succesfully to the Code - '.$name);
+		                $this->template->load('admin_template','/admin/user/assignpermission',$data);
+				mysql_close($new_link);
+                		return;
+		
+        		}
+		}
+
+	}
 }
 
 /* End of file user.php */

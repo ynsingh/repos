@@ -1153,6 +1153,76 @@ var $ledgers = array();
 		}
 		return $this->ledgers;
 	}
+        /** get only ledgers in which user is permitted.**/
+        function get_all_ledgers_permission()
+        {
+
+                $this->load->library('Addsubgroup');
+                //get logged in username
+                $allgroup = array();
+                //$options = array();
+                //$options[0] = "(Please Select)";
+
+                $data_user_name= $this->session->userdata('user_name');
+                $this->db->from('bgas_acl')->where('username',$data_user_name)->where('atype','grp');
+                $heads = $this->db->get();
+                print_r(sizeof($heads));
+                $options = array();
+                $options[0] ="(Please Select)";
+                foreach ($heads->result() as $row1)
+                {
+                        $headid=$row1->headid;
+                        $allgroup = new Addsubgroup();
+                        $allgroup->init($headid);
+                        $value=array();
+                        $this->db->from('ledgers')->where('group_id',$allgroup->id)->order_by('name', 'asc');
+                                        $ledger_q = $this->db->get();
+                                        foreach ($ledger_q->result() as $row)
+                                        {
+                                                $cd = $row->code;
+                                                $nme = $row->name;
+                                                if(substr($cd, 0, 2) == 10)
+                                                        $name = $nme." - L";
+                                                if(substr($cd, 0, 2) == 20)
+                                                        $name = $nme." - A";
+                                                if(substr($cd, 0, 2) == 30)
+                                                        $name = $nme." - I";
+                                                if(substr($cd, 0, 2) == 40)
+                                                        $name = $nme." - E";
+                                                //echo $row->id;
+                                                $options[$row->id] = $name;
+                                        }
+
+
+                        foreach ($allgroup as $value)
+                        {
+                                foreach ((array)$value as $value1)
+                                {
+                                        $gid=@ $value1->id;
+                                        $this->db->from('ledgers')->where('group_id',$gid)->order_by('name', 'asc');
+                                        $ledger_q = $this->db->get();
+                                        foreach ($ledger_q->result() as $row)
+                                        {
+                                                $cd = $row->code;
+                                                $nme = $row->name;
+                                                if(substr($cd, 0, 2) == 10)
+                                                        $name = $nme." - L";
+                                                if(substr($cd, 0, 2) == 20)
+                                                        $name = $nme." - A";
+                                                if(substr($cd, 0, 2) == 30)
+                                                        $name = $nme." - I";
+                                                if(substr($cd, 0, 2) == 40)
+                                                        $name = $nme." - E";
+
+                                                //echo $row->id;
+                                                $options[$row->id] = $name;
+                                        }
+                                }
+                        }
+                }
+                return $options;
+        }
+
 
 	function get_ledgers(){
 
