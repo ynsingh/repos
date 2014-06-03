@@ -1,4 +1,6 @@
 <?php
+	setlocale(LC_MONETARY, 'en_IN');
+
 	$i = 0;
 	$old_cr_total = 0;
         $old_dr_total = 0;

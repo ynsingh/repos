@@ -96,12 +96,12 @@ $(document).ready(function() {
 	echo form_fieldset_close();
 
 
-	echo "<p>";
+/*	echo "<p>";
         echo form_label('Group Schedule', 'schedule');
         echo "<br />";
         echo form_input($schedule);
         echo "</p>";
-
+*/
 	echo "<p class=\"affects-gross\">";
 	echo "<span id=\"tooltip-target-1\">";
 	echo form_checkbox('affects_gross', 1, $affects_gross) . " Affects Gross Profit/Loss Calculations";

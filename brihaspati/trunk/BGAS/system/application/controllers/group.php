@@ -65,21 +65,21 @@ var $group_code = 0;
 		$data['affects_gross'] = 0;
 
 		//schedule
-		$data['schedule'] = array(
+	/*	$data['schedule'] = array(
                         'name' => 'schedule',
                         'id' => 'schedule',
                         'maxlength' => '100',
                         'size' => '40',
                         'value' => '',
                 );
-
+*/
 //		$data['group_code'] = 0;
 
 		/* Form validations */
 //		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|unique[groups.code]');
 		$this->form_validation->set_rules('group_name', 'Group name', 'trim|required|min_length[2]|max_length[100]|unique[groups.name]');
 		$this->form_validation->set_rules('group_parent', 'Parent group', 'trim|required|is_natural_no_zero');
-		$this->form_validation->set_rules('schedule', 'Group schedule', 'trim');
+//		$this->form_validation->set_rules('schedule', 'Group schedule', 'trim');
 
 		/* Re-populating form */
 		if ($_POST)
@@ -88,7 +88,7 @@ var $group_code = 0;
 			$data['group_name']['value'] = $this->input->post('group_name', TRUE);
 			$data['group_parent_active'] = $this->input->post('group_parent', TRUE);
 			$data['affects_gross'] = $this->input->post('affects_gross', TRUE);
-			$data['schedule']['value'] = $this->input->post('schedule', TRUE);
+//			$data['schedule']['value'] = $this->input->post('schedule', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)
@@ -103,7 +103,7 @@ var $group_code = 0;
 //			$data_code = $this->group_code;
 			$data_name = $this->input->post('group_name', TRUE);
 			$data_parent_id = $this->input->post('group_parent', TRUE);
-			$schedule = $this->input->post('schedule', TRUE);
+//			$schedule = $this->input->post('schedule', TRUE);
 
 			/* Check if parent group id present */
 			$this->db->select('id')->from('groups')->where('id', $data_parent_id);
@@ -158,7 +158,7 @@ var $group_code = 0;
 				'name' => $data_name,
 				'parent_id' => $data_parent_id,
 				'affects_gross' => $data_affects_gross,
-				'schedule' => $schedule
+//				'schedule' => $schedule
 			);
 			if ( ! $this->db->insert('groups', $insert_data))
 			{
@@ -316,19 +316,19 @@ var $group_code = 0;
 		$data['group_id'] = $id;
 		$data['affects_gross'] = $group_data->affects_gross;
 
-		$data['schedule'] = array(
+/*		$data['schedule'] = array(
                         'name' => 'schedule',
                         'id' => 'schedule',
                         'maxlength' => '100',
                         'size' => '40',
                         'value' => $group_data->schedule,
                 );
-
+*/
 		/* Form validations */
 //		$this->form_validation->set_rules('group_code', 'Group code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.code.' . $id . ']');
 		$this->form_validation->set_rules('group_name', 'Group name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[groups.name.' . $id . ']');
 		$this->form_validation->set_rules('group_parent', 'Parent group', 'trim|required|is_natural_no_zero');
-		$this->form_validation->set_rules('schedule', 'Group schedule', 'trim');
+//		$this->form_validation->set_rules('schedule', 'Group schedule', 'trim');
 
 		/* Re-populating form */
 		if ($_POST)
@@ -337,7 +337,7 @@ var $group_code = 0;
 			$data['group_name']['value'] = $this->input->post('group_name', TRUE);
 			$data['group_parent_active'] = $this->input->post('group_parent', TRUE);
 			$data['affects_gross'] = $this->input->post('affects_gross', TRUE);
-			$data['schedule']['value'] = $this->input->post('schedule', TRUE);
+//			$data['schedule']['value'] = $this->input->post('schedule', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)
@@ -352,7 +352,7 @@ var $group_code = 0;
 			$data_name = $this->input->post('group_name', TRUE);
 			$data_parent_id = $this->input->post('group_parent', TRUE);
 			$data_id = $id;
-			$schedule = $this->input->post('schedule', TRUE);
+//			$schedule = $this->input->post('schedule', TRUE);
 
 			/* Check if parent group id present */
 			$this->db->select('id')->from('groups')->where('id', $data_parent_id);
@@ -415,7 +415,7 @@ var $group_code = 0;
 				'name' => $data_name,
 				'parent_id' => $data_parent_id,
 				'affects_gross' => $data_affects_gross,
-				'schedule' => $schedule
+//				'schedule' => $schedule
 			);
 			if ( ! $this->db->where('id', $data_id)->update('groups', $update_data))
 			{

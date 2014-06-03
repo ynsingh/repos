@@ -95,18 +95,20 @@ procedure updateParentProjection(proj_id, proj_amount){
 			$.ajax({
                                 url: <?php echo '\'' . site_url('projection/get_target_projection_code') . '\''; ?>,
                                 success: function(data) {
-					code = $.trim(data);
-					temp = "#"+code;
-					//var target_amount = $(temp).val();
-					var target_proj_amount = $(temp).val();
-		                        var target_amount_array = target_proj_amount.split(',');
-                			var target_amount = '';
-		                        for (var i = 0; i < target_amount_array.length; i++) {
-                                		target_amount = target_amount + target_amount_array[i];
-		                        }
-					
-                		        target_amount = jsFloatOps(target_amount, changed_amount, '+');
-                		        $(temp).val(target_amount);
+					target_code = $.trim(data);
+					if(target_code != code){
+						temp = "#"+target_code;
+						//var target_amount = $(temp).val();
+						var target_proj_amount = $(temp).val();
+		        	                var target_amount_array = target_proj_amount.split(',');
+                				var target_amount = '';
+		                        	for (var i = 0; i < target_amount_array.length; i++) {
+                                			target_amount = target_amount + target_amount_array[i];
+			                        }
+						
+                			        target_amount = jsFloatOps(target_amount, changed_amount, '+');
+                			        $(temp).val(target_amount);
+					}
 				}
 			});
 
@@ -127,12 +129,16 @@ procedure updateParentProjection(proj_id, proj_amount){
 	                //get 'amount' where id = parent_code;
 			var code = "#"+parent_code;
 			//var amount = $(code).val();
-			var project_amount = $(this).attr('value');
-                        var amount_array = project_amount.split(',');
-                        var amount = '';
-                        for (var i = 0; i < amount_array.length; i++) {
-                                amount = amount+amount_array[i];
-                        }
+			//var project_amount = $(this).attr('value');
+			var amount = '';
+			if($(this).attr('value')){
+				var amount_array = project_amount.split(',');
+                                for (var i = 0; i < amount_array.length; i++) {
+          	                      amount = amount+amount_array[i];
+                	        }
+			}else{
+				amount = 0.00;
+			}
 
         	        amount = jsFloatOps(amount, proj_amount, '+');
                 	//set 'amount' where id = parent_code;

@@ -121,7 +121,7 @@
 	echo "</p>";
 
 	echo "<p>";
-	echo "<b>Note: </b>After account creation go to <b>Settings --> Upload Logo</b> page to set the ledger name to which the profit and loss balance will be carry forward.";
+	echo "<b>Note: </b>After account creation go to <b>Settings --> Account Settings</b> page to set the ledger name to which the profit and loss balance will be carry forward.";
 	echo "</p>";
 
 	echo "<p>";
