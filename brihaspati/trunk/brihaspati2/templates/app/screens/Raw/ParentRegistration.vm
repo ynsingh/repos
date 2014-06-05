@@ -40,7 +40,11 @@ $!data.getMessage()
 		#else
                 	<tr><td>
                         	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none> $brih_login $WikiPage </a>| $brih_parent $brih_reg   
-                	</td></tr>
+                	</td>
+ 	<td align="right">
+              <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ParentRegistration.html","newWin"); style=text-decoration:none><font size=3>$brih_help</font></a>
+        </td>
+</tr>
 		#end
         </table>
 
@@ -85,8 +89,8 @@ $!data.getMessage()
         			<tr id="FileBoxDiv1" bgcolor="$ui.menuColor" class="datepair">
 		        		<td width="320px">$brih_student $brih_mail $brih_Id<font color="red">*</font></td>
 		        		<td colspan=2 ><input type='email' id='text1' name="text1">
-					<input class="button-ftextstyle" type='button' value='Add text box' id='addFile'>
-					<input class="button-ftextstyle" type='button' value='Remove Box' id='removeFile'></td>
+					<input class="button-ftextstyle" type='button' value=$brih_add $brih_text $brih_box id='addFile'>
+					<input class="button-ftextstyle" type='button' value=$brih_remove $brih_ box id='removeFile'></td>
 	        		</tr>
 			</table>
 	      </tr>
@@ -96,8 +100,8 @@ $!data.getMessage()
     <input type="hidden" name="myvalue" id="myvalue"  value="1">
     <input type="hidden" name="actionName" value=""/>
     ##<input type="hidden" name="mode" value=$mode>
-    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="submit" onClick="check(document.frm,this);" id="upload"/>
-    <input type="reset" class="button-ftextstyle" name="Clear" value="Clear" onClick="checkClear(document.frm,this);"/>
+    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value=$brih_submit onClick="check(document.frm,this);" id="upload"/>
+    <input type="reset" class="button-ftextstyle" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
 </table>
 </form>
 </body>

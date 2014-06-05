@@ -61,9 +61,9 @@ $!data.getMessage()
                                 </select>
 
 
-                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Offccode" value="$!offccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Offccode" onclick="remove(name)">
-                                <input title="State code (Maximum limit 5 digit)" type="text" name="Offrcode" value="$!offrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Offrcode" onclick="remove(name)">
-                                <input title="Number (Maximum limit 10 digit)" type="text" name="Offphnumber" value="$!offphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Offphnumber" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Offccode" value="$!offccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Offccode" onclick="CleanBox(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Offrcode" value="$!offrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Offrcode" onclick="CleanBox(name)">
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Offphnumber" value="$!offphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Offphnumber" onclick="CleanBox(name)">
                                 #if($!offradio=="3")
                                 <input type="radio" name="Offdirectory" value="$public"/>$public
                                 <input type="radio" name="Offdirectory" value="$protected"/>$protected
@@ -92,9 +92,9 @@ $!data.getMessage()
                                 </select>
 
 
-                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Mobccode" value="$!mobccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Mobccode" onclick="remove(name)">
-                                <input title="State code (Maximum limit 5 digit)" type="text" name="Mobrcode" value="$!mobrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Mobrcode" onclick="remove(name)">
-				<input title="Number (Maximum limit 10 digit)" type="text" name="Mobphnumber" value="$!mobphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Mobphnumber" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Mobccode" value="$!mobccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Mobccode" onclick="CleanBox(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Mobrcode" value="$!mobrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Mobrcode" onclick="CleanBox(name)">
+				<input title="Number (Maximum limit 10 digit)" type="text" name="Mobphnumber" value="$!mobphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Mobphnumber" onclick="CleanBox(name)">
 				#if($!mobradio=="3")
 				<input type="radio" name="Mobdirectory" value="$public"/>$public
                                 <input type="radio" name="Mobdirectory" value="$protected"/>$protected
@@ -123,9 +123,9 @@ $!data.getMessage()
                                 </select>
 
 
-                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Homeccode" value="$!homeccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Homeccode" onclick="remove(name)">
-                                <input title="State code (Maximum limit 5 digit)" type="text" name="Homercode" value="$!homercode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Homercode" onclick="remove(name)">
-                                <input title="Number (Maximum limit 10 digit)" type="text" name="Homephnumber" value="$!homephone" maxlength="10" onkeypress="return isNumberKey(event)" id="Homephnumber" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Homeccode" value="$!homeccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Homeccode" onclick="CleanBox(name)">
+                                <input title="State code (Maximum limit 5 digit)" type="text" name="Homercode" value="$!homercode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Homercode" onclick="CleanBox(name)">
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Homephnumber" value="$!homephone" maxlength="10" onkeypress="return isNumberKey(event)" id="Homephnumber" onclick="CleanBox(name)">
 				#if($!homeradio=="3")
                                 <input type="radio" name="Homedirectory" value="$public"/>$public
                                 <input type="radio" name="Homedirectory" value="$protected"/>$protected
@@ -153,9 +153,9 @@ $!data.getMessage()
                                 </select>
 
 
-                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Othccode" value="$!othccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Othccode" onclick="remove(name)">
-				<input title="State code (Maximum limit 5 digit)" type="text" name="Othrcode" value="$!othrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Othrcode" onclick="remove(name)">
-                                <input title="Number (Maximum limit 10 digit)" type="text" name="Othphnumber" value="$!othphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Othphnumber" onclick="remove(name)">
+                                <input title="Country code (Maximum limit 4 digit)" type="text" name="Othccode" value="$!othccode" maxlength="4" size="4" onkeypress="return isNumberKey(event)" id="Othccode" onclick="CleanBox(name)">
+				<input title="State code (Maximum limit 5 digit)" type="text" name="Othrcode" value="$!othrcode" maxlength="5" size="5" onkeypress="return isNumberKey(event)" id="Othrcode" onclick="CleanBox(name)">
+                                <input title="Number (Maximum limit 10 digit)" type="text" name="Othphnumber" value="$!othphone" maxlength="10" onkeypress="return isNumberKey(event)" id="Othphnumber" onclick="CleanBox(name)">
 				#if($!othradio=="3")
                                 <input type="radio" name="Othdirectory" value="$public"/>$public
                                 <input type="radio" name="Othdirectory" value="$protected"/>$protected
@@ -291,16 +291,16 @@ $!data.getMessage()
 			<input type="hidden" name="parent_details" value="not_exists"/>
 		#else
 			<tr>
-		        	#formCell("Parent $brih_first $brih_name" "PFName" "")
+		        	#formCell("$brih_parent $brih_first $brih_name" "PFName" "")
 			</tr>
          		<tr>
-           			#formCell("Parent $brih_last $brih_name" "PLName" "")
+           			#formCell("$brih_parent $brih_last $brih_name" "PLName" "")
          		</tr>
          		<tr>
-          			#formCell("Parent $brih_email" "PEMAIL" "")
+          			#formCell("$brih_parent $brih_email" "PEMAIL" "")
          		</tr>
 			<tr>
-				#formCell("Parent Mobile No" "PMOBILE" "")
+				#formCell("$brih_parent $brih_mobileno" "PMOBILE" "")
 			</tr>
 			<input type="hidden" name="parent_details" value="exists"/>
 		#end
@@ -374,7 +374,7 @@ $!data.getMessage()
 	{
         	Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
 	}
-	function remove(name)
+	function CleanBox(name)
 	{
                 if(document.getElementById(name).value=="x")
                 {
