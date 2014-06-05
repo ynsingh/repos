@@ -554,8 +554,8 @@ var dc = '';
 	$('.ledger-dropdown').trigger('change');
 	$('.dr-item:first').trigger('change');
 	$('.cr-item:first').trigger('change');
-	$('#fund').trigger('change');
-	response.setIntHeader("Refresh", 1);	
+	//$('#fund').trigger('change');
+	//response.setIntHeader("Refresh", 1);	
 
 });
 	
@@ -668,7 +668,8 @@ var dc = '';
 		echo "<td>" . form_input($cheque) . "</td>";	
 	
 		$temp = "fund-list".$i;
-                echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
+                //echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
+		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
 
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";

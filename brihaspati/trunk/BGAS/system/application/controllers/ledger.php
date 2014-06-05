@@ -105,12 +105,16 @@ var $username;
 			$data_name = $this->input->post('ledger_name', TRUE);
 			//$data_group_id = $this->input->post('ledger_group_id', TRUE);
 			$data_group_name = $this->input->post('ledger_group_id', TRUE);
-			$this->db->select('id')->from('groups')->where('name',$data_group_name);
+
+			/*$this->db->select('id')->from('groups')->where('name',$data_group_name);
                         $group_parent_qn = $this->db->get();
                         foreach ($group_parent_qn->result() as $row1)
                         {
                                 $data_group_id=$row1->id;
-                        }
+                        }*/
+			$Array = explode("#", $data_group_name);
+			$data_group_id = $Array[1];
+
 			$data_op_balance = $this->input->post('op_balance', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_ledger_type_cashbank_value = $this->input->post('ledger_type_cashbank', TRUE);
@@ -339,13 +343,13 @@ var $username;
 			'value' => $ledger_data->op_balance,
 		);
 		
-		$this->db->select('name');
+		$this->db->select('id, name');
 		$this->db->from('groups')->where('id =', $ledger_data->group_id);
 		$query_result = $this->db->get();
 		$group = $query_result->row();
 		
 		//$data['ledger_group_active'] = $ledger_data->group_id;
-		$data['ledger_group_active'] = $group->name;
+		$data['ledger_group_active'] = $group->name . "#" . $group->id;
 
 		$data['op_balance_dc'] = $ledger_data->op_balance_dc;
 		$data['ledger_id'] = $id;
@@ -394,12 +398,17 @@ var $username;
 			$data_name = $this->input->post('ledger_name', TRUE);
 			//echo $data_group_id = $this->input->post('ledger_group_id', TRUE);
 			$data_group_name = $this->input->post('ledger_group_id', TRUE);
-			$this->db->select('id')->from('groups')->where('name',$data_group_name);
+			
+			/*$this->db->select('id')->from('groups')->where('name',$data_group_name);
                         $group_parent_qn = $this->db->get();
                         foreach ($group_parent_qn->result() as $row1)
                         {
                                 $data_group_id=$row1->id;
-                        }
+                        }*/
+	
+			$Array = explode("#", $data_group_name);
+                        $data_group_id = $Array[1];
+
 			$data_op_balance = $this->input->post('op_balance', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
 			$data_id = $id;
@@ -747,15 +756,16 @@ var $username;
 		return;
 	}
 
-	function set_group_id($name){
-		$this->db->select('id');
+	function set_group_id($id){
+
+		/*$this->db->select('id');
 		$this->db->from('groups')->where('name =', $name);
 		$result = $this->db->get();
 		$group = $result->row();
-		$group_id = $group->id;
+		$group_id = $group->id;*/
 		
 		$this->load->library('session');
-                $this->session->set_userdata('ledger_group_id', $group_id);		
+                $this->session->set_userdata('ledger_group_id', $id);		
 	}
 }
 

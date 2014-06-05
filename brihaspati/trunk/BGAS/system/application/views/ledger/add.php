@@ -8,9 +8,13 @@ $(document).ready(function() {
                         
 	                }else{
         	                $('.parent').show();
-                	        name = $(this).val();
+                	        ledger = $(this).val();
+				var ledgerArray = ledger.split('#');
+				name = ledgerArray[0];
+				id = ledgerArray[1]; 
+					
                         	$.ajax({
-                               	        url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + name,
+                               	        url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id,
                                        	success: function() {
                                                 location.reload();
                                         }

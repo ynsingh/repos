@@ -39,21 +39,27 @@ class Group_model extends Model {
 		{
 			$cd = $row->code;
                         $nm = $row->name;
+			$id = $row->name . '#' . $row->id;
 			//if(substr($cd,0,2)== 10){
 			if(substr($cd,0,2) == $this->get_account_code('Liabilities and Owners Equity')){
-                        	$arraylblt[$row->name]=" L- ".$nm;
+                        	//$arraylblt[$row->name]=" L- ".$nm;
+                        	$arraylblt[$id]=" L- ".$nm;
                         }
                         //if(substr($cd,0,2)== 20){
 			if(substr($cd,0,2) == $this->get_account_code('Assets')){
-                        	$arrayasset[$row->name]="A- ".$nm;
+                        	//$arrayasset[$row->name]="A- ".$nm;
+                        	$arrayasset[$id]="A- ".$nm;
+				
                         }
                         //if(substr($cd,0,2)== 30){
 			if(substr($cd,0,2) == $this->get_account_code('Incomes')){
-                        	$arrayincm[$row->name]=" I- ".$nm;
+                        	//$arrayincm[$row->name]=" I- ".$nm;
+                        	$arrayincm[$id]=" I- ".$nm;
                         }
                         //if(substr($cd,0,2)== 40){
 			if(substr($cd,0,2) == $this->get_account_code('Expenses')){
-                        	$arrayexpnd[$row->name]=" E- ".$nm;
+                        	//$arrayexpnd[$row->name]=" E- ".$nm;
+                        	$arrayexpnd[$id]=" E- ".$nm;
                         }
 	
 		}

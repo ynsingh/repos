@@ -659,6 +659,9 @@ class Entry extends Controller {
 
 		$data['fund_list'] = $this->Ledger_model->get_ledgers();
                 $data['fund_list_active'] = 0;
+		//$data['income'] = array( 'Income from Invest' => 'Income from investments made of the funds',
+					 //'Accrued Int' => 'Accrued interest on investments of the funds');
+		//$data['income_select'] = 0;
 
 		$options = array();
                 $this->db->select('name, label');
@@ -723,7 +726,7 @@ class Entry extends Controller {
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
 			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
-
+			//$data['income_select'] = $this->input->post('income', TRUE);
 		} 
 		else {
 			for ($count = 0; $count <= 3; $count++)
@@ -3589,8 +3592,8 @@ class Entry extends Controller {
 
                 $data['entry_tag'] = 0;
 
-		$data['fund_list'] = $this->Ledger_model->get_ledgers();
-                $data['fund_list_active'] = 0;
+		//$data['fund_list'] = $this->Ledger_model->get_ledgers();
+                //$data['fund_list_active'] = 0;
 
                 /* Form validations */
                 if ($current_entry_type['numbering'] == '2')
@@ -3633,7 +3636,8 @@ class Entry extends Controller {
                         $data['cr_amount'] = $this->input->post('cr_amount', TRUE);
 			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
-			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
+			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
+			$data['fund_list'] = $this->input->post('fund_list', TRUE);
                 }
 		else {
                         for ($count = 0; $count <= 3; $count++)
@@ -3745,6 +3749,8 @@ class Entry extends Controller {
                 $result = $this->db->get();
                 $group = $result->row();
                 $group_id = $group->group_id;
+		$group_array = array();
+		$counter = 0;
 
 		$parent = '';
                 if($group_id != 0){
@@ -3754,7 +3760,9 @@ class Entry extends Controller {
                                 $this->db->from('groups')->where('id =', $id);
                                 $query_result = $this->db->get();
                                 $data = $query_result->row();
-                                $parent = $parent . $data->name . " -> ";
+                                //$parent = $parent . $data->name . " -> ";
+				$group_array[$counter] = $data->name;
+	                        $counter++;
 
                                 if($data->parent_id){
                 	                $id = $data->parent_id;
@@ -3763,11 +3771,21 @@ class Entry extends Controller {
                                 }
                          }while($id != 0);
 
-                         $this->db->select('name');
-                         $this->db->from('ledgers')->where('id =', $ledgerid);
-                         $ledger = $this->db->get();
-                         $ledger_name = $ledger->row();
-                         $parent = $parent . $ledger_name->name;
+			$counter--;
+
+			do{
+        	                $parent = $parent . $group_array[$counter];
+                	        $counter--;
+
+                        	if($counter >= 0)
+                                	$parent = $parent . " -> ";
+	                }while($counter >= 0);
+		
+			$this->db->select('name');
+                        $this->db->from('ledgers')->where('id =', $ledgerid);
+                        $ledger = $this->db->get();
+                        $ledger_name = $ledger->row();
+                        $parent = $parent . " -> " . $ledger_name->name;
                 }
 		echo $parent;
         }
