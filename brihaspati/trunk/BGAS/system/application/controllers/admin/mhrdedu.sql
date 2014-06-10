@@ -151,6 +151,7 @@ INSERT INTO `groups` VALUES(147,'400601',32,'Interest on Fixed Asset',0,0,0);
 INSERT INTO `groups` VALUES(148,'400602',32,'Interest on Other Loan',0,0,0);
 INSERT INTO `groups` VALUES(149,'400603',32,'Bank Charges',0,0,0);
 INSERT INTO `groups` VALUES(33,'4007',4,'Other expenses',0,0,0);
+INSERT INTO `groups` VALUES(151,'4008',4,'Depriciation',0,0,0);
 
 INSERT INTO `ledgers` VALUES (1,'10010201',10,'Contributions towards General Fund','0.00','D',0,0,0);
 INSERT INTO `ledgers` VALUES (2,'10010202',10,'Balance of net income/expenditure transferred from I/E Account','0.00','D',0,0,0);
@@ -217,6 +218,8 @@ INSERT INTO `ledgers` VALUES (122,'30010314',112,'Membership for SHMC Fees','0.0
 INSERT INTO `ledgers` VALUES (53,'30010401',113,'Sale of syllabous and Question paper etc','0.00','C',0,0,0);
 INSERT INTO `ledgers` VALUES (54,'30010402',113,'Sale of prospectus including admission forms','0.00','C',0,0,0);
 INSERT INTO `ledgers` VALUES (55,'30020101',114,'HRD','0.00','C',0,0,0);
+INSERT INTO `ledgers` VALUES (124,'300301',25,'Income from Investment','0.00','C',0,0,0);
+INSERT INTO `ledgers` VALUES (125,'300302',25,'Accrued interest from Investment','0.00','C',0,0,0);
 INSERT INTO `ledgers` VALUES (56,'30040101',120,'Hostel Room Rent','0.00','C',0,0,0);
 INSERT INTO `ledgers` VALUES (57,'30040102',120,'License Fee','0.00','C',0,0,0);
 INSERT INTO `ledgers` VALUES (58,'30040103',120,'Hire Charges of Auditorium, Play ground etc.','0.00','C',0,0,0);
