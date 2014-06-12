@@ -9,6 +9,7 @@ class Help extends Controller {
 	}
 
 	function entry(){
+		$this->template->set('help', 'true');
 		$this->template->load('template', 'help/entry');
 		return;
 	}

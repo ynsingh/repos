@@ -1229,8 +1229,12 @@ var $ledgers = array();
 		$funds = array();
 
 		$income_code = $this->get_account_code('Liabilities and Owners Equity');
+		
+		$unrestricted_code = $this->get_account_code('Unrestricted Funds');
+		$restricted_code = $this->get_account_code('Restricted Funds');
+		$general_fund = $this->get_account_code('General Funds');
 
-		$this->db->select('name, id, group_id');
+		$this->db->select('name, id, group_id, code');
 		$this->db->from('ledgers');
 		//$this->db->like('code', '10', 'after'); 
 		$this->db->like('code', $income_code, 'after');
@@ -1239,19 +1243,20 @@ var $ledgers = array();
 		$funds[0] = 'Select Fund';
 		if($query->num_rows() > 0){
 			foreach($query->result() as $ledger){
-				//$this->db->select('name');
-				//$this->db->from('groups');
-				//$this->db->where('id=', $ledger->group_id);
-				//$this->db->like('name', 'Current Liabilities', 'both');
-				//$group_query = $this->db->get();
-				
-			//	if($group_query->num_rows() == 0)
-					$funds[$ledger->id] = $ledger->name;
+				if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code)){
+					if(!($this->startsWith($ledger->code, $general_fund)))
+						$funds[$ledger->id] = $ledger->name;
+				}
 			}
 		}
 
 		return $funds;
 	
 	}
+
+	function startsWith($str1, $str2)
+        {
+                return !strncmp($str1, $str2, strlen($str2));
+        }
 }
 ?>

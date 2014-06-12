@@ -231,12 +231,14 @@ var dc = '';
 
 					account = $.trim(data);
 
-                                        if(dc == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Income' || account == 'Income-e'){
+	                                        if(dc == 'D')
+                        	                        alert("You have made a wrong entry");
                                         }
 
-                                        if(dc == 'C' && account == 'Expense'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Expense' || account == 'Expense-e'){        
+		                                if(dc == 'C')
+                	                                alert("You have made a wrong entry");
                                         }
 
                                         //following code is for fund dropdown list
@@ -245,7 +247,7 @@ var dc = '';
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                               
                                         temp = ".fund-list"+fund_index;
 
-                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
+                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0') || (dc == 'C' && account == 'Income')){
                                                 //alert("i m here 1");
                                                 //alert(temp);
                                                 $(temp).show();
@@ -389,12 +391,14 @@ var dc = '';
 
 					account = $.trim(data);
 
-                                        if(dc_value == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Income' || account == 'Income-e'){
+	                                        if(dc_value == 'D')
+        	                                        alert("You have made a wrong entry");
                                         }
 
-                                        if(dc_value == 'C' && account == 'Expense'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Expense' || account == 'Expense-e'){                
+        			                if(dc_value == 'C')
+                                	                alert("You have made a wrong entry");
                                         }
 
                                         //following code is for fund dropdown list
@@ -403,7 +407,7 @@ var dc = '';
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                             
                                         temp = ".fund-list"+fund_index;
 
-                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
+                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Income')){
                                                 //alert("i m here");
                                                 //alert(temp);
                                                 $(temp).show();
@@ -479,7 +483,7 @@ var dc = '';
 		$.ajax({
 			url: <?php echo '\'' . site_url('entry/addrow/' . $add_type) . '\''; ?>,
 			success: function(data) {
-				$(cur_obj).parent().parent().after(data);
+				$(cur_obj).parent().parent().next().after(data);
 				$(cur_obj).attr('src', add_image_url);
 			}
 		});
@@ -557,15 +561,20 @@ var dc = '';
 	//$('#fund').trigger('change');
 	//response.setIntHeader("Refresh", 1);	
 
+	function popupWin(url,popupName)
+	{
+        	Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+	}
+
 });
 	
 
 </script>
 
 <?php
-	echo "<p align=\"right\">";
-        echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));
-        echo "</p>";
+	echo "<p align=\"right\">"; ?>
+        <a href=javascript:popupWin(<?php echo '\'' . site_url('help/entry') . '\''; ?>,"newWin");><img src="<?php echo  asset_url(); ?>images/icons/hand.gif" />Help</a>
+        <?php echo "</p>";
 
 	echo form_open('entry/add/' . $current_entry_type['label']);
 	echo "<p>";
@@ -622,7 +631,8 @@ var dc = '';
 	{
 		$dr_amount_item = array(
 			'name' => 'dr_amount[' . $i . ']',
-			'id' => 'dr_amount[' . $i . ']',
+			//'id' => 'dr_amount[' . $i . ']',
+			'id' => 'dr_amount'.$i,
 			'maxlength' => '15',
 			'size' => '15',
 			'value' => isset($dr_amount[$i]) ? $dr_amount[$i] : "",

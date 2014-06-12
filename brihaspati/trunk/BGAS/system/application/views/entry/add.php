@@ -122,6 +122,7 @@ var dc = '';
                 var ledger_value = $(this).parent().prev().children().attr('value');
 		var dr_name = $(this).attr('name');
 		var dr_amount = $(this).val();
+		var check = 0;
 
                 $.ajax({
                                         url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
@@ -226,12 +227,14 @@ var dc = '';
 
 					account = $.trim(data);
 
-                                        if(dc == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Income' || account == 'Income-e'){
+                                        	if(dc == 'D')
+                                                	alert("You have made a wrong entry");
                                         }
 
-                                        if(dc == 'C' && account == 'Expense'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Expense' || account == 'Expense-e'){
+                                        	if(dc == 'C')
+                                                	alert("You have made a wrong entry");
                                         }
 
                                         //following code is for fund dropdown list
@@ -239,17 +242,23 @@ var dc = '';
                                         var last_index = dr_name.lastIndexOf("]"); 
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                               
                                         temp = ".fund-list"+fund_index;
+					//var income = ".tr-row1"+fund_index;
 
 					$.ajax({
                    	                     url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
                         	                success: function(bank) {
                                 	                bank_cash = $.trim(bank);
 
-							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
+							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0') || (dc == 'C' && account == 'Income') ){
                                 	       		      $(temp).show();
 		                                        }else{
                 		                                $(temp).hide();
                                 		        }
+
+							/*if(dc == 'C' && account == 'Income')
+                                                                $(income).show();
+                                                        else
+                                                                $(income).hide();*/
                                         	}
 			                });
 
@@ -384,13 +393,14 @@ var dc = '';
 					*/
 
 					account = $.trim(data);
-
-                                        if(dc_value == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Income' || account == 'Income-e'){
+	                                        if(dc_value == 'D')
+        	                                        alert("You have made a wrong entry");
                                         }
 
-                                        if(dc_value == 'C' && account == 'Expense'){
-                                                alert("You have made a wrong entry");
+        				if(account == 'Expense' || account == 'Expense-e'){
+			                        if(dc_value == 'C')
+                	                                alert("You have made a wrong entry");
                                         }
                 
                                         //following code is for fund dropdown list
@@ -398,17 +408,23 @@ var dc = '';
                                         var last_index = dr_name.lastIndexOf("]"); 
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                             
                                         temp = ".fund-list"+fund_index;
+					//var income = ".tr-row1"+fund_index;
 
 					$.ajax({
 			                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
                         	                success: function(bank) {
                                 		        bank_cash = $.trim(bank);
-		                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
+		                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Income')){
                 		                                $(temp).show();
                                 		        }else{
                                                 		$(temp).hide();
 	        	                                }
-        	        	                }
+							
+							/*if(dc_value == 'C' && account == 'Income')
+								$(income).show();
+							else
+								$(income).hide();*/
+        	        	                }	
                         		});
 				}
 		});
@@ -477,7 +493,7 @@ var dc = '';
 			url: <?php echo '\'' . site_url('entry/addrow/' . $add_type) . '\''; ?>,
 			success: function(data) {
 			
-				$(cur_obj).parent().parent().after(data);
+				$(cur_obj).parent().parent().next().after(data);
 				$(cur_obj).attr('src', add_image_url);
 				$(".cheque-item").show();
 				$("#ch_no").show();
@@ -550,12 +566,18 @@ var dc = '';
 	//$('#fund').trigger('change');
 });
 
+	function popupWin(url,popupName)
+	{
+		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+	}
+
 </script>
 
 <?php
-	echo "<p align=\"right\">";
-	echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));
-	echo "</p>";
+	echo "<p align=\"right\">"; 
+	//echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));?>
+	<a href=javascript:popupWin(<?php echo '\'' . site_url('help/entry') . '\''; ?>,"newWin");><img src="<?php echo  asset_url(); ?>images/icons/hand.gif" />Help</a>
+	<?php echo "</p>";
 
 	//echo form_open('entry/add/' . $current_entry_type['label']);
 	echo form_open('entry/checkentry/' . $current_entry_type['label']);
@@ -682,7 +704,7 @@ var dc = '';
 		echo "<td></td>";
 	        echo "<td>";
 		        echo form_input($data);
-		        echo "</td>";
+		echo "</td>";
 		echo "</tr>";
 	}
 

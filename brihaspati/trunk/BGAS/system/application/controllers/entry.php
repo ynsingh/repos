@@ -1428,19 +1428,40 @@ class Entry extends Controller {
                 if ($ledger_id > 0){
                         $code = $this->Ledger_model->get_ledger_code($ledger_id);
 			$account_code = $this->Budget_model->get_account_code('Expenses');
+			$finance_cost_code = $this->Budget_model->get_account_code('Finance Costs');
+                        $other_expenses_code = $this->Budget_model->get_account_code('Other expenses');
+                        $depreciation_code = $this->Budget_model->get_account_code('Depriciation');
 			$temp = $this->startsWith($code, $account_code);
-                        if($temp)
-	                        echo "Expense";
+                        if($temp){
+				if($this->startsWith($code, $other_expenses_code) || $this->startsWith($code, $depreciation_code) || $this->startsWith($code, $finance_cost_code))
+					echo "Expense-e";
+/*                                elseif($this->startsWith($code, $depreciation_code))
+					echo "Expense-e";
+                                elseif($this->startsWith($code, $finance_code))
+			              	echo "Expense-e";*/
+				else
+					echo "Expense";
+			}
 
 			$account_code = $this->Budget_model->get_account_code('Incomes');
+			$income_investment_code = $this->Budget_model->get_account_code('Income from Investments');		
                         $temp = $this->startsWith($code, $account_code);
-                        if($temp)
-                                echo "Income";
+                        if($temp){
+				if($this->startsWith($code, $income_investment_code))
+					echo "Income";
+				else
+					echo "Income-e";
+			}
                                         
 			$account_code = $this->Budget_model->get_account_code('Assets');
+			$loan_code = $this->Budget_model->get_account_code('Loans Advances and Deposits');
                         $temp = $this->startsWith($code, $account_code);
-                        if($temp)
-                                echo "Asset";
+                        if($temp){
+				if($this->startsWith($code, $loan_code))
+					echo "Asset-e";
+				else
+	                                echo "Asset";
+			}
                 }else{
                         echo "";
 		}
@@ -2564,7 +2585,8 @@ class Entry extends Controller {
 		$i = time() + rand  (0, time()) + rand  (0, time()) + rand  (0, time());
 		$dr_amount = array(
 			'name' => 'dr_amount[' . $i . ']',
-			'id' => 'dr_amount[' . $i . ']',
+			//'id' => 'dr_amount[' . $i . ']',
+			'id' => 'dr_amount'.$i,
 			'maxlength' => '15',
 			'size' => '15',
 			'value' => '',
@@ -2573,7 +2595,8 @@ class Entry extends Controller {
 		);
 		$cr_amount = array(
 			'name' => 'cr_amount[' . $i . ']',
-			'id' => 'cr_amount[' . $i . ']',
+			//'id' => 'cr_amount[' . $i . ']',
+			'id' => 'cr_amount' . $i,
 			'maxlength' => '15',
 			'size' => '15',
 			'value' => '',
@@ -2603,7 +2626,7 @@ class Entry extends Controller {
 	//		echo form_input_ledger('ledger_id[' . $i . ']', 0, '', $type = 'nobankcash');
 	//	else
 	//		echo form_input_ledger('ledger_id[' . $i . ']');
-		echo "<td>" . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . "</td>";
+		echo '<td id ="ledger">' . form_input_ledger('ledger_id[' . $i . ']', isset($ledger_id[$i]) ? $ledger_id[$i] : 0) . '</td>';
 //		echo '</td>';
 
 		echo '<td>';
@@ -2616,6 +2639,10 @@ class Entry extends Controller {
               	echo form_input($cheque);
               	echo '</td>';
 
+		$temp = "fund-list".$i;
+//                echo '<td id ="fund">' . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, 'class = "'.$temp.'"') . '</td>';
+		echo '<td id = "fund">' . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, 'class = "'.$temp.'"') . '</td>';
+
 		echo '<td>';
 		echo img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow'));
 		echo '</td>';
@@ -2625,6 +2652,28 @@ class Entry extends Controller {
 		echo '<td class="ledger-balance"><div></div>';
 		echo '</td>';
 		echo '</tr>';
+
+		/**
+                 * Code for diplaying parent child hierarchy
+                 * for the selected ledger head.
+                 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+                 */
+                $row_temp = "tr-row".$i;
+                $data = array(
+                      'name'        => 'parent',
+                      'id'          => $row_temp,
+                      'value'       => '',
+                      'maxlength'   => '300',
+                      //'style'       => 'width:100%',
+                        'style'       => 'width:200%; border: none;'
+                );
+                echo '<tr>';
+                echo '<td></td>';
+                echo '<td>';
+                        echo form_input($data);
+                echo '</td>';
+
+                echo '</tr>';
 		return;
 	}
 	function sort($entry_sort)

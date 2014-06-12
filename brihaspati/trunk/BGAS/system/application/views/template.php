@@ -104,7 +104,8 @@ $(document).ready(function() {
                         }
 			}
 */
-			if(isset($schedule)){}
+			if(isset($schedule) || isset($help)){
+			}
 			else{
 			echo "<div id=\"admin\">";
 			if ($this->session->userdata('user_name')) {
@@ -209,7 +210,7 @@ $(document).ready(function() {
 	
 	<?php 
 	//Check added by Priyanka
-	if(isset($schedule)){}
+	if(isset($schedule) || isset($help)){}
 	else{ 
 	echo "<div id=\"menu\">";
 		echo "<ul class=\"sf-menu\">";
@@ -320,7 +321,7 @@ $(document).ready(function() {
 	}
 	?>
 
-	<?php if(isset($schedule)){ 
+	<?php if(isset($schedule) || isset($help)){ 
 	echo "<div id=\"content\" style=\"margin-top:20px\">";
 	}
 	else{

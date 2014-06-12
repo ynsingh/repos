@@ -218,19 +218,21 @@ var dc = '';
 
 					account = $.trim(data);
 
-                                        if(dc == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Income' || account == 'Income-e'){
+	                                        if(dc == 'D')
+	                                                alert("You have made a wrong entry");
                                         }
 
-                                        if(dc == 'C' && account == 'Expense'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Expense' || account == 'Expense-e'){        
+		                                if(dc == 'C')
+                 	                               alert("You have made a wrong entry");
                                         }
 		                        //following code is for fund dropdown list
                 		        $.ajax({
                                 		url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
 		                                success: function(bank) {
                 		                      bank_or_cash = $.trim(bank);
-		                                      if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_or_cash == '0')){
+		                                      if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_or_cash == '0') || (dc == 'C' && account == 'Income')){
                 		                            $(temp).show();
                                 		      }else{
 		                                            $(temp).hide();
@@ -333,19 +335,21 @@ var dc = '';
 
 					account = $.trim(data);
 
-                                        if(dc_value == 'D' && account == 'Income'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Income' || account == 'Income-e'){
+	                                        if(dc_value == 'D')
+        	                                        alert("You have made a wrong entry");
                                         }
 
-                                        if(dc_value == 'C' && account == 'Expense'){
-                                                alert("You have made a wrong entry");
+					if(account == 'Expense' || account == 'Expense-e'){
+	                                        if(dc_value == 'C')
+        	                                        alert("You have made a wrong entry");
                                         }
                 			//following code is for fund dropdown list
 			                $.ajax({
                         			url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
 			                        success: function(bank) {
                         			        bankorcash = $.trim(bank);
-			                                if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bankorcash == '0')){
+			                                if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bankorcash == '0') || (dc_value == 'C' && account == 'Income')){
                         			                $(temp).show();
 			                                }else{
                         			                $(temp).hide();
@@ -417,7 +421,7 @@ var dc = '';
 		$.ajax({
 			url: <?php echo '\'' . site_url('entry/addrow/' . $add_type) . '\''; ?>,
 			success: function(data) {
-				$(cur_obj).parent().parent().after(data);
+				$(cur_obj).parent().parent().next().after(data);
 				$(cur_obj).attr('src', add_image_url);
 			}
 		});
@@ -487,12 +491,17 @@ var dc = '';
   //      $('#ledger').trigger('change');
 });
 
+	function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+
 </script>
 
 <?php
-	echo "<p align=\"right\">";
-        echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));
-        echo "</p>";
+	echo "<p align=\"right\">"; ?>
+        <a href=javascript:popupWin(<?php echo '\'' . site_url('help/entry') . '\''; ?>,"newWin");><img src="<?php echo  asset_url(); ?>images/icons/hand.gif" />Help</a>
+        <?php echo "</p>";	
 
 	echo form_open('entry/edit/' . $current_entry_type['label'] . "/" . $entry_id);
 	echo "<p>";
