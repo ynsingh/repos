@@ -172,9 +172,11 @@ procedure updateParentProjection(proj_id, proj_amount){
                                         echo "</strong>";
                                 echo "</td>";
                                 $name = 'projection_value_' .$data['id'];
+				$bud_name = $name[0];
                                 echo "<td class=\"td-ledger\">";
                                         echo "<strong>";
-                                        echo form_label($data['name'], $$name);
+//                                        echo form_label($data['name'], $$name);
+					 echo form_label($data['name'], $bud_name);
                                         echo "</strong>";
                                 echo "</td>";
                                 }
@@ -184,8 +186,10 @@ procedure updateParentProjection(proj_id, proj_amount){
                                         echo $data['code'];
                                 echo "</td>";
                                 $name = 'projection_value_' .$data['id'];
+				$bud_name = $name[0];
                                 echo "<td class=\"td-ledger\">";
-                                        echo form_label($data['name'], $$name);
+//                                        echo form_label($data['name'], $$name);
+					echo form_label($data['name'], $bud_name);
                                 echo "</td>";
                                 }
                                 echo "<td class=\"td-ledger\">";

@@ -22,9 +22,11 @@
                                         echo "</strong>";
                                 echo "</td>";
                                 $name = 'budget_value'. "_" .$data['id'];
+				$bud_name = $name[0];
                                 echo "<td class=\"td-ledger\">";
                                         echo "<strong>";
-                                        echo form_label($data['budgetname'], $$name);
+  //                                      echo form_label($data['budgetname'], $$name);
+					echo form_label($data['budgetname'], $bud_name);
                                         echo "</strong>";
                                 echo "</td>";
 				}
@@ -34,8 +36,10 @@
                                         echo $data['code'];
                                 echo "</td>";
                                 $name = 'budget_value'. "_" .$data['id'];
+				$bud_name = $name[0];
                                 echo "<td class=\"td-ledger\">";
-                                        echo form_label($data['budgetname'], $$name);
+//                                        echo form_label($data['budgetname'], $$name);
+					echo form_label($data['budgetname'], $bud_name);
                                 echo "</td>";
 				}
                                 echo "<td class=\"td-ledger\">";

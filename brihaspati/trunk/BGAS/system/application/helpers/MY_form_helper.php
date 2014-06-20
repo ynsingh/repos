@@ -121,13 +121,18 @@ if ( ! function_exists('form_input_ledger'))
                         $databasepassword=$row->dbpass;
                 }
                 $db1->close();
-                $con = mysql_connect($databasehost, $databaseusername, $databasepassword);
+                /*$con = mysql_connect($databasehost, $databaseusername, $databasepassword);
                 if($con){
                         $value = mysql_select_db($dbname, $con);
                         $query = "select * from bgas_acl where username='$data_user_name' and headid='*'";
                         $val = mysql_query($query);
                         $num_rows = mysql_num_rows($val);
                 }
+		*/
+		$CI->db->from('bgas_acl')->where('username', $data_user_name);
+                $CI->db->where('headid', '*');
+                $val = $CI->db->get();
+                $num_rows = $val->num_rows();
 
                 if(($userrole == 'administrator') || ($num_rows != "0"))
                 {
