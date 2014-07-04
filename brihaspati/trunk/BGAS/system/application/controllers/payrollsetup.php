@@ -40,7 +40,7 @@ class payrollsetup extends Controller {
 			'readonly' => 'readonly',
                         
                 );
-		$data['salary_budgetcode'] = $this->Payrollsetup_model->get_selected_groups_withcode('Expenses');
+		$data['salary_budgetcode'] = $this->Payrollsetup_model->get_selected_groups_withcode('Expenditure');
 		$data['cash_bankcode'] =$this->Payrollsetup_model->get_all_ledgers_bankcash();
 
 		/* Form validations */
