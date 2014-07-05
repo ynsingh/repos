@@ -1,118 +1,161 @@
 #*
  * @(#)ViewCourseList.vm
- *  Copyright (c) 2005, 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2010,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
- * @author <a href="shaistashekh@hotmail.com" > Shaista </a>
- * @modified date: 27-03-2012
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:16-March-2012(Richa)
  *#
-<head>
-<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-</head>
-$page.setTitle("$brih_reg2 $brih_course $brih_list")
+
+$page.setTitle("$brih_reg2 $brih_courses $brih_list")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script
+</head>
 
-<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
-<tr align=right>
-	<td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<b><a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $brih_Of1 $WikiPage</a> |
-	$brih_reg2 $brih_course
-	</b>
-	</font>
+<table bgcolor="$ui.menuColor" width=100%>
+   <tr>
+                <td>
+        <href=javascript:popupWin("/brihaspati2/docs/RegisteredCourses.html","newWin"); style=text-decoration:none><font size=4>$brih_help</font><img src="$content.getURI("/images/Lefthand.gif")"></a>
+       </td>
+	<td align="right">
+		<font face="$ui.sansSerifFonts" size=3>
+		<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $WikiPage</a>|$brih_reg2 $brih_courses
+		</font>
 	</td>
 </tr>
+
+
 </table>
-<br>
-<form name="frm" method="Post">
+<form name="frm" method="Post" action="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang)">
 #set($listConf = ["10","20","30","40","50"] )
-<table align="right" width="100%">
-	<tr bgcolor="$ui.tableColor">
-	<td align="right">
-		<select name="SearchList" class="drop" onChange="ShowList(document.frm,this);"/>
+<table align="right" width="100%" bgcolor="$ui.tableColor">
+<tr align="right">
+<td align="right">
+#if( $total_size!=0 )
+        #if( $endIndex < $total_size )
+                #if( $endIndex < $ListConf )
+                        #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_Of $total_size #end
+                #else
+                        #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_Of $total_size #end
+                #end
+        #else
+                #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_Of $total_size #end
+        #end
+#end
+</td>
+	<td>
+                <b>$brih_search1 $brih_courses</b>&nbsp;&nbsp;
+                <input type="text" name="SearchKey" value="" onSelect="ShowList(document.frm,this);"/>
+	</td>
+	<td>
+               	<b>$brih_course $brih_for $brih_searchBy</b>&nbsp;&nbsp;
+		<select name="queryList" class="drop">
+        		<option value="CourseId"> $brih_course $brih_Of1 $brih_ID</option>
+                        <option value="Course Name"> $brih_course $brih_Of1 $brih_name</option>
+		</select>
+	</td>
+	<td>
+                <b> $RemoteInstitute  $brih_for $brih_searchBy</b>&nbsp;&nbsp;
+
+		<select name="InstId" onChange="ShowList(document.frm,this);" class="drop" style="width:300px;" />
+		#if($InstName!="")
+		        <option value="$Instid">$InstName</option>
+                	<option value=""></option>
+	                #foreach ($iname in $instdetail)
+        	                #if($iname.getInstituteName()!= $InstName)
+                	                <option value="$iname.getInstituteId()" style="width:275px;" title="$iname.getInstituteName()">$iname.getInstituteName()</option>
+                        	#end
+	                #end
+		#else	
+		        <option value=""></option>
+                	#foreach ($iname in $instdetail)
+                        	<option value="$iname.getInstituteId()" style="width:275px;" title="$iname.getInstituteName()">$iname.getInstituteName()</option>
+	                #end
+		#end
+		</select>
+	</td>
+	<td>
+		<b>$brih_list $brih_for $brih_num $brih_select</b>&nbsp;&nbsp;
+		<select name="SearchList" onChange="ShowList(document.frm,this);" class="drop"/>
 			<option value=$ListConf_str>$ListConf_str</option>
 			#foreach($list in $listConf)
-				#if($ListConf_str != $list)
-					<option value=$list>$list</option>
-				#end
+			        #if($ListConf_str != $list)
+			                <option value=$list>$list</option>
+			        #end
 			#end
-                </select>     
-			<b>$brih_list $brih_for $brih_value $brih_select</b>&nbsp;&nbsp;
+		</select>
 	</td>
-	<td align="right">
-	##<b>$brih_course $brih_Of $brih_search</b>&nbsp;&nbsp;<input type="text" name="SearchKey" value="$!SearchKey" onSelect="ShowList(document.frm,this);"/>
-	<input type="text" name="SearchKey" value="$!SearchKey" onSelect="ShowList(document.frm,this);"/>&nbsp;&nbsp;<b> $brih_search1 $brih_course </i>
-	</td>
-	</tr>
-</table>
-#if($status!="empty")
-#set($headings = ["$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_status","$brih_instructor $brih_Of1 $brih_name","$brih_instructor $brih_Of1 $brih_email"] )
-<table align="right" width="100%">
-<tr align="right">
-	<td><font size=4><u><b>$brih_reg2 $brih_course</b></u></font></td>
 </tr>
 </table>
-<table width="100%" bgcolor="$ui.tableColor" align="right">
-	<tr align="right">
-  		#foreach ($heading in $headings)
-  		<td bgcolor="$ui.menuColor"><font size=4><b>$heading</b></font></td>
-		#end
-	</tr>
-	#foreach($entry in $allcourse)
-		#if($velocityCount%2==0)
-		        <tr bgcolor="$ui.tableColor" align="right">
-	        #else
-	        	<tr bgcolor="$ui.menuColor" align="right">
-	        #end
-		##entryCell($!entry.getGroupName())
-		##entryCell($entry.getCourseName())
-		<td>$entry.getCAlias() : $entry.getCourseName()</td>
-                <td>$!entry.getGroupName()</td>
+#if($status!="empty")
+	#set($headings = ["$brih_instructor $brih_Of1 $brih_email","$brih_instructorName","$brih_status","$RemoteInstitute $brih_name","$brih_course $brih_Of1 $brih_name"] )
 
-		#if ($entry.getActive()=="1")
-			<td ><font color="Green">$brih_active $brih_in $brih_is</font></td>
-		#else
-			<td><font color="Red">$brih_inactive $brih_in $brih_not $brih_is</font></td>
+	<table align="right" bgcolor="$ui.menuColor" width=100%>
+		<tr align="right">
+			<td><b>$brih_reg2 $brih_courses</b></font></td>
+		</tr>
+	</table>
+	<table align="left" width=100% bgcolor="$ui.tableColor">
+		<tr width=100%>
+			#foreach ($heading in $headings)
+				<td><b>$heading</b></td>
+			#end
+		</tr>
+		#foreach($entry in $allcourse)
+			#if($velocityCount%2==0)
+				<tr bgcolor="$ui.tableColor">
+			#else
+				<tr bgcolor="$ui.menuColor">
+			#end
+			##entryCell($!entry.getGroupName())
+			##entryCell($entry.getCourseName())
+			<td>$entry.getCAlias() : $entry.getCourseName()</td>
+			<td>$!entry.getInstName()</td>	
+			#if ($entry.getActive()=="1")
+				<td><font color="Green">$brih_active</font></td>
+			#else
+			 	<td><font color="Red">$brih_inactive</font></td>
+			#end
+			<td>$!entry.getInstructorName()</td>
+			<td><a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a></td>
+			##entryCell($!entry.getInstructorName())
+			##entryCell("<a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a>")
+			</tr>
 		#end
-		##entryCell($!entry.getInstructorName())
-		##entryCell("<a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a>")
-		<td>$!entry.getInstructorName()</td>
-                <td><a href=mailto:$!entry.getEmail()>$!entry.getEmail()</a></td>
-	</tr>
-	#end
-	<tr bgcolor="$ui.menuColor" align="right">
-	<td colspan=5 >
-        	#if($total_size <= $ListConf)
-         	<u><font color="white">$brih_first</font></u> &nbsp;
-         	<u><font color="white">$brih_nxt</font></u> &nbsp;
-         	<u><font color="white">$brih_pre</font></u> &nbsp;
-         	<u><font color="white">$brih_last</font></u> &nbsp;
-          	#elseif($startIndex== $ListConf_str)
-          	<u><font color="white">$brih_first</font></u> &nbsp;
-          	<u><font color="white">$brih_pre</font></u> &nbsp;
-          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$startIndex)">$brih_nxt</a> &nbsp;
-          	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
-         	#elseif($endIndex == $total_size || $endIndex > $total_size)
-         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
-         	<a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-         	<u><font color="white">$brih_nxt</font></u> &nbsp;
-         	<u><font color="white">$brih_last</font></u> &nbsp;
-          	#else
-           	 <a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$check_first)">$brih_first</a> &nbsp;
-           	 <a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-           	 <a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
-            	 <a href="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang).addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
-		#end
-
-
-	</td>
-	</tr>
-</table>
+		<tr bgcolor="$ui.menuColor">
+			<td colspan=5>
+		        	#if($total_size <= $ListConf)
+	        			<img src="$content.getURI("images/First_blank.png")">
+			                <img src="$content.getURI("images/Next_blank.png")">
+			                <img src="$content.getURI("images/Previous_blank.png")">
+			                <img src="$content.getURI("images/Last_blank.png")">
+		                #elseif($startIndex== $ListConf_str)
+			                <img src="$content.getURI("images/First_blank.png")">
+			                <img src="$content.getURI("images/Previous_blank.png")">
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/Next.png")"></a>
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/Last.png")"></a>
+		                #elseif($endIndex == $total_size || $endIndex > $total_size)
+                			<a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/First.png")"></a>
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/Previous.png")"></a>
+			                <img src="$content.getURI("images/Next_blank.png")">
+			                <img src="$content.getURI("images/Last_blank.png")">
+		                #else
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_first).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/First.png")"></a>
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_pre).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/Previous.png")"></a>
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/Next.png")"></a>
+			                <a href="$link.setPage("ViewCourseList.vm").addPathInfo("InstId",$Instid).addPathInfo("queryList",$query).addPathInfo("SearchKey",$SearchKey).addPathInfo("startIndex",$check_last).addPathInfo("SearchList",$ListConf)"><img src="$content.getURI("images/Last.png")"></a>
+		
+				#end
+			</td>
+		</tr>
+	</table>
 #end
 </form>
-
 <SCRIPT LANGUAGE="javascript">
 	function ShowList(frm,field)
 	{

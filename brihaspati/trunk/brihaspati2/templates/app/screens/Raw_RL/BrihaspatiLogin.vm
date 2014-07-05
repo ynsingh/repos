@@ -187,7 +187,7 @@ $page.setBgColor($ui.bgcolor)
 				<table align="right" class="desc" valign="top"> ## 4
 					<tr align="right"><td valign="top"> ## 5, 6
         					<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-						<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $brih_course $brih_Of2 $brih_list</b></a>
+						<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_reg2 $brih_course $brih_Of $brih_list</b></a>
 						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
 						<br>
 
@@ -213,7 +213,7 @@ $page.setBgColor($ui.bgcolor)
 						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
 						<br>
 						<span class="spce" style= "font-size:15px;font-family:Times New Roman;">
-						<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang","english") style="text-decoration:none"><b>$brih_parent $brih_Of1 $brih_reg</b> </a>&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href=$link.setPage("ParentRegistration.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b>$brih_parent $brih_Of1 $brih_reg</b> </a>&nbsp;&nbsp;<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;&nbsp;&nbsp;&nbsp;
 						<br>
 					        <span class="spce" style= "font-size:15px;font-family:Times New Roman;">
 						<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) style="text-decoration:none"><b> $brih_brihaspati $brih_server $brih_from1  $brih_auth</b></a>

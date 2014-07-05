@@ -105,7 +105,7 @@ $!data.getMessage()
 		<option value="student">$brih_student</option>
 	  	</select>
 	 </td>
-	 <td> <b> <font color="Red">*</font> <font face="$ui.sansSerifFonts">$brih_role $brih_select </font> </b> </td>
+	 <td> <font color="Red">*</font> <font face="$ui.sansSerifFonts">$brih_role $brih_select </font> </td>
 </tr>
 <tr align="right">
 	<td colspan="2">
@@ -193,30 +193,30 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" align="right">
 	##formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
 	<td colspan="2">  <input type="text" size="30" name="EMAIL" value=""> </td>
-	<td> <b> <font color=red>*</font>  $brih_email $brih_ID </b></td>
+	<td> <font color=red>*</font>  $brih_email $brih_ID </td>
 </tr>
 <tr align="right">
 	##formPasswordCell(" $brih_pwd " "PASS" "")
 	<td colspan="2"> <input type="password" size="30" name="PASS" value=""> </td>
-	<td> <b> $brih_pwd </b></td>
+	<td> $brih_pwd </td>
 </tr>
 <tr bgcolor="$ui.menuColor" align="right">
 	##formCell(" $brih_first  $brih_name " "FNAME" "")
 	<td colspan="2">  <input type="text" size="30" name="FNAME" value=""></td> 
-	<td> <b> $brih_first  $brih_name </b></td>
+	<td> $brih_first  $brih_name </td>
 </tr>
 <tr align="right">
 	##formCell(" $brih_last $brih_name " "LNAME" "")
 	<td colspan="2"> <input type="text" size="30" name="LNAME" value=""> </td>
-	<td> <b>$brih_last $brih_name </b></td>
+	<td> $brih_last $brih_name </td>
 </tr>	
 #*<tr bgcolor="$ui.menuColor" align="right">
 	##formCell(" $online_organisation " "ORGTN" "")
 	<td colspan="2"><input type="text" size="30" name="ORGTN" value=""> </td>
-	<td> <b> $online_organisation </b> </td>
+	<td> $online_organisation </td>
 </tr>*#
 <tr bgcolor="$ui.menuColor" align="right">
-        <td colspan=3> 
+        <td colspan=5> 
     		<input type="hidden" name="actionName">
     		<input type="button" class="button-ftextstyle" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
     		<input type="reset" class="button-ftextstyle"  name="Clear" value=" $brih_clear " onClick="checkClear(document.frm,this);"/>

@@ -47,59 +47,60 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 			<tr bgcolor="$ui.menuColor" align="right">
 			##	#formCell ("$RemoteInstitute $brih_name <font color=red>*</font>" "INAME" "")
 				 <td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="INAME" value=""> </font> </td>
-			           <td><b><font face="$ui.sansSerifFonts"><font color=red>*</font> $RemoteInstitute $brih_Of1 $brih_name </font></b> </td>
+			           <td><font face="$ui.sansSerifFonts"><font color=red>*</font> $RemoteInstitute $brih_Of1 $brih_name </font> </td>
 
         		</tr>
         		<tr align="right">
 				##formCell ("$RemoteInstitute $RemoteAddress <font color=red>*</font>" "IADDRESS" "")
 				<td align="right" wiidth=75% > <font face="$ui.sansSerifFonts"> <input type="text" name="IADDRESS" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"><font color=red>*</font> $RemoteInstitute $brih_Of1 $RemoteAddress </font></b></td>
+				<td> <font face="$ui.sansSerifFonts"><font color=red>*</font> $RemoteInstitute $brih_Of1 $RemoteAddress </font></td>
 				
 
 			</tr>
 			<tr bgcolor="$ui.menuColor" align="right">
 				##formCell ("$Inst_city <font color=red>*</font>" "ICITY" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ICITY" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_city </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_city </font></td>
                         </tr>
                         <tr align="right">
                                 ##formCell ("$Inst_pincode <font color=red>*</font>" "IPINCODE" "")
 				<td align="right" width=75%>  <font face="$ui.sansSerifFonts"> <input type="text" name="IPINCODE" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_pincode </font> </b> </td>
+				<td><font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_pincode </font> </td>
                         </tr>
 			<tr bgcolor="$ui.menuColor" align="right">
 				##formCell ("$Inst_state <font color=red>*</font>" "ISTATE" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ISTATE" value=""> </font> </td>
-				 <td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_state </font> </b> </td>
+				 <td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_state </font></td>
                         </tr>
 #*
                                 ###formCell ("$Inst_landline <font color=red>*</font>" "ILANDLINE" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="ILANDLINE" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_landline  </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $Inst_landline  </font></td>
 
 *#
                         <tr align="right">
-                                <tdalign="right"><font color=red>*</font> $Inst_landline</td>
+                                <td></td>
+                                <td align="right"><font color=red>*</font> $Inst_landline</td>
                         </tr>
                         <tr align="right">
                                 <td>+<input type="text" name="ccode" value="91">
                                 <td>$brih_country $brih_code</td>
                         </tr>
                         <tr align="right">
-                                <td> Ex.(0512)$brih_knp $brih_for <input type="text" name="rcode" value=""> </td>
-                                <td>$brih_region $brih_code </td>
+                                <td> (0512)$brih_example $brih_knp $brih_for <input type="text" name="rcode" value=""> </td>
+                                <td>$brih_region $brih_Of1 $brih_code </td>
                         </tr>
                         <tr align="right">
                                 <td>
 				##<input type="text" name="phnumber" value=""> Ex.
-				 Ex. (2597841)$brih_iit $brih_knp $brih_for <input type="text" name="phnumber" value=""> </td>
-                                <td>$brih_num </td>
+				 (2597841)$brih_example $brih_iit $brih_knp $brih_for <input type="text" name="phnumber" value=""> </td>
+                                <td>$brih_phone </td>
                         </tr>
 
 			<tr bgcolor="$ui.menuColor" align="right">
 				## #formCell ("$RemoteInstitute $brih_domain <font color=red>*</font>" "IDOMAIN" "")
 				<td align="right" width=75%>@<font face="$ui.sansSerifFonts"> <input type="text" name="IDOMAIN" value=""> </font></td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of1 $brih_domain </font> </b> </td>
+				<td>  <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of1 $brih_domain </font>  </td>
                         </tr>
                         <tr align="right">
                                 ###formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
@@ -111,46 +112,46 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 				        <option value=SF>$brih_sf</option>
 				        <option value=Other>$brih_other</option>
                                 </select></td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of $brih_type </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of $brih_type </font>  </td>
                         </tr>
                         <tr bgcolor="$ui.menuColor" align="right">
                                 ##formCell ("$RemoteInstitute $Inst_website <font color=red>*</font>" "IWEBSITE" "")
 				 <td align="right" width=75%> http:// <font face="$ui.sansSerifFonts"> <input type="text" name="IWEBSITE" value=""></font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of $Inst_website </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $RemoteInstitute $brih_Of $Inst_website </font> </td>
                         </tr>
 			<tr align="right">
 		           ##formCell ("$brih_ad $brih_Of1 $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="IADMINFNAME" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_first $brih_name  </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_first $brih_name  </font>  </td>
                         </tr>
                         <tr bgcolor="$ui.menuColor" align="right"> 
 				##formCell ("$brih_ad $brih_Of1 $brih_last $brih_name<font color=red>*</font>" "IADMINLNAME" "")
 				 <td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="IADMINLNAME" value=""> </font> </td>
-				 <td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_last $brih_name  </font> </b> </td>
+				 <td><font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_last $brih_name  </font> </td>
                         </tr>
 			<tr align="right">
 				##formCell ("$brih_ad $brih_Of1 $Inst_designation<font color=red>*</font>" "IADMINDESIGNATION" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="IADMINDESIGNATION" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $Inst_designation </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $Inst_designation </font> </td>
                         </tr>
 
                         <tr bgcolor="$ui.menuColor" align="right"> 
                                 ##formCell ("$brih_ad $brih_Of1 $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="text" name="IADMINEMAIL" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_email </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_email </font> </td>
 
                         </tr>
 			<tr align="right"> 
 				##formPasswordCell ("$brih_ad $brih_pwd<font color=red>*</font>" "IADMINPASSWORD" "")
 				<td align="right" width=75%> <font face="$ui.sansSerifFonts"> <input type="password" name="IADMINPASSWORD" value=""> </font> </td>
-				<td> <b> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_pwd </font> </b> </td>
+				<td> <font face="$ui.sansSerifFonts"> <font color=red>*</font> $brih_ad $brih_Of1 $brih_pwd </font> </td>
                         </tr>
                         <tr bgcolor="$ui.menuColor" align="right"> 
                                 ##formCell ("$brih_ad $brih_Of1 $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
         			<td colspan=2 align="right">
 				<input type="hidden" name="actionName">
-				<input type="button" class="button-ftextstyle" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
         			<input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
         			</td>
         		</tr>
 			
