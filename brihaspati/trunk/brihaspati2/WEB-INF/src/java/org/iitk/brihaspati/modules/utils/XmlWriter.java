@@ -417,7 +417,15 @@ public class XmlWriter
 			atsLength=ats.getLength();
 			for(int i=0;i<atsLength;i++)
 			{
-				fos.write( (" "+ ats.getLocalName(i)+"=\""+ats.getValue(i)+"\"").getBytes());
+				if(ats.getValue(i).contains("&amp;frasl;"))
+				{
+					String str=ats.getValue(i);
+					String actval=str.replaceAll("&amp;frasl;","/");
+					fos.write( (" "+ ats.getLocalName(i)+"=\""+actval+"\"").getBytes());
+				}
+				else{
+					fos.write( (" "+ ats.getLocalName(i)+"=\""+ats.getValue(i)+"\"").getBytes());
+				}
 			}
 		}
 		String Data=xd.getData();
