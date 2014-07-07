@@ -7,7 +7,7 @@ class Addparty extends Controller {
 		parent::Controller();
 
 		/* Check access */
-		if ( ! check_access('administer'))
+		if ( ! check_access('create entry'))
 		{
 			$this->messages->add('Permission denied.', 'error');
 			redirect('');
@@ -109,7 +109,6 @@ class Addparty extends Controller {
 	}
 	function add()
 	{
-		//$this->load->helper('file');
 		$this->load->library('form_validation');
 		$this->template->set('page_title', 'Add Party');
 
@@ -277,6 +276,12 @@ class Addparty extends Controller {
 			}
 			if($code == "07"){
 			$prole="service provider";	
+			}
+			if(($code !="00")&&($code !="01")&&($code !="02")&&($code !="03")&&($code !="04")&&($code !="05")&&($code !="06")&&($code !="07"))
+			{
+                                $this->messages->add('Please insert the second unit id with given code.', 'error');
+                                $this->template->load('template', 'addparty/add', $data);
+                                return;
 			}
 			$data_pname = $this->input->post('pname', TRUE);
                         $data_mnumber = $this->input->post('mnumber', TRUE);

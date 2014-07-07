@@ -11,6 +11,7 @@ class Entry extends Controller {
 		$this->load->model('Tag_model');
 		$this->load->model('Budget_model');
 		$this->load->library('GetParentlist');
+		$this->load->model('Secunit_model');
 		return;
 	}
 
@@ -662,7 +663,9 @@ class Entry extends Controller {
 		//$data['income'] = array( 'Income from Invest' => 'Income from investments made of the funds',
 					 //'Accrued Int' => 'Accrued interest on investments of the funds');
 		//$data['income_select'] = 0;
-
+		$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
+                $data['sec_unit_active'] = " ";	
+		
 		$options = array();
                 $this->db->select('name, label');
                 $this->db->from('entry_types');
@@ -693,6 +696,7 @@ class Entry extends Controller {
 		$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
 		$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
 		$this->form_validation->set_rules('banif_name', 'Beneficiary name', 'trim');
+		$this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim');
 		/* Debit and Credit amount validation */
 			
 		
@@ -727,6 +731,8 @@ class Entry extends Controller {
                         $data['cheque'] = $this->input->post('cheque', TRUE);
 			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			//$data['income_select'] = $this->input->post('income', TRUE);
+			$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
+
 		} 
 		else {
 			for ($count = 0; $count <= 3; $count++)
@@ -771,7 +777,7 @@ class Entry extends Controller {
                         $data_cheque = $this->input->post('cheque', TRUE);
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$bank_cash_global = '';
-
+			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                         {
 
@@ -819,7 +825,7 @@ class Entry extends Controller {
                                         $data_number = $this->Entry_model->next_entry_number($entry_type_id);
                         }
 		
-			foreach ($data_all_ledger_dc as $id => $ledger_data)
+		foreach ($data_all_ledger_dc as $id => $ledger_data)
 			{
 				
 				//these lines existed earlier
@@ -957,6 +963,7 @@ class Entry extends Controller {
 			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$entry_id = NULL;
 			$uname=$this->session->userdata('user_name');
+                        $sec_unit=$this->session->userdata('sec_unit_id');
 			$today = date("Y-m-d H:i:s");
 			$this->db->trans_start();
 			$insert_data = array(
@@ -968,7 +975,8 @@ class Entry extends Controller {
 				'update_date' => $today,
 				'submitted_by' => $uname,
 				'forward_refrence_id' => '0',
-				'backward_refrence_id' => $data_back_refrence
+				'backward_refrence_id' => $data_back_refrence,
+				'secunitid' => $sec_unit,
 			);
 
 			 //echo random_element($insert_data);
@@ -999,7 +1007,7 @@ class Entry extends Controller {
 			$data_amount = 0;
 			$useamt = 0;
 			$allow = 0;
-
+ 
 
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
 			{
@@ -1258,7 +1266,7 @@ class Entry extends Controller {
                                		        'dc' => 'D',
 	                                        'update_date' => $data_date,
                		                        'forward_refrence_id' => '0',
-                               		        'backward_refrence_id' => $data_back_refrence
+                               		        'backward_refrence_id' => $data_back_refrence,
 	                                );
 
         	                        if ( ! $this->db->insert('entry_items', $insert_fund_data))
@@ -1280,7 +1288,7 @@ class Entry extends Controller {
                         	                'dc' => 'C',
                                 		'update_date' => $data_date,
 	                                        'forward_refrence_id' => '0',
-        	                                'backward_refrence_id' => $data_back_refrence
+        	                                'backward_refrence_id' => $data_back_refrence,
                 	                );
 
 	                                if ( ! $this->db->insert('entry_items', $insert_income_data))
@@ -1297,7 +1305,7 @@ class Entry extends Controller {
 					'dc' => $data_ledger_dc,
 					'update_date' => $data_date,
 					'forward_refrence_id' => '0',
-	                                'backward_refrence_id' => $data_back_refrence
+	                                'backward_refrence_id' => $data_back_refrence,
 				);
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
@@ -1409,7 +1417,7 @@ class Entry extends Controller {
 			$this->session->set_userdata('entry_added_number', $data_number);
 			/* Showing success message in show() method since message is too long for storing it in session */
 			$this->logger->write_message("success", "Added " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
-			redirect('entry/show/' . $current_entry_type['label']);
+			//redirect('entry/show/' . $current_entry_type['label']);
 			$this->template->load('template', 'entry/add', $data);
 			return;
 		}
@@ -1950,6 +1958,7 @@ class Entry extends Controller {
 			$data_date = $this->input->post('entry_date', TRUE);
 			$data_narration = $this->input->post('entry_narration', TRUE);
 			$data_tag = $this->input->post('entry_tag', TRUE);
+			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 			if ($data_tag < 1)
 				$data_tag = NULL;
 			$this->db->select('id')->from('entry_types')->where('name', $data_entry_name);
@@ -3621,6 +3630,8 @@ class Entry extends Controller {
                         'rows' => '4',
                         'value' => '',
                 );
+		$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
+                $data['sec_unit_active']=0;
                 $data['entry_type_id'] = $entry_type_id;
                 $data['current_entry_type'] = $current_entry_type;
                 $data['entry_tags'] = $this->Tag_model->get_all_tags();
@@ -3658,6 +3669,8 @@ class Entry extends Controller {
 			$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
                 	$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
 			$this->form_validation->set_rules('banif_name', 'Beneficiary Name', 'trim');
+                        $this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim|required');
+
                 /* Debit and Credit amount validation */
                 if ($_POST)
                 {
@@ -3687,6 +3700,7 @@ class Entry extends Controller {
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
 			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
+			$data['sec_unit_active'] = $this->input->post('sec_unit_id', TRUE);
                 }
 		else {
                         for ($count = 0; $count <= 3; $count++)
@@ -3697,7 +3711,7 @@ class Entry extends Controller {
                                 else if ($count == 1 && $entry_type != "payment")
                                         $data['ledger_dc'][$count] = "C";
                                 else*/
-                                        $data['ledger_dc'][$count] = "D";
+                                $data['ledger_dc'][$count] = "D";
                                 $data['ledger_id'][$count] = 0;
                                 $data['dr_amount'][$count] = "";
                                 $data['cr_amount'][$count] = "";
@@ -3720,7 +3734,7 @@ class Entry extends Controller {
                         $data_bank_name = $this->input->post('bank_name', TRUE);
                         $data_entry_name = $this->input->post('entry_name', TRUE);
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
-
+			$data_sec_unit_active = $this->input->post('sec_unit_id', TRUE);
                         $dr_total = 0;
                         $cr_total = 0;
 			$det='';
@@ -3772,17 +3786,17 @@ class Entry extends Controller {
 
 			if($det){
                         	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create ', 'error');
-                                //$this->template->load('template', 'entry/checkentry', $data);
-                                //return;
+                                $this->template->load('template', 'entry/checkentry', $data);
+                                return;
                         }
                         else{
                                 $this->add($entry_type);
-                        //        redirect('entry/show/' . $entry_type);
-			//	return;
+                                redirect('entry/show/' . $entry_type);
+				return;
                         }
                 }
-                $this->template->load('template', 'entry/checkentry', $data);
-                return;
+                //$this->template->load('template', 'entry/checkentry', $data);
+                //return;
         }
 
 	function ledger_fund($id){
@@ -3837,6 +3851,12 @@ class Entry extends Controller {
                         $parent = $parent . " -> " . $ledger_name->name;
                 }
 		echo $parent;
+        }
+
+	function set_secunit_id($id){
+                $this->load->library('session');
+                $this->session->set_userdata('sec_unit_id', $id);
+		return;
         }
 }
 

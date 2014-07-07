@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS entries (
   forward_refrence_id int(11) DEFAULT NULL,
   backward_refrence_id int(11) DEFAULT NULL,
   modifiedvalue BLOB,	
+  secunitid VARCHAR(10) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 

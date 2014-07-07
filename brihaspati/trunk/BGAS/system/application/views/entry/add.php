@@ -301,6 +301,16 @@ var dc = '';
 		$('.dr-item:first').trigger('change');
 		$('.cr-item:first').trigger('change');
 	});
+	
+	$('.secid_dropdown').live('change', function() {
+                var secunitid = $(this).val();
+		$.ajax({
+                	url: <?php echo '\'' . site_url('entry/set_secunit_id') . '/\''; ?> + secunitid,
+                        success: function() {
+                        	location.reload();
+                        }
+                });
+        });
 
 	/* Ledger dropdown changed */
 	$('.ledger-dropdown').live('change', function() {
@@ -624,7 +634,7 @@ var dc = '';
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><td>Sec Unit Id</td><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
 	{
@@ -674,6 +684,7 @@ var dc = '';
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
+		echo "<td>" . form_dropdown('sec_unit_id', $sec_unit_id, $sec_unit_active, "class = \"secid_dropdown\""). "</td>";
 		echo "<td>" . form_input($cheque) . "</td>";
 
 		$temp = "fund-list".$i;
