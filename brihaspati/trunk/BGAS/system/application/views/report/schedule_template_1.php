@@ -76,9 +76,9 @@
         $dr_total = $liability->dr_total;
 
         $total = $cr_total - $dr_total;
-	$liability->getPreviousYearDetails();
+	//$liability->getPreviousYearDetails();
 	//$liability->previous_year_data(1);
-	$liability->callToOldSchedule(1);
+//	$liability->callToOldSchedule(1);
 	$old_cr_total = $liability->old_cr_total;
         $old_dr_total = $liability->old_dr_total;
 
@@ -211,7 +211,6 @@
 		}
         }
                                 
-
 	echo "<tr>";
                 echo "<td width=40% class=\"bold\">";
                         echo "BALANCE AT THE YEAR-END";

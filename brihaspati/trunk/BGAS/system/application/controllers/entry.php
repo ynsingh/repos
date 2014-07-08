@@ -658,11 +658,9 @@ class Entry extends Controller {
 		$data['entry_tags'] = $this->Tag_model->get_all_tags();
 		$data['entry_tag'] = 0;
 
-		$data['fund_list'] = $this->Ledger_model->get_ledgers();
-                $data['fund_list_active'] = 0;
-		//$data['income'] = array( 'Income from Invest' => 'Income from investments made of the funds',
-					 //'Accrued Int' => 'Accrued interest on investments of the funds');
-		//$data['income_select'] = 0;
+		//$data['fund_list'] = $this->Ledger_model->get_ledgers();
+                //$data['fund_list_active'] = 0;
+		
 		$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
                 $data['sec_unit_active'] = " ";	
 		
@@ -729,8 +727,8 @@ class Entry extends Controller {
 			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
-			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
-			//$data['income_select'] = $this->input->post('income', TRUE);
+			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
+			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 			$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
 
 		} 
@@ -1432,50 +1430,51 @@ class Entry extends Controller {
 
 	function ledger_code($ledger_id = 0)
         {
-		$account_code = 0;
+                $account_code = 0;
                 if ($ledger_id > 0){
                         $code = $this->Ledger_model->get_ledger_code($ledger_id);
-			$account_code = $this->Budget_model->get_account_code('Expenses');
-			$finance_cost_code = $this->Budget_model->get_account_code('Finance Costs');
+                        $account_code = $this->Budget_model->get_account_code('Expenses');
+                        $finance_cost_code = $this->Budget_model->get_account_code('Finance Costs');
                         $other_expenses_code = $this->Budget_model->get_account_code('Other expenses');
                         $depreciation_code = $this->Budget_model->get_account_code('Depriciation');
-			$temp = $this->startsWith($code, $account_code);
+                        $temp = $this->startsWith($code, $account_code);
                         if($temp){
-				if($this->startsWith($code, $other_expenses_code) || $this->startsWith($code, $depreciation_code) || $this->startsWith($code, $finance_cost_code))
-					echo "Expense-e";
-/*                                elseif($this->startsWith($code, $depreciation_code))
-					echo "Expense-e";
-                                elseif($this->startsWith($code, $finance_code))
-			              	echo "Expense-e";*/
-				else
-					echo "Expense";
-			}
 
-			$account_code = $this->Budget_model->get_account_code('Incomes');
-			$income_investment_code = $this->Budget_model->get_account_code('Income from Investments');		
+                                if(($other_expenses_code != '') && ($this->startsWith($code, $other_expenses_code)))
+                                        echo "Expense-e";
+                                elseif(($depreciation_code != '') && ($this->startsWith($code, $depreciation_code)))
+                                        echo "Expense-e";
+                                elseif(($finance_cost_code != '') && ($this->startsWith($code, $finance_cost_code)))
+                                        echo "Expense-e";
+                                else
+                                        echo "Expense";
+                        }
+
+                        $account_code = $this->Budget_model->get_account_code('Incomes');
+                        $income_investment_code = $this->Budget_model->get_account_code('Income from Investments');
                         $temp = $this->startsWith($code, $account_code);
                         if($temp){
-				if($this->startsWith($code, $income_investment_code))
-					echo "Income";
-				else
-					echo "Income-e";
-			}
-                                        
-			$account_code = $this->Budget_model->get_account_code('Assets');
-			$loan_code = $this->Budget_model->get_account_code('Loans Advances and Deposits');
+                                if($this->startsWith($code, $income_investment_code))
+                                        echo "Income";
+                                else
+                                        echo "Income-e";
+                        }
+
+                        $account_code = $this->Budget_model->get_account_code('Assets');
+                        $loan_code = $this->Budget_model->get_account_code('Loans Advances and Deposits');
                         $temp = $this->startsWith($code, $account_code);
                         if($temp){
-				if($this->startsWith($code, $loan_code))
-					echo "Asset-e";
-				else
-	                                echo "Asset";
-			}
+                                if(($loan_code != '') && ($this->startsWith($code, $loan_code)))
+                                        echo "Asset-e";
+                                else
+                                        echo "Asset";
+                        }
                 }else{
                         echo "";
-		}
+                }
                 return;
         }
-	
+
 	 function check_acc($ledger_id = 0)
         {
         if ($ledger_id > 0)
@@ -1634,8 +1633,6 @@ class Entry extends Controller {
                         'value' => $cur_entry->backward_refrence_id,
                 );
 
-		//$data['fund_list'] = $this->Ledger_model->get_ledgers();
-                //$data['fund_list_active'] = 0;
 
 		$debitled="";
 		$debitid="";
@@ -1701,7 +1698,6 @@ class Entry extends Controller {
 							if($temp){
 								$bank_cash = $this->Ledger_model->get_ledgers_bankcash($debitid);
 								if($bank_cash == 0){
-                                                                //$data['fund_list_active'.$counter][$counter]= $fund_id;
 	                                                                $data['fund_list'][$counter] = $fund_id;
                                                                 	$flag = 0;
 	                                                                $fund_id = null;
@@ -1714,7 +1710,6 @@ class Entry extends Controller {
 								$account_code = $this->Budget_model->get_account_code('Expenses');
 	                                                        $temp = $this->startsWith($ledger_code, $account_code);
 								if($temp){
-                                                                //$data['fund_list_active'.$counter][$counter]= $fund_id;
                                                                 	$data['fund_list'][$counter] = $fund_id;
 	                                                                $flag = 0;
         	                                                        $fund_id = null;
@@ -1740,7 +1735,7 @@ class Entry extends Controller {
 							$creditid=$row->ledger_id;
 							$data['dr_amount'][$counter] = "";
 							$data['cr_amount'][$counter] = $row->amount;
-							$data['fund_list_active'.$counter][$counter]= 0;
+							$data['fund_list'][$counter]= 0;
 						}
 						if ($row->reconciliation_date)
 							$data['has_reconciliation'] = TRUE;
@@ -1806,7 +1801,7 @@ class Entry extends Controller {
 			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
                         $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('cheque', TRUE);
-			$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
+			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)

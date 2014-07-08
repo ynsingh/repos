@@ -22,19 +22,26 @@ class Payrollsetup_model extends Model {
                 return $options;
         }
 
+
 	/** 
-	 * Returns code of the requested account, 
-	 * as specified in the 'groups' table
-	 */
-	function get_account_code($account_name)
-	{
-		$this->db->from('groups');
-                $this->db->select('code')->where('name =', $account_name);
+         * Returns code of the requested account, 
+         * as specified in the 'groups' table
+         */
+        function get_account_code($account_name)
+        {
+                $this->db->from('groups');
+                $this->db->select('code');
+                $this->db->where('name =', $account_name);
+                if($account_name == 'Expenses')
+                        $this->db->or_where('name = ', 'Expenditure');
+                if($account_name == 'Liabilities and Owners Equity')
+                        $this->db->or_where('name = ', 'Sources of Funds');
+                if($account_name == 'Assets')
+                        $this->db->or_where('name = ', 'Application of Funds');
                 $group = $this->db->get();
                 foreach($group->result() as $row)
-			return $row->code;                			
-	}
-
+                        return $row->code;
+        }
 
 	function get_selected_groups_withcode($account_name)
         {
@@ -46,7 +53,7 @@ class Payrollsetup_model extends Model {
                 //$this->db->where('code LIKE', '40%');
                 $this->db->where('code LIKE', $account_code.'%');
                 //$this->db->where('code NOT LIKE', '40');
-                if($account_name == 'Expenses')
+                if($account_name == 'Expenses' || $account_name == 'Expenditure')
                         $this->db->where('code NOT LIKE', $account_code);
                 $this->db->where('status', '0')->order_by('name', 'asc');
                 $group_code = $this->db->get();

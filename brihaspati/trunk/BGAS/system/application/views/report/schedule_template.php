@@ -77,9 +77,9 @@
 		$total = $cr_total - $dr_total;
 	else
 	        $total = $dr_total - $cr_total;
-	$object->getPreviousYearDetails();	
+	/*$object->getPreviousYearDetails();	
 	
-	$object->callToOldSchedule(1);
+	$object->callToOldSchedule(1);*/
 	$old_cr_total = $object->old_cr_total;
         $old_dr_total = $object->old_dr_total;
         //$old_total = $old_cr_total - $old_dr_total;

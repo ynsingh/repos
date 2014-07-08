@@ -384,15 +384,15 @@ var dc = '';
                                         if (isNaN(ledger_bal))
                                                 ledger_bal = 0;
                                         if (jsFloatOps(ledger_bal, 0, '=='))
-                                                rowid.parent().next().next().next().next().next().next().children().text("0");
+                                                rowid.parent().next().next().next().next().next().next().next().next().children().text("0");
                                         else if (jsFloatOps(ledger_bal, 0, '<'))
-                                                rowid.parent().next().next().next().next().next().next().children().text("Cr " + -data);
+                                                rowid.parent().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
                                         else
-                                                rowid.parent().next().next().next().next().next().next().children().text("Dr " + data);
+                                                rowid.parent().next().next().next().next().next().next().next().next().children().text("Dr " + data);
                                 }
                         });
                 } else {
-                        rowid.parent().next().next().next().next().next().next().children().text("");
+                        rowid.parent().next().next().next().next().next().next().next().next().children().text("");
                 }
 
 

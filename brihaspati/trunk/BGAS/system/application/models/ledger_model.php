@@ -1234,18 +1234,30 @@ var $ledgers = array();
 		$restricted_code = $this->get_account_code('Restricted Funds');
 		$general_fund = $this->get_account_code('General Funds');
 
+		$current_liab = $this->get_account_code('Current Liabilities-L');
+                $provision = $this->get_account_code('Provision');
+
 		$this->db->select('name, id, group_id, code');
 		$this->db->from('ledgers');
 		//$this->db->like('code', '10', 'after'); 
 		$this->db->like('code', $income_code, 'after');
+		$this->db->not_like('name', 'General', 'both');
+		$this->db->not_like('name', 'Capital', 'both');
+		$this->db->not_like('name', 'Income & Expenditure', 'both');
 		$query = $this->db->get();
 
 		$funds[0] = 'Select Fund';
 		if($query->num_rows() > 0){
 			foreach($query->result() as $ledger){
-				if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code)){
-					if(!($this->startsWith($ledger->code, $general_fund)))
+				if(($unrestricted_code != '') &&  ($restricted_code != '') && ($general_fund != '')){
+					if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code)){
+						if(!($this->startsWith($ledger->code, $general_fund)))
+							$funds[$ledger->id] = $ledger->name;
+					}
+				}elseif(($current_liab != '') && ($provision != '')){
+					if(!($this->startsWith($ledger->code, $current_liab)) && !($this->startsWith($ledger->code, $provision))){
 						$funds[$ledger->id] = $ledger->name;
+					}
 				}
 			}
 		}

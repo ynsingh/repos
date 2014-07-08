@@ -467,15 +467,15 @@ var dc = '';
 					if (isNaN(ledger_bal))
 						ledger_bal = 0;
 					if (jsFloatOps(ledger_bal, 0, '=='))
-						rowid.parent().next().next().next().next().next().next().children().text("0");
+						rowid.parent().next().next().next().next().next().next().next().next().children().text("0");
 					else if (jsFloatOps(ledger_bal, 0, '<'))
-						rowid.parent().next().next().next().next().next().next().children().text("Cr " + -data);
+						rowid.parent().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
 					else
-						rowid.parent().next().next().next().next().next().next().children().text("Dr " + data);
+						rowid.parent().next().next().next().next().next().next().next().next().children().text("Dr " + data);
 				}
 			});
 		} else {
-			rowid.parent().next().next().next().next().next().next().children().text("");
+			rowid.parent().next().next().next().next().next().next().next().next().children().text("");
 		}
 	});
 
@@ -634,7 +634,7 @@ var dc = '';
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><td>Sec Unit Id</td><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Sec Unit Id</th><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
 	{
@@ -688,7 +688,8 @@ var dc = '';
 		echo "<td>" . form_input($cheque) . "</td>";
 
 		$temp = "fund-list".$i;
-		echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
+		//echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
+		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
 
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";

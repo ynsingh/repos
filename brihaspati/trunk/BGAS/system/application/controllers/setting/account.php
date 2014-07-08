@@ -201,7 +201,7 @@ class Account extends Controller {
 
 			if($account_data->account_flag == 'false')
                                 $data_chart_account = $this->input->post('chart_account', TRUE);
-			$this->logger->write_message("success", "chart == ".$data_chart_account);
+			//$this->logger->write_message("success", "chart == ".$data_chart_account);
 			if($data_chart_account != 'mhrd'){
 				$data_liability_ledger_name = $this->input->post('ledger_name', TRUE);
 				$arr = explode(': ',$data_liability_ledger_name);
@@ -215,7 +215,7 @@ class Account extends Controller {
 			/* Update settings */
 			$this->db->trans_start();
 			if($account_data->account_flag == 'false'){
-			$this->logger->write_message("success", "i readched here");
+			//$this->logger->write_message("success", "i readched here");
 				$update_data = array(
 	                                'name' => $data_account_name,
         	                        'address' => $data_account_address,

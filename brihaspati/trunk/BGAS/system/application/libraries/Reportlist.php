@@ -6,8 +6,8 @@ class Reportlist
 	var $name = "";
 	var $code = "";
 	var $status = 0;
-	var $total = 0;
-	var $total2 = 0;
+	var $total = 0.00;
+	var $total2 = 0.00;
 	var $optype = "";
 	var $opbalance = 0;
 	var $schedule = 0;
@@ -16,16 +16,16 @@ class Reportlist
 	var $counter = 0;
 	//var $check = 0;
 
-	var $dr_total = 0;
-        var $cr_total = 0;
-        var $old_dr_total = 0;
-        var $old_cr_total = 0;
-        var $netpl = 0;
-        var $netpl_old = 0;
+	var $dr_total = 0.00;
+        var $cr_total = 0.00;
+        var $old_dr_total = 0.00;
+        var $old_cr_total = 0.00;
+        var $netpl = 0.00;
+        var $netpl_old = 0.00;
 	var $prevYearDB = "";
-        var $old_total = 0;
-	var $opening_balance = 0;
-	var $opening_balance_prev = 0;
+        var $old_total = 0.00;
+	var $opening_balance = 0.00;
+	var $opening_balance_prev = 0.00;
 	//var $opening_balance_type = "";
 	var $db_username = "";
 	var $db_password = "";
@@ -290,6 +290,29 @@ class Reportlist
 				                        $this->total2 = float_ops($this->total2, -$old_pandl, '+');
 					}
 	                        }
+			}else{
+				$income = new Reportlist();
+                                $income->init(3);
+                                $expense = new Reportlist();
+                                $expense->init(4);
+                                $income_total = -$income->total;
+                                $old_income_total = -$income->total2;
+                                $expense_total = $expense->total;
+                                $old_expense_total = $expense->total2;
+                                $pandl = float_ops($income_total, $expense_total, '-');
+                                $old_pandl = float_ops($old_income_total, $old_expense_total, '-');
+                                if ($pandl != 0 || $old_pandl !=0)
+                                {
+  	                              //the change in sign is needed
+                                      if($pandl > 0)
+        	                              $this->total = float_ops($this->total, -$pandl, '+');
+                                      else
+                                              $this->total = float_ops($this->total, -$pandl, '+');
+                                      if($old_pandl > 0)
+                                              $this->total2 = float_ops($this->total2, -$old_pandl, '+');
+                                      else
+                                              $this->total2 = float_ops($this->total2, -$old_pandl, '+');
+                                }
 			}
 
                         echo "</td>";
@@ -360,7 +383,21 @@ class Reportlist
                         $this->counter = $data->new_balance_sheet($this->counter);
   
                 }
-		//}
+
+		/*foreach ($this->children_ledgers as $id => $led_data){
+			$search = '1234567890';
+	                $code = strlen($led_data['code']) - strlen(str_replace(str_split($search), '', $led_data['code']));
+			if($code == 6){
+			echo "<tr>";
+                        	echo "<td class=\"td-group\">";
+		                        echo "&nbsp;" .  $led_data['name'];
+                	        echo "</td>";
+				echo "<td></td>";	
+				echo "<td align=\"right\">" . convert_amount_dc($led_data['total']) . "</td>";
+	                        echo "<td align=\"right\">" . convert_amount_dc($led_data['total2']) . "</td>";
+                        echo "</tr>";
+			}
+		}*/
                 return $this->counter;
         }
 
@@ -371,6 +408,7 @@ class Reportlist
                 $count = strlen($this->code) - strlen(str_replace(str_split($search), '', $this->code));
                 return $count;
         }	
+
 
 	/**
 	 * Supplementary method for calling method: schedule().	
@@ -415,97 +453,6 @@ class Reportlist
                 	}
 		}
 
-        }
-
-	function calculateOpBalance($year, $name)
-        {
-		$CI =& get_instance();
-                $CI->load->model('Ledger_model');
-                if($year == 'new'){
-    	            //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
-                    list($opBal, $optype) = $CI->Ledger_model->get_op_balance($this->id);
-                    $this->opening_balance = $this->opening_balance + $opBal;
-                    if($name == 'schedule'){
-	                    if($optype == 'C')
-        	                    $this->cr_total = $this->cr_total + $opBal;
-                            elseif($optype == 'D')
-                                    $this->dr_total = $this->dr_total + $opBal;
-                    }else
-                    {
-                            if($optype == 'C')
-                                    $this->total = $this->total - $opBal;
-                            elseif($optype == 'D')
-                                    $this->total = $this->total + $opBal;
-                    }
-
-                }elseif($year == 'old'){
-                    //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
-                    list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($this->id);
-                    $this->opening_balance_prev = $this->opening_balance_prev + $opBal;
-                    if($name == 'schedule'){
-                   	 if($optype == 'C')
-                        	 $this->old_cr_total = $this->old_cr_total + $opBal;
-                         elseif($optype == 'D')
-                                 $this->old_dr_total = $this->old_dr_total + $opBal;
-                    }else{
-                         if($optype == 'C')
-                                 $this->total2 = $this->total2 - $opBal;
-                         elseif($optype == 'D')
-                                 $this->total2 = $this->total2 + $opBal;
-                    }
-                }
-                foreach ($this->children_groups as $id => $data)
-                {
-                        $this->counter++;
-                        $data->calculate_op_balance($this->counter, $name);
-                        $this->counter--;
-                }
-                if (count($this->children_ledgers) > 0)
-                {
-                        //$this->counter++;
-                        foreach ($this->children_ledgers as $id => $data)
-                        {
-                                //Get opening balance
-                                $CI =& get_instance();
-                                $CI->load->model('Ledger_model');
-                                if($year == 'new'){
-                                        //list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
-                                        list($opBal, $optype) = $CI->Ledger_model->get_op_balance($data['id']);
-                                        $this->opening_balance = $this->opening_balance + $opBal;
-                                        if($name == 'schedule'){
-                                                if($optype == 'C')
-                                                        $this->cr_total = $this->cr_total + $opBal;
-                                                elseif($optype == 'D')
-                                                        $this->dr_total = $this->dr_total + $opBal;
-                                        }else
-                                        {
-                                                if($optype == 'C')
-                                                        $this->total = $this->total - $opBal;
-                                                elseif($optype == 'D')
-                                                        $this->total = $this->total + $opBal;
-                                        }
-
-                                }
-                                elseif($year == 'old'){
-                                        //list($opBal, $optype) = $CI->Ledger_model->get_prevToPrev_year_op_balance($data['id']);
-                                        list($opBal, $optype) = $CI->Ledger_model->get_prev_year_op_balance($data['id']);
-                                        $this->opening_balance_prev = $this->opening_balance_prev + $opBal;
-                                        if($name == 'schedule'){
-                                                if($optype == 'C')
-                                                        $this->old_cr_total = $this->old_cr_total + $opBal;
-                                                elseif($optype == 'D')
-                                                        $this->old_dr_total = $this->old_dr_total + $opBal;
-                                        }
-                                        else
-                                        {
-                                                if($optype == 'C')
-                                                        $this->total2 = $this->total2 - $opBal;
-                                                elseif($optype == 'D')
-                                                        $this->total2 = $this->total2 + $opBal;
-                                        }
-                                }
-                        }
-                }
         }
 
 	function calculate_op_balance($year, $name)
@@ -618,9 +565,13 @@ class Reportlist
 	function callToSchedule($c = 0){
 		$credit_total = 0;
 		$debit_total = 0;
-		list($credit_total, $debit_total) = $this->schedule($c);
+		$old_credit_total = 0;
+                $old_debit_total = 0;
+		list($credit_total, $debit_total, $old_credit_total, $old_debit_total) = $this->schedule($c);
 		$this->cr_total = $this->cr_total + $credit_total;
 		$this->dr_total = $this->dr_total + $debit_total;
+		$this->old_cr_total = $this->old_cr_total + $old_credit_total;
+                $this->old_dr_total = $this->old_dr_total + $old_debit_total;
 	}
 
 	function callToOldSchedule($c = 0){
@@ -634,13 +585,17 @@ class Reportlist
 	/* Displays schedule */
         function schedule($c = 1)
         {
-		static $credit_total = 0;
-		static $debit_total = 0;
+		static $credit_total = 0.00;
+		static $debit_total = 0.00;
+		static $old_credit_total = 0.00;
+		static $old_debit_total = 0.00;
 		
 		if($c == null)
 		{
 			$credit_total = null;
                 	$debit_total = null;
+			$old_credit_total = null;
+                        $old_debit_total = null;
 		}else{
 
                 $len = $this->countDigits();
@@ -669,6 +624,8 @@ class Reportlist
                         {
 				$c_total = 0.00;
 				$d_total = 0.00;
+				$old_c_total = 0.00;
+                                $old_d_total = 0.00;
 				
 				echo "<tr class=\"tr-ledger\">";
 	                                echo "<td class=\"td-ledger\">";
@@ -812,7 +769,7 @@ class Reportlist
 							$debit_total = $debit_total + $row->amount;                                               
                                                 }
                                         }
-					echo "<td align=\"right\">";
+					/*echo "<td align=\"right\">";
                         	                echo convert_amount_dc($d_total);
 		                        echo "</td>";
 	
@@ -827,14 +784,58 @@ class Reportlist
                                         echo "<td>";
                                                 echo "";
 					echo "</td>";
-                        		echo "</tr>";
+                        		echo "</tr>";*/
                                 }
+				
+				$this->getPreviousYearDetails();
+                                if($this->prevYearDB != "" ){//3
+                                        /* database connectivity for getting previous year opening balance */
+                                        $con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
+                                        $op_balance = array();
+                                        if($con){//4
+                                                $value = mysql_select_db($this->prevYearDB, $con);
+                                                $id = mysql_real_escape_string($data['id']);
+                                                $cl = "select entry_id, id, amount, dc from entry_items where ledger_id = '$id'";
+                                                $val = mysql_query($cl);
+                                                if($val != ''){//5
+                                                        while($row = mysql_fetch_assoc($val))
+                                                        {//6
+                                                                if($row != null){//7
+                                                                                                        if($row['dc'] == 'C'){//12
+                                                                                                                $old_credit_total = $old_credit_total + $row['amount'];
+                                                                                                                $old_c_total = $old_c_total + $row['amount'];
+                                                                                                        }//12
+                                                                                                        else{//13
+                                                                                                                $old_debit_total = $old_debit_total + $row['amount'];
+                                                                                                                $old_d_total = $old_d_total + $row['amount'];
+                                                                                                        }//13
+                                                                }//7
+                                                        }//6
+						}//5
+					}//4
+				}//3
 
+					echo "<td align=\"right\">";
+                                                echo convert_amount_dc($d_total);
+                                        echo "</td>";
+
+                                        echo "<td align=\"right\">";
+                                                echo convert_amount_dc(-$c_total);
+                                        echo "</td>";
+
+                                        echo "<td>";
+                                                echo convert_amount_dc($old_d_total);
+                                        echo "</td>";
+
+                                        echo "<td>";
+                                                echo convert_amount_dc(-$old_c_total);
+                                        echo "</td>";
+                                        echo "</tr>";
                         }                        //$this->counter--;
                 }
 
 		}//else for null
-                return array($credit_total, $debit_total);
+                return array($credit_total, $debit_total, $old_credit_total, $old_debit_total);
         }
 
         function previous_year_data($c = 0)
@@ -865,9 +866,9 @@ class Reportlist
                         //$this->counter++;
                         foreach ($this->children_ledgers as $id => $data)
                         {//2
-				$c_total = 0;
-				$d_total = 0;			
-	
+				$c_total = 0.00;
+				$d_total = 0.00;			
+				$this->getPreviousYearDetails();
                 		if($this->prevYearDB != "" ){//3
                         		/* database connectivity for getting previous year opening balance */
 	                        	$con = mysql_connect($this->host_name, $this->db_username, $this->db_password);
@@ -881,126 +882,17 @@ class Reportlist
         	                	                while($row = mysql_fetch_assoc($val))
                 	                	        {//6
 								if($row != null){//7
-	                                                		//if($row->dc == 'C'){
-									$con1 = mysql_connect($this->host_name, $this->db_username, $this->db_password);
-                                                        		if($con1){//8
-		                                                                $value = mysql_select_db($this->prevYearDB, $con1);
-                		                                                $id1 = mysql_real_escape_string($row['entry_id']);
-                                		                                $cl1 = "select narration from entries where id = '$id1'";
-                                                		                $val1 = mysql_query($cl1);
-                                                                		if($val1 != ''){//9
-		                                                                        while($row1 = mysql_fetch_assoc($val1))
-                		                                                        {//10
-                                		                                                if($row1 != null){//11
-                                                		                                        $narration = $row1['narration'];
 	                                               							if($row['dc'] == 'C'){//12
-													/*	if($this->startsWith($data['code'], '10')){
-						                                                                echo "<tr class=\"tr-ledger\">";
-                                                						                echo "<td class=\"td-ledger\">";
-						                	                                                echo $this->print_space($this->counter);
-                                                							                echo "&nbsp;" . "Add: " . $narration;
-							                                                        echo "</td>";
-
-                                                						                echo "<td>";
-						                                                                echo "</td>";
-							
-						                                                                echo "<td>";
-														echo "</td>";
-						        
-								                                                echo "<td>";
-                                                	        						        echo "";
-						                                                                echo "</td>";
-
-                                                						                echo "<td>";
-															echo convert_amount_dc(-$row['amount']);
-                                                        						        echo "</td>";
-
-						                                                                echo "</tr>";
-														}else{
-														echo "<tr class=\"tr-ledger\">";
-                                                                                                                echo "<td class=\"td-ledger\">";
-                                                                                                                        echo $this->print_space($this->counter);
-                                                                                                                        echo "&nbsp;" . "Deduct: " . $narration;
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                        echo "";
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                        echo convert_amount_dc(-$row['amount']);
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "</tr>";
-														}*/
 														$old_credit_total = $old_credit_total + $row['amount'];
 														$c_total = $c_total + $row['amount'];
 					                                                		}//12
                                                 							else{//13
-														/*if($this->startsWith($data['code'], '10')){
-                                                        	                                	        echo "<tr class=\"tr-ledger\">";
-                                                                						echo "<td class=\"td-ledger\">";
-					                                	                                	echo $this->print_space($this->counter);
-	                                        				        		                echo "&nbsp;" . "Deduct: " . $narration;
-						                                                                echo "</td>";
-				
-                        						                                        echo "<td>";
-                                	                                                                        echo "</td>";
-
-                                        	                        					echo "<td>";
-					        	                                                        echo "</td>";
-
-                                        						                        echo "<td>";
-						                	                                                //echo convert_amount_dc($row->amount);
-															echo convert_amount_dc($row['amount']);
-					                                        	                        echo "</td>";
-		
-                	                        					                        echo "<td>";
-							                                                                echo "";
-                                	                					                echo "</td>";
-
-                                        						                        echo "</tr>";
-														}else{
-														echo "<tr class=\"tr-ledger\">";
-                                                                                                                echo "<td class=\"td-ledger\">";
-                                                                                                                        echo $this->print_space($this->counter);
-                                                                                                                        echo "&nbsp;" . "Add: " . $narration;
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                        //echo convert_amount_dc($row->amount);
-                                                                                                                        echo convert_amount_dc($row['amount']);
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "<td>";
-                                                                                                                        echo "";
-                                                                                                                echo "</td>";
-
-                                                                                                                echo "</tr>";
-														}*/
-                                                        	                                                //$this->old_dr_total = $this->old_dr_total - $row->amount;
 														$old_debit_total = $old_debit_total + $row['amount'];
 														$d_total = $d_total + $row['amount'];
                                                 							}//13
-												}//11
-												mysql_close($con1);
-                                                					}//10
-                                                				}//9
-                                        				}//8
                                					}//7
-								// mysql_close($con);
+							}//6
+								if($d_total != '' || $c_total != ''){								
 									echo "<tr>";
 									echo "<td>";
                                                                                 echo "";
@@ -1023,8 +915,8 @@ class Reportlist
                                                                         echo "</td>";
                                                                         
 									echo "</tr>";
-                                                                        
-                                                        }//6
+                                                                 }       
+                                                        //}//6
 							//	mysql_close($con);
 		
                                                 }//5
