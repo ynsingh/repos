@@ -12,6 +12,7 @@ class Secunit_model extends Model {
 		$secunitarray = array();
 		$this->db->from('addsecondparty')->order_by('id', 'asc');
 		$detail_q = $this->db->get();
+		$secunitarray[0] = "selectuid";
 		foreach ($detail_q->result() as $row)
 		{
 			$secunit = $row->partyname;

@@ -3664,7 +3664,7 @@ class Entry extends Controller {
 			$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
                 	$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
 			$this->form_validation->set_rules('banif_name', 'Beneficiary Name', 'trim');
-                        $this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim|required');
+                        $this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim');
 
                 /* Debit and Credit amount validation */
                 if ($_POST)

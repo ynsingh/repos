@@ -1,0 +1,11 @@
+ALTER TABLE addsecondparty DROP pan;
+ALTER TABLE addsecondparty MODIFY mobnum VARCHAR (25) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY email VARCHAR(100) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY address VARCHAR(255) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY permanentaddress varchar(255) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY bancacnum VARCHAR (25) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY bankname VARCHAR(255) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY branchname VARCHAR(255) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY bankaddress varchar(255) DEFAULT NULL;
+ALTER TABLE addsecondparty MODIFY bankaddress varchar(255) DEFAULT NULL;
+ALTER TABLE addsecondparty add pan VARCHAR(15) DEFAULT NULL after bankaddress;

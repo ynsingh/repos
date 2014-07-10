@@ -211,17 +211,17 @@ class Addparty extends Controller {
 		/* Form validations */
 		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
 		$this->form_validation->set_rules('sacunitid', 'Secondary Accounting Unit', 'trim|required|max_length[10]');
-		$this->form_validation->set_rules('mnumber', 'Mobile Number', 'trim|required|max_length[13]');
-		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('address', 'Address', 'trim|required|max_length[255]');
-		$this->form_validation->set_rules('bacnumber', 'Bank Account Number', 'trim|required|max_length[17]');
-		$this->form_validation->set_rules('bankname', 'Bank Name', 'trim|required|max_length[255]');
-		$this->form_validation->set_rules('branchname', 'Branch Name', 'trim|required|max_length[255]');
-		$this->form_validation->set_rules('ifsccode', 'IFSC Code', 'trim|required|max_length[11]');
-		$this->form_validation->set_rules('bankaddress', 'Bank Address', 'trim|required|max_length[255]');
-		$this->form_validation->set_rules('pannum', 'PAN Number', 'trim|max_length[10]');
-		$this->form_validation->set_rules('tannum', 'TAN Number', 'trim|max_length[10]');
-		$this->form_validation->set_rules('stnum', 'Service Tax Number', 'trim|max_length[10]');
+		$this->form_validation->set_rules('mnumber', 'Mobile Number');
+		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|valid_email');
+		$this->form_validation->set_rules('address', 'Address', 'trim');
+		$this->form_validation->set_rules('bacnumber', 'Bank Account Number', 'trim');
+		$this->form_validation->set_rules('bankname', 'Bank Name','trim');
+		$this->form_validation->set_rules('branchname', 'Branch Name','trim');
+		$this->form_validation->set_rules('ifsccode', 'IFSC Code','trim');
+		$this->form_validation->set_rules('bankaddress', 'Bank Address','trim');
+		$this->form_validation->set_rules('pannum', 'PAN Number','trim');
+		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
+		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
 		
 		/* Repopulating form */
 		if ($_POST)
@@ -287,7 +287,7 @@ class Addparty extends Controller {
                         $data_mnumber = $this->input->post('mnumber', TRUE);
                         $data_accountemail = $this->input->post('accountemail', TRUE);
                         $data_address = $this->input->post('address', TRUE);
-                        $data_bacnumber = $this->input->post('bacnumber', TRUE);
+                        $data_bacnumber = $this->input->post('bacnumber',TRUE);
                         $data_bankname = $this->input->post('bankname', TRUE);
                         $data_branchname = $this->input->post('branchname', TRUE);
                         $data_ifsccode = $this->input->post('ifsccode', TRUE);
@@ -295,46 +295,59 @@ class Addparty extends Controller {
                         $data_pannum = $this->input->post('pannum', TRUE);
                         $data_tannum = $this->input->post('tannum', TRUE);
                         $data_stnm = $this->input->post('stnum', TRUE);
-
 			if(strlen($data_sacunitid) < 10){
                                 $this->messages->add('second account unit should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			if($data_mnumber !=""){
 			if(strlen($data_mnumber) < 10){
                                 $this->messages->add('Mobile Number should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			}
+			if($data_bacnumber !=""){
 			if(strlen($data_bacnumber) < 13){
                                 $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			}
+			if($data_bacnumber !=""){
 			if(strlen($data_bacnumber) > 17){
                                 $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			}
+			if($data_ifsccode !=""){
 			if(strlen($data_ifsccode) < 10){
                                 $this->messages->add('IFSC code should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			}
+			if($data_pannum !=""){
 			if(strlen($data_pannum) < 10){
                                 $this->messages->add('PAN should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			}
+			if($data_tannum !=""){
 			if(strlen($data_tannum) < 10){
                                 $this->messages->add('TAN should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
 			}
+			}
+			if($data_stnm !=""){
 			if(strlen($data_stnm) < 10){
                                 $this->messages->add('Service tax number should be 10 digits.', 'error');
                                 $this->template->load('template', 'addparty/add', $data);
                                 return;
+			}
 			}
 			$this->db->from('addsecondparty');
 	                $pdetail = $this->db->get();
@@ -352,55 +365,66 @@ class Addparty extends Controller {
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				if($data_accountemail !=""){
 				if($emailid == $data_accountemail)
 				{
                         		$this->messages->add(' Party with email ' .$data_accountemail. ' already exist. ', 'error');
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				}
+				if($data_bacnumber !="" ){
 				if($acnum == $data_bacnumber)
 				{
                         		$this->messages->add(' Party with A/C ' .$data_bacnumber. ' already exist. ', 'error');
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				}
+				if($data_pannum !=""){
 				if($pan == $data_pannum)
 				{
                         		$this->messages->add(' Party with Pan Number ' .$data_pannum. ' already exist. ', 'error');
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				}
+				if($data_tannum !=""){
 				if($tan == $data_tannum)
 				{
                         		$this->messages->add(' Party with Tan Number ' .$data_tannum. ' already exist. ', 'error');
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				}
+				if($data_stnm !=""){
 				if($stnumber == $data_stnm)
 				{
                         		$this->messages->add(' Party with Service Tax Number ' .$data_stnm. ' already exist. ', 'error');
                 			$this->template->load('template', 'addparty/add', $data);
                         		return;
 				}
+				}
                 	}
 			$this->db->trans_start();
 			$insert_data=array(
-				'sacunit' => $data_sacunitid,
-				'partyname' =>	$data_pname,
-				'mobnum' => $data_mnumber,
-				'email' => $data_accountemail, 
-				'address' =>  $data_address,
-				'permanentaddress' => $data_address, 
-				'bancacnum' =>  $data_bacnumber,
-				'bankname' =>  $data_bankname,
-				'branchname' =>  $data_branchname,
-				'ifsccode' =>  $data_ifsccode,
-				'bankaddress' =>  $data_bankaddress,
-				'pan' =>  $data_pannum,
-				'tan' =>  $data_tannum,
-				'staxnum' =>  $data_stnm,
-				'partyrole' => $prole
+				'sacunit' =>$data_sacunitid,
+				'partyname' =>$data_pname,
+				'mobnum' =>$data_mnumber,
+				'email' =>$data_accountemail, 
+				'address' =>$data_address,
+				'permanentaddress' =>$data_address, 
+				'bancacnum' =>$data_bacnumber,
+				'bankname' =>$data_bankname,
+				'branchname' =>$data_branchname,
+				'ifsccode' =>$data_ifsccode,
+				'bankaddress' =>$data_bankaddress,
+				'pan' =>$data_pannum,
+				'tan' =>$data_tannum,
+				'staxnum' =>$data_stnm,
+				'partyrole' =>$prole
 			);
+			print_r($insert_data);
 			if ( ! $this->db->insert('addsecondparty', $insert_data))
                         {
                                 $this->db->trans_rollback();
