@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Create Grade Setup</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <sj:head/>
@@ -66,10 +66,10 @@
                                             <s:a action="GetGradeSetupList" cssClass="marl5">Grade Setup</s:a>
                                             </div>                                    
                                         </div>
-                                        <div class="w100 fl-l mart20">
-                                            <fieldset class="w500p mar0a">
-                                                <legend class="fbld">Grade Setup</legend>
-                                                <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
+                                    <div class="w100 fl-l mart20">
+                                        <fieldset class="w500p mar0a">
+                                            <legend class="fbld">Grade Setup</legend>
+                                            <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
                                             <s:url id="Univer" action="RegUniversity" namespace="/Dropdown"/> 
                                             <s:url id="dept" action="DeptAct" namespace="/Dropdown"/> 
                                             <s:url id="deptprogram" action="DeptProgramAct" namespace="/Dropdown"/> 

@@ -15,7 +15,7 @@ Author : IGNOU Team
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>View Comments</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -32,7 +32,7 @@ Author : IGNOU Team
         <%
             final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -59,7 +59,7 @@ Author : IGNOU Team
                                     <% if (role.contains("faculty")) {%>
                                     <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;> <a href="FacultyTaskShow">Task / Activities</a> &nbsp; > <a href="ActivSubList?evidenceId=<s:property value="evidenceId"/>">Task/Activity Details</a> &nbsp;> View Comments
-                                    </div>
+                                    </div>  
                                     <div align="right" class="tab_btn">
                                         <div class="tab_btn_1"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
                                         <div class="fl-r">
@@ -67,7 +67,7 @@ Author : IGNOU Team
                                             <s:a href="FacultyTaskShow" cssClass="marl5">Task/Activities</s:a>
                                             <s:a action="EviDraftList" cssClass="marl5">Draft</s:a>
                                             <s:a action="GetGradeSetupList" cssClass="marl5">Grade Setup</s:a>
-                                            </div>
+                                            </div>                                    
                                         </div>
                                     <% } else if (role.contains("student")) {%>
                                     <div class="bradcum">
@@ -83,6 +83,7 @@ Author : IGNOU Team
                                             </div>
                                         </div>
                                     <% }%>
+
 
                                     <div class="w100 fl-l">
                                         <fieldset class="w550p mar0a mart10">
@@ -114,7 +115,7 @@ Author : IGNOU Team
                                             <legend><strong>Comments</strong></legend>
                                             <div class="w100 fl-l tc fbld fcred mart10"><s:property value="msg"/></div>
                                             <div class="w200p mar0a">
-                                                <span class="fbld wau fl-l">Average Rating:&nbsp;&nbsp;</span>
+                                                <span class="fbld wau fl-l">Average Rating:&nbsp;&nbsp;</span> 
                                                 <div class="score wau fl-l" rating="<s:property value="avgStarRating"/>"></div>
                                             </div>
                                             <table width="100%" class="mar0a" cellpadding="4" border="0" cellspacing="0">

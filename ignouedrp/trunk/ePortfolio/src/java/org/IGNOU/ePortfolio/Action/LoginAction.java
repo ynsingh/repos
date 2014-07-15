@@ -85,7 +85,7 @@ public class LoginAction extends ActionSupport implements Serializable, SessionA
                 session.put("name", userList.iterator().next().getFname() + " " + userList.iterator().next().getLname());
                 session.put("password", password);
                 session.put("clientIP", clientIP);
-                 session.put("logId", logInfo.iterator().next().getLogId());
+                session.put("logId", logInfo.iterator().next().getLogId());
                 logger.warn("user logged in " + getEmail_id() + " Access from IP: " + clientIP);
                 return SUCCESS;
             } else {

@@ -58,11 +58,11 @@ public class LoginDao implements Serializable {
 
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
-    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private SessionFactory sessionFactory;
     private Session s;
 
     public boolean FindUser(String email_id, String password, String role) {
-        // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         s = sessionFactory.openSession();
         Query qr = s.createQuery("from User  where email_id='" + email_id + "' and password='" + password + "' and role='" + role + "'");
         @SuppressWarnings("unchecked")
@@ -88,7 +88,7 @@ public class LoginDao implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public User UserSave(String emailId, String role, String fname, String lname, int InstituteId, int ProgrammeId) {
-        // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
@@ -142,12 +142,12 @@ public class LoginDao implements Serializable {
 //            System.err.println("Initial SessionFactory creation failed." + ex);
 //            throw new ExceptionInInitializerError(ex);
 //        } finally {
-//           s.close();
+//            s.close();
 //            sessionFactory.close();
 //        }
 //    }
     public Logs logOutUpdate(long logId) {
-        // sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
@@ -184,7 +184,7 @@ public class LoginDao implements Serializable {
             s.save(l);
             t.commit();
             s.flush();
-            s = sessionFactory.openSession();
+            s.clear();
             t = s.beginTransaction();
             logInfo = s.createQuery("from Logs where userId='" + user_id + "' and ip='" + ip + "' and logId='" + l.getLogId() + "'").list();
         } catch (HibernateException HE) {

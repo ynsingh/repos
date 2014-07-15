@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : TaskActivityScore
     Created on : Jul 4, 2012, 5:21:17 PM
     Author     : IGNOU Team
@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Task/Activities Score</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -31,7 +31,7 @@
         <%
             final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -47,12 +47,12 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
                         <div class="right_box">
-                            <div class="my_account_bg">Score Card</div>
+                            <div class="my_account_bg">Task/Activities Score</div>
                             <div class="v_gallery">
                                 <div class="w98 mar0a mart10">
                                     <div class="bradcum">
@@ -71,12 +71,11 @@
 
                                     <% } else if (role.contains("student")) {%>
                                     <div class="w100 fl-l">
-                                        <table width="100%" class="fl-l mart10 tablepaging" cellpadding="4" border="1" cellspacing="0">
+                                        <table width="100%" class="fl-l mart10" cellpadding="4" border="1" cellspacing="0">   
                                             <tr>
                                                 <th align="center">S.No.</th>
                                                 <th align="center">Course</th>
                                                 <th align="center">Task/Activity</th>
-                                                <th align="center">Score Range/Max Score</th>
                                                 <th align="center">Obtained Score</th>
                                                 <th align="center">Special Comments</th>
                                             </tr>
@@ -86,30 +85,22 @@
                                                         <s:property value="#stat.count" />
                                                     </td>
                                                     <td align="center">
-                                                        <s:property value="course.courseCode" />
+                                                        <s:property value="evidence.course.courseCode" />
                                                     </td>
                                                     <td align="left">
-                                                        <s:property value="evTitle" />
+                                                        <s:property value="evidence.evTitle" />
                                                     </td>
-                                                    <td align="center">
-                                                        <s:property value="gradeValue.gradeValue"/>
+                                                    <td align="center">  
+                                                        <s:property value="gradesObtained"/>
                                                     </td>
-                                                    <td align="center">
-                                                        <s:iterator value="evidenceSubmissions">
-                                                            <s:property value="gradesObtained"/>
-                                                        </s:iterator>
-                                                    </td>
-                                                    <td align="left">
-                                                        <s:iterator value="evidenceSubmissions">
-                                                            <s:property value="facultyComment" escape="false"/><br/>
-                                                            <s:if test="facultyAttachment!='null'">
-                                                                <a href="../Activity/downnloadAttach?facultyId=<s:property value="evidence.user.emailId"/>&amp;assAttach=<s:property value="facultyAttachment"/>" target="_blank">
-                                                                    <s:property value="facultyAttachment"/>
-                                                                </a>
-                                                            </s:if>
-                                                            <s:elseif test="assAttach=='null'">
-                                                            </s:elseif>
-                                                        </s:iterator>
+                                                    <td align="left"> <s:property value="facultyComment" escape="false"/><br/>
+                                                        <s:if test="facultyAttachment!='null'">
+                                                            <a href="../Activity/downnloadAttach?facultyId=<s:property value="evidence.user.emailId"/>&amp;assAttach=<s:property value="facultyAttachment"/>" target="_blank">
+                                                                <s:property value="facultyAttachment"/>
+                                                            </a>
+                                                        </s:if>
+                                                        <s:elseif test="assAttach=='null'">
+                                                        </s:elseif> 
                                                     </td>
                                                 </tr>
                                             </s:iterator>
@@ -127,6 +118,6 @@
                 </div>
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

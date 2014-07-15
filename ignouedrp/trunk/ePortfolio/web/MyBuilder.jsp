@@ -14,15 +14,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>My Education and Work</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-
+        
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-        <script>
+         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -52,7 +52,7 @@
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">My Builder</div>
-                            <div class="v_gallery">
+                             <div class="v_gallery">
                                 <div class="w100 fl-l mart10">
                                     <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;My Builder
@@ -68,7 +68,7 @@
                             </div>
                             <!--Right box End Here-->
                         </div>
-
+                        
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>

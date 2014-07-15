@@ -175,4 +175,5 @@ public class JournalDao {
             sessionFactory.close();
         }
     }
+
 }

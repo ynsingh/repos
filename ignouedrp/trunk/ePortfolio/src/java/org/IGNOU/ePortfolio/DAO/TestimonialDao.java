@@ -37,7 +37,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();            
+        s.close();
         sessionFactory.close();
         return TestiUlist;
     }
@@ -63,7 +63,7 @@ public class TestimonialDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();          
+            s.close();
             sessionFactory.close();
         }
     }
@@ -79,7 +79,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();            
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -95,7 +95,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();           
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -111,7 +111,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();         
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -132,7 +132,7 @@ public class TestimonialDao {
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
-       s.close();          
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -147,7 +147,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();       
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -173,7 +173,7 @@ public class TestimonialDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();        
+            s.close();
             sessionFactory.close();
         }
     }
@@ -188,7 +188,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();          
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -203,7 +203,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();          
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -218,7 +218,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();           
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -234,7 +234,7 @@ public class TestimonialDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();          
+        s.close();
         sessionFactory.close();
         return ReqList;
     }
@@ -261,7 +261,7 @@ public class TestimonialDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();           
+            s.close();
             sessionFactory.close();
         }
     }

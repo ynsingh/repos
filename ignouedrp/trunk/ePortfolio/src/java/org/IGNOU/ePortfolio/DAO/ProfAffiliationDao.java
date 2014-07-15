@@ -1,5 +1,8 @@
+
+
+
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -43,21 +46,19 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory
- * object.
- *
+ * Hibernate Utility class with a convenient method to get Session Factory object.
  * @version 1
  * @since 14-Oct-2011
- * @author IGNOU Team Modified and Upgrade Edit, Update, Delete Functionality by
- * IGNOU Team on 17-Oct-2011.
+ * @author IGNOU Team
+ * Modified and Upgrade Edit, Update, Delete Functionality by IGNOU Team on 17-Oct-2011.
  */
 public class ProfAffiliationDao {
 
     private SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
-    private Session s;
+    private Session s;   
 
     public ProfileProAffiliation ProfileProAffiliationSave(ProfileProAffiliation AffiliationModel) throws Exception {
-        s = sf.openSession();
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -80,7 +81,7 @@ public class ProfAffiliationDao {
 
     @SuppressWarnings("unchecked")
     public List<ProfileProAffiliation> ProfileProAffiliationList(String UserId) throws Exception {
-        s = sf.openSession();
+      s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -139,7 +140,7 @@ public class ProfAffiliationDao {
     }
 
     public ProfileProAffiliation ProfileProAffiliationUpdate(long proAffiliationId, String userId, String role, String orgBody, String vfrom, String vupto, String place, String country, String summary) {
-        s = sf.openSession();
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -168,7 +169,7 @@ public class ProfAffiliationDao {
     }
 
     public ProfileProAffiliation ProfileProAffiliationDelete(long proAffiliationId) {
-        s = sf.openSession();
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -191,4 +192,5 @@ public class ProfAffiliationDao {
             sf.close();
         }
     }
+
 }

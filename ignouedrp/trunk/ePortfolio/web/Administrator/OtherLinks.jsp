@@ -12,5 +12,5 @@
 <ul>
     <s:iterator value="CaptionList" status="stat">
         <li><a href="<s:property value="UrlList[#stat.index]"/>" target="_blank"><s:property value="CaptionList[#stat.index]"/></a></li>
-        </s:iterator>
+    </s:iterator>
 </ul>

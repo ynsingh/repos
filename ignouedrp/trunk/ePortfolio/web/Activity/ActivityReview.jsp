@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : EvidenceReview
     Created on : May 28, 2012, 12:50:49 PM
     Author     : IGNOU Team
@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Review Task / Activities</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -30,7 +30,7 @@
         <%
             final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -46,7 +46,7 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
@@ -64,7 +64,7 @@
                                             <s:a href="FacultyTaskShow" cssClass="marl5">Task/Activities</s:a>
                                             <s:a action="EviDraftList" cssClass="marl5">Draft</s:a>
                                             <s:a action="GetGradeSetupList" cssClass="marl5">Grade Setup</s:a>
-                                            </div>
+                                            </div>   
                                         </div>
                                         <div class="w100 fl-l mart20">
                                             <table class="tablepaging" id="tablepaging" width="75%" cellspacing="0" cellpadding="5" border="1">
@@ -77,22 +77,22 @@
                                                 <tr>
                                                     <td align="left" class="fbld w200p">Start Date (MM/DD/YY)</td>
                                                     <td>
-                                                        <s:property value="openDate"/>
+                                                        <s:property value="openDate"/> 
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td align="left" class="fbld w200p">Closing Date (MM/DD/YY)</td>
-                                                    <td>
+                                                    <td> 
                                                         <s:property value="closeDate"/>
                                                     </td>
                                                 </tr>
-                                                <!--      <tr>
-                                                          <td align="left" class="fbld w200p">Accept Until</td>
-                                                          <td>
-                                                <s:property value="lastAcceptDate"/>
-                                            </td>
-                                        </tr>
-                                                -->
+                                                <tr>
+                                                    <td align="left" class="fbld w200p">Accept Until</td>
+                                                    <td> 
+                                                        <s:property value="lastAcceptDate"/>
+                                                    </td>
+                                                </tr>
+
                                                 <tr>
                                                     <td valign="top" align="left" class="fbld w200p">Instructions</td>
                                                     <td valign="top">
@@ -134,6 +134,6 @@
                 <!--Middle Section Ends Here-->
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

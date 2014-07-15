@@ -7,10 +7,10 @@ package org.IGNOU.ePortfolio.DAO;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import org.IGNOU.ePortfolio.Model.ActivitiesAnnounce;
 import org.IGNOU.ePortfolio.Model.ActivitiesComments;
-import org.IGNOU.ePortfolio.Model.ActivitiesSubmission;
 import org.IGNOU.ePortfolio.Model.Course;
+import org.IGNOU.ePortfolio.Model.ActivitiesAnnounce;
+import org.IGNOU.ePortfolio.Model.ActivitiesSubmission;
 import org.IGNOU.ePortfolio.Model.GradeValue;
 import org.IGNOU.ePortfolio.Model.UserList;
 import org.hibernate.HibernateException;
@@ -64,7 +64,7 @@ public class ActivitiesDao implements Serializable {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-            s.close();;
+            s.close();
             sessionFactory.close();
         }
     }
@@ -124,7 +124,7 @@ public class ActivitiesDao implements Serializable {
         Transaction t = s.beginTransaction();
         List<ActivitiesAnnounce> StudentEvilist = null;
         try {
-            StudentEvilist = s.createQuery("from ActivitiesAnnounce as e where e.saveEvid!='1' and e.evidenceId not in (select es.evidence.evidenceId from ActivitiesSubmission as es where es.user='" + userId + "') and e.course in (select courseId from Course where programme=(select programme.programmeId from UserList as u where u.emailId='" + userId + "'))").list();
+            StudentEvilist = s.createQuery("from ActivitiesAnnounce as e where e.saveEvid!='1' and e.evidenceId not in (select es.evidence.evidenceId from ActivitiesSubmission as es where es.user='" + userId + "')").list();
         } catch (HibernateException HE) {
             System.out.println(HE);
         }
@@ -326,22 +326,5 @@ public class ActivitiesDao implements Serializable {
         s.close();
         sessionFactory.close();
         return userlist;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<ActivitiesAnnounce> EvidenceSubmissionListGradeNotNullByUserId(String userId) {
-        s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        List<ActivitiesAnnounce> EvidStdList = null;
-        try {
-            EvidStdList = s.createQuery("from ActivitiesAnnounce as e where e.saveEvid!='1' and e.course in (select courseId from Course where programme=(select programme.programmeId from UserList as u where u.emailId='" + userId + "'))").list();
-            // EvidStdList = s.createQuery("from ActivitiesSubmission where user='" + userId + "' and gradesObtained!=null  ORDER BY evidence_id DESC").list();
-        } catch (HibernateException HE) {
-            System.out.println(HE);
-        }
-        t.commit();
-        s.close();
-        sessionFactory.close();
-        return EvidStdList;
     }
 }

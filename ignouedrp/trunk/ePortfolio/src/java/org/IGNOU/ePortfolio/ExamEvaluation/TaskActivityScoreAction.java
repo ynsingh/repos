@@ -8,8 +8,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.Serializable;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.DAO.ActivitiesDao;
-import org.IGNOU.ePortfolio.Model.ActivitiesAnnounce;
+import org.IGNOU.ePortfolio.DAO.TaskActivityDAO;
+import org.IGNOU.ePortfolio.Model.ActivitiesSubmission;
 import org.apache.log4j.Logger;
 
 /**
@@ -22,8 +22,8 @@ public class TaskActivityScoreAction extends ActionSupport implements Serializab
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
     private String user_id = new UserSession().getUserInSession();
-    private ActivitiesDao dao = new ActivitiesDao();
-    private List<ActivitiesAnnounce> StdScrList;
+    private TaskActivityDAO dao = new TaskActivityDAO();
+    private List<ActivitiesSubmission> StdScrList;
     private String notfound = getText("recordNotFound");
     private String msg;
 
@@ -53,16 +53,30 @@ public class TaskActivityScoreAction extends ActionSupport implements Serializab
     }
 
     /**
+     * @return the dao
+     */
+    public TaskActivityDAO getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(TaskActivityDAO dao) {
+        this.dao = dao;
+    }
+
+    /**
      * @return the StdScrList
      */
-    public List<ActivitiesAnnounce> getStdScrList() {
+    public List<ActivitiesSubmission> getStdScrList() {
         return StdScrList;
     }
 
     /**
      * @param StdScrList the StdScrList to set
      */
-    public void setStdScrList(List<ActivitiesAnnounce> StdScrList) {
+    public void setStdScrList(List<ActivitiesSubmission> StdScrList) {
         this.StdScrList = StdScrList;
     }
 

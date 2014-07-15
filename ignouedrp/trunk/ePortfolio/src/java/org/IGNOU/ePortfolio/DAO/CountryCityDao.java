@@ -7,7 +7,6 @@ package org.IGNOU.ePortfolio.DAO;
 import java.util.List;
 import org.IGNOU.ePortfolio.Model.City;
 import org.IGNOU.ePortfolio.Model.Country;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -54,7 +53,7 @@ public class CountryCityDao {
             citylist = s.createQuery("from City where countryCode='" + countryCode + "'").list();
             t.commit();
             return citylist;
-        } catch (HibernateException ex) {
+        } catch (Throwable ex) {
             //Log the Exception
             t.rollback();
             System.err.println("Initial SessionFactory creation failed." + ex);

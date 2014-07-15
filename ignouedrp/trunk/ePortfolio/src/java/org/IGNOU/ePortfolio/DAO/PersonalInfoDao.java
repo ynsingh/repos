@@ -35,7 +35,7 @@ public class PersonalInfoDao {
 //            System.out.println(HE);
 //        }
 //        t.commit();
-//       s.close();
+//        s.close();
 //        getSf().close();
 //        return personallist;
 //    }

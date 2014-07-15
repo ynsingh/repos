@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : TestimonialPreview
     Created on : Sep 18, 2012, 5:39:07 PM
     Author     : Vinay
@@ -17,83 +17,79 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
         <title>Testimonial Request Form</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <sj:head/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
         <script type="text/javascript">
             function template() {
                 var div_num = $("#choice").val();
                 if (div_num == 1) {
-                    $("#div1").show();
-                    $("#div2").hide();
+                    $("#div1").show(); 
+                    $("#div2").hide(); 
                     $("#div3").hide();
                     $("#div4").hide();
-                }
-                ;
-                if (div_num == 2) {
-                    $("#div1").hide();
-                    $("#div2").show();
-                    $("#div3").hide();
+                };
+                if (div_num ==2) {
+                    $("#div1").hide(); 
+                    $("#div2").show(); 
+                    $("#div3").hide(); 
                     $("#div4").hide();
-                }
-                ;
+                };
                 if (div_num == 3) {
-                    $("#div1").hide();
-                    $("#div2").hide();
-                    $("#div3").show();
+                    $("#div1").hide(); 
+                    $("#div2").hide(); 
+                    $("#div3").show(); 
                     $("#div4").hide();
-                }
-                ;
+                };
                 if (div_num == 4) {
-                    $("#div1").hide();
-                    $("#div2").hide();
-                    $("#div3").hide();
-                    $("#div4").show();
-                }
-                ;
+                    $("#div1").hide(); 
+                    $("#div2").hide(); 
+                    $("#div3").hide(); 
+                    $("#div4").show(); 
+                };
             }
         </script>
         <script type="text/javascript">
             function printfDiv1()
             {
                 var contentv;
-                if (document.getElementById("div1").style.display != "none")
-                    contentv = document.getElementById("printDiv1").innerHTML;
-                else if (document.getElementById("div2").style.display != "none")
-                    contentv = document.getElementById("printDiv2").innerHTML;
-                else if (document.getElementById("div3").style.display != "none")
-                    contentv = document.getElementById("printDiv3").innerHTML;
-                else if (document.getElementById("div4").style.display != "none")
-                    contentv = document.getElementById("printDiv4").innerHTML;
-
-                var WindowObject = window.open('', 'PrintWindow', 'width=550,height=350,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
+                if(document.getElementById("div1").style.display!="none")
+                    contentv=document.getElementById("printDiv1").innerHTML;
+                else if(document.getElementById("div2").style.display!="none")
+                    contentv=document.getElementById("printDiv2").innerHTML;
+                else if(document.getElementById("div3").style.display!="none")
+                    contentv=document.getElementById("printDiv3").innerHTML;
+                else if(document.getElementById("div4").style.display!="none")
+                    contentv=document.getElementById("printDiv4").innerHTML;
+                
+                var WindowObject = window.open('', 'PrintWindow','width=550,height=350,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes');
                 WindowObject.document.writeln(contentv);
                 WindowObject.document.close();
                 WindowObject.focus();
                 WindowObject.print();
-                WindowObject.close();
+                WindowObject.close(); 
             }
         </script>
         <script type="text/javascript">
             function getContent()
             {
                 var contentv;
-                if (document.getElementById("div1").style.display != "none")
-                    contentv = document.getElementById("printDiv1").innerHTML;
-                else if (document.getElementById("div2").style.display != "none")
-                    contentv = document.getElementById("printDiv2").innerHTML;
-                else if (document.getElementById("div3").style.display != "none")
-                    contentv = document.getElementById("printDiv3").innerHTML;
-                else if (document.getElementById("div4").style.display != "none")
-                    contentv = document.getElementById("printDiv4").innerHTML;
-                document.getElementById("report").value = contentv;
+                if(document.getElementById("div1").style.display!="none")
+                    contentv=document.getElementById("printDiv1").innerHTML;
+                else if(document.getElementById("div2").style.display!="none")
+                    contentv=document.getElementById("printDiv2").innerHTML;
+                else if(document.getElementById("div3").style.display!="none")
+                    contentv=document.getElementById("printDiv3").innerHTML;
+                else if(document.getElementById("div4").style.display!="none")
+                    contentv=document.getElementById("printDiv4").innerHTML;
+                document.getElementById("report").value=contentv;
                 //alert(contentv);
             }
             // alert(contentv);
@@ -102,7 +98,7 @@
     <body>
         <%  final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -117,24 +113,23 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
                         <!--Right box Starts Here-->
                         <div class="right_box">
                             <div class="my_account_bg">Testimonial Preview</div>
                             <div class="w100 fl-l mart10">
                                 <div class="bradcum">
-                                    <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial
+                                    <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="TestimonialIndex.jsp">Testimonials</a> > Request for Testimonial 
                                 </div>
                                 <div class="w100 fl-l mart10">
                                     <div class="marr15 fl-r mart10">
-                                        <% if (role.contains("faculty")) {%>
+                                        <% if (role.contains("faculty")) {%>     
                                         || <s:a action="StdTestiReq">Inbox</s:a>  || <a href="TestimonialCreateForm.jsp">Create New Testimonial</a> || Sent Testimonials ||
                                         <% } else if (role.contains("student")) {%>
                                         || <a href="TestimonialRequestForm.jsp">New Request</a> || Inbox || Sent Request ||
-                                        <% }%>
+                                        <% }%> 
                                     </div>
-                                    <div class="tab_btn_1 mart5"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
                                     <div class="w100 fl-l mart20">
                                         <table align="center" width="100%" border="0">
                                             <tr>
@@ -191,7 +186,7 @@
                                                         Ph:- <s:property value="facultyPhoneNo"/><br/>
                                                         Email:- <s:property value="facultyEmailId"/>
                                                     </p>
-                                                </div>
+                                                </div>                                
                                             </div>
                                             <div id='div3' style="display:none;" class="w600p mar0a mart20 tj">
                                                 <div id="printDiv3">
@@ -216,18 +211,18 @@
                                             <div id='div4' style="display:none;" class="w600p mar0a mart20 tj">
                                                 <div id="printDiv4">
                                                     Proctor Template
-                                                </div>
-                                            </div>
+                                                </div>                                                
+                                            </div>                                            
                                             <p class="clear tc">
                                                 <button type="submit" name="ButtonName" value="Email" onclick="getContent();">Email</button>
                                                 <button type="submit" name="ButtonName" value="Export" onclick="getContent();">Export</button>
                                                 <button type="submit" name="ButtonName" value="Save" onclick="getContent();">Draft</button>
                                                 <button type="button" onClick="history.go(-1);" >Back</button>
-                                            </p>
+                                            </p> 
                                         </s:form>
                                     </div>
                                     <!--
-                                    <s:property value="JSONTestimonial"/>
+                                    <s:property value="JSONTestimonial"/> 
                                     -->
                                 </div>
                             </div>
@@ -239,6 +234,6 @@
             </div>
         </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

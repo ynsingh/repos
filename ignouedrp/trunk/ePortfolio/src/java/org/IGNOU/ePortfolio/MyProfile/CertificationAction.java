@@ -1,5 +1,5 @@
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -62,7 +62,8 @@ public class CertificationAction extends ActionSupport implements Serializable {
     private String certificationDate;
     private String validDate;
     private String msg;
-    private String infoDeleted = getText("msg.infoDeleted"), infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public CertificationAction() {
     }
@@ -71,10 +72,10 @@ public class CertificationAction extends ActionSupport implements Serializable {
     public String execute() throws Exception {
         CertificateList = dao.ProfileCertificationListByUserId(user_id);
         if (CertificateList.isEmpty()) {
-            msg = notFound;
+            return INPUT;
         } else {
+            return SUCCESS;
         }
-        return SUCCESS;
     }
 
     public String editCertificateInfo() throws Exception {
@@ -295,19 +296,5 @@ public class CertificationAction extends ActionSupport implements Serializable {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
-    }
-
-    /**
-     * @return the notFound
-     */
-    public String getNotFound() {
-        return notFound;
-    }
-
-    /**
-     * @param notFound the notFound to set
-     */
-    public void setNotFound(String notFound) {
-        this.notFound = notFound;
     }
 }

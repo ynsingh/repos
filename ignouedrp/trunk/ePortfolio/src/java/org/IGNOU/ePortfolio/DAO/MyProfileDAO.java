@@ -263,6 +263,7 @@ public class MyProfileDAO {
         Transaction t = null;
         try {
             t = s.beginTransaction();
+
             List<ProfileSkill> SkillList = null;
             try {
                 SkillList = s.createQuery("from ProfileSkill where user_id='" + user_id + "' and type='" + type + "'").list();

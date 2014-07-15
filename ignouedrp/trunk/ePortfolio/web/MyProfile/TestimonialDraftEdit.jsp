@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : TestimonialDraftEdit
     Created on : Oct 12, 2012, 3:15:39 PM
     Author     : Vinay
@@ -16,7 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Edit Testimonials</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <sj:head/>
@@ -28,14 +28,14 @@
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -47,7 +47,7 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
                         <!--Right box Starts Here-->
                         <div class="right_box">
@@ -59,9 +59,9 @@
                                 <div class="marr15 fl-r mart10">
                                     || <s:a action="StdTestiReq">Inbox</s:a> || <s:a action="MailedTestimonial">Sent</s:a> || <s:a action="FacultyDraftTesti">Draft</s:a> ||
                                     </div>
-                                            <div class="tab_btn_1 mart5"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>     <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
+                                            <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
                                 <div class="w100 fl-l mart5">
-                                    <s:form action="UpdateTestimonial" method="post" theme="simple" namespace="/MyProfile">
+                                    <s:form action="UpdateTestimonial" method="post" theme="simple" namespace="/MyProfile">   
                                         <fieldset class="w550p mar0a">
                                             <legend class="fbld">Edit Testimonial</legend>
                                             <table width="100%" class="fl-l" cellpadding="5" border="0" cellspacing="5">
@@ -92,7 +92,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th class="tl" valign="top">Testimonial</th>
-                                                        <td>
+                                                        <td>  
                                                             <sjr:tinymce
                                                                 id="richtextTinymceAdvancedEditor"
                                                                 name="report"
@@ -123,7 +123,7 @@
                                             </table>
                                         </fieldset>
                                     </s:form>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                         <!--Right box End Here-->
@@ -132,6 +132,6 @@
                 <!--Middle Section Ends Here-->
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

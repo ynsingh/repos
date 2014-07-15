@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : MyWorkspace
     Created on : Sep 22, 2011, 3:00:59 PM
 Author     : IGNOU Team
@@ -15,15 +15,15 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Profile</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
 
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-        <script>
+         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -31,7 +31,7 @@ Version      : 1
         <%
             final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -47,7 +47,7 @@ Version      : 1
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
@@ -58,8 +58,6 @@ Version      : 1
                                     <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;> My Workspace
                                     </div>
-                                    <div class="fl-r mart10"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
-
                                     <s:url id="PPUID" action="ShowPublicationInfo" namespace="/MyWorkspace"/>
                                     <s:url id="MyPlanID" action="fetch" namespace="/MyPlans"/>
                                     <s:url id="SFID" action="show_files" namespace="/MyResources"/>
@@ -75,11 +73,10 @@ Version      : 1
                                             <li><s:a href="%{MNID}"><img src="<s:url value="/icons/my-notes.gif"/>" width="60" height="60" /><span>My Notes</span></s:a></li>
                                             <li><s:a href="%{MProjectID}"><img src="<s:url value="/icons/my-projects.gif"/>" width="60" height="60" /><span>My Projects</span></s:a></li>
                                             <li><s:a href="%{EXTID}"><img src="<s:url value="/icons/extra-activities.gif"/>" width="60" height="60" /><span>My Extra Activities</span></s:a></li>
-                                                <% if (role.contains("faculty")) {%>
+                                            <% if (role.contains("faculty")) {%>
                                             <li><s:a href="%{EventID}"><img src="<s:url value="/icons/event.gif"/>" width="60" height="60" /><span>Events</span></s:a></li>
-                                                <% } else if (role.contains("student")) {%>
-                                                <% }%>
-                                            <li><a href="../Assignment/Index.jsp"><img src="<s:url value="/icons/assignment.gif"/>" width="60" height="60" /><span>Assignment</span></a></li>
+                                            <% } else if (role.contains("student")) {%>
+                                            <% }%> 
                                         </ul>
                                     </table>
                                 </div>
@@ -92,6 +89,6 @@ Version      : 1
                 </div>
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

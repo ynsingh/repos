@@ -14,7 +14,7 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Personal Information</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -171,7 +171,7 @@ Version      : 1
                                                                 &nbsp;
                                                                 <s:property value="lname"/>
                                                             </td>
-                                                            <td><a href="EditPersonalInfo?personalInfoId=<s:property value="registrationId"/>"><img src="<s:url value="/icons/edit.gif"/>" align="right" title="Edit Information"/></a></td>
+                                                            <td><a href="EditPersonalInfo?personalInfoId=<s:property value="personalInfoId"/>"><img src="<s:url value="/icons/edit.gif"/>" align="right" title="Edit Information"/></a></td>
                                                         </tr>
                                                         <tr>
                                                             <th align="left">Father's Name :</th>

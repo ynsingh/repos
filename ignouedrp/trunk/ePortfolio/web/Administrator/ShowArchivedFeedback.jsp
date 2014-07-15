@@ -15,15 +15,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Feedback List</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
-        <script>
+         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -66,7 +66,7 @@
                                                 <th align="center">S. No</th>
                                                 <th align="center">From</th>
                                                 <th align="center">Subject</th>
-                                                    <s:iterator value="fbList" status="stat">
+                                                <s:iterator value="fbList" status="stat">
                                                     <tr>
                                                         <td align="center"> <s:property value="%{#stat.count}"/></td>
                                                         <td ><a href="DetailFback?feedbackId=<s:property value="feedbackId"/>" style="text-decoration: none;">

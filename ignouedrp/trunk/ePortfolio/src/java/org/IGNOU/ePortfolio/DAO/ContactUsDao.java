@@ -17,11 +17,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author Amit
  */
 public class ContactUsDao {
-
-    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+     private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
-
-    @SuppressWarnings("unchecked")
+    
+     @SuppressWarnings("unchecked")
     public List<ContactUs> ContactUsList() {
         s = sessionFactory.openSession();
         Transaction t = s.beginTransaction();
@@ -42,18 +41,18 @@ public class ContactUsDao {
         }
 
     }
-
-    public ContactUs ContactUsSave(String contactName, String contactAddress, Long contactOff, Long contactMob, String contactEmail) {
+    public  ContactUs ContactUsSave( String contactName, String contactAddress, Long contactOff, Long contactMob, String contactEmail,String aboutUs) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
-            ContactUs cus = new ContactUs();
+            ContactUs cus=new ContactUs();
             cus.setContactName(contactName);
             cus.setContactAddress(contactAddress);
             cus.setContactOff(contactOff);
             cus.setContactMob(contactMob);
             cus.setContactEmail(contactEmail);
+            cus.setAboutUs(aboutUs);
             s.save(cus);
             t.commit();
             return cus;
@@ -67,7 +66,6 @@ public class ContactUsDao {
             sessionFactory.close();
         }
     }
-
     @SuppressWarnings("unchecked")
     public List<ContactUs> ContactUsEditByContactId(int contactId) {
         s = sessionFactory.openSession();
@@ -83,9 +81,9 @@ public class ContactUsDao {
         sessionFactory.close();
         return contactlist;
     }
-
-    @SuppressWarnings("unchecked")
-    public ContactUs ContactUsUpdate(int contactId, String contactName, String contactAddress, Long contactOff, Long contactMob, String contactEmail, String aboutUs) {
+   
+     @SuppressWarnings("unchecked")
+    public ContactUs ContactUsUpdate(int contactId,String contactName, String contactAddress, Long contactOff, Long contactMob, String contactEmail,String aboutUs) {
         s = sessionFactory.openSession();
         Transaction t = null;
         try {
@@ -97,6 +95,7 @@ public class ContactUsDao {
             Updatecontactus.setContactMob(contactMob);
             Updatecontactus.setContactOff(contactOff);
             Updatecontactus.setContactEmail(contactEmail);
+            Updatecontactus.setAboutUs(aboutUs);
             if (null != Updatecontactus) {
                 s.update(Updatecontactus);
             }
@@ -112,4 +111,5 @@ public class ContactUsDao {
             sessionFactory.close();
         }
     }
+
 }

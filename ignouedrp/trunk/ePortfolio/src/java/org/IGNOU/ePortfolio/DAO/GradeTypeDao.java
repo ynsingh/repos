@@ -227,4 +227,5 @@ public class GradeTypeDao {
             sessionFactory.close();
         }
     }
+
 }

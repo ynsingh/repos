@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : ContactInfoAdd
     Created on : Sep 16, 2011, 10:41:44 AM
     Author     : IGNOU Team
@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Add Contact</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -32,14 +32,14 @@
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -64,66 +64,77 @@
                                     </div>
                                     <div class="w100 fl-l mart10">
                                         <s:form action="AddContactInfo" method="post" namespace="MyProfile" name="myform" theme="simple" >
-                                            <fieldset class="w100p">
-                                                <legend>Contact Form</legend>
-                                                <table width="100%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
-                                                    <tr>
-                                                        <td>Country</td>
-                                                        <td colspan="3"><select onchange="print_state('state', this.selectedIndex);" id="country" name ="country">
-                                                                <option value="#">Choose Your Country Name</option>
-                                                            </select></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>State/District</td>
-                                                        <td><select id ="state" name ="state" >
-                                                            </select></td>
-                                                        <script language="javascript">print_country("country");</script>
-                                                        <td>City/Place</td>
-                                                        <td><s:textfield name="city" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Address 1</td>
-                                                        <td><s:textarea name="address1" /></td>
-                                                        <td>Address 2</td>
-                                                        <td><s:textarea name="address2" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>PIN/ZIP Code</td>
-                                                        <td><s:textfield name="pin" /></td>
-                                                        <td>Telephone(Home)</td>
-                                                        <td><s:textfield name="HTelephone" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Telephone(Office)</td>
-                                                        <td><s:textfield name="OTelephone" /></td>
-                                                        <td>Mobile No.</td>
-                                                        <td><s:textfield name="mobileNo" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>FAX No.</td>
-                                                        <td><s:textfield name="faxNo" /></td>
-                                                        <td>Alternative Email 1</td>
-                                                        <td><s:textfield name="email1" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Alternative Email 2</td>
-                                                        <td><s:textfield name="email2" /></td>
-                                                        <td>Alternative Email 3</td>
-                                                        <td><s:textfield name="email3" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Website(Organization)</td>
-                                                        <td><s:textfield name="owebsite" /></td>
-                                                        <td>Website(Personal)</td>
-                                                        <td><s:textfield name="pwebsite" /></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="4" align="center">
-                                                            <s:submit value="Save" />
-                                                            <s:reset value="Cancel" onClick="history.go(-1);" /></td>
-                                                    </tr>
-                                                </table>
-                                            </fieldset>
+                                            <table width="50%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                <tr>
+                                                    <td>Country</td>
+                                                    <td><select onchange="print_state('state', this.selectedIndex);" id="country" name ="country">
+                                                            <option value="#">Choose Your Country Name</option>
+                                                        </select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>State/District</td>
+                                                    <td><select id ="state" name ="state" >
+                                                        </select></td>
+                                                </tr>
+                                                <script language="javascript">print_country("country");</script>
+                                                <tr>
+                                                    <td>City/Place</td>
+                                                    <td><s:textfield name="city" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address 1</td>
+                                                    <td><s:textarea name="address1" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address 2</td>
+                                                    <td><s:textarea name="address2" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PIN/ZIP Code</td>
+                                                    <td><s:textfield name="pin" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Telephone(Home)</td>
+                                                    <td><s:textfield name="HTelephone" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Telephone(Office)</td>
+                                                    <td><s:textfield name="OTelephone" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mobile No.</td>
+                                                    <td><s:textfield name="mobileNo" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FAX No.</td>
+                                                    <td><s:textfield name="faxNo" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Alternative Email 1</td>
+                                                    <td><s:textfield name="email1" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Alternative Email 2</td>
+                                                    <td><s:textfield name="email2" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Alternative Email 3</td>
+                                                    <td><s:textfield name="email3" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Website(Organization)</td>
+                                                    <td><s:textfield name="owebsite" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Website(Personal)</td>
+                                                    <td><s:textfield name="pwebsite" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>&nbsp;</td>
+                                                    <td><s:submit value="Save" />
+                                                        <s:reset value="Cancel" onClick="history.go(-1);" /></td>
+                                                </tr>
+                                            </table>
                                         </s:form>
                                     </div>
                                 </div>
@@ -151,9 +162,9 @@
             frmvalidator.addValidation("pin", "maxlen=10", "Max length is 10");
             frmvalidator.addValidation("pin", "numeric", "numeric only");
 
-            //  frmvalidator.addValidation("HTelephone", "req", "Please enter your TelephoneHome");
-            // frmvalidator.addValidation("HTelephone", "maxlen=20", "Max length is 20");
-            // frmvalidator.addValidation("HTelephone", "numeric", "Numeric only");
+          //  frmvalidator.addValidation("HTelephone", "req", "Please enter your TelephoneHome");
+           // frmvalidator.addValidation("HTelephone", "maxlen=20", "Max length is 20");
+           // frmvalidator.addValidation("HTelephone", "numeric", "Numeric only");
 
             frmvalidator.addValidation("mobileNo", "req", "Please enter your MobileNo");
             frmvalidator.addValidation("mobileNo", "maxlen=20", "Max length is 20");

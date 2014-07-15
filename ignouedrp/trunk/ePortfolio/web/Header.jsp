@@ -84,8 +84,8 @@
                             <li class="w20p"><img class="fl-l cursor" src="/ePortfolio/images/expanded_arrow.png" alt="" width="16" height="16" />
                                 <ul class="sub-menu w120p fs11 hght60">
                                     <li><a class="mart35" href="<s:url value="/ChangeLoginPassword.jsp"/>">Change Password</a></li>
-                                <li><span class="marl10 fcgrey">------------------------</span></li>
-                                <li><s:a href="%{logoutID}">Logout</s:a></li>
+                                    <li><span class="marl10 fcgrey">------------------------</span></li>
+                                    <li><s:a href="%{logoutID}">Logout</s:a></li>
                             </ul>
                         </li>
                     </ul>

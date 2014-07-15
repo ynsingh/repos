@@ -38,4 +38,5 @@ public class FacultyGroupDao {
         sessionFactory.close();
         return MyFacultyListList;
     }
+
 }

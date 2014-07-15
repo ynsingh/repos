@@ -38,7 +38,7 @@ public class UserListDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();           
+        s.close();
         sessionFactory.close();
         return TestiUlist;
     }
@@ -54,7 +54,7 @@ public class UserListDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();            
+        s.close();
         sessionFactory.close();
         return usrlist;
     }
@@ -68,7 +68,7 @@ public class UserListDao {
         Ppl.setFiletype(filtype);
         s.update(Ppl);
         t.commit();
-       s.close();         
+        s.close();
         return Ppl;
     }
 
@@ -108,7 +108,7 @@ public class UserListDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();            
+            s.close();
             sessionFactory.close();
         }
     }

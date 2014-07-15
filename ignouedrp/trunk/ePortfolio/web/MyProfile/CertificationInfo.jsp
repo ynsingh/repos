@@ -1,4 +1,4 @@
-<%--
+<%-- 
 Document   : CertificationInfo
 Created on : Oct 4, 2011, 4:31:14 PM
 Author     : IGNOU Team
@@ -9,37 +9,31 @@ Version      : 1
 <%@page import="org.apache.log4j.Logger"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
-<%@taglib prefix="sj" uri="/struts-jquery-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Certification</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
-        <sj:head/>
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
                 $("#accordion").accordion();
             });
-            $(document).ready(function() {
-                $(".add_certificate a").click(function() {
-                    $("#add_certificate_form").toggle();
-                });
-            });
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -59,42 +53,14 @@ Version      : 1
                                 <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Certifications </div>
                                 <div class="w100 fl-l">
                                     <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
-                                    <div class="add_certificate fl-r mar0a mart10"><a href="#" onclick="show_from()"><img src=" <s:url value="/icons/add.gif"/>" title="Add Certification"/> </a> </div>
-                                </div>
-                                <div id="add_certificate_form" style="display:none;" class="fl-l w100">
-                                    <fieldset class="w450p mar0a">
-                                        <legend class="fbld">Add Certification</legend>
-                                        <s:form action="AddCertificateInfo" method="post" name="myform" namespace="/MyProfile">
-                                            <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
-                                                <s:textfield name="certificationName" label="Certification Name"/>
-                                                <s:textfield name="certificationAuthority" label="Certification Authority"/>
-                                                <s:textfield name="license" label="License Number"/>
-                                                <sj:datepicker readonly="true"  id="date0" label="Valid From" name="certificationDate"
-                                                               value="today" displayFormat="MM, yy"
-                                                               changeMonth="true" changeYear="true"
-                                                               onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
-                                                               />
-                                                <sj:datepicker readonly="true"  id="date1" label="Valid Upto" name="validDate"
-                                                               value="today" displayFormat="MM, yy"
-                                                               changeMonth="true" changeYear="true"
-                                                               onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
-                                                               />
-                                                <tr>
-                                                    <td>&nbsp;</td>
-                                                    <td><s:submit value="Save" theme="simple" />
-                                                        <s:reset value="Cancel" theme="simple" onClick="history.go(-1);" /></td>
-                                                </tr>
-                                            </table>
-                                            <br/>
-                                        </s:form>
-                                    </fieldset>
+                                    <div class="wau fl-r mart10"> <a href="CertificationInfoAdd.jsp"> <img src=" <s:url value="/icons/add.gif"/>" title="Add Certification"/> </a> </div>
                                 </div>
                                 <div class="w100 fl-l">
                                     <div class="w100 fl-l tc fbld fcgreen">
                                         <s:property value="msg"/>
                                     </div>
                                     <div class="w100 fl-l mart10">
-                                        <table class="tablepaging" id="tablepaging" width="100%" cellspacing="0" cellpadding="5" border="1">
+                                        <table width="100%" class="fl-l" cellpadding="4" border="1" cellspacing="0">
                                             <tr>
                                                 <th>S. No</th>
                                                 <th>Certification Name</th>

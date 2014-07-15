@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Profile</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -23,7 +23,6 @@
             $(function() {
                 $(".column div div .ui-icon").click(function() {
                     $(this).toggleClass("ui-icon-minusthick");
-                    $(this).toggleClass("ui-icon-plusthick");
                     $(this).parents(".column div").find(".portlet-content").toggle();
                 });
             });
@@ -108,7 +107,7 @@
                                                     <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
                                                         <div class="ui-widget-header ui-corner-all">
                                                             <span class="title">Personal Information</span>
-                                                            <span class="ui-icon ui-icon-minusthick"></span>
+                                                            <span class="ui-icon ui-icon-plusthick"></span>
                                                         </div>
                                                         <div class="portlet-content">
                                                             <table align="center" border="0" width="100%">
@@ -163,7 +162,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Experience Details</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Experience Details</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content"> <table border="0" align="center" width="100%">
                                                                     <tr><th>Job Title</th>
                                                                         <th>Organization Name</th>
@@ -195,7 +194,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Skills Set</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Skills Set</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content">  
                                                                 <s:iterator value="profileSkills" >
                                                                     <s:property value="skills"/>,&nbsp;
@@ -210,7 +209,7 @@
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
                                                             <div class="ui-widget-header ui-corner-all">
                                                                 <span class="title">Education</span>
-                                                                <span class="ui-icon ui-icon-minusthick">
+                                                                <span class="ui-icon ui-icon-plusthick">
 
                                                                 </span>
                                                             </div>
@@ -245,7 +244,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Certification</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Certification</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content"> <table border="0" align="center" width="100%">
                                                                     <tr>
                                                                         <th>Certification Name</th>
@@ -271,7 +270,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Test Scores</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Test Scores</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content"> <table border="0" width="100%">
                                                                     <tr>
                                                                         <th width="150">Name</th>
@@ -301,7 +300,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Project</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Project</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content">     <table align="center" width="100%" border="0">
                                                                     <tr>
                                                                         <th width="5%" align="center">S. No</th>
@@ -344,7 +343,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Honor and Awards</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Honor and Awards</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content"> <table border="0" width="100%">
                                                                     <tr>
                                                                         <th width="120">Title</th>
@@ -374,7 +373,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Patents</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Patents</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content">
                                                                 <table border="0" width="100%">
 
@@ -405,7 +404,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Journals</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Journals</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content">
                                                                 <table width="100%" border="0">
                                                                     <s:iterator value="journals" status="stat"> 
@@ -436,7 +435,7 @@
                                                     </s:if>
                                                     <s:else>
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Conferences</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">Conferences</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content">
                                                                 <table width="100%" border="0">
                                                                     <s:iterator value="conferences" status="stat"> 
@@ -472,7 +471,7 @@
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
                                                             <div class="ui-widget-header ui-corner-all">
                                                                 <span class="title">Professional Affiliation</span>
-                                                                <span class="ui-icon ui-icon-minusthick"></span>
+                                                                <span class="ui-icon ui-icon-plusthick"></span>
                                                             </div>
                                                             <div class="portlet-content"><table width="100%" border="0">
                                                                     <tr>
@@ -509,7 +508,7 @@
                                                     </s:if>
                                                     <s:else> <!--References -->
                                                         <div class="ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                                                            <div class="ui-widget-header ui-corner-all"><span class="title">References</span><span class="ui-icon ui-icon-minusthick"></span></div>
+                                                            <div class="ui-widget-header ui-corner-all"><span class="title">References</span><span class="ui-icon ui-icon-plusthick"></span></div>
                                                             <div class="portlet-content"> <table align="center" border="0" width="100%">
                                                                     <tr>
                                                                         <th width="150">Name &amp; Designation</th>

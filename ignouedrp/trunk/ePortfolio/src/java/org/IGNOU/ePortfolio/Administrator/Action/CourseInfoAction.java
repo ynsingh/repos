@@ -27,7 +27,7 @@ public class CourseInfoAction extends ActionSupport implements Serializable {
     public CourseInfoAction() {
     }
 
-    public String MyCourses() throws Exception {
+    public String MyCoursesforFaculty() throws Exception {
         CourseList = dao.CourseListByUserId(user_id);
         return SUCCESS;
     }

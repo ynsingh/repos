@@ -16,7 +16,7 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Welcome to ePortfolio</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -24,7 +24,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -90,7 +90,7 @@ Version      : 1
         </div>
         <div class="footer_panel">
             <div class="footer_txt">
-                <div class="wau fl-l tl">ePortfolio &COPY; 2011-13, MHRD. All Rights Reserved</div>
+                <div class="wau fl-l tl">&COPY; 2011-12, MHRD. All Rights are Reserved</div>
                 <div class="wau fl-r tr">Designed and Developed by eGyanKosh,Indira Gandhi National Open University</div>
             </div>
             <!--Footer Section Ends Here-->

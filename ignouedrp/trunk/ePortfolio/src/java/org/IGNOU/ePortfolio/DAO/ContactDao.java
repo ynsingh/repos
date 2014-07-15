@@ -81,4 +81,5 @@ public class ContactDao {
             sessionFactory.close();
         }
     }
+
 }

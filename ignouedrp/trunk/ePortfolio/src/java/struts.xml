@@ -13,7 +13,6 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-  <!--  <constant name="struts.action.extension" value="do"/>  -->
     <constant name="struts.enable.DynamicMethodInvocation" value="true" />
     <constant name="struts.devMode" value="false" />
     <constant name="struts.configuration.xml.reload" value="true" />
@@ -35,7 +34,6 @@
     <include file="Struts-Events.xml"/>
     <include file="Struts-Requests.xml"/>
     <include file="Struts-MyGroups.xml"/>
-	<include file="Assignment.xml"/>
     <!-- Configuration for the default package. -->
        
     <package name="org.IGNOU.ePortfolio.Action" namespace="/" extends="struts-default"> 

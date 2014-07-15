@@ -177,4 +177,5 @@ public class ConferenceDao {
             sessionFactory.close();
         }
     }
+
 }

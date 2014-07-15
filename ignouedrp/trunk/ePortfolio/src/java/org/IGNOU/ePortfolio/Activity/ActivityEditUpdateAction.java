@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @version 1
  * @since 28-05-2012
  */
-public class ActivityEditUpdateAction extends ActionSupport implements Serializable {
+public class ActivityEditUpdateAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());

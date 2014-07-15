@@ -1,5 +1,5 @@
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -47,7 +47,7 @@ import org.apache.log4j.Logger;
  * @since 14-Oct-2011
  * @author IGNOU Team ID is Modified by IGNOU Team on 17-Oct-2011.
  */
-public class ProfAffiliationInfoAction extends ActionSupport implements Serializable {
+public class ProfAffiliationInfoAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
@@ -66,7 +66,7 @@ public class ProfAffiliationInfoAction extends ActionSupport implements Serializ
     private List<ProfileProAffiliation> AffiliationList = null;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public ProfAffiliationInfoAction() {
     }
@@ -74,10 +74,10 @@ public class ProfAffiliationInfoAction extends ActionSupport implements Serializ
     public String ShowAffiliationInfo() throws Exception {
         AffiliationList = dao.ProfileProAffiliationList(user_id);
         if (AffiliationList.isEmpty()) {
-            msg = notFound;
+            return INPUT;
         } else {
+            return SUCCESS;
         }
-        return SUCCESS;
     }
 
     public String EditAffiliationInfo() throws Exception {
@@ -326,19 +326,5 @@ public class ProfAffiliationInfoAction extends ActionSupport implements Serializ
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
-    }
-
-    /**
-     * @return the notFound
-     */
-    public String getNotFound() {
-        return notFound;
-    }
-
-    /**
-     * @param notFound the notFound to set
-     */
-    public void setNotFound(String notFound) {
-        this.notFound = notFound;
     }
 }

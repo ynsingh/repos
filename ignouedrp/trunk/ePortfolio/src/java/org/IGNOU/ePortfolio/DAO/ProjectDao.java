@@ -1,6 +1,6 @@
 
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -44,9 +44,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory
- * object.
- *
+ * Hibernate Utility class with a convenient method to get Session Factory object.
  * @version 1
  * @since 20-Oct-2011
  * @author IGNOU Team
@@ -55,7 +53,7 @@ public class ProjectDao {
 
     private SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
     private Session s;
-
+   
     public Projects ProjectsSave(Projects ProjectModel) throws Exception {
         s = sf.openSession();
         Transaction t = null;
@@ -105,7 +103,7 @@ public class ProjectDao {
 
     @SuppressWarnings("unchecked")
     public List<Projects> ProjectsEdit(long projectId) {
-        s = sf.openSession();
+       s = sf.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -180,4 +178,6 @@ public class ProjectDao {
             sf.close();
         }
     }
+
+   
 }

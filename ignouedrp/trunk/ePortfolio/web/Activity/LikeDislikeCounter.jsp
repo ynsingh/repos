@@ -20,8 +20,8 @@
             <s:url id="Dislike" value="SaveDislike"><s:param name="evidenceSubId" value="evidenceSubId"/><s:param name="likeDislikeId" value="likeDislikeId"/><s:param name="L" value="0"/><s:param name="D" value="1"/><s:param name="commentId" value="commentId"/></s:url>
             <td><sd:a href="%{Unlike}">Unlike</sd:a></td> 
             <td><sd:a href="%{Dislike}">Dislike</sd:a></td>
-                <td>
-                    Likes :&nbsp;<s:property value="likeCount"/>
+            <td>
+                Likes :&nbsp;<s:property value="likeCount"/>
             </td>&nbsp;
             <td>
                 Dislikes :&nbsp;<s:property value="dislikeCount"/>
@@ -50,7 +50,7 @@
     <td> <sd:a href="%{Like}">Like</sd:a></td> 
     <s:url id="Dislike" value="SaveDislike"><s:param name="evidenceSubId" value="evidenceSubId"/><s:param name="likeDislikeId" value="likeDislikeId"/><s:param name="L" value="0"/><s:param name="D" value="1"/><s:param name="commentId" value="commentId"/></s:url>
     <td><sd:a href="%{Dislike}">Dislike</sd:a></td>
-        <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-        <td>Likes :&nbsp;<s:property value="likeCount"/> </td>&nbsp;<td>Dislikes :&nbsp;<s:property value="dislikeCount"/> </td>
+    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    <td>Likes :&nbsp;<s:property value="likeCount"/> </td>&nbsp;<td>Dislikes :&nbsp;<s:property value="dislikeCount"/> </td>
 </s:elseif>
 

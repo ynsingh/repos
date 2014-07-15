@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : EmployeeInfo
     Created on : Sep 1, 2011, 5:59:33 PM
 Author     : IGNOU Team
@@ -15,7 +15,7 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Edit Employment Information</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -32,14 +32,14 @@ Version      : 1
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -66,22 +66,25 @@ Version      : 1
                                                 <legend class="fbld">Edit Employment Information</legend>
                                                 <table width="70%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                     <s:iterator value="empListList" var="ProfileEmployment">
+
                                                         <s:hidden name="employmentInfoId"/>
                                                         <tr>
-                                                            <td width="20%">Job Title</td>
-                                                            <td colspan="3"><s:textfield name="jtitle" cssClass="w100"/></td>
+                                                            <td width="25%">Job Title</td>
+                                                            <td width="45%"><s:textfield name="jtitle" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Organization</td>
-                                                            <td colspan="3"><s:textfield name="orgName" cssClass="w100"/></td>
+                                                            <td><s:textfield name="orgName" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Address</td>
-                                                            <td colspan="3"><s:textarea name="oaddress" cssClass="w100" /></td>
+                                                            <td><s:textfield name="oaddress" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>City</td>
                                                             <td><s:textfield name="ocity" /></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td>State</td>
                                                             <td><s:textfield name="ostate" /></td>
                                                         </tr>
@@ -91,24 +94,24 @@ Version      : 1
                                                         </tr>
                                                         <tr>
                                                             <td>Joining Date</td>
-                                                            <td><sj:datepicker cssClass="w50" readonly="true"  id="date0" value="%{jdate}" name="jdate" changeMonth="true" changeYear="true"/></td>
-                                                            <td width="20%">Leaving Date</td>
-                                                            <td><sj:datepicker cssClass="w50" readonly="true"  id="date1" maxDate="-1d" value="%{ldate}" name="ldate" changeMonth="true" changeYear="true"/></td>
+                                                            <td><sj:datepicker readonly="true"  id="date0" value="%{jdate}" name="jdate" changeMonth="true" changeYear="true"/></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Description</td>
-                                                            <td colspan="3"><s:textarea cssClass="w100" name="description"  cols="30" rows="5"/></td>
+                                                            <td>Leaving Date</td>
+                                                            <td><sj:datepicker readonly="true"  id="date1" maxDate="-1d" value="%{ldate}" name="ldate" changeMonth="true" changeYear="true"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="top">Role &amp; Description</td>
+                                                            <td><s:textarea name="description"  cols="30" rows="6"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td>&nbsp;</td>
-                                                            <td colspan="2"><s:submit cssClass="fl-l" value="Save" />
-                                                                <s:reset cssClass="fl-l" value="Cancel" onClick="history.go(-1);" />
-                                                            </td><td>&nbsp;</td>
+                                                            <td><s:submit value="Save Changes" />
+                                                                <s:reset value="Cancel" onClick="history.go(-1);" /></td>
                                                         </tr>
                                                     </table>
-                                                </s:iterator>
-                                            </fieldset>
-                                        </s:form>
+                                                </s:iterator></fieldset>
+                                            </s:form>
                                     </div>
                                 </div>
                             </div>

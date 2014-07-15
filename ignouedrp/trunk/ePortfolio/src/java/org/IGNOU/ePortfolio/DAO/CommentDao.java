@@ -79,7 +79,7 @@ public class CommentDao implements Serializable {
         }
     }
 
-    //update evidence submission table with list of users
+    //update evidence submission table with list of users 
     @SuppressWarnings("unchecked")
     public ActivitiesSubmission EvidenceSubmissionUpdateWithAllowedStudent(int submissionId, Boolean canComment, String listStudent) {
         s = sessionFactory.openSession();

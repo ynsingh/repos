@@ -14,9 +14,9 @@ Database Configration.
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/eportfolio</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
-
-        <!-- .hbm Mapping -->
+        <property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.pool_size">5000</property>
+        <property name="hibernate.connection.release_mode">auto</property>
         <mapping resource="org/IGNOU/ePortfolio/Model/Userdocs.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/User.hbm.xml"/>
         <mapping resource="org/IGNOU/ePortfolio/Model/UserList.hbm.xml"/>

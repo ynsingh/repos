@@ -1,5 +1,5 @@
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -48,7 +48,7 @@ import org.apache.log4j.Logger;
  * @version 1
  * @author IGNOU Team
  */
-public class ReferenceAction extends ActionSupport implements Serializable {
+public class ReferenceAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     private MyProfileDAO dao = new MyProfileDAO();
@@ -71,7 +71,7 @@ public class ReferenceAction extends ActionSupport implements Serializable {
     private String website;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public ReferenceAction() {
     }
@@ -79,10 +79,12 @@ public class ReferenceAction extends ActionSupport implements Serializable {
     public String ShowInfo() throws Exception {
         RefList = dao.ProfileReferencesListByUserId(getUser_id());
         if (RefList.isEmpty()) {
-            msg = notFound;
+            // return SUCCESS;
+            return INPUT;
         } else {
+            //return ERROR;
+            return SUCCESS;
         }
-        return SUCCESS;
     }
 
     public String EditInfo() throws Exception {
@@ -380,19 +382,5 @@ public class ReferenceAction extends ActionSupport implements Serializable {
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
-    }
-
-    /**
-     * @return the notFound
-     */
-    public String getNotFound() {
-        return notFound;
-    }
-
-    /**
-     * @param notFound the notFound to set
-     */
-    public void setNotFound(String notFound) {
-        this.notFound = notFound;
     }
 }

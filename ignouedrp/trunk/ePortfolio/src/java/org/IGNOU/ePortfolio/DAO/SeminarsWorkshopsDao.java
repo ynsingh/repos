@@ -25,10 +25,8 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class SeminarsWorkshopsDao {
 
-    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-    ;
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();;
     private Session s;
-
     public SeminarsWorkshops SeminarsWorkshopsSave(SeminarsWorkshops SWModel) {
         s = sessionFactory.openSession();
         Transaction t = null;
@@ -53,13 +51,12 @@ public class SeminarsWorkshopsDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            s.clear();
             sessionFactory.close();
         }
     }
 
     public List<SeminarsWorkshops> SeminarsWorkshopsListByUserId(String user_id) {
-        s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -84,7 +81,7 @@ public class SeminarsWorkshopsDao {
     }
 
     public List<SeminarsWorkshops> SeminarsWorkshopsEdit(long seminarsWorkshopsId) {
-        s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -108,7 +105,7 @@ public class SeminarsWorkshopsDao {
     }
 
     public SeminarsWorkshops SeminarsWorkshopsDelete(long seminarsWorkshopsId) {
-        s = sessionFactory.openSession();
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -130,7 +127,7 @@ public class SeminarsWorkshopsDao {
     }
 
     public SeminarsWorkshops SeminarsWorkshopsUpdate(Long seminarsWorkshopsId, String userId, String swType, String swName, String DFrom, String DTo, String venue, String state, String country, String swRole, String perType, String paperTitle, Integer noCoauthors, String areaThemeTopic, String sourceFunding, Long amountFunded, String language, String url, String abstract_, Set<SeminarsWorkshopsAuthor> seminarsWorkshopsAuthors, ArrayList<String> fname, ArrayList<String> lname) {
-        s = sessionFactory.openSession();
+         s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -164,7 +161,8 @@ public class SeminarsWorkshopsDao {
             throw new ExceptionInInitializerError(ex);
         } finally {
             s.close();
-            sessionFactory.close();
+           sessionFactory.close();
         }
     }
+
 }

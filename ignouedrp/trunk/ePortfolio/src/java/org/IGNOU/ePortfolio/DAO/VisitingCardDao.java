@@ -75,7 +75,7 @@ public class VisitingCardDao {
         vacardmod.setWebsiteOff(websiteOff);
         vacardmod.setWebsitePer(websitePer);
         t.commit();
-       s.close();
+        s.close();
         sessionFactory.close();
         return vacardmod;
     }

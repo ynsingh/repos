@@ -1,5 +1,5 @@
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
  *
  * @author IGNOU Team
  */
-public class ProfileInterestInfoAction extends ActionSupport implements Serializable {
+public class ProfileInterestInfoAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     final Logger logger = Logger.getLogger(this.getClass());
@@ -64,15 +64,15 @@ public class ProfileInterestInfoAction extends ActionSupport implements Serializ
     private String myHobbies;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public String ShowInterestInfo() throws Exception {
         IntListList = getIntdao().ProfileInterestByUserId(user_id);
         if (IntListList.isEmpty()) {
-            msg = notFound;
+            return INPUT;
         } else {
+            return SUCCESS;
         }
-        return SUCCESS;
     }
 
     public String EditInterestInfo() {
@@ -300,19 +300,5 @@ public class ProfileInterestInfoAction extends ActionSupport implements Serializ
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
-    }
-
-    /**
-     * @return the notFound
-     */
-    public String getNotFound() {
-        return notFound;
-    }
-
-    /**
-     * @param notFound the notFound to set
-     */
-    public void setNotFound(String notFound) {
-        this.notFound = notFound;
     }
 }

@@ -37,7 +37,7 @@ public class ThesisDissertationDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();         
+            s.close();
             sessionFactory.close();
         }
     }
@@ -60,7 +60,7 @@ public class ThesisDissertationDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();        
+            s.close();
             sessionFactory.close();
         }
     }
@@ -83,7 +83,7 @@ public class ThesisDissertationDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();           
+            s.close();
             sessionFactory.close();
         }
     }
@@ -117,7 +117,7 @@ public class ThesisDissertationDao {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();
+            s.close();
             sessionFactory.close();
         }
     }
@@ -138,7 +138,7 @@ public class ThesisDissertationDao {
             System.err.println("Initial   SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         } finally {
-           s.close();
+            s.close();
             sessionFactory.close();
         }
     }

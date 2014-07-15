@@ -16,7 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Task / Activity Grading</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -59,13 +59,13 @@
                                     <div class="bradcum">
                                         <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;> <a href="FacultyTaskShow">Task / Activities</a> &nbsp; >  <a href="ActivSubList?evidenceId=<s:property value="evidenceId"/>">Task / Activities Grade</a> &nbsp; > Task / Activity Grading 
                                     </div>
-                                    <div align="right" class="tab_btn">
-                                        <div class="tab_btn_1"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
-                                        <div class="fl-r">
-                                            <s:a href="ActivityAnnounce.jsp" cssClass="marl5">Create Activity</s:a>
-                                            <s:a href="FacultyTaskShow" cssClass="marl5">Task/Activities</s:a>
-                                            <s:a action="EviDraftList" cssClass="marl5">Draft</s:a>
-                                            <s:a action="GetGradeSetupList" cssClass="marl5">Grade Setup</s:a>
+                                        <div align="right" class="tab_btn">
+                                            <div class="tab_btn_1"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
+                                            <div class="fl-r">
+                                                <s:a href="ActivityAnnounce.jsp" cssClass="marl5">Create Activity</s:a>
+                                                <s:a href="FacultyTaskShow" cssClass="marl5">Task/Activities</s:a>
+                                                <s:a action="EviDraftList" cssClass="marl5">Draft</s:a>
+                                                <s:a action="GetGradeSetupList" cssClass="marl5">Grade Setup</s:a>
                                             </div>   
                                         </div>
                                         <div class="w100 fl-l">

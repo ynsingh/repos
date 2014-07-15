@@ -15,7 +15,7 @@ Author : Vinay
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><s:property value="title"/></title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <sj:head/>
@@ -29,14 +29,14 @@ Author : Vinay
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -105,7 +105,7 @@ Author : Vinay
                                                                     <s:property value="email3" />
                                                                 </s:iterator>
                                                             </a>
-                                                        </td>
+                                                        </td> 
                                                     </tr>
                                                 </s:iterator>
                                                 <s:iterator value="MyFacultyList" status="stat">
@@ -117,21 +117,21 @@ Author : Vinay
                                                                 <span class="wau fl-l marl5"><s:property value="fname"/>&nbsp;<s:property value="lname"/></span>
                                                             </a>
                                                         </td>
-                                                        <!--       <td width="25%" valign="top">
-                                                        <s:iterator value="profileContacts">
-                                                            <s:property value="address1"/>, <s:property value="address2"/><br/>
-                                                            <s:property value="city"/>, <s:property value="state"/><br/>
-                                                            <s:property value="country"/>, <s:property value="pin"/>
-                                                        </s:iterator>
-                                                    </td>
-                                                    <td width="20%" valign="top">
-                                                        <s:iterator value="profileContacts">
-                                                            Res No.: <s:property value="HTelephone"/><br/>
-                                                            Off No.: <s:property value="OTelephone"/><br/>
-                                                            Mob No.: <s:property value="mobileNo"/><br/>
-                                                            Fax No.: <s:property value="faxNo"/>
-                                                        </s:iterator>
-                                                    </td> -->
+                                                        <td width="25%" valign="top">
+                                                            <s:iterator value="profileContacts">
+                                                                <s:property value="address1"/>, <s:property value="address2"/><br/>
+                                                                <s:property value="city"/>, <s:property value="state"/><br/>
+                                                                <s:property value="country"/>, <s:property value="pin"/>
+                                                            </s:iterator>
+                                                        </td>
+                                                        <td width="20%" valign="top">
+                                                            <s:iterator value="profileContacts">
+                                                                Res No.: <s:property value="HTelephone"/><br/>
+                                                                Off No.: <s:property value="OTelephone"/><br/>
+                                                                Mob No.: <s:property value="mobileNo"/><br/>
+                                                                Fax No.: <s:property value="faxNo"/>
+                                                            </s:iterator>
+                                                        </td>
                                                         <td width="25%" class="fbld" valign="top">
                                                             <a href="mailto:<s:property value="emailId"/>, <s:property value="email1"/>">
                                                                 <s:property value="emailId"/><br/>
@@ -158,7 +158,7 @@ Author : Vinay
         </div>
         </div>
         <s:include value="/Footer.jsp"/>
-        <script type="text/javascript">
+        <script type="text/javascript"><!--
             var pager = new Pager('tablepaging', 10);
             pager.init();
             pager.showPageNav('pager', 'pageNavPosition');

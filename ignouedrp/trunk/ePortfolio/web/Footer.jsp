@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : Footer
     Created on : Oct 10, 2011, 11:30:05 AM
 Author     : IGNOU Team
@@ -14,7 +14,7 @@ Version      : 1
 
 <!--Footer Section Starts Here-->
 <div class="footer">
-    <div class="f_menu">
+    <div class="f_menu"> 
 
         <%
             session.putValue("requri", request.getRequestURI());
@@ -26,7 +26,7 @@ Version      : 1
 </div>
 <div class="footer_panel">
     <div class="footer_txt">
-        <div class="wau fl-l tl">ePortfolio &COPY; 2011-13, MHRD. All Rights Reserved</div>
+        <div class="wau fl-l tl">&COPY; 2011-13, MHRD. All Rights are Reserved</div>
         <div class="wau fl-r tr">Designed and Developed by eGyanKosh,&nbsp; Indira Gandhi National Open University</div>
     </div>
     <!--Footer Section Ends Here-->

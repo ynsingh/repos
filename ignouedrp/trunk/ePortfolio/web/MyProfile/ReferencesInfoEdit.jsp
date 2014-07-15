@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : ReferencesInfoEdit
     Created on : Oct 11, 2011, 2:20:28 PM
 Author     : IGNOU Team
@@ -14,7 +14,7 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Edit Reference</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -31,14 +31,14 @@ Version      : 1
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -62,36 +62,23 @@ Version      : 1
                                         <s:property value="msg"/>
                                     </div>
                                     <div class="w100 fl-l">
-                                        <fieldset class="w700p mar0a">
+                                        <fieldset class="w400p mar0a">
                                             <legend><strong>Add References</strong></legend>
-                                            <s:form action="UpdateInfo" method="post" namespace="/MyProfile" name="myform" theme="simple">
+                                            <s:form action="UpdateInfo" method="post" namespace="/MyProfile" name="myform">
                                                 <s:iterator value="RefList" var="ProRef">
                                                     <s:hidden name="referencesId"/>
                                                     <s:hidden name="userId"/>
-                                                    <table width="100%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                    <table width="100%" class="fl-l" cellpadding="4" border="0" cellspacing="0">
+                                                        <s:textfield name="name" label="Name"/>
+                                                        <s:textfield name="designation" label="Designation"/>
+                                                        <s:textfield name="department" label="Department / School"/>
+                                                        <s:textfield name="orgUniv" label="University, Organization"/>
+                                                        <s:textfield name="place" label="Address"/>
+                                                        <s:textfield name="city" label="City"/>
+                                                        <s:textfield name="state" label="State"/>
                                                         <tr>
-                                                            <td>Name</td>
-                                                            <td><s:textfield name="name" label="Name"/></td>
-                                                            <td>Designation</td>
-                                                            <td><s:textfield name="designation" label="Designation"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Department / School</td>
-                                                            <td><s:textfield name="department" label="Department / School"/></td>
-                                                            <td>University / Organization</td>
-                                                            <td><s:textfield name="orgUniv" label="University / Organization"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Address</td>
-                                                            <td><s:textfield name="place" label="Address"/></td>
-                                                            <td>City</td>
-                                                            <td><s:textfield name="city" label="City"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>State</td>
-                                                            <td><s:textfield name="state" label="State"/></td>
                                                             <td>Country</td>
-                                                            <td><select name="country" style="width: 200px;">
+                                                            <td><select name="country" style="width: 255px;">
                                                                     <option value="Afghanistan"> Afghanistan </option>
                                                                     <option value="Albania"> Albania </option>
                                                                     <option value="Algeria"> Algeria </option>
@@ -333,21 +320,13 @@ Version      : 1
                                                                 </select>
                                                             </td>
                                                         </tr>
+                                                        <s:textfield name="phoneno" label="Phone No."/>
+                                                        <s:textfield name="mobileno" label="Mobile No."/>
+                                                        <s:textfield name="emailId" label="Email ID"/>
+                                                        <s:textfield name="website" label="Website"/>
                                                         <tr>
-                                                            <td>Phone No</td>
-                                                            <td><s:textfield name="phoneno" label="Phone No"/></td>
-                                                            <td>Mobile No</td>
-                                                            <td><s:textfield name="mobileno" label="Mobile No"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Phone No</td>
-                                                            <td> <s:textfield name="emailId" label="Email ID"/></td>
-                                                            <td>Mobile No</td>
-                                                            <td><s:textfield name="website" label="Website"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="4" align="center">
-                                                                <s:submit value="Submit" theme="simple"/>
+                                                            <td>&nbsp;</td>
+                                                            <td><s:submit value="Save Changes" theme="simple"/>
                                                                 <s:reset value="Cancel" theme="simple" onClick="history.go(-1);" />
                                                             </td>
                                                         </tr>

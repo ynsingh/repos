@@ -34,7 +34,7 @@ public class UserProgrammeDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();          
+        s.close();
         sessionFactory.close();
         return UserProlist;
     }
@@ -49,7 +49,7 @@ public class UserProgrammeDao {
             System.out.println(HE);
         }
         t.commit();
-       s.close();          
+        s.close();
         sessionFactory.close();
         return UserProlist;
     }

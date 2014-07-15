@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : ContactInfoEdit
     Created on : Sep 15, 2011, 4:57:30 PM
 Author     : IGNOU Team
@@ -14,7 +14,7 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Edit Contact</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -32,14 +32,14 @@ Version      : 1
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -61,7 +61,7 @@ Version      : 1
                                     </s:if>
                                     <s:else><s:a action="ShowContactInfo">Contact Information</s:a>
                                     </s:else>
-                                    &nbsp;>&nbsp;Edit Contact Information
+                                    &nbsp;>&nbsp;Edit Contact Information 
                                 </div>
                                 <div class="w100 fl-l">
                                     <div class="tab_btn_2"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
@@ -83,7 +83,7 @@ Version      : 1
                                                                 <table class="mar0a" cellpadding="4" border="0" cellspacing="0" align="center">
                                                                     <tr>
                                                                         <th align="left">Address:</th>
-                                                                        <td> <s:textarea name="PAaddress"/>
+                                                                        <td> <s:textarea name="PAaddress"/> 
                                                                     </tr>
                                                                     <tr>
                                                                         <th align="left">City:</th>
@@ -129,7 +129,7 @@ Version      : 1
                                                                 <table class="mar0a" cellpadding="4" border="0" cellspacing="0" align="center">
                                                                     <tr>
                                                                         <th align="left">Address:</th>
-                                                                        <td> <s:textarea name="CAaddress"/>
+                                                                        <td> <s:textarea name="CAaddress"/> 
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -169,7 +169,7 @@ Version      : 1
                                                                     </tr>
                                                                 </table>
                                                             </fieldset>
-                                                        </td>
+                                                        </td>  
                                                     </tr>
                                                     <tr><td colspan="2" align="center">
                                                             <s:submit value="Update"/>
@@ -181,67 +181,80 @@ Version      : 1
                                             <s:form action="updateContact" method="post" name="myform" theme="simple">
                                                 <fieldset class="w500p mar0a">
                                                     <legend class="fbld">Contact Information</legend>
-                                                    <table width="100%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                    <table width="50%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
                                                         <s:iterator value="contactListList" var="ProfileContact">
                                                             <s:hidden name="contactInfoId"/>
                                                             <s:hidden name="userId" label="User ID"/>
 
                                                             <tr>
                                                                 <td>Country</td>
-                                                                <td colspan="3"><select onchange="print_state('state', this.selectedIndex);" id="country" name ="country">
+                                                                <td><select onchange="print_state('state', this.selectedIndex);" id="country" name ="country">
                                                                         <option value="#">Choose Your Country Name</option>
                                                                     </select></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>State/District</td>
-                                                                <td><select id ="state" name ="state" >
+                                                                <td><select id="state" name="state" >
                                                                     </select></td>
-                                                                <script language="javascript">print_country("country");</script>
+                                                            </tr>
+                                                            <script language="javascript">print_country("country");</script>
+                                                            <tr>
                                                                 <td>City/Place</td>
                                                                 <td><s:textfield name="city" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Address 1</td>
                                                                 <td><s:textarea name="address1" /></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Address 2</td>
                                                                 <td><s:textarea name="address2" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PIN/ZIP Code</td>
                                                                 <td><s:textfield name="pin" /></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Telephone(Home)</td>
                                                                 <td><s:textfield name="HTelephone" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Telephone(Office)</td>
                                                                 <td><s:textfield name="OTelephone" /></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Mobile No.</td>
                                                                 <td><s:textfield name="mobileNo" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>FAX No.</td>
                                                                 <td><s:textfield name="faxNo" /></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Alternative Email 1</td>
                                                                 <td><s:textfield name="email1" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Alternative Email 2</td>
                                                                 <td><s:textfield name="email2" /></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Alternative Email 3</td>
                                                                 <td><s:textfield name="email3" /></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Website(Organization)</td>
                                                                 <td><s:textfield name="owebsite" /></td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Website(Personal)</td>
                                                                 <td><s:textfield name="pwebsite" /></td>
                                                             </tr>
                                                         </s:iterator>
                                                         <tr>
-                                                            <td colspan="4" align="center">
-                                                                <s:submit value="Update" theme="simple"/>
-                                                                <s:reset theme="simple" value="Cancel" onClick="history.go(-1);" />
-                                                            </td>
+                                                            <td>&nbsp;</td>
+                                                            <td><s:submit cssClass="fl-l" value="Save Changes"/>
+                                                                <s:reset cssClass="fl-l" value="Cancel" onClick="history.go(-1);" /></td>
                                                         </tr>
                                                     </table>
                                                 </fieldset>

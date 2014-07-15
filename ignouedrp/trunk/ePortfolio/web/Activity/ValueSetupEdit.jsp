@@ -14,15 +14,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Course Grade Setup</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-
+        
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-        <script>
+         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -65,16 +65,16 @@
                                                 <tr><th>Course</th><td><s:textfield name="courseId"/></td></tr>
                                                 <tr><td colspan="2"><hr/></td></tr>
                                                 <tr><th>Grade</th><th>Minimum %</th></tr>
-                                                        <s:property value="gradeValue"/>
-                                                    </s:iterator>
-                                            <tr><td colspan="2" align="center"><s:submit value="Save Changes"/></td></tr>
-                                            </s:form>
+                                                <s:property value="gradeValue"/>
+                                            </s:iterator>
+                                                <tr><td colspan="2" align="center"><s:submit value="Save Changes"/></td></tr>
+                                        </s:form>
                                     </table>
                                 </div>
                             </div>
                             <!--Right box End Here-->
                         </div>
-
+                        
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>

@@ -14,15 +14,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>ePortfolio Home</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
-
+        
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
-        <script>
+         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -66,11 +66,11 @@
                                             <li><a href="<s:url value="/MyProfile/MyProfile.jsp"/>"><img src="<s:url value="/icons/my-profile.gif"/>" alt="My Profile" /><span>My Profile</span></a></li>
                                             <li><s:a href="%{TestiID}"><img src="<s:url value="/icons/testmonials.gif"/>" alt="Testimonials" /><span>Testimonials</span></s:a></li>
                                             <li><s:a href="%{RefID}"><img src="<s:url value="/icons/references.gif"/>" alt="References" /><span>References</span></s:a></li>
-                                            </ul>
-                                        </div>
+                                        </ul>
                                     </div>
-                                    <div class="w100 fl-l mart10">
-                                        <div class="hdng_gallery"><span>My Education and Work</span></div>
+                                </div>
+                                <div class="w100 fl-l mart10">
+                                    <div class="hdng_gallery"><span>My Education and Work</span></div>
                                     <% if (role.contains("faculty")) {%>     
                                     <s:url id="EviID" action="FacultyTaskShow" namespace="/Activity"/>
                                     <% } else if (role.contains("student")) {%>
@@ -113,7 +113,7 @@
                             </div>
                             <!--Right box Starts Here-->
                         </div>
-
+                        
                     </div>
                     <!--Middle Section Ends Here-->
                 </div>

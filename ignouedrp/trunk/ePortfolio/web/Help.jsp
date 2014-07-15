@@ -16,7 +16,7 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Welcome to ePortfolio</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -24,7 +24,7 @@ Version      : 1
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -33,9 +33,9 @@ Version      : 1
             <div class="w990p mar0a">
                 <!--Header Starts Here-->
                 <div class="w100 fl-l">
-                    <div class="header">
+                     <div class="header">
                         <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
-                    </div>
+                       </div>
                     <div class="menu_bg">
                         <div class="wau fl-l"><img src="images/blank.gif" alt="" width="20" height="10" /></div>
                         <div class="eportfolio_txt">ePORTFOLIO</div>

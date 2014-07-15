@@ -141,4 +141,5 @@ public class ExtraActivitiesDao {
             sessionFactory.close();
         }
     }
+
 }

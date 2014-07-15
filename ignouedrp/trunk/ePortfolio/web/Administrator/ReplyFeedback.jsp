@@ -15,16 +15,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Reply FeedBack</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <sj:head />
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script type="text/javascript" src="<s:url value="/js/global.js"/>"></script>
-        <script>
+         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
     </head>
@@ -54,52 +54,52 @@
                             <div class="my_account_bg">Reply FeedBack</div>
                             <div class="w98 mar0a">
                                 <div class="w100 fl-l mart10">
-                                    <fieldset class="w500p mar0a">
-                                        <legend class="fbld">Reply Feedback</legend>
+                                     <fieldset class="w500p mar0a">
+                                            <legend class="fbld">Reply Feedback</legend>
 
-                                        <s:form action="SendFeedback" method="post" theme="simple">
-                                            <table align="center" width="75%" cellpadding="4" border="0" cellspacing="0">
+                                    <s:form action="SendFeedback" method="post" theme="simple">
+                                        <table align="center" width="75%" cellpadding="4" border="0" cellspacing="0">
+                                            <tr>
+                                                <td colspan="2" align="left"><s:submit value="Send" />
+                                                    <s:reset  value="Discard" onClick="history.go(-1);" />
+                                                </td>
+                                            </tr>
+                                            <s:iterator value="fbList" var="fback">
+                                                <s:hidden name="feedbackId"/>
+                                                <s:hidden name="name"/>
                                                 <tr>
-                                                    <td colspan="2" align="left"><s:submit value="Send" />
-                                                        <s:reset  value="Discard" onClick="history.go(-1);" />
+                                                    <td><s:label value="To"/></td>
+                                                    <td><s:textfield name="emailId"/>
                                                     </td>
                                                 </tr>
-                                                <s:iterator value="fbList" var="fback">
-                                                    <s:hidden name="feedbackId"/>
-                                                    <s:hidden name="name"/>
-                                                    <tr>
-                                                        <td><s:label value="To"/></td>
-                                                        <td><s:textfield name="emailId"/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Subject:</td>
-                                                        <td><input type="text" name="FSubject" value="Re: <s:property value="FSubject"/>
-                                                                   "  label="Subject"/> </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Message:</td>
-                                                        <td><sjr:tinymce
-                                                                id="richtextTinymceAdvancedEditor"
-                                                                name="comment"
-                                                                rows="10"
-                                                                cols="10"
-                                                                value="%{comment}"
-                                                                editorLocal="en"
-                                                                editorTheme="advanced"
-                                                                editorSkin="o2k7"
-                                                                toolbarAlign="left"
-                                                                toolbarLocation="top"
-                                                                toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
-                                                                toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
-                                                                toolbarButtonsRow3=" "
-                                                                />
-                                                        </td>
-                                                    </tr>
-                                                </s:iterator>
-                                            </table>
-                                        </s:form>
-                                    </fieldset>
+                                                <tr>
+                                                    <td>Subject:</td>
+                                                    <td><input type="text" name="FSubject" value="Re: <s:property value="FSubject"/>
+                                                               "  label="Subject"/> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Message:</td>
+                                                    <td><sjr:tinymce
+                                                            id="richtextTinymceAdvancedEditor"
+                                                            name="comment"
+                                                            rows="10"
+                                                            cols="10"
+                                                            value="%{comment}"
+                                                            editorLocal="en"
+                                                            editorTheme="advanced"
+                                                            editorSkin="o2k7"
+                                                            toolbarAlign="left"
+                                                            toolbarLocation="top"
+                                                            toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
+                                                            toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
+                                                            toolbarButtonsRow3=" "
+                                                            />
+                                                    </td>
+                                                </tr>
+                                            </s:iterator>
+                                        </table>
+                                    </s:form>
+                                     </fieldset>
                                 </div>
                                 <!--Right box Starts Here-->
                             </div>

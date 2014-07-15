@@ -169,4 +169,5 @@ public class MyNoteDao {
             sessionFactory.close();
         }
     }
+
 }

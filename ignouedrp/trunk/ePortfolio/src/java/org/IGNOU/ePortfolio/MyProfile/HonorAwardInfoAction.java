@@ -1,5 +1,5 @@
 /*
- *
+ * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -47,7 +47,7 @@ import org.apache.log4j.Logger;
  * @since 13-Oct-2011 (Created & Functional)
  * @author IGNOU Team
  */
-public class HonorAwardInfoAction extends ActionSupport implements Serializable {
+public class HonorAwardInfoAction extends ActionSupport implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     private HonorAwardDao dao = new HonorAwardDao();
@@ -63,7 +63,7 @@ public class HonorAwardInfoAction extends ActionSupport implements Serializable 
     private List<ProfileHonorAward> HonorAwardList;
     private String msg;
     private String infoDeleted = getText("msg.infoDeleted");
-    private String infoUpdated = getText("msg.infoUpdated"), notFound = getText("recordNotFound");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public HonorAwardInfoAction() {
     }
@@ -71,10 +71,10 @@ public class HonorAwardInfoAction extends ActionSupport implements Serializable 
     public String ShowHonorInfo() throws Exception {
         HonorAwardList = dao.ProfileHonorAwardListByUserId(user_id);
         if (HonorAwardList.isEmpty()) {
-            msg = notFound;
+            return INPUT;
         } else {
+            return SUCCESS;
         }
-        return SUCCESS;
     }
 
     public String EditHonoprInfo() throws Exception {
@@ -281,19 +281,5 @@ public class HonorAwardInfoAction extends ActionSupport implements Serializable 
      */
     public void setInfoUpdated(String infoUpdated) {
         this.infoUpdated = infoUpdated;
-    }
-
-    /**
-     * @return the notFound
-     */
-    public String getNotFound() {
-        return notFound;
-    }
-
-    /**
-     * @param notFound the notFound to set
-     */
-    public void setNotFound(String notFound) {
-        this.notFound = notFound;
     }
 }

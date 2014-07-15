@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : MyEdudation-Workspace
     Created on : Apr 17, 2012, 1:18:29 PM
     Author     : IGNOU Team
@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>My Education and Work</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -30,7 +30,7 @@
         <%
             final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -45,7 +45,7 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
                         <!--Right box Starts Here-->
                         <div class="right_box">
@@ -57,15 +57,16 @@
                                     </div>
                                     <div class="gallery">
                                         <ul id="myconnectionicon" class="jcarousel-skin-tango">
-                                            <% if (role.contains("faculty")) {%>
+                                            <% if (role.contains("faculty")) {%>     
                                             <s:url id="EviID" action="FacultyTaskShow" namespace="/Activity"/>
                                             <s:url id="ActId" action="myAnnouncedActivities" namespace="/Activities"/>
                                             <% } else if (role.contains("student")) {%>
                                             <s:url id="EviID" action="StudentTaskList" namespace="/Activity"/>
                                             <s:url id="ActId" action="announcedActivities" namespace="/Activities"/>
-                                            <% }%>
-                                            <li><s:a href="%{EviID}"><img src="<s:url value="/icons/task-activities.gif"/>" width="60" height="60"/><span>Task / Activities&nbsp;(Evidence)</span></s:a></li>
-                                            <li><a href="MyWorkspace/MyWorkspace.jsp"><img src="<s:url value="/icons/my-workspace.gif"/>" alt="My Workspace" /><span>My Workspace</span></a></li>
+                                            <% }%> 
+                                             <li><s:a href="%{EviID}"><img src="<s:url value="/icons/task-activities.gif"/>" width="60" height="60"/><span>Task / Activities&nbsp;(Evidence)</span></s:a></li>
+                                            <li><s:a href="%{ActId}"><img src="<s:url value="/icons/task-activities.gif"/>" width="60" height="60"/><span>Activities</span></s:a></li>
+                                             <li><a href="MyWorkspace/MyWorkspace.jsp"><img src="<s:url value="/icons/my-workspace.gif"/>" alt="My Workspace" /><span>My Workspace</span></a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/institute.gif"/>" alt="Institute" /><span>Institute</span></a></li>
                                             <li><a href="<s:url value="/PageUnderConstruction.jsp"/>"><img src="<s:url value="/icons/course.gif"/>" alt="Course" /><span>Courses</span></a></li>
                                             <li><a href="<s:url value="/ExamEvaluation/ExamEvaluationIndex.jsp"/>"><img src="<s:url value="/icons/exam-eval.gif"/>" alt="Examination &amp; Evaluation" /><span>Examination &amp; Evaluation</span></a></li>
@@ -81,6 +82,6 @@
                 </div>
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : CommentsonPeerGroup
     Created on : May 19, 2012, 11:04:32 AM
     Author     : IGNOU Team
@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Comment on Peer Group</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -31,7 +31,7 @@
         <%
             final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+             logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -47,7 +47,7 @@
                 <div class="w100 fl-l">
                     <div class="middle_bg">
                         <!--Left box Starts Here-->
-                        <s:include value="/Left-Nevigation.jsp"/>
+                        <s:include value="/Left-Nevigation.jsp"/> 
                         <!--Left box Ends Here-->
 
                         <!--Right box Starts Here-->
@@ -56,7 +56,7 @@
                             <div class="v_gallery">
                                 <div class="w98 mar0a mart10">
                                     <div class="bradcum">
-                                        <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;><a href="<s:url value="/Activity/StudentTaskList"/>"> Task /Activity</a>&nbsp;> <a href="<s:url value="/Activity/SubmitedEvi"/>"> Submitted Task / Activities</a>&nbsp;> Comment on Peer Group
+                                        <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;><a href="<s:url value="/Activity/StudentTaskList"/>"> Task /Activity</a>&nbsp;> <a href="<s:url value="/Activity/SubmitedEvi"/>"> Submitted Task / Activities</a>&nbsp;> Comment on Peer Group 
                                     </div>
                                     <div align="right" class="tab_btn">
                                         <div class="tab_btn_1"><a onclick="history.go(-1);"><img src="<s:url value="/icons/back-arrow.png"/>" class="w25p" /></a></div>
@@ -70,7 +70,7 @@
                                         <div class="w100 fl-l mart20">
                                             <fieldset class="w550p mar0a">
                                                 <legend class="fbld">Peer Group's Task/Activity</legend>
-                                                <table class="mar0a fl-l w100 mart15 tablepaging" cellpadding="4" border="1" cellspacing="0">
+                                                <table width="100%" class="mar0a tablepaging" id="tablepaging" cellpadding="4" border="0" cellspacing="0">
                                                 <s:iterator value="eviList">
                                                     <tr>
                                                         <th align="left">Task / Activities</th>
@@ -96,25 +96,27 @@
                                                 </s:iterator>
                                             </table>
                                         </fieldset>
-                                        <table class="mar0a fl-l w100 mart15 tablepaging" cellpadding="4" border="1" cellspacing="0">
-                                            <tr>
-                                                <th align="center">S No.</th>
-                                                <th align="center" width="200px;">Student</th>
-                                                <th align="center">Date Of Submission(MM/DD/YY)</th>
-                                                <th align="center">Comments</th>
-                                            </tr>
+                                        <table width="80%" class="mar0a mart10 tablepaging" id="tablepaging" cellpadding="4" border="1" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <td align="center">S No.</td>
+                                                    <td align="center" width="200px;">Student</td>
+                                                    <td align="center">Date Of Submission(MM/DD/YY)</td>
+                                                    <td align="center">Comments</td>
+                                                </tr>
+                                            </thead>
                                             <s:iterator value="EviStdList" status="stat">
                                                 <tr><td align="center"><s:property value="#stat.count"/></td>
                                                     <td><s:property value="user.lname"/>,&nbsp;<s:property value="user.fname"/></td>
                                                     <td align="center"><s:date name="subDate" format="MMM dd, yyyy"/></td>
                                                     <s:if test="canComment!=true">
                                                         <td>&nbsp;&nbsp;</td>
-                                                    </s:if>
+                                                    </s:if>                                            
                                                     <s:elseif test="canComment='true'">
-                                                        <td>
+                                                        <td> 
                                                             <a href="CmtDetList?evidenceId=<s:property value="evidenceId"/>&amp;userId=<s:property value="user.emailId"/>">Comment</a>
-                                                        </td>
-                                                    </s:elseif>
+                                                        </td> 
+                                                    </s:elseif>                                                                                           
                                                 </tr>
                                             </s:iterator>
                                         </table>
@@ -129,6 +131,6 @@
                 <!--Middle Section Ends Here-->
             </div>
         </div>
-        <s:include value="/Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

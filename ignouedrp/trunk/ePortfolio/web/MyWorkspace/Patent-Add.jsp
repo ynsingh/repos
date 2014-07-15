@@ -16,7 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Add Patent</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -24,11 +24,11 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
         <script type="text/javascript">
-            if (window.history.forward(1) != null)
+            if(window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -312,19 +312,19 @@
                                                     <s:textfield name="patentTitle" label="Title of the  Patent"/>
                                                     <s:select id="mymenu" label="No of Inventors" name="NoofInventor" style="width: 255px;" onchange="updatefields()" list="{'1','2','3','4','5','6','7','8','9','10'}" headerKey="0" headerValue="Select No. of Inventor"/>
                                                     <script type="text/javascript">
-                                                        var selectmenu = document.getElementById("mymenu")
+                                                        var selectmenu=document.getElementById("mymenu")
                                                         var i;
-                                                        var fieldcont = "";
-                                                        selectmenu.onchange = function() { //run some code when "onchange" event fires
-                                                            var chosenoption = this.options[this.selectedIndex] //this refers to "selectmenu"
-                                                            for (i = 0; i < chosenoption.value; i++) {
-                                                                fieldcont += '<table border="0"><tr><td valign="top" width="123">Inventor First Name ' + (i + 1) + '</td><td><input type="text" name="fname[' + i + ']"/></td></tr>';
-                                                                fieldcont += '<tr><td valign="top" width="123">Inventor Last Name' + (i + 1) + '</td><td><input type="text" name="lname[' + i + ']" /></td></tr>';
-                                                                fieldcont += '<tr><td valign="top">Address of Inventor' + (i + 1) + '</td><td><textarea name="address[' + i + ']"></textarea></td></tr></table>';
-                                                            }
-                                                            if (fieldcont) {
-                                                                document.getElementById("formfields").innerHTML = fieldcont;
-                                                                fieldcont = "";
+                                                        var fieldcont="";
+                                                        selectmenu.onchange=function(){ //run some code when "onchange" event fires
+                                                            var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"
+                                                            for(i=0;i<chosenoption.value;i++){
+                                                                fieldcont+='<table border="0"><tr><td valign="top" width="123">Inventor First Name '+(i+1)+'</td><td><input type="text" name="fname['+i+']"/></td></tr>';
+                                                                fieldcont+='<tr><td valign="top" width="123">Inventor Last Name'+(i+1)+'</td><td><input type="text" name="lname['+i+']" /></td></tr>';
+                                                                fieldcont+='<tr><td valign="top">Address of Inventor'+(i+1)+'</td><td><textarea name="address['+i+']"></textarea></td></tr></table>';
+                                                            }  
+                                                            if(fieldcont){
+                                                                document.getElementById("formfields").innerHTML=fieldcont;
+                                                                fieldcont="";
                                                             }
                                                         }
                                                     </script>

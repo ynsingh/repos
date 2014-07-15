@@ -11,19 +11,18 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
- * Hibernate Utility class with a convenient method to get Session Factory
- * object.
+ * Hibernate Utility class with a convenient method to get Session Factory object.
  *
  * @author Vinay
  */
 public class ResetLoginPasswordDao {
 
-    private SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-    ;
+    private SessionFactory sessionFactory=new AnnotationConfiguration().configure().buildSessionFactory();;
     private Session s;
-
+    
     public User UserUpdateByRegistrationIdPassword(long registrationId, String passwordField) {
-        s = sessionFactory.openSession();
+      
+       s = sessionFactory.openSession();
         Transaction t = null;
         try {
             t = s.beginTransaction();
@@ -44,4 +43,5 @@ public class ResetLoginPasswordDao {
             sessionFactory.close();
         }
     }
+
 }

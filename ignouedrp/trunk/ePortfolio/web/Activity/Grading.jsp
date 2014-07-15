@@ -15,25 +15,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Student's Activity Submitted List</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
+
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
                 $("#accordion").accordion();
             });
         </script>
-        <style type="text/css" >
-            #tablepaging th a{ color: #fff!important;}
-        </style>
     </head>
     <body>
         <%
-            final Logger logger = Logger.getLogger(this.getClass());
+            //final Logger logger = Logger.getLogger(this.getClass());
             String ipAddress = request.getRemoteAddr();
-            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            // logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
             String role = session.getAttribute("role").toString();
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("../Login.jsp");
@@ -71,54 +69,43 @@
                                         </div>
                                         <div class="w100 fl-l">
                                             <table class="w100 mar0a fl-l mart10 tablepaging" id="tablepaging" cellpadding="4" border="1" cellspacing="0">
-                                                <head>
-                                                    <tr>
-                                                        <th colspan="2" class="tc">
-                                                            <a href="#" onclick='$(".dta").toggle();'>Activity Details</a>
-                                                        </th>
-                                                    </tr>
-                                                </head>
-                                                <tr class="dta" style='display:none;'v>
+                                                <tr>
                                                     <td class="w100p">Title</td>
                                                     <td><s:property value="evTitle"/></td></tr>
-                                            <tr class="dta" style='display:none;'>
+                                            <tr>
                                                 <td class="w100p">Created By</td>
                                                 <td><s:property value="facultyName"/></td>
                                             </tr>
-                                            <tr class="dta" style='display:none;'>
+                                            <tr>
                                                 <td class="w100p">Grade Type</td>
                                                 <td><s:property value="title"/></td></tr>
-                                            <tr class="dta" style='display:none;'>
+                                            <tr>
                                                 <td class="w100p">Start Date</td>
                                                 <td><s:date name="openDate" format="MMM dd, yyyy"/></td></tr>
-                                            <tr class="dta" style='display:none;'>
+                                            <tr>
                                                 <td align="left">Closing Date</td>
                                                 <td><s:date name="closeDate" format="MMM dd, yyyy"/></td></tr>
-                                            <tr class="dta" style='display:none;'>
+                                            <tr>
                                                 <td class="w100p">File</td>
                                                 <td>
                                                     <s:if test="assAttach!='null'">
-                                                        <a href="downnloadAttach?facultyId=<s:property value="facultyId"/>&amp;assAttach=<s:property value="assAttach"/>" target="_blank"><s:property value="evidence.assAttach"/></a>
+                                                        <a href="downnloadAttach?facultyId=<s:property value="facultyId"/>&amp;assAttach=<s:property value="assAttach"/>" target="_blank"><s:property value="assAttach"/></a>
                                                     </s:if>
                                                     <s:elseif test="assAttach=='null'">
 
                                                     </s:elseif>
                                                 </td>
                                             </tr>
-                                            <tr class="dta" style='display:none;'>
+                                            <tr>
                                                 <td class="w100p">Instruction</td>
                                                 <td><s:property value="instruction" escape="false"/></td>
                                             </tr>
                                         </table>
                                         <div class="w100 fl-l tc fbld fcred mart10"><s:property value="msg"/></div>
                                         <table class="w100 mar0a fl-l mart10 tablepaging" id="tablepaging" cellpadding="4" border="1" cellspacing="0">
-                                            <tr>
-                                                <th>S No.</th>
-                                                <th>Student</th>
-                                                <th>Submitted On</th>
-                                                <th>Submitted</th>
-                                                <th>Grade Obtained</th>
-                                            </tr>
+                                            <thead>
+                                                <tr><td>S No.</td><td>Student</td><td>Submitted On</td><td>Submitted</td><td>Grade Obtained</td></tr>
+                                            </thead>
                                             <s:iterator value="ActivitiesSubmitedList" status="stat">
                                                 <tr>
                                                     <td align="center"><s:property value="#stat.count"/></td>

@@ -28,7 +28,7 @@ public class ContactUsAction extends ActionSupport implements Serializable {
     private String aboutUs;
 
     public String contactAdd() {
-        cuDao.ContactUsSave(contactName, contactAddress, contactOff, contactMob, contactEmail);
+        cuDao.ContactUsSave(contactName, contactAddress, contactOff, contactMob, contactEmail, aboutUs);
         return SUCCESS;
     }
 

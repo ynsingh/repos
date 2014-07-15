@@ -3,9 +3,9 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <!-- Author: IGNOU Team -->
-
+ 
 <struts>
-
+   
     <!-- Add your configuration elements here -->
     <package name="org.IGNOU.ePortfolio.Activity" namespace="/Activity" extends="struts-default">
         <!--IGNOU Team-->
@@ -13,15 +13,15 @@
             <result name="success" type="redirectAction">FacultyTaskShow</result>
             <result name="error">./error.jsp</result>
             <result name="input">./ActivityAnnounce.jsp</result>
-        </action>
+        </action>        
         <action name="EvSubmision" class="org.IGNOU.ePortfolio.Activity.ActivitySubmissionAction" method="EvidSubmissionSave">
             <result name="success" type="redirectAction">
-                <param name="actionName">SubmitedEvi</param>
+                <param name="actionName">StudentTaskList</param>
                 <param name="msg">${msg}</param>
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./ActivitySubmitbyStudent.jsp</result>
-        </action>
+        </action>  
         <action name="Activ_SubList" class="org.IGNOU.ePortfolio.Activity.GradingAction" method="ActivitiesSubmitedList">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -30,7 +30,7 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">./ActivitySubmitbyStudent.jsp</result>
             <result name="error" type="redirectAction">StudentTaskList</result>
-        </action>
+        </action> 
         <action name="CmtDetList" class="org.IGNOU.ePortfolio.Activity.CommentListAction" method="EvidenceCommentList">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -39,17 +39,17 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">./CommentAdd.jsp</result>
             <result name="error">./error.jsp</result>
-        </action>
+        </action>        
         <action name="AddComment" class="org.IGNOU.ePortfolio.Activity.CommentAction" method="CommentAdd">
             <result name="success" type="redirectAction">
                 <param name="actionName">CmtDetList</param>
                 <param name="evidenceId">${evidenceId}</param>
                 <param name="userId">${userId}</param>
-                <param name="msg">${msg}</param>
+                <param name="msg">${msg}</param>     
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./CommentAdd.jsp</result>
-        </action>
+        </action> 
         <action name="ReplyonComment" class="org.IGNOU.ePortfolio.Activity.CommentAction" method="CommentAdd">
             <result name="success" type="redirectAction">
                 <param name="actionName">CmtDetList</param>
@@ -67,21 +67,21 @@
                 <param name="bufferSize">1024</param>
                 <param name="contentDisposition">attachment;filename="attachFile${filetype}"</param>
             </result>
-        </action>
+        </action>      
         <action name="downloadStuAtt" class="org.IGNOU.ePortfolio.Activity.DownloadAction" method="downloadStuAtt">
             <result name="success" type="stream">
                 <param name="inputName">fis</param>
                 <param name="bufferSize">1024</param>
                 <param name="contentDisposition">inline;filename="attachFile${filetype}"</param>
             </result>
-        </action>
+        </action> 
         <action name="downloadCmtAtth" class="org.IGNOU.ePortfolio.Activity.DownloadAction" method="downloadCmtAttachment">
             <result name="success" type="stream">
                 <param name="inputName">fis</param>
                 <param name="bufferSize">1024</param>
                 <param name="contentDisposition">attachment;filename="attachFile${filetype}"</param>
             </result>
-        </action>
+        </action> 
         <action name="StudentPop" class="org.IGNOU.ePortfolio.Administrator.Action.InstituteInfoAction" method="StudentList">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -99,25 +99,25 @@
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./AllowComment.jsp</result>
-        </action>
+        </action>       
         <action name="GradeType" class="org.IGNOU.ePortfolio.Activity.GradeTypeAction" method="GradeType">
             <result name="success">GradeSetup.jsp</result>
             <result name="error">./error.jsp</result>
-        </action>
+        </action>        
         <action name="setVal" class="org.IGNOU.ePortfolio.Activity.GradeTypeAction" method="GradeTypeDetails">
             <result name="success">ValueSetup.jsp</result>
             <result name="error">./error.jsp</result>
-            <result name="input">GradeSetup.jsp</result>
+            <result name="input">GradeSetup.jsp</result>          
         </action>
-
+        
         <action name="AddGradeValue" class="org.IGNOU.ePortfolio.Activity.GradeValueAction" method="AddGradeValue">
             <result name="success" type="redirectAction">
                 <param name="actionName">GetGradeSetupList</param>
-                <param name="msg">${msg}</param>
+                <param name="msg">${msg}</param>      
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">./ValueSetup.jsp</result>
-        </action>
+        </action>         
         <action name="StudentTaskList" class="org.IGNOU.ePortfolio.Activity.ActivityListAction" method="StudentEvidenceList">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -126,7 +126,7 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">ActivityIndex.jsp</result>
             <result name="error">./error.jsp</result>
-        </action>
+        </action>        
         <action name="FacultyTaskShow" class="org.IGNOU.ePortfolio.Activity.ActivityListAction" method="FacultyEvidenceList">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -163,7 +163,7 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">ActivSubList</param>
                 <param name="evidenceId">${evidenceId}</param>
-                <param name="msg">${msg}</param>
+                <param name="msg">${msg}</param>                
             </result>
             <result name="error">./error.jsp</result>
             <result name="input">GradingValue.jsp</result>
@@ -206,8 +206,8 @@
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
             <result name="success">./CommentReply.jsp</result>
-            <result name="error">./error.jsp</result>
-        </action>
+            <result name="error">./error.jsp</result>            
+        </action> 
         <action name="EviReview" class="org.IGNOU.ePortfolio.Activity.ActivityListAction" method="EvidenceReview">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -215,7 +215,7 @@
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
             <result name="success">./ActivityReview.jsp</result>
-            <result name="error">./error.jsp</result>
+            <result name="error">./error.jsp</result>  
         </action>
         <action name="EviDraftList" class="org.IGNOU.ePortfolio.Activity.ActivityListAction" method="StudentEvidenceDraftList">
             <interceptor-ref name="defaultStack"/>
@@ -224,20 +224,20 @@
             </interceptor-ref>
             <result name="wait">../Processing.jsp</result>
             <result name="success">ActivityDraft.jsp</result>
-            <result name="error">./error.jsp</result>
+            <result name="error">./error.jsp</result>  
         </action>
         <action name="EditEvidence" class="org.IGNOU.ePortfolio.Activity.ActivityEditUpdateAction" method="EditEvidenceInfo">
             <result name="success">./ActivityEdit.jsp</result>
-            <result name="error">./error.jsp</result>
+            <result name="error">./error.jsp</result>  
         </action>
         <action name="UpdateEvidInfo" class="org.IGNOU.ePortfolio.Activity.ActivityEditUpdateAction" method="UpdateEvidence">
             <result name="success" type="redirectAction">
                 <param name="actionName">FacultyTaskShow</param>
                 <param name="msg">${msg}</param>
             </result>
-            <result name="error">./error.jsp</result>
+            <result name="error">./error.jsp</result>  
             <result name="input" type="redirectAction">FacultyTaskShow</result>
-        </action>
+        </action>  
         <action name="SubmitedEvi" class="org.IGNOU.ePortfolio.Activity.ActivityListAction" method="EvidenceSubmittedList">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -250,7 +250,7 @@
                 <param name="actionName">ActivitySubmited.jsp</param>
                 <param name="msg">${msg}</param>
             </result>
-        </action>
+        </action> 
         <action name="GetGradeSetupList" class="org.IGNOU.ePortfolio.Activity.GradeValueAction" method="GetGradeSetupInfo">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -259,11 +259,11 @@
             <result name="wait">../Processing.jsp</result>
             <result name="success">GradeSetupIndex.jsp</result>
             <result name="error">./error.jsp</result>
-        </action>
+        </action> 
         <action name="EditGradeSetup" class="org.IGNOU.ePortfolio.Activity.GradeSetupAction" method="EditGradeSetup">
             <result name="success">GradingSetupEdit.jsp</result>
             <result name="error">./error.jsp</result>
-        </action>
+        </action> 
         <action name="EditsetVal" class="org.IGNOU.ePortfolio.Activity.GradeTypeAction" method="GradeTypeEditDetails">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="execAndWait">
@@ -303,7 +303,7 @@
             <result name="success">LikeDislikeCounter.jsp</result>
             <result name="error">../ErrorPage/error.jsp</result>
         </action>
-
-    </package>
+        
+    </package>    
 </struts>
-
+  

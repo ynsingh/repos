@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Submitted Task / Activities</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -66,8 +66,8 @@
                                             <s:a href="%{GSSID}">Activity Score</s:a>
                                             </div>
                                         </div>
-                                        <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
-                                    <table class="mar0a fl-l w100 mart15 tablepaging" cellpadding="4" border="1" cellspacing="0">
+                                        <div class="w100 fl-l tc fbld fcred"><s:property value="msg"/></div>
+                                    <table width="60%" class="mar0a fl-l" cellpadding="4" border="1" cellspacing="0">
                                         <tr>
                                             <th align="center">S No.</th>
                                             <th align="center">Course</th>

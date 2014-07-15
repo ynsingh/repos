@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>My Extra Activities</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
@@ -23,11 +23,11 @@
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
         <script type="text/javascript">
-            if (window.history.forward(1) != null)
+            if(window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
@@ -125,25 +125,25 @@
         </div>
         <s:include value="/Footer.jsp"/>
         <script type="text/javascript">
-            var frmvalidator = new Validator("myform");
-            frmvalidator.addValidation("organizationName", "req", "Which Organization do you support");
-            frmvalidator.addValidation("organizationName", "maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("organizationName", "alpha_s", "Alphabetic chars only");
-
-            frmvalidator.addValidation("role", "req", "Please enter Role");
-            frmvalidator.addValidation("role", "maxlen=20", "Max length is 20");
-            frmvalidator.addValidation("role", "alpha_s", "Alphabetic chars only");
-
-            frmvalidator.addValidation("cause", "dontselect=-1", "Please enter Cause");
-
-            frmvalidator.addValidation("tfrom", "req", "Please enter Time Period");
-
-            frmvalidator.addValidation("tto", "req", "Please enter Time Period");
-
-            frmvalidator.addValidation("description", "req", "Please enter Description");
-            frmvalidator.addValidation("description", "maxlen=200", "Max length is 200");
-            frmvalidator.addValidation("description", "alpha_s", "Alphabetic chars only");
-
+            var frmvalidator  = new Validator("myform");
+            frmvalidator.addValidation("organizationName","req","Which Organization do you support");
+            frmvalidator.addValidation("organizationName","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("organizationName","alpha_s","Alphabetic chars only");        
+            
+            frmvalidator.addValidation("role","req","Please enter Role");
+            frmvalidator.addValidation("role","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("role","alpha_s","Alphabetic chars only");     
+            
+            frmvalidator.addValidation("cause","dontselect=-1","Please enter Cause"); 
+            
+            frmvalidator.addValidation("tfrom","req","Please enter Time Period");    
+            
+            frmvalidator.addValidation("tto","req","Please enter Time Period"); 
+                        
+            frmvalidator.addValidation("description","req","Please enter Description");
+            frmvalidator.addValidation("description","maxlen=200","Max length is 200");
+            frmvalidator.addValidation("description","alpha_s","Alphabetic chars only");        
+                                    
         </script>
     </body>
 </html>

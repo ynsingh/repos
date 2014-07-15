@@ -1,4 +1,4 @@
-<%--
+<%-- 
     Document   : Books-Chapter-Add
     Created on : Dec 5, 2011, 9:06:38 AM
     Author     : IGNOU Team
@@ -16,30 +16,31 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Add Book / Chapter</title>
-        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />         <link href="<s:url value="/css/main.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
         <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <sj:head/>
         <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
         <script>
             $(function() {
-                $("#accordion").accordion();
+                $( "#accordion" ).accordion();
             });
         </script>
         <script type="text/javascript">
-            if (window.history.forward(1) != null)
+            if(window.history.forward(1) != null)
                 window.history.forward(1);
         </script>
     </head>
     <body><%
-        final Logger logger = Logger.getLogger(this.getClass());
-        String ipAddress = request.getRemoteAddr();
-        logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
-        String role = session.getAttribute("role").toString();
-        if (session.getAttribute("user_id") == null) {
-            session.invalidate();
-            response.sendRedirect("../Login.jsp");
-        }
+            final Logger logger = Logger.getLogger(this.getClass());
+            String ipAddress = request.getRemoteAddr();
+            logger.warn(session.getAttribute("user_id") + " Accessed from: " + ipAddress + " at: " + new Date());
+            String role = session.getAttribute("role").toString();
+            if (session.getAttribute("user_id") == null) {
+                session.invalidate();
+                response.sendRedirect("../Login.jsp");
+            }
         %>
         <div class="w100 fl-l">
             <div class="w990p mar0a">
@@ -68,18 +69,18 @@
                                                     <s:textfield name="title" label="Title"/>
                                                     <s:select id="mymenu" label="No of Author" name="noCoauthor" nchange="updatefields()" list="{'1','2','3','4','5','6','7','8','9','10'}" headerKey="0" headerValue="Select No. of Author"/>
                                                     <script type="text/javascript">
-                                                        var selectmenu = document.getElementById("mymenu")
+                                                        var selectmenu=document.getElementById("mymenu")
                                                         var i;
-                                                        var fieldcont = "";
-                                                        selectmenu.onchange = function() { //run some code when "onchange" event fires
-                                                            var chosenoption = this.options[this.selectedIndex] //this refers to "selectmenu"
-                                                            for (i = 0; i < chosenoption.value; i++) {
-                                                                fieldcont += '<table border="0"><tr><td valign="top" width="120">Author ' + (i + 1) + ' First Name </td><td><input type="text" name="fname[' + i + ']"/></td></tr>';
-                                                                fieldcont += '<tr><td valign="top">Author ' + (i + 1) + ' Last Name</td><td><input type="text" name="lname[' + i + ']"/></td></tr><tr><td colspan="2">&nbsp;</td></tr></table>';
-                                                            }
-                                                            if (fieldcont) {
-                                                                document.getElementById("formfields").innerHTML = fieldcont;
-                                                                fieldcont = "";
+                                                        var fieldcont="";
+                                                        selectmenu.onchange=function(){ //run some code when "onchange" event fires
+                                                            var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"
+                                                            for(i=0;i<chosenoption.value;i++){
+                                                                fieldcont+='<table border="0"><tr><td valign="top" width="120">Author '+(i+1)+' First Name </td><td><input type="text" name="fname['+i+']"/></td></tr>';
+                                                                fieldcont+='<tr><td valign="top">Author '+(i+1)+' Last Name</td><td><input type="text" name="lname['+i+']"/></td></tr><tr><td colspan="2">&nbsp;</td></tr></table>';
+                                                            }  
+                                                            if(fieldcont){
+                                                                document.getElementById("formfields").innerHTML=fieldcont;
+                                                                fieldcont="";
                                                             }
                                                         }
                                                     </script>
