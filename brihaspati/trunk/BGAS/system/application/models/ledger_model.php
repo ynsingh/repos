@@ -1270,5 +1270,39 @@ var $ledgers = array();
         {
                 return !strncmp($str1, $str2, strlen($str2));
         }
+
+	function isFund($ledger_code){
+                $flag = false;
+                $income_code = $this->get_account_code('Liabilities and Owners Equity');
+
+                $unrestricted_code = $this->get_account_code('Unrestricted Funds');
+                $restricted_code = $this->get_account_code('Restricted Funds');
+
+                $ownfund_code = $this->get_account_code('Own Funds');
+                $reservesurplus_code = $this->get_account_code('Reserves and Surplus');
+                $earn_code = $this->get_account_code('Earnmarked');
+                $other_code = $this->get_account_code('Other Funds');
+                $endowcode = $this->get_account_code('Endowment Funds-L');
+
+                $this->db->from('ledgers');
+                $this->db->like('code', $income_code, 'after');
+                $query = $this->db->get();
+                if($query->num_rows() > 0){
+                        foreach($query->result() as $ledger){
+                                if(($unrestricted_code != '') &&  ($restricted_code != '')){
+                                        if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code)){
+                                                $flag = true;
+                                        }
+                                }elseif(($ownfund_code != '') && ($reservesurplus_code != '') && ($earn_code != '') && ($other_code != '') && ($endowcode != '')){
+                                        if($this->startsWith($ledger->code, $ownfund_code) || $this->startsWith($ledger->code, $reservesurplus_code) || $this->startsWith($ledger->code, $earn_code) || $this->startsWith($ledger->code, $other_code) ||  $this->startsWith($ledger->code, $endowcode)){
+                                                $flag = true;
+                                        }
+                                }
+                        }
+                }
+                return $flag;
+
+        }
+
 }
 ?>
