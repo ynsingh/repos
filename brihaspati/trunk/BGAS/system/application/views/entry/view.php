@@ -21,7 +21,7 @@ foreach ($cur_entry_ledgers->result() as $row)
 	$temp = $this->Ledger_model->isFund($ledger_code);
 
 //	if(!($temp && $row->dc == "D")){
-	if(!($temp)){
+	if($temp){
 		echo "<tr class=\"tr-" . $odd_even . "\">";
 		echo "<td>" . convert_dc($row->dc) . "</td>";
 		echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";
