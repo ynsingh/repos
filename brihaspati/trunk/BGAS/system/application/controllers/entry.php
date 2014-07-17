@@ -623,6 +623,7 @@ class Entry extends Controller {
 			'size' => '11',
 			'value' => '',
 		);
+/*
 		$data['bank_name'] = array(
                         'name' => 'bank_name',
                         'id' => 'bank_name',
@@ -637,7 +638,7 @@ class Entry extends Controller {
                         'size' => '11',
                         'value' => '',
                 );
-
+*/
 
 		$data['entry_date'] = array(
 			'name' => 'entry_date',
@@ -692,8 +693,8 @@ class Entry extends Controller {
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 		$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
-		$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
-		$this->form_validation->set_rules('banif_name', 'Beneficiary name', 'trim');
+//		$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
+//		$this->form_validation->set_rules('banif_name', 'Beneficiary name', 'trim');
 		$this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim');
 		/* Debit and Credit amount validation */
 			
@@ -724,9 +725,9 @@ class Entry extends Controller {
 			$data['ledger_id'] = $this->input->post('ledger_id', TRUE);
 			$data['dr_amount'] = $this->input->post('dr_amount', TRUE);
 			$data['cr_amount'] = $this->input->post('cr_amount', TRUE);
-			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
-                        $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
-                        $data['cheque'] = $this->input->post('cheque', TRUE);
+	//		$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+          //              $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
+                        $data['ledger_payt'] = $this->input->post('ledger_payt', TRUE);
 			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 			$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
@@ -768,11 +769,11 @@ class Entry extends Controller {
 			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
 			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-			$data_banif_name = $this->input->post('banif_name', TRUE);
-                        $data_bank_name = $this->input->post('bank_name', TRUE);
+	//		$data_banif_name = $this->input->post('banif_name', TRUE);
+          //              $data_bank_name = $this->input->post('bank_name', TRUE);
                         $data_entry_name = $this->input->post('entry_name', TRUE);
                         $data_date = $this->input->post('entry_date', TRUE);
-                        $data_cheque = $this->input->post('cheque', TRUE);
+                        $data_cheque = $this->input->post('ledger_payt', TRUE);
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$bank_cash_global = '';
 			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
@@ -1328,8 +1329,32 @@ class Entry extends Controller {
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			}
+			 //cheque_no entry in cheque_print table...... 
+                        foreach ($data_cheque as $cheque_val => $cheque_data)
+                        {
+				if ($data_cheque[$cheque_val] == 1 ){
+//                                if ($data_cheque[$cheque_val] < 1)
+  //                                      continue;
+
+                              		$insert_cheque_data = array(
+                             //           'name' =>$data_banif_name,
+                                        	'entry_no' => $entry_id,
+                                        	'cheque_no' => $data_cheque[$cheque_val],
+                                	);
+                                	if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
+                                	{
+                                        	$this->db->trans_rollback();
+	                                        $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
+        	                                $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+                	                        $this->template->load('template', 'entry/add', $data);
+                        	                return;
+                                	}//if inner
+				}//if
+                        }//for
+
+
 			/*lines added by manshi*/
-                        foreach ($data_all_ledger_dc as $id => $ledger_data)
+/*                        foreach ($data_all_ledger_dc as $id => $ledger_data)
                         {
                                 if ($data_all_ledger_id[$id] < 1)
                                         continue;
@@ -1347,6 +1372,7 @@ class Entry extends Controller {
                                         return;
                                 }
 						$val=$data_cheque[$id];
+						$this->messages->add('the value of val is ',$val);
 						
 						if($val != NULL)
 						{
@@ -1357,9 +1383,9 @@ class Entry extends Controller {
                                                          $bank_cash_present = TRUE;
                                                          $this->db->trans_start();
                                                          $insert_data = array(
-                                                                'Bank_name'=>$data_bank_name,
+                                                           //     'Bank_name'=>$data_bank_name,
                                                                 'amount' => $data_amount,
-                                                                'name' => $data_banif_name,
+                                                             //   'name' => $data_banif_name,
                                                                 'dc'=>'D',
 								'entry_no'=>$ledger->id,
                                                                 'cheque_date'=>$data_date,
@@ -1383,9 +1409,9 @@ class Entry extends Controller {
                                                          $bank_cash_present = TRUE;
                                                          $this->db->trans_start();
                                                          $insert_data = array(
-                                                                'Bank_name'=>$data_bank_name,
+                                                         //       'Bank_name'=>$data_bank_name,
                                                                 'amount' => $data_amount,
-                                                                'name' => $data_banif_name,
+                                                           //     'name' => $data_banif_name,
                                                                 'dc'=>'C',
                                                                 'entry_no'=>$ledger->id,
                                                                 'cheque_date'=>$data_date,
@@ -1404,7 +1430,7 @@ class Entry extends Controller {
                         		}
 
 				}
-
+*/
 			/* Success */
 			$this->db->trans_complete();
 			$this->session->set_userdata('entry_added_show_action', TRUE);
@@ -1531,20 +1557,20 @@ class Entry extends Controller {
 		}
 		$loginname=$this->session->userdata('user_name');
                 $submittername=$cur_entry->submitted_by;
-		$bank_name='';
-		$name='';
-		$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
-                $ledger_q = $this->db->get();
+	//	$bank_name='';
+	//	$name='';
+	//	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
+          //      $ledger_q = $this->db->get();
                // if ($ledger = $ledger_q->row())
-		foreach($ledger_q->result() as $row)
-                                {
-                                $bank_name = $row->bank_name;
-                                $name= $row->name;
-                                }
+	//	foreach($ledger_q->result() as $row)
+          //                      {
+            //                    $bank_name = $row->bank_name;
+              //                  $name= $row->name;
+                //                }
 
 		
 
-                if($loginname==$submittername){
+                if(($loginname==$submittername) && ($loginname != 'admin')){
                         $this->messages->add('Submitter can not verify own entry');
                         redirect('entry/show/' . $current_entry_type['label']);
                         return;
@@ -1566,7 +1592,7 @@ class Entry extends Controller {
 			'size' => '11',
 			'value' => date_mysql_to_php($cur_entry->date),
 		);
-		$data['bank_name'] = array(
+	/*	$data['bank_name'] = array(
                         'name' => 'bank_name',
                         'id' => 'bank_name',
                         'maxlength' => '255',
@@ -1580,7 +1606,7 @@ class Entry extends Controller {
                         'size' => '11',
                         'value' => $name,
                 );
-
+*/
 		$data['entry_narration'] = array(
 			'name' => 'entry_narration',
 			'id' => 'entry_narration',
@@ -1798,9 +1824,9 @@ class Entry extends Controller {
 			$data['cr_amount'] = $this->input->post('cr_amount', TRUE);
 			$data['forward_refrence_id']['value'] = $this->input->post('forward_refrence_id', TRUE);
                         $data['backward_refrence_id']['value'] = $this->input->post('backward_refrence_id', TRUE);
-			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
-                        $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
-                        $data['cheque'] = $this->input->post('cheque', TRUE);
+//			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+  //                      $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
+                        $data['cheque'] = $this->input->post('ledger_payt', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 		}
 
@@ -1818,7 +1844,7 @@ class Entry extends Controller {
                         $data_bank_name = $this->input->post('bank_name', TRUE);
                         $data_entry_name = $this->input->post('entry_name', TRUE);
                         $data_date = $this->input->post('entry_date', TRUE);
-                        $data_cheque = $this->input->post('cheque', TRUE);
+                        $data_cheque = $this->input->post('ledger_payt', TRUE);
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 
 
@@ -2123,7 +2149,31 @@ class Entry extends Controller {
 				redirect('entry/show/' . $entry_type);
                                 return;
                         }
-			foreach ($data_all_ledger_dc as $id => $ledger_data)
+			
+			 //cheque_no entry in cheque_print table...... 
+                        foreach ($data_cheque as $cheque_val => $cheque_data)
+                        {
+                                if ($data_cheque[$cheque_val] == 1 ){
+//                                if ($data_cheque[$cheque_val] < 1)
+  //                                      continue;
+
+                                        $update_cheque_data = array(
+                             //           'name' =>$data_banif_name,
+                                                'entry_no' => $entry_id,
+                                                'cheque_no' => $data_cheque[$cheque_val],
+                                        );
+                                        if ( ! $this->db->where('entry_no',$entry_id)update('cheque_print', $update_cheque_data))
+                                        {
+                                                $this->db->trans_rollback();
+                                                $this->messages->add('Error updating cheque print - ' . $data_ledger_id . ' to Entry.', 'error');
+                                                $this->logger->write_message("error", "Error updating " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+                                                $this->template->load('template', 'entry/edit', $data);
+                                                return;
+                                        }//if inner
+                                }//if
+                        }//for
+
+/*			foreach ($data_all_ledger_dc as $id => $ledger_data)
                         {
                                 if ($data_all_ledger_id[$id] < 1)
                                         continue;
@@ -2192,6 +2242,7 @@ class Entry extends Controller {
                                                 }
 
 				}
+*/
 			/* Success */
 			$this->db->trans_complete();
 
@@ -2607,7 +2658,7 @@ class Entry extends Controller {
 			'class' => 'cr-item',
 			'disabled' => 'disabled',
 		);
-		$cheque = array(
+/*		$cheque = array(
                         'name' => 'cheque[' . $i . ']',
                         'id' => 'cheque[' . $i . ']',
                         'maxlength' => '15',
@@ -2616,6 +2667,9 @@ class Entry extends Controller {
                         'value' => '',
                         'class' => 'cheque-item',
                 );
+*/
+		// getting the secondary unit id
+		$sec_unit_id = $this->Secunit_model->get_all_secunitid();
 
 
 		echo '<tr class="new-row">';
@@ -2639,9 +2693,11 @@ class Entry extends Controller {
 		echo '<td>';
 		echo form_input($cr_amount);
 		echo '</td>';
-		echo '<td>';
-              	echo form_input($cheque);
-              	echo '</td>';
+		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "1") . "</td>";
+//		echo '<td>';
+  //            	echo form_input($cheque);
+    //          	echo '</td>';
+		echo '<td>' . form_dropdown('sec_unit_id', $sec_unit_id).'</td>';
 
 		$temp = "fund-list".$i;
 //                echo '<td id ="fund">' . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, 'class = "'.$temp.'"') . '</td>';
@@ -3596,6 +3652,7 @@ class Entry extends Controller {
                         'size' => '11',
                         'value' => '',
                 );
+/*
 		$data['bank_name'] = array(
                         'name' => 'bank_name',
                         'id' => 'bank_name',
@@ -3610,7 +3667,7 @@ class Entry extends Controller {
                         'size' => '11',
                         'value' => '',
                 );
-
+*/
                 $data['entry_date'] = array(
                         'name' => 'entry_date',
                         'id' => 'entry_date',
@@ -3662,8 +3719,8 @@ class Entry extends Controller {
                 	$this->form_validation->set_rules('entry_narration', 'trim');
                 	$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
 			$this->form_validation->set_rules('entry_name', 'Entry Type', 'trim|required');
-                	$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
-			$this->form_validation->set_rules('banif_name', 'Beneficiary Name', 'trim');
+   //             	$this->form_validation->set_rules('bank_name', 'Bank name', 'trim');
+//			$this->form_validation->set_rules('banif_name', 'Beneficiary Name', 'trim');
                         $this->form_validation->set_rules('sec_unit_id', 'Sec Unit Id', 'trim');
 
                 /* Debit and Credit amount validation */
@@ -3674,7 +3731,7 @@ class Entry extends Controller {
 
                                 $this->form_validation->set_rules('dr_amount[' . $id . ']', 'Debit Amount', 'trim|currency');
                                 $this->form_validation->set_rules('cr_amount[' . $id . ']', 'Credit Amount', 'trim|currency');
-                                $this->form_validation->set_rules('cheque[' . $id . ']', 'Cheque No', 'trim|currency');
+  //                              $this->form_validation->set_rules('cheque[' . $id . ']', 'Cheque No', 'trim|currency');
 			 }
                 }
 
@@ -3688,11 +3745,12 @@ class Entry extends Controller {
 			$data['backward_refrence_id'] = $this->input->post('backward_refrence_id', TRUE);
 			$data['active_entry_name'] = $this->input->post('entry_name', TRUE);
                         $data['ledger_dc'] = $this->input->post('ledger_dc', TRUE);
+                        $data['ledger_payt'] = $this->input->post('ledger_payt', TRUE);
                         $data['ledger_id'] = $this->input->post('ledger_id', TRUE);
                         $data['dr_amount'] = $this->input->post('dr_amount', TRUE);
                         $data['cr_amount'] = $this->input->post('cr_amount', TRUE);
-			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
-                        $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
+//			$data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+  //                      $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
 			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 			$data['sec_unit_active'] = $this->input->post('sec_unit_id', TRUE);
@@ -3725,8 +3783,8 @@ class Entry extends Controller {
                         $data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
                         $data_all_dr_amount = $this->input->post('dr_amount', TRUE);
                         $data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-			$data_banif_name = $this->input->post('banif_name', TRUE);
-                        $data_bank_name = $this->input->post('bank_name', TRUE);
+//			$data_banif_name = $this->input->post('banif_name', TRUE);
+  //                      $data_bank_name = $this->input->post('bank_name', TRUE);
                         $data_entry_name = $this->input->post('entry_name', TRUE);
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 			$data_sec_unit_active = $this->input->post('sec_unit_id', TRUE);
@@ -3773,7 +3831,7 @@ class Entry extends Controller {
                                 $this->template->load('template', 'entry/add', $data);
                                 return;
                         } else if (float_ops($dr_total, 0, '==') && float_ops($cr_total, 0, '==')) {
-                                $this->messages->add('Cannot save empty Entry.', 'error');
+                                $this->messages->add('Can not save empty Entry.', 'error');
                                 $this->template->load('template', 'entry/add', $data);
                                 return;
                         }

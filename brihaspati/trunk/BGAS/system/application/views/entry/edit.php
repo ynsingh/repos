@@ -294,10 +294,10 @@ var dc = '';
                                         bank_cash = $.trim(bank);
                                         //Check account either bank cash or non bank cash.......
                                         if(bank_cash == '1' ){
-                                                $(".cheque-item").show();
-                                                $("#ch_no").show();
-                                                $(".bank_value").show();
-                                                rowid.parent().next().next().next().children().attr('disabled', '');
+                                            //    $(".cheque-item").show();
+                                              //  $("#ch_no").show();
+                                               // $(".bank_value").show();
+                                                rowid.parent().next().next().next().children().attr('disabled', 'disabled');
                                           }
                                 }
                         });
@@ -407,6 +407,7 @@ var dc = '';
 
 	/* Delete ledger row */
 	$('table td .deleterow').live('click', function() {
+		$(this).parent().parent().next().remove();
 		$(this).parent().parent().remove();
 		/* Recalculate Total */
 		$('.dr-item:first').trigger('change');
@@ -533,7 +534,7 @@ var dc = '';
         echo "</span>";
         echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
         echo "</p>";
-	
+/*	
 		echo "<span class=\"bank_value\">";
                 echo form_label('Bank Name', 'bank_name');
                 echo " ";
@@ -549,10 +550,10 @@ var dc = '';
                 echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
 
                 echo"</br>";
-
+*/
 	$val='';
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Cheque No</th><th colspan=2>Actions</th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th></th><th colspan=2>Actions</th><th>Cur Balance</th></tr></thead>";
 	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
         $ledger_q = $this->db->get();
         if ($ledger = $ledger_q->row())
@@ -577,7 +578,7 @@ var dc = '';
 			'value' => isset($cr_amount[$i]) ? $cr_amount[$i] : "",
 			'class' => 'cr-item',
 		);
-		$cheque = array(
+/*		$cheque = array(
                         'name' => 'cheque[' . $i . ']',
                         'id' => 'cheque[' . $i . ']',
                         'maxlength' => '15',
@@ -587,7 +588,7 @@ var dc = '';
 			'value'    => $val,
                         'class' => 'cheque-item',
                 );
-
+*/
 		echo "<tr>";
 
 		echo "<td id = \"dc\">" . form_dropdown_dc('ledger_dc[' . $i . ']', isset($ledger_dc[$i]) ? $ledger_dc[$i] : "D") . "</td>";
@@ -606,7 +607,8 @@ var dc = '';
 
 		echo "<td id =\"dr\">" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
-		echo "<td>" . form_input($cheque) . "</td>";
+		echo "<td id = \"dc\">" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "D") . "</td>";
+		//echo "<td>" . form_input($cheque) . "</td>";
 
 		/* code for fund list*/
 		$temp_var = "fund-list".$i;

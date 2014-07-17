@@ -33,6 +33,40 @@ if ( ! function_exists('form_dropdown_dc'))
 	}
 }
 
+if ( ! function_exists('form_dropdown_payt'))
+{
+        function form_dropdown_payt($name, $selected = NULL, $extra = '')
+        {
+                $options = array("1" => "Cheque", "2" => "Cash", "3" => "Bank Transfer");
+
+                // If no selected state was submitted we will attempt to set it automatically
+                if ( ! ($selected == "1" || $selected == "2" || $selected == "3"))
+                {
+                        // If the form name appears in the $_POST array we have a winner!
+                        if (isset($_POST[$name]))
+                        {
+                                $selected = $_POST[$name];
+                        }
+                }
+
+                if ($extra != '') $extra = ' '.$extra;
+
+                $form = '<select name="'.$name.'"'.$extra.' class="payt-dropdown" >';
+
+                foreach ($options as $key => $val)
+                {
+                        $key = (string) $key;
+                        $sel = ($key == $selected) ? ' selected="selected"' : '';
+                        $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                }
+
+                $form .= '</select>';
+
+                return $form;
+        }
+}
+
+
 if ( ! function_exists('form_dropdown_fund'))
 {
         function form_dropdown_fund($name, $selected = NULL, $extra = '')

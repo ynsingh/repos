@@ -13,7 +13,7 @@ $(document).ready(function() {
 //global variable
 var dc = '';
 	/*cheque field hide and show functionality*/
-        $(".cheque-item").hide(function(){
+   /*     $(".cheque-item").hide(function(){
                 });
                 $(".bank_value").hide(function(){
                 });
@@ -22,7 +22,7 @@ var dc = '';
                                         $(".ledger-dropdown").change(function(){
                                                                                         
                                         });
-
+*/
 
 	/* javascript floating point operations */
 	var jsFloatOps = function(param1, param2, op) {
@@ -309,10 +309,10 @@ var dc = '';
                                         success: function(bank) {
                                         bank_cash = $.trim(bank);
                                         if(bank_cash == '1' ){
-                                                $(".cheque-item").show();
-                                                $("#ch_no").show();
-                                                $(".bank_value").show();
-                                                rowid.parent().next().next().next().children().attr('disabled', '');
+                                          //      $(".cheque-item").show();
+                                            //    $("#ch_no").show();
+                                              //  $(".bank_value").show();
+                                                rowid.parent().next().next().next().children().attr('disabled', 'disabled');
                                           	}
          				//Define Entry Types.........
                                         if(dc == 'C' && bank_cash == '1')
@@ -469,6 +469,7 @@ var dc = '';
 
 	/* Delete ledger row */
 	$('table td .deleterow').live('click', function() {
+		$(this).parent().parent().next().remove();
 		$(this).parent().parent().remove();
 		/* Recalculate Total */
 		$('.dr-item:first').trigger('change');
@@ -605,7 +606,7 @@ var dc = '';
         echo "<span id=\"tooltip-content-3\">Enter the Bill/Voucher Id of the related back dated transaction</span>";
         echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	echo "</p>";
-
+/*
                 echo "<span class=\"bank_value\">";
                 echo form_label('Bank Name', 'bank_name');
                 echo " ";
@@ -617,7 +618,7 @@ var dc = '';
                 echo " ";
                 echo form_input($banif_name);
                 echo"</span>";
-
+*/
                 echo "(A - Asset, L - Libility, I - Income , E - Expenditure)";
 
                 echo"</br>";
@@ -626,7 +627,7 @@ var dc = '';
 
 	echo "<table class=\"entry-table\">";
 	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Sec Unit Id</th><th id=\"ch_no\">Cheque No</th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th colspan=2>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
 	{
@@ -648,6 +649,7 @@ var dc = '';
 			'value' => isset($cr_amount[$i]) ? $cr_amount[$i] : "",
 			'class' => 'cr-item',
 		);
+/*
 		$cheque = array(
                         'name' => 'cheque[' . $i . ']',
                         'id' => 'cheque[' . $i . ']',
@@ -657,7 +659,7 @@ var dc = '';
                         'value' => isset($cheque[$i]) ? $cheque[$i] : "",
                         'class' => 'cheque-item',
                 );
-
+*/
 		echo "<tr>";
 
 		echo "<td>" . form_dropdown_dc('ledger_dc[' . $i . ']', isset($ledger_dc[$i]) ? $ledger_dc[$i] : "D") . "</td>";
@@ -676,15 +678,17 @@ var dc = '';
 
 		echo "<td>" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
+		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "1") . "</td>";
 		echo "<td>" . form_dropdown('sec_unit_id', $sec_unit_id, $sec_unit_active). "</td>";
-		echo "<td>" . form_input($cheque) . "</td>";	
+
+//		echo "<td>" . form_input($cheque) . "</td>";	
 	
 		$temp = "fund-list".$i;
                 //echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
 		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
 
-		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
-		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
+//		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
+//		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";
 
 		echo "<td class=\"ledger-balance\"><div></div></td>";
 
