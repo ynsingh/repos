@@ -2162,7 +2162,7 @@ class Entry extends Controller {
                                                 'entry_no' => $entry_id,
                                                 'cheque_no' => $data_cheque[$cheque_val],
                                         );
-                                        if ( ! $this->db->where('entry_no',$entry_id)update('cheque_print', $update_cheque_data))
+                                        if ( ! $this->db->where('entry_no',$entry_id)->update('cheque_print', $update_cheque_data))
                                         {
                                                 $this->db->trans_rollback();
                                                 $this->messages->add('Error updating cheque print - ' . $data_ledger_id . ' to Entry.', 'error');
