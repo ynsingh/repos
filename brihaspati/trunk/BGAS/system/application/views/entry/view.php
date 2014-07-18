@@ -15,13 +15,12 @@ $odd_even = "odd";
 foreach ($cur_entry_ledgers->result() as $row)
 {
 	$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
- //       $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
-//        $temp = $this->startsWith($ledger_code, $account_code);
-//	$temp = !strncmp($ledger_code, $account_code, strlen($account_code));
+        //$account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
 	$temp = $this->Ledger_model->isFund($ledger_code);
+	//$temp = !strncmp($ledger_code, $account_code, strlen($account_code));
 
-//	if(!($temp && $row->dc == "D")){
-	if($temp){
+	if(!($temp && $row->dc == "D")){
+	//if($temp){
 		echo "<tr class=\"tr-" . $odd_even . "\">";
 		echo "<td>" . convert_dc($row->dc) . "</td>";
 		echo "<td>" . $this->Ledger_model->get_name($row->ledger_id) . "</td>";

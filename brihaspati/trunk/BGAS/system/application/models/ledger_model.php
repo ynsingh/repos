@@ -1233,8 +1233,10 @@ var $ledgers = array();
 		$unrestricted_code = $this->get_account_code('Unrestricted Funds');
 		$restricted_code = $this->get_account_code('Restricted Funds');
 		$general_fund = $this->get_account_code('General Funds');
+		$current_liab = $this->get_account_code('Current Liabilities And Provisions');
 
-		$current_liab = $this->get_account_code('Current Liabilities-L');
+		//current liability should be part of fund list
+		//$current_liab = $this->get_account_code('Current Liabilities-L');
                 $provision = $this->get_account_code('Provision');
 
 		$this->db->select('name, id, group_id, code');
@@ -1249,13 +1251,15 @@ var $ledgers = array();
 		$funds[0] = 'Select Fund';
 		if($query->num_rows() > 0){
 			foreach($query->result() as $ledger){
-				if(($unrestricted_code != '') &&  ($restricted_code != '') && ($general_fund != '')){
-					if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code)){
+				if(($unrestricted_code != '') &&  ($restricted_code != '') && ($general_fund != '') && ($current_liab != '')){
+					if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code) || $this->startsWith($ledger->code, $current_liab)){
 						if(!($this->startsWith($ledger->code, $general_fund)))
 							$funds[$ledger->id] = $ledger->name;
 					}
-				}elseif(($current_liab != '') && ($provision != '')){
-					if(!($this->startsWith($ledger->code, $current_liab)) && !($this->startsWith($ledger->code, $provision))){
+				//}elseif(($current_liab != '') && ($provision != '')){
+				}elseif($provision != ''){
+					//if(!($this->startsWith($ledger->code, $current_liab)) && !($this->startsWith($ledger->code, $provision))){
+					if(!($this->startsWith($ledger->code, $provision))){
 						$funds[$ledger->id] = $ledger->name;
 					}
 				}
@@ -1284,25 +1288,25 @@ var $ledgers = array();
                 $other_code = $this->get_account_code('Other Funds');
                 $endowcode = $this->get_account_code('Endowment Funds-L');
 
-                $this->db->from('ledgers');
-                $this->db->like('code', $income_code, 'after');
-                $query = $this->db->get();
-                if($query->num_rows() > 0){
-                        foreach($query->result() as $ledger){
+//                $this->db->from('ledgers');
+  //              $this->db->like('code', $income_code, 'after');
+    //            $query = $this->db->get();
+      //          if($query->num_rows() > 0){
+        //                foreach($query->result() as $ledger){
+			if($this->startsWith($ledger_code, $income_code)){
                                 if(($unrestricted_code != '') &&  ($restricted_code != '')){
-                                        if($this->startsWith($ledger->code, $unrestricted_code) || $this->startsWith($ledger->code, $restricted_code)){
+                                        if($this->startsWith($ledger_code, $unrestricted_code) || $this->startsWith($ledger_code, $restricted_code)){
                                                 $flag = true;
                                         }
                                 }elseif(($ownfund_code != '') && ($reservesurplus_code != '') && ($earn_code != '') && ($other_code != '') && ($endowcode != '')){
-                                        if($this->startsWith($ledger->code, $ownfund_code) || $this->startsWith($ledger->code, $reservesurplus_code) || $this->startsWith($ledger->code, $earn_code) || $this->startsWith($ledger->code, $other_code) ||  $this->startsWith($ledger->code, $endowcode)){
+                                        if($this->startsWith($ledger_code, $ownfund_code) || $this->startsWith($ledger_code, $reservesurplus_code) || $this->startsWith($ledger_code, $earn_code) || $this->startsWith($ledger_code, $other_code) ||  $this->startsWith($ledger_code, $endowcode)){
                                                 $flag = true;
                                         }
                                 }
                         }
-                }
+               // }
                 return $flag;
 
-        }
-
+	}
 }
 ?>

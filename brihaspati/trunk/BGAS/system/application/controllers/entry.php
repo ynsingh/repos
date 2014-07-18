@@ -557,7 +557,7 @@ class Entry extends Controller {
 		return;
 	}
 
-	function add($entry_type)
+	function add($entry_type, $check = 0)
 	{
 		/* Check access */
 		if ( ! check_access('create entry'))
@@ -664,6 +664,8 @@ class Entry extends Controller {
 		
 		$data['sec_unit_id'] = $this->Secunit_model->get_all_secunitid();
                 $data['sec_unit_active'] = " ";	
+
+		$data['check'] = $check;
 		
 		$options = array();
                 $this->db->select('name, label');
@@ -731,7 +733,8 @@ class Entry extends Controller {
 			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
 			$data['sec_unit_active']= $this->input->post('sec_unit_id', TRUE);
-
+			$data['income_type'] = $this->input->post('income_type', TRUE);
+                        $data['expense_type'] = $this->input->post('expense_type', TRUE);
 		} 
 		else {
 			for ($count = 0; $count <= 3; $count++)
@@ -777,6 +780,8 @@ class Entry extends Controller {
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$bank_cash_global = '';
 			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
+			$data_check = $this->input->post('check', TRUE);
+
 			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                         {
 
@@ -991,13 +996,14 @@ class Entry extends Controller {
 				$entry_id = $this->db->insert_id();
 			}
 
-
 			/* Adding ledger accounts */
 			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
 			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
 			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+			$data_all_income_type = $this->input->post('income_type', TRUE);
+			$data_all_expense_type = $this->input->post('expense_type', TRUE);
 
 			$dr_total = 0;
 			$cr_total = 0;
@@ -1272,8 +1278,34 @@ class Entry extends Controller {
 		                        {
                 	                        $this->db->trans_rollback();
 	                                        $this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
-                        	        }
+                        	        }else {
+                                 		$entry_fund_id = $this->db->insert_id();
+                                	}
 
+					$expense_type = $data_all_expense_type[$id];
+                                        if($expense_type != "Select" && $expense_type != ""){
+                                                $this->db->select('name');
+                                                $this->db->from('ledgers')->where('id', $fund_ledger);
+                                                $query = $this->db->get();
+                                                $ledger = $query->row();
+                                                $ledger_name = $ledger->name;
+
+                                                $insert_expense_data = array(
+                                                        'fund_id' => $fund_ledger,
+                                                        'fund_name' => $ledger_name,
+                                                        'amount' => $data_amount,
+                                                        'date' => $data_date,
+                                                        'type' => $expense_type,
+                                                        'entry_id' => $entry_fund_id
+                                                );
+
+                                                if ( ! $this->db->insert('income_from_investment', $insert_expense_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding expenditure details for fund :" . $fund_ledger);
+                                                }
+                                        }
+				
 					$this->db->select('id');
 					$this->db->from('ledgers')->where('name', 'Transit Income');
 					$query = $this->db->get();
@@ -1313,7 +1345,36 @@ class Entry extends Controller {
 					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
 					$this->template->load('template', 'entry/add', $data);
 					return;
-				}
+				}else {
+                                        $entry_items_id = $this->db->insert_id();
+                                }
+
+                                if($data_ledger_dc == 'C'){
+                                        $income_type = $data_all_income_type[$id];
+                                        if($income_type != "Select" && $income_type != ""){
+
+                                                $this->db->select('name');
+                                                $this->db->from('ledgers')->where('id', $data_ledger_id);
+                                                $query = $this->db->get();
+                                                $ledger = $query->row();
+                                                $ledger_name = $ledger->name;
+
+                                                $insert_income_data = array(
+                                                        'fund_id' => $data_ledger_id,
+                                                        'fund_name' => $ledger_name,
+                                                        'amount' => $data_amount,
+                                                        'date' => $data_date,
+                                                        'type' => $income_type,
+                                                        'entry_id' => $entry_items_id
+                                                );
+
+                                                if ( ! $this->db->insert('income_from_investment', $insert_income_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding income from investment details for fund :" . $data_ledger_id);
+                                                }
+                                        }
+                                }
 			}
 
 			/* Updating Debit and Credit Total in entries table */
@@ -1477,13 +1538,9 @@ class Entry extends Controller {
                         }
 
                         $account_code = $this->Budget_model->get_account_code('Incomes');
-                        $income_investment_code = $this->Budget_model->get_account_code('Income from Investments');
                         $temp = $this->startsWith($code, $account_code);
                         if($temp){
-                                if($this->startsWith($code, $income_investment_code))
                                         echo "Income";
-                                else
-                                        echo "Income-e";
                         }
 
                         $account_code = $this->Budget_model->get_account_code('Assets');
@@ -1495,6 +1552,18 @@ class Entry extends Controller {
                                 else
                                         echo "Asset";
                         }
+			
+			$account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
+			$temp = $this->startsWith($code, $account_code);
+                        if($temp){
+				$this->db->from('ledgers');
+				$this->db->where('code', $code);
+				$this->db->like('name', 'Interest on', 'after');
+				$query = $this->db->get();
+				if($query->num_rows() > 0)
+					echo "Liability";
+			}
+			
                 }else{
                         echo "";
                 }
@@ -1703,8 +1772,9 @@ class Entry extends Controller {
 
                                         //if ledger is a liability account
                                         if($temp && $flag == 0 && $row->dc == 'D'){
- 	                                       $fund_id = $row->ledger_id;
-                                               $flag = 1;
+ 	                                	$fund_id = $row->ledger_id;
+						$entryId = $row->id;
+                                               	$flag = 1;
                                         }else{
 						$flag = 0;
 					}
@@ -1725,8 +1795,17 @@ class Entry extends Controller {
 								$bank_cash = $this->Ledger_model->get_ledgers_bankcash($debitid);
 								if($bank_cash == 0){
 	                                                                $data['fund_list'][$counter] = $fund_id;
+									$this->db->from('income_from_investment')->where('entry_id', $entryId);
+                                                                        $this->db->where('fund_id', $fund_id);
+                                                                        $expense_q = $this->db->get();
+                                                                        if($expense_q->num_rows > 0){
+                                                                                $expense = $expense_q->row();
+                                                                                $expense_type = $expense->type;
+                                                                                $data['expense_type'][$counter] = $expense_type;
+                                                                        }
                                                                 	$flag = 0;
 	                                                                $fund_id = null;
+									$entryId = null;
         	                                                        $bank_cash = null;
                 	                                        }
 							}
@@ -1737,22 +1816,21 @@ class Entry extends Controller {
 	                                                        $temp = $this->startsWith($ledger_code, $account_code);
 								if($temp){
                                                                 	$data['fund_list'][$counter] = $fund_id;
+									$this->db->from('income_from_investment')->where('entry_id', $entryId);
+                                                                        $this->db->where('fund_id', $fund_id);
+                                                                        $expense_q = $this->db->get();
+                                                                        if($expense_q->num_rows > 0){
+                                                                                $expense = $expense_q->row();
+                                                                                $expense_type = $expense->type;
+                                                                                $data['expense_type'][$counter] = $expense_type;
+                                                                        }
 	                                                                $flag = 0;
         	                                                        $fund_id = null;
+									$entryId = null;
                 	                                                $bank_cash = null;
                         	                                }
 							}
 
-	
-							//if ledger is an asset non-bank/cash account
-							//if($temp && $bank_cash == 0 && $flag = 1){
-						/*	if($temp && $bank_cash == 0){
-								//$data['fund_list_active'.$counter][$counter]= $fund_id;
-								$data['fund_list'][$counter] = $fund_id;
-								$flag = 0;
-								$fund_id = null;
-								$bank_cash = null;
-							}*/
 	
 							$data['dr_amount'][$counter] = $row->amount;
 							$data['cr_amount'][$counter] = "";
@@ -1760,8 +1838,19 @@ class Entry extends Controller {
 							$creditled=$row->dc;
 							$creditid=$row->ledger_id;
 							$data['dr_amount'][$counter] = "";
-							$data['cr_amount'][$counter] = $row->amount;
-							$data['fund_list'][$counter]= 0;
+                                                        $data['cr_amount'][$counter] = $row->amount;
+
+							$this->db->from('income_from_investment')->where('entry_id', $row->id);
+                                                        $income_q = $this->db->get();
+                                                        if($income_q->num_rows > 0){
+                                                                $income = $income_q->row();
+                                                                $income_type = $income->type;
+                                                                $fund_id = $income->fund_id;
+                                                                //$data['fund_list'][$counter] = $fund_id;
+                                                                $data['income_type'][$counter] = $income_type;
+                                                        }
+
+							//$data['fund_list'][$counter]= 0;
 						}
 						if ($row->reconciliation_date)
 							$data['has_reconciliation'] = TRUE;
@@ -1828,6 +1917,8 @@ class Entry extends Controller {
   //                      $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
                         $data['cheque'] = $this->input->post('ledger_payt', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
+			$data['income_type'] = $this->input->post('income_type', TRUE);
+                        $data['expense_type'] = $this->input->post('expense_type', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)
@@ -2033,6 +2124,8 @@ class Entry extends Controller {
 			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
 			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+			$data_all_income_type = $this->input->post('income_type', TRUE);
+                        $data_all_expense_type = $this->input->post('expense_type', TRUE);
 
 			$dr_total = 0;
 			$cr_total = 0;
@@ -2079,6 +2172,33 @@ class Entry extends Controller {
                                         {
                                                 $this->db->trans_rollback();
                                                 $this->logger->write_message("error", "Error adding fund id:" . $fund_ledger);
+                                        }else{
+                                                $entry_fund_id = $this->db->insert_id();
+                                        }
+
+					$expense_type = $data_all_expense_type[$id];
+                                        if($expense_type != "Select" && $expense_type != ""){
+
+                                                $this->db->select('name');
+                                                $this->db->from('ledgers')->where('id', $fund_ledger);
+                                                $query = $this->db->get();
+                                                $ledger = $query->row();
+                                                $ledger_name = $ledger->name;
+
+                                                $insert_expense_data = array(
+                                                        'fund_id' => $fund_ledger,
+                                                        'fund_name' => $ledger_name,
+                                                        'amount' => $data_amount,
+                                                        'date' => $updatedate,
+                                                        'type' => $expense_type,
+                                                        'entry_id' => $entry_fund_id
+                                                );
+
+                                                if ( ! $this->db->insert('income_from_investment', $insert_expense_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding expenditure details for fund :" . $fund_ledger);
+                                                }
                                         }
 
                                         $this->db->select('id');
@@ -2112,7 +2232,8 @@ class Entry extends Controller {
 					'amount' => $data_amount,
 					'dc' => $data_ledger_dc,
 					'update_date' => $updatedate,
-				);
+				);				
+
 				if ( ! $this->db->insert('entry_items', $insert_ledger_data))
 				{
 					$this->db->trans_rollback();
@@ -2120,7 +2241,36 @@ class Entry extends Controller {
 					$this->logger->write_message("error", "Error adding Ledger account item [id:" . $data_ledger_id . "] for " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " [id:" . $entry_id . "]");
 					$this->template->load('template', 'entry/edit', $data);
 					return;
-				}
+				}else {
+                                        $entry_items_id = $this->db->insert_id();
+                                }
+
+                                if($fund_ledger > 0 && $data_ledger_dc == 'C'){
+                                        $income_type = $data_all_income_type[$id];
+                                       if($income_type != "Select" && $income_type != ""){
+
+                                                $this->db->select('name');
+                                                $this->db->from('ledgers')->where('id', $fund_ledger);
+                                                $query = $this->db->get();
+                                                $ledger = $query->row();
+                                                $ledger_name = $ledger->name;
+
+                                                $insert_income_data = array(
+                                                        'fund_id' => $fund_ledger,
+                                                        'fund_name' => $ledger_name,
+                                                        'amount' => $data_amount,
+                                                        'date' => $data_date,
+                                                        'type' => $income_type,
+                                                        'entry_id' => $entry_items_id
+                                                );
+
+                                                if ( ! $this->db->insert('income_from_investment', $insert_income_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->logger->write_message("error", "Error adding income from investment details for fund :" . $fund_ledger);
+                                                }
+                                        }
+                                }
 			}
 
 			/* Updating Debit and Credit Total in entries table */
@@ -2698,10 +2848,17 @@ class Entry extends Controller {
   //            	echo form_input($cheque);
     //          	echo '</td>';
 		echo '<td>' . form_dropdown('sec_unit_id', $sec_unit_id).'</td>';
+		
 
 		$temp = "fund-list".$i;
 //                echo '<td id ="fund">' . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, 'class = "'.$temp.'"') . '</td>';
 		echo '<td id = "fund">' . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, 'class = "'.$temp.'"') . '</td>';
+
+		$temp1 = "type-dropdown".$i;
+                echo '<td>' . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : 'Select', 'class = "'.$temp1.'"') . '</td>';
+
+                $temp2 = "exp-dropdown".$i;
+                echo '<td>' . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : 'Select', 'class = "'.$temp2.'"') . '</td>';
 
 		echo '<td>';
 		echo img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow'));
@@ -3605,7 +3762,7 @@ class Entry extends Controller {
 			return;
 	}
 
-	function checkentry($entry_type)
+	function checkentry($entry_type, $check=0)
         {
                 /* Check access */
                 if ( ! check_access('create entry'))
@@ -3707,6 +3864,8 @@ class Entry extends Controller {
 		//$data['fund_list'] = $this->Ledger_model->get_ledgers();
                 //$data['fund_list_active'] = 0;
 
+		$data['check'] = $check;
+
                 /* Form validations */
                 if ($current_entry_type['numbering'] == '2')
                         $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
@@ -3753,6 +3912,8 @@ class Entry extends Controller {
   //                      $data['banif_name']['value'] = $this->input->post('banif_name', TRUE);
 			//$data['fund_list_active'] = $this->input->post('fund_list', TRUE);
 			$data['fund_list'] = $this->input->post('fund_list', TRUE);
+			$data['income_type'] = $this->input->post('income_type', TRUE);
+                        $data['expense_type'] = $this->input->post('expense_type', TRUE);
 			$data['sec_unit_active'] = $this->input->post('sec_unit_id', TRUE);
                 }
 		else {
@@ -3787,7 +3948,12 @@ class Entry extends Controller {
   //                      $data_bank_name = $this->input->post('bank_name', TRUE);
                         $data_entry_name = $this->input->post('entry_name', TRUE);
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+			$data_all_income_type = $this->input->post('income_type', TRUE);
+                        $data_all_expense_type = $this->input->post('expense_type', TRUE);
 			$data_sec_unit_active = $this->input->post('sec_unit_id', TRUE);
+			$data_cheque = $this->input->post('cheque', TRUE);
+                        $data['data_cheque']=$data_cheque;
+
                         $dr_total = 0;
                         $cr_total = 0;
 			$det='';
@@ -3837,9 +4003,12 @@ class Entry extends Controller {
                         }
                         $det=$this->Ledger_model->get_other_ledger_name($ledidarray, $entry_type, $leddcarray, $dr_total);
 
-			if($det){
+			if($det && $check == 0){
+				$data['check'] = 1;
                         	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create ', 'error');
-                                $this->template->load('template', 'entry/checkentry', $data);
+                                //$this->template->load('template', 'entry/checkentry', $data);
+				$this->template->load('template', 'entry/add', $data);
+				//redirect('entry/show/' . $entry_type);
                                 return;
                         }
                         else{

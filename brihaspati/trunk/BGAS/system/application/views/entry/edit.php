@@ -193,32 +193,16 @@ var dc = '';
                 var last_index = dr_name.lastIndexOf("]"); 
                 var fund_index = dr_name.substring(first_index+1, last_index);                                               
                 var temp = ".fund-list"+fund_index;
+		var temp1 = ".type-dropdown"+fund_index;
+                var temp2 = ".exp-dropdown"+fund_index;
 
 		if ($(this).parent().next().children().val() != "0") {
                 $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
                                 success: function(data) {
-                                        /*var code = $.trim(data);
-                                        var n = code.indexOf("40");
-                                        if(n == 0){
-                                                account = 'Expense';
-                                        }else{
-                                                n = code.indexOf("30");
-                                                if(n == 0){
-                                                        account = 'Income';
-                                                }else{
-                                                        n = code.indexOf("20");
-                                                        if(n == 0){
-                                                                account = 'Asset';
-                                                        }else{
-                                                                account = '';
-                                                        }
-                                                }
-                                        }*/
 
 					account = $.trim(data);
-
-					if(account == 'Income' || account == 'Income-e'){
+					if(account == 'Income'){
 	                                        if(dc == 'D')
 	                                                alert("You have made a wrong entry");
                                         }
@@ -232,17 +216,31 @@ var dc = '';
                                 		url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
 		                                success: function(bank) {
                 		                      bank_or_cash = $.trim(bank);
-		                                      if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_or_cash == '0') || (dc == 'C' && account == 'Income')){
+		                                      if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_or_cash == '0')){
                 		                            $(temp).show();
                                 		      }else{
 		                                            $(temp).hide();
                 		                      }
+
+							if((dc == 'C' && account == 'Liability')){
+                                                                $(temp1).show();
+                                                        }else{
+                                                                $(temp1).hide();
+                                                        }
+
+                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_or_cash == '0')){
+                                                                $(temp2).show();
+                                                        }else{
+                                                                $(temp2).hide();
+                                                        }
                                 		}
                         		});
 				}
 			});
 		}else{
 			$(temp).hide();
+			$(temp1).hide();
+                        $(temp2).hide();
 		}	
 
 		var drValue = $(this).parent().next().next().children().attr('value');
@@ -310,32 +308,17 @@ var dc = '';
                 var last_index = dr_name.lastIndexOf("]"); 
                 var fund_index = dr_name.substring(first_index+1, last_index);                                             
                 var temp = ".fund-list"+fund_index;
+		var temp1 = ".type-dropdown"+fund_index;
+                var temp2 = ".exp-dropdown"+fund_index;
 
 		if(ledgerid > 0){
                 $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
                                 success: function(data) {
-                                        /*var code = $.trim(data);
-                                        var n = code.indexOf("40");
-                                        if(n == 0){
-                                                account = 'Expense';
-                                        }else{
-                                                n = code.indexOf("30");
-                                                if(n == 0){
-                                                        account = 'Income';
-                                                }else{
-                                                        n = code.indexOf("20");
-                                                        if(n == 0){
-                                                                account = 'Asset';
-                                                        }else{
-                                                                account = '';
-                                                        }
-                                                }
-                                        }*/
-
+					
 					account = $.trim(data);
 
-					if(account == 'Income' || account == 'Income-e'){
+					if(account == 'Income'){
 	                                        if(dc_value == 'D')
         	                                        alert("You have made a wrong entry");
                                         }
@@ -349,17 +332,31 @@ var dc = '';
                         			url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
 			                        success: function(bank) {
                         			        bankorcash = $.trim(bank);
-			                                if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bankorcash == '0') || (dc_value == 'C' && account == 'Income')){
+			                                if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bankorcash == '0')){
                         			                $(temp).show();
 			                                }else{
                         			                $(temp).hide();
 			                                }
+
+							if((dc_value == 'C' && account == 'Liability')){
+                                                                $(temp1).show();
+                                                        }else{
+                                                                $(temp1).hide();
+                                                        }
+
+                                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bankorcash == '0')){
+                                                                $(temp2).show();
+                                                        }else{
+                                                                $(temp2).hide();
+                                                        }
                         			}
                 			});
 				}
 			});
 		}else{
 			$(temp).hide();
+			$(temp1).hide();
+                        $(temp2).hide();
 		}
 
 		if(ledgerid == "0") {
@@ -384,15 +381,15 @@ var dc = '';
                                         if (isNaN(ledger_bal))
                                                 ledger_bal = 0;
                                         if (jsFloatOps(ledger_bal, 0, '=='))
-                                                rowid.parent().next().next().next().next().next().next().next().next().children().text("0");
+                                                rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("0");
                                         else if (jsFloatOps(ledger_bal, 0, '<'))
-                                                rowid.parent().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
+                                                rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
                                         else
-                                                rowid.parent().next().next().next().next().next().next().next().next().children().text("Dr " + data);
+                                                rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("Dr " + data);
                                 }
                         });
                 } else {
-                        rowid.parent().next().next().next().next().next().next().next().next().children().text("");
+                        rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("");
                 }
 
 
@@ -424,6 +421,7 @@ var dc = '';
 			success: function(data) {
 				$(cur_obj).parent().parent().next().after(data);
 				$(cur_obj).attr('src', add_image_url);
+				$('.dc-dropdown').trigger('change');
 			}
 		});
 	});
@@ -553,7 +551,8 @@ var dc = '';
 */
 	$val='';
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th></th><th colspan=2>Actions</th><th>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt by</th><th></th><th></th><th></th><th colspan=2>Actions</th><th colspan=2>Cur Balance</th></tr></thead>";
+	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th>Payment/Receipt by</th><th></th><th colspan=2>Actions</th><th>Cur Balance</th></tr></thead>";
 	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$entry_id);
         $ledger_q = $this->db->get();
         if ($ledger = $ledger_q->row())
@@ -613,6 +612,12 @@ var dc = '';
 		/* code for fund list*/
 		$temp_var = "fund-list".$i;
 		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp_var."\"") . "</td>";
+
+		$temp1 = "type-dropdown".$i;
+                echo "<td>" . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : "Select", "class = \"".$temp1."\"") . "</td>";
+
+                $temp2 = "exp-dropdown".$i;
+                echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
 
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";

@@ -210,24 +210,10 @@ var dc = '';
 	                $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
                                 success: function(data) {
-                                        /*var code = $.trim(data);
-
-                                        var n = code.indexOf("40");
-                                        if(n == 0)
-                                                account = 'Expense';
-
-                                        n = code.indexOf("30");
-                                        if(n == 0)
-                                                account = 'Income';
-                                        
-                                        n = code.indexOf("20");
-                                        if(n == 0)
-                                                account = 'Asset';
-					*/
-
 					account = $.trim(data);
 
-					if(account == 'Income' || account == 'Income-e'){
+					//if(account == 'Income' || account == 'Income-e'){
+					if(account == 'Income'){
                                         	if(dc == 'D')
                                                 	alert("You have made a wrong entry");
                                         }
@@ -242,23 +228,32 @@ var dc = '';
                                         var last_index = dr_name.lastIndexOf("]"); 
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                               
                                         temp = ".fund-list"+fund_index;
-					//var income = ".tr-row1"+fund_index;
+					var temp1 = ".type-dropdown"+fund_index;
+                                        var temp2 = ".exp-dropdown"+fund_index;
 
 					$.ajax({
                    	                     url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledger_value,
                         	                success: function(bank) {
                                 	                bank_cash = $.trim(bank);
 
-							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0') || (dc == 'C' && account == 'Income') ){
+							if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
                                 	       		      $(temp).show();
 		                                        }else{
                 		                                $(temp).hide();
                                 		        }
 
-							/*if(dc == 'C' && account == 'Income')
-                                                                $(income).show();
-                                                        else
-                                                                $(income).hide();*/
+							if(dc == 'C' && account == 'Liability'){
+                                                                $(temp1).show();
+                                                        }else{
+                                                                $(temp1).hide();
+                                                        }
+
+                                                        if((dc == 'D' && account == 'Expense') || (dc == 'D' && account == 'Asset' && bank_cash == '0')){
+                                                                $(temp2).show();
+                                                        }else{
+                                                                $(temp2).hide();
+                                                        }
+
                                         	}
 			                });
 
@@ -387,24 +382,9 @@ var dc = '';
                 $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledgerid,
                                 success: function(data) {
-                                        /*var code = $.trim(data);
-                                        
-                                        var n = code.indexOf("40");
-                                        if(n == 0)
-                                                account = 'Expense';
-
-                                        n = code.indexOf("30");
-                                        if(n == 0)
-                                                account = 'Income';
-                                        
-                                        n = code.indexOf("20");
-                                        if(n == 0)
-                                                account = 'Asset';
-
-					*/
 
 					account = $.trim(data);
-					if(account == 'Income' || account == 'Income-e'){
+					if(account == 'Income'){
 	                                        if(dc_value == 'D')
         	                                        alert("You have made a wrong entry");
                                         }
@@ -419,22 +399,30 @@ var dc = '';
                                         var last_index = dr_name.lastIndexOf("]"); 
                                         var fund_index = dr_name.substring(first_index+1, last_index);                                             
                                         temp = ".fund-list"+fund_index;
-					//var income = ".tr-row1"+fund_index;
+					var temp1 = ".type-dropdown"+fund_index;
+                                        var temp2 = ".exp-dropdown"+fund_index;
 
 					$.ajax({
 			                        url: <?php echo '\'' . site_url('entry/check_acc') . '/\''; ?> + ledgerid,
                         	                success: function(bank) {
                                 		        bank_cash = $.trim(bank);
-		                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0') || (dc_value == 'C' && account == 'Income')){
+		                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
                 		                                $(temp).show();
                                 		        }else{
                                                 		$(temp).hide();
 	        	                                }
-							
-							/*if(dc_value == 'C' && account == 'Income')
-								$(income).show();
-							else
-								$(income).hide();*/
+						
+							if(dc_value == 'C' && account == 'Liability'){
+                                                                $(temp1).show();
+                                                        }else{
+                                                                $(temp1).hide();
+                                                        }
+
+                                                        if((dc_value == 'D' && account == 'Expense') || (dc_value == 'D' && account == 'Asset' && bank_cash == '0')){
+                                                                $(temp2).show();
+                                                        }else{
+                                                                $(temp2).hide();
+                                                        }	
         	        	                }	
                         		});
 				}
@@ -468,15 +456,15 @@ var dc = '';
 					if (isNaN(ledger_bal))
 						ledger_bal = 0;
 					if (jsFloatOps(ledger_bal, 0, '=='))
-						rowid.parent().next().next().next().next().next().next().next().next().children().text("0");
+						rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("0");
 					else if (jsFloatOps(ledger_bal, 0, '<'))
-						rowid.parent().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
+						rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("Cr " + -data);
 					else
-						rowid.parent().next().next().next().next().next().next().next().next().children().text("Dr " + data);
+						rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("Dr " + data);
 				}
 			});
 		} else {
-			rowid.parent().next().next().next().next().next().next().next().next().children().text("");
+			rowid.parent().next().next().next().next().next().next().next().next().next().next().children().text("");
 		}
 	});
 
@@ -593,7 +581,7 @@ var dc = '';
 	<?php echo "</p>";
 
 	//echo form_open('entry/add/' . $current_entry_type['label']);
-	echo form_open('entry/checkentry/' . $current_entry_type['label']);
+	echo form_open('entry/checkentry/' . $current_entry_type['label']."/".$check);
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
 	echo form_label('Bill/Voucher Number', 'entry_number');
@@ -637,7 +625,8 @@ var dc = '';
 
 
 	echo "<table class=\"entry-table\">";
-	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th colspan=2>Available Action</th><th>Cur Balance</th></tr></thead>";
+	echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th></th><th></th><th colspan=2></th><th colspan=2>Cur Balance</th></tr></thead>";
+	//echo "<thead><tr><th>Type</th><th>Ledger Account</th><th>Dr Amount</th><th>Cr Amount</th><th id=\"ch_no\">Payment/Receipt By</th><th>Sec Unit Id</th><th></th><th colspan=2>Available Action</th><th>Cur Balance</th></tr></thead>";
 
 	foreach ($ledger_dc as $i => $ledger)
 	{
@@ -690,10 +679,17 @@ var dc = '';
 		//echo "<td>" . form_input($cheque) . "</td>";
 		echo "<td>" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "1") . "</td>";
 		echo "<td>" . form_dropdown('sec_unit_id', $sec_unit_id, $sec_unit_active, "class = \"secid_dropdown\""). "</td>";
+		//echo "<td>" . form_dropdown('sec_unit_id', $sec_unit_id, $sec_unit_active, "class = \"secid_dropdown\""). "</td>";
 
 		$temp = "fund-list".$i;
 		//echo "<td id =\"fund\">" . form_dropdown('fund_list[' . $i . ']', $fund_list, $fund_list_active, "class = \"".$temp."\"") . "</td>";
 		echo "<td id = \"fund\">" . form_dropdown_fund('fund_list[' . $i . ']', isset($fund_list[$i]) ? $fund_list[$i] : 0, "class = \"".$temp."\"") . "</td>";
+
+		$temp1 = "type-dropdown".$i;
+                echo "<td>" . form_dropdown_type('income_type[' . $i . ']', isset($income_type[$i]) ? $income_type[$i] : "Select", "class = \"".$temp1."\"") . "</td>";
+
+                $temp2 = "exp-dropdown".$i;
+                echo "<td>" . form_dropdown_exptype('expense_type[' . $i . ']', isset($expense_type[$i]) ? $expense_type[$i] : "Select", "class = \"".$temp2."\"") . "</td>";
 
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/add.png", 'border' => '0', 'alt' => 'Add Ledger', 'class' => 'addrow')) . "</td>";
 		echo "<td>" . img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Remove Ledger', 'class' => 'deleterow')) . "</td>";

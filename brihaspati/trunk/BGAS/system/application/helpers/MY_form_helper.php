@@ -74,7 +74,7 @@ if ( ! function_exists('form_dropdown_fund'))
 		$CI =& get_instance();
                 $CI->load->model('Ledger_model');
 
-                $options = $CI->Ledger_model->get_ledgers();;
+                $options = $CI->Ledger_model->get_ledgers();
 
                 // If no selected state was submitted we will attempt to set it automatically
                 if ( ! ($selected))
@@ -223,6 +223,70 @@ if ( ! function_exists('form_input_ledger'))
 
 		return $form;
 	}
+}
+
+if ( ! function_exists('form_dropdown_type'))
+{
+        function form_dropdown_type($name, $selected = NULL, $extra = '')
+        {
+                $options = array("Select" => "Select Type", "Earn" => "Earned", "Accru" => "Accrued");
+
+                // If no selected state was submitted we will attempt to set it automatically
+                if ( ! ($selected == "Earn" || $selected == "Accru"))
+                {
+                        // If the form name appears in the $_POST array we have a winner!
+                        if (isset($_POST[$name]))
+                        {
+                                $selected = $_POST[$name];
+                        }
+                }
+
+                if ($extra != '') $extra = ' '.$extra;
+
+                $form = '<select name="'.$name.'"'.$extra.'>';
+                foreach ($options as $key => $val)
+                {
+                        $key = (string) $key;
+                        $sel = ($key == $selected) ? ' selected="selected"' : '';
+                        $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                }
+
+                $form .= '</select>';
+
+                return $form;
+        }
+}
+
+if ( ! function_exists('form_dropdown_exptype'))
+{
+        function form_dropdown_exptype($name, $selected = NULL, $extra = '')
+        {
+                $options = array("Select" => "Select Type", "Capital" => "Capital Expenditure", "Revenue" => "Revenue Expenditure");
+
+                // If no selected state was submitted we will attempt to set it automatically
+                if ( ! ($selected == "Capital" || $selected == "Revenue"))
+                {
+                        // If the form name appears in the $_POST array we have a winner!
+                        if (isset($_POST[$name]))
+                        {
+                                $selected = $_POST[$name];
+                        }
+                }
+
+                if ($extra != '') $extra = ' '.$extra;
+
+                $form = '<select name="'.$name.'"'.$extra.'>';
+                foreach ($options as $key => $val)
+                {
+                        $key = (string) $key;
+                        $sel = ($key == $selected) ? ' selected="selected"' : '';
+                        $form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
+                }
+
+                $form .= '</select>';
+
+                return $form;
+        }
 }
 
 /* End of file MY_form_helper.php */
