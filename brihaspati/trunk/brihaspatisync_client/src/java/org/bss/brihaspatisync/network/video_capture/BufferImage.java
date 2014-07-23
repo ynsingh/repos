@@ -58,13 +58,10 @@ public class BufferImage {
 	/**
  	 * Remove an Obect in the buffer
  	 */
-	public synchronized BufferedImage remove() {
-                if(buffer.size() > 0) {
-			BufferedImage image=(BufferedImage)buffer.elementAt(0);
+	public synchronized void remove() {
+                if(buffer.size() > 0){
 			buffer.removeElementAt(0);
-			return image;
                 }
-		return null;
         }
 	
 	/**

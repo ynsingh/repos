@@ -35,7 +35,6 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 public class UserListPanel extends Thread {
 
 	private JPanel mainPanel;
-	private JPanel mainPanel_new;
 	private JScrollPane scrollPane=null;
 	private JList jlist=null;
 	
@@ -61,9 +60,6 @@ public class UserListPanel extends Thread {
 		
 		mainPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
-
-		mainPanel_new=new JPanel();
-                mainPanel_new.setLayout(new BorderLayout());
 		
 		ClassLoader clr= this.getClass().getClassLoader();
 		Object elements[][]=new Object[1][5];
@@ -77,14 +73,9 @@ public class UserListPanel extends Thread {
                 ListCellRenderer renderer = new UserListCellRendered();
                 jlist.setCellRenderer(renderer);
                 scrollPane = new JScrollPane(jlist);
-		
-		mainPanel_new.add(new VideoSlider(),BorderLayout.PAGE_START);//BorderLayout.NORTH);
-                mainPanel_new.add(all_deny_per.createGUI(),BorderLayout.PAGE_END);//BorderLayout.NORTH);
-                all_deny_per.setEnable_Decable_Permission(true);
 	
-              	//mainPanel_new.add(new SliderDemo(),BorderLayout.PAGE_START);//BorderLayout.NORTH);
-              	mainPanel.add(mainPanel_new,BorderLayout.NORTH);
-		//all_deny_per.setEnable_Decable_Permission(true);
+              	mainPanel.add(all_deny_per.createGUI(),BorderLayout.NORTH);
+		all_deny_per.setEnable_Decable_Permission(true);
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
 		this.start();
 		return mainPanel;
@@ -125,6 +116,7 @@ public class UserListPanel extends Thread {
 
 	private void user_Name_Id(int k,String str) {
 		try {
+			System.out.println("==============>>>>>>>>>>>>>>>>>   "+str);
                         StringTokenizer st=new StringTokenizer(str,"$");
                         while(st.hasMoreTokens()) {
 				if(k== 0) {

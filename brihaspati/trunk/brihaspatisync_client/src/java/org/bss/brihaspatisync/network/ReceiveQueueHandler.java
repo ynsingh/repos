@@ -55,7 +55,6 @@ public class ReceiveQueueHandler implements Runnable{
                         runner = new Thread(this);
 			utilobject.addType("Chat_Wb_Data");
 			utilobject.addType("UserList_Data");
-			utilobject.addType("parent_ref");
 			runner.start();
 			System.out.println("ReceiveQueueHandler has started.");
                 }
@@ -79,8 +78,7 @@ public class ReceiveQueueHandler implements Runnable{
 	public void run(){
 		while(flag && ThreadController.getThreadFlag()){
 			try{
-				synchronized(utilobject) {
-						
+				synchronized(utilobject){
 					LinkedList cha_wb_queue=utilobject.getReceiveQueue("Chat_Wb_Data");
 					if(cha_wb_queue.size()>0) {
 	                        	        String str=new String((byte[])cha_wb_queue.remove()); 	
@@ -136,7 +134,6 @@ public class ReceiveQueueHandler implements Runnable{
 						try {
 							startallthreadflag=true;
 				                        org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
-				                        org.bss.brihaspatisync.network.singleport.LocalPortClient.getController().start();
         	                			WhiteBoardDraw.getController().start();
 				                        ReceiveQueueHandler.getController().start();
                         				org.bss.brihaspatisync.gui.HandRaiseThreadController.getController().startHandRaiseThread();
@@ -151,11 +148,11 @@ public class ReceiveQueueHandler implements Runnable{
         	                			//start video thread
 				                        String v_status=org.bss.brihaspatisync.util.AudioUtilObject.getVideoStatus();
                         				if((ClientObject.getUserRole()).equals("instructor")) {
-		        		                        if(v_status.equals("1")) {
+		        		                        if(v_status.equals("1")){
                 	        			                org.bss.brihaspatisync.network.video_capture.LocalServer.getController().startLocalServer();
 		                	        	                org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().startVideoCaptureThread(false);
                 			                	}
-				                        } else {
+				                        } else{
 				                                org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().startVideoCaptureThread(true);
                 	        			}
 						} catch(Exception ex){ System.out.println("Exception in ReceiveQueueHandler class to start all thread "+ex.getMessage());}

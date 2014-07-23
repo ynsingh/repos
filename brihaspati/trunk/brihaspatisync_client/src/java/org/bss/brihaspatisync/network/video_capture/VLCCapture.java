@@ -52,14 +52,11 @@ public class VLCCapture {
 	} 
 
 	public BufferedImage grab() {
-		BufferedImage im=null;
-		try {
-			im = mPlayer.getSnapshot(imWidth, 0);   
-			if ((im == null) || (im.getWidth() == 0)) {
-      				System.out.println("No snap available");
-      				return null;
-    			}
-		} catch (Exception e) {}
+		BufferedImage im = mPlayer.getSnapshot(imWidth, 0);   
+		if ((im == null) || (im.getWidth() == 0)) {
+      			System.out.println("No snap available");
+      			return null;
+    		}
     		return im;
   	}  
 	

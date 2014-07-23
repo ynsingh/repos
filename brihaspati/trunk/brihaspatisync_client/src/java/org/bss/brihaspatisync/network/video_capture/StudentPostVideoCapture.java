@@ -93,16 +93,12 @@ public class StudentPostVideoCapture implements Runnable {
 							BufferImage.getController().remove();
 							encode(image);	
 							LinkedList send_queue=utilobject.getSendQueue("stud_video");
-							LinkedList local_send_queue=utilobject.getLocalSendQueue("stud_video");
                                                         if(send_queue.size()==0 ){
                                                                 send_queue.addLast(os.toByteArray());
-                                                                local_send_queue.addLast(os.toByteArray());
                                                         }else {
                                                                 int k=compare(os.toByteArray(),(byte[])send_queue.get((send_queue.size())-1));
-                                                                if(k!=0) {
+                                                                if(k!=0)
                                                                         send_queue.addLast(os.toByteArray());
-                                                                        local_send_queue.addLast(os.toByteArray());
-								}
                                                         }
 							os.flush();
 							os.reset();
