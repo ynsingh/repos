@@ -1263,6 +1263,9 @@ var $ledgers = array();
 						$funds[$ledger->id] = $ledger->name;
 					}
 				}
+				else{
+					 $funds[$ledger->id] = $ledger->name;
+				}
 			}
 		}
 
