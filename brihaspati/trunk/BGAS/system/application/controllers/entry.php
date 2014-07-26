@@ -597,8 +597,8 @@ class Entry extends Controller {
 		$data['entry_number'] = array(
 			'name' => 'entry_number',
 			'id' => 'entry_number',
-			'maxlength' => '11',
-			'size' => '11',
+			'maxlength' => '55',
+			'size' => '55',
 			'value' => '',
 		);
 
@@ -619,8 +619,8 @@ class Entry extends Controller {
 		$data['backward_refrence_id'] = array(
 			'name' => 'backward_refrence_id',
 			'id' => 'backward_refrence_id',
-			'maxlength' => '11',
-			'size' => '11',
+			'maxlength' => '55',
+			'size' => '55',
 			'value' => '',
 		);
 /*
@@ -684,13 +684,13 @@ class Entry extends Controller {
 
 		/* Form validations */
 		if ($current_entry_type['numbering'] == '2')
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 		else if ($current_entry_type['numbering'] == '3')
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 		else
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
 		//$this->form_validation->set_rules('forward_refrence_id', 'Forward Refrence Id', 'trim|is_natural_no_zero');
-		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim|is_natural_no_zero');
+		$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
@@ -780,7 +780,7 @@ class Entry extends Controller {
                         $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
 			$bank_cash_global = '';
 			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
-			$data_check = $this->input->post('check', TRUE);
+			$data_check =+ $this->input->post('check', TRUE);
 
 			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
                         {
@@ -1650,8 +1650,8 @@ class Entry extends Controller {
 		$data['entry_number'] = array(
 			'name' => 'entry_number',
 			'id' => 'entry_number',
-			'maxlength' => '11',
-			'size' => '11',
+			'maxlength' => '55',
+			'size' => '55',
 			'value' => $cur_entry->number,
 		);
 		$data['entry_date'] = array(
@@ -1715,16 +1715,16 @@ class Entry extends Controller {
                 $data['forward_refrence_id'] = array(
                         'name' => 'forward_refrence_id',
                         'id' => 'forward_refrence_id',
-                        'maxlength' => '11',
-                        'size' => '11',
+                        'maxlength' => '55',
+                        'size' => '55',
                         'value' => $cur_entry->forward_refrence_id,
                 );
                 
                 $data['backward_refrence_id'] = array(
                         'name' => 'backward_refrence_id',
                         'id' => 'backward_refrence_id',
-                        'maxlength' => '11',
-                        'size' => '11',
+                        'maxlength' => '55',
+                        'size' => '55',
                         'value' => $cur_entry->backward_refrence_id,
                 );
 
@@ -1761,7 +1761,7 @@ class Entry extends Controller {
 				$account_code = null;
 				$bank_cash = null;
 				$index = -1;
-
+				$entryId = "";
 				//check whether ledger is 'Transit Income'
                                 if($row->ledger_id != $income_id){
 
@@ -1879,9 +1879,9 @@ class Entry extends Controller {
 		$previousvalue="'Credit ledger name'"." ". $creditledgername .',' ."'Debited ledger name'"." ". $debitledgername.','."'Cr Amount'"." " . $cramount.','."'Dr Amount'"."  " . $dramount.','."'Narration' " . $narrat;
 		/* Form validations */
 		if ($current_entry_type['numbering'] == '3')
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
 		else
-			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
+			$this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentrynowithid[' . $entry_type_id . '.' . $entry_id . ']');
 		$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
 		$this->form_validation->set_rules('entry_narration', 'trim');
 		$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');
@@ -3798,15 +3798,15 @@ class Entry extends Controller {
 		$data['backward_refrence_id'] = array(
                         'name' => 'backward_refrence_id',
                         'id' => 'backward_refrence_id',
-                        'maxlength' => '11',
-                        'size' => '11',
+                        'maxlength' => '55',
+                        'size' => '55',
                         'value' => '',
                 );
                 $data['entry_number'] = array(
                         'name' => 'entry_number',
                         'id' => 'entry_number',
-                        'maxlength' => '11',
-                        'size' => '11',
+                        'maxlength' => '55',
+                        'size' => '55',
                         'value' => '',
                 );
 /*
@@ -3868,12 +3868,12 @@ class Entry extends Controller {
 
                 /* Form validations */
                 if ($current_entry_type['numbering'] == '2')
-                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|required|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
                 else if ($current_entry_type['numbering'] == '3')
-                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
+                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
                 else
-                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|is_natural_no_zero|uniqueentryno[' . $entry_type_id . ']');
-			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim|is_natural_no_zero');
+                        $this->form_validation->set_rules('entry_number', 'Bill/Voucher Number', 'trim|uniqueentryno[' . $entry_type_id . ']');
+			$this->form_validation->set_rules('backward_refrence_id', 'Backward Refrence Id', 'trim');
                 	$this->form_validation->set_rules('entry_date', 'Bill/Voucher Date', 'trim|required|is_date|is_date_within_range');
                 	$this->form_validation->set_rules('entry_narration', 'trim');
                 	$this->form_validation->set_rules('entry_tag', 'Tag', 'trim|is_natural');

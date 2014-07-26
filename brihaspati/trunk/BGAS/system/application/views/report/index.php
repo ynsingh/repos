@@ -48,9 +48,50 @@
 				&nbsp;
 			</div>
 		</div>
+		<div class="settings-container">
+			<div class="settings-title">
+				<?php echo anchor('report/reconciliation/pending', 'Reconciliation ', array('title' => 'Reconciliation ')); ?>
+			</div>
+			<div class="settings-desc">
+				&nbsp;
+			</div>
+		</div>
+		<div class="settings-container">
+			<div class="settings-title">
+				<?php echo anchor('report/depreciation', 'Depreciation of Asset', array('title' => 'Depreciation of Asset')); ?>
+			</div>
+			<div class="settings-desc">
+				&nbsp;
+			</div>
+		</div>
 	</div>
-	<div id="right-col">
 
+	<div id="right-col">
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php //echo anchor('report/fundlist', 'Fund List', array('title' => 'Fund List')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php //echo anchor('report/taglist', 'Tag Base Report', array('title' => 'Tag Base Report')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+		<div class="settings-container">
+                        <div class="settings-title">
+                                <?php //echo anchor('report/daybook', 'Day Book', array('title' => 'Day Book')); ?>
+                        </div>
+                        <div class="settings-desc">
+                                &nbsp;
+                        </div>
+                </div>
+	
 	</div>
 </div>
 <div class="clear">
