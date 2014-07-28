@@ -8,6 +8,7 @@
 		$add_type = "all";
 	
 ?>
+
 <script type="text/javascript">
 
 
@@ -205,7 +206,6 @@ var dc = '';
 		bank_cash = -1;
 		var account = '';
                 var ledger_value = $(this).parent().next().children().attr('value');
-
 
 	                $.ajax({
                                 url: <?php echo '\'' . site_url('entry/ledger_code') . '/\''; ?> + ledger_value,
@@ -497,7 +497,7 @@ var dc = '';
 				$(cur_obj).attr('src', add_image_url);
 				$(".cheque-item").show();
 				$("#ch_no").show();
-				$('.dc-dropdown').trigger('change');
+			//	$('.dc-dropdown').trigger('change');
 			}
 		});
 	});
@@ -573,14 +573,12 @@ var dc = '';
 	}
 
 </script>
-
 <?php
 	echo "<p align=\"right\">"; 
 	//echo anchor_popup('help/entry', 'Help'.img(array('src' => asset_url() . "images/icons/tip.png", 'alt' => 'Help')));?>
 	<a href=javascript:popupWin(<?php echo '\'' . site_url('help/entry') . '\''; ?>,"newWin");><img src="<?php echo  asset_url(); ?>images/icons/hand.gif" />Help</a>
 	<?php echo "</p>";
 
-	//echo form_open('entry/add/' . $current_entry_type['label']);
 	echo form_open('entry/checkentry/' . $current_entry_type['label']."/".$check);
 	echo "<p>";
 	echo "<span id=\"tooltip-target-1\">";
@@ -746,10 +744,29 @@ var dc = '';
 	echo "</p>";
 
 	echo "<p>";
+	if($check == 1){
+		echo my_form_label_start();
+	}
 	echo form_submitjscript('submit', 'Create');
-	echo " ";
-	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' . $current_entry_type['name'] . ' Entries'));
-	echo "</p>";
+	if($check == 1){
+		echo my_form_label_end();	
+	}
 
-	echo form_close();
+	if($check == 0){
+		echo " ";
+			echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' . $current_entry_type['name'] . ' Entries'));
+		echo "</p>";
+	}else{
+		echo "</p>";
+	}
+
+	echo form_close(); 
+
+	if($check == 1){
+		echo my_form_label_start();
+			$var = site_url('entry/show/'.$current_entry_type['label']);
+			echo my_form_anchor($var);
+		echo my_form_label_end();
+	}
 ?>
+

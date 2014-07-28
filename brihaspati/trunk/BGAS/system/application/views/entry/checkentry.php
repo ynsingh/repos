@@ -761,12 +761,38 @@ var dc = '';
         echo form_dropdown('entry_tag', $entry_tags, $entry_tag);
         echo "</p>";
 
+	echo "<p>";
+        if($check == 1){
+                echo my_form_label_start();
+        }
+		echo form_submit('submit', 'Create');
+        if($check == 1){
+                echo my_form_label_end();
+        }
 
-	echo "<p id=\"reload\">";
+        if($check == 0){
+                echo " ";
+                        echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' . $current_entry_type['name'] . ' Entries'));
+                echo "</p>";
+        }else{
+                echo "</p>";
+        }
+
+        echo form_close();
+
+        if($check == 1){
+                echo my_form_label_start();
+                        $var = site_url('entry/show/'.$current_entry_type['label']);
+                        echo my_form_anchor($var);
+                echo my_form_label_end();
+        }
+
+
+/*	echo "<p id=\"reload\">";
 	echo form_submit('submit', 'Create');
 	echo " ";
 	echo anchor('entry/show/' . $current_entry_type['label'], 'Back', array('title' => 'Back to ' . $current_entry_type['name'] . ' Entries'));
 	echo "</p>";
 
-	echo form_close();
+	echo form_close();*/
 ?>

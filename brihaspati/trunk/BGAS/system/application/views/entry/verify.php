@@ -14,9 +14,10 @@ Backward Reference Id : <span class="bold"><?php echo $backward_reference_id; ?>
 foreach ($cur_entry_ledgers->result() as $row)
 {
 	$ledger_code = $this->Ledger_model->get_ledger_code($row->ledger_id);
-        $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
+//        $account_code = $this->Budget_model->get_account_code('Liabilities and Owners Equity');
 //        $temp = $this->startsWith($ledger_code, $account_code);
-        $temp = !strncmp($ledger_code, $account_code, strlen($account_code));
+//        $temp = !strncmp($ledger_code, $account_code, strlen($account_code));
+	$temp = $this->Ledger_model->isFund($ledger_code);
 
 	if(!($temp && $row->dc == "D")){	
 		echo "<td>" . convert_dc($row->dc) . "</td>";

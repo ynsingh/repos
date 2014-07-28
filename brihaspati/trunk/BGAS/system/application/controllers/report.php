@@ -464,7 +464,10 @@ class Report extends Controller {
 	
         }
 
-
+	/**
+	 * Method for displaying MHRD format balancesheet
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+	 */
 	function new_balancesheet($period = NULL)
 	{
 		$this->load->library('session');
@@ -494,6 +497,11 @@ class Report extends Controller {
                 return !strncmp($str1, $str2, strlen($str2));
         }
 
+	/**
+	 * Method for displaying print preview
+	 * of all the schedules in one page.
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+	 */
 	function printPreview_schedules($c = 1)
 	{
  	        $this->load->library('session');
@@ -630,12 +638,19 @@ class Report extends Controller {
                 return $count;
         }
 
-	//function schedule($code)
+	/**
+	 * Method for printing schedules
+	 * for balancesheet MHRD format.
+	 * @author Priyanka Rawat <rpriyanka12@ymail.com>
+	 */
 	// $code is chart of account code 
 	// $count is schedule number
 	function schedule($code, $count)
 	{
 		$this->template->set('schedule', 'true');
+		//$design_earm_funds = array();
+		$design_earm_funds_group = array();
+		$design_earm_funds_ledger = array();
 		$data = array();
 		$id = '';
 		$schedule = '';
@@ -649,7 +664,7 @@ class Report extends Controller {
                         //$schedule = $group['schedule'];
 			$name = $group['name'];
 		}
-		
+	
 		if($name != '' && $id != ''){
 			$this->template->set('page_title', 'Schedule - ' . $count . ' ' . $name);
 	                $this->session->set_userdata('code', $code);
@@ -666,6 +681,49 @@ class Report extends Controller {
 		//if($name == 'General Funds' || $name == 'Reserves and Surplus'){
 		if($name == $ledger_name){
 			$this->template->load('template', 'report/schedule_template_1', $data);
+                        return;
+		}
+		elseif($name == 'Designated-Earmarked Funds' || $name == 'Restricted Funds'){
+			//add child groups and ledgers for the fund
+			$num_of_childs = $this->Group_model->get_numOfChild($id);
+			$count = 0;
+
+			if($num_of_childs > 0){
+				//get child id, name, code
+				$this->db->select('id, name, code');
+				$this->db->from('groups')->where('parent_id', $id);
+				$group_result = $this->db->get();
+
+				foreach($group_result->result() as $row){
+					$design_earm_funds_group[$count]['id'] = $row->id;
+					$design_earm_funds_group[$count]['name'] = $row->name;
+					$design_earm_funds_group[$count]['code'] = $row->code;
+					$count++;
+				}
+			}
+
+			$num_of_childs = $this->Ledger_model->get_numOfChild($id);
+			
+			if($num_of_childs > 0){
+                                //get child id, name, code
+       	                        $this->db->select('id, name, code');
+               	                $this->db->from('ledgers')->where('group_id', $id);
+                       	        $ledger_result = $this->db->get();
+
+                                foreach($ledger_result->result() as $row){
+       	                                $design_earm_funds_ledger[$count]['id']= $row->id;
+					$design_earm_funds_ledger[$count]['name'] = $row->name;
+					$design_earm_funds_ledger[$count]['code'] = $row->code;
+               	                        $count++;
+                       	        }
+                       	}	
+
+
+			//$data['designated_earmarked_funds'] = $design_earm_funds;
+			$data['designated_earmarked_funds_group'] = $design_earm_funds_group;
+			$data['designated_earmarked_funds_ledger'] = $design_earm_funds_ledger;
+			
+			$this->template->load('template', 'report/schedule_template_2', $data);
                         return;
 		}
 		else{
@@ -2044,6 +2102,8 @@ class Report extends Controller {
 		if ($statement == "schedule")
                 {
 			$arr = array();
+			$design_earm_funds_group = array();
+			$design_earm_funds_ledger = array();
 	                $group_id = '';
         	        $title = '';
                 	$name = '';
@@ -2069,6 +2129,44 @@ class Report extends Controller {
 	                $ledger_name = $this->Setting_model->get_from_settings('ledger_name');
         	        if($name == $ledger_name)
 				$data['report'] = "report/schedule_template_1";
+			elseif($name == 'Designated-Earmarked Funds' || $name == 'Restricted Funds'){
+				$data['report'] = "report/schedule_template_2";
+				//add child groups and ledgers for the fund
+	                        $num_of_childs = $this->Group_model->get_numOfChild($group_id);
+        	                $count = 0;
+
+                	        if($num_of_childs > 0){
+                        	        //get child id, name, code
+                                	$this->db->select('id, name, code');
+	                                $this->db->from('groups')->where('parent_id', $group_id);
+        	                        $group_result = $this->db->get();
+
+                	                foreach($group_result->result() as $row){
+                        	                $design_earm_funds_group[$count]['id'] = $row->id;
+                                	        $design_earm_funds_group[$count]['name'] = $row->name;
+                                        	$design_earm_funds_group[$count]['code'] = $row->code;
+	                                        $count++;
+        	                        }
+                	        }
+
+                        	$num_of_childs = $this->Ledger_model->get_numOfChild($group_id);
+
+	                        if($num_of_childs > 0){
+        		 	       //get child id, name, code
+                                	$this->db->select('id, name, code');
+	                                $this->db->from('ledgers')->where('group_id', $group_id);
+        	                        $ledger_result = $this->db->get();
+	
+        	                        foreach($ledger_result->result() as $row){
+                	                        $design_earm_funds_ledger[$count]['id']= $row->id;
+                        	                $design_earm_funds_ledger[$count]['name'] = $row->name;
+                                	        $design_earm_funds_ledger[$count]['code'] = $row->code;
+                                        	$count++;
+                                	}
+                        	}
+
+	                        //$data['designated_earmarked_funds'] = $design_earm_funds;
+			}
 			else
 				$data['report'] = "report/schedule_template";
 
@@ -2080,6 +2178,8 @@ class Report extends Controller {
                         $data['entry_date2'] = $date2;
 			$data['isSchedule'] = "true";
 			$data['arr'] = $arr;
+			$data['designated_earmarked_funds_group'] = $design_earm_funds_group;
+			$data['designated_earmarked_funds_ledger'] = $design_earm_funds_ledger;
                         $this->load->view('report/report_template', $data);
                         return;
                 }

@@ -289,5 +289,28 @@ if ( ! function_exists('form_dropdown_exptype'))
         }
 }
 
+if(! function_exists('my_form_label_start'))
+{
+	function my_form_label_start(){
+
+		return "<label style=\"width: 50px; float: left; margin: 0 20px 0 0;\">";
+	}
+}
+
+if(! function_exists('my_form_label_end'))
+{
+	function my_form_label_end(){
+		return "</label>";
+	}
+}
+
+if(! function_exists('my_form_anchor'))
+{
+	function my_form_anchor($var){
+//		$anchor = '<a href="'.$url.'"';
+		return "<a href=\"".$var."\"><button>Cancel</button></a>";
+	}
+}
+
 /* End of file MY_form_helper.php */
 /* Location: ./system/application/helpers/MY_form_helper.php */

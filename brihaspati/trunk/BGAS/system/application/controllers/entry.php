@@ -704,18 +704,19 @@ class Entry extends Controller {
 		
 		if ($_POST)
 		{
-			foreach ($this->input->post('ledger_dc', TRUE) as $id => $ledger_data)
-			{
-					
-				$this->form_validation->set_rules('dr_amount[' . $id . ']', 'Debit Amount', 'trim|currency');
-				$this->form_validation->set_rules('cr_amount[' . $id . ']', 'Credit Amount', 'trim|currency');
-
+			if($check == 0){
+				foreach ($this->input->post('ledger_dc', TRUE) as $id => $ledger_data)
+				{
+					$this->form_validation->set_rules('dr_amount[' . $id . ']', 'Debit Amount', 'trim|currency');
+					$this->form_validation->set_rules('cr_amount[' . $id . ']', 'Credit Amount', 'trim|currency');
+				}
 			}
 		}
 	
 		/* Repopulating form */
 		if ($_POST)
 		{
+			
 			$data['entry_number']['value'] = $this->input->post('entry_number', TRUE);
 			$data['entry_date']['value'] = $this->input->post('entry_date', TRUE);
 			$data['entry_narration']['value'] = $this->input->post('entry_narration', TRUE);
@@ -767,496 +768,452 @@ class Entry extends Controller {
 		}
 		else
 		{
-			/* Checking for Valid Ledgers account and Debit and Credit Total */
-			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
-			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
-			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
-			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-	//		$data_banif_name = $this->input->post('banif_name', TRUE);
-          //              $data_bank_name = $this->input->post('bank_name', TRUE);
-                        $data_entry_name = $this->input->post('entry_name', TRUE);
-                        $data_date = $this->input->post('entry_date', TRUE);
-                        $data_cheque = $this->input->post('ledger_payt', TRUE);
-                        $data_date = date_php_to_mysql($data_date); // Converting date to MySQL
-			$bank_cash_global = '';
-			$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 			$data_check =+ $this->input->post('check', TRUE);
+			
+				/* Checking for Valid Ledgers account and Debit and Credit Total */
+				$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
+				$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
+				$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
+				$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+				//$data_banif_name = $this->input->post('banif_name', TRUE);
+          			//$data_bank_name = $this->input->post('bank_name', TRUE);
+	                        $data_entry_name = $this->input->post('entry_name', TRUE);
+        	                $data_date = $this->input->post('entry_date', TRUE);
+                	        $data_cheque = $this->input->post('ledger_payt', TRUE);
+                        	$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
+				$bank_cash_global = '';
+				$data_secunitid = $this->input->post('sec_unit_id', TRUE);
 
-			if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
-                        {
-
-			foreach ($data_all_ledger_dc as $id => $ledger_data)
-                        {
-                                if($data_all_ledger_id[$id] < 1)
-					continue;
-
-				$bank_cash = $this->Ledger_model->get_ledgers_bankcash($data_all_ledger_id[$id]);
-
-				if($data_all_ledger_dc[$id] == 'C' && $bank_cash == '1')
-					$data_entry_name = 'Payment';
-                                elseif($data_all_ledger_dc[$id] == 'D' && $bank_cash == '1')
-					$data_entry_name = 'Receipt';
-
-				if($bank_cash_global== '1' && $bank_cash == '1')
-                        		$data_entry_name = 'Contra';
-                                        
-								
-				if($bank_cash == '1')
-					$bank_cash_global = '1';
-				else
-					$bank_cash_global = '0';
-                        }
-			}
-			// get the correct id
-
-			$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
-			$dr_total = 0;
-			$cr_total = 0;
-			$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
-			$non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
-			/* Adding main entry */
-                        if ($current_entry_type['numbering'] == '2')
-                        {
-                                $data_number = $this->input->post('entry_number', TRUE);
-                        } else if ($current_entry_type['numbering'] == '3') {
-                                $data_number = $this->input->post('entry_number', TRUE);
-                                if ( ! $data_number)
-                                        $data_number = NULL;
-                        } else {
-                                if ($this->input->post('entry_number', TRUE))
-                                        $data_number = $this->input->post('entry_number', TRUE);
-                                else
-                                        $data_number = $this->Entry_model->next_entry_number($entry_type_id);
-                        }
+				if($data_entry_name == 'Payment' || $data_entry_name == 'Receipt' || $data_entry_name == 'Contra' )
+                	        {
+					foreach ($data_all_ledger_dc as $id => $ledger_data)
+                		        {
+                                		if($data_all_ledger_id[$id] < 1)
+							continue;
+	
+						$bank_cash = $this->Ledger_model->get_ledgers_bankcash($data_all_ledger_id[$id]);
 		
-		foreach ($data_all_ledger_dc as $id => $ledger_data)
-			{
-				
-				//these lines existed earlier
-				if ($data_all_ledger_id[$id] < 1)
-					continue;
-				
-                                       
-				/* Check for valid ledger id */
-				$this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
-				
-				//lines added by Priyanka
-                                //$ledger_array = explode('#', $data_all_ledger_id[$id]);
-                                //$ledger_id = $ledger_array[0];
-                                //$ledger_code = $ledger_array[1];
-                                //if ($ledger_id < 1)
-                                  //      continue;
-                                //$ledger_code = $ledger_array[1];
-				//$this->db->from('ledgers')->where('id', $ledger_id);
-				//...
-					
-				$valid_ledger_q = $this->db->get();
-				if ($valid_ledger_q->num_rows() < 1)
+						if($data_all_ledger_dc[$id] == 'C' && $bank_cash == '1')
+							$data_entry_name = 'Payment';
+                                		elseif($data_all_ledger_dc[$id] == 'D' && $bank_cash == '1')
+							$data_entry_name = 'Receipt';
+
+						if($bank_cash_global== '1' && $bank_cash == '1')
+                        				$data_entry_name = 'Contra';
+                                        
+						if($bank_cash == '1')
+							$bank_cash_global = '1';
+						else
+							$bank_cash_global = '0';
+                        		}
+				}
+				// get the correct id
+
+				$entry_type_id=entry_type_name_to_id(strtolower($data_entry_name));
+				$dr_total = 0;
+				$cr_total = 0;
+				$bank_cash_present = FALSE; /* Whether atleast one Ledger account is Bank or Cash account */
+				$non_bank_cash_present = FALSE;  /* Whether atleast one Ledger account is NOT a Bank or Cash account */
+				/* Adding main entry */
+                        	if ($current_entry_type['numbering'] == '2')
+                        	{
+                                	$data_number = $this->input->post('entry_number', TRUE);
+	                        } else if ($current_entry_type['numbering'] == '3') {
+        	                        $data_number = $this->input->post('entry_number', TRUE);
+                	                if ( ! $data_number)
+                        	                $data_number = NULL;
+	                        } else {
+        	                        if ($this->input->post('entry_number', TRUE))
+                	                        $data_number = $this->input->post('entry_number', TRUE);
+                        	        else
+                                	        $data_number = $this->Entry_model->next_entry_number($entry_type_id);
+                        	}
+		
+				foreach ($data_all_ledger_dc as $id => $ledger_data)
 				{
-					$this->messages->add('Invalid Ledger account.', 'error');
+					//these lines existed earlier
+					if ($data_all_ledger_id[$id] < 1)
+						continue;
+				                                     
+					/* Check for valid ledger id */
+					$this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
+				
+					$valid_ledger_q = $this->db->get();
+					if ($valid_ledger_q->num_rows() < 1)
+					{
+						$this->messages->add('Invalid Ledger account.', 'error');
+						$this->template->load('template', 'entry/add', $data);
+						return;
+					}
+					// these checks existed earlier 
+					/*else {
+						/* Check for valid ledger type /
+						$valid_ledger = $valid_ledger_q->row();
+						if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
+						{
+							if ($data_all_ledger_dc[$id] == 'D' && $valid_ledger->type == 1)
+							{
+							bank_cash_present = TRUE;
+							}
+							if ($valid_ledger->type != 1)
+								$non_bank_cash_present = TRUE;
+	
+						} else if ($current_entry_type['bank_cash_ledger_restriction'] == '3')
+						{
+							if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
+							{
+								$bank_cash_present = TRUE;
+							}
+							if ($valid_ledger->type != 1)
+								$non_bank_cash_present = TRUE;
+						} else if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
+						{
+							if ($valid_ledger->type != 1)
+							{
+								$this->messages->add('Invalid Ledger account. ' . $current_entry_type['name'] . ' Entries can have only Bank and Cash Ledgers accounts.', 'error');
+								$this->template->load('template', 'entry/add', $data);
+								return;
+							}
+						} else if ($current_entry_type['bank_cash_ledger_restriction'] == '5')
+						{
+							if ($valid_ledger->type == 1)
+							{
+								$this->messages->add('Invalid Ledger account. ' . $current_entry_type['name'] . ' Entries cannot have Bank and Cash Ledgers accounts.', 'error');
+								$this->template->load('template', 'entry/add', $data);
+								return;
+							}
+						}
+					}*/
+					if ($data_all_ledger_dc[$id] == "D")
+					{
+						$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+					} else {
+						$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+					}
+				 }
+	
+				if (float_ops($dr_total, $cr_total, '!='))
+				{
+					$this->messages->add('Debit and Credit Total does not match!', 'error');
+					$this->template->load('template', 'entry/add', $data);
+					return;
+				} else if (float_ops($dr_total, 0, '==') && float_ops($cr_total, 0, '==')) {
+					$this->messages->add('Cannot save empty Entry.', 'error');
 					$this->template->load('template', 'entry/add', $data);
 					return;
 				}
-				// these checks existed earlier 
-				/*else {
-					/* Check for valid ledger type /
-					$valid_ledger = $valid_ledger_q->row();
-					if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
+	
+				// these checks existed earlier
+				/* Check if atleast one Bank or Cash Ledger account is present */
+				/*if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
+				{	
+					if ( ! $bank_cash_present)
 					{
-						if ($data_all_ledger_dc[$id] == 'D' && $valid_ledger->type == 1)
-						{
-						
-							$bank_cash_present = TRUE;
-						}
-						if ($valid_ledger->type != 1)
-							$non_bank_cash_present = TRUE;
-
-					} else if ($current_entry_type['bank_cash_ledger_restriction'] == '3')
-					{
-						if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
-						{
-							$bank_cash_present = TRUE;
-						}
-						if ($valid_ledger->type != 1)
-							$non_bank_cash_present = TRUE;
-					} else if ($current_entry_type['bank_cash_ledger_restriction'] == '4')
-					{
-						if ($valid_ledger->type != 1)
-						{
-							$this->messages->add('Invalid Ledger account. ' . $current_entry_type['name'] . ' Entries can have only Bank and Cash Ledgers accounts.', 'error');
-							$this->template->load('template', 'entry/add', $data);
-							return;
-						}
-					} else if ($current_entry_type['bank_cash_ledger_restriction'] == '5')
-					{
-						if ($valid_ledger->type == 1)
-						{
-							$this->messages->add('Invalid Ledger account. ' . $current_entry_type['name'] . ' Entries cannot have Bank and Cash Ledgers accounts.', 'error');
-							$this->template->load('template', 'entry/add', $data);
-							return;
-						}
+						$this->messages->add('Need to Debit atleast one Bank or Cash account.', 'error');
+						$this->template->load('template', 'entry/add', $data);
+						return;
 					}
+					if ( ! $non_bank_cash_present)
+					{
+						$this->messages->add('Need to Debit or Credit atleast one NON - Bank or Cash account.', 'error');
+						$this->template->load('template', 'entry/add', $data);
+						return;
+					}
+				} else if ($current_entry_type['bank_cash_ledger_restriction'] == '3')
+				{
+					if ( ! $bank_cash_present)
+					{
+						$this->messages->add('Need to Credit atleast one Bank or Cash account.', 'error');
+						$this->template->load('template', 'entry/add', $data);
+						return;
+					}
+					if ( ! $non_bank_cash_present)
+					{
+						$this->messages->add('Need to Debit or Credit atleast one NON - Bank or Cash account.', 'error');
+						$this->template->load('template', 'entry/add', $data);
+						return;
+					}	
 				}*/
-				if ($data_all_ledger_dc[$id] == "D")
-				{
-					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
-				} else {
-					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
-				}
-			 }
 
-			if (float_ops($dr_total, $cr_total, '!='))
-			{
-				$this->messages->add('Debit and Credit Total does not match!', 'error');
-				$this->template->load('template', 'entry/add', $data);
-				return;
-			} else if (float_ops($dr_total, 0, '==') && float_ops($cr_total, 0, '==')) {
-				$this->messages->add('Cannot save empty Entry.', 'error');
-				$this->template->load('template', 'entry/add', $data);
-				return;
-			}
+					$data_date = $this->input->post('entry_date', TRUE);
+					$data_back_refrence = $this->input->post('backward_refrence_id', TRUE);
+					$data_narration = $this->input->post('entry_narration', TRUE);
+					$data_tag = $this->input->post('entry_tag', TRUE);
 
-			// these checks existed earlier
-			/* Check if atleast one Bank or Cash Ledger account is present */
-			/*if ($current_entry_type['bank_cash_ledger_restriction'] == '2')
-			{
-				if ( ! $bank_cash_present)
-				{
-					$this->messages->add('Need to Debit atleast one Bank or Cash account.', 'error');
-					$this->template->load('template', 'entry/add', $data);
-					return;
-				}
-				if ( ! $non_bank_cash_present)
-				{
-					$this->messages->add('Need to Debit or Credit atleast one NON - Bank or Cash account.', 'error');
-					$this->template->load('template', 'entry/add', $data);
-					return;
-					}
-			} else if ($current_entry_type['bank_cash_ledger_restriction'] == '3')
-			{
-				if ( ! $bank_cash_present)
-				{
-					$this->messages->add('Need to Credit atleast one Bank or Cash account.', 'error');
-					$this->template->load('template', 'entry/add', $data);
-					return;
-				}
-				if ( ! $non_bank_cash_present)
-				{
-					$this->messages->add('Need to Debit or Credit atleast one NON - Bank or Cash account.', 'error');
-					$this->template->load('template', 'entry/add', $data);
-					return;
-				}
-			}*/
-
-
-			$data_date = $this->input->post('entry_date', TRUE);
-			//$data_forw_refrence = $this->input->post('forward_refrence_id', TRUE);
-			$data_back_refrence = $this->input->post('backward_refrence_id', TRUE);
-			$data_narration = $this->input->post('entry_narration', TRUE);
-			$data_tag = $this->input->post('entry_tag', TRUE);
-			if ($data_tag < 1)
-				$data_tag = NULL;
+				if ($data_tag < 1)
+					$data_tag = NULL;
 				$this->db->select('id')->from('entry_types')->where('name', $data_entry_name);
                                 $query1 = $this->db->get();
                                 foreach($query1->result() as $row1)
                                 {
                                         $id = $row1->id;
                                 }
-
-			
-			$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
-			$entry_id = NULL;
-			$uname=$this->session->userdata('user_name');
-                        $sec_unit=$this->session->userdata('sec_unit_id');
-			$today = date("Y-m-d H:i:s");
-			$this->db->trans_start();
-			$insert_data = array(
-				'number' => $data_number,
-				'date' => $data_date,
-				'narration' => $data_narration,
-				'entry_type' => $id,
-				'tag_id' => $data_tag,
-				'update_date' => $today,
-				'submitted_by' => $uname,
-				'forward_refrence_id' => '0',
-				'backward_refrence_id' => $data_back_refrence,
-				'secunitid' => $sec_unit,
-			);
-
-			 //echo random_element($insert_data);
-
-			if ( ! $this->db->insert('entries', $insert_data))
-			{
-				$this->db->trans_rollback();
-				$this->messages->add('Error addding Entry.', 'error');
-				$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry");
-				$this->template->load('template', 'entry/add', $data);
-				return;
-			} else {
-				$entry_id = $this->db->insert_id();
-			}
-
-			/* Adding ledger accounts */
-			$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
-			$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
-			$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
-			$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
-			$data_all_income_type = $this->input->post('income_type', TRUE);
-			$data_all_expense_type = $this->input->post('expense_type', TRUE);
-
-			$dr_total = 0;
-			$cr_total = 0;
-			$ledg_code = 0;
-			$budgetamt = 0;
-			$data_amount = 0;
-			$useamt = 0;
-			$allow = 0;
- 
-
-			foreach ($data_all_ledger_dc as $id => $ledger_data)
-			{
-
-				$data_ledger_dc = $data_all_ledger_dc[$id];
-				$data_ledger_id = $data_all_ledger_id[$id];
-				//lines added by Priyanka
-                                //$ledger_array = explode('#', $data_ledger_id);
-                                //$ledger_id = $ledger_array[0];
-                                //$ledger_code = $ledger_array[1];
-
-                                //if ($ledger_id < 1)
-                                 //       continue;
-				//...
 				
-                                //this line existed earlier
-				if ($data_ledger_id < 1)
-					continue;
+				$data_date = date_php_to_mysql($data_date); // Converting date to MySQL
+				$entry_id = NULL;
+				$uname=$this->session->userdata('user_name');
+	                        $sec_unit=$this->session->userdata('sec_unit_id');
+				$today = date("Y-m-d H:i:s");
+				$this->db->trans_start();
+				$insert_data = array(
+					'number' => $data_number,
+					'date' => $data_date,
+					'narration' => $data_narration,
+					'entry_type' => $id,
+					'tag_id' => $data_tag,
+					'update_date' => $today,
+					'submitted_by' => $uname,
+					'forward_refrence_id' => '0',
+					'backward_refrence_id' => $data_back_refrence,
+					'secunitid' => $sec_unit,
+				);
 
-				//$data_amount = 0;
-				if ($data_all_ledger_dc[$id] == "D")
+				if ( ! $this->db->insert('entries', $insert_data))
 				{
-					$data_amount = $data_all_dr_amount[$id];
-					$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
-					
+					$this->db->trans_rollback();
+					$this->messages->add('Error addding Entry.', 'error');
+					$this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry");
+					$this->template->load('template', 'entry/add', $data);
+					return;
 				} else {
-					
-					$data_amount = $data_all_cr_amount[$id];
-					$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
-				}	
+					$entry_id = $this->db->insert_id();
+				}
+
+				/* Adding ledger accounts */
+					$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
+					$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
+					$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
+					$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+					$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+					$data_all_income_type = $this->input->post('income_type', TRUE);
+					$data_all_expense_type = $this->input->post('expense_type', TRUE);
+
+				$dr_total = 0;
+				$cr_total = 0;
+				$ledg_code = 0;
+				$budgetamt = 0;
+				$data_amount = 0;
+				$useamt = 0;
+				$allow = 0;
+ 
+				foreach ($data_all_ledger_dc as $id => $ledger_data)
+				{
+					$data_ledger_dc = $data_all_ledger_dc[$id];
+					$data_ledger_id = $data_all_ledger_id[$id];
+			
+                        	        //this line existed earlier
+					if ($data_ledger_id < 1)
+						continue;
+
+					if ($data_all_ledger_dc[$id] == "D")
+					{
+						$data_amount = $data_all_dr_amount[$id];
+						$dr_total = float_ops($data_all_dr_amount[$id], $dr_total, '+');
+					} else {
+						$data_amount = $data_all_cr_amount[$id];
+						$cr_total = float_ops($data_all_cr_amount[$id], $cr_total, '+');
+					}	
 					 $data_ledger_id;
 
-				if($data_ledger_dc == "D")
-				{//001
-					//these lines existed earlier
-					//if($entry_type_id == '2'){//01
-				 	$this->db->from('ledgers')->where('id', $data_ledger_id);
-                                        //$this->db->from('ledgers')->where('id', $ledger_id);	
-					$query_q = $this->db->get();
-		                        $query_n = $query_q->row();
-                		        $this->id = $query_n->id;
-                        		$this->code = $query_n->code;
-					$this->group_id = $query_n->group_id;
-					$ledg_code=$this->code;
-					$groupid=$this->group_id;
-					/**
-                                         * To identify "expense" entry, code of the selected ledger head
-                                         * is being fetched. If the ledger head has "Expenses" as its 
-                                         * super parent and the account is being debited, then it must
-                                         * be a "expense" entry.
-					 * Then, the corresponding budget amount is updated. Since,
-					 * the budget amount is set for "expense" only.
-                                         * Lines added by Priyanka
-                                         */
-					$this->load->model('Budget_model');
-                                        $account_code = $this->Budget_model->get_account_code('Expenses');
-					$temp = $this->startsWith($ledg_code, $account_code);
-                                        if($temp){//01
+					if($data_ledger_dc == "D")
+					{//001
+						//these lines existed earlier
+						//if($entry_type_id == '2'){//01
+					 	$this->db->from('ledgers')->where('id', $data_ledger_id);
+                                        	//$this->db->from('ledgers')->where('id', $ledger_id);	
+						$query_q = $this->db->get();
+			                        $query_n = $query_q->row();
+                			        $this->id = $query_n->id;
+                        			$this->code = $query_n->code;
+						$this->group_id = $query_n->group_id;
+						$ledg_code=$this->code;
+						$groupid=$this->group_id;
+						/**
+                	                         * To identify "expense" entry, code of the selected ledger head
+                                	         * is being fetched. If the ledger head has "Expenses" as its 
+                        	        	 * super parent and the account is being debited, then it must
+	                                         * be a "expense" entry.
+						 * Then, the corresponding budget amount is updated. Since,
+						 * the budget amount is set for "expense" only.
+                        	                 * Lines added by Priyanka
+                                	         */
+						$this->load->model('Budget_model');
+	                                        $account_code = $this->Budget_model->get_account_code('Expenses');
+						$temp = $this->startsWith($ledg_code, $account_code);
+                	                        if($temp){//01
+							//get budget amnt 
+							$parents;
+							$query1=$this->db->from('budgets')->where('code', $ledg_code)->get();
 					
-					//get budget amnt 
-					$parents;
-					$query1=$this->db->from('budgets')->where('code', $ledg_code)->get();
-					
-					/**
-					* code for if particular head is not in budget,
-					* then made payment from parent which is present
-					* in budget.
-					*/
-					if($query1->num_rows() > 0)
-		                        {
-					$this->db->from('budgets')->where('code', $ledg_code);
-                                        $query_l = $this->db->get();
-                                        $query_l = $query_l->row();
-                                        $this->amt = $query_l->bd_balance;
-					$this->useamt = $query_l->consume_amount;
-					$this->allow=$query_l->allowedover;
-                                        $budgetamt=$this->amt;
-					$useamt=$this->useamt;
-					$allow=$this->allow;
+							/**
+							* code for if particular head is not in budget,
+							* then made payment from parent which is present
+							* in budget.
+							*/
+							if($query1->num_rows() > 0)
+				                        {
+								$this->db->from('budgets')->where('code', $ledg_code);
+		        	                                $query_l = $this->db->get();
+                                			        $query_l = $query_l->row();
+			                                        $this->amt = $query_l->bd_balance;
+								$this->useamt = $query_l->consume_amount;
+								$this->allow=$query_l->allowedover;
+                        			                $budgetamt=$this->amt;
+								$useamt=$this->useamt;
+								$allow=$this->allow;
 
-					if($budgetamt > $useamt)
+								if($budgetamt > $useamt){//if1
+									$available_amount=$budgetamt - $useamt ;//its wrong
+									/**  payment amount is greater than or equal to available amount **/
+									if($data_amount > $available_amount)
+									{
+										/* check for allowed over expense*/
+										if(($allow == -1) || ($allow == 0))
+                        			                        	{
+                                                			        	$this->messages->add('Budget is not sufficient to make this payment.','error');
+				                                                       // 	$this->template->load('template', 'entry/add',$data);
+                                			                        	return;
+                                                				}
+										else
+										{
+										/* check for payment amount by adding allowd over amount + consume amount */
+											$available_amount = $budgetamt - $useamt + $allow;
+											if($data_amount >= $available_amount)
+											{
+	                                        			                        $this->messages->add('Budget is not sufficient to make this payment.','error');
+        	                                          					//  $this->template->load('template', 'entry/add',$data);
+			                	                                                return;
+											}
+											else
+											{
+												/* Update budget table */
+												$sumamt=$data_amount + $useamt;
+												$allow_left = $available_amount - $data_amount ;
+												$update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
+									                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                        									{
+                                									$this->db->trans_rollback();
+                                									$this->messages->add('Error updating total expenses amount in budget.', 'error');
+			                                						$this->template->load('template', 'entry/add', $data);
+                        			        						return;
+                        									}
+												$parents = new GetParentlist();
+							                                        $parents->init($groupid,$data_amount);
+												//$this->db->from('budgets')->where('code', '50');
+												$this->db->from('budgets')->where('budgetname', 'Main Budget');
+				                			                        $query_ll = $this->db->get();
+                                				        			$query_ll = $query_ll->row();
+							                                        //$this->id = $query_l->id;
+				                        			                $this->amt1 = $query_ll->bd_balance;
+			                                				        $this->useamt1 = $query_ll->consume_amount;
+												$update_data2 = $this->useamt1 + $data_amount;
+												$update_data3 = array('consume_amount' => $update_data2);
+												//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+												if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+                        			                                                {
+                                                			                                $this->db->trans_rollback();
+                                                                        			        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+			                                                                                $this->template->load('template', 'entry/add', $data);
+                        			                                                        return;
+                                                			                        }
 
-					{//if1
-						$available_amount=$budgetamt - $useamt ;//its wrong
-						/**  payment amount is greater than or equal to available amount **/
-						if($data_amount > $available_amount)
-						{
-							/* check for allowed over expense*/
+											}	
+								
+										}
 
-							if(($allow == -1) || ($allow == 0))
-                                                	{
-                                                        	$this->messages->add('Budget is not sufficient to make this payment.','error');
-                                                       // 	$this->template->load('template', 'entry/add',$data);
-                                                        	return;
-                                                	}
-							else
-							{
-								/* check for payment amount by adding allowd over amount + consume amount */
-								$available_amount = $budgetamt - $useamt + $allow;
-								if($data_amount >= $available_amount)
-								{
-	                                                                $this->messages->add('Budget is not sufficient to make this payment.','error');
-        	                                          //              $this->template->load('template', 'entry/add',$data);
-                	                                                return;
-
-								}
+									}
 								else
 								{
-									/* Update budget table */
 									$sumamt=$data_amount + $useamt;
-									$allow_left = $available_amount - $data_amount ;
-									$update_data1 = array('consume_amount' => $sumamt, 'allowedover' => $allow_left);
-						                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
-                        						{
-                                						$this->db->trans_rollback();
-                                						$this->messages->add('Error updating total expenses amount in budget.', 'error');
-                                						$this->template->load('template', 'entry/add', $data);
-                                						return;
-                        						}
+									$update_data1 = array('consume_amount' => $sumamt );
+                                		                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                		        {
+        	                                                       		$this->db->trans_rollback();
+	        	                                                        $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                        		                                        $this->template->load('template', 'entry/add', $data);
+                                        		                        return;
+                                                        		}
 									$parents = new GetParentlist();
 				                                        $parents->init($groupid,$data_amount);
-
+									
 									//$this->db->from('budgets')->where('code', '50');
 									$this->db->from('budgets')->where('budgetname', 'Main Budget');
-				                                        $query_ll = $this->db->get();
-                                				        $query_ll = $query_ll->row();
-                                        //$this->id = $query_l->id;
-				                                        $this->amt1 = $query_ll->bd_balance;
-                                				        $this->useamt1 = $query_ll->consume_amount;
-									$update_data2 = $this->useamt1 + $data_amount;
-									$update_data3 = array('consume_amount' => $update_data2);
+                		                                        $query_ll = $this->db->get();
+                                		                        $query_ll = $query_ll->row();
+                                                		        $this->amt1 = $query_ll->bd_balance;
+		                                                        $this->useamt1 = $query_ll->consume_amount;
+                		                                        $update_data2 = $this->useamt1 + $data_amount;
+                                		                        $update_data3 = array('consume_amount' => $update_data2);
+	
 									//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
 									if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
-                                                                        {
+                                		         		{
                                                                                 $this->db->trans_rollback();
                                                                                 $this->messages->add('Error updating total expenses amount in budget.', 'error');
                                                                                 $this->template->load('template', 'entry/add', $data);
                                                                                 return;
-                                                                        }
-
+                                                		        }
 								}
-								
-							}
-
+							}//1	
+							/* consume amount is greater than allocated budget amount*/ 
+							if($useamt >= $budgetamt)
+							{//2
+								/* check for allowed over expenses */
+								if(($allow == -1) || ($allow == 0))
+			                                        {
+                		                                	$this->messages->add('Budget is not sufficient to make this payment.','error');
+                                		                	return;
+								}
+								/** get over consume amount and check with allowed left **/
+								$overconsume_amount = $useamt - $budgetamt ;
+								/* payment amount is greater than allowed over amount*/
+								if($data_amount > $allow)
+								{
+			                                                $this->template->load('template', 'entry/add',$data);
+									return;
+								}
+								 /* payment amount is less than allowed over amount*/
+								if($data_amount <= $allow)
+								{
+									$overconsume_amount = $useamt - $budgetamt ;
+									$available_amount = $allow ;
+									$allowed_left = $allow - $data_amount;
+									$consume_amount = $useamt + $data_amount;
+									$update_data1 = array('consume_amount' => $consume_amount, 'allowedover' => $allowed_left);
+                                                		        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
+                                                        		{	
+		                                                                $this->db->trans_rollback();
+                		                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
+                                		                                $this->template->load('template', 'entry/add', $data);
+                                                		                return;
+                                                        		}
+									$parents = new GetParentlist();
+				                                        $parents->init($groupid,$data_amount);
+									//$this->db->from('budgets')->where('code', '50');
+									$this->db->from('budgets')->where('budgetname', 'Main Budget');
+		                                                        $query_ll = $this->db->get();
+                		                                        $query_ll = $query_ll->row();
+                                		                        $this->amt1 = $query_ll->bd_balance;
+                                                		        $this->useamt1 = $query_ll->consume_amount;
+		                                                        $update_data2 = $this->useamt1 + $data_amount;
+                		                                        $update_data3 = array('consume_amount' => $update_data2);
+	
+									//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
+									if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
+        	                		                        {
+                 	                        		        	$this->db->trans_rollback();
+                                                               			$this->messages->add('Error updating total expenses amount in budget.', 'error');
+		                                                               $this->template->load('template', 'entry/add', $data);
+                		                                               return;
+                                		                        }
+								}	
+							}//2
 						}
 						else
 						{
-							$sumamt=$data_amount + $useamt;
-							$update_data1 = array('consume_amount' => $sumamt );
-                                                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
-                                                        {
-                                                                     $this->db->trans_rollback();
-                                                                     $this->messages->add('Error updating total expenses amount in budget.', 'error');
-                                                                     $this->template->load('template', 'entry/add', $data);
-                                                                     return;
-                                                        }
-							$parents = new GetParentlist();
-		                                        $parents->init($groupid,$data_amount);
-							
-							//$this->db->from('budgets')->where('code', '50');
-							$this->db->from('budgets')->where('budgetname', 'Main Budget');
-                                                        $query_ll = $this->db->get();
-                                                        $query_ll = $query_ll->row();
-                                                        $this->amt1 = $query_ll->bd_balance;
-                                                        $this->useamt1 = $query_ll->consume_amount;
-                                                        $update_data2 = $this->useamt1 + $data_amount;
-                                                        $update_data3 = array('consume_amount' => $update_data2);
-
-
-							//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
-							if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
-                                         		{
-                                                                                $this->db->trans_rollback();
-                                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
-                                                                                $this->template->load('template', 'entry/add', $data);
-                                                                                return;
-                                                        }
-
+							$parents_get ="";
+                                			$parents_get=$this->init1l($groupid,$data_amount,$data);
 						}
-					}//1	
-					/* consume amount is greater than allocated budget amount*/ 
-					if($useamt >= $budgetamt)
-					{//2
-						/* check for allowed over expenses */
-						if(($allow == -1) || ($allow == 0))
-	                                        {
-                                                	$this->messages->add('Budget is not sufficient to make this payment.','error');
-                                                	return;
-						}
-						/** get over consume amount and check with allowed left **/
-				
-						
-						$overconsume_amount = $useamt - $budgetamt ;
-						/* payment amount is greater than allowed over amount*/
-						if($data_amount > $allow)
-						{
-	                                                $this->template->load('template', 'entry/add',$data);
-							return;
-						}
-						 /* payment amount is less than allowed over amount*/
-						if($data_amount <= $allow)
-						{
-							$overconsume_amount = $useamt - $budgetamt ;
-							$available_amount = $allow ;
-							$allowed_left = $allow - $data_amount;
-							$consume_amount = $useamt + $data_amount;
-							$update_data1 = array('consume_amount' => $consume_amount, 'allowedover' => $allowed_left);
-                                                        if ( ! $this->db->where('code', $ledg_code)->update('budgets', $update_data1))
-                                                        {
-                                                                $this->db->trans_rollback();
-                                                                $this->messages->add('Error updating total expenses amount in budget.', 'error');
-                                                                $this->template->load('template', 'entry/add', $data);
-                                                                return;
-                                                        }
-							$parents = new GetParentlist();
-		                                        $parents->init($groupid,$data_amount);
-							//$this->db->from('budgets')->where('code', '50');
-							$this->db->from('budgets')->where('budgetname', 'Main Budget');
-                                                        $query_ll = $this->db->get();
-                                                        $query_ll = $query_ll->row();
-                                                        $this->amt1 = $query_ll->bd_balance;
-                                                        $this->useamt1 = $query_ll->consume_amount;
-                                                        $update_data2 = $this->useamt1 + $data_amount;
-                                                        $update_data3 = array('consume_amount' => $update_data2);
-
-
-							//if ( ! $this->db->where('code', '50')->update('budgets', $update_data3))
-							if ( ! $this->db->where('budgetname', 'Main Budget')->update('budgets', $update_data3))
-        	                                        {
-                 	                                       $this->db->trans_rollback();
-                                                               $this->messages->add('Error updating total expenses amount in budget.', 'error');
-                                                               $this->template->load('template', 'entry/add', $data);
-                                                               return;
-                                                        }
-						}	
-					}//2
-
-				//	}//01
-					}
-					else
-					{
-						$parents_get ="";
-                                		$parents_get=$this->init1l($groupid,$data_amount,$data);
-					}
 					}//01	
 				
 				}//001
@@ -1413,85 +1370,6 @@ class Entry extends Controller {
 				}//if
                         }//for
 
-
-			/*lines added by manshi*/
-/*                        foreach ($data_all_ledger_dc as $id => $ledger_data)
-                        {
-                                if ($data_all_ledger_id[$id] < 1)
-                                        continue;
-				$this->db->select('id')->from('entries')->order_by('id', 'desc')->limit (1);
-	                        $ledger_q = $this->db->get();
-                        	if ($ledger = $ledger_q->row())
-                       				
-                                $this->db->from('ledgers')->where('id', $data_all_ledger_id[$id]);
-                                $valid_ledger_q = $this->db->get();
-                                $valid_ledger = $valid_ledger_q->row();
-                                if ($valid_ledger_q->num_rows() < 1)
-                                {
-                                        $this->messages->add('Invalid Ledger account.', 'error');
-                                        $this->template->load('template', 'entry/add', $data);
-                                        return;
-                                }
-						$val=$data_cheque[$id];
-						$this->messages->add('the value of val is ',$val);
-						
-						if($val != NULL)
-						{
-                                  		$valid_ledger = $valid_ledger_q->row();
-                                                if ($data_all_ledger_dc[$id] == 'D' && $valid_ledger->type == 1)
-                                                {
-						
-                                                         $bank_cash_present = TRUE;
-                                                         $this->db->trans_start();
-                                                         $insert_data = array(
-                                                           //     'Bank_name'=>$data_bank_name,
-                                                                'amount' => $data_amount,
-                                                             //   'name' => $data_banif_name,
-                                                                'dc'=>'D',
-								'entry_no'=>$ledger->id,
-                                                                'cheque_date'=>$data_date,
-                                                                'cheque_no' => $val,
-                                                                );
-
-                                                        if ( ! $this->db->insert('reconcilation', $insert_data))
-                                                        {
-                                                                $this->db->trans_rollback();
-                                                                $this->template->load('template', 'entry/add', $data);
-                                                                return;
-                                                                } else {
-                                                                $this->db->trans_complete();
-                                                                }
-
-                                                }
-					 	if ($valid_ledger->type != 1)
-                                                $non_bank_cash_present = TRUE;
-                                                if ($data_all_ledger_dc[$id] == 'C' && $valid_ledger->type == 1)
-                                                {
-                                                         $bank_cash_present = TRUE;
-                                                         $this->db->trans_start();
-                                                         $insert_data = array(
-                                                         //       'Bank_name'=>$data_bank_name,
-                                                                'amount' => $data_amount,
-                                                           //     'name' => $data_banif_name,
-                                                                'dc'=>'C',
-                                                                'entry_no'=>$ledger->id,
-                                                                'cheque_date'=>$data_date,
-                                                                'cheque_no' => $val,
-                                                                );
-
-                                                        if ( ! $this->db->insert('reconcilation', $insert_data))
-                                                        {
-                                                           	$this->db->trans_rollback();
-                                                                $this->template->load('template', 'entry/add', $data);
-                                                                return;
-                                                                } else {
-                                                                $this->db->trans_complete();
-                                                                }
-                                                }
-                        		}
-
-				}
-*/
 			/* Success */
 			$this->db->trans_complete();
 			$this->session->set_userdata('entry_added_show_action', TRUE);
@@ -1505,6 +1383,7 @@ class Entry extends Controller {
 			//redirect('entry/show/' . $current_entry_type['label']);
 			$this->template->load('template', 'entry/add', $data);
 			return;
+
 		}
 		return;
 	}
@@ -3915,6 +3794,7 @@ class Entry extends Controller {
 			$data['income_type'] = $this->input->post('income_type', TRUE);
                         $data['expense_type'] = $this->input->post('expense_type', TRUE);
 			$data['sec_unit_active'] = $this->input->post('sec_unit_id', TRUE);
+
                 }
 		else {
                         for ($count = 0; $count <= 3; $count++)
@@ -4005,7 +3885,7 @@ class Entry extends Controller {
 
 			if($det && $check == 0){
 				$data['check'] = 1;
-                        	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create ', 'error');
+                        	$this->messages->add('The entry with same parameter exist, if you want to submit, click Create or Cancel', 'error');
                                 //$this->template->load('template', 'entry/checkentry', $data);
 				$this->template->load('template', 'entry/add', $data);
 				//redirect('entry/show/' . $entry_type);
