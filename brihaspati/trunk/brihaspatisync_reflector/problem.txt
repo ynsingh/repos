@@ -1,0 +1,14 @@
+Problem 1: When we start the reflector and found the output as
+ 
+ 0    https://202.141.40.215:8443/brihaspatisync_iserver
+
+Enter option: 
+Exception in RegisterToIndexServer Class in bufferReadeR() null
+Reflector already started !! 
+Reflector is not started successfuly 
+
+Solution: Go to index server and open Reflector.xml
+Replace the active with inactive.
+Save and close file
+Again restart reflector.
+

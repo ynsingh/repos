@@ -1,6 +1,8 @@
+Last updated on 20140729-1309
+------------------------------------ 
 For compiling the reflector code use.
 
 $ant clean
 $ant sign
 
-
+For running the server use script reflectorstart.sh. It will connect to master indexing server, and fetch the list of secondary indexing servers. One of the secondary indexing servers is choosen by user to which the reflector attaches. Each secondary indexing server will have separate reflectors. At lest one reflector has to be started, which has to be started directly on Internet (not behind firewall or NAT).  
