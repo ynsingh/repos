@@ -38,6 +38,7 @@
 			<th>CR Amount</th>
 			<th>Submitted By</th>
 			<th>Verified By</th>
+			<th>Payment/Receipt By</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -62,7 +63,9 @@
 			}
 			if($value != NULL) {
 				echo "<tr>";
-
+				$this->db->select('name,bank_name,ledger_id')->from('cheque_print')->where('entry_no',$row->id);
+        			$ledger_q = $this->db->get();
+				$no_of_row=$ledger_q->num_rows();
 				//Ids added by Priyanka
 				echo "<td>" . $row->id . "</td>";
 				echo "<td>" . $row->forward_refrence_id . "</td>";
@@ -91,6 +94,45 @@
 				}else{
 					echo $row->verified_by. " ";	
 				}
+				echo "<td>" ;
+				if( $no_of_row == 1)
+				{
+				foreach($ledger_q->result() as $row1)
+                                {
+                                        $bank_name = $row1->bank_name;
+                                        $name= $row1->name;
+                                        $ledger_id= $row1->ledger_id;	
+                        				$this->db->select('cheque_print_status, cheque_bounce_status, No_of_bounce_cheque')->from('cheque_print')->where('ledger_id', $ledger_id)->where('entry_no',$row->id);
+                        				$cheque_status = $this->db->get();
+                        				foreach($cheque_status->result() as $row2)
+                        				{
+                                				$cheque_print_status = $row2->cheque_print_status;
+                                				$cheque_bounce_status = $row2->cheque_bounce_status;
+                                				$No_of_bounce_cheque = $row2->No_of_bounce_cheque;
+                        				}
+                        				//Print cheque initially.........
+                        				if($cheque_print_status == 0 && $cheque_bounce_status == 0)
+                        				{
+			
+                                				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+								echo"<br>";
+					
+                        				}
+							//Print cheque if bounced..........
+                        				if($cheque_print_status == 1 && $cheque_bounce_status == 0 || $cheque_print_status == 1 && $cheque_bounce_status == 1)
+                        				{
+                               				echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $row->id, 'Cancle Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+							
+							}
+							
+				}
+	}elseif( $no_of_row > 1){
+				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+	}else{
+		 		echo "Cash";
+	}
+	
+				echo "<td>" ;
 				echo " &nbsp;" . anchor_popup('entry/printpreview/' . $current_entry_type['label'] . "/" . $row->id , img(array('src' => asset_url() . "images/icons/print.png", 'border' => '0', 'alt' => 'Print ' . $current_entry_type['name'] . ' Entry')), array('title' => 'Print ' . $current_entry_type['name']. ' Entry', 'width' => '600', 'height' => '600')) . " ";
 				echo " &nbsp;" . anchor_popup('entry/email/' . $current_entry_type['label'] . "/" . $row->id , img(array('src' => asset_url() . "images/icons/email.png", 'border' => '0', 'alt' => 'Email ' . $current_entry_type['name'] . ' Entry')), array('title' => 'Email ' . $current_entry_type['name'] . ' Entry', 'width' => '500', 'height' => '300')) . " ";
 				echo " &nbsp;" . anchor('entry/download/' . $current_entry_type['label'] . "/" . $row->id , img(array('src' => asset_url() . "images/icons/save.png", 'border' => '0', 'alt' => 'Download ' . $current_entry_type['name'] . ' Entry', 'title' => "Download entry")), array('title' => 'Download  ' . $current_entry_type['name'] . ' Entry')) . "</td>";

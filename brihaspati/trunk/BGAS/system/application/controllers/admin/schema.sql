@@ -344,10 +344,12 @@ UNIQUE (username, headid, roleid)
 
 CREATE TABLE IF NOT EXISTS cheque_print (
   id int(11) NOT NULL AUTO_INCREMENT,
+  ledger_id int(11) NOT NULL,
   entry_no int(11) NOT NULL,
   name VARCHAR (255) NOT NULL,
   bank_name VARCHAR (255) NOT NULL,
-  cheque_no VARCHAR (25) NOT NULL,
+  amount decimal(15,2) NOT NULL DEFAULT '0.00',
+  update_cheque_no VARCHAR (25) NOT NULL,
   cheque_print_date datetime NOT NULL,
   cheque_bounce_date datetime NOT NULL,
   cheque_print_status int(1) NOT NULL DEFAULT 0,
@@ -359,10 +361,11 @@ CREATE TABLE IF NOT EXISTS cheque_print (
 
 CREATE TABLE IF NOT EXISTS cheque_bounce_record (
   id int(11) NOT NULL AUTO_INCREMENT,
+  ledger_id int(11) NOT NULL,
   entry_no int(11) NOT NULL,
   name VARCHAR (255) NOT NULL,
   bank_name VARCHAR (255) NOT NULL,
-  old_cheque_no VARCHAR (25) NOT NULL,
+  amount decimal(15,2) NOT NULL DEFAULT '0.00',
   new_cheque_no VARCHAR (25) NOT NULL,
   cheque_bounce_date datetime NOT NULL,
   PRIMARY KEY (id)

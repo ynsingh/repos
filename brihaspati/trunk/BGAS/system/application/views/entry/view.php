@@ -36,14 +36,20 @@ foreach ($cur_entry_ledgers->result() as $row)
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";
 	}
 }
-	$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row->entry_id);
+	$this->db->select('name,bank_name,ledger_id, update_cheque_no')->from('cheque_print')->where('entry_no',$row->entry_id);
         $ledger_q = $this->db->get();
+	$no_of_row=$ledger_q->num_rows();
+	if($no_of_row > 0){	
 	foreach($ledger_q->result() as $row)
         {
         	$bank_name = $row->bank_name;
+		$ledger_id = $row->ledger_id;
                 $name= $row->name;
-		$cheque_no= $row->cheque_no;
+		$cheque_no= $row->update_cheque_no;
+		$cheque[] =$cheque_no;
 	}	
+		$length=count($cheque);
+	}
 ?>
 <tr class="entry-total"><td colspan=2><strong>Total</strong></td><td id=dr-total>Dr <?php echo $cur_entry->dr_total; ?></td><td id=cr-total">Cr <?php echo $cur_entry->cr_total; ?></td></tr>
 <?php
@@ -86,9 +92,12 @@ else
                         echo "<p>";
                         echo "Beneficiary Name :" . $bank_name . "</br>";
                         echo "</p>";
+			for($i=0; $i<$length; $i++)
+                	{
                         echo "<p>";
-                        echo "Cheque No :" . $cheque_no . "</br>";
+                        echo "Cheque No :" . $cheque[$i] . "</br>";
                         echo "</p>";
+			}
                 }
         }
 
@@ -105,18 +114,35 @@ else
 	echo anchor_popup('entry/email/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Email', array('title' => 'Email this ' . $current_entry_type['name'] . ' Entry', 'width' => '400', 'height' => '200'));
 	echo " | ";
 	echo anchor('entry/download/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Download', array('title' => "Download entry", 'title' => 'Download this ' . $current_entry_type['name'] . ' Entry'));
- 	if($ledger_q->num_rows() > 0){
-        if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        {
-       // $this->load->library('numbertowords');
-        echo " | ";
-        echo anchor_popup('entry/cheque_print/' .  $current_entry_type['label'] . "/" . $cur_entry->id . "/Order", 'Print Order Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
-        echo " OR ";
-        echo anchor_popup('entry/cheque_print/' .  $current_entry_type['label'] . "/" . $cur_entry->id . "/Bearer", 'Print Bearer Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+	if($no_of_row >=2){
+		 echo " | ";
+ echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Print Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+}elseif($no_of_row > 0){
+	$this->db->select('cheque_print_status, cheque_bounce_status, No_of_bounce_cheque')->from('cheque_print')->where('ledger_id', $ledger_id)->where('entry_no',$cur_entry->id);
+                                                        $cheque_status = $this->db->get();
+                                                        foreach($cheque_status->result() as $row2)
+                                                        {
+                                                                $cheque_print_status = $row2->cheque_print_status;
+                                                                $cheque_bounce_status = $row2->cheque_bounce_status;
+                                                                $No_of_bounce_cheque = $row2->No_of_bounce_cheque;
+                                                        }
+                                                        //Print cheque initially.........
+                                                        if($cheque_print_status == 0 && $cheque_bounce_status == 0)
+                                                        {
+								echo " | ";
+                                                                echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
+                                                                echo"<br>";
 
-        }
-        }
+                                                        }
+                                                        //Print cheque if bounced..........
+                                                        if($cheque_print_status == 1 && $cheque_bounce_status == 0 || $cheque_print_status == 1 && $cheque_bounce_status == 1)
+                                                        {
+							echo " | ";
+                                                        echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $cur_entry->id, 'Cancle Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600'));
 
+                                                        }
+
+	}
 ?>
 
 

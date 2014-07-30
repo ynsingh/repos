@@ -45,13 +45,13 @@
 			}
 			echo "<tr class=\"tr-total\"><td class=\"total-name\">Total</td><td class=\"total-dr\">" . $currency . " " .  $entry_dr_total . "</td><td class=\"total-cr\">" . $currency . " " . $entry_cr_total . "</td></tr>";
 			
-			$this->db->select('name,bank_name,cheque_no')->from('reconcilation')->where('entry_no',$row['id']);
+			$this->db->select('name,bank_name,update_cheque_no')->from('cheque_print')->where('entry_no',$row['id']);
          		$ledger_q = $this->db->get();
          		foreach($ledger_q->result() as $row)
                                 {
                                 $bank_name = $row->bank_name;
                                 $name= $row->name;
-                                $cheque_no= $row->cheque_no;
+				$cheque_no=$row->update_cheque_no;
                                 }
 
 
@@ -75,8 +75,8 @@
         elseif($ledger_q->num_rows() > 0){
          if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
         {
-        echo "Bank Name :" . $name . "</br>";
-        echo "Beneficiary Name :" . $bank_name . "</br>";
+        echo "Bank Name :" . $bank_name . "</br>";
+        echo "Beneficiary Name :" . $name . "</br>";
         echo "Cheque No :" . $cheque_no . "</br>";
         }
         }

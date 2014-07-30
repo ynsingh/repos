@@ -980,14 +980,14 @@ class Entry extends Controller {
 				}
 
 				/* Adding ledger accounts */
-					$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
-					$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
-					$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
-					$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
-					$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
-					$data_all_income_type = $this->input->post('income_type', TRUE);
-					$data_all_expense_type = $this->input->post('expense_type', TRUE);
-
+				$data_all_ledger_dc = $this->input->post('ledger_dc', TRUE);
+				$data_all_ledger_id = $this->input->post('ledger_id', TRUE);
+				$data_all_dr_amount = $this->input->post('dr_amount', TRUE);
+				$data_all_cr_amount = $this->input->post('cr_amount', TRUE);
+				$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
+				$data_all_income_type = $this->input->post('income_type', TRUE);
+				$data_all_expense_type = $this->input->post('expense_type', TRUE);
+				$data_cheque = $this->input->post('ledger_payt', TRUE);
 				$dr_total = 0;
 				$cr_total = 0;
 				$ledg_code = 0;
@@ -1332,6 +1332,22 @@ class Entry extends Controller {
                                                 }
                                         }
                                 }
+				if ($data_cheque[$id] == 1 ){
+                                                $insert_cheque_data = array(
+                                                        'ledger_id' => $data_ledger_id,
+                                                        'entry_no' => $entry_id,
+                                                        'update_cheque_no' => $data_cheque[$id]
+                                                );
+                                                if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
+                                                {
+                                                        $this->db->trans_rollback();
+                                                        $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
+                                                        $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
+                                                        $this->template->load('template', 'entry/add', $data);
+                                                        return;
+                                                }//if inner
+                                        }//if
+
 			}
 
 			/* Updating Debit and Credit Total in entries table */
@@ -1347,28 +1363,6 @@ class Entry extends Controller {
 				$this->template->load('template', 'entry/add', $data);
 				return;
 			}
-			 //cheque_no entry in cheque_print table...... 
-                        foreach ($data_cheque as $cheque_val => $cheque_data)
-                        {
-				if ($data_cheque[$cheque_val] == 1 ){
-//                                if ($data_cheque[$cheque_val] < 1)
-  //                                      continue;
-
-                              		$insert_cheque_data = array(
-                             //           'name' =>$data_banif_name,
-                                        	'entry_no' => $entry_id,
-                                        	'cheque_no' => $data_cheque[$cheque_val],
-                                	);
-                                	if ( ! $this->db->insert('cheque_print', $insert_cheque_data))
-                                	{
-                                        	$this->db->trans_rollback();
-	                                        $this->messages->add('Error adding Ledger account - ' . $data_ledger_id . ' to Entry.', 'error');
-        	                                $this->logger->write_message("error", "Error adding " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
-                	                        $this->template->load('template', 'entry/add', $data);
-                        	                return;
-                                	}//if inner
-				}//if
-                        }//for
 
 			/* Success */
 			$this->db->trans_complete();
@@ -1677,7 +1671,9 @@ class Entry extends Controller {
 									$this->db->from('income_from_investment')->where('entry_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
                                                                         $expense_q = $this->db->get();
-                                                                        if($expense_q->num_rows > 0){
+									$no_of_row=$expense_q['num_rows'];
+                                                                        if($no_of_row > 0){
+
                                                                                 $expense = $expense_q->row();
                                                                                 $expense_type = $expense->type;
                                                                                 $data['expense_type'][$counter] = $expense_type;
@@ -1698,7 +1694,8 @@ class Entry extends Controller {
 									$this->db->from('income_from_investment')->where('entry_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
                                                                         $expense_q = $this->db->get();
-                                                                        if($expense_q->num_rows > 0){
+									$no_of_row=$expense_q['num_rows'];
+                                                        		if($no_of_row > 0){
                                                                                 $expense = $expense_q->row();
                                                                                 $expense_type = $expense->type;
                                                                                 $data['expense_type'][$counter] = $expense_type;
@@ -1721,7 +1718,9 @@ class Entry extends Controller {
 
 							$this->db->from('income_from_investment')->where('entry_id', $row->id);
                                                         $income_q = $this->db->get();
-                                                        if($income_q->num_rows > 0){
+							$no_of_row=$income_q['num_rows'];
+                                                        if($no_of_row > 0){
+
                                                                 $income = $income_q->row();
                                                                 $income_type = $income->type;
                                                                 $fund_id = $income->fund_id;
@@ -2005,7 +2004,7 @@ class Entry extends Controller {
 			$data_all_fund_ledger = $this->input->post('fund_list', TRUE);
 			$data_all_income_type = $this->input->post('income_type', TRUE);
                         $data_all_expense_type = $this->input->post('expense_type', TRUE);
-
+			$data_cheque = $this->input->post('ledger_payt', TRUE);
 			$dr_total = 0;
 			$cr_total = 0;
 			foreach ($data_all_ledger_dc as $id => $ledger_data)
@@ -2179,28 +2178,6 @@ class Entry extends Controller {
                                 return;
                         }
 			
-			 //cheque_no entry in cheque_print table...... 
-                        foreach ($data_cheque as $cheque_val => $cheque_data)
-                        {
-                                if ($data_cheque[$cheque_val] == 1 ){
-//                                if ($data_cheque[$cheque_val] < 1)
-  //                                      continue;
-
-                                        $update_cheque_data = array(
-                             //           'name' =>$data_banif_name,
-                                                'entry_no' => $entry_id,
-                                                'cheque_no' => $data_cheque[$cheque_val],
-                                        );
-                                        if ( ! $this->db->where('entry_no',$entry_id)->update('cheque_print', $update_cheque_data))
-                                        {
-                                                $this->db->trans_rollback();
-                                                $this->messages->add('Error updating cheque print - ' . $data_ledger_id . ' to Entry.', 'error');
-                                                $this->logger->write_message("error", "Error updating " . $current_entry_type['name'] . " Bill/Voucher number " . full_entry_number($entry_type_id, $data_number) . " since failed inserting entry ledger item " . "[id:" . $data_ledger_id . "]");
-                                                $this->template->load('template', 'entry/edit', $data);
-                                                return;
-                                        }//if inner
-                                }//if
-                        }//for
 
 /*			foreach ($data_all_ledger_dc as $id => $ledger_data)
                         {
@@ -2499,11 +2476,407 @@ class Entry extends Controller {
 		return;
 	}
 
-	function cheque_print($entry_type, $entry_id = 0, $cheque_type)
+	function cheque($entry_type, $entry_id = 0)
+	{
+		$this->template->set('page_title', 'Cheque Print');
+		$this->db->select('id, name, amount, bank_name, update_cheque_no, entry_no')->from('cheque_print')->where('entry_no', $entry_id);
+                $allvalue = $this->db->get();
+		foreach($allvalue->result() as $row)
+                {
+                	$cheque_no = $row->update_cheque_no;
+			$bank_name = $row->bank_name;
+			$name=$row->name;
+			$amount= $row->amount;
+                }
+		if($cheque_no == 1)
+		{	
+			$cheque_no1=Null;
+		}else{
+			$cheque_no1=$cheque_no+1;
+		}
+		$today_date=date("Y-m-d");
+		$type = "Order";
+                $data['value']=$type;
+		$data['date'] = array(
+                        'name' => 'date',
+                        'id' => 'date',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => $today_date,
+                );
+
+		
+		  $data['bank_name'] = array(
+                        'name' => 'bank_name',
+                        'id' => 'bank_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => $bank_name,
+		);
+
+			$data['beneficiary_name'] = array(
+                        'name' => 'beneficiary_name',
+                        'id' => 'benef_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => $name,
+                );
+
+			$data['amount'] = array(
+                        'name' => 'amount',
+                        'id' => 'amount',
+                        'maxlength' => '11',
+                        'size' => '15',
+                        'value' => $amount,
+		);
+
+			$data['cheque_no'] = array(
+			'name' => 'cheque_no',
+			'id' => 'cheque_no',
+			'maxlength' => '11',
+			'size' => '15',
+			'value' => $cheque_no1,
+		);
+
+		$data['cheque_type'] = array(
+			"Order" => "Order",
+			"Bearer"=> "Bearer",
+		);
+
+		$data['active_cheque_type'] = "";
+		$data['entry_type']=$entry_type;
+		$data['entry_id']=$entry_id;
+
+		//form validation
+		$this->form_validation->set_rules('bank_name', 'Bank Name', 'trim|required');
+		$this->form_validation->set_rules('beneficiary_name', 'Payee Name', 'trim|required');
+		$this->form_validation->set_rules('cheque_no', 'Cheque No', 'trim');
+		$this->form_validation->set_rules('cheque_type', 'Cheque Type', 'trim|required');
+		/* Repopulating form */
+
+                if ($_POST)
+                {
+			$data['date']['value'] = $this->input->post('date', TRUE);
+	
+                        $data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+
+			$data['beneficiary_name']['value'] = $this->input->post('beneficiary_name', TRUE);
+			
+			$data['amount']['value'] = $this->input->post('amount', TRUE);
+
+			$data['cheque_no']['value'] = $this->input->post('cheque_no', TRUE);
+
+			$data['active_cheque_type'] = $this->input->post('cheque_type', TRUE);
+                }
+
+		if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'entry/cheque', $data);
+			return;
+                }
+		$this->template->load('template', 'entry/cheque', $data);
+                return;
+
+	}
+	function cheque_bounce($entry_type, $entry_id = 0)
+	{
+		$this->template->set('page_title', 'Cheque Bounce');
+		$this->db->select('id, name, amount, bank_name, update_cheque_no, entry_no, cheque_print_date, No_of_bounce_cheque')->from('cheque_print')->where('entry_no', $entry_id)->where('cheque_print_status', '1');
+                $allvalue = $this->db->get();
+		foreach($allvalue->result() as $row)
+                {
+			$cheque_print_date=$row->cheque_print_date;
+                	$cheque_no = $row->update_cheque_no;
+			$bank_name = $row->bank_name;
+			$amount=$row->amount;
+			$name=$row->name;
+			$No_of_bounce_cheque=$row->No_of_bounce_cheque;
+                }
+		if($cheque_no == 1)
+                {       
+                        $cheque_no1=Null;
+                }else{
+                        $cheque_no1=$cheque_no+1;
+                }
+
+		$data['date'] = array(
+                        'name' => 'date',
+                        'id' => 'date',
+                        'maxlength' => '',
+                        'size' => '15',
+                        'value' => date_mysql_to_php($cheque_print_date),
+			'readonly'=>'readonly',
+                );
+
+		$data['print_cheque_no'] = array(
+                        'name' => 'print_cheque_no',
+                        'id' => 'print_cheque_no',
+                        'maxlength' => '',
+                        'size' => '15',
+			'value' =>$cheque_no,
+                        'readonly'=>'readonly',
+                );
+
+
+		
+		  $data['bank_name'] = array(
+                        'name' => 'bank_name',
+                        'id' => 'bank_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => $bank_name,
+			'readonly'=>'readonly',
+		);
+
+		$data['cheque_bounce'] = array(
+                        'name' => 'cheque_bounce',
+                        'id' => 'cheque_bounce',
+                        'maxlength' => '',
+                        'size' => '15',
+                        'value' => $No_of_bounce_cheque,
+                        'readonly'=>'readonly',
+                );
+
+
+			$data['beneficiary_name'] = array(
+                        'name' => 'beneficiary_name',
+                        'id' => 'benef_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => $name,
+                );
+
+			$data['amount'] = array(
+                        'name' => 'amount',
+                        'id' => 'amount',
+                        'maxlength' => '',
+                        'size' => '15',
+                        'value' => $amount,
+		);
+
+			$data['cheque_no'] = array(
+			'name' => 'cheque_no',
+			'id' => 'cheque_no',
+			'maxlength' => '11',
+			'size' => '15',
+			'value' =>$cheque_no1,
+		);
+
+		$data['cheque_type'] = array(
+			"Order" => "Order",
+			"Bearer"=> "Bearer",
+		);
+
+		$data['active_cheque_type'] = "";
+		$data['entry_type']=$entry_type;
+		$data['entry_id']=$entry_id;
+		//form validation
+		$this->form_validation->set_rules('cheque_no', 'New Cheque No', 'trim');
+		$this->form_validation->set_rules('cheque_type', 'Cheque Type', 'trim|required');
+		/* Repopulating form */
+
+                if ($_POST)
+                {
+			$data['date']['value'] = $this->input->post('date', TRUE);
+	
+                        $data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+
+			$data['beneficiary_name']['value'] = $this->input->post('beneficiary_name', TRUE);
+			
+			$data['amount']['value'] = $this->input->post('amount', TRUE);
+
+			$data['cheque_no']['value'] = $this->input->post('cheque_no', TRUE);
+
+			$data['active_cheque_type'] = $this->input->post('cheque_type', TRUE);
+			
+			$data['cheque_bounce']['value'] = $this->input->post('cheque_bounce', TRUE);
+			
+			$data['print_cheque_no']['value'] = $this->input->post('print_cheque_no', TRUE);
+                }
+
+		if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+                        $this->template->load('template', 'entry/cheque_bounce', $data);
+			return;
+                }	
+		
+		$this->template->load('template', 'entry/cheque_bounce', $data);
+                return;
+		
+	}
+
+	function cheque_print($entry_type, $entry_id = 0, $ledger_id)
         {
-                $data['cheque_type'] = $cheque_type;
+		$new_cheque_no='';
+		$id=0;
+		$this->db->select('id, name, entry_no')->from('cheque_print')->where('entry_no', $entry_id);
+                $allvalue = $this->db->get();
+		$no_of_row=$allvalue->num_rows();
+                foreach($allvalue->result() as $row)
+                {
+                        $name=$row->name;
+                }
+
+		$cheque_print_status='';
                 $data['entry_id'] = $entry_id;
                 $data['entry_type'] = $entry_type;
+		$today_date=date("Y-m-d");
+		$data['date'] = array(
+                        'name' => 'date',
+                        'id' => 'date',
+                        'maxlength' => '',
+                        'size' => '15',
+                        'value' => '',
+			'readonly' => 'readonly',
+                );
+
+		
+		  $data['bank_name'] = array(
+                        'name' => 'bank_name',
+                        'id' => 'bank_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => '',
+			
+		);
+
+			$data['beneficiary_name'] = array(
+                        'name' => 'beneficiary_name',
+                        'id' => 'benef_name',
+                        'maxlength' => '255',
+                        'size' => '15',
+                        'value' => '',
+                );
+
+			$data['amount'] = array(
+                        'name' => 'amount',
+                        'id' => 'amount',
+                        'maxlength' => '',
+                        'size' => '15',
+                        'value' => '',
+		);
+
+			$data['cheque_no'] = array(
+			'name' => 'cheque_no',
+			'id' => 'cheque_no',
+			'maxlength' => '11',
+			'size' => '15',
+			'value' => '',
+		);
+
+		$data['cheque_type'] = array(
+			"Order" => "Order",
+			"Bearer"=> "Bearer",
+		);
+
+		$data['active_cheque_type'] = "";
+		$data['entry_type']=$entry_type;
+		$data['entry_id']=$entry_id;
+		//form validation
+		$this->form_validation->set_rules('amount', 'Amount', 'trim|required');
+		$this->form_validation->set_rules('bank_name', 'Bank_name', 'trim|required');
+		$this->form_validation->set_rules('beneficiary_name', 'Payee Name', 'trim|required');
+		$this->form_validation->set_rules('cheque_no', 'Cheque No', 'trim');
+		$this->form_validation->set_rules('cheque_type', 'Cheque Type', 'trim|required');
+		/* Repopulating form */
+
+                if ($_POST)
+                {
+			$data['date']['value'] = $this->input->post('date', TRUE);
+	
+                        $data['bank_name']['value'] = $this->input->post('bank_name', TRUE);
+
+			$data['beneficiary_name']['value'] = $this->input->post('beneficiary_name', TRUE);
+			
+			$data['amount']['value'] = $this->input->post('amount', TRUE);
+
+			$data['cheque_no'] = $this->input->post('cheque_no', TRUE);
+
+			$data['active_cheque_type'] = $this->input->post('cheque_type', TRUE);
+                }
+
+		if ($this->form_validation->run() == FALSE)
+                {
+                        $this->messages->add(validation_errors(), 'error');
+			redirect('entry/cheque/'. $entry_type.'/'.$entry_id);
+			return;
+                }else  {
+                        $data_date = $this->input->post('date', TRUE);
+                        $data_bank_name = $this->input->post('bank_name', TRUE);
+                        $data_beneficiary_name = $this->input->post('beneficiary_name', TRUE);
+                        $data_amount = $this->input->post('amount', TRUE);
+                        $data_cheque_no = $this->input->post('cheque_no', TRUE);
+                        $data_cheque_type = $this->input->post('cheque_type', TRUE);
+                        $newdata = array(
+                        'cheque_type'  => $data_cheque_type,
+                        );
+                        $this->session->set_userdata($newdata);
+			$this->db->select('id, entry_no, update_cheque_no, cheque_print_status, cheque_bounce_status')->from('cheque_print')->where('entry_no', $entry_id)->where('ledger_id', $ledger_id);
+                	$ch_value = $this->db->get();
+                	foreach($ch_value->result() as $row)
+                	{
+				$id=$row->id;
+				$update_cheque_no=$row->update_cheque_no;
+                        	$cheque_print_status=$row->cheque_print_status;
+                        	$cheque_bounce_status = $row->cheque_bounce_status;
+                        	
+                	}
+			if($id == Null){
+				$id=0;
+			}
+			$this->db->select('new_cheque_no')->from('cheque_bounce_record')->where('entry_no', $entry_id);
+                        $cheque_bounce = $this->db->get();
+			foreach($cheque_bounce->result() as $row1)
+                        {
+                                $new_cheque_no=$row1->new_cheque_no;
+
+                        }
+			if($new_cheque_no == NULL){
+					$new_cheque_no=$data_cheque_no;
+			}
+			$no_of_row=$cheque_bounce->num_rows();
+			if($cheque_print_status == 1 || $new_cheque_no != NULL)
+			{
+                                $insert_cheque_data = array(
+                                        'entry_no' => $entry_id,
+                                        'name' => $data_beneficiary_name,
+                                        'bank_name' => $data_bank_name,
+					'amount' =>$data_amount,
+					'ledger_id'=> $ledger_id,
+                                        'new_cheque_no' => $update_cheque_no,
+                                        'cheque_bounce_date' => $today_date,
+                                );
+                                if ( ! $this->db->insert('cheque_bounce_record', $insert_cheque_data))
+                                {
+                                        $this->db->trans_rollback();
+                                        $this->messages->add('Error adding cheque data - ' . $entry_id , 'error');
+                                        $this->template->load('template', 'entry/cheque', $data);
+                                        return;
+                                }
+			}
+                        $this->db->trans_start();
+                        $update_data2 = array(
+                                        'Bank_name'=>$data_bank_name,
+                                        'name'=>$data_beneficiary_name,
+					'amount'=>$data_amount,
+                                        'update_cheque_no'=>$data_cheque_no,
+
+                                );
+                                if ( ! $this->db->where('id', $id)->update('cheque_print', $update_data2))
+                                {
+                                        $this->db->trans_rollback();
+                                        $this->messages->add('Error addding Entry', 'error');
+                                        $this->template->load('template', 'entry/cheque', $data);
+                                        return;
+                                        } else {
+                                        $this->db->trans_complete();
+                                }
+			
+
+		} 
+		
                 /* Getting Ledger details */
                 $this->db->from('entry_items')->where('entry_id', $entry_id)->order_by('dc', 'desc');
                 $ledger_q = $this->db->get();
@@ -2517,18 +2890,88 @@ class Entry extends Controller {
                                         'id' => $row->ledger_id,
                                         'name' => $this->Ledger_model->get_name($row->ledger_id),
                                         'dc' => $row->dc,
-                                        'amount' => $row->amount,
-                                        'id'=>$entry_id,
-                                        'cheque_type'=>$cheque_type,
+					'cheque_no' =>$data_cheque_no,
+					'bank_name'=> $data_bank_name,
+					'name'=>$data_beneficiary_name,
+                                        'amount' => $data_amount,
+                                        'entry_id'=>$entry_id,
+					'entry_type'=>$entry_type,
+					'ledger_id'=>$ledger_id,
                                 );
                                 $counter++;
                         }
                 }
+		 $this->load->view('entry/cheque_print', $data);	
+		return;
+        }
+	function print_status($status)
+        {
+		$val=explode("saperator",$status);
+		$update_status="1";
+		$today_date=date("Y-m-d");
+		$this->db->select('cheque_print_status, cheque_bounce_status, No_of_bounce_cheque');
+                $this->db->from('cheque_print')->where('entry_no', $val[1])->where('ledger_id', $val[0]);
+                $query = $this->db->get();
+                foreach($query->result() as $row)
+                {
+                        $cheque_print_status = $row->cheque_print_status;
+			$cheque_bounce_status = $row->cheque_bounce_status;
+			$No_of_bounce_cheque = $row->No_of_bounce_cheque;
+                }
+		$this->db->select('new_cheque_no');
+                $this->db->from('cheque_bounce_record')->where('new_cheque_no', $status);
+                $query1= $this->db->get();
+                foreach($query1->result() as $row1)
+                {
+                        $old_cheque_no = $row1->new_cheque_no;
+                }
+		$this->db->trans_start();
+		if($cheque_print_status == '0')
+		{
+		$update_data = array(
+                                'cheque_print_status' => $update_status,
+				'cheque_print_date'=>$today_date,
+                        );
+		}elseif($cheque_print_status == '1' || $old_cheque_no == $status){
+			$add_No_of_bounce_cheque=$No_of_bounce_cheque+1;
+			$update_data = array(
+                                'cheque_print_status' => $update_status,
+				'cheque_bounce_status' => $update_status,
+                                'cheque_bounce_date'=>$today_date,
+				'No_of_bounce_cheque' => $add_No_of_bounce_cheque,
+                        );
 
-                $this->load->view('entry/cheque_print', $data);
-                return;
+		}elseif($cheque_print_status == '1' && $cheque_bounce_status == '1' || $old_cheque_no == $status){
+			$add_No_of_bounce_cheque=$No_of_bounce_cheque+1;
+			$update_data = array(
+                                'cheque_reprint_date' => $today_date,
+				'No_of_bounce_cheque' => $add_No_of_bounce_cheque,
+                        );
+
+
+		}
+                if ( ! $this->db->where('ledger_id', $val[0])->where('entry_no', $val[1])->update('cheque_print', $update_data))
+                {
+                	$this->db->trans_rollback();
+                }else {
+                        $this->db->trans_complete();
+                }
+			echo"#######$status";
+                return ;
+
+
         }
 
+
+	function cheque_detail($entry_id = 0, $ledger_id, $entry_type)
+	{
+	$data['entry_id'] = $entry_id;
+	$data['entry_type'] = $entry_type;
+        $data['ledger_id'] = $ledger_id;
+
+	$this->load->view('entry/cheque_detail', $data);
+         return;	
+	}
 
 	function email($entry_type, $entry_id = 0)
 	{

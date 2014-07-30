@@ -606,7 +606,7 @@ var dc = '';
 
 		echo "<td id =\"dr\">" . form_input($dr_amount_item) . "</td>";
 		echo "<td>" . form_input($cr_amount_item) . "</td>";
-		echo "<td id = \"dc\">" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "D") . "</td>";
+		echo "<td id = \"dc\">" . form_dropdown_payt('ledger_payt[' . $i . ']', isset($ledger_payt[$i]) ? $ledger_payt[$i] : "0") . "</td>";
 		//echo "<td>" . form_input($cheque) . "</td>";
 
 		/* code for fund list*/

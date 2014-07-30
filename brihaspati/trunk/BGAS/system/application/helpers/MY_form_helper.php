@@ -37,7 +37,7 @@ if ( ! function_exists('form_dropdown_payt'))
 {
         function form_dropdown_payt($name, $selected = NULL, $extra = '')
         {
-                $options = array("1" => "Cheque", "2" => "Cash", "3" => "Bank Transfer","4" => "Credit Card", "5" => "Debit Card" );
+                $options = array("0" => "select", "1" => "Cheque", "2" => "Cash", "3" => "Bank Transfer","4" => "Credit Card", "5" => "Debit Card" );
 
                 // If no selected state was submitted we will attempt to set it automatically
                 if ( ! ($selected == "1" || $selected == "2" || $selected == "3" || $selected == "4"|| $selected == "5"))
