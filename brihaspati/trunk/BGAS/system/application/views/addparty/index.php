@@ -49,6 +49,8 @@
                         echo "<td>" . $row->pan . "</td>";
                         echo "<td>" . $row->tan . "</td>";
                         echo "<td>" . $row->staxnum . "</td>";
+			echo "<td>" . "</td>";
+			echo "<td>" . anchor('addparty/edit/' . $row->sacunit , "Edit", array('title' => 'Edit Details' , 'class' => 'red-link')) . " ";
                         echo "</tr>";
 		}
 	?>

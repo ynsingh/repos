@@ -424,7 +424,7 @@ class Addparty extends Controller {
 				'staxnum' =>$data_stnm,
 				'partyrole' =>$prole
 			);
-			print_r($insert_data);
+
 			if ( ! $this->db->insert('addsecondparty', $insert_data))
                         {
                                 $this->db->trans_rollback();
@@ -444,6 +444,239 @@ class Addparty extends Controller {
 		}
                 $this->template->load('template', 'addparty/add', $data);
                 return;
+	}
+	function edit($sunitid)
+	{
+		$this->template->set('page_title', 'Edit Party ');
+		$this->db->from('addsecondparty')->where('sacunit', $sunitid);
+                $detail = $this->db->get();
+		$update_detail = $detail->row();
+
+		/* Form fields */
+                $data['pname'] = array(
+                        'name' => 'pname',
+                        'id' => 'pname',
+                        'maxlength' => '30',
+                        'size' => '25',
+                        'value' => $update_detail->partyname,
+                );
+
+                $data['mnumber'] = array(
+                        'name' => 'mnumber',
+                        'id' => 'mnumber',
+                        'maxlength' => '12',
+                        'size' => '25',
+                        'value' => $update_detail->mobnum,
+                );
+				
+		$data['accountemail'] = array(
+                        'name' => 'accountemail',
+                        'id' => 'accountemail',
+                        'maxlength' => '100',
+                        'size' => '25',
+                        'value' => $update_detail->email,
+                );
+
+                $data['address'] = array(
+                        'name' => 'address',
+                        'id' => 'address',
+                        'rows' => '5',
+                        'cols' => '40',
+                        'value' => $update_detail->address,
+                );
+                $data['bacnumber'] = array(
+                        'name' => 'bacnumber',
+                        'id' => 'bacnumber',
+                        'maxlength' => '17',
+                        'size' => '25',
+                        'value' => $update_detail->bancacnum ,
+                );
+                $data['bankname'] = array(
+                        'name' => 'bankname',
+                        'id' => 'bankname',
+                        'maxlength' => '200',
+                        'size' => '25',
+                        'value' => $update_detail->bankname,
+                );
+		
+                $data['branchname'] = array(
+                        'name' => 'branchname',
+                        'id' => 'branchname',
+                        'maxlength' => '200',
+                        'size' => '25',
+                        'value' => $update_detail->branchname,
+                );
+                $data['ifsccode'] = array(
+                        'name' => 'ifsccode',
+                        'id' => 'ifsccode',
+                        'maxlength' => '200',
+                        'size' => '25',
+                        'value' => $update_detail->ifsccode,
+                );
+                $data['bankaddress'] = array(
+                        'name' => 'bankaddress',
+                        'id' => 'bankaddress',
+                        'rows' => '5',
+                        'cols' => '40',
+                        'value' => $update_detail->bankaddress,
+                );
+                $data['pannum'] = array(
+                        'name' => 'pannum',
+                        'id' => 'pannum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => $update_detail->pan,
+                );
+                $data['tannum'] = array(
+                        'name' => 'tannum',
+                        'id' => 'tannum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => $update_detail->tan,
+                );
+                $data['stnum'] = array(
+                        'name' => 'stnum',
+                        'id' => 'stnum',
+                        'maxlength' => '10',
+                        'size' => '25',
+                        'value' => $update_detail->staxnum,
+                );
+		$data['sunitid'] = $sunitid;
+
+		/* Form validations */
+		$this->form_validation->set_rules('pname', 'Party Name', 'trim|required|min_length[2]|max_length[30]');
+		$this->form_validation->set_rules('mnumber', 'Mobile Number');
+		$this->form_validation->set_rules('accountemail', 'Account Email', 'trim|valid_email');
+		$this->form_validation->set_rules('address', 'Address', 'trim');
+		$this->form_validation->set_rules('bacnumber', 'Bank Account Number', 'trim');
+		$this->form_validation->set_rules('bankname', 'Bank Name','trim');
+		$this->form_validation->set_rules('branchname', 'Branch Name','trim');
+		$this->form_validation->set_rules('ifsccode', 'IFSC Code','trim');
+		$this->form_validation->set_rules('bankaddress', 'Bank Address','trim');
+		$this->form_validation->set_rules('pannum', 'PAN Number','trim');
+		$this->form_validation->set_rules('tannum', 'TAN Number','trim');
+		$this->form_validation->set_rules('stnum', 'Service Tax Number','trim');
+		
+		/* Repopulating form */
+		if ($_POST)
+		{
+			$data['pname']['value'] = $this->input->post('pname', TRUE);
+			$data['mnumber']['value'] = $this->input->post('mnumber', TRUE);
+			$data['accountemail']['value'] = $this->input->post('accountemail', TRUE);
+			$data['address']['value'] = $this->input->post('address', TRUE);
+			$data['bacnumber']['value'] = $this->input->post('bacnumber', TRUE);
+			$data['bankname']['value'] = $this->input->post('bankname', TRUE);
+			$data['branchname']['value'] = $this->input->post('branchname', TRUE);
+			$data['ifsccode']['value'] = $this->input->post('ifsccode', TRUE);
+			$data['bankaddress']['value'] = $this->input->post('bankaddress', TRUE);
+			$data['pannum']['value'] = $this->input->post('pannum', TRUE);
+			$data['tannum']['value'] = $this->input->post('tannum', TRUE);
+			$data['stnum']['value'] = $this->input->post('stnum', TRUE);
+		}
+
+		/* Validating form */
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->messages->add(validation_errors(), 'error');
+			$this->template->load('template', 'addparty/edit', $data);
+			return;
+		}
+		else
+		{
+			$data_pname = $this->input->post('pname', TRUE);
+                        $data_mnumber = $this->input->post('mnumber', TRUE);
+                        $data_accountemail = $this->input->post('accountemail', TRUE);
+                        $data_address = $this->input->post('address', TRUE);
+                        $data_bacnumber = $this->input->post('bacnumber',TRUE);
+                        $data_bankname = $this->input->post('bankname', TRUE);
+                        $data_branchname = $this->input->post('branchname', TRUE);
+                        $data_ifsccode = $this->input->post('ifsccode', TRUE);
+                        $data_bankaddress = $this->input->post('bankaddress', TRUE);
+                        $data_pannum = $this->input->post('pannum', TRUE);
+                        $data_tannum = $this->input->post('tannum', TRUE);
+                        $data_stnm = $this->input->post('stnum', TRUE);
+			$data_sunitid = $sunitid;
+			if($data_mnumber !=""){
+			if(strlen($data_mnumber) < 10){
+                                $this->messages->add('Mobile Number should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_bacnumber !=""){
+			if(strlen($data_bacnumber) < 13){
+                                $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_bacnumber !=""){
+			if(strlen($data_bacnumber) > 17){
+                                $this->messages->add('Bank A/C number should be between 13 and 17 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_ifsccode !=""){
+			if(strlen($data_ifsccode) < 10){
+                                $this->messages->add('IFSC code should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_pannum !=""){
+			if(strlen($data_pannum) < 10){
+                                $this->messages->add('PAN should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_tannum !=""){
+			if(strlen($data_tannum) < 10){
+                                $this->messages->add('TAN should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			if($data_stnm !=""){
+			if(strlen($data_stnm) < 10){
+                                $this->messages->add('Service tax number should be 10 digits.', 'error');
+                                $this->template->load('template', 'addparty/edit', $data);
+                                return;
+			}
+			}
+			$this->db->trans_start();
+			$update_data=array(
+				'partyname' =>$data_pname,
+				'mobnum' =>$data_mnumber,
+				'email' =>$data_accountemail, 
+				'address' =>$data_address,
+				'permanentaddress' =>$data_address, 
+				'bancacnum' =>$data_bacnumber,
+				'bankname' =>$data_bankname,
+				'branchname' =>$data_branchname,
+				'ifsccode' =>$data_ifsccode,
+				'bankaddress' =>$data_bankaddress,
+				'pan' =>$data_pannum,
+				'tan' =>$data_tannum,
+				'staxnum' =>$data_stnm,
+			);
+			if ( ! $this->db->where('sacunit', $data_sunitid)->update('addsecondparty', $update_data))
+			{
+				$this->db->trans_rollback();
+				$this->messages->add('Error updating Secondary Unit.', 'error');
+				$this->template->load('template', 'addparty/edit', $data);
+				return;
+			}
+			else{
+                        	$this->db->trans_complete();
+                                $this->messages->add('Updated Secondary Unit Id ' . $data_sunitid . '.', 'success');
+				redirect('addparty/show');
+				return;
+                        }
+		}
+                return;
+
 	}
 }
 
