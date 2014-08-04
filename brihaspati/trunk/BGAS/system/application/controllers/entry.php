@@ -598,7 +598,7 @@ class Entry extends Controller {
 			'name' => 'entry_number',
 			'id' => 'entry_number',
 			'maxlength' => '55',
-			'size' => '55',
+			'size' => '11',
 			'value' => '',
 		);
 
@@ -620,7 +620,7 @@ class Entry extends Controller {
 			'name' => 'backward_refrence_id',
 			'id' => 'backward_refrence_id',
 			'maxlength' => '55',
-			'size' => '55',
+			'size' => '11',
 			'value' => '',
 		);
 /*
@@ -1524,7 +1524,7 @@ class Entry extends Controller {
 			'name' => 'entry_number',
 			'id' => 'entry_number',
 			'maxlength' => '55',
-			'size' => '55',
+			'size' => '11',
 			'value' => $cur_entry->number,
 		);
 		$data['entry_date'] = array(
@@ -1589,7 +1589,7 @@ class Entry extends Controller {
                         'name' => 'forward_refrence_id',
                         'id' => 'forward_refrence_id',
                         'maxlength' => '55',
-                        'size' => '55',
+                        'size' => '11',
                         'value' => $cur_entry->forward_refrence_id,
                 );
                 
@@ -1597,7 +1597,7 @@ class Entry extends Controller {
                         'name' => 'backward_refrence_id',
                         'id' => 'backward_refrence_id',
                         'maxlength' => '55',
-                        'size' => '55',
+                        'size' => '11',
                         'value' => $cur_entry->backward_refrence_id,
                 );
 
@@ -1671,7 +1671,8 @@ class Entry extends Controller {
 									$this->db->from('income_from_investment')->where('entry_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
                                                                         $expense_q = $this->db->get();
-									$no_of_row=$expense_q['num_rows'];
+									//$no_of_row=$expense_q['num_rows'];
+									$no_of_row=$expense_q->num_rows();
                                                                         if($no_of_row > 0){
 
                                                                                 $expense = $expense_q->row();
@@ -1694,7 +1695,8 @@ class Entry extends Controller {
 									$this->db->from('income_from_investment')->where('entry_id', $entryId);
                                                                         $this->db->where('fund_id', $fund_id);
                                                                         $expense_q = $this->db->get();
-									$no_of_row=$expense_q['num_rows'];
+									//$no_of_row=$expense_q['num_rows'];
+									$no_of_row=$expense_q->num_rows();
                                                         		if($no_of_row > 0){
                                                                                 $expense = $expense_q->row();
                                                                                 $expense_type = $expense->type;
@@ -1718,7 +1720,8 @@ class Entry extends Controller {
 
 							$this->db->from('income_from_investment')->where('entry_id', $row->id);
                                                         $income_q = $this->db->get();
-							$no_of_row=$income_q['num_rows'];
+							//$no_of_row=$income_q['num_rows'];
+							$no_of_row=$income_q->num_rows();
                                                         if($no_of_row > 0){
 
                                                                 $income = $income_q->row();
@@ -4121,14 +4124,14 @@ class Entry extends Controller {
                         'name' => 'backward_refrence_id',
                         'id' => 'backward_refrence_id',
                         'maxlength' => '55',
-                        'size' => '55',
+                        'size' => '11',
                         'value' => '',
                 );
                 $data['entry_number'] = array(
                         'name' => 'entry_number',
                         'id' => 'entry_number',
                         'maxlength' => '55',
-                        'size' => '55',
+                        'size' => '11',
                         'value' => '',
                 );
 /*
