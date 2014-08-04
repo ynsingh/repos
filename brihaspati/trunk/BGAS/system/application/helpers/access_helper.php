@@ -80,6 +80,7 @@ if ( ! function_exists('check_access'))
 			'create projection',
 			'reappropriate projection',
 			'verify entry',
+			'edit doc'
 		);
 		$permissions['manager'] = array(
 			'view entry',
@@ -112,6 +113,7 @@ if ( ! function_exists('check_access'))
 			'create projection',
                         'reappropriate projection',
 			'verify entry',
+			'edit doc'
 		);
 		$permissions['accountant'] = array(
 			'view entry',
@@ -137,6 +139,7 @@ if ( ! function_exists('check_access'))
 			'create projection',
                         'reappropriate projection',
 			'verify entry',
+			'edit doc'
 		);
 		$permissions['dataentry'] = array(
 			'view entry',
@@ -150,6 +153,7 @@ if ( ! function_exists('check_access'))
 			'edit ledger',
 			'change password',
 			'verify entry',
+			'edit doc'
 		);
 		$permissions['guest'] = array(
 			'view entry',

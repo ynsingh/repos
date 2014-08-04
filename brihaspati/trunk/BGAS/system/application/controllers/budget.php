@@ -666,7 +666,7 @@ class Budget extends Controller {
              	foreach ($this->reappropriation['budget'] as $id => $bud)
                 {
 			$name = 'budget_value'. "_" .$bud['id'];
-                        $this->form_validation->set_rules($name, 'Budget Value', 'trim|min_length[2]|max_length[15]');
+                        $this->form_validation->set_rules($name, 'Budget Value', 'trim|min_length[2]|max_length[100]');
                 }		
 
 		if ($_POST)

@@ -572,7 +572,7 @@ class Projection extends Controller {
              	foreach ($this->reappropriation['projection'] as $id => $proj)
                 {
 			$name = 'projection_value_' .$proj['id'];
-                        $this->form_validation->set_rules($name, 'Projection Value', 'trim|min_length[2]|max_length[15]');
+                        $this->form_validation->set_rules($name, 'Projection Value', 'trim|min_length[2]|max_length[100]');
                 }		
 
 		if ($_POST)
