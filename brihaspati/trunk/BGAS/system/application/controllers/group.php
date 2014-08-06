@@ -306,6 +306,7 @@ var $group_code = 0;
 			'maxlength' => '100',
 			'size' => '40',
 			'value' => $group_data->name,
+			'readonly' => 'readonly',
 		);
 
 		$old_group_parent =  $group_data->parent_id;

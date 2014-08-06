@@ -15,6 +15,13 @@
 	echo "</p>";
 
 	echo "<p>";
+        echo form_label('Budget type', 'budget_type');
+        echo "<br />";
+        echo form_input($budget_type);
+        echo "</p>";
+
+
+	echo "<p>";
         echo form_label('Over Expense Allowed', 'budget_over');
         echo "<br />";
         echo form_input($budget_over);

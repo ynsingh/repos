@@ -417,6 +417,14 @@ class Budget extends Controller {
 			'readonly'=>'true',
                 );
 
+		 $data['budget_type'] = array(
+                        'name' => 'budget_type',
+                        'id' => 'budget_type',
+                        'maxlength' => '100',
+                        'size' => '40',
+                        'value' => $budget_data->type,
+                );
+
 
                 $data['budget_over'] = array(
                         'name' => 'budget_over',
@@ -438,6 +446,7 @@ class Budget extends Controller {
 			$data['budget_code']['value'] = $this->input->post('budget_code', TRUE);
                         $data['budget_name']['value'] = $this->input->post('budget_name', TRUE);
                         $data['budget_over']['value'] = $this->input->post('budget_over', TRUE);
+                        $data['budget_type']['value'] = $this->input->post('budget_type', TRUE);
 		}
 
 		if ($this->form_validation->run() == FALSE)
@@ -452,6 +461,7 @@ class Budget extends Controller {
 			$data_code = $this->input->post('budget_code', TRUE);
                         $data_name = $this->input->post('budget_name', TRUE);
                         $data_over = $this->input->post('budget_over', TRUE);
+                        $data_type = $this->input->post('budget_type', TRUE);
 			$data_id = $id;
 			/* Check if parent budget id present */
 			
@@ -468,6 +478,7 @@ class Budget extends Controller {
 				'code' => $data_code,
 				'budgetname' => $data_name,
 				'allowedover' => $data_over, 
+				'type' => $data_type, 
 			);
 			if ( ! $this->db->where('id', $data_id)->update('budgets', $update_data))
 			{

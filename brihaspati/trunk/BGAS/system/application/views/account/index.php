@@ -89,7 +89,7 @@
 									else
 										echo " &nbsp;" . anchor('group/enabledisable/' . $id1 . "/" .  $status1, 'Unhide', array('title' => 'Edit Group', 'class' => 'red-link')) ;
 								}
-								echo " &nbsp;" . anchor('group/delete/' . $row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete group')), array('class' => "onClick", 'title' => "Delete Group")) . "</td>";
+	//							echo " &nbsp;" . anchor('group/delete/' . $row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete group')), array('class' => "onClick", 'title' => "Delete Group")) . "</td>";
 							}
 						$check++;
 						}
@@ -123,7 +123,7 @@
 							else
 								echo " &nbsp;" . anchor('group/enabledisable/' . $id1 . "/" .  $status1, 'Unhide', array('title' => 'Edit Group', 'class' => 'red-link')) ;
 							}
-							echo " &nbsp;" . anchor('group/delete/' . $row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete group')), array('class' => "onClick", 'title' => "Delete Group")) . "</td>";
+	//						echo " &nbsp;" . anchor('group/delete/' . $row->id, img(array('src' => asset_url() . "images/icons/delete.png", 'border' => '0', 'alt' => 'Delete group')), array('class' => "onClick", 'title' => "Delete Group")) . "</td>";
 						}
 						$check++;
 					}
