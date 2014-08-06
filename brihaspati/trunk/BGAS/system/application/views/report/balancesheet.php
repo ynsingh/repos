@@ -5,26 +5,27 @@
 	$this->load->library('reportlist');
 	$fy_start=explode("-",$date1);
 	$fy_end=explode("-",$date2);
-
 	$curr_year = '('.$fy_start[0] ."-" .$fy_end[0] .')';
 	$prev_year = '(' . ($fy_start[0]-1) ."-" . ($fy_end[0]-1) .')';
 	/* check for dates */
+
 	if($date1 > $date2)
 	{
 		$this->messages->add('TO ENTRY DATE should be larger than ENTRY DATE FROM.', 'success');
 	}
 	else {
 		if( $print_preview)
+		
 		echo "<table border=0 align=\"center\">";
 		else
 		echo "<table border=0 >";
 		echo "<tr valign=\"top\">";
 
 		$liability = new Reportlist();
-		echo "<td width=\"" . $left_width . "\">";
+		echo "<td>";
 		$liability->init(2);
 		echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Liabilities and Owners Equity</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
+		echo "<thead><tr><th width=\"$left_width\">Liabilities and Owners Equity</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		$liability->account_st_short(0);
 		echo "</table>";
 		echo "</td>";
@@ -32,10 +33,10 @@
 		$old_liability_total = -$liability->total2;
 
 		$asset = new Reportlist();
-		echo "<td width=\"" . $right_width . "\">";
+		echo "<td>";
 		$asset->init(1);
 		echo "<table border=0 cellpadding=5 class=\"simple-table balance-sheet-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Assets</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\"> Previous Year Amount<br>$prev_year</th></tr></thead>";
+		echo "<thead><tr><th width=\"$left_width\">Assets</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\"> Previous Year Amount<br>$prev_year</th></tr></thead>";
 		$asset->account_st_short(0);
 		echo "</table>";
 		echo "</td>";
@@ -68,9 +69,9 @@
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
-	echo "<td width=\"300\" class=\"bold\">Liability and Owners Equity Total</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($liability_total)) . "</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_liability_total)) . "</td>";
+	echo "<td width=\"$left_width\" class=\"bold\">Liability and Owners Equity Total</td>";
+	echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($liability_total)) . "</td>";
+	echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_liability_total)) . "</td>";
 	echo "</tr>";
 	
 	/* If Profit then Liability side, If Loss then Asset side */
@@ -128,9 +129,9 @@
 	echo "<td>";
 	echo "<table border=0 cellpadding=5 class=\"balance-sheet-total-table\" width=\"100%\">";
 	echo "<tr valign=\"top\">";
-	echo "<td width=\"300\" class=\"bold\">Asset Total</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($asset_total)) . "</td>";
-	echo "<td width=\"125\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_asset_total)) . "</td>";
+	echo "<td width=\"$left_width\" class=\"bold\">Asset Total</td>";
+	echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($asset_total)) . "</td>";
+	echo "<td width=\"$right_width\" align=\"right\" class=\"bold\">" . money_format('%!i', convert_cur($old_asset_total)) . "</td>";
 	echo "</tr>";
 
 	/* If Profit then Liability side, If Loss then Asset side */

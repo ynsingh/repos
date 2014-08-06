@@ -7,15 +7,37 @@
                 echo "<table border='0' cellpadding='3'class=\"simple-table report-table\" width=\"70%\">";
 
                 echo "<tr><td align=\"left\">";
+		$this->db->select('id, name')->from('settings');
+                $ins_id = $this->db->get();
+                foreach( $ins_id->result() as $row)
+                {
+                        $row1 = $row->name;
+                }
                 $this->upload_path= realpath(BASEPATH.'../uploads/logo');
                 $file_list = get_filenames($this->upload_path);
                 if ($file_list)
                 {
-                        foreach ($file_list as $row)
+                        foreach ($file_list as $row2)
                         {
-                                echo img(array('src' => base_url() . "uploads/logo/" . $row));
+                                $ext = substr(strrchr($row2, '.'), 1);
+                                $my_values = explode('.',$row2);
+                                if($my_values[0] == $row1)
+                                {
+                                echo img(array('src' => base_url() . "uploads/logo/" . $row1.'.'.$ext));
+                                echo "<br/>";
+                                echo"&nbsp;&nbsp;&nbsp;&nbsp;";
+                                echo $this->config->item('account_ins_name');
+                                }
                         }
                 }
+                else{
+                echo "<br/>";
+                echo "<br/>";
+                echo "<br/>";
+                echo "<br/>";
+                echo "<p align=\"justify\">" . "&nbsp;" . $this->config->item('account_ins_name') . "</p>";
+                }
+
         ?>
         <br>
         <?php
@@ -52,6 +74,7 @@
                 	echo "<br><br>";
 	                $count++;
         	}
+		
         ?>
                 <br>
         <form><input class="hide-print" type="button" onClick="window.print()" value="Print Statement"></form>

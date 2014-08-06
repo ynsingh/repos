@@ -34,7 +34,7 @@
 	$temp_dr_total = 0;
 	$temp_cr_total = 0;
 	
-	echo "<table border=0 cellpadding=5 class=\"simple-table trial-balance-table\" width=\"70%\">";
+	echo "<table border=0 cellpadding=5 class=\"simple-table trial-balance-table\" width=\"$width\">";
 	echo "<thead><tr><th>Ledger Account</th><th>O/P Balance</th><th>C/L Balance</th><th>Dr Total</th><th>Cr Total</th></tr></thead>";
 	$this->load->model('Ledger_model');
 	$all_ledgers = $this->Ledger_model->get_all_ledgers1($date1, $date2);
@@ -82,7 +82,7 @@
 		echo "</tr>";
 		$odd_even = ($odd_even == "odd") ? "even" : "odd";
 	}
-		echo "<tr class=\"tr-total\"><td colspan=3>TOTAL ";
+		echo "<tr class=\"tr-total\"><td colspan=\"3\">TOTAL ";
 	if (float_ops($temp_dr_total, $temp_cr_total, '=='))
 		echo "<img src=\"" . asset_url() . "images/icons/match.png\">";
 	else
@@ -101,3 +101,4 @@
 	echo form_submit('submit', 'Download CSV');
 	echo form_close();
 	}
+

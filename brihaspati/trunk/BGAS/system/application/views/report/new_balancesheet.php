@@ -1,4 +1,7 @@
+<html>
+<head>
 <script type = "text/javascript">
+
 	var flag = '';
 	//var ledger = '';
 
@@ -28,7 +31,10 @@
 		}
 	);
 </script>
+</head>
+<body>
 
+<br>
 <?php
 	$this->load->library('session');
 	$date1 = $this->session->userdata('date1');
@@ -72,12 +78,13 @@
 	//$liability_total = float_ops($liability_total, -$liability->total, '+');
 	//$old_liability_total = float_ops($old_liability_total, -$liability->total2, '+');
 
-	echo "<table border=0 class=\"simple-table balance-sheet-table\" >";
+	echo "<table border=0 class=\"simple-table balance-sheet-table\"  >";
 	echo "<thead><tr><th></th><th>Schedule</th><th>Current Year<br>$curr_year</th><th>Previous Year<br>$prev_year</th></tr></thead>";
 	echo "<tr>";
-        echo "<td colspan=4 class=\"bold\">";
+        echo "<td colspan=\"4\" class=\"bold\">";
         echo "Sources Of Funds";
         echo "</td>";
+	echo "</tr>";
 	$count = $liability->new_balance_sheet(0);
 	$liability_total = float_ops($liability_total, -$liability->total, '+');
 	$old_liability_total = float_ops($old_liability_total, -$liability->total2, '+');
@@ -104,7 +111,7 @@
         //$asset_total = $asset->total;
 
 	echo "<tr>";
-		echo "<td colspan=4 class=\"bold\">";
+		echo "<td colspan=\"4\" class=\"bold\">";
 			echo "Application Of Funds";
 	        echo "</td>";
 	echo "</tr>";
@@ -148,3 +155,5 @@
         echo "</tr>";
 	echo "</table>";
 ?>
+</body>
+</html>

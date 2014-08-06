@@ -94,15 +94,15 @@
 		/* Ledger Summary */
 		echo "<table class=\"ledger-summary\">";
 		echo "<tr>";
-		echo "<td><b>Opening Balance</b></td><td>" . convert_opening($opbalance, $optype) . "</td>";
+		echo "<td><b>Opening Balance</b>&nbsp;&nbsp;&nbsp;" . convert_opening($opbalance, $optype) . "</td>";
 		echo "</tr>";
 		echo "<tr>";
-		echo "<td><b>Closing Balance</b></td><td>" . convert_amount_dc($clbalance) . "</td>";
+		echo "<td><b>Closing Balance</b>&nbsp;&nbsp;&nbsp;&nbsp;" . convert_amount_dc($clbalance) . "</td>";
 		echo "</tr>";
 		echo "</table>";
 		echo "<br />";
 		
-		echo "<table border=0 cellpadding=5 class=\"simple-table ledgerst-table\" width=\"70%\">";
+		echo "<table border=0 cellpadding=\"5\" class=\"simple-table ledgerst-table\" width=\"$width\">";
 
 		echo "<thead><tr><th>Date</th><th>No.</th><th>Ledger Name</th><th>Type</th><th>Dr Amount</th><th>Cr Amount</th><th>Balance</th></tr></thead>";
 		$odd_even = "odd";
@@ -114,10 +114,10 @@
 			/* Opening balance */
 			if ($optype == "D")
 			{
-				echo "<tr class=\"tr-balance\"><td colspan=6>Opening Balance</td><td>" . convert_opening($opbalance, $optype) . "</td></tr>";
+				echo "<tr class=\"tr-balance\"><td colspan=\"6\">Opening Balance</td><td>" . convert_opening($opbalance, $optype) . "</td></tr>";
 				$cur_balance = float_ops($cur_balance, $opbalance, '+');
 			} else {
-				echo "<tr class=\"tr-balance\"><td colspan=6>Opening Balance</td><td>" . convert_opening($opbalance, $optype) . "</td></tr>";
+				echo "<tr class=\"tr-balance\"><td colspan=\"6\">Opening Balance</td><td>" . convert_opening($opbalance, $optype) . "</td></tr>";
 				$cur_balance = float_ops($cur_balance, $opbalance, '-');
 			}
 		} else {
@@ -144,7 +144,7 @@
 					$cur_balance = float_ops($cur_balance, $row->entry_items_amount, '-');
 			}
 			/* Show new current total */
-			echo "<tr class=\"tr-balance\"><td colspan=6>Opening</td><td>" . convert_amount_dc($cur_balance) . "</td></tr>";
+			echo "<tr class=\"tr-balance\"><td colspan=\"6\">Opening</td><td>" . convert_amount_dc($cur_balance) . "</td></tr>";
 		}
 		if( $from_date > $to_date )
 		{
@@ -188,7 +188,7 @@
 			echo "<td>";
 				echo $this->Ledger_model->get_opp_ledger_name($row->entries_id, $current_entry_type['label'], $row->entry_items_dc, 'html');
 			if ($row->entries_narration)
-				echo "<div class=\"small-font\">" . character_limiter($row->entries_narration, 50) . "</div>";
+				echo "<div>" . character_limiter($row->entries_narration, 50) . "</div>";
 			echo "</td>";
 
 			echo "<td>";
@@ -219,7 +219,7 @@
 			$odd_even = ($odd_even == "odd") ? "even" : "odd";
 		}
 		/* Current Page Closing Balance */
-		echo "<tr class=\"tr-balance\"><td colspan=6>Closing</td><td>" .  convert_amount_dc($cur_balance) . "</td></tr>";
+		echo "<tr class=\"tr-balance\"><td colspan=\"6\">Closing</td><td>" .  convert_amount_dc($cur_balance) . "</td></tr>";
 		echo "</table>";
 		if (!$print_preview){
 		echo "<br>";

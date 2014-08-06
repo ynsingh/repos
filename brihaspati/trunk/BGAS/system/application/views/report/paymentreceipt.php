@@ -46,13 +46,14 @@
 		echo "<tr valign=\"top\">";
 
 		/* Payment */	
-		echo "<td width=\"" . $left_width . "\">";
+		//echo "<td width=\"" . $left_width . "\">";
+		echo "<td>";
 		$this->db->from('groups')->where('parent_id', 4)->where('affects_gross !=', 1);
 		$net_expense_list_q = $this->db->get();
-		echo "<tr valign=\"top\">";
-		echo "<td>";
+		//echo "<tr valign=\"top\">";
+		//echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Payment</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
+		echo "<thead><tr><th width=\"$left_width\">Payment</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 		foreach ($net_expense_list_q->result() as $row)
 		{
 			$net_expense = new Reportlist();
@@ -63,9 +64,9 @@
 		echo "</td>";
 			
 		/* Receipt */
-		echo "<td width=\"" . $right_width . "\">";
+		echo "<td>";
 		echo "<table border=0 cellpadding=5 class=\"simple-table profit-loss-table\" width=\"100%\">";
-		echo "<thead><tr><th width=\"300\">Receipt</th><th width=\"125\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"125\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
+		echo "<thead><tr><th width=\"$left_width\">Receipt</th><th width=\"$right_width\" align=\"right\">Current Year Amount<br>$curr_year</th><th width=\"$right_width\" align=\"right\">Previous Year Amount<br>$prev_year</th></tr></thead>";
 	
 		$this->db->from('groups')->where('parent_id', 3)->where('affects_gross !=', 1);			
 		$net_income_list_q = $this->db->get();
