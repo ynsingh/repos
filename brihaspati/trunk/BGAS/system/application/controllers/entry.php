@@ -2481,7 +2481,7 @@ class Entry extends Controller {
 
 	function cheque($entry_type, $entry_id = 0)
 	{
-		$this->template->set('page_title', 'Cheque Print');
+		$this->template->set('page_title', 'Cheque Details');
 		$this->db->select('id, name, amount, bank_name, update_cheque_no, entry_no')->from('cheque_print')->where('entry_no', $entry_id);
                 $allvalue = $this->db->get();
 		foreach($allvalue->result() as $row)
@@ -2489,7 +2489,6 @@ class Entry extends Controller {
                 	$cheque_no = $row->update_cheque_no;
 			$bank_name = $row->bank_name;
 			$name=$row->name;
-			$amount= $row->amount;
                 }
 		if($cheque_no == 1)
 		{	
@@ -2508,15 +2507,6 @@ class Entry extends Controller {
                         'value' => $today_date,
                 );
 
-		
-		  $data['bank_name'] = array(
-                        'name' => 'bank_name',
-                        'id' => 'bank_name',
-                        'maxlength' => '255',
-                        'size' => '15',
-                        'value' => $bank_name,
-		);
-
 			$data['beneficiary_name'] = array(
                         'name' => 'beneficiary_name',
                         'id' => 'benef_name',
@@ -2525,13 +2515,6 @@ class Entry extends Controller {
                         'value' => $name,
                 );
 
-			$data['amount'] = array(
-                        'name' => 'amount',
-                        'id' => 'amount',
-                        'maxlength' => '11',
-                        'size' => '15',
-                        'value' => $amount,
-		);
 
 			$data['cheque_no'] = array(
 			'name' => 'cheque_no',
@@ -2584,7 +2567,7 @@ class Entry extends Controller {
 	}
 	function cheque_bounce($entry_type, $entry_id = 0)
 	{
-		$this->template->set('page_title', 'Cheque Bounce');
+		$this->template->set('page_title', 'Cheque Details (Print New Cheque)');
 		$this->db->select('id, name, amount, bank_name, update_cheque_no, entry_no, cheque_print_date, No_of_bounce_cheque')->from('cheque_print')->where('entry_no', $entry_id)->where('cheque_print_status', '1');
                 $allvalue = $this->db->get();
 		foreach($allvalue->result() as $row)
@@ -2712,8 +2695,9 @@ class Entry extends Controller {
 
 	function cheque_print($entry_type, $entry_id = 0, $ledger_id)
         {
-		$new_cheque_no='';
 		$id=0;
+		$new_cheque_no='';
+		$duplicate_id='';
 		$this->db->select('id, name, entry_no')->from('cheque_print')->where('entry_no', $entry_id);
                 $allvalue = $this->db->get();
 		$no_of_row=$allvalue->num_rows();
@@ -2795,7 +2779,7 @@ class Entry extends Controller {
 			
 			$data['amount']['value'] = $this->input->post('amount', TRUE);
 
-			$data['cheque_no'] = $this->input->post('cheque_no', TRUE);
+			$data['cheque_no']['value'] = $this->input->post('cheque_no', TRUE);
 
 			$data['active_cheque_type'] = $this->input->post('cheque_type', TRUE);
                 }
@@ -2812,10 +2796,27 @@ class Entry extends Controller {
                         $data_amount = $this->input->post('amount', TRUE);
                         $data_cheque_no = $this->input->post('cheque_no', TRUE);
                         $data_cheque_type = $this->input->post('cheque_type', TRUE);
+
+			//Check entered cheque no. already exist in database(Give error message) .........
+			$this->db->select('id, entry_no')->from('cheque_bounce_record')->where('new_cheque_no', $data_cheque_no)->where('bank_name', $data_bank_name);
+                        $check_name_exist = $this->db->get();
+			foreach($check_name_exist->result() as $row3)
+                        {
+				$duplicate_id=$row3->id;
+                        }
+			if($duplicate_id)
+			{
+				$this->messages->add($data_cheque_no.' Cheque No already printed by '.$data_bank_name . '.', 'error');
+                                $this->template->load('template', 'entry/cheque', $data);
+                                return;
+		
+			}
+			//set cheque_type(Bearer or order) in session..
                         $newdata = array(
                         'cheque_type'  => $data_cheque_type,
                         );
-                        $this->session->set_userdata($newdata);
+                        $this->session->set_userdata($newdata);//end
+		
 			$this->db->select('id, entry_no, update_cheque_no, cheque_print_status, cheque_bounce_status')->from('cheque_print')->where('entry_no', $entry_id)->where('ledger_id', $ledger_id);
                 	$ch_value = $this->db->get();
                 	foreach($ch_value->result() as $row)
@@ -2839,7 +2840,6 @@ class Entry extends Controller {
 			if($new_cheque_no == NULL){
 					$new_cheque_no=$data_cheque_no;
 			}
-			$no_of_row=$cheque_bounce->num_rows();
 			if($cheque_print_status == 1 || $new_cheque_no != NULL)
 			{
                                 $insert_cheque_data = array(

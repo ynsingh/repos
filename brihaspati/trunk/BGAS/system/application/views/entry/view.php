@@ -87,10 +87,10 @@ else
         	if( $cheque_no != NULL)
          	{
                         echo "<p>";
-                        echo "Bank Name :" . $name . "</br>";
+                        echo "Bank Name :" . $bank_name . "</br>";
                         echo "</p>";
                         echo "<p>";
-                        echo "Beneficiary Name :" . $bank_name . "</br>";
+                        echo "Beneficiary Name :" . $name . "</br>";
                         echo "</p>";
 			for($i=0; $i<$length; $i++)
                 	{

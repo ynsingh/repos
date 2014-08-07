@@ -1,4 +1,5 @@
 <?php
+	$entry_amount='0';
 	$this->db->select('entry_no, name, amount, ledger_id, bank_name, update_cheque_no')->from('cheque_print')->where('entry_no', $entry_id);
         $cheque_bounce = $this->db->get();
 	$no_of_row=$cheque_bounce->num_rows();
@@ -7,7 +8,35 @@
 		foreach($cheque_bounce->result() as $row)
         	{
 			$ledger_id=$row->ledger_id;
+			$bank_name1=$row->bank_name;
+
         	}
+		//Get amount when entry has been made initially(from entry_items)...
+                $this->db->select('amount')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
+                $entry_items = $this->db->get();
+                foreach($entry_items->result() as $row2)
+                {
+                        $entry_amount=$row2->amount;
+                }
+		//Get bank or cash id when entry has been made initially(from entry_items)...
+                $this->db->select('ledger_id')->from('entry_items')->where('entry_id', $entry_id)->where('dc', 'C');
+                $ledger = $this->db->get();
+                foreach($ledger->result() as $row3)
+                {
+                        $id=$row3->ledger_id;
+                }
+                //Get name from that id from ledgers table....
+                $this->db->select('name')->from('ledgers')->where('id', $id);
+                $ledger_name = $this->db->get();
+                foreach($ledger_name->result() as $row4)
+                {
+                        $led_name=$row4->name;
+                }
+                if($bank_name1 == Null)
+                {
+                        $bank_name1=$led_name;
+                }
+
 	echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/". $ledger_id);
 	echo"<br>";
         echo form_label('Date', 'date');
@@ -19,9 +48,15 @@
 
 	echo"<br>";
 	echo form_label('Bank Name', 'bank_name');
-	echo "&nbsp;&nbsp;";
-	echo " ";
-	echo form_input($bank_name);
+	echo "&nbsp;&nbsp;&nbsp;";
+	$bank_name = array(
+                   	'name' => 'bank_name',
+                   	'id' => 'bank_name',
+                   	'maxlength' => '255',
+                   	'size' => '15',
+                   	'value' => $bank_name1,
+                   );
+        echo form_input($bank_name);
 	echo"</br>";
 
 	echo"<br>";
@@ -32,9 +67,18 @@
 	echo"</br>";
 
 	echo"<br>";
-        echo form_label('Amount', 'amount');
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo form_input($amount);
+	echo form_label('Amount', 'amount');
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	$amount1 = array(
+                	'name' => 'amount',
+                	'id' => 'amount',
+                	'maxlength' => '11',
+                	'size' => '15',
+                	'value' => $entry_amount,
+			'readonly'=>'readonly',
+                );
+        echo form_input($amount1);
+
         echo"</br>";
 
 	echo "<p>";
@@ -56,7 +100,7 @@
 
 	echo"<p id=\"submit\">";	
 	echo"<br>";
-        echo form_submit('submit', 'verify');
+        echo form_submitscript('submit', 'submit');
         echo " ";
         echo"</br>";
 	echo"</p>";
@@ -72,11 +116,40 @@
 		$ledger_id=$row->ledger_id;
 		$bank_name1=$row->bank_name;
 		$update_cheque=$row->update_cheque_no;
-		$amount=$row->amount;
-		
-		
 		$name1=$row->name;
+		//Get amount when entry has been made initially(from entry_items)...
+		$this->db->select('amount')->from('entry_items')->where('entry_id', $entry_id)->where('ledger_id', $ledger_id);
+                $entry_items = $this->db->get();
+                foreach($entry_items->result() as $row2)
+                {
+                        $entry_amount=$row2->amount;
+                }
+		//Get bank or cash id when entry has been made initially(from entry_items)...
+                $this->db->select('ledger_id')->from('entry_items')->where('entry_id', $entry_id)->where('dc', 'C');
+                $ledger = $this->db->get();
+                foreach($ledger->result() as $row3)
+                {
+                        $id=$row3->ledger_id;
+                }
+		//Get name from that id from ledgers table....
+		$this->db->select('name')->from('ledgers')->where('id', $id);
+                $ledger_name = $this->db->get();
+                foreach($ledger_name->result() as $row4)
+                {
+                        $led_name=$row4->name;
+                }
+		if($bank_name1 == Null)
+		{
+			$bank_name1=$led_name;
+		}
+		if($update_cheque == 1)
+		{
+			$update_cheque=NULL;
+		}else{
+			$update_cheque=$update_cheque+1;
+		}
         	echo"<tr>";
+			//Get cheque print status....
 			 $this->db->select('cheque_print_status, cheque_bounce_status')->from('cheque_print')->where('entry_no', $entry_id)->where('ledger_id', $ledger_id);
                         $ch_value = $this->db->get();
                         foreach($ch_value->result() as $row)
@@ -98,19 +171,23 @@
 			}else{
 			echo form_open_multipart('entry/cheque_print/'. $entry_type."/".$entry_id."/".$ledger_id);
 			}
-			if($cheque_print_status == 1 || $cheque_bounce_status == 1)
+			if($cheque_print_status == 1 )
 			{
 				echo " <td>";
-                        	echo "<font color=\"red\">";
-				echo anchor_popup('entry/cheque_detail/'.$entry_id.'/'. $ledger_id.'/'.$entry_type, 'Cheque Bounce Detail', array('title' => 'Print this ', 'width' => '600', 'height' => '600'));
+				echo '<p>Cheque Printed</p>';
+				echo anchor_popup('entry/cheque_detail/'.$entry_id.'/'. $ledger_id.'/'.$entry_type, '(Cheque Detail)', array('title' => 'Print this ', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
 
-				echo "</font>";
                         	echo"</td>";
-			}else
+			}elseif($cheque_print_status == 1 && $cheque_bounce_status == 1)
 			{
 				echo " <td>";
-                        	echo '<p style="color: blue; text-align: center">Cheque Not Printed</p>';
+				echo '<p style="color: blue; text-align: center">Reprint Cheque</p>';
+				echo anchor_popup('entry/cheque_detail/'.$entry_id.'/'. $ledger_id.'/'.$entry_type, '(Cheque Detail)', array('title' => 'Print this ', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
                         	echo"</td>";
+			}else{
+				 echo " <td>";
+				 echo '<p>Cheque Not Printed</p>';
+				 echo "</td>";
 			}
 	
         		echo " <td>";
@@ -118,6 +195,7 @@
         		echo"</td>";
 
         		echo "<td>";
+			echo"&nbsp;&nbsp;";
 			$bank_name = array(
                         		'name' => 'bank_name',
                         		'id' => 'bank_name',
@@ -147,7 +225,8 @@
                        		 	'id' => 'amount',
                         		'maxlength' => '11',
 		                        'size' => '15',
-		                        'value' => $amount,
+		                        'value' => $entry_amount,
+					'readonly'=>'readonly',
 		                );
 			echo form_input($amount1);
 
@@ -159,7 +238,7 @@
                                                 'id' => 'cheque_no',
                                                 'maxlength' => '15',
                                                 'size' => '15',
-                                                'value' => $update_cheque+1,
+                                                'value' => $update_cheque,
 					);
         		echo form_input($cheque_no2);
         		echo "</td>";
@@ -170,7 +249,7 @@
 
         		echo"<td>";
         		echo"<p id=\"submit\">";
-        		echo form_submit('submit', 'Verify');
+			echo form_submitscript('submit', 'submit');
         		echo"</p>";
         		echo form_close();
         		echo "</td>";

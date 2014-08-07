@@ -50,9 +50,13 @@
          		foreach($ledger_q->result() as $row)
                                 {
                                 $bank_name = $row->bank_name;
+				$bank[] =$bank_name;
                                 $name= $row->name;
+				$benif_name[] =$name;
 				$cheque_no=$row->update_cheque_no;
+				$cheque[] =$cheque_no;
                                 }
+				$length=count($cheque);
 
 
 		?>
@@ -65,20 +69,17 @@
 	 <?php
 	if($ledger_q->num_rows() == 0)
         {
-        if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
-        {
         echo "Bank Name :" . '' . "</br>";
         echo "Beneficiary Name :" . '' . "</br>";
         echo "Cheque No :" . '' . "</br>";
         }
-        }
         elseif($ledger_q->num_rows() > 0){
-         if( $current_entry_type['name'] == "Receipt" || $current_entry_type['name'] == "Payment" || $current_entry_type['name'] == "Contra")
+	for($i=0; $i<$length; $i++)
         {
-        echo "Bank Name :" . $bank_name . "</br>";
-        echo "Beneficiary Name :" . $name . "</br>";
-        echo "Cheque No :" . $cheque_no . "</br>";
-        }
+	echo "Bank Name :" . $bank[$i] . "</br>";
+        echo "Beneficiary Name :" . $benif_name[$i] . "</br>";
+        echo "Cheque No :" . $cheque[$i] . "</br>";
+	}
         }
 
         ?>

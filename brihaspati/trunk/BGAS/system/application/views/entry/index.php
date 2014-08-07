@@ -63,7 +63,7 @@
 			}
 			if($value != NULL) {
 				echo "<tr>";
-				$this->db->select('name,bank_name,ledger_id')->from('cheque_print')->where('entry_no',$row->id);
+				$this->db->select('name,bank_name,ledger_id,update_cheque_no')->from('cheque_print')->where('entry_no',$row->id);
         			$ledger_q = $this->db->get();
 				$no_of_row=$ledger_q->num_rows();
 				//Ids added by Priyanka
@@ -102,6 +102,7 @@
                                         $bank_name = $row1->bank_name;
                                         $name= $row1->name;
                                         $ledger_id= $row1->ledger_id;	
+					$update_chequ_no=$row1->update_cheque_no;
                         				$this->db->select('cheque_print_status, cheque_bounce_status, No_of_bounce_cheque')->from('cheque_print')->where('ledger_id', $ledger_id)->where('entry_no',$row->id);
                         				$cheque_status = $this->db->get();
                         				foreach($cheque_status->result() as $row2)
@@ -114,20 +115,31 @@
                         				if($cheque_print_status == 0 && $cheque_bounce_status == 0)
                         				{
 			
-                                				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                                				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
 								echo"<br>";
 					
                         				}
 							//Print cheque if bounced..........
                         				if($cheque_print_status == 1 && $cheque_bounce_status == 0 || $cheque_print_status == 1 && $cheque_bounce_status == 1)
                         				{
-                               				echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $row->id, 'Cancle Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+                               				echo anchor('entry/cheque_bounce/' .  $current_entry_type['label'] . "/" . $row->id, 'Cancle Cheque', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
 							
 							}
 							
 				}
 	}elseif( $no_of_row > 1){
-				echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print this ' . $current_entry_type['name'] . ' Entry', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+	foreach($ledger_q->result() as $row1)
+        {
+        	$ledger_id= $row1->ledger_id;
+        	$update_chequ_no=$row1->update_cheque_no;
+        }
+        if($ledger_id != NULL &&  $update_chequ_no != NULL)
+        {
+        	if($update_chequ_no != '0'){
+        		echo anchor('entry/cheque/' .  $current_entry_type['label'] . "/" . $row->id, 'Cheque', array('title' => 'Print Cheque', 'width' => '600', 'height' => '600', 'class' => 'anchor-link-a'));
+        		}
+        }
+
 	}else{
 		 		echo "Cash";
 	}
