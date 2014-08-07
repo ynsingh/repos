@@ -1,6 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
+	
 	//code for displaying parent child hierarchy
         $('.ledger-parent').change(function() {
 			if($(this).val() == "Please Select"){
@@ -12,16 +13,18 @@ $(document).ready(function() {
 				var ledgerArray = ledger.split('#');
 				name = ledgerArray[0];
 				id = ledgerArray[1]; 
-					
+
+				ledger_name = $('#ledger_name').val();
+
                         	$.ajax({
-                               	        url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id,
+                               	        //url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id,
+                               	        url: <?php echo '\'' . site_url('ledger/set_group_id') . '/\''; ?> + id + <?php echo '\'/\''; ?> + ledger_name + <?php echo '\'/\''; ?> + name,
                                        	success: function() {
                                                 location.reload();
                                         }
 			         });
 			}
         });     
-
 
 });
 </script>
@@ -82,6 +85,8 @@ $(document).ready(function() {
 	                }while($counter >= 0);
 
                 $this->session->unset_userdata('ledger_group_id');
+                $this->session->unset_userdata('ledger_name');
+                $this->session->unset_userdata('group_name');
         }
         echo "</p>";
         echo form_fieldset_close();

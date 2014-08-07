@@ -25,6 +25,7 @@ var $username;
 	{
 		$this->template->set('page_title', 'New Ledger');
 		$this->load->library('accountlist');
+		$this->load->library('session');
                 $asset = new Accountlist();
 
 		/* Check access */
@@ -43,7 +44,7 @@ var $username;
 			return;
 		}
 
-		/* Form fields */
+		/*Form fields */
 /*		$data['ledger_code'] = array(
 			'name' => 'ledger_code',
 			'id' => 'ledger-code',
@@ -53,13 +54,17 @@ var $username;
 		//	'readonly' => 'readonly',
 		); 
 */	
-	
+		$ledger_name = '';	
+		$sess_ledger_name = $this->session->userdata('ledger_name');
+	        if($sess_ledger_name)
+        	        $ledger_name = $sess_ledger_name;
+
 		$data['ledger_name'] = array(
 			'name' => 'ledger_name',
 			'id' => 'ledger_name',
 			'maxlength' => '100',
 			'size' => '40',
-			'value' => '',
+			'value' => $ledger_name,
 		);
 		$data['ledger_group_id'] = $this->Group_model->get_ledger_groups();
 		$data['op_balance'] = array(
@@ -69,7 +74,15 @@ var $username;
 			'size' => '15',
 			'value' => '',
 		);
-		$data['ledger_group_active'] = 0;
+
+		$ledger_group_id = $this->session->userdata('ledger_group_id');
+		$ledger_group_name = $this->session->userdata('group_name');
+		$ledger_group = $ledger_group_name.'#'.$ledger_group_id;
+		if($ledger_group)
+                        $data['ledger_group_active'] = $ledger_group;
+		else
+			$data['ledger_group_active'] = 0;
+	
 		$data['op_balance_dc'] = "D";
 		$data['ledger_type_cashbank'] = FALSE;
 		$data['reconciliation'] = FALSE;
@@ -490,7 +503,7 @@ var $username;
 		/* Form validations */
 //		$this->form_validation->set_rules('ledger_code', 'Ledger code', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.code.' . $id . ']');
 		$this->form_validation->set_rules('ledger_name', 'Ledger name', 'trim|required|min_length[2]|max_length[100]|uniquewithid[ledgers.name.' . $id . ']');
-		$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required');
+		//$this->form_validation->set_rules('ledger_group_id', 'Parent group', 'trim|required');
 		$this->form_validation->set_rules('op_balance', 'Opening balance', 'trim|currency');
 		$this->form_validation->set_rules('op_balance_dc', 'Opening balance type', 'trim|required|is_dc');
 
@@ -499,7 +512,7 @@ var $username;
 		{
 //			$data['ledger_code']['value'] = $this->input->post('ledger_code', TRUE);
 			$data['ledger_name']['value'] = $this->input->post('ledger_name', TRUE);
-			$data['ledger_group_active'] = $this->input->post('ledger_group_id', TRUE);
+			//$data['ledger_group_active'] = $this->input->post('ledger_group_id', TRUE);
 			$data['op_balance']['value'] = $this->input->post('op_balance', TRUE);
 			$data['op_balance_dc'] = $this->input->post('op_balance_dc', TRUE);
 			$data['ledger_type_cashbank'] = $this->input->post('ledger_type_cashbank', TRUE);
@@ -518,7 +531,7 @@ var $username;
 //			$data_code = $this->input->post('ledger_code', TRUE);
 			$data_name = $this->input->post('ledger_name', TRUE);
 			//echo $data_group_id = $this->input->post('ledger_group_id', TRUE);
-			$data_group_name = $this->input->post('ledger_group_id', TRUE);
+			//$data_group_name = $this->input->post('ledger_group_id', TRUE);
 			
 			/*$this->db->select('id')->from('groups')->where('name',$data_group_name);
                         $group_parent_qn = $this->db->get();
@@ -527,8 +540,8 @@ var $username;
                                 $data_group_id=$row1->id;
                         }*/
 	
-			$Array = explode("#", $data_group_name);
-                        $data_group_id = $Array[1];
+		//	$Array = explode("#", $data_group_name);
+                  //      $data_group_id = $Array[1];
 
 			$data_op_balance = $this->input->post('op_balance', TRUE);
 			$data_op_balance_dc = $this->input->post('op_balance_dc', TRUE);
@@ -536,14 +549,14 @@ var $username;
 			$data_ledger_type_cashbank_value = $this->input->post('ledger_type_cashbank', TRUE);
 			$data_reconciliation = $this->input->post('reconciliation', TRUE);
 
-			if ($data_group_id < 5)
+	/*		if ($data_group_id < 5)
 			{
 				$this->messages->add('Invalid Parent group.', 'error');
 				$this->template->load('template', 'ledger/edit', $data);
 				return;
 			}
 
-			/* Check if parent group id present */
+			/* Check if parent group id present 
 			$this->db->select('id')->from('groups')->where('id', $data_group_id);
 			if ($this->db->get()->num_rows() < 1)
 			{
@@ -551,7 +564,7 @@ var $username;
 				$this->template->load('template', 'ledger/edit', $data);
 				return;
 			}
-
+	*/
 			if (!$data_op_balance) {
 				$data_op_balance = "0.00";
 			}
@@ -591,7 +604,7 @@ var $username;
 				$data_reconciliation = 0;
 			}
                         
-			if($old_ledger_parent != $data_group_id)
+	/*		if($old_ledger_parent != $data_group_id)
 			{
 				$num = $this->Ledger_model->get_numOfChild($data_group_id);
                         	$l_code = $this->Group_model->get_group_code($data_group_id);
@@ -615,12 +628,12 @@ var $username;
                                 	$i++;
                        		}while($group_q->num_rows()>0);
 			}
-
+	*/
 			$this->db->trans_start();
 			$update_data = array(
 				'code' => $data_code,
 				'name' => $data_name,
-				'group_id' => $data_group_id,
+	//			'group_id' => $data_group_id,
 				'op_balance' => $data_op_balance,
 				'op_balance_dc' => $data_op_balance_dc,
 				'type' => $data_ledger_type,
@@ -877,16 +890,12 @@ var $username;
 		return;
 	}
 
-	function set_group_id($id){
+	function set_group_id($id, $ledger_name, $name){
 
-		/*$this->db->select('id');
-		$this->db->from('groups')->where('name =', $name);
-		$result = $this->db->get();
-		$group = $result->row();
-		$group_id = $group->id;*/
-		
 		$this->load->library('session');
                 $this->session->set_userdata('ledger_group_id', $id);		
+		$this->session->set_userdata('ledger_name', $ledger_name);
+		$this->session->set_userdata('group_name', $name);
 	}
 }
 

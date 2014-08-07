@@ -39,7 +39,8 @@ $(document).ready(function() {
 	echo "<p>";
 	echo form_label('Parent group', 'ledger_group_id');
 	echo "<br />";
-	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
+	//echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active,"class=\"ledger-parent\"");
+	echo form_dropdown('ledger_group_id', $ledger_group_id, $ledger_group_active, "disabled");
 	echo "</p>";
 
 	/**
