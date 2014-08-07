@@ -301,7 +301,7 @@ $(document).ready(function() {
 				echo anchor('addparty', 'Sec Unit Id', array('title' => 'Sec Unit Id'));
 				echo "<ul>";
 					echo "<li>";
-					echo anchor('addparty', 'View Party', array('title' => 'ViewParty'));
+					echo anchor('addparty/show', 'View Party', array('title' => 'ViewParty'));
 					echo "</li>";
 					echo "<li>";
 					echo anchor('addparty/add', 'Add Party', array('title' => 'AddParty'));
